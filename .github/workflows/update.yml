@@ -22,17 +22,17 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
 
-      - name: Download latest tarball
-        run: curl -sLO https://src.fedoraproject.org/lookaside/rpm-specs-latest.tar.xz
-        
-      - name: Extract tarball
-        run: tar xvf rpm-specs-latest.tar.xz
-
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Setup Pages
         uses: actions/configure-pages@v2
+
+      - name: Download latest tarball
+        run: curl -sLO https://src.fedoraproject.org/lookaside/rpm-specs-latest.tar.xz
+        
+      - name: Extract tarball
+        run: tar xf rpm-specs-latest.tar.xz
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
