@@ -23,7 +23,7 @@ jobs:
     steps:
 
       - name: Download latest tarball
-        run: curl -sLo https://src.fedoraproject.org/lookaside/rpm-specs-latest.tar.xz
+        run: curl -sLO https://src.fedoraproject.org/lookaside/rpm-specs-latest.tar.xz
         
       - name: Extract tarball
         run: tar xvf rpm-specs-latest.tar.xz
