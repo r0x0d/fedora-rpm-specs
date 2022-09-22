@@ -1,0 +1,7 @@
+[allowlist]
+description = "Global Allowlist"
+
+paths = [
+  # Replace this with the regex for a path
+  '''libreoffice.spec''',
+]
