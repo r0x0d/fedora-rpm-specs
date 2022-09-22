@@ -1,0 +1,17 @@
+name: Run urlwatch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  urlwatch:
+    runs-on: ubuntu-latest
+    container: quay.io/fedora/fedora:latest
+    steps:
+
+      - name: Download latest tarball
+        run: curl -sLo https://src.fedoraproject.org/lookaside/rpm-specs-latest.tar.xz
+        
+      - name: Extract tarball
+        run: tar xvf rpm-specs-latest.tar.xz
