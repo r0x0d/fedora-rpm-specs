@@ -34,6 +34,15 @@ jobs:
       - name: Extract tarball
         run: tar xf rpm-specs-latest.tar.xz
         
+      - name: Create a basic HTML index of the specs
+        run: |
+          pushd rpm-specs
+          echo "<html><head><title>Major's Fedora RPM spec files dump</title></head><body><ul>" > index.html
+          for i in `ls *.spec`; do
+            echo "<li><a href='${i}'>${i}</a></li>" >> index.html
+          done
+          echo "</ul></body></html>" >> index.html
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
