@@ -1,3 +1,5 @@
+name: "Update"
+
 on:
   push:
     branches:
@@ -29,3 +31,4 @@ jobs:
           FOLDER: rpm-specs
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SQUASH_HISTORY: false
+          TARGET_DIR: specs
