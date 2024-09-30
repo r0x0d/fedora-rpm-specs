@@ -1,2 +1,4 @@
 # fedora-rpm-specs
-Tracking changes to Fedora RPM spec files
+
+This repository downloads Fedora RPM spec files from the lookaside cache and keeps them
+in the `specs` directory.
