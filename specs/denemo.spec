@@ -1,9 +1,10 @@
-Summary:	Graphical music notation program
 Name:		denemo
 Version:	2.6.0
-Release:	14%{?dist}
+Release:	15%{?dist}
+Summary:	Graphical music notation program
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:	GPL-3.0-or-later
+
 Source:		https://ftp.gnu.org/gnu/denemo/denemo-%{version}.tar.gz
 Source1:	%{name}-feta.metainfo.xml
 Source2:	%{name}-emmentaler.metainfo.xml
@@ -11,11 +12,12 @@ Source3:	%{name}-music.metainfo.xml
 Patch1:		%{name}-%{version}-configure.patch
 # Upstream patch: https://savannah.gnu.org/bugs/index.php?63720
 Patch2:		%{name}-%{version}-c99.patch
+Patch3:		%{name}-guile-3.0.patch
 
 URL: http://www.denemo.org/
 
 BuildRequires: gcc libtool
-BuildRequires: portaudio-devel aubio-devel guile22-devel
+BuildRequires: portaudio-devel aubio-devel guile30-devel
 BuildRequires: gettext libxml2-devel fftw-devel desktop-file-utils
 BuildRequires: libtool-ltdl-devel jack-audio-connection-kit-devel
 BuildRequires: fontpackages-devel lash-devel libsamplerate-devel
@@ -96,26 +98,25 @@ and much more.
 This contains the directory common to all Denemo fonts.
 
 %prep
-%setup -q
-%patch 1 -p1
-%patch 2 -p1
+%autosetup -p1
 
 %build
 autoupdate
 autoreconf -if
-%configure --enable-jack=yes --disable-binreloc --enable-guile_2_2=yes
+%configure --enable-jack=yes --disable-binreloc --enable-guile_3_0=yes
 
-make %{?_smp_mflags} 
+%make_build
 chrpath -d src/denemo
 chmod 644 actions/*.scm
 
 %install
-rm -rf %{buildroot}
-make install DESTDIR=%{buildroot}
+%make_install
+
 desktop-file-install --vendor=""\
 	--dir=%{buildroot}/%{_datadir}/applications\
 	--add-category=X-Notation\
 	%{buildroot}/%{_datadir}/applications/org.denemo.Denemo.desktop
+
 %find_lang %{name}
 install -m 0755 -d %{buildroot}/%{_datadir}/denemo/fonts
 install -m 0755 -d %{buildroot}%{_fontdir}
@@ -135,13 +136,14 @@ install -Dm 0644 -p %{SOURCE3} \
 	%{buildroot}%{_datadir}/appdata/%{name}-music.metainfo.xml
 
 %files -f %{name}.lang
+%license COPYING
+%doc ChangeLog
 %dir %{_datadir}/denemo
 %{_datadir}/denemo/*
 %{_datadir}/pixmaps/org.denemo.Denemo.png
 %{_datadir}/applications/org.denemo.Denemo.desktop
 %{_bindir}/*
 %{_datadir}/appdata/org.denemo.Denemo.appdata.xml
-%doc COPYING ChangeLog 
 
 %_font_pkg -n feta feta.ttf
 %{_datadir}/appdata/%{name}-feta.metainfo.xml
@@ -153,11 +155,16 @@ install -Dm 0644 -p %{SOURCE3} \
 %{_datadir}/appdata/%{name}-music.metainfo.xml
 
 %files fonts-common
-%doc COPYING AUTHORS
+%license COPYING
+%doc AUTHORS
 %defattr(0644,root,root,0755)
 
 
 %changelog
+* Mon Sep 30 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 2.6.0-15
+- Build against guile 3.0
+- Spec file cleanups
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 2.6.0-14
 - convert license to SPDX
 

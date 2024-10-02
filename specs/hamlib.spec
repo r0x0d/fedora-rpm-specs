@@ -141,6 +141,7 @@ autoreconf -fi
 
 %configure \
         --disable-static \
+        --with-tcl=/usr/%{_lib} \
         --with-tcl-binding \
         --with-perl-binding \
         --with-python-binding \

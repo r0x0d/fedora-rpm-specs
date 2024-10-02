@@ -4,7 +4,7 @@
 %global upstream_name redis
 
 Name:           python-%{upstream_name}
-Version:        5.0.8
+Version:        5.1.0
 Release:        %autorelease
 Summary:        Python interface to the Redis key-value store
 License:        MIT
@@ -21,6 +21,7 @@ BuildRequires:  python3dist(pytest-asyncio)
 BuildRequires:  python3dist(async-timeout)
 BuildRequires:  python3dist(pytest-timeout)
 BuildRequires:  python3dist(numpy)
+BuildRequires:  python3dist(coverage)
 %endif
 
 %global _description\

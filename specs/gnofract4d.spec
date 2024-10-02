@@ -1,6 +1,6 @@
 Name:           gnofract4d
 Version:        4.3
-Release:        18%{?dist}
+Release:        19%{?dist}
 Summary:        Gnofract 4D is a Gnome-based program to draw fractals
 License:        BSD-3-Clause
 
@@ -24,7 +24,6 @@ Patch2:         %{name}-pyeval-initthreads.patch
 # See https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
 
-BuildRequires:  adwaita-blue-gtk-theme
 BuildRequires:  desktop-file-utils
 BuildRequires:  gcc-c++
 BuildRequires:  gmp-devel
@@ -128,6 +127,9 @@ mv ../test_main_window.py fract4dgui/tests
 %{_metainfodir}/com.github.fract4d.%{name}.metainfo.xml
 
 %changelog
+* Sun Sep 29 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 4.3-19
+- Drop unused adwaita-blue-gtk-theme dependency
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.3-18
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

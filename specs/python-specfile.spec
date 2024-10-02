@@ -7,7 +7,7 @@ Main focus is on modifying existing spec files, any change should result
 in a minimal diff.}
 
 
-%global base_version 0.32.2
+%global base_version 0.32.3
 #global prerelease   rc1
 
 %global package_version %{base_version}%{?prerelease:~%{prerelease}}
@@ -77,6 +77,10 @@ sed -i 's/setuptools_scm\[toml\]>=7/setuptools_scm[toml]/' pyproject.toml
 
 
 %changelog
+* Mon Sep 30 2024 Packit <hello@packit.dev> - 0.32.3-1
+- specfile can now handle multi-line tag values (enclosed in a macro body, e.g. `%%shrink`). (#412)
+- Resolves: rhbz#2299289
+
 * Sun Sep 15 2024 Packit <hello@packit.dev> - 0.32.2-1
 - Explicitly invalidate the global parse hash when a SpecParser instance is created to prevent this issue. (#409)
 
@@ -97,7 +101,7 @@ sed -i 's/setuptools_scm\[toml\]>=7/setuptools_scm[toml]/' pyproject.toml
 * Wed Jun 26 2024 Packit <hello@packit.dev> - 0.30.0-1
 - Fixed an exception that occured when accessing the `Specfile.has_autochangelog` property while having unparseable lines (e.g. lines ending with unescaped `%`) in `%%changelog`. (#387)
 
-* Thu Jun 06 2024 Packit <hello@packit.dev> - 0.29.0-1
+* Mon Jun 17 2024 Packit <hello@packit.dev> - 0.29.0-1
 - Improved compatibility with RPM 4.20 (alpha version is currently in Fedora Rawhide). (#380)
 - Resolves: rhbz#2282962
 

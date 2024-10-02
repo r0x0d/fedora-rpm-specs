@@ -1,6 +1,6 @@
 Name:           python-ibm-cloud-sdk-core
 Epoch:          2
-Version:        3.20.4
+Version:        3.21.0
 Release:        %autorelease
 Summary:        Core library used by SDKs for IBM Cloud Services
 
@@ -29,7 +29,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -p1 -n ibm-cloud-sdk-core-%{version}
+%autosetup -p1 -n ibm_cloud_sdk_core-%{version}
 echo > requirements-dev.txt
 
 %generate_buildrequires
@@ -53,8 +53,6 @@ echo > requirements-dev.txt
 %license LICENSE
 %{python3_sitelib}/ibm_cloud_sdk_core
 %{python3_sitelib}/ibm_cloud_sdk_core-%{version}.dist-info/
-%exclude %{python3_sitelib}/test
-%exclude %{python3_sitelib}/test_integration
 
 %changelog
 %autochangelog

@@ -1,4 +1,4 @@
-Version: 7.050
+Version: 7.051
 Release: 1%{?dist}
 URL: https://github.com/alerque/libertinus
 
@@ -63,6 +63,9 @@ Source10: 60-%{fontpkgname}.conf
 %fontfiles
 
 %changelog
+* Mon Sep 30 2024 Jonny Heggheim <hegjon@gmail.com> - 7.051-1
+- Updated to version v7.051
+
 * Sat Sep 21 2024 Caleb Maclennan <caleb@alerque.com> - 7.050-1
 - Bump to new upstream release v7.050
 

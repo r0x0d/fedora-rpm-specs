@@ -1,8 +1,13 @@
-%global git_date 20240828
-%global git_commit 5f66e812217239a4fd6677e4dfb41d0cf1e8e50e
+%global git_date 20240927
+%global git_commit 93b72514d5c35f66565af004a42674480d6e768a
 %{?git_commit:%global git_commit_hash %(c=%{git_commit}; echo ${c:0:7})}
 
 %global _python_bytecompile_extra 0
+
+# File used as marker to preserve the auto-bindmount of the FIPS policy across
+# upgrades while temporarily removing it for the RPM transaction.
+%define rpmstatedir %{_localstatedir}/lib/rpm-state/%{name}
+%define rpmstate_autopolicy %{rpmstatedir}/autopolicy-reapplication-needed
 
 Name:           crypto-policies
 Version:        %{git_date}
@@ -108,7 +113,7 @@ done
 make test %{?_smp_mflags} SKIP_LINTING=1
 
 # Migrate away from removed policies; can be dropped 3 releases later
-%pretrans scripts -p <lua>
+%pretrans -p <lua>
 if posix.access("%{_sysconfdir}/crypto-policies/config") then
     local cf = io.open("%{_sysconfdir}/crypto-policies/config", "r")
     if cf then
@@ -131,6 +136,54 @@ if posix.access("%{_sysconfdir}/crypto-policies/config") then
             if cf then
                 cf:write(new)
                 cf:close()
+            end
+        end
+    end
+end
+
+if arg[2] == 2 then
+    posix.unlink("%{rpmstate_autopolicy}")
+
+    local mountinfo = io.open("/proc/self/mountinfo", "r");
+    if mountinfo then
+        local mountpoints = {}
+        for mount in mountinfo:lines() do
+            -- See proc_pid_mountinfo(5) for the format
+            local pos, _, _, _, _, mountroot, mountpoint = string.find(mount, "^(%d+) (%d+) (%d+:%d+) ([^ ]+) ([^ ]+) ")
+            if pos == nil then
+                print("Failed to parse /proc/self/mountinfo line, ignoring:", mount)
+            else
+                mountpoints[mountpoint] = mountroot
+            end
+        end
+        mountinfo:close()
+
+        local expected_backend_suffix = "/%{name}/back-ends/FIPS"
+        local expected_config_suffix = "/%{name}/default-fips-config"
+
+        local backends_automount =
+            mountpoints["%{_sysconfdir}/%{name}/back-ends"] and
+            string.sub(mountpoints["%{_sysconfdir}/%{name}/back-ends"], string.len(expected_backend_suffix) * -1, -1) == expected_backend_suffix
+        local config_automount =
+            mountpoints["%{_sysconfdir}/%{name}/config"] and
+            string.sub(mountpoints["%{_sysconfdir}/%{name}/config"], string.len(expected_config_suffix) * -1, -1) == expected_config_suffix
+
+        if backends_automount and config_automount then
+            if posix.access("%{_bindir}/umount", "x") then
+                rpm.execute("%{_bindir}/umount", "%{_sysconfdir}/%{name}/config")
+                rpm.execute("%{_bindir}/umount", "%{_sysconfdir}/%{name}/back-ends")
+            end
+
+            local res, msg, errno = posix.mkdir("%{rpmstatedir}")
+            if res ~= 0 and errno ~= 17  then -- 17 is EEXIST
+                print("Failed to create state directory: " .. msg)
+            else
+                local marker, err = io.open("%{rpmstate_autopolicy}", "w+")
+                if not marker then
+                    print("Failed to create marker file %{rpmstate_autopolicy} for automatic FIPS policy bind-mount: " .. err)
+                else
+                    marker:close()
+                end
             end
         end
     end
@@ -166,24 +219,13 @@ if not posix.access("%{_sysconfdir}/crypto-policies/config") then
         end
     end
 else
-    if posix.access("%{_sysconfdir}/crypto-policies/autopolicy-reapplication-needed") then
+    if posix.access("%{rpmstate_autopolicy}") then
         os.execute("%{_libexecdir}/fips-crypto-policy-overlay >/dev/null 2>/dev/null || :")
-        posix.unlink("%{_sysconfdir}/crypto-policies/autopolicy-reapplication-needed")
+        posix.unlink("%{rpmstate_autopolicy}")
     end
 end
 
 %pre
-if [ $1 == 2 ]; then  # upgrade
-    rm -f %{_sysconfdir}/crypto-policies/config/autopolicy-reapplication-needed || :
-    if mountpoint -q %{_sysconfdir}/crypto-policies/back-ends >/dev/null 2>/dev/null && \
-            mountpoint -q %{_sysconfdir}/crypto-policies/config >/dev/null 2>/dev/null && \
-            grep -Fq '/crypto-policies/back-ends/FIPS %{_sysconfdir}/crypto-policies/back-ends ' /proc/self/mountinfo && \
-            grep -Fq '/crypto-policies/default-fips-config %{_sysconfdir}/crypto-policies/config ' /proc/self/mountinfo; then
-        umount %{_sysconfdir}/crypto-policies/config || :
-        umount %{_sysconfdir}/crypto-policies/back-ends || :
-        touch %{_sysconfdir}/crypto-policies/autopolicy-reapplication-needed || :
-    fi
-fi
 # Drop removed javasystem backend; can be dropped in F43
 rm -f "%{_sysconfdir}/crypto-policies/back-ends/javasystem.config" || :
 exit 0
@@ -253,6 +295,9 @@ exit 0
 %{_mandir}/man8/fips-finish-install.8*
 
 %changelog
+* Fri Sep 27 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20240927-1.git93b7251
+- nss: be stricter with new purposes
+
 * Wed Aug 28 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20240828-1.git5f66e81
 - fips-mode-setup: small Argon2 detection fix
 

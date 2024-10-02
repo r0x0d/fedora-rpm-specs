@@ -15,6 +15,7 @@ URL:            https://crates.io/crates/combine
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * drop unused, benchmark-only criterion dev-dependency
+# * drop features and dependencies for tokio 0.2
 # * drop features and dependencies for tokio 0.3
 Patch:          combine-fix-metadata.diff
 
@@ -74,18 +75,6 @@ This package contains library source intended for building other packages which
 use the "bytes" feature of the "%{crate}" crate.
 
 %files       -n %{name}+bytes-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+bytes_05-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+bytes_05-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "bytes_05" feature of the "%{crate}" crate.
-
-%files       -n %{name}+bytes_05-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+futures-03-devel
@@ -194,30 +183,6 @@ This package contains library source intended for building other packages which
 use the "tokio" feature of the "%{crate}" crate.
 
 %files       -n %{name}+tokio-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+tokio-02-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+tokio-02-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "tokio-02" feature of the "%{crate}" crate.
-
-%files       -n %{name}+tokio-02-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+tokio-02-dep-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+tokio-02-dep-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "tokio-02-dep" feature of the "%{crate}" crate.
-
-%files       -n %{name}+tokio-02-dep-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+tokio-dep-devel

@@ -1,15 +1,16 @@
 Name:           xbindkeys
 Version:        1.8.7
-Release:        10%{?dist}
+Release:        11%{?dist}
 
 Summary:        Binds keys or mouse buttons to shell commands under X
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://www.nongnu.org/xbindkeys/
 Source:         http://www.nongnu.org/xbindkeys/xbindkeys-%{version}.tar.gz
-BuildRequires: make
+Patch1:         xbindkeys-1.8.7-guile-3.0.patch
+BuildRequires:  make
 BuildRequires:  gcc
-BuildRequires:  guile22-devel
+BuildRequires:  guile30-devel
 BuildRequires:  libX11-devel
 Requires:       tk
 
@@ -20,7 +21,7 @@ or mouse buttons using a simple configuration file, and is
 independent of the window manager.
 
 %prep
-%autosetup
+%autosetup -p1
 
 %build
 %configure
@@ -36,6 +37,9 @@ LDFLAGS="-lpthread" %{make_build}
 %attr(0644, root, root) %{_mandir}/man?/*
 
 %changelog
+* Mon Sep 30 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1.8.7-11
+- Build against guile 3.0
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.8.7-10
 - convert license to SPDX
 

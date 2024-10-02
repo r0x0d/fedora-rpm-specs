@@ -171,7 +171,7 @@ Source0: gcc-%{version}-%{DATE}.tar.xz
 Source1: nvptx-tools-%{nvptx_tools_gitrev}.tar.xz
 # The source for nvptx-newlib package was pulled from upstream's vcs.  Use the
 # following commands to generate the tarball:
-# git clone git://sourceware.org/git/newlib-cygwin.git newlib-cygwin-dir.tmp
+# git clone https://sourceware.org/git/newlib-cygwin.git newlib-cygwin-dir.tmp
 # git --git-dir=newlib-cygwin-dir.tmp/.git archive --prefix=newlib-cygwin-%%{newlib_cygwin_gitrev}/ %%{newlib_cygwin_gitrev} ":(exclude)newlib/libc/sys/linux/include/rpc/*.[hx]" | xz -9e > newlib-cygwin-%%{newlib_cygwin_gitrev}.tar.xz
 # rm -rf newlib-cygwin-dir.tmp
 Source2: newlib-cygwin-%{newlib_cygwin_gitrev}.tar.xz

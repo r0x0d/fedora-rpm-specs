@@ -49,7 +49,6 @@ BuildRequires:  coreutils
 BuildRequires:  fontconfig
 BuildRequires:  system-logos
 BuildRequires:  ImageMagick
-BuildRequires:  zopfli
 
 # For the udev rule
 BuildRequires:  systemd-rpm-macros
@@ -106,16 +105,9 @@ This package contains various developer tools for m1n1.
 %autosetup -N
 
 # Use our logos
-# https://pagure.io/fedora-logos/pull-request/21
-# https://pagure.io/generic-logos/pull-request/2
 pushd data
 rm bootlogo_{128,256}.{bin,png}
-convert -background none -resize 128x128 -gravity center -extent 128x128 \
-  %{_datadir}/pixmaps/fedora-logo-sprite.svg bootlogo_128.png
-zopflipng -ym bootlogo_128.png bootlogo_128.png
-convert -background none -resize 256x256 -gravity center -extent 256x256 \
-  %{_datadir}/pixmaps/fedora-logo-sprite.svg bootlogo_256.png
-zopflipng -ym bootlogo_256.png bootlogo_256.png
+ln -s %{_datadir}/pixmaps/bootloader/bootlogo_{128,256}.png .
 ./makelogo.sh
 popd
 

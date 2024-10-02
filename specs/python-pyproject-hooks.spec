@@ -2,7 +2,7 @@
 %bcond_without tests
 
 Name:           python-pyproject-hooks
-Version:        1.0.0
+Version:        1.2.0
 Release:        %autorelease
 Summary:        Wrappers to call pyproject.toml-based build backend hooks
 

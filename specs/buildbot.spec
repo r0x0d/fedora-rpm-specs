@@ -20,8 +20,8 @@
 %endif
 
 Name:           buildbot
-Version:        4.0.2
-Release:        2%{?dist}
+Version:        4.0.3
+Release:        1%{?dist}
 
 Summary:        Build/test automation system
 License:        GPL-2.0-only
@@ -409,6 +409,9 @@ trial buildbot.test
 %endif
 
 %changelog
+* Mon Sep 30 2024 Gwyn Ciesla <gwync@protonmail.com> - 4.0.3-1
+- 4.0.3
+
 * Wed Sep 18 2024 Gwyn Ciesla <gwync@protonmail.com> - 4.0.2-2
 - Worker patch for Python 3.13
 

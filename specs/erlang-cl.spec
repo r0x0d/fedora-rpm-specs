@@ -1,6 +1,5 @@
 %global realname cl
 
-
 Name:		erlang-%{realname}
 Version:	1.2.4
 Release:	%autorelease
@@ -20,14 +19,11 @@ BuildRequires:	opencl-headers
 # BuildRequires:	pocl
 # BuildRequires:	opencl-filesystem
 
-
 %description
-OpenCL binding for Erlang.
-
+%{summary}.
 
 %prep
 %autosetup -p1 -n %{realname}-cl-%{version}
-
 
 %build
 %{erlang3_compile}
@@ -38,21 +34,17 @@ gcc c_src/cl_hash.c $CFLAGS -fPIC -c -I%{_libdir}/erlang/usr/include -o c_src/cl
 gcc c_src/cl_nif.c  $CFLAGS -fPIC -c -I%{_libdir}/erlang/usr/include -o c_src/cl_nif.o
 gcc c_src/cl_hash.o c_src/cl_nif.o $LDFLAGS -shared -L%{_libdir}/erlang/usr/lib -lei -lOpenCL -o priv/cl_nif.so
 
-
 %install
 %{erlang3_install}
-
 
 %check
 # Can't pass autotests for now due to limited OpenCL support in Fedora (?)
 #%%{erlang3_test}
 
-
 %files
 %license COPYRIGHT
 %doc README examples/
 %{erlang_appdir}/
-
 
 %changelog
 %autochangelog

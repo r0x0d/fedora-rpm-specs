@@ -1,21 +1,25 @@
-%define       mver 2.0
+%define       mver 3.0
 
 Name:         guile-reader
 Version:      0.6.3
-Release:      4%{?dist}
+Release:      5%{?dist}
 Summary:      A simple framework for building readers for GNU Guile
 
 License:      GPL-3.0-or-later
 URL:          https://www.nongnu.org/guile-reader/%{name}
 Source0:      https://git.savannah.nongnu.org/cgit/%{name}.git/snapshot/%{name}-%{version}.tar.gz 
+# Update configuration for autoconf
+Patch0:       config.patch
+# Include missing header
+Patch1:       header.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  gcc
+BuildRequires:  gettext
 BuildRequires:  gettext-devel
 BuildRequires:  gperf
-BuildRequires:  guile
-BuildRequires:  guile-devel
+BuildRequires:  guile30-devel
 BuildRequires:  libtool
 # Error in configuring lightning, but optional
 #BuildRequires:  lightning-devel
@@ -38,16 +42,16 @@ variants can easily be written, possibly by re-using existing
 Files to allow guile-reader to be used from other applications.
 
 %prep
-%autosetup
-# Generate internationalization options
-sed -i '/AC_CONFIG_AUX_DIR(build-aux)/a AM_GNU_GETTEXT_VERSION(0.18.2)' configure.ac
+%autosetup -p 1
 
 %build
 autoupdate
 autopoint
 libtoolize
-autoreconf -fi
-%configure --with-guilemoduledir=%{_datadir}/guile/site/%{mver}
+# Use --warnings=none to silence spurious warning about po directories
+autoreconf -fi --verbose --warnings=none
+%configure --with-guilemoduledir=%{_datadir}/guile/site/%{mver} \
+	   GUILE=/usr/bin/guile3.0
 %make_build
 
 %install
@@ -89,6 +93,9 @@ make check
 %{_libdir}/libguile-reader.so
 
 %changelog
+* Sun Sep 29 2024 Benson Muite <benson_muite@emailplus.org> - 0.6.3-5
+- Build against Guile 3.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.6.3-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

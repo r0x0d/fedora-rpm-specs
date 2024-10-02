@@ -1,12 +1,24 @@
+%global giturl	https://github.com/radsz/jacop
+
 Name:		jacop
-Version:	4.9.0
-Release:	6%{?dist}
+Version:	4.10.0
+Release:	1%{?dist}
 License:	AGPL-3.0-or-later
 Summary:	Java Constraint Programming solver
 URL:		http://jacop.osolpro.com/
-Source0:	https://github.com/radsz/jacop/archive/%{version}/%{name}-%{version}.tar.gz
+VCS:		git:%{giturl}.git
+Source:		%{giturl}/archive/%{version}/%{name}-%{version}.tar.gz
+# Avoid use of deprecated interfaces
+Patch:		%{name}-deprecation.patch
+# Fix various javadoc errors
+# https://github.com/radsz/jacop/pull/73
+Patch:		%{name}-javadoc.patch
+
 BuildRequires:	maven-local
 BuildRequires:	mvn(junit:junit)
+BuildRequires:	mvn(org.apache.maven.plugins:maven-compiler-plugin)
+BuildRequires:	mvn(org.apache.maven.plugins:maven-jar-plugin)
+BuildRequires:	mvn(org.apache.maven.plugins:maven-surefire-plugin)
 BuildRequires:	mvn(org.codehaus.mojo:build-helper-maven-plugin)
 BuildRequires:	mvn(org.codehaus.mojo:javacc-maven-plugin)
 BuildRequires:	mvn(org.jacoco:jacoco-maven-plugin)
@@ -30,21 +42,22 @@ This package contains the API documentation for %{name}.
 %prep
 %autosetup -p1
 
-# maven-jdeps-plugin is not available in Fedora
-%pom_remove_plugin org.apache.maven.plugins:maven-jdeps-plugin
-
-# We do not need to create a source jar
-%pom_remove_plugin org.apache.maven.plugins:maven-source-plugin
-
-# Remove unnecessary dependency on maven-javadoc-plugin
+# Remove plugins not needed for an RPM build
+%pom_remove_plugin :maven-checkstyle-plugin
 %pom_remove_plugin :maven-javadoc-plugin
+%pom_remove_plugin :maven-jdeps-plugin
+%pom_remove_plugin :maven-project-info-reports-plugin
+%pom_remove_plugin :maven-site-plugin
+%pom_remove_plugin :maven-source-plugin
+%pom_remove_plugin :maven-surefire-report-plugin
+%pom_remove_plugin :spotbugs-maven-plugin
 
 # Remove unused slf4j dependencies.
 # https://github.com/radsz/jacop/commit/e61795bdd161499173933bd90a7ecfc0804e76df
 %pom_remove_dep org.slf4j
 
 # Do not build the Scala interface
-%pom_remove_plugin org.scala-tools:maven-scala-plugin
+%pom_remove_plugin net.alchim31.maven:scala-maven-plugin
 %pom_remove_dep org.scala-lang:scala-library
 %pom_remove_dep org.scala-lang:scala-compiler
 sed -i '\@src/main/scala@d' pom.xml
@@ -63,6 +76,9 @@ sed -i '\@src/main/scala@d' pom.xml
 %license LICENSE.md
 
 %changelog
+* Mon Sep 30 2024 Jerry James <loganjerry@gmail.com> - 4.10.0-1
+- Version 4.10.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.9.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

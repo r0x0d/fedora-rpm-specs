@@ -6,7 +6,7 @@ Release:  %autorelease
 Summary:  Extension to Erlang's standard library
 License:  MIT
 URL:      https://github.com/erlware/%{realname}
-VCS:      scm:git:%{url}.git
+VCS:      git:%{url}.git
 Source0:  %{url}/archive/v%{version}/%{realname}-%{version}.tar.gz
 # The "color" test does not play well with Fedora's build system
 Patch1:   erlang-erlware_commons-0001-Disable-color-test.patch

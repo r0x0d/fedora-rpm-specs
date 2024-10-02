@@ -1,5 +1,5 @@
 Name:           python-aiohappyeyeballs
-Version:        2.4.2
+Version:        2.4.3
 Release:        %autorelease
 Summary:        Happy Eyeballs for asyncio
 
@@ -61,8 +61,6 @@ rm src/aiohappyeyeballs/_staggered.py
 
 
 %check
-# Tests pass, but staggered_race spews RuntimeError: coroutine ignored GeneratorExit
-# https://github.com/aio-libs/aiohappyeyeballs/issues/97
 %pytest
 
 

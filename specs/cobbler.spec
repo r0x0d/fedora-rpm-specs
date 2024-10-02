@@ -6,7 +6,7 @@
 
 Name:           cobbler
 Version:        3.3.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Boot server configurator
 URL:            https://cobbler.github.io/
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -23,14 +23,19 @@ BuildArch:      noarch
 
 BuildRequires: make
 BuildRequires: python%{python3_pkgversion}-devel
+# Cheetah switched names from Cheetah3 to CT3 in its metadata in version 3.3.0.
+# https://github.com/CheetahTemplate3/cheetah3/commit/673259b2d139b4ea970b1c2da12607b7ac39cbec
+%if 0%{?fedora} >= 42 || 0%{?rhel} >= 10
+BuildRequires: %{py3_dist ct3}
+%else
 BuildRequires: %{py3_dist cheetah3}
+%endif
 BuildRequires: %{py3_dist distro}
 BuildRequires: %{py3_dist netaddr}
 BuildRequires: %{py3_dist pyyaml}
 BuildRequires: %{py3_dist requests}
 BuildRequires: %{py3_dist schema}
 BuildRequires: %{py3_dist setuptools}
-BuildRequires: %{py3_dist simplejson}
 # For docs
 BuildRequires: %{py3_dist sphinx}
 
@@ -44,16 +49,6 @@ Requires: dosfstools
 Requires: createrepo_c
 Requires: rsync
 Requires: xorriso
-Requires: %{py3_dist cheetah3}
-Requires: %{py3_dist distro}
-Requires: %{py3_dist dnspython}
-Requires: %{py3_dist file-magic}
-Requires: %{py3_dist mod_wsgi}
-Requires: %{py3_dist netaddr}
-Requires: %{py3_dist pyyaml}
-Requires: %{py3_dist requests}
-Requires: %{py3_dist schema}
-Requires: %{py3_dist simplejson}
 
 Requires: genisoimage
 # Not everyone wants bash-completion...?
@@ -65,7 +60,6 @@ Requires: (syslinux if (filesystem.x86_64 or filesystem.i686))
 Recommends: grub2-efi-ia32
 Recommends: grub2-efi-x64
 Recommends: logrotate
-Recommends: %{py3_dist ldap}
 Recommends: %{py3_dist librepo}
 # https://github.com/cobbler/cobbler/issues/1685
 Requires: /sbin/service
@@ -119,6 +113,12 @@ Dockerfiles and scripts to setup testing containers.
 %autosetup -p1
 mkdir -p selinux
 cp -p %{SOURCE2} %{SOURCE3} %{SOURCE4} selinux/
+
+# Cheetah switched names from Cheetah3 to CT3 in its metadata in version 3.3.0.
+# https://github.com/CheetahTemplate3/cheetah3/commit/673259b2d139b4ea970b1c2da12607b7ac39cbec
+%if 0%{?fedora} >= 42 || 0%{?rhel} >= 10
+sed -e 's/Cheetah3/CT3/' -i setup.py
+%endif
 
 
 %build
@@ -325,6 +325,9 @@ fi
 
 
 %changelog
+* Fri Sep 27 2024 Carl George <carlwgeorge@fedoraproject.org> - 3.3.6-2
+- Fix cheetah dependency rhbz#2314630
+
 * Wed Jul 31 2024 Orion Poplawski <orion@nwra.com> - 3.3.6-1
 - Update to 3.3.6
 

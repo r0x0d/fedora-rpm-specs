@@ -19,7 +19,7 @@
 %endif
 
 Name:           webkitgtk
-Version:        2.46.0
+Version:        2.46.1
 Release:        %autorelease
 Summary:        GTK web content engine library
 

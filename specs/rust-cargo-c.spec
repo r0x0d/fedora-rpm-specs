@@ -21,6 +21,7 @@ Source1:        macros.cargo-c
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          cargo-c-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
+# * bump itertools dependency from 0.12 to 0.13
 # * remove feature for building / statically linking vendored OpenSSL sources
 Patch:          cargo-c-fix-metadata.diff
 

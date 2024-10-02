@@ -1,6 +1,6 @@
 Name:           perl-IRI
-Version:        0.011
-Release:        17%{?dist}
+Version:        0.012
+Release:        1%{?dist}
 Summary:        Internationalized Resource Identifiers
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/IRI
@@ -90,6 +90,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Mon Sep 30 2024 Petr Pisar <ppisar@redhat.com> - 0.012-1
+- 0.012 bump
+
 * Thu Sep 05 2024 Petr Pisar <ppisar@redhat.com> - 0.011-17
 - Modernize a spec file
 

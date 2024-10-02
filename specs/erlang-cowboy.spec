@@ -1,6 +1,5 @@
 %global realname cowboy
 
-
 Name:		erlang-%{realname}
 Version:	2.12.0
 Release:	%autorelease
@@ -21,22 +20,17 @@ BuildRequires:	dblatex
 BuildRequires:	libxml2
 BuildRequires:	texlive-upquote
 
-
 %description
-Small, fast, modular HTTP server written in Erlang.
-
+%{summary}.
 
 %package doc
 Summary: Documentation for %{name}
 
-
 %description doc
 Documentation for %{name}.
 
-
 %prep
 %autosetup -p 1 -n %{realname}-%{version}
-
 
 %build
 %{erlang3_compile}
@@ -46,7 +40,6 @@ a2x -v -f pdf doc/src/guide/book.asciidoc && mv doc/src/guide/book.pdf doc/guide
 a2x -v -f chunked doc/src/guide/book.asciidoc && mv doc/src/guide/book.chunked/ doc/html/
 # FIXME broken right now
 # for f in doc/src/manual/*.asciidoc ; do a2x -v -f manpage $f ; done
-
 
 %install
 %{erlang3_install}
@@ -64,11 +57,9 @@ a2x -v -f chunked doc/src/guide/book.asciidoc && mv doc/src/guide/book.chunked/ 
 #	install -p -m 0644 $manfile %{buildroot}%{_mandir}/man7/
 #done
 
-
 %check
 # FIXME broken - need to investigate
 #%%{erlang3_test}
-
 
 %files
 %license LICENSE
@@ -77,10 +68,8 @@ a2x -v -f chunked doc/src/guide/book.asciidoc && mv doc/src/guide/book.chunked/ 
 #%%{_mandir}/man3/*
 #%%{_mandir}/man7/*
 
-
 %files doc
 %doc CONTRIBUTING.pdf doc/guide.pdf doc/html examples/
-
 
 %changelog
 %autochangelog

@@ -21,6 +21,10 @@ Source:         %{url}/-/archive/%{version}/%{name}-%{version}.tar.gz
 Patch:          %{url}/-/commit/0458426e9595c95f765f347d47a27a2a4ed8ae63.patch
 # build: relax Python version pins in requirements.txt
 Patch:          %{url}/-/merge_requests/179.patch
+# Fix gresource generation
+Patch:          %{url}/-/commit/7aa9f6da72c2821a467989a8458e5b204184598e.patch
+Patch:          %{url}/-/commit/b4689c2426cf24e944f8ae419ed23f1969745995.patch
+Patch:          %{url}/-/commit/3891aecfe538864cfc31561d21ccbcd007a94d2d.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  cmake

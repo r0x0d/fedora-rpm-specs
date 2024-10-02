@@ -14,14 +14,15 @@
 
 Name:    arm-trusted-firmware
 Version: 2.11.0
-Release: 1%{?candidate:.%{candidate}}%{?dist}
+Release: 2%{?candidate:.%{candidate}}%{?dist}
 Summary: ARM Trusted Firmware
 License: BSD-3-clause
 URL:     https://github.com/TrustedFirmware-A/trusted-firmware-a
 Source0: %{url}/archive/v%{version}%{?candidate:-%{candidate}}.tar.gz#/%{pname}-%{version}%{?candidate:-%{candidate}}.tar.gz
 Source1: aarch64-bl31
-Patch1:  atf-rk35xx.patch
-Patch2:  fix-gcc-locations.patch
+Patch1:  fix-gcc-locations.patch
+Patch2:  atf-rk35xx.patch
+Patch3:  rk356x-scmi-clk-reset.patch
 
 %if %{with cross}
 BuildRequires: gcc-aarch64-linux-gnu
@@ -133,6 +134,9 @@ done
 %endif
 
 %changelog
+* Mon Sep 30 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 2.11.0-2
+- Add patch for rk356x SCMI clocks and reset
+
 * Tue Sep 03 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 2.11.0-1
 - Update to 2.11.0
 - Move to upstream patches for rk35xx

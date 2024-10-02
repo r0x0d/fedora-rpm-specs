@@ -6,7 +6,7 @@
 
 Name:           tigervnc
 Version:        1.14.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        A TigerVNC remote display system
 
 %global _hardened_build 1
@@ -87,6 +87,11 @@ BuildRequires:  xorg-x11-server-devel
 BuildRequires:  xorg-x11-server-source
 BuildRequires:  xorg-x11-util-macros
 BuildRequires:  xorg-x11-xtrans-devel
+BuildRequires:  pkgconfig(libavcodec)
+BuildRequires:  pkgconfig(libavutil)
+BuildRequires:  pkgconfig(libswscale)
+
+
 
 # SELinux
 BuildRequires:  libselinux-devel, selinux-policy-devel, systemd
@@ -391,6 +396,9 @@ fi
 %{_datadir}/icons/hicolor/*/apps/*
 
 %changelog
+* Sun Sep 29 2024 Sérgio Basto <sergio@serjux.com> - 1.14.0-7
+- Enable ffmpeg
+
 * Fri Sep 27 2024 Sérgio Basto <sergio@serjux.com> - 1.14.0-6
 - Rebuild for rebase of xorg-server to versions 21.1.x
 

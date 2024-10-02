@@ -1,7 +1,7 @@
 %global __brp_check_rpaths %{nil}
 
 Name:          toolbox
-Version:       0.0.99.5
+Version:       0.0.99.6
 
 %global goipath github.com/containers/%{name}
 
@@ -31,7 +31,7 @@ Version:       0.0.99.5
 %endif
 %endif
 
-Release:       18%{?dist}
+Release:       1%{?dist}
 Summary:       Tool for interactive command line environments on Linux
 
 License:       Apache-2.0
@@ -41,14 +41,8 @@ Source0:       https://github.com/containers/%{name}/releases/download/%{version
 # RHEL specific
 Source1:       %{name}.conf
 
-# Upstream
-Patch0:        toolbox-test-system-new.patch
-Patch1:        toolbox-test-system-Unbreak-Podman-s-downstream-Fedora-CI.patch
-Patch2:        toolbox-playbooks-test-system-bats-1.11-podman-5.patch
-
 # Fedora specific
 Patch100:      toolbox-Make-the-build-flags-match-Fedora-s-gobuild.patch
-Patch101:      toolbox-Make-the-build-flags-match-Fedora-s-gobuild-for-PPC64.patch
 
 # RHEL specific
 Patch200:      toolbox-Make-the-build-flags-match-RHEL-s-gobuild.patch
@@ -65,21 +59,27 @@ BuildRequires: systemd
 BuildRequires: systemd-rpm-macros
 %if ! 0%{?rhel}
 BuildRequires: golang(github.com/HarryMichal/go-version) >= 1.0.1
+BuildRequires: golang-ipath(github.com/NVIDIA/go-nvlib) >= 0.6.1
+BuildRequires: golang-ipath(github.com/NVIDIA/go-nvml) >= 0.12.4.0
+BuildRequires: golang-ipath(github.com/NVIDIA/nvidia-container-toolkit) >= 1.16.1
 BuildRequires: golang(github.com/acobaugh/osrelease) >= 0.1.0
-BuildRequires: golang(github.com/briandowns/spinner) >= 1.17.0
+BuildRequires: golang(github.com/briandowns/spinner) >= 1.18.0
 BuildRequires: golang(github.com/docker/go-units) >= 0.5.0
-BuildRequires: golang(github.com/fsnotify/fsnotify) >= 1.5.1
+BuildRequires: golang(github.com/fsnotify/fsnotify) >= 1.7.0
+BuildRequires: golang(github.com/go-logfmt/logfmt) >= 0.5.0
 BuildRequires: golang(github.com/godbus/dbus) >= 5.0.6
-BuildRequires: golang(github.com/sirupsen/logrus) >= 1.8.1
+BuildRequires: golang(github.com/google/renameio/v2) >= 2.0.0
+BuildRequires: golang(github.com/sirupsen/logrus) >= 1.9.3
 BuildRequires: golang(github.com/spf13/cobra) >= 1.3.0
 BuildRequires: golang(github.com/spf13/viper) >= 1.10.1
-BuildRequires: golang(golang.org/x/sys/unix) >= 0.1.0
+BuildRequires: golang-ipath(golang.org/x/sys) >= 0.22.0
 BuildRequires: golang(golang.org/x/text) >= 0.3.8
-BuildRequires: golang(gopkg.in/yaml.v3) >= 3.0.0
+BuildRequires: golang-ipath(gopkg.in/yaml.v3) >= 3.0.1
+BuildRequires: golang-ipath(tags.cncf.io/container-device-interface) >= 0.8.0
 BuildRequires: pkgconfig(fish)
 # for tests
 # BuildRequires: codespell
-# BuildRequires: golang(github.com/stretchr/testify) >= 1.7.0
+# BuildRequires: golang(github.com/stretchr/testify) >= 1.9.0
 # BuildRequires: ShellCheck
 %endif
 
@@ -95,9 +95,9 @@ Requires:      shadow-utils-subid%{?_isa} >= 4.16.0
 
 %description
 Toolbx is a tool for Linux, which allows the use of interactive command line
-environments for development and troubleshooting the host operating system,
-without having to install software on the host. It is built on top of Podman
-and other standard container technologies from OCI.
+environments for software development and troubleshooting the host operating
+system, without having to install software on the host. It is built on top of
+Podman and other standard container technologies from OCI.
 
 Toolbx environments have seamless access to the user's home directory, the
 Wayland and X11 sockets, networking (including Avahi), removable devices (like
@@ -110,14 +110,18 @@ Summary:       Tests for %{name}
 
 Requires:      %{name}%{?_isa} = %{version}-%{release}
 Requires:      coreutils
+Requires:      diffutils
+# for gdbus(1)
+Requires:      glib2
 Requires:      grep
-# for htpasswd
+# for htpasswd(1)
 Requires:      httpd-tools
 Requires:      openssl
+Requires:      python3
 Requires:      skopeo
 Requires:      slirp4netns
 %if ! 0%{?rhel}
-Requires:      bats >= 1.7.0
+Requires:      bats >= 1.10.0
 %endif
 
 
@@ -128,16 +132,8 @@ The %{name}-tests package contains system tests for %{name}.
 %prep
 %setup -q
 
-%patch -P0 -p1
-%patch -P1 -p1
-%patch -P2 -p1
-
 %if 0%{?fedora}
-%ifnarch ppc64
 %patch -P100 -p1
-%else
-%patch -P101 -p1
-%endif
 %endif
 
 %if 0%{?rhel}
@@ -189,7 +185,7 @@ install -m0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/containers/%{name}.conf
 
 
 %files
-%doc CODE-OF-CONDUCT.md NEWS README.md SECURITY.md
+%doc CODE-OF-CONDUCT.md CONTRIBUTING.md GOALS.md NEWS README.md SECURITY.md
 %license COPYING %{?rhel:src/vendor/modules.txt}
 %{_bindir}/%{name}
 %{_datadir}/bash-completion
@@ -208,6 +204,9 @@ install -m0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/containers/%{name}.conf
 
 
 %changelog
+* Mon Sep 30 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.0.99.6-1
+- Update to 0.0.99.6
+
 * Thu Sep 12 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.0.99.5-18
 - Rebuild against shadow-utils-subid ABI version 5.0.0
 

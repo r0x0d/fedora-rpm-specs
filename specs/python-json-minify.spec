@@ -4,13 +4,17 @@
 
 Name:           python-%{srcname}
 Version:        0.3.0
-Release:        22%{?dist}
+Release:        23%{?dist}
 Summary:        Python port of the JSON-minify utility
 
 License:        MIT
 URL:            https://github.com/getify/JSON.minify/tree/python
-Source0:        %pypi_source %{Srcname_}
+Source:         %pypi_source %{Srcname_}
+# Fix invalid escape sequences in regex strings.
+Patch:          https://github.com/getify/JSON.minify/pull/74.patch
+
 BuildArch:      noarch
+
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch: %{ix86}
 
@@ -23,12 +27,8 @@ transmitting them over-the-wire.
 
 %package -n     python3-%{srcname}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{srcname}}
 
 BuildRequires:  python3-devel
-BuildRequires:  python3dist(setuptools)
-
-%{?python_enable_dependency_generator}
 
 %description -n python3-%{srcname}
 JSON-minify minifies blocks of JSON-like content into valid JSON by removing
@@ -38,31 +38,29 @@ transmitting them over-the-wire.
 
 
 %prep
-%autosetup -n JSON_minify-%{version}
+%autosetup -n %{Srcname_}-%{version} -p1
 
-# Remove bundled egg-info
-rm -rf %{srcname}.egg-info
-
+%generate_buildrequires
+%pyproject_buildrequires
 
 %build
-%py3_build
-
+%pyproject_wheel
 
 %install
-%py3_install
-
+%pyproject_install
+%pyproject_save_files -L %{srcname_}
 
 %check
-%{__python3} setup.py test
+%{python3} -m unittest discover
 
-
-%files -n python3-%{srcname}
+%files -n python3-%{srcname} -f %{pyproject_files}
 %doc README.rst
-%{python3_sitelib}/%{srcname_}
-%{python3_sitelib}/%{Srcname_}-%{version}-py%{python3_version}.egg-info
-
 
 %changelog
+* Mon Sep 30 2024 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 0.3.0-23
+- Switch to modern Python packaging macros
+- Backport patch to fix invalid escape sequences
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.3.0-22
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

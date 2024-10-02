@@ -1,7 +1,8 @@
 %global fontname paktype-naskh-basic
+%global release_date 20231228
 
-Version:       6.0
-Release:       13%{?dist}
+Version:       7.0
+Release:       1.%{release_date}%{?dist}
 URL:           https://sourceforge.net/projects/paktype/
 
 %global foundry           paktype
@@ -11,7 +12,7 @@ URL:           https://sourceforge.net/projects/paktype/
 
 %global fontfamily        PakType Naskh Basic
 %global fontsummary       Fonts for Arabic, Farsi, Urdu and Sindhi from PakType
-%global fonts             *.ttf
+%global fonts             PakTypeNaskhBasic*.ttf
 %global fontconfs         %{SOURCE10}
 
 %global fontdescription   %{expand:
@@ -19,17 +20,20 @@ The paktype-naskh-basic-fonts package contains fonts for the display of \
 Arabic, Farsi, Urdu and Sindhi from PakType by Lateef Sagar.
 }
 
-Source0:        https://sourceforge.net/p/paktype/code/HEAD/tree/Fonts/Release/PakType-Naskh-Basic-%{version}.tar.gz?format=raw#/%{name}-%{version}.tar.gz
+Source0:        https://downloads.sourceforge.net/project/paktype/PakType-Release-2023-12-28.tar.gz
 Source10:       55-0-%{fontpkgname}.conf
 
 %fontpkg
 
 %prep
 %autosetup -c
+pwd
+pushd License\ files/
 %linuxtext -e ascii "PakType Naskh Basic License.txt"
+popd
 
-mv PakType\ Naskh\ Basic\ License.txt PakType_Naskh_Basic_License.txt
-mv PakType\ Naskh\ Basic\ Features.pdf PakTypeNaskhBasicFeatures.pdf
+mv License\ files/PakType\ Naskh\ Basic\ License.txt PakType_Naskh_Basic_License.txt
+mv Features/PakType\ Naskh\ Basic\ Features.pdf PakTypeNaskhBasicFeatures.pdf
 chmod 644 PakTypeNaskhBasicFeatures.pdf
 
 %build
@@ -44,8 +48,8 @@ chmod 644 PakTypeNaskhBasicFeatures.pdf
 %fontfiles
 
 %changelog
-* Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.0-13
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+* Mon Sep 30 2024 Parag Nemade <pnemade AT redhat DOT com> - 7.0-1.20231228
+- Update to new upstream source archive 20231228 (rhbz#2213602)
 
 * Tue Jun 18 2024 Sudip Shil <sshil@redhat.com> - 6.0-12
 - increase priority of paktype-naskh-basic-fonts for urdu

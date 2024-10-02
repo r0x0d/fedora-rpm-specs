@@ -21,7 +21,7 @@
 
 Name:           mingw-gcc
 Version:        14.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        MinGW Windows cross-compiler (GCC) for C
 
 # Sync with native 'gcc' package
@@ -984,6 +984,9 @@ ln -sf %{ucrt64_bindir}/libssp-0.dll %{buildroot}%{ucrt64_libdir}/libssp.dll.a
 
 
 %changelog
+* Mon Sep 30 2024 Sandro Mani <manisandro@gmail.com> - 14.2.1-2
+- Rebuild for fixed default msvcrt in mingw-crt
+
 * Tue Aug 27 2024 Sandro Mani <manisandro@gmail.com> - 14.2.1-1
 - Update to 14.2.1
 

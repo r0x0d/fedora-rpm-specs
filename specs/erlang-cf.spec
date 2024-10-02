@@ -5,10 +5,9 @@ Version:  0.3.1
 Release:  %autorelease
 BuildArch:noarch
 Summary:  Terminal color helper
-# Automatically converted from old format: BSD - review is highly recommended.
-License:  LicenseRef-Callaway-BSD
+License:  BSD-3-Clause
 URL:      https://github.com/project-fifo/%{realname}
-VCS:      scm:git:%{url}.git
+VCS:      git:%{url}.git
 Source0:  %{url}/archive/v%{version}/%{realname}-%{version}.tar.gz
 BuildRequires: erlang-rebar3
 

@@ -1,39 +1,60 @@
-%global bootstrap 0
+%bcond bootstrap 0
+
+%global docs    %[%{without bootstrap} && 0%{?fedora}]
+%global giturl  https://github.com/mongodb/mongo-python-driver
 
 Name:           python-pymongo
-Version:        4.2.0
-Release:        9%{?dist}
+Version:        4.9.1
+Release:        1%{?dist}
 
-# All code is ASL 2.0 except bson/time64*.{c,h} which is MIT
-# Automatically converted from old format: ASL 2.0 and MIT - review is highly recommended.
-License:        Apache-2.0 AND LicenseRef-Callaway-MIT
+License:        Apache-2.0
 Summary:        Python driver for MongoDB
 URL:            https://pymongo.readthedocs.io/en/stable/
-Source0:        https://github.com/mongodb/mongo-python-driver/archive/%{version}/pymongo-%{version}.tar.gz
+VCS:            git:%{giturl}.git
+Source0:        %{giturl}/archive/%{version}/pymongo-%{version}.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  make
-%if 0%{!?bootstrap:1}
+BuildRequires:  python3-devel
+%if 0%{docs}
+BuildRequires:  python3-furo
 BuildRequires:  python3-sphinx
 %endif
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
 
 %description
 The Python driver for MongoDB.
 
 
 %package doc
-BuildArch: noarch
-Summary:   Documentation for python-pymongo
+# Apache-2.0: the content.  Other licenses are due to files copied in by Sphinx.
+# _static/basic.css: BSD-2-Clause
+# _static/debug.css: MIT
+# _static/doctools.js: BSD-2-Clause
+# _static/documentation_options.js: BSD-2-Clause
+# _static/file.png: BSD-2-Clause
+# _static/language_data.js: BSD-2-Clause
+# _static/minus.png: BSD-2-Clause
+# _static/plus.png: BSD-2-Clause
+# _static/scripts: MIT
+# _static/searchtools.js: BSD-2-Clause
+# _static/skeleton.css: MIT
+# _static/sphinx_highlight.js: BSD-2-Clause
+# _static/styles: MIT
+# genindex.html: BSD-2-Clause
+# search.html: BSD-2-Clause
+# searchindex.js: BSD-2-Clause
+License:        Apache-2.0 AND BSD-2-Clause AND MIT
+BuildArch:      noarch
+Summary:        Documentation for python-pymongo
 
 %description doc
 Documentation for python-pymongo.
 
 
 %package -n python3-bson
+# All code is Apache-2.0 except bson/time64*.{c,h} which is MIT
+License:        Apache-2.0 AND MIT
 Summary:        Python bson library
-%{?python_provide:%python_provide python3-bson}
 
 %description -n python3-bson
 BSON is a binary-encoded serialization of JSON-like documents. BSON is designed
@@ -45,7 +66,6 @@ contains the python3 version of this module.
 %package -n python3-pymongo
 Summary:        Python driver for MongoDB
 Requires:       python3-bson%{?_isa} = %{version}-%{release}
-%{?python_provide:%python_provide python3-pymongo}
 
 %description -n python3-pymongo
 The Python driver for MongoDB.  This package contains the python3 version of
@@ -55,61 +75,86 @@ this module.
 %package -n python3-pymongo-gridfs
 Summary:        Python GridFS driver for MongoDB
 Requires:       python3-pymongo%{?_isa} = %{version}-%{release}
-%{?python_provide:%python_provide python3-pymongo-gridfs}
 
 %description -n python3-pymongo-gridfs
 GridFS is a storage specification for large objects in MongoDB.  This package
 contains the python3 version of this module.
 
 
+# Some extras cannot be supported due to missing dependencies:
+# - pymongo-auth-aws: needed for aws and encryption extras
+# - pymongocrypt: needed for encryption extra
+# - pykerberos: needed for gssapi extra
+%pyproject_extras_subpkg -n python3-pymongo ocsp snappy zstd
+
+
 %prep
 %setup -q -n mongo-python-driver-%{version}
 
+# Permit use of pytest-asyncio 0.23
+sed -i '/pytest-asyncio/s/0\.24\.0/0.23.0/' requirements/test.txt
+
+
+%generate_buildrequires
+%pyproject_buildrequires -t -x ocsp,snappy,test,zstd
+
 
 %build
-%py3_build
+export PYMONGO_C_EXT_MUST_BUILD=1
+%pyproject_wheel
 
-%if 0%{!?bootstrap:1}
-pushd doc
-%make_build html
-popd
+%if 0%{docs}
+export PYTHONPATH=$PWD
+%make_build -C doc html
+rm doc/_build/html/.buildinfo
 %endif
 
 
 %install
-%py3_install
-# Fix permissions
-chmod 755 %{buildroot}%{python3_sitearch}/bson/*.so
-chmod 755 %{buildroot}%{python3_sitearch}/pymongo/*.so
+%pyproject_install
+%pyproject_save_files -L pymongo
+
+
+%check
+%tox
 
 
 %files doc
 %license LICENSE
-%if 0%{!?bootstrap:1}
+%if 0%{docs}
 %doc doc/_build/html/*
 %endif
 
 
 %files -n python3-bson
 %license LICENSE
-%doc README.rst
+%doc README.md
 %{python3_sitearch}/bson
 
 
-%files -n python3-pymongo
+%files -n python3-pymongo -f %{pyproject_files}
 %license LICENSE
-%doc README.rst
-%{python3_sitearch}/pymongo
-%{python3_sitearch}/pymongo-%{version}-*.egg-info
+%doc README.md
 
 
 %files -n python3-pymongo-gridfs
 %license LICENSE
-%doc README.rst
+%doc README.md
 %{python3_sitearch}/gridfs
 
 
 %changelog
+* Fri Sep 20 2024 Jerry James <loganjerry@gmail.com> - 4.9.1-1
+- Version 4.9.1
+- Fixes CVE-2024-21506 (rhbz#2273860)
+- Fixes CVE-2024-5629 (rhbz#2290587)
+- Modernize the spec file
+- Fix up the license information
+- Add check script
+- Package the ocsp, snappy, and zstd extras
+- Build docs for Fedora only
+- Permit use of pytest-asyncio 0.23 until Fedora can catch up
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 4.2.0-9
 - convert license to SPDX
 

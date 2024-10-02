@@ -8,7 +8,7 @@
 
 Name:          tesseract
 Version:       5.4.1
-Release:       3%{?dist}
+Release:       4%{?dist}
 Summary:       Raw OCR Engine
 
 License:       Apache-2.0
@@ -265,6 +265,9 @@ cp -a doc/*.5 %{buildroot}%{_mandir}/man5/
 
 
 %changelog
+* Mon Sep 30 2024 Neal Gompa <ngompa@fedoraproject.org> - 5.4.1-4
+- Rebuild for ffmpeg 7
+
 * Mon Sep 23 2024 Michel Lind <salimma@fedoraproject.org> - 5.4.1-3
 - Correctly set the soversion based on SemVer properties
   Backport of upstream PR#4319 from Neal Gompa (ngompa)

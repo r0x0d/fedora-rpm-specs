@@ -1,7 +1,7 @@
 %bcond tests 1
 
 Name:           python-httpx
-Version:        0.27.0
+Version:        0.27.2
 Release:        %autorelease
 Summary:        Next-generation HTTP client for Python
 
@@ -20,6 +20,7 @@ BuildRequires:  %{py3_dist pytest}
 BuildRequires:  %{py3_dist trio}
 BuildRequires:  %{py3_dist trustme}
 BuildRequires:  %{py3_dist uvicorn}
+BuildRequires:  %{py3_dist zstandard}
 %endif
 BuildRequires:  help2man
 
@@ -75,7 +76,7 @@ k="${k-}${k+ and }not test_sync_proxy_close"
 %files -n python3-httpx -f %{pyproject_files}
 %doc CHANGELOG.md
 %doc README.md
-%doc README_chinese.md
+%license LICENSE.md
 
 %changelog
 %autochangelog

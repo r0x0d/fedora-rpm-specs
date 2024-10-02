@@ -1,9 +1,11 @@
+# Docs require pandoc, which is not included in RHEL
+%bcond docs %[%{undefined rhel} || %{defined epel}]
 # Tests fail in mock, not in local build.
-%bcond_with     tests
+%bcond tests 0
 
 Name:              valkey
 Version:           8.0.0
-Release:           2%{?dist}
+Release:           3%{?dist}
 Summary:           A persistent key-value database
 # valkey: BSD-3-Clause
 # hiredis: BSD-3-Clause
@@ -31,9 +33,11 @@ BuildRequires:     pkgconfig(libsystemd)
 BuildRequires:     systemd-devel
 BuildRequires:     systemd-rpm-macros
 BuildRequires:     openssl-devel
+%if %{with docs}
 # for docs/man pages
 BuildRequires:     pandoc
 BuildRequires:     python3-pyyaml
+%endif
 
 Requires:          logrotate
 # from deps/hiredis/hiredis.h
@@ -127,6 +131,7 @@ Header file required for building loadable Valkey modules with the legacy
 Redis API.
 
 
+%if %{with docs}
 %package           doc
 Summary:           Documentation and extra man pages for %{name}
 BuildArch:         noarch
@@ -138,6 +143,7 @@ Provides:          redis-doc = %{version}-%{release}
 
 %description       doc
 %summary
+%endif
 
 
 %prep
@@ -190,6 +196,7 @@ echo '# valkey-sentinel_rpm_conf' >> sentinel.conf
 %build
 %make_build %{make_flags}
 
+%if %{with docs}
 # docs
 pushd %{name}-doc-%{version}
 # build man pages
@@ -197,10 +204,12 @@ pushd %{name}-doc-%{version}
 # build html docs
 %make_build html VALKEY_ROOT=../
 popd
+%endif
 
 
 %install
 %make_install %{make_flags}
+%if %{with docs}
 # install docs
 pushd %{name}-doc-%{version}
 # man pages
@@ -209,6 +218,7 @@ pushd %{name}-doc-%{version}
 install -d %{buildroot}%{_docdir}/%{name}/
 cp -ra _build/html/* %{buildroot}%{_docdir}/%{name}/
 popd
+%endif
 
 # remove sample confs
 rm -rf %{buildroot}%{_datadir}/%{name}
@@ -344,13 +354,17 @@ fi
 %{_unitdir}/%{name}-sentinel.service
 %dir %attr(0755, valkey, valkey) %ghost %{_localstatedir}/run/%{name}
 %{_sysusersdir}/%{name}.conf
+%if %{with docs}
 %{_mandir}/man1/%{name}*.gz
 %{_mandir}/man5/%{name}.conf.5.gz
+%endif
 
 
+%if %{with docs}
 %files doc
 %doc %{_docdir}/valkey/
 %{_mandir}/man{3,7}/*%{name}*.gz
+%endif
 
 
 %files devel
@@ -370,6 +384,9 @@ fi
 
 
 %changelog
+* Fri Sep 27 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 8.0.0-3
+- Disable docs on RHEL
+
 * Tue Sep 24 2024 Jonathan Wright <jonathan@almalinux.org> - 8.0.0-2
 - add man pages rhbz#2276017
 - add doc subpackage rhbz#2276020

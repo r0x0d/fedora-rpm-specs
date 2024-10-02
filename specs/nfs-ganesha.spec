@@ -122,8 +122,8 @@ Requires: openSUSE-release
 #%%global dev rc6
 
 Name:		nfs-ganesha
-Version:	6.0
-Release:	2%{?dev:%{dev}}%{?dist}
+Version:	6.1
+Release:	1%{?dev:%{dev}}%{?dist}
 Summary:	NFS-Ganesha is a NFS Server running in user space
 License:	LGPL-3.0-or-later
 Url:		https://github.com/nfs-ganesha/nfs-ganesha/wiki
@@ -968,6 +968,9 @@ exit 0
 %endif
 
 %changelog
+* Mon Sep 30 2024 Kaleb S. KEITHLEY <kkeithle at redhat.com> - 6.1-1
+- NFS-Ganesha 6.1 GA
+
 * Thu Aug 29 2024 Kaleb S. KEITHLEY <kkeithle at redhat.com> - 6.0-2
 - NFS-Ganesha 6.0, enable rgw
 

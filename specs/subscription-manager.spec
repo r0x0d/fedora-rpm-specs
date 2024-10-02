@@ -95,7 +95,7 @@
 %global exclude_packages %{exclude_packages}"
 
 Name: subscription-manager
-Version: 1.29.41
+Version: 1.30.2
 Release: 1%{?dist}
 Summary: Tools and libraries for subscription and repository management
 %if 0%{?suse_version}
@@ -527,6 +527,8 @@ find %{buildroot} -name \*.py* -exec touch -r %{SOURCE0} '{}' \;
 %{completion_dir}/rhsm-debug
 %{completion_dir}/rhsmcertd
 
+%{_sysusersdir}/rhsm.conf
+
 %dir %{python_sitearch}/subscription_manager
 
 # code, python modules and packages
@@ -657,7 +659,8 @@ find %{buildroot} -name \*.py* -exec touch -r %{SOURCE0} '{}' \;
 %attr(750,root,root) %dir %{_var}/cache/cloud-what
 %dir %{python_sitearch}/cloud_what
 %dir %{python_sitearch}/cloud_what/providers
-%{python_sitearch}/cloud_what/*
+%{python_sitearch}/cloud_what/*.py*
+%{python_sitearch}/cloud_what/providers/*.py*
 %{python_sitearch}/cloud_what/__pycache__
 %{python_sitearch}/cloud_what/providers/__pycache__
 
@@ -688,6 +691,10 @@ if [ "$1" = "2" ] ; then
     killall rhsmd 2> /dev/null || true
 fi
 %endif
+
+# Make all consumer certificates and keys readable by group rhsm
+find /etc/pki/consumer -mindepth 1 -maxdepth 1 -name '*.pem' | xargs --no-run-if-empty chgrp rhsm
+find /etc/pki/consumer -mindepth 1 -maxdepth 1 -name '*.pem' | xargs --no-run-if-empty chmod g+r
 
 # Make all entitlement certificates and keys files readable by group and other
 find /etc/pki/entitlement -mindepth 1 -maxdepth 1 -name '*.pem' | xargs --no-run-if-empty chmod go+r
@@ -735,35 +742,118 @@ rmdir %{python_sitearch}/subscription_manager-*-*.egg-info --ignore-fail-on-non-
 rm -f /var/lib/rhsm/cache/rhsm_icon.json
 
 %changelog
-* Thu Aug 15 2024 Packit <hello@packit.dev> - 1.29.41-1
-- Update to version 1.29.41
-- Resolves: rhbz#2305098
+* Thu Sep 26 2024 Pino Toscano <ptoscano@redhat.com> 1.30.2-1
+- Translated using Weblate (Georgian) (temuri.doghonadze@gmail.com)
+- feat: Create consumer cert & key owner by rhsm group (jhnidek@redhat.com)
+- feat: Add rhsm group during installation of subman RPM (jhnidek@redhat.com)
+- feat: dnf plugin - outsource uploading of profile to rhsmcertd.
+  (jhnidek@redhat.com)
+- docs: remove references to removed commands (jajerome@redhat.com)
+- feat: Remove auto-attach command (jhnidek@redhat.com)
+- feat: Eliminate command 'remove' from subscription-manager
+  (jvlcek@redhat.com)
+- feat: Remove attach from bash completion script (jhnidek@redhat.com)
+- feat: Remove references on auto-attach in man page (jhnidek@redhat.com)
+- feat: Removed attach service (jhnidek@redhat.com)
+- feat: Removed D-Bus methods related to attach (jhnidek@redhat.com)
+- feat: Removed attach command and CLI option related to attach
+  (jhnidek@redhat.com)
+- feat: Remove 'addons' subcommand(s) (mhorky@redhat.com)
+- feat: Removed command "redeem" from subscription-manager (jhnidek@redhat.com)
+- Update the correct man page file. (jvlcek@redhat.com)
+- docs: Change reverse proxy to proxy in man page (jvlcek@redhat.com)
+- test(ci): Improve container pre-test script (mhorky@redhat.com)
 
-* Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.29.40-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+* Wed Aug 21 2024 Pino Toscano <ptoscano@redhat.com> 1.30.1-1
+- feat: forcefully switch automatic cloud registration to v1
+  (ptoscano@redhat.com)
 
-* Fri Jun 07 2024 Python Maint <python-maint@redhat.com> - 1.29.40-4
-- Rebuilt for Python 3.13
+* Fri Aug 16 2024 Pino Toscano <ptoscano@redhat.com> 1.30.0-1
+- Translated using Weblate (Russian) (aleksejfedorov963@gmail.com)
+- Translated using Weblate (Korean) (simmon@nplob.com)
+- chore: Format register.py (mhorky@redhat.com)
+- feat: Require SCA for registration (mhorky@redhat.com)
+- doc: Update install and testing guide (stomsa@redhat.com)
+- Fixed spec file to list packages twice (suttner@atix.de)
+- code review comments fixes - update metadata and test. (chambrid@redhat.com)
+- feat: Disable anonymous cloud registration temporarily (mhorky@redhat.com)
+- Collect Azure VM Name and Resource Group Name as a cloud fact.
+  (chambrid@redhat.com)
+- fix: Improve wording in redhat.repo template (glutexo@icloud.com)
+- Remove commands moved to syspurpose (glutexo@icloud.com)
+- doc: drop references to "activate" (ptoscano@redhat.com)
+- feat: Remove import command (zpetrace@redhat.com)
+- fix: make SyspurposeComplianceStatusCache.get_overall_status() always usable
+  (ptoscano@redhat.com)
+- fix: Change order of checks (jhnidek@redhat.com)
+- fix: Cache shouldn't try to get data from server without UUID
+  (jhnidek@redhat.com)
+- feat: Add option to run smoke tests with fake IMDS servers.
+  (jhnidek@redhat.com)
+- fix: Hide subscription management "errors" in container mode
+  (mhorky@redhat.com)
+- feat(ci): Update testing matrix (mhorky@redhat.com)
+- fix(test): Properly stop method mock (mhorky@redhat.com)
+- feat: Azure: added extended location and type of location fact
+  (jhnidek@redhat.com)
+- fix: Update version of Azure metadata (jhnidek@redhat.com)
+- feat: Added Azure location to facts (jhnidek@redhat.com)
+- feat: Added zone GCP fact (jhnidek@redhat.com)
+- feat: Added more AWS cloud facts (jhnidek@redhat.com)
+- fix: Change type hint according returned value. (jhnidek@redhat.com)
+- feat: Add warning message about release version to dnf plugin
+  (jhnidek@redhat.com)
+- Bump black from 23.3.0 to 24.3.0
+  (49699333+dependabot[bot]@users.noreply.github.com)
+- Format code with black==24.3.0 (ptoscano@redhat.com)
+- Fix memory leaks in test-productdb.c (jhnidek@redhat.com)
+- Fix memory leaks in productdb.c (jhnidek@redhat.com)
+- fix: Function prototype without declaration is deprecated
+  (jhnidek@redhat.com)
+- Removed unused includes of .h files (jhnidek@redhat.com)
+- libdnf: switch from g_error_free() to g_clear_error() in tests
+  (ptoscano@redhat.com)
+- libdnf: do not build test code in plugin (ptoscano@redhat.com)
+- Change handling of deprecated `datetime.datetime.utcnow()`
+  (mhorky@redhat.com)
+- CCT-66: Update identity reporting in DNF plugin during autoregistration
+  (mhorky@redhat.com)
+- Remove automatic registration delay for rhsmcertd (mhorky@redhat.com)
+- Remove API endpoint for automatic cloud registration v1 (mhorky@redhat.com)
+- CCT-67: Use automatic registration v2 (mhorky@redhat.com)
+- IdentityUpdateAction: Improve logging for updating identity certificates
+  (mhorky@redhat.com)
+- Identity: Add method to extract current owner (mhorky@redhat.com)
+- rhsmcertd: Define exit codes (mhorky@redhat.com)
+- rhsmcertd: Use module-level logger (mhorky@redhat.com)
+- Add AnonymousCertificateManager (mhorky@redhat.com)
+- Add CloudTokenCache for Candlepin JWT (mhorky@redhat.com)
+- Implement API endpoints for Automatic registration v2 (mhorky@redhat.com)
+- Update documentation for one API call in connection.py (mhorky@redhat.com)
+- Fix type hint of RegisterService.register() (mhorky@redhat.com)
+- rhsmcertd: Drop D-Bus loop code (mhorky@redhat.com)
+- rhsmcertd: Add type hints (mhorky@redhat.com)
+- rhsmcertd: Remove forgotten old comment (mhorky@redhat.com)
+- Stop logging full lscpu output (mhorky@redhat.com)
+- Prevent double-logging of syspurpose cache log statement (mhorky@redhat.com)
+- Update the log message containing response time statistics
+  (mhorky@redhat.com)
+- CCT-266: Update TLS flags (mhorky@redhat.com)
 
-* Fri Jun 07 2024 Python Maint <python-maint@redhat.com> - 1.29.40-3
-- Rebuilt for Python 3.13
-
-* Sat Jan 27 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.29.40-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Thu Jan 18 2024 Packit <hello@packit.dev> - 1.29.40-1
-- Automatic commit of package [subscription-manager] release [1.29.40-1]. (Pino Toscano)
-- Translated using Weblate (Korean) (김인수)
-- Translated using Weblate (Chinese (Simplified) (zh_CN)) (Jingge Chen)
-- spec: Add missing GLib dependency when building without DNF (Debarshi Ray)
-- Remove deprecated `locale.*()` functions (mhorky)
-- Remove version constraint of pytest (mhorky)
-- RHEL-15110: RegisterServer is stopped, when not needed (Jiri Hnidek)
-- RHEL-15110: Fix issue with registration using gsd-subman (Jiri Hnidek)
-- Fix an error in debug logging of cloud-what (mhorky)
-- ci: bump actions/upload-artifact from 3 to 4 (dependabot[bot])
-- Improve debug logging to make it faster to understand (mhorky)
-- Resolves rhbz#2258965
+* Thu Jan 18 2024 Pino Toscano <ptoscano@redhat.com> 1.29.40-1
+- Translated using Weblate (Korean) (simmon@nplob.com)
+- Translated using Weblate (Chinese (Simplified) (zh_CN))
+  (mariocanfly@hotmail.com)
+- spec: Add missing GLib dependency when building without DNF
+  (debarshir@gnome.org)
+- Remove deprecated `locale.*()` functions (mhorky@redhat.com)
+- Remove version constraint of pytest (mhorky@redhat.com)
+- RHEL-15110: RegisterServer is stopped, when not needed (jhnidek@redhat.com)
+- RHEL-15110: Fix issue with registration using gsd-subman (jhnidek@redhat.com)
+- Fix an error in debug logging of cloud-what (mhorky@redhat.com)
+- ci: bump actions/upload-artifact from 3 to 4
+  (49699333+dependabot[bot]@users.noreply.github.com)
+- Improve debug logging to make it faster to understand (mhorky@redhat.com)
 
 * Thu Nov 23 2023 Pino Toscano <ptoscano@redhat.com> 1.29.39-1
 - tito: drop bz requirement (ptoscano@redhat.com)

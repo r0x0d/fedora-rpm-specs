@@ -1,13 +1,12 @@
 %global realname bitcask
 
-
 Name:		erlang-%{realname}
 Version:	2.1.0
 Release:	%autorelease
 Summary:	Eric Brewer-inspired key/value store
 License:	Apache-2.0
 URL:		https://github.com/basho/%{realname}
-VCS:		scm:git:%{url}.git
+VCS:		git:%{url}.git
 Source0:	%{url}/archive/%{version}/%{realname}-%{version}.tar.gz
 Source1:	bitcask.licensing
 Patch1:		erlang-bitcask-0001-Don-t-use-deprecated-erlang-now-0.patch
@@ -19,14 +18,11 @@ BuildRequires:	erlang-meck
 BuildRequires:	erlang-rebar3
 BuildRequires:	gcc
 
-
 %description
-Eric Brewer-inspired key/value store.
-
+%{summary}.
 
 %prep
 %autosetup -p1 -n %{realname}-%{version}
-
 
 %build
 %{erlang3_compile}
@@ -44,15 +40,12 @@ gcc $LDFLAGS -shared -L%{_libdir}/erlang/usr/lib -lei c_src/bitcask_nifs.o c_src
 cp -arv priv/bitcask.schema %{buildroot}%{erlang_appdir}/priv
 cp -arv priv/bitcask_multi.schema %{buildroot}%{erlang_appdir}/priv
 
-
 %check
 %{erlang3_test}
-
 
 %files
 %doc README.md THANKS doc/
 %{erlang_appdir}/
-
 
 %changelog
 %autochangelog

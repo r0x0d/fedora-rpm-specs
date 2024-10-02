@@ -274,7 +274,7 @@
 
 Name:	chromium%{chromium_channel}
 Version: 129.0.6668.70
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: A WebKit (Blink) powered web browser that Google doesn't want you to use
 Url: http://www.chromium.org/Home
 License: BSD-3-Clause AND LGPL-2.1-or-later AND Apache-2.0 AND IJG AND MIT AND GPL-2.0-or-later AND ISC AND OpenSSL AND (MPL-1.1 OR GPL-2.0-only OR LGPL-2.0-only)
@@ -1915,6 +1915,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Mon Sep 30 2024 Than Ngo <than@redhat.com> - 129.0.6668.70-3
+- add clang-19 support
+
 * Fri Sep 27 2024 Dominik Mierzejewski <dominik@greysector.net> - 129.0.6668.70-2
 - Rebuilt for FFmpeg 7
 

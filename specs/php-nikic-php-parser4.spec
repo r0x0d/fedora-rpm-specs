@@ -15,7 +15,7 @@
 %bcond_with    tests
 %endif
 
-%global gh_commit    0ed4c8949a32986043e977dbe14776c14d644c45
+%global gh_commit    715f4d25e225bc47b293a8b997fe6ce99bf987d2
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     nikic
 %global gh_project   PHP-Parser
@@ -25,7 +25,7 @@
 %global major        4
 
 Name:           php-%{gh_owner}-%{pk_project}%{major}
-Version:        4.19.2
+Version:        4.19.4
 Release:        1%{?dist}
 Summary:        A PHP parser written in PHP - version %{major}
 
@@ -49,7 +49,7 @@ BuildRequires:  php-json
 BuildRequires:  php-pcre
 BuildRequires:  php-spl
 # From composer.json, "require-dev": {
-#        "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0 || ^9.0",
+#        "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
 #        "ircmaxell/php-yacc": "0.0.7"
 %global phpunit %{_bindir}/phpunit9
 BuildRequires:  phpunit9
@@ -149,6 +149,9 @@ exit $ret
 
 
 %changelog
+* Mon Sep 30 2024 Remi Collet <remi@remirepo.net> - 4.19.4-1
+- update to 4.19.4
+
 * Wed Sep 18 2024 Remi Collet <remi@remirepo.net> - 4.19.2-1
 - update to 4.19.2
 

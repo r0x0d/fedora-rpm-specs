@@ -1,4 +1,4 @@
-# depends on downloading googletest src directory, only suitable to local building
+# depends on downloading googletest src directory, use mock --enable-network
 %bcond_with check
 
 # So pre releases can be tried
@@ -12,8 +12,8 @@
 #      |                                  cpuinfo_has_x86_mmx_plus
 #
 # Pick a more recent cpuinfo
-%global commit0 16bfc1622c6902d6f91d316ec54894910c620325
-Version:        24.08.07
+%global commit0 1e83a2fdd3102f65c6f1fb602c1b320486218a99
+Version:        24.09.26
 %define patch_level 0
 
 %else
@@ -106,6 +106,16 @@ sed -i -e 's@cpuinfo_VERSION 23.11.04@cpuinfo_VERSION %{version}@' CMakeLists.tx
 
 %install
 %cmake_install
+
+%if %{with check}
+rm -rf %{buildroot}/%{_includedir}/gmock
+rm -rf %{buildroot}/%{_includedir}/gtest
+rm -rf %{buildroot}/%{_libdir}/cmake/GTest
+rm -rf %{buildroot}/%{_libdir}/libgmock*
+rm -rf %{buildroot}/%{_libdir}/libgtest*
+rm -rf %{buildroot}/%{_libdir}/pkgconfig/gmock*
+rm -rf %{buildroot}/%{_libdir}/pkgconfig/gtest*
+%endif
 
 %check
 %if %{with check}

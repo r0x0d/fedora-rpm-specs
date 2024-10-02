@@ -1,6 +1,5 @@
 %global realname erlsyslog
 
-
 Name:		erlang-%{realname}
 Version:	0.8.0
 Release:	%autorelease
@@ -12,14 +11,11 @@ Source0:	%{url}/archive/%{version}/%{realname}-%{version}.tar.gz
 BuildRequires:	erlang-rebar3
 BuildRequires:	gcc
 
-
 %description
-Syslog facility for Erlang.
-
+%{summary}.
 
 %prep
 %autosetup -p1 -n %{realname}-%{version}
-
 
 %build
 mkdir -p ./ebin
@@ -32,19 +28,15 @@ mkdir -p priv/
 gcc c_src/erlsyslog_drv.c	$CFLAGS -fPIC -c -I%{_libdir}/erlang/usr/include -o c_src/erlsyslog_drv.o
 gcc c_src/erlsyslog_drv.o	$LDFLAGS -shared -L%{_libdir}/erlang/usr/lib -lei -o priv/erlsyslog_drv.so
 
-
 %install
 %{erlang3_install}
-
 
 %check
 %{erlang3_test}
 
-
 %files
 %doc example
 %{erlang_appdir}/
-
 
 %changelog
 %autochangelog

@@ -39,12 +39,12 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 # Recommend external pixbuf loaders for popular image formats only.
 # Please do not recommend obscure image formats here.
 %if ! 0%{?rhel}
-# avif and jxl are not shipped in RHEL
+# these are not shipped in RHEL
 Recommends: avif-pixbuf-loader
 Recommends: jxl-pixbuf-loader
-Recommends: rsvg-pixbuf-loader
-%endif
 Recommends: webp-pixbuf-loader
+%endif
+Recommends: rsvg-pixbuf-loader
 
 %description modules
 This package contains the additional modules that are needed to load GIF and

@@ -1,8 +1,8 @@
 %global forgeurl https://github.com/PixlOne/logiops
 
 Name:    logiops
-Version: 0.3.4
-Release: 3%{?dist}
+Version: 0.3.5
+Release: 1%{?dist}
 Summary: Unofficial driver for Logitech mice and keyboard
 %forgemeta
 
@@ -63,6 +63,9 @@ rmdir src/ipcgull
 %doc logid.example.cfg
 
 %changelog
+* Mon Sep 30 2024 Nicolas De Amicis <deamicis@bluewin.ch> - 0.3.5-1
+- Fixes CVE-2024-45752
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 0.3.4-3
 - convert license to SPDX
 

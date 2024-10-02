@@ -1,6 +1,6 @@
 Name:           gnubik
 Version:        2.4.3
-Release:        20%{?dist}
+Release:        21%{?dist}
 Summary:        3D interactive graphics puzzle
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -12,12 +12,12 @@ Source1:        %{name}.desktop
 Patch1:         iconfix.patch
 # The install-desktop target is broken
 Patch2:         installfix.patch
-# Allow guile 2.2 to be found
-Patch3:		guile-2.2.patch
+# Allow guile 3.0 to be found
+Patch3:		guile-3.0.patch
 
 BuildRequires:	autoconf automake
 BuildRequires:  gcc
-BuildRequires:  libX11-devel pkgconfig(guile-2.2) libGL-devel libGLU-devel gtk2-devel gtkglext-devel
+BuildRequires:  libX11-devel pkgconfig(guile-3.0) libGL-devel libGLU-devel gtk2-devel gtkglext-devel
 BuildRequires:  gettext gettext-devel desktop-file-utils texinfo
 BuildRequires:  make
 Requires:       hicolor-icon-theme
@@ -75,6 +75,9 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/applications/gen-dot-desktop.scm
 
 
 %changelog
+* Mon Sep 30 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 2.4.3-21
+- Build with guile 3.0
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 2.4.3-20
 - convert license to SPDX
 

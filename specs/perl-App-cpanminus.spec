@@ -1,6 +1,6 @@
 Name:           perl-App-cpanminus
 Version:        1.7047
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Get, unpack, build and install CPAN modules
 # Other files:  GPL+ or Artistic
 ## unbundled
@@ -133,6 +133,8 @@ with "%{_libexecdir}/%{name}/test".
 podselect lib/App/cpanminus.pm > lib/App/cpanminus.pod
 
 for F in bin/cpanm lib/App/cpanminus/fatscript.pm; do
+    # CVE-2024-45321 - patch to use https instead of http
+    perl -pi -E 's{http://(cpan\.cpantesters\.org|www\.cpan\.org|backpan\.perl\.org|cpan\.metacpan\.org|fastapi\.metacpan\.org|cpanmetadb\.plackperl\.org)}{https://$1}g' "$F"
     %{SOURCE1} --libdir lib --filter '^App/cpanminus' "$F" > "${F}.stripped"
     perl -c -Ilib "${F}.stripped"
     mv "${F}.stripped" "$F"
@@ -177,6 +179,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Thu Sep 26 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1.7047-5
+- Patch the code to use https instead of http (CVE-2024-45321)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.7047-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

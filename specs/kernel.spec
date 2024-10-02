@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc0.20240927git075dbe9f6e3c.14
+%define pkgrelease 0.rc1.17
 %define kversion 6
-%define tarfile_release 6.11-11558-g075dbe9f6e3c
+%define tarfile_release 6.12-rc1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc0.20240927git075dbe9f6e3c.14%{?buildid}%{?dist}
+%define specrelease 0.rc1.17%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4136,6 +4136,18 @@ fi\
 #
 #
 %changelog
+* Mon Sep 30 2024 Justin M. Forbes <jforbes@fedoraproject.org> [6.12.0-0.rc1.17]
+- bcachefs: rename version -> bversion for big endian builds (Guenter Roeck)
+
+* Mon Sep 30 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc1.17]
+- Linux v6.12.0-0.rc1
+
+* Sun Sep 29 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc0.3efc57369a0c.16]
+- Linux v6.12.0-0.rc0.3efc57369a0c
+
+* Sat Sep 28 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc0.ad46e8f95e93.15]
+- Linux v6.12.0-0.rc0.ad46e8f95e93
+
 * Fri Sep 27 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc0.075dbe9f6e3c.14]
 - Linux v6.12.0-0.rc0.075dbe9f6e3c
 

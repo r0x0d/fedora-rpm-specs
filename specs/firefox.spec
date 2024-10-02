@@ -103,7 +103,7 @@ ExcludeArch: i686
 %global build_with_pgo    0
 %ifarch x86_64
 %if %{release_build}
-%global build_with_pgo    1
+%global build_with_pgo    0
 %endif
 %endif
 %if 0%{?flatpak}
@@ -197,7 +197,7 @@ ExcludeArch: i686
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        131.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 # Automatically converted from old format: MPLv1.1 or GPLv2+ or LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-MPLv1.1 OR GPL-2.0-or-later OR LicenseRef-Callaway-LGPLv2+
@@ -288,6 +288,7 @@ Patch422:        D210158.1715685536.diff
 Patch423:        D210159.1715685538.diff
 Patch424:        D210430.1715848796.diff
 Patch425:        D220671.patch
+Patch426:        D224089.patch
 
 # PipeWire camera upstream patches
 # https://phabricator.services.mozilla.com/D219224
@@ -610,6 +611,7 @@ export LIBCLANG_RT=`pwd`/wasi-sdk-20/build/compiler-rt/lib/wasi/libclang_rt.buil
 %patch -P407 -p1 -b .1667096
 
 %patch -P425 -p1 -b .D220671
+%patch -P426 -p1 -b .D224089
 
 %patch -P500 -p1 -b .filter-out-devices-with-no-capabilities
 %patch -P501 -p1 -b .always-query-information-about-camera-availability
@@ -1249,8 +1251,12 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Sep 30 2024 Martin Stransky <stransky@redhat.com> - 131.0-2
+- Fix regression from mzbz#1634961 - enable Gnome Shell search in opened tabs
+- Temporary disabled PGO due to build issues.
+
 * Wed Sep 25 2024 Martin Stransky <stransky@redhat.com> - 131.0-1
-- Added fix for mzbz#1634961
+- Added fix for mzbz#1634961 - enable Gnome Shell search in opened tabs
 - Updated to 131.0
 
 * Mon Sep 23 2024 Jan Grulich <jgrulich@redhat.com> - 130.0.1-3

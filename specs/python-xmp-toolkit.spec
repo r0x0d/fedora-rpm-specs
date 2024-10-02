@@ -68,11 +68,10 @@ rm -rf html/.{doctrees,buildinfo}
 
 
 %check
-%{python3} setup.py test
+%{python3} -m unittest discover -v
 
 
 %files -n python3-%{srcname} -f %{pyproject_files}
-#license LICENSE
 %doc README.rst
 
 %files -n python-%{srcname}-doc

@@ -1,6 +1,6 @@
 Name:		mdk
 Version:	1.3.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	GNU MIX Development Kit
 
 # Automatically converted from old format: GPLv3+ and GFDL - review is highly recommended.
@@ -12,7 +12,7 @@ Patch0:		glib-deprecated.patch
 
 BuildRequires: make
 BuildRequires:  gcc
-BuildRequires:	guile22-devel
+BuildRequires:	guile30-devel
 BuildRequires:	libglade2-devel
 BuildRequires:	gettext
 BuildRequires:	desktop-file-utils
@@ -77,6 +77,9 @@ desktop-file-install \
 %doc samples doc
 
 %changelog
+* Mon Sep 30 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1.3.0-3
+- Build with guile 3.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.3.0-2
 - convert license to SPDX
 

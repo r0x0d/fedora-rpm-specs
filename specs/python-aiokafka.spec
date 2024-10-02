@@ -16,6 +16,9 @@ License:    Apache-2.0
 Source0:    https://github.com/%{owner}/%{sname}/archive/v%{version}/%{sname}-%{version}.tar.gz
 URL:        https://github.com/%{owner}/%{sname}
 
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+ExcludeArch:    %{ix86}
+
 BuildRequires:  python3-devel
 BuildRequires:  gcc
 BuildRequires:  python3dist(docker)

@@ -15,8 +15,8 @@
 
 Name:          sexpp
 Summary:       S-expressions parser and generator tools
-Version:       0.8.8
-Release:       3%{?dist}
+Version:       0.9.0
+Release:       1%{?dist}
 License:       MIT
 
 URL:           https://github.com/rnpgp/%{name}
@@ -123,6 +123,9 @@ rm $LST
 
 
 %changelog
+* Mon Sep 30 2024 Remi Collet <remi@remirepo.net> - 0.9.0-1
+- update to 0.9.0
+
 * Fri Jul 26 2024 Remi Collet <remi@remirepo.net> - 0.8.8-3
 - Disable i686 build
 

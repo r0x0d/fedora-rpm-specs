@@ -1,10 +1,9 @@
 Name:		rgbds
-Version:	0.7.0
-Release:	2%{?dist}
+Version:	0.8.0
+Release:	1%{?dist}
 Summary:	A development package for the Game Boy, including an assembler
 
-# See LICENSE for details
-License:	DWPL and ISC and MIT and BSD
+License:	MIT
 URL:		https://github.com/gbdev/%{name}
 Source0:	%{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
@@ -52,9 +51,13 @@ It consists of:
 %{_mandir}/man7/rgbds.7.*
 %{_mandir}/man7/gbz80.7.*
 %license LICENSE
-%doc README.rst
+%doc README.md
 
 %changelog
+* Mon Sep 30 2024 Benjamin Lowry <ben@ben.gmbh> - 0.8.0-1
+- rgbds 0.8.0
+- Update SPDX licensing string to address new Fedora policy
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.7.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

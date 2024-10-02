@@ -1,6 +1,6 @@
 Name:           texstudio
 Version:        4.8.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 Summary:        A feature-rich editor for LaTeX documents
 # texstudio binary: GPLv3 due to static linkage of bundled qcodeedit
@@ -16,31 +16,30 @@ Patch1:         texstudio-disable-update-check.patch
 
 BuildRequires:  make
 BuildRequires:  cmake
-BuildRequires:  qt5-qtbase-devel
-BuildRequires:  qt5-qtdeclarative-devel
-BuildRequires:  qt5-qttools-devel
-BuildRequires:  qt5-qttools-static
-BuildRequires:  qt5-qtsvg-devel
-BuildRequires:  qt5-qtscript-devel
+BuildRequires:  qt6-qtbase-devel
+BuildRequires:  qt6-qtdeclarative-devel
+BuildRequires:  qt6-qttools-devel
+BuildRequires:  qt6-qttools-static
+BuildRequires:  qt6-qtsvg-devel
 BuildRequires:  hunspell-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  gettext
 BuildRequires:  poppler-devel
-BuildRequires:  poppler-qt5-devel
+BuildRequires:  poppler-qt6-devel
 BuildRequires:  poppler-cpp-devel
-BuildRequires:  qtsingleapplication-qt5-devel
-BuildRequires:  qtsinglecoreapplication-qt5-devel
+BuildRequires:  qtsingleapplication-qt6-devel
+BuildRequires:  qtsinglecoreapplication-qt6-devel
 # Not present in EPEL
 %if 0%{?fedora}
 BuildRequires:  qtermwidget-devel
 %endif
-BuildRequires:  quazip-qt5-devel
+BuildRequires:  quazip-qt6-devel
 BuildRequires:  zlib-devel
 
 Recommends:     tex(latex)
 Recommends:     tex(preview.sty)
 Recommends:     tex-dvipng
-Requires:       qt5-qtsvg
+Requires:       qt6-qtsvg
 # Not present in EPEL
 %if 0%{?fedora}
 Requires:       qtermwidget
@@ -123,6 +122,9 @@ desktop-file-install --dir %{buildroot}%{_datadir}/applications %{SOURCE1}
 %doc utilities/AUTHORS utilities/COPYING utilities/manual/source/CHANGELOG.md
 
 %changelog
+* Mon Sep 30 2024 Marco Huenseler <marco@wuthoehle.de> 4.8.4-2
+- build with qt6 instead of qt5 and update dependencies
+
 * Sat Sep 28 2024 Johannes Lips <hannes@fedoraproject.org> 4.8.4-1
 - update to 4.8.4
 

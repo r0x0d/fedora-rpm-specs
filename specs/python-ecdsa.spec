@@ -60,22 +60,8 @@ find src/ecdsa -name \*.py | xargs sed -ie '/\/usr\/bin\/env/d'
 
 
 %check
-%if 0%{?rhel}
-# el9 openssl doesn't support these
-%pytest \
--k "not test_from_openssl_nist224p  \
-and not test_from_openssl_nist256p  \
-and not test_from_openssl_nist384p  \
-and not test_from_openssl_nist521p  \
-and not test_from_openssl_secp256k1 \
-and not test_to_openssl_nist224p    \
-and not test_to_openssl_nist256p    \
-and not test_to_openssl_nist384p    \
-and not test_to_openssl_nist521p    \
-and not test_to_openssl_secp256k1"
-%else
+export OPENSSL_ENABLE_SHA1_SIGNATURES=yes
 %pytest
-%endif
 
 
 %files -n python3-%{srcname} -f %{pyproject_files}

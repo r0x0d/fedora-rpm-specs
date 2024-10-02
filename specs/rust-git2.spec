@@ -12,8 +12,14 @@ Summary:        Bindings to libgit2 for interoperating with git repositories
 License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/git2
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+# * drop dependency on time ^0.1 which is only required for building examples
+Patch:          git2-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
+%if %{with check}
+BuildRequires:  /usr/bin/git
+%endif
 
 %global _description %{expand:
 Bindings to libgit2 for interoperating with git repositories. This
@@ -138,12 +144,11 @@ use the "vendored-libgit2" feature of the "%{crate}" crate.
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
+# drop examples that pull in time ^0.1
+rm -rv examples/
 
 %generate_buildrequires
 %cargo_generate_buildrequires
-%if %{with check}
-echo '/usr/bin/git'
-%endif
 
 %build
 %cargo_build

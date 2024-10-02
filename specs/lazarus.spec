@@ -1,7 +1,7 @@
 Name:           lazarus
 Summary:        Lazarus Component Library and IDE for Free Pascal
 
-Version:        3.4
+Version:        3.6
 
 %global baserelease 1
 Release:        %{baserelease}%{?dist}
@@ -67,9 +67,6 @@ Requires:	%{name}-lcl-nogui%{?_isa} = %{version}-%{release}
 Requires:	%{name}-lcl-gtk2%{?_isa} = %{version}-%{release}
 Requires:	%{name}-tools%{?_isa} = %{version}-%{release}
 
-# For smooth upgrade from F38 or older. Can be removed in F41.
-Obsoletes:  lazarus < 2.2.6-2
-
 ExclusiveArch:  %{fpc_arches}
 
 %description
@@ -128,9 +125,6 @@ This package provides helper programs used for building Lazarus projects.
 %package doc
 Summary: Lazarus IDE documentation
 License: %{license_doc}
-
-# For smooth upgrade from F38 or older. Can be removed in F41.
-Obsoletes:  lazarus < 2.2.6-2
 
 %description doc
 Lazarus is a cross-platform IDE and component library for Free Pascal.
@@ -563,6 +557,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{name}.appdat
 
 
 %changelog
+* Mon Sep 30 2024 Artur Frenszek-Iwicki <fedora@svgames.pl> - 3.6-1
+- Update to v3.6
+
 * Sun Jul 28 2024 Artur Frenszek-Iwicki <fedora@svgames.pl> - 3.4-1
 - Update to v3.4
 - Drop Patch2 (qt6pas build failure - backport from this release)

@@ -1,12 +1,12 @@
 Name:           python-certifi
-Version:        2023.05.07
+Version:        2024.08.30
 Release:        %autorelease
 Summary:        Python package for providing Mozilla's CA Bundle
 
 License:        MPL-2.0
 URL:            https://certifi.io/
 Source:         https://github.com/certifi/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
-Patch:          certifi-2022.12.07-use-system-cert.patch
+Patch:          certifi-2024.08.30-use-system-cert.patch
 
 BuildArch:      noarch
 

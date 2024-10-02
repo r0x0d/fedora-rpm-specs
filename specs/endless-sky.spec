@@ -1,6 +1,6 @@
 Name:		endless-sky
-Version:	0.10.8
-Release:	3%{?dist}
+Version:	0.10.9
+Release:	1%{?dist}
 Summary:	Space exploration, trading, and combat game
 
 # Automatically converted from old format: GPLv3 - review is highly recommended.
@@ -28,6 +28,9 @@ BuildRequires:	desktop-file-utils
 BuildRequires:	libmad-devel
 BuildRequires:	libuuid-devel
 BuildRequires:  mesa-libGL-devel
+BuildRequires:  catch-devel
+BuildRequires:  libasan
+BuildRequires:  libubsan
 
 %description
 Explore other star systems. Earn money by trading, carrying passengers, or
@@ -93,6 +96,9 @@ rm -f %{buildroot}%{_datadir}/doc/endless-sky/license.txt
 
 
 %changelog
+* Mon Sep 30 2024 Gwyn Ciesla <gwync@protonmail.com> - 0.10.9-1
+- 0.10.9
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 0.10.8-3
 - convert license to SPDX
 

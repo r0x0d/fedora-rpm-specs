@@ -1,5 +1,5 @@
 Name:           exiv2
-Version:        0.28.2
+Version:        0.28.3
 Release:        %autorelease
 Summary:        Exif and Iptc metadata manipulation library
 
@@ -20,7 +20,6 @@ Source:         %{vcs}/archive/v%{version}-%{beta}/%{name}-%{version}-%{beta}.ta
 Source:         %{vcs}/archive/v%{version}/%{name}-%{version}.tar.gz
 %endif
 
-BuildRequires:  brotli-devel
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  gettext
