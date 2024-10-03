@@ -1,17 +1,17 @@
-%global oqs_version 0.10.1
+%global oqs_version 0.11.0
 Name:       liboqs
 Version:    %{oqs_version}
-Release:    3%{?dist}
+Release:    2%{?dist}
 Summary:    liboqs is an open source C library for quantum-safe cryptographic algorithms.
 
 #liboqs uses MIT license by itself but includes several files licensed under different terms.
 #src/common/crypto/sha3/xkcp_low/.../KeccakP-1600-AVX2.s : BSD-like CRYPTOGAMS license
 #src/common/rand/rand_nist.c: See file
 #see https://github.com/open-quantum-safe/liboqs/blob/main/README.md#license for more details
-License:    MIT AND Apache 2.0 AND BSD 3-Clause AND (BSD-3-Clause OR GPL-1.0-or-later) AND CC0-1.0 AND Unlicense
+License:    MIT AND Apache-2.0 AND BSD-3-Clause AND (BSD-3-Clause OR GPL-1.0-or-later) AND CC0-1.0 AND Unlicense
 URL:        https://github.com/open-quantum-safe/liboqs.git
 Source:     https://github.com/open-quantum-safe/liboqs/archive/refs/tags/%{oqs_version}.tar.gz
-Patch1:	    liboqs-0.10.0-dlopen-openssl.patch
+Patch1:	    liboqs-0.11.0-acvp_patch.patch
 Patch2:	    liboqs-0.10.0-std-iana.patch
 
 BuildRequires: ninja-build
@@ -82,7 +82,7 @@ done
 %files
 %license LICENSE.txt
 %{_libdir}/liboqs.so.%{oqs_version}
-%{_libdir}/liboqs.so.5
+%{_libdir}/liboqs.so.6
 
 %files devel
 %{_libdir}/liboqs.so
@@ -99,6 +99,12 @@ done
 #%doc %%{_datadir}/doc/oqs/xml/*
 
 %changelog
+* Tue Oct 01 2024 Dmitry Belyavskiy <dbelyavs@redhat.com> - 0.11.0-2
+- rebuilt and cleanup
+
+* Mon Sep 30 2024 Dmitry Belyavskiy <dbelyavs@redhat.com> - 0.11.0-1
+- Update to 0.11.0 version
+
 * Fri Aug 02 2024 Lokesh Mandvekar <lsm5@fedoraproject.org> - 0.10.1-3
 - Add PQ container test
 

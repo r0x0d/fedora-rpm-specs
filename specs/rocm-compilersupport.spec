@@ -7,8 +7,6 @@
 %global rocm_version %{rocm_release}.%{rocm_patch}
 # What LLVM is upstream using (use LLVM_VERSION_MAJOR from llvm/CMakeLists.txt):
 %global llvm_maj_ver 18
-#Use compat if LLVM is not latest:
-%bcond_with compat_build
 %global upstreamname llvm-project
 
 # Used to tell cmake where to install device libs (must be relative to prefix)
@@ -19,7 +17,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        7.rocm%{rocm_version}%{?dist}
+Release:        8.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -119,11 +117,8 @@ LLVM devel files used when building ROCm.
 %package -n hipcc-libomp-devel
 Summary:        OpenMP header files for hipcc
 Requires:       hipcc = %{version}-%{release}
-%if %{with compat_build}
-Requires:       libomp%{llvm_maj_ver}-devel
-%else
-Requires:       libomp-devel
-%endif
+# TODO: is this too hacky? :)
+Requires:       /usr/lib/clang/%{llvm_maj_ver}/include/omp.h
 
 %description -n hipcc-libomp-devel
 OpenMP header files compatible with HIPCC.
@@ -149,9 +144,7 @@ sed -i 's/lib\(\/clang\)/%{_lib}\1/' amd/comgr/src/comgr-compiler.cpp
 # CMake's find_package Config mode doesn't work if we use older llvm packages:
 sed -i 's/find_package(Clang REQUIRED CONFIG)/find_package(Clang REQUIRED)/' amd/comgr/CMakeLists.txt
 sed -i 's/find_package(LLD REQUIRED CONFIG)/find_package(LLD REQUIRED)/' amd/comgr/CMakeLists.txt
-%if %{with compat_build}
 sed -i 's@${CLANG_CMAKE_DIR}/../../../@/usr/lib/clang/%{llvm_maj_ver}/@' amd/comgr/cmake/opencl_pch.cmake
-%endif
 
 # Fixup finding /opt/llvm
 sed -i -e 's@sys::path::append(LLVMPath, "llvm");@//sys::path::append(LLVMPath, "llvm");@' amd/comgr/src/comgr-env.cpp
@@ -296,6 +289,11 @@ popd
 %files -n hipcc-libomp-devel
 
 %changelog
+* Tue Oct 01 2024 Jeremy Newton <alexjnewt at hotmail dot com> - 18-8.rocm6.2.0
+- Drop compat build option (be more agnostic to llvm packaging)
+- Add hip sanity test
+- Spec cleanup
+
 * Thu Sep 19 2024 Jeremy Newton <alexjnewt at hotmail dot com> - 18-7.rocm6.2.0
 - Spec cleanup
 - Add rocm-llvm-devel

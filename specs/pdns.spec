@@ -2,8 +2,8 @@
 %global backends %{nil}
 
 Name: pdns
-Version: 4.9.1
-Release: 2%{?dist}
+Version: 4.9.2
+Release: 1%{?dist}
 Summary: A modern, advanced and high performance authoritative-only name server
 License: GPL-2.0-only
 URL: http://powerdns.com
@@ -322,6 +322,9 @@ getent passwd pdns >/dev/null || \
 %{_unitdir}/ixfrdist@.service
 
 %changelog
+* Tue Oct 01 2024 Morten Stevens <mstevens@fedoraproject.org> - 4.9.2-1
+- Update to 4.9.2
+
 * Mon Sep 09 2024 Morten Stevens <mstevens@fedoraproject.org> - 4.9.1-2
 - Fixed typo in %__install macro
 - Remove outdated obsoletes entries

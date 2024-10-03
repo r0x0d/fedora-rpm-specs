@@ -15,6 +15,9 @@ URL:            https://github.com/milesgranger/cramjam
 # the GitHub source archive.
 Source:         %{url}/archive/v%{version}/cramjam-%{version}.tar.gz
 
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+ExcludeArch:    %{ix86}
+
 BuildRequires:  python3-devel
 BuildRequires:  tomcli
 BuildRequires:  cargo-rpm-macros >= 24

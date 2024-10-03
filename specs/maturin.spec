@@ -1,7 +1,7 @@
 %bcond_without check
 
 Name:           maturin
-Version:        1.7.0
+Version:        1.7.3
 Release:        %autorelease
 Summary:        Build and publish Rust crates as Python packages
 SourceLicense:  MIT OR Apache-2.0
@@ -44,10 +44,6 @@ Patch:          0002-drop-incompatible-cargo-flags-from-setuptools_rust.patch
 
 # * drop #!/usr/bin/env python3 shebang from maturin/__init__.py
 Patch:          0003-remove-shebang-from-non-executable-__init__.py-file.patch
-
-# * Update clap_complete_command to v0.6.1
-#   https://github.com/PyO3/maturin/commit/ef4f8ec3fd2ccb1683400834379d0499fedd0bf5
-Patch:          0004-Update-clap_complete_command-to-v0.6.1-2144.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 BuildRequires:  python3-devel

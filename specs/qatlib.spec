@@ -4,7 +4,7 @@
 %global libusdm_soversion 0
 Name:             qatlib
 Version:          24.09.0
-Release:          3%{?dist}
+Release:          4%{?dist}
 Summary:          Intel QuickAssist user space library
 # The entire source code is released under BSD.
 # For a breakdown of inbound licenses see the INSTALL file.
@@ -133,6 +133,9 @@ exit 0
 %{_mandir}/man8/qat_init.sh.8*
 
 %changelog
+* Tue Oct 01 2024 Vladis Dronov <vdronov@redhat.com> - 24.09.0-4
+- Update to qatlib 24.09.0 @ 36fb0903
+
 * Mon Sep 16 2024 Giovanni Cabiddu <giovanni.cabiddu@intel.com> - 24.09.0-3
 - Move pciutils as a dependency of the qat-service subpackage
 

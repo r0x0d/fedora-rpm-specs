@@ -27,7 +27,7 @@ This package is developed and maintained by the Neurosim lab
 (www.neurosimlab.org) }
 
 Name:           python-netpyne
-Version:        1.0.6
+Version:        1.0.7
 Release:        %autorelease
 Summary:        Develop, simulate and analyse biological neuronal networks in NEURON
 
@@ -42,18 +42,13 @@ Summary:        Develop, simulate and analyse biological neuronal networks in NE
 License:        MIT AND GPL-3.0-only AND GPL-3.0-or-later
 URL:            %forgeurl
 Source0:        %forgesource
-# Exclude tests/ from being installed as a top level module
-# https://github.com/suny-downstate-medical-center/netpyne/pull/767
-Patch:          https://github.com/suny-downstate-medical-center/netpyne/pull/767.patch
-# remove `imp` in py3.12
-# sent upstream: https://github.com/suny-downstate-medical-center/netpyne/pull/812
-Patch:          0001-fix-py312-remove-imp.patch
-# Drop dependency on `future`
-# https://github.com/suny-downstate-medical-center/netpyne/issues/773
-Patch:          %{forgeurl}/pull/815.patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
+
+# https://github.com/suny-downstate-medical-center/netpyne/pull/767
+# merged but not released
+Patch:          https://github.com/suny-downstate-medical-center/netpyne/pull/767.patch
 
 %description %_description
 
@@ -86,8 +81,7 @@ Requires:  %{py3_dist neuron}
 %prep
 %forgeautosetup -p1
 
-sed -e 's/matplotlib<=3.5.1/matplotlib/' \
-    -e 's/"future",//' \
+sed -e 's/"future",//' \
     -i setup.py
 
 # None executable script
@@ -106,7 +100,8 @@ find . -type f -name "*.py" -exec sed -i '/^#![  ]*\/usr\/bin\/env.*$/ d' {} 2>/
 %check
 # Do not test optional modules that have requirements not yet packaged in Fedora
 # sbi: requires pytorch
-%pyproject_check_import -e *optuna* -e *sbi*
+# batchtools: requires ray batchtk + ray
+%pyproject_check_import -e *optuna* -e *sbi* -e *batchtools*
 
 export %{py3_test_envvars}
 pushd doc/source/code

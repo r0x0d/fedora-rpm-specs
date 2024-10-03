@@ -5,7 +5,7 @@
 %global crate pep440_rs
 
 Name:           rust-pep440_rs
-Version:        0.5.0
+Version:        0.6.6
 Release:        %autorelease
 Summary:        Library for python version numbers and specifiers, implementing PEP 440
 
@@ -15,6 +15,7 @@ Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * drop unused Python bindings
 # * drop unused pubgrub support
+# * drop unused rkyv support
 Patch:          pep440_rs-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
@@ -51,18 +52,6 @@ This package contains library source intended for building other packages which
 use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+rkyv-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+rkyv-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "rkyv" feature of the "%{crate}" crate.
-
-%files       -n %{name}+rkyv-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+serde-devel

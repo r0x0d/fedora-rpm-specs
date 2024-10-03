@@ -10,6 +10,10 @@ Summary:    Debugging, in-system programming and boundary-scan testing for embed
 License:    GPL-2.0-only
 URL:        https://sourceforge.net/projects/openocd
 Source0:    https://downloads.sourceforge.net/project/openocd/openocd/%{version}%{?rcVer:-rc%{rcVer}}/%{name}-%{version}%{?rcVer:-rc%{rcVer}}.tar.bz2
+Patch0:     0001-openocd-revert-workarounds-for-expr-syntax-change.patch
+Patch1:     0003-jtag-vdebug-fix-endianness-support.patch
+Patch2:     0004-openocd-fix-build-with-jimtcl-0.83.patch
+
 
 BuildRequires: capstone-devel
 BuildRequires: chrpath
@@ -34,7 +38,7 @@ Install OpenOCD if you are looking for an open source solution for hardware
 debugging.
 
 %prep
-%autosetup -n %{name}-%{version}%{?rcVer:-rc%{rcVer}}
+%autosetup -n %{name}-%{version}%{?rcVer:-rc%{rcVer}} -p1
 rm -rf jimtcl
 rm -f src/jtag/drivers/OpenULINK/ulink_firmware.hex
 sed -i 's/MODE=.*/TAG+="uaccess"/' contrib/60-openocd.rules
@@ -112,6 +116,9 @@ chrpath --delete %{buildroot}/%{_bindir}/openocd
 %{_mandir}/man1/*
 
 %changelog
+* Tue Oct 01 2024 Jiri Kastner <jkastner@fedoraproject.org> - 0.12.0-3.5
+- fix build with jimtcl-0.83
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 0.12.0-3.4
 - convert license to SPDX
 

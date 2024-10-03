@@ -1,6 +1,6 @@
 Name:           perl-Type-Tiny
-Version:        2.004000
-Release:        5%{?dist}
+Version:        2.006000
+Release:        1%{?dist}
 Summary:        Tiny, yet Moo(se)-compatible type constraint
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Type-Tiny
@@ -9,7 +9,6 @@ BuildArch:      noarch
 
 # --with reply_plugin
 #	Default: --without
-# Missing deps (perl(Reply::Plugin))
 # Marked as unstable (cf. lib/Reply/Plugin/TypeTiny.pm)
 %bcond_with reply_plugin
 
@@ -146,12 +145,6 @@ BuildRequires:  perl(Validation::Class::Simple)
 Requires:       perl(B::Deparse)
 Requires:       perl(Carp)
 Requires:       perl(Data::Dumper)
-%if "%{version}" >= "2.000001"
-Obsoletes:  perl-Type-Tie < %{version}-%{release}
-%if 0%{?fedora} < 37
-Provides: perl-Type-Tie = %{version}-%{release}
-%endif
-%endif
 
 Recommends:	perl(Type::Tiny::XS)
 
@@ -196,6 +189,11 @@ sed -i -e '/^inc\//d' MANIFEST
 %{_mandir}/man3/Test::TypeTiny.3pm*
 
 %changelog
+* Tue Oct 01 2024 Ralf Corsépius <corsepiu@fedoraproject.org> - 2.006000-1
+- Update to 2.006000.
+- Reflect perl(Reply::Plugin) having been added to Fedora.
+- Remove references to perl-Type-Tie.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.004000-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

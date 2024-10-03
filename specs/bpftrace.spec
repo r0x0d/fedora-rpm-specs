@@ -1,13 +1,16 @@
 #global llvm_compat 18
 
 Name:           bpftrace
-Version:        0.21.1
-Release:        2%{?dist}
+Version:        0.21.2
+Release:        1%{?dist}
 Summary:        High-level tracing language for Linux eBPF
 License:        Apache-2.0
 
 URL:            https://github.com/iovisor/bpftrace
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
+
+# https://github.com/bpftrace/bpftrace/pull/3433
+Patch0:         llvm19.patch
 
 # Arches will be included as upstream support is added and dependencies are
 # satisfied in the respective arches
@@ -90,6 +93,10 @@ find %{buildroot}%{_datadir}/%{name}/tools -type f -exec \
 
 
 %changelog
+* Tue Oct 01 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 0.21.2-1
+- Rebased to version 0.21.2
+- Allow building with LLVM 19
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.21.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

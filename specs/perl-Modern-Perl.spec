@@ -1,6 +1,6 @@
 Name:           perl-Modern-Perl
-Version:        1.20240120
-Release:        3%{?dist}
+Version:        1.20241001
+Release:        1%{?dist}
 Summary:        Enable all of the features of Modern Perl with one command
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Modern-Perl
@@ -8,11 +8,11 @@ Source0:        https://cpan.metacpan.org/authors/id/C/CH/CHROMATIC/Modern-Perl-
 BuildArch:      noarch
 # Module Build
 BuildRequires:  coreutils
-BuildRequires:  findutils
 BuildRequires:  make
 BuildRequires:  perl-generators
-BuildRequires:  perl-interpreter >= 4:5.10.0
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl-interpreter
+BuildRequires:  perl(:VERSION) >= 5.10.0
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 # Module Runtime
 BuildRequires:  perl(feature)
 BuildRequires:  perl(IO::File)
@@ -35,12 +35,11 @@ and modules.  Wouldn't it be nice to use them all with a single command?
 %setup -q -n Modern-Perl-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 %{_fixperms} -c %{buildroot}
 
 %check
@@ -55,6 +54,11 @@ make test
 %{_mandir}/man3/odern::Perl.3*
 
 %changelog
+* Tue Oct  1 2024 Paul Howarth <paul@city-fan.org> - 1.20241001-1
+- Update to 1.20241001 (rhbz#2315826)
+  - Fix switch tests after Perl 5.41.4 removal of deprecated feature
+    (CPAN RT#155822)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.20240120-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

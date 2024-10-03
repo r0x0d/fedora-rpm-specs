@@ -2,7 +2,7 @@ Name:           perl-LockFile-Simple
 Version:        0.208
 Release:        31%{?dist}
 Summary:        Simple file locking scheme
-License:        GPLv2+ or Artistic
+License:        GPL-2.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/LockFile-Simple
 Source0:        https://cpan.metacpan.org/modules/by-module/LockFile/LockFile-Simple-%{version}.tar.gz
 BuildArch:      noarch

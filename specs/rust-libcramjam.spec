@@ -22,6 +22,7 @@ Source:         %{crates_source}
 #   template from rust2rpm
 # * Don’t ask for the static feature of the xz2 crate (link the liblzma shared
 #   library instead)
+# * Update brotli from 3.x to 6.x: https://github.com/cramjam/libcramjam/pull/14
 Patch:          libcramjam-fix-metadata.diff
 # * Fix tests that assume C char is signed
 # * https://github.com/milesgranger/cramjam/pull/150
@@ -30,6 +31,9 @@ Patch10:       0001-Fix-tests-that-assume-C-char-is-signed.patch
 # * Do not test a hard-coded expected compressed data size
 # * Suggested upstream: https://github.com/cramjam/libcramjam/issues/6
 Patch11:       0001-Do-not-test-a-hard-coded-expected-compressed-data-si.patch
+
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+ExcludeArch:    %{ix86}
 
 BuildRequires:  cargo-rpm-macros >= 24
 BuildRequires:  cargo-c

@@ -2,7 +2,7 @@ Name:           perl-Devel-Caller-IgnoreNamespaces
 Version:        1.1
 Release:        21%{?dist}
 Summary:        Make available a function which can ignore name-spaces that you tell it about
-License:        GPLv2 or Artistic
+License:        GPL-2.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Devel-Caller-IgnoreNamespaces
 Source0:        https://cpan.metacpan.org/authors/id/D/DC/DCANTRELL/Devel-Caller-IgnoreNamespaces-%{version}.tar.gz
 BuildArch:      noarch

@@ -1,8 +1,8 @@
-%global rc -rc.0
+%global rc -rc.1
 
 Name:           srt
 Version:        1.5.4
-Release:        0.rc0%{?dist}.1
+Release:        0.rc1%{?dist}
 Summary:        Secure Reliable Transport protocol tools
 
 License:        MPL-2.0
@@ -92,6 +92,9 @@ rm -f %{buildroot}/%{_libdir}/pkgconfig/haisrt.pc
 
 
 %changelog
+* Tue Oct  1 2024 Yanko Kaneti <yaneti@declera.com> - 1.5.4-0.rc1
+- Update to 1.5.4-rc1
+
 * Wed Sep 11 2024 Xavier Bachelot <xavier@bachelot.org> - 1.5.4-0.rc0.1
 - Explicitely BR: nettle-devel
 

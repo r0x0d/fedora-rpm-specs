@@ -6,13 +6,13 @@
 %endif
 
 Name:           libgit2
-Version:        1.8.1
+Version:        1.8.2~rc1
 Release:        %autorelease
 Summary:        C implementation of the Git core methods as a library with a solid API
 # Automatically converted from old format: GPLv2 with exceptions - review is highly recommended.
 License:        LicenseRef-Callaway-GPLv2-with-exceptions
 URL:            https://libgit2.org/
-Source0:        https://github.com/libgit2/libgit2/archive/refs/tags/v%{version}.tar.gz#/libgit2-%{version}.tar.gz
+Source0:        https://github.com/libgit2/libgit2/archive/refs/tags/v%{version_no_tilde}.tar.gz#/libgit2-%{version_no_tilde}.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  cmake >= 3.5.1
@@ -52,7 +52,7 @@ This package contains libraries and header files for
 developing applications that use %{name}.
 
 %prep
-%autosetup -p1 -n libgit2-%{version}
+%autosetup -p1 -n libgit2-%{version_no_tilde}
 
 # Remove VCS files from examples
 find examples -name ".gitignore" -delete -print

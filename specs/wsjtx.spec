@@ -1,8 +1,8 @@
-%global rctag rc6
+%global rctag rc7
 
 Name:		wsjtx
 Version:	2.7.0
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	Weak Signal communication by K1JT
 
 License:	GPL-3.0-or-later
@@ -11,7 +11,6 @@ URL:		http://physics.princeton.edu/pulsar/k1jt/wsjtx.html
 Source0:    https://sourceforge.net/projects/wsjt/files/%{name}-%{version}%{?rctag:-%{rctag}}/%{name}-%{version}%{?rctag:-%{rctag}}.tgz
 Source100:	wsjtx.appdata.xml
 
-Patch0:     wsjtx-no_superfox.patch
 
 BuildRequires:	cmake
 BuildRequires:	dos2unix
@@ -58,7 +57,6 @@ rm -f src/hamlib*.tgz* src/hamlib*.tar.gz*
 # Extract wsjtx source and clean up
 tar -xzf src/%{name}.tgz
 rm -f src/wsjtx.tgz*
-find wsjtx/lib/superfox -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} \;
 find ./ -type f -exec chmod -x {} \;
 
 cd %{name}
@@ -70,9 +68,6 @@ rm -rf boost
 
 # convert CR + LF to LF
 dos2unix *.ui *.iss *.txt
-
-# Do not install prebuilt superfox binaries
-%patch 0 -p2
 
 
 %build
@@ -165,6 +160,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 
 
 %changelog
+* Tue Oct 01 2024 Richard Shaw <hobbes1069@gmail.com> - 2.7.0-8
+- Update to 2.7.0 RC7.
+
 * Sat Sep 14 2024 Richard Shaw <hobbes1069@gmail.com> - 2.7.0-7
 - Remove superfox binaries and patch build system.
 

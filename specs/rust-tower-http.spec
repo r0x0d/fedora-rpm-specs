@@ -14,9 +14,11 @@ URL:            https://crates.io/crates/tower-http
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * relax sync_wrapper dev-dependency from ^0.1.1 to >=0.1.1,<2
+# * Upgrade base64 and brotli
+#   (https://github.com/tower-rs/tower-http/commit/24b6b730810df8950cb89854f8a4571eb8804587)
 Patch:          tower-http-fix-metadata.diff
-# # * Downstream-only: adjust README.md paths for testing published crates
-# # * The original paths are correct for testing in a checked-out git repository
+# * Downstream-only: adjust README.md paths for testing published crates
+# * The original paths are correct for testing in a checked-out git repository
 Patch10:       0001-Downstream-only-adjust-README.md-paths-for-testing-p.patch
 
 BuildRequires:  cargo-rpm-macros >= 24

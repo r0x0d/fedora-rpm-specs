@@ -3,7 +3,7 @@ Version:        0.2.4
 Release:        46%{?dist}
 Summary:        Perl extension to choose a language
 
-License:        GPLv2+ or Artistic
+License:        GPL-2.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Lingua-Preferred
 Source0:        https://cpan.metacpan.org/authors/id/E/ED/EDAVIS/Lingua-Preferred-%{version}.tar.gz
 

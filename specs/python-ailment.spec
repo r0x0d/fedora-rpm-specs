@@ -1,11 +1,10 @@
 %global pypi_name ailment
 
 Name:           python-%{pypi_name}
-Version:        9.2.119
+Version:        9.2.120
 Release:        1%{?dist}
 Summary:        The angr intermediate language
 
-# Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
 URL:            https://github.com/angr/ailment
 Source0:        %{url}/archive/v%{version}/%{pypi_name}-%{version}.tar.gz
@@ -42,6 +41,9 @@ AIL is the angr intermediate language.
 %license LICENSE
 
 %changelog
+* Tue Oct 01 2024 Fabian Affolter <mail@fabian-affolter.ch> - 9.2.120-1
+- Update to latest upstream release (closes rhbz#2315976)
+
 * Thu Sep 26 2024 Fabian Affolter <mail@fabian-affolter.ch> - 9.2.119-1
 - Update to latest upstream release (closes rhbz#2314472)
 

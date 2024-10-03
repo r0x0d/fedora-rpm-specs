@@ -9,27 +9,27 @@
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 Name:           snapshot
-Version:        46.3
+Version:        47.0.1
 Release:        %autorelease
 Summary:        Take pictures and videos
 
-# snapshot itself is GPL-3.0-or-later
-SourceLicense:  GPL-3.0-or-later
-# ... and its crate dependencies are:
+# snapshot: GPL-3.0-or-later
+# Rust dependencies:
 # (MIT OR Apache-2.0) AND Unicode-DFS-2016
 # Apache-2.0 OR MIT
 # Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
+# BSD-2-Clause OR Apache-2.0 OR MIT
 # GPL-3.0-or-later
+# ISC
 # MIT
 # MIT OR Apache-2.0
-# MIT OR Apache-2.0 OR Zlib
-# MPL-2.0
+# MPL-2.0 OR LGPL-2.1-or-later
 # Unlicense OR MIT
 # Zlib OR Apache-2.0 OR MIT
-License:        (MIT OR Apache-2.0) AND Unicode-DFS-2016 AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND GPL-3.0-or-later AND MIT AND (MIT OR Apache-2.0) AND (MIT OR Apache-2.0 OR Zlib) AND MPL-2.0 AND (Unlicense OR MIT) AND (Zlib OR Apache-2.0 OR MIT)
+License:        GPL-3.0-or-later AND ISC AND MIT AND Unicode-DFS-2016 AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND (BSD-2-Clause OR Apache-2.0 OR MIT) AND (MPL-2.0 OR LGPL-2.1-or-later) AND (Unlicense OR MIT) AND (Zlib OR Apache-2.0 OR MIT)
 # LICENSE.dependencies contains a full license breakdown
 URL:            https://gitlab.gnome.org/GNOME/snapshot
-Source:         https://download.gnome.org/sources/snapshot/46/snapshot-%{tarball_version}.tar.xz
+Source:         https://download.gnome.org/sources/snapshot/47/snapshot-%{tarball_version}.tar.xz
 
 # Downstream patch to disable linting as part of self tests
 Patch:          0001-Disable-cargo-clippy-test.patch
@@ -52,12 +52,16 @@ BuildRequires:  pkgconfig(libadwaita-1)
 BuildRequires:  /usr/bin/appstream-util
 BuildRequires:  /usr/bin/desktop-file-validate
 
-# For camerabin
+# For camerabin GStreamer element
 Requires:       gstreamer1-plugins-bad-free%{_isa}
+# For gtk4 GStreamer element
+Requires:       gstreamer1-plugin-gtk4%{_isa}
+# Image loaders used by snapshot
+Requires:       glycin-loaders >= 1.1
 # For hicolor icon theme directories
 Requires:       hicolor-icon-theme
 
-Provides:       bundled(crate(aperture)) = 0.3.1
+Provides:       bundled(crate(aperture)) = 0.7.0
 
 %description
 Take pictures and videos on your computer, tablet, or phone.
@@ -76,9 +80,9 @@ rm -rf vendor
 
 %if ! 0%{?bundled_rust_deps}
 %generate_buildrequires
-%cargo_generate_buildrequires
+%cargo_generate_buildrequires -a
 cd aperture
-%cargo_generate_buildrequires
+%cargo_generate_buildrequires -a
 cd ~-
 %endif
 

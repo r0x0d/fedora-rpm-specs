@@ -61,6 +61,9 @@ Source2:        webkitgtk-keys.gpg
 # https://github.com/llvm/llvm-project/issues/108014
 Patch:          webkitgtk-skia-musttail.patch
 
+# https://bugs.webkit.org/show_bug.cgi?id=280642
+Patch:          llvm19.patch
+
 BuildRequires:  bison
 BuildRequires:  bubblewrap
 BuildRequires:  clang

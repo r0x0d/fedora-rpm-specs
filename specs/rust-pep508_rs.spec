@@ -5,7 +5,7 @@
 %global crate pep508_rs
 
 Name:           rust-pep508_rs
-Version:        0.4.2
+Version:        0.6.1
 Release:        %autorelease
 Summary:        Library for python dependency specifiers, better known as PEP 508
 
@@ -14,6 +14,7 @@ URL:            https://crates.io/crates/pep508_rs
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * drop unused Python bindings
+# * drop unused rkyv support
 Patch:          pep508_rs-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
@@ -61,18 +62,6 @@ This package contains library source intended for building other packages which
 use the "non-pep508-extensions" feature of the "%{crate}" crate.
 
 %files       -n %{name}+non-pep508-extensions-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+rkyv-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+rkyv-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "rkyv" feature of the "%{crate}" crate.
-
-%files       -n %{name}+rkyv-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+serde-devel

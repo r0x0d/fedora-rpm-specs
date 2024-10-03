@@ -216,6 +216,11 @@ sed -i FEXCore/Source/CMakeLists.txt \
 %install
 %cmake_install
 
+# These are used to store RootFS and overlays for FEX that will be provided
+# by other packages
+install -Ddpm0755 %{buildroot}%{_datadir}/fex-emu/RootFS/
+install -Ddpm0755 %{buildroot}%{_datadir}/fex-emu/overlays/
+
 %postun
 if [ $1 -eq 0 ]; then
 /bin/systemctl try-restart systemd-binfmt.service
@@ -239,6 +244,8 @@ fi
 %{_binfmtdir}/FEX-x86.conf
 %{_binfmtdir}/FEX-x86_64.conf
 %{_datadir}/fex-emu/
+%dir %{_datadir}/fex-emu/RootFS/
+%dir %{_datadir}/fex-emu/overlays/
 %{_mandir}/man1/FEX.1*
 
 %files devel

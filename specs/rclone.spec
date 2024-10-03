@@ -60,7 +60,7 @@ rm -rf backend/protondrive
 
 %if %{without bootstrap}
 %build
-export LDFLAGS="-X github.com/rclone/rclone/fs.Version=%{version}"
+export LDFLAGS="-X github.com/rclone/rclone/fs.Version=v%{version}"
 %gobuild -o %{gobuilddir}/bin/rclone %{goipath}
 
 %{gobuilddir}/bin/%{name} completion bash - > %{name}.bash

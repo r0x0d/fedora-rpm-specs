@@ -2,28 +2,25 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate nu-command
+%global crate ordermap
 
-Name:           rust-nu-command
-Version:        0.96.1
+Name:           rust-ordermap
+Version:        0.5.3
 Release:        %autorelease
-Summary:        Nushell's built-in commands
+Summary:        Hash table with consistent order and fast iteration
 
-License:        MIT
-URL:            https://crates.io/crates/nu-command
+License:        Apache-2.0 OR MIT
+URL:            https://crates.io/crates/ordermap
 Source:         %{crates_source}
-# Automatically generated patch to strip dependencies and normalize metadata
-Patch:          nu-command-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
-# * drop rusqlite's bundled feature
-# * Update brotli from 5.0 to 6.0: https://github.com/nushell/nushell/pull/13960
-# * allow chrono-tz 0.9
-Patch:          nu-command-fix-metadata.diff
+# * drop unused benchmark definitions
+# * drop unused optional support for borsh
+Patch:          ordermap-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-Nushell's built-in commands.}
+A hash table with consistent order and fast iteration.}
 
 %description %{_description}
 
@@ -37,8 +34,10 @@ This package contains library source intended for building other packages which
 use the "%{crate}" crate.
 
 %files          devel
-%license %{crate_instdir}/LICENSE
+%license %{crate_instdir}/LICENSE-APACHE
+%license %{crate_instdir}/LICENSE-MIT
 %doc %{crate_instdir}/README.md
+%doc %{crate_instdir}/RELEASES.md
 %{crate_instdir}/
 
 %package     -n %{name}+default-devel
@@ -53,64 +52,64 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+plugin-devel
+%package     -n %{name}+arbitrary-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+plugin-devel %{_description}
+%description -n %{name}+arbitrary-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "plugin" feature of the "%{crate}" crate.
+use the "arbitrary" feature of the "%{crate}" crate.
 
-%files       -n %{name}+plugin-devel
+%files       -n %{name}+arbitrary-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+rusqlite-devel
+%package     -n %{name}+quickcheck-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+rusqlite-devel %{_description}
+%description -n %{name}+quickcheck-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "rusqlite" feature of the "%{crate}" crate.
+use the "quickcheck" feature of the "%{crate}" crate.
 
-%files       -n %{name}+rusqlite-devel
+%files       -n %{name}+quickcheck-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+sqlite-devel
+%package     -n %{name}+rayon-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+sqlite-devel %{_description}
+%description -n %{name}+rayon-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "sqlite" feature of the "%{crate}" crate.
+use the "rayon" feature of the "%{crate}" crate.
 
-%files       -n %{name}+sqlite-devel
+%files       -n %{name}+rayon-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+trash-devel
+%package     -n %{name}+serde-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+trash-devel %{_description}
+%description -n %{name}+serde-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "trash" feature of the "%{crate}" crate.
+use the "serde" feature of the "%{crate}" crate.
 
-%files       -n %{name}+trash-devel
+%files       -n %{name}+serde-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+trash-support-devel
+%package     -n %{name}+std-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+trash-support-devel %{_description}
+%description -n %{name}+std-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "trash-support" feature of the "%{crate}" crate.
+use the "std" feature of the "%{crate}" crate.
 
-%files       -n %{name}+trash-support-devel
+%files       -n %{name}+std-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep
@@ -128,8 +127,7 @@ use the "trash-support" feature of the "%{crate}" crate.
 
 %if %{with check}
 %check
-# * these tests require unshipped fixtures
-%cargo_test -- -- --skip debug::timeit::test_time_block --skip strings::split::words::test::test_incompat_flags --skip commands:: --skip format_conversions:: --skip system::run_external::test::test_expand_glob
+%cargo_test
 %endif
 
 %changelog

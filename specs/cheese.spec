@@ -3,13 +3,18 @@
 Name:           cheese
 Epoch:          2
 Version:        44.1
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Application for taking pictures and movies from a webcam
 
 License:        GPL-2.0-or-later
 URL:            https://wiki.gnome.org/Apps/Cheese
 Source0:        https://download.gnome.org/sources/%{name}/44/%{name}-%{tarball_version}.tar.xz
 Patch0: cheese-c99.patch
+# https://gitlab.gnome.org/GNOME/cheese/-/merge_requests/73
+# https://gitlab.gnome.org/GNOME/cheese/-/issues/183
+# https://bugzilla.redhat.com/show_bug.cgi?id=2315884
+# Fix crash on startup due to invalid JSON
+Patch1: 73.patch
 
 BuildRequires:  gcc
 BuildRequires:  meson
@@ -115,6 +120,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.gnome.Cheese.desk
 
 
 %changelog
+* Tue Oct 01 2024 Adam Williamson <awilliam@redhat.com> - 2:44.1-7
+- Backport MR #73 to fix a crash on startup with recent json-glib
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2:44.1-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

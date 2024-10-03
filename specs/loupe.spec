@@ -9,27 +9,29 @@
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 Name:           loupe
-Version:        46.2
+Version:        47.0
 Release:        %autorelease
 Summary:        Image viewer
 
+# loupe: GPL-3.0-or-later
+# Rust dependencies:
 # (MIT OR Apache-2.0) AND Unicode-DFS-2016
-# 0BSD OR MIT OR Apache-2.0
 # Apache-2.0 OR MIT
 # Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
 # BSD-2-Clause
+# BSD-2-Clause OR Apache-2.0 OR MIT
 # GPL-3.0-or-later
+# ISC
 # MIT
 # MIT OR Apache-2.0
 # MIT OR Apache-2.0 OR Zlib
-# MIT OR Zlib OR Apache-2.0
 # MPL-2.0 OR LGPL-2.1-or-later
 # Unlicense OR MIT
 # Zlib OR Apache-2.0 OR MIT
-License:        (MIT OR Apache-2.0) AND Unicode-DFS-2016 AND (0BSD OR MIT OR Apache-2.0) AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND BSD-2-Clause AND GPL-3.0-or-later AND MIT AND (MIT OR Apache-2.0) AND (MIT OR Apache-2.0 OR Zlib) AND (MIT OR Zlib OR Apache-2.0) AND (MPL-2.0 OR LGPL-2.1-or-later) AND (Unlicense OR MIT) AND (Zlib OR Apache-2.0 OR MIT)
+License:        GPL-3.0-or-later AND BSD-2-Clause AND ISC AND MIT AND Unicode-DFS-2016 AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND (BSD-2-Clause OR Apache-2.0 OR MIT) AND (MIT OR Apache-2.0 OR Zlib) AND (MPL-2.0 OR LGPL-2.1-or-later) AND (Unlicense OR MIT)
 # LICENSE.dependencies contains a full license breakdown
 URL:            https://gitlab.gnome.org/GNOME/loupe
-Source0:        https://download.gnome.org/sources/loupe/46/loupe-%{tarball_version}.tar.xz
+Source0:        https://download.gnome.org/sources/loupe/47/loupe-%{tarball_version}.tar.xz
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
@@ -54,7 +56,7 @@ BuildRequires:  /usr/bin/desktop-file-validate
 # For /usr/share/dbus-1/services directory
 Requires:       dbus
 # Image loaders used by loupe
-Requires:       glycin-loaders
+Requires:       glycin-loaders >= 1.1
 # For hicolor icon theme directories
 Requires:       hicolor-icon-theme
 

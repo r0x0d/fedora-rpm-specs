@@ -1,5 +1,5 @@
 Name:           akmods
-Version:        0.5.10
+Version:        0.6.0
 Release:        %autorelease
 Summary:        Automatic kmods build and install tool
 
@@ -11,7 +11,6 @@ Source0:        95-akmods.preset
 Source1:        akmods
 Source2:        akmodsbuild
 Source3:        akmods.h2m
-Source5:        akmodsposttrans
 Source6:        akmods.service.in
 Source7:        akmods-shutdown
 Source8:        akmods-shutdown.service
@@ -115,7 +114,6 @@ mkdir -p %{buildroot}%{_usrsrc}/%{name} \
 install -pm 0755 %{SOURCE1} %{buildroot}%{_sbindir}/
 install -pm 0755 %{SOURCE2} %{buildroot}%{_sbindir}/
 install -pm 0755 %{SOURCE12} %{buildroot}%{_sbindir}/
-install -pm 0755 %{SOURCE5} %{buildroot}%{_sysconfdir}/kernel/postinst.d/
 install -pm 0644 %{SOURCE14} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 install -pm 0640 %{SOURCE16} %{buildroot}%{_sysconfdir}/pki/%{name}/
 install -pm 0755 %{SOURCE17} %{buildroot}%{_sbindir}/kmodgenca
@@ -180,7 +178,6 @@ useradd -r -g akmods -d /var/cache/akmods/ -s /sbin/nologin \
 %dir %attr(750,root,akmods) %{_sysconfdir}/pki/%{name}/private
 %config(noreplace) %attr(640,root,akmods) %{_sysconfdir}/pki/%{name}/cacert.config.in
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
-%{_sysconfdir}/kernel/postinst.d/akmodsposttrans
 %{_unitdir}/akmods.service
 %{_unitdir}/akmods@.service
 %{_sbindir}/akmods-shutdown

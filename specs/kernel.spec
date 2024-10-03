@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc1.17
+%define pkgrelease 0.rc1.20241001gite32cde8d2bd7.18
 %define kversion 6
-%define tarfile_release 6.12-rc1
+%define tarfile_release 6.12-rc1-31-ge32cde8d2bd7
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc1.17%{?buildid}%{?dist}
+%define specrelease 0.rc1.20241001gite32cde8d2bd7.18%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4136,8 +4136,9 @@ fi\
 #
 #
 %changelog
-* Mon Sep 30 2024 Justin M. Forbes <jforbes@fedoraproject.org> [6.12.0-0.rc1.17]
-- bcachefs: rename version -> bversion for big endian builds (Guenter Roeck)
+* Tue Oct 01 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc1.e32cde8d2bd7.18]
+- redhat: ignore rpminspect runpath report on selftests/bpf/cpuv4/urandom_read (Viktor Malik)
+- Linux v6.12.0-0.rc1.e32cde8d2bd7
 
 * Mon Sep 30 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc1.17]
 - Linux v6.12.0-0.rc1

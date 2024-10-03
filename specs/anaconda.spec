@@ -1,6 +1,6 @@
 Summary: Graphical system installer
 Name:    anaconda
-Version: 42.4
+Version: 42.5
 Release: 1%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
@@ -81,6 +81,9 @@ Requires: anaconda-tui = %{version}-%{release}
 The anaconda package is a metapackage for the Anaconda installer.
 
 %package core
+# Since the binaries in anaconda-core are shell or Python scripts,
+# there's no need to generate a debuginfo package
+%define debug_package %{nil}
 Summary: Core of the Anaconda installer
 # core/signal.py is under MIT
 License: GPL-2.0-or-later AND MIT
@@ -95,7 +98,7 @@ Requires: python3-meh >= %{mehver}
 %if 0%{?rhel} < 10 || 0%{?fedora}
 Requires: libreport-anaconda >= %{libreportanacondaver}
 %endif
-Requires: libselinux-python3
+Requires: python3-libselinux
 Requires: python3-rpm >= %{rpmver}
 Requires: python3-pyparted >= %{pypartedver}
 Requires: python3-requests
@@ -160,7 +163,6 @@ Obsoletes: anaconda-images <= 10
 Provides: anaconda-images = %{version}-%{release}
 Obsoletes: anaconda-runtime < %{version}-%{release}
 Provides: anaconda-runtime = %{version}-%{release}
-Obsoletes: booty <= 0.107-1
 
 %description core
 The anaconda-core package contains the program which was used to install your
@@ -481,6 +483,20 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Tue Oct 01 2024 Packit <hello@packit.dev> - 42.5-1
+- docs: Adjust CONTRIBUTING document to mention automatic linter checks
+  (k.koukiou)
+- docs: rule is covered by pylint (k.koukiou)
+- docs: rule is covered by pylint (k.koukiou)
+- Update tests for patition device data (adamkankovsky)
+- build: remove the Obsoletes line from the spec file for booty (k.koukiou)
+- build: fix: anaconda-core-debuginfo.x86_64: E: no-binary (k.koukiou)
+- build: fix: anaconda-core.x86_64: E: explicit-lib-dependency libselinux-
+  python3 (k.koukiou)
+- Take partition label from blivet (akankovs)
+- Update test for comunicate (akankovs)
+- webui: Saving webui-desktop log to anaconda.log (akankovs)
+
 * Tue Sep 24 2024 Packit <hello@packit.dev> - 42.4-1
 - pyanaconda: fix incorrect access to --repo argument (k.koukiou)
 - util: log PID also when a created process terminates (k.koukiou)

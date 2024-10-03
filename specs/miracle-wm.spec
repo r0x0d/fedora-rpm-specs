@@ -1,8 +1,10 @@
+%global miral_ver 5.1
+%global miroil_ver 5.0
 %global mirversion 2.18
 
 Name:           miracle-wm
 Version:        0.3.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A tiling Wayland compositor based on Mir
 
 License:        GPL-3.0-or-later and MIT
@@ -12,8 +14,8 @@ Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  git-core
-BuildRequires:  pkgconfig(miral) >= %{mirversion}
-BuildRequires:  pkgconfig(miroil) >= %{mirversion}
+BuildRequires:  pkgconfig(miral) >= %{miral_ver}
+BuildRequires:  pkgconfig(miroil) >= %{miroil_ver}
 BuildRequires:  pkgconfig(mirrenderer) >= %{mirversion}
 BuildRequires:  pkgconfig(mirplatform) >= %{mirversion}
 BuildRequires:  pkgconfig(mircommon) >= %{mirversion}
@@ -74,6 +76,9 @@ those compositors, like swayfx.
 
 
 %changelog
+* Tue Oct 01 2024 Neal Gompa <ngompa@fedoraproject.org> - 0.3.6-2
+- Fix miral and miroil versioned BRs
+
 * Wed Sep 25 2024 Matthew Kosarek <matthew@matthewkosarek.xyz> - 0.3.6-1
 - Update to 0.3.6
 

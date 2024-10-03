@@ -16,10 +16,12 @@ Version: 2.4.1
 Release: %autorelease
 
 # MIT is the main license for ProDy
-# prody/utilities/tnt/* code --> 'Public domain' license
-# CEalign module is distributed under BSD license
-# Automatically converted from old format: MIT and Public domain and BSD - review is highly recommended.
-License: Warning: we do not have SPDX identifier for Public domain
+# part of prody/dynamics/editing.py is MIT-Modern-Variant
+# Biopython is MIT-CMU
+# prody/utilities/tnt/* code is NIST-PD
+# CEalign module is distributed under BSD-2-Clause license
+# scikit-learn is BSD-3-Clause
+License: MIT AND MIT-CMU AND MIT-Modern-Variant AND BSD-2-Clause AND BSD-3-Clause AND Python-2.0.1 AND NIST-PD
 URL: http://www.csb.pitt.edu/ProDy
 Source0: https://github.com/prody/ProDy/archive/v%{version}/ProDy-%{version}.tar.gz
 

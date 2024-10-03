@@ -1,12 +1,11 @@
 Name:      schismtracker
 Version:   20240909
-Release:   1%{?dist}
+Release:   2%{?dist}
 Summary:   Sound module composer/player
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License:   GPL-2.0-only
 URL:       http://schismtracker.org/
 Source0:   https://github.com/schismtracker/schismtracker/archive/%{version}.tar.gz
-Source1:   schismtracker.desktop
 Excludearch:   s390x
 Requires:      hicolor-icon-theme
 BuildRequires: make
@@ -52,20 +51,19 @@ done
 install -m644 -D schism-icon.svg %{buildroot}/%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 popd
 
-desktop-file-install \
---dir %{buildroot}/%{_datadir}/applications \
-%SOURCE1
-
 %files
 %doc AUTHORS COPYING NEWS
 %{_bindir}/schismtracker
-%{_datadir}/applications/schismtracker.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.*
 %{_mandir}/man1/%{name}.1*
 %{_datadir}/applications/schism.desktop
 %{_datadir}/pixmaps/schism*.png
 
 %changelog
+* Tue Oct 01 2024 Jindrich Novy <jnovy@redhat.com> - 20240909-2
+- remove duplicate desktop file - prefer upstream one
+- Resolves: 2315896
+
 * Sun Sep 15 2024 josef radinger <cheese@nosuchhost.net> - 20240909-1
 - bump version
 - add BuildRequires on utf8proc-devel

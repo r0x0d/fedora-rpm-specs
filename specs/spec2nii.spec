@@ -12,7 +12,7 @@
 # seems to consider the command-line tool to be the primary interface, so we
 # use application naming guidelines.
 Name:           spec2nii
-Version:        0.8.3
+Version:        0.8.4
 Release:        %autorelease
 Summary:        Multi-format in vivo MR spectroscopy conversion to NIFTI
 
@@ -113,9 +113,10 @@ sed -r -i 's/(scipy)==.*/\1/' requirements.yml
 %ifarch s390x
 # PyMapVBVD assumes the platform is little-endian
 # https://bugzilla.redhat.com/show_bug.cgi?id=2225518
-# Since this package doesn’t import it directly, we can remove the dependency
-# and still get a generally usable package.
-sed -r -i 's/^pymapvbvd\b/# &/' requirements.yml
+# Most of the functionality in this package is still available without it, so
+# we can remove the dependency and still get a generally usable package.
+sed -r -i 's/^([[:blank:]]*)?(-[[:blank:]]+)?(pyMapVBVD)\b/\1# \2\3/' \
+    requirements.yml
 %endif
 
 
@@ -140,7 +141,12 @@ install -t '%{buildroot}%{_mandir}/man1' -D -p -m 0644 \
 
 
 %check
+%ifarch s390x
+# Skip import-checking modules that need pymapvbvd.
+%pyproject_check_import -e spec2nii.Siemens.dicomfunctions
+%else
 %pyproject_check_import
+%endif
 
 %if %{with test_data}
 # Only a few tests can be executed without the test data archive, and those

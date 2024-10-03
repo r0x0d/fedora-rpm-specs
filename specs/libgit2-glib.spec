@@ -1,7 +1,4 @@
-# minimum version of libgit2 compatible and required by this package
 %global libgit2_version 0.25.0
-# new version of libgit2 with which this is not yet compatible (set to 9999 when unneeded)
-%global libgit2_broken 1.8.0
 %global glib2_version 2.44.0
 
 Name:           libgit2-glib
@@ -13,6 +10,8 @@ Summary:        Git library for GLib
 License:        LicenseRef-Callaway-LGPLv2+
 URL:            https://wiki.gnome.org/Projects/Libgit2-glib
 Source0:        https://download.gnome.org/sources/libgit2-glib/1.2/libgit2-glib-%{version}.tar.xz
+# https://gitlab.gnome.org/GNOME/libgit2-glib/-/merge_requests/40
+Patch:          libgit2-1.8.x.patch
 
 BuildRequires:  gcc
 BuildRequires:  gi-docgen
@@ -20,7 +19,7 @@ BuildRequires:  meson
 BuildRequires:  pkgconfig(glib-2.0) >= %{glib2_version}
 BuildRequires:  pkgconfig(gobject-2.0) >= %{glib2_version}
 BuildRequires:  pkgconfig(gio-2.0) >= %{glib2_version}
-BuildRequires:  (pkgconfig(libgit2) >= %{libgit2_version} and pkgconfig(libgit2) < %{libgit2_broken})
+BuildRequires:  pkgconfig(libgit2) >= %{libgit2_version}
 BuildRequires:  libssh2-devel
 BuildRequires:  pkgconfig(pygobject-3.0)
 BuildRequires:  python3-devel

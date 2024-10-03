@@ -2,7 +2,7 @@
 
 Name:       libxcb
 Version:    1.17.0
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    A C binding to the X11 protocol
 License:    X11
 URL:        http://xcb.freedesktop.org/
@@ -66,21 +66,21 @@ autoreconf -v -f --install
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-make %{?_smp_mflags}
+%make_build
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
-install -pm 644 COPYING NEWS README.md $RPM_BUILD_ROOT%{_pkgdocdir}
+%make_install
+install -pm 644 COPYING NEWS README.md %{buildroot}%{_pkgdocdir}
 sed 's,@libdir@,%{_libdir},;s,@prefix@,%{_prefix},;s,@exec_prefix@,%{_exec_prefix},' %{SOURCE1} \
-    > $RPM_BUILD_ROOT%{_libdir}/pkgconfig/pthread-stubs.pc
+    > %{buildroot}%{_libdir}/pkgconfig/pthread-stubs.pc
 
-find $RPM_BUILD_ROOT -name '*.la' -delete
+find %{buildroot} -name '*.la' -delete
 
-%ldconfig_post
-
-%ldconfig_postun
+# Pick up the license file separately:
+rm -f %{buildroot}%{_pkgdocdir}/COPYING
 
 %files
+%license COPYING
 %{_libdir}/libxcb-composite.so.0*
 %{_libdir}/libxcb-damage.so.0*
 %{_libdir}/libxcb-dbe.so.0*
@@ -115,9 +115,14 @@ find $RPM_BUILD_ROOT -name '*.la' -delete
 %{_mandir}/man3/*.3*
 
 %files doc
+%license COPYING
 %{_pkgdocdir}
 
 %changelog
+* Tue Oct 01 2024 Simone Caronni <negativo17@gmail.com> - 1.17.0-3
+- Make sure license is properly identified (#2315743).
+- Small cleanups.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.17.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

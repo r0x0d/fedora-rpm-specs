@@ -5,7 +5,7 @@
 %global toolchain clang
 
 # Sometimes releases require legacy versions of LLVM
-%if 0%{?fedora} && 0%{?fedora} > 41
+%if 0%{?fedora} && 0%{?fedora} >= 41
 %global llvm_legacy 1
 %else
 %global llvm_legacy 0
@@ -72,7 +72,11 @@ superscalar,...).
 %package devel
 Summary: Portable Computing Language development files
 Requires: %{name}%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+%if %{llvm_legacy}
+Requires: clang%{llvm_legacy_ver}
+%else
 Requires: clang%{?_isa}
+%endif
 Requires: ocl-icd-devel%{?_isa}
 Requires: opencl-filesystem
 Requires: uthash-devel

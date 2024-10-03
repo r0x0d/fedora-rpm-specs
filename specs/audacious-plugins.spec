@@ -11,7 +11,7 @@
 
 Name: audacious-plugins
 Version: 4.4.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 %global tar_ver %{version}
 
@@ -386,6 +386,9 @@ install -p -m0644 %{SOURCE103} ${RPM_BUILD_ROOT}%{_datadir}/appdata
 
 
 %changelog
+* Tue Oct 01 2024 Neal Gompa <ngompa@fedoraproject.org> - 4.4.1-2
+- Rebuild for ffmpeg 7
+
 * Thu Sep 26 2024 Michael Schwendt <mschwendt@fedoraproject.org> - 4.4.1-1
 - Update to 4.4.1. Now with Qt Audio output plugin.
 

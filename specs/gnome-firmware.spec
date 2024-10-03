@@ -2,7 +2,7 @@
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 Name:           gnome-firmware
-Version:        46.0
+Version:        47.0
 Release:        %autorelease
 Summary:        Install firmware on devices
 
@@ -48,12 +48,16 @@ This application can:
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{uuid}.metainfo.xml
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{uuid}.desktop
 
+%posttrans
+/usr/bin/glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
+
 %files -f %{name}.lang
 %license COPYING
 %doc README.md MAINTAINERS
 %{_bindir}/%{name}
 %{_datadir}/applications/*.desktop
 %{_datadir}/icons/hicolor/*/*/*.svg
+%{_datadir}/glib-2.0/schemas/org.gnome.Firmware.gschema.xml
 %{_mandir}/man1/*.1.*
 %{_metainfodir}/*.xml
 

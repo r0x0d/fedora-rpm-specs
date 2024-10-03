@@ -3,19 +3,10 @@
 
 %global with_vault_credmon 0
 
-# This is a stopgap until I can conditionalize the cmake files
-# use the system libfmt if suitable version available
-
-# Do not check .so files in condor's library directory
-%global __provides_exclude_from ^%{_libdir}/%{name}/.*\\.so.*$
-
-# Do not provide libfmt
-%global __requires_exclude ^libfmt\\.so.*$
-
 #######################
 Name:           condor
 Version:        23.9.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        HTCondor: High Throughput Computing
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
@@ -27,6 +18,15 @@ URL:            http://htcondor.org
 Source0:        https://github.com/htcondor/htcondor/archive/v%{version}/%{name}-%{version}.tar.gz
 
 Patch1: exit_37.sif.patch
+
+# This is a stopgap until I can conditionalize the cmake files
+# use the system libfmt if suitable version available
+
+# Do not check .so files in condor's library directory
+%global __provides_exclude_from ^%{_libdir}/%{name}/.*\\.so.*$
+
+# Do not provide libfmt
+%global __requires_exclude ^libfmt\\.so.*$
 
 #######################
 BuildRequires: gcc gcc-c++
@@ -937,6 +937,9 @@ done
 /sbin/ldconfig
 
 %changelog
+* Tue Oct 01 2024 Tim Theisen <ttheisen@fedoraproject.org> - 23.9.6-2
+- Suppress provides/requires for libfmt - rhbz#2315859
+
 * Mon Sep 16 2024 Tim Theisen <ttheisen@fedoraproject.org> - 23.9.6-1
 - Update to latest upstream 23.9.6
 

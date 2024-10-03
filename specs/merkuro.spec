@@ -8,10 +8,6 @@ URL:     https://invent.kde.org/pim/%{name}
 
 Source:  https://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
 
-# ref: https://invent.kde.org/pim/merkuro/-/commit/23b279548f8229d624ccf790daf8a19600993a29
-# Add missing GENERATE_PLUGIN_SOURCE to merkuro_contact_plugin (Fixes crash on start)
-Patch:   https://invent.kde.org/pim/merkuro/-/commit/23b279548f8229d624ccf790daf8a19600993a29.patch
-
 BuildRequires:  kf6-rpm-macros
 BuildRequires:  extra-cmake-modules
 BuildRequires:  gcc-c++
@@ -128,9 +124,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.me
 %{_datadir}/qlogging-categories6/merkuro.categories
 %{_datadir}/qlogging-categories6/merkuro.contact.categories
 %{_libdir}/libMerkuroComponents.so
-%{_libdir}/libMerkuroComponents.so*
-%{_libdir}/libmerkuro_contact_plugin.so
-%{_libdir}/libmerkuro_contact_plugin.so*
+%{_libdir}/libMerkuroComponents.so.{6,%{version}}
+%{_libdir}/libmerkuro_contact.so
+%{_libdir}/libmerkuro_contact.so.{6,%{version}}
 %{_datadir}/knotifications6/merkuro.mail.notifyrc
 %{_metainfodir}/org.kde.merkuro.metainfo.xml
 

@@ -1,6 +1,6 @@
 Name:    fotocx
 Version: 24.50
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: Photo editor
 
 License: GPL-3.0-or-later
@@ -94,6 +94,9 @@ rm -f %{buildroot}%{_datadir}/icons/fotocx.png
 %{_metainfodir}/*%{name}.metainfo.xml
 
 %changelog
+* Tue Oct 01 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 24.50-3
+- Update and soften optional dependencies
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 24.50-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

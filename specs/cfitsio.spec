@@ -51,6 +51,8 @@ Summary: CFITSIO based utilities
 Requires: %{name} = %{version}-%{release}
 Provides: fpack{?_isa} = %{version}-%{release}
 Obsoletes: fpack <= 4.5.0-1  
+Provides: fitsverify{?_isa} = 4.22-5
+Obsoletes: fitsverify <= 4.22-4
 
 %description utils
 This package contains utility programas provided by CFITSIO
@@ -72,9 +74,6 @@ cmp -s testprog.fit testprog.std
 make DESTDIR=%{buildroot} install
 #
 rm %{buildroot}/%{_bindir}/cookbook
-rm %{buildroot}/%{_bindir}/fitsverify
-rm %{buildroot}/%{_bindir}/fitscopy
-rm %{buildroot}/%{_bindir}/imcopy
 rm %{buildroot}/%{_bindir}/smem
 rm %{buildroot}/%{_bindir}/speed
 
@@ -102,8 +101,11 @@ rm %{buildroot}/%{_bindir}/speed
 %files utils
 %doc docs/fpackguide.pdf
 %license licenses/License.txt
+%{_bindir}/fitsverify
+%{_bindir}/fitscopy
 %{_bindir}/fpack
 %{_bindir}/funpack
+%{_bindir}/imcopy
 
 %changelog
 %autochangelog

@@ -1,10 +1,10 @@
 %define majorver 8.6
-%define vers %{majorver}.14
+%define vers %{majorver}.15
 
 Summary: The graphical toolkit for the Tcl scripting language
 Name: tk
 Version: %{vers}
-Release: 2%{?dist}
+Release: 1%{?dist}
 Epoch:   1
 License: TCL AND HPND-Pbmplus AND CC-BY-SA-3.0 AND MIT-open-group AND MIT
 URL: http://tcl.sourceforge.net
@@ -20,7 +20,7 @@ Conflicts: itcl <= 3.2
 Obsoletes: tile <= 0.8.2
 Provides: tile = 0.8.2
 Patch1: tk-8.6.12-make.patch
-Patch2: tk-8.6.12-conf.patch
+Patch2: tk-8.6.15-conf.patch
 # https://core.tcl-lang.org/tk/tktview/dccd82bdc70dc25bb6709a6c14880a92104dda43
 Patch3: tk-8.6.10-font-sizes-fix.patch
 
@@ -110,6 +110,10 @@ ln -s %{_bindir}/wish %{_bindir}/wish%{majorver} %{buildroot}%{_usr}/bin/
 %{_datadir}/%{name}%{majorver}/tkAppInit.c
 
 %changelog
+* Tue Oct  1 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 1:8.6.15-1
+- New version
+  Related: rhbz#2315271
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:8.6.14-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

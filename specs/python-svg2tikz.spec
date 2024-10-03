@@ -5,7 +5,7 @@ Version:        2.1.0
 %forgemeta
 
 Name:           python-%{srcname}
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Convert SVG to TikZ/PGF code
 
 License:        GPL-2.0-or-later
@@ -63,14 +63,12 @@ chmod +x %{buildroot}%{python3_sitelib}/%{srcname}/extensions/tikz_export.py
 
 # Inkscape-extension
 mkdir -p %{buildroot}%{_datadir}/inkscape/extensions
-cd %{buildroot}
-ln -s .%{python3_sitelib}/%{srcname}/extensions/tikz_export.py \
-  .%{_datadir}/inkscape/extensions/tikz_export.py
-ln -s .%{python3_sitelib}/%{srcname}/extensions/tikz_export_effect.inx \
-  .%{_datadir}/inkscape/extensions/tikz_export_effect.inx
-ln -s .%{python3_sitelib}/%{srcname}/extensions/tikz_export_output.inx \
-  .%{_datadir}/inkscape/extensions/tikz_export_output.inx
-cd %{_builddir}
+ln -s %{python3_sitelib}/%{srcname}/extensions/tikz_export.py \
+  %{buildroot}%{_datadir}/inkscape/extensions/tikz_export.py
+ln -s %{python3_sitelib}/%{srcname}/extensions/tikz_export_effect.inx \
+  %{buildroot}%{_datadir}/inkscape/extensions/tikz_export_effect.inx
+ln -s %{python3_sitelib}/%{srcname}/extensions/tikz_export_output.inx \
+  %{buildroot}%{_datadir}/inkscape/extensions/tikz_export_output.inx
 
 %check
 %{py3_test_envvars} %{python3} -m unittest
@@ -92,6 +90,9 @@ cd %{_builddir}
 
 
 %changelog
+* Mon Sep 30 2024 Benson Muite <benson_muite@emailplus.org> - 2.1.0-7
+- Fix broken symlinks
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

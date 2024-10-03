@@ -1,8 +1,7 @@
 Name:           perl-Perl-Critic-StricterSubs
-Version:        0.06
-Release:        10%{?dist}
+Version:        0.07
+Release:        1%{?dist}
 Summary:        Perl::Critic plugin for stricter subroutine checks
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Perl-Critic-StricterSubs
 Source0:        https://cpan.metacpan.org/authors/id/P/PE/PETDANCE/Perl-Critic-StricterSubs-%{version}.tar.gz
@@ -22,9 +21,11 @@ BuildRequires:  perl(English)
 BuildRequires:  perl(Exporter)
 BuildRequires:  perl(File::PathList)
 BuildRequires:  perl(List::MoreUtils)
+BuildRequires:  perl(Perl::Critic::Exception::Configuration::Option::Policy::ParameterValue)
 BuildRequires:  perl(Perl::Critic::Policy) >= 1.082
 BuildRequires:  perl(Perl::Critic::Utils) >= 1.082
 BuildRequires:  perl(PPI::Document)
+BuildRequires:  perl(Readonly)
 # Tests:
 BuildRequires:  perl(Perl::Critic::TestUtils) >= 1.082
 BuildRequires:  perl(Test::More)
@@ -83,13 +84,33 @@ export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print
 %files
 %license LICENSE
 %doc Changes README
-%{perl_vendorlib}/*
-%{_mandir}/man3/*
+%dir %{perl_vendorlib}/Perl
+%dir %{perl_vendorlib}/Perl/Critic
+%dir %{perl_vendorlib}/Perl/Critic/Policy
+%dir %{perl_vendorlib}/Perl/Critic/Policy/Modules
+%{perl_vendorlib}/Perl/Critic/Policy/Modules/RequireExplicitInclusion.pm
+%dir %{perl_vendorlib}/Perl/Critic/Policy/Subroutines
+%{perl_vendorlib}/Perl/Critic/Policy/Subroutines/ProhibitCallsToUndeclaredSubs.pm
+%{perl_vendorlib}/Perl/Critic/Policy/Subroutines/ProhibitCallsToUnexportedSubs.pm
+%{perl_vendorlib}/Perl/Critic/Policy/Subroutines/ProhibitExportingUndeclaredSubs.pm
+%{perl_vendorlib}/Perl/Critic/Policy/Subroutines/ProhibitQualifiedSubDeclarations.pm
+%{perl_vendorlib}/Perl/Critic/StricterSubs
+%{perl_vendorlib}/Perl/Critic/StricterSubs.pm
+%{_mandir}/man3/Perl::Critic::Policy::Modules::RequireExplicitInclusion.*
+%{_mandir}/man3/Perl::Critic::Policy::Subroutines::ProhibitCallsToUndeclaredSubs.*
+%{_mandir}/man3/Perl::Critic::Policy::Subroutines::ProhibitCallsToUnexportedSubs.*
+%{_mandir}/man3/Perl::Critic::Policy::Subroutines::ProhibitExportingUndeclaredSubs.*
+%{_mandir}/man3/Perl::Critic::Policy::Subroutines::ProhibitQualifiedSubDeclarations.*
+%{_mandir}/man3/Perl::Critic::StricterSubs.*
+%{_mandir}/man3/Perl::Critic::StricterSubs::Utils.*
 
 %files tests
 %{_libexecdir}/%{name}
 
 %changelog
+* Tue Oct 01 2024 Petr Pisar <ppisar@redhat.com> - 0.07-1
+- 0.07 bump
+
 * Tue Aug 06 2024 Miroslav Suchý <msuchy@redhat.com> - 0.06-10
 - convert license to SPDX
 

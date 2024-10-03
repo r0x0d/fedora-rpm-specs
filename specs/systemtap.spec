@@ -120,7 +120,7 @@ m     stapdev  stapdev
 
 Name: systemtap
 # PRERELEASE
-Version: 5.2~pre17250223gd07e4284
+Version: 5.2~pre17277956g0b7f6722
 Release: 1%{?release_override}%{?dist}
 # for version, see also configure.ac
 
@@ -348,12 +348,14 @@ Requires: mokutil
 %endif
 
 %description client
-This package contains/requires the components needed to develop
-systemtap scripts, and compile them using a local systemtap-devel
-or a remote systemtap-server installation, then run them using a
-local or remote systemtap-runtime.  It includes script samples and
+This package contains/requires only the components needed to
+use systemtap scripts by compiling them using a local or a remote
+systemtap-server service, then run them using a local or
+remote systemtap-runtime.  It includes script samples and
 documentation, and a copy of the tapset library for reference.
-
+It does NOT include all the components for running a systemtap
+script in a self-contained fashion; for that, use the -devel
+subpackage instead.
 
 %package initscript
 Summary: Systemtap Initscripts
@@ -1141,6 +1143,7 @@ exit 0
 # python script to help list python probes.
 %if %{with_python3_probes} || %{with_python2_probes}
 %{_libexecdir}/systemtap/python/stap-resolve-module-function.py
+%dir %{_libexecdir}/systemtap/python
 %exclude %{_libexecdir}/systemtap/python/stap-resolve-module-function.py?
 %endif
 
@@ -1323,6 +1326,10 @@ exit 0
 
 # PRERELEASE
 %changelog
+* Tue Oct 01 2024 William Cohen <wcohen@redhat.com> - 5.2-17277956g0b7f6722
+- Automated weekly rawhide release
+- Applied spec changes from upstream git
+
 * Fri Aug 30 2024 Frank Ch. Eigler <fche@redhat.com> - 5.2-17250223gd07e4284
 - Automated weekly rawhide release
 - Applied spec changes from upstream git

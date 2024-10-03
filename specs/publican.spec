@@ -1,4 +1,3 @@
-
 # Track font name changes
 %define RHEL6 %([[ %{?dist}x == .el6[a-z]* ]] && echo 1 || echo 0)
 %define RHEL7 %([[ %{?dist}x == .el7[a-z]* ]] && echo 1 || echo 0)
@@ -25,7 +24,7 @@ Version:        4.3.2
 Release:        30%{?dist}
 Summary:        Common files and scripts for publishing with DocBook XML
 # For a breakdown of the licensing, refer to LICENSE
-License:        (GPLv2+ or Artistic) and CC0
+License:        (GPL-2.0-or-later OR Artistic-1.0-Perl) AND CC0-1.0
 URL:            https://publican.fedorahosted.org
 Source0:        https://fedorahosted.org/released/publican/Publican-v%{version}.tar.gz
 BuildArch:      noarch

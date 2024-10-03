@@ -255,6 +255,7 @@ Source202:      samba.abignore
 Patch0:         samba-4.21.0-backport-freeipa-support.patch
 # https://gitlab.com/samba-team/samba/-/merge_requests/3807
 Patch1:         samba-4.21.0-ldb-lmdb.patch
+Patch2:         samba-4-21-fix-libldb-deepbind.patch
 
 Requires(pre): %{name}-common = %{samba_depver}
 Requires: %{name}-common = %{samba_depver}

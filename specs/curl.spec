@@ -214,7 +214,7 @@ be installed.
 
 # disable test 1801
 # <https://github.com/bagder/curl/commit/21e82bd6#commitcomment-12226582>
-printf "1801\n" >> tests/data/DISABLED
+printf "1801\n" >>tests/data/DISABLED
 
 # test3026: avoid pthread_create() failure due to resource exhaustion on i386
 %ifarch %{ix86}
@@ -234,10 +234,14 @@ sed -e 's|^35$|35,52|' -i tests/data/test323
     eval "$cmd"
 )
 
+# avoid unnecessary arch-dependent line in the processed file
+sed -e '/# Used in @libdir@/d' \
+    -i curl-config.in
+
+%build
 # regenerate the configure script and Makefile.in files
 autoreconf -fiv
 
-%build
 mkdir build-{full,minimal}
 export common_configure_opts="          \
     --cache-file=../config.cache        \

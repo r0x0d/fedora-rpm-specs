@@ -6,7 +6,7 @@
 %global crate tracing-tree
 
 Name:           rust-tracing-tree
-Version:        0.3.1
+Version:        0.4.0
 Release:        %autorelease
 Summary:        Tracing Layer which prints a tree of spans and events
 

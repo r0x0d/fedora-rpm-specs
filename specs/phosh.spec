@@ -1,8 +1,8 @@
 %global gvc_commit 5f9768a2eac29c1ed56f1fbb449a77a3523683b6
-%global libcall_ui_version 0.1.3
+%global libcall_ui_version 0.1.4
 
 Name:		phosh
-Version:	0.41.1
+Version:	0.42.0
 Release:	%autorelease
 Summary:	Graphical shell for mobile devices
 License:	GPL-3.0-or-later
@@ -38,21 +38,22 @@ BuildRequires:	pkgconfig(gudev-1.0)
 BuildRequires:	pkgconfig(libfeedback-0.0) >= 0.4.0
 BuildRequires:	pkgconfig(libhandy-1) >= 1.1.90
 BuildRequires:	pkgconfig(libnm) >= 1.14
-BuildRequires:	pkgconfig(polkit-agent-1) >= 0.105
+BuildRequires:	pkgconfig(polkit-agent-1) >= 0.122
 BuildRequires:	pkgconfig(libsoup-3.0) >= 3.0
 BuildRequires:	pkgconfig(libsystemd) >= 241
 BuildRequires:	pkgconfig(libsecret-1)
 BuildRequires:	pkgconfig(upower-glib) >= 0.99.1
 BuildRequires:	pkgconfig(wayland-client) >= 1.14
 BuildRequires:	pkgconfig(wayland-protocols) >= 1.12
-BuildRequires:	pkgconfig(gtk4) >= 4.8.3
-BuildRequires:	pkgconfig(libadwaita-1)
+BuildRequires:	pkgconfig(gtk4) >= 4.12
+BuildRequires:	pkgconfig(libadwaita-1) >= 1.5
 BuildRequires:	pkgconfig(evince-document-3.0)
 BuildRequires:	pkgconfig(evince-view-3.0)
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(libpulse) >= 12.99.3
 BuildRequires:	pkgconfig(libpulse-mainloop-glib)
 BuildRequires:	pkgconfig(libcallaudio-0.1)
+BuildRequires:	pkgconfig(mm-glib)
 BuildRequires:	/usr/bin/xvfb-run
 BuildRequires:	/usr/bin/xauth
 BuildRequires:	dbus-daemon
@@ -124,7 +125,7 @@ desktop-file-install --dir %{buildroot}%{_datadir}/applications %{SOURCE4}
 %find_lang %{name}
 
 %{__install} -Dpm 0644 data/phosh.service %{buildroot}%{_unitdir}/phosh.service
-rm %{buildroot}%{_libdir}/libphosh.a
+rm %{buildroot}%{_libdir}/libphosh-0.42.a
 
 %check
 desktop-file-validate \
@@ -143,6 +144,7 @@ SH
 %{_datadir}/glib-2.0/schemas/00_mobi.Phosh.gschema.override
 %{_datadir}/glib-2.0/schemas/sm.puri.phosh.plugins.ticket-box.gschema.xml
 %{_datadir}/glib-2.0/schemas/sm.puri.phosh.plugins.launcher-box.gschema.xml
+%{_datadir}/glib-2.0/schemas/sm.puri.phosh.plugins.upcoming-events.gschema.xml
 %{_datadir}/gnome-session/sessions/phosh.session
 %{_datadir}/wayland-sessions/phosh.desktop
 %{_datadir}/phosh
@@ -179,6 +181,7 @@ SH
 %{_libdir}/phosh/plugins/upcoming-events.plugin
 %{_libdir}/phosh/plugins/prefs/libphosh-plugin-prefs-emergency-info.so
 %{_libdir}/phosh/plugins/prefs/libphosh-plugin-prefs-ticket-box.so
+%{_libdir}/phosh/plugins/prefs/libphosh-plugin-prefs-upcoming-events.so
 %{_libdir}/phosh/plugins/wifi-hotspot-quick-setting.plugin
 
 %doc README.md
@@ -190,12 +193,12 @@ SH
 %{_libdir}/pkgconfig/phosh-settings.pc
 
 %files -n libphosh
-%{_libdir}/libphosh.so.0_41
+%{_libdir}/libphosh-0.42.so.0
 
 %files -n libphosh-devel
-%{_includedir}/libphosh-0
-%{_libdir}/libphosh.so
-%{_libdir}/pkgconfig/libphosh-0.pc
+%{_includedir}/libphosh-0.42
+%{_libdir}/libphosh-0.42.so
+%{_libdir}/pkgconfig/libphosh-0.42.pc
 
 %changelog
 %autochangelog

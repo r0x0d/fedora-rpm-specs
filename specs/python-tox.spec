@@ -20,7 +20,7 @@
 %undefine _py3_shebang_s
 
 Name:           python-tox
-Version:        4.16.0
+Version:        4.21.0
 Release:        %autorelease
 Summary:        Virtualenv-based automation of test activities
 

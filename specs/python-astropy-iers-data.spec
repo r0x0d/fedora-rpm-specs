@@ -2,7 +2,7 @@
 %global srcname astropy_iers_data
 
 Name: python-%{upname}
-Version: 0.2024.9.23.0.31.43
+Version: 0.2024.9.30.0.32.59
 Release: %autorelease
 Summary: IERS Earth Rotation and Leap Second tables for the astropy core package
 License: BSD-3-Clause

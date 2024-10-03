@@ -2,7 +2,7 @@ Name:           perl-XML-Tiny
 Version:        2.07
 Release:        21%{?dist}
 Summary:        Simple lightweight parser for a subset of XML
-License:        GPLv2+ or Artistic
+License:        GPL-2.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/XML-Tiny
 Source0:        https://cpan.metacpan.org/authors/id/D/DC/DCANTRELL/XML-Tiny-%{version}.tar.gz
 BuildArch:      noarch

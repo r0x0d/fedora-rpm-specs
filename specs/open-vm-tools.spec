@@ -34,7 +34,7 @@ Name:             open-vm-tools
 Version:          %{toolsversion}
 Release:          2%{?dist}
 Summary:          Open Virtual Machine Tools for virtual machines hosted on VMware
-License:          GPL-2.0 AND W3C AND LGPL-2.1 AND ICU AND ISC AND MIT
+License:          GPL-2.0-only AND W3C AND LGPL-2.1-only AND ICU AND ISC AND MIT
 URL:              https://github.com/vmware/%{name}
 
 Source0:          https://github.com/vmware/%{name}/releases/download/stable-%{version}/%{name}-%{version}-%{toolsbuild}.tar.gz

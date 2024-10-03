@@ -39,12 +39,6 @@ Summary:        %{summary}
 
 %prep
 %autosetup -n aiohappyeyeballs-%{version} -p1
-%if v"0%{?python3_version}" < v"3.11"
-# This is only imported (from src/aiohappyeyeballs/staggered.py) on Python 3.11
-# and later; its syntax is invalid in Python 3.10 and older, so we must remove
-# it where it is unused to avoid a SyntaxError while bytecompiling.
-rm src/aiohappyeyeballs/_staggered.py
-%endif
 
 
 %generate_buildrequires

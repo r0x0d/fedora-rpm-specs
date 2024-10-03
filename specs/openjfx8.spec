@@ -5,8 +5,19 @@ Version:        8.0.202
 Release:        41.b07%{?dist}
 Summary:        Rich client application platform for Java
 
-#fxpackager is BSD
-License:        GPL v2 with exceptions and BSD
+# most filese are either BSD-3-Clause or GPL-2.0-only WITH Classpath-exception-2.0
+# modules/web/src/main/native/Tools/TestRunnerShared/Bindings/JSWrapper.h and few other is BSD-2-Clause
+# modules/web/src/main/native/Tools/DumpRenderTree/config.h and few others is LGPL-2.0-or-later
+# modules/web/src/main/native/Source/WebCore/platform/graphics/texmap/coordinated/AreaAllocator.h and others are LGPL-2.1-or-later
+# modules/web/src/main/native/Source/WTF/wtf/text/StringBuilderJSON.cpp is MPL-2.0
+# modules/web/src/main/native/Source/WTF/wtf/DateMath.h and others are (MPL-1.1 OR GPL-2.0-only OR LGPL-2.0-or-later)
+# modules/web/src/main/native/Source/WebCore/xml/XPathGrammar.h is GPL-2.0-or-later WITH Bison-exception-2.2
+# modules/web/src/main/native/Source/ThirdParty/sqlite/* are blessing
+# modules/web/src/main/native/Source/ThirdParty/icu/source/common/unicode/* are Unicode-DFS-2015
+# modules/web/src/main/native/Source/JavaScriptCore/Scripts/jsmin.py is MIT
+# modules/web/src/main/native/Source/JavaScriptCore/runtime/MathCommon.cpp is SunPro
+# modules/graphics/src/main/native-iio/libjpeg/* is IJG
+License:        BSD-3-Clause AND BSD-2-Clause AND GPL-2.0-only WITH Classpath-exception-2.0 AND LGPL-2.0-or-later AND LGPL-2.1-or-later AND MPL-2.0 AND (MPL-1.1 OR GPL-2.0-only OR LGPL-2.0-or-later) AND GPL-2.0-or-later WITH Bison-exception-2.2 AND blessing AND Unicode-DFS-2015 AND MIT AND SunPro AND IJG
 URL:            http://openjdk.java.net/projects/openjfx/
 
 Source0:        http://hg.openjdk.java.net/openjfx/8u-dev/rt/archive/8u202-b07.tar.bz2

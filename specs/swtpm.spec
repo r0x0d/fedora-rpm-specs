@@ -8,7 +8,7 @@
 Summary: TPM Emulator
 Name:           swtpm
 Version:        0.9.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        BSD-3-Clause
 Url:            https://github.com/stefanberger/swtpm
 Source0:        https://github.com/stefanberger/swtpm/archive/v%{version}/%{name}-%{version}.tar.gz
@@ -18,6 +18,8 @@ Source0:        https://github.com/stefanberger/swtpm/archive/v%{version}/%{name
 # SHA-1, we MUST always provide a working SHA-1 impl
 Source1:        openssl-swtpm.cnf
 Patch1:         swtpm-custom-openssl.patch
+Patch2:         0001-swtpm-Return-TPM_FAIL-from-invalid-header-version-ca.patch
+Patch3:         0002-selinux-Add-rule-for-logging-to-svirt_image_t-labele.patch
 
 BuildRequires: make
 BuildRequires:  git-core
@@ -188,7 +190,6 @@ fi
 %{_mandir}/man8/swtpm-localca.8*
 %{_mandir}/man8/swtpm_localca.8*
 %{_mandir}/man8/swtpm_setup.8*
-%exclude %{_mandir}/man8/swtpm_cuse.8.gz
 %config(noreplace) %{_sysconfdir}/swtpm_setup.conf
 %config(noreplace) %{_sysconfdir}/swtpm-localca.options
 %config(noreplace) %{_sysconfdir}/swtpm-localca.conf
@@ -202,6 +203,10 @@ fi
 %{_datadir}/swtpm/swtpm-create-tpmca
 
 %changelog
+* Tue Oct  1 2024 Stefan Berger <stefanb@linux.ibm.com> - 0.9.0-4
+- Add rules for SELinux policy to allow appending to log (BZ 2306817)
+- Handle unknown swtpm file header version appropriately
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
