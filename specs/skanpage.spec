@@ -1,6 +1,6 @@
 Name:     skanpage
 Version:  24.08.1
-Release:  1%{?dist}
+Release:  2%{?dist}
 Summary:  Utility to scan images and multi-page documents
 License:  BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-3.0-only
 
@@ -88,6 +88,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.kde.%{name
 %{_kf6_datadir}/icons/hicolor/48x48/apps/%{name}.png
 
 %changelog
+* Thu Oct 03 2024 Neal Gompa <ngompa@fedoraproject.org> - 24.08.1-2
+- Rebuild for tesseract-5.4.1-3 (soversion change) again
+
 * Wed Sep 25 2024 Alessandro Astone <ales.astone@gmail.com> - 24.08.1-1
 - 24.08.1
 

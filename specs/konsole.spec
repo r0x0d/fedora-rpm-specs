@@ -1,4 +1,10 @@
+%if  0%{?rhel} && 0%{?rhel} >= 10
+# Tests require x11
+# x11 is not in RHEL 10
+%global tests 0
+%else
 %global tests 1
+%endif
 
 Name:    konsole
 Summary: KDE Terminal emulator
@@ -21,7 +27,6 @@ Source10: konsolerc
 BuildRequires: make
 BuildRequires: desktop-file-utils
 BuildRequires: gettext
-BuildRequires: pkgconfig(x11)
 BuildRequires: pkgconfig(zlib)
 
 BuildRequires: extra-cmake-modules
@@ -59,6 +64,7 @@ BuildRequires: cmake(Qt6Core5Compat)
 BuildRequires: libicu-devel
 
 %if 0%{?tests}
+BuildRequires: pkgconfig(x11)
 BuildRequires: appstream
 BuildRequires: xorg-x11-server-Xvfb dbus-x11
 %endif

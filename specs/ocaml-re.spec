@@ -10,15 +10,16 @@ ExcludeArch: %{ix86}
 %bcond_with test
 
 Name:           ocaml-re
-Version:        1.11.0
-Release:        9%{?dist}
+Version:        1.13.0
+Release:        1%{?dist}
 Summary:        A regular expression library for OCaml
 
 License:        LGPL-2.1-or-later WITH OCaml-LGPL-linking-exception
 URL:            https://github.com/ocaml/ocaml-re
 Source0:        https://github.com/ocaml/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
+
 # Fedora's OCaml is new enough that we don't need the seq compatibility library
-Patch0:         %{name}-remove-seq.patch
+Patch:          ocaml-re-remove-seq.patch
 
 BuildRequires:  ocaml
 BuildRequires:  ocaml-dune
@@ -68,6 +69,9 @@ sed -i 's/oUnit/ounit2/' lib_test/fort_unit/dune
 %files devel -f .ofiles-devel
 
 %changelog
+* Wed Oct 02 2024 Richard W.M. Jones <rjones@redhat.com> - 1.13.0-1
+- Rebase to 1.13.0 (RHBZ#2232846)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.11.0-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

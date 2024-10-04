@@ -1,6 +1,6 @@
 Name:    fotocx
-Version: 24.50
-Release: 3%{?dist}
+Version: 24.60
+Release: 1%{?dist}
 Summary: Photo editor
 
 License: GPL-3.0-or-later
@@ -94,6 +94,9 @@ rm -f %{buildroot}%{_datadir}/icons/fotocx.png
 %{_metainfodir}/*%{name}.metainfo.xml
 
 %changelog
+* Tue Oct 01 2024 Gwyn Ciesla <gwync@protonmail.com> - 24.60-1
+- 24.60
+
 * Tue Oct 01 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 24.50-3
 - Update and soften optional dependencies
 

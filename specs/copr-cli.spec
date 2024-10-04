@@ -9,8 +9,8 @@
 %global min_python_copr_version 1.128.1
 
 Name:       copr-cli
-Version:    1.112
-Release:    3%{?dist}
+Version:    2.0
+Release:    1%{?dist}
 Summary:    Command line interface for COPR
 
 License:    GPL-2.0-or-later
@@ -124,11 +124,8 @@ install -m 755 copr_cli/package_build_order.py %{buildroot}/%{_bindir}/package-b
 
 
 %changelog
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.112-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Sat Jun 08 2024 Python Maint <python-maint@redhat.com> - 1.112-2
-- Rebuilt for Python 3.13
+* Wed Oct 02 2024 Jiri Kyjovsky <j1.kyjovsky@gmail.com> 2.0-1
+- Allow admins to set storage for new projects
 
 * Tue May 21 2024 Jakub Kadlcik <frostyx@email.cz> 1.112-1
 - Add per package timeout option

@@ -3,8 +3,8 @@
 %global debug_package %{nil}
 
 Name:           Lmod
-Version:        8.7.48
-Release:        2%{?dist}
+Version:        8.7.49
+Release:        1%{?dist}
 Summary:        Environmental Modules System in Lua
 
 # Lmod-5.3.2/tools/base64.lua is LGPLv2
@@ -12,8 +12,6 @@ License:        MIT AND LGPL-2.0-only
 URL:            https://www.tacc.utexas.edu/tacc-projects/lmod
 Source0:        https://github.com/TACC/Lmod/archive/%{version}/Lmod-%{version}.tar.gz
 Source1:        macros.%{name}
-# Backport of https://github.com/TACC/Lmod/issues/718
-Patch1:         Lmod-4.7.48-compinit.patch
 
 BuildRequires:  gcc
 BuildRequires:  make
@@ -151,6 +149,9 @@ fi
 
 
 %changelog
+* Wed Oct 02 2024 Orion Poplawski <orion@nwra.com> - 8.7.49-1
+- Update to 8.7.49
+
 * Sat Sep 28 2024 Terje Rosten <terjeros@gmail.com> - 8.7.48-2
 - Add patch from upstream to fix issue if compinit it not in $PATH
 

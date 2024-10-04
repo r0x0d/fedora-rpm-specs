@@ -8,7 +8,7 @@
 %global crate brotli
 
 Name:           rust-brotli
-Version:        6.0.0
+Version:        7.0.0
 Release:        %autorelease
 Summary:        Brotli compressor and decompressor with no_std support
 
@@ -16,22 +16,11 @@ License:        BSD-3-Clause AND MIT
 URL:            https://crates.io/crates/brotli
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * Adjust license from BSD-3-Clause/MIT to BSD-3-Clause AND MIT; see
-#   https://github.com/dropbox/rust-brotli/issues/41,
-#   https://github.com/dropbox/rust-brotli/pull/218 (which was merged upstream),
-#   and Patch10.  See also the similar PR
-#   https://github.com/dropbox/rust-brotli-decompressor/pull/32, which was
-#   merged, but note comments in
-#   https://github.com/dropbox/rust-brotli/pull/218: we should be attentive to
-#   future improvements or corrections to the license texts.
 # * Exclude files that are only useful for upstream development:
 #   https://github.com/dropbox/rust-brotli/pull/43
 Patch:          brotli-fix-metadata.diff
-# * Adjust license to reflect a MIT-only source, and add a MIT license file
-#   (https://github.com/dropbox/rust-brotli/pull/218), without the changes to
-#   Cargo.toml (which are applied manually to the normalized Cargo.toml in the
-#   crate).
-Patch10:       brotli-6.0.0-license-accuracy.patch
+# * Remove unwanted executable permission from src/enc/test.rs
+Patch10:       https://github.com/dropbox/rust-brotli/pull/219.patch
 
 BuildRequires:  cargo-rpm-macros >= 26
 
@@ -84,6 +73,18 @@ use the "alloc-stdlib" feature of the "%{crate}" crate.
 %files       -n %{name}+alloc-stdlib-devel
 %ghost %{crate_instdir}/Cargo.toml
 
+%package     -n %{name}+billing-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+billing-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "billing" feature of the "%{crate}" crate.
+
+%files       -n %{name}+billing-devel
+%ghost %{crate_instdir}/Cargo.toml
+
 %package     -n %{name}+disable-timer-devel
 Summary:        %{summary}
 BuildArch:      noarch
@@ -94,6 +95,18 @@ This package contains library source intended for building other packages which
 use the "disable-timer" feature of the "%{crate}" crate.
 
 %files       -n %{name}+disable-timer-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+disallow_large_window_size-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+disallow_large_window_size-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "disallow_large_window_size" feature of the "%{crate}" crate.
+
+%files       -n %{name}+disallow_large_window_size-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+external-literal-probability-devel
@@ -118,6 +131,42 @@ This package contains library source intended for building other packages which
 use the "ffi-api" feature of the "%{crate}" crate.
 
 %files       -n %{name}+ffi-api-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+float64-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+float64-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "float64" feature of the "%{crate}" crate.
+
+%files       -n %{name}+float64-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+floating_point_context_mixing-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+floating_point_context_mixing-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "floating_point_context_mixing" feature of the "%{crate}" crate.
+
+%files       -n %{name}+floating_point_context_mixing-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+no-stdlib-ffi-binding-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+no-stdlib-ffi-binding-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "no-stdlib-ffi-binding" feature of the "%{crate}" crate.
+
+%files       -n %{name}+no-stdlib-ffi-binding-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+pass-through-ffi-panics-devel
@@ -206,9 +255,6 @@ use the "vector_scratch_space" feature of the "%{crate}" crate.
 
 %prep
 %autosetup -n %{crate}-%{version} -p1
-# Remove executable flag from .rs files
-# https://github.com/dropbox/rust-brotli/pull/181
-find -type f -name '*.rs' -executable -exec chmod -x '{}' +
 %cargo_prep
 
 %generate_buildrequires
@@ -227,6 +273,8 @@ find -type f -name '*.rs' -executable -exec chmod -x '{}' +
 %else
 # Few tests fail with OOM on 32bit
 # https://github.com/dropbox/rust-brotli/issues/42
+# A fix was included in 7.0.0, but it was not entirely successful:
+# https://github.com/dropbox/rust-brotli/issues/42#issuecomment-2388527527
 skip="${skip-} --skip enc::test::test_roundtrip_10x10y"
 skip="${skip-} --skip enc::test::test_roundtrip_64x"
 skip="${skip-} --skip enc::test::test_roundtrip_asyoulik"

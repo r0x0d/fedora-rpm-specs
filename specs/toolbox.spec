@@ -31,7 +31,7 @@ Version:       0.0.99.6
 %endif
 %endif
 
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       Tool for interactive command line environments on Linux
 
 License:       Apache-2.0
@@ -204,6 +204,9 @@ install -m0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/containers/%{name}.conf
 
 
 %changelog
+* Wed Oct 02 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.0.99.6-2
+- Silence 'rpminspect --tests=elf'
+
 * Mon Sep 30 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.0.99.6-1
 - Update to 0.0.99.6
 

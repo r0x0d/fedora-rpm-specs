@@ -8,7 +8,7 @@
 %global pkgname %{srcname}
 
 Name:           python-%{pkgname}
-Version:        0.3.10
+Version:        0.3.11
 Release:        1%{?dist}
 Summary:        Distributed self-replicating programs in Python
 
@@ -70,6 +70,9 @@ rm -r mitogen/compat ansible_mitogen/compat
 %{python3_sitelib}/%{eggname}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Wed Oct 02 2024 Fabian Affolter <mail@fabian-affolter.ch> - 0.3.11-1
+- Update to latest upstream release (closes rhbz#2315800)
+
 * Thu Sep 26 2024 Fabian Affolter <mail@fabian-affolter.ch> - 0.3.10-1
 - Update to new upstream version (closes rhbz#2018379)
 

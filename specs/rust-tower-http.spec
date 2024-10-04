@@ -16,6 +16,8 @@ Source:         %{crates_source}
 # * relax sync_wrapper dev-dependency from ^0.1.1 to >=0.1.1,<2
 # * Upgrade base64 and brotli
 #   (https://github.com/tower-rs/tower-http/commit/24b6b730810df8950cb89854f8a4571eb8804587)
+#   then further update brotli dev-dependency from 6 to 7
+#   (https://github.com/tower-rs/tower-http/pull/524)
 Patch:          tower-http-fix-metadata.diff
 # * Downstream-only: adjust README.md paths for testing published crates
 # * The original paths are correct for testing in a checked-out git repository

@@ -44,7 +44,7 @@
 %bcond network_tests 0
 
 %global forgeurl https://github.com/getsentry/sentry-python
-Version:        2.13.0
+Version:        2.15.0
 %global tag %{version}
 %forgemeta
 
@@ -54,10 +54,8 @@ Summary:        The new Python SDK for Sentry.io
 License:        MIT
 URL:            https://sentry.io/for/python/
 Source0:        %{forgesource}
-# Patches for testing and fixing logic for handling `in_app_include` in `add_query_source`
-# Upstream PR: https://github.com/getsentry/sentry-python/pull/3313
-Patch0:         0000-test-tracing-Test-add_query_source-with-modules-outs.patch
-Patch1:         0001-fix-tracing-Fix-add_query_source-with-modules-outsid.patch
+# Upstream PR: https://github.com/getsentry/sentry-python/pull/3598
+Patch0:         0001-tests-reorder-to-unpin-pytest.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -269,7 +267,7 @@ diff <(echo "$defined_extra") <(echo "$setup_py_extra")
 sed -r -i 's/psycopg2-binary/psycopg2/' tox.ini
 
 # Unpin all test dependencies to make the installation happen.
-sed -r -i 's/(pytest)<7\.0\.0/\1/' tox.ini
+sed -r -i 's/(pytest)<7.*/\1/' tox.ini
 sed -r -i 's/(Werkzeug)<2\.1\.0/\1/' tox.ini
 sed -r -i 's/(gevent)>=22\.10\.0, <22\.11\.0/\1/' tox.ini
 sed -r -i 's/(anyio)<4\.0\.0/\1/' tox.ini

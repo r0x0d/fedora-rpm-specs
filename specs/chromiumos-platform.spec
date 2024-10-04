@@ -20,6 +20,7 @@ Source:         %{url}/+archive/%{commit}.tar.gz
 Patch:          0001-Revert-sommelier-bump-up-CROSS_DOMAIN_MAX_IDENTIFIER.patch
 Patch:          0002-vm_tools-sommelier-align-mem-operations-to-16K.patch
 Patch:          0003-vm_tools-sommelier-don-t-call-to-fixup_plane0.patch
+Patch:          0004-vm_tools-sommelier-Do-not-assert-on-unsued-wayland-i.patch
 
 BuildRequires:  cmake
 BuildRequires:  meson

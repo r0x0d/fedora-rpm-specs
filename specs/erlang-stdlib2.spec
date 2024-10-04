@@ -1,6 +1,5 @@
 %global realname stdlib2
 
-
 Name:		erlang-%{realname}
 Version:	1.4.6
 Release:	%autorelease
@@ -15,31 +14,24 @@ Source0:	%{url}/archive/v%{version}/%{realname}-%{version}.tar.gz
 BuildRequires:	erlang-folsom
 BuildRequires:	erlang-rebar3
 
-
 %description
-Erlang stdlib extensions.
-
+%{summary}.
 
 %prep
 %autosetup -p1 -n %{realname}-%{version}
 
-
 %build
 %{erlang3_compile}
-
 
 %install
 %{erlang3_install}
 
-
 %check
 %{erlang3_test}
-
 
 %files
 %doc README.md
 %{erlang_appdir}/
-
 
 %changelog
 %autochangelog

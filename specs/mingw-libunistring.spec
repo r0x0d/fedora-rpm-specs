@@ -4,8 +4,7 @@ Name: mingw-libunistring
 Version: 0.9.10
 Release: 15%{?dist}
 Summary: MinGW port of GNU Unicode string library
-# Automatically converted from old format: GPLV2+ or LGPLv3+ - review is highly recommended.
-License: Warning: we do not have SPDX identifier for GPLV2+
+License: GPL-2.0-or-later OR LGPL-3.0-or-later
 Url: http://www.gnu.org/software/libunistring/
 Source0: http://ftp.gnu.org/gnu/libunistring/libunistring-%{version}.tar.xz
 

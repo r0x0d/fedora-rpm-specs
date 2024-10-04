@@ -11,7 +11,7 @@ Summary:       MinGW port of the wxWidgets GUI library
 Name:          mingw-%{mingw_pkg_name}
 Version:       %{majorver}.%{minorver}.4
 Release:       16%{?dist}
-License:       wxWidgets
+License:       LGPL-2.0-or-later WITH WxWindows-exception-3.1
 
 URL:           http://wxwidgets.org
 Source:        https://github.com/wxWidgets/wxWidgets/releases/download/v%{version}/wxWidgets-%{version}.tar.bz2

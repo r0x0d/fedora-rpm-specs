@@ -12,7 +12,7 @@
 Summary: Qt6 - QtTool components
 Name:    qt6-qttools
 Version: 6.7.2
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -33,6 +33,8 @@ Patch1: qttools-run-qttools-with-qt6-suffix.patch
 Patch2: qttools-add-libatomic.patch
 
 ## upstream patches
+# LLVM/Clang 19 compatibility (several commits)
+Patch3: qttools-llvm19.patch
 
 Source20: assistant.desktop
 Source21: designer.desktop
@@ -155,6 +157,7 @@ Requires: %{name}-common = %{version}-%{release}
 %ifarch %{mips32}
 %patch -P2 -p1 -b .libatomic
 %endif
+%patch -P3 -p1
 
 %build
 %cmake_qt6 \
@@ -382,6 +385,9 @@ popd
 
 
 %changelog
+* Tue Oct 01 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 6.7.2-4
+- Rebuilt for LLVM 19
+
 * Mon Jul 22 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 6.7.2-3
 - Add appstream data for apps
 

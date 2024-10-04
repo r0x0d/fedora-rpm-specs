@@ -1,5 +1,5 @@
 Name:           python-docutils
-Version:        0.20.1
+Version:        0.21.2
 Release:        %autorelease
 Summary:        System for processing plaintext documentation
 
@@ -57,10 +57,6 @@ rm -f licenses/docutils.conf
 %install
 %pyproject_install
 %pyproject_save_files docutils
-
-for file in %{buildroot}%{_bindir}/*.py; do
-  mv $file $(dirname $file)/$(basename $file .py)
-done
 
 
 %check

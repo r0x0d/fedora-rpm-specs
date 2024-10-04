@@ -1,8 +1,8 @@
-%global copr_common_version 0.20.1.dev1
+%global copr_common_version 0.25.1~~dev0
 
 Name:       copr-dist-git
-Version:    0.70
-Release:    2%{?dist}
+Version:    1.0
+Release:    1%{?dist}
 Summary:    Copr services for Dist Git server
 
 License:    GPL-2.0-or-later
@@ -19,10 +19,9 @@ BuildRequires: systemd
 BuildRequires: python3-devel
 BuildRequires: python3-munch
 BuildRequires: python3-requests
-BuildRequires: python3-rpkg >= 1.66-6
+BuildRequires: python3-rpkg >= 1.67-1
 BuildRequires: python3-pytest
 BuildRequires: python3-copr-common >= %copr_common_version
-BuildRequires: python3-oslo-concurrency
 BuildRequires: python3-redis
 BuildRequires: python3-setproctitle
 
@@ -37,7 +36,6 @@ Requires: python3-copr-common >= %copr_common_version
 Requires: python3-requests
 Requires: python3-rpkg >= 1.66-6
 Requires: python3-munch
-Requires: python3-oslo-concurrency
 Requires: python3-setproctitle
 Requires: python3-daemon
 Requires: python3-redis
@@ -139,8 +137,8 @@ touch %{buildroot}%{_var}/log/copr-dist-git/main.log
 %{_tmpfilesdir}/copr-dist-git.conf
 
 %changelog
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.70-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+* Wed Oct 02 2024 Jiri Kyjovsky <j1.kyjovsky@gmail.com> 1.0-1
+- Don't check that specfile matches the repository name
 
 * Tue May 21 2024 Jakub Kadlcik <frostyx@email.cz> 0.70-1
 - Don't expect remove_unused_sources is in /usr/bin

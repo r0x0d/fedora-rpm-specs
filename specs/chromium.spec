@@ -273,8 +273,8 @@
 %endif
 
 Name:	chromium%{chromium_channel}
-Version: 129.0.6668.70
-Release: 3%{?dist}
+Version: 129.0.6668.89
+Release: 1%{?dist}
 Summary: A WebKit (Blink) powered web browser that Google doesn't want you to use
 Url: http://www.chromium.org/Home
 License: BSD-3-Clause AND LGPL-2.1-or-later AND Apache-2.0 AND IJG AND MIT AND GPL-2.0-or-later AND ISC AND OpenSSL AND (MPL-1.1 OR GPL-2.0-only OR LGPL-2.0-only)
@@ -1915,6 +1915,12 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Wed Oct 02 2024 Than Ngo <than@redhat.com> - 129.0.6668.89-1
+- update to 129.0.6668.89
+  * High CVE -2024-7025: Integer overflow in Layout
+  * High CVE-2024-9369: Insufficient data validation in Mojo
+  * High CVE-2024-9370: Inappropriate implementation in V8
+
 * Mon Sep 30 2024 Than Ngo <than@redhat.com> - 129.0.6668.70-3
 - add clang-19 support
 

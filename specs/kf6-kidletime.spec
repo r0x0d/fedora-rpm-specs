@@ -1,8 +1,11 @@
+# Disable X11 for RHEL
+%bcond x11 %[%{undefined rhel}]
+
 %global		framework kidletime
 
 Name:		kf6-%{framework}
 Version:	6.6.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	KDE Frameworks 6 Tier 1 integration module for idle time detection
 License:	CC0-1.0 AND GPL-2.0-or-later AND LGPL-2.1-or-later AND MIT
 URL:		https://invent.kde.org/frameworks/%{framework}
@@ -18,9 +21,31 @@ BuildRequires:	wayland-protocols-devel
 BuildRequires:	cmake(PlasmaWaylandProtocols)
 BuildRequires:	cmake(Qt6WaylandClient)
 Requires:	kf6-filesystem
+%if %{with x11}
+Recommends:	%{name}-x11%{?_isa} = %{version}-%{release}
+%endif
 
 %description
 KDE Frameworks 6 Tier 1 integration module for idle time detection.
+
+%if %{with x11}
+%package	x11
+Summary:	Idle time detection plugins for X11 environments
+BuildRequires:	pkgconfig(xext)
+BuildRequires:	pkgconfig(x11-xcb)
+BuildRequires:	pkgconfig(xcb)
+BuildRequires:	pkgconfig(xcb-sync)
+BuildRequires:	pkgconfig(xscrnsaver)
+BuildRequires:	pkgconfig(xkbcommon)
+Requires:	%{name}%{?_isa} = %{version}-%{release}
+Conflicts:	%{name} < 6.6.0-1
+# X11 is deprecated and this will be removed eventually...
+Provides:	deprecated()
+
+%description	x11
+The %{name}-x11 package contains plugins for applications using
+%{name} to detect idle time on X11 environments.
+%endif
 
 %package	devel
 Summary:	Development files for %{name}
@@ -41,7 +66,7 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 
 %build
 %cmake_kf6 \
-  -DWITH_X11=OFF
+  -DWITH_X11=%{?with_x11:ON}%{?!with_x11:OFF}
 %cmake_build
 
 %install
@@ -55,16 +80,25 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 %dir %{_kf6_plugindir}/org.kde.kidletime.platforms/
 %{_kf6_plugindir}/org.kde.kidletime.platforms/KF6IdleTimeWaylandPlugin.so
 
+%if %{with x11}
+%files x11
+%{_kf6_plugindir}/org.kde.kidletime.platforms/KF6IdleTimeXcbPlugin0.so
+%{_kf6_plugindir}/org.kde.kidletime.platforms/KF6IdleTimeXcbPlugin1.so
+%endif
+
 %files devel
 %{_kf6_includedir}/KIdleTime/
 %{_kf6_libdir}/libKF6IdleTime.so
 %{_kf6_libdir}/cmake/KF6IdleTime/
 %{_qt6_docdir}/*.tags
- 
+
 %files doc
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Wed Oct 02 2024 Neal Gompa <ngompa@fedoraproject.org> - 6.6.0-3
+- Enable X11 plugins and ship as subpackage in Fedora
+
 * Wed Oct 02 2024 Neal Gompa <ngompa@fedoraproject.org> - 6.6.0-2
 - Drop unused qt6-qtbase-private-devel BR
 

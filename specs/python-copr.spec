@@ -7,8 +7,8 @@
 %endif
 
 Name:       python-copr
-Version:    1.132
-Release:    3%{?dist}
+Version:    2.0
+Release:    1%{?dist}
 Summary:    Python interface for Copr
 
 License:    GPL-2.0-or-later
@@ -229,11 +229,8 @@ cp -a docs/_build/html %{buildroot}%{_pkgdocdir}/
 %doc %{_pkgdocdir}
 
 %changelog
-* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.132-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Fri Jun 07 2024 Python Maint <python-maint@redhat.com> - 1.132-2
-- Rebuilt for Python 3.13
+* Wed Oct 02 2024 Jiri Kyjovsky <j1.kyjovsky@gmail.com> 2.0-1
+- Allow admins to set storage for new projects
 
 * Tue May 21 2024 Jakub Kadlcik <frostyx@email.cz> 1.132-1
 - Discourage from deleting objects while paginating over them

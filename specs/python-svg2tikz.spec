@@ -1,11 +1,11 @@
 %global         srcname         svg2tikz
 %global         forgeurl        https://github.com/xyz2tex/svg2tikz
-Version:        2.1.0
+Version:        3.2.0
 %global         tag             v%{version}
 %forgemeta
 
 Name:           python-%{srcname}
-Release:        7%{?dist}
+Release:        2%{?dist}
 Summary:        Convert SVG to TikZ/PGF code
 
 License:        GPL-2.0-or-later
@@ -56,18 +56,18 @@ sed -i "s/lxml =.*/lxml = '\*'/" pyproject.toml
 %pyproject_save_files %{srcname}
 # Executable fix
 chmod -x %{buildroot}%{python3_sitelib}/%{srcname}/__init__.py
-chmod -x %{buildroot}%{python3_sitelib}/%{srcname}/extensions/__init__.py
 # Shebang fix
-%py3_shebang_fix %{buildroot}%{python3_sitelib}/%{srcname}/extensions/tikz_export.py
-chmod +x %{buildroot}%{python3_sitelib}/%{srcname}/extensions/tikz_export.py
-
+%py3_shebang_fix %{buildroot}%{python3_sitelib}/%{srcname}/tikz_export.py
+chmod +x %{buildroot}%{python3_sitelib}/%{srcname}/tikz_export.py
+	
+ 
 # Inkscape-extension
 mkdir -p %{buildroot}%{_datadir}/inkscape/extensions
-ln -s %{python3_sitelib}/%{srcname}/extensions/tikz_export.py \
+ln -s %{python3_sitelib}/%{srcname}/tikz_export.py \
   %{buildroot}%{_datadir}/inkscape/extensions/tikz_export.py
-ln -s %{python3_sitelib}/%{srcname}/extensions/tikz_export_effect.inx \
+ln -s %{python3_sitelib}/%{srcname}/tikz_export_effect.inx \
   %{buildroot}%{_datadir}/inkscape/extensions/tikz_export_effect.inx
-ln -s %{python3_sitelib}/%{srcname}/extensions/tikz_export_output.inx \
+ln -s %{python3_sitelib}/%{srcname}/tikz_export_output.inx \
   %{buildroot}%{_datadir}/inkscape/extensions/tikz_export_output.inx
 
 %check
@@ -76,9 +76,10 @@ ln -s %{python3_sitelib}/%{srcname}/extensions/tikz_export_output.inx \
 %files -n python3-%{srcname} -f %{pyproject_files}
 %doc README.md
 %doc CHANGELOG.md
+%{_bindir}/svg2tikz
 # Poetry does not mark license files
 # https://github.com/python-poetry/poetry/issues/1350
-%license %{python3_sitelib}/svg2tikz-2.1.0.dist-info/LICENSE
+#%license %{python3_sitelib}/svg2tikz-2.1.0.dist-info/LICENSE
 
 %files -n inkscape-%{srcname}
 %license LICENSE
@@ -90,6 +91,12 @@ ln -s %{python3_sitelib}/%{srcname}/extensions/tikz_export_output.inx \
 
 
 %changelog
+* Wed Oct 02 2024 Benson Muite <benson_muite@emailplus.org> - 3.2.0-2
+- Update paths
+
+* Tue Oct 01 2024 Benson Muite <benson_muite@emailplus.org> - 3.2.0-1
+- Update to release 3.2.0
+
 * Mon Sep 30 2024 Benson Muite <benson_muite@emailplus.org> - 2.1.0-7
 - Fix broken symlinks
 

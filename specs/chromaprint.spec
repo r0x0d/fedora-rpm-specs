@@ -1,3 +1,7 @@
+# The presence of this macro ensures the disttag changes
+# when set in side tags
+%bcond_with bootstrap
+
 %if 0%{?rhel} && 0%{?rhel} < 9
 %bcond_with ffmpeg
 %else

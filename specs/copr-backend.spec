@@ -6,11 +6,11 @@
 %global tests_version 5
 %global tests_tar test-data-copr-backend
 
-%global copr_common_version 0.21.1.dev1
+%global copr_common_version 0.25.1~~dev0
 
 Name:       copr-backend
-Version:    1.177
-Release:    3%{?dist}
+Version:    2.0
+Release:    1%{?dist}
 Summary:    Backend for Copr
 
 License:    GPL-2.0-or-later
@@ -41,7 +41,6 @@ BuildRequires: python3-copr-common >= %copr_common_version
 BuildRequires: python3-daemon
 BuildRequires: python3-dateutil
 BuildRequires: python3-distro
-BuildRequires: python3-filelock
 BuildRequires: python3-gobject
 BuildRequires: python3-httpretty
 BuildRequires: python3-humanize
@@ -81,7 +80,6 @@ Recommends: python3-copr-messaging
 Requires:   python3-daemon
 Requires:   python3-dateutil
 Recommends: python3-fedmsg
-Requires:   python3-filelock
 Requires:   python3-gobject
 Requires:   python3-humanize
 Requires:   python3-jinja2
@@ -240,11 +238,12 @@ useradd -r -g copr -G lighttpd -s /bin/bash -c "COPR user" copr
 %exclude %{_pkgdocdir}/lighttpd
 
 %changelog
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.177-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Sun Jun 09 2024 Python Maint <python-maint@redhat.com> - 1.177-2
-- Rebuilt for Python 3.13
+* Wed Oct 02 2024 Jiri Kyjovsky <j1.kyjovsky@gmail.com> 2.0-1
+- Implement project, build, chroot deletion and creation in Pulp
+- Fix timeout fail-safe in case copr-rpmbuild hangs up
+- Remove fake jobs and pass specific arguments to storage calls
+- Add support for Pulp
+- Improve logging for expiring user SSH builders
 
 * Tue May 21 2024 Jakub Kadlcik <frostyx@email.cz> 1.177-1
 - Multiple attempts to create repository before giving up

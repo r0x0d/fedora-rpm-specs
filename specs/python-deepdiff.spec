@@ -24,6 +24,8 @@ BuildRequires:  python3dist(tomli-w)
 BuildRequires:  python3dist(python-dateutil)
 BuildRequires:  python3dist(jsonpickle)
 BuildRequires:  python3dist(pydantic)
+BuildRequires:  python3-pandas
+BuildRequires:  python3-pytest-benchmark
 %endif
 
 # For docs

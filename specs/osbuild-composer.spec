@@ -12,7 +12,7 @@
 
 %global goipath         github.com/osbuild/osbuild-composer
 
-Version:        121
+Version:        122
 
 %gometa
 
@@ -684,6 +684,27 @@ Integration tests to be run on a pristine-dedicated system to test the osbuild-c
 %endif
 
 %changelog
+* Wed Oct 02 2024 Packit <hello@packit.dev> - 122-1
+Changes with 122
+----------------
+  * Add fedora-41 (#4369)
+    * Author: Sanne Raymaekers, Reviewers: Brian C. Lane
+  * CI: integration test rules fixup (#4383)
+    * Author: Jakub Rusz, Reviewers: Brian C. Lane
+  * Revert "Add fedora-41" (#4380)
+    * Author: Sanne Raymaekers, Reviewers: Jakub Rusz
+  * Update snapshots to 20240924 (#4381)
+    * Author: SchutzBot, Reviewers: Tomáš Hozza
+  * cloud: fixed typo UnfulfillableCapacity (HMS-4676) (#4385)
+    * Author: Lukáš Zapletal, Reviewers: Sanne Raymaekers
+  * composer: don't create RepoRegistry using reporegistry.New() (#4378)
+    * Author: Tomáš Hozza, Reviewers: Achilleas Koutsou
+  * test/cases: Use openscap customization + enable oci api test on RHEL-10  (#4356)
+    * Author: Jakub Rusz, Reviewers: Tomáš Hozza
+
+— Somewhere on the Internet, 2024-10-02
+
+
 * Fri Sep 20 2024 Packit <hello@packit.dev> - 121-1
 Changes with 121
 ----------------

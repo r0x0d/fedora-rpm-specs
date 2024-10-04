@@ -4,7 +4,7 @@
 %global crate gst-plugin-gtk4
 
 Name:           rust-gst-plugin-gtk4
-Version:        0.12.7
+Version:        0.13.1
 Release:        %autorelease
 Summary:        GStreamer GTK 4 sink element
 
@@ -227,6 +227,18 @@ This package contains library source intended for building other packages which
 use the "gtk_v4_14" feature of the "%{crate}" crate.
 
 %files       -n %{name}+gtk_v4_14-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+gtk_v4_16-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+gtk_v4_16-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "gtk_v4_16" feature of the "%{crate}" crate.
+
+%files       -n %{name}+gtk_v4_16-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+static-devel

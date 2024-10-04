@@ -32,11 +32,16 @@
 %endif
 
 %if 0%{?rhel}
-# Disable dependencies not offered in RHEL/EPEL
+# Disable dependencies not available or wanted on RHEL/EPEL
+%bcond chromaprint 0
 %else
+# Break chromaprint dependency cycle (Fedora-only):
+#   ffmpeg (libavcodec-free) → chromaprint → ffmpeg
+%bcond chromaprint %{?_with_bootstrap:0}%{!?_with_bootstrap:1}
+%endif
 
-# Disable some features because RHEL 9 packages are too old
 %if 0%{?rhel} && 0%{?rhel} <= 9
+# Disable some features because RHEL 9 packages are too old
 %bcond flite 0
 %bcond lcms2 0
 %bcond placebo 0
@@ -45,17 +50,6 @@
 %bcond lcms2 1
 %bcond placebo 1
 %endif
-
-%endif
-
-# Break chromaprint dependency cycle (Fedora-only):
-#   ffmpeg (libavcodec-free) → chromaprint → ffmpeg
-%if %{with bootstrap}
-%bcond chromaprint 0
-%else
-%bcond chromaprint 1
-%endif
-
 
 %if %{with all_codecs}
 %bcond evc 1
@@ -88,7 +82,7 @@ Name:           ffmpeg
 %global pkg_name %{name}%{?pkg_suffix}
 
 Version:        7.0.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A complete solution to record, convert and stream audio and video
 License:        GPL-3.0-or-later
 URL:            https://ffmpeg.org/
@@ -860,6 +854,9 @@ rm -rf %{buildroot}%{_datadir}/%{name}/examples
 %{_mandir}/man3/libswscale.3*
 
 %changelog
+* Wed Oct 02 2024 Neal Gompa <ngompa@fedoraproject.org> - 7.0.2-4
+- Fix chromaprint bcond
+
 * Wed Sep 25 2024 Michel Lind <salimma@fedoraproject.org> - 7.0.2-3
 - Disable omxil completely, it's now retired
 - Rebuild for tesseract-5.4.1-3 (soversion change from 5.4.1 to just 5.4)

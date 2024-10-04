@@ -1,5 +1,5 @@
 Name:           tmt
-Version:        1.36.1
+Version:        1.37.0
 Release:        %autorelease
 Summary:        Test Management Tool
 
@@ -39,6 +39,7 @@ metadata specification (L1 and L2) and allows easy test execution.
 %pyproject_extras_subpkg -n tmt export-polarion
 %pyproject_extras_subpkg -n tmt report-junit
 %pyproject_extras_subpkg -n tmt report-polarion
+%pyproject_extras_subpkg -n tmt link-jira
 
 %package -n     tmt+test-convert
 Summary:        Dependencies required for tmt test import and export
@@ -157,6 +158,9 @@ install -pm 644 %{name}/steps/provision/mrack/mrack* %{buildroot}/etc/%{name}/
 %files -n tmt+all -f %{_pyproject_ghost_distinfo}
 
 %changelog
+* Wed Oct 02 2024 Packit <hello@packit.dev> - 1.37.0-1
+- Update to version 1.37.0
+
 * Fri Sep 13 2024 Packit <hello@packit.dev> - 1.36.1-1
 - Update to version 1.36.1
 

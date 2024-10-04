@@ -3,7 +3,7 @@
 
 
 Name:           python-vobject
-Version:        0.9.7
+Version:        0.9.8
 Release:        1%{?dist}
 Summary:        %{sum}
 
@@ -28,6 +28,7 @@ Requires:           python3-setuptools
 BuildRequires:      python3-devel
 BuildRequires:      python3-setuptools
 BuildRequires:      python3-dateutil
+BuildRequires:      python3-pytz
 
 %{?python_provide:%python_provide python3-%{modname}}
 
@@ -64,6 +65,9 @@ rm vobject/win32tz.py
 
 
 %changelog
+* Wed Oct 02 2024 Dan Horák <dan[at]danny.cz> - 0.9.8-1
+- updated to 0.9.8 (rhbz#2315926)
+
 * Fri Aug 16 2024 Dan Horák <dan[at]danny.cz> - 0.9.7-1
 - updated to 0.9.7 (rhbz#2271534)
 

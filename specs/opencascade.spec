@@ -9,7 +9,7 @@ Release:        3%{?dist}
 Summary:        SDK intended for development of applications dealing with 3D CAD data
 
 # https://dev.opencascade.org/resources/licensing
-License:        LGPL-2.1-only with additional exception
+License:        LGPL-2.1-only WITH OCCT-exception-1.0
 URL:            https://www.opencascade.com/content/overview
 
 Source0:        https://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=refs/tags/V%{ver_under};sf=tgz#/%{name}-%{version}.tgz

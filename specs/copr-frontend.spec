@@ -4,7 +4,7 @@
 # https://fedoraproject.org/wiki/Packaging:Guidelines#Packaging_of_Additional_RPM_Macros
 %global macrosdir       %(d=%{_rpmconfigdir}/macros.d; [ -d $d ] || d=%{_sysconfdir}/rpm; echo $d)
 
-%global copr_common_version 0.19.1~~dev
+%global copr_common_version 0.24.1~~dev0
 
 # Please bump the %%flavor_guard version every-time some incompatible change
 # happens (since the last release) in %%flavor_files set of files.  Those files
@@ -46,8 +46,8 @@
 }
 
 Name:       copr-frontend
-Version:    1.206
-Release:    2%{?dist}
+Version:    2.0
+Release:    1%{?dist}
 Summary:    Frontend for Copr
 
 License:    GPL-2.0-or-later
@@ -108,7 +108,6 @@ BuildRequires: python3dist(redis)
 BuildRequires: python3dist(requests)
 BuildRequires: python3dist(sphinx)
 BuildRequires: python3dist(sphinxcontrib-httpdomain)
-BuildRequires: python3dist(sqlalchemy-utils)
 BuildRequires: python3dist(whoosh)
 BuildRequires: python3dist(wtforms) >= 2.2.1
 BuildRequires: python3dist(python-ldap)
@@ -165,7 +164,6 @@ Requires: python3dist(pylibravatar)
 Requires: python3dist(pytz)
 Requires: python3dist(redis)
 Requires: python3dist(requests)
-Requires: python3dist(sqlalchemy-utils)
 Requires: python3dist(templated-dictionary)
 Requires: python3dist(wtforms) >= 2.2.1
 Requires: python3dist(pyzmq)
@@ -385,8 +383,12 @@ usermod -L copr-fe
 
 
 %changelog
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.206-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+* Wed Oct 02 2024 Jiri Kyjovsky <j1.kyjovsky@gmail.com> 2.0-1
+- Show Webhook History table under Settings -> Integrations
+- Fix the 500 for racy creation attempts
+- Implement project, build, chroot deletion and creation in Pulp
+- Provide statistics on how many users submitted at least one build in past month
+- Use the same repofile for all CentOS Stream versions
 
 * Tue May 21 2024 Jakub Kadlcik <frostyx@email.cz> 1.206-1
 - Center the outage warning banner text

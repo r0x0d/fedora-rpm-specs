@@ -1,4 +1,5 @@
 %global realname gen_leader
+%global git_commit d9689e6e80cd8a437bc207d37cb53290ecd64b35
 
 Name:		erlang-%{realname}
 Version:	1.0
@@ -8,8 +9,7 @@ Summary:	A leader election behavior modeled after gen_server
 License:	ErlPL-1.1
 URL:		https://github.com/garret-smith/%{realname}_revival
 VCS:		git:%{url}.git
-#Source0:	%{url}/archive/%{version}/%{realname}-%{version}.tar.gz
-Source0:	%{url}/archive/d9689e6/%{realname}-%{version}.tar.gz
+Source0:	%{url}/archive/%{git_commit}/%{realname}-%{version}.tar.gz
 BuildRequires:	erlang-rebar3
 
 %description
@@ -18,8 +18,7 @@ This behavior intends to make it reasonably straightforward to implement a fully
 distributed server with master-slave semantics.
 
 %prep
-#%%setup -q -n %{realname}_revival-%{version}
-%setup -q -n %{realname}_revival-d9689e6e80cd8a437bc207d37cb53290ecd64b35
+%autosetup -p1 -n %{realname}_revival-%{git_commit}
 
 %build
 %{erlang3_compile}

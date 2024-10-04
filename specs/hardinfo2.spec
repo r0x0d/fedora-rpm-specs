@@ -4,7 +4,7 @@
 %endif
 
 Name:           hardinfo2
-Version:        2.1.14
+Version:        2.1.17
 Release:        %autorelease
 Summary:        System Information and Benchmark for Linux Systems
 
@@ -146,7 +146,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 %{_datadir}/hardinfo2/benchmark.data
 %{_datadir}/hardinfo2/*.json
 %{_datadir}/hardinfo2/pixmaps/
-%{_datadir}/icons/hicolor/256x256/apps/hardinfo2.png
+%{_datadir}/icons/hicolor/scalable/apps/hardinfo2.svg
 %{_mandir}/man1/hardinfo2.1*
 
 %changelog

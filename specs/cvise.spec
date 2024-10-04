@@ -1,6 +1,6 @@
 Name: cvise
-Version: 2.9.0
-Release: 5%{?dist}
+Version: 2.10.0.1
+Release: 1%{?dist}
 Summary: Super-parallel Python port of the C-Reduce
 # Automatically converted from old format: BSD - review is highly recommended.
 License: LicenseRef-Callaway-BSD
@@ -27,6 +27,7 @@ Requires: clang-tools-extra
 Requires: unifdef
 Requires: python3-pebble
 Requires: python3-psutil
+Requires: python3-chardet
 Requires: indent
 Requires: colordiff
 
@@ -67,6 +68,10 @@ export CXXFLAGS="$RPM_OPT_FLAGS -Wno-error=restrict"
 %{_datadir}/cvise
 
 %changelog
+* Wed Oct 2 2024 Marek Polacek <polacek@redhat.com> - 2.10.0.1-1
+- update to cvise-2.10.0 (#2300616)
+- require python3-chardet (#2292488)
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 2.9.0-5
 - convert license to SPDX
 

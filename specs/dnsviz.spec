@@ -2,13 +2,15 @@
 %bcond_with    all_tests
 
 Name:           dnsviz
-Version:        0.10.0
+Version:        0.11.0
 Release:        %autorelease
 Summary:        Tools for analyzing and visualizing DNS and DNSSEC behavior
 
 License:        GPL-2.0-or-later
 URL:            https://github.com/dnsviz/dnsviz
 Source0:        %{url}/releases/download/v%{version}/%{name}-%{version}.tar.gz
+
+Patch1:         dnsviz-0.11-no-sha1.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -17,12 +19,13 @@ BuildRequires:  graphviz
 BuildRequires:  make
 
 BuildRequires:  python3-pygraphviz >= 1.3
-BuildRequires:  python3-m2crypto >= 0.28.0
+BuildRequires:  python3-cryptography
 BuildRequires:  python3-dns >= 1.13
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-pytest
+BuildRequires:  bind
+BuildRequires:  bind-dnssec-utils
 Requires:       python3-pygraphviz >= 1.3
-Requires:       python3-m2crypto >= 0.28.0
 Requires:       python3-dns >= 1.13
 
 %description
@@ -45,6 +48,7 @@ powers the Web-based analysis available at http://dnsviz.net/
 
 %check
 %if %{with tests}
+export DNSVIZ_SHARE_PATH="%{buildroot}%{_datadir}%{name}"
 %if %{with all_tests}
   if ! [ -f /etc/resolv.conf ]; then
     # mock may not have any resolv.conf
@@ -56,7 +60,7 @@ powers the Web-based analysis available at http://dnsviz.net/
     rm -f /etc/resolv.conf
   fi
 %else
-  %pytest -k "not probe_options and not probe_run_o and not test_dnsviz_graph_output_format"
+  %pytest -k "not probe_options and not probe_run_online and not test_dnsviz_graph_output_format and not _online"
 %endif
 %endif
 

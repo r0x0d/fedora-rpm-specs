@@ -10,7 +10,7 @@
 
 Name:           ghc-%{pkg_name}
 Version:        1.3.2.0
-Release:        %autorelease
+Release:        %autorelease -b 24
 Summary:        TOML 1.0.0 parser
 
 License:        ISC

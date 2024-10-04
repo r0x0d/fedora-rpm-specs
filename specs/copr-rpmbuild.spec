@@ -14,9 +14,9 @@ Requires: %1 \
 %{expand: %%global latest_requires_packages %1 %%{?latest_requires_packages}}
 
 Name:    copr-rpmbuild
-Version: 0.73
+Version: 1.0
 Summary: Run COPR build tasks
-Release: 3%{?dist}
+Release: 1%{?dist}
 URL: https://github.com/fedora-copr/copr
 License: GPL-2.0-or-later
 
@@ -28,11 +28,10 @@ Source0:    %name-%version.tar.gz
 BuildRequires: %{python}-copr-common >= %copr_common_version
 BuildRequires: %{python}-devel
 BuildRequires: %{python}-distro
-%if 0%{?rhel} == 0 || 0%{?rhel} != 6
 BuildRequires: %{python}-httmock
-%endif
 BuildRequires: %{rpm_python}
 BuildRequires: asciidoc
+BuildRequires: dist-git-client
 BuildRequires: git
 BuildRequires: %{python}-setuptools
 BuildRequires: %{python}-pytest
@@ -41,6 +40,7 @@ BuildRequires: %{python}-requests
 BuildRequires: %{python_pfx}-jinja2
 BuildRequires: %{python_pfx}-specfile >= 0.21.0
 BuildRequires: python3-backoff >= 1.9.0
+BuildRequires: python3-pyyaml
 
 BuildRequires: /usr/bin/argparse-manpage
 BuildRequires: python-rpm-macros
@@ -58,13 +58,16 @@ Requires: %{python_pfx}-munch
 Requires: %{python}-requests
 Requires: %{python_pfx}-specfile >= 0.21.0
 Requires: python3-backoff >= 1.9.0
+Requires: python3-pyyaml
 
 Requires: mock >= 5.0
 Requires: git
 Requires: git-svn
 # for the /bin/unbuffer binary
 Requires: expect
-%if !0%{?openEuler}
+%if 0%{?openEuler} > 0 || 0%{?rhel} > 0
+# qemu-user-static is not supported
+%else
 Requires: qemu-user-static
 %endif
 Requires: sed
@@ -72,7 +75,7 @@ Requires: sed
 %if 0%{?fedora} || 0%{?rhel} > 7
 Recommends: rpkg
 Recommends: python-srpm-macros
-Recommends: copr-distgit-client
+Recommends: dist-git-client
 Suggests: tito
 Suggests: rubygem-gem2rpm
 Suggests: pyp2rpm
@@ -88,9 +91,9 @@ build build-id 12345 for chroot epel-7-x86_64.
 %package -n copr-builder
 Summary: copr-rpmbuild with all weak dependencies
 Requires: %{name} = %{version}-%{release}
-Requires: copr-distgit-client = %{version}-%{release}
+Requires: dist-git-client
 
-%if 0%{?fedora}
+%if 0%{?fedora} && 0%{?fedora} < 41
 # replacement for yum/yum-utils, to be able to work with el* chroots
 # bootstrap_container.
 Requires: dnf-yum
@@ -105,7 +108,9 @@ Requires: nosync
 %endif
 Requires: openssh-clients
 Requires: podman
-%if !0%{?openEuler}
+%if 0%{?openEuler} > 0 || 0%{?rhel} > 0
+# not supported
+%else
 Requires: pyp2rpm
 Requires: pyp2spec
 Requires: rubygem-gem2rpm
@@ -151,30 +156,9 @@ build build-id 12345 for chroot epel-7-x86_64.
 This package contains all optional modules for building SRPM.
 
 
-%package -n copr-distgit-client
-Summary: Utility to download sources from dist-git
-
-Requires: %{_bindir}/git
-Requires: curl
-%if 0%{?fedora} || 0%{?rhel} > 9
-Requires: %{python_pfx}-rpmautospec
-BuildRequires: %{python_pfx}-rpmautospec
-%endif
-
-
-%description -n copr-distgit-client
-A simple, configurable python utility that is able to download sources from
-various dist-git instances, and generate source RPMs.
-
-The utility is able to automatically map the .git/config clone URL into
-the corresponding dist-git instance configuration.
-
-
 %prep
 %setup -q
-for script in bin/copr-rpmbuild* \
-              bin/copr-distgit*
-do
+for script in bin/copr-rpmbuild*; do
     sed -i '1 s|#.*python.*|#! /usr/bin/%python|' "$script"
 done
 
@@ -235,6 +219,7 @@ install -m 644 mock.cfg.j2 %{buildroot}%{_sysconfdir}/copr-rpmbuild/mock.cfg.j2
 install -m 644 rpkg.conf.j2 %{buildroot}%{_sysconfdir}/copr-rpmbuild/rpkg.conf.j2
 install -m 644 mock-source-build.cfg.j2 %{buildroot}%{_sysconfdir}/copr-rpmbuild/
 install -m 644 mock-custom-build.cfg.j2 %{buildroot}%{_sysconfdir}/copr-rpmbuild/
+install -m 644 copr-rpmbuild.yml %{buildroot}%{_sysconfdir}/copr-rpmbuild/copr-rpmbuild.yml
 
 cat <<EOF > %buildroot%mock_config_overrides/README
 Contents of this directory is used by %_bindir/copr-update-builder script.
@@ -265,19 +250,6 @@ install -p -m 755 copr-update-builder %buildroot%_bindir
   done
 )
 
-install -p -m 755 bin/copr-distgit-client %buildroot%_bindir
-argparse-manpage --pyfile copr_distgit_client.py \
-    --function _get_argparser \
-    --author "Copr Team" \
-    --author-email "copr-team@redhat.com" \
-    --url %url --project-name Copr \
-> %{buildroot}%{_mandir}/man1/copr-distgit-client.1
-mkdir -p %{buildroot}%{_sysconfdir}/copr-distgit-client
-install -p -m 644 etc/copr-distgit-client/default.ini \
-    %{buildroot}%{_sysconfdir}/copr-distgit-client
-mkdir -p %{buildroot}%{sitelib}
-install -p -m 644 copr_distgit_client.py %{buildroot}%{expand:%%%{python}_sitelib}
-
 
 %files
 %{!?_licensedir:%global license %doc}
@@ -299,6 +271,7 @@ install -p -m 644 copr_distgit_client.py %{buildroot}%{expand:%%%{python}_siteli
 %config(noreplace) %{_sysconfdir}/copr-rpmbuild/rpkg.conf.j2
 %config(noreplace) %{_sysconfdir}/copr-rpmbuild/mock-source-build.cfg.j2
 %config(noreplace) %{_sysconfdir}/copr-rpmbuild/mock-custom-build.cfg.j2
+%config(noreplace) %{_sysconfdir}/copr-rpmbuild/copr-rpmbuild.yml
 
 %files -n copr-builder
 %license LICENSE
@@ -310,24 +283,13 @@ install -p -m 644 copr_distgit_client.py %{buildroot}%{expand:%%%{python}_siteli
 %doc %mock_config_overrides/README
 
 
-%files -n copr-distgit-client
-%license LICENSE
-%_bindir/copr-distgit-client
-%_mandir/man1/copr-distgit-client.1*
-%dir %_sysconfdir/copr-distgit-client
-%config %_sysconfdir/copr-distgit-client/default.ini
-%sitelib/copr_distgit_client.*
-%if "%{?python}" != "python2"
-%sitelib/__pycache__/copr_distgit_client*
-%endif
-
-
 %changelog
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.73-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Mon Jun 17 2024 Python Maint <python-maint@redhat.com> - 0.73-2
-- Rebuilt for Python 3.13
+* Wed Oct 02 2024 Jiri Kyjovsky <j1.kyjovsky@gmail.com> 1.0-1
+- Specify snippets to mock config via copr-rpmbuild config file
+- Increase the custom method timeout to 90 minutes
+- Use new dist-git-client instead of copr one
+- Add diff.txt file for fedora review
+- When `copr-builder release` set timestamp 0
 
 * Tue May 21 2024 Jakub Kadlcik <frostyx@email.cz> 0.73-1
 - Remove static methods from tests

@@ -97,7 +97,6 @@ ExclusiveArch:  %{arm64}
 
 BuildRequires:  cmake
 BuildRequires:  clang
-BuildRequires:  gdb
 BuildRequires:  git-core
 BuildRequires:  lld
 BuildRequires:  llvm
@@ -139,6 +138,10 @@ Recommends:     erofs-utils
 Recommends:     squashfs-tools
 Recommends:     squashfuse
 
+# Drop once f42 is retired
+Obsoletes:      fex-emu-gdb < 2409-4
+Provides:       fex-emu-gdb = %{version}-%{release}
+
 %description
 FEX allows you to run x86 and x86-64 binaries on an AArch64 host, similar to
 qemu-user and box86. It has native support for a rootfs overlay, so you don't
@@ -153,13 +156,6 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description    devel
 This package provides development headers and libraries for %{name}.
-
-%package        gdb
-Summary:        GDBSymbol integration for %{name}
-Requires:       %{name}%{?_isa} = %{version}-%{release}
-
-%description    gdb
-This package provides GDBSymbol integration for %{name}.
 
 %package        utils
 Summary:        Utility tools for %{name}
@@ -251,12 +247,6 @@ fi
 %files devel
 %{_includedir}/FEXCore/
 %{_libdir}/libFEXCore.so
-
-%files gdb
-# This path should eventually be owned by one of the gdb packages
-# https://bugzilla.redhat.com/show_bug.cgi?id=2308270
-%dir %{_libdir}/gdb/
-%{_libdir}/gdb/libFEXGDBReader.so
 
 %files utils
 %{_bindir}/FEXConfig

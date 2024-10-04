@@ -1,7 +1,7 @@
 %global pypi_name claripy
 
 Name:           python-%{pypi_name}
-Version:        9.2.119
+Version:        9.2.120
 Release:        1%{?dist}
 Summary:        Abstraction layer for constraint solvers
 
@@ -44,6 +44,9 @@ sed -i -e '/z3-solver/d' setup.cfg
 %doc README.md
 
 %changelog
+* Wed Oct 02 2024 Fabian Affolter <mail@fabian-affolter.ch> - 9.2.120-1
+- Update to new upstream version (closes rhbz#2315969)
+
 * Thu Sep 26 2024 Fabian Affolter <mail@fabian-affolter.ch> - 9.2.119-1
 - Update to new upstream version (closes rhbz#2314473)
 

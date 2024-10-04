@@ -1,13 +1,10 @@
 Name:           perl-Gtk3-ImageView
-Version:        10
-Release:        11%{?dist}
+Version:        11
+Release:        1%{?dist}
 Summary:        Image viewer widget for GTK 3
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
-URL:            https://metacpan.org/release/Gtk3-ImageView
+URL:            https://github.com/DarthGandalf/gtk3-imageview
 Source0:        https://cpan.metacpan.org/authors/id/A/AS/ASOKOLOV/Gtk3-ImageView-%{version}.tar.gz
-# Adapt to changes in Perl 5.38, in upstream after version 10,
-# <https://github.com/carygravel/gtk3-imageview/pull/30>
-Patch0:         Gtk3-ImageView-10-Replace-deprecated-given-when-with-if-elsif-else.patch
 BuildArch:      noarch
 BuildRequires:  coreutils
 BuildRequires:  make
@@ -108,6 +105,9 @@ xvfb-run -d make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Wed Oct 02 2024 Petr Pisar <ppisar@redhat.com> - 11-1
+- 0.11 bump
+
 * Thu Aug 01 2024 Petr Pisar <ppisar@redhat.com> - 10-11
 - Adapt to changes in Perl 5.38 (upstream GH#30)
 

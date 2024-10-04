@@ -7,8 +7,8 @@ Package also provides several convenience methods for working with \
 copr messages.
 
 Name:       copr-messaging
-Version:    0.11
-Release:    3%{?dist}
+Version:    1.0
+Release:    1%{?dist}
 Summary:    Abstraction for Copr messaging listeners/publishers
 
 License:    GPL-2.0-or-later
@@ -86,11 +86,9 @@ rm -rf html/.{doctrees,buildinfo}
 
 
 %changelog
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.11-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Sun Jun 09 2024 Python Maint <python-maint@redhat.com> - 0.11-2
-- Rebuilt for Python 3.13
+* Wed Oct 02 2024 Jiri Kyjovsky <j1.kyjovsky@gmail.com> 1.0-1
+- Set chroot message severity to DEBUG
+- One-line descriptions should be the summary
 
 * Fri Mar 01 2024 Pavel Raiskup <praiskup@redhat.com> 0.11-1
 - handle namespaced usernames

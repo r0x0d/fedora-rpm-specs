@@ -1,4 +1,4 @@
-%global device_mapper_version 1.02.200
+%global device_mapper_version 1.02.201
 
 %global enable_cache 1
 %global enable_lvmdbusd 1
@@ -47,7 +47,7 @@ Name: lvm2
 %if 0%{?rhel}
 Epoch: %{rhel}
 %endif
-Version: 2.03.26
+Version: 2.03.27
 Release: %autorelease
 License: GPL-2.0-only
 URL: https://sourceware.org/lvm2
@@ -668,6 +668,10 @@ An extensive functional testsuite for LVM2.
 %endif
 
 %changelog
+* Wed Oct 02 2024 Marian Csontos <mcsontos@redhat.com> - 2.03.27-1
+- Update to upstream version 2.03.27.
+- See WHATS_NEW and WHATS_NEW_DM for more information.
+
 * Fri Aug 23 2024 Marian Csontos <mcsontos@redhat.com> - 2.03.26-1
 - Update to upstream version 2.03.26.
 - See WHATS_NEW and WHATS_NEW_DM for more information.

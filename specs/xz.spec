@@ -8,8 +8,8 @@ Name:		xz
 # do this on a side tag, according to
 # https://docs.fedoraproject.org/en-US/package-maintainers/Package_Update_Guide/#multiple_packages
 Epoch:		1
-Version:	5.6.2
-Release:	3%{?dist}
+Version:	5.6.3
+Release:	1%{?dist}
 
 # liblzma - 0BSD
 # xz{,dec}, lzma{dec,info} - 0BSD
@@ -180,6 +180,9 @@ LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
 
 
 %changelog
+* Wed Oct 02 2024 Richard W.M. Jones <rjones@redhat.com> - 1:5.6.3-1
+- New upstream version 5.6.3 (RHBZ#2316069)
+
 * Thu Aug 08 2024 Lukáš Zaoral <lzaoral@redhat.com> - 1:5.6.2-3
 - fix licenses and finish SPDX license conversion
 

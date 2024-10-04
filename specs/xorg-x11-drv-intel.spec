@@ -11,7 +11,7 @@
 Summary:   Xorg X11 Intel video driver
 Name:      xorg-x11-drv-intel
 Version:   2.99.917%{!?tag:^%{date}git%{shortcommit}}
-Release:   61%{?dist}
+Release:   62%{?dist}
 URL:       http://www.x.org
 License:   MIT
 
@@ -92,8 +92,8 @@ X.Org X11 Intel video driver.
     -D default-accel=sna \
     -D default-dri=3 \
     -D dri1=false \
-    -D dri2=false \
-    -D dri3=false \
+    -D dri2=true \
+    -D dri3=true \
     -D internal-debug=no \
     -D kms=true \
     -D present=true \
@@ -127,6 +127,9 @@ rm -f %{buildroot}%{_libdir}/libI*XvMC.so
 %{_bindir}/intel-virtual-output
 
 %changelog
+* Wed Oct 02 2024 Simone Caronni <negativo17@gmail.com> - 2.99.917^20240506gitce811e7-62
+- Fix obvious typo.
+
 * Sun Sep 29 2024 Simone Caronni <negativo17@gmail.com> - 2.99.917^20240506gitce811e7-61
 - Switch to meson.
 

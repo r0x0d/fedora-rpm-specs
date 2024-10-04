@@ -2,8 +2,8 @@
 %global copr_common_version 0.16.3.dev
 
 Name:       copr-keygen
-Version:    1.92
-Release:    3%{?dist}
+Version:    2.0
+Release:    1%{?dist}
 Summary:    Part of Copr build system. Aux service that generate keys for signd
 
 License:    GPL-2.0-or-later
@@ -21,7 +21,6 @@ BuildRequires: systemd
 BuildRequires: python3-devel
 BuildRequires: python3-copr-common >= %copr_common_version
 BuildRequires: python3-setuptools
-BuildRequires: python3-six
 BuildRequires: python3-flask
 
 # doc
@@ -41,7 +40,6 @@ Requires:   passwd
 Recommends: logrotate
 Requires:   python3-copr-common >= %copr_common_version
 Requires:   python3-setuptools
-Requires:   python3-six
 Requires:   python3-flask
 
 # tests
@@ -64,7 +62,6 @@ Obsoletes:  copr-doc < 1.38
 BuildRequires: python3-devel
 BuildRequires: python3-setuptools
 BuildRequires: python3-requests
-BuildRequires: python3-six
 BuildRequires: python3-flask
 BuildRequires: python3-sphinx
 BuildRequires: python3-sphinxcontrib-httpdomain
@@ -176,11 +173,8 @@ systemctl condrestart httpd &>/dev/null || :
 %endif
 
 %changelog
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.92-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Sun Jun 09 2024 Python Maint <python-maint@redhat.com> - 1.92-2
-- Rebuilt for Python 3.13
+* Wed Oct 02 2024 Jiri Kyjovsky <j1.kyjovsky@gmail.com> 2.0-1
+- Drop support for python2
 
 * Fri Mar 01 2024 Pavel Raiskup <praiskup@redhat.com> 1.92-1
 - keep logs 6 weeks instead of 13

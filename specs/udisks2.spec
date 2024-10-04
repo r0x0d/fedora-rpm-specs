@@ -2,10 +2,9 @@
 %global gobject_introspection_version   1.30.0
 %global polkit_version                  0.102
 %global systemd_version                 208
-%global libatasmart_version             0.17
 %global dbus_version                    1.4.0
 %global with_gtk_doc                    1
-%global libblockdev_version             3.0
+%global libblockdev_version             3.2
 
 %define with_btrfs                      1
 %ifnarch %{ix86}
@@ -25,22 +24,16 @@
 
 Name:    udisks2
 Summary: Disk Manager
-Version: 2.10.1
-Release: 6%{?dist}
+Version: 2.10.90
+Release: 1%{?dist}
 License: GPL-2.0-or-later
 URL:     https://github.com/storaged-project/udisks
 Source0: https://github.com/storaged-project/udisks/releases/download/udisks-%{version}/udisks-%{version}.tar.bz2
-
-Patch0:  udisks-2.11.0-BLKRRPART_harder.patch
-Patch1:  udisks-2.11.0-targetcli_config.json_netif_timeout.patch
-Patch2:  udisks-2.11.0-udiskslinuxmanager_use_after_free.patch
-Patch3:  udisks-2.11.0-udiskslinuxblock_survive_missing_fstab.patch
 
 BuildRequires: make
 BuildRequires: glib2-devel >= %{glib2_version}
 BuildRequires: gobject-introspection-devel >= %{gobject_introspection_version}
 BuildRequires: libgudev1-devel >= %{systemd_version}
-BuildRequires: libatasmart-devel >= %{libatasmart_version}
 BuildRequires: polkit-devel >= %{polkit_version}
 BuildRequires: systemd >= %{systemd_version}
 BuildRequires: systemd-devel >= %{systemd_version}
@@ -58,6 +51,7 @@ BuildRequires: libblockdev-mdraid-devel >= %{libblockdev_version}
 BuildRequires: libblockdev-fs-devel     >= %{libblockdev_version}
 BuildRequires: libblockdev-crypto-devel >= %{libblockdev_version}
 BuildRequires: libblockdev-nvme-devel   >= %{libblockdev_version}
+BuildRequires: libblockdev-smart-devel  >= %{libblockdev_version}
 BuildRequires: libmount-devel
 BuildRequires: libuuid-devel
 
@@ -69,6 +63,7 @@ Requires: libblockdev-mdraid >= %{libblockdev_version}
 Requires: libblockdev-fs     >= %{libblockdev_version}
 Requires: libblockdev-crypto >= %{libblockdev_version}
 Requires: libblockdev-nvme   >= %{libblockdev_version}
+Requires: libblockdev-smart  >= %{libblockdev_version}
 
 Requires: lib%{name}%{?_isa} = %{version}-%{release}
 
@@ -76,8 +71,6 @@ Requires: lib%{name}%{?_isa} = %{version}-%{release}
 Requires: dbus >= %{dbus_version}
 # Needed to pull in the udev daemon
 Requires: udev >= %{systemd_version}
-# We need at least this version for bugfixes/features etc.
-Requires: libatasmart >= %{libatasmart_version}
 # For mount, umount, mkswap
 Requires: util-linux
 # For mkfs.ext3, mkfs.ext3, e2label
@@ -111,6 +104,10 @@ Recommends: ntfs-3g
 %if 0%{?with_btrfs}
 Recommends: btrfs-progs
 %endif
+
+
+# For /proc/self/mountinfo, only available in 2.6.26 or higher
+Conflicts: kernel < 2.6.26
 
 Provides:  storaged = %{version}-%{release}
 Obsoletes: storaged < %{version}-%{release}
@@ -210,6 +207,7 @@ sed -i data/builtin_mount_options.conf -e 's/ntfs_drivers=ntfs3,ntfs/ntfs_driver
 %else
     --disable-gtk-doc \
 %endif
+    --enable-smart    \
 %if 0%{?with_btrfs}
     --enable-btrfs    \
 %endif
@@ -342,6 +340,9 @@ fi
 %endif
 
 %changelog
+* Wed Oct 02 2024 Tomas Bzatek <tbzatek@redhat.com> - 2.10.90-1
+- Version 2.10.90
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.10.1-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

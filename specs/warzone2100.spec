@@ -2,8 +2,8 @@
 %global _cmake_shared_libs %{nil}
 
 Name:           warzone2100
-Version:        4.5.2
-Release:        2%{?dist}
+Version:        4.5.3
+Release:        1%{?dist}
 Summary:        Innovative 3D real-time strategy
 
 # Automatically converted from old format: GPLv2+ and CC-BY-SA - review is highly recommended.
@@ -93,6 +93,9 @@ mv $RPM_BUILD_ROOT%{_datadir}/icons/net.wz2100.warzone2100.png \
 %{_datadir}/warzone2100/sequences.wz
 
 %changelog
+* Wed Oct 02 2024 Pete Walter <pwalter@fedoraproject.org> - 4.5.3-1
+- Update to 4.5.3 (rhbz#2312053)
+
 * Wed Sep  4 2024 Miroslav Suchý <msuchy@redhat.com> - 4.5.2-2
 - convert license to SPDX
 

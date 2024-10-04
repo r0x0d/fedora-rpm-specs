@@ -22,7 +22,9 @@ Source:         %{crates_source}
 #   template from rust2rpm
 # * Don’t ask for the static feature of the xz2 crate (link the liblzma shared
 #   library instead)
-# * Update brotli from 3.x to 6.x: https://github.com/cramjam/libcramjam/pull/14
+# * Update brotli from 3.x to 7.x:
+#   https://github.com/cramjam/libcramjam/pull/14,
+#   https://github.com/cramjam/libcramjam/pull/15
 Patch:          libcramjam-fix-metadata.diff
 # * Fix tests that assume C char is signed
 # * https://github.com/milesgranger/cramjam/pull/150

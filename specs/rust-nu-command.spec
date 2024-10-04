@@ -16,7 +16,7 @@ Source:         %{crates_source}
 Patch:          nu-command-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * drop rusqlite's bundled feature
-# * Update brotli from 5.0 to 6.0: https://github.com/nushell/nushell/pull/13960
+# * Update brotli from 5.0 to 7.0: https://github.com/nushell/nushell/pull/13960
 # * allow chrono-tz 0.9
 Patch:          nu-command-fix-metadata.diff
 

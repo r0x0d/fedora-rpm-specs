@@ -1,5 +1,5 @@
 Name:           perl-IRI
-Version:        0.012
+Version:        0.013
 Release:        1%{?dist}
 Summary:        Internationalized Resource Identifiers
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -90,6 +90,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Wed Oct 02 2024 Petr Pisar <ppisar@redhat.com> - 0.013-1
+- 0.013 bump
+
 * Mon Sep 30 2024 Petr Pisar <ppisar@redhat.com> - 0.012-1
 - 0.012 bump
 

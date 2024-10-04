@@ -14,10 +14,10 @@ URL: https://www.python.org/
 #  WARNING  When rebasing to a new Python version,
 #           remember to update the python3-docs package as well
 %global general_version %{pybasever}.0
-%global prerel rc2
+%global prerel rc3
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 3%{?dist}
+Release: 1%{?dist}
 License: Python-2.0.1
 
 
@@ -389,14 +389,6 @@ Source11: idle3.appdata.xml
 #
 # pypa/distutils integration: https://github.com/pypa/distutils/pull/70
 Patch251: 00251-change-user-install-location.patch
-
-# 00439 # 5c3ace49fc6242246c8e54f2f904d483fb51aefa
-# gh-122145: Handle an empty AST body when reporting tracebacks
-Patch439: 00439-gh-122145-handle-an-empty-ast-body-when-reporting-tracebacks.patch
-
-# 00440 # 7c35d4da60c9edc333a7031434bf114660e1ad34
-# gh-124160: Pass main_tstate to update_global_state_for_extension()
-Patch440: 00440-gh-124160-pass-main_tstate-to-update_global_state_for_extension.patch
 
 # (New patches go here ^^^)
 #
@@ -1739,6 +1731,9 @@ CheckPython freethreading
 # ======================================================
 
 %changelog
+* Tue Oct 01 2024 Miro Hrončok <mhroncok@redhat.com> - 3.13.0~rc3-1
+- Update to Python 3.13.0rc3
+
 * Thu Sep 19 2024 Miro Hrončok <mhroncok@redhat.com> - 3.13.0~rc2-3
 - Fix segfault when trying to use PyRun_SimpleString() with some imports
 

@@ -68,6 +68,9 @@ sed -i 's/jsonschema = ">=4.10.0,<4.18.0"/jsonschema = ">=4.10.0,<4.20.0"/' pypr
 # incompatibilities.
 sed -i -r 's/(keyring = ")\^/\1>=/' pyproject.toml
 
+# Allow newer version of dulwich, which has landed in Fedora
+sed -i 's/dulwich = "^0.21.2"/dulwich = ">=0.21.2"/' pyproject.toml
+
 
 %generate_buildrequires
 %pyproject_buildrequires %{?with_bootstrap: -R}
@@ -91,7 +94,9 @@ done
 
 %if %{without bootstrap}
 %check
-%pytest -m "not network"
+# the test test_add_git_constraint_with_extras is flaky
+# upstream issue: https://github.com/python-poetry/poetry/issues/9652
+%pytest -m "not network" -k "not test_add_git_constraint_with_extras"
 %endif
 
 

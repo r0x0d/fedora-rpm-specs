@@ -1,8 +1,8 @@
 %global srcname colcon-core
 
 Name:           python-%{srcname}
-Version:        0.17.0
-Release:        2%{?dist}
+Version:        0.18.1
+Release:        1%{?dist}
 Summary:        Command line tool to build sets of software packages
 
 License:        Apache-2.0
@@ -24,42 +24,31 @@ and sets up the environment to use the packages.
 
 %package -n python%{python3_pkgversion}-%{srcname}
 Summary:        %{summary}
+BuildRequires:  (python%{python3_pkgversion} >= 3.8 or python%{python3_pkgversion}-importlib-metadata)
+BuildRequires:  (python%{python3_pkgversion} >= 3.11 or python%{python3_pkgversion}-tomli >= 1)
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-distlib >= 0.2.5
-BuildRequires:  python%{python3_pkgversion}-empy < 4
-%if 0%{?rhel} && 0%{?rhel} < 9
-BuildRequires:  python%{python3_pkgversion}-importlib-metadata
-%endif
+BuildRequires:  python%{python3_pkgversion}-empy
 BuildRequires:  python%{python3_pkgversion}-packaging
 BuildRequires:  python%{python3_pkgversion}-pytest
 BuildRequires:  python%{python3_pkgversion}-setuptools >= 30.3.0
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{srcname}}
 
 %if %{undefined __pythondist_requires}
+Requires:       (python%{python3_pkgversion} >= 3.8 or python%{python3_pkgversion}-importlib-metadata)
+Requires:       (python%{python3_pkgversion} >= 3.11 or python%{python3_pkgversion}-tomli >= 1)
 Requires:       python%{python3_pkgversion}-distlib >= 0.2.5
-Requires:       python%{python3_pkgversion}-empy < 4
-%if 0%{?rhel} && 0%{?rhel} < 9
-Requires:       python%{python3_pkgversion}-importlib-metadata
-%endif
+Requires:       python%{python3_pkgversion}-empy
 Requires:       python%{python3_pkgversion}-packaging
 Requires:       python%{python3_pkgversion}-setuptools
 %endif
 
-%if !0%{?rhel} || 0%{?rhel} >= 8
 Recommends:     python%{python3_pkgversion}-coloredlogs
 Recommends:     python%{python3_pkgversion}-pytest
 Recommends:     python%{python3_pkgversion}-pytest-cov
 Recommends:     python%{python3_pkgversion}-pytest-repeat
 Recommends:     python%{python3_pkgversion}-pytest-rerunfailures
 Recommends:     python%{python3_pkgversion}-pytest-runner
-%else
-Requires:       python%{python3_pkgversion}-coloredlogs
-Requires:       python%{python3_pkgversion}-pytest
-Requires:       python%{python3_pkgversion}-pytest-cov
-Requires:       python%{python3_pkgversion}-pytest-repeat
-Requires:       python%{python3_pkgversion}-pytest-rerunfailures
-Requires:       python%{python3_pkgversion}-pytest-runner
-%endif
 
 %description -n python%{python3_pkgversion}-%{srcname}
 colcon is a command line tool to improve the workflow of building, testing and
@@ -93,6 +82,11 @@ and sets up the environment to use the packages.
 
 
 %changelog
+* Wed Oct 02 2024 Scott K Logan <logans@cottsay.net> - 0.18.1-1
+- Update to 0.18.1 (rhbz#2300129)
+- Drop RHEL 7 spec support
+- Use boolean operators for backwards compatibility package dependencies
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.17.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
