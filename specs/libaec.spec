@@ -1,6 +1,6 @@
 Name:           libaec
-Version:        1.1.2
-Release:        3%{?dist}
+Version:        1.1.3
+Release:        1%{?dist}
 Summary:        Adaptive Entropy Coding library
 # Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
@@ -60,6 +60,9 @@ mv %{buildroot}/%{_prefix}/cmake %{buildroot}/%{_libdir}
 %{_libdir}/cmake/%{name}-*.cmake
 
 %changelog
+* Thu Oct 03 2024 Christoph Junghans <junghans@votca.org> - 1.1.3-1
+- Version bump to v1.1.3 (bug #2270651)
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.1.2-3
 - convert license to SPDX
 

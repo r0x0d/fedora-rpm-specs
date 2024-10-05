@@ -26,7 +26,7 @@ Version:	0.1.0
 Release:	20%{?dist}
 Summary:	YaST filesystem layout
 
-License:	Public Domain
+License:	Unlicense
 URL:		https://en.opensuse.org/Portal:YaST
 
 # Package has no real upstream.  Spec-file was written by me,

@@ -1,6 +1,6 @@
 Name:           mpv
-Version:        0.38.0
-Release:        4%{?dist}
+Version:        0.39.0
+Release:        1%{?dist}
 
 License:        GPL-2.0-or-later AND LGPL-2.1-or-later
 Summary:        Movie player playing most video formats and DVDs
@@ -173,7 +173,6 @@ sed -e "s|/usr/local/etc|%{_sysconfdir}/%{name}|" -i etc/%{name}.conf
     -Dvdpau-gl-x11=enabled \
     -Dvdpau=enabled \
     -Dvector=enabled \
-    -Dvulkan-interop=disabled \
     -Dvulkan=enabled \
     -Dwayland=enabled \
     -Dwerror=false \
@@ -218,6 +217,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Tue Sep 24 2024 Sérgio Basto <sergio@serjux.com> - 0.39.0-1
+- Update mpv to 0.39.0
+
 * Mon Sep 23 2024 Fabio Valentini <decathorpe@gmail.com> - 0.38.0-4
 - Rebuild for ffmpeg 7
 

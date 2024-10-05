@@ -1,43 +1,16 @@
-%global pybin %{?fedora:%{__python3}}%{!?fedora:%{__python2}}
-%global pylib %{?fedora:%{python3_sitelib}}%{!?fedora:%{python2_sitelib}}
-%global pypkg %{?fedora:python3}%{!?fedora:python}
-%global meh_pypkg %{?fedora:%{pypkg}-}
-
-%if 0%{?rhel} >= 8
-%global pybin %__python3
-%global pylib %python3_sitelib
-%global pypkg python3
-%global meh_pypkg python3-
-%endif
-
-
 Name:       distgen
 Summary:    Templating system/generator for distributions
-Version:    1.18
+Version:    2.0
 Release:    1%{?dist}
 License:    GPL-2.0-or-later AND Apache-2.0
 URL:        https://github.com/devexp-db/distgen
 BuildArch:  noarch
 
-Requires: %{pypkg}-jinja2
-Requires: %{pypkg}-distro
-Requires: %{meh_pypkg}PyYAML
-Requires: %{pypkg}-six
+BuildRequires: python3-devel
+BuildRequires: pyproject-rpm-macros
+BuildRequires: python3-pytest
 
-BuildRequires: make
-BuildRequires: %{pypkg}-devel
-BuildRequires: %{pypkg}-distro
-BuildRequires: %{pypkg}-jinja2
-BuildRequires: %{meh_pypkg}pytest
-%if 0%{?rhel} && 0%{?rhel} < 8
-BuildRequires: %{pypkg}-mock
-BuildRequires: %{pypkg}-pytest-catchlog
-%endif
-BuildRequires: %{meh_pypkg}PyYAML
-BuildRequires: %{pypkg}-setuptools
-BuildRequires: %{pypkg}-six
-
-Source0: https://pypi.org/packages/source/d/%name/%name-%version.tar.gz
+Source0: https://github.com/devexp-db/%name/releases/download/v%version/%name-%version.tar.gz
 
 %description
 Based on given template specification (configuration for template), template
@@ -47,33 +20,36 @@ file and preexisting distribution metadata generate output file.
 %prep
 %autosetup -p1
 
+%generate_buildrequires
+%pyproject_buildrequires -x pytest,pytest-catchlog,pytest-cov,coverage,flake8
 
 %build
-%{pybin} setup.py build
+%pyproject_wheel
 
 
 %install
-%{pybin} setup.py install --root=%{buildroot}
-mkdir -p %{buildroot}%{_datadir}/distgen
-mv %{buildroot}%{pylib}/distgen/{distconf,templates} %{buildroot}%{_datadir}/distgen
+%pyproject_install
+%pyproject_save_files distgen
 
 
 %check
-make PYTHON=%{pybin} check
+%pytest tests/unittests/
 
 
-%files
+%files -f %{pyproject_files}
 %license LICENSE
-%doc AUTHORS NEWS
+%doc NEWS
 %doc docs/
 %{_bindir}/dg
-%{pylib}/distgen
-%{pylib}/%{name}-*.egg-info
-%{_datadir}/%{name}
 %{_mandir}/man1/*
 
 
 %changelog
+* Wed Oct 2 2024 Ales Nezbeda <anezbeda@redhat.com> - 2.0-1
+- Update to 2.0
+- Refresh of build system
+- Change spec file so it follows fedora guidelines
+
 * Mon Sep 09 2024 Lumír Balhar <lbalhar@redhat.com> - 1.18-1
 - Update to 1.18
 

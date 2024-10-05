@@ -5,7 +5,8 @@ Name:           vim-mediawiki
 Version:        0.2^1.%{shortcommit}
 Release:        %autorelease
 Summary:        Vim syntax highlighting for MediaWiki
-License:        Public Domain
+# Automatically converted from old format: Public Domain - needs further work
+License:        LicenseRef-Callaway-Public-Domain
 URL:            https://github.com/chikamichi/mediawiki.vim
 Source:         %{url}/archive/%{commit}/mediawiki.vim-%{shortcommit}.tar.gz
 BuildArch:      noarch

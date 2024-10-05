@@ -5,7 +5,7 @@
 %global crate boxcar
 
 Name:           rust-boxcar
-Version:        0.2.5
+Version:        0.2.6
 Release:        %autorelease
 Summary:        Concurrent, append-only vector
 
@@ -13,12 +13,13 @@ License:        MIT
 URL:            https://crates.io/crates/boxcar
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * Exclude benchmarks and other unnecessary files from published crates:
-#   https://github.com/ibraheemdev/boxcar/pull/8/commits/0a4ffbad2486a902ac251664e7ce1a64b286e39c
+# * Exclude benchmarks, since bench.rs carries an MIT license and this
+#   complicates packaging. We suggested this upstream in
+#   https://github.com/ibraheemdev/boxcar/pull/8, which was merged, but upstream
+#   subsequently decided to inclue benchmarks in published crates,
+#   https://github.com/ibraheemdev/boxcar/commit/7131dc44d35d4b4e88d9d80374a7528c59bd6cfe.
+#   This patch basically reverts that commit.
 Patch:          boxcar-fix-metadata.diff
-# * Include MIT license text for sharded-slab in bench.rs
-# * From https://github.com/ibraheemdev/boxcar/pull/8
-Patch10:       https://github.com/ibraheemdev/boxcar/pull/8/commits/74c3f316c23d419bc97054c017b94d07bec21b34.patch#/boxcar-sharded-slab-license.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 BuildRequires:  tomcli
@@ -39,7 +40,6 @@ use the "%{crate}" crate.
 
 %files          devel
 %license %{crate_instdir}/LICENSE
-%doc %{crate_instdir}/DESIGN.md
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
 

@@ -2,7 +2,7 @@
 %global sover 2.5
 
 Name:           OpenImageIO
-Version:        2.5.15.0
+Version:        2.5.16.0
 Release:        1%{?dist}
 Summary:        Library for reading and writing images
 
@@ -17,8 +17,9 @@ Source0:        https://github.com/AcademySoftwareFoundation/OpenImageIO/archive
 # OpenVDB no longer builds for i686
 ExcludeArch:    i686
 
-# Needed until LibRaw is available on s390x and aarch64
-%if 0%{?rhel} >= 8
+# LibRaw on RHEL is only available on s390x and aarch64. As of RHEL 10 it looks
+# like the package has moved back to EPEL and build for all architectures.
+%if 0%{?rhel} >= 8 && 0%{?rhel} < 10
 ExclusiveArch:  x86_64 ppc64le
 %endif
 
@@ -40,7 +41,7 @@ BuildRequires:  glew-devel
 BuildRequires:  hdf5-devel
 BuildRequires:  jasper-devel
 # Only available on RPM Fusion
-#BuildRequires:  libheif-devel
+BuildRequires:  libheif-devel
 BuildRequires:  turbojpeg-devel
 BuildRequires:  libpng-devel
 BuildRequires:  LibRaw-devel
@@ -48,11 +49,7 @@ BuildRequires:  libsquish-devel
 BuildRequires:  libtiff-devel
 BuildRequires:  libwebp-devel
 BuildRequires:  opencv-devel
-%if 0%{?fedora}
 BuildRequires:  cmake(OpenEXR)
-%else
-BuildRequires:  OpenEXR-devel ilmbase-devel
-%endif
 BuildRequires:  cmake(OpenColorIO)
 BuildRequires:  openjpeg2-devel
 BuildRequires:  openssl-devel
@@ -207,6 +204,9 @@ cp -a src/doc/*.1 %{buildroot}%{_mandir}/man1
 
 
 %changelog
+* Thu Oct 03 2024 Richard Shaw <hobbes1069@gmail.com> - 2.5.16.0-1
+- Update to 2.5.16.0.
+
 * Tue Sep 03 2024 Richard Shaw <hobbes1069@gmail.com> - 2.5.15.0-1
 - Update to 2.5.15.0.
 

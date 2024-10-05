@@ -9,7 +9,7 @@
 
 Name:           ncl
 Version:        6.6.2
-Release:        44%{?dist}
+Release:        45%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -50,6 +50,9 @@ Patch5:         ncl-boz.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1856959
 # https://github.com/OSGeo/gdal/issues/2775
 Patch6:         ncl-gdal.patch
+# Drop unused headers removed from hdf 4.3
+# https://github.com/NCAR/ncl/pull/209
+Patch7:         ncl-hdf4.3.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
 Patch10:        ncl-5.0.0-no_install_dep.patch
@@ -138,6 +141,7 @@ Example programs and data using NCL.
 %patch -P4 -p1 -b .format
 %patch -P5 -p1 -b .boz
 %patch -P6 -p1 -b .gdal
+%patch -P7 -p1 -b .hdf
 %patch -P10 -p1 -b .no_install_dep
 %patch -P11 -p1 -b .build_n_scripts
 %patch -P12 -p1 -b .netcdff
@@ -362,6 +366,9 @@ done
 
 
 %changelog
+* Wed Oct 02 2024 Orion Poplawski <orion@nwra.com> - 6.6.2-45
+- Add patch to fix build with hdf 4.3
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 6.6.2-44
 - convert license to SPDX
 

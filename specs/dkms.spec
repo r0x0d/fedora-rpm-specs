@@ -1,8 +1,7 @@
 Summary:        Dynamic Kernel Module Support Framework
 Name:           dkms
-Version:        3.0.13
-Release:        3%{?dist}
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
+Version:        3.1.0
+Release:        1%{?dist}
 License:        GPL-2.0-or-later
 URL:            http://linux.dell.com/dkms
 
@@ -30,7 +29,9 @@ Requires:       which
 
 Requires:       (kernel-debug-devel-matched if kernel-debug-core)
 Requires:       (kernel-devel-matched if kernel-core)
-Requires:       (kernel-lpae-devel-matched if kernel-lpae-core)
+# RT kernel has no matched:
+Requires:       (kernel-rt-devel if kernel-rt-core)
+Requires:       (kernel-rt-debug-devel if kernel-rt-debug-core)
 
 Requires(post):     systemd
 Requires(preun):    systemd
@@ -47,10 +48,6 @@ method for installing module RPMS as originally developed by Dell.
 
 %install
 make install-redhat DESTDIR=%{buildroot}
-
-# Move 40-dkms.install to read only area (no configuration file):
-mkdir -p %{buildroot}%{_prefix}/lib/kernel/
-mv %{buildroot}%{_sysconfdir}/kernel/install.d %{buildroot}%{_prefix}/lib/kernel/
 
 sed -i -e 's/# modprobe_on_install="true"/modprobe_on_install="true"/g' %{buildroot}%{_sysconfdir}/%{name}/framework.conf
 
@@ -81,6 +78,9 @@ sed -i -e 's/# modprobe_on_install="true"/modprobe_on_install="true"/g' %{buildr
 %{_unitdir}/%{name}.service
 
 %changelog
+* Tue Oct 01 2024 Simone Caronni <negativo17@gmail.com> - 3.1.0-1
+- Update to 3.1.0.
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 3.0.13-3
 - convert license to SPDX
 

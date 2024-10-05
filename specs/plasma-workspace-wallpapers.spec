@@ -1,5 +1,5 @@
 Name:    plasma-workspace-wallpapers
-Version: 6.1.90
+Version: 6.2.0
 Release: 1%{?dist}
 Summary: Additional wallpapers for Plasma workspace
 # Automatically converted from old format: LGPLv3 - review is highly recommended.
@@ -75,6 +75,9 @@ Obsoletes:      plasma-workspace-wallpapers < 5.2.0-2
 %{_datadir}/wallpapers/Volna/
 
 %changelog
+* Thu Oct 03 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.2.0-1
+- 6.2.0
+
 * Thu Sep 12 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.1.90-1
 - 6.1.90
 

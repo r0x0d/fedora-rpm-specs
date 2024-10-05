@@ -5,14 +5,14 @@
 Name: make
 Epoch: 1
 Version: 4.4.1
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: GPL-3.0-or-later AND LGPL-2.1-or-later AND GFDL-1.3-or-later AND FSFULLR
 URL: https://www.gnu.org/software/make/
 Source: https://ftp.gnu.org/gnu/make/make-%{version}.tar.gz
 
 %if "%{name}" != "make"
 # Set this to the sub-package base name, for "make-latest"
-%global make make441
+%global make %(echo make%{version} | tr -d .)
 %if 0%{?rhel} > 0
 %global _prefix /opt/rh/%{make}
 %else
@@ -24,6 +24,8 @@ Summary: Meta package to include latest version of make
 %else
 %global make %{name}
 Summary: A GNU tool which simplifies the build process for users
+Provides:   make-latest = %{version}-%{release}
+Provides:   %(echo make%{version} | tr -d .) = %{version}-%{release}
 %endif
 
 # This gives the user the option of saying --with guile, but defaults to WITHOUT
@@ -129,6 +131,9 @@ echo ============END TESTING===========
 %{_includedir}/gnumake.h
 
 %changelog
+* Wed Oct 2 2024 DJ Delorie <dj@redhat.com> - 1:4.4.1-9
+- Ensure that we can upgrade from make-latest to make
+
 * Mon Jul 22 2024 Florian Weimer <fweimer@redhat.com> - 1:4.4.1-8
 - Disable guile support by default
 

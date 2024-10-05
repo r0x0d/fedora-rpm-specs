@@ -6,7 +6,9 @@ Summary(de):    Symbolthema vom Tango Projekt
 Summary(es):    Iconos del Proyecto Tango
 Summary(pl):    Ikony Projektu Tango
 
-License:        Public Domain
+
+# Automatically converted from old format: Public Domain - needs further work
+License:        LicenseRef-Callaway-Public-Domain
 URL:            http://tango.freedesktop.org/Tango_Desktop_Project
 
 Source0:        http://tango.freedesktop.org/releases/%{name}-%{version}.tar.bz2

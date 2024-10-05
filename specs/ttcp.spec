@@ -11,7 +11,8 @@ Patch1: ttcp-malloc.patch
 Patch2: ttcp-GNU.patch
 Patch3: ttcp-man.patch
 BuildRequires: gcc
-License: Public Domain
+# Automatically converted from old format: Public Domain - needs further work
+License: LicenseRef-Callaway-Public-Domain
 
 %description
 ttcp is a tool for testing the throughput of TCP connections.  Unlike other

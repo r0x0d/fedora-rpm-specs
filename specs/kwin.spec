@@ -2,8 +2,8 @@
 %bcond x11 0
 
 Name:    kwin
-Version: 6.1.90
-Release: 4%{?dist}
+Version: 6.2.0
+Release: 1%{?dist}
 Summary: KDE Window manager
 
 License: BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND GPL-3.0-or-later AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only) AND MIT
@@ -14,15 +14,6 @@ URL:     https://userbase.kde.org/KWin
 Source0: http://download.kde.org/%{stable_kf6}/plasma/%{maj_ver_kf6}.%{min_ver_kf6}.%{bug_ver_kf6}/%{name}-%{version}.tar.xz
 
 ## upstream patches
-# https://invent.kde.org/plasma/kwin/-/merge_requests/6409
-# https://bugs.kde.org/show_bug.cgi?id=493295
-# https://bugzilla.redhat.com/show_bug.cgi?id=2312900
-# Fixes slow performance with software rendering
-Patch: 0001-scene-itemrenderer_opengl-use-the-color-pipeline-to-.patch
-# https://invent.kde.org/plasma/kwin/-/merge_requests/6495
-# https://bugs.kde.org/show_bug.cgi?id=493054
-# Fixes loading Xwayland scripts with a Wayland session
-Patch: https://invent.kde.org/plasma/kwin/-/merge_requests/6495.patch
 
 ## proposed patches
 
@@ -310,6 +301,9 @@ rm -v %{buildroot}%{_kf6_bindir}/kwin_x11 %{buildroot}%{_userunitdir}/plasma-kwi
 
 
 %changelog
+* Thu Oct 03 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.2.0-1
+- 6.2.0
+
 * Wed Sep 25 2024 Neal Gompa <ngompa@fedoraproject.org> - 6.1.90-4
 - Backport patch to run Xwayland-session.d scripts
 

@@ -5,7 +5,7 @@
 %global _python_bytecompile_errors_terminate_build 0
 
 Name:           qt-creator
-Version:        14.0.1
+Version:        14.0.2
 Release:        1%{?dist}
 Summary:        Cross-platform IDE for Qt
 
@@ -211,7 +211,10 @@ diff -u %{SOURCE1} $outfile
 
 
 %changelog
-* Wed Aug 07 2024 Sandro Mani <manisandro@gmail.com>
+* Thu Oct 03 2024 Sandro Mani <manisandro@gmail.com> - 14.0.2-1
+- Update to 14.0.2
+
+* Wed Aug 07 2024 Sandro Mani <manisandro@gmail.com> - 14.0.1-1
 - Update to 14.0.1
 
 * Fri Jul 26 2024 Sandro Mani <manisandro@gmail.com> - 14.0.0-1

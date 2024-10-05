@@ -10,7 +10,7 @@
 # For compatibility with SCL
 %undefine __brp_mangle_shebangs
 
-%global gh_commit    e30ccdd665828ae66eb1be78f056e39e1d5f55ab
+%global gh_commit    d5e75c21ceeb6829918a75ed63b56c576b4a6261
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_branch    2.0-dev
 %global gh_owner     composer
@@ -18,7 +18,7 @@
 %global api_version  2.6.0
 %global run_version  2.2.2
 
-%global upstream_version 2.7.9
+%global upstream_version 2.8.0
 #global upstream_prever  RC1
 #global upstream_lower   rc1
 
@@ -80,11 +80,11 @@ Requires:       php-cli
 Requires:       ca-certificates
 # Bundled libraries
 # License MIT
-Provides:       bundled(php-composer-ca-bundle) = 1.5.1
+Provides:       bundled(php-composer-ca-bundle) = 1.5.2
 Provides:       bundled(php-composer-class-map-generator) = 1.3.4
 Provides:       bundled(php-composer-metadata-minifier) = 1.0.0
 Provides:       bundled(php-composer-pcre) = 2.3.1
-Provides:       bundled(php-composer-semver) = 3.4.2
+Provides:       bundled(php-composer-semver) = 3.4.3
 Provides:       bundled(php-composer-spdx-licenses) = 1.5.8
 Provides:       bundled(php-composer-xdebug-handler) = 3.0.5
 Provides:       bundled(php-justinrainbow-json-schema) = 5.3.0
@@ -94,20 +94,20 @@ Provides:       bundled(php-react-promise) = v3.2.0
 Provides:       bundled(php-seld-jsonlint) = 1.11.0
 Provides:       bundled(php-seld-phar-utils) = 1.2.1
 Provides:       bundled(php-seld-signal-handler) = 2.0.2
-Provides:       bundled(php-symfony-console) = v5.4.43
+Provides:       bundled(php-symfony-console) = v5.4.44
 Provides:       bundled(php-symfony-deprecation-contracts) = v2.5.3
-Provides:       bundled(php-symfony-filesystem) = v5.4.41
+Provides:       bundled(php-symfony-filesystem) = v5.4.44
 Provides:       bundled(php-symfony-finder) = v5.4.43
-Provides:       bundled(php-symfony-polyfill-ctype) = v1.30.0
-Provides:       bundled(php-symfony-polyfill-intl-grapheme) = v1.30.0
-Provides:       bundled(php-symfony-polyfill-intl-normalizer) = v1.30.0
-Provides:       bundled(php-symfony-polyfill-mbstring) = v1.30.0
-Provides:       bundled(php-symfony-polyfill-php73) = v1.30.0
-Provides:       bundled(php-symfony-polyfill-php80) = v1.30.0
-Provides:       bundled(php-symfony-polyfill-php81) = v1.30.0
-Provides:       bundled(php-symfony-process) = v5.4.40
+Provides:       bundled(php-symfony-polyfill-ctype) = v1.31.0
+Provides:       bundled(php-symfony-polyfill-intl-grapheme) = v1.31.0
+Provides:       bundled(php-symfony-polyfill-intl-normalizer) = v1.31.0
+Provides:       bundled(php-symfony-polyfill-mbstring) = v1.31.0
+Provides:       bundled(php-symfony-polyfill-php73) = v1.31.0
+Provides:       bundled(php-symfony-polyfill-php80) = v1.31.0
+Provides:       bundled(php-symfony-polyfill-php81) = v1.31.0
+Provides:       bundled(php-symfony-process) = v5.4.44
 Provides:       bundled(php-symfony-service-contracts) = v2.5.3
-Provides:       bundled(php-symfony-string) = v5.4.43
+Provides:       bundled(php-symfony-string) = v5.4.44
 
 # From composer.json, suggest
 #        "ext-openssl": "Enabling the openssl extension allows you to access https URLs for repositories and packages",
@@ -230,14 +230,22 @@ mkdir -p       %{buildroot}%{_datadir}/%{name}
 cp -pr res     %{buildroot}%{_datadir}/%{name}/res
 cp -p  LICENSE %{buildroot}%{_datadir}/%{name}/LICENSE
 
-ln -sf %{_datadir}/%{name}/LICENSE LICENSE
-
 : Command
 install -Dpm 755 bin/%{name} %{buildroot}%{_bindir}/%{name}
 
+: Licenses
+ln -sf ../../%{name}/LICENSE LICENSE
+cd src/Composer/vendor
+for lic in */*/LICENSE
+do dir=$(dirname $lic)
+   own=$(dirname $dir)
+   prj=$(basename $dir)
+   ln -sf ../../php/Composer/vendor/$own/$prj/LICENSE ../../../$own-$prj-LICENSE
+done
+
 
 %files
-%license LICENSE
+%license *LICENSE
 %doc *.md doc
 %doc composer.json
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*
@@ -248,6 +256,9 @@ install -Dpm 755 bin/%{name} %{buildroot}%{_bindir}/%{name}
 
 
 %changelog
+* Thu Oct  3 2024 Remi Collet <remi@remirepo.net> - 2.8.0-1
+- update to 2.8.0
+
 * Wed Sep  4 2024 Remi Collet <remi@remirepo.net> - 2.7.9-1
 - update to 2.7.9
 

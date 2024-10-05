@@ -1,20 +1,15 @@
 # note: PROJ_MIN_VERSION is defined in the setup.py file of pyproj
 # a compatibility matrix is also provided in docs/installation.rst
-%global minimal_needed_proj_version 9.0.0
+%global minimal_needed_proj_version 9.2.0
 
 Name:           pyproj
-Version:        3.6.1
-Release:        7%{?dist}
+Version:        3.7.0
+Release:        1%{?dist}
 Summary:        Cython wrapper to provide python interfaces to Proj
 # this software uses the "MIT:Modern Style with sublicense" license
 License:        MIT
 URL:            https://github.com/jswhit/%{name}
 Source0:        https://files.pythonhosted.org/packages/source/p/%{name}/%{name}-%{version}.tar.gz
-
-# A new member was added to wgs84 datum ensemble in EPSG
-Patch:          https://github.com/pyproj4/pyproj/pull/1407.patch
-# Support azimuthal_equidistant coordinate operation to CF
-Patch:          https://github.com/pyproj4/pyproj/pull/1380.patch
 
 BuildRequires:  make
 BuildRequires:  gcc
@@ -190,6 +185,9 @@ py.test-3 -m "not network and not pandas"
 
 
 %changelog
+* Thu Oct 03 2024 Jos de Kloe <josdekloe@gmail.com> 3.7.0
+- Update to 3.7.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.6.1-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -6,7 +6,7 @@
 
 %global _lto_cflags %{nil}
 
-%global subversion .992
+%global subversion .993
 
 Name:          giac
 Summary:       Computer Algebra System, Symbolic calculus, Geometry
@@ -49,6 +49,10 @@ Patch5:        %{name}-pari2.15.patch
 
 # https://xcas.univ-grenoble-alpes.fr/forum/viewtopic.php?f=3&t=2895
 Patch6:        %{name}-undefine_GLIBCXX_ASSERTIONS.patch
+
+# 'mkjs' is not correctly compiled 
+# https://xcas.univ-grenoble-alpes.fr/forum/viewtopic.php?f=4&t=2930
+Patch7:        %{name}-faking_mkjs.patch
 
 BuildRequires: autoconf, libtool
 BuildRequires: python3-devel
@@ -180,6 +184,7 @@ with Giac computations.
 %patch -P 4 -p1 -b .backup
 %patch -P 5 -p1 -b .backup
 %patch -P 6 -p1 -b .backup
+%patch -P 7 -p1 -b .backup
 
 # Remove local intl (already bundled in fedora)
 rm -rf intl/*.h
@@ -236,6 +241,12 @@ export CFLAGS_FEDORA="$OPT_FLAGS"
 # The --disable-rpath option of configure was not enough to get rid of the hardcoded libdir
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
+
+# Compile 'mkjs' executable
+# See patch7's comment
+export OPT_FLAGS=$(echo "%build_cxxflags" | %{__sed} -e 's/-Werror=format-security/-Wno-error=format-security/')
+g++ $OPT_FLAGS -std=gnu++14 src/mkjs.cc -o src/mkjs
+#
 
 # https://xcas.univ-grenoble-alpes.fr/forum/viewtopic.php?f=4&t=2817
 OPT_FLAGS=$(echo "%build_cflags" | %{__sed} -e 's/-Werror=format-security/-Wno-error=format-security/')

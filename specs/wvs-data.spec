@@ -12,7 +12,8 @@ Version:	0.0.%{WVS_date}
 Release:	30%{?dist}
 Summary:	World Vector Shoreline data
 
-License:	Public Domain
+# Automatically converted from old format: Public Domain - needs further work
+License:	LicenseRef-Callaway-Public-Domain
 URL:		http://www.flaterco.com/xtide/files.html
 Source0:	ftp://ftp.flaterco.com/xtide/wvs.tar.bz2
 

@@ -1,6 +1,6 @@
 Name:    powerdevil
-Version: 6.1.90
-Release: 2%{?dist}
+Version: 6.2.0
+Release: 1%{?dist}
 Summary: Manages the power consumption settings of a Plasma Shell
 
 License: BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-only AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only)
@@ -8,9 +8,6 @@ URL:     https://invent.kde.org/plasma/%{name}
 
 Source0: https://download.kde.org/%{stable_kf6}/plasma/%{version}/%{name}-%{version}.tar.xz
 
-# 6.1.90: daemon: Do not compare const and non-const QMap iterator
-# https://invent.kde.org/plasma/powerdevil/-/commit/950ba15e9b38e4214a1877b8f035f999c1a0db89
-Patch0:  950ba15e9b38e4214a1877b8f035f999c1a0db89.patch
 
 # Plasma Dependencies
 BuildRequires:  plasma-workspace-devel
@@ -154,6 +151,9 @@ rm -fv %{buildroot}/%{_libdir}/libpowerdevil{configcommonprivate,core,ui}.so
 %{_kf6_datadir}/qlogging-categories6/batterymonitor.categories
 
 %changelog
+* Thu Oct 03 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.2.0-1
+- 6.2.0
+
 * Thu Sep 26 2024 Steve Cossette <farchord@gmail.com> - 6.1.90-2
 - Fix for crash on 6.2 beta
 

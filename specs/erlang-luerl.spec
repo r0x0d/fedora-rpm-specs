@@ -1,7 +1,7 @@
 %global srcname luerl
 
 Name:       erlang-%{srcname}
-Version:    1.2.1
+Version:    1.2.3
 Release:    %autorelease
 BuildArch:  noarch
 License:    Apache-2.0

@@ -10,8 +10,8 @@
 Name:           qbs
 # qbs was previously packaged as part of qt-creator, using the qt-creator version, hence the epoch bump
 Epoch:          1
-Version:        2.4.1
-Release:        2%{?dist}
+Version:        2.4.2
+Release:        1%{?dist}
 Summary:        Cross platform build tool
 # Fails to build on i686
 ExcludeArch:    i686
@@ -155,6 +155,9 @@ rm %{buildroot}%{_bindir}/clang-format-test
 
 
 %changelog
+* Thu Oct 03 2024 Sandro Mani <manisandro@gmail.com> - 1:2.4.2-1
+- Update to 2.4.2
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1:2.4.1-2
 - convert license to SPDX
 

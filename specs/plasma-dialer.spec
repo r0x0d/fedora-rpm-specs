@@ -2,13 +2,16 @@
 
 Name:           plasma-dialer
 Epoch:          1
-Version:        6.1.90
+Version:        6.2.0
 Release:        1%{?dist}
 License:        BSD and CC0 and GPLv2 and GPLv2+ and GPLv3 and GPLv3+ and LGPLv2+ and LGPLv2.1 and LGPLv2.1+ and LGPLv3 and LGPLv3
 Summary:        Convergent Plasma Mobile dialer application
 Url:            https://invent.kde.org/plasma-mobile/plasma-dialer
 Source0:        https://download.kde.org/%{stable_kf6}/plasma/%{version}/%{name}-%{version}.tar.xz
 
+## patches
+# https://invent.kde.org/plasma-mobile/plasma-dialer/-/merge_requests/173
+Patch0: 173.patch
 ExclusiveArch:  %{java_arches}
 
 BuildRequires:  cmake
@@ -69,7 +72,7 @@ The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 %prep
-%autosetup -n plasma-dialer-%{version}
+%autosetup -n plasma-dialer-%{version} -p1
 
 %build
 %cmake_kf6
@@ -104,6 +107,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/%{kde_name}.deskt
 %{_kf6_libdir}/libktelephonymetatypes.a
 
 %changelog
+* Thu Oct 03 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 1:6.2.0-1
+- 6.2.0
+
 * Mon Sep 23 2024 Alessandro Astone <ales.astone@gmail.com> - 6.1.90-1
 - 6.1.90
 - Bump epoch

@@ -6,7 +6,7 @@
 
 Name:          virt-v2v
 Epoch:         1
-Version:       2.5.10
+Version:       2.5.11
 Release:       1%{?dist}
 Summary:       Convert a virtual machine to run on KVM
 
@@ -290,9 +290,7 @@ done
 %{_mandir}/man1/virt-v2v-output-rhv.1*
 %endif
 %{_mandir}/man1/virt-v2v-release-notes-1.42.1*
-%{_mandir}/man1/virt-v2v-release-notes-2.0.1*
-%{_mandir}/man1/virt-v2v-release-notes-2.2.1*
-%{_mandir}/man1/virt-v2v-release-notes-2.4.1*
+%{_mandir}/man1/virt-v2v-release-notes-2.*.1*
 %{_mandir}/man1/virt-v2v-support.1*
 
 
@@ -312,6 +310,9 @@ done
 
 
 %changelog
+* Thu Oct 03 2024 Richard W.M. Jones <rjones@redhat.com> - 1:2.5.11-1
+- New upstream development version 2.5.11
+
 * Tue Sep 10 2024 Richard W.M. Jones <rjones@redhat.com> - 1:2.5.10-1
 - New upstream development version 2.5.10
 

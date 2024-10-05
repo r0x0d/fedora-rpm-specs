@@ -33,7 +33,7 @@ BuildRequires:  python%{python3_pkgversion}-devel
 
 
 %generate_buildrequires
-%pyproject_buildrequires %{?with_tests: -t}
+%pyproject_buildrequires
 
 
 %build
@@ -47,7 +47,7 @@ BuildRequires:  python%{python3_pkgversion}-devel
 
 %if %{with tests}
 %check
-%tox
+%pytest tests
 %endif
 
 

@@ -10,8 +10,8 @@
 
 Name:           mingw-python-%{pkgname}
 Summary:        MinGW Python %{pypi_name} library
-Version:        1.0.0
-Release:        5%{?dist}
+Version:        1.2.0
+Release:        1%{?dist}
 BuildArch:      noarch
 
 License:        MIT
@@ -63,7 +63,7 @@ mkdir %{distinfo}
 cat > %{distinfo}/METADATA << EOF
 Metadata-Version: 2.2
 Name: %{pypi_name}
-Version: %{version}+rpmbootstrap
+Version: 1.2.0
 EOF
 %else
 %global distinfo %{pypi_name}-%{version}.dist-info
@@ -108,6 +108,9 @@ cp -a src/pyproject_hooks %{distinfo} %{buildroot}%{mingw64_python3_hostsitearch
 
 
 %changelog
+* Thu Oct 03 2024 Sandro Mani <manisandro@gmail.com> - 1.2.0-1
+- Update to 1.2.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

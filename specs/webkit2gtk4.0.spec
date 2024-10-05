@@ -10,8 +10,16 @@
 # any warning during WebKit docs build is fatal!
 %bcond_without docs
 
+# Clang is preferred: https://skia.org/docs/user/build/#supported-and-preferred-compilers
+%global toolchain clang
+
+# We run out of memory if building with LTO enabled on i686.
+%ifarch %{ix86}
+%global _lto_cflags %{nil}
+%endif
+
 Name:           webkit2gtk4.0
-Version:        2.44.3
+Version:        2.46.1
 Release:        %autorelease
 Summary:        WebKitGTK for GTK 3 and libsoup 2
 
@@ -49,14 +57,18 @@ Source1:        https://webkitgtk.org/releases/webkitgtk-%{version}.tar.xz.asc
 # $ gpg --export --export-options export-minimal 013A0127AC9C65B34FFA62526C1009B693975393 5AA3BC334FD7E3369E7C77B291C559DBE4C9123B > webkitgtk-keys.gpg
 Source2:        webkitgtk-keys.gpg
 
-# https://bugs.webkit.org/show_bug.cgi?id=278113
-Patch0:         fix-wasm.patch
+# Work around a missing implementation of musttail in clang for ppc64le
+# https://github.com/llvm/llvm-project/issues/108014
+Patch:          webkitgtk-skia-musttail.patch
+
+# https://bugs.webkit.org/show_bug.cgi?id=280642
+Patch:          llvm19.patch
 
 BuildRequires:  bison
 BuildRequires:  bubblewrap
+BuildRequires:  clang
 BuildRequires:  cmake
 BuildRequires:  flex
-BuildRequires:  gcc-c++
 BuildRequires:  gettext
 BuildRequires:  gi-docgen
 BuildRequires:  git
@@ -112,6 +124,7 @@ BuildRequires:  pkgconfig(libwoff2dec)
 BuildRequires:  pkgconfig(libxslt)
 BuildRequires:  pkgconfig(manette-0.2)
 BuildRequires:  pkgconfig(sqlite3)
+BuildRequires:  pkgconfig(sysprof-capture-4)
 BuildRequires:  pkgconfig(upower-glib)
 BuildRequires:  pkgconfig(wayland-client)
 BuildRequires:  pkgconfig(wayland-egl)
@@ -129,6 +142,7 @@ Recommends:     gstreamer1-plugins-good
 Recommends:     xdg-desktop-portal-gtk
 Provides:       bundled(angle)
 Provides:       bundled(pdfjs)
+Provides:       bundled(skia)
 Provides:       bundled(xdgmime)
 Obsoletes:      webkitgtk4 < %{version}-%{release}
 Provides:       webkitgtk4 = %{version}-%{release}

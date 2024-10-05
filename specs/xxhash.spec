@@ -1,6 +1,6 @@
 Name:		xxhash
 Version:	0.8.2
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	Extremely fast hash algorithm
 
 #		The source for the library (xxhash.c and xxhash.h) is BSD-2-Clause
@@ -71,7 +71,10 @@ Documentation files for the xxhash library
 doxygen
 
 %install
-%make_install PREFIX=%{_prefix} LIBDIR=%{_libdir}
+%make_install \
+    PREFIX=%{_prefix} \
+    LIBDIR=%{_libdir} \
+    DISPATCH=%{dispatch}
 rm %{buildroot}/%{_libdir}/libxxhash.a
 
 %check
@@ -94,6 +97,9 @@ make test-xxhsum-c
 %files devel
 %{_includedir}/xxhash.h
 %{_includedir}/xxh3.h
+%if 0%{?dispatch}
+%{_includedir}/xxh_x86dispatch.h
+%endif
 %{_libdir}/libxxhash.so
 %{_libdir}/pkgconfig/libxxhash.pc
 
@@ -101,6 +107,9 @@ make test-xxhsum-c
 %doc doxygen/html
 
 %changelog
+* Wed Sep 25 2024 Andreas Rogge <andreas.rogge@bareos.com> - 0.8.2-4
+- add xxh_x86dispatch.h to devel package when dispatching is enabled (rhbz#2314193)
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

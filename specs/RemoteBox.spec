@@ -2,8 +2,8 @@
 %global __provides_exclude ^perl\\(vboxService\\)
 
 Name:           RemoteBox
-Version:        3.2
-Release:        5%{?dist}
+Version:        3.3
+Release:        1%{?dist}
 Summary:        Open Source VirtualBox Client with Remote Management
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License:        GPL-2.0-only
@@ -19,7 +19,6 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  perl-generators
 BuildRequires:  sed
 
-Requires:       perl(SOAP::Lite)
 Requires:       perl-Gtk3
 Requires:       perl-libwww-perl
 Requires:       rdesktop
@@ -86,6 +85,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/remotebox.desktop
 
 
 %changelog
+* Thu Oct 03 2024 Pete Walter <pwalter@fedoraproject.org> - 3.3-1
+- Update to 3.3
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 3.2-5
 - convert license to SPDX
 

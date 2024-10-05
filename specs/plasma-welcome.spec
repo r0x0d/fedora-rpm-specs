@@ -1,7 +1,7 @@
 %global orgname org.kde.plasma-welcome
 
 Name:           plasma-welcome
-Version:        6.1.90
+Version:        6.2.0
 Release:        1%{?dist}
 License:        GPL-2.0-or-later and BSD-3-Clause
 Summary:        Plasma Welcome
@@ -75,6 +75,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/%{orgname}.deskto
 
 
 %changelog
+* Thu Oct 03 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.2.0-1
+- 6.2.0
+
 * Thu Sep 12 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.1.90-1
 - 6.1.90
 

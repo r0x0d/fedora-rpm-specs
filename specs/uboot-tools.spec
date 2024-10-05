@@ -7,7 +7,7 @@
 
 Name:     uboot-tools
 Version:  2024.10
-Release:  0.7%{?candidate:.%{candidate}}%{?dist}
+Release:  0.8%{?candidate:.%{candidate}}%{?dist}
 Epoch:    1
 Summary:  U-Boot utilities
 # Automatically converted from old format: GPLv2+ BSD LGPL-2.1+ LGPL-2.0+ - review is highly recommended.
@@ -34,6 +34,8 @@ Patch10:  rockchip-Enable-preboot-start-for-pci-usb.patch
 Patch11:  FUSB302-USB-C-controller-support.patch
 # QCom
 Patch15:  Qualcomm-add-support-for-SC7280-and-the-RB3-Gen-2.patch
+# RPi
+Patch20:  0001-board-rpi-Pass-CMA-through-from-firmware-DT.patch
 
 BuildRequires:  bc
 BuildRequires:  bison
@@ -207,6 +209,9 @@ install -p -m 0755 builds/tools/env/fw_printenv %{buildroot}%{_bindir}
 %endif
 
 %changelog
+* Thu Oct 03 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1:2024.10-0.8.rc6
+- Pass CMA FW setting through to kernel DT for Raspberry Pi
+
 * Tue Oct 01 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1:2024.10-0.7.rc6
 - Update to 2024.10 RC6
 

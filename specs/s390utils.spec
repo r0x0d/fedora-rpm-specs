@@ -13,8 +13,8 @@
 
 Name:           s390utils
 Summary:        Utilities and daemons for IBM z Systems
-Version:        2.34.0
-Release:        2%{?dist}
+Version:        2.35.0
+Release:        1%{?dist}
 Epoch:          2
 # MIT covers nearly all the files, except init files
 License:        MIT AND LGPL-2.1-or-later
@@ -47,7 +47,7 @@ Patch0:         s390-tools-zipl-invert-script-options.patch
 Patch1:         s390-tools-zipl-blscfg-rpm-nvr-sort.patch
 
 # upstream fixes/updates
-Patch100:       s390utils-%{version}-fedora.patch
+#Patch100:       s390utils-%%{version}-fedora.patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
@@ -248,12 +248,10 @@ touch %{buildroot}%{_sysconfdir}/zipl.conf
 %license rust/cargo-vendor.txt
 %endif
 %{_bindir}/genprotimg
-%{_bindir}/pvapconfig
 %{_bindir}/pvattest
 %{_bindir}/pvextract-hdr
 %{_bindir}/pvsecret
 %{_mandir}/man1/genprotimg.1*
-%{_mandir}/man1/pvapconfig.1*
 %{_mandir}/man1/pvattest.1*
 %{_mandir}/man1/pvattest-create.1*
 %{_mandir}/man1/pvattest-perform.1*
@@ -1067,6 +1065,9 @@ User-space development files for the s390/s390x architecture.
 
 
 %changelog
+* Thu Oct 03 2024 Dan Horák <dan[at]danny.cz> - 2:2.35.0-1
+- rebased to 2.35.0 (rhbz#2316232)
+
 * Mon Aug 26 2024 Dan Horák <dan[at]danny.cz> - 2:2.34.0-2
 - don't make Rust warnings fatal
 

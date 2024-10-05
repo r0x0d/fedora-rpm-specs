@@ -3,7 +3,8 @@ Version:        4.4
 Release:        35%{?dist}
 Summary:        ZOO archive extractor
 
-License:        Public Domain
+# Automatically converted from old format: Public Domain - needs further work
+License:        LicenseRef-Callaway-Public-Domain
 URL:            http://archives.math.utk.edu/software/multi-platform/gap/util/unzoo.c
 Source0:        http://archives.math.utk.edu/software/multi-platform/gap/util/unzoo.c
 

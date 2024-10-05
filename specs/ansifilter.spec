@@ -1,9 +1,18 @@
 %global debug_package %{nil}
 %bcond_without  gui
+# Fedora has Qt6
+# EPEL9+ has Qt6, but RHEL9 and CentOS Stream 9 do not, while their 10 versions do
+%if (0%{?rhel} && 0%{?rhel} < 10)
+%global qt_ver 5
+%global qmake %{_qt5_qmake}
+%else
+%global qt_ver 6
+%global qmake %{_qt6_qmake}
+%endif
 
 Name:           ansifilter
 Version:        2.21
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        ANSI terminal escape code converter
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
@@ -24,7 +33,7 @@ output (HTML, RTF, TeX, LaTeX, BBCode).
 %package        gui
 Summary:        GUI for %{name} based on Qt5
 BuildRequires:  desktop-file-utils
-BuildRequires:  qt5-qtbase-devel
+BuildRequires:  qt%{qt_ver}-qtbase-devel
 BuildRequires: make
 
 %description    gui
@@ -32,7 +41,7 @@ Ansifilter handles text files containing ANSI terminal escape codes. The
 command sequences may be stripped or be interpreted to generate formatted
 output (HTML, RTF, TeX, LaTeX, BBCode).
 
-This is a GUI of %{name} based on Qt5.
+This is a GUI of %{name} based on Qt%{qt_ver}.
 %endif
 
 %prep
@@ -56,8 +65,8 @@ find . -type f -exec sed -i 's/\r$//' {} + -print
 %make_build CFLAGS+="%{optflags} -c" LDFLAGS="%{?__global_ldflags}"
 
 %if %{with gui}
-# %%_qt5_qmake will respect the redhat-rpm-config
-%make_build all-gui QMAKE="%{_qt5_qmake}"
+# %%_qt5/6_qmake will respect the redhat-rpm-config
+%make_build all-gui QMAKE="%{qmake}"
 %endif
 
 %install
@@ -91,6 +100,9 @@ rm -frv %{buildroot}%{_docdir}
 %endif
 
 %changelog
+* Thu Oct 03 2024 Moritz Barsnick <moritz+rpm@barsnick.net> 2.21-2
+- build with Qt6, except on RedHat < 10
+
 * Mon Sep 16 2024 Filipe Rosset <rosset.filipe@gmail.com> - 2.21-1
 - Update to 2.21 fixes rhbz#2310316
 

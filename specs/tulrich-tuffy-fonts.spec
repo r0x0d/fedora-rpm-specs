@@ -6,7 +6,8 @@ Version:        1.28
 Release:        23%{?dist}
 Summary:        Generic sans font
 
-License:        Public Domain
+# Automatically converted from old format: Public Domain - needs further work
+License:        LicenseRef-Callaway-Public-Domain
 URL:            http://tulrich.com/fonts/
 Source0:        http://tulrich.com/fonts/tuffy-20120614.tar.gz
 Source1:        %{name}-fontconfig.conf

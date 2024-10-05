@@ -79,7 +79,8 @@ Requires:        libxtide%{?_isa} = %{version}-%{release}
 
 %package         common
 Summary:         Xtide common files
-License:         Public Domain
+# Automatically converted from old format: Public Domain - needs further work
+License:         LicenseRef-Callaway-Public-Domain
 Requires:        bzip2
 Requires:        wget
 BuildArch:       noarch

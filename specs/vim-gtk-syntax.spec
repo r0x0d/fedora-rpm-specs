@@ -3,7 +3,8 @@ Version:        20130716
 Release:        22%{?dist}
 Summary:        Vim syntax highlighting for GLib, Gtk+, Gstreamer, and more
 
-License:        Public Domain
+# Automatically converted from old format: Public Domain - needs further work
+License:        LicenseRef-Callaway-Public-Domain
 URL:            http://www.vim.org/scripts/script.php?script_id=1000
 #Source0:       http://www.vim.org/scripts/download_script.php?src_id=20534
 # The source for this package was downloaded from the URL above, and renamed to

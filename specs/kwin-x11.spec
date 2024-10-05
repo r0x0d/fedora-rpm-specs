@@ -1,6 +1,6 @@
 Name:    kwin-x11
-Version: 6.1.90
-Release: 2%{?dist}
+Version: 6.2.0
+Release: 1%{?dist}
 Summary: KDE Window manager with X11 support
 
 License: BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND GPL-3.0-or-later AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only) AND MIT
@@ -16,11 +16,6 @@ URL:     https://userbase.kde.org/KWin
 Source0: http://download.kde.org/%{stable}/plasma/%{plasma_version}/kwin-%{version}.tar.xz
 
 ## upstream patches
-# https://invent.kde.org/plasma/kwin/-/merge_requests/6409
-# https://bugs.kde.org/show_bug.cgi?id=493295
-# https://bugzilla.redhat.com/show_bug.cgi?id=2312900
-# Fixes slow performance with software rendering
-Patch100: 0001-scene-itemrenderer_opengl-use-the-color-pipeline-to-.patch
 
 ## proposed patches
 
@@ -157,7 +152,6 @@ maintained by the KDE SIG.)
 
 %prep
 %setup -q -n kwin-%{version}
-%patch -P100 -p1 -b .mr6409
 
 # set component for the install step
 sed -i \
@@ -182,6 +176,10 @@ sed -i \
 
 
 %changelog
+* Thu Oct 03 2024 Kevin Kofler <Kevin@tigcc.ticalc.org> - 6.2.0-1
+- 6.2.0
+- Drop backported MR !6409 patch already upstream in 6.2.0
+
 * Mon Sep 23 2024 Kevin Kofler <Kevin@tigcc.ticalc.org> - 6.1.90-2
 - BuildRequires: wayland-devel >= 1.23.0 (just in case, #2312499)
 - Backport MR !6409 to fix slowness with software rendering (#2312900)

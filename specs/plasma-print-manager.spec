@@ -2,7 +2,7 @@
 
 Name:    plasma-print-manager
 Summary: Printer management for KDE
-Version: 6.1.90
+Version: 6.2.0
 Release: 1%{?dist}
 
 License: BSD-3-Clause AND GPL-2.0-or-later AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-3.0-only AND (LGPL-2.1-only OR LGPL-3.0-only)
@@ -114,6 +114,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.PrintQueu
 
 
 %changelog
+* Thu Oct 03 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.2.0-1
+- 6.2.0
+
 * Thu Sep 12 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.1.90-1
 - 6.1.90
 

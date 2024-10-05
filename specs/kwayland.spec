@@ -1,5 +1,5 @@
 Name:       kwayland
-Version:    6.1.90
+Version:    6.2.0
 Release:    1%{?dist}
 Summary:    Qt-style API to interact with the wayland-client API
 
@@ -82,6 +82,9 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Thu Oct 03 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.2.0-1
+- 6.2.0
+
 * Thu Sep 12 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.1.90-1
 - 6.1.90
 

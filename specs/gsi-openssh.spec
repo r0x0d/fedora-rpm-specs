@@ -23,13 +23,13 @@
 # Do we want libedit support
 %global libedit 1
 
-%global openssh_ver 9.6p1
-%global openssh_rel 3
+%global openssh_ver 9.8p1
+%global openssh_rel 2
 
 Summary: An implementation of the SSH protocol with GSI authentication
 Name: gsi-openssh
 Version: %{openssh_ver}
-Release: %{openssh_rel}%{?dist}.1
+Release: %{openssh_rel}%{?dist}
 Provides: gsissh = %{version}-%{release}
 Obsoletes: gsissh < 5.8p2-2
 URL: http://www.openssh.com/portable.html
@@ -96,7 +96,7 @@ Patch711: openssh-7.8p1-UsePAM-warning.patch
 # Reenable MONITOR_REQ_GSSCHECKMIC after gssapi-with-mic failures
 # upstream MR:
 # https://github.com/openssh-gsskex/openssh-gsskex/pull/21
-Patch800: openssh-8.0p1-gssapi-keyex.patch
+Patch800: openssh-9.6p1-gssapi-keyex.patch
 #http://www.mail-archive.com/kerberos@mit.edu/msg17591.html
 Patch801: openssh-6.6p1-force_krb.patch
 # add new option GSSAPIEnablek5users and disable using ~/.k5users by default (#1169843)
@@ -107,8 +107,6 @@ Patch802: openssh-6.6p1-GSSAPIEnablek5users.patch
 Patch804: openssh-7.7p1-gssapi-new-unique.patch
 # Respect k5login_directory option in krk5.conf (#1328243)
 Patch805: openssh-7.2p2-k5login_directory.patch
-# Rewriting OpenSSH GSS KEX to use new packet API
-Patch806: openssh-9.6p1-gsskex-new-api.patch
 
 #https://bugzilla.mindrot.org/show_bug.cgi?id=1780
 Patch901: openssh-6.6p1-kuserok.patch
@@ -128,8 +126,6 @@ Patch926: openssh-6.7p1-sftp-force-permission.patch
 Patch939: openssh-7.2p2-s390-closefrom.patch
 # Move MAX_DISPLAYS to a configuration option (#1341302)
 Patch944: openssh-7.3p1-x11-max-displays.patch
-# Help systemd to track the running service
-Patch948: openssh-9.8p1-systemd.patch
 # Pass inetd flags for SELinux down to openbsd compat level
 Patch949: openssh-7.6p1-cleanup-selinux.patch
 # Sandbox adjustments for s390 and audit
@@ -184,15 +180,13 @@ Patch1014: openssh-8.7p1-nohostsha1proof.patch
 
 Patch1015: openssh-9.6p1-pam-rhost.patch
 
-Patch1016: CVE-2024-6387.patch
-
 # This is the patch that adds GSI support
 # Based on hpn_isshd-gsi.7.5p1b.patch from Globus upstream
-Patch98: openssh-9.6p1-gsissh.patch
+Patch98: openssh-9.8p1-gsissh.patch
 
 # This is the HPN patch
-# Based on https://github.com/rapier1/hpn-ssh/ tag: hpn-18.3.1
-Patch99: openssh-9.6p1-hpn-18.3.1.patch
+# Based on https://github.com/rapier1/hpn-ssh/ tag: hpn-18.5.1
+Patch99: openssh-9.8p1-hpn-18.5.1.patch
 
 License: BSD-3-Clause AND BSD-2-Clause AND ISC AND SSH-OpenSSH AND ssh-keyscan AND sprintf AND LicenseRef-Fedora-Public-Domain AND X11-distribute-modifications-variant
 Requires: /sbin/nologin
@@ -307,7 +301,6 @@ gpgv2 --quiet --keyring %{SOURCE3} %{SOURCE1} %{SOURCE0}
 %patch -P 801 -p1 -b .force_krb
 %patch -P 804 -p1 -b .ccache_name
 %patch -P 805 -p1 -b .k5login
-%patch -P 806 -p1 -b .gsskex-new-api
 
 %patch -P 901 -p1 -b .kuserok
 %patch -P 906 -p1 -b .fromto-remote
@@ -319,7 +312,6 @@ gpgv2 --quiet --keyring %{SOURCE3} %{SOURCE1} %{SOURCE0}
 %patch -P 926 -p1 -b .sftp-force-mode
 %patch -P 939 -p1 -b .s390-dev
 %patch -P 944 -p1 -b .x11max
-%patch -P 948 -p1 -b .systemd
 %patch -P 949 -p1 -b .refactor
 %patch -P 950 -p1 -b .sandbox
 %patch -P 951 -p1 -b .pkcs11-uri
@@ -348,17 +340,14 @@ gpgv2 --quiet --keyring %{SOURCE3} %{SOURCE1} %{SOURCE0}
 %patch -P 1013 -p1 -b .evp-fips-ecdh
 %patch -P 1014 -p1 -b .nosha1hostproof
 %patch -P 1015 -p1 -b .pam-rhost
-%patch -P 1016 -p1 -b .cve-2024-6387
 
 %patch -P 100 -p1 -b .coverity
-
 %patch -P 98 -p1 -b .gsi
 %patch -P 99 -p1 -b .hpn
 
 sed 's/sshd.pid/gsisshd.pid/' -i pathnames.h
 sed 's!$(piddir)/sshd.pid!$(piddir)/gsisshd.pid!' -i Makefile.in
-sed 's!/etc/sysconfig/sshd!/etc/sysconfig/gsisshd!' -i sshd_config
-sed 's!/etc/pam.d/sshd!/etc/pam.d/gsisshd!' -i sshd_config
+sed 's!/etc/pam.d/sshd!/etc/pam.d/gsisshd!' -i sshd_config_redhat
 
 cp -p %{SOURCE99} .
 
@@ -404,7 +393,6 @@ fi
 	--with-privsep-path=%{_datadir}/empty.sshd \
 	--disable-strip \
 	--without-zlib-version-check \
-	--with-ssl-engine \
 	--with-ipaddr-display \
 	--with-pie=no \
 	--without-hardening `# The hardening flags are configured by system` \
@@ -412,7 +400,7 @@ fi
 	--with-default-pkcs11-provider=yes \
 	--with-security-key-builtin=yes \
 	--with-pam \
-	--without-ssl-engine \
+	--with-pam-service=gsisshd \
 %if %{WITH_SELINUX}
 	--with-selinux --with-audit=linux \
 	--with-sandbox=seccomp_filter \
@@ -549,6 +537,7 @@ fi
 %files server
 %dir %attr(0711,root,root) %{_datadir}/empty.sshd
 %attr(0755,root,root) %{_sbindir}/gsisshd
+%attr(0755,root,root) %{_libexecdir}/gsissh/sshd-session
 %attr(0755,root,root) %{_libexecdir}/gsissh/sftp-server
 %attr(0755,root,root) %{_libexecdir}/gsissh/sshd-keygen
 %attr(0644,root,root) %{_mandir}/man5/gsisshd_config.5*
@@ -572,6 +561,12 @@ fi
 %ghost %attr(0644,root,root) %{_localstatedir}/lib/.gsissh-host-keys-migration
 
 %changelog
+* Wed Oct 02 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 9.8p1-2
+- Based on openssh-9.8p1-4.fc42
+
+* Fri Sep 27 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 9.8p1-1
+- Based on openssh-9.8p1-3.fc41.1
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 9.6p1-3.1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

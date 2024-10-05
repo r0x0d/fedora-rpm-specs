@@ -5,8 +5,8 @@
 
 Name:    plasma-desktop
 Summary: Plasma Desktop shell
-Version: 6.1.90
-Release: 2%{?dist}
+Version: 6.2.0
+Release: 1%{?dist}
 
 License: BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only)
 URL:     https://invent.kde.org/plasma/%{name}
@@ -18,10 +18,6 @@ Source0: https://download.kde.org/%{stable_kf6}/plasma/%{version}/%{name}-%{vers
 Source20:       breeze-fedora-0.3.tar.gz
 
 ## upstream patches
-
-# 6.1.90: kaccess: Order service after plasma-core.target
-# https://invent.kde.org/plasma/plasma-desktop/-/commit/d125eb12790d93687e235b3ee53ebb4bfc138b00
-Patch40:  d125eb12790d93687e235b3ee53ebb4bfc138b00.patch
 
 ## downstream patches
 # default kickoff/kicker favorites: +kwrite +konsole
@@ -350,6 +346,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/kaccess.desktop
 
 
 %changelog
+* Thu Oct 03 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.2.0-1
+- 6.2.0
+
 * Thu Sep 26 2024 Steve Cossette <farchord@gmail.com> - 6.1.90-2
 - Fix kaccess crash on 6.1.90
 

@@ -133,6 +133,7 @@ BuildRequires:  cmake(Qt6Widgets)
 
 Requires:       systemd-udev
 
+Recommends:     fex-emu-rootfs-fedora
 Recommends:     erofs-fuse
 Recommends:     erofs-utils
 Recommends:     squashfs-tools

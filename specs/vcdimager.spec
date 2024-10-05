@@ -1,23 +1,19 @@
 Summary: VideoCD (pre-)mastering and ripping tool
 Name:    vcdimager
 Version: 2.0.1
-Release: 19%{?dist}
+Release: 20%{?dist}
 License: GPL-2.0-or-later
 URL:     http://www.gnu.org/software/vcdimager/
-Source:  ftp://ftp.gnu.org/pub/gnu/vcdimager/vcdimager-%{version}.tar.gz
+Source:  https://ftp.gnu.org/pub/gnu/vcdimager/vcdimager-%{version}.tar.gz
 
+BuildRequires: gcc-c++
 BuildRequires: libcdio-devel >= 0.72
 BuildRequires: libxml2-devel >= 2.3.8
-BuildRequires: zlib-devel
 BuildRequires: pkgconfig >= 0.9
 BuildRequires: popt-devel
-BuildRequires: gcc-c++
+BuildRequires: zlib-devel
 
 Requires:        %{name}-libs%{?_isa} = %{version}-%{release}
-%if 0%{?el7}
-Requires(post):  info
-Requires(preun): info
-%endif
 
 
 %description
@@ -66,22 +62,8 @@ find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 # Sometimes this file gets created... but we don't want it!
 rm -f %{buildroot}%{_infodir}/dir
 
+
 %ldconfig_scriptlets libs
-
-%if 0%{?el7}
-%post
-for infofile in vcdxrip.info vcdimager.info vcd-info.info; do
-  /sbin/install-info %{_infodir}/${infofile} %{_infodir}/dir 2>/dev/null || :
-done
-
-%preun
-if [ $1 -eq 0 ]; then
-  for infofile in vcdxrip.info vcdimager.info vcd-info.info; do
-    /sbin/install-info --delete %{_infodir}/${infofile} %{_infodir}/dir \
-      2>/dev/null || :
-  done
-fi
-%endif
 
 
 %files
@@ -117,6 +99,11 @@ fi
 
 
 %changelog
+* Thu Oct 03 2024 Xavier Bachelot <xavier@bachelot.org> - 2.0.1-20
+- Change Source: URL to https
+- Drop EL7 conditionals
+- Sort BR:s
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.1-19
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

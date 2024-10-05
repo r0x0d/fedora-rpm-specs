@@ -6,7 +6,8 @@ Version:	%{ver_maj}.%{ver_min}.%{ver_patch}
 Release:	15%{?dist}
 Summary:	Fast large integer arithmetic library
 
-License:	Public Domain or WTFPL
+# Automatically converted from old format: Public Domain or WTFPL - needs further work
+License:	LicenseRef-Callaway-Public-Domain OR WTFPL
 URL:		http://www.libtom.net/
 Source0:	https://github.com/libtom/tomsfastmath/archive/v%{ver_maj}.%{ver_min}.%{ver_patch}.tar.gz#/%{name}-%{version}.tar.gz
 

@@ -1,8 +1,8 @@
-%global upload_hash 0a322decb848196690126d5674f9b544
+%global upload_hash 4a5dcb11cec0b0438ad575db08aa755c
 
 Name:           fragments
-Version:        3.0.0
-Release:        2%{?dist}
+Version:        3.0.1
+Release:        1%{?dist}
 Summary:        Easy to use BitTorrent client which follows the GNOME HIG
 
 License:        GPL-3.0-or-later
@@ -60,7 +60,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 %files -f %{name}.lang
 %doc README.md
 %license COPYING.md
-%{_bindir}/%{name}
+%{_bindir}/fragments
 %{_datadir}/applications/*.desktop
 %{_datadir}/glib-2.0/schemas/*.gschema.xml
 %{_datadir}/dbus-1/services/*.service
@@ -70,6 +70,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 
 
 %changelog
+* Thu Oct 03 2024 Pete Walter <pwalter@fedoraproject.org> - 3.0.1-1
+- Update to 3.0.1 (rhbz#2284003)
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

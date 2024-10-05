@@ -3,7 +3,9 @@ Version:        20220204hga1b3c7faf452
 Release:        6%{?dist}
 Summary:        Cross-development toolkit for use with the Tandy Color Computer
 
-License:        Public Domain
+
+# Automatically converted from old format: Public Domain - needs further work
+License:        LicenseRef-Callaway-Public-Domain
 URL:            http://sourceforge.net/projects/toolshed/
 Source0:        %{name}-%{version}-noroms.tar.gz
 # toolshed contains disassmbled code that we cannot ship.  Therefore we use

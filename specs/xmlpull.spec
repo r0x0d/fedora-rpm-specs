@@ -3,7 +3,8 @@ Version:        1.2.0
 Release:        10%{?dist}
 Summary:        XML Pull Parsing API
 
-License:        Public Domain
+# Automatically converted from old format: Public Domain - needs further work
+License:        LicenseRef-Callaway-Public-Domain
 URL:            https://github.com/xmlpull-xpp3/%{name}-xpp3
 Source0:        %{url}/archive/%{name}-xpp3-parent-%{version}.tar.gz
 BuildArch:      noarch

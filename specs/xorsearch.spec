@@ -3,7 +3,8 @@ Version:        1.11.4
 Release:        6%{?dist}
 Summary:        Search for a given string in an XOR, ROL, ROT or SHIFT encoded binary file
 
-License:        Public Domain
+# Automatically converted from old format: Public Domain - needs further work
+License:        LicenseRef-Callaway-Public-Domain
 URL:            http://blog.didierstevens.com/programs/xorsearch/
 
 %global pkgver %(echo %{version} | sed 's/\\./_/g')

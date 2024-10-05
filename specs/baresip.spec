@@ -1,6 +1,6 @@
 Summary:        Modular SIP user-agent with audio and video support
 Name:           baresip
-Version:        3.15.0
+Version:        3.16.0
 Release:        1%{?dist}
 License:        BSD-3-Clause
 URL:            https://github.com/baresip/baresip
@@ -14,7 +14,7 @@ Source14:       https://gitlab.gnome.org/GNOME/adwaita-icon-theme/-/raw/master/C
 BuildRequires:  cmake
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
-BuildRequires:  libre-devel >= 3.15.0
+BuildRequires:  libre-devel >= 3.16.0
 %if 0%{?fedora} || 0%{?rhel} >= 9
 BuildRequires:  openssl-devel
 Recommends:     %{name}-pipewire%{?_isa} = %{version}-%{release}
@@ -399,7 +399,7 @@ gtk-update-icon-cache --force %{_datadir}/icons/Adwaita &>/dev/null || :
 %license LICENSE
 %doc CHANGELOG.md docs/THANKS docs/examples
 %{_bindir}/%{name}
-%{_libdir}/lib%{name}.so.17*
+%{_libdir}/lib%{name}.so.18*
 %dir %{_libdir}/%{name}/
 %dir %{_libdir}/%{name}/modules/
 %{_libdir}/%{name}/modules/account.so
@@ -539,6 +539,9 @@ gtk-update-icon-cache --force %{_datadir}/icons/Adwaita &>/dev/null || :
 %{_libdir}/%{name}/modules/x11.so
 
 %changelog
+* Thu Oct 03 2024 Robert Scheck <robert@fedoraproject.org> 3.16.0-1
+- Upgrade to 3.16.0 (#2316283)
+
 * Sat Sep 14 2024 Robert Scheck <robert@fedoraproject.org> 3.15.0-1
 - Upgrade to 3.15.0 (#2309007)
 

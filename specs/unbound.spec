@@ -32,7 +32,7 @@
 
 Summary: Validating, recursive, and caching DNS(SEC) resolver
 Name: unbound
-Version: 1.20.0
+Version: 1.21.1
 Release: %autorelease %{?extra_version:-e %{extra_version}}
 License: BSD-3-Clause
 Url: https://nlnetlabs.nl/projects/unbound/
@@ -58,6 +58,7 @@ Source18: %{downloads}/%{name}/%{name}-%{version}%{?extra_version}.tar.gz.asc
 Source19: https://keys.openpgp.org/pks/lookup?op=get&search=0x9F6F1C2D7E045F8D#/wouter.nlnetlabs.nl.key
 Source20: unbound.sysusers
 Source21: remote-control.conf
+Source22: https://nlnetlabs.nl/downloads/keys/Yorgos.asc
 
 # Downstream configuration changes
 Patch1:   unbound-fedora-config.patch
@@ -193,27 +194,20 @@ Python 3 modules and extensions for unbound
 
 %prep
 %if 0%{?fedora}
-%{gpgverify} --keyring='%{SOURCE19}' --signature='%{SOURCE18}' --data='%{SOURCE0}'
+%{gpgverify} --keyring='%{SOURCE22}' --signature='%{SOURCE18}' --data='%{SOURCE0}'
 %endif
 %global pkgname %{name}-%{version}%{?extra_version}
 
 %if 0%{with_python2} && 0%{with_python3}
-%global dir_primary %{pkgname}_python3
 %global python_primary %{__python3}
 %global dir_secondary %{pkgname}_python2
 %global python_secondary %{__python2}
-%else
-%global dir_primary %{pkgname}
 %endif
 
-%autosetup -c -N -n %{pkgname}
+%autosetup -N -n %{pkgname}
 
-pushd %{pkgname}
 # patches go here
-%autopatch -p2
-
-# copy common doc files - after here, since it may be patched
-cp -pr doc pythonmod libunbound ../
+%autopatch -p1
 
 %if 0%{?rhel} > 8
   # SHA-1 breaks some tests. Disable just some tests because of that.
@@ -223,11 +217,9 @@ cp -pr doc pythonmod libunbound ../
     mv testdata/${TEST}.rpl{,-disabled} 
   done
 %endif
-popd
 
 %if 0%{with_python2} && 0%{with_python3}
-mv %{pkgname} %{dir_primary}
-cp -a %{dir_primary} %{dir_secondary}
+  cp -a . %{dir_secondary}
 %endif
 
 %build
@@ -242,9 +234,8 @@ cp -a %{dir_primary} %{dir_secondary}
             --with-rootkey-file=%{_sharedstatedir}/%{name}/root.key \\\
             --with-username=unbound \\\
             --enable-linux-ip-local-port-range \\\
-
-
-pushd %{dir_primary}
+            --with-dynlibmodule \\\
+#
 
 # always regenerate configure
 rm -f config.h.in aclocal.m4 configure ltmain.sh
@@ -252,6 +243,7 @@ rm -f {ax_pthread,ax_swig_python}.m4
 cp -p %{_datadir}/aclocal/{ax_pthread,ax_swig_python}.m4 .
 # ensure bison is used to generate fresh parser
 rm -f util/configparser.{c,h} util/configlexer.c
+
 autoreconf -fiv
 
 %configure  \
@@ -267,7 +259,7 @@ autoreconf -fiv
 %if %{with doh}
             --with-libnghttp2 \
 %endif
-%if 0%{?rhel}
+%if 0%{?rhel} || 0%{?fedora} > 40
             --disable-sha1 \
 %endif
 %if %{with redis}
@@ -278,8 +270,6 @@ autoreconf -fiv
 
 %make_build
 %make_build streamtcp
-
-popd
 
 %if 0%{?python_secondary:1}
 pushd %{dir_secondary}
@@ -308,11 +298,9 @@ pushd %{dir_secondary}
 popd
 %endif
 
-pushd %{dir_primary}
 %make_install unbound-event-install
 install -m 0755 streamtcp %{buildroot}%{_sbindir}/unbound-streamtcp
 install -p -m 0644 doc/example.conf %{buildroot}%{_sysconfdir}/unbound/unbound.conf
-popd
 
 install -d -m 0755 %{buildroot}%{_unitdir} %{buildroot}%{_sysconfdir}/sysconfig
 install -p -m 0644 %{SOURCE1} %{buildroot}%{_unitdir}/unbound.service
@@ -333,11 +321,9 @@ for plugin in unbound_munin_hits unbound_munin_queue unbound_munin_memory unboun
 done
 %endif
 
-pushd %{dir_primary}
 # install streamtcp man page
 install -m 0644 testcode/streamtcp.1 %{buildroot}/%{_mandir}/man1/unbound-streamtcp.1
 install -D -m 0644 contrib/libunbound.pc %{buildroot}/%{_libdir}/pkgconfig/libunbound.pc
-popd
 
 # Install tmpfiles.d config
 install -d -m 0755 %{buildroot}%{_tmpfilesdir} %{buildroot}%{_sharedstatedir}/unbound
@@ -409,14 +395,11 @@ fi
 %systemd_postun_with_restart unbound-anchor.service unbound-anchor.timer
 
 %check
-pushd %{dir_primary}
 #pushd pythonmod
 #make test
 #popd
 
 make check
-
-popd
 
 %if 0%{?python_secondary:1}
 pushd %{dir_secondary}

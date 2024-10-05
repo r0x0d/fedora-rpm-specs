@@ -18,7 +18,7 @@ BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  openssl-devel
 %if 0%{?fedora} >= 41 || 0%{?rhel} >= 11
-BuildRequires:    openssl-devel-engine
+BuildRequires:  openssl-devel-engine
 %endif
 BuildRequires:  perl-generators
 
@@ -29,14 +29,26 @@ modern C++ approach.
 
 %package devel
 Summary:        Header files for asio
-Requires:     openssl-devel
+Requires:       openssl-devel
 %if 0%{?fedora} >= 41 || 0%{?rhel} >= 11
 Requires:       openssl-devel-engine
 %endif
-Requires:     boost-devel
+Requires:       boost-devel
 
 %description devel
 Header files you can use to develop applications with asio.
+
+The asio package contains a cross-platform C++ library for network programming
+that provides developers with a consistent asynchronous I/O model using a
+modern C++ approach.
+
+%package doc
+Summary:        Documentation for asio
+
+BuildArch:      noarch
+
+%description doc
+Detailed documentation of the asio library.
 
 The asio package contains a cross-platform C++ library for network programming
 that provides developers with a consistent asynchronous I/O model using a
@@ -54,11 +66,13 @@ autoreconf --install
 %make_install
 
 %files devel
-%doc doc/*
 %license LICENSE_1_0.txt
 %{_includedir}/asio/
 %{_includedir}/asio.hpp
 %{_libdir}/pkgconfig/asio.pc
+
+%files doc
+%doc doc/*
 
 %changelog
 %autochangelog

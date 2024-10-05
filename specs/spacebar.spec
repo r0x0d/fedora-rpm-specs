@@ -1,6 +1,6 @@
 Name:           spacebar
 Epoch:          1
-Version:        6.1.90
+Version:        6.2.0
 Release:        1%{?dist}
 License:        GPLv2+ and GPLv3 and GPLv2
 Summary:        Messaging app for Plasma Mobile
@@ -85,6 +85,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.%{name}.deskt
 %{_sysconfdir}/xdg/autostart/org.kde.%{name}.daemon.desktop
 
 %changelog
+* Thu Oct 03 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 1:6.2.0-1
+- 6.2.0
+
 * Mon Sep 23 2024 Alessandro Astone <ales.astone@gmail.com> - 6.1.90-1
 - 6.1.90
 - Bump epoch

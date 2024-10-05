@@ -8,8 +8,8 @@
 
 Name:    plasma-discover
 Summary: KDE and Plasma resources management GUI
-Version: 6.1.90
-Release: 2%{?dist}
+Version: 6.2.0
+Release: 1%{?dist}
 
 License: BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-3.0-only AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only)
 URL:     https://invent.kde.org/plasma/discover
@@ -20,8 +20,6 @@ Source0: https://download.kde.org/%{stable_kf6}/plasma/%{version}/%{base_name}-%
 Source10: discoverrc
 
 ## upstream patches
-# https://invent.kde.org/plasma/discover/-/merge_requests/942
-Patch0:  notifier-Fix-showing-the-tray-notifier-on-the-first-notification-ever.patch
 
 ## downstream patches
 # Adjust periodic refresh from 1/24hr to 1/12hr
@@ -311,6 +309,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.discover.desk
 
 
 %changelog
+* Thu Oct 03 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.2.0-1
+- 6.2.0
+
 * Fri Sep 27 2024 Alessandro Astone <ales.astone@gmail.com> - 6.1.90-2
 - Backport patch to fix showing the system tray icon (rhbz#2314785)
 

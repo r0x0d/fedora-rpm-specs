@@ -21,7 +21,7 @@ BuildRequires:  coreutils
 %package filesystem
 Summary:        The basic directory layout for Web Assets
 #there's nothing copyrightable about a few directories and symlinks
-License:        Public Domain
+License:        LicenseRef-Not-Copyrightable
 Requires:       fonts-filesystem
 
 %description filesystem

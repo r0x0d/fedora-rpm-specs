@@ -7,7 +7,8 @@ Summary:  Show the sun's shadows on earth
 
 # src/astro.[ch] are by John Walker in 1988 and placed in the Public Domain.
 # Otherwise it's LGPLv3.
-License:  LGPLv3 and Public Domain
+# Automatically converted from old format: LGPLv3 and Public Domain - review is highly recommended.
+License:  LGPL-3.0-only AND LicenseRef-Callaway-Public-Domain
 
 URL:      https://github.com/sentriz/wlr-sunclock
 Source:   %{url}/archive/v%{version}/%{name}-%{version}.tar.gz

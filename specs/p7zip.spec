@@ -7,7 +7,7 @@
 Summary: Very high compression ratio file archiver
 Name: p7zip
 Version: 16.02
-Release: 30%{?dist}
+Release: 31%{?dist}
 # Files under C/Compress/Lzma/ are dual LGPL or CPL
 # Automatically converted from old format: LGPLv2 and (LGPLv2+ or CPL) - review is highly recommended.
 License: LicenseRef-Callaway-LGPLv2 AND (LicenseRef-Callaway-LGPLv2+ OR CPL-1.0)
@@ -32,6 +32,10 @@ Patch11: 14-Fix-g++-warning.patch
 Patch12: gcc10-conversion.patch
 Patch13: 0001-fix-data-null-pointer.patch
 Patch14: 0001-fix-out-of-mem.patch
+
+# Issue with hiding the password from the process history
+# reported to upstream https://sourceforge.net/p/p7zip/patches/38/
+Patch15: p7zip-015-hide-passwd.patch
 
 BuildRequires: make
 BuildRequires: gcc-c++
@@ -176,6 +180,9 @@ make test
 
 
 %changelog
+* Fri Oct 04 2024 Sérgio Basto <sergio@serjux.com> - 16.02-31
+- Fix wrapper to hide password from process history
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 16.02-30
 - convert license to SPDX
 

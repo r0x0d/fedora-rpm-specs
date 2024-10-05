@@ -1,8 +1,8 @@
 %global modname dbusmock
 
 Name:             python-%{modname}
-Version:          0.32.1
-Release:          2%{?dist}
+Version:          0.32.2
+Release:          1%{?dist}
 Summary:          Mock D-Bus objects
 
 License:          LGPL-3.0-or-later
@@ -52,6 +52,10 @@ rm -rf python-%{modname}.egg-info
 %{python3_sitelib}/*%{modname}*
 
 %changelog
+* Thu Oct 03 2024 Packit <hello@packit.dev> - 0.32.2-1
+- all templates: Drop wrong variant wrapping from all properties
+- tests: Skip TestNetworkManager::test_one_wifi_with_accesspoints with NM ≥ 1.49.3
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.32.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

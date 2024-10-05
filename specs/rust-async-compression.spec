@@ -6,17 +6,13 @@
 %global crate async-compression
 
 Name:           rust-async-compression
-Version:        0.4.12
+Version:        0.4.13
 Release:        %autorelease
 Summary:        Adaptors between compression crates and Rust's modern asynchronous IO types
 
 License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/async-compression
 Source:         %{crates_source}
-# Manually created patch for downstream crate metadata changes
-# * Update brotli to 7.0:
-#   https://github.com/Nullus157/async-compression/pull/292
-Patch:          async-compression-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
