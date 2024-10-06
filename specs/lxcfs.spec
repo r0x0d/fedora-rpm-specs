@@ -1,6 +1,6 @@
 Name:		  lxcfs
-Version:	  5.0.4
-Release:	  5%{?dist}
+Version:	  6.0.2
+Release:	  1%{?dist}
 Summary:	  FUSE based filesystem for LXC
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:	  Apache-2.0
@@ -76,6 +76,9 @@ mkdir -p %{buildroot}%{_sharedstatedir}/%{name}
 
 
 %changelog
+* Sat Sep 21 2024 Sérgio Basto <sergio@serjux.com> - 6.0.2-1
+- Update lxcfs to 6.0.2
+
 * Wed Jul  24 2024 Miroslav Suchý <msuchy@redhat.com> - 5.0.4-5
 - convert license to SPDX
 

@@ -127,7 +127,7 @@
 %{?python_disable_dependency_generator}
 
 # Support for passkey
-%global sssd_version 2.9.2
+%global sssd_version 2.9.5
 
 # Fedora
 %endif
@@ -200,7 +200,7 @@
 
 Name:           %{package_name}
 Version:        %{IPA_VERSION}
-Release:        1%{?rc_version:.%rc_version}%{?dist}
+Release:        4%{?rc_version:.%rc_version}%{?dist}
 Summary:        The Identity, Policy and Audit system
 
 License:        GPL-3.0-or-later
@@ -220,6 +220,7 @@ Source2:        gpgkey-0E63D716D76AC080A4A33513F40800B6298EB963.asc
 %endif
 
 Patch0001:      0001-freeipa-disable-nis.patch
+Patch0002:      freeipa-fix-ca-uninstall.patch
 
 # RHEL spec file only: START: Change branding to IPA and Identity Management
 # Moved branding logos and background to redhat-logos-ipa-80.4:
@@ -286,9 +287,12 @@ BuildRequires:  libpwquality-devel
 BuildRequires:  libsss_idmap-devel
 BuildRequires:  libsss_certmap-devel
 BuildRequires:  libsss_nss_idmap-devel >= %{sssd_version}
-%if 0%{?fedora} >= 39 || 0%{?rhel} >= 10
+%if 0%{?fedora} >= 41
+# Do not use nodejs22 on fedora < 41, https://pagure.io/freeipa/issue/9643
+BuildRequires: nodejs(abi)
+%elif 0%{?fedora} >= 39 || 0%{?rhel} >= 10
 # Do not use nodejs20 on fedora < 39, https://pagure.io/freeipa/issue/9374
-BuildRequires:  nodejs(abi)
+BuildRequires:  nodejs(abi) < 127
 %else
 BuildRequires:  nodejs(abi) < 111
 %endif
@@ -1857,6 +1861,12 @@ fi
 %endif
 
 %changelog
+* Fri Oct  4 2024 Alexander Bokovoy <abokovoy@redhat.com> - 4.12.2-4
+- Bump release to handle F41 updates which went out of sync due to rebuilds
+- Fix CA uninstall in case ACME instance is available
+- Bump SSSD requirement to 2.9.5 to ensure sssd-idp can handle Entra ID
+- Make sure to use correct nodejs version for build
+
 * Thu Aug 22 2024 Alexander Bokovoy <abokovoy@redhat.com> - 4.12.2-1
 - Upstream release 4.12.2
 - Rebuild against Samba 4.21.0-RC3

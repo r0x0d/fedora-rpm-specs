@@ -5,7 +5,7 @@
 %global crate platform-info
 
 Name:           rust-platform-info
-Version:        2.0.3
+Version:        2.0.4
 Release:        %autorelease
 Summary:        Simple cross-platform interface to get info about a system
 

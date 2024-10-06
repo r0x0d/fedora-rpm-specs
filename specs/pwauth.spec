@@ -6,7 +6,7 @@ Release:        32%{?dist}
 Summary:        External plugin for mod_authnz_external authenticator
 
 # Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            https://github.com/phokz/pwauth/
 Source0:        https://github.com/phokz/pwauth/archive/%{name}-%{version}.tar.gz
 Source1:        pwauth.pam
@@ -14,8 +14,8 @@ Patch1:         pwauth-make.patch
 Patch2:         pwauth-strchr.patch
 Patch3:         pwauth-cleanup.patch
 
-BuildRequires: make
 BuildRequires:  gcc
+BuildRequires:  make
 BuildRequires:  pam-devel
 
 Requires:       httpd

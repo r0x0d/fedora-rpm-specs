@@ -43,13 +43,10 @@ Source0:    README
 
 # ===============================================================================
 # Skip down below these convenience macros
+# First, declare the main Lua structure
+%{lua:obs = {}}
 %define obsolete_ticket() %{lua:
     local ticket = rpm.expand('%1')
-
-    -- May need to declare the master structure
-    if type(obs) == 'nil' then
-        obs = {}
-    end
 
     if ticket == '%1' then
         rpm.expand('%{error:No ticket provided to obsolete_ticket}')
@@ -189,6 +186,10 @@ Source0:    README
 %obsolete_ticket https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/LAE5JLO3KYVQVSF776H4QLY6DTAUQHWR/
 %obsolete celestia 1.7.0~320231229.git6899839-6
 %obsolete celestia-data 1.7.0~320231125.gitdb53ae3-4
+
+# https://src.fedoraproject.org/rpms/module-build-service/c/920f1845d372ffa78b3b0ef93bc9a26821ace667
+%obsolete_ticket https://bugzilla.redhat.com/2291560
+%obsolete module-build-service 3.9.2-10
 
 # Remove in F43
 # Removed packages with broken dependencies on Python 3.12

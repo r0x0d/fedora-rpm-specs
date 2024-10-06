@@ -1,5 +1,5 @@
 Name:           mold
-Version:        2.34.0
+Version:        2.34.1
 Release:        %autorelease
 Summary:        A Modern Linker
 

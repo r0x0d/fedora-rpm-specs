@@ -67,7 +67,7 @@
 
 Name:		%pkg_name
 Version:	%{clang_version}%{?rc_ver:~rc%{rc_ver}}%{?llvm_snapshot_version_suffix:~%{llvm_snapshot_version_suffix}}
-Release:	8%{?dist}
+Release:	9%{?dist}
 Summary:	A C language family front-end for LLVM
 
 License:	Apache-2.0 WITH LLVM-exception OR NCSA
@@ -104,6 +104,8 @@ Patch6:     cfg.patch
 Patch7:     tsa.patch
 Patch8:     0001-Clang-Fix-build-with-GCC-14-on-ARM.patch
 Patch9:     0001-Clang-Defer-the-instantiation-of-explicit-specifier-.patch
+# https://github.com/llvm/llvm-project/pull/110758
+Patch10:    0001-clang-shlib-Add-symbol-versioning-to-all-symbols.patch
 
 
 # RHEL specific patches
@@ -411,6 +413,7 @@ rm test/CodeGen/profile-filter.c
 	\
 	-DCLANG_BUILD_EXAMPLES:BOOL=OFF \
 	-DBUILD_SHARED_LIBS=OFF \
+	-DLLVM_SHLIB_SYMBOL_VERSION=LLVM_%{maj_ver} \
 	-DCLANG_REPOSITORY_STRING="%{?dist_vendor} %{version}-%{release}" \
 %if %{with compat_build}
 	-DCLANG_RESOURCE_DIR=../../../lib/clang/%{maj_ver} \
@@ -692,6 +695,9 @@ LD_LIBRARY_PATH=%{buildroot}/%{install_libdir} %{__ninja} check-all -C %{__cmake
 
 %endif
 %changelog
+* Thu Oct 03 2024 Tom Stellard <tstellar@redhat.com> - 17.0.6-9
+- Add symbol versions to libclang-cpp.so
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 17.0.6-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

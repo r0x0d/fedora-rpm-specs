@@ -36,17 +36,13 @@ mkdir -p %{buildroot}%{_httpd_moddir} %{buildroot}%{_httpd_confdir} \
          %{buildroot}%{_httpd_modconfdir}
 apxs -i -S LIBEXECDIR=%{buildroot}%{_httpd_moddir} -n %{name} %{name}.la
 install -p -m 644 -t %{buildroot}%{_httpd_confdir}/ %{SOURCE1}
-%if "%{_httpd_modconfdir}" != "%{_httpd_confdir}"
 install -p -m 644 -t %{buildroot}%{_httpd_modconfdir}/ %{SOURCE2}
-%endif
 
 
 %files
 %{_httpd_moddir}/%{name}.so
 %config(noreplace) %lang(en) %{_httpd_confdir}/%{conffile}
-%if "%{_httpd_modconfdir}" != "%{_httpd_confdir}"
 %config(noreplace) %lang(en) %{_httpd_modconfdir}/%{conffile2}
-%endif
 %doc AUTHENTICATORS CHANGES README TODO UPGRADE
 
 

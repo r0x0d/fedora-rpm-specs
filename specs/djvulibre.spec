@@ -1,9 +1,15 @@
 %define         _hardened_build 1
 
+%if 0%{?el10}
+%bcond_with inkscape
+%else
+%bcond_without inkscape
+%endif
+
 Summary: DjVu viewers, encoders, and utilities
 Name: djvulibre
 Version: 3.5.28
-Release: 11%{?dist}
+Release: 12%{?dist}
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License: GPL-2.0-or-later
 URL: http://djvu.sourceforge.net/
@@ -21,18 +27,16 @@ Patch15: 0001-Check-for-zero-width-and-height.patch
 
 Requires(post): xdg-utils
 Requires(preun): xdg-utils
-%if (0%{?fedora} > 15 || 0%{?rhel} > 6)
-BuildRequires:  gcc
-BuildRequires: libjpeg-turbo-devel
-%else
-BuildRequires: libjpeg-devel
-%endif
-BuildRequires: libtiff-devel
-BuildRequires: xdg-utils chrpath
-BuildRequires: hicolor-icon-theme
-BuildRequires: inkscape
+BuildRequires: chrpath
 BuildRequires: gcc-c++
+BuildRequires: hicolor-icon-theme
+%if %{with inkscape}
+BuildRequires: inkscape
+%endif
+BuildRequires: libjpeg-turbo-devel
+BuildRequires: libtiff-devel
 BuildRequires: make
+BuildRequires: xdg-utils
 
 Provides: %{name}-mozplugin = %{version}
 Obsoletes: %{name}-mozplugin < 3.5.24
@@ -87,11 +91,11 @@ Development files for DjVuLibre.
 #sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 #sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-make %{?_smp_mflags} V=1
+%make_build
 
 
 %install
-make install DESTDIR=%{buildroot}
+%make_install
 
 # Fix for the libs to get stripped correctly (still required in 3.5.20-2)
 find %{buildroot}%{_libdir} -name '*.so*' | xargs %{__chmod} +x
@@ -173,19 +177,25 @@ fi
 
 
 %files libs
-%doc README COPYRIGHT COPYING NEWS
-%{_libdir}/*.so.*
+%license COPYING
+%doc README COPYRIGHT NEWS
+%{_libdir}/libdjvulibre.so.21*
 
 
 %files devel
-%doc doc/*.*
+%doc doc/
 %{_includedir}/libdjvu/
 %{_libdir}/pkgconfig/ddjvuapi.pc
-%exclude %{_libdir}/*.la
-%{_libdir}/*.so
+%{_libdir}/libdjvulibre.so
 
 
 %changelog
+* Fri Oct 04 2024 Xavier Bachelot <xavier@bachelot.org> - 3.5.28-12
+- Do not BuildRequires: inkscape on EL10
+- Sort BuildRequires:
+- Use %%make_build, %%make_install and %%license macros
+- Improve %%files section
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 3.5.28-11
 - convert license to SPDX
 

@@ -1,6 +1,6 @@
 Name:           asymptote
 Version:        2.89
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Descriptive vector graphics language
 
 # LGPL-3.0-or-later: the project as a whole
@@ -119,6 +119,8 @@ mv examples/interpolate1.asy{.utf8,}
 autoreconf -i
 
 %build
+export CPPFLAGS='-I%{_includedir}/eigen3 -I%{_includedir}/tirpc'
+export LIBS='-lflexiblas '
 %configure --enable-gc=system --with-docdir=%{?_pkgdocdir}%{!?_pkgdocdir:%{_docdir}/%{name}-%{version}/} --with-latex=%{_texmf}/tex/latex --with-context=%{_texmf}/tex/context/ --enable-lsp --enable-offscreen
 %make_build
 cd doc/
@@ -194,6 +196,9 @@ chmod 755 %{buildroot}%{_datadir}/%{name}/{asy-kate.sh,asymptote.py}
 %{_emacs_sitelispdir}/%{name}/
 
 %changelog
+* Fri Jul 19 2024 Jerry James <loganjerry@gmail.com> - 2.89-4
+- Fix eigen3, libtirpc, and gsl detection
+
 * Wed Jul 17 2024 Jerry James <loganjerry@gmail.com> - 2.89-3
 - Reenable offscreen rendering
 - Unbundle glew

@@ -40,7 +40,6 @@
                                          %{_sysconfdir}/{crypto-policies/back-ends,pki/dnssec-keys,named} \\\
                                          %{_libdir}/bind %{_libdir}/named %{_datadir}/GeoIP /proc/sys/net/ipv4
 
-%global        selinuxbooleans   named_write_master_zones=1
 ## The order of libs is important. See lib/Makefile.in for details
 %define bind_export_libs isc dns isccfg irs
 %{!?_export_dir:%global _export_dir /bind9-export/}
@@ -83,8 +82,8 @@ License:  MPL-2.0 AND ISC AND MIT AND BSD-3-Clause AND BSD-2-Clause
 #
 # Before rebasing bind, ensure bind-dyndb-ldap is ready to be rebuild and use side-tag with it.
 # Updating just bind will cause freeipa-dns-server package to be uninstallable.
-Version:  9.18.28
-Release:  3%{?dist}
+Version:  9.18.30
+Release:  1%{?dist}
 Epoch:    32
 Url:      https://www.isc.org/downloads/bind/
 #
@@ -739,16 +738,12 @@ if [ $1 -gt 1 ]; then \
   done \
 fi
 
-%triggerun -- bind < 32:9.9.0-0.6.rc1
-/sbin/chkconfig --del named >/dev/null 2>&1 || :
-/bin/systemctl try-restart named.service >/dev/null 2>&1 || :
-
 %triggerpostun -- bind < 32:9.18.4-2, selinux-policy, policycoreutils
 if [ -x %{_sbindir}/selinuxenabled ] && [ -x %{_sbindir}/getsebool ] && [ -x %{_sbindir}/setsebool ] \
    && %{_sbindir}/selinuxenabled && [ -x %{_sbindir}/named ]; then
   # Return master zones after upgrade from selinux_booleans version
   WRITEBOOL="$(LC_ALL=C %{_sbindir}/getsebool named_write_master_zones)"
-  if [ "echo ${WRITEBOOL#named_write_master_zones --> }" = "off" ]; then
+  if [ "${WRITEBOOL#named_write_master_zones --> }" = "off" ]; then
     echo "Restoring new sebool default of named_write_master_zones..."
     %{_sbindir}/setsebool -P named_write_master_zones=1 || :
   fi
@@ -978,6 +973,15 @@ fi;
 %endif
 
 %changelog
+* Fri Oct 04 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.30-1
+- Update to 9.18.30 (rhbz#2306542)
+
+* Wed Aug 21 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.29-1
+- Update to 9.18.29 (rhbz#2306542)
+
+* Wed Aug 21 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.28-4
+- Remove ancient triggerun and selinux boolean traces
+
 * Wed Jul 31 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.28-3
 - Drop PostgreSQL dependencies not used by DLZ anymore
 

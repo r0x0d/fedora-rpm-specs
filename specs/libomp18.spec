@@ -51,7 +51,7 @@
 
 Name: %{pkg_name}
 Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}%{?llvm_snapshot_version_suffix:~%{llvm_snapshot_version_suffix}}
-Release: 7%{?dist}
+Release: 8%{?dist}
 Summary: OpenMP runtime for clang
 
 License: Apache-2.0 WITH LLVM-exception OR NCSA
@@ -94,6 +94,8 @@ BuildRequires:	%{llvm_pkg_name}-devel = %{version}
 
 Requires: elfutils-libelf%{?isa}
 
+Provides:libomp(major) = %{maj_ver}
+
 %description
 OpenMP runtime for clang.
 
@@ -105,6 +107,8 @@ Requires: clang%{maj_ver}-resource-filesystem%{?isa} = %{version}
 %else
 Requires: clang-resource-filesystem%{?isa} = %{version}
 %endif
+
+Provides:libomp-devel(major) = %{maj_ver}
 
 %description devel
 OpenMP header files.
@@ -192,6 +196,9 @@ rm -rf %{buildroot}%{install_libdir}/libarcher_static.a
 %endif
 
 %changelog
+* Thu Oct 03 2024 Tim Flink <tflink@fedoraproject.org> - 18.1.7-8
+- add provides for libomp(major) and libomp-devel(major)
+
 * Fri Sep 27 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.7-7
 - Add conflicts with next major version of non-compat package
 

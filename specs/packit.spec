@@ -6,7 +6,7 @@
 %endif
 
 Name:           packit
-Version:        0.101.1
+Version:        0.102.0
 Release:        1%{?dist}
 Summary:        A tool for integrating upstream projects with Fedora operating system
 
@@ -79,6 +79,12 @@ cp files/bash-completion/packit %{buildroot}%{bash_completions_dir}/packit
 %doc README.md
 
 %changelog
+* Fri Oct 04 2024 Packit <hello@packit.dev> - 0.102.0-1
+- Check for `upstream_project_url` presence in the configuration when `pull_from_upstream` job is configured was removed from `validate-config`, as this is no longer required. (#2423)
+- `packit init` now adds working directories that are used in `packit prepare-sources` into the `.gitignore` file in the same directory where Packit config resides. (#2431)
+- Previously, `create-update` command took `--resolve-bugzillas` option and `propose-downstream` command took `--resolve-bug` option. The options have been unified into `--resolve-bug` for better user experience. If you used `create-update` with `--resolve-bugzillas` you have to use `--resolve-bug` (or shorthand `-b`) now instead. (#2428)
+- Resolves: rhbz#2316445
+
 * Wed Sep 18 2024 Packit <hello@packit.dev> - 0.101.1-1
 - In the user configuration file, it's possible to set `default_parse_time_macros`, e.g. might be helpful in situations like [packit/packit-service#2514](https://github.com/packit/packit-service/issues/2514). (#2408)
 - Packit now allows to configure mock bootstrap feature setup of Copr projects with a new `bootstrap` configuration option. (#2411)

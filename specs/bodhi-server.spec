@@ -4,12 +4,14 @@
 
 Name:           %{pypi_name}
 Version:        %{pypi_version}
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Bodhi server
 
 License:        GPL-2.0-or-later
 URL:            https://github.com/fedora-infra/bodhi
 Source:         %{pypi_source bodhi_server}
+# https://github.com/fedora-infra/bodhi/commit/ef5e5784d7d329742e1c1d30e0052c709ef013ba
+Patch:          %{name}-bump-zstandard-dep.patch
 
 BuildArch:      noarch
 
@@ -160,6 +162,9 @@ export BODHI_CONFIG=$(pwd)/tests/testing.ini
 %pycached %{python3_sitelib}/bodhi/server/metadata.py
 
 %changelog
+* Fri Oct 04 2024 Dominik Mierzejewski <dominik@greysector.net> - 8.1.1-3
+- Backport upstream patch to build with latest zstandard (0.23.0)
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 8.1.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -5,26 +5,20 @@
 %endif
 
 %global pypi_name zstandard
-%if 0%{!?pytest:1}
-%global pytest %{expand:\\\
-  CFLAGS="${CFLAGS:-${RPM_OPT_FLAGS}}" LDFLAGS="${LDFLAGS:-${RPM_LD_FLAGS}}"\\\
-  PATH="%{buildroot}%{_bindir}:$PATH"\\\
-  PYTHONPATH="${PYTHONPATH:-%{buildroot}%{python3_sitearch}:%{buildroot}%{python3_sitelib}}"\\\
-  PYTHONDONTWRITEBYTECODE=1\\\
-  /usr/bin/pytest}
-%endif
 
 %global desc This project provides Python bindings for interfacing with the Zstandard\
 compression library. A C extension and CFFI interface are provided.
 
 Name: python-%{pypi_name}
-Version: 0.22.0
-Release: 5%{?dist}
+Version: 0.23.0
+Release: 1%{?dist}
 Summary: Zstandard bindings for Python
 License: (BSD-3-Clause OR GPL-2.0-only) AND MIT
 URL: https://github.com/indygreg/python-zstandard
 Source0: %{pypi_source}
 Patch0: %{name}-py313.patch
+# relax dependencies so that auto BR generation works
+Patch1: %{name}-deps.patch
 
 %description
 %{desc}
@@ -34,31 +28,39 @@ Summary: %{summary}
 BuildRequires: gcc
 BuildRequires: libzstd-devel
 BuildRequires: python3-devel
-BuildRequires: python3-setuptools
-BuildRequires: python3-cffi
 %if %{with check}
-BuildRequires: python3-hypothesis
-BuildRequires: python3-pytest
-BuildRequires: python3-pytest-xdist
+BuildRequires: python3dist(pytest)
+BuildRequires: python3dist(pytest-xdist)
 %endif
 # https://github.com/indygreg/python-zstandard/issues/48
-Provides: bundled(zstd) = 1.5.5
+Provides: bundled(zstd) = 1.5.6
 
 %description -n python3-%{pypi_name}
 %{desc}
+
+%pyproject_extras_subpkg -n python3-%{pypi_name} cffi
 
 %prep
 %autosetup -p1 -n %{pypi_name}-%{version}
 rm -r %{pypi_name}.egg-info
 
+%generate_buildrequires
+%if %{with check}
+%pyproject_buildrequires -x cffi -t
+%else
+%pyproject_buildrequires -x cffi
+%endif
+
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l %{pypi_name}
 
-%if %{with check}
 %check
+%pyproject_check_import
+%if %{with check}
 mv zstandard{,.src}
 export ZSTD_SLOW_TESTS=1
 %pytest -v\
@@ -66,13 +68,16 @@ export ZSTD_SLOW_TESTS=1
 mv zstandard{.src,}
 %endif
 
-%files -n python3-%{pypi_name}
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %license LICENSE zstd/COPYING
 %doc README.rst
-%{python3_sitearch}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
-%{python3_sitearch}/%{pypi_name}
 
 %changelog
+* Thu Oct 03 2024 Dominik Mierzejewski <dominik@greysector.net> - 0.23.0-1
+- update to 0.23.0 (resolves rhbz#2298052)
+- switch to modern python packaging guidelines
+  and automatic BuildRequires generation
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.22.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

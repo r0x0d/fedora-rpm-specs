@@ -2,7 +2,7 @@
 
 Name:           python-%{srcname}
 Version:        0.21.0
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Comprehensive HTTP client library
 License:        MIT
 URL:            https://pypi.python.org/pypi/httplib2
@@ -22,9 +22,6 @@ other HTTP libraries.
 
 %package -n python3-%{srcname}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{srcname}}
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
 BuildRequires:  python3-pytest
 # This is listed as a test requirement, but doesn't seem to actually be used.
 #BuildRequires:  python3-pytest-forked
@@ -39,27 +36,26 @@ BuildRequires:  python3-pyparsing
 
 %prep
 %autosetup -p1 -n %{srcname}-%{version}
-rm -r python2
-
-# drop python2-only requirement for old pyparsing
-sed -i '/TODO remove after dropping Python2 support/d' requirements.txt
 
 # Drop coverage
 sed -i '/--cov/d' setup.cfg
 
+%generate_buildrequires
+%pyproject_buildrequires
 
 %build
-%py3_build
+%pyproject_wheel
 
 
 %install
-%py3_install
+%pyproject_install
 
+%pyproject_save_files -l httplib2
 
 %check
 # test_get_301_no_redirect is disabled because it leads to Segfault on Python 3.11
 # the other disabled tests are broken PySocks tests
-PYTHONPATH=%{buildroot}%{python3_sitelib} pytest -k "not test_unknown_server \
+%pytest -k "not test_unknown_server \
 	and not test_socks5_auth and not \
 	test_server_not_found_error_is_raised_for_invalid_hostname and not \
 	test_functional_noproxy_star_https and not \
@@ -69,13 +65,13 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} pytest -k "not test_unknown_server \
 	test_get_via_https and not test_min_tls_version and not\
 	test_client_cert_verified and not test_inject_space and not test_get_301_no_redirect"
 
-
-%files -n python3-%{srcname}
+%files -n python3-%{srcname} -f %{pyproject_files}
 %doc README.md
-%{python3_sitelib}/%{srcname}-*.egg-info/
-%{python3_sitelib}/%{srcname}/
 
 %changelog
+* Sun Sep 22 2024 Kevin Fenzi <kevin@scrye.com> - 0.21.0-9
+- Modernize spec
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.21.0-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -2,7 +2,7 @@
 Summary:      Real-time software synthesizer
 Name:         fluidsynth
 Version:      2.3.6
-Release:      1%{?dist}
+Release:      2%{?dist}
 URL:          http://www.fluidsynth.org/
 Source0:      https://github.com/Fluidsynth/fluidsynth/archive/v%{version}/fluidsynth-%{version}.tar.gz
 License:      LGPL-2.1-or-later
@@ -22,7 +22,11 @@ BuildRequires: cmake
 %endif
 BuildRequires: dbus-devel
 BuildRequires: g++
-BuildRequires: jack-audio-connection-kit-devel
+%if 0%{?fedora} || 0%{?rhel} >= 9
+BuildRequires:  pipewire-jack-audio-connection-kit-devel
+%else
+BuildRequires:  jack-audio-connection-kit-devel
+%endif
 BuildRequires: ladspa-devel
 BuildRequires: libsndfile-devel
 BuildRequires: ncurses-devel
@@ -126,6 +130,9 @@ install -m 644 fluidsynth.service.in $RPM_BUILD_ROOT/usr/lib/systemd/user/fluids
 
 
 %changelog
+* Fri Oct 04 2024 Christoph Karl <pampelmuse [AT] gmx [DOT] at> - 2.3.6-2
+- change BuildRequires to pipewire-jack-audio-connection-kit-devel for fedora and epel>=9
+
 * Sat Sep 21 2024 Christoph Karl <pampelmuse [AT] gmx [DOT] at> - 2.3.6-1
 - Update to 2.3.6
 

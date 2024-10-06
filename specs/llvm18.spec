@@ -36,7 +36,7 @@
 
 %global maj_ver 18
 %global min_ver 1
-%global patch_ver 7
+%global patch_ver 8
 #global rc_ver 4
 
 %if %{with snapshot_build}
@@ -93,7 +93,7 @@
 
 Name:		%{pkg_name}
 Version:	%{maj_ver}.%{min_ver}.%{patch_ver}%{?rc_ver:~rc%{rc_ver}}%{?llvm_snapshot_version_suffix:~%{llvm_snapshot_version_suffix}}
-Release:	5%{?dist}
+Release:	4%{?dist}
 Summary:	The Low Level Virtual Machine
 
 License:	Apache-2.0 WITH LLVM-exception OR NCSA
@@ -586,6 +586,9 @@ fi
 
 
 %changelog
+* Fri Oct 04 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.8-4
+- Update to 18.1.8
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 18.1.7-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

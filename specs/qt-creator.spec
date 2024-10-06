@@ -24,6 +24,8 @@ Patch2:         qt-creator_qmake-names.patch
 Patch3:         qt-creator-debuginfod.patch
 # Drop refereces to unbundled yaml-cpp
 Patch4:         qt-creator_unbundle.patch
+# Fix compability with LLVM>=19.x
+Patch5:         https://github.com/qt-creator/qt-creator/commit/f175ec933f1c5c5d7a345edbaacc8ff90202aee2.patch
 
 BuildRequires:  chrpath
 BuildRequires:  cmake

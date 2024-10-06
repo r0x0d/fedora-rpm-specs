@@ -10,7 +10,7 @@
 # For compatibility with SCL
 %undefine __brp_mangle_shebangs
 
-%global gh_commit    d5e75c21ceeb6829918a75ed63b56c576b4a6261
+%global gh_commit    e52b8672276cf436670cdd6bd5de4353740e83b2
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_branch    2.0-dev
 %global gh_owner     composer
@@ -18,7 +18,7 @@
 %global api_version  2.6.0
 %global run_version  2.2.2
 
-%global upstream_version 2.8.0
+%global upstream_version 2.8.1
 #global upstream_prever  RC1
 #global upstream_lower   rc1
 
@@ -81,7 +81,7 @@ Requires:       ca-certificates
 # Bundled libraries
 # License MIT
 Provides:       bundled(php-composer-ca-bundle) = 1.5.2
-Provides:       bundled(php-composer-class-map-generator) = 1.3.4
+Provides:       bundled(php-composer-class-map-generator) = 1.4.0
 Provides:       bundled(php-composer-metadata-minifier) = 1.0.0
 Provides:       bundled(php-composer-pcre) = 2.3.1
 Provides:       bundled(php-composer-semver) = 3.4.3
@@ -256,6 +256,9 @@ done
 
 
 %changelog
+* Fri Oct  4 2024 Remi Collet <remi@remirepo.net> - 2.8.1-1
+- update to 2.8.1
+
 * Thu Oct  3 2024 Remi Collet <remi@remirepo.net> - 2.8.0-1
 - update to 2.8.0
 

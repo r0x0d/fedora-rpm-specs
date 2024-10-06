@@ -1,8 +1,8 @@
 %global packname  bitops
-%global packvers 1.0-8
+%global packvers 1.0-9
 
 Name:             R-%{packname}
-Version:          1.0.8
+Version:          1.0.9
 Release:          1%{?dist}
 Summary:          Functions for Bitwise operations
 
@@ -42,6 +42,9 @@ test -d %{packname}/src && (cd %{packname}/src; rm -f *.o *.so)
 %{_libdir}/R/library/%{packname}/libs
 
 %changelog
+* Fri Oct 04 2024 josef radinger <cheese@nosuchhost.net> - 
+- bump version
+
 * Tue Jul 30 2024 josef radinger <cheese@nosuchhost.net> - 1.0.8-1
 - bump version
 

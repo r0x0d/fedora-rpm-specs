@@ -3,11 +3,9 @@
 %global debug_package %{nil}
 
 %global crate unicode-width
-%global crate_version 0.1.12
-%global version_no_tilde 0.1.12
 
 Name:           rust-unicode-width
-Version:        0.1.13+really0.1.12
+Version:        0.2.0
 Release:        %autorelease
 Summary:        Determine displayed width of 'char' and 'str' types
 
@@ -54,6 +52,18 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
+%package     -n %{name}+cjk-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+cjk-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "cjk" feature of the "%{crate}" crate.
+
+%files       -n %{name}+cjk-devel
+%ghost %{crate_instdir}/Cargo.toml
+
 %package     -n %{name}+no_std-devel
 Summary:        %{summary}
 BuildArch:      noarch
@@ -67,7 +77,7 @@ use the "no_std" feature of the "%{crate}" crate.
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep
-%autosetup -n %{crate}-%{crate_version} -p1
+%autosetup -n %{crate}-%{version} -p1
 %cargo_prep
 
 %generate_buildrequires

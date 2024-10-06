@@ -5,7 +5,7 @@
 %global crate cc
 
 Name:           rust-cc
-Version:        1.1.19
+Version:        1.1.24
 Release:        %autorelease
 Summary:        Build-time dependency for Cargo build scripts to invoke the native C compiler
 

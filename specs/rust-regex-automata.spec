@@ -5,7 +5,7 @@
 %global crate regex-automata
 
 Name:           rust-regex-automata
-Version:        0.4.7
+Version:        0.4.8
 Release:        %autorelease
 Summary:        Automata construction and matching using regular expressions
 
@@ -423,8 +423,10 @@ use the "unicode-word-boundary" feature of the "%{crate}" crate.
 %if %{with check}
 %check
 # * integration tests can only be run in-tree
+# * skip one doctest that fails depending on Rust version and architecture:
+#   https://github.com/rust-lang/regex/issues/1230
 %cargo_test -- --lib
-%cargo_test -- --doc
+%cargo_test -- --doc -- --skip nfa::thompson::compiler::Config::nfa_size_limit
 %endif
 
 %changelog

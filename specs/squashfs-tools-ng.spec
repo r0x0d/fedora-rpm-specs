@@ -1,5 +1,5 @@
 Name: squashfs-tools-ng
-Version: 1.3.1
+Version: 1.3.2
 Summary: A new set of tools and libraries for working with SquashFS images
 URL:	 https://github.com/AgentD/squashfs-tools-ng
 Source0: https://infraroot.at/pub/squashfs/squashfs-tools-ng-%{version}.tar.gz

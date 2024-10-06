@@ -49,7 +49,7 @@ Summary:        %{summary}
 tomcli set pyproject.toml lists str "build-system.requires" "hatchling" "hatch-vcs"
 tomcli set pyproject.toml str "build-system.build-backend" "hatchling.build"
 tomcli set pyproject.toml str "tool.hatch.version.source" "vcs"
-tomcli set pyproject.toml lists str "tool.hatch.build.targets.wheel.packages" "jaraco"
+tomcli set pyproject.toml lists str "tool.hatch.build.targets.wheel.packages" %{modname}
 %endif
 
 %generate_buildrequires

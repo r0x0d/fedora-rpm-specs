@@ -2,7 +2,7 @@
 
 Name:    kf6
 # This version MUST remain in sync with KF6 versions!
-Version: 6.6.0
+Version: 6.7.0
 Release: 1%{?dist}
 Summary: Filesystem and RPM macros for KDE Frameworks 6
 License: BSD-3-Clause
@@ -94,6 +94,9 @@ sed -i \
 %{_rpmconfigdir}/macros.d/macros.kf6
 
 %changelog
+* Fri Oct 04 2024 Steve Cossette <farchord@gmail.com> - 6.7.0-1
+- 6.7.0
+
 * Mon Sep 16 2024 Steve Cossette <farchord@gmail.com> - 6.6.0-1
 - 6.6.0
 

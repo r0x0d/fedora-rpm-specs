@@ -8,7 +8,7 @@
 %global crate snapbox
 
 Name:           rust-snapbox
-Version:        0.6.17
+Version:        0.6.18
 Release:        %autorelease
 Summary:        Snapshot testing toolbox
 

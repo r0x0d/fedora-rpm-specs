@@ -1,12 +1,12 @@
 Name:           perl-Net-Server
 Version:        2.014
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Extensible, general Perl server engine
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Net-Server
 Source0:        https://cpan.metacpan.org/modules/by-module/Net/Net-Server-%{version}.tar.gz
-# Only initialize existing Net::SSLeay methods
-Patch0:         https://github.com/rhandom/perl-net-server/pull/38.patch
+# Only initialize existing Net::SSLeay methods (RT#154333)
+Patch0:         https://github.com/rhandom/perl-net-server/pull/Net-Server-2.014-Fix-using-OpenSSL-ENGINE-API-routines.patch
 
 BuildArch:      noarch
 BuildRequires:  coreutils
@@ -106,7 +106,8 @@ mkdir -p %{buildroot}%{_libexecdir}/%{name}
 cp -a t %{buildroot}%{_libexecdir}/%{name}
 cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
 #!/bin/sh
-cd %{_libexecdir}/%{name} && exec prove -I . -j "$(getconf _NPROCESSORS_ONLN)" -r
+# XXX Not possible to run in parallel
+cd %{_libexecdir}/%{name} && exec prove -I . -r
 EOF
 chmod +x %{buildroot}%{_libexecdir}/%{name}/test
 %{_fixperms} %{buildroot}/*
@@ -126,6 +127,10 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Fri Oct 04 2024 Michal Josef Špaček <mspacek@redhat.com> - 2.014-7
+- Fix running of tests in perl-Net-Server-tests subpackage
+- Rename patch file to better name
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.014-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

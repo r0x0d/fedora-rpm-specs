@@ -1,5 +1,5 @@
 Name:           perlbrew
-Version:        0.99
+Version:        1.00
 Release:        1%{?dist}
 Summary:        Manage perl installations in your $HOME
 License:        MIT
@@ -143,6 +143,9 @@ chmod +x %{buildroot}%{_libexecdir}/%{name}/test
 %{_libexecdir}/%{name}
 
 %changelog
+* Fri Oct 04 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1.00-1
+- 1.00 bump (rhbz#2316412)
+
 * Tue Sep 10 2024 Jitka Plesnikova <jplesnik@redhat.com> - 0.99-1
 - 0.99 bump (rhbz#2310606)
 

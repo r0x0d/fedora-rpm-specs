@@ -30,7 +30,8 @@ BuildRequires:  libusbx-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  readline-devel
 
-# Applications using libimobiledevice might use sockets provided by usbmuxd to work
+# Applications using libimobiledevice might use sockets provided by usbmuxd to
+# work
 Recommends: usbmuxd
 
 %description
@@ -45,11 +46,11 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 Files for development with libimobiledevice.
 
 %package        utils
-Summary:        Utilites for libimobiledevice
+Summary:        Utilities for libimobiledevice
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description    utils
-Utilites for use with libimobiledevice.
+Utilities for use with libimobiledevice.
 
 %prep
 %autosetup -p1 -n %{name}-%{commit}

@@ -37,7 +37,7 @@
 Summary: Enhanced system logging and kernel message trapping daemon
 Name: rsyslog
 Version: 8.2408.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPL-3.0-or-later AND Apache-2.0
 URL: http://www.rsyslog.com/
 Source0: http://www.rsyslog.com/files/download/rsyslog/%{name}-%{version}.tar.gz
@@ -760,6 +760,10 @@ done
 
 
 %changelog
+* Fri Oct 04 2024 Attila Lakatos <alakatos@redhat.com> - 8.2408.0-2
+- Rebuild package
+  Resolves: rhzb#2316361
+
 * Wed Aug 21 2024 Attila Lakatos <alakatos@redhat.com> - 8.2408.0-1
 - Rebase to 8.2408.0
   Resolves: rhbz#2266329

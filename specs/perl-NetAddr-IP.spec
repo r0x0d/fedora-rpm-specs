@@ -1,6 +1,6 @@
 Name:           perl-NetAddr-IP
 Version:        4.079
-Release:        30%{?dist}
+Release:        31%{?dist}
 Summary:        Manages IPv4 and IPv6 addresses and subnets
 # Lite/Util/Util.xs is GPL-2.0-or-later
 # Other files are (GPL-2.0-or-later OR Artistic-1.0-Perl)
@@ -17,7 +17,7 @@ BuildRequires:  perl-devel
 BuildRequires:  perl-generators
 BuildRequires:  perl(Config)
 BuildRequires:  perl(Cwd)
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 BuildRequires:  perl(File::Spec)
 BuildRequires:  perl(Getopt::Long)
 BuildRequires:  perl(Pod::Text)
@@ -50,12 +50,11 @@ or IP subnets, that allows for easy manipulations.
 %setup -q -n NetAddr-IP-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor OPTIMIZE="%{optflags}"
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor OPTIMIZE="%{optflags}" NO_PERLLOCAL=1 NO_PACKLIST=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 find %{buildroot} -type f -name '*.bs' -empty -delete
 %{_fixperms} %{buildroot}
 
@@ -63,11 +62,7 @@ find %{buildroot} -type f -name '*.bs' -empty -delete
 make test
 
 %files
-%if 0%{?_licensedir:1}
 %license Artistic Copying
-%else
-%doc Artistic Copying
-%endif
 %doc About-NetAddr-IP.txt Changes TODO docs/rfc1884.txt
 %{perl_vendorarch}/auto/NetAddr/
 %{perl_vendorarch}/NetAddr/
@@ -78,6 +73,9 @@ make test
 %{_mandir}/man3/NetAddr::IP::UtilPP.3*
 
 %changelog
+* Sat Sep 28 2024 Xavier Bachelot <xavier@bachelot.org> - 4.079-31
+- Modernize specfile (Thanks to Tom Stellard for the initial PR)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.079-30
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

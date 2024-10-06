@@ -5,7 +5,7 @@
 %global crate scc
 
 Name:           rust-scc
-Version:        2.1.17
+Version:        2.2.0
 Release:        %autorelease
 Summary:        Containers and utilities for concurrent and asynchronous programming
 
@@ -50,6 +50,18 @@ This package contains library source intended for building other packages which
 use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+equivalent-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+equivalent-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "equivalent" feature of the "%{crate}" crate.
+
+%files       -n %{name}+equivalent-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+serde-devel

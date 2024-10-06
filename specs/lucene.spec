@@ -1,5 +1,5 @@
 Name:           lucene
-Version:        9.11.1
+Version:        9.12.0
 Release:        %autorelease
 Epoch:          0
 Summary:        High-performance, full-featured text search engine
@@ -153,6 +153,12 @@ Summary:        Lucene module: expressions
 %description expressions
 %{summary}.
 
+%package facet
+Summary:        Lucene module: facet
+
+%description facet
+%{summary}.
+
 %package grouping
 Summary:        Lucene module: grouping
 
@@ -255,7 +261,6 @@ popd
 
 %pom_disable_module benchmark
 %pom_disable_module demo
-%pom_disable_module facet
 %pom_disable_module luke
 %pom_disable_module replicator
 %pom_disable_module test-framework
@@ -293,6 +298,7 @@ popd
 %doc README.md
 
 %files expressions -f .mfiles-lucene-expressions
+%files facet -f .mfiles-lucene-facet
 %files grouping -f .mfiles-lucene-grouping
 %files highlighter -f .mfiles-lucene-highlighter
 %files join -f .mfiles-lucene-join

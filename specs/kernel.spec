@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc1.20241001gite32cde8d2bd7.18
+%define pkgrelease 0.rc1.20241004git0c559323bbaa.21
 %define kversion 6
-%define tarfile_release 6.12-rc1-31-ge32cde8d2bd7
+%define tarfile_release 6.12-rc1-125-g0c559323bbaa
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc1.20241001gite32cde8d2bd7.18%{?buildid}%{?dist}
+%define specrelease 0.rc1.20241004git0c559323bbaa.21%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -207,7 +207,7 @@ Summary: The Linux kernel
 # kernel-64k (aarch64 kernel with 64K page_size)
 %define with_arm64_64k %{?_without_arm64_64k: 0} %{?!_without_arm64_64k: 1}
 # kernel-rt (x86_64 and aarch64 only PREEMPT_RT enabled kernel)
-%define with_realtime  %{?_with_realtime:     1} %{?!_with_realtime:     0}
+%define with_realtime  %{?_without_realtime:  0} %{?!_without_realtime:  1}
 
 # Supported variants
 #            with_base with_debug    with_gcov
@@ -1871,7 +1871,7 @@ chmod +x scripts/checkpatch.pl
 mv COPYING COPYING-%{specrpmversion}-%{release}
 
 # on linux-next prevent scripts/setlocalversion from mucking with our version numbers
-rm -f localversion-next
+rm -f localversion-next localversion-rt
 
 # Mangle /usr/bin/python shebangs to /usr/bin/python3
 # Mangle all Python shebangs to be Python 3 explicitly
@@ -4136,6 +4136,19 @@ fi\
 #
 #
 %changelog
+* Fri Oct 04 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc1.0c559323bbaa.21]
+- configs for RT deps (Clark Williams)
+- Linux v6.12.0-0.rc1.0c559323bbaa
+
+* Thu Oct 03 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc1.e32cde8d2bd7.20]
+- CONFIG_OF_OVERLAY: enable for aarch64 and powerpc (Scott Weaver)
+- redhat: enable changes to build rt variants (Clark Williams)
+- redhat: clean up pending-rhel (Patrick Talbert)
+- Enable CONFIG_SCHED_CLASS_EXT for Fedora (Jose Fernandez)
+
+* Wed Oct 02 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc1.e32cde8d2bd7.19]
+- redhat/configs: new config in arch/s390 (Izabela Bakollari)
+
 * Tue Oct 01 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc1.e32cde8d2bd7.18]
 - redhat: ignore rpminspect runpath report on selftests/bpf/cpuv4/urandom_read (Viktor Malik)
 - Linux v6.12.0-0.rc1.e32cde8d2bd7

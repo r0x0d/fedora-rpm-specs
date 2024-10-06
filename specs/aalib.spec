@@ -1,9 +1,15 @@
 %global         rc_subver     rc5
 
+%if 0%{?el10}
+%bcond_with gpm
+%else
+%bcond_without gpm
+%endif
+
 Summary:        ASCII art library
 Name:           aalib
 Version:        1.4.0
-Release:        0.51.%{rc_subver}%{?dist}
+Release:        0.52.%{rc_subver}%{?dist}
 License:        LGPL-2.1-or-later
 URL:            http://aa-project.sourceforge.net/aalib/
 Source0:        http://download.sourceforge.net/aa-project/%{name}-1.4%{rc_subver}.tar.gz
@@ -11,18 +17,24 @@ Patch0:         aalib-aclocal.patch
 Patch1:         aalib-config-rpath.patch
 Patch2:         aalib-1.4rc5-bug149361.patch
 Patch3:         aalib-1.4rc5-rpath.patch
-Patch4:		aalib-1.4rc5-x_libs.patch
-Patch5:		aalib-1.4rc5-libflag.patch
-Patch6:		aalib-c99.patch
-Patch7:		https://gitweb.gentoo.org/repo/gentoo.git/plain/media-libs/aalib/files/aalib-1.4_rc5-free-offset-pointer.patch
-Patch8:		https://gitweb.gentoo.org/repo/gentoo.git/plain/media-libs/aalib/files/aalib-1.4_rc5-fix-aarender.patch
+Patch4:         aalib-1.4rc5-x_libs.patch
+Patch5:         aalib-1.4rc5-libflag.patch
+Patch6:         aalib-c99.patch
+Patch7:         https://gitweb.gentoo.org/repo/gentoo.git/plain/media-libs/aalib/files/aalib-1.4_rc5-free-offset-pointer.patch
+Patch8:         https://gitweb.gentoo.org/repo/gentoo.git/plain/media-libs/aalib/files/aalib-1.4_rc5-fix-aarender.patch
 # Modern ncurses has an opaque WINDOW structure (you cannot address its members directly)
 # Use the getmaxx() and getmaxy() functions provided by ncurses instead.
 Patch9:		aalib-1.4rc5-opaque-ncurses-fix.patch
 
-BuildRequires:  slang-devel libXt-devel gpm-devel ncurses-devel
-BuildRequires:	autoconf libtool
-BuildRequires:	make
+BuildRequires:  autoconf
+%if 0%{with gpm}
+BuildRequires:  gpm-devel
+%endif
+BuildRequires:  libtool
+BuildRequires:  libXt-devel
+BuildRequires:  make
+BuildRequires:  ncurses-devel
+BuildRequires:  slang-devel
 
 %description
 AA-lib is a low level gfx library just as many other libraries are. The
@@ -63,11 +75,11 @@ autoreconf -v -f -i
 %build
 %configure --disable-static  --with-curses-driver=yes --with-ncurses
 
-make %{?_smp_mflags}
+%make_build
 
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT INSTALL="%{__install} -p"
+%make_install
 rm -f $RPM_BUILD_ROOT{%{_libdir}/libaa.la,%{_infodir}/dir}
 
 # clean up multilib conflicts
@@ -85,7 +97,7 @@ touch -r NEWS $RPM_BUILD_ROOT%{_bindir}/aalib-config $RPM_BUILD_ROOT%{_datadir}/
 %files libs
 %doc README ChangeLog NEWS
 %license COPYING
-%{_libdir}/libaa.so.*
+%{_libdir}/libaa.so.1*
 
 %files devel
 %{_bindir}/aalib-config
@@ -96,6 +108,10 @@ touch -r NEWS $RPM_BUILD_ROOT%{_bindir}/aalib-config $RPM_BUILD_ROOT%{_datadir}/
 %{_datadir}/aclocal/aalib.m4
 
 %changelog
+* Fri Oct 04 2024 Xavier Bachelot <xavier@bachelot.org> - 1.4.0-0.52.rc5
+- Do not BuildRequires gpm-devel on EL10
+- Specfile clean up
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.0-0.51.rc5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

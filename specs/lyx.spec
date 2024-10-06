@@ -11,8 +11,8 @@ BuildRequires: fontpackages-devel
 %global _changelog_trimtime %(date +%s -d "1 year ago")
 
 Name:    lyx
-Version: 2.4.1
-Release: 4%{?dist}
+Version: 2.4.2.1
+Release: 1%{?dist}
 Summary: WYSIWYM (What You See Is What You Mean) document processor
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License: GPL-2.0-or-later
@@ -23,9 +23,6 @@ Source1: lyxrc.dist
 
 # font metainfo file
 Source20: %{fontname}.metainfo.xml
-
-# Upstream patches
-Patch1: 0001-Python-3.13-removed-the-pipes-module-from-the-standa.patch
 
 %if 0%{?autotools}
 BuildRequires: automake libtool
@@ -259,6 +256,13 @@ texhash >& /dev/null
 
 
 %changelog
+* Wed Sep 25 2024 José Matos <jamatos@fedoraproject.org> - 2.4.2.1-1
+- Update to 2.4.2.1
+
+* Thu Sep 19 2024 José Matos <jamatos@fedoraproject.org> - 2.4.2-0
+- Update to 2.4.2
+- remove upstream patch
+
 * Sun Aug 25 2024 José Matos <jamatos@fedoraproject.org> - 2.4.1-4
 - Fix code to be compatible with Python 3.13 (upstream patch)
 

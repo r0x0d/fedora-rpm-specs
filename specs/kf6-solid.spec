@@ -1,8 +1,8 @@
 %global framework solid
 
 Name:           kf6-%{framework}
-Version:        6.6.0
-Release:        2%{?dist}
+Version:        6.7.0
+Release:        1%{?dist}
 Summary:        KDE Frameworks 6 Tier 1 integration module that provides hardware information
 License:        LGPL-2.1-or-later AND LGPL-2.1-only AND CCO-1.0 AND BSD-3-Clause AND LGPL-3.0-only
 URL:            https://solid.kde.org/
@@ -78,6 +78,9 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Fri Oct 04 2024 Steve Cossette <farchord@gmail.com> - 6.7.0-1
+- 6.7.0
+
 * Sun Sep 29 2024 Alessandro Astone <ales.astone@gmail.com> - 6.6.0-2
 - Rebuild for libimobiledevice
 

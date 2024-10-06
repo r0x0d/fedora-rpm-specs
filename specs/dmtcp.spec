@@ -1,7 +1,7 @@
 %{!?_pkgdocdir: %global _pkgdocdir %{_docdir}/%{name}-%{version}}
 
 %global forgeurl https://github.com/dmtcp/dmtcp
-Version:        3.0.0
+Version:        3.1.0
 %global tag %{version}
 %forgemeta
 
@@ -19,6 +19,7 @@ Source0:        %{forgesource}
 
 BuildRequires:  gcc-c++
 BuildRequires:  make
+BuildRequires:  libatomic
 BuildRequires:  python3
 
 # This package is functional only on i386, x86_64 and aarch64 architectures.

@@ -18,6 +18,8 @@ Patch:          onefetch-fix-metadata-auto.diff
 #   (https://bugzilla.redhat.com/show_bug.cgi?id=2274161)
 # * Allow image 0.25 (see https://github.com/o2sh/onefetch/pull/1396)
 # * Patch out tests/repo.rs, which requires gix-testtools
+# * Update strum from 0.25.0 to 0.26.3:
+#   https://github.com/o2sh/onefetch/pull/1431
 Patch:          onefetch-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

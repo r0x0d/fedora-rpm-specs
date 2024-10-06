@@ -44,7 +44,7 @@
 
 Name:		%{pkg_name}
 Version:	%{compiler_rt_version}%{?rc_ver:~rc%{rc_ver}}%{?llvm_snapshot_version_suffix:~%{llvm_snapshot_version_suffix}}
-Release:	5%{?dist}
+Release:	6%{?dist}
 Summary:	LLVM "compiler-rt" runtime libraries
 
 License:	Apache-2.0 WITH LLVM-exception OR NCSA OR MIT
@@ -83,7 +83,7 @@ Conflicts: compiler-rt < %{lua: return tonumber(macros['maj_ver']) + 1}
 %else
 Requires: clang-resource-filesystem%{?isa} = %{version}
 %endif
-Provides: %{name}(major) = %{maj_ver}
+Provides: compiler-rt(major) = %{maj_ver}
 
 %description
 The compiler-rt project is a part of the LLVM project. It provides
@@ -166,6 +166,10 @@ ln -s i386-redhat-linux-gnu %{buildroot}%{_prefix}/lib/clang/%{maj_ver}/lib/%{_t
 #%endif
 
 %changelog
+* Thu Oct 03 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.7-6
+- Provide compiler-rt(major) = 18 instead of
+  compiler-rt18(major) = 18
+
 * Fri Sep 27 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.7-5
 - Add conflicts with next major version of non-compat package
 

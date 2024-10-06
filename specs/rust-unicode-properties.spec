@@ -5,7 +5,7 @@
 %global crate unicode-properties
 
 Name:           rust-unicode-properties
-Version:        0.1.2
+Version:        0.1.3
 Release:        %autorelease
 Summary:        Query character Unicode properties according to UAX #44 and UTR #51
 

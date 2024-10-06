@@ -1,21 +1,8 @@
-%if 0%{?fedora} >= 38
-%ifnarch s390x
-%global _with_qt6 1
-%global _qtver Qt6
-%else
-%global _qtver Qt5
-%endif
-%else
-%global _qtver Qt5
-%endif
-# Use old cmake macro
-%global __cmake_in_source_build 1
-
 Name:    qbittorrent
 Summary: A Bittorrent Client
 Epoch:   1
-Version: 4.6.5
-Release: 3%{?dist}
+Version: 5.0.0
+Release: 1%{?dist}
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License: GPL-2.0-or-later
 URL:     https://www.qbittorrent.org
@@ -32,7 +19,6 @@ BuildRequires: gcc-c++
 BuildRequires: gnupg2
 BuildRequires: ninja-build
 BuildRequires: systemd
-%if 0%{?_with_qt6}
 BuildRequires: cmake(Qt6Core)
 BuildRequires: cmake(Qt6Gui)
 BuildRequires: cmake(Qt6Svg)
@@ -40,13 +26,6 @@ BuildRequires: cmake(Qt6LinguistTools)
 BuildRequires: libxkbcommon-devel
 BuildRequires: qt6-qtbase-private-devel
 BuildRequires: qt6-linguist
-%else
-BuildRequires: cmake(Qt5Core)
-BuildRequires: cmake(Qt5Gui)
-BuildRequires: cmake(Qt5Svg)
-BuildRequires: qt5-qtbase-private-devel
-BuildRequires: qt5-linguist
-%endif
 BuildRequires: rb_libtorrent-devel >= 1.2.12
 BuildRequires: desktop-file-utils
 BuildRequires: boost-devel >= 1.60
@@ -55,18 +34,12 @@ BuildRequires: openssl-devel-engine
 BuildRequires: zlib-ng-compat-static
 
 Requires: python3
-%if 0%{?_with_qt6}
 Recommends: (qgnomeplatform-qt6%{?_isa} if gnome-shell)
 Recommends: (qgnomeplatform-qt6%{?_isa} if cinnamon)
 Requires:   qt6-qtsvg%{?_isa}
-%else
-Recommends: (qgnomeplatform-qt5%{?_isa} if gnome-shell)
-Recommends: (qgnomeplatform-qt5%{?_isa} if cinnamon)
-Requires:   qt5-qtsvg%{?_isa}
-%endif
 
 %description
-A Bittorrent client using rb_libtorrent and a %{_qtver} Graphical User Interface.
+A Bittorrent client using rb_libtorrent and a Qt6 Graphical User Interface.
 It aims to be as fast as possible and to provide multi-OS, unicode support.
 
 %package nox
@@ -88,9 +61,7 @@ pushd build-nox
  -DSYSTEMD=ON \
  -Wno-dev \
  -GNinja \
-%if 0%{?_with_qt6}
  -DQT6=ON \
-%endif
  -DGUI=OFF \
  ..
 %cmake_build
@@ -101,9 +72,7 @@ mkdir build
 pushd build
 %cmake \
  -Wno-dev \
-%if 0%{?_with_qt6}
  -DQT6=ON \
-%endif
  -GNinja \
  ..
 %cmake_build
@@ -135,6 +104,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.qbittorren
 %{_datadir}/icons/hicolor/*/apps/qbittorrent.*
 %{_datadir}/icons/hicolor/*/status/qbittorrent-tray*
 %{_mandir}/man1/qbittorrent.1*
+%{_mandir}/ru/man1/qbittorrent.1*
 
 %files nox
 %license COPYING
@@ -142,8 +112,13 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.qbittorren
 %{_bindir}/qbittorrent-nox
 %{_unitdir}/qbittorrent-nox@.service
 %{_mandir}/man1/qbittorrent-nox.1*
+%{_mandir}/ru/man1/qbittorrent-nox.1*
 
 %changelog
+* Tue Oct 01 2024 Charalampos Stratakis <cstratak@redhat.com> - 1:5.0.0-1
+- Update to 5.0.0
+- Fixes: rhbz#2305922
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1:4.6.5-3
 - convert license to SPDX
 

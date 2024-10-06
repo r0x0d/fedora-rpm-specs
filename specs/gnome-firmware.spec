@@ -17,7 +17,7 @@ BuildRequires:  libappstream-glib
 BuildRequires:  meson >= 0.46.0
 BuildRequires:  systemd-devel
 BuildRequires:  pkgconfig(appstream-glib)
-BuildRequires:  pkgconfig(fwupd) >= 1.8.11
+BuildRequires:  pkgconfig(fwupd) >= 2.0.0
 BuildRequires:  pkgconfig(gio-2.0) >= 2.74.0
 BuildRequires:  pkgconfig(gtk4) >= 4.6.0
 BuildRequires:  pkgconfig(xmlb) >= 0.1.7

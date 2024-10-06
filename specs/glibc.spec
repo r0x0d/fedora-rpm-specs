@@ -1,4 +1,4 @@
-%global glibcsrcdir glibc-2.40.9000-203-gda29dc24d4
+%global glibcsrcdir glibc-2.40.9000-224-ga36814e145
 %global glibcversion 2.40.9000
 # Pre-release tarballs are pulled in from git using a command that is
 # effectively:
@@ -169,7 +169,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 5
+%global baserelease 6
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -2586,6 +2586,31 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Wed Oct 02 2024 Carlos O'Donell <carlos@redhat.com> - 2.40.9000-6
+- Auto-sync with upstream branch master,
+  commit a36814e1455093fc9ebfcdf6ef39bb0cf3d447da.
+- riscv: align .preinit_array (bug 32228)
+- linux: sparc: Fix clone for LEON/sparcv8 (BZ 31394)
+- linux: sparc: Fix syscall_cancel for LEON
+- math: Improve layout of expf data
+- Disable _TIME_BITS if the compiler defaults to it
+- Disable _FILE_OFFSET_BITS if the compiler defaults to it
+- Do not use -Wp to disable fortify (BZ 31928)
+- libio: Set _vtable_offset before calling _IO_link_in [BZ #32148]
+- Add a new fwrite test that exercises buffer overflow
+- x86/string: Fixup alignment of main loop in str{n}cmp-evex [BZ #32212]
+- stdio-common: Fix memory leak in tst-freopen4* tests on UNSUPPORTED
+- Linux: Block signals around _Fork (bug 32215)
+- Update to Unicode 16.0.0 [BZ #32168]
+- manual: Document that feof and ferror are mutually exclusive
+- stdio-common: Add new test for fdopen
+- Fix missing randomness in __gen_tempname (bug 32214)
+- arc: Cleanup arcbe
+- arc: Remove HAVE_ARC_BE macro and disable big-endian port
+- scripts: Remove arceb-linux-gnu from build-many-glibcs.py
+- LoongArch: Undef __NR_fstat and __NR_newfstatat.
+- Add tests of fread
+
 * Tue Sep 24 2024 Arjun Shankar <arjun@redhat.com> - 2.40.9000-5
 - Auto-sync with upstream branch master,
   commit da29dc24d419656a4a6d6d61598b767b86b1425d:

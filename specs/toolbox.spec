@@ -31,7 +31,7 @@ Version:       0.0.99.6
 %endif
 %endif
 
-Release:       3%{?dist}
+Release:       4%{?dist}
 Summary:       Tool for interactive command line environments on Linux
 
 License:       Apache-2.0
@@ -43,6 +43,7 @@ Source1:       %{name}.conf
 
 # Upstream
 Patch0:        toolbox-test-system-Unbreak-downstream-Fedora-CI.patch
+Patch1:        toolbox-Update-fallback-release-to-40-for-non-fedo.patch
 
 # Fedora specific
 Patch100:      toolbox-Make-the-build-flags-match-Fedora-s-gobuild.patch
@@ -135,6 +136,7 @@ The %{name}-tests package contains system tests for %{name}.
 %prep
 %setup -q
 %patch -P0 -p1
+%patch -P1 -p1
 
 %if 0%{?fedora}
 %patch -P100 -p1
@@ -208,6 +210,9 @@ install -m0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/containers/%{name}.conf
 
 
 %changelog
+* Fri Oct 04 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.0.99.6-4
+- Use the fedora-toolbox:40 image for Fedora Asahi Remix hosts
+
 * Thu Oct 03 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.0.99.6-3
 - Unbreak the downstream Fedora CI
 

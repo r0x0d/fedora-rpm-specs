@@ -5,8 +5,7 @@ Version:        2.19.5
 Release:        %autorelease
 Summary:        Crypto and TLS for C++11
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-2-Clause
 URL:            https://botan.randombit.net/
 Source0:        https://botan.randombit.net/releases/Botan-%{version}.tar.xz
 

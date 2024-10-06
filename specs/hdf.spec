@@ -6,22 +6,16 @@
 %endif
 
 Name: hdf
-Version: 4.2.16.2
-Release: 3%{?dist}
+Version: 4.3.0
+Release: 1%{?dist}
 Summary: A general purpose library and file format for storing scientific data
 # Automatically converted from old format: BSD - review is highly recommended.
 License: LicenseRef-Callaway-BSD
 URL: https://portal.hdfgroup.org/
-Source0: https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDF4/HDF4.2.16-2/src/hdf-4.2.16-2.tar.bz2
+Source0: https://github.com/HDFGroup/hdf4/archive/refs/tags/hdf%{version}.tar.gz
 Source1: h4comp
-# Fix type - https://github.com/HDFGroup/hdf4/pull/496
-Patch1: hdf-type.patch
-# Support DESTDIR in install-examples
-Patch5: hdf-destdir.patch
-# Install examples into the right location
-Patch6: hdf-examplesdir.patch
 # Fix java build
-Patch11: hdf-build.patch
+Patch1: hdf-build.patch
 
 # For destdir/examplesdir patches
 BuildRequires: automake, libtool, gcc, gcc-c++
@@ -64,6 +58,14 @@ Requires: zlib-devel%{?_isa}
 HDF4 development headers and libraries.
 
 
+%package examples
+Summary: HDF4 example source files
+BuildArch: noarch
+
+%description examples
+HDF4 example source files.
+
+
 %package libs
 Summary: HDF4 shared libraries
 
@@ -91,12 +93,8 @@ HDF4 java library
 
 
 %prep
-%setup -q -n hdf-4.2.16-2
-
-%patch -P 1 -p1 -b .type
-%patch -P 5 -p1 -b .destdir
-%patch -P 6 -p1 -b .examplesdir
-%patch -P 11 -p1 -b .build
+%setup -q -n hdf4-hdf%{version}
+%patch -P 1 -p1 -b .build
 
 %if %{with java}
 # Replace jars with system versions
@@ -221,18 +219,18 @@ make -j1 -C build-static check
 %files
 %license COPYING
 %doc README.md release_notes/*.txt
-%exclude %{_pkgdocdir}/examples
 %{_bindir}/*
 %exclude %{_bindir}/h4?c*
 %{_libdir}/*.so.0*
-%{_mandir}/man1/*.gz
 
 %files devel
 %{_bindir}/h4?c*
 %{_includedir}/%{name}/
 %{_libdir}/*.so
 %{_libdir}/*.settings
-%{_pkgdocdir}/examples/
+
+%files examples
+%doc HDF4Examples
 
 %files libs
 %{_libdir}/*.so.0*
@@ -248,6 +246,9 @@ make -j1 -C build-static check
 
 
 %changelog
+* Mon Sep 30 2024 Orion Poplawski <orion@nwra.com> - 4.3.0-1
+- Update to 4.3.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 4.2.16.2-3
 - convert license to SPDX
 

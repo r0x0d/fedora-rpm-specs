@@ -47,7 +47,7 @@
 # than a Fedora release lifecycle.
 %global nodejs_epoch 1
 %global nodejs_major 20
-%global nodejs_minor 17
+%global nodejs_minor 18
 %global nodejs_patch 0
 # nodejs_soversion - from NODE_MODULE_VERSION in src/node_version.h
 %global nodejs_soversion 115
@@ -75,7 +75,7 @@
 
 # c-ares - from deps/cares/include/ares_version.h
 # https://github.com/nodejs/node/pull/9332
-%global c_ares_version 1.32.3
+%global c_ares_version 1.33.1
 
 # llhttp - from deps/llhttp/include/llhttp.h
 %global llhttp_version 8.1.2
@@ -102,7 +102,7 @@
 # " this line just fixes syntax highlighting for vim that is confused by the above and continues literal
 
 # simdutf from deps/simdutf/simdutf.h
-%global simdutf_version 5.3.0
+%global simdutf_version 5.5.0
 
 # OpenSSL minimum version
 %global openssl11_minimum 1:1.1.1
@@ -329,14 +329,14 @@ Provides: bundled(ada) = 2.9.0
 
 # undici and cjs-module-lexer ship with pre-built WASM binaries.
 %if %{with bundled_cjs_module_lexer}
-Provides: bundled(nodejs-cjs-module-lexer) = 1.2.2
+Provides: bundled(nodejs-cjs-module-lexer) = 1.4.1
 %else
 BuildRequires: nodejs-cjs-module-lexer
 Requires: nodejs-cjs-module-lexer
 %endif
 
 %if %{with bundled_undici}
-Provides: bundled(nodejs-undici) = 6.19.2
+Provides: bundled(nodejs-undici) = 6.19.8
 %else
 BuildRequires: nodejs-undici
 Requires: nodejs-undici

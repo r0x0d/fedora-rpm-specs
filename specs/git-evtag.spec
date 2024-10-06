@@ -1,7 +1,7 @@
 Summary: Strong GPG verification of git tags
 Name: git-evtag
 Version: 2016.1
-Release: 33%{?dist}
+Release: 34%{?dist}
 
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License: LicenseRef-Callaway-LGPLv2+
@@ -42,6 +42,9 @@ env NOCONFIGURE=1 ./autogen.sh
 %{_bindir}/%{name}
 
 %changelog
+* Fri Oct 04 2024 Pete Walter <pwalter@fedoraproject.org> - 2016.1-34
+- Rebuild for libgit2 1.8.x
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 2016.1-33
 - convert license to SPDX
 

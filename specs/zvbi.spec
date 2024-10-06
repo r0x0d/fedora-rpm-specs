@@ -2,25 +2,31 @@
 %define             catalogue %{_sysconfdir}/X11/fontpath.d
 
 Name:               zvbi
-Version:            0.2.35
-Release:            23%{?dist}
+Version:            0.2.42
+Release:            1%{?dist}
 Summary:            Raw VBI, Teletext and Closed Caption decoding library
 License:            GPL-2.0-or-later AND LGPL-2.0-or-later AND LGPL-2.1-or-later AND BSD-2-Clause AND MIT
-URL:                http://zapping.sourceforge.net/ZVBI/index.html
-Source0:            http://downloads.sourceforge.net/zapping/%{name}-%{version}.tar.bz2
+URL:                https://github.com/zapping-vbi/zvbi
+Source0:            https://github.com/zapping-vbi/zvbi/archive/v%{version}/%{name}-%{version}.tar.gz
 Patch0:             %{name}-0.2.24-tvfonts.patch
 Patch1:             %{name}-0.2.25-openfix.patch
+# slightly adapted from https://github.com/zapping-vbi/zvbi/commit/ae74ae513714f81b9b8abdb12e1b235d16fad74e.patch
+Patch2:             zvbi-0.2.42-fix_sincos_declaration.patch
 
-BuildRequires:      make
-BuildRequires:      gcc-c++
+BuildRequires:      autoconf
+BuildRequires:      automake
+BuildRequires:      bdftopcf
 BuildRequires:      doxygen
 BuildRequires:      fontconfig
-BuildRequires:      gettext >= 0.16.1
-BuildRequires:      libpng-devel
+BuildRequires:      gcc-c++
+BuildRequires:      gettext-devel
 BuildRequires:      libICE-devel
-BuildRequires:      bdftopcf
+BuildRequires:      libpng-devel
+BuildRequires:      libtool
+BuildRequires:      make
 BuildRequires:      mkfontdir
 BuildRequires:      systemd-units
+BuildRequires:      tzdata
 
 
 %description
@@ -43,7 +49,7 @@ Development files for zvbi
 
 %package fonts
 Summary:            Fonts from zvbi converted to X11
-BuildArch:	    noarch
+BuildArch:          noarch
 Obsoletes:          xawtv-tv-fonts < 3.95
 Provides:           xawtv-tv-fonts >= 3.95
 
@@ -55,9 +61,7 @@ Fonts from zvbi converted for use with X11
 %setup -q
 %patch -P 0 -p1
 %patch -P 1 -p1
-
-# Fix character encodings
-iconv -f iso8859-1 README -t utf8 > README.conv && /bin/mv -f README.conv README
+%patch -P 2 -p1
 
 # systemd service file
 cat >zvbid.service <<EOF
@@ -76,6 +80,7 @@ EOF
 
 
 %build
+./autogen.sh
 # Note: We don't do --enable-static=no because static libs are needed to build
 # x11font during compile time to convert zvbi fonts into x11 fonts. x11font
 # is thrown away and not installed as it's not useful for anything else
@@ -84,7 +89,7 @@ EOF
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-make %{?_smp_mflags}
+%make_build
 
 # Generate fonts, fonts.alias and fonts.dir
 pushd contrib
@@ -102,7 +107,7 @@ popd
 
 %install
 mkdir -p %{buildroot}%{fontdir}
-make install DESTDIR=%{buildroot}
+%make_install
 
 %find_lang %{name}
 
@@ -116,6 +121,13 @@ touch %{buildroot}%{fontdir}/fonts.cache-1
 
 mkdir -p %{buildroot}%{catalogue}
 ln -sf %{fontdir} %{buildroot}%{catalogue}/%{name}
+
+find %{buildroot}%{_libdir} -name '*.a' -delete
+
+
+%check
+cd test
+make check
 
 
 %post
@@ -131,14 +143,14 @@ ln -sf %{fontdir} %{buildroot}%{catalogue}/%{name}
 
 
 %files -f %{name}.lang
+%license COPYING.md
+%doc AUTHORS BUGS ChangeLog NEWS README.md TODO
 %{_bindir}/%{name}*
 %{_sbindir}/zvbid
 %{_unitdir}/zvbid.service
-%{_libdir}/*.so.*
-%{_mandir}/man1/*
-%exclude %{_libdir}/*.a
-%exclude %{_libdir}/*.la
-%doc AUTHORS BUGS ChangeLog COPYING COPYING.LIB NEWS README TODO
+%{_libdir}/libzvbi.so.0*
+%{_libdir}/libzvbi-chains.so.0*
+%{_mandir}/man1/zvbi*1*
 
 
 %files devel
@@ -157,6 +169,9 @@ ln -sf %{fontdir} %{buildroot}%{catalogue}/%{name}
 
 
 %changelog
+* Fri Sep 13 2024 Xavier Bachelot <xavier@bachelot.org> - 0.2.42-1
+- Update to 0.2.42
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.35-23
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

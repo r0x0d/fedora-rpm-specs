@@ -2,21 +2,25 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate gdk4-wayland
+%global crate unicode-width
 
-Name:           rust-gdk4-wayland0.8
-Version:        0.8.2
+Name:           rust-unicode-width0.1
+Version:        0.1.14
 Release:        %autorelease
-Summary:        Rust bindings of the GDK 4 Wayland library
+Summary:        Determine displayed width of 'char' and 'str' types
 
-License:        MIT
-URL:            https://crates.io/crates/gdk4-wayland
+License:        MIT OR Apache-2.0
+URL:            https://crates.io/crates/unicode-width
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+# * exclude scripts that are only useful for upstream development
+Patch:          unicode-width-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-Rust bindings of the GDK 4 Wayland library.}
+Determine displayed width of `char` and `str` types according to Unicode
+Standard Annex #11 rules.}
 
 %description %{_description}
 
@@ -31,7 +35,8 @@ use the "%{crate}" crate.
 
 %files          devel
 %license %{crate_instdir}/COPYRIGHT
-%license %{crate_instdir}/LICENSE
+%license %{crate_instdir}/LICENSE-APACHE
+%license %{crate_instdir}/LICENSE-MIT
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
@@ -47,52 +52,28 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+v4_10-devel
+%package     -n %{name}+cjk-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+v4_10-devel %{_description}
+%description -n %{name}+cjk-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "v4_10" feature of the "%{crate}" crate.
+use the "cjk" feature of the "%{crate}" crate.
 
-%files       -n %{name}+v4_10-devel
+%files       -n %{name}+cjk-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+v4_12-devel
+%package     -n %{name}+no_std-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+v4_12-devel %{_description}
+%description -n %{name}+no_std-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "v4_12" feature of the "%{crate}" crate.
+use the "no_std" feature of the "%{crate}" crate.
 
-%files       -n %{name}+v4_12-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+v4_16-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+v4_16-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "v4_16" feature of the "%{crate}" crate.
-
-%files       -n %{name}+v4_16-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+v4_4-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+v4_4-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "v4_4" feature of the "%{crate}" crate.
-
-%files       -n %{name}+v4_4-devel
+%files       -n %{name}+no_std-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep

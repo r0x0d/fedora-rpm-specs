@@ -9,20 +9,15 @@
 # Please, preserve the changelog entries
 #
 
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
-
 %global pecl_name  mailparse
-%global with_zts   0%{?__ztsphp:1}
 # After 20-mbstring
 %global ini_name   40-%{pecl_name}.ini
 %global sources    %{pecl_name}-%{version}
-%global _configure ../%{sources}/configure
 
 Summary:   PHP PECL package for parsing and working with email messages
 Name:      php-pecl-mailparse
-Version:   3.1.6
-Release:   6%{?dist}
+Version:   3.1.8
+Release:   1%{?dist}
 License:   PHP-3.01
 URL:       https://pecl.php.net/package/mailparse
 Source0:   https://pecl.php.net/get/%{sources}.tgz
@@ -79,44 +74,29 @@ extension = mailparse.so
 ;mailparse.def_charset = us-ascii
 EOF
 
-mkdir NTS
-%if %{with_zts}
-mkdir ZTS
-%endif
-
 
 %build
 cd %{sources}
 %{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-cd ../NTS
 %configure --with-php-config=%{__phpconfig}
-make %{?_smp_mflags}
-
-%if %{with_zts}
-cd ../ZTS
-%configure --with-php-config=%{__ztsphpconfig}
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-make -C NTS install INSTALL_ROOT=%{buildroot}
 # Drop in the bit of configuration
 install -Dpm 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
-
-%if %{with_zts}
-make -C ZTS install INSTALL_ROOT=%{buildroot}
-# Drop in the bit of configuration
-install -Dpm 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
 
 # Install XML package description
 install -Dpm 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
+cd %{sources}
+%make_install
+
 # Documentation
-for i in $(grep 'role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 %{sources}/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
@@ -137,23 +117,6 @@ NO_INTERACTION=1 \
     -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --show-diff
 
-%if %{with_zts}
-: Minimal load test for ZTS extension
-%{__ztsphp} --no-php-ini \
-    --define extension=mbstring.so \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep '^%{pecl_name}$'
-
-: Upstream test suite for ZTS extension
-TEST_PHP_EXECUTABLE=%{__ztsphp} \
-NO_INTERACTION=1 \
-php run-tests.php \
-    -n -q \
-    -d extension=mbstring.so \
-    -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --show-diff
-%endif
-
 
 %files
 %license %{sources}/LICENSE
@@ -162,13 +125,15 @@ php run-tests.php \
 %{php_extdir}/%{pecl_name}.so
 %{pecl_xmldir}/%{name}.xml
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %changelog
+* Fri Oct  4 2024 Remi Collet <remi@remirepo.net> - 3.1.8-1
+- update to 3.1.8
+
+* Fri Oct  4 2024 Remi Collet <remi@remirepo.net> - 3.1.7-1
+- update to 3.1.7
+- cleanup spec file
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.1.6-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

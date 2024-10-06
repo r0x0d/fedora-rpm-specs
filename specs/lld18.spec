@@ -49,7 +49,7 @@
 
 Name:		%{pkg_name}
 Version:	%{lld_version}%{?rc_ver:~rc%{rc_ver}}%{?llvm_snapshot_version_suffix:~%{llvm_snapshot_version_suffix}}
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	The LLVM Linker
 
 License:	Apache-2.0 WITH LLVM-exception OR NCSA
@@ -104,7 +104,7 @@ Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 # dependency.
 Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
-Provides: %{name}-devel(major) = %{maj_ver}
+Provides: lld-devel(major) = %{maj_ver}
 
 %description devel
 This package contains library and header files needed to develop new native
@@ -219,11 +219,8 @@ export LD_LIBRARY_PATH=%{buildroot}/%{install_libdir}
 %{install_libdir}/liblld*.so.*
 
 %changelog
-* Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 18.1.8-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Fri Jul 12 2024 Jesus Checa Hidalgo <jchecahi@redhat.com> - 18.1.8-1
-- 18.1.8 Release
+* Thu Oct 03 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.7-4
+- Provide lld-devel(18) instead of lld18-devel(18)
 
 * Thu Jun 13 2024 Tom Stellard <tstellar@redhat.com> - 18.1.7-1
 - 18.1.7 Release

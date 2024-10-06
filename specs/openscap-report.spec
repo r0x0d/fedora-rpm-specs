@@ -1,8 +1,8 @@
 %global pymodule_name openscap_report
 
 Name:           openscap-report
-Version:        0.2.9
-Release:        3%{?dist}
+Version:        1.0.0
+Release:        1%{?dist}
 Summary:        A tool for generating human-readable reports from (SCAP) XCCDF and ARF results
 
 # The entire source code is LGPL-2.1+ and GPL-2.0+ and MIT except schemas/ and assets/, which are Public Domain
@@ -22,6 +22,8 @@ Provides:       bundled(patternfly) = 4
 Requires:       python3-lxml
 Recommends:     redhat-display-fonts
 Recommends:     redhat-text-fonts
+
+Obsoletes:      oval-graph
 
 %global _description %{expand:
 This package provides a command-line tool for generating
@@ -64,6 +66,9 @@ install -m 0644 -Dt %{buildroot}%{_mandir}/man1 _build_docs/oscap-report.1
 
 
 %changelog
+* Fri Oct 04 2024 Packit <hello@packit.dev> - 1.0.0-1
+- Update to version 1.0.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.9-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

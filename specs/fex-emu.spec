@@ -43,6 +43,8 @@ Source1:    README.fedora
 # Build host tools without jemalloc
 # Backport of https://github.com/FEX-Emu/FEX/pull/4028
 Patch:      fex-no-jemalloc-host-tools.patch
+# SoftFloat: fix FPREM
+Patch:      %{forgeurl}/commit/aa3c963df1ea09cee4de5a45c1d77ad0ed25007e.patch
 
 # Bundled dependencies managed as git submodules upstream
 # These are too entangled with the build system to unbundle for now
@@ -241,8 +243,6 @@ fi
 %{_binfmtdir}/FEX-x86.conf
 %{_binfmtdir}/FEX-x86_64.conf
 %{_datadir}/fex-emu/
-%dir %{_datadir}/fex-emu/RootFS/
-%dir %{_datadir}/fex-emu/overlays/
 %{_mandir}/man1/FEX.1*
 
 %files devel
