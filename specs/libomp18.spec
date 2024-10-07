@@ -9,7 +9,7 @@
 
 %global maj_ver 18
 %global min_ver 1
-%global libomp_version %{maj_ver}.%{min_ver}.7
+%global libomp_version %{maj_ver}.%{min_ver}.8
 #global rc_ver 4
 %global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 %global so_suffix %{maj_ver}.%{min_ver}
@@ -51,7 +51,7 @@
 
 Name: %{pkg_name}
 Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}%{?llvm_snapshot_version_suffix:~%{llvm_snapshot_version_suffix}}
-Release: 8%{?dist}
+Release: 3%{?dist}
 Summary: OpenMP runtime for clang
 
 License: Apache-2.0 WITH LLVM-exception OR NCSA
@@ -196,6 +196,9 @@ rm -rf %{buildroot}%{install_libdir}/libarcher_static.a
 %endif
 
 %changelog
+* Sat Oct 05 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.8-3
+- Update to 18.1.8
+
 * Thu Oct 03 2024 Tim Flink <tflink@fedoraproject.org> - 18.1.7-8
 - add provides for libomp(major) and libomp-devel(major)
 

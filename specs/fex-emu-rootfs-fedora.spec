@@ -19,7 +19,7 @@ Source0:        %{baseurl}/Fedora.x86_64-Rawhide.erofs
 Source1:        %{baseurl}/Fedora.x86_64-Rawhide.packages
 Source2:        gen-license-tag.py
 
-Requires:       fex-emu
+Requires:       fex-emu-filesystem
 Provides:       fex-emu-rootfs(fedora) = %{version}-%{release}
 
 BuildArch:      noarch

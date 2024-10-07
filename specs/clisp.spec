@@ -24,7 +24,7 @@ Version:	2.49.93
 # - src/socket.d and modules/clx/mit-clx/doc.lisp are HPND
 # - src/xthread.d and modules/asdf/asdf.lisp are X11
 License:	GPL-2.0-or-later AND (GPL-2.0-or-later OR GFDL-1.2-or-later) AND LGPL-2.1-or-later AND HPND AND X11
-Release:	39%{?dist}
+Release:	40%{?dist}
 URL:		http://www.clisp.org/
 VCS:		git:%{forgeurl}.git
 Source0:	%{forgesource}
@@ -45,14 +45,18 @@ Patch2:		%{name}-register-volatile.patch
 # the test for now.
 Patch3:		%{name}-pts-access.patch
 # Fix HAVE_DB_STAT_ACCEPT_TXN test in the Berkeley DB module
+# https://gitlab.com/gnu-clisp/clisp/-/merge_requests/8
 Patch4:		%{name}-c99.patch
 # Fix mismatched pointer types in the Berkeley DB module
 # https://gitlab.com/gnu-clisp/clisp/-/merge_requests/9
 Patch5:		%{name}-bdb-mismatched-pointer.patch
 # Fix the new-clx build, which was broken by a recent gnulib update
+# https://gitlab.com/gnu-clisp/clisp/-/merge_requests/10
 Patch6:		%{name}-new-clx.patch
 # Do not call the deprecated siginterrupt function
 Patch7:		%{name}-siginterrupt.patch
+# Adapt to changes in pari 2.17
+Patch8:		%{name}-pari.patch
 
 # Work around a problem inlining a function on ppc64le
 # See https://bugzilla.redhat.com/show_bug.cgi?id=2049371
@@ -448,6 +452,9 @@ make -C build base-mod-check
 
 
 %changelog
+* Sat Oct  5 2024 Jerry James <loganjerry@gmail.com> - 2.49.93-40
+- Rebuild for pari 2.17.0
+
 * Tue Sep  3 2024 Jerry James <loganjerry@gmail.com> - 2.49.93-39
 - Update to latest git snapshot
 - Add patch to fix FTBFS in the new-clx code

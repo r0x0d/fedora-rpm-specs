@@ -13,9 +13,14 @@ License:        MPL-2.0
 URL:            https://crates.io/crates/adblock
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
+# * bump base64 dependency from 0.13 to 0.22
+# * bump idna dependency from 0.2 to 0.5
+# * bump itertools dependency from 0.10 to 0.13
 # * bump rmp-serde dependency from 0.15 to 1
 # * bump mock_instant dev-dependency from 0.2 to 0.3
+# * bump sha2 dev-dependency from 0.9 to 0.10
 # * drop unused, benchmark-only criterion dev-dependency
+# * drop unused, benchmark-only reqwest dev-dependency
 # * drop unused css-validation feature with outdated dependencies
 Patch:          adblock-fix-metadata.diff
 # * drop tests that require unshipped support code

@@ -8,7 +8,7 @@
 
 Name:          tesseract
 Version:       5.4.1
-Release:       4%{?dist}
+Release:       5%{?dist}
 Summary:       Raw OCR Engine
 
 License:       Apache-2.0
@@ -91,6 +91,7 @@ developing applications that use %{name}.
 
 %package libs
 Summary:       Shared libraries for %{name}
+Conflicts:     %{name} < 5.4.1-4
 
 %description libs %_description
 
@@ -265,6 +266,9 @@ cp -a doc/*.5 %{buildroot}%{_mandir}/man5/
 
 
 %changelog
+* Sat Oct 05 2024 Neal Gompa <ngompa@fedoraproject.org> - 5.4.1-5
+- Fix upgrade path for package split
+
 * Mon Sep 30 2024 Neal Gompa <ngompa@fedoraproject.org> - 5.4.1-4
 - Rebuild for ffmpeg 7
 

@@ -2,7 +2,7 @@
 %global gem_name tins
 
 Name: rubygem-%{gem_name}
-Version: 1.33.0
+Version: 1.34.0
 Release: %autorelease
 Summary: Useful tools library in Ruby
 License: MIT
@@ -13,8 +13,6 @@ BuildRequires: rubygem(irb)
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby >= 2.0
-# BuildRequires: rubygem(gem_hadar) >= 1.11.0
-# BuildRequires: rubygem(gem_hadar) < 1.12
 BuildRequires: rubygem(sync)
 BuildRequires: rubygem(bigdecimal)
 BuildRequires: rubygem(test-unit)
@@ -66,6 +64,7 @@ popd
 %doc %{gem_docdir}
 %{gem_instdir}/Gemfile
 %doc %{gem_instdir}/README.md
+%{gem_instdir}/CHANGES.md
 %{gem_instdir}/Rakefile
 %{gem_instdir}/examples
 %{gem_instdir}/tests

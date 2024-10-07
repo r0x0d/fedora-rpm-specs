@@ -16,7 +16,7 @@
 
 %global maj_ver 18
 %global min_ver 1
-%global patch_ver 7
+%global patch_ver 8
 #global rc_ver 4
 %if %{with snapshot_build}
 %global maj_ver %{llvm_snapshot_version_major}
@@ -44,7 +44,7 @@
 
 Name:		%{pkg_name}
 Version:	%{compiler_rt_version}%{?rc_ver:~rc%{rc_ver}}%{?llvm_snapshot_version_suffix:~%{llvm_snapshot_version_suffix}}
-Release:	6%{?dist}
+Release:	3%{?dist}
 Summary:	LLVM "compiler-rt" runtime libraries
 
 License:	Apache-2.0 WITH LLVM-exception OR NCSA OR MIT
@@ -166,6 +166,9 @@ ln -s i386-redhat-linux-gnu %{buildroot}%{_prefix}/lib/clang/%{maj_ver}/lib/%{_t
 #%endif
 
 %changelog
+* Sat Oct 05 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.8-3
+- Update to 18.1.8
+
 * Thu Oct 03 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.7-6
 - Provide compiler-rt(major) = 18 instead of
   compiler-rt18(major) = 18

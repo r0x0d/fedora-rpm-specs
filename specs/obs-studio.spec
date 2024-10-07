@@ -15,36 +15,26 @@
 # x264 is not in Fedora
 %bcond x264 0
 
-%if ! (0%{?fedora} >= 40)
-# OBS-CEF is only available in F40+
+# CEF is not packaged yet...
 %bcond cef 0
-%else
-%ifarch %{x86_64} %{arm64}
-# OBS-CEF is only available on x86_64 and aarch64
-%bcond cef 1
-%else
-%bcond cef 0
-%endif
-%endif
 
 %if "%{__isa_bits}" == "64"
 %global lib64_suffix ()(64bit)
 %endif
-%global openh264_soversion 7
 %global libvlc_soversion 5
 
 
-%global obswebsocket_version 5.5.1
-%global obsbrowser_commit 2a2879b5a69f4a99cd7459d8595af46cdb23115c
-%global cef_version 5060
+%global obswebsocket_version 5.5.3
+%global obsbrowser_commit c794b64be90c87387973098ca012a7f79483e1ff
+%global cef_version 6533
 
 #global commit ad859a3f66daac0d30eebcc9b07b0c2004fb6040
 #global snapdate 202303261743
 #global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           obs-studio
-Version:        30.2.2
-Release:        3%{?dist}
+Version:        31.0.0~beta1
+Release:        2%{?dist}
 Summary:        Open Broadcaster Software Studio
 
 # OBS itself is GPL-2.0-or-later, while various plugin dependencies are of various other licenses
@@ -58,12 +48,12 @@ Source0:        https://github.com/obsproject/obs-studio/archive/%{version_no_ti
 %endif
 Source1:        https://github.com/obsproject/obs-websocket/archive/%{obswebsocket_version}/obs-websocket-%{obswebsocket_version}.tar.gz
 Source2:        https://github.com/obsproject/obs-browser/archive/%{obsbrowser_commit}/obs-browser-%{obsbrowser_commit}.tar.gz
-# CMake snippets for finding systemwide obs-cef
-Source3:        FindCEF.cmake
 
 # Backports from upstream
 
 # Proposed upstream
+## From: https://github.com/obsproject/obs-studio/pull/11345
+Patch0100:      https://github.com/obsproject/obs-studio/pull/11345.patch
 ## From: https://github.com/obsproject/obs-studio/pull/8529
 Patch0101:      0101-UI-Consistently-reference-the-software-H264-encoder-.patch
 Patch0102:      0102-obs-ffmpeg-Add-initial-support-for-the-OpenH264-H.26.patch
@@ -91,7 +81,7 @@ BuildRequires:  freetype-devel
 BuildRequires:  jansson-devel >= 2.5
 BuildRequires:  json-devel
 BuildRequires:  libcurl-devel
-BuildRequires:  libdatachannel-devel
+BuildRequires:  libdatachannel-devel >= 0.20
 BuildRequires:  libdrm-devel
 BuildRequires:  libGL-devel
 BuildRequires:  libglvnd-devel
@@ -123,6 +113,7 @@ BuildRequires:  qt6-qtbase-devel
 BuildRequires:  qt6-qtbase-private-devel
 BuildRequires:  qt6-qtsvg-devel
 BuildRequires:  qt6-qtwayland-devel
+BuildRequires:  rnnoise-devel
 BuildRequires:  speexdsp-devel
 BuildRequires:  swig
 BuildRequires:  systemd-devel
@@ -136,12 +127,12 @@ BuildRequires:  x264-devel
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 # Ensure that we have the full ffmpeg suite installed
 Requires:       /usr/bin/ffmpeg
-# We dlopen() openh264, so weak-depend on it...
+# Try to ensure openh264 is installed
 ## Note, we can do this because openh264 is provided in a default-enabled
 ## third party repository provided by Cisco.
-Recommends:     libopenh264.so.%{openh264_soversion}%{?lib64_suffix}
+Recommends:     openh264%{?_isa}
 %if %{with x264}
-Requires:       x264
+Requires:       x264%{?_isa}
 %endif
 
 # Ensure QtWayland is installed when libwayland-client is installed
@@ -174,6 +165,11 @@ Provides:      bundled(libnsgif)
 ## Cf. https://github.com/obsproject/obs-studio/pull/8327
 Provides:      bundled(intel-mediasdk)
 
+%if ! %{with cef}
+# When the plugin is not available, obsolete it
+Obsoletes:     %{name}-plugin-browser < %{version}-%{release}
+%endif
+
 %description
 Open Broadcaster Software is free and open source
 software for video recording and live streaming.
@@ -184,6 +180,7 @@ software for video recording and live streaming.
 %license COPYING
 %{_bindir}/obs
 %{_bindir}/obs-ffmpeg-mux
+%{_bindir}/obs-nvenc-test
 %{_datadir}/metainfo/com.obsproject.Studio.metainfo.xml
 %{_datadir}/applications/com.obsproject.Studio.desktop
 %{_datadir}/icons/hicolor/*/apps/com.obsproject.Studio.*
@@ -227,6 +224,7 @@ Header files for Open Broadcaster Software
 %{_libdir}/cmake/obs-frontend-api/
 %{_libdir}/cmake/obs-websocket-api/
 %{_libdir}/pkgconfig/libobs.pc
+%{_libdir}/pkgconfig/obs-frontend-api.pc
 %{_includedir}/obs/
 
 # --------------------------------------------------------------------------
@@ -286,21 +284,6 @@ tar -xf %{SOURCE1} -C plugins/obs-websocket --strip-components=1
 tar -xf %{SOURCE2} -C plugins/obs-browser --strip-components=1
 %autopatch -p1
 
-# rpmlint reports E: hardcoded-library-path
-# replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
-sed -e 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' -i cmake/Modules/ObsHelpers.cmake
-
-# Kill rpath settings
-sed -e '/CMAKE_INSTALL_RPATH/d' -i cmake/Modules/ObsDefaults_Linux.cmake
-
-# Fix FindCEF to use systemwide obs-cef
-cp %{SOURCE3} cmake/Modules/FindCEF.cmake
-# Fix include paths
-sed -e 's,include/,obs-cef/,g' -i plugins/obs-browser/{cef-headers.hpp,browser-scheme.cpp}
-# Remove obs-cef install
-sed -e '/setup_target_browser(/d' -i cmake/Modules/ObsHelpers.cmake
-# Fix obs-browser rpath setting
-sed -e 's,INSTALL_RPATH ".*",INSTALL_RPATH "%{_libdir}/obs-cef/",' -i plugins/obs-browser/cmake/{os-linux,legacy}.cmake
 
 %if ! %{with x264}
 # disable x264 plugin
@@ -313,10 +296,6 @@ touch plugins/obs-x264/CMakeLists.txt
 mv plugins/obs-qsv11/CMakeLists.txt plugins/obs-qsv11/CMakeLists.txt.disabled
 touch plugins/obs-qsv11/CMakeLists.txt
 %endif
-
-# remove -Werror flag to mitigate FTBFS with ffmpeg 5.1
-sed -e 's|-Werror-implicit-function-declaration||g' -i cmake/Modules/CompilerConfig.cmake
-sed -e '/-Werror/d' -i cmake/Modules/CompilerConfig.cmake
 
 # Removing unused third-party deps
 rm -rf deps/w32-pthreads
@@ -337,7 +316,6 @@ cp deps/json11/LICENSE.txt .fedora-rpm/licenses/deps/json11-LICENSE.txt
 cp deps/libcaption/LICENSE.txt .fedora-rpm/licenses/deps/libcaption-LICENSE.txt
 cp plugins/obs-qsv11/QSV11-License-Clarification-Email.txt .fedora-rpm/licenses/plugins/QSV11-License-Clarification-Email.txt
 cp deps/blake2/LICENSE.blake2 .fedora-rpm/licenses/deps/
-cp deps/media-playback/LICENSE.media-playback .fedora-rpm/licenses/deps/
 cp libobs/graphics/libnsgif/LICENSE.libnsgif .fedora-rpm/licenses/deps/
 cp libobs/util/simde/LICENSE.simde .fedora-rpm/licenses/deps/
 cp plugins/decklink/LICENSE.decklink-sdk .fedora-rpm/licenses/deps
@@ -345,16 +323,18 @@ cp plugins/obs-qsv11/obs-qsv11-LICENSE.txt .fedora-rpm/licenses/plugins/
 
 
 %build
-%cmake -DOBS_VERSION_OVERRIDE=%{version_no_tilde} \
+%cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+       -DOBS_VERSION_OVERRIDE=%{version_no_tilde} \
+       -DCMAKE_COMPILE_WARNING_AS_ERROR=OFF \
        -DUNIX_STRUCTURE=1 -GNinja \
 %if ! %{with cef}
-       -DBUILD_BROWSER=OFF \
+       -DENABLE_BROWSER=OFF \
 %endif
        -DENABLE_JACK=ON \
        -DENABLE_LIBFDK=ON \
        -DENABLE_AJA=OFF \
 %if ! %{with lua_scripting}
-       -DDISABLE_LUA=ON \
+       -DENABLE_SCRIPTING_LUA=OFF \
 %endif
        -DOpenGL_GL_PREFERENCE=GLVND
 %cmake_build
@@ -381,6 +361,12 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.metainf
 
 
 %changelog
+* Sat Oct 05 2024 Neal Gompa <ngompa@fedoraproject.org> - 31.0.0~beta1-2
+- Directly recommend the openh264 package
+
+* Sat Oct 05 2024 Neal Gompa <ngompa@fedoraproject.org> - 31.0.0~beta1-1
+- Update to 31.0.0~beta1
+
 * Mon Sep 23 2024 Fabio Valentini <decathorpe@gmail.com> - 30.2.2-3
 - Rebuild for ffmpeg 7
 

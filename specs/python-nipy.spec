@@ -133,8 +133,8 @@ rm -vf examples/.gitignore
 %pyproject_buildrequires -w -x optional%{?with_tests:,test}
 
 
-%build
-%pyproject_wheel
+# The package is already built in %%pyproject_buildrequires.
+# Skip the %%build section entirely.
 
 
 %install
@@ -148,18 +148,17 @@ install -t '%{buildroot}%{_mandir}/man1' -m 0644 -p -D \
 %check
 %pyproject_check_import -e '*.test*'
 %if %{with tests}
-# The docstring says: “fixme : this one often fails. I don't really see why”
-k="${k-}${k+ and }not test_gmm_bf"
-# Below tests fail since 0.6.0
-# https://github.com/nipy/nipy/issues/562
-# some are globs for multiple tests
-k="${k-}${k+ and }not test_em"
-k="${k-}${k+ and }not test_imm"
-k="${k-}${k+ and }not test_pproba"
-
 # See: .github/workflows/test.yml
+# Also: https://bugzilla.redhat.com/show_bug.cgi?id=2279556
 mkdir -p for_testing
 cd for_testing
+# Test with reference BLAS/LAPACK as scipy does
+# https://src.fedoraproject.org/rpms/scipy/blob/rawhide/f/scipy.spec#_231
+export FLEXIBLAS=netlib
+# Skip tests failing with Python 3.13
+# https://github.com/nipy/nipy/issues/576
+k="${k-}${k+ and }not test_dtype_cmap_inverses"
+k="${k-}${k+ and }not test_cmap_coord_types"
 %pytest -v --doctest-plus --ignore-glob='__config__.py' -k "${k-}" --pyargs nipy
 %endif
 

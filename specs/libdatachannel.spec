@@ -1,7 +1,7 @@
 %define soversion() %(echo "%1" | awk -F. '{print $1"."$2}')
 
 Name:           libdatachannel
-Version:        0.20.2
+Version:        0.21.2
 Release:        2%{?dist}
 Summary:        WebRTC network library featuring Data Channels, Media Transport, and WebSockets
 
@@ -43,7 +43,7 @@ developing applications that use %{name}.
 
 
 %build
-%cmake -DPREFER_SYSTEM_LIB=ON -DUSE_GNUTLS=ON -DUSE_NICE=ON
+%cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DPREFER_SYSTEM_LIB=ON -DUSE_GNUTLS=ON -DUSE_NICE=ON
 %cmake_build
 
 
@@ -63,6 +63,12 @@ developing applications that use %{name}.
 
 
 %changelog
+* Sat Oct 05 2024 Neal Gompa <ngompa@fedoraproject.org> - 0.21.2-2
+- Set cmake build type
+
+* Sat Oct 05 2024 Neal Gompa <ngompa@fedoraproject.org> - 0.21.2-1
+- Update to 0.21.2
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.20.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

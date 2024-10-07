@@ -5,7 +5,7 @@
 %global crate is_executable
 
 Name:           rust-is_executable
-Version:        1.0.3
+Version:        1.0.4
 Release:        %autorelease
 Summary:        There an executable file at the given path?
 

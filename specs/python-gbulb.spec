@@ -1,15 +1,17 @@
 %global srcname gbulb
 
 Name:           python-%{srcname}
-Version:        0.6.4
+Version:        0.6.5
 Release:        %autorelease
 Summary:        GLib event loop for tulip (PEP 3156)
 
 License:        Apache-2.0
 URL:            https://github.com/beeware/gbulb
 Source:         %{pypi_source}
-# Update test suite to remove use of generators as co-routines
-Patch:          %{url}/commit/864cdb8a0b1f0d3fb5c0d84703fedb2bf1e1491e.patch
+# upstream hardcodes arbitrary versions in dependencies to make their live
+# easier (and harder for anybody else...); relax dependencies
+Patch:          requirements-versions.patch
+Patch:          0001-Fix-compatibility-with-Python-3.13.patch
 
 BuildArch:      noarch
 BuildRequires:  gtk3-devel

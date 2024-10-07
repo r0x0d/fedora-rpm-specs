@@ -1,6 +1,6 @@
 Name:           python-pwntools
-Version:        4.12.0
-Release:        3%{?dist}
+Version:        4.13.1
+Release:        1%{?dist}
 Summary:        A CTF framework and exploit development library
 URL:            https://github.com/Gallopsled/pwntools/
 VCS:            https://github.com/Gallopsled/pwntools/
@@ -18,19 +18,9 @@ License:        MIT AND BSD-2-Clause AND GPL-2.0-or-later
 # Source0:      https://github.com/Gallopsled/%%{srcname}/archive/%%{srcname}-%%{version}.tar.gz
 Source0:        https://github.com/Gallopsled/%{srcname}/archive/refs/tags/%{version}.tar.gz#/%{srcname}-%{version}.tar.gz
 
-# some modules for the pwn command do have python2 shabeng even though imported from python3 lib
-Patch0:         https://github.com/Gallopsled/pwntools/pull/2301.patch#/%{name}-4.11.1-shabeng.patch
-
-# Regular expressions matching binary need to be escaped in python 3.12
-Patch1:         https://github.com/Gallopsled/pwntools/pull/2302.patch#/%{name}-4.11.1-python3.12.patch
-
-# fix pwn libcdb file [something]
-# libcdb failing on binaries not containing /bin/sh
-Patch2:         https://github.com/Gallopsled/pwntools/pull/2307.patch#/%{name}-4.11.1-binsh_search.patch
-
 # Unicorn package currently doesn't build on s390x platform, but it is used ony for resolving plt.
 # Other functionality of pwntools should be still working
-Patch3:         python-pwntools-4.11.1-weak-unicorn.patch
+Patch0:         0001-Weaken-unicorn-dependency.patch
 
 
 BuildArch:      noarch
@@ -188,6 +178,9 @@ export PYTHONPATH="${PYTHONPATH:-%{buildroot}%{python3_sitearch}:%{buildroot}%{p
 # %%license LICENSE-pwntools.txt
 
 %changelog
+* Sat Oct 05 2024 Paul Pfeister <code@pfeister.dev> - 4.13.1-1
+- Update to 4.13.1
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.12.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

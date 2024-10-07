@@ -2,10 +2,11 @@
 
 Name:		L-function
 Version:	2.0.5
-Release:	9%{?dist}
+Release:	10%{?dist}
 Summary:	C++ L-function class library and command line interface
 License:	GPL-2.0-or-later
 URL:		https://gitlab.com/sagemath/lcalc
+VCS:		git:%{url}.git
 Source0:	%{url}/-/archive/%{version}/lcalc-%{version}.tar.bz2
 # Fix use of the wrong delete operator
 # https://gitlab.com/sagemath/lcalc/-/merge_requests/5
@@ -71,6 +72,9 @@ make check
 %{_libdir}/pkgconfig/lcalc.pc
 
 %changelog
+* Sat Oct  5 2024 Jerry James <loganjerry@gmail.com> - 2.0.5-10
+- Rebuild for pari 2.17.0
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.5-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -5,7 +5,7 @@
 %global crate rustls-pki-types
 
 Name:           rust-rustls-pki-types
-Version:        1.8.0
+Version:        1.9.0
 Release:        %autorelease
 Summary:        Shared types for the rustls PKI ecosystem
 
@@ -14,6 +14,9 @@ URL:            https://crates.io/crates/rustls-pki-types
 Source:         %{crates_source}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          rustls-pki-types-fix-metadata-auto.diff
+# Manually created patch for downstream crate metadata changes
+# * drop unused x86_64-specific crabgrind dev-dependency
+Patch:          rustls-pki-types-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

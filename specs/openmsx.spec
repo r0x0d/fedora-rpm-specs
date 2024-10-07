@@ -1,15 +1,13 @@
 %define pkgverdir %(echo %version|sed s/\\\\\./_/)
 
 Name:           openmsx
-Version:        19.1
-Release:        5%{?dist}
+Version:        20.0
+Release:        1%{?dist}
 Summary:        An emulator for the MSX home computer system
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License:        GPL-2.0-only
 URL:            https://openmsx.org/
 Source0:        https://github.com/openMSX/openMSX/releases/download/RELEASE_%{pkgverdir}/%{name}-%{version}.tar.gz
-# No new Catapult has been released, as it has no changes
-Source1:        https://github.com/openMSX/openMSX/releases/download/RELEASE_%{pkgverdir}/%{name}-catapult-19.0.tar.gz
 BuildRequires:  alsa-lib-devel
 BuildRequires:  desktop-file-utils libappstream-glib
 BuildRequires:  docbook-utils
@@ -26,10 +24,12 @@ BuildRequires:  python3
 BuildRequires:  SDL2_image-devel
 BuildRequires:  SDL2_ttf-devel
 BuildRequires:  tcl-devel >= 8.6.0
-BuildRequires:  wxGTK-devel
 BuildRequires:  zlib-devel
 Requires:       cbios-%{name}
 Requires:       hicolor-icon-theme
+
+# Catapult is no longer maintained
+Obsoletes:      %{name}-catapult <= 19.1
 
 %description
 openMSX is an emulator for the MSX home computer system. Its goal is to emulate
@@ -39,24 +39,8 @@ ColecoVision game console and the SpectraVideo SVI-318 and SVI-328 home
 computer systems.
 
 
-%package        catapult
-Summary:        Graphical front-end for openMSX
-Requires:       %{name}%{?_isa} = %{version}-%{release}
-
-%description    catapult
-openMSX Catapult is a graphical user interface for openMSX.
-Although the program should be self explanatory, we included a set of HTML
-manuals, that tell how to use Catapult with openMSX. To understand what all
-options mean and to get a better feeling of what openMSX is, we also recommend
-to read the documentation of openMSX.
-
-
 %prep
-%autosetup -N -a 1
-%autopatch -p1 -M 9
-pushd %{name}-catapult-19.0
-  %autopatch -p1 -m 10
-popd
+%autosetup
 
 
 %build
@@ -68,10 +52,7 @@ LINK_FLAGS+=%{__global_ldflags}
 
 # Dont strip exe, let rpm do it and save debug info
 OPENMSX_STRIP:=false
-CATAPULT_STRIP:=false
 EOF
-
-cp build/flavour-rpm.mk %{name}-catapult-19.0/build
 
 cat > build/custom.mk << EOF
 PYTHON:=python3
@@ -83,25 +64,8 @@ INSTALL_SHARE_DIR=%{_datadir}/%{name}
 INSTALL_DOC_DIR=%{_docdir}/%{name}
 EOF
 
-cat > %{name}-catapult-19.0/build/custom.mk << EOF
-PYTHON:=python3
-# If we set this to %%{_prefix} catapult cannot find its resources
-INSTALL_BASE:=%{_datadir}/%{name}-catapult
-SYMLINK_FOR_BINARY:=false
-INSTALL_BINARY_DIR=%{_bindir}
-INSTALL_SHARE_DIR=%{_datadir}/%{name}-catapult
-INSTALL_DOC_DIR=%{_docdir}/%{name}-catapult
-CATAPULT_OPENMSX_BINARY:=%{_bindir}/%{name}
-CATAPULT_OPENMSX_SHARE:=%{_datadir}/%{name}
-EOF
-
 %configure
 %make_build OPENMSX_FLAVOUR=rpm
-pushd %{name}-catapult-19.0
-  # Make config.h first to fix parallel build issue
-  make CATAPULT_FLAVOUR=rpm derived/linux-rpm/config/config.h
-  %make_build CATAPULT_FLAVOUR=rpm
-popd
 
 # Build desktop icon
 cat >%{name}.desktop <<EOF
@@ -109,7 +73,7 @@ cat >%{name}.desktop <<EOF
 Name=openMSX
 GenericName=MSX Emulator
 Comment=%{summary}
-Exec=%{name}-catapult
+Exec=%{name}
 Icon=%{name}
 Terminal=false
 Type=Application
@@ -123,15 +87,8 @@ docbook2man doc/openmsx.sgml -o ./
 
 %install
 %make_install OPENMSX_FLAVOUR=rpm V=1
-pushd %{name}-catapult-19.0
-  %make_install CATAPULT_FLAVOUR=rpm V=1
-popd
 
 rm $RPM_BUILD_ROOT%{_docdir}/%{name}/GPL.txt
-rm $RPM_BUILD_ROOT%{_docdir}/%{name}-catapult/GPL.txt
-
-# Move some things around
-mv $RPM_BUILD_ROOT%{_bindir}/catapult $RPM_BUILD_ROOT%{_bindir}/%{name}-catapult
 
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/machines/*.txt \
    $RPM_BUILD_ROOT%{_docdir}/%{name}
@@ -215,18 +172,15 @@ appstream-util validate-relax --nonet \
 %{_mandir}/man1/%{name}.1.gz
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/settings.xml
-
-%files catapult
-%doc %{_docdir}/%{name}-catapult
-%license doc/GPL.txt
-%{_bindir}/%{name}-catapult
-%{_datadir}/%{name}-catapult
 %{_datadir}/appdata/%{name}.appdata.xml
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 
 
 %changelog
+* Mon Sep 23 2024 Andrea Musuruane <musuruan@gmail.com> - 20.0-1
+- New upstream version 20.0
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 19.1-5
 - convert license to SPDX
 

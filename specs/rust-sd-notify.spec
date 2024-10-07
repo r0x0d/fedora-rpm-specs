@@ -5,7 +5,7 @@
 %global crate sd-notify
 
 Name:           rust-sd-notify
-Version:        0.4.2
+Version:        0.4.3
 Release:        %autorelease
 Summary:        Lightweight crate for systemd service state notifications
 

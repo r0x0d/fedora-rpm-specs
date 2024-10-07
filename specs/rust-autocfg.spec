@@ -5,7 +5,7 @@
 %global crate autocfg
 
 Name:           rust-autocfg
-Version:        1.3.0
+Version:        1.4.0
 Release:        %autorelease
 Summary:        Automatic cfg for Rust compiler features
 
@@ -62,9 +62,7 @@ use the "default" feature of the "%{crate}" crate.
 
 %if %{with check}
 %check
-# * tests are unreliable when run in parallel:
-#   https://github.com/cuviper/autocfg/issues/65
-%cargo_test -- -- --test-threads 1
+%cargo_test
 %endif
 
 %changelog

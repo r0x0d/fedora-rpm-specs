@@ -6,7 +6,7 @@
 %global crate gstreamer-allocators-sys
 
 Name:           rust-gstreamer-allocators-sys
-Version:        0.23.0
+Version:        0.23.2
 Release:        %autorelease
 Summary:        FFI bindings to libgstallocators-1.0
 

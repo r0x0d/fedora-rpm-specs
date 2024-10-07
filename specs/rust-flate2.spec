@@ -5,7 +5,7 @@
 %global crate flate2
 
 Name:           rust-flate2
-Version:        1.0.33
+Version:        1.0.34
 Release:        %autorelease
 Summary:        DEFLATE compression and decompression exposed as Read/BufRead/Write streams
 

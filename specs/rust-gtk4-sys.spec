@@ -6,7 +6,7 @@
 %global crate gtk4-sys
 
 Name:           rust-gtk4-sys
-Version:        0.9.0
+Version:        0.9.2
 Release:        %autorelease
 Summary:        FFI bindings of GTK 4
 

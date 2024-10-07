@@ -6,8 +6,8 @@
 %bcond tests 1
 
 Name:           python-onigurumacffi
-Version:        1.2.0
-Release:        5%{?dist}
+Version:        1.3.0
+Release:        1%{?dist}
 Summary:        Python cffi bindings for the Oniguruma regex engine
 
 License:        MIT
@@ -48,7 +48,7 @@ Summary:    %{summary}
 
 %install
 %pyproject_install
-%pyproject_save_files onigurumacffi
+%pyproject_save_files -l onigurumacffi
 
 
 %check
@@ -59,15 +59,14 @@ Summary:    %{summary}
 
 
 %files -n python3-onigurumacffi -f %{pyproject_files}
-# Note(gotmax23): Yes, pyproject_save_files and setuptools already handle
-# this automatically, but I don't rely on it, as it makes it too easy to
-# miss licenses when upstream changes their build system or something else.
-%license LICENSE
 %doc README.md
 %{python3_sitearch}/_onigurumacffi.abi3.so
 
 
 %changelog
+* Sat Oct 05 2024 Maxwell G <maxwell@gtmx.me> - 1.3.0-1
+- Update to 1.3.0.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -5,16 +5,13 @@
 %global crate filetreelist
 
 Name:           rust-filetreelist
-Version:        0.5.1
+Version:        0.5.2
 Release:        %autorelease
 Summary:        Filetree abstraction based on a sorted path list
 
 License:        MIT
 URL:            https://crates.io/crates/filetreelist
 Source:         %{crates_source}
-# Manually created patch for downstream crate metadata changes
-# * exclude useless animated GIF
-Patch:          filetreelist-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

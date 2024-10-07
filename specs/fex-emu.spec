@@ -134,6 +134,7 @@ BuildRequires:  cmake(Qt6Quick)
 BuildRequires:  cmake(Qt6Widgets)
 
 Requires:       systemd-udev
+Requires:       %{name}-filesystem = %{version}-%{release}
 
 Recommends:     fex-emu-rootfs-fedora
 Recommends:     erofs-fuse
@@ -152,6 +153,13 @@ need to chroot, as well as some thunklibs so it can forward things like GL to
 the host. FEX presents a Linux 5.0+ interface to the guest, and supports only
 AArch64 as a host. FEX is very much work in progress, so expect things to
 change.
+
+%package        filesystem
+Summary:        FEX rootfs and overlay filesystem
+BuildArch:      noarch
+
+%description    filesystem
+%{summary}.
 
 %package        devel
 Summary:        Development headers and libraries for %{name}
@@ -242,8 +250,14 @@ fi
 %{_libdir}/libFEXCore.so.%{version}
 %{_binfmtdir}/FEX-x86.conf
 %{_binfmtdir}/FEX-x86_64.conf
-%{_datadir}/fex-emu/
+%{_datadir}/fex-emu/AppConfig/
+%{_datadir}/fex-emu/ThunksDB.json
 %{_mandir}/man1/FEX.1*
+
+%files filesystem
+%dir %{_datadir}/fex-emu/
+%dir %{_datadir}/fex-emu/RootFS
+%dir %{_datadir}/fex-emu/overlays
 
 %files devel
 %{_includedir}/FEXCore/

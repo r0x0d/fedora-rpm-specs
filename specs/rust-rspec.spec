@@ -17,6 +17,7 @@ Source:         %{crates_source}
 # * remove unused optional feature for expectest compatibility
 # * bump derive-new dependency from 0.5 to 0.6
 # * bump derive_builder dependency from 0.9 to 0.20
+# * bump time dependency from 0.2 to 0.3
 Patch:          rspec-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

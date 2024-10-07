@@ -1,20 +1,20 @@
-%global gittag 4.2
+%global gittag 4.3
 %global dpf DPF
 
 # Disable lto
 %define _lto_cflags %{nil}
 
 # DPF git submodule
-%global commit1 63dfb7610bc37dee69f4a303f3e3362529d95f24
+%global commit1 077fcf5758ed6038bfe6e7aee1e407aa02e807b2
 %global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
 
 # pugl git submodule
-%global commit2 2e98e220b5b860c1c8cd5809fad61baf27380a37
+%global commit2 e33b2f6b0cea6d6263990aa9abe6a69fdfba5973
 %global shortcommit2 %(c=%{commit2}; echo ${c:0:7})
 
 Name:           zam-plugins
 Version:        %{gittag}
-Release:        4%{?dist}
+Release:        1%{?dist}
 Summary:        A collection of LV2/LADSPA/JACK audio plugins
 
 # Automatically converted from old format: GPLv2+ and ISC - review is highly recommended.
@@ -96,6 +96,9 @@ chmod -x %{buildroot}%{_libdir}/lv2/*.lv2/*.ttl
 %doc README.md
 
 %changelog
+* Sat Oct 05 2024 Guido Aulisi <guido.aulisi@inps.it> - 4.3-1
+- Version 4.3
+
 * Wed Aug 07 2024 Miroslav Suchý <msuchy@redhat.com> - 4.2-4
 - convert license to SPDX
 

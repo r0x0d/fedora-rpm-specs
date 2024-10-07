@@ -1,33 +1,15 @@
-# Why not use forge macros when pulling from GitHub
-%global forgeurl https://github.com/HIPS/autograd
-
-# We’re using a git commit because the PyPI tar does not contain any tests but
-# the github source does; unfortunately, upstream does not tag releases on
-# GitHub, but we are confident we are using the git commit that corresponds to
-# the PyPI release.
-# https://github.com/HIPS/autograd/issues/392
-%global commit 1bb5cbc21d2aa06e0c61654a9cc6f38c174dacc0
-
-# Don't use commit in dist tag
-%global distprefix %{nil}
-
 Name:           python-autograd
-# Because we are using the commit that corresponds to the PyPI release (even
-# though it is not tagged), we do not use the snapinfo version field even
-# though our source URL is based on the git commit hash.
-Version:        1.6.2
+Version:        1.7.0
 Release:        %autorelease
 Summary:        Efficiently computes derivatives of numpy code
+
+%global forgeurl https://github.com/HIPS/autograd
 %forgemeta
+
 # SPDX
 License:        MIT
 URL:            %forgeurl
 Source:         %forgesource
-# Fix tests for Python 3.13
-# https://github.com/HIPS/autograd/issues/606
-Patch:          https://github.com/HIPS/autograd/commit/55e3373b35b175e24e44359c8c4201aa8d645103.patch
-# https://github.com/HIPS/autograd/pull/619
-Patch:          https://github.com/HIPS/autograd/pull/619.patch
 
 BuildArch:      noarch
 

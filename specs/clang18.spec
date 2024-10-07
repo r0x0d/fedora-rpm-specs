@@ -23,7 +23,7 @@
 
 %global maj_ver 18
 %global min_ver 1
-%global patch_ver 7
+%global patch_ver 8
 #global rc_ver 4
 
 %if %{with snapshot_build}
@@ -75,7 +75,7 @@
 
 Name:		%pkg_name
 Version:	%{clang_version}%{?rc_ver:~rc%{rc_ver}}%{?llvm_snapshot_version_suffix:~%{llvm_snapshot_version_suffix}}
-Release:	6%{?dist}
+Release:	4%{?dist}
 Summary:	A C language family front-end for LLVM
 
 License:	Apache-2.0 WITH LLVM-exception OR NCSA
@@ -731,6 +731,9 @@ LD_LIBRARY_PATH=%{buildroot}/%{install_libdir} %{__ninja} check-all -C %{__cmake
 
 %endif
 %changelog
+* Fri Oct 04 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.8-4
+- Update to 18.1.8
+
 * Fri Sep 27 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.7-6
 - Add conflicts with next major version of non-compat package
 

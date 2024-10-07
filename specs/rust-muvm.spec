@@ -38,6 +38,7 @@ License:        Apache-2.0 AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT) A
 # that reason, we only set Obsoletes, not Provides, to avoid perpetuating the
 # conflict. This should be removed once f42 is EOL.
 Obsoletes:      krun < 0.1.0-2
+Requires:       passt
 Requires:       sommelier
 
 %description -n %{crate} %{_description}

@@ -2,8 +2,7 @@ Name:           pokerth
 Version:        1.1.2
 Release:        30%{?dist}
 Summary:        A Texas-Holdem poker game
-# Has a typical OpenSSL linking exception
-License:        AGPLv3+ with exceptions
+License:        AGPL-3.0-or-later WITH GPL-3.0-linking-source-exception
 URL:            http://www.pokerth.net
 Source0:        http://downloads.sourceforge.net/%{name}/pokerth-%{version}.tar.gz
 

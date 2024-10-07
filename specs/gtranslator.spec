@@ -1,13 +1,13 @@
 Name:		gtranslator
-Version:	46.1
-Release:	3%{?dist}
+Version:	47.0
+Release:	1%{?dist}
 Summary:	Gettext po file editor for GNOME
 
 # Sources are GPL-2.0-or-later and GPL-3.0-or-later, help is CC-BY-SA-3.0 and
 # AppData is CC0-1.0.
 License:	GPL-2.0-or-later AND GPL-3.0-or-later AND CC-BY-SA-3.0 AND CC0-1.0
 URL:		https://wiki.gnome.org/Apps/Gtranslator
-Source0:	https://download.gnome.org/sources/%{name}/46/%{name}-%{version}.tar.xz
+Source0:	https://download.gnome.org/sources/%{name}/47/%{name}-%{version}.tar.xz
 
 BuildRequires:	desktop-file-utils
 BuildRequires:	gettext-devel
@@ -17,10 +17,10 @@ BuildRequires:	pkgconfig(gio-2.0)
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(gsettings-desktop-schemas)
 BuildRequires:	pkgconfig(gthread-2.0)
-BuildRequires:	pkgconfig(gtk4)
+BuildRequires:	pkgconfig(gtk4) >= 4.12.0
 BuildRequires:	pkgconfig(gtksourceview-5)
 BuildRequires:	pkgconfig(json-glib-1.0)
-BuildRequires:	pkgconfig(libadwaita-1)
+BuildRequires:	pkgconfig(libadwaita-1) >= 1.5.99
 BuildRequires:	pkgconfig(libgda-6.0)
 BuildRequires:	pkgconfig(libsoup-3.0)
 BuildRequires:	pkgconfig(libspelling-1)
@@ -46,8 +46,6 @@ replace functions, auto translation, and translation learning,
 %install
 %meson_install
 
-rm $RPM_BUILD_ROOT%{_includedir}/gtr-marshal.h
-
 %find_lang %{name} --with-gnome
 
 %files -f %{name}.lang
@@ -64,6 +62,9 @@ rm $RPM_BUILD_ROOT%{_includedir}/gtr-marshal.h
 %{_mandir}/man1/gtranslator.1*
 
 %changelog
+* Sat Oct 05 2024 Artem Polishchuk <ego.cordatus@gmail.com> - 47.0-1
+- Update to 47.0 (#2316636)
+
 * Fri Sep 13 2024 Carl George <carlwgeorge@fedoraproject.org> - 46.1-3
 - Rebuild for libspelling soname bump rhbz#2312315
 

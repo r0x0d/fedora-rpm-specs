@@ -3,7 +3,7 @@
 Name:           dummy-test-package-gloster
 
 Version:        0
-Release:        16000%{?dist}
+Release:        16020%{?dist}
 Summary:        Dummy Test Package called Gloster
 # Automatically converted from old format: CC0 - review is highly recommended.
 License:        CC0-1.0
@@ -33,6 +33,66 @@ cp -p uuid %{buildroot}%{_datadir}/%{name}
 %{_datadir}/%{name}
 
 %changelog
+* Sun Oct 06 2024 packagerbot <admin@fedoraproject.org> - 0-16020
+- rebuilt
+
+* Sun Oct 06 2024 packagerbot <admin@fedoraproject.org> - 0-16019
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16018
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16017
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16016
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16015
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16014
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16013
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16012
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16011
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16010
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16009
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16008
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16007
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16006
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16005
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16004
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16003
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16002
+- rebuilt
+
+* Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16001
+- rebuilt
+
 * Sat Oct 05 2024 packagerbot <admin@fedoraproject.org> - 0-16000
 - rebuilt
 
