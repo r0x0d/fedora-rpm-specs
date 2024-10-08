@@ -1,8 +1,12 @@
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
 
+%global forgeurl https://gitlab.com/free-astro/siril
+%global tag 1.3.3
+%forgemeta
+
 Name:           siril
-Version:        1.2.4
+Version:        1.3.3
 Release:        %autorelease
 Summary:        Astronomical image processing software
 
@@ -21,9 +25,9 @@ Summary:        Astronomical image processing software
 # https://gitlab.com/free-astro/siril/-/issues/1192
 License:        GPL-3.0-or-later AND GPL-2.0-or-later AND BSL-1.0 AND Zlib
 URL:            https://siril.org
-Source0:        https://free-astro.org/download/%{name}-%{version}.tar.bz2
+Source:         %{forgesource}
 
-Patch1:         siril-1.0.2-opencv_flann.patch
+#Patch1:         siril-1.0.2-opencv_flann.patch
 
 BuildRequires:  make
 BuildRequires:  cmake
@@ -43,11 +47,14 @@ BuildRequires:  pkgconfig(gsl)
 BuildRequires:  pkgconfig(gtk+-3.0)
 BuildRequires:  pkgconfig(json-glib-1.0)
 BuildRequires:  pkgconfig(libconfig)
+BuildRequires:  pkgconfig(libgit2)
 BuildRequires:  pkgconfig(libheif)
 BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(libraw)
 BuildRequires:  pkgconfig(libtiff-4)
+BuildRequires:  pkgconfig(libjxl)
+BuildRequires:  pkgconfig(libxisf)
 BuildRequires:  pkgconfig(rtprocess)
 BuildRequires:  pkgconfig(opencv)
 BuildRequires:  pkgconfig(wcslib)
@@ -65,16 +72,12 @@ SER files)
 
 
 %prep
-%autosetup -p1 -n %{name}-%{version}
+%forgeautosetup -p1
 
 
 %build
 %meson \
-    -Drelocatable-bundle=no \
-    -Dopenmp=true \
-    -Dlibheif=true \
-    -Dffms2=true \
-    -Denable-libcurl=yes
+    -Drelocatable-bundle=no
 
 %meson_build
 
@@ -83,26 +86,25 @@ SER files)
 %meson_install
 
 rm -f %{buildroot}%{_pkgdocdir}/LICENSE.md
+rm -f %{buildroot}%{_pkgdocdir}/GPL-2.0-or-later.txt
 rm -f %{buildroot}%{_pkgdocdir}/LICENSE_sleef.txt
-
-desktop-file-install \
-    --dir=%{buildroot}%{_datadir}/applications \
-    platform-specific/linux/org.free_astro.siril.desktop
+rm -f %{buildroot}%{_pkgdocdir}/LICENSE_zlib.txt
 
 %find_lang %{name}
 
 
 %check
-appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/org.free_astro.siril.appdata.xml
+desktop-file-validate %{buildroot}%{_datadir}/applications/org.siril.Siril.desktop
+appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/org.siril.Siril.appdata.xml
 
 %files -f %{name}.lang
-%license LICENSE.md LICENSE_sleef.txt
+%license LICENSE.md 3rdparty_licenses/GPL-2.0-or-later.txt 3rdparty_licenses/LICENSE_sleef.txt 3rdparty_licenses/LICENSE_zlib.txt
 %doc AUTHORS ChangeLog NEWS README.md
 %{_bindir}/%{name}*
-%{_datadir}/applications/org.free_astro.siril.desktop
+%{_datadir}/applications/org.siril.Siril.desktop
 %{_datadir}/mime/packages/%{name}.xml
 %{_datadir}/icons/hicolor/*/*/*.svg
-%{_datadir}/metainfo/org.free_astro.siril.appdata.xml
+%{_datadir}/metainfo/org.siril.Siril.appdata.xml
 %{_datadir}/%{name}/
 %{_mandir}/man1/%{name}*.1.gz
 

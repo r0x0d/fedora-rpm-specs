@@ -24,7 +24,11 @@
 %global sanlock_version 3.3.0-2
 
 %global enable_lockd_sanlock %{enable_lvmlockd}
+%if 0%{?rhel} >= 10
+%global enable_lockd_dlm 0
+%else
 %global enable_lockd_dlm %{enable_lvmlockd}
+%endif
 
 %if 0%{?rhel} && 0%{?rhel} <= 8
   %ifnarch i686 x86_64 ppc64le s390x

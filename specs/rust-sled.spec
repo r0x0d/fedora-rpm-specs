@@ -16,6 +16,7 @@ Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * bump rand_distr to 0.4: https://github.com/spacejam/sled/pull/1500
 # * bump zerocopy to 0.7: https://github.com/spacejam/sled/pull/1501
+# * drop unused color-backtrace dependency and pretty_backtrace feature
 # * drop unused zstd dependency and compression feature
 Patch:          sled-fix-metadata.diff
 
@@ -71,18 +72,6 @@ This package contains library source intended for building other packages which
 use the "backtrace" feature of the "%{crate}" crate.
 
 %files       -n %{name}+backtrace-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+color-backtrace-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+color-backtrace-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "color-backtrace" feature of the "%{crate}" crate.
-
-%files       -n %{name}+color-backtrace-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+docs-devel
@@ -215,18 +204,6 @@ This package contains library source intended for building other packages which
 use the "no_metrics" feature of the "%{crate}" crate.
 
 %files       -n %{name}+no_metrics-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+pretty_backtrace-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+pretty_backtrace-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "pretty_backtrace" feature of the "%{crate}" crate.
-
-%files       -n %{name}+pretty_backtrace-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+rio-devel

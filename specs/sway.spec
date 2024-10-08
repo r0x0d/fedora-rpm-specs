@@ -1,7 +1,7 @@
-%global tag     1.10-rc1
+%global tag     1.10-rc2
 
 Name:           sway
-Version:        1.10~rc1
+Version:        1.10~rc2
 Release:        1%{?dist}
 Summary:        i3-compatible window manager for Wayland
 License:        MIT
@@ -180,6 +180,9 @@ install -d -m755 -pv %{buildroot}%{_sysconfdir}/sway/config.d
 %{_datadir}/backgrounds/sway
 
 %changelog
+* Sun Oct 06 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 1.10~rc2-1
+- Update to 1.10-rc2
+
 * Sun Sep 29 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 1.10~rc1-1
 - Update to 1.10-rc1
 

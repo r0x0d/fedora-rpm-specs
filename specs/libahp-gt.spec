@@ -1,10 +1,10 @@
-%global gittag v1.6.5
+%global gittag v1.6.7
 #%%global commit 5c8e8ee43ccea13d69b232abd741b653c40c331c
 #%%global shortcommit %%(c=%%{commit}; echo ${c:0:7})
 #%%global date 20230904
 
 Name:           libahp-gt
-Version:        1.6.5
+Version:        1.6.7
 Release:        %autorelease
 Summary:        Driver library for the AHP GT Controllers
 License:        MIT

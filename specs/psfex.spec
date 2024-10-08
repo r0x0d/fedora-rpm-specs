@@ -1,6 +1,6 @@
 Name: psfex
 Version: 3.24.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: Model the Point Spread Function from FITS images
 
 License: GPL-3.0-only
@@ -43,6 +43,9 @@ morphological analyses.
 %{_datadir}/%{name}/
 
 %changelog
+* Sun Oct 06 2024 Sergio Pascual <sergiopr@fedoraproject.org> - 3.24.1-3
+- Rebuild to fix FTBFS 2301104
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.24.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

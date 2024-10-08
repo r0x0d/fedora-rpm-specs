@@ -62,7 +62,7 @@
 Name:           ibus
 Version:        1.5.31~beta2
 # https://github.com/fedora-infra/rpmautospec/issues/101
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Intelligent Input Bus for Linux OS
 License:        LGPL-2.1-or-later
 URL:            https://github.com/ibus/%name/wiki
@@ -332,6 +332,7 @@ if test x"$SAVED_SUM" != x"$MY_SUM" ; then
     abort
 fi
 %autosetup -S git -n %{name}-%{source_version}
+rm bus/marshalers.[ch]
 # cp client/gtk2/ibusimcontext.c client/gtk3/ibusimcontext.c || :
 # cp client/gtk2/ibusim.c client/gtk3/ibusim.c || :
 # cp client/gtk2/ibusimcontext.c client/gtk4/ibusimcontext.c || :
@@ -380,6 +381,7 @@ autoreconf -f -i -v
 %else
     --enable-python-library \
 %endif
+    --with-python-overrides-dir=%{python3_sitearch}/gi/overrides \
     --enable-wayland \
     --enable-introspection \
     --enable-install-tests \
@@ -614,6 +616,10 @@ dconf update || :
 %{_datadir}/installed-tests/ibus
 
 %changelog
+* Fri Oct 04 2024 Takao Fujiwara <tfujiwar@redhat.com> - 1.5.31~beta2-3
+- Add --with-python-overrides-dir configure option for Flatpak
+- Use va_marshaller to avoid GValue boxing
+
 * Tue Sep 24 2024 Takao Fujiwara <tfujiwar@redhat.com> - 1.5.31~beta2-2
 - Resolves #2310892 Show Emojier dialog from menu item
 

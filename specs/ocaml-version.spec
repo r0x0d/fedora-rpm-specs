@@ -8,7 +8,7 @@ ExcludeArch: %{ix86}
 %global giturl  https://github.com/ocurrent/ocaml-version
 
 Name:           ocaml-version
-Version:        3.6.8
+Version:        3.6.9
 Release:        %autorelease
 Summary:        Manipulate, parse and generate OCaml compiler version strings
 

@@ -13,6 +13,9 @@ Summary:        MIO support for signal-hook
 License:        Apache-2.0 OR MIT
 URL:            https://crates.io/crates/signal-hook-mio
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+# * drop unused support for mio v0.6
+Patch:          signal-hook-mio-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -46,18 +49,6 @@ This package contains library source intended for building other packages which
 use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+mio-0_6-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+mio-0_6-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "mio-0_6" feature of the "%{crate}" crate.
-
-%files       -n %{name}+mio-0_6-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+mio-0_7-devel
@@ -94,30 +85,6 @@ This package contains library source intended for building other packages which
 use the "mio-1_0" feature of the "%{crate}" crate.
 
 %files       -n %{name}+mio-1_0-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+mio-uds-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+mio-uds-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "mio-uds" feature of the "%{crate}" crate.
-
-%files       -n %{name}+mio-uds-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+support-v0_6-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+support-v0_6-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "support-v0_6" feature of the "%{crate}" crate.
-
-%files       -n %{name}+support-v0_6-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+support-v0_7-devel

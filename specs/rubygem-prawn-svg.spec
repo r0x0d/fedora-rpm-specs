@@ -2,11 +2,13 @@
 
 Name: rubygem-%{gem_name}
 Version: 0.35.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: SVG renderer for Prawn PDF library
 License: MIT
 URL: http://github.com/mogest/prawn-svg
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
+# https://github.com/mogest/prawn-svg/pull/171
+Patch0:  %{gem_name}-pr171-support-new-rexml-invalid-xml-handling.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
@@ -31,6 +33,7 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n  %{gem_name}-%{version}
+%patch -P0 -p1
 
 %build
 gem build ../%{gem_name}-%{version}.gemspec
@@ -73,6 +76,9 @@ popd
 %{gem_instdir}/spec
 
 %changelog
+* Sat Oct 05 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.35.1-2
+- Backport upstream patch to support REXML 3.3.3 invalid XML handling
+
 * Sat Aug 10 2024 Sergi Jimenez <tripledes@fedoraproject.org> - 0.35.1-1
 - Update to 0.35.1
 

@@ -2,8 +2,8 @@
 %global srcname frozendict
 
 Name:           python-%{srcname}
-Version:        2.4.4
-Release:        3%{?dist}
+Version:        2.4.5
+Release:        1%{?dist}
 Summary:        An immutable dictionary
 
 License:        MIT
@@ -46,6 +46,9 @@ export FROZENDICT_PURE_PY=1
 %{python3_sitelib}/%{srcname}/
 
 %changelog
+* Mon Oct 07 2024 Orion Poplawski <orion@nwra.com> - 2.4.5-1
+- Update to 2.4.5
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.4-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

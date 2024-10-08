@@ -11,8 +11,8 @@
 
 # https://github.com/jpillora/chisel
 %global goipath         github.com/jpillora/chisel
-Version:                1.10.0
-%global tag             v1.10.0
+Version:                1.10.1
+%global tag             v1.10.1
 
 %gometa
 
@@ -74,6 +74,9 @@ install -m 0755 -vp %{gobuilddir}/bin/* %{buildroot}%{_bindir}/
 %gopkgfiles
 
 %changelog
+* Sun Oct 06 2024 Fabian Affolter <mail@fabian-affolter.ch> - 1.10.1-1
+- Update to latest upstream release 1.10.1 (closes rhbz#2316742)
+
 * Tue Sep 17 2024 Fabian Affolter <mail@fabian-affolter.ch> - 1.10.0-1
 - Update to new upstream version (closes rhbz#2303131)
 - Set version (closes rhbz#2265825)

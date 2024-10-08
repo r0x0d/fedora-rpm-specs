@@ -1,10 +1,11 @@
 # workaround for GCC 10. upstream is inactive,
 # delaying fixing the code itself.
 %define _legacy_common_support 1
+%define _gcc_lto_cflags %{nil}
 
 Name:           gnugo
 Version:        3.8
-Release:        34%{?dist}
+Release:        35%{?dist}
 
 Summary:        Text based go program
 
@@ -54,6 +55,9 @@ rm -f ${RPM_BUILD_ROOT}/%{_infodir}/dir
 
 
 %changelog
+* Mon Sep 30 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 3.8-35
+- Disable LTO
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 3.8-34
 - convert license to SPDX
 

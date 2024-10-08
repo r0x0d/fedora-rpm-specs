@@ -3,7 +3,7 @@ ExcludeArch: %{ix86}
 
 Name:           ocaml-atd
 Version:        2.15.0
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Adaptable Type Definitions for cross-language data types
 
 License:        BSD-3-Clause
@@ -284,6 +284,9 @@ rm -rf %{buildroot}%{_libdir}/ocaml/atd{d,j,py,s,ts}
 
 
 %changelog
+* Sun Oct  6 2024 Jerry James <loganjerry@gmail.com> - 2.15.0-11
+- Rebuild for ocaml-re 1.13.3
+
 * Mon Aug  5 2024 Jerry James <loganjerry@gmail.com> - 2.15.0-10
 - Rebuild for ocaml-menhir 20240715 and ocaml-yojson 2.2.2
 

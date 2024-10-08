@@ -27,25 +27,14 @@ associated with functional programming, within a natural Pythonic style\
 suitable for most developers.
 
 Name:           python-%{srcname}
-Version:        0.12.1
-Release:        3%{?dist}
+Version:        1.0.0
+Release:        1%{?dist}
 Summary:        A functional standard library for Python
 
 # Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
 URL:            http://github.com/pytoolz/%{srcname}/
 Source0:        https://github.com/pytoolz/toolz/archive/%{version}/%{srcname}-%{version}.tar.gz
-# https://bugzilla.redhat.com/show_bug.cgi?id=2245886
-# https://github.com/pytoolz/toolz/issues/581
-# https://github.com/pytoolz/toolz/pull/582
-# Fixes for tests with recent upstream Python
-# Second patch is a temporary workaround for CPython issue
-# https://github.com/python/cpython/issues/118404 so it is not
-# sent upstream, it should be removed when that bug is fixed in
-# our Python package
-Patch:          0001-test_excepts-fudge-changed-indentation-in-Python-3.1.patch
-Patch:          0002-num_required_args-special-case-map-for-Python-3.13.patch
-Patch:          0003-test_inspect_wrapped_property-handle-fixed-wrapper-i.patch
 BuildArch:      noarch
 
 %description
@@ -87,6 +76,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} pytest-%{python3_version} -v -k 'not t
 
 
 %changelog
+* Sat Oct 05 2024 Orion Poplawski <orion@nwra.com> - 1.0.0-1
+- Update to 1.0.0
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.12.1-3
 - convert license to SPDX
 

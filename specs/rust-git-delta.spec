@@ -12,7 +12,8 @@ License:        MIT
 URL:            https://crates.io/crates/git-delta
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * relax rstest dependency from ^0.21.0 to >=0.18.2,<0.22
+# * relax unicode-width dependency from =0.1.12 to ^0.1.14
+# * relax rstest dev-dependency from ^0.21.0 to >=0.18.2,<0.24
 Patch:          git-delta-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

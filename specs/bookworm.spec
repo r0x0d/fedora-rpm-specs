@@ -5,13 +5,15 @@
 
 Name:     bookworm
 Version:  1.1.3
-Release:  0.14.20200414git.%{shortcommit}%{?dist}
+Release:  0.15.20200414git.%{shortcommit}%{?dist}
 Summary:  Simple, focused eBook reader
 # Automatically converted from old format: GPLv3 - review is highly recommended.
 License:  GPL-3.0-only
 URL:      https://github.com/babluboy/bookworm
 Source0:  %{url}/archive/%{commit}/%{name}-%{commit}.tar.gz
 Patch0:   bookworm-patch0-python3.patch
+# https://github.com/babluboy/bookworm/pull/391
+Patch1:   bookworm-patch1-webkitgtk41.patch
 
 BuildRequires: gcc
 BuildRequires: granite-devel
@@ -20,7 +22,7 @@ BuildRequires: libgee-devel
 BuildRequires: meson
 BuildRequires: poppler-glib-devel
 BuildRequires: vala
-BuildRequires: webkit2gtk3-devel
+BuildRequires: webkit2gtk4.1-devel
 BuildRequires: desktop-file-utils
 BuildRequires: libappstream-glib
 
@@ -40,6 +42,7 @@ https://babluboy.github.io/bookworm/
 %prep
 %setup -q -n %{name}-%{commit}
 %patch -P0 -p1
+%patch -P1 -p1
 
 %build
 %meson
@@ -64,6 +67,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/com.github.bab
 %license COPYING
 
 %changelog
+* Sun Sep 29 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 1.1.3-0.15.20200414git.c7c3643
+- Use webkit2gtk4.1
+
 * Wed Aug 07 2024 Miroslav Suchý <msuchy@redhat.com> - 1.1.3-0.14.20200414git.c7c3643
 - convert license to SPDX
 

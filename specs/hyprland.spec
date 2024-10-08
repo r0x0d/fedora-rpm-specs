@@ -1,5 +1,5 @@
 Name:           hyprland
-Version:        0.43.0
+Version:        0.44.0
 Release:        %autorelease
 Summary:        Dynamic tiling Wayland compositor that doesn't sacrifice on its looks
 
@@ -74,11 +74,13 @@ Provides:       bundled(udis86) = 1.7.2^1.git5336633
 Requires:       xorg-x11-server-Xwayland%{?_isa}
 Requires:       xdg-desktop-portal%{?_isa}
 Requires:       hyprcursor%{?_isa} >= 0.1.9
-Requires:       hyprutils%{?_isa} >= 0.2.1
+Requires:       hyprutils%{?_isa} >= 0.2.3
 
-# Both are used in the default configuration
+# Used in the default configuration
 Recommends:     kitty
 Recommends:     wofi
+Recommends:     playerctl
+Recommends:     brightnessctl
 # Lack of graphical drivers may hurt the common use case
 Recommends:     mesa-dri-drivers
 # Logind needs polkit to create a graphical session
@@ -151,7 +153,7 @@ Recommends:     git-core
 %autosetup -n %{name}-source -p1
 rm -rf subprojects/{tracy,hyprland-protocols}
 # don't run generateVersion.sh, release tarballs have pregenerated version.h
-sed -i '/version_h/d' meson.build
+sed -i '/scripts\/generateVersion.sh/d' meson.build
 
 cp -p subprojects/udis86/LICENSE LICENSE-udis86
 

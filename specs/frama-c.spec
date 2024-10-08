@@ -6,7 +6,7 @@ ExclusiveArch: %{ocaml_native_compiler}
 
 Name:           frama-c
 Version:        29.0
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Framework for source code analysis of C software
 
 %global pkgversion %{version}-Copper
@@ -263,6 +263,9 @@ make default-tests PTESTS_OPTS=-error-code
 %{_emacs_sitestartdir}/acsl.el
 
 %changelog
+* Sun Oct  6 2024 Jerry James <loganjerry@gmail.com> - 29.0-9
+- Rebuild for ocaml-re 1.13.3
+
 * Mon Aug 12 2024 Jerry James <loganjerry@gmail.com> - 29.0-8
 - Rebuild for ocaml-yaml with ocaml-ctypes 0.23.0
 

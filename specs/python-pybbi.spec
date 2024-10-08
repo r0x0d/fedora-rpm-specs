@@ -23,6 +23,9 @@ BuildRequires:  pkgconfig(zlib)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(libpng)
 
+# for %%pyproject_buildrequires -p:
+BuildRequires:  pyproject-rpm-macros >= 1.15
+
 %global _description %{expand:
 Python interface to Jim Kent's Big Binary Indexed file (BBI) library
 from the UCSC Genome Browser source tree using Cython.
@@ -49,12 +52,11 @@ sed -i 's/oldest-supported-numpy/numpy/' pyproject.toml
 
 
 %generate_buildrequires
-%pyproject_buildrequires -x test -w
+%pyproject_buildrequires -x test -p
 
 
-# Don't re-invent the wheel
-# The wheel is already built in %%genrate_buildrequires
-#%%build
+%build
+%pyproject_wheel
 
 
 %install

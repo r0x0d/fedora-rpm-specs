@@ -33,7 +33,7 @@
 %global webcam_pkg indi-3rdparty-webcam
 %global weewx_pkg indi-3rdparty-weewx-json
 
-%global indi_version 2.0.9
+%global indi_version 2.1.0
 
 # Define boolean to quickly set option and dependencies for
 # unit tests
@@ -55,6 +55,9 @@ URL:            http://indilib.org
 # https://github.com/indilib/indi-3rdparty/archive/refs/tags/v%%{version}.tar.gz
 Source0:        %{name}-%{version}.tar.zst
 Source1:        generate-drivers-tarball.sh
+
+# Patch for building with libahp-xc >=1.4.4
+Patch:          ahp-xc-1.4.4.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc

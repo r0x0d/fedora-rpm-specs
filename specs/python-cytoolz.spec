@@ -3,20 +3,14 @@
 %define py_setup_args --with-cython
 
 Name:           python-%{srcname}
-Version:        0.12.2
-Release:        6%{?dist}
+Version:        1.0.0
+Release:        1%{?dist}
 Summary:        Cython implementation of the toolz package
 
 # Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
 URL:            http://github.com/pytoolz/%{srcname}/
 Source0:        https://files.pythonhosted.org/packages/source/c/cytoolz/cytoolz-%{version}.tar.gz
-# Patches to add support for Python 3.13
-# https://github.com/pytoolz/cytoolz/pull/206
-Patch1:         0001-test_excepts-fudge-changed-indentation-in-Python-3.1.patch
-Patch2:         0002-test_inspect_wrapped_property-handle-fixed-wrapper-i.patch
-Patch3:         0003-Add-docstring-for-identity.patch
-Patch4:         0004-test_docstrings_uptodate-fudge-changed-indentation-i.patch
 
 BuildRequires:  gcc
 
@@ -96,9 +90,12 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} PYTHONDONTWRITEBYTECODE=1 py.test-%{p
 %license LICENSE.txt
 %{python3_sitearch}/%{srcname}/
 %{python3_sitearch}/%{srcname}*.egg-info/
-%exclude %{python3_sitearch}/.pytest_cache/
+
 
 %changelog
+* Sun Oct 06 2024 Orion Poplawski <orion@nwra.com> - 1.0.0-1
+- Update to 1.0.0
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.12.2-6
 - convert license to SPDX
 

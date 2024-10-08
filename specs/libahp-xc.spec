@@ -1,11 +1,11 @@
-%global gittag v1.4.1
+%global gittag v1.4.4
 #%%global commit dad5c01d83ca8cf9c8d5ab14ad7593d51ce290f3
 #%%global shortcommit %%(c=%%{commit}; echo ${c:0:7})
 #%%global date 20230904
 
 Name:           libahp-xc
 %if "%{?gittag}"
-Version:        1.4.1
+Version:        1.4.4
 %else
 Version:        1.3.5^%{date}.%{shortcommit}
 %endif

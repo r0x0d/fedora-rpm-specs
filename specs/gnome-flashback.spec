@@ -3,13 +3,13 @@
 %bcond_with compiz_session
 
 Name:           gnome-flashback
-Version:        3.52.1
+Version:        3.54.0
 Release:        %autorelease
 Summary:        GNOME Flashback session
 
 License:        GPL-3.0-or-later
 URL:            https://wiki.gnome.org/Projects/GnomeFlashback
-Source0:        https://download.gnome.org/sources/%{name}/3.52/%{name}-%{version}.tar.xz
+Source0:        https://download.gnome.org/sources/%{name}/3.54/%{name}-%{version}.tar.xz
 Source1:        %{name}.pamd
 
 BuildRequires:  desktop-file-utils
@@ -27,7 +27,7 @@ BuildRequires:  pkgconfig(glib-2.0) >= 2.67.3
 BuildRequires:  pkgconfig(gnome-bluetooth-3.0)
 %endif
 BuildRequires:  pkgconfig(gnome-desktop-3.0) >= 43
-BuildRequires:  pkgconfig(gsettings-desktop-schemas) >= 3.31.0
+BuildRequires:  pkgconfig(gsettings-desktop-schemas) >= 42.0
 BuildRequires:  pkgconfig(gtk+-3.0) >= 3.22.0
 BuildRequires:  pkgconfig(ibus-1.0) >= 1.5.2
 BuildRequires:  pkgconfig(libcanberra-gtk3) >= 0.13

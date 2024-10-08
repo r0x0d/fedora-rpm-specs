@@ -1,6 +1,6 @@
 Name:           osm-gps-map
 Version:        1.1.0
-Release:        17%{?dist}
+Release:        18%{?dist}
 Summary:        Gtk+ widget for displaying OpenStreetMap tiles
 
 # Automatically converted from old format: GPLv2 - review is highly recommended.
@@ -39,30 +39,28 @@ GObject introspection bindings for %{name}.
 
 
 %prep
-%setup0 -q
+%autosetup
 
 
 %build
 %configure --disable-static
-make V=1 %{?_smp_mflags}
+%make_build
 
 
 %install
-make install DESTDIR=%{buildroot}
-
-
-%ldconfig_scriptlets
+%make_install
 
 
 %files
-%doc AUTHORS COPYING README NEWS ChangeLog
+%doc AUTHORS README NEWS ChangeLog
+%license COPYING
 %exclude %{_libdir}/*.la
 %exclude %{_datadir}/gtk-doc/html/libosmgpsmap/
 %if 0%{?rhel} <= 7
 %exclude %{_datadir}/doc/%{name}/
 %endif
 
-%{_libdir}/libosmgpsmap-1.0.so.*
+%{_libdir}/libosmgpsmap-1.0.so.1{,.*}
 
 %files gobject
 %{_libdir}/girepository-1.0/OsmGpsMap-1.0.typelib
@@ -75,6 +73,9 @@ make install DESTDIR=%{buildroot}
 
 
 %changelog
+* Fri Sep 27 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 1.1.0-18
+- Modernize spec
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 1.1.0-17
 - convert license to SPDX
 

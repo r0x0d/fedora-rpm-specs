@@ -1,12 +1,13 @@
 Name:           mbuffer
-Version:        20240707
-Release:        2%{?dist}
+Version:        20240929
+Release:        1%{?dist}
 Summary:        Measuring Buffer is an enhanced version of buffer
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
 URL:            http://www.maier-komor.de/mbuffer.html
 Source0:        http://www.maier-komor.de/software/mbuffer/mbuffer-%{version}.tgz
+Patch0:         network.diff
 
 BuildRequires:  make
 BuildRequires:  gcc
@@ -20,7 +21,7 @@ Measuring Buffer is an enhanced version of buffer. It features displayof
 throughput, memory-mapped file I/O for huge buffers, and multithreading.
 
 %prep
-%autosetup -n %{name}-r%{version}
+%autosetup -n %{name}-%{version} -p1
 
 %build
 #autoconf
@@ -43,6 +44,9 @@ rm -rf %{buildroot}/usr/etc/mbuffer.rc
 %config(noreplace) %{_sysconfdir}/mbuffer.rc
 
 %changelog
+* Fri Oct 04 2024 Filipe Rosset <rosset.filipe@gmail.com> - 20240929-1
+- Update to 20240929 fixes rhbz#2315585
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 20240707-2
 - convert license to SPDX
 

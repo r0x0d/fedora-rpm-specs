@@ -5,16 +5,13 @@
 %global crate color-backtrace
 
 Name:           rust-color-backtrace
-Version:        0.5.1
+Version:        0.6.1
 Release:        %autorelease
 Summary:        Colorful panic backtraces
 
 License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/color-backtrace
 Source:         %{crates_source}
-# Manually created patch for downstream crate metadata changes
-# * drop noop backtrace/gimli-symbolize dependency (removed in backtrace 0.3.72)
-Patch:          color-backtrace-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

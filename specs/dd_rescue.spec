@@ -1,5 +1,5 @@
 Name:           dd_rescue
-Version:        1.99.15
+Version:        1.99.16
 Release:        %autorelease
 Summary:        Fault tolerant "dd" utility for rescuing data from bad media
 # No version specified

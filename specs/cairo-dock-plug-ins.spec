@@ -4,12 +4,12 @@
 %global	core_least_ver	3.5.99
 
 %global	use_git	1
-%global	gitdate	20240501
-%global	githash	9901f7d9d59657363580b75766f7d5e7f23b6388
+%global	gitdate	20241007
+%global	githash	019f49fa9e3db780823ed7aea08493eafd52d7f3
 %global	shorthash	%(c=%{githash} ; echo ${c:0:7})
 
 %global	tarballver	%{mainver}%{?use_git:-%{gitdate}git%{shorthash}}
-%global	baserelease	5
+%global	baserelease	1
 
 
 %global	ruby_vendorlib	%(ruby -rrbconfig -e "puts RbConfig::CONFIG['vendorlibdir']")
@@ -93,7 +93,7 @@ Requires:	%{name}-base%{?_isa} = %{version}-%{release}
 Requires:	%{name}-dbus%{?_isa} = %{version}-%{release}
 # cairo-dock-launcher-API-daemon is written in python,
 # so for now make this depending on python
-Requires:	cairo-dock-python3 = %{version}-%{release}
+Requires:	cairo-dock-python3%{?_isa} = %{version}-%{release}
 # Require xdg-utils for logout by default
 Requires:	xdg-utils
 
@@ -170,7 +170,7 @@ Requires:	cairo-dock-core >= %{core_least_ver}
 Requires:	%{name}-dbus = %{version}-%{release}
 Requires:	python3-gobject
 Requires:	python3-dbus
-BuildArch:	noarch
+Obsoletes:	cairo-dock-python3 < 3.5.99^20241007git019f49f-1
 
 %description	-n cairo-dock-python3
 This package contains Python3 binding files for Cairo-Dock
@@ -245,7 +245,7 @@ sed -i.installdir \
 	CMakeLists.txt
 
 # Modify version forcely
-sed -i CMakeLists.txt -e '\@set (VERSION @s|VERSION.*|VERSION "%{mainver}")|'
+sed -i CMakeLists.txt -e '\@set (\(CORE_REQUIRED_\|\)VERSION @s|VERSION.*|VERSION "%{mainver}")|'
 
 # Kill python2 explicitly
 sed -i.py2 CMakeLists.txt -e 's|python2)|python2-nono)|'
@@ -399,11 +399,10 @@ popd
 %{_datadir}/cairo-dock/plug-ins/*weblet*
 
 %files	-n cairo-dock-python3
-%{python3_sitelib}/CairoDock.py*
-%{python3_sitelib}/CDApplet.py*
-%{python3_sitelib}/CDBashApplet.py*
-%{python3_sitelib}/*.egg-info
-%{python3_sitelib}/__pycache__/
+%{python3_sitearch}/CairoDock.py*
+%{python3_sitearch}/CDApplet.py*
+%{python3_sitearch}/CDBashApplet.py*
+%{python3_sitearch}/__pycache__/
 
 %files	-n cairo-dock-ruby
 %{ruby_vendorlib}/CDApplet.rb
@@ -418,6 +417,9 @@ popd
 %{_datadir}/cairo-dock/plug-ins/Dbus/CDApplet.h
 
 %changelog
+* Sun Oct 06 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.5.99^20241007git019f49f-1
+- Update to the latest git (20241007git019f49f)
+
 * Sun Sep 22 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.5.99^20240501git9901f7d-5
 - BR: ayatana-indicator3-0.4 for Messaging-Menu support
 

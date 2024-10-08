@@ -1,14 +1,14 @@
 Name:           python-pdir2
 Version:        1.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Pretty dir() printing with joy
 
 License:        MIT
 URL:            https://github.com/laike9m/pdir2
 Source0:        %{pypi_source pdir2}
 
-#Patch0:         pdir2-0003-add-py311-getstate.patch
-#Patch1:         pdir2-0004-no-upper-bound.patch
+# https://github.com/laike9m/pdir2/issues/78
+Patch0:         python313.patch
 
 BuildArch:      noarch
 
@@ -53,6 +53,9 @@ sed -r -i 's/=(=[[:digit:]\.]+)\.\*/>\1/' pyproject.toml
 %doc README.md
 
 %changelog
+* Sun Oct 06 2024 Simon de Vlieger <cmdr@supakeen.com> - 1.1.0-2
+- Patch for Python 3.13
+
 * Tue Aug 06 2024 Filipe Rosset <rosset.filipe@gmail.com> - 1.1.0-1
 - Update to 1.1.0
 

@@ -5,7 +5,7 @@
 %global crate backtrace
 
 Name:           rust-backtrace
-Version:        0.3.73
+Version:        0.3.74
 Release:        %autorelease
 Summary:        Library to acquire a stack trace (backtrace) at runtime in a Rust program
 

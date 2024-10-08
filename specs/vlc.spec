@@ -92,7 +92,7 @@ BuildRequires:	lua-devel
 BuildRequires:	pkgconfig(alsa) >= 1.0.24
 BuildRequires:	pkgconfig(aom)
 BuildRequires:	pkgconfig(aribb24)
-#BuildRequires:	pkgconfig(aribb25)
+BuildRequires:	pkgconfig(aribb25)
 %if %{with asdcp}
 BuildRequires:	pkgconfig(asdcplib)
 %endif
@@ -653,7 +653,7 @@ export LIVE555_PREFIX=%{_prefix}
 	--disable-telx						\
 	--enable-libass						\
 	--enable-aribsub					\
-	--disable-aribb25					\
+	--enable-aribb25					\
 	--enable-kate						\
 	--enable-tiger						\
 	--enable-css						\
@@ -1132,6 +1132,7 @@ make check
 %{vlc_plugindir}/services_discovery/libupnp_plugin.so
 %{vlc_plugindir}/services_discovery/libudev_plugin.so
 %{vlc_plugindir}/stream_extractor/libarchive_plugin.so
+%{vlc_plugindir}/stream_filter/libaribcam_plugin.so
 %{vlc_plugindir}/stream_out/libstream_out_chromecast_plugin.so
 %{vlc_plugindir}/text_renderer/libfreetype_plugin.so
 %{vlc_plugindir}/video_output/libaa_plugin.so

@@ -8,7 +8,7 @@ ExclusiveArch: %{ocaml_native_compiler}
 
 Name:           why3
 Version:        1.7.2
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Software verification platform
 
 License:        LGPL-2.1-only WITH OCaml-LGPL-linking-exception
@@ -283,6 +283,9 @@ chmod 0755 %{buildroot}%{_bindir}/* \
 %files all
 
 %changelog
+* Sun Oct  6 2024 Jerry James <loganjerry@gmail.com> - 1.7.2-9
+- Rebuild for ocaml-re 1.13.3
+
 * Mon Aug  5 2024 Jerry James <loganjerry@gmail.com> - 1.7.2-8
 - Rebuild for ocaml-menhir 20240715, ocaml-ppxlib 0.33.0, and ocaml-zip 1.1.2
 
