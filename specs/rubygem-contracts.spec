@@ -1,8 +1,8 @@
 %global	gem_name	contracts
 
 Name:		rubygem-%{gem_name}
-Version:	0.17
-Release:	11%{?dist}
+Version:	0.17.1
+Release:	1%{?dist}
 
 Summary:	Contracts for Ruby
 # SPDX confirmed
@@ -33,10 +33,6 @@ Documentation for %{name}.
 %prep
 %setup -q -n %{gem_name}-%{version}
 mv ../%{gem_name}-%{version}.gemspec .
-
-# Ruby3.2 removes Fixnum
-# https://github.com/egonSchiele/contracts.ruby/issues/300
-sed -i spec/fixtures/fixtures.rb -e 's|Fixnum|Integer|'
 
 %build
 gem build %{gem_name}-%{version}.gemspec
@@ -82,6 +78,9 @@ popd
 %{gem_instdir}/benchmarks/
 
 %changelog
+* Tue Oct 08 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.17.1-1
+- 0.17.1
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.17-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

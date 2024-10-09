@@ -10,7 +10,7 @@
 
 # https://github.com/aws/smithy-go
 %global goipath         github.com/aws/smithy-go
-Version:                1.21.0
+Version:                1.22.0
 
 %gometa -L -f
 

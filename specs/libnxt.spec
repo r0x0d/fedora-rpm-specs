@@ -5,9 +5,9 @@ Version:         %{tag}
 
 %forgemeta
 
-Release:         6%{?dist}
+Release:         7%{?dist}
 Summary:         Utility for flashing LEGO Mindstorms NXT firmware
-License:         GPLv2+
+License:         GPL-2.0-or-later
 Url:             %{forgeurl}
 Source0:         %{forgesource}
 # Short document describing how to reflash the NXT firmware
@@ -60,6 +60,9 @@ cp -p %{SOURCE1} NXT-REFLASH-HOWTO
 %{_mandir}/man1/fwflash.1*
 
 %changelog
+* Mon Oct 07 2024 Damian Wrobel <dwrobel@ertelnet.rybnik.pl> - 0.4.2-7
+- Rebuilt for updated license tag
+
 * Mon Jul 29 2024 Damian Wrobel <dwrobel@ertelnet.rybnik.pl> - 0.4.2-6
 - ExcludeArch ix86 (fixes FTBFS, rhbz#2300908)
 

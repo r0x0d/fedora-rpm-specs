@@ -1,27 +1,19 @@
-%global __cmake_in_source_build 1
-
-# Some tests are failing:
-# https://github.com/hoene/libmysofa/issues/129
-%ifarch s390x
-%global _without_tests 1
-%endif
-%if 0%{?el7:1}
-%ifarch ppc64le
-%global _without_tests 1
-%endif
-%endif
+%global commit0 2297dd8224ccf42882a2546f2c7ee02e7ab0d1ba
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commitdate0 20240917
 
 Name:           libmysofa
-Version:        1.2.1
-Release:        9%{?dist}
+Version:        1.3.2
+Release:        3.%{commitdate0}git%{shortcommit0}%{?dist}
 Summary:        C functions for reading HRTFs
 
 # Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
 URL:            https://github.com/hoene/libmysofa
-Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
+#Source0:        %%{url}/archive/v%%{version}/%%{name}-%%{version}.tar.gz
+Source0:        %{url}/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
 
-BuildRequires:  cmake3
+BuildRequires:  cmake
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  pkgconfig(cunit)
@@ -52,34 +44,29 @@ Tools for %{name}.
 
 
 %prep
-%autosetup -p1
+%autosetup -p1 -n %{name}-%{commit0}
 
 
 %build
-mkdir -p build
-cd build
-%cmake3 \
+%cmake \
   -DBUILD_STATIC_LIBS=OFF \
   -DCODE_COVERAGE=OFF \
-  -DCMAKE_VERBOSE_MAKEFILE=ON \
-  ..
+  -DCMAKE_VERBOSE_MAKEFILE=ON
 
-%make_build
+%cmake_build
 
 
 %install
-cd build
-%make_install
+%cmake_install
 
 
 %{?!_without_tests:
 %check
-cd build
-make test || (cat Testing/Temporary/LastTest.log && exit 1)
+export MYSOFA2JSON=%{_builddir}/%{buildsubdir}/%{_vpath_builddir}/src/mysofa2json
+# Tests are not paralle compatible
+# https://github.com/hoene/libmysofa/issues/224
+%ctest -j1
 }
-
-
-%ldconfig_scriptlets
 
 
 %files
@@ -96,11 +83,23 @@ make test || (cat Testing/Temporary/LastTest.log && exit 1)
 %files devel
 %doc CODE_OF_CONDUCT.md
 %{_includedir}/mysofa.h
+%{_includedir}/mysofa_export.h
 %{_libdir}/libmysofa.so
 %{_libdir}/pkgconfig/libmysofa.pc
+%dir %{_libdir}/cmake/mysofa
+%{_libdir}/cmake/mysofa/mysofaConfig.cmake
+%{_libdir}/cmake/mysofa/mysofaConfigVersion.cmake
+%{_libdir}/cmake/mysofa/mysofaTargets-noconfig.cmake
+%{_libdir}/cmake/mysofa/mysofaTargets.cmake
 
 
 %changelog
+* Mon Oct 07 2024 Nicolas Chauvet <kwizart@gmail.com> - 1.3.2-3.20240917git2297dd8
+- Update snapshot - rhbz#2316036
+
+* Thu Sep 19 2024 Nicolas Chauvet <kwizart@gmail.com> - 1.3.2-1
+- Update to 1.3.2
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.2.1-9
 - convert license to SPDX
 

@@ -1,12 +1,12 @@
 Name:           perl-VM-EC2
 Version:        1.28
-Release:        29%{?dist}
+Release:        30%{?dist}
 Summary:        Perl interface to Amazon EC2
-# lib/VM/EC2.pm:    GPL+ or Artistic 2.0
-# LICENSE:          GPL+ or Artistic 2.0
-# DISCLAIMER.txt:   GPL+ or Artistic
+# lib/VM/EC2.pm:    GPL-1.0-or-later OR Artistic-2.0
+# LICENSE:          GPL-1.0-or-later OR Artistic-2.0
+# DISCLAIMER.txt:   GPL-1.0-or-later OR Artistic-1.0-Perl
 # See <https://rt.cpan.org/Public/Bug/Display.html?id=104957>.
-License:        (GPL+ or Artistic 2.0) and (GPL+ or Artistic)
+License:        (GPL-1.0-or-later OR Artistic-2.0) AND (GPL-1.0-or-later OR Artistic-1.0-Perl)
 URL:            https://metacpan.org/release/VM-EC2
 Source0:        https://cpan.metacpan.org/authors/id/L/LD/LDS/VM-EC2-%{version}.tar.gz
 # Fix a typo leading to unresolved dependencies, CPAN RT#104961
@@ -133,6 +133,9 @@ export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print
 %{_libexecdir}/%{name}
 
 %changelog
+* Mon Oct 07 2024 Petr Pisar <ppisar@redhat.com> - 1.28-30
+- Convert a License tag to SDPX
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.28-29
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

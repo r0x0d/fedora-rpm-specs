@@ -1,15 +1,12 @@
 Name:          notcurses
-Version:       3.0.9
+Version:       3.0.11
 Release:       %autorelease
 Summary:       Character graphics and TUI library
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:       Apache-2.0
 URL:           https://nick-black.com/dankwiki/index.php/Notcurses
 Source0:       https://github.com/dankamongmen/%{name}/releases/download/v%{version}/notcurses_%{version}+dfsg.1.orig.tar.xz
 Source1:       https://github.com/dankamongmen/%{name}/releases/download/v%{version}/notcurses_%{version}+dfsg.1.orig.tar.xz.asc
 Source2:       https://nick-black.com/dankamongmen.gpg
-# Add compatibility with FFMPEG 7
-Patch1:        0001-Add-compatibility-with-FFMPEG-7.0.patch
 
 BuildRequires: gnupg2
 BuildRequires: cmake
@@ -38,7 +35,6 @@ This package includes C and C++ shared libraries.
 
 %package devel
 Summary:       Development files for the Notcurses library
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:       Apache-2.0
 Requires:      %{name}%{?_isa} = %{version}-%{release}
 
@@ -47,7 +43,6 @@ Development files for the notcurses library.
 
 %package static
 Summary:       Static library for the Notcurses library
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:       Apache-2.0
 Requires:      %{name}%{?_isa} = %{version}-%{release}
 
@@ -56,7 +51,6 @@ A statically-linked version of the notcurses library.
 
 %package utils
 Summary:       Binaries from the Notcurses project
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:       Apache-2.0
 Requires:      %{name}%{?_isa} = %{version}-%{release}
 
@@ -65,7 +59,6 @@ Binaries from Notcurses, and multimedia content used thereby.
 
 %package -n python3-%{name}
 Summary:       Python wrappers for notcurses
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:       Apache-2.0
 Requires:      %{name}%{?_isa} = %{version}-%{release}
 

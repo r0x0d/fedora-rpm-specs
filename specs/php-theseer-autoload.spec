@@ -1,6 +1,6 @@
 # remirepo/fedora spec file for php-theseer-autoload
 #
-# Copyright (c) 2014-2023 Remi Collet
+# Copyright (c) 2014-2024 Remi Collet
 # License: CC-BY-SA-4.0
 # http://creativecommons.org/licenses/by-sa/4.0/
 #
@@ -10,7 +10,7 @@
 # For compatibility with SCL
 %undefine __brp_mangle_shebangs
 
-%global gh_commit    abb83aaae55eacb3582e1a888a6f74ff14a331d7
+%global gh_commit    6ac38edd83856019e70d1c904a2450c8e042ad28
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     theseer
 %global gh_project   Autoload
@@ -25,8 +25,8 @@
 %endif
 
 Name:           php-theseer-autoload
-Version:        1.29.1
-Release:        2%{?dist}
+Version:        1.29.2
+Release:        1%{?dist}
 Summary:        A tool and library to generate autoload code
 
 License:        BSD-3-Clause
@@ -45,13 +45,8 @@ BuildRequires:  php-openssl
 BuildRequires:  php-phar
 BuildRequires:  php-spl
 BuildRequires:  php-tokenizer
-%if 0%{?fedora} >= 27 || 0%{?rhel} >= 8
 BuildRequires: (php-composer(theseer/directoryscanner)     >= 1.3.2 with php-composer(theseer/directoryscanner)     < 2)
 BuildRequires: (php-composer(zetacomponents/console-tools) >= 1.7   with php-composer(zetacomponents/console-tools) < 2)
-%else
-BuildRequires:  php-theseer-directoryscanner               >= 1.3.2
-BuildRequires:  php-zetacomponents-console-tools           >= 1.7
-%endif
 %if %{with tests}
 %global phpunit %{_bindir}/phpunit9
 BuildRequires:  %{phpunit}
@@ -64,13 +59,8 @@ BuildRequires:  %{phpunit}
 #        "zetacomponents/console-tools": "^1.7.2"
 Requires:       php(language) >= 5.3.1
 Requires:       php-openssl
-%if 0%{?fedora} >= 27 || 0%{?rhel} >= 8
 Requires:      (php-composer(theseer/directoryscanner)     >= 1.3.2 with php-composer(theseer/directoryscanner)     < 2)
 Requires:      (php-composer(zetacomponents/console-tools) >= 1.7   with php-composer(zetacomponents/console-tools) < 2)
-%else
-Requires:       php-theseer-directoryscanner               >= 1.3.2
-Requires:       php-zetacomponents-console-tools           >= 1.7
-%endif
 # From phpcompatinfo report for version 1.25.0
 Requires:       php-cli
 Requires:       php-date
@@ -135,7 +125,7 @@ require '%{buildroot}%{_datadir}/php/TheSeer/Autoload/autoload.php';
 EOF
 
 ret=0
-for cmd in "php %{phpunit}" php80 php81 php82 php83; do
+for cmd in "php %{phpunit}" php80 php81 php82 php83 php84; do
   if which $cmd; then
     set $cmd
     $1 ${2:-%{_bindir}/phpunit9} --verbose || ret=1
@@ -153,7 +143,6 @@ fi
 
 
 %files
-%{!?_licensedir:%global license %%doc}
 %license LICENSE
 %doc README.md composer.json
 %{php_home}/%{gh_project}
@@ -161,6 +150,9 @@ fi
 
 
 %changelog
+* Mon Oct  7 2024 Remi Collet <remi@remirepo.net> - 1.29.2-1
+- update to 1.29.2
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.29.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

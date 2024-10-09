@@ -1,10 +1,10 @@
 Name: docbook5-schemas
 Version: 5.1
-Release: 12%{?dist}
+Release: 13%{?dist}
 
 Summary: Norman Walsh's schemas (DTD, Relax NG, W3C schema) for Docbook 5.X
 
-License: Freely redistributable without restriction
+License: LicenseRef-OASIS-spec AND DocBook-Stylesheet AND LicenseRef-Fedora-UltraPermissive
 URL: http://www.oasis-open.org/docbook/
 
 Provides: docbook5-dtd = %{version}-%{release}
@@ -40,11 +40,6 @@ cd 5.0
 unzip %{SOURCE0}
 mv docbook-5.0/* .
 
-# Remove perl script
-rm tools/db4-entities.pl
-rm tools/db4-upgrade.xsl
-rmdir tools/
-
 # Remove howto docs
 rm docs/howto.html
 rm docs/howto.pdf
@@ -60,9 +55,6 @@ cd ..
 # Unzip Docbook 5.1 specification
 cd 5.1
 unzip %{SOURCE1}
-rm tools/db4-entities.pl
-rm tools/db4-upgrade.xsl
-rmdir tools/
 mv schemas/rng .
 mv schemas/sch .
 mv schemas/catalog.xml .
@@ -261,6 +253,10 @@ mkdir -p ${DOCBOOK5DIR}/schema/dtd/5.0
 mkdir -p ${DOCBOOK5DIR}/schema/xsd/5.0
 install -m644 5.0/dtd/* ${DOCBOOK5DIR}/schema/dtd/5.0
 install -m644 5.0/xsd/* ${DOCBOOK5DIR}/schema/xsd/5.0
+mkdir -p $RPM_BUILD_ROOT%{_bindir}            
+install -m755 %{version}/tools/db4-entities.pl $RPM_BUILD_ROOT%{_bindir}            
+mkdir -p ${DOCBOOK5DIR}/stylesheet/upgrade            
+install -m644 %{version}/tools/db4-upgrade.xsl ${DOCBOOK5DIR}/stylesheet/upgrade
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/xml
 install -m644 docbook-5.xml $RPM_BUILD_ROOT%{_sysconfdir}/xml/docbook-5.xml
@@ -331,6 +327,8 @@ fi
 %dir %{_datadir}/xml/docbook5/schema/rng
 %dir %{_datadir}/xml/docbook5/schema/sch
 %dir %{_datadir}/xml/docbook5/schema/xsd
+%dir %{_datadir}/xml/docbook5/stylesheet            
+%dir %{_datadir}/xml/docbook5/stylesheet/upgrade
 # Docbook5.0
 %{_datadir}/xml/docbook5/schema/dtd/5.0
 %{_datadir}/xml/docbook5/schema/rng/5.0
@@ -339,8 +337,16 @@ fi
 # Docbook 5.1
 %{_datadir}/xml/docbook5/schema/rng/%{version}
 %{_datadir}/xml/docbook5/schema/sch/%{version}
+%{_datadir}/xml/docbook5/stylesheet/upgrade/db4-upgrade.xsl
+%{_bindir}/db4-entities.pl
 
 %changelog
+* Mon Oct 7 2024 Ales Nezbeda <anezbeda@redhat.com> - 5.1-13
+- Convert license to SPDX
+- Add perl script that is licensed with
+  LicenseRef-Fedora-UltraPermissive (as per Norm's Tovey-Walsh email
+  where stated license is "Completely free to use.")
+
 * Mon Aug 19 2024 Ales Nezbeda <anezbeda@redhat.com> - 5.1-12
 - Remove unlicensed perl script and howto docs
 

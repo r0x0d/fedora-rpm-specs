@@ -1,6 +1,6 @@
 Name: debugedit
 Version: 5.0
-Release: 17%{?dist}
+Release: 18%{?dist}
 Summary: Tools for debuginfo creation
 License: GPL-3.0-or-later AND GPL-2.0-or-later AND LGPL-2.0-or-later
 URL: https://sourceware.org/debugedit/
@@ -56,6 +56,7 @@ Patch12: 0002-Simplify-update_rela_data-by-checking-rel_updated.patch
 Patch13: 0003-debug_str_offsets-header-version-and-padding-are-2-b.patch
 Patch14: 0004-debugedit-Track-active-CU.patch
 Patch15: 0005-debugedit-Handle-DW_MACRO_-define-undef-_strx.patch
+Patch16: debugedit-5.0-DW_UT_type.patch
 
 %description
 The debugedit project provides programs and scripts for creating
@@ -97,6 +98,9 @@ make check %{?_smp_mflags}
 %{_mandir}/man1/find-debuginfo.1*
 
 %changelog
+* Mon Oct 7 2024 Mark Wielaard <mjw@fedoraproject.org> - 5.0-18
+- Add debugedit-5.0-DW_UT_type.patch
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.0-17
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

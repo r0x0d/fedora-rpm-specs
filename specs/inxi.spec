@@ -1,6 +1,6 @@
 Name:           inxi
-Version:        3.3.34
-Release:        2%{?dist}
+Version:        3.3.36
+Release:        1%{?dist}
 Summary:        A full featured system information script
 
 License:        GPL-3.0-or-later
@@ -81,6 +81,9 @@ install -p -D -m 644 %{name}.1.gz %{buildroot}/%{_mandir}/man1/%{name}.1.gz
 
 
 %changelog
+* Mon Oct 07 2024 Vasiliy N. Glazov <vascom2@gmail.com> - 3.3.36-1
+- Update to 3.3.36
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.3.34-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

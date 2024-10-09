@@ -1,11 +1,11 @@
-%global commit0 f5d9c690cda570d44b3c365fe58ce9a9c123e163
-%global date 20240919
+%global commit0 c10c5300483a8ec975e64e5d76c0fb00ac94e026
+%global date 20240924
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 #global tag %{version}
 
 Name:           egl-wayland
 Version:        1.1.17%{!?tag:^%{date}git%{shortcommit0}}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        EGLStream-based Wayland external platform
 License:        MIT
 URL:            https://github.com/NVIDIA/%{name}
@@ -81,6 +81,9 @@ find %{buildroot} -name '*.la' -delete
 %{_libdir}/pkgconfig/wayland-eglstream.pc
 
 %changelog
+* Mon Oct 07 2024 Simone Caronni <negativo17@gmail.com> - 1.1.17^20240924gitc10c530-2
+- Update to latest snapshot.
+
 * Fri Sep 20 2024 Simone Caronni <negativo17@gmail.com> - 1.1.17^20240919gitf5d9c69-1
 - Update to latest snapshot.
 - ICD is installed directly from sources.

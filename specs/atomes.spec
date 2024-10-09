@@ -1,7 +1,7 @@
 Name:           atomes
 %global upname Atomes-GNU
-Version:        1.1.14
-Release:        4%{?dist}
+Version:        1.1.15
+Release:        2%{?dist}
 Summary:        An atomistic toolbox
 License:        AGPL-3.0-or-later
 Source0:        https://github.com/Slookeur/%{upname}/archive/refs/tags/v%{version}.tar.gz
@@ -74,6 +74,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/fr.ipcms.%{nam
 %files
 %license COPYING
 %{_bindir}/%{name}
+%{_libexecdir}/%{name}_startup_testing
 %{_datadir}/doc/%{name}/
 %{_mandir}/man1/%{name}.1*
 %{_datadir}/%{name}/
@@ -87,6 +88,12 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/fr.ipcms.%{nam
 %{_metainfodir}/fr.ipcms.%{name}.appdata.xml
 
 %changelog
+* Fri Oct 04 2024 Sébastien Le Roux <sebastien.leroux@ipcms.unistra.fr> - 1.1.15-2
+- Package spec file update
+
+* Fri Oct 04 2024 Sébastien Le Roux <sebastien.leroux@ipcms.unistra.fr> - 1.1.15-1
+- Bug corrections and improvements (see: https://github.com/Slookeur/Atomes-GNU/releases/tag/v1.1.15)
+
 * Mon Sep 23 2024 Fabio Valentini <decathorpe@gmail.com> - 1.1.14-4
 - Rebuild for ffmpeg 7
 

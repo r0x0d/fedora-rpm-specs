@@ -1,7 +1,7 @@
 Name:		qtermwidget
 Version:	2.0.1
 Release:	1%{?dist}
-License:	GPLv2+
+License:	GPL-2.0-or-later
 Summary:	Qt6 terminal widget
 URL:		https://github.com/lxqt/%{name}/
 Source0:        https://github.com/lxqt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz

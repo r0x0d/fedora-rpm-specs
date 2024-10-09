@@ -8,17 +8,17 @@
 # Please, preserve the changelog entries
 #
 # see https://github.com/tecnickcom/TCPDF/releases
-%global gh_commit    951eabf0338ec2522bd0d5d9c79b08a3a3d36b36
+%global gh_commit    4cf1ab192e87e6916d20f93077b2bdfa96a2f848
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     tecnickcom
-%global gh_date      2024-04-20
+%global gh_date      2024-10-06
 %global gh_project   TCPDF
 %global real_name    tcpdf
 
 Name:           php-tcpdf
 Summary:        PHP class for generating PDF documents and barcodes
-Version:        6.7.5
-Release:        2%{?dist}
+Version:        6.7.6
+Release:        1%{?dist}
 
 URL:            http://www.tcpdf.org
 License:        LGPL-3.0-or-later
@@ -47,10 +47,8 @@ Requires:       php-tidy
 Requires:       php-xml
 Requires:       php-zlib
 # mcrypt is optionnal and openssl is preferred
-%if 0%{?fedora} >= 27 || 0%{?rhel} >= 8
 # imagick is optionnal (and conflicts with gmagick)
 Recommends:     php-imagick
-%endif
 # Autoloader
 Requires:       php-composer(fedora/autoloader)
 
@@ -274,7 +272,6 @@ php -r 'require "%{buildroot}%{_datadir}/php/%{real_name}/autoload.php";
 %files -f corefonts.lst
 %doc README.md CHANGELOG.TXT examples
 %doc composer.json
-%{!?_licensedir:%global license %%doc}
 %license LICENSE.TXT
 %{_bindir}/%{real_name}_addfont
 %dir %{_datadir}/php/%{real_name}
@@ -317,6 +314,9 @@ php -r 'require "%{buildroot}%{_datadir}/php/%{real_name}/autoload.php";
 
 
 %changelog
+* Mon Oct  7 2024 Remi Collet <remi@remirepo.net> - 6.7.6-1
+- update to 6.7.6
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.5-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

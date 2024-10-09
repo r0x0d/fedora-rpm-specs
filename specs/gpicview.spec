@@ -11,11 +11,11 @@
 %global		git_builddir	%{nil}
 
 %if 0%{?use_gitbare}
-%global		gittardate		20240825
-%global		gittartime		2013
+%global		gittardate		20241008
+%global		gittartime		0911
 
-%global		gitbaredate	20240818
-%global		git_rev		cfce58f1b957a5ef94222837190208b0918ad66e
+%global		gitbaredate	20240818.1
+%global		git_rev		1efbde2ac9db0f3099b2a06314aba856a2d67287
 %global		git_short		%(echo %{git_rev} | cut -c-8)
 %global		git_version	%{gitbaredate}git%{git_short}
 %endif
@@ -146,6 +146,9 @@ cd ..
 %{_mandir}/man1/%{name}.1*
 
 %changelog
+* Tue Oct 08 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.2.6^20240818.1git1efbde2a-1
+- Update to the latest git
+
 * Sun Aug 25 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.2.6^20240818gitcfce58f1-1
 - Update to the latest git
 

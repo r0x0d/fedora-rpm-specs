@@ -28,7 +28,7 @@
 
 %define rpmhome /usr/lib/rpm
 
-%global rpmver 4.19.94
+%global rpmver 4.20.0
 #global snapver rc1
 %global baserelease 1
 %global sover 10
@@ -658,6 +658,9 @@ fi
 %doc %{_defaultdocdir}/rpm/API/
 
 %changelog
+* Mon Oct 07 2024 Michal Domonkos <mdomonko@redhat.com> - 4.20.0-1
+- Rebase to 4.20.0
+
 * Tue Sep 10 2024 Michal Domonkos <mdomonko@redhat.com> - 4.19.94-1
 - Rebase to 4.20 rc2
 

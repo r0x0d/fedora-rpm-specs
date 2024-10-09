@@ -1,8 +1,3 @@
-%if 0%{?rhel} == 7
-%{!?lua_version: %global lua_version %{lua: print(string.sub(_VERSION, 5))}}
-%{!?lua_libdir: %global lua_libdir %{_libdir}/lua/%{lua_version}}
-%endif
-
 Summary:        Binding to libunbound for Lua
 Name:           lua-unbound
 Version:        1.0.0

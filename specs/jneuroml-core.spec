@@ -41,7 +41,7 @@ BuildRequires:  maven-remote-resources-plugin
 %package doc
 Summary:        NeuroML2 core documentation, schemas, and examples
 # bootstrap.css file is ASL 2.0
-License:        LGPLv3 and ASL 2.0
+License:        LGPL-3.0-only AND Apache-2.0
 
 %description doc %_description
 

@@ -2,7 +2,7 @@ Name:           perl-File-MMagic-XS
 Version:        0.09008
 Release:        33%{?dist}
 Summary:        Guess file type with XS
-License:        ASL 2.0 and (GPL+ or Artistic)
+License:        Apache-2.0 AND (GPL-1.0-or-later OR Artistic-1.0-Perl)
 URL:            https://metacpan.org/release/File-MMagic-XS
 Source0:        https://cpan.metacpan.org/authors/id/D/DM/DMAKI/File-MMagic-XS-%{version}.tar.gz
 # Perl 5.18 compatibility, CPAN RT#63048

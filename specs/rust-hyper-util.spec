@@ -6,7 +6,7 @@
 %global crate hyper-util
 
 Name:           rust-hyper-util
-Version:        0.1.8
+Version:        0.1.9
 Release:        %autorelease
 Summary:        Hyper utilities
 

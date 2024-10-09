@@ -1,6 +1,6 @@
 Name:           easyeffects
-Version:        7.1.7
-Release:        1%{?dist}
+Version:        7.1.9
+Release:        2%{?dist}
 Summary:        Audio effects for PipeWire applications
 
 License:        GPL-3.0-or-later
@@ -45,11 +45,11 @@ BuildRequires:  ladspa-devel
 Requires:       hicolor-icon-theme
 Requires:       dbus-common
 #Requires:       ladspa-swh-plugins >= 0.4
-Requires:       lv2-calf-plugins >= 0.90.0
 Requires:       ladspa-calf-plugins
 Requires:       lv2-mdala-plugins
 Requires:       lsp-plugins-lv2
 
+Recommends:     lv2-calf-plugins
 Recommends:     zam-plugins
 Recommends:     lv2-zam-plugins
 Recommends:     ladspa-zam-plugins
@@ -99,6 +99,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/com.githu
 
 
 %changelog
+* Mon Oct 07 2024 Vasiliy N. Glazov <vascom2@gmail.com> - 7.1.9-2
+- Update to 7.1.9
+- Make lv2-calf-plugins weak dependency (#2313553)
+
 * Mon Jul 22 2024 Vasiliy N. Glazov <vascom2@gmail.com> - 7.1.7-1
 - Update to 7.1.7
 

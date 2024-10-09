@@ -17,7 +17,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        8.rocm%{rocm_version}%{?dist}
+Release:        9.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -171,11 +171,21 @@ sed -i '/^# Add paths to common HIP includes:/,/^$HIPCFLAGS/d' \
 
 # HIPCC fixes to find clang++
 # Fedora places clang++ in the regular bindir:
-sed -i 's|lib/llvm/bin|bin|' amd/hipcc/bin/hipvars.pm amd/hipcc/src/hipBin_amd.h
+LLVM_BINDIR=`llvm-config-%{llvm_maj_ver} --bindir`
+if [ ! -x ${LLVM_BINDIR}/clang++ ]; then
+    echo "Something wrong with llvm-config"
+    false
+fi
+echo "s@\$ROCM_PATH/lib/llvm/bin@${LLVM_BINDIR}@" > pm.sed
+echo "s@hipClangPath /= \"lib/llvm/bin\"@hipClangPath = \"${LLVM_BINDIR}\"@" > h.sed
+sed -i -f pm.sed amd/hipcc/bin/hipvars.pm
+sed -i -f h.sed amd/hipcc/src/hipBin_amd.h
+
 #Make sure clang-MAJOR and clang++MAJOR is used over clang and clang++
-sed -i -e 's|\(/clang[+]*\)|\1-%{llvm_maj_ver}|' \
-	-e 's|\("clang++\)"|\1-%{llvm_maj_ver}"|' \
-	amd/hipcc/bin/hip*.p* amd/hipcc/src/hipBin_amd.h
+# atm this is the symlink on clang++18 is broken
+# sed -i -e 's|\(/clang[+]*\)|\1-%{llvm_maj_ver}|' \
+#	-e 's|\("clang++\)"|\1-%{llvm_maj_ver}"|' \
+#	amd/hipcc/bin/hip*.p* amd/hipcc/src/hipBin_amd.h
 
 # Fix up the location AMD_DEVICE_LIBS_PREFIX
 sed -i 's|@AMD_DEVICE_LIBS_PREFIX_CODE@|set(AMD_DEVICE_LIBS_PREFIX "%{_prefix}/%{amd_device_libs_prefix}")|' amd/device-libs/AMDDeviceLibsConfig.cmake.in
@@ -289,6 +299,9 @@ popd
 %files -n hipcc-libomp-devel
 
 %changelog
+* Mon Oct 07 2024 Tom Rix <Tom.Rix@amd.com> - 18.8.rocm6.2.0
+- Work around broken clang++-18 link
+
 * Tue Oct 01 2024 Jeremy Newton <alexjnewt at hotmail dot com> - 18-8.rocm6.2.0
 - Drop compat build option (be more agnostic to llvm packaging)
 - Add hip sanity test

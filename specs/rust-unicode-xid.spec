@@ -5,7 +5,7 @@
 %global crate unicode-xid
 
 Name:           rust-unicode-xid
-Version:        0.2.5
+Version:        0.2.6
 Release:        %autorelease
 Summary:        Check characters for the XID_Start and XID_Continue properties
 

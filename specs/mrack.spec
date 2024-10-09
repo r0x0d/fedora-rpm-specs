@@ -1,5 +1,5 @@
 Name:           mrack
-Version:        1.19.0
+Version:        1.21.0
 Release:        1%{?dist}
 Summary:        Multicloud use-case based multihost async provisioner
 
@@ -185,7 +185,14 @@ rm -r src/%{name}.egg-info
 %{python3_sitelib}/%{name}/providers/utils/{,__pycache__/}testcloud.*
 
 %changelog
-* Thu Oct 03 2024 David Pascual Hernandez <davherna@redhat.com> - 1.19.0-1
+* Tue Aug 06 2024 Kaleemullah Siddiqui  <kaleem.amu@gmail.com> - 1.21.0-1
+- b3e0f7d feat: update pytest-mh output to work with latest version (Kaleemullah Siddiqui)
+
+* Tue Jul 16 2024 David Pascual Hernandez <davherna@redhat.com> - 1.20.0-1
+- feeae04 feat: Add support for translanting %pre and main body part of kickstart (David Pascual)
+- 236393c chore: Update deprecated actions (David Pascual)
+
+* Thu May 30 2024 David Pascual Hernandez <davherna@redhat.com> - 1.19.0-1
 - 6f81e37 test: speed-up tests by mocking gethostbyaddr (Petr Vobornik)
 - 587a9c7 fix(beaker): supress 10_avc_check restraint plugin (Petr Vobornik)
 - 2c0c2bb test: Add add_dict_to_node test (Petr Vobornik)
@@ -195,18 +202,6 @@ rm -r src/%{name}.egg-info
 - f6f9131 chore(deps): bump black from 22.3.0 to 24.3.0 (David Pascual)
 - a7db867 test: Add test for _get_recipe_info function (Petr Vobornik)
 - aa25ff3 feat: Provide beaker log links (Petr Vobornik)
-
-* Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.18.0-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Fri Jun 07 2024 Python Maint <python-maint@redhat.com> - 1.18.0-4
-- Rebuilt for Python 3.13
-
-* Thu Jan 25 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.18.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Sun Jan 21 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.18.0-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
 
 * Mon Nov 27 2023 David Pascual Hernandez <davherna@redhat.com> - 1.18.0-1
 - c158474 feat: Add async_timeout dependency (David Pascual)

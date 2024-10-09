@@ -185,7 +185,7 @@ This package provides documentation for the %{srcname} library.
 sed -i -e 's|aclocal)|aclocal/wxwin32.m4)|' Makefile.in
 
 # fix plugin dir for 64-bit
-sed -i -e 's|/usr/lib\b|%{_libdir}|' wx-config.in configure
+sed -i -e 's|/usr/lib\b|/usr/%{_lib}|' wx-config.in configure
 sed -i -e 's|/lib|/%{_lib}|' src/unix/stdpaths.cpp
 
 # Since we're currently patching configure.in

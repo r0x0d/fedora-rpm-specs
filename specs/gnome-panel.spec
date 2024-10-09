@@ -3,13 +3,13 @@
 %global use_evolution_data_server 1
 
 Name:           gnome-panel
-Version:        3.52.0
+Version:        3.54.0
 Release:        %autorelease
 Summary:        GNOME Flashback panel
 
 License:        GPL-2.0-or-later and LGPL-2.1-or-later
 URL:            https://wiki.gnome.org/Projects/GnomePanel
-Source0:        https://download.gnome.org/sources/%{name}/3.52/%{name}-%{version}.tar.xz
+Source0:        https://download.gnome.org/sources/%{name}/3.54/%{name}-%{version}.tar.xz
 
 BuildRequires:  autoconf
 BuildRequires:  automake >= 1.16.4
@@ -31,7 +31,7 @@ BuildRequires:  pkgconfig(gdk-pixbuf-2.0) >= 2.26.0
 BuildRequires:  pkgconfig(gdm)
 BuildRequires:  pkgconfig(geocode-glib-2.0)
 BuildRequires:  pkgconfig(glib-2.0) >= 2.67.1
-BuildRequires:  pkgconfig(gnome-desktop-3.0) >= 2.91.6
+BuildRequires:  pkgconfig(gnome-desktop-3.0) >= 3.35.3
 BuildRequires:  pkgconfig(gsettings-desktop-schemas) >= 42.0
 BuildRequires:  pkgconfig(gtk+-3.0) >= 3.22.0
 BuildRequires:  pkgconfig(gweather4) >= 3.91

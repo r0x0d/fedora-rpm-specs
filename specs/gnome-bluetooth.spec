@@ -5,7 +5,7 @@
 
 Name:		gnome-bluetooth
 Epoch:		1
-Version:	47.0
+Version:	47.1
 Release:	1%{?dist}
 Summary:	Bluetooth graphical utilities
 
@@ -101,6 +101,9 @@ for writing applications that require a Bluetooth device selection widget.
 %{_datadir}/gtk-doc
 
 %changelog
+* Mon Oct 07 2024 Bastien Nocera <bnocera@redhat.com> - 47.1-1
+- Update to 47.1
+
 * Mon Sep 16 2024 nmontero <nmontero@redhat.com> - 1:47.0-1
 - Update to 47.0
 

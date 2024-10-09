@@ -60,7 +60,7 @@
 Summary: A Modern Concurrent Version Control System
 Name: subversion
 Version: 1.14.3
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: Apache-2.0
 URL: https://subversion.apache.org/
 Source0: https://downloads.apache.org/subversion/subversion-%{version}.tar.bz2
@@ -591,6 +591,9 @@ make check-javahl
 %endif
 
 %changelog
+* Mon Oct 07 2024 Tomas Korbar <tkorbar@redhat.com> - 1.14.3-11
+- Rebuild for utf8proc SONAME bump
+
 * Tue Aug 06 2024 Tomas Korbar <tkorbar@redhat.com> - 1.14.3-10
 - Fix debuginfo generation for bindings
 

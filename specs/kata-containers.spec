@@ -28,7 +28,7 @@
 %endif
 
 # htps://github.com/kata-containers/kata-containers
-Version: 3.7.0
+Version: 3.9.0
 %global tag         %{version}%{?rcstr}
 
 %global domain      github.com
@@ -68,6 +68,10 @@ Source5:    50-kata
 Patch0999:  0999-osbuilder-Adjust-agent_version-for-our-builds.patch
 Patch1000:  1000-Remove-shebang-in-non-executable-completion-script.patch
 Patch1001:  1001-Remove-warnings-as-compilation-errors.patch
+Patch1002:  1002-Remove-warnings-as-errors-from-genpolicy.patch
+Patch1003:  1003-Fix-time-dependency-compilation-error.patch
+Patch1004:  1004-Fix-arch-name-compilation-failure.patch
+Patch1005:  1005-build-Fix-RPM-build-fail-due-to-AGENT_POLICY.patch
 
 %if 0%{?have_go_rpm_macros}
 BuildRequires: go-rpm-macros
@@ -93,6 +97,7 @@ BuildRequires: dbus-daemon
 BuildRequires: dracut
 BuildRequires: kernel
 BuildRequires: busybox
+BuildRequires: rsyslog
 
 %if 0%{?bundled_rust_deps}
 BuildRequires: cargo
@@ -135,6 +140,7 @@ BuildRequires: crate(ttrpc/default) >= 0.0.0
 %endif
 
 Requires: busybox
+Requires: binutils
 Requires: dracut
 Requires: kernel
 Requires: qemu-kvm-core >= 8.2.0-1
@@ -387,7 +393,15 @@ fi
 
 
 %changelog
-* Thu Jul 25 2024 Emanuel Lima <emlima@redhat.com> - 3.7.0-1
+* Mon Oct 07 2024 Emanuel Lima <emlima@redhat.com> - 3.9.0-1
+- kata-containers 3.9.0
+  Fix warnings as compilation errors patch
+  Add time dependency compilation error patch
+  Add arch name compilation failure patch
+  Add binutils and rsyslog as dependencies
+  Add AGENT_POLICY patch
+
+* Mon Sep 16 2024 Emanuel Lima <emlima@redhat.com> - 3.7.0-1
 - kata-containers 3.7.0
   Add "io.kubernetes.cri-o.Devices" to cri-o config
   Remove the openssl feature patch

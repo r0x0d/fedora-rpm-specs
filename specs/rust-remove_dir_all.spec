@@ -5,7 +5,7 @@
 %global crate remove_dir_all
 
 Name:           rust-remove_dir_all
-Version:        0.8.3
+Version:        0.8.4
 Release:        %autorelease
 Summary:        Safe, reliable implementation of remove_dir_all
 

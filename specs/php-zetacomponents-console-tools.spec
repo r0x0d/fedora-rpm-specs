@@ -7,7 +7,7 @@
 # Please, preserve the changelog entries
 #
 
-%global gh_commit    c487720bffd26e74a297c3baa31a9b90580759b2
+%global gh_commit    de081f422b574d638e62e15661bf833d80fac61a
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     zetacomponents
 %global gh_project   ConsoleTools
@@ -22,8 +22,8 @@
 %bcond_without  phpab
 
 Name:           php-%{gh_owner}-%{cname}
-Version:        1.7.4
-Release:        2%{?dist}
+Version:        1.7.5
+Release:        1%{?dist}
 Summary:        Zeta %{gh_project} Component
 
 License:        Apache-2.0
@@ -119,7 +119,7 @@ sed -e '/realpath/d' -i tests/statusbar_test.php
 
 
 : Run test test suite
-for cmd in php php81 php82 php83
+for cmd in php php81 php82 php83 php84
 do
   if which $cmd;
   then
@@ -143,6 +143,9 @@ done
 
 
 %changelog
+* Mon Oct  7 2024 Remi Collet <remi@remirepo.net> - 1.7.5-1
+- update to 1.7.5
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.7.4-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,15 +1,14 @@
-%global forgeurl https://github.com/WayfireWM/%{name}
+%global forgeurl https://github.com/WayfireWM/wf-shell
 # 'libgnome-volume-control'
 # This project is only intended to be used as a subproject
-%global gvc_commit      91f3f41490666a526ed78af744507d7ee1134323
+%global gvc_commit      5f9768a2eac29c1ed56f1fbb449a77a3523683b6
 %global gvc_shortcommit %(c=%{gvc_commit}; echo ${c:0:7})
 
 Name:           wf-shell
-Version:        0.8.1
+Version:        0.9.0
+%forgemeta
 Release:        %autorelease
 Summary:        GTK3-based panel for wayfire
-
-%forgemeta
 
 License:        MIT
 URL:            %{forgeurl}

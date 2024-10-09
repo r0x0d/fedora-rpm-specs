@@ -5,7 +5,7 @@
 %global crate libgweather
 
 Name:           rust-libgweather
-Version:        4.4.0
+Version:        4.5.0
 Release:        %autorelease
 Summary:        Rust bindings for libgweather
 

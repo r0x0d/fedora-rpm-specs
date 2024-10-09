@@ -5,7 +5,7 @@
 %global crate gweather-sys
 
 Name:           rust-gweather-sys
-Version:        4.4.0
+Version:        4.5.0
 Release:        %autorelease
 Summary:        FFI bindings for libgweather
 

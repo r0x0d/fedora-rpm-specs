@@ -13,29 +13,23 @@
 %bcond_without       tests
 %bcond_without       igbinary
 %bcond_without       msgpack
-%if 0%{?fedora} >= 41 || 0%{?rhel} >= 10
 %bcond_without       valkey
-%else
-%bcond_with          valkey
-%endif
 
 %global pecl_name    redis
 # after 20-json, 40-igbinary and 40-msgpack
 %global ini_name     50-%{pecl_name}.ini
 
-%global upstream_version 6.0.2
+%global upstream_version 6.1.0
 #global upstream_prever  RC2
 %global sources          %{pecl_name}-%{upstream_version}%{?upstream_prever}
 
-Summary:       Extension for communicating with the Redis key-value store
+Summary:       PHP extension for interfacing with key-value stores
 Name:          php-pecl-redis6
 Version:       %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:       3%{?dist}
+Release:       1%{?dist}
 License:       PHP-3.01
 URL:           https://pecl.php.net/package/redis
 Source0:       https://pecl.php.net/get/%{sources}.tgz
-
-Patch0:        %{pecl_name}-upstream.patch
 
 ExcludeArch:   %{ix86}
 
@@ -96,12 +90,12 @@ Conflicts:     php-pecl-%{pecl_name}5 < 6
 
 
 %description
-The phpredis extension provides an API for communicating
-with the Redis key-value store.
+This extension provides an API for communicating with RESP-based key-value
+stores, such as Redis, Valkey, and KeyDB.
 
-This Redis client implements most of the latest Redis API.
+This client implements most of the latest API.
 As method only works when also implemented on the server side,
-some doesn't work with an old redis server version.
+some doesn't work with an old server version.
 
 
 %prep
@@ -114,7 +108,6 @@ sed -e 's/role="test"/role="src"/' \
     -i package.xml
 
 cd %{sources}
-%patch -P0 -p1
 
 # Use system library
 rm -r liblzf
@@ -175,6 +168,8 @@ extension = %{pecl_name}.so
 ;redis.session.lock_retries = 100
 ;redis.session.lock_wait_time = 20000
 ;redis.session.early_refresh = 0
+;redis.session.compression = none
+;redis.session.compression_level = 3
 EOF
 
 
@@ -288,6 +283,9 @@ exit $ret
 
 
 %changelog
+* Mon Oct  7 2024 Remi Collet <remi@remirepo.net> - 6.1.0-1
+- update to 6.1.0
+
 * Mon Sep 16 2024 Remi Collet <remi@remirepo.net> - 6.0.2-3
 - cleanup and modernize spec file
 

@@ -3,10 +3,10 @@
 %global debug_package %{nil}
 
 %global crate curl-sys
-%global upstream_version 0.4.74+curl-8.9.0
+%global upstream_version 0.4.77+curl-8.10.1
 
 Name:           rust-curl-sys
-Version:        0.4.74
+Version:        0.4.77
 Release:        %autorelease
 Summary:        Native bindings to the libcurl library
 
@@ -16,7 +16,6 @@ Source:         %{crates_source %{crate} %{upstream_version}}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          curl-sys-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
-# * remove curl version suffix from crate version
 # * drop windows-specific features and dependencies
 # * drop optional dependencies and unused features (libnghttp2, mesalink)
 # * drop rustls support (rustls is not supported on all architectures)

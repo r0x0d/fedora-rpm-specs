@@ -5,7 +5,7 @@
 %global crate snafu
 
 Name:           rust-snafu
-Version:        0.8.4
+Version:        0.8.5
 Release:        %autorelease
 Summary:        Ergonomic error handling library
 
@@ -168,6 +168,18 @@ This package contains library source intended for building other packages which
 use the "rust_1_65" feature of the "%{crate}" crate.
 
 %files       -n %{name}+rust_1_65-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+rust_1_81-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+rust_1_81-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "rust_1_81" feature of the "%{crate}" crate.
+
+%files       -n %{name}+rust_1_81-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+std-devel

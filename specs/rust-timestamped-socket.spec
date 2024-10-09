@@ -5,7 +5,7 @@
 %global crate timestamped-socket
 
 Name:           rust-timestamped-socket
-Version:        0.2.4
+Version:        0.2.5
 Release:        %autorelease
 Summary:        Implementation of async UDP and raw ethernet sockets with timestamping
 

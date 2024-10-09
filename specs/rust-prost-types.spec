@@ -5,7 +5,7 @@
 %global crate prost-types
 
 Name:           rust-prost-types
-Version:        0.13.2
+Version:        0.13.3
 Release:        %autorelease
 Summary:        Prost definitions of Protocol Buffers well known types
 

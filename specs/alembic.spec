@@ -5,7 +5,7 @@
 # Python Module
 
 Name:           alembic
-Version:        1.8.6
+Version:        1.8.7
 Release:        %autorelease
 Summary:        Open framework for storing and sharing scene data
 License:        BSD-3-Clause AND BSL-1.0
@@ -18,7 +18,7 @@ Source0:        https://github.com/%{name}/%{name}/archive/%{version}%{?prerelea
 Patch0:         alembic-1.7.11-0002-Find-IlmBase-by-setting-a-proper-ILMBASE_ROOT-value.patch 
 BuildRequires:  boost-devel
 BuildRequires:  cmake >= 3.13
-BuildRequires:	gcc-c++
+BuildRequires:  gcc-c++
 BuildRequires:  hdf5-devel
 
 # Per https://github.com/alembic/alembic/blob/master/README.txt
@@ -95,7 +95,7 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed"
 %{_bindir}/abctree
 
 %files libs
-%license LICENSE.txt
+%license LICENSE.txt                                       
 %doc ACKNOWLEDGEMENTS.txt FEEDBACK.txt NEWS.txt README.txt
 %{_libdir}/libAlembic.so.*
 

@@ -1,13 +1,12 @@
 %bcond_without test
 
-%global forgeurl https://github.com/WayfireWM/%{name}
+%global forgeurl https://github.com/WayfireWM/wf-config
 
 Name:           wf-config
-Version:        0.8.0
+Version:        0.9.0
+%forgemeta
 Release:        %autorelease
 Summary:        Library for managing configuration files, written for wayfire
-
-%forgemeta
 
 License:        MIT
 URL:            %{forgeurl}

@@ -1,16 +1,16 @@
-%global forgeurl https://github.com/WayfireWM/%{name}
+%global forgeurl https://github.com/WayfireWM/wayfire
 
 # Git submodules
 #   * wf-utils
-%global commit1 15f8e16721585ae3eaf278ba71d7064237eb23f5
+%global commit1 08553c418f164bf5e84613d27447a32e380b75f0
 %global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
 
 #   * wf-touch
-%global commit2 8974eb0f6a65464b63dd03b842795cb441fb6403
+%global commit2 b8b844fa873871f90a9cf0768c8ae8c92ad49f34
 %global shortcommit2 %(c=%{commit2}; echo ${c:0:7})
 
 Name:           wayfire
-Version:        0.8.1
+Version:        0.9.0
 %forgemeta
 Release:        %autorelease
 Summary:        A modular and extensible wayland compositor
@@ -25,7 +25,7 @@ BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  inotify-tools-devel
 BuildRequires:  libevdev-devel
-BuildRequires:  meson >= 0.56.0
+BuildRequires:  meson >= 0.63.0
 
 BuildRequires:  cmake(doctest)
 BuildRequires:  cmake(glm)
@@ -37,14 +37,14 @@ BuildRequires:  pkgconfig(libdrm)
 BuildRequires:  pkgconfig(libinput) >= 1.7.0
 BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  pkgconfig(libpng)
-BuildRequires:  pkgconfig(nlohmann_json)
+BuildRequires:  pkgconfig(nlohmann_json) >= 3.11.2
 BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(pixman-1)
 BuildRequires:  pkgconfig(wayland-client)
 BuildRequires:  pkgconfig(wayland-cursor)
 BuildRequires:  pkgconfig(wayland-protocols) >= 1.12
 BuildRequires:  pkgconfig(wayland-server)
-BuildRequires:  pkgconfig(wf-config) >= 0.8.0
+BuildRequires:  pkgconfig(wf-config) >= 0.9.0
 BuildRequires:  pkgconfig(wlroots) >= 0.17.0
 BuildRequires:  pkgconfig(xkbcommon)
 

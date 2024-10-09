@@ -28,8 +28,11 @@
 # necessary dependencies, and this will probably remain true of EPELs.
 %bcond doc_pdf %{expr:!0%{?rhel}}
 
+%global commit ae806749f02502be1a8c073fd81050c04aa56c96
+%global snapdate 20241004
+
 Name:           python-cattrs
-Version:        24.1.2
+Version:        24.1.2%{?commit:^%{snapdate}git%{sub %{commit} 1 7}}
 Release:        %autorelease
 Summary:        Python library for structuring and unstructuring data
 
@@ -37,7 +40,13 @@ Summary:        Python library for structuring and unstructuring data
 License:        MIT
 URL:            https://github.com/python-attrs/cattrs
 # The GitHub archive contains tests and docs, which the PyPI sdist lacks
+%if %{undefined commit}
 Source:         %{url}/archive/v%{version}/cattrs-%{version}.tar.gz
+%global srcversion %{version}
+%else
+Source:         %{url}/archive/%{commit}/cattrs-%{commit}.tar.gz
+%global srcversion %(echo %{version} | cut -d '^' -f 1)
+%endif
 
 # Because an extras metapackage is conditionalized on architecture, the base
 # package cannot be noarch – but the rest of the binary packages *are* noarch,
@@ -159,7 +168,7 @@ BuildArch:      noarch
 
 
 %prep
-%autosetup -n cattrs-%{version}
+%autosetup -n cattrs-%{?!commit:%{version}}%{?commit:%{commit}}
 
 # Don’t run benchmarks when testing (we don’t depend on pytest-benchmark)
 sed -r -i 's/ --benchmark[^[:blank:]"]*//g' pyproject.toml
@@ -167,7 +176,7 @@ sed -r -i 's/ --benchmark[^[:blank:]"]*//g' pyproject.toml
 # The version-finding code in docs/conf.py relies on a real installed
 # “distribution” with metadata, which we don’t have at the time the
 # documentation is built.
-sed -r -i 's/^(version = ).*/\1 "%{version}"/' docs/conf.py
+sed -r -i 's/^(version = ).*/\1 "%{srcversion}"/' docs/conf.py
 
 # Remove bundled fonts to show they are not packaged:
 rm -rv docs/_static/fonts/
@@ -177,7 +186,7 @@ echo "latex_engine = 'xelatex'" >> docs/conf.py
 
 
 %generate_buildrequires
-export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
+export SETUPTOOLS_SCM_PRETEND_VERSION='%{srcversion}'
 %{pyproject_buildrequires \
     -x ujson \
 %if %{with orjson}
@@ -201,7 +210,7 @@ export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 
 
 %build
-export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
+export SETUPTOOLS_SCM_PRETEND_VERSION='%{srcversion}'
 %pyproject_wheel
 
 %if %{with doc_pdf}
@@ -229,30 +238,8 @@ ignore="${ignore-} --ignore=tests/preconf/test_pyyaml.py"
 ignore="${ignore-} --ignore=tests/preconf/test_msgspec_cpython.py"
 %endif
 
-%if v"0%{python3_version}" >= v"3.13"
-# Deselect tests failing on Python 3.13
-# https://github.com/python-attrs/cattrs/issues/547#issuecomment-2353748516
-# Some appear to be related to https://github.com/python/cpython/issues/120645
-k="${k-}${k+ and }not test_310_optional_field_roundtrip"
-k="${k-}${k+ and }not test_310_union_field_roundtrip"
-k="${k-}${k+ and }not test_nested_roundtrip"
-k="${k-}${k+ and }not test_nested_roundtrip_tuple"
-k="${k-}${k+ and }not test_nodefs_generated_unstructuring_cl"
-k="${k-}${k+ and }not test_omit_default_roundtrip"
-k="${k-}${k+ and }not test_optional_field_roundtrip"
-k="${k-}${k+ and }not test_renaming"
-k="${k-}${k+ and }not test_simple_roundtrip"
+# https://github.com/python-attrs/cattrs/issues/547#issuecomment-2397173866
 k="${k-}${k+ and }not test_simple_roundtrip_defaults"
-k="${k-}${k+ and }not test_simple_roundtrip_tuple"
-k="${k-}${k+ and }not test_simple_roundtrip_with_extra_keys_forbidden"
-k="${k-}${k+ and }not test_structure_simple_from_dict_default"
-k="${k-}${k+ and }not test_union_field_roundtrip"
-k="${k-}${k+ and }not test_unmodified_generated_structuring"
-k="${k-}${k+ and }not test_unstructure_deeply_nested_generics_list[False]"
-k="${k-}${k+ and }not test_unstructure_deeply_nested_generics_list[True]"
-# Flaky:
-k="${k-}${k+ and }not test_individual_overrides"
-%endif
 
 %pytest --ignore-glob='bench/*' ${ignore-} -k "${k-}" %{?with_xdist:-n auto}
 

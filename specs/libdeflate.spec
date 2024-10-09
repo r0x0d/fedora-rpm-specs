@@ -1,7 +1,7 @@
 %bcond_without mingw
 
 Name:          libdeflate
-Version:       1.21
+Version:       1.22
 Release:       %autorelease
 Summary:       Fast implementation of DEFLATE, gzip, and zlib
 
@@ -12,14 +12,6 @@ Source:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 # Add a library version to the mingw dll
 Patch:         libdeflate-mingw-libver.patch
-# lib/arm: avoid build error with gcc 13.3 + binutils 2.40
-# https://github.com/ebiggers/libdeflate/pull/385
-#
-# Fixes:
-#
-# ARM feature issues on GCC 13.3.1?
-# https://github.com/ebiggers/libdeflate/issues/383
-Patch:         %{url}/pull/385.patch
 
 BuildRequires: gcc
 BuildRequires: cmake

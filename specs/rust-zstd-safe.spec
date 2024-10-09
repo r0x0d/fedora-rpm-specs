@@ -5,7 +5,7 @@
 %global crate zstd-safe
 
 Name:           rust-zstd-safe
-Version:        7.2.0
+Version:        7.2.1
 Release:        %autorelease
 Summary:        Safe low-level bindings for the zstd compression library
 

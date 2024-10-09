@@ -5,7 +5,7 @@
 %global crate ulid
 
 Name:           rust-ulid
-Version:        1.1.2
+Version:        1.1.3
 Release:        %autorelease
 Summary:        Universally Unique Lexicographically Sortable Identifier implementation
 
@@ -14,8 +14,6 @@ URL:            https://crates.io/crates/ulid
 Source:         %{crates_source}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          ulid-fix-metadata-auto.diff
-# https://github.com/dylanhart/ulid-rs/pull/81
-Patch1:         0001-Make-lib.rs-non-executable.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 

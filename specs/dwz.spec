@@ -1,7 +1,7 @@
 Summary: DWARF optimization and duplicate removal tool
 Name: dwz
 Version: 0.15
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: GPL-3.0-or-later AND (GPL-3.0-or-later WITH GCC-exception-3.1) AND GPL-2.0-or-later AND (GPL-2.0-or-later WITH GCC-exception-2.0) AND LGPL-2.0-or-later
 URL: https://sourceware.org/dwz/
 Source: https://sourceware.org/ftp/dwz/releases/%{name}-%{version}.tar.xz
@@ -9,6 +9,7 @@ BuildRequires: gcc, gcc-c++, gdb, elfutils-libelf-devel, dejagnu
 BuildRequires: make elfutils xxhash-devel
 
 # Patches
+Patch1: dwz-0.15-index9.patch
 
 %description
 The dwz package contains a program that attempts to optimize DWARF
@@ -21,10 +22,6 @@ and using DW_TAG_imported_unit to import it into each CU that needs it.
 
 %prep
 %autosetup -p1 -n dwz
-# not compatible with .gdb_index version 9 (GDB 15)
-# https://sourceware.org/bugzilla/show_bug.cgi?id=32028
-sed -i '1i\
-exit 77' testsuite/dwz.tests/gdb-add-index.sh
 
 %build
 %make_build CFLAGS='%{optflags}' LDFLAGS='%{build_ldflags}' \
@@ -43,6 +40,9 @@ CFLAGS="" LDFLAGS="" make check
 %{_mandir}/man1/dwz.1*
 
 %changelog
+* Mon Oct 7 2024 Mark Wielaard <mjw@fedoraproject.org> - 0.15-8
+- Add dwz-0.15-index9.patch
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.15-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

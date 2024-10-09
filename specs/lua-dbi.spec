@@ -1,7 +1,3 @@
-%{!?lua_version: %global lua_version %{lua: print(string.sub(_VERSION, 5))}}
-%{!?lua_libdir: %global lua_libdir %{_libdir}/lua/%{lua_version}}
-%{!?lua_pkgdir: %global lua_pkgdir %{_datadir}/lua/%{lua_version}}
-
 %{!?lua_compat_version: %global lua_compat_version 5.1}
 %{!?lua_compat_libdir: %global lua_compat_libdir %{_libdir}/lua/%{lua_compat_version}}
 %{!?lua_compat_pkgdir: %global lua_compat_pkgdir %{_datadir}/lua/%{lua_compat_version}}
@@ -9,26 +5,19 @@
 
 Summary:        Database interface library for Lua
 Name:           lua-dbi
-Version:        0.7.3
-Release:        2%{?dist}
+Version:        0.7.4
+Release:        1%{?dist}
 License:        MIT
 URL:            https://github.com/mwild1/luadbi
 Source0:        https://github.com/mwild1/luadbi/archive/v%{version}/luadbi-%{version}.tar.gz
-Patch0:         https://github.com/mwild1/luadbi/pull/76/commits/2f069da0da6f52aca66e0819084fb8143d0b3153.patch#/lua-dbi-0.7.3-unsigned-long.patch
-Patch1:         https://github.com/mwild1/luadbi/pull/77/commits/75f6baec43967bf5cf52c8b8c47145f88544565f.patch#/lua-dbi-0.7.3-my_bool.patch
 Requires:       lua(abi) = %{lua_version}
 BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  lua >= %{lua_version}
 BuildRequires:  lua-devel >= %{lua_version}
 BuildRequires:  sqlite-devel
-%if 0%{?fedora} || 0%{?rhel} >= 8
 BuildRequires:  mariadb-connector-c-devel
 BuildRequires:  libpq-devel
-%else
-BuildRequires:  mysql-devel
-BuildRequires:  postgresql-devel
-%endif
 
 %description
 LuaDBI is a database interface library for Lua. It is designed to provide a
@@ -68,14 +57,14 @@ cp -a . %{lua_compat_builddir}
 %endif
 
 %build
-%make_build free \
+%make_build mysql psql sqlite3 \
   CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="$RPM_LD_FLAGS" \
   LUA_V=%{lua_version} LUA_INC="-I%{_includedir}" \
   MYSQL_LDFLAGS="-L%{_libdir}/mysql -lmysqlclient"
 
 %if 0%{?fedora}
 pushd %{lua_compat_builddir}
-%make_build free \
+%make_build mysql psql sqlite3 \
   CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="$RPM_LD_FLAGS" \
   LUA_V=%{lua_compat_version} LUA_INC="-I%{_includedir}/lua-%{lua_compat_version}" \
   MYSQL_LDFLAGS="-L%{_libdir}/mysql -lmysqlclient"
@@ -83,7 +72,7 @@ popd
 %endif
 
 %install
-make install_free INSTALL='install -p' \
+make install_lua install_mysql install_psql install_sqlite3 INSTALL='install -p' \
   CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="$RPM_LD_FLAGS" \
   LUA_V=%{lua_version} LUA_INC="-I%{_includedir}" \
   LUA_CDIR=$RPM_BUILD_ROOT%{lua_libdir} LUA_LDIR=$RPM_BUILD_ROOT%{lua_pkgdir} \
@@ -91,7 +80,7 @@ make install_free INSTALL='install -p' \
 
 %if 0%{?fedora}
 pushd %{lua_compat_builddir}
-make install_free INSTALL='install -p' \
+make install_lua install_mysql install_psql install_sqlite3 INSTALL='install -p' \
   CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="$RPM_LD_FLAGS" \
   LUA_V=%{lua_compat_version} LUA_INC="-I%{_includedir}/lua-%{lua_compat_version}" \
   LUA_CDIR=$RPM_BUILD_ROOT%{lua_compat_libdir} LUA_LDIR=$RPM_BUILD_ROOT%{lua_compat_pkgdir} \
@@ -127,6 +116,9 @@ lua-%{lua_compat_version} -e \
 %endif
 
 %changelog
+* Mon Oct 07 2024 Robert Scheck <robert@fedoraproject.org> 0.7.4-1
+- Upgrade to 0.7.4 (#2317084)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.7.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

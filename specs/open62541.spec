@@ -1,5 +1,5 @@
 Name:     open62541
-Version:  1.4.5
+Version:  1.4.6
 Release:  1%{?dist}
 Summary:  OPC UA implementation
 License:  MPL-2.0
@@ -113,6 +113,9 @@ chmod 0644 examples/nodeset/Opc.Ua.POWERLINK.NodeSet2.bsd
 %doc examples/
 
 %changelog
+* Mon Oct 07 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1.4.6-1
+- Update to 1.4.6
+
 * Thu Oct 03 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1.4.5-1
 - Update to 1.4.5
 

@@ -1,6 +1,3 @@
-%{!?lua_version: %global lua_version %{lua: print(string.sub(_VERSION, 5))}}
-%{!?lua_libdir: %global lua_libdir %{_libdir}/lua/%{lua_version}}
-
 Summary:        Cyrus SASL library for Lua
 Name:           lua-cyrussasl
 Version:        1.1.0

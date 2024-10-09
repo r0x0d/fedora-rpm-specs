@@ -4,7 +4,7 @@
 Summary:        A Python interface to the HDF5 library
 Name:           h5py
 Version:        3.12.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 # Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
 URL:            http://www.h5py.org/
@@ -24,9 +24,7 @@ BuildRequires:  python%{python3_pkgversion}-cached_property
 BuildRequires:  python%{python3_pkgversion}-numpy >= 1.7
 BuildRequires:  python%{python3_pkgversion}-pkgconfig
 BuildRequires:  python%{python3_pkgversion}-pip
-# the package does not work with pytest 8
-# downstream issue: https://bugzilla.redhat.com/show_bug.cgi?id=2272984
-BuildRequires:  python%{python3_pkgversion}-pytest < 8
+BuildRequires:  python%{python3_pkgversion}-pytest
 BuildRequires:  python%{python3_pkgversion}-pytest-mpi
 BuildRequires:  python%{python3_pkgversion}-six
 BuildRequires:  python%{python3_pkgversion}-sphinx
@@ -189,19 +187,19 @@ fail=1
 %endif
 
 export PYTHONPATH=$(echo serial/build/lib*)
-%{__python3} -m pytest --pyargs h5py -rxXs ${PYTHONPATH} || exit $fail
+%{__python3} -m pytest -rxXs ${PYTHONPATH} || exit $fail
 
 %if %{with openmpi}
 export PYTHONPATH=$(echo openmpi/build/lib*)
 %{_openmpi_load}
-mpirun -- %{__python3} -m pytest --pyargs h5py -rxXs --with-mpi ${PYTHONPATH} || exit $fail
+mpirun -- %{__python3} -m pytest -rxXs --with-mpi ${PYTHONPATH} || exit $fail
 %{_openmpi_unload}
 %endif
 
 %if %{with mpich}
 export PYTHONPATH=$(echo mpich/build/lib*)
 %{_mpich_load}
-mpirun %{__python3} -m pytest --pyargs h5py -rxXs --with-mpi ${PYTHONPATH} || exit $fail
+mpirun %{__python3} -m pytest -rxXs --with-mpi ${PYTHONPATH} || exit $fail
 %{_mpich_unload}
 %endif
 
@@ -231,6 +229,10 @@ mpirun %{__python3} -m pytest --pyargs h5py -rxXs --with-mpi ${PYTHONPATH} || ex
 
 
 %changelog
+* Sat Oct 05 2024 Miro Hrončok <mhroncok@redhat.com> - 3.12.1-2
+- Use pytest 8
+- Fixes: rhbz#2272984
+
 * Sun Sep 29 2024 Terje Rosten <terjeros@gmail.com> - 3.12.1-1
 - Update to 3.12.1
 

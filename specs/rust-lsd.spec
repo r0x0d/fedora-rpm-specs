@@ -4,7 +4,7 @@
 %global crate lsd
 
 Name:           rust-lsd
-Version:        1.1.2
+Version:        1.1.5
 Release:        %autorelease
 Summary:        Ls command with a lot of pretty colors and some other stuff
 
@@ -16,6 +16,7 @@ Patch:          lsd-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * relax clap dependency from 4.3.* to ^4.3
 # * bump lscolors dependency from 0.16 to 0.17
+# * bump unicode-width dependency from 0.1.13 to 0.2.0
 Patch:          lsd-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

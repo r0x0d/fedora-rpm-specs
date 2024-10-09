@@ -4,7 +4,7 @@
 
 # https://github.com/antchfx/xmlquery
 %global goipath         github.com/antchfx/xmlquery
-Version:                1.4.1
+Version:                1.4.2
 
 %gometa -L
 

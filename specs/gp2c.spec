@@ -1,4 +1,4 @@
-%global upver 0.0.13
+%global upver 0.0.14
 
 Name:           gp2c
 Version:        %{gsub %{upver} pl .}

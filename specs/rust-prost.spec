@@ -8,7 +8,7 @@
 %global crate prost
 
 Name:           rust-prost
-Version:        0.13.2
+Version:        0.13.3
 Release:        %autorelease
 Summary:        Protocol Buffers implementation for the Rust Language
 

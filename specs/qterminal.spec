@@ -1,7 +1,7 @@
 Name:		qterminal
 Version:	2.0.1
 Release:	1%{?dist}
-License:	GPLv2
+License:	GPL-2.0-only
 URL:		https://github.com/qterminal/qterminal
 Source0:	https://github.com/%{name}/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
 Summary:	Advanced Qt6-based terminal emulator

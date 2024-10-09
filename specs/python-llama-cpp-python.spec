@@ -1,5 +1,5 @@
 %global pypi_name llama-cpp-python
-%global pypi_version 0.2.75
+%global pypi_version 0.3.1
 # it's all python code
 %global debug_package %{nil}
 
@@ -29,6 +29,7 @@ BuildRequires:  llama-cpp-devel
 %if %{with test}
 BuildRequires:  python3-pytest
 BuildRequires:  python3-scipy
+BuildRequires:  python3-huggingface-hub
 %endif
 
 %generate_buildrequires
@@ -62,7 +63,7 @@ OpenAI compatible web server
 %check
 # test_mistral_instruct is failing
 # llama tests need ggml model
-%pytest -v -k 'not test_mistral_instruct and not test_llama_cpp_tokenization and not test_llama_patch and not test_llama_pickle and not test_utf8 and not test_llama_server' tests/
+%pytest -v -k 'not test_mistral_instruct and not test_llama_cpp_tokenization and not test_llama_patch and not test_llama_pickle and not test_utf8 and not test_llama_server and not test_real_llama and not test_real_model' tests/
 %endif
 
 %install

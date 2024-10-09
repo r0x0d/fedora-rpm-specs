@@ -1,15 +1,17 @@
 %global srcname fontMath
+%global lcname fontmath
 
 Name:           python-%{srcname}
-Version:        0.6.0
-Release:        15%{?dist}
+Version:        0.9.4
+Release:        1%{?dist}
 Summary:        A set of objects for performing math operations on font data
 
 License:        MIT 
 URL:            https://pypi.python.org/pypi/%{srcname}
-Source0:        https://github.com/typesupply/%{srcname}/archive/%{version}/%{srcname}-%{version}.tar.gz
+Source0:        %{pypi_source %{lcname} 0.9.4 zip}
 
 BuildArch:      noarch
+BuildRequires:  python3-devel
 
 %description
 A set of objects for performing math operations on font data.
@@ -17,38 +19,38 @@ A set of objects for performing math operations on font data.
 
 %package -n python3-%{srcname}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{srcname}}
-
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-pytest
-BuildRequires:  python3-pytest-runner
-BuildRequires:  python3-fonttools
 
 %description -n python3-%{srcname}
 A set of objects for performing math operations on font data.
 
 
 %prep
-%autosetup -n %{srcname}-%{version}
+%autosetup -n %{lcname}-%{version}
+# Relax version requirement
+sed -i 's/fonttools==4.43.0/fonttools>=4.43.0/g' requirements.txt
 
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
- 
+%pyproject_install
+
+%pyproject_save_files -l fontMath
+
 %check
 export LC_ALL=C.UTF-8
-%{__python3} setup.py test
+%pytest
 
-%files -n python3-%{srcname}
-%license License.txt
-%{python3_sitelib}/%{srcname}
-%{python3_sitelib}/%{srcname}-%{version}*.egg-info
+%files -n python3-%{srcname} -f %{pyproject_files}
 
 %changelog
+* Sun Sep 29 2024 Benson Muite <benson_muite@emailplus.org> 0.9.4-1
+- Update to latest release 0.9.4
+- Update to using latest python build macros
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.6.0-15
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

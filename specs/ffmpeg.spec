@@ -82,7 +82,7 @@ Name:           ffmpeg
 %global pkg_name %{name}%{?pkg_suffix}
 
 Version:        7.0.2
-Release:        4%{?dist}
+Release:        6%{?dist}
 Summary:        A complete solution to record, convert and stream audio and video
 License:        GPL-3.0-or-later
 URL:            https://ffmpeg.org/
@@ -135,6 +135,7 @@ BuildRequires:  gsm-devel
 BuildRequires:  ladspa-devel
 BuildRequires:  lame-devel
 BuildRequires:  libgcrypt-devel
+BuildRequires:  libklvanc-devel
 BuildRequires:  libmysofa-devel
 BuildRequires:  libX11-devel
 BuildRequires:  libXext-devel
@@ -144,6 +145,7 @@ BuildRequires:  nasm
 BuildRequires:  perl(Pod::Man)
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(aom)
+BuildRequires:  pkgconfig(aribb24) >= 1.0.3
 BuildRequires:  pkgconfig(bzip2)
 BuildRequires:  pkgconfig(caca)
 BuildRequires:  pkgconfig(codec2)
@@ -164,6 +166,7 @@ BuildRequires:  pkgconfig(jack)
 %if %{with lcms2}
 BuildRequires:  pkgconfig(lcms2) >= 2.13
 %endif
+BuildRequires:  pkgconfig(libaribcaption) >= 1.1.1
 BuildRequires:  pkgconfig(libass)
 BuildRequires:  pkgconfig(libbluray)
 BuildRequires:  pkgconfig(libbs2b)
@@ -204,7 +207,6 @@ BuildRequires:  pkgconfig(openh264)
 BuildRequires:  pkgconfig(opus)
 BuildRequires:  pkgconfig(rav1e)
 BuildRequires:  pkgconfig(rubberband)
-BuildRequires:  pkgconfig(schroedinger-1.0)
 BuildRequires:  pkgconfig(sdl2)
 BuildRequires:  pkgconfig(shaderc) >= 2019.1
 BuildRequires:  pkgconfig(smbclient)
@@ -583,6 +585,8 @@ cp -a doc/examples/{*.c,Makefile,README} _doc/examples/
     --enable-vulkan \
     --disable-cuda-sdk \
     --enable-libaom \
+    --enable-libaribb24 \
+    --enable-libaribcaption \
     --enable-libass \
     --enable-libbluray \
     --enable-libbs2b \
@@ -611,9 +615,11 @@ cp -a doc/examples/{*.c,Makefile,README} _doc/examples/
     --enable-libilbc \
     --enable-libjack \
     --enable-libjxl \
+    --enable-libklvanc \
     --enable-libmodplug \
     --enable-libmp3lame \
     --enable-libmysofa \
+    --enable-libopenh264 \
     --enable-libopenjpeg \
     --enable-libopenmpt \
     --enable-libopus \
@@ -854,6 +860,13 @@ rm -rf %{buildroot}%{_datadir}/%{name}/examples
 %{_mandir}/man3/libswscale.3*
 
 %changelog
+* Mon Oct 07 2024 Neal Gompa <ngompa@fedoraproject.org> - 7.0.2-6
+- Enable SDI data processing (Kernel Labs VANC) processing
+- Enable Japanese DVD subtitles/teletext (aribb24/libaribcaption)
+
+* Mon Oct 07 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 7.0.2-5
+- Properly enable noopenh264
+
 * Wed Oct 02 2024 Neal Gompa <ngompa@fedoraproject.org> - 7.0.2-4
 - Fix chromaprint bcond
 

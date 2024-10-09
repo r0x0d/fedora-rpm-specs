@@ -1,7 +1,7 @@
 %bcond_without tests
 
 Name:           python-imbalanced-learn
-Version:        0.12.3
+Version:        0.12.4
 Release:        %autorelease
 Summary:        A Python Package to Tackle the Imbalanced Datasets in Machine Learning
 

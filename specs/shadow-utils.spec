@@ -1,7 +1,7 @@
 Summary: Utilities for managing accounts and shadow password files
 Name: shadow-utils
 Version: 4.16.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 Epoch: 2
 License: BSD-3-Clause AND GPL-2.0-or-later
 URL: https://github.com/shadow-maint/shadow
@@ -26,7 +26,7 @@ Patch1: shadow-4.15.0-date-parsing.patch
 Patch2: shadow-4.15.1-audit-update.patch
 # Probably non-upstreamable
 Patch3: shadow-4.15.0-account-tools-setuid.patch
-# https://github.com/shadow-maint/shadow/commit/8903b94c86c978e8abef623358fd3e4629c06967
+# https://github.com/shadow-maint/shadow/commit/903593249630054ab5df327481f7386f718088cc
 Patch4: shadow-4.16.0-useradd-fix-write-full-return.patch
 
 ### Dependencies ###
@@ -294,7 +294,7 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libsubid.a
 %{_libdir}/libsubid.so
 
 %changelog
-* Thu Sep 19 2024 Iker Pedrosa <ipedrosa@redhat.com> - 2:4.16.0-4
+* Mon Oct  7 2024 Iker Pedrosa <ipedrosa@redhat.com> - 2:4.16.0-5
 - useradd: fix write_full() return value. Resolves: #2313559
 
 * Fri Sep 13 2024 Iker Pedrosa <ipedrosa@redhat.com> - 2:4.16.0-3

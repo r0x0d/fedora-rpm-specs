@@ -13,6 +13,8 @@ Source0:        %pypi_source %{srcname}
 
 BuildRequires:  python3-devel
 BuildRequires:  gcc-c++
+# for %%pyproject_buildrequires -p:
+BuildRequires:  pyproject-rpm-macros >= 1.15.1
 
 %global _description %{expand:
 ContourPy is a Python library for calculating contours of 2D quadrilateral
@@ -35,7 +37,7 @@ Summary:        %{summary}
 %autosetup -n %{srcname}-%{version} -p1
 
 %generate_buildrequires
-%pyproject_buildrequires -w -x test%{?with_bootstrap:-no-images}
+%pyproject_buildrequires -p -x test%{?with_bootstrap:-no-images}
 
 %build
 %pyproject_wheel

@@ -1,7 +1,3 @@
-%{!?lua_version: %global lua_version %{lua: print(string.sub(_VERSION, 5))}}
-%{!?lua_libdir: %global lua_libdir %{_libdir}/lua/%{lua_version}}
-%{!?lua_pkgdir: %global lua_pkgdir %{_datadir}/lua/%{lua_version}}
-
 %{!?lua_compat_version: %global lua_compat_version 5.1}
 %{!?lua_compat_libdir: %global lua_compat_libdir %{_libdir}/lua/%{lua_compat_version}}
 %{!?lua_compat_pkgdir: %global lua_compat_pkgdir %{_datadir}/lua/%{lua_compat_version}}
@@ -20,11 +16,7 @@ BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  lua >= %{lua_version}
 BuildRequires:  lua-devel >= %{lua_version}
-%if 0%{?fedora} || 0%{?rhel} >= 8
 BuildRequires:  openssl-devel >= 1.0.2
-%else
-BuildRequires:  openssl11-devel
-%endif
 
 %description
 Lua binding for OpenSSL library to provide TLS/SSL communication.
@@ -56,11 +48,6 @@ cp -a . %{lua_compat_builddir}
 %endif
 
 %build
-%if 0%{?rhel} == 7
-OPENSSL_CFLAGS="$(pkg-config --cflags-only-I openssl11)"
-OPENSSL_LDFLAGS="$(pkg-config --libs-only-L openssl11)"
-%endif
-
 %make_build linux \
   CFLAGS="$RPM_OPT_FLAGS -fPIC -I. -I%{_includedir} -DWITH_LUASOCKET -DLUASOCKET_DEBUG -DLUA_COMPAT_APIINTCASTS $OPENSSL_CFLAGS" \
   LD="gcc -shared" LDFLAGS="-fPIC -shared -L./luasocket $RPM_LD_FLAGS $OPENSSL_LDFLAGS"

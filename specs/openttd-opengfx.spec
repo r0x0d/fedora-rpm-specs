@@ -18,6 +18,9 @@ BuildRequires:  gimp
 BuildRequires:  grfcodec
 BuildRequires:  nml
 BuildRequires:  python3
+%if 0%{?fedora} >= 41 || 0%{?rhel} >= 10
+BuildRequires:  xwayland-run
+%endif
 Requires:       openttd
 
 
@@ -37,16 +40,33 @@ to improve the graphics.
 %setup -q -n %{realname}-%{version}%{?prever:-%{prever}}-source 
 
 %build
+%if 0%{?fedora} >= 41 || 0%{?rhel} >= 10
+# gimp-3 requires a display even in batch mode and additional arguments
+xwfb-run -- make grf _V= PYTHON=/usr/bin/python3 GIMP_FLAGS="-n -i --quit --batch-interpreter plug-in-script-fu-eval"
+%else
 make grf _V= PYTHON=/usr/bin/python3
+%endif
 
 
 %install
+%if 0%{?fedora} >= 41 || 0%{?rhel} >= 10
+# gimp-3 requires a display even in batch mode
+xwfb-run -- make install _V= PYTHON=/usr/bin/python3 UNIX2DOS= \
+    INSTALL_DIR=$RPM_BUILD_ROOT%{_datadir}/openttd/data \
+    GIMP_FLAGS="-n -i --quit --batch-interpreter plug-in-script-fu-eval"
+%else
 make install _V= PYTHON=/usr/bin/python3 UNIX2DOS= INSTALL_DIR=$RPM_BUILD_ROOT%{_datadir}/openttd/data
+%endif
 
 
 %check
 cp %{realname}-%{version}.check.md5 %{realname}-%{version}.md5
+%if 0%{?fedora} >= 41 || 0%{?rhel} >= 10
+# gimp-3 requires a display even in batch mode
+xwfb-run -- make check _V= PYTHON=/usr/bin/python3 GIMP_FLAGS="-n -i --quit --batch-interpreter plug-in-script-fu-eval"
+%else
 make check _V= PYTHON=/usr/bin/python3
+%endif
 
 
 %files

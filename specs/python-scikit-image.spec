@@ -3,8 +3,8 @@
 %global srcname scikit-image
 
 Name: python-scikit-image
-Version: 0.23.2
-Release: 3%{?dist}
+Version: 0.24.0
+Release: 1%{?dist}
 Summary: Image processing in Python
 # The following files are BSD 2 clauses, the rest BSD 3 clauses
 # skimage/graph/_mcp.pyx
@@ -19,6 +19,8 @@ Source1: scikit-image-data-20240618.tar.xz
 # Fix method docstring generation for Python 3.13
 # https://github.com/scikit-image/scikit-image/pull/7448
 Patch: 0001-_parse_docs-handle-change-to-docstring-indentation-i.patch
+# Fix tests on i686
+Patch: https://github.com/scikit-image/scikit-image/pull/7453.patch
 
 BuildRequires: gcc gcc-c++
 BuildRequires: xorg-x11-server-Xvfb
@@ -126,6 +128,9 @@ popd
 
 
 %changelog
+* Mon Oct 07 2024 Orion Poplawski <orion@nwra.com> - 0.24.0-1
+- Update to 0.24.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.23.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

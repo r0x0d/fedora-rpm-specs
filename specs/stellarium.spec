@@ -1,5 +1,3 @@
-%global __cmake_in_source_build 1
-
 Name:           stellarium
 Version:        24.3
 Release:        1%{?dist}
@@ -19,19 +17,19 @@ BuildRequires:  make
 BuildRequires:  desktop-file-utils
 BuildRequires:  mesa-libGLU-devel
 BuildRequires:  ImageMagick
-BuildRequires:	cmake
-BuildRequires:	qt6-qtbase-devel
+BuildRequires:  cmake
+BuildRequires:  qt6-qtbase-devel
 BuildRequires:  qt6-qtdeclarative-devel
-BuildRequires:	qt6-qtlocation-devel
-BuildRequires:	qt6-qttools-devel
-BuildRequires:	qt6-qtserialport-devel
-BuildRequires:	qt6-qtmultimedia-devel
+BuildRequires:  qt6-qtlocation-devel
+BuildRequires:  qt6-qttools-devel
+BuildRequires:  qt6-qtserialport-devel
+BuildRequires:  qt6-qtmultimedia-devel
 BuildRequires:  qt6-qtcharts-devel
 BuildRequires:  qt6-qtbase-private-devel
-BuildRequires:	gettext-devel
-BuildRequires:	boost-devel
-BuildRequires:	glib2-devel
-BuildRequires:	perl-podlators
+BuildRequires:  gettext-devel
+BuildRequires:  boost-devel
+BuildRequires:  glib2-devel
+BuildRequires:  perl-podlators
 BuildRequires:  libappstream-glib
 BuildRequires:  CalcMySky-devel >= 0.2.1
 %if 0%{?fedora} && 0%{?fedora} < 38
@@ -43,32 +41,37 @@ BuildRequires:  libxkbcommon-devel
 BuildRequires:  exiv2-devel
 BuildRequires:  NLopt-devel
 
+Requires:       %{name}-data = %{version}-%{release}
+
 %description
 Stellarium is a real-time 3D photo-realistic nightsky renderer. It can
 generate images of the sky as seen through the Earth's atmosphere with
 more than one hundred thousand stars from the Hipparcos Catalogue,
 constellations, planets, major satellites and nebulas.
 
+
+%package        data
+Summary:        Data files for Stellarium
+BuildArch:      noarch
+
+%description    data
+Data files for the stellarium package.
+
+
 %prep
 %setup -q
 
 %build
-export CFLAGS="$RPM_OPT_FLAGS -fPIC"
-export CXXFLAGS="$RPM_OPT_FLAGS -fPIC"
 # Kill USE_PLUGIN_TELESCOPECONTROL support due to libindi 2 incompatibility
 %{cmake} -DCMAKE_BUILD_TYPE=Release -DQT6_LIBS=%{_libdir}/qt6 -DCPM_USE_LOCAL_PACKAGES=yes -DENABLE_SHOWMYSKY=yes \
 %if 0%{?fedora} >= 38
    -DUSE_PLUGIN_TELESCOPECONTROL=no \
 %endif
    %{nil}
-make VERBOSE=1 %{?_smp_mflags}
+%cmake_build
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT INSTALL="%{_bindir}/install -c -p"
-mkdir -p $RPM_BUILD_ROOT%{_libdir}
-for i in `find . -type f -name '*.so'`; do
-	install -c -p $i $RPM_BUILD_ROOT%{_libdir}
-done
+%cmake_install
 
 #Fix appdata
 sed -i /url/d $RPM_BUILD_ROOT%{_datadir}/metainfo/org.stellarium.Stellarium.appdata.xml
@@ -85,18 +88,19 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/stellarium/data/stellarium.ico
 appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/metainfo/org.stellarium.Stellarium.appdata.xml
 desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.stellarium.Stellarium.desktop
 
-%files 
+%files
 %license COPYING
 %doc ChangeLog CREDITS.md README.md
 %{_bindir}/stellarium
-%{_datadir}/%{name}
 %{_datadir}/applications/org.stellarium.Stellarium.desktop
 %{_datadir}/icons/hicolor/*/apps/stellarium.png
 %{_datadir}/metainfo/org.stellarium.Stellarium.appdata.xml
 %{_mandir}/man1/stellarium.1*
 %{_datadir}/mime/packages/stellarium.xml
 
-%ldconfig_scriptlets
+%files data
+%license COPYING
+%{_datadir}/stellarium
 
 %changelog
 * Tue Sep 24 2024 Gwyn Ciesla <gwync@protonmail.com> - 24.3-1

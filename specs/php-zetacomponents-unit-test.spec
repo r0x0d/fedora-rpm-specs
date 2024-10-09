@@ -7,7 +7,7 @@
 # Please, preserve the changelog entries
 #
 
-%global gh_commit    ba9fd9e050d822c590a87f6c3cf31d60f556209e
+%global gh_commit    179fd95f1ed1292a5fb639a89f482dfce2038758
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     zetacomponents
 %global gh_project   UnitTest
@@ -15,8 +15,8 @@
 %global ezcdir       %{_datadir}/php/ezc
 
 Name:           php-%{gh_owner}-%{cname}
-Version:        1.2.5
-Release:        2%{?dist}
+Version:        1.2.6
+Release:        1%{?dist}
 Summary:        Zeta UnitTest Component
 
 License:        Apache-2.0
@@ -71,7 +71,6 @@ cp -pr src/*_autoload.php \
 
 
 %files
-%{!?_licensedir:%global license %%doc}
 %license LICENSE* CREDITS
 %doc ChangeLog
 %doc composer.json
@@ -83,6 +82,9 @@ cp -pr src/*_autoload.php \
 
 
 %changelog
+* Mon Oct  7 2024 Remi Collet <remi@remirepo.net> - 1.2.6-1
+- update to 1.2.6
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.5-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

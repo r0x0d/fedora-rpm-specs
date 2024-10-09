@@ -5,7 +5,7 @@
 %global crate terminal-trx
 
 Name:           rust-terminal-trx
-Version:        0.2.2
+Version:        0.2.3
 Release:        %autorelease
 Summary:        Handle to the terminal of the current process
 

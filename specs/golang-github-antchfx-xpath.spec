@@ -4,7 +4,7 @@
 
 # https://github.com/antchfx/xpath
 %global goipath         github.com/antchfx/xpath
-Version:                1.3.1
+Version:                1.3.2
 
 %gometa -L
 

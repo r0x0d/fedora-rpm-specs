@@ -3,7 +3,7 @@ Version:        0.62
 Release:        18%{?dist}
 Summary:        Implementation of various BackupPC functions in a perl-callable module
 
-License:        GPLv3+ and (GPL+ or Artistic) and zlib
+License:        GPL-3.0-or-later AND (GPL-1.0-or-later OR Artistic-1.0-Perl) AND Zlib
 URL:            https://github.com/backuppc/backuppc-xs
 Source0:        https://github.com/backuppc/backuppc-xs/releases/download/%{version}/%{name}-%{version}.tar.gz
 

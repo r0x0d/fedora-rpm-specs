@@ -3,8 +3,8 @@
 %global _python_bytecompile_extra 0
 
 Name:		lilypond
-Version:	2.25.16
-Release:	3%{?dist}
+Version:	2.25.20
+Release:	1%{?dist}
 Summary:	A typesetting system for music notation
 
 License:	GPL-3.0-only
@@ -85,7 +85,7 @@ make %{?_smp_mflags} bytecode
 
 %install
 make install-bytecode DESTDIR=$RPM_BUILD_ROOT package_infodir=%{_infodir} \
-	vimdir=%{_datadir}/vim/vim90
+	vimdir=%{_datadir}/vim/vimfiles
 
 # Symlink lilypond-init.el in emacs' site-start.d directory
 pushd $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp
@@ -118,6 +118,10 @@ ln -s %{_fontdir} $RPM_BUILD_ROOT%{_datadir}/lilypond/%{version}/fonts/otf
 %doc COPYING
 
 %changelog
+* Mon Oct 07 2024 Gwyn Ciesla <gwync@protonmail.com> - 2.25.20-4
+- 2.25.20
+- Fix vim files path.
+
 * Fri Aug 02 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.25.16-3
 - Rebuild to fix missing automatic Requires (fix RHBZ#2302532)
 

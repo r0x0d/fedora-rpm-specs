@@ -14,9 +14,9 @@ Version:               1.4.0
 
 %forgemeta
 
-Release:               1%{?dist}
+Release:               2%{?dist}
 Summary:               Read the wireless mbus protocol to acquire utility meter readings
-License:               GPLv3+
+License:               GPL-3.0-or-later
 Url:                   %{forgeurl}
 Source0:               %{forgesource}
 # Default configuration file
@@ -102,6 +102,9 @@ install -p -m 0644 %{SOURCE2} %{buildroot}%{_unitdir}/%{name}.service
 
 
 %changelog
+* Mon Oct 07 2024 Damian Wrobel <dwrobel@ertelnet.rybnik.pl> - 1.17.1-2
+- Rebuilt for updated license tag
+
 * Thu Sep 12 2024 Damian Wrobel <dwrobel@ertelnet.rybnik.pl> - 1.17.1-1
 - Update to 1.17.1 (rhbz#2307772)
 

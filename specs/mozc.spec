@@ -6,7 +6,7 @@
 
 Name:		mozc
 Version:	2.29.5111.102
-Release:	10%{?dist}
+Release:	11%{?dist}
 Summary:	A Japanese Input Method Editor (IME) designed for multi-platform
 
 License:	BSD-3-Clause AND Apache-2.0 AND Unicode-DFS-2015 AND NAIST-2003
@@ -61,6 +61,7 @@ Patch7:		mozc-build-new-abseil.patch
 # Add #include directives for compatibility with abseil-cpp-20240116.
 # Downstream-only because these are fixed upstream in a later release.
 Patch8:         mozc-abseil-cpp-20240116-includes.patch
+Patch9:		mozc-fix-2257171.patch
 
 BuildRequires:	python gettext
 BuildRequires:	libstdc++-devel zlib-devel libxcb-devel protobuf-devel protobuf-c glib2-devel gtk2-devel
@@ -253,6 +254,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 
 
 %changelog
+* Mon Oct  7 2024 Akira TAGOH <tagoh@redhat.com> - 2.29.5111.102-11
+- Backport a patch to fix key event behavior with modifier keys.
+  Resolves rhbz#2257171
+
 * Sun Aug 25 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.29.5111.102-10
 - Rebuilt for abseil-cpp-20240722.0
 

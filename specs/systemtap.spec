@@ -120,7 +120,7 @@ m     stapdev  stapdev
 
 Name: systemtap
 # PRERELEASE
-Version: 5.2~pre17277956g0b7f6722
+Version: 5.2~pre17283218gc5774e18
 Release: 1%{?release_override}%{?dist}
 # for version, see also configure.ac
 
@@ -1326,6 +1326,10 @@ exit 0
 
 # PRERELEASE
 %changelog
+* Mon Oct 07 2024 William Cohen <wcohen@redhat.com> - 5.2-17283218gc5774e18
+- Automated weekly rawhide release
+- Applied spec changes from upstream git
+
 * Tue Oct 01 2024 William Cohen <wcohen@redhat.com> - 5.2-17277956g0b7f6722
 - Automated weekly rawhide release
 - Applied spec changes from upstream git

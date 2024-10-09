@@ -92,13 +92,19 @@ sed -r -i 's/-fsanitize=address\b//' test/CMakeLists.txt
 
 %build
 # Building examples and tests from the top-level project is not yet supported.
+#
 # In docs/index.html, LOGURU_STACKTRACES=1 is documented as the default where
 # supported.
+#
+# Setting LOGURU_WITH_STREAMS adds C++ iostream support to the shared library
+# ABI without changing the C ABI; C++ in loguru.hpp is still guarded by whether
+# or not LOGURU_WITH_STREAMS is defined before including loguru.hpp.
 %cmake \
   -DLOGURU_INSTALL:BOOL=ON \
   -DLOGURU_BUILD_EXAMPLES:BOOL=OFF \
   -DLOGURU_BUILD_TESTS:BOOL=OFF \
-  -DLOGURU_STACKTRACES=1 \
+  -DLOGURU_STACKTRACES:BOOL=ON \
+  -DLOGURU_WITH_STREAMS:BOOL=ON \
   -GNinja
 %cmake_build
 

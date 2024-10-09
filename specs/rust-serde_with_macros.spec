@@ -5,7 +5,7 @@
 %global crate serde_with_macros
 
 Name:           rust-serde_with_macros
-Version:        3.9.0
+Version:        3.11.0
 Release:        %autorelease
 Summary:        Proc-macro library for serde_with
 

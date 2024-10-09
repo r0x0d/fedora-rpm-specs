@@ -1,21 +1,18 @@
-%global commit0 d926a2ee469a3fefd50a9364fb9ac6fb484c3f70
+%global commit0 0b6b25eba39fe1d2f4a981867957b9dcf62016db
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date0 20200406
+%global date0 20240506
 
 Name:           libspatialaudio
 Version:        3.1
-Release:        17.%{date0}git%{?shortcommit0}%{?dist}
+Release:        18.%{date0}git%{?shortcommit0}%{?dist}
 Summary:        Ambisonic encoding / decoding and binauralization library
 
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-LGPLv2+
 URL:            https://github.com/videolabs/libspatialaudio
 Source0:        %{url}/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
-# https://github.com/videolabs/libspatialaudio/pull/41
-# Needed to fix the VLC build
-Patch1:         0001-Fix-MySofa-library-directory-detection.patch
 
-BuildRequires:  cmake3
+BuildRequires:  cmake
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  pkgconfig(libmysofa)
@@ -45,7 +42,7 @@ developing applications that use %{name}.
 
 
 %build
-%cmake3 \
+%cmake \
   -DBUILD_STATIC_LIBS=OFF
 
 %cmake_build
@@ -54,8 +51,6 @@ developing applications that use %{name}.
 %install
 %cmake_install
 
-
-%ldconfig_scriptlets
 
 
 %files
@@ -70,6 +65,9 @@ developing applications that use %{name}.
 
 
 %changelog
+* Mon Oct 07 2024 Nicolas Chauvet <kwizart@gmail.com> - 3.1-18.20240506git0b6b25e
+- Update snapshot
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 3.1-17.20200406gitd926a2e
 - convert license to SPDX
 

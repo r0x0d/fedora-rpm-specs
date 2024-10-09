@@ -7,7 +7,7 @@ Documentation is available at https://neurom.readthedocs.io/
 %global forgeurl    https://github.com/BlueBrain/NeuroM
 
 Name:           python-neurom
-Version:        4.0.2
+Version:        4.0.3
 Release:        %autorelease
 Summary:        Neuronal Morphology Analysis Tool
 
@@ -73,8 +73,6 @@ rm -rf $RPM_BUILD_ROOT/%{python3_sitelib}/tests/
 export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 # tests failing
 # reported upstream: https://github.com/BlueBrain/NeuroM/issues/983
-k="${k-}${k+ and }not test_extract_dataframe_multiproc"  # failing with 3.2.11
-k="${k-}${k+ and }not test_extract_stats_scalar_feature"  # failing with 3.2.11
 k="${k-}${k+ and }not test_markers"  # failing with 3.2.11
 k="${k-}${k+ and }not test_single_neurite_no_soma"  # failing with 3.2.11
 k="${k-}${k+ and }not test_skip_header"  # failing with 3.2.11

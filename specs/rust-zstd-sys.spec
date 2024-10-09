@@ -3,10 +3,10 @@
 %global debug_package %{nil}
 
 %global crate zstd-sys
-%global upstream_version 2.0.12+zstd.1.5.6
+%global upstream_version 2.0.13+zstd.1.5.6
 
 Name:           rust-zstd-sys
-Version:        2.0.12
+Version:        2.0.13
 Release:        %autorelease
 Summary:        Low-level bindings for the zstd compression library
 
@@ -22,7 +22,7 @@ Patch:          zstd-sys-fix-metadata-auto.diff
 # * exclude files that are only useful for upstream development
 Patch:          zstd-sys-fix-metadata.diff
 # * unconditionally use bindgen and pkg-config to link against system libzstd
-Patch:          0001-unconditionally-use-bindgen-and-pkg-config-to-link-a.patch
+Patch10:        0001-unconditionally-use-bindgen-and-pkg-config-to-link-a.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 BuildRequires:  pkgconfig(libzstd)

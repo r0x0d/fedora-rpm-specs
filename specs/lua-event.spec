@@ -1,13 +1,7 @@
-%{!?lua_version: %global lua_version %{lua: print(string.sub(_VERSION, 5))}}
-%{!?lua_libdir: %global lua_libdir %{_libdir}/lua/%{lua_version}}
-%{!?lua_pkgdir: %global lua_pkgdir %{_datadir}/lua/%{lua_version}}
-
 %global enable_docs 1
 
 # ikiwiki is not available on EPEL
-%{?el7:%global enable_docs 0}
-%{?el8:%global enable_docs 0}
-%{?el9:%global enable_docs 0}
+%{?rhel:%global enable_docs 0}
 
 Summary:        Bindings of libevent to Lua
 Name:           lua-event

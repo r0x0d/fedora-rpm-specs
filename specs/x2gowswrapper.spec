@@ -7,7 +7,7 @@ Name:     x2gowswrapper
 Version:  0.0.0.1
 Release:  0.6%{?dist}
 Summary:  Helper utility for X2Go HTML5 client
-License:  GPLv2+
+License:  GPL-2.0-or-later
 URL:      http://www.x2go.org
 # git clone git://code.x2go.org/x2gowswrapper
 # cd x2gowswrapper

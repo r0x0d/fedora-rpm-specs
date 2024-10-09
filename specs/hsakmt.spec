@@ -4,7 +4,7 @@
 %global rocm_version %{rocm_release}.%{rocm_patch}
 Name:           hsakmt
 Version:        1.0.6
-Release:        44.rocm%{rocm_version}%{?dist}
+Release:        45.rocm%{rocm_version}%{?dist}
 Summary:        AMD HSA thunk library
 
 License:        MIT
@@ -18,6 +18,7 @@ ExclusiveArch: x86_64 aarch64 ppc64le
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires: rocm-llvm-devel
+BuildRequires: rocm-compilersupport-macros
 BuildRequires: cmake
 BuildRequires: pciutils-devel
 BuildRequires: libdrm-devel
@@ -60,6 +61,12 @@ sed -i "s/{HSAKMT_LIBRARY_DIRS}/{LIBHSAKMT_PATH}/" tests/kfdtest/CMakeLists.txt
 sed -i "s/GROUP_WRITE//" tests/kfdtest/CMakeLists.txt
 
 %build
+LLVM_CMAKEDIR=`llvm-config-%{rocmllvm_version} --cmakedir`
+if [ ! -d ${LLVM_CMAKEDIR} ]; then
+    echo "Something wrong with llvm-config"
+    false
+fi
+
 mkdir build build-kfdtest
 cd build
 
@@ -68,7 +75,7 @@ cd build
 export LIBHSAKMT_PATH=$(pwd)
 
 cd ../build-kfdtest
-%cmake ../tests/kfdtest -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_SKIP_RPATH=ON
+%cmake ../tests/kfdtest -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_SKIP_RPATH=ON -DLLVM_DIR=${LLVM_CMAKEDIR}
 %cmake_build
 
 %install
@@ -105,6 +112,9 @@ rm %{buildroot}%{_docdir}/hsakmt/LICENSE.md
 %exclude %{_libdir}/libhsakmt-staticdrm.a
 
 %changelog
+* Mon Oct 7 2024 Tom Rix <Tom.Rix@amd.com> - 1.0.6-45.rocm6.2.0
+- Need some help to find llvm
+
 * Mon Sep 23 2024 Jeremy Newton <alexjnewt at hotmail dot com> - 1.0.6-44.rocm6.2.0
 - Update to ROCm 6.2.1
 

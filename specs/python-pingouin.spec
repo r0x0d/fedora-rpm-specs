@@ -1,7 +1,7 @@
 %bcond tests 1
 
 Name:           python-pingouin
-Version:        0.5.4
+Version:        0.5.5
 Release:        %autorelease
 Summary:        Statistical package in Python based on Pandas
 
@@ -9,11 +9,6 @@ License:        GPL-3.0-only
 URL:            https://pingouin-stats.org/
 # PyPI tar does not contain docs and tests
 Source:         https://github.com/raphaelvallat/pingouin/archive/v%{version}/pingouin-%{version}.tar.gz
-
-# Fix penalty for LogisticRegression (#403)
-# https://github.com/raphaelvallat/pingouin/pull/403
-# https://github.com/raphaelvallat/pingouin/commit/0fb0277be107dac4fbcb607c6259e3d509e90da0
-Patch:          https://github.com/raphaelvallat/pingouin/commit/0fb0277be107dac4fbcb607c6259e3d509e90da0.patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
@@ -29,6 +24,19 @@ BuildRequires:  python3-devel
 # Since the package still contains no compiled machine code, we still have no
 # debuginfo.
 %global debug_package %{nil}
+
+# Downstream-only: Do not pass coverage arguments to pytest
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
+Patch:          0001-Do-not-pass-coverage-arguments-to-pytest.patch
+
+%if %{with tests}
+# The test extra includes unwanted coverage dependencies; rather than patching
+# them out, we find it easier to maintan the list of test dependencies
+# manually.
+BuildRequires:  %{py3_dist pytest} >= 6
+BuildRequires:  %{py3_dist openpyxl}
+BuildRequires:  %{py3_dist mpmath}
+%endif
 
 %global _description %{expand:
 Pingouin is an open-source statistical package written in Python 3 and based
@@ -76,13 +84,9 @@ BuildArch:      noarch
 
 %prep
 %autosetup -n pingouin-%{version} -p1
-# Version was upper-bounded in 2223ca5a89c28511dc54101ed0b9501425fcca47; this
-# is possibly a “Temp fix for bug in plot_paired.” Anyway, we cannot respect
-# the version bound.
-sed -r -i 's/(numpy)<.*/\1/' requirements-test.txt
 
 %generate_buildrequires
-%pyproject_buildrequires %{?with_tests:requirements-test.txt}
+%pyproject_buildrequires
 
 %build
 %pyproject_wheel
@@ -92,6 +96,7 @@ sed -r -i 's/(numpy)<.*/\1/' requirements-test.txt
 %pyproject_save_files -l pingouin
 
 %check
+%pyproject_check_import
 %if %{with tests}
 # TestMultivariate.test_box_m fails without this. See:
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/BLAS_LAPACK/#_tests

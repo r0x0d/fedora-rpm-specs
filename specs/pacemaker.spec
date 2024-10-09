@@ -40,11 +40,11 @@
 ## Upstream pacemaker version, and its package version (specversion
 ## can be incremented to build packages reliably considered "newer"
 ## than previously built packages with the same pcmkversion)
-%global pcmkversion 2.1.8
-%global specversion 1
+%global pcmkversion 2.1.9
+%global specversion 1.rc1
 
 ## Upstream commit (full commit ID, abbreviated commit ID, or tag) to build
-%global commit 3980678f0372f2c7c294c01f61d63f0b2cafaad1
+%global commit 95cef6b30764eb39152754d1649ad812f60ff470
 
 ## Since git v2.11, the extent of abbreviation is autoscaled by default
 ## (used to be constant of 7), so we need to convey it for non-tags, too.
@@ -88,7 +88,7 @@
 
 ## Add option to prefix package version with "0."
 ## (so later "official" packages will be considered updates)
-%bcond_with pre_release
+%bcond_without pre_release
 
 ## NOTE: skip --with upstart_job
 
@@ -855,6 +855,11 @@ exit 0
 %license %{nagios_name}-%{nagios_hash}/COPYING
 
 %changelog
+* Mon Oct 7 2024 Klaus Wenninger <kwenning@redhat.com> - 2.1.9-0.1.rc1
+- Update for new upstream release tarball: Pacemaker-2.1.9-rc1,
+  for full details, see included ChangeLog file or
+  https://github.com/ClusterLabs/pacemaker/releases/tag/Pacemaker-2.1.9-rc1
+
 * Mon Aug 12 2024 Klaus Wenninger <kwenning@redhat.com> - 2.1.8-1
 - Update for new upstream release tarball: Pacemaker-2.1.8,
   for full details, see included ChangeLog file or

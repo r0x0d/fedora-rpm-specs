@@ -1,7 +1,7 @@
 %global srcname wikitcms
 
 Name:           python-%{srcname}
-Version:        2.6.16
+Version:        2.6.17
 Release:        1%{?dist}
 Summary:        Fedora QA wiki test management Python library
 
@@ -66,6 +66,9 @@ sed -i -e 's., "setuptools-git"..g' pyproject.toml
 %{python3_sitelib}/%{srcname}*
 
 %changelog
+* Mon Oct 07 2024 Adam Williamson <awilliam@redhat.com> - 2.6.17-1
+- New release 2.6.17: update AMI page generation for message topic change
+
 * Fri Sep 13 2024 Adam Williamson <awilliam@redhat.com> - 2.6.16-1
 - New release 2.6.16: avoid mwclient deprecations, drop pytz dep
 

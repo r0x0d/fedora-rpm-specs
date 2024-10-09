@@ -5,7 +5,7 @@
 %global crate futures
 
 Name:           rust-futures
-Version:        0.3.30
+Version:        0.3.31
 Release:        %autorelease
 Summary:        Implementation of futures and streams
 
@@ -16,7 +16,7 @@ Source:         %{crates_source}
 # * add missing futures-test dev-dependency
 # * drop unused compat support for tokio 0.1
 Patch:          futures-fix-metadata.diff
-Patch:          0001-Fix-compiling-tests-with-io-compat-feature-removed.patch
+Patch10:        0001-Fix-compiling-tests-with-io-compat-feature-removed.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -202,11 +202,11 @@ rm tests/compat.rs
 
 %if %{with check}
 %check
-# * always skip a test that is officially "flaky"
-# * skip a possibly flaky test:
+# * always skip a test that is officially "flaky" (stream_select)
+# * skip a possibly flaky test (many_threads):
 #   https://github.com/rust-lang/futures-rs/issues/2539
-# * skip a test which fails depending on Rust version:
-#   sizes of some structs and enums changed between Rust 1.62 and 1.63
+# * skip a test which fails depending on Rust version (join_size): sizes of some
+#   structs and enums changed between Rust 1.62 and 1.63
 %cargo_test -a -- -- --skip stream_select --skip many_threads --skip join_size
 %endif
 

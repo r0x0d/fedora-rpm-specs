@@ -2,10 +2,10 @@
 
 Name: freetds
 Summary: Implementation of the TDS (Tabular DataStream) protocol
-Version: 1.4.16
-Release: 3%{?dist}
+Version: 1.4.23
+Release: 1%{?dist}
 # Automatically converted from old format: LGPLv2+ and GPLv2+ - review is highly recommended.
-License: LicenseRef-Callaway-LGPLv2+ AND GPL-2.0-or-later
+License: LGPL-2.0-or-later AND GPL-2.0-or-later
 URL: http://www.freetds.org/
 
 Source0: https://www.freetds.org/files/stable/%{name}-%{version}.tar.bz2
@@ -150,6 +150,10 @@ find docdir -type f -print0 | xargs -0 chmod -x
  
 
 %changelog
+* Mon Oct  7 2024 Dmitry Butskoy <Dmitry@Butskoy.name> - 1.4.23-1
+- update to 1.4.23 (#2316972)
+- fix SPDX license
+
 * Wed Aug  28 2024 Miroslav Suchý <msuchy@redhat.com> - 1.4.16-3
 - convert license to SPDX
 

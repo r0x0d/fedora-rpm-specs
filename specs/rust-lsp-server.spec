@@ -5,17 +5,13 @@
 %global crate lsp-server
 
 Name:           rust-lsp-server
-Version:        0.7.6
+Version:        0.7.7
 Release:        %autorelease
 Summary:        Generic LSP server scaffold
 
 License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/lsp-server
 Source:         %{crates_source}
-# Missing license files
-# see https://github.com/rust-lang/rust-analyzer/pull/16576
-Source:         https://raw.githubusercontent.com/rust-lang/rust-analyzer/5338eef982e2a649b7e411422425c839d39cde62/LICENSE-APACHE
-Source:         https://raw.githubusercontent.com/rust-lang/rust-analyzer/5338eef982e2a649b7e411422425c839d39cde62/LICENSE-MIT
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -52,9 +48,6 @@ use the "default" feature of the "%{crate}" crate.
 
 %prep
 %autosetup -n %{crate}-%{version} -p1
-# copy in license files
-cp -p %{SOURCE1} .
-cp -p %{SOURCE2} .
 %cargo_prep
 
 %generate_buildrequires

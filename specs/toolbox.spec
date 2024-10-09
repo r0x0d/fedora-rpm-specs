@@ -31,7 +31,7 @@ Version:       0.0.99.6
 %endif
 %endif
 
-Release:       4%{?dist}
+Release:       5%{?dist}
 Summary:       Tool for interactive command line environments on Linux
 
 License:       Apache-2.0
@@ -42,15 +42,16 @@ Source0:       https://github.com/containers/%{name}/releases/download/%{version
 Source1:       %{name}.conf
 
 # Upstream
-Patch0:        toolbox-test-system-Unbreak-downstream-Fedora-CI.patch
+Patch0:        toolbox-Unbreak-downstream-Fedora-CI.patch
 Patch1:        toolbox-Update-fallback-release-to-40-for-non-fedo.patch
+Patch2:        toolbox-Revert-Work-around-bug-in-past.patch
 
 # Fedora specific
-Patch100:      toolbox-Make-the-build-flags-match-Fedora-s-gobuild.patch
+Patch100:      toolbox-Make-the-build-flags-match-Fedora.patch
 
 # RHEL specific
-Patch200:      toolbox-Make-the-build-flags-match-RHEL-s-gobuild.patch
-Patch201:      toolbox-Make-the-build-flags-match-RHEL-s-gobuild-for-PPC64.patch
+Patch200:      toolbox-Make-the-build-flags-match-RHEL-9.patch
+Patch201:      toolbox-Make-the-build-flags-match-RHEL-10.patch
 Patch202:      toolbox-Add-migration-paths-for-coreos-toolbox-users.patch
 
 BuildRequires: gcc
@@ -91,10 +92,10 @@ Recommends:    skopeo
 
 Requires:      containers-common
 Requires:      podman >= 1.6.4
+Requires:      shadow-utils-subid%{?_isa} >= 4.16.0
 %if ! 0%{?rhel}
 Requires:      flatpak-session-helper
 %endif
-Requires:      shadow-utils-subid%{?_isa} >= 4.16.0
 
 
 %description
@@ -123,7 +124,6 @@ Requires:      httpd-tools
 Requires:      openssl
 Requires:      python3
 Requires:      skopeo
-Requires:      slirp4netns
 %if ! 0%{?rhel}
 Requires:      bats >= 1.10.0
 %endif
@@ -137,15 +137,18 @@ The %{name}-tests package contains system tests for %{name}.
 %setup -q
 %patch -P0 -p1
 %patch -P1 -p1
+%patch -P2 -p1
 
 %if 0%{?fedora}
 %patch -P100 -p1
 %endif
 
 %if 0%{?rhel}
-%ifnarch ppc64
+%if 0%{?rhel} == 9
 %patch -P200 -p1
-%else
+%endif
+
+%if 0%{?rhel} == 10
 %patch -P201 -p1
 %endif
 
@@ -210,6 +213,9 @@ install -m0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/containers/%{name}.conf
 
 
 %changelog
+* Mon Oct 07 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.0.99.6-5
+- Don't use slirp4netns(1) in tests to work around bug in pasta(1)
+
 * Fri Oct 04 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.0.99.6-4
 - Use the fedora-toolbox:40 image for Fedora Asahi Remix hosts
 

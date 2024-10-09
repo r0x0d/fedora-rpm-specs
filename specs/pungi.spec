@@ -2,7 +2,7 @@
 
 Name:           pungi
 Version:        4.7.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Distribution compose tool
 
 License:        GPL-2.0-only
@@ -10,6 +10,7 @@ URL:            https://pagure.io/pungi
 Source0:        https://pagure.io/releases/%{name}/%{name}-%{version}.tar.bz2
 Patch:          https://pagure.io/pungi/pull-request/1780.patch
 Patch:          https://pagure.io/pungi/pull-request/1782.patch
+Patch:          https://pagure.io/pungi/pull-request/1788.patch
 
 BuildRequires:  make
 BuildRequires:  python3-pytest
@@ -143,6 +144,9 @@ rm %{buildroot}%{_bindir}/pungi
 %{_bindir}/%{name}-cache-cleanup
 
 %changelog
+* Mon Oct 07 2024 Adam Williamson <awilliam@redhat.com> - 4.7.0-4
+- Backport patches to fix GCE image format not to be 'docker'
+
 * Thu Aug 29 2024 Lubomír Sedlář <lsedlar@redhat.com> - 4.7.0-3
 - Backport patch for setting kiwibuild image type in metadata
 

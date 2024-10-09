@@ -36,7 +36,6 @@ BuildRequires:  cmake
 BuildRequires:  git
 BuildRequires:  hipblas-devel
 BuildRequires:  hipcc
-BuildRequires:  lld
 BuildRequires:  msgpack-devel
 BuildRequires:  ninja-build
 BuildRequires:  rocblas-devel
@@ -45,6 +44,7 @@ BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
 BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  rocm-hip-devel
+BuildRequires:  rocm-llvm-devel
 BuildRequires:  rocm-runtime-devel
 BuildRequires:  rocm-rpm-macros
 BuildRequires:  rocm-smi
@@ -95,10 +95,21 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %prep
 %autosetup -p1 -n %{upstreamname}-rocm-%{version}
 
+LLVM_BINDIR=`llvm-config-%{rocmllvm_version} --bindir`
+if [ ! -d ${LLVM_BINDIR} ]; then
+    echo "Something wrong with llvm-config"
+    false
+else
+    if [ ${LLVM_BINDIR} != %{_libdir}/llvm%{rocmllvm_version}/bin ]; then
+	echo "Assumption about install location for clang is wrong"
+	false
+    fi
+fi
+
 # rocm path
 sed -i -e 's@rocm_path=/opt/rocm@rocm_path=/usr@'                              tensilelite/Tensile/Ops/gen_assembly.sh
 # No llvm/bin/clang, use clang++-17 or similar
-sed -i -e 's@toolchain=${rocm_path}/llvm/bin/clang++@toolchain=clang++-%{rocmllvm_version}@'    tensilelite/Tensile/Ops/gen_assembly.sh
+sed -i -e 's@toolchain=${rocm_path}/llvm/bin/clang++@toolchain=%{_libdir}/llvm%{rocmllvm_version}/bin/clang++@'    tensilelite/Tensile/Ops/gen_assembly.sh
 # Remove venv
 sed -i -e 's@. ${venv}/bin/activate@@'                                         tensilelite/Tensile/Ops/gen_assembly.sh
 sed -i -e 's@deactivate@@'                                                     tensilelite/Tensile/Ops/gen_assembly.sh
@@ -108,7 +119,7 @@ sed -i -e 's@deactivate@@'                                                     t
 sed -i -e 's@opt/rocm@usr@'                                                    tensilelite/Tensile/Common.py
 # look for clang things in 'usr' + '/lib64/llv17/bin'  or similar
 # need to be able to find clang++, ld.lld, clang-offload-bundler
-sed -i -e 's@llvm/bin@lib64/llvm%{rocmllvm_version}/bin@'                      tensilelite/Tensile/Common.py
+sed -i -e 's@llvm/bin@%{_libdir}/llvm%{rocmllvm_version}/bin@'                      tensilelite/Tensile/Common.py
 # Use PATH to find where TensileGetPath and other tensile bins are
 sed -i -e 's@${Tensile_PREFIX}/bin/TensileGetPath@TensileGetPath@g'            tensilelite/Tensile/cmake/TensileConfig.cmake
 
@@ -141,9 +152,7 @@ TL=$PWD
 cd ..
 
 # Should not have to do this
-export ROCM_PATH=`hipconfig -R`
-export HIP_CLANG_PATH=`hipconfig -l`
-RESOURCE_DIR=`${HIP_CLANG_PATH}/clang -print-resource-dir`
+RESOURCE_DIR=`%{_libdir}/llvm%{rocmllvm_version}/bin/clang -print-resource-dir`
 export DEVICE_LIB_PATH=${RESOURCE_DIR}/amdgcn/bitcode
 
 # Look for the just built tensilelite
@@ -168,7 +177,7 @@ export Tensile_DIR=${TL}%{python3_sitelib}/Tensile
        -DCMAKE_INSTALL_LIBDIR=%{_lib} \
        -DCMAKE_C_COMPILER=hipcc \
        -DCMAKE_CXX_COMPILER=hipcc \
-       -DCMAKE_CXX_FLAGS="-fuse-ld=/usr/bin/ld.lld" \
+       -DCMAKE_CXX_FLAGS="-fuse-ld=%{_libdir}/llvm%{rocmllvm_version}/bin/ld.lld" \
        -DHIP_PLATFORM=amd \
        -DROCM_SYMLINK_LIBS=OFF \
        -DBUILD_WITH_TENSILE=ON \

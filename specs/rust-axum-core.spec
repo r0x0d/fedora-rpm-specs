@@ -6,7 +6,7 @@
 %global crate axum-core
 
 Name:           rust-axum-core
-Version:        0.4.3
+Version:        0.4.5
 Release:        %autorelease
 Summary:        Core types and traits for axum
 
@@ -15,7 +15,6 @@ URL:            https://crates.io/crates/axum-core
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * remove documentation-specific feature
-# * relax sync_wrapper dependency from ^0.1.1 to >=0.1.1,<2
 Patch:          axum-core-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

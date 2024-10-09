@@ -2,7 +2,7 @@
 %bcond_without ninja_build
 
 Name:           ddnet
-Version:        18.5.1
+Version:        18.6
 Release:        1%{?dist}
 Summary:        DDraceNetwork, a cooperative racing mod of Teeworlds
 
@@ -39,8 +39,6 @@ Source0:        https://github.com/ddnet/ddnet/archive/%{version}/%{name}-%{vers
 Patch1:         0001-Disabled-network-lookup-test.patch
 # Unbundle md5 and json-parser
 Patch2:         0002-Unbundle-md5_and_json-parser.patch
-
-Patch3:         8886.diff
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  libappstream-glib
@@ -119,6 +117,9 @@ Standalone server for %{name}.
 
 %prep
 %autosetup -p1 -n %{name}-%{version}
+find -type f -exec sed -i 's|engine/external/md5/md5.h|md5/md5.h|g' {} +
+find -type f -exec sed -i 's|engine/external/json-parser/json.h|json-parser/json.h|g' {} +
+
 %cargo_prep
 sed '/Cargo.lock/d' -i CMakeLists.txt
 touch CMakeLists.txt
@@ -177,6 +178,10 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Sun Oct 06 2024 Packit <hello@packit.dev> - 18.6-1
+- Update to version 18.6
+- Resolves: rhbz#2315593
+
 * Sun Sep 15 2024 Packit <hello@packit.dev> - 18.5.1-1
 - Update to version 18.5.1
 - Resolves: rhbz#2312441

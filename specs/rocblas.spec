@@ -32,12 +32,8 @@
 %global build_test OFF
 %endif
 
-%if 0%{?rhel}
-# Not available on RHEL
+# Tensile blocks general enablement of rocBLAS.
 %bcond_with tensile
-%else
-%bcond_without tensile
-%endif
 %if %{with tensile}
 %global build_tensile ON
 %else

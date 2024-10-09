@@ -1,11 +1,15 @@
 # Docs require pandoc, which is not included in RHEL
-%bcond docs %[%{undefined rhel} || %{defined epel}]
+%if %{undefined rhel} || %{defined epel}
+%bcond_without docs
+%else
+%bcond_with docs
+%endif
 # Tests fail in mock, not in local build.
-%bcond tests 0
+%bcond_with tests
 
 Name:              valkey
-Version:           8.0.0
-Release:           3%{?dist}
+Version:           8.0.1
+Release:           2%{?dist}
 Summary:           A persistent key-value database
 # valkey: BSD-3-Clause
 # hiredis: BSD-3-Clause
@@ -36,6 +40,7 @@ BuildRequires:     openssl-devel
 %if %{with docs}
 # for docs/man pages
 BuildRequires:     pandoc
+BuildRequires:     python3
 BuildRequires:     python3-pyyaml
 %endif
 
@@ -384,6 +389,16 @@ fi
 
 
 %changelog
+* Mon Oct 07 2024 Jonathan Wright <jonathan@almalinux.org> - 8.0.1-2
+- fix spec for epel8
+- buildrequires python3 for docs
+
+* Mon Oct 07 2024 Jonathan Wright <jonathan@almalinux.org> - 8.0.1-1
+- update to 8.0.1 rhbz#2316254
+  fixes CVE-2024-31449
+  fixes CVE-2024-31227
+  fixes CVE-2024-31228
+
 * Fri Sep 27 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 8.0.0-3
 - Disable docs on RHEL
 

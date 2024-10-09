@@ -5,7 +5,7 @@
 %global crate prost-build
 
 Name:           rust-prost-build
-Version:        0.13.2
+Version:        0.13.3
 Release:        %autorelease
 Summary:        Generate Prost annotated Rust types from Protocol Buffers files
 

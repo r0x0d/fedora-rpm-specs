@@ -139,7 +139,7 @@ This package provides %{summary}.
 # Copy Maven home packaged as RPM instead of unpacking Maven binary
 # tarball with maven-dependency-plugin
 %pom_remove_plugin :maven-dependency-plugin
-maven_home=$(realpath $(dirname $(realpath $(%{?jpb_env} which mvn)))/..)
+maven_home=$(realpath $(dirname $(realpath $(%{?jpb_env} type -p mvn)))/..)
 mver=$(sed -n '/<mavenVersion>/{s/.*>\(.*\)<.*/\1/;p}' \
            xmvn-parent/pom.xml)
 mkdir -p target/dependency/
@@ -170,7 +170,7 @@ rm -f %{name}-${version}/bin/*
 %mvn_install
 
 version=4.*
-maven_home=$(realpath $(dirname $(realpath $(%{?jpb_env} which mvn)))/..)
+maven_home=$(realpath $(dirname $(realpath $(%{?jpb_env} type -p mvn)))/..)
 
 install -d -m 755 %{buildroot}%{_datadir}/%{name}
 cp -r%{?mbi:L} %{name}-${version}/* %{buildroot}%{_datadir}/%{name}/
