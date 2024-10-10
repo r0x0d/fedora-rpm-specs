@@ -1,5 +1,5 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 # we are excluding some BRs from automatic generator
@@ -16,8 +16,8 @@ Client library and command line utility for interacting with Openstack Designate
 %global sname designateclient
 
 Name:       python-%{sname}
-Version:    6.0.1
-Release:    3%{?dist}
+Version:    6.1.0
+Release:    1%{?dist}
 Summary:    Python API and CLI for OpenStack Designate
 
 License:    Apache-2.0
@@ -130,6 +130,9 @@ rm -fr doc/build/html/.{doctrees,buildinfo}
 %endif
 
 %changelog
+* Mon Oct 07 2024 Joel Capitao <jcapitao@redhat.com> 6.1.0-1
+- Update to upstream version 6.1.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.0.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

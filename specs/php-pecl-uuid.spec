@@ -7,26 +7,23 @@
 # Please, preserve the changelog entries
 #
 
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
-
 %global pecl_name   uuid
-%global with_zts    0%{?__ztsphp:1}
 %global ini_name    40-%{pecl_name}.ini
+%global sources     %{pecl_name}-%{version}
 
 Summary:       Universally Unique Identifier extension for PHP
 Name:          php-pecl-uuid
-Version:       1.2.0
-Release:       15%{?dist}
+Version:       1.2.1
+Release:       1%{?dist}
 License:       LGPL-2.1-or-later
 URL:           https://pecl.php.net/package/%{pecl_name}
-Source:        https://pecl.php.net/get/%{pecl_name}-%{version}.tgz
+Source:        https://pecl.php.net/get/%{sources}.tgz
 
 ExcludeArch:   %{ix86}
 
 BuildRequires: make
 BuildRequires: gcc
-BuildRequires: php-devel > 7
+BuildRequires: php-devel
 BuildRequires: php-pear
 BuildRequires: libuuid-devel
 
@@ -53,9 +50,7 @@ sed -e 's/role="test"/role="src"/' \
     -e '/LICENSE/s/role="doc"/role="src"/' \
     -i package.xml
 
-mv %{pecl_name}-%{version} NTS
-cd NTS
-
+cd %{sources}
 # Sanity check, really often broken
 extver=$(sed -n '/#define PHP_UUID_VERSION/{s/.* "//;s/".*$//;p}' php_uuid.h)
 if test "x${extver}" != "x%{version}"; then
@@ -63,11 +58,6 @@ if test "x${extver}" != "x%{version}"; then
    exit 1
 fi
 cd ..
-
-%if %{with_zts}
-# duplicate for ZTS build
-cp -pr NTS ZTS
-%endif
 
 # Drop in the bit of configuration
 cat > %{ini_name} << 'EOF'
@@ -79,91 +69,63 @@ EOF
 %build
 export PHP_RPATH=no
 
-cd NTS
-%{_bindir}/phpize
-%configure \
-    --with-php-config=%{_bindir}/php-config \
-    --with-libdir=%{_lib} \
-    --with-uuid
-make %{?_smp_mflags}
+cd %{sources}
+%{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-%if %{with_zts}
-cd ../ZTS
-%{_bindir}/zts-phpize
 %configure \
-    --with-php-config=%{_bindir}/zts-php-config \
+    --with-php-config=%{__phpconfig} \
     --with-libdir=%{_lib} \
     --with-uuid
-make %{?_smp_mflags}
-%endif
+
+%make_build
 
 
 %install
-# Install the NTS stuff
-make -C NTS install INSTALL_ROOT=%{buildroot}
+: Install the configuration file
 install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-%if %{with_zts}
-# Install the ZTS stuff
-make -C ZTS install INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
-
-# Install the package XML file
+: Install the package XML file
 install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-# Documentation
-cd NTS
+cd %{sources}
+: Install the extension
+%make_install
+
+: Install the documentation
 for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
 do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
 %check
-cd NTS
+cd %{sources}
 
-TEST_PHP_EXECUTABLE=%{_bindir}/php \
-TEST_PHP_ARGS="-n -d extension_dir=$PWD/modules -d extension=%{pecl_name}.so" \
-NO_INTERACTION=1 \
-REPORT_EXIT_STATUS=1 \
-%{_bindir}/php -n run-tests.php
+: Minimal load test for the extension
+%{__php} --no-php-ini \
+    --define extension=mbstring.so \
+    --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
+    --modules | grep '^%{pecl_name}$'
 
-%if %{with_zts}
-cd ../ZTS
-
-TEST_PHP_EXECUTABLE=%{__ztsphp} \
-TEST_PHP_ARGS="-n -d extension_dir=$PWD/modules -d extension=%{pecl_name}.so" \
-NO_INTERACTION=1 \
-REPORT_EXIT_STATUS=1 \
-%{__ztsphp} -n run-tests.php
-%endif
-
-
-%post
-%{pecl_install} %{pecl_xmldir}/%{name}.xml >/dev/null || :
-
-
-%postun
-if [ $1 -eq 0 ] ; then
-    %{pecl_uninstall} %{pecl_name} >/dev/null || :
-fi
+: Upstream test suite for the extension
+TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
+%{__php} -n run-tests.php -q --show-diff %{?_smp_mflags}
 
 
 %files
-%license NTS/LICENSE
+%license %{sources}/LICENSE
 %doc %{pecl_docdir}/%{pecl_name}
 %{pecl_xmldir}/%{name}.xml
 
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%{php_ztsextdir}/%{pecl_name}.so
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%endif
-
 
 %changelog
+* Tue Oct  8 2024 Remi Collet <remi@remirepo.net> - 1.2.1-1
+- Update to 1.2.1
+- modernize the spec file
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.0-15
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

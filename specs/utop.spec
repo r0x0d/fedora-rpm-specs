@@ -9,7 +9,7 @@ ExcludeArch: %{ix86}
 
 Name:           utop
 Version:        2.14.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Improved toplevel for OCaml
 
 License:        BSD-3-Clause
@@ -99,6 +99,9 @@ cp -p src/top/utop.elc %{buildroot}%{_emacs_sitelispdir}
 %{_emacs_sitestartdir}/%{name}-loaddefs.el*
 
 %changelog
+* Tue Oct 08 2024 Richard W.M. Jones <rjones@redhat.com> - 2.14.0-6
+- Rebuild for ocaml-lwt 5.8.0
+
 * Fri Aug  9 2024 Jerry James <loganjerry@gmail.com> - 2.14.0-5
 - Generate loaddefs instead of deprecated autoloads
 

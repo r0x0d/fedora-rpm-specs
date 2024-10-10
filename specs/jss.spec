@@ -7,12 +7,12 @@ Name:           jss
 # Upstream version number:
 %global         major_version 5
 %global         minor_version 5
-%global         update_version 0
+%global         update_version 1
 
 # Downstream release number:
 # - development/stabilization (unsupported): 0.<n> where n >= 1
 # - GA/update (supported): <n> where n >= 1
-%global         release_number 2
+%global         release_number 1
 
 # Development phase:
 # - development (unsupported): alpha<n> where n >= 1
@@ -350,6 +350,8 @@ cp base/target/jss-tests.jar %{buildroot}%{_datadir}/jss/tests/lib
 
 ################################################################################
 %changelog
+* Fri Oct 04 2024 Dogtag PKI Team <devel@lists.dogtagpki.org> 5.5.1-1
+- Rebase to JSS 5.5.1
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.5.0-2.1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

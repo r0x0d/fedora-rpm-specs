@@ -14,7 +14,7 @@ URL: https://www.python.org/
 #  WARNING  When rebasing to a new Python version,
 #           remember to update the python3-docs package as well
 %global general_version %{pybasever}.0
-%global prerel rc3
+#global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
 Release: 1%{?dist}
@@ -1287,8 +1287,9 @@ CheckPython() {
   # the test is skipped until it is fixed in upstream.
   # see: https://github.com/python/cpython/issues/104280#issuecomment-1669249980
   # test_signal is skipped due to https://github.com/python/cpython/issues/118989
-  # test.test_concurrent_futures.test_deadlock tends to time out on s390x in
+  # test.test_concurrent_futures.test_deadlock tends to time out on s390x and ppc64le in
   # freethreading{,-debug} build, skipping it to shorten the build time
+  # see: https://github.com/python/cpython/issues/121719
   LD_LIBRARY_PATH=$ConfDir $ConfDir/python -m test.regrtest \
     -wW --slowest %{_smp_mflags} --timeout=2700 \
     -i test_freeze_simple_script \
@@ -1296,7 +1297,7 @@ CheckPython() {
     %ifarch %{mips64}
     -x test_ctypes \
     %endif
-    %ifarch s390x
+    %ifarch s390x ppc64le
     -x test_signal \
     -i test_deadlock \
     %endif
@@ -1731,6 +1732,9 @@ CheckPython freethreading
 # ======================================================
 
 %changelog
+* Tue Oct 08 2024 Karolina Surma <ksurma@redhat.com> - 3.13.0-1
+- Update to Python 3.13.0
+
 * Tue Oct 01 2024 Miro Hrončok <mhroncok@redhat.com> - 3.13.0~rc3-1
 - Update to Python 3.13.0rc3
 

@@ -1,6 +1,6 @@
 Name:           torrent-file-editor
-Version:        0.3.18
-Release:        5%{?dist}
+Version:        1.0.0
+Release:        1%{?dist}
 Summary:        Qt based GUI tool designed to create and edit .torrent files
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -16,7 +16,8 @@ BuildRequires:  cmake(Qt6Core)
 BuildRequires:  cmake(Qt6Widgets)
 BuildRequires:  cmake(Qt6Core5Compat)
 BuildRequires:  qt6-qttools-devel
-%elif 0%{?fedora} > 21 || 0%{?rhel} > 7
+%else
+%if (0%{?fedora} > 21 || 0%{?rhel} > 7)
 BuildRequires:  pkgconfig(Qt5Gui)
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Widgets)
@@ -24,7 +25,7 @@ BuildRequires:  qt5-qttools-devel
 %else
 BuildRequires:  pkgconfig(QtGui)
 BuildRequires:  pkgconfig(QtCore)
-BuildRequires:  pkgconfig(QJson)
+%endif
 %endif
 BuildRequires:  desktop-file-utils
 BuildRequires:  libappstream-glib
@@ -49,10 +50,12 @@ Features
 %build
 %if 0%{?fedora} > 39
 %cmake -DQT6_BUILD=ON -DDISABLE_DONATION=ON
-%elif 0%{?fedora} > 21 || 0%{?rhel} > 7
+%else
+%if (0%{?fedora} > 21 || 0%{?rhel} > 7)
 %cmake -DQT5_BUILD=ON -DDISABLE_DONATION=ON
 %else
 %cmake -DQT4_BUILD=ON -DDISABLE_DONATION=ON
+%endif
 %endif
 %cmake_build
 
@@ -76,6 +79,11 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{name}.a
 %{_datadir}/appdata/%{name}.appdata.xml
 
 %changelog
+* Tue Oct 08 2024 Ivan Romanov <drizt72@zoho.eu> - 1.0.0-1
+- Bump to v1.0.0
+- Fix EPEL8 Qt5 version
+- Drop QJson dependencies
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 0.3.18-5
 - convert license to SPDX
 

@@ -8,7 +8,7 @@
 %{?!python3_pkgversion:%global python3_pkgversion 3}
 
 Name: koji
-Version: 1.35.0
+Version: 1.35.1
 Release: 1%{?dist}
 # the included arch lib from yum's rpmUtils is GPLv2+
 # Automatically converted from old format: LGPLv2 and GPLv2+ - review is highly recommended.
@@ -362,6 +362,10 @@ done
 %systemd_postun kojira.service
 
 %changelog
+* Tue Oct 08 2024 Kevin Fenzi <kevin@scrye.com> - 1.35.1-1
+- Update to 1.35.1. Fixes rhbz#2316304
+- Fixes CVE-2024-9427
+
 * Wed Sep 18 2024 Kevin Fenzi <kevin@scrye.com> - 1.35.0-1
 - Update to 1.35.0. Fixes rhbz#2312848
 

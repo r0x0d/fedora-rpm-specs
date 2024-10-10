@@ -8,7 +8,7 @@ Source0:        https://download.savannah.gnu.org/releases/%{name}/%{name}-%{ver
 URL:            https://www.nongnu.org/dmidecode/
 BuildRequires:  gcc make
 BuildRequires:  pkgconfig(bash-completion)
-ExclusiveArch:  %{ix86} x86_64 ia64 aarch64
+ExclusiveArch:  %{ix86} x86_64 ia64 aarch64 riscv64
 
 %if "%{_sbindir}" == "%{_bindir}"
 # We rely on filesystem to create the compat symlinks for us
@@ -40,7 +40,7 @@ I/O ports (e.g. serial, parallel, USB).
 %doc AUTHORS NEWS README
 %license LICENSE
 %{_sbindir}/dmidecode
-%ifnarch ia64 aarch64
+%ifnarch ia64 aarch64 riscv64
 %{_sbindir}/vpddecode
 %{_sbindir}/ownership
 %{_sbindir}/biosdecode
@@ -52,6 +52,9 @@ I/O ports (e.g. serial, parallel, USB).
 %{bash_completions_dir}/%{name}
 
 %changelog
+* Wed Sep 25 2024 David Abdurachmanov <davidlt@rivosinc.com> - 1:3.6-4
+- Add riscv64
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:3.6-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

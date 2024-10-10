@@ -1,5 +1,5 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 %global pypi_name keystoneauth1
 
 %global common_desc \
@@ -15,8 +15,8 @@ new clients.
 %global excluded_brs doc8 bandit pre-commit hacking flake8-import-order flake8-docstrings
 
 Name:       python-%{pypi_name}
-Version:    5.6.0
-Release:    3%{?dist}
+Version:    5.8.0
+Release:    1%{?dist}
 Summary:    Authentication Library for OpenStack Clients
 License:    Apache-2.0
 URL:        https://pypi.io/pypi/%{pypi_name}
@@ -111,7 +111,7 @@ rm -rf doc/build/html/.buildinfo
 %endif
 
 %check
-%tox -e %{default_toxenv}
+%tox -e %{default_toxenv} -- -- --exclude-regex '(.*test_keystoneauth_betamax_fixture)'
 
 %files -n python3-%{pypi_name}
 %doc README.rst
@@ -126,6 +126,9 @@ rm -rf doc/build/html/.buildinfo
 %endif
 
 %changelog
+* Tue Oct 08 2024 Joel Capitao <jcapitao@redhat.com> 5.8.0-1
+- Update to upstream version 5.8.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.6.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

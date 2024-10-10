@@ -28,6 +28,8 @@ Version:       0.0.99.6
 %global toolbx_go 1.22.5
 %elif 0%{?rhel} == 10
 %global toolbx_go 1.22.5
+%elif 0%{?rhel} > 10
+%global toolbx_go 1.23.1
 %endif
 %endif
 
@@ -148,7 +150,7 @@ The %{name}-tests package contains system tests for %{name}.
 %patch -P200 -p1
 %endif
 
-%if 0%{?rhel} == 10
+%if 0%{?rhel} >= 10
 %patch -P201 -p1
 %endif
 

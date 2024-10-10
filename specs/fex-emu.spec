@@ -45,6 +45,9 @@ Source1:    README.fedora
 Patch:      fex-no-jemalloc-host-tools.patch
 # SoftFloat: fix FPREM
 Patch:      %{forgeurl}/commit/aa3c963df1ea09cee4de5a45c1d77ad0ed25007e.patch
+# Add support for using a prctl to opt-in for receiving compat input events
+# Backport of https://github.com/FEX-Emu/FEX/pull/4106
+Patch:      fex-compat-input-prctl.patch
 
 # Bundled dependencies managed as git submodules upstream
 # These are too entangled with the build system to unbundle for now

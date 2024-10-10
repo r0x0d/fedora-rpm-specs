@@ -1,10 +1,10 @@
 Name:			rkcommon
-Version:		1.13.0
+Version:		1.14.2
 Release:		%autorelease
 Summary:		Intel renderKit common C++/CMake infrastructure
 
 License:		Apache-2.0
-URL:			https://github.com/ospray/rkcommon
+URL:			https://github.com/Renderkit/rkcommon
 Source0:		%{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 # Upstream only supports x86-64 and ARM64 architectures

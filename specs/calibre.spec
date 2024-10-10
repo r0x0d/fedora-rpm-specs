@@ -151,7 +151,7 @@ Requires:       /usr/bin/jpegtran
 Requires:       jxrlib
 Requires:       python3-jeepney
 Requires:       qt6-qtmultimedia
-Requires:       qt6-qtspeech-flite
+Requires:       (qt6-qtspeech-flite or qt6-qtspeech-speechd)
 Requires:       python3-xxhash
 Recommends:     python3dist(zeroconf)
 

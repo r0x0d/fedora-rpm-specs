@@ -1,6 +1,6 @@
 Name:		classified-ads
 Version:	0.16
-Release:	6%{?dist}
+Release:	7%{?dist}
 Summary:	Classified ads is distributed, server-less messaging system
 
 # Automatically converted from old format: LGPLv2 - review is highly recommended.
@@ -60,6 +60,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/classified-ads.deskt
 %{_datadir}/doc/classified-ads/examples/calendar.tcl
 
 %changelog
+* Tue Oct 08 2024 Simone Caronni <negativo17@gmail.com> - 0.16-7
+- Rebuild for updated miniupnpc.
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 0.16-6
 - convert license to SPDX
 

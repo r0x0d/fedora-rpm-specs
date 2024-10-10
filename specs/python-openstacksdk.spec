@@ -21,8 +21,8 @@ A collection of libraries for building applications to work with OpenStack \
 clouds - test files
 
 Name:           python-%{pypi_name}
-Version:        3.0.0
-Release:        3%{?dist}
+Version:        4.0.0
+Release:        1%{?dist}
 Summary:        An SDK for building applications to work with OpenStack
 
 License:        Apache-2.0
@@ -121,6 +121,9 @@ rm -f ./openstack/tests/unit/test_hacking.py
 %endif
 
 %changelog
+* Tue Oct 08 2024 Joel Capitao <jcapitao@redhat.com> 4.0.0-1
+- Update to upstream version 4.0.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

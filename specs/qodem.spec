@@ -1,6 +1,6 @@
 Name:           qodem
 Version:        1.0.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Terminal emulator and communications package
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -93,6 +93,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.appdata
 
 
 %changelog
+* Tue Oct 08 2024 Simone Caronni <negativo17@gmail.com> - 1.0.1-9
+- Rebuild for updated miniupnpc.
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.1-8
 - convert license to SPDX
 

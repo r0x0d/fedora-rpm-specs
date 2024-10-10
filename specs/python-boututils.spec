@@ -6,7 +6,7 @@ Version:        0.2.1
 Release:        %autorelease
 Summary:        Python package containing BOUT++ utils
 
-License:        LGPLv3+
+License:        LGPL-3.0-or-later
 URL:            http://boutproject.github.io
 Source0:        %pypi_source
 BuildArch:      noarch

@@ -1,5 +1,5 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 # we are excluding some BRs from automatic generator
@@ -7,8 +7,8 @@
 
 Name:           diskimage-builder
 Summary:        Image building tools for OpenStack
-Version:        3.32.0
-Release:        4%{?dist}
+Version:        3.34.0
+Release:        1%{?dist}
 License:        Apache-2.0
 Group:          System Environment/Base
 URL:            https://launchpad.net/diskimage-builder
@@ -37,6 +37,7 @@ Requires: tar
 Requires: gdisk
 Requires: lvm2
 Requires: git-core
+Requires: /usr/bin/guestfish
 Requires: /usr/sbin/mkfs.ext2
 Requires: /usr/sbin/mkfs.ext3
 Requires: /usr/sbin/mkfs.ext4
@@ -73,8 +74,6 @@ for pkg in %{excluded_brs}; do
   done
 done
 
-sed -i 's/^flake8.*/flake8/g' requirements.txt
-
 %generate_buildrequires
 %pyproject_buildrequires -R
 
@@ -106,6 +105,9 @@ Components of TripleO that are responsible for building disk images.
 %{_datadir}/%{name}/elements
 
 %changelog
+* Mon Oct 07 2024 Joel Capitao <jcapitao@redhat.com> 3.34.0-1
+- Update to upstream version 3.34.0
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.32.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,6 +1,6 @@
 Name:           elementary-xfce-icon-theme
-Version:        0.19
-Release:        3%{?dist}
+Version:        0.20
+Release:        1%{?dist}
 Summary:        Icons for Xfce based on the elementary Project Icon Theme
  
 
@@ -83,6 +83,9 @@ fi
 
 
 %changelog
+* Tue Oct 08 2024 Johannes Lips <hannes@fedoraproject.org> - 0.20-1
+- update to latest upstream version 0.20
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 0.19-3
 - convert license to SPDX
 

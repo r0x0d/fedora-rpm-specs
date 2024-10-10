@@ -1,7 +1,7 @@
-Version: 1.14.19
+Version: 1.14.20
 Summary: Universal Plug and Play (UPnP) SDK
 Name: libupnp
-Release: 3%{?dist}
+Release: 1%{?dist}
 # Automatically converted from old format: BSD - review is highly recommended.
 License: LicenseRef-Callaway-BSD
 URL: https://github.com/pupnp/pupnp
@@ -61,6 +61,9 @@ sed -i.rpath 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 %{_libdir}/pkgconfig/libupnp.pc
 
 %changelog
+* Tue Oct 08 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.14.20-1
+- 1.14.20
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.14.19-3
 - convert license to SPDX
 

@@ -1,7 +1,7 @@
 Summary:       Graphical LDAP directory browser and editor
 Name:          gq
 Version:       1.3.4
-Release:       52%{?dist}
+Release:       53%{?dist}
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:       GPL-2.0-or-later
 URL:           http://sourceforge.net/projects/gqclient/
@@ -48,7 +48,7 @@ for f in TODO AUTHORS ChangeLog ; do
 done
 
 %build
-export CFLAGS="%{optflags} -fcommon"
+export CFLAGS="%{optflags} -fcommon -Wno-incompatible-pointer-types -Wno-return-mismatch"
 %configure --with-included-gettext      \
            --disable-update-mimedb      \
            --with-default-codeset=UTF-8 \
@@ -81,6 +81,9 @@ desktop-file-install --delete-original      \
 %dir %{_datadir}/%{name}
 
 %changelog
+* Tue Oct 08 2024 Terje Rosten <terjeros@gmail.com> - 1.3.4-53
+- Disable some warnings to build
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.3.4-52
 - convert license to SPDX
 

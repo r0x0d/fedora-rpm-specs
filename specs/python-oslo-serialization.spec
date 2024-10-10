@@ -1,5 +1,5 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 # we are excluding some runtime reqs from automatic generator
@@ -20,8 +20,8 @@ An OpenStack library for representing objects in transmittable and \
 storable formats.
 
 Name:           python-%{pkg_name}
-Version:        5.4.0
-Release:        3%{?dist}
+Version:        5.5.0
+Release:        1%{?dist}
 Summary:        OpenStack oslo.serialization library
 
 License:        Apache-2.0
@@ -150,6 +150,9 @@ export OS_TEST_PATH="./oslo_serialization/tests"
 %{python3_sitelib}/oslo_serialization/tests
 
 %changelog
+* Mon Oct 07 2024 Joel Capitao <jcapitao@redhat.com> 5.5.0-1
+- Update to upstream version 5.5.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.4.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

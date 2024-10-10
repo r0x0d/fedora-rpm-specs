@@ -32,14 +32,9 @@ Pixel manipulation library for X and Cairo development package.
 
 %prep
 %autosetup -p1
-# bump up the test suite timeout because arm
-sed -i 's/120/600/' test/meson.build
 
 %build
 %meson --auto-features=auto \
-%ifarch %{arm}
-  -Diwmmxt=disabled -Diwmmxt2=false \
-%endif
   %nil
 
 %meson_build

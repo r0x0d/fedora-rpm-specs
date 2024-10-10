@@ -1,17 +1,16 @@
 %global srcname cartopy
-%global Srcname Cartopy
 
 # Some tests use the network.
 %bcond_with network
 
 Name:           python-%{srcname}
-Version:        0.23.0
+Version:        0.24.1
 Release:        %autorelease
 Summary:        Cartographic Python library with Matplotlib visualisations
 
 License:        BSD-3-Clause
 URL:            https://scitools.org.uk/cartopy/docs/latest/
-Source0:        %pypi_source %{Srcname}
+Source0:        %pypi_source %{srcname}
 # Set location of Fedora-provided pre-existing data.
 Source1:        siteconfig.py
 
@@ -19,8 +18,6 @@ Source1:        siteconfig.py
 Patch:          0001-Reduce-numpy-build-dependency.patch
 # Might not go upstream in current form.
 Patch:          0002-Increase-tolerance-for-new-FreeType.patch
-# https://github.com/SciTools/cartopy/pull/2369
-Patch:          0003-Merge-pull-request-2369-from-rcomer-ne-test-fixes.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  proj-data-uk
@@ -76,10 +73,9 @@ Data files for %{srcname}.
 
 
 %prep
-%autosetup -n %{Srcname}-%{version} -p1
+%autosetup -n %{srcname}-%{version} -p1
 cp -a %SOURCE1 lib/cartopy/
 
-sed -i -e 's/oldest-supported-numpy/numpy/g' pyproject.toml
 sed -i -e 's/, "pytest-cov", "coveralls"//g' pyproject.toml
 
 # Remove generated Cython sources

@@ -1,7 +1,7 @@
 Name:    kdepim-runtime
 Summary: KDE PIM Runtime Environment
 Epoch:   1
-Version: 24.08.1
+Version: 24.08.2
 Release: 1%{?dist}
 
 License: AGPL-3.0-or-later AND BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND GPL-3.0-or-later AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-or-later AND LGPL-3.0-only AND LGPL-3.0-or-later AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only)
@@ -59,6 +59,7 @@ BuildRequires:  cmake(KF6Wallet)
 BuildRequires:  cmake(KPim6Akonadi)
 BuildRequires:  cmake(KPim6Mime)
 BuildRequires:  cmake(KPim6AkonadiMime)
+BuildRequires:  cmake(KPim6AkonadiNotes)
 BuildRequires:  cmake(KPim6MailTransport)
 BuildRequires:  cmake(KPim6IdentityManagementWidgets)
 BuildRequires:  cmake(KF6Contacts)
@@ -142,6 +143,9 @@ desktop-file-validate %{buildroot}/%{_kf6_datadir}/applications/org.kde.akonadi_
 
 
 %changelog
+* Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 1:24.08.2-1
+- 24.08.2
+
 * Wed Sep 25 2024 Alessandro Astone <ales.astone@gmail.com> - 1:24.08.1-1
 - 24.08.1
 

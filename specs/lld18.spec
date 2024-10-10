@@ -17,7 +17,7 @@
 
 %global maj_ver 18
 %global min_ver 1
-%global patch_ver 7
+%global patch_ver 8
 #global rc_ver 4
 
 %if %{with snapshot_build}
@@ -49,7 +49,7 @@
 
 Name:		%{pkg_name}
 Version:	%{lld_version}%{?rc_ver:~rc%{rc_ver}}%{?llvm_snapshot_version_suffix:~%{llvm_snapshot_version_suffix}}
-Release:	4%{?dist}
+Release:	6%{?dist}
 Summary:	The LLVM Linker
 
 License:	Apache-2.0 WITH LLVM-exception OR NCSA
@@ -92,6 +92,7 @@ Requires(post): %{_sbindir}/update-alternatives
 Requires(preun): %{_sbindir}/update-alternatives
 
 Requires: %{name}-libs = %{version}-%{release}
+Provides: lld(major) = %{maj_ver}
 
 %description
 The LLVM project linker.
@@ -99,11 +100,9 @@ The LLVM project linker.
 %package devel
 Summary:	Libraries and header files for LLD
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
-%if %{without compat_build}
 # lld tools are referenced in the cmake files, so we need to add lld as a
 # dependency.
 Requires: %{name}%{?_isa} = %{version}-%{release}
-%endif
 Provides: lld-devel(major) = %{maj_ver}
 
 %description devel
@@ -219,6 +218,12 @@ export LD_LIBRARY_PATH=%{buildroot}/%{install_libdir}
 %{install_libdir}/liblld*.so.*
 
 %changelog
+* Tue Oct 08 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.8-6
+- Update to 18.1.8
+
+* Fri Oct 04 2024 Tom Rix <Tom.Rix@amd.com> - 18.1.7-5
+- Provide lld(18)
+
 * Thu Oct 03 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.7-4
 - Provide lld-devel(18) instead of lld18-devel(18)
 

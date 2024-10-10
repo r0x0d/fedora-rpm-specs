@@ -5,7 +5,7 @@ ExcludeArch: %{ix86}
 
 Name:           ocaml-mdx
 Version:        2.4.1
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Executable code blocks inside markdown files
 
 License:        ISC
@@ -85,6 +85,9 @@ files for developing applications that use %{name}.
 %files devel -f .ofiles-devel
 
 %changelog
+* Tue Oct 08 2024 Richard W.M. Jones <rjones@redhat.com> - 2.4.1-7
+- Rebuild for ocaml-lwt 5.8.0
+
 * Sun Oct  6 2024 Jerry James <loganjerry@gmail.com> - 2.4.1-6
 - Rebuild for ocaml-re 1.13.3 and ocaml-version 3.6.9
 

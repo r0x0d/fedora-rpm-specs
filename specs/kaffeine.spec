@@ -40,6 +40,7 @@ Requires:      kio-extras%{?_isa}
 # Needed for open file dialog translations
 Requires:      qt5-qttranslations
 Requires:      vlc-plugins-base%{?_isa}
+Requires:      vlc-plugins-extra%{?_isa}
 Requires:      vlc-plugins-video-out%{?_isa}
 Recommends:    vlc-plugin-ffmpeg%{?_isa}
 Recommends:    (vlc-plugin-gnome%{?_isa} if gnome-keyring%{?_isa})

@@ -1,6 +1,6 @@
 Name:           mmapper
 Version:        24.03.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Graphical MUME mapper
 
 License:        GPL-2.0-or-later
@@ -67,6 +67,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.mume.MMapper.d
 
 
 %changelog
+* Tue Oct 08 2024 Simone Caronni <negativo17@gmail.com> - 24.03.1-3
+- Rebuild for updated miniupnpc.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 24.03.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

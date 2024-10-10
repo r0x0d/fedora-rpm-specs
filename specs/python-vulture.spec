@@ -9,7 +9,7 @@ implicitly may be reported as unused. Nonetheless, vulture can be a \
 very helpful tool for higher code quality.
 
 Name:           python-%{pypi_name}
-Version:        2.12
+Version:        2.13
 Release:        1%{?dist}
 Summary:        Find dead code
 
@@ -60,6 +60,9 @@ ln -s %{_bindir}/vulture-%{python3_version} %{buildroot}/%{_bindir}/vulture
 %{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Tue Oct 08 2024 Fabian Affolter <mail@fabian-affolter.ch> - 2.13-1
+- Update to new upstream version (closes rhbz#2316093)
+
 * Wed Sep 18 2024 Fabian Affolter <mail@fabian-affolter.ch> - 2.12-1
 - Update to latest upstream release (closes rhbz#2159155)
 

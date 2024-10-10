@@ -41,6 +41,11 @@ Patch5:         py3.13.patch
 #
 # Backported to 20.21.1.
 Patch6:         prs-2709-and-2712.patch
+# Quote template strings in activation scripts
+# to prevent possible command injection.
+# https://github.com/pypa/virtualenv/issues/2768
+# Backported from 20.26.6
+Patch7:         prevent_command_injection.patch
 
 BuildArch:      noarch
 

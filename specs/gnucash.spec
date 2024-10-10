@@ -1,3 +1,7 @@
+%if 0%{?rhel} >= 9
+%global _lto_cflags %nil
+%endif
+
 Name: gnucash
 Summary: Finance management application
 Version: 5.9
@@ -37,7 +41,11 @@ BuildRequires: boost-devel >= 1.66.0
 BuildRequires: boost-devel >= 1.67.0
 %endif
 BuildRequires: gtest-devel >= 1.8.0, gmock-devel >= 1.8.0
+%if 0%{?rhel} >= 9
+BuildRequires: webkit2gtk3-devel
+%else
 BuildRequires: webkit2gtk4.1-devel
+%endif
 BuildRequires: python3-devel >= 3.6
 BuildRequires: python3-setuptools
 
@@ -63,7 +71,11 @@ balanced books.
 
 %build
 # thanks gcc8
+%if 0%{?rhel} >= 9
+%global optflags %{optflags} -Wno-parentheses -Wno-error
+%else
 %global optflags %{optflags} -Wno-parentheses
+%endif
 sed -i s/3.8/%{python3_version}/g CMakeLists.txt
 %cmake -D WITH_PYTHON=ON -D COMPILE_GSCHEMAS=OFF
 %cmake_build

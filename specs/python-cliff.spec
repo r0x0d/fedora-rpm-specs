@@ -16,8 +16,8 @@ http://readthedocs.org/docs/cliff/en/latest/
 %global common_desc_tests This package contains tests for the python cliff library.
 
 Name:             python-%{modname}
-Version:          4.6.0
-Release:          3%{?dist}
+Version:          4.7.0
+Release:          1%{?dist}
 Summary:          Command Line Interface Formulation Framework
 
 Group:            Development/Libraries
@@ -40,8 +40,6 @@ Summary:          Command Line Interface Formulation Framework
 
 BuildRequires:    bash
 BuildRequires:    which
-# fixtures is test requirement but missing in test-requirements.txt
-BuildRequires:    python3-fixtures
 # cliff imports docutils in code which is not in requirements.txt and it is
 # needed to run tests.
 BuildRequires:    python3-docutils
@@ -108,6 +106,9 @@ PYTHON=python3 python3 setup.py test
 %{python3_sitelib}/%{modname}/tests
 
 %changelog
+* Mon Oct 07 2024 Joel Capitao <jcapitao@redhat.com> 4.7.0-1
+- Update to upstream version 4.7.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.6.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

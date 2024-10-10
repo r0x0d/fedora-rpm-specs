@@ -1,6 +1,6 @@
 Name:    ksystemlog
 Summary: System Log Viewer for KDE
-Version: 24.08.1
+Version: 24.08.2
 Release: 1%{?dist}
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -80,6 +80,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.ks
 
 
 %changelog
+* Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
+- 24.08.2
+
 * Wed Sep 25 2024 Alessandro Astone <ales.astone@gmail.com> - 24.08.1-1
 - 24.08.1
 

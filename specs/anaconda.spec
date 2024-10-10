@@ -1,6 +1,6 @@
 Summary: Graphical system installer
 Name:    anaconda
-Version: 42.5
+Version: 42.6
 Release: 1%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
@@ -483,6 +483,9 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Tue Oct 08 2024 Packit <hello@packit.dev> - 42.6-1
+- Update to version 42.6
+
 * Tue Oct 01 2024 Packit <hello@packit.dev> - 42.5-1
 - docs: Adjust CONTRIBUTING document to mention automatic linter checks
   (k.koukiou)

@@ -39,7 +39,8 @@
 %endif
 %endif
 
-
+# Needs to match rocblas
+%bcond_with tensile
 
 Name:           miopen
 Version:        %{rocm_version}
@@ -137,6 +138,12 @@ done
 %if %{without test}
 sed -i -e 's@add_subdirectory(test)@#add_subdirectory(test)@' CMakeLists.txt
 sed -i -e 's@add_subdirectory(speedtests)@#add_subdirectory(speedtests)@' CMakeLists.txt
+%endif
+
+%if %{without tensile}
+sed -i -e 's@#define ROCBLAS_BETA_FEATURES_API 1@#define ROCBLAS_BETA_FEATURES_API 0@' src/include/miopen/handle.hpp
+sed -i -e 's@#define ROCBLAS_BETA_FEATURES_API 1@#define ROCBLAS_BETA_FEATURES_API 0@' src/solver/mha/mha_common.hpp
+sed -i -e 's@#define ROCBLAS_BETA_FEATURES_API 1@#define ROCBLAS_BETA_FEATURES_API 0@' src/gemm_v2.cpp
 %endif
 
 # Our use of modules confuse install locations

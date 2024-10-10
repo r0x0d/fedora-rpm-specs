@@ -1,5 +1,5 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 
@@ -14,12 +14,11 @@ The request context is usually populated in the \
 WSGI pipeline and used by various modules such as logging.
 
 Name:           python-%{pkg_name}
-Version:        5.5.0
-Release:        4%{?dist}
+Version:        5.6.0
+Release:        1%{?dist}
 Summary:        OpenStack Oslo Context library
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
-License:        Apache-2.0
+License:        ASL 2.0
 URL:            https://launchpad.net/oslo.context
 Source0:        https://tarballs.openstack.org/%{pypi_name}/%{pypi_name}-%{upstream_version}.tar.gz
 # Required for tarball sources verification
@@ -119,6 +118,9 @@ python3 setup.py test
 %{python3_sitelib}/oslo_context/tests
 
 %changelog
+* Mon Oct 07 2024 Joel Capitao <jcapitao@redhat.com> 5.6.0-1
+- Update to upstream version 5.6.0
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 5.5.0-4
 - convert license to SPDX
 

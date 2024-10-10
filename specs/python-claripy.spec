@@ -1,7 +1,7 @@
 %global pypi_name claripy
 
 Name:           python-%{pypi_name}
-Version:        9.2.120
+Version:        9.2.122
 Release:        1%{?dist}
 Summary:        Abstraction layer for constraint solvers
 
@@ -19,7 +19,6 @@ Claripy is an abstracted constraint-solving wrapper.
 Summary:        %{summary}
 
 Requires:       python3-z3
-%{?python_provide:%python_provide python3-%{pypi_name}}
 
 %description -n python3-%{pypi_name}
 Claripy is an abstracted constraint-solving wrapper.
@@ -27,7 +26,7 @@ Claripy is an abstracted constraint-solving wrapper.
 %prep
 %autosetup -p1 -n %{pypi_name}-%{version}
 # Remove installation requirement. Fedora is using a different name, see above
-sed -i -e '/z3-solver/d' setup.cfg
+sed -i 's/, "z3-solver==4.13.0.0"//' pyproject.toml
 
 %generate_buildrequires
 %pyproject_buildrequires -t
@@ -44,6 +43,9 @@ sed -i -e '/z3-solver/d' setup.cfg
 %doc README.md
 
 %changelog
+* Tue Oct 08 2024 Fabian Affolter <mail@fabian-affolter.ch> - 9.2.122-1
+- Update to new upstream version (closes rhbz#2317137)
+
 * Wed Oct 02 2024 Fabian Affolter <mail@fabian-affolter.ch> - 9.2.120-1
 - Update to new upstream version (closes rhbz#2315969)
 

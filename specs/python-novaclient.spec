@@ -1,11 +1,15 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 # we are excluding some BRs from automatic generator
-%global excluded_brs doc8 bandit pre-commit hacking flake8-import-order whereto tempest osprofiler
+%global excluded_brs doc8 bandit pre-commit hacking flake8-import-order whereto
 # Exclude sphinx from BRs if docs are disabled
 %if ! 0%{?with_doc}
 %global excluded_brs %{excluded_brs} sphinx openstackdocstheme
+%endif
+# Exclude some BRs for Fedora
+%if 0%{?fedora}
+%global excluded_brs %{excluded_brs} tempest osprofiler
 %endif
 
 %global sname novaclient
@@ -18,8 +22,8 @@ the OpenStack Nova API.
 
 Name:             python-novaclient
 Epoch:            1
-Version:          18.6.0
-Release:          3%{?dist}
+Version:          18.7.0
+Release:          1%{?dist}
 Summary:          Python API and CLI for OpenStack Nova
 License:          Apache-2.0
 URL:              https://launchpad.net/%{name}
@@ -73,6 +77,7 @@ sed -i "s/^deps = -c{env:.*_CONSTRAINTS_FILE.*/deps =/" tox.ini
 sed -i /^minversion.*/d tox.ini
 sed -i /^requires.*virtualenv.*/d tox.ini
 sed -i /^.*whereto/d tox.ini
+sed -i '/sphinx-build/ s/-W//' tox.ini
 
 # Exclude some bad-known BRs
 for pkg in %{excluded_brs}; do
@@ -133,6 +138,9 @@ rm -fr doc/build/html/.doctrees doc/build/html/.buildinfo doc/build/html/.htacce
 %endif
 
 %changelog
+* Tue Oct 08 2024 Joel Capitao <jcapitao@redhat.com> 1:18.7.0-1
+- Update to upstream version 18.7.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:18.6.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

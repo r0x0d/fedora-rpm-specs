@@ -3,7 +3,7 @@
 %global upstream_package_name GitQlient
 
 Name:       gitqlient
-Version:    1.6.2
+Version:    1.6.3
 %forgemeta
 Release:    %autorelease
 Summary:    Multi-platform Git client written with Qt

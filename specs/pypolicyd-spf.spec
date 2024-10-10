@@ -1,14 +1,14 @@
 %global srcname spf-engine
 
 Name:           pypolicyd-spf
-Version:        3.0.4
-Release:        7%{?dist}
+Version:        3.1.0
+Release:        1%{?dist}
 Summary:        SPF Policy Server for Postfix (Python implementation)
 
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://launchpad.net/%{srcname}
-Source0:        https://launchpad.net/%{srcname}/2.9/%{version}/+download/%{srcname}-%{version}.tar.gz
+Source0:        https://launchpad.net/%{srcname}/3.1/%{version}/+download/%{srcname}-%{version}.tar.gz
 Source1:        %{name}-tmpfiles.conf
 Patch0:         pypolicyd-spf-3.0.4-service.patch
 
@@ -102,6 +102,9 @@ Milter for pypolicyd-spf.
 
 
 %changelog
+* Wed Oct  9 2024 Bojan Smojver <bojan@rexursive.com> 3.1.0-1
+- Update to 3.1.0
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 3.0.4-7
 - convert license to SPDX
 

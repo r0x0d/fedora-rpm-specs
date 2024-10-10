@@ -1,12 +1,16 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 # we are excluding some BRs from automatic generator
-%global excluded_brs doc8 bandit pre-commit hacking flake8-import-order eventlet
+%global excluded_brs doc8 bandit pre-commit hacking flake8-import-order
 # Exclude sphinx from BRs if docs are disabled
 %if ! 0%{?with_doc}
 %global excluded_brs %{excluded_brs} sphinx openstackdocstheme
+%endif
+# Exclude some BRs for Fedora
+%if 0%{?fedora}
+%global excluded_brs %{excluded_brs} eventlet
 %endif
 
 %global with_doc 1
@@ -22,8 +26,8 @@ support for context specific logging (like resource id’s etc).
 Tests for the Oslo Log handling library.
 
 Name:           python-oslo-log
-Version:        5.5.1
-Release:        3%{?dist}
+Version:        6.1.2
+Release:        1%{?dist}
 Summary:        OpenStack Oslo Log library
 
 License:        Apache-2.0
@@ -35,10 +39,6 @@ Source101:        https://tarballs.openstack.org/%{pypi_name}/%{pypi_name}-%{ups
 Source102:        https://releases.openstack.org/_static/%{sources_gpg_sign}.txt
 %endif
 BuildArch:      noarch
-# We need https://review.opendev.org/c/openstack/oslo.log/+/921797 for python 3.13
-Patch0:         0001-Replace-deprecated-logging.warn-calls-with-logging.w.patch
-# We need https://review.opendev.org/c/openstack/oslo.log/+/924063 for python 3.13
-Patch1:         0001-Mock-time.time_ns-in.patch
 
 # Required for tarball sources verification
 %if 0%{?sources_gpg} == 1
@@ -145,9 +145,11 @@ mv %{buildroot}%{python3_sitelib}/oslo_log/locale %{buildroot}%{_datadir}/locale
 %find_lang oslo_log --all-name
 
 %check
+%if 0%{?fedora}
 # skipping tests using eventlet as it's not available for python 3.13 and this functionality
 # in oslo.log is unused in the client packages used in Fedora
 rm -f oslo_log/tests/unit/test_pipe_mutex.py
+%endif
 %tox -e %{default_toxenv}
 
 %files -n python3-%{pkg_name}
@@ -172,6 +174,9 @@ rm -f oslo_log/tests/unit/test_pipe_mutex.py
 %license LICENSE
 
 %changelog
+* Tue Oct 08 2024 Joel Capitao <jcapitao@redhat.com> 6.1.2-1
+- Update to upstream version 6.1.2
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.5.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

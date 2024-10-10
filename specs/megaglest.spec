@@ -1,6 +1,6 @@
 Name:       megaglest
 Version:    3.13.0
-Release:    23%{?dist}
+Release:    24%{?dist}
 Summary:    Open Source 3d real time strategy game
 License:    GPL-3.0-or-later AND GPL-1.0-or-later
 Url:        http://megaglest.org/
@@ -111,6 +111,9 @@ install -d %{buildroot}/%{_datadir}/%{name}
 %{_datadir}/%{name}/
 
 %changelog
+* Tue Oct 08 2024 Simone Caronni <negativo17@gmail.com> - 3.13.0-24
+- Rebuild for updated miniupnpc.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.13.0-23
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

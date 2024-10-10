@@ -1,5 +1,5 @@
 Name:    kio-extras
-Version: 24.08.1
+Version: 24.08.2
 Release: 1%{?dist}
 Summary: Additional components to increase the functionality of KIO Framework
 
@@ -12,8 +12,6 @@ Source0: https://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%
 ## upstramable patches
 
 ## upstream patches
-Patch:   https://invent.kde.org/network/kio-extras/-/commit/f0fca6e20d1e71427caff9fc7ab3e8d7041d71ec.patch
-
 
 BuildRequires:  bzip2-devel
 BuildRequires:  gperf
@@ -137,6 +135,9 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 
 %changelog
+* Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
+- 24.08.2
+
 * Wed Sep 25 2024 Alessandro Astone <ales.astone@gmail.com> - 24.08.1-1
 - 24.08.1
 

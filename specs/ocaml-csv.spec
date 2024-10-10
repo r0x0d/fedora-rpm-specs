@@ -3,7 +3,7 @@ ExcludeArch: %{ix86}
 
 Name:           ocaml-csv
 Version:        2.4
-Release:        22%{?dist}
+Release:        23%{?dist}
 Summary:        OCaml library for reading and writing CSV files
 License:        LGPL-2.1-only WITH OCaml-LGPL-linking-exception
 
@@ -91,6 +91,9 @@ rm -r %{buildroot}%{ocamldir}/csvtool
 
 
 %changelog
+* Tue Oct 08 2024 Richard W.M. Jones <rjones@redhat.com> - 2.4-23
+- Rebuild for ocaml-lwt 5.8.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.4-22
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

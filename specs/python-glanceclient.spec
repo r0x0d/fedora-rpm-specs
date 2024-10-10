@@ -1,5 +1,5 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 
 %global sname glanceclient
@@ -7,7 +7,7 @@
 # for bootstrapping and Python bumps: with functional tests there is a
 # dependency loop between os-client-config and glanceclient, turn this
 # off to disable the functional tests and drop os-client-config dep
-%global with_functional_tests 0
+%global with_functional_tests 1
 
 # we are excluding some BRs from automatic generator
 %global excluded_brs doc8 bandit pre-commit hacking flake8-import-order tempest
@@ -27,8 +27,8 @@ glanceclient module), and a command-line script (glance). Each implements \
 
 Name:             python-glanceclient
 Epoch:            1
-Version:          4.5.0
-Release:          3%{?dist}
+Version:          4.7.0
+Release:          1%{?dist}
 Summary:          Python API and CLI for OpenStack Glance
 
 License:          Apache-2.0
@@ -136,7 +136,7 @@ install -p -D -m 644 doc/build/man/glance.1 %{buildroot}%{_mandir}/man1/glance.1
 # CentOS CI environment is setting "http://cache.rdu2.centos.org:8080" which breaks the unit tests.
 unset http_proxy
 unset https_proxy
-%tox -e %{default_toxenv} -- -- --exclude-regex '(glanceclient.tests.unit.test_ssl.TestHTTPSVerifyCert*|.*test_cache_schemas_gets_when_not_exists|.*test_cache_schemas_gets_when_forced)'
+%tox -e %{default_toxenv} -- -- --exclude-regex '(glanceclient.tests.unit.test_ssl.TestHTTPSVerifyCert*|.*test_cache_schemas_gets_when_not_exists|.*test_cache_schemas_gets_when_forced)|.*test_http_chunked_response|.*test_log_request_id_once'
 
 
 %files -n python3-%{sname}
@@ -158,6 +158,9 @@ unset https_proxy
 %endif
 
 %changelog
+* Tue Oct 08 2024 Joel Capitao <jcapitao@redhat.com> 1:4.7.0-1
+- Update to upstream version 4.7.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:4.5.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,6 +1,6 @@
 Name:           eiskaltdcpp
 Version:        2.4.2
-Release:        13%{?dist}
+Release:        14%{?dist}
 Summary:        Direct Connect client
 
 # The entire source code is GPLv3+ except FlowLayout.cpp and .h which is LGPLv2+
@@ -8,6 +8,8 @@ Summary:        Direct Connect client
 License:        GPL-3.0-or-later AND LicenseRef-Callaway-LGPLv2+
 URL:            https://github.com/eiskaltdcpp/eiskaltdcpp
 Source0:        %{url}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+
+Patch0:         https://github.com/eiskaltdcpp/eiskaltdcpp/commit/5ab5e1137a46864b6ecd1ca302756da8b833f754.patch
 
 BuildRequires:  cmake >= 2.6.3
 BuildRequires:  cmake(Qt5LinguistTools)
@@ -72,7 +74,7 @@ BuildArch:  noarch
 Necessary data files for %{name}.
 
 %prep
-%autosetup
+%autosetup -p1
 
 # Remove bundled libs
 rm -rf upnp
@@ -140,6 +142,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 
 
 %changelog
+* Tue Oct 08 2024 Simone Caronni <negativo17@gmail.com> - 2.4.2-14
+- Rebuild for updated miniupnpc.
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 2.4.2-13
 - convert license to SPDX
 

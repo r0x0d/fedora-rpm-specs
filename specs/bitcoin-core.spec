@@ -5,7 +5,7 @@
 %bcond_with extended_tests
 
 Name:       bitcoin-core
-Version:    27.1
+Version:    28.0
 Release:    2%{?dist}
 Summary:    Peer to Peer Cryptographic Currency
 License:    MIT
@@ -96,26 +96,13 @@ issuing of bitcoins is carried out collectively by the network.
 This package contains the Qt based graphical client and node. If you are looking
 to run a Bitcoin wallet, this is probably the package you want.
 
-%package libs
-Summary:    Peer-to-peer digital currency
-Conflicts:  bitcoin-libs
-
-%description libs
-This package provides the bitcoinconsensus shared libraries. These libraries
-may be used by third party software to provide consensus verification
-functionality.
-
-Unless you know you need this package, you probably do not.
-
 %package devel
 Summary:    Peer-to-peer digital currency
 Conflicts:  bitcoin-devel
 Requires:   %{name}-libs%{?_isa} = %{version}-%{release}
 
 %description devel
-This package contains the header files and static library for the
-bitcoinconsensus shared library. If you are developing or compiling software
-that wants to link against that library, then you need this package installed.
+This package contains the bitcoin utility tool.
 
 Most people do not need this package installed.
 
@@ -295,18 +282,9 @@ exit 0
 %{_mandir}/man1/%{project_name}-qt.1*
 %{_metainfodir}/%{project_name}-qt.metainfo.xml
 
-%files libs
-%license COPYING
-%doc doc/README.md SECURITY.md
-%{_libdir}/libbitcoinconsensus.so.0
-%{_libdir}/libbitcoinconsensus.so.0.0.0
-
 %files devel
-%doc doc/developer-notes.md doc/shared-libraries.md
+%doc doc/developer-notes.md
 %{_bindir}/%{project_name}-util
-%{_includedir}/bitcoinconsensus.h
-%{_libdir}/libbitcoinconsensus.so
-%{_libdir}/pkgconfig/libbitcoinconsensus.pc
 %{_mandir}/man1/%{project_name}-util.1*
 
 %files utils
@@ -341,6 +319,12 @@ exit 0
 %{_userunitdir}/%{project_name}.service
 
 %changelog
+* Tue Oct 08 2024 Simone Caronni <negativo17@gmail.com> - 28.0-2
+- Rebuild for updated miniupnpc 2.2.8.
+
+* Tue Oct 08 2024 Simone Caronni <negativo17@gmail.com> - 28.0-1
+- Update to 28.0.
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 27.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,6 +1,6 @@
 Name:           perl-HTTP-Message
-Version:        6.46
-Release:        2%{?dist}
+Version:        7.00
+Release:        1%{?dist}
 Summary:        HTTP style message
 # CONTRIBUTING.md:  CC0-1.0
 # other files:      GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -82,6 +82,7 @@ Summary:        Tests for %{name}
 Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 Requires:       perl-Test-Harness
 Requires:       perl(URI::URL)
+Requires:       perl(IO::Compress::Brotli)
 
 %description tests
 Tests from %{name}. Execute them
@@ -125,6 +126,10 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Tue Oct 08 2024 Michal Josef Špaček <mspacek@redhat.com> - 7.00-1
+- 7.00 bump
+- Requires IO::Compress::Brotli for tests.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.46-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

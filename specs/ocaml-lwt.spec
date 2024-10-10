@@ -4,8 +4,8 @@ ExcludeArch: %{ix86}
 %global giturl  https://github.com/ocsigen/lwt
 
 Name:           ocaml-lwt
-Version:        5.7.0
-Release:        13%{?dist}
+Version:        5.8.0
+Release:        1%{?dist}
 Summary:        OCaml lightweight thread library
 
 # The project as a whole is MIT.  The following files are BSD-2-Clause:
@@ -17,8 +17,6 @@ License:        MIT AND BSD-2-Clause
 URL:            https://ocsigen.org/lwt
 VCS:            git:%{giturl}.git
 Source0:        %{giturl}/archive/%{version}/lwt-%{version}.tar.gz
-# Fix GCC 14 incompatibilites: https://github.com/ocsigen/lwt/pull/1004
-Patch0:         0001-Prepare-for-stricter-checking-in-GCC-14.patch
 
 BuildRequires:  ocaml >= 4.08
 BuildRequires:  ocaml-dune >= 1.8.0
@@ -147,6 +145,10 @@ rm -rf %{buildroot}%{ocamldir}/lwt_ppx_let
 
 
 %changelog
+* Tue Oct 08 2024 Richard W.M. Jones <rjones@redhat.com> - 5.8.0-1
+- New upstream version 5.8.0 (RHBZ#2229326)
+- Remove GCC patch, merged upstream.
+
 * Mon Aug  5 2024 Jerry James <loganjerry@gmail.com> - 5.7.0-13
 - Rebuild for ocaml-ppxlib 0.33.0
 

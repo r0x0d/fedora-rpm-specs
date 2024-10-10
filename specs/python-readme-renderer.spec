@@ -2,15 +2,13 @@
 %global pkg_name readme-renderer
 
 Name:           python-%{pkg_name}
-Version:        43.0
+Version:        44.0
 Release:        %autorelease
 Summary:        Library for rendering "readme" descriptions for Warehouse
 
 License:        Apache-2.0
 URL:            https://github.com/pypa/readme_renderer
 Source:         %{pypi_source %{pypi_name}}
-# pytest-icdiff not packaged and not essential
-Patch:          readme_renderer-rm_unneeded_test_deps.diff
 
 BuildArch:      noarch
 
@@ -31,35 +29,28 @@ Summary:        %{summary}
 
 %pyproject_extras_subpkg -n python%{python3_pkgversion}-%{pkg_name} md
 
-
 %prep
 %autosetup -p1 -n %{pypi_name}-%{version}
-
+# pytest-icdiff not packaged and not essential
+sed -i "/pytest-icdiff/d" tox.ini
 
 %generate_buildrequires
 %pyproject_buildrequires -t -x md
- 
 
 %build
 %pyproject_wheel
- 
 
 %install
 %pyproject_install
 %pyproject_save_files %{pypi_name}
 
-
 %check
 %pyproject_check_import
 %pytest -v tests
-# -k "not test_md_fixtures"
- 
 
 %files -n python%{python3_pkgversion}-%{pkg_name} -f %{pyproject_files}
 %license LICENSE
 %doc README.rst
 
-
 %changelog
 %autochangelog
-

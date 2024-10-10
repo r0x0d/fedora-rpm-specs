@@ -1,11 +1,11 @@
 # Debuginfo packages are disabled to prevent rpmbuild from generating an empty
 # debuginfo package for the empty main package.
 %global debug_package %{nil}
-%bcond mingw 1
+%bcond mingw %[%{undefined rhel} || %{defined epel}]
 
 Name:           cereal
 Version:        1.3.2
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        A header-only C++11 serialization library
 # include/cereal/details/polymorphic_impl.hpp is BSL-1.0
 # include/cereal/external/base64.hpp is Zlib
@@ -111,6 +111,9 @@ MinGW Windows %{name} library.
 %endif
 
 %changelog
+* Tue Oct 08 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 1.3.2-9
+- Disable mingw in RHEL builds
+
 * Tue Oct 01 2024 Jean THOMAS <virgule@jeanthomas.me> - 1.3.2-8
 - Add mingw32/mingw64 packages
 

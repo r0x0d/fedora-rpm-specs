@@ -1,5 +1,5 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 # we are excluding some BRs from automatic generator
@@ -18,8 +18,8 @@ troveclient module), and a command-line script (trove). Each \
 implements 100% (or less ;) ) of the Trove API.
 
 Name:           python-troveclient
-Version:        8.4.0
-Release:        3%{?dist}
+Version:        8.6.0
+Release:        1%{?dist}
 Summary:        Client library for OpenStack DBaaS API
 
 License:        Apache-2.0
@@ -128,6 +128,9 @@ rm -rf doc/build/html/.{doctrees,buildinfo}
 %endif
 
 %changelog
+* Mon Oct 07 2024 Joel Capitao <jcapitao@redhat.com> 8.6.0-1
+- Update to upstream version 8.6.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 8.4.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,6 +1,6 @@
 Name:    ffmpegthumbs
-Version: 24.08.1
-Release: 2%{?dist}
+Version: 24.08.2
+Release: 1%{?dist}
 Summary: KDE ffmpegthumbnailer service
 
 License: GPL-2.0-or-later
@@ -51,6 +51,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.%{
 
 
 %changelog
+* Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
+- 24.08.2
+
 * Wed Oct 02 2024 Alessandro Astone <ales.astone@gmail.com> - 24.08.1-2
 - Rebuild for ffmpeg 7 (again)
 

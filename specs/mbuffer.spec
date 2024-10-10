@@ -1,5 +1,5 @@
 Name:           mbuffer
-Version:        20240929
+Version:        20241007
 Release:        1%{?dist}
 Summary:        Measuring Buffer is an enhanced version of buffer
 
@@ -7,7 +7,6 @@ Summary:        Measuring Buffer is an enhanced version of buffer
 License:        GPL-3.0-or-later
 URL:            http://www.maier-komor.de/mbuffer.html
 Source0:        http://www.maier-komor.de/software/mbuffer/mbuffer-%{version}.tgz
-Patch0:         network.diff
 
 BuildRequires:  make
 BuildRequires:  gcc
@@ -44,6 +43,9 @@ rm -rf %{buildroot}/usr/etc/mbuffer.rc
 %config(noreplace) %{_sysconfdir}/mbuffer.rc
 
 %changelog
+* Tue Oct 08 2024 Filipe Rosset <rosset.filipe@gmail.com> - 20241007-1
+- Update to 20241007 fixes rhbz#2317034
+
 * Fri Oct 04 2024 Filipe Rosset <rosset.filipe@gmail.com> - 20240929-1
 - Update to 20240929 fixes rhbz#2315585
 

@@ -3,7 +3,7 @@
 %bcond qt %[%{undefined rhel} || 0%{?rhel} < 10]
 
 Name:		thermald
-Version:	2.5.6
+Version:	2.5.8
 Release:	%autorelease
 Summary:	Thermal Management daemon
 
@@ -18,9 +18,9 @@ ExclusiveArch:	%{ix86} x86_64
 BuildRequires:	make
 BuildRequires:	autoconf autoconf-archive
 BuildRequires:	automake
-BuildRequires:	dbus-glib-devel
 BuildRequires:	desktop-file-utils
 BuildRequires:	gcc-c++
+BuildRequires:	glib2-devel
 BuildRequires:	libxml2-devel
 BuildRequires:	systemd-rpm-macros
 BuildRequires:  upower-devel

@@ -5,7 +5,7 @@
 %global crate rkyv_derive
 
 Name:           rust-rkyv_derive
-Version:        0.7.45
+Version:        0.8.8
 Release:        %autorelease
 Summary:        Derive macro for rkyv
 
@@ -32,6 +32,7 @@ use the "%{crate}" crate.
 %files          devel
 %license %{crate_instdir}/LICENSE
 %license %{crate_instdir}/src/serde/LICENSE
+%doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
 %package     -n %{name}+default-devel
@@ -46,64 +47,16 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+arbitrary_enum_discriminant-devel
+%package     -n %{name}+bytecheck-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+arbitrary_enum_discriminant-devel %{_description}
+%description -n %{name}+bytecheck-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "arbitrary_enum_discriminant" feature of the "%{crate}" crate.
+use the "bytecheck" feature of the "%{crate}" crate.
 
-%files       -n %{name}+arbitrary_enum_discriminant-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+archive_be-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+archive_be-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "archive_be" feature of the "%{crate}" crate.
-
-%files       -n %{name}+archive_be-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+archive_le-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+archive_le-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "archive_le" feature of the "%{crate}" crate.
-
-%files       -n %{name}+archive_le-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+copy-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+copy-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "copy" feature of the "%{crate}" crate.
-
-%files       -n %{name}+copy-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+strict-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+strict-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "strict" feature of the "%{crate}" crate.
-
-%files       -n %{name}+strict-devel
+%files       -n %{name}+bytecheck-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep

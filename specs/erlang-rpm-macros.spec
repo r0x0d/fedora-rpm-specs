@@ -4,7 +4,7 @@ Release:	%autorelease
 Summary:	Macros for simplifying building of Erlang packages
 License:	MIT
 URL:		https://github.com/fedora-erlang/erlang-rpm-macros
-VCS:		scm:git:%{url}.git
+VCS:		git:%{url}.git
 Source0:	%{url}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildArch:	noarch
 # These BRs needed only for testing
@@ -22,18 +22,14 @@ Requires:	python3-pybeam
 Requires:	python3-pyelftools
 Requires:	python3-rpm
 
-
 %description
 Macros for simplifying building of Erlang packages.
-
 
 %prep
 %autosetup -p1
 
-
 %build
 # Nothing to build
-
 
 %install
 install -d %{buildroot}%{_rpmconfigdir}/fileattrs
@@ -43,10 +39,8 @@ install -p -m 0755 erlang-find-requires.py %{buildroot}%{_rpmconfigdir}/erlang-f
 install -p -m 0644 macros.erlang %{buildroot}%{_rpmconfigdir}/macros.d/
 install -p -m 0644 erlang.attr %{buildroot}%{_rpmconfigdir}/fileattrs/
 
-
 %check
 make check
-
 
 %files
 %license LICENSE
@@ -55,7 +49,6 @@ make check
 %{_rpmconfigdir}/erlang-find-requires
 %{_rpmconfigdir}/fileattrs/erlang.attr
 %{_rpmconfigdir}/macros.d/macros.erlang
-
 
 %changelog
 %autochangelog

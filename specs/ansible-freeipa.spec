@@ -12,18 +12,22 @@
 Summary: Roles and playbooks to deploy FreeIPA servers, replicas and clients
 Name: ansible-freeipa
 Version: 1.13.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 URL: https://github.com/freeipa/ansible-freeipa
 License: GPL-3.0-or-later
 Source: https://github.com/freeipa/ansible-freeipa/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 BuildArch: noarch
-Requires: ansible-core >= 1.15.0
-BuildRequires: ansible-core >= 1.15.0
+Requires: ansible-core >= 2.15.0
+BuildRequires: ansible-core >= 2.15.0
 BuildRequires: python
+Provides: ansible-collection-%{collection_namespace}-%{collection_name} = %{version}-%{release}
+Provides: ansible-freeipa-tests
+Obsoletes: ansible-freeipa-tests < 1.12.1-2
 
 %description
-Ansible roles to install and uninstall FreeIPA servers, replicas and clients,
-roles for backups and SmartCard configuration, modules for management and also
+Ansible collection %{collection_namespace}.%{collection_name} providing
+roles to install and uninstall FreeIPA servers, replicas and clients, roles
+for backups and SmartCard configuration, modules for management and also
 playbooks for all roles and modules.
 
 Note: The Ansible playbooks and roles require a configured Ansible environment
@@ -112,27 +116,6 @@ Work is planned to have a new method to handle CSR for external signed CAs in
 a separate step before starting the server installation.
 
 
-%package tests
-Summary: ansible-freeipa tests
-Requires: %{name} = %{version}-%{release}
-
-%description tests
-ansible-freeipa tests.
-
-The tests for the collection are part of the collection sub package.
-
-Please have a look at %{_datadir}/ansible-freeipa/requirements-tests.txt
-to get the needed requrements to run the tests.
-
-
-%package collection
-Summary: %{collection_namespace}.%{collection_name} collection
-Provides: ansible-collection-%{collection_namespace}-%{collection_name} = %{version}-%{release}
-
-%description collection
-The %{collection_namespace}.%{collection_name} collection, including tests.
-
-
 %prep
 %setup -q
 # Do not create backup files with patches
@@ -157,60 +140,27 @@ done
 %build
 
 %install
-install -m 755 -d %{buildroot}%{_datadir}/ansible/roles/
-cp -rp roles/ipaserver %{buildroot}%{_datadir}/ansible/roles/
-cp -rp roles/ipaserver/README.md README-server.md
-cp -rp roles/ipareplica %{buildroot}%{_datadir}/ansible/roles/
-cp -rp roles/ipareplica/README.md README-replica.md
-cp -rp roles/ipaclient %{buildroot}%{_datadir}/ansible/roles/
-cp -rp roles/ipaclient/README.md README-client.md
-cp -rp roles/ipabackup %{buildroot}%{_datadir}/ansible/roles/
-cp -rp roles/ipabackup/README.md README-backup.md
-cp -rp roles/ipasmartcard_server %{buildroot}%{_datadir}/ansible/roles/
-cp -rp roles/ipasmartcard_server/README.md README-smartcard_server.md
-cp -rp roles/ipasmartcard_client %{buildroot}%{_datadir}/ansible/roles/
-cp -rp roles/ipasmartcard_client/README.md README-smartcard_client.md
-install -m 755 -d %{buildroot}%{_datadir}/ansible/plugins/
-cp -rp plugins/* %{buildroot}%{_datadir}/ansible/plugins/
-
-install -m 755 -d %{buildroot}%{_datadir}/ansible-freeipa
-cp requirements*.txt %{buildroot}%{_datadir}/ansible-freeipa/
-cp -rp utils %{buildroot}%{_datadir}/ansible-freeipa/
-install -m 755 -d %{buildroot}%{_datadir}/ansible-freeipa/tests
-cp -rp tests %{buildroot}%{_datadir}/ansible-freeipa/
-
 # Create collection and install to %{buildroot}%{ansible_collections_dir}
 # ansible-galaxy collection install creates ansible_collections directory
 # automatically in given path, therefore /..
 utils/build-galaxy-release.sh -o "%{version}" -p %{buildroot}%{ansible_collections_dir}/.. %{collection_namespace} %{collection_name}
 
+cp %{buildroot}/%{ansible_collections_dir}/%{collection_namespace}/%{collection_name}/README.md .
+
+
 %files
 %license COPYING
-%{_datadir}/ansible/roles/ipaserver
-%{_datadir}/ansible/roles/ipareplica
-%{_datadir}/ansible/roles/ipaclient
-%{_datadir}/ansible/roles/ipabackup
-%{_datadir}/ansible/roles/ipasmartcard_server
-%{_datadir}/ansible/roles/ipasmartcard_client
-%{_datadir}/ansible/plugins/doc_fragments
-%{_datadir}/ansible/plugins/module_utils
-%{_datadir}/ansible/plugins/modules
-%{_datadir}/ansible/plugins/inventory
-%doc README*.md
-%doc playbooks
-%{_datadir}/ansible-freeipa/requirements.txt
-%{_datadir}/ansible-freeipa/requirements-dev.txt
-%{_datadir}/ansible-freeipa/utils
-
-%files tests
-%{_datadir}/ansible-freeipa/tests
-%{_datadir}/ansible-freeipa/requirements-tests.txt
-
-%files collection
+%doc README.md
 %dir %{ansible_collections_dir}/%{collection_namespace}
 %{ansible_collections_dir}/%{collection_namespace}/%{collection_name}
 
 %changelog
+* Tue Oct  8 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.13.2-3
+- Only provide Ansible collection freeipa.ansible_freeipa
+  - Roles and modules are not installed into %{_datadir}/ansible/ anymore
+  - Drops tests sub package, part of the collection
+  - Merges collection sub package into main package
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.13.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

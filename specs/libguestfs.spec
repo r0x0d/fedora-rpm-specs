@@ -30,7 +30,7 @@ ExcludeArch: %{ix86}
 %global verify_tarball_signature 1
 
 # The source directory.
-%global source_directory 1.53-development
+%global source_directory 1.54-stable
 
 # Filter perl provides.
 %{?perl_default_filter}
@@ -41,7 +41,7 @@ ExcludeArch: %{ix86}
 Summary:       Access and modify virtual machine disk images
 Name:          libguestfs
 Epoch:         1
-Version:       1.53.7
+Version:       1.54.0
 Release:       1%{?dist}
 License:       LGPL-2.1-or-later
 
@@ -1100,6 +1100,9 @@ rm ocaml/html/.gitignore
 
 
 %changelog
+* Tue Oct 08 2024 Richard W.M. Jones <rjones@redhat.com> - 1:1.54.0-1
+- New upstream stable version 1.54.0
+
 * Thu Oct 03 2024 Richard W.M. Jones <rjones@redhat.com> - 1:1.53.7-1
 - New upstream development version 1.53.7
 

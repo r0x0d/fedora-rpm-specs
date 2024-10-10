@@ -12,6 +12,7 @@ Summary:       Pytest plugin to compare CIDs
 License:       MPL-2.0
 URL:           https://github.com/ntninja/pytest-cid
 Source0:       %{pypi_source pytest_cid}
+# https://github.com/ntninja/pytest-cid/pull/3
 Patch1:        python-pytest-cid-0001-Relax-dependencies.patch
 BuildRequires: python3-devel
 BuildRequires: python3-pytest

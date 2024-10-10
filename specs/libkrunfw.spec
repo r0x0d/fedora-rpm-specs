@@ -5,7 +5,7 @@
 %global kernel linux-6.6.52
 
 Name:           libkrunfw
-Version:        4.4.1
+Version:        4.4.2
 Release:        1%{?dist}
 Summary:        A dynamic library bundling the guest payload consumed by libkrun
 # Automatically converted from old format: LGPLv2 and GPLv2 - review is highly recommended.
@@ -114,6 +114,9 @@ cp %{SOURCE1} tarballs/
 %endif
 
 %changelog
+* Tue Oct 08 2024 Sergio Lopez <slp@redhat.com> - 4.4.2-1
+- Update to 4.4.2 which bundles a 6.6.52 kernel
+
 * Fri Sep 27 2024 Sergio Lopez <slp@redhat.com> - 4.4.1-1
 - Update to 4.4.1 which bundles a 6.6.52 kernel
 

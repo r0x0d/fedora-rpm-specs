@@ -30,6 +30,10 @@
 %bcond_with    TSAN
 # Add experimental extra verbose logging of query processing
 %bcond_with    QUERYTRACE
+%if 0%{?fedora} >= 41 && ! 0%{?rhel}
+# Make this enabled on recent Fedora, but not in ELN or RHEL
+  %bcond_without OPENSSL_ENGINE
+%endif
 
 %{?!bind_uid:  %global bind_uid  25}
 %{?!bind_gid:  %global bind_gid  25}
@@ -83,7 +87,7 @@ License:  MPL-2.0 AND ISC AND MIT AND BSD-3-Clause AND BSD-2-Clause
 # Before rebasing bind, ensure bind-dyndb-ldap is ready to be rebuild and use side-tag with it.
 # Updating just bind will cause freeipa-dns-server package to be uninstallable.
 Version:  9.18.30
-Release:  1%{?dist}
+Release:  2%{?dist}
 Epoch:    32
 Url:      https://www.isc.org/downloads/bind/
 #
@@ -121,7 +125,9 @@ Patch16: bind-9.16-redhat_doc.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=2122010
 Patch26: bind-9.18-unittest-netmgr-unstable.patch
 # https://fedoraproject.org/wiki/Changes/OpensslDeprecateEngine
-Patch27: bind-9.18-openssl-no-engine.patch
+# Correct support for building without openssl/engine.h header
+# https://gitlab.isc.org/isc-projects/bind9/-/merge_requests/9593
+Patch27: bind-9.20-openssl-no-engine.patch
 
 %{?systemd_ordering}
 Requires:       coreutils
@@ -136,7 +142,7 @@ Obsoletes:      %{name}-pkcs11 < 32:9.18.4-2
 
 BuildRequires:  gcc, make
 BuildRequires:  openssl-devel, libtool, autoconf, pkgconfig, libcap-devel
-%if 0%{?fedora} >= 41
+%if %{with OPENSSL_ENGINE}
 BuildRequires:  openssl-devel-engine
 %endif
 BuildRequires:  libidn2-devel, libxml2-devel
@@ -377,8 +383,11 @@ done
 %define systemtest_prepare_build() \
   cp -Tuav bin/tests "%{1}/bin/tests/" \
 
-CFLAGS="$CFLAGS $RPM_OPT_FLAGS"
+%if %{with OPENSSL_ENGINE}
 CPPFLAGS="$CPPFLAGS -DOPENSSL_API_COMPAT=10100"
+%else
+CPPFLAGS="$CPPFLAGS -DOPENSSL_NO_ENGINE=1"
+%endif
 %if %{with TSAN}
   CFLAGS+=" -O1 -fsanitize=thread -fPIE -pie"
 %endif
@@ -973,6 +982,9 @@ fi;
 %endif
 
 %changelog
+* Tue Oct 08 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.30-2
+- Make OpenSSL engine support optional
+
 * Fri Oct 04 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.30-1
 - Update to 9.18.30 (rhbz#2306542)
 

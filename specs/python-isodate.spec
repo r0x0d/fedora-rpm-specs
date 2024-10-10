@@ -4,7 +4,7 @@
 %global srcname isodate
 
 Name:           python-%{srcname}
-Version:        0.6.1
+Version:        0.7.0
 Release:        %autorelease
 Summary:        An ISO 8601 date/time/duration parser and formatter
 License:        BSD-3-Clause

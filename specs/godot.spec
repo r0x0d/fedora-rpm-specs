@@ -16,7 +16,7 @@
 
 Name:           godot
 Version:        4.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Multi-platform 2D and 3D game engine with a feature-rich editor
 %if 0%{?mageia}
 Group:          Development/Tools
@@ -32,6 +32,8 @@ Source1:        https://downloads.tuxfamily.org/godotengine/%{version}/%{?prerel
 Patch0:         preconfigure-blender-oidn-paths.patch
 # https://github.com/godotengine/godot/pull/95658
 Patch1:         0001-OpenXR-Fix-support-for-building-against-distro-packa.patch
+# https://github.com/godotengine/godot/commit/4c72d599f0a171a96e47004239f42756115b723f
+Patch2:         %{name}-miniupnp228.patch
 
 # Upstream does not support this arch (for now)
 ExcludeArch:    s390x
@@ -275,6 +277,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{rdnsname}.desktop
 appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/%{rdnsname}.appdata.xml
 
 %changelog
+* Tue Oct 08 2024 Simone Caronni <negativo17@gmail.com> - 4.3-2
+- Rebuild for updated miniupnpc.
+
 * Wed Sep 04 2024 Rémi Verschelde <akien@fedoraproject.org> - 4.3-1
 - Version 4.3-stable
 - Adds Wayland support (opt-in)

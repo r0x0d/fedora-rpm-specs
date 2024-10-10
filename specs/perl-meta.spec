@@ -2,14 +2,12 @@
 %bcond_without perl_meta_enables_optional_test
 
 Name:           perl-meta
-Version:        0.010
+Version:        0.011
 Release:        1%{?dist}
 Summary:        Meta-programming API
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/dist/meta
 Source0:        https://cpan.metacpan.org/authors/id/P/PE/PEVANS/meta-%{version}.tar.gz
-# Fix compiler wanings, proposed to the upstream, CPAN RT#151024
-Patch0:         meta-0.010-Fix-compiler-warnings.patch
 BuildRequires:  coreutils
 BuildRequires:  findutils
 BuildRequires:  perl-devel
@@ -93,6 +91,9 @@ export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print
 %{_libexecdir}/%{name}
 
 %changelog
+* Tue Oct 08 2024 Petr Pisar <ppisar@redhat.com> - 0.011-1
+- 0.011 bump
+
 * Thu Oct 03 2024 Petr Pisar <ppisar@redhat.com> - 0.010-1
 - 0.010 bump
 

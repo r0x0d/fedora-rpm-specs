@@ -8,7 +8,7 @@
 
 Name:           foot
 Version:        1.18.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Fast, lightweight and minimalistic Wayland terminal emulator
 
 # Main package license: MIT
@@ -154,6 +154,9 @@ desktop-file-validate \
 
 
 %changelog
+* Tue Oct 08 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 1.18.1-2
+- Rebuilt for utf8proc 2.9.0
+
 * Thu Aug 15 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 1.18.1-1
 - Update to 1.18.1 (#2304836)
 

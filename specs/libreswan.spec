@@ -7,8 +7,8 @@
 %global unbound_version 1.6.6
 # Libreswan config options
 %global libreswan_config \\\
-    FINALLIBEXECDIR=%{_libexecdir}/ipsec \\\
-    FINALMANDIR=%{_mandir} \\\
+    LIBEXECDIR=%{_libexecdir}/ipsec \\\
+    MANDIR=%{_mandir} \\\
     PREFIX=%{_prefix} \\\
     INITSYSTEM=systemd \\\
     SHELL_BINARY=%{_bindir}/sh \\\
@@ -29,7 +29,7 @@
 Name: libreswan
 Summary: Internet Key Exchange (IKEv1 and IKEv2) implementation for IPsec
 # version is generated in the release script
-Version: 4.15
+Version: 5.1
 Release: %autorelease
 # The code in lib/libswan/nss_copies.c is under MPL-2.0, while the
 # rest is under GPL-2.0-or-later

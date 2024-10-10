@@ -58,7 +58,6 @@ BuildRequires:  sed
 BuildRequires:  gawk
 BuildRequires:  gzip
 BuildRequires:  xz
-BuildRequires:  pcre
 BuildRequires:  bison
 BuildRequires:  flex
 BuildRequires:  libtool

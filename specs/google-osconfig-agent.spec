@@ -7,7 +7,7 @@
 
 # https://github.com/GoogleCloudPlatform/osconfig
 %global goipath         github.com/GoogleCloudPlatform/osconfig
-Version:                20240927.00
+Version:                20241004.00
 %global tag             %{version}
 
 %gometa -f

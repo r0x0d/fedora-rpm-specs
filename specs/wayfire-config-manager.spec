@@ -10,6 +10,9 @@ License:        MIT
 URL:            %{forgeurl}
 Source0:        %{forgesource}
 
+# https://github.com/WayfireWM/wcm/pull/90
+Patch0:         %{forgeurl}/pull/90.patch#/appdata-fix.patch
+
 BuildRequires:  desktop-file-utils
 BuildRequires:  gcc-c++
 BuildRequires:  glm-devel

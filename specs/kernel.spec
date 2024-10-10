@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc2.24
+%define pkgrelease 0.rc2.20241008git87d6aab2389e.25
 %define kversion 6
-%define tarfile_release 6.12-rc2
+%define tarfile_release 6.12-rc2-6-g87d6aab2389e
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc2.24%{?buildid}%{?dist}
+%define specrelease 0.rc2.20241008git87d6aab2389e.25%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4136,6 +4136,16 @@ fi\
 #
 #
 %changelog
+* Tue Oct 08 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc2.87d6aab2389e.25]
+- configs: rhel: Fix designware I2C controllers related config settings (Hans de Goede)
+- Enable CONFIG_DMA_NUMA_CMA for x86_64 and aarch64 (Chris von Recklinghausen)
+- new config in drivers/phy (Izabela Bakollari)
+- configs: fedora: Unset CONFIG_I2C_DESIGNWARE_CORE on s390x (Hans de Goede)
+- configs: fedora: Drop duplicate CONFIG_I2C_DESIGNWARE_CORE for x86_64 and aarch64 (Hans de Goede)
+- Enable DESIGNWARE_CORE for ppc as well (Justin M. Forbes)
+- Fix up I2C_DESIGNWARE_CORE config for Fedora (Justin M. Forbes)
+- Linux v6.12.0-0.rc2.87d6aab2389e
+
 * Mon Oct 07 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc2.24]
 - Linux v6.12.0-0.rc2
 

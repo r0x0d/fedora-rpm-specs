@@ -1,16 +1,19 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 %global pypi_name oslo.utils
 %global pkg_name oslo-utils
 %global with_doc 1
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 # we are excluding some BRs from automatic generator
-# eventlet is not runtime req and it's currently unsupported on python 3.13
-%global excluded_brs doc8 bandit pre-commit hacking flake8-import-order eventlet
+%global excluded_brs doc8 bandit pre-commit hacking flake8-import-order
 # Exclude sphinx from BRs if docs are disabled
 %if ! 0%{?with_doc}
 %global excluded_brs %{excluded_brs} sphinx openstackdocstheme
+%endif
+# Exclude some BRs for Fedora
+%if 0%{?fedora}
+%global excluded_brs %{excluded_brs} eventlet
 %endif
 
 %global common_desc \
@@ -22,15 +25,13 @@ The OpenStack Oslo Utility library. \
 %global common_desc_tests Tests for the Oslo Utility library.
 
 Name:           python-oslo-utils
-Version:        7.1.0
-Release:        3%{?dist}
+Version:        7.3.0
+Release:        1%{?dist}
 Summary:        OpenStack Oslo Utility library
 
 License:        Apache-2.0
 URL:            http://launchpad.net/oslo
 Source0:        https://tarballs.openstack.org/%{pypi_name}/%{pypi_name}-%{upstream_version}.tar.gz
-# Patch required for netaddr update https://review.opendev.org/c/openstack/oslo.utils/+/909307
-Patch0:         0001-netutils-Explicitly-require-INET_ATON.patch
 # Required for tarball sources verification
 %if 0%{?sources_gpg} == 1
 Source101:        https://tarballs.openstack.org/%{pypi_name}/%{pypi_name}-%{upstream_version}.tar.gz.asc
@@ -53,6 +54,7 @@ Summary:    OpenStack Oslo Utility library
 
 BuildRequires:  python3-devel
 BuildRequires:  pyproject-rpm-macros
+BuildRequires:  qemu-img
 
 Requires:       python-%{pkg_name}-lang = %{version}-%{release}
 
@@ -71,7 +73,9 @@ Documentation for the Oslo Utility library.
 Summary:    Tests for the Oslo Utility library
 
 Requires: python3-%{pkg_name} = %{version}-%{release}
-#Requires: python3-eventlet
+%if ! 0%{?fedora}
+Requires: python3-eventlet
+%endif
 Requires: python3-hacking
 Requires: python3-fixtures
 Requires: python3-oslotest
@@ -126,7 +130,7 @@ done
 # generate html docs
 %tox -e docs
 # remove the sphinx-build-3 leftovers
-rm -rf doc/build/html/.{doctrees,buildinfo}
+rm -rf doc/build/html/.{doctrees,buildinfo} doc/build/html/objects.inv
 %endif
 
 
@@ -147,9 +151,10 @@ mv %{buildroot}%{python3_sitelib}/oslo_utils/locale %{buildroot}%{_datadir}/loca
 %find_lang oslo_utils --all-name
 
 %check
-# skip test failing with netaddr > 1.2.0
+%if 0%{?fedora}
 # eventlet is not yet supported on python 3.13 and it's not used in openstack clients
 rm oslo_utils/tests/test_eventletutils.py
+%endif
 %tox -e %{default_toxenv} -- -- --exclude-regex '(oslo_utils.tests.test_netutils.NetworkUtilsTest.test_is_valid_ip)'
 
 %files -n python3-%{pkg_name}
@@ -172,6 +177,9 @@ rm oslo_utils/tests/test_eventletutils.py
 %license LICENSE
 
 %changelog
+* Tue Oct 08 2024 Joel Capitao <jcapitao@redhat.com> 7.3.0-1
+- Update to upstream version 7.3.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.1.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

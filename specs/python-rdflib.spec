@@ -19,6 +19,8 @@ Source:         %{pypi_source}
 Patch:          %{srcname}-py3_13-fix-pickler.diff
 # Backported from https://github.com/RDFLib/rdflib/pull/2817
 Patch:          rdflib-7.0.0-pytest8.patch
+# Relax isodate version requirement
+Patch:          rdflib-7.0.0-isodate-0.7.patch
 
 BuildRequires:  python%{python3_pkgversion}-devel
 %if %{with tests}

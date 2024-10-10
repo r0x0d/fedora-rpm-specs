@@ -1,7 +1,7 @@
 Name:    kgpg
 Summary: Manage GPG encryption keys
-Version: 24.08.1
-Release: 2%{?dist}
+Version: 24.08.2
+Release: 1%{?dist}
 
 License: CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND (GPL-2.0-only OR GPL-3.0-only)
 URL:     https://www.kde.org/applications/utilities/kgpg/
@@ -104,6 +104,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 
 
 %changelog
+* Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
+- 24.08.2
+
 * Thu Sep 26 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 24.08.1-2
 - Drop KDE4 servicemenu
 

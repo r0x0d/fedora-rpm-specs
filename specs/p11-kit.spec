@@ -1,4 +1,11 @@
 # This spec file has been automatically updated
+%if 0%{?fedora}
+%bcond_without mingw
+%else
+%bcond_with mingw
+%endif
+
+
 Version:        0.25.5
 Release:        %{?autorelease}%{!?autorelease:1%{?dist}}
 Name:           p11-kit
@@ -26,6 +33,23 @@ BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(systemd)
 BuildRequires:  gnupg2
 BuildRequires:  /usr/bin/xsltproc
+
+%if %{with mingw}
+BuildRequires:  ninja-build
+
+BuildRequires:  mingw32-filesystem >= 95
+BuildRequires:  mingw32-gcc
+BuildRequires:  mingw32-binutils
+BuildRequires:  mingw32-libffi
+BuildRequires:  mingw32-libtasn1
+
+BuildRequires:  mingw64-filesystem >= 95
+BuildRequires:  mingw64-gcc
+BuildRequires:  mingw64-binutils
+BuildRequires:  mingw64-libffi
+BuildRequires:  mingw64-libtasn1
+%endif
+
 
 %description
 p11-kit provides a way to load and enumerate PKCS#11 modules, as well
@@ -64,6 +88,33 @@ export PKCS#11 modules through a Unix domain socket.  Note that this
 feature is still experimental.
 
 
+%if %{with mingw}
+%package -n mingw32-%{name}
+Summary:        MinGW Library for loading and sharing PKCS#11 modules
+Requires:       pkgconfig
+BuildArch:      noarch
+
+%description -n mingw32-%{name}
+p11-kit provides a way to load and enumerate PKCS#11 modules, as well as
+a standard configuration setup for installing PKCS#11 modules in such a
+way that they're discoverable.  This library is cross-compiled for MinGW.
+
+
+%package -n mingw64-%{name}
+Summary:        MinGW Library for loading and sharing PKCS#11 modules
+Requires:       pkgconfig
+BuildArch:      noarch
+
+%description -n mingw64-%{name}
+p11-kit provides a way to load and enumerate PKCS#11 modules, as well as
+a standard configuration setup for installing PKCS#11 modules in such a
+way that they're discoverable.  This library is cross-compiled for MinGW.
+
+
+%{?mingw_debug_package}
+%endif
+
+
 # solution taken from icedtea-web.spec
 %define multilib_arches ppc64 sparc64 x86_64 ppc64le
 %ifarch %{multilib_arches}
@@ -79,10 +130,15 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %autosetup -p1
 
 %build
-# These paths are the source paths that  come from the plan here:
+# These paths are the source paths that come from the plan here:
 # https://fedoraproject.org/wiki/Features/SharedSystemCertificates:SubTasks
 %meson -Dgtk_doc=true -Dman=true -Dtrust_paths=%{_sysconfdir}/pki/ca-trust/source:%{_datadir}/pki/ca-trust-source
 %meson_build
+
+%if %{with mingw}
+%mingw_meson -Dgtk_doc=false -Dman=false -Dnls=false -Dtrust_paths=%{_sysconfdir}/pki/ca-trust/source:%{_datadir}/pki/ca-trust-source
+%mingw_ninja
+%endif
 
 %install
 %meson_install
@@ -94,6 +150,12 @@ mv $RPM_BUILD_ROOT%{_sysconfdir}/pkcs11/pkcs11.conf.example $RPM_BUILD_ROOT%{_do
 mkdir -p $RPM_BUILD_ROOT%{_userunitdir}
 install -p -m 644 %{SOURCE4} $RPM_BUILD_ROOT%{_userunitdir}
 %find_lang %{name}
+
+%if %{with mingw}
+%mingw_ninja_install
+
+%{?mingw_debug_install_post}
+%endif
 
 %check
 %meson_test
@@ -149,6 +211,44 @@ fi
 %{_libexecdir}/p11-kit/p11-kit-server
 %{_userunitdir}/p11-kit-server.service
 %{_userunitdir}/p11-kit-server.socket
+
+%if %{with mingw}
+%files -n mingw32-%{name}
+%{!?_licensedir:%global license %%doc}
+%license COPYING
+%{mingw32_bindir}/libp11-kit-0.dll
+%{mingw32_bindir}/p11-kit.exe
+%{mingw32_bindir}/trust.exe
+%{mingw32_libdir}/libp11-kit.dll.a
+%dir %{mingw32_libdir}/pkcs11/
+%{mingw32_libdir}/pkcs11/p11-kit-trust.dll
+%{mingw32_libdir}/pkcs11/p11-kit-trust.dll.a
+%{mingw32_libdir}/pkgconfig/p11-kit-1.pc
+%dir %{mingw32_libexecdir}/p11-kit/
+%{mingw32_libexecdir}/p11-kit/*.exe
+%{mingw32_libexecdir}/p11-kit/trust-extract-compat
+%{mingw32_includedir}/p11-kit-1/
+%{mingw32_datadir}/p11-kit/
+%{mingw32_sysconfdir}/pkcs11/
+
+%files -n mingw64-%{name}
+%{!?_licensedir:%global license %%doc}
+%license COPYING
+%{mingw64_bindir}/libp11-kit-0.dll
+%{mingw64_bindir}/p11-kit.exe
+%{mingw64_bindir}/trust.exe
+%{mingw64_libdir}/libp11-kit.dll.a
+%dir %{mingw64_libdir}/pkcs11/
+%{mingw64_libdir}/pkcs11/p11-kit-trust.dll
+%{mingw64_libdir}/pkcs11/p11-kit-trust.dll.a
+%{mingw64_libdir}/pkgconfig/p11-kit-1.pc
+%dir %{mingw64_libexecdir}/p11-kit/
+%{mingw64_libexecdir}/p11-kit/*.exe
+%{mingw64_libexecdir}/p11-kit/trust-extract-compat
+%{mingw64_includedir}/p11-kit-1/
+%{mingw64_datadir}/p11-kit/
+%{mingw64_sysconfdir}/pkcs11/
+%endif
 
 
 %changelog

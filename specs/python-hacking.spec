@@ -1,5 +1,5 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 %global pypi_name hacking
 
 # disable tests for now, see
@@ -17,8 +17,8 @@
 %global excluded_brs doc8 bandit pre-commit hacking flake8-import-order
 
 Name:           python-%{pypi_name}
-Version:        6.1.0
-Release:        4%{?dist}
+Version:        7.0.0
+Release:        1%{?dist}
 Summary:        OpenStack Hacking Guideline Enforcement
 
 License:        Apache-2.0
@@ -41,9 +41,12 @@ Source102:        https://releases.openstack.org/_static/%{sources_gpg_sign}.txt
 # feature. Only apply on releases with flake8 3.x.
 #Patch1:         0002-Disable-local-checks.patch
 %endif
+
+%if 0%{?fedora}
 # FIXME(hiwkby) a patch that does not require eventlet
 # Actually, eventlet is not needed for unittests
 Patch1:         test-requirements.txt.patch
+%endif
 BuildArch:      noarch
 
 # Required for tarball sources verification
@@ -146,6 +149,9 @@ rm -rf doc/build/html/.{doctrees,buildinfo} doc/build/html/objects.inv
 %{python3_sitelib}/%{pypi_name}
 
 %changelog
+* Tue Oct 08 2024 Joel Capitao <jcapitao@redhat.com> 7.0.0-1
+- Update to upstream version 7.0.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.1.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

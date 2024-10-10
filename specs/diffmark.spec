@@ -1,32 +1,33 @@
 Name:       diffmark
 Version:    0.10
-Release:    33%{?dist}
+Release:    34%{?dist}
 Summary:    XML diff and merge
 # COPYING:          diffmark license text
-# lib/lcs.hh:       GPL+ or Artistic    (based on Algorithm-Diff)
-# lib/xutil.hh:     GPL+ or Artistic    (based on XML-LibXML dom.c)
+# lib/lcs.hh:       GPL-1.0-or-later OR Artistic-1.0-Perl   (based on Algorithm-Diff)
+# lib/xutil.hh:     GPL-1.0-or-later OR Artistic-1.0-Perl   (based on XML-LibXML dom.c)
 ## Not in any binary package
-# aclocal.m4:       FSFUL and FSFULLR and GPLv2+ with a Libtool exception and
-#                   and GPLv2+ with an Autoconf exception
-# cmd/Makefile.in:  FSFUL
-# config.guess:     GPLv2+ with an Autoconf exception
-# config.sub:       GPLv2+ with an Autoconf exception
-# configure:        FSFUL and GPLv2+ with a Libtool exception
-# depcomp:          GPLv2+ with an Autoconf exception
-# diffmark.test/Makefile.in:        FSFULLR
-# doc/Makefile.in:  FSFULLR
-# install-sh:       MIT
-# lib/Makefile.in:  FSFULLR
-# ltmain.sh:        GPLv2+ with a Libtool exception
-# Makefile.in:      FSFULLR
-# missing:          GPLv2+ with an Autoconf exception
-# testdata/diff/Makefile.in:        FSFULLR
-# testdata/faildiff/Makefile.in:    FSFULLR
-# testdata/failmerge/Makefile.in:   FSFULLR
-# testdata/Makefile.in:             FSFULLR
-# testdata/merge/Makefile.in:       FSFULLR
-# testdata/roundup/Makefile.in:     FSFULLR
-License:    diffmark and (GPL+ or Artistic)
+# aclocal.m4:       FSFUL AND FSFULLR AND FSFULLRWD AND GPL-2.0-or-later WITH Libtool-exception
+#                   AND GPL-2.0-or-later WITH Autoconf-exception-generic
+# cmd/Makefile.in:  FSFULLRWD
+# config.guess:     GPL-2.0-or-later WITH Autoconf-exception-generic
+# config.sub:       GPL-2.0-or-later WITH Autoconf-exception-generic
+# configure:        FSFUL AND GPL-2.0-or-later WITH Libtool-exception
+# depcomp:          GPL-2.0-or-later WITH Autoconf-exception-generic
+# diffmark.test/Makefile.in:        FSFULLRWD
+# doc/Makefile.in:  FSFULLRWD
+# install-sh:       X11
+# lib/Makefile.in:  FSFULLRWD
+# ltmain.sh:        GPL-2.0-or-later WITH Libtool-exception
+# Makefile.in:      FSFULLRWD
+# missing:          GPL-2.0-or-later WITH Autoconf-exception-generic
+# testdata/diff/Makefile.in:        FSFULLRWD
+# testdata/faildiff/Makefile.in:    FSFULLRWD
+# testdata/failmerge/Makefile.in:   FSFULLRWD
+# testdata/Makefile.in:             FSFULLRWD
+# testdata/merge/Makefile.in:       FSFULLRWD
+# testdata/roundup/Makefile.in:     FSFULLRWD
+License:    diffmark AND (GPL-1.0-or-later OR Artistic-1.0-Perl)
+SourceLicense: %{license} AND FSFUL AND FSFULLR AND FSFULLRWD AND X11 AND GPL-2.0-or-later WITH Libtool-exception AND GPL-2.0-or-later WITH Autoconf-exception-generic
 URL:        http://www.mangrove.cz/%{name}/
 Source0:    %{url}%{name}-%{version}.tar.gz
 # Remove a superfluous RPATH from the programs
@@ -56,9 +57,7 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 Header files and libraries for developing applications that use %{name}.
 
 %prep
-%setup -q
-%patch -P0 -p1
-%patch -P1 -p1
+%autosetup -p1
 # automake -i -f to support aarch64, bug #925255
 libtoolize --force && autoreconf -i -f
 
@@ -73,14 +72,18 @@ find "$RPM_BUILD_ROOT" -name '*.la' -delete
 %files
 %license COPYING
 %doc doc/*.html README
-%{_bindir}/*
-%{_libdir}/*.so.*
+%{_bindir}/dm
+%{_bindir}/dm-merge
+%{_libdir}/libdiffmark.so.1{,.*}
 
 %files devel
-%{_includedir}/*
-%{_libdir}/*.so
+%{_includedir}/diffmark
+%{_libdir}/libdiffmark.so
 
 %changelog
+* Tue Oct 08 2024 Petr Pisar <ppisar@redhat.com> - 0.10-34
+- Convert a License tag to SPDX
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.10-33
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

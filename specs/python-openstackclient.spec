@@ -1,11 +1,15 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 # we are excluding some BRs from automatic generator
-%global excluded_brs doc8 bandit pre-commit hacking flake8-import-order whereto python-zunclient python-watcherclient python-cyborgclient python-senlinclient python-muranoclient python-saharaclient tempest osc-placement python-ironic-inspector-client osprofiler
+%global excluded_brs doc8 bandit pre-commit hacking flake8-import-order whereto python-zunclient python-watcherclient python-cyborgclient python-senlinclient python-muranoclient python-saharaclient
 # Exclude sphinx from BRs if docs are disabled
 %if ! 0%{?with_doc}
 %global excluded_brs %{excluded_brs} sphinx openstackdocstheme
+%endif
+# Exclude some BRs for Fedora
+%if 0%{?fedora}
+%global excluded_brs %{excluded_brs} tempest osc-placement python-ironic-inspector-client osprofiler
 %endif
 
 # Command name
@@ -22,13 +26,21 @@ It is a thin wrapper to the stock python-*client modules that implement the \
 actual REST API client actions.
 
 Name:             python-%{sname}
-Version:          6.6.0
-Release:          4%{?dist}
+Version:          7.1.2
+Release:          3%{?dist}
 Summary:          OpenStack Command-line Client
 
 License:          Apache-2.0
 URL:              http://launchpad.net/%{name}
 Source0:          https://tarballs.openstack.org/%{name}/%{name}-%{upstream_version}.tar.gz
+%if %{lua:print(rpm.vercmp(rpm.expand("%{version}"), '7.1.3'));} <= 0
+# Patch https://review.opendev.org/c/openstack/python-openstackclient/+/930911 on 7.1.2
+Patch0001:        0001-identity-in-service-set-command-don-t-pass-the-enabl.patch
+# Patch https://review.opendev.org/c/openstack/python-openstackclient/+/931031 on 7.1.2
+Patch0002:        0001-Always-resolve-domain-id.patch
+%endif
+
+
 # Required for tarball sources verification
 %if 0%{?sources_gpg} == 1
 Source101:        https://tarballs.openstack.org/%{name}/%{name}-%{upstream_version}.tar.gz.asc
@@ -160,7 +172,7 @@ openstack complete | sed -n '/_openstack/,$p' > /etc/bash_completion.d/osc.bash_
 
 %check
 export PYTHON=%{__python3}
-%tox -e %{default_toxenv} -- -- --exclude-regex "openstackclient.tests.unit.common.test_module.TestModuleList.*"
+%tox -e %{default_toxenv}
 
 %files -n python3-%{sname}
 %license LICENSE
@@ -181,6 +193,9 @@ export PYTHON=%{__python3}
 %license LICENSE
 
 %changelog
+* Tue Oct 08 2024 Joel Capitao <jcapitao@redhat.com> 7.1.2-3
+- Update to upstream version 7.1.2
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.6.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -7,7 +7,7 @@ ExcludeArch: %{ix86}
 
 Name:           ocaml-bos
 Version:        0.2.1
-Release:        22%{?dist}
+Release:        23%{?dist}
 Summary:        Basic OS interaction for OCaml
 
 License:        ISC
@@ -73,6 +73,9 @@ ocaml pkg/pkg.ml test
 %endif
 
 %changelog
+* Tue Oct 08 2024 Richard W.M. Jones <rjones@redhat.com> - 0.2.1-23
+- Rebuild for ocaml-lwt 5.8.0
+
 * Thu Sep 12 2024 Jerry James <loganjerry@gmail.com> - 0.2.1-22
 - Rebuild for ocaml-mtime 2.1.0
 

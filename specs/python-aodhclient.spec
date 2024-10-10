@@ -1,5 +1,5 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 %global pypi_name aodhclient
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
@@ -16,14 +16,16 @@ This is a client library for Aodh built on the Aodh API. It \
 provides a Python API (the aodhclient module) and a command-line tool.
 
 Name:             python-aodhclient
-Version:          3.5.1
-Release:          3%{?dist}
+Version:          3.6.0
+Release:          1%{?dist}
 Summary:          Python API and CLI for OpenStack Aodh
 
 License:          Apache-2.0
 URL:              https://launchpad.net/python-aodhclient
 Source0:          https://tarballs.openstack.org/%{name}/%{pypi_name}-%{upstream_version}.tar.gz
+%if 0%{?fedora}
 Patch0:           0001-Revert-Add-OSprofiler-support-for-Aodh-client.patch
+%endif
 # Required for tarball sources verification
 %if 0%{?sources_gpg} == 1
 Source101:        https://tarballs.openstack.org/%{name}/%{pypi_name}-%{upstream_version}.tar.gz.asc
@@ -93,8 +95,10 @@ for pkg in %{excluded_brs}; do
   done
 done
 
+%if 0%{?fedora}
 # Remove osprofiler as runtime dep
 sed -i /^osprofiler.*/d requirements.txt
+%endif
 
 # Automatic BR generation
 %generate_buildrequires
@@ -139,6 +143,9 @@ rm -rf doc/build/html/.{doctrees,buildinfo}
 %endif
 
 %changelog
+* Tue Oct 08 2024 Joel Capitao <jcapitao@redhat.com> 3.6.0-1
+- Update to upstream version 3.6.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.5.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -4,7 +4,7 @@
 %global crate muvm
 
 Name:           rust-muvm
-Version:        0.1.1
+Version:        0.1.2
 Release:        %autorelease
 Summary:        Run programs from your system in a microVM
 

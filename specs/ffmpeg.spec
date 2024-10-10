@@ -82,7 +82,7 @@ Name:           ffmpeg
 %global pkg_name %{name}%{?pkg_suffix}
 
 Version:        7.0.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        A complete solution to record, convert and stream audio and video
 License:        GPL-3.0-or-later
 URL:            https://ffmpeg.org/
@@ -135,7 +135,6 @@ BuildRequires:  gsm-devel
 BuildRequires:  ladspa-devel
 BuildRequires:  lame-devel
 BuildRequires:  libgcrypt-devel
-BuildRequires:  libklvanc-devel
 BuildRequires:  libmysofa-devel
 BuildRequires:  libX11-devel
 BuildRequires:  libXext-devel
@@ -615,7 +614,6 @@ cp -a doc/examples/{*.c,Makefile,README} _doc/examples/
     --enable-libilbc \
     --enable-libjack \
     --enable-libjxl \
-    --enable-libklvanc \
     --enable-libmodplug \
     --enable-libmp3lame \
     --enable-libmysofa \
@@ -860,6 +858,10 @@ rm -rf %{buildroot}%{_datadir}/%{name}/examples
 %{_mandir}/man3/libswscale.3*
 
 %changelog
+* Mon Oct 07 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 7.0.2-7
+- Properly enable aribb24/libaribcaption
+- Disable VANC dependency as it depends on decklink
+
 * Mon Oct 07 2024 Neal Gompa <ngompa@fedoraproject.org> - 7.0.2-6
 - Enable SDI data processing (Kernel Labs VANC) processing
 - Enable Japanese DVD subtitles/teletext (aribb24/libaribcaption)

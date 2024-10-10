@@ -1,5 +1,5 @@
 Name:		mmv
-Version:	2.8
+Version:	2.9.1
 Release:	1%{?dist}
 Summary:	Move/copy/link multiple files
 
@@ -44,6 +44,10 @@ make check
 %{_mandir}/man1/*.1*
 
 %changelog
+* Tue Oct 08 2024 Jens Kuehnel <JensKuehnel@users.noreply.github.com> - 2.9.1-1
+- release 2.9.1
+- fixes setuid call as marked by rpmlint
+
 * Sun Oct 06 2024 Jens Kuehnel <JensKuehnel@users.noreply.github.com> - 2.8-1
 - release 2.8
 

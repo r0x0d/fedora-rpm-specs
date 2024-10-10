@@ -5,7 +5,7 @@
 %global crate rkyv
 
 Name:           rust-rkyv
-Version:        0.7.45
+Version:        0.8.8
 Release:        %autorelease
 Summary:        Zero-copy deserialization framework for Rust
 
@@ -13,11 +13,25 @@ License:        MIT
 URL:            https://crates.io/crates/rkyv
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * bump hashbrown dependency from 0.12 to 0.14
-# * drop unused support for various third-party crates
+# * Where possible, patch out "support for common crates" features. Many of
+#   these have satisfiable dependencies and could be packaged if something
+#   specifically requires them. Upstream plans to remove these crate-integration
+#   features in 1.0:
+#   https://github.com/rkyv/rkyv/blob/89a1bc48229ca6ac5ee620964d778293270257d0/rkyv/Cargo.toml#L29-L32
+# * Patch out the ui test, which seems to require *all* integrations, even the
+#   patched-out ones
 Patch:          rkyv-fix-metadata.diff
+# * Fix generic SIMD for big-endian targets:
+#   https://github.com/rkyv/rkyv/commit/6d6a5461e42cac18707dfee42b9f41ee7d078866
+# * Fixes: “Some tests related to hash_map fail on big-endian platforms”
+#   https://github.com/rkyv/rkyv/issues/557
+# * Exported with "git format-patch --relative" so that the patch applies to the
+#   released crate.
+Patch10:       0001-Fix-generic-SIMD-for-big-endian-targets.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
+BuildRequires:  dos2unix
+BuildRequires:  tomcli
 
 %global _description %{expand:
 Zero-copy deserialization framework for Rust.}
@@ -36,7 +50,6 @@ use the "%{crate}" crate.
 %files          devel
 %license %{crate_instdir}/LICENSE
 %doc %{crate_instdir}/README.md
-%doc %{crate_instdir}/crates-io.md
 %{crate_instdir}/
 
 %package     -n %{name}+default-devel
@@ -51,6 +64,18 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
+%package     -n %{name}+aligned-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+aligned-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "aligned" feature of the "%{crate}" crate.
+
+%files       -n %{name}+aligned-devel
+%ghost %{crate_instdir}/Cargo.toml
+
 %package     -n %{name}+alloc-devel
 Summary:        %{summary}
 BuildArch:      noarch
@@ -63,52 +88,16 @@ use the "alloc" feature of the "%{crate}" crate.
 %files       -n %{name}+alloc-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+arbitrary_enum_discriminant-devel
+%package     -n %{name}+big_endian-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+arbitrary_enum_discriminant-devel %{_description}
+%description -n %{name}+big_endian-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "arbitrary_enum_discriminant" feature of the "%{crate}" crate.
+use the "big_endian" feature of the "%{crate}" crate.
 
-%files       -n %{name}+arbitrary_enum_discriminant-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+archive_be-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+archive_be-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "archive_be" feature of the "%{crate}" crate.
-
-%files       -n %{name}+archive_be-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+archive_le-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+archive_le-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "archive_le" feature of the "%{crate}" crate.
-
-%files       -n %{name}+archive_le-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+arrayvec-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+arrayvec-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "arrayvec" feature of the "%{crate}" crate.
-
-%files       -n %{name}+arrayvec-devel
+%files       -n %{name}+big_endian-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+bytecheck-devel
@@ -123,88 +112,52 @@ use the "bytecheck" feature of the "%{crate}" crate.
 %files       -n %{name}+bytecheck-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+copy-devel
+%package     -n %{name}+little_endian-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+copy-devel %{_description}
+%description -n %{name}+little_endian-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "copy" feature of the "%{crate}" crate.
+use the "little_endian" feature of the "%{crate}" crate.
 
-%files       -n %{name}+copy-devel
+%files       -n %{name}+little_endian-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+copy_unsafe-devel
+%package     -n %{name}+pointer_width_16-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+copy_unsafe-devel %{_description}
+%description -n %{name}+pointer_width_16-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "copy_unsafe" feature of the "%{crate}" crate.
+use the "pointer_width_16" feature of the "%{crate}" crate.
 
-%files       -n %{name}+copy_unsafe-devel
+%files       -n %{name}+pointer_width_16-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+hashbrown-devel
+%package     -n %{name}+pointer_width_32-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+hashbrown-devel %{_description}
+%description -n %{name}+pointer_width_32-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "hashbrown" feature of the "%{crate}" crate.
+use the "pointer_width_32" feature of the "%{crate}" crate.
 
-%files       -n %{name}+hashbrown-devel
+%files       -n %{name}+pointer_width_32-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+rend-devel
+%package     -n %{name}+pointer_width_64-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+rend-devel %{_description}
+%description -n %{name}+pointer_width_64-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "rend" feature of the "%{crate}" crate.
+use the "pointer_width_64" feature of the "%{crate}" crate.
 
-%files       -n %{name}+rend-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+size_16-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+size_16-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "size_16" feature of the "%{crate}" crate.
-
-%files       -n %{name}+size_16-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+size_32-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+size_32-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "size_32" feature of the "%{crate}" crate.
-
-%files       -n %{name}+size_32-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+size_64-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+size_64-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "size_64" feature of the "%{crate}" crate.
-
-%files       -n %{name}+size_64-devel
+%files       -n %{name}+pointer_width_64-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+std-devel
@@ -219,32 +172,26 @@ use the "std" feature of the "%{crate}" crate.
 %files       -n %{name}+std-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+strict-devel
+%package     -n %{name}+unaligned-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+strict-devel %{_description}
+%description -n %{name}+unaligned-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "strict" feature of the "%{crate}" crate.
+use the "unaligned" feature of the "%{crate}" crate.
 
-%files       -n %{name}+strict-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+validation-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+validation-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "validation" feature of the "%{crate}" crate.
-
-%files       -n %{name}+validation-devel
+%files       -n %{name}+unaligned-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep
 %autosetup -n %{crate}-%{version} -p1
+# Do not depend on divan; it is needed only for benchmarks.
+tomcli set Cargo.toml del dev-dependencies.divan
+# The crate has a mixture of newline styles.
+# Fixed upstream in:
+# https://github.com/rkyv/rkyv/commit/6b7ab529d32166ec0fc81b7b8828ba71e2c65c38
+find . -type f | xargs -r -t dos2unix --keepdate
 %cargo_prep
 
 %generate_buildrequires

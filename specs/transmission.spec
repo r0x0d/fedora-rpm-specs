@@ -1,6 +1,6 @@
 Name:           transmission
 Version:        4.0.6
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A lightweight GTK+ BitTorrent client
 # See COPYING. This licensing situation is... special.
 License:        MIT and GPL-2.0-only
@@ -12,6 +12,7 @@ Source1:        https://raw.githubusercontent.com/gnome-design-team/gnome-icons/
 # Fix the DBus name to match the app name for flatpak builds
 # https://github.com/transmission/transmission/pull/847
 Patch0:         0001-gtk-use-com.transmissionbt.Transmission.-D-Bus-names.patch
+Patch1:         %{name}-miniupnp228.patch
 
 
 BuildRequires:  make
@@ -195,6 +196,9 @@ desktop-file-install \
 %doc %{_mandir}/man1/transmission-qt.*
 
 %changelog
+* Tue Oct 08 2024 Simone Caronni <negativo17@gmail.com> - 4.0.6-3
+- Rebuild for updated miniupnpc.
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.0.6-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

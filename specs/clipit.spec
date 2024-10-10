@@ -1,6 +1,3 @@
-# Skip -Werror=incompatilbe-pointer-types
-%global         build_type_safety_c  2
-
 %global         main_ver      1.4.5
 
 %global         reponame      ClipIt
@@ -30,7 +27,7 @@
 
 Name:           clipit
 Version:        %{rpm_ver}
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        A lightweight, fully featured GTK+ clipboard manager
 
 # meson.build says:	 GPL-3.0-or-later
@@ -53,6 +50,8 @@ Patch0:         0001-Autostart-in-MATE.patch
 # Force GDK_BACKEND to x11
 Patch1:         clipit-1.4.5-force-gdk_backend-x11.patch
 Patch2:         clipit-c99.patch
+# Fix -Werror=incompatible-pointer-types
+Patch3:         https://sources.debian.org/data/main/c/clipit/1.4.5%2Bgit20210313-3/debian/patches/incompatible-pointer-types.patch
 
 %if 0%{?use_gitbare} >= 1
 BuildRequires:  git
@@ -98,6 +97,7 @@ git config user.email "%{name}-maintainers@fedoraproject.org"
 %patch -P0 -p1 -b .mate
 %patch -P1 -p1 -b .nowayland
 %patch -P2 -p1 -b .c99
+%patch -P3 -p1 -b .c99_cast
 
 sed -i data/clipit.desktop.in -e '\@_Comment.*hr@d'
 sed -i data/clipit-startup.desktop.in -e '\@_Comment.*hr@d'
@@ -161,6 +161,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{name}.appdat
 %config(noreplace) %{_sysconfdir}/xdg/autostart/%{name}-startup.desktop
 
 %changelog
+* Tue Oct 08 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.4.5^20210513gite5fa64c-6
+- Apply debian patch for -Werror=incompatible-pointer-types
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.5^20210513gite5fa64c-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

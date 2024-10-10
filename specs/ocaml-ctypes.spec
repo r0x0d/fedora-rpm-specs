@@ -5,7 +5,7 @@ ExcludeArch: %{ix86}
 
 Name:           ocaml-ctypes
 Version:        0.23.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Combinators for binding to C libraries without writing any C
 
 License:        MIT
@@ -79,6 +79,9 @@ sed -i 's/ "-cclib"; "-Wl,--no-as-needed";//' src/ctypes-foreign/config/discover
 %files devel -f .ofiles-devel
 
 %changelog
+* Tue Oct 08 2024 Richard W.M. Jones <rjones@redhat.com> - 0.23.0-2
+- Rebuild for ocaml-lwt 5.8.0
+
 * Mon Aug 12 2024 Jerry James <loganjerry@gmail.com> - 0.23.0-1
 - Version 0.23.0
 - Add patch to remove dependency on stdlib-shims

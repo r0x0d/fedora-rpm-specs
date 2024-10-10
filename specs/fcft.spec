@@ -2,7 +2,7 @@
 
 Name:           fcft
 Version:        3.1.8
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Simple library for font loading and glyph rasterization
 
 # main source:  MIT
@@ -86,6 +86,9 @@ rm -f %{buildroot}%{_docdir}/%{name}/LICENSE
 
 
 %changelog
+* Tue Oct 08 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 3.1.8-3
+- Rebuilt for utf8proc 2.9.0
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.1.8-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

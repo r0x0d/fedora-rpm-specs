@@ -2,11 +2,11 @@
 %global verify_tarball_signature 1
 
 # The source directory.
-%global source_directory 2.5-development
+%global source_directory 2.6-stable
 
 Name:          virt-v2v
 Epoch:         1
-Version:       2.5.11
+Version:       2.6.0
 Release:       1%{?dist}
 Summary:       Convert a virtual machine to run on KVM
 
@@ -310,6 +310,9 @@ done
 
 
 %changelog
+* Tue Oct 08 2024 Richard W.M. Jones <rjones@redhat.com> - 1:2.6.0-1
+- New upstream stable version 2.6.0
+
 * Thu Oct 03 2024 Richard W.M. Jones <rjones@redhat.com> - 1:2.5.11-1
 - New upstream development version 2.5.11
 

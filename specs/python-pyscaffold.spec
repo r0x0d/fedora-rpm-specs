@@ -185,7 +185,10 @@ k="${k-}${k+ and }not test_pipenv_works_with_pyscaffold"
 # We should be able to write:
 #   %%tox -- -- -k "${k-}" …
 # but for some reason this does not successfully collect any tests.
-%pytest -k "${k-}" -n auto \
+#
+# While upstream explicitly supports running tests in parallel, we observe a
+# race condition causing flaky failures in test_get_log_level in practice.
+%pytest -k "${k-}" \
     --ignore=tests/test_install.py \
     --ignore=tests/system/test_common.py
 %endif

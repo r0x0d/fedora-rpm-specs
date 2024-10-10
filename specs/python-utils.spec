@@ -1,5 +1,5 @@
 Name:           python-utils
-Version:        3.7.0
+Version:        3.9.0
 Release:        %autorelease
 Summary:        Python Utils is a module with some convenient utilities
 

@@ -54,7 +54,7 @@
 Summary: The Visualization Toolkit - A high level 3D visualization library
 Name: vtk
 Version: 9.2.6
-Release: 17%{?dist}
+Release: 18%{?dist}
 License: BSD-3-Clause
 Source0: https://www.vtk.org/files/release/9.2/VTK-%{version}.tar.gz
 Source1: https://www.vtk.org/files/release/9.2/VTKData-%{version}.tar.gz
@@ -66,6 +66,10 @@ Patch1: https://gitlab.kitware.com/vtk/vtk/-/merge_requests/9616.patch
 # Add missing includes for gcc 13
 # https://gitlab.kitware.com/vtk/vtk/-/issues/18782
 Patch2: vtk-include.patch
+# Fix segfault with Python 3.13
+# https://bugzilla.redhat.com/show_bug.cgi?id=2310520
+# Backport of https://gitlab.kitware.com/vtk/vtk/-/merge_requests/11486
+Patch3: vtk-python3.13.patch
 
 URL: https://vtk.org/
 
@@ -849,6 +853,10 @@ cat xorg.log
 
 
 %changelog
+* Tue Oct 08 2024 Orion Poplawski <orion@nwra.com> - 9.2.6-18
+- Add upstream patch to fix segmentation fault on import with Python 3.13
+  (rhbz#2310520)
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 9.2.6-17
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

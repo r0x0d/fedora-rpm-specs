@@ -5,16 +5,14 @@
 %bcond_with internet
 
 Name:           python-%{srcname}
-Version:        5.0.0
-Release:        5%{?dist}
+Version:        5.1.1
+Release:        1%{?dist}
 Summary:        Collection of utilities for interacting with PyPI
 
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://github.com/pypa/%{srcname}
 Source0:        %{pypi_source}
-# Fixes the failing test when built with python-pkginfo 1.10.0
-Patch:          https://github.com/pypa/twine/commit/9eb9269e8c.patch
 BuildArch:      noarch
 
 %description
@@ -107,6 +105,10 @@ install -p -D -T -m 0644 docs/build/man/%{srcname}.1 %{buildroot}%{_mandir}/man1
 %{_bindir}/twine
 
 %changelog
+* Tue Oct 08 2024 Charalampos Stratakis <cstratak@redhat.com> - 5.1.1-1
+- Update to 5.1.1
+- Fixes: rhbz#2280943
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 5.0.0-5
 - convert license to SPDX
 

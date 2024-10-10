@@ -40,7 +40,7 @@ OCamlbuild is a build tool for building OCaml libraries and programs.
 
 %package doc
 Summary:       Documentation for %{name}
-License:       CC0
+License:       CC0-1.0
 BuildArch:     noarch
 
 

@@ -1,5 +1,5 @@
 Name:           ansible-collection-chocolatey-chocolatey
-Version:        1.5.2
+Version:        1.5.3
 Release:        1%{?dist}
 Summary:        Ansible collection for Chocolatey
 
@@ -45,6 +45,9 @@ cd chocolatey
 %doc README.md
 
 %changelog
+* Tue Oct 08 2024 Orion Poplawski <orion@nwra.com> - 1.5.3-1
+- Update to 1.5.3
+
 * Sun Sep 29 2024 Orion Poplawski <orion@nwra.com> - 1.5.2-1
 - Update to 1.5.2
 

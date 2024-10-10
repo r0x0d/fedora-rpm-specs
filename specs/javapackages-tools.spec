@@ -10,7 +10,7 @@
 %global maven_home %{_usr}/share/xmvn
 
 Name:           javapackages-tools
-Version:        6.3.2
+Version:        6.3.3
 Release:        %autorelease
 Summary:        Macros and scripts for Java packaging support
 License:        BSD-3-Clause
@@ -25,7 +25,6 @@ Patch:          0001-Disable-dependency-generators.patch
 Patch:          0002-Fall-back-to-JRE-21-until-all-packages-explicitly-se.patch
 
 BuildRequires:  coreutils
-BuildRequires:  which
 BuildRequires:  make
 BuildRequires:  rubygem-asciidoctor
 BuildRequires:  %{python_prefix}-devel
@@ -36,7 +35,6 @@ BuildRequires:  %{python_prefix}-pytest
 Requires:       javapackages-filesystem = %{version}-%{release}
 Requires:       coreutils
 Requires:       findutils
-Requires:       which
 # provisional
 Requires:       java-21-openjdk-headless
 

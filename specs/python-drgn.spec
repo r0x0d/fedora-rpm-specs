@@ -14,7 +14,7 @@ drgn exposes the types and variables in a program for easy, expressive
 scripting in Python.}
 
 Name:           python-%{pypi_name}
-Version:        0.0.27
+Version:        0.0.29
 Release:        %autorelease
 Summary:        Programmable debugger
 
@@ -107,6 +107,7 @@ cp -PR contrib tools %{buildroot}%{_datadir}/drgn
 %{python3_sitearch}/_%{pypi_name}.pyi
 %{python3_sitearch}/_%{pypi_name}.cpython*.so
 %{python3_sitearch}/%{pypi_name}
+%{python3_sitearch}/_%{pypi_name}_util
 %{python3_sitearch}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
 
 %if %{with docs}
