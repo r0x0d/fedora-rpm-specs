@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc2.20241008git87d6aab2389e.25
+%define pkgrelease 0.rc2.20241009git75b607fab38d.26
 %define kversion 6
-%define tarfile_release 6.12-rc2-6-g87d6aab2389e
+%define tarfile_release 6.12-rc2-58-g75b607fab38d
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc2.20241008git87d6aab2389e.25%{?buildid}%{?dist}
+%define specrelease 0.rc2.20241009git75b607fab38d.26%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4136,6 +4136,10 @@ fi\
 #
 #
 %changelog
+* Wed Oct 09 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc2.75b607fab38d.26]
+- Turn on ZRAM_WRITEBACK for Fedora (Justin M. Forbes)
+- Linux v6.12.0-0.rc2.75b607fab38d
+
 * Tue Oct 08 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc2.87d6aab2389e.25]
 - configs: rhel: Fix designware I2C controllers related config settings (Hans de Goede)
 - Enable CONFIG_DMA_NUMA_CMA for x86_64 and aarch64 (Chris von Recklinghausen)

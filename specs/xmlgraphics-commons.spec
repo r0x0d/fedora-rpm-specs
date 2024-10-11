@@ -1,6 +1,6 @@
 Name:           xmlgraphics-commons
-Version:        2.9
-Release:        4%{?dist}
+Version:        2.10
+Release:        1%{?dist}
 Epoch:          0
 Summary:        XML Graphics Commons
 
@@ -41,7 +41,6 @@ find -name "*.jar" -delete
 
 # Disable plugins not needed for RPM build
 %pom_remove_plugin :maven-checkstyle-plugin
-%pom_remove_plugin :findbugs-maven-plugin
 
 # Make into OSGi bundle
 %pom_xpath_inject pom:project '<packaging>bundle</packaging>'
@@ -68,6 +67,9 @@ find -name "*.jar" -delete
 %license LICENSE NOTICE
 
 %changelog
+* Wed Oct 09 2024 Gwyn Ciesla <gwync@protonmail.com> - 0:2.10-1
+- 2.10
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0:2.9-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

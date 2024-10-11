@@ -1,6 +1,8 @@
 
 %global qt_module qtlanguageserver
 
+%global debug_package %{nil}
+
 #global unstable 1
 %if 0%{?unstable}
 %global prerelease rc2
@@ -8,8 +10,8 @@
 
 Summary: Qt6 - LanguageServer component
 Name:    qt6-%{qt_module}
-Version: 6.7.2
-Release: 2%{?dist}
+Version: 6.8.0
+Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt.io
@@ -59,16 +61,14 @@ Requires: qt6-qtbase-devel%{?_isa}
 
 %files
 %license LICENSES/*
-%{_qt6_libdir}/libQt6JsonRpc.so.6*
-%{_qt6_libdir}/libQt6LanguageServer.so.6*
 
 %files devel
 %{_qt6_headerdir}/QtJsonRpc/
 %{_qt6_headerdir}/QtLanguageServer/
+%{_qt6_libdir}/libQt6JsonRpc.a
 %{_qt6_libdir}/libQt6JsonRpc.prl
-%{_qt6_libdir}/libQt6JsonRpc.so
+%{_qt6_libdir}/libQt6LanguageServer.a
 %{_qt6_libdir}/libQt6LanguageServer.prl
-%{_qt6_libdir}/libQt6LanguageServer.so
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtLanguageServer*
 %{_qt6_libdir}/cmake/Qt6JsonRpcPrivate/
 %{_qt6_libdir}/cmake/Qt6LanguageServerPrivate/
@@ -81,6 +81,9 @@ Requires: qt6-qtbase-devel%{?_isa}
 
 
 %changelog
+* Wed Oct 09 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

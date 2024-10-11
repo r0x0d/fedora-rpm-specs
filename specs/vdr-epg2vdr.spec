@@ -1,17 +1,22 @@
-# version we want build against
+# version we want to build against
 %global vdr_version 2.6.3
-%if 0%{?fedora} >= 40
+# Set vdr_version based on Fedora version
+%if 0%{?fedora} >= 42
+%global vdr_version 2.7.2
+%elif 0%{?fedora} >= 40
 %global vdr_version 2.6.9
 %endif
 
 Name:           vdr-epg2vdr
 Version:        1.2.16
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        A plugin to retrieve EPG data from a mysql database into VDR
 
 License:        GPL-1.0-or-later
 URL:            https://github.com/horchi/vdr-plugin-epg2vdr
 Source0:        %url/archive/refs/tags/%{version}.tar.gz#/%{name}-%{version}.tar.gz
+# https://github.com/kfb77/vdr-plugin-epg2vdr/commit/0f5caa2739a1adf5669c128df96cf0b102a2cb34.diff
+Patch0:         %{name}-EventID.diff
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -62,6 +67,10 @@ chmod 0755 %{buildroot}/%{vdr_plugindir}/libvdr-*.so.%{vdr_apiversion}
 %{vdr_plugindir}/libvdr-*.so.%{vdr_apiversion}
 
 %changelog
+* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 1.2.16-9
+- Rebuilt for new VDR API version 2.7.2
+- Add %%{name}-EventID.diff for vdr 2.7.x
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.16-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

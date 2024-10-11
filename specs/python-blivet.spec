@@ -5,7 +5,7 @@ Version: 3.11.0
 
 #%%global prerelease .b2
 # prerelease, if defined, should be something like .a1, .b1, .b2.dev1, or .c2
-Release: 2%{?prerelease}%{?dist}
+Release: 3%{?prerelease}%{?dist}
 Epoch: 1
 License: LGPL-2.1-or-later
 %global realname blivet
@@ -18,6 +18,7 @@ Patch0: 0001-remove-btrfs-plugin.patch
 %endif
 
 Patch1: 0002-Do-not-raise-libblockdev-errors-in-FSMinSize-tasks.patch
+Patch2: 0003-free_space_estimate-adjust-for-compression-on-btrfs.patch
 
 # Versions of required components (done so we make sure the buildrequires
 # match the requires versions of things).
@@ -116,6 +117,9 @@ make DESTDIR=%{buildroot} install
 %{python3_sitelib}/*
 
 %changelog
+* Wed Oct 09 2024 Vojtech Trefny <vtrefny@redhat.com> - 3.11.0-3
+- free_space_estimate: adjust for compression on btrfs (#2315638)
+
 * Thu Sep 26 2024 Vojtech Trefny <vtrefny@redhat.com> - 3.11.0-2
 - Do not raise libblockdev errors in FSMinSize tasks (#2314637)
 

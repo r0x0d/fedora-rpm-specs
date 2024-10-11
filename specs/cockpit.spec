@@ -49,20 +49,12 @@ Summary:        Web Console for Linux servers
 License:        LGPL-2.1-or-later
 URL:            https://cockpit-project.org/
 
-Version:        325
+Version:        326
 Release:        1%{?dist}
 Source0:        https://github.com/cockpit-project/cockpit/releases/download/%{version}/cockpit-%{version}.tar.xz
 
 %if 0%{?fedora} >= 41 || 0%{?rhel}
 ExcludeArch: %{ix86}
-%endif
-
-# pcp stopped building on ix86 in Fedora 40+, and broke hard on 39: https://bugzilla.redhat.com/show_bug.cgi?id=2284431
-%define build_pcp 1
-%if 0%{?fedora} >= 39 || 0%{?rhel} >= 10
-%ifarch %ix86
-%define build_pcp 0
-%endif
 %endif
 
 %define enable_multihost 1
@@ -84,7 +76,6 @@ BuildRequires: autoconf automake
 BuildRequires: make
 BuildRequires: python3-devel
 BuildRequires: gettext >= 0.21
-BuildRequires: libssh-devel >= 0.8.5
 BuildRequires: openssl-devel
 BuildRequires: gnutls-devel >= 3.4.3
 BuildRequires: zlib-devel
@@ -98,19 +89,10 @@ BuildRequires: glib2-devel >= 2.50.0
 BuildRequires: systemd-devel >= 235
 %if 0%{?suse_version}
 BuildRequires: distribution-release
-%if %{build_pcp}
-BuildRequires: libpcp-devel
-BuildRequires: pcp-devel
-BuildRequires: libpcp3
-BuildRequires: libpcp_import1
-%endif
 BuildRequires: openssh
 BuildRequires: distribution-logos
 BuildRequires: wallpaper-branding
 %else
-%if %{build_pcp}
-BuildRequires: pcp-libs-devel
-%endif
 BuildRequires: openssh-clients
 BuildRequires: docbook-style-xsl
 %endif
@@ -133,7 +115,7 @@ Requires: cockpit-system
 # Optional components
 Recommends: (cockpit-storaged if udisks2)
 Recommends: (cockpit-packagekit if dnf)
-Suggests: cockpit-pcp
+Suggests: python3-pcp
 
 %if 0%{?rhel} == 0
 Recommends: (cockpit-networkmanager if NetworkManager)
@@ -167,9 +149,6 @@ BuildRequires:  python3-tox-current-env
     --docdir=%_defaultdocdir/%{name} \
 %endif
     --with-pamdir='%{pamdir}' \
-%if %{build_pcp} == 0
-    --disable-pcp \
-%endif
 %if %{enable_multihost}
     --enable-multihost \
 %endif
@@ -198,12 +177,6 @@ echo '%dir %{_datadir}/cockpit/base1' >> base.list
 find %{buildroot}%{_datadir}/cockpit/base1 -type f -o -type l >> base.list
 echo '%{_sysconfdir}/cockpit/machines.d' >> base.list
 echo %{buildroot}%{_datadir}/polkit-1/actions/org.cockpit-project.cockpit-bridge.policy >> base.list
-echo '%{_libexecdir}/cockpit-ssh' >> base.list
-
-%if %{build_pcp}
-echo '%dir %{_datadir}/cockpit/pcp' > pcp.list
-find %{buildroot}%{_datadir}/cockpit/pcp -type f >> pcp.list
-%endif
 
 echo '%dir %{_datadir}/cockpit/shell' >> system.list
 find %{buildroot}%{_datadir}/cockpit/shell -type f >> system.list
@@ -289,7 +262,6 @@ troubleshooting, interactive command-line sessions, and more.
 %package bridge
 Summary: Cockpit bridge server-side component
 Requires: glib-networking
-Provides: cockpit-ssh = %{version}-%{release}
 # 233 dropped jquery.js, pages started to bundle it (commit 049e8b8dce)
 Conflicts: cockpit-dashboard < 233
 Conflicts: cockpit-networkmanager < 233
@@ -297,6 +269,7 @@ Conflicts: cockpit-storaged < 233
 Conflicts: cockpit-system < 233
 Conflicts: cockpit-tests < 233
 Conflicts: cockpit-docker < 233
+Obsoletes: cockpit-pcp < 326
 
 %description bridge
 The Cockpit bridge component installed server side and runs commands on the
@@ -346,6 +319,7 @@ Recommends: PackageKit
 Recommends: setroubleshoot-server >= 3.3.3
 Recommends: /usr/bin/kdumpctl
 Suggests: NetworkManager-team
+Suggests: python3-pcp
 Provides: cockpit-kdump = %{version}-%{release}
 Provides: cockpit-networkmanager = %{version}-%{release}
 Provides: cockpit-selinux = %{version}-%{release}
@@ -355,11 +329,11 @@ Provides: cockpit-sosreport = %{version}-%{release}
 Recommends: (reportd if abrt)
 %endif
 
-Provides: bundled(npm(@patternfly/patternfly)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.0
+Provides: bundled(npm(@patternfly/patternfly)) = 5.4.1
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.1
 Provides: bundled(npm(@patternfly/react-icons)) = 5.4.0
 Provides: bundled(npm(@patternfly/react-styles)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.0
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.1
 Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.0
 Provides: bundled(npm(@xterm/addon-canvas)) = 0.7.0
 Provides: bundled(npm(@xterm/xterm)) = 5.5.0
@@ -378,7 +352,7 @@ Provides: bundled(npm(loose-envify)) = 1.4.0
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
 Provides: bundled(npm(react-dom)) = 18.3.1
-Provides: bundled(npm(react-dropzone)) = 14.2.3
+Provides: bundled(npm(react-dropzone)) = 14.2.9
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.3.1
 Provides: bundled(npm(remarkable)) = 2.0.1
@@ -623,24 +597,6 @@ These files are not required for running Cockpit.
 %{_unitdir}/cockpit-session.socket
 %{_unitdir}/cockpit-session@.service
 
-%if %{build_pcp}
-
-%package -n cockpit-pcp
-Summary: Cockpit PCP integration
-Requires: cockpit-bridge >= %{required_base}
-Requires: pcp
-
-%description -n cockpit-pcp
-Cockpit support for reading PCP metrics and loading PCP archives.
-
-%files -n cockpit-pcp -f pcp.list
-%{_libexecdir}/cockpit-pcp
-
-%post -n cockpit-pcp
-systemctl reload-or-try-restart pmlogger
-
-%endif
-
 %package -n cockpit-packagekit
 Summary: Cockpit user interface for packages
 BuildArch: noarch
@@ -658,6 +614,12 @@ via PackageKit.
 
 # The changelog is automatically generated and merged
 %changelog
+* Wed Oct 09 2024 Packit <hello@packit.dev> - 326-1
+- cockpit-pcp package is now obsolete
+- cockpit/ws container: Connect to servers without installed Cockpit
+- cockpit/ws container: Support host specific SSH keys
+- Storage: Support for Stratis filesystem sizes and limits
+
 * Wed Sep 25 2024 Packit <hello@packit.dev> - 325-1
 - storage: Expose Stratis virtual filesystem sizes
 - client: Properly handle unknown SSH host keys

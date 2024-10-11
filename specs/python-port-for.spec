@@ -2,7 +2,7 @@
 %global name_with_underscore port_for
 
 Name:           python-%{pypi_name}
-Version:        0.7.3
+Version:        0.7.4
 Release:        %autorelease
 Summary:        Utility that helps with local TCP ports management
 

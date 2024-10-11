@@ -31,7 +31,7 @@
 %global jspspec 2.3
 %global major_version 9
 %global minor_version 0
-%global micro_version 95
+%global micro_version 96
 %global packdname apache-tomcat-%{version}-src
 %global servletspec 4.0
 %global elspec 3.0
@@ -551,6 +551,10 @@ fi
 %{appdir}/ROOT
 
 %changelog
+* Tue Oct 08 2024 Packit <hello@packit.dev> - 1:9.0.96-1
+- Update to version 9.0.96
+- Resolves: rhbz#2317237
+
 * Tue Sep 17 2024 Packit <hello@packit.dev> - 1:9.0.95-1
 - Update to version 9.0.95
 - Resolves: rhbz#2312858

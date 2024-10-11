@@ -6,7 +6,7 @@ Version:	2.1.0
 Release:	12%{?dist}
 Summary:	A Cross-platform library for sharing Bible navigation
 
-License:	Public Domain
+License:	LicenseRef-Fedora-Public-Domain
 URL:		http://www.xiphos.org
 Source0:	https://github.com/karlkleinpaste/biblesync/releases/download/%{version}/%{name}-%{version}.tar.gz
 

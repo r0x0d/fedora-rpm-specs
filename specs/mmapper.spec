@@ -7,6 +7,7 @@ License:        GPL-2.0-or-later
 URL:            https://github.com/MUME/MMapper
 Source0:        https://github.com/MUME/MMapper/archive/v%{version}/MMapper-%{version}.tar.gz
 Source1:        https://github.com/g-truc/glm/releases/download/0.9.9.7/glm-0.9.9.7.zip
+Patch0:         %{name}-miniupnp228.patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}

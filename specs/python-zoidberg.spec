@@ -9,6 +9,9 @@ URL:            http://boutproject.github.io
 Source0:        %{pypi_source zoidberg}
 BuildArch:      noarch
 
+# scipy updated name
+Patch:          https://github.com/boutproject/zoidberg/pull/31.patch
+
 BuildRequires:  python3-devel
 BuildRequires:  pyproject-rpm-macros
 BuildRequires:  python3-pytest

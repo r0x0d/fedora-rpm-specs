@@ -1,11 +1,10 @@
 %global srcname colcon-python-setup-py
 
 Name:           python-%{srcname}
-Version:        0.2.8
-Release:        9%{?dist}
+Version:        0.2.9
+Release:        1%{?dist}
 Summary:        Extension for colcon to support Python packages with a setup.py file
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://colcon.readthedocs.io
 Source0:        https://github.com/colcon/%{srcname}/archive/%{version}/%{srcname}-%{version}.tar.gz
@@ -19,6 +18,7 @@ introspecting the arguments to the setup() function call of setuptools.
 
 %package -n python%{python3_pkgversion}-%{srcname}
 Summary:        %{summary}
+BuildRequires:  python%{python3_pkgversion}-colcon-core >= 0.6.1
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-pytest
 BuildRequires:  python%{python3_pkgversion}-setuptools >= 30.3.0
@@ -47,10 +47,7 @@ introspecting the arguments to the setup() function call of setuptools.
 
 
 %check
-%{__python3} -m pytest \
-    --ignore=test/test_spell_check.py \
-    --ignore=test/test_flake8.py \
-    test
+%pytest -k 'not linter' test
 
 
 %files -n python%{python3_pkgversion}-%{srcname}
@@ -61,6 +58,9 @@ introspecting the arguments to the setup() function call of setuptools.
 
 
 %changelog
+* Wed Oct 09 2024 Scott K Logan <logans@cottsay.net> - 0.2.9-1
+- Update to 0.2.9 (rhbz#2317443)
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0.2.8-9
 - convert license to SPDX
 

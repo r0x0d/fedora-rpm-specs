@@ -17,8 +17,8 @@
 %bcond_with          defcmd
 %endif
 
-%global gh_commit    7ac8b4e63f456046dcb4c9787da9382831a1874b
-%global gh_date      2024-09-19
+%global gh_commit    aa0a8ce701ea7ee314b0dfaa8970dc94f3f8c870
+%global gh_date      2024-10-08
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     sebastianbergmann
 %global gh_project   phpunit
@@ -31,7 +31,7 @@
 %global ver_major    10
 %global ver_minor    5
 
-%global upstream_version 10.5.35
+%global upstream_version 10.5.36
 #global upstream_prever  dev
 
 Name:           %{pk_project}%{ver_major}
@@ -212,18 +212,19 @@ cat src/autoload.php
 
 %{_bindir}/phpab \
   --output   tests/autoload.php \
-  --exclude 'tests/end-to-end/regression/4376/tests/Test.php' \
-  --exclude 'tests/end-to-end/regression/2448/Test.php' \
-  --exclude 'tests/*/_files/*.php' \
-  tests
+  tests/_files
 cat << 'EOF' | tee -a tests/autoload.php
 // Dependencies
 \Fedora\Autoloader\Dependencies::required([
+  __DIR__ . '/unit/Event/AbstractEventTestCase.php',
+  __DIR__ . '/unit/Framework/MockObject/TestDoubleTestCase.php',
+  __DIR__ . '/unit/Metadata/Parser/AnnotationParserTestCase.php',
+  __DIR__ . '/unit/Metadata/Parser/AttributeParserTestCase.php',
   __DIR__ . '/_files/CoverageNamespacedFunctionTest.php',
   __DIR__ . '/_files/CoveredFunction.php',
+  __DIR__ . '/_files/Generator.php',
   __DIR__ . '/_files/NamespaceCoveredFunction.php',
   __DIR__ . '/end-to-end/code-coverage/ignore-function-using-attribute/src/CoveredFunction.php',
-  __DIR__ . '/end-to-end/execution-order/_files/MultiDependencyTest.php',
 ]);
 EOF
 
@@ -270,6 +271,9 @@ exit $ret
 
 
 %changelog
+* Wed Oct  9 2024 Remi Collet <remi@remirepo.net> - 10.5.36-1
+- update to 10.5.36
+
 * Thu Sep 19 2024 Remi Collet <remi@remirepo.net> - 10.5.35-1
 - update to 10.5.35
 

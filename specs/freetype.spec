@@ -1,10 +1,10 @@
 %{!?with_xfree86:%define with_xfree86 1}
 %bcond_with bootstrap
 
-Summary: A free and portable font rendering engine
 Name: freetype
-Version: 2.13.2
-Release: 6%{?dist}
+Version: 2.13.3
+Release: 1%{?dist}
+Summary: A free and portable font rendering engine
 License: (FTL OR GPL-2.0-or-later) AND BSD-3-Clause AND MIT AND MIT-Modern-Variant AND LicenseRef-Fedora-Public-Domain AND Zlib
 URL: http://www.freetype.org
 Source:  http://download.savannah.gnu.org/releases/freetype/freetype-%{version}.tar.xz
@@ -25,7 +25,7 @@ Patch4:  freetype-2.8-multilib.patch
 
 Patch5:  freetype-2.10.0-internal-outline.patch
 
-BuildRequires:  gcc
+BuildRequires: gcc
 BuildRequires: libX11-devel
 BuildRequires: libpng-devel
 BuildRequires: zlib-devel
@@ -227,6 +227,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.{a,la}
 %{_mandir}/man1/*
 
 %changelog
+* Tue Oct 08 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 2.13.3-1
+- Update to 2.13.3
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.13.2-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

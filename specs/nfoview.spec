@@ -1,6 +1,6 @@
 Name:           nfoview
-Version:        1.28.1
-Release:        12%{?dist}
+Version:        2.0.1
+Release:        1%{?dist}
 Summary:        Viewer for NFO files
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -32,10 +32,12 @@ size and clickable hyperlinks.
 %autosetup
 
 %build
-%py3_build
+%make_build PREFIX=/usr/
+
 
 %install
-%py3_install
+%make_install PREFIX=/usr/
+
 desktop-file-install                                        \
     --add-category="TextTools;"                             \
     --remove-category="Viewer;"                             \
@@ -54,12 +56,13 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/io.otsaloma.nf
 %{_bindir}/%{name}
 %{_datadir}/%{name}/
 %{_metainfodir}/io.otsaloma.nfoview.appdata.xml
-%{python3_sitelib}/%{name}/
-%{python3_sitelib}/%{name}*.egg-info
 %{_datadir}/applications/io.otsaloma.nfoview.desktop
 %{_datadir}/icons/hicolor/*/apps/io.otsaloma.nfoview*
 
 %changelog
+* Tue Oct 08 2024 Sérgio Basto <sergio@serjux.com> - 2.0.1-1
+- Update nfoview to 2.0.1 (#2131920)
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 1.28.1-12
 - convert license to SPDX
 

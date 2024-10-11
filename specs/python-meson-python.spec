@@ -33,6 +33,8 @@ Patch100:         meson_python-remove-patchelf.patch
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
+# for %%pyproject_buildrequires -p
+BuildRequires:  pyproject-rpm-macros >= 1.15.1
 
 %if %{with tests}
 BuildRequires:  gcc
@@ -83,7 +85,7 @@ sed -r -i "s/^  '(pytest-mock)/#&/" pyproject.toml
 
 
 %generate_buildrequires
-%pyproject_buildrequires -w %{?with_tests:-x test}
+%pyproject_buildrequires -p %{?with_tests:-x test}
 
 
 %build

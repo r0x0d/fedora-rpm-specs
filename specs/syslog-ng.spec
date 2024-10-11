@@ -2,13 +2,13 @@
 
 %global syslog_ng_major_ver 4
 %global syslog_ng_minor_ver 8
-%global syslog_ng_patch_ver 0
+%global syslog_ng_patch_ver 1
 %global syslog_ng_major_minor_ver %{syslog_ng_major_ver}.%{syslog_ng_minor_ver}
 %global syslog_ng_ver %{syslog_ng_major_ver}.%{syslog_ng_minor_ver}.%{syslog_ng_patch_ver}
 
 Name:    syslog-ng
 Version: %{syslog_ng_ver}
-Release: 3%{?dist}
+Release: 1%{?dist}
 Summary: Next-generation syslog server
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -611,6 +611,10 @@ fi
 
 
 %changelog
+* Wed Oct 09 2024 Peter Czanik <peter@czanik.hu> - 4.8.1-1
+- update to 4.8.1
+- it is a bug fix release fixing many bugs reported upstream
+
 * Mon Sep 02 2024 Peter Czanik <peter@czanik.hu> - 4.8.0-3
 - re-enable modules based on GRPC
 - merge spec modernization fixes from carlwgeorge

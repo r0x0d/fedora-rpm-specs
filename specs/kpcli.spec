@@ -1,5 +1,5 @@
 Name:		kpcli	
-Version:	4.1.1
+Version:	4.1.2
 Release:	1%{?dist}
 Summary:	KeePass Command Line Interface (CLI) / interactive shell
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -47,6 +47,9 @@ install -p -m0755 %{name}-%{version}.pl %{buildroot}%{_bindir}/%{name}
 
 
 %changelog
+* Thu Sep 19 2024 Charles R. Anderson <cra@alum.wpi.edu> - 4.1.2-1
+- Update to 4.1.2
+
 * Sun Sep 08 2024 Charles R. Anderson <cra@alum.wpi.edu> - 4.1.1-1
 - Update to 4.1.1
 

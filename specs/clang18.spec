@@ -75,7 +75,7 @@
 
 Name:		%pkg_name
 Version:	%{clang_version}%{?rc_ver:~rc%{rc_ver}}%{?llvm_snapshot_version_suffix:~%{llvm_snapshot_version_suffix}}
-Release:	4%{?dist}
+Release:	5%{?dist}
 Summary:	A C language family front-end for LLVM
 
 License:	Apache-2.0 WITH LLVM-exception OR NCSA
@@ -499,7 +499,7 @@ for f in %{buildroot}/%{install_bindir}/*; do
 done
 
 # Add clang++-{version} symlink
-ln -s ../../%{install_bindir}/clang++  %{buildroot}%{install_bindir}/clang++-%{maj_ver}
+ln -s clang++ %{buildroot}%{install_bindir}/clang++-%{maj_ver}
 
 %endif
 
@@ -731,6 +731,10 @@ LD_LIBRARY_PATH=%{buildroot}/%{install_libdir} %{__ninja} check-all -C %{__cmake
 
 %endif
 %changelog
+* Mon Oct 07 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.8-5
+- Fix clang++-18 symlink location
+- https://bugzilla.redhat.com/show_bug.cgi?id=2316833
+
 * Fri Oct 04 2024 Timm Bäder <tbaeder@redhat.com> - 18.1.8-4
 - Update to 18.1.8
 

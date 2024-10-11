@@ -1,5 +1,5 @@
 Name:           hyprland
-Version:        0.44.0
+Version:        0.44.1
 Release:        %autorelease
 Summary:        Dynamic tiling Wayland compositor that doesn't sacrifice on its looks
 
@@ -21,7 +21,6 @@ ExcludeArch:    %{ix86}
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
-BuildRequires:  jq
 BuildRequires:  meson
 
 BuildRequires:  pkgconfig(aquamarine)
@@ -101,6 +100,7 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       cmake
 Requires:       cpio
 Requires:       gcc-c++
+Requires:       meson
 Requires:       ninja-build
 Requires:       pkgconfig(aquamarine)
 Requires:       pkgconfig(cairo)

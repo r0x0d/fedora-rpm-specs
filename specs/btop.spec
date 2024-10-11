@@ -6,7 +6,7 @@ Summary:        Modern and colorful command line resource monitor that shows usa
 # The entire source code is ASL 2.0 except:
 # include/robin_hood.h - MIT
 # include/widechar_width.hpp - Public Domain
-License:        Apache-2.0 and MIT and Public Domain
+License:        Apache-2.0 AND MIT AND LicenseRef-Fedora-Public-Domain
 URL:            https://github.com/aristocratos/btop
 Source:         %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 

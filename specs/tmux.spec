@@ -1,8 +1,8 @@
 %global _hardened_build 1
 
 Name:           tmux
-Version:        3.5
-Release:        1%{?dist}
+Version:        3.5a
+Release:        2%{?dist}
 Summary:        A terminal multiplexer
 
 License:        ISC AND BSD-2-Clause AND BSD-3-Clause AND SSH-short AND LicenseRef-Fedora-Public-Domain
@@ -10,6 +10,7 @@ URL:            https://tmux.github.io/
 Source0:        https://github.com/tmux/%{name}/releases/download/%{version}/%{name}-%{version}.tar.gz
 # Examples has been removed - so include the bash_completion here
 Source1:        bash_completion_tmux.sh
+Source2:        tmux@.service
 
 BuildRequires:  byacc
 BuildRequires:  gcc
@@ -42,6 +43,7 @@ as GNU Screen.
 %make_install
 # bash completion
 install -Dpm 644 %{SOURCE1} %{buildroot}%{_datadir}/bash-completion/completions/tmux
+install -Dpm 644 %{SOURCE2} %{buildroot}%{_unitdir}/tmux@.service
 
 %post
 if [ "$1" = 1 ]; then
@@ -68,8 +70,15 @@ fi
 %{_bindir}/tmux
 %{_mandir}/man1/tmux.1.*
 %{_datadir}/bash-completion/completions/tmux
+%{_unitdir}/tmux@.service
 
 %changelog
+* Wed Oct 09 2024 Pat Riehecky <riehecky@fnal.gov> - 3.5a-2
+- Add tmux@.service
+
+* Wed Oct 09 2024 Filipe Rosset <rosset.filipe@gmail.com> - 3.5a-1
+- update to 3.5a
+
 * Fri Sep 27 2024 Sven Lankes <sven@lank.es> - 3.5
 - update to latest upstream release
 

@@ -11,7 +11,7 @@ Source0: https://ftpmirror.gnu.org/gnutls/%{name}-%{version}.tar.gz
 Source1: https://ftpmirror.gnu.org/gnutls/%{name}-%{version}.tar.gz.sig
 Source2: https://ftp.gnu.org/gnu/gnu-keyring.gpg
 
-Requires:      guile22
+Requires:      guile30
 BuildRequires: gcc make
 BuildRequires: gnupg2
 BuildRequires: gnutls-devel

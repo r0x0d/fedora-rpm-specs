@@ -1,21 +1,25 @@
 %global pname   femon
 %global __provides_exclude_from ^%{vdr_libdir}/.*\\.so.*$
-# version we want build against
+# version we want to build against
 %global vdr_version 2.6.3
-%if 0%{?fedora} >= 40
+# Set vdr_version based on Fedora version
+%if 0%{?fedora} >= 42
+%global vdr_version 2.7.2
+%elif 0%{?fedora} >= 40
 %global vdr_version 2.6.9
 %endif
 
 Name:           vdr-%{pname}
 Version:        2.4.0
-Release:        30%{?dist}
+Release:        31%{?dist}
 Summary:        DVB frontend status monitor plugin for VDR
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            https://github.com/rofafor/vdr-plugin-femon
 Source0:        %url/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Source1:        %{name}.conf
 Patch0:         %{name}-gcc11.patch
+# https://www.vdr-portal.de/index.php?attachment/49666-0002-femon-removal-of-deprecated-interface-functions-zip/
+Patch1:         0002-femon-Removal-of-deprecated-interface-functions.patch
 BuildRequires:  make
 BuildRequires:  gcc-c++
 BuildRequires:  gettext
@@ -48,6 +52,10 @@ install -Dpm 644 %{SOURCE1} \
 %{vdr_libdir}/libvdr-%{pname}.so.%{vdr_apiversion}
 
 %changelog
+* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 2.4.0-31
+- Rebuilt for new VDR API version 2.7.2
+- Add 0002-femon-Removal-of-deprecated-interface-functions.patch
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 2.4.0-30
 - convert license to SPDX
 

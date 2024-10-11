@@ -1,8 +1,8 @@
 
 Name: qt6
 # This version MUST remain in sync with Qt6 versions!
-Version: 6.7.2
-Release: 3%{?dist}
+Version: 6.8.0
+Release: 1%{?dist}
 Summary: Qt6 meta package
 License: GPL-3.0-only
 URL:     https://getfedora.org/
@@ -22,12 +22,11 @@ Requires: qt6-qtcharts
 Requires: qt6-qtconnectivity
 Requires: qt6-qtdatavis3d
 Requires: qt6-qtdeclarative
-Requires: qt6-qtdoc
 Requires: qt6-qtimageformats
 Requires: qt6-qtlocation
-Requires: qt6-qtlottie
 Requires: qt6-qtmultimedia
 Requires: qt6-qtnetworkauth
+Requires: qt6-qtpositioning
 Requires: qt6-qtquick3d
 Requires: qt6-qtquicktimeline
 Requires: qt6-qtremoteobjects
@@ -51,8 +50,6 @@ Requires: qt6-qtwebsockets
 Summary: Qt6 meta devel package
 Requires: qt6-designer
 Requires: qt6-linguist
-Requires: qt6-qdoc
-Requires: qt6-qhelpgenerator
 Requires: qt6-qt3d-devel
 Requires: qt6-qt5compat-devel
 Requires: qt6-qtbase-devel
@@ -62,11 +59,10 @@ Requires: qt6-qtconnectivity-devel
 Requires: qt6-qtdatavis3d-devel
 Requires: qt6-qtdeclarative-devel
 Requires: qt6-qtdeclarative-static
-Requires: qt6-qtimageformats-devel
 Requires: qt6-qtlocation-devel
-Requires: qt6-qtlottie-devel
 Requires: qt6-qtmultimedia-devel
 Requires: qt6-qtnetworkauth-devel
+Requires: qt6-qtpositioning-devel
 Requires: qt6-qtquick3d-devel
 Requires: qt6-qtquicktimeline-devel
 Requires: qt6-qtremoteobjects-devel
@@ -201,6 +197,9 @@ echo "- Qt6 devel meta package" > %{buildroot}%{_docdir}/qt6-devel/README
 
 
 %changelog
+* Wed Oct 09 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

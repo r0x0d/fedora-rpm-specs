@@ -1,5 +1,5 @@
 Name: cockpit-files
-Version: 8
+Version: 9
 Release: 1%{?dist}
 Summary: A filesystem browser for Cockpit
 License: LGPL-2.1-or-later
@@ -19,11 +19,11 @@ BuildRequires: gettext
 
 Requires: cockpit-bridge >= 318
 
-Provides: bundled(npm(@patternfly/patternfly)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.0
+Provides: bundled(npm(@patternfly/patternfly)) = 5.4.1
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.1
 Provides: bundled(npm(@patternfly/react-icons)) = 5.4.0
 Provides: bundled(npm(@patternfly/react-styles)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.0
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.1
 Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.0
 Provides: bundled(npm(attr-accept)) = 2.2.2
 Provides: bundled(npm(dequal)) = 2.0.3
@@ -35,7 +35,7 @@ Provides: bundled(npm(loose-envify)) = 1.4.0
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
 Provides: bundled(npm(react-dom)) = 18.3.1
-Provides: bundled(npm(react-dropzone)) = 14.2.3
+Provides: bundled(npm(react-dropzone)) = 14.2.9
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.3.1
 Provides: bundled(npm(scheduler)) = 0.23.2
@@ -71,6 +71,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 %{_datadir}/metainfo/*
 
 %changelog
+* Wed Oct 9 2024 Packit <hello@packit.dev> - 9-1
+-  basic keyboard shortcuts
+
 * Wed Sep 25 2024 Packit <hello@packit.dev> - 8-1
 - Move global menu to the toolbar
 

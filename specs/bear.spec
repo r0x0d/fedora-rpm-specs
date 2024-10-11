@@ -1,14 +1,11 @@
 Name:           bear
-Version:        3.1.4
+Version:        3.1.5
 Release:        %autorelease
 Summary:        Tool that generates a compilation database for clang tooling
 
 License:        GPL-3.0-or-later
 URL:            https://github.com/rizsotto/%{name}
 Source:         %{url}/archive/%{version}/%{name}-%{version}.tar.gz
-
-# https://github.com/rizsotto/Bear/pull/586
-Patch:          0001-citnames-include-fmt-ranges.h-for-using-fmt-join.patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}

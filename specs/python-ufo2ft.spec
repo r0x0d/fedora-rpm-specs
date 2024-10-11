@@ -1,25 +1,31 @@
 %global         srcname         ufo2ft
 %global         forgeurl        https://github.com/googlefonts/ufo2ft
-Version:        2.32.0
+%global         commit          04e2fa7fa332642049fc7b0ba9ebfcfe45ff34f9
+%global         shortcommit %(c=%{commit}; echo ${c:0:7})
+Version:        3.3.0^20241007git04e2fa7
 %global         tag             v%{version}
 %forgemeta
 
 Name:           python-%{srcname}
-Release:        6%{?dist}
+Release:        1%{?dist}
 Summary:        A bridge from UFOs to FontTool objects
 
 # The entire source is (SPDX) MIT, except:
 #   - Lib/ufo2ft/filters/propagateAnchors.py is Apache-2.0
 License:        MIT AND Apache-2.0
 URL:            %forgeurl
-Source0:        %{pypi_source %{srcname}}
+Source:         %{srcname}.tar.gz
+# Need git history, so build sources independently
+Source:         prepare.sh
+# Relax version requirements
+Patch:          relax-versions.patch
 
-
+BuildRequires:  git
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(pytest)
 BuildRequires:  python3dist(ufolib2)
 BuildRequires:  python3dist(defcon)
-
+BuildRequires:  python3dist(syrupy)
 BuildArch: noarch
 
 %global _description %{expand:
@@ -38,7 +44,7 @@ Summary:        %{summary}
 %pyproject_extras_subpkg -n python3-%{srcname} cffsubr compreffor
 
 %prep
-%forgeautosetup -N
+%autosetup -n %{srcname} -p 1
 
 %generate_buildrequires
 %pyproject_buildrequires -x cffsubr,compreffor
@@ -66,11 +72,17 @@ k="${k-}${k+ and }not (TTFInterpolatablePreProcessorTest and test_custom_filters
 %doc README.rst
  
 %changelog
+* Wed Oct 09 2024 Benson Muite <benson_muite@emailplus.org> - 3.3.0^20241007git0e2fa7-1
+- Update to latest release
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.32.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
 * Mon Jun 17 2024 Python Maint <python-maint@redhat.com> - 2.32.0-5
 - Rebuilt for Python 3.13
+
+* Wed Feb 21 2024 Benson Muite <benson_muite@emailplus.org> - 3.1.0-1
+- Update to latest release
 
 * Fri Jan 26 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.32.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
@@ -131,4 +143,3 @@ k="${k-}${k+ and }not (TTFInterpolatablePreProcessorTest and test_custom_filters
 
 * Thu Mar 23 2017 Athos Ribeiro <athoscr@fedoraproject.org> - 0.4.0-1
 - Initial package
-

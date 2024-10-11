@@ -1,14 +1,16 @@
-# version we want build against
+# version we want to build against
 %global vdr_version 2.6.3
-%if 0%{?fedora} >= 40
+# Set vdr_version based on Fedora version
+%if 0%{?fedora} >= 42
+%global vdr_version 2.7.2
+%elif 0%{?fedora} >= 40
 %global vdr_version 2.6.9
 %endif
 
 Name:           vdr-iptv
 Version:        2.4.0
-Release:        31%{?dist}
+Release:        32%{?dist}
 Summary:        IPTV plugin for VDR
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            https://github.com/rofafor/vdr-plugin-iptv
 Source0:        %url/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
@@ -51,6 +53,9 @@ sed -i "s|^CHANNELS_CONF=.*|CHANNELS_CONF=%{vdr_configdir}/channels.conf|; \
 %config(noreplace) %{vdr_resdir}/plugins/iptv/vlc2iptv
 
 %changelog
+* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 2.4.0-32
+- Rebuilt for new VDR API version 2.7.2
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 2.4.0-31
 - convert license to SPDX
 

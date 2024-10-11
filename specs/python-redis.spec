@@ -4,7 +4,7 @@
 %global upstream_name redis
 
 Name:           python-%{upstream_name}
-Version:        5.1.0
+Version:        5.1.1
 Release:        %autorelease
 Summary:        Python interface to the Redis key-value store
 License:        MIT

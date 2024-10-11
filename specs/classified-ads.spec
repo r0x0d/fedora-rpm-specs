@@ -8,6 +8,7 @@ License:	LicenseRef-Callaway-LGPLv2
 URL:		http://katiska.org/classified_ads/
 Source0:	https://github.com/operatornormal/%{name}/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Source1:	https://github.com/operatornormal/classified-ads/blob/graphics/preprocessed.tar.gz?raw=true#/%{name}-graphics-%{version}.tar.gz
+Patch0:     %{name}-miniupnp228.patch
 BuildRequires:	qt5-qtbase-devel
 BuildRequires:	qt5-qtmultimedia-devel
 BuildRequires:	openssl-devel
@@ -33,7 +34,7 @@ basic operator data, search, voice calls between nodes, UI extensions
 with TCL language and general-purpose database shared between nodes of the 
 application. 
 %prep
-%setup -q -a 1
+%autosetup -p1 -a 1
 
 %build
 qmake-qt5 QMAKE_STRIP=echo

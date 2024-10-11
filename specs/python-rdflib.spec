@@ -119,7 +119,12 @@ rm -rf docs/_build/html/.{doctrees,buildinfo}
             test_example and not test_suite and not \
             test_infix_owl_example1 and not test_context and not \
             test_service and not test_simple_not_null and not \
-            test_sparqleval and not test_parser"
+            test_sparqleval and not test_parser \
+%if "%{version}" == "7.0.0" && (! 0%{?fedora} || 0%{?fedora} >= 42)
+            and not test_literal_addsub[2006-07-01T20:52:00-P123D-aplusb-2006-11-01T12:50:00] \
+            and not test_literal_addsub[2006-07-01T20:52:00-2006-11-01T12:50:00-bminusa-P123D] \
+%endif
+            "
 %endif
 
 %files -n python%{python3_pkgversion}-%{srcname} -f %{pyproject_files}

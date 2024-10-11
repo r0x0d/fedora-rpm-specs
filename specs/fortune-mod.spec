@@ -10,7 +10,7 @@
 
 Name:		fortune-mod
 Version:	3.22.0
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	A program which will display a fortune
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -32,11 +32,11 @@ BuildRequires:	perl(File::Path)
 BuildRequires:	perl(File::Spec)
 BuildRequires:	perl(FindBin)
 BuildRequires:	perl(Getopt::Long)
-BuildRequires:	perl(IO::All)
 BuildRequires:	perl(List::Util)
 BuildRequires:	perl(Path::Tiny)
 BuildRequires:	perl(Test::Differences)
 BuildRequires:	perl(Test::More)
+BuildRequires:	perl(Test::RunValgrind)
 BuildRequires:	perl(Test::Trap)
 BuildRequires:	perl(autodie)
 BuildRequires:	perl(lib)
@@ -50,6 +50,8 @@ BuildRequires:	recode-devel
 BuildRequires:	cmake
 BuildRequires:	gcc
 BuildRequires:	gcc-c++
+BuildRequires:	valgrind
+BuildRequires:	valgrind-devel
 BuildRequires:	chrpath
 
 
@@ -118,8 +120,9 @@ chrpath -d %{buildroot}%{_bindir}/fortune
 %check
 %__rm -f tests/t/trailing-space*.t
 %__rm -f tests/t/valgrind*.t
-%ctest
-
+# The fortune-mod tests suite does not use CTest - only "[build-cmd] check"
+# ctest
+%cmake_build --target check
 
 %files
 %license COPYING.txt
@@ -131,6 +134,9 @@ chrpath -d %{buildroot}%{_bindir}/fortune
 %{_mandir}/man*/*
 
 %changelog
+* Wed Oct 09 2024 Shlomi Fish <shlomif@shlomifish.org> 3.22.0-4
+- Restore running the tests-suite. Update the build-deps ( valgrind, IO::All)
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 3.22.0-3
 - convert license to SPDX
 

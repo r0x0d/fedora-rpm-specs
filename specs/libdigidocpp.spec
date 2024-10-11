@@ -1,7 +1,7 @@
 Name:           libdigidocpp
 
-Version:        3.17.1
-Release:        3%{?dist}
+Version:        4.0.0
+Release:        1%{?dist}
 
 Summary:        Library offers creating, signing and verification of digitally signed documents
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
@@ -15,19 +15,15 @@ ExcludeArch:    %{ix86}
 BuildRequires: make
 BuildRequires: cmake
 BuildRequires:  gcc-c++
+BuildRequires:  libtool-ltdl-devel
 BuildRequires:  pkgconfig(openssl)
-BuildRequires:  xml-security-c-devel
-BuildRequires:  xsd
-BuildRequires:  zlib-devel
+BuildRequires:  pkgconfig(libxml-2.0)
+BuildRequires:  pkgconfig(xmlsec1-openssl)
+BuildRequires:  pkgconfig(zlib)
 BuildRequires:  minizip-ng-compat-devel
-# Provide xxd
-BuildRequires:  vim-common
 
 # Dynamically loaded libraries
 Requires:       opensc%{?_isa}
-
-# about Patch0 https://github.com/open-eid/libdigidocpp/issues/600
-Patch0:         minizip.patch
 
 %description
 Libdigidocpp library offers creating, signing and verification of digitally
@@ -52,12 +48,6 @@ The %{name}-doc package contains documentation provided by upstream.
 
 %prep
 %autosetup -p 1
-# Compatibility macro XALAN_USING_XALAN() was removed in xalan-c 1.12. This
-# workaround is harmless when using older xalan-c versions. See
-# https://github.com/open-eid/libdigidocpp/issues/363 and the corresponding
-# xml-security-c issue, https://issues.apache.org/jira/browse/SANTUARIO-560.
-find . -type f -execdir sed -r -i \
-    's/XALAN_USING_XALAN\(([^\(\)]+)\);*/using xalanc::\1;/g' '{}' '+'
 
 # it contains non UTF-8 files, but they do not worth the process of
 # unpackaging and fixing the encoding
@@ -123,6 +113,9 @@ rm -rf src/minizip
 
 
 %changelog
+* Tue Oct 8 2024 Dmitri Smirnov <dmitri@smirnov.ee> - 4.0.0-1
+- 4.0.0 upstream release
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 3.17.1-3
 - convert license to SPDX
 

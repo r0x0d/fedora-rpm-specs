@@ -1,25 +1,27 @@
-# https://github.com/MarkusEh/vdr-plugin-live/commit/0fbd9b32fc6afcdbe8722daa0e772260cd058f41
-%global commit0 0fbd9b32fc6afcdbe8722daa0e772260cd058f41
+# https://github.com/MarkusEh/vdr-plugin-live/commit/80b8da8af509fc0c4e93338b0a680b05d7d1e550
+%global commit0 80b8da8af509fc0c4e93338b0a680b05d7d1e550
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global gitdate 20211228
-# version we want build against
+%global gitdate 20241008
+# version we want to build against
 %global vdr_version 2.6.3
-%if 0%{?fedora} >= 40
+# Set vdr_version based on Fedora version
+%if 0%{?fedora} >= 42
+%global vdr_version 2.7.2
+%elif 0%{?fedora} >= 40
 %global vdr_version 2.6.9
 %endif
 
 Name:           vdr-live
-Version:        3.3.5
-#Release:        0.4.%%{gitdate}git%%{shortcommit0}%%{?dist}
-Release:        5%{?dist}
+Version:        3.3.8
+Release:        0.1.%{gitdate}git%{shortcommit0}%{?dist}
+# Release:        1%%{?dist}
 Summary:        An interactive web interface with HTML5 live stream support for VDR
 
-# The entire source code is GPLv2+ except live/js/mootools/ which is MIT
-# Automatically converted from old format: GPLv2+ and MIT - review is highly recommended.
+# The entire source code is GPL-2.0-or-later except live/js/mootools/ which is MIT
 License:        GPL-2.0-or-later AND LicenseRef-Callaway-MIT
 URL:            https://github.com/MarkusEh/vdr-plugin-live
-#Source0:        https://github.com/MarkusEh/vdr-plugin-live/archive/%%{commit0}/%%{name}-%%{version}-%%{shortcommit0}.tar.gz
-Source0:        https://github.com/MarkusEh/vdr-plugin-live/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        https://github.com/MarkusEh/vdr-plugin-live/archive/%{commit0}/%{name}-%{version}-%{shortcommit0}.tar.gz
+# Source0:        https://github.com/MarkusEh/vdr-plugin-live/archive/v%%{version}.tar.gz#/%%{name}-%%{version}.tar.gz
 Source1:        %{name}.conf
 
 BuildRequires:  make
@@ -51,8 +53,8 @@ Requires:      %{name} = %{version}-%{release}
 This package contains images, themes and JavaScript.
 
 %prep
-#%%autosetup -p1 -n vdr-plugin-live-%%{commit0}
-%autosetup -p1 -n vdr-plugin-live-%{version}
+%autosetup -p1 -n vdr-plugin-live-%{commit0}
+#%%autosetup -p1 -n vdr-plugin-live-%%{version}
 
 # delete unused directories and files
 find -name .git -type d -or -name gitignore -type d | xargs rm -rfv
@@ -78,12 +80,20 @@ install -Dpm 644 %{SOURCE1} \
 %doc CONTRIBUTORS README
 %license COPYING
 %config(noreplace) %{_sysconfdir}/sysconfig/vdr-plugins.d/live.conf
+%config(noreplace) %{_sysconfdir}/vdr/plugins/live/ffmpeg.conf
 %{vdr_plugindir}/libvdr-*.so.%{vdr_apiversion}
 
 %files data
 %{vdr_resdir}/plugins/live/
 
 %changelog
+* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 3.3.8-0.1.20241008git80b8da8
+- Rebuilt for new VDR API version 2.7.2
+- Update to 3.3.8-0.1.20241008git80b8da8
+
+* Mon Sep 30 2024 Martin Gansser <martinkg@fedoraproject.org> - 3.3.7-1
+- Update to 3.3.7
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 3.3.5-5
 - convert license to SPDX
 

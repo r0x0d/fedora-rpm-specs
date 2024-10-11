@@ -3,7 +3,7 @@
 
 Name:           authselect
 Version:        1.5.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Configures authentication and identity sources from supported profiles
 URL:            https://github.com/authselect/authselect
 
@@ -34,7 +34,6 @@ Patch0007: 0007-ci-remove-python-checks.patch
 Patch0008: 0008-pot-update-pot-files.patch
 Patch0009: 0009-profiles-merge-groups-records-with-SUCCESS-merge.patch
 Patch0010: 0010-spec-use-altfiles-with-success-merge-on-ostree-syste.patch
-Patch0011: 0011-profiles-put-myhostname-before-dns.patch
 
 # RHEL-only patches
 %if 0%{?rhel}
@@ -259,6 +258,9 @@ done
 exit 0
 
 %changelog
+* Wed Oct 9 2024 Pavel Březina <pbrezina@redhat.com> - 1.5.0-8
+- Temporary revert: myhostname is put right before dns module in nsswitch.conf hosts (rhbz#2291062)
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org>
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

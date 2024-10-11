@@ -1,15 +1,11 @@
-# no new tag release for long time
 %global forgeurl https://github.com/dirkvdb/ffmpegthumbnailer
-%global date 20240105
-%global commit 1b5a77983240bcf00a4ef7702c07bcd8f4e5f97c
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
+Version:        2.2.3
+%global tag %{version}
 %forgemeta
 
 Name:           ffmpegthumbnailer
-Version:        2.2.2
 Release:        %autorelease
 Summary:        Lightweight video thumbnailer that can be used by file managers
-
 License:        GPL-2.0-or-later
 URL:            %{forgeurl}
 Source0:        %{forgesource}

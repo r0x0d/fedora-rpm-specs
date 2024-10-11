@@ -1,23 +1,26 @@
 %global rname   vdr-plugin-graphlcd
 %global sname   graphlcd
-# version we want build against
+# version we want to build against
 %global vdr_version 2.6.3
-%if 0%{?fedora} >= 40
+# Set vdr_version based on Fedora version
+%if 0%{?fedora} >= 42
+%global vdr_version 2.7.2
+%elif 0%{?fedora} >= 40
 %global vdr_version 2.6.9
 %endif
 
 
 Name:           vdr-graphlcd
 Version:        1.0.6
-Release:        18%{?dist}
+Release:        19%{?dist}
 Summary:        VDR plugin: Output to graphic LCD
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            https://github.com/vdr-projects/vdr-plugin-graphlcd
 Source0:        https://github.com/vdr-projects/%{rname}/archive/refs/tags/%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Source1:        %{name}.conf
 Source2:        %{name}.conf.sample
 Source3:        %{name}-fonts.conf
+Patch0:         0002-graphlcd-Removal-of-deprecated-interface-functions.patch
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -80,11 +83,14 @@ install -Dpm 644 %{SOURCE3} \
 %config(noreplace) %{_sysconfdir}/sysconfig/vdr-plugins.d/%{sname}.conf.sample
 
 %changelog
-* Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.6-18
-- convert license to SPDX
+* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 1.0.6-19
+- Rebuilt for new VDR API version 2.7.2
 
-* Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.6-17
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+* Mon Sep 30 2024 Martin Gansser <martinkg@fedoraproject.org> - 1.0.6-18
+- Add 0002-graphlcd-Removal-of-deprecated-interface-functions.patch for vdr-2.7.x
+
+* Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.6-17
+- convert license to SPDX
 
 * Mon Jul 15 2024 Martin Gansser <martinkg@fedoraproject.org> - 1.0.6-16
 - Rebuilt for new VDR API version 2.6.9

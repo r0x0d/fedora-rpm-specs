@@ -3,7 +3,7 @@
 # %%global gitcommit %%(c=%%{gitcommit_full}; echo ${c:0:7})
 
 Name:           kdiff3
-Version:        1.11.2
+Version:        1.11.4
 Release:        1%{?dist}
 Summary:        Compare + merge 2 or 3 files or directories
 
@@ -83,6 +83,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.%{name}.deskt
 
 
 %changelog
+* Wed Oct 09 2024 Vasiliy N. Glazov <vascom2@gmail.com> - 1.11.4-1
+- Update to 1.11.4
+
 * Tue Aug 27 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 1.11.2-1
 - Update to 1.11.2
 

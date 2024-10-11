@@ -1,5 +1,5 @@
 Name:          ruqola
-Version:       2.2.0
+Version:       2.3.0
 Release:       1%{?dist}
 Summary:       Qt-based client for Rocket Chat
 
@@ -65,6 +65,8 @@ BuildRequires: cmake(PlasmaActivities)
 
 Requires: hicolor-icon-theme
 
+Provides: bundled(cmark-rc)
+
 %description
 Ruqola is a Rocket chat client for the KDE desktop.
 
@@ -102,6 +104,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.ru
 %{_kf6_libdir}/{librocketchatrestapi-qt,libruqolacore,libruqolawidgets}.so.0
 %{_kf6_metainfodir}/org.kde.ruqola.appdata.xml
 %{_kf6_qtplugindir}/ruqolaplugins/
+%{_kf6_libdir}/libcmark-rc-copy.so.*
 
 %files doc
 %dir %{_docdir}/HTML/en/ruqola
@@ -109,6 +112,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.ru
 %{_docdir}/HTML/en/ruqola/index.docbook
 
 %changelog
+* Wed Oct 09 2024 Alessandro Astone <ales.astone@gmail.com> - 2.3.0-1
+- new version
+
 * Sat Sep 14 2024 Pavel Solovev <daron439@gmail.com> - 2.2.0-1
 - new version
 

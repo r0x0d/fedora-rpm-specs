@@ -5,7 +5,7 @@
 %bcond doc_pdf 1
 
 Name:           python-ncclient
-Version:        0.6.15
+Version:        0.6.16
 Release:        %autorelease
 Summary:        Python library for the NETCONF protocol
 

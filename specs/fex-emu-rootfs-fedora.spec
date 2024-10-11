@@ -3,7 +3,7 @@
 # https://pagure.io/fedora-kiwi-descriptions/c/03aacd1818f24ff945f206ac580699b6b23cef11
 # https://pagure.io/pungi-fedora/c/e53efc4c1e82cf05a48679a45e3da1195e5310d0
 # https://pagure.io/releng/issue/12378
-%global baseurl https://artifacts.dev.testing-farm.io/5a8013bf-2aab-4ace-9874-34a14dfe3924/work-build-fex-rootfsj0zewmi9/tmt/plans/asahi/build-fex-rootfs/execute/data/guest/default-0/tmt/tests/build-image-1/data/
+%global baseurl https://artifacts.dev.testing-farm.io/d545dbfe-ecf5-4480-9e80-a9358c8b138d/work-build-fex-rootfst_yjcumx/tmt/plans/asahi/build-fex-rootfs/execute/data/guest/default-0/tmt/tests/build-image-1/data
 
 Name:           fex-emu-rootfs-fedora
 Version:        42

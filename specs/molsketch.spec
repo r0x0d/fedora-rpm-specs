@@ -68,7 +68,7 @@ applications that use %{name}.
 
 
 %build
-%cmake -DMSK_QT6=true
+%cmake -DMSK_PREFIX=%{_prefix} -DMSK_QT6=true
 %cmake_build
 
 

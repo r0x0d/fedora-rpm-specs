@@ -20,7 +20,6 @@ Patch:          hidpipe-fix-metadata.diff
 Patch:          https://rosenzweig.io/0001-src-client-Wait-for-half-a-second-to-sync-up-with-th.patch
 
 BuildRequires:  cargo-rpm-macros >= 26
-BuildRequires:  systemd-rpm-macros
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch: %{ix86}
@@ -46,8 +45,6 @@ License:        (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND MIT AN
 %doc README.md
 %{_bindir}/hidpipe-client
 %{_bindir}/hidpipe-server
-%{_userunitdir}/hidpipe.service
-%{_userunitdir}/hidpipe.socket
 
 %prep
 %autosetup -n %{crate}-%{version} -p1
@@ -63,16 +60,6 @@ License:        (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND MIT AN
 
 %install
 %cargo_install
-install -Dpm0644 -t %{buildroot}%{_userunitdir} etc/systemd/user/hidpipe.{service,socket}
-
-%post
-%systemd_user_post hidapi.service hidapi.socket
-
-%preun
-%systemd_user_preun hidapi.service hidapi.socket
-
-%postun
-%systemd_user_postun_with_restart hidapi.service hidapi.socket
 
 %if %{with check}
 %check

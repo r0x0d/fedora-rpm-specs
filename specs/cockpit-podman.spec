@@ -16,7 +16,7 @@
 #
 
 Name:           cockpit-podman
-Version:        95
+Version:        96
 Release:        1%{?dist}
 Summary:        Cockpit component for Podman containers
 License:        LGPL-2.1-or-later
@@ -45,11 +45,11 @@ Requires:       criu-libs
 Requires:       libcriu2
 %endif
 
-Provides: bundled(npm(@patternfly/patternfly)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.0
+Provides: bundled(npm(@patternfly/patternfly)) = 5.4.1
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.1
 Provides: bundled(npm(@patternfly/react-icons)) = 5.4.0
 Provides: bundled(npm(@patternfly/react-styles)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.0
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.1
 Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.0
 Provides: bundled(npm(@xterm/addon-canvas)) = 0.7.0
 Provides: bundled(npm(@xterm/xterm)) = 5.5.0
@@ -64,7 +64,7 @@ Provides: bundled(npm(loose-envify)) = 1.4.0
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
 Provides: bundled(npm(react-dom)) = 18.3.1
-Provides: bundled(npm(react-dropzone)) = 14.2.3
+Provides: bundled(npm(react-dropzone)) = 14.2.9
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.3.1
 Provides: bundled(npm(scheduler)) = 0.23.2
@@ -92,6 +92,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 %{_datadir}/metainfo/*
 
 %changelog
+* Wed Oct 09 2024 Packit <hello@packit.dev> - 96-1
+- pull images from registries without search API
+
 * Wed Sep 25 2024 Packit <hello@packit.dev> - 95-1
 - Bug fixes and translation updates
 

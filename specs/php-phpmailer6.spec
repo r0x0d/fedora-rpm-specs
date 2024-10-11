@@ -7,7 +7,7 @@
 # Please preserve changelog entries
 #
 # Github
-%global gh_commit    039de174cd9c17a8389754d3b877a2ed22743e18
+%global gh_commit    a7b17b42fa4887c92146243f3d2f4ccb962af17c
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     PHPMailer
 %global gh_project   PHPMailer
@@ -23,8 +23,8 @@
 %global php_home     %{_datadir}/php
 
 Name:           php-%{pk_project}%{major}
-Version:        6.9.1
-Release:        6%{?dist}
+Version:        6.9.2
+Release:        1%{?dist}
 Summary:        Full-featured email creation and transfer class for PHP
 
 License:        LGPL-2.1-only
@@ -77,11 +77,7 @@ Requires:       php-filter
 Requires:       php-hash
 # from phpcompatinfo report on version 6.1.3
 Requires:       php-date
-%if 0%{?fedora} >= 27 || 0%{?rhel} >= 8
 Recommends:     php-imap
-%else
-Requires:       php-imap
-%endif
 Requires:       php-intl
 Requires:       php-mbstring
 Requires:       php-openssl
@@ -95,9 +91,7 @@ Requires:       php-pcre
 #        "psr/log": "For optional PSR-3 debug logging",
 #        "thenetworg/oauth2-azure": "Needed for Microsoft XOAUTH2 authentication",
 #        "symfony/polyfill-mbstring": "To support UTF-8 if the Mbstring PHP extension is not enabled (^1.2)"
-%if 0%{?fedora} >= 27 || 0%{?rhel} >= 8
 Suggests:       php-composer(psr/log)
-%endif
 # Autoloader
 Requires:       php-composer(fedora/autoloader)
 
@@ -186,7 +180,7 @@ popd
 
 : Run upstream test suite
 ret=0
-for cmd in php php81 php82 php83; do
+for cmd in php php81 php82 php83 php84; do
   if which $cmd; then
     $cmd  -d "sendmail_path=$PWD/test/fakesendmail.sh -t -i " \
       %{phpunit} --exclude slow,pop3,languages --verbose || ret=1
@@ -210,6 +204,9 @@ exit $ret
 
 
 %changelog
+* Wed Oct  9 2024 Remi Collet <remi@remirepo.net> - 6.9.2-1
+- update to 6.9.2
+
 * Fri Aug 30 2024 Remi Collet <remi@remirepo.net> - 6.9.1-6
 - fix build dependency on yoast/phpunit-polyfills 1.0.4
 

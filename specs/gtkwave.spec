@@ -1,10 +1,11 @@
 Summary:	Waveform Viewer
 Name:		gtkwave
-Version:	3.3.119
-Release:	2%{?dist}
+Version:	3.3.121
+Release:	1%{?dist}
 License:	GPL-2.0-or-later
 URL:		http://gtkwave.sourceforge.net/
 Source0:	http://gtkwave.sourceforge.net/gtkwave-gtk3-%{version}.tar.gz
+Patch0:		gtkwave-3.3.121-appdata.patch
 BuildRequires:	bzip2-devel
 BuildRequires:	coreutils
 BuildRequires:	desktop-file-utils
@@ -45,6 +46,10 @@ tools.
 
 %prep
 %setup -q -n gtkwave-gtk3-%{version}
+
+# Fix broken appdata file
+# https://github.com/gtkwave/gtkwave/pull/387
+%patch -P 0
 
 %build
 %configure \
@@ -191,6 +196,19 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/appdata/io.github.
 %{_mandir}/man5/gtkwaverc.5*
 
 %changelog
+* Wed Oct  9 2024 Paul Howarth <paul@city-fan.org> - 3.3.121-1
+- Update to 3.3.121
+  - Add launchable tag in io.github.gtkwave.GTKWave.metainfo.xml
+  - Fix memory leak on name in build_hierarchy_array()
+  - Fix memory leak in ptranslate/ttranslate
+  - Fix case of missing newline at EOF for VCD loaders
+  - Add escape handling state machine for vars in FST loader
+  - Remove escape check on coalesce in FST loader
+  - CreateFileMapping() warning fix for Win32 compiles
+  - Integrate gtkwave/pull/376 and gtkwave/pull/377 updates to the FST loader
+    for Windows and warnings fixes
+  - Clang warning fixes in fstapi.c on dynamic arrays
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.3.119-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

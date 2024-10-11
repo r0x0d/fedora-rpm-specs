@@ -1,6 +1,6 @@
 Name:      schismtracker
 Version:   20240909
-Release:   2%{?dist}
+Release:   3%{?dist}
 Summary:   Sound module composer/player
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License:   GPL-2.0-only
@@ -60,6 +60,9 @@ popd
 %{_datadir}/pixmaps/schism*.png
 
 %changelog
+* Wed Oct 09 2024 josef radinger <cheese@nosuchhost.net> - 20240909-3
+- rebuild for utf8proc 2.9.0 (soname bump)
+
 * Tue Oct 01 2024 Jindrich Novy <jnovy@redhat.com> - 20240909-2
 - remove duplicate desktop file - prefer upstream one
 - Resolves: 2315896

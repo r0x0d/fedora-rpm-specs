@@ -5,9 +5,12 @@
 %global gitshort  %(echo %gitver | awk '{print substr($0,1,8)}')
 %global __provides_exclude_from ^%{vdr_plugindir}/.*\\.so.*$
 
-# version we want build against
+# version we want to build against
 %global vdr_version 2.6.3
-%if 0%{?fedora} >= 40
+# Set vdr_version based on Fedora version
+%if 0%{?fedora} >= 42
+%global vdr_version 2.7.2
+%elif 0%{?fedora} >= 40
 %global vdr_version 2.6.9
 %endif
 
@@ -27,12 +30,11 @@
 Name:           vdr-%{pname}
 Version:        0.6.3
 %if 0%{?gitver:0}
-Release:        0.43%{?gitver:.git%{gitshort}}%{?dist}
+Release:        0.44%{?gitver:.git%{gitshort}}%{?dist}
 %else
-Release:        13%{?dist}
+Release:        14%{?dist}
 %endif
 Summary:        Streaming plug-in for VDR
-# Automatically converted from old format: GPL+ and GPLv2+ - review is highly recommended.
 License:        GPL-1.0-or-later AND GPL-2.0-or-later
 URL:            https://github.com/vdr-projects/vdr-plugin-streamdev
 
@@ -112,6 +114,9 @@ install -Dpm 644 %{SOURCE2} \
 %config(noreplace) %{_sysconfdir}/sysconfig/vdr-plugins.d/%{pname}-client.conf
 
 %changelog
+* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 0.6.3-14
+- Rebuilt for new VDR API version 2.7.2
+
 * Wed Aug 07 2024 Miroslav Suchý <msuchy@redhat.com> - 0.6.3-13
 - convert license to SPDX
 

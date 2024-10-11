@@ -3,16 +3,19 @@
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global pname   scraper2vdr
 %global gitdate 20190128
-# version we want build against
+# version we want to build against
 %global vdr_version 2.6.3
-%if 0%{?fedora} >= 40
+# Set vdr_version based on Fedora version
+%if 0%{?fedora} >= 42
+%global vdr_version 2.7.2
+%elif 0%{?fedora} >= 40
 %global vdr_version 2.6.9
 %endif
 
 Name:           vdr-scraper2vdr
 Version:        1.1.2
 #Release:        15.%%{gitdate}git%%{shortcommit0}%%{?dist}
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        A client plugin which provides scraped metadata from EPGD to other plugins
 License:        GPL-1.0-or-later
 URL:            https://github.com/horchi/scraper2vdr
@@ -21,6 +24,7 @@ Source0:        https://github.com/horchi/scraper2vdr/archive/refs/tags/%{versio
 Source1:        %{name}.conf
 # https://www.vdr-portal.de/index.php?attachment/44795-scraper2vdr-serienposter-statt-banner-diff/
 Patch0:         scraper2vdr_serienposter_statt_banner.diff
+Patch1:         vdr-scraper2vdr-EventID.patch
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -46,7 +50,7 @@ the terms of use.
 
 %prep
 #%%autosetup -p0 -n %%{pname}-%%{commit0}
-%autosetup -p0 -n %{pname}-%{version}
+%autosetup -p1 -n %{pname}-%{version}
 iconv -f iso-8859-1 -t utf-8 README > README.utf8 ; mv README.utf8 README
 
 # fedora specific
@@ -72,6 +76,10 @@ install -Dpm 644 %{SOURCE1} \
 %config(noreplace) %{vdr_configdir}/plugins/%{pname}/epg.dat
 
 %changelog
+* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 1.1.2-10
+- Rebuilt for new VDR API version 2.7.2
+- Add vdr-scraper2vdr-EventID.patch for vdr-2.7.x
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

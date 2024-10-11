@@ -6,23 +6,25 @@
 %global gitdate 20220201
 
 # version we want build against
-# version we want build against
+# version we want to build against
 %global vdr_version 2.6.3
-%if 0%{?fedora} >= 40
+# Set vdr_version based on Fedora version
+%if 0%{?fedora} >= 42
+%global vdr_version 2.7.2
+%elif 0%{?fedora} >= 40
 %global vdr_version 2.6.9
 %endif
 
 Name:           vdr-%{pname}
-Version:        2.4.2
-#Release:        5%%{?dist}
-Release:        0.14.%{gitdate}git%{shortcommit0}%{?dist}
+Version:        2.4.3
+Release:        1%{?dist}
+# Release:        0.12.%%{gitdate}git%%{shortcommit0}%%{?dist}
 Summary:        Powerful schedules menu replacement plugin for VDR
 
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            https://github.com/vdr-projects/vdr-plugin-epgsearch
-# Source0:        https://github.com/vdr-projects/vdr-plugin-epgsearch/archive/refs/tags/v2.4.1.tar.gz
-Source0:        %url/archive/%{commit0}/%{name}-%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+Source0:        https://github.com/vdr-projects/vdr-plugin-epgsearch/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+#Source0:        %%url/archive/%%{commit0}/%%{name}-%%{commit0}.tar.gz#/%%{name}-%%{shortcommit0}.tar.gz
 Source1:        %{name}.conf
 Source2:        %{name}-epgsearchonly.conf
 Source3:        %{name}-conflictcheckonly.conf
@@ -44,8 +46,8 @@ adds several functions, such as additional commands for EPG entries,
 reusable queries which can be used as dynamic "search timers" etc.
 
 %prep
-#%%setup -q -n vdr-plugin-%%{pname}-%%{version}
-%setup -qn vdr-plugin-%{pname}-%{commit0}
+%setup -q -n vdr-plugin-%{pname}-%{version}
+#%%setup -qn vdr-plugin-%{pname}-%%{commit0}
 sed -e 's|__VARDIR__|%{vdr_vardir}|g' %{PATCH0} | %{__patch} -p1 --fuzz=0
 for f in scripts/epgsearchcmds-french.conf conf/epgsearchcats.conf-tvm2vdr* ; do
     iconv -f iso-8859-1 -t utf-8 -o $f.utf8 $f ; mv $f.utf8 $f
@@ -91,6 +93,10 @@ install -dm 755 $RPM_BUILD_ROOT%{vdr_vardir}/epgsearch
 %defattr(-,root,root,-)
 
 %changelog
+* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 2.4.3-1
+- Rebuilt for new VDR API version 2.7.2
+- Update to 2.4.3
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 2.4.2-0.14.20220201git76d2b10
 - convert license to SPDX
 

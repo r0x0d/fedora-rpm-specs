@@ -1,26 +1,26 @@
 %global sname   skinelchihd
-# https://github.com/FireFlyVDR/vdr-plugin-skinelchihd/commit/53f8c8756392d068715aaf7ccb2599e1f456b148
-%global commit0 53f8c8756392d068715aaf7ccb2599e1f456b148
+%global commit0 56fc1731410f32d6f13507b8548c9d955af35759
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global gitdate 20231222
+%global gitdate 20241008
 
-# version we want build against
+# version we want to build against
 %global vdr_version 2.6.3
-%if 0%{?fedora} >= 40
+# Set vdr_version based on Fedora version
+%if 0%{?fedora} >= 42
+%global vdr_version 2.7.2
+%elif 0%{?fedora} >= 40
 %global vdr_version 2.6.9
 %endif
 
 Name:           vdr-skinelchihd
-Version:        1.2.4
-Release:        0.7.%{gitdate}git%{shortcommit0}%{?dist}
-# Release:        2%%{?dist}
+Version:        1.2.5
+# Release:        0.8.%%{gitdate}git%%{shortcommit0}%%{?dist}
+Release:        1%{?dist}
 Summary:        A Elchi based skin with True Color support for the Video Disc Recorder
-
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            https://github.com/FireFlyVDR/vdr-plugin-skinelchihd
-# Source0:        %%url/archive/refs/tags/v%%{version}.tar.gz#/%%{name}-%%{version}.tar.gz
-Source0:        %url/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
+Source0:        %url/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+# Source0:        %%url/archive/%%{commit0}/%%{name}-%%{shortcommit0}.tar.gz
 # Configuration files for plugin parameters. These are Fedora specific and not in upstream.
 Source1:        %{name}.conf
 BuildRequires:  make
@@ -41,8 +41,8 @@ skin. It is based on the Elchi skin with major re-factoring to make use of newer
 VDR features like True Color support.
 
 %prep
-#%%autosetup -n vdr-plugin-%%{sname}-%%{version}
-%autosetup -n vdr-plugin-%{sname}-%{commit0}
+%autosetup -n vdr-plugin-%{sname}-%%{version}
+#%%autosetup -n vdr-plugin-%%{sname}-%%{commit0}
 
 %build
 %{set_build_flags}
@@ -73,6 +73,13 @@ install -Dpm 644 %{SOURCE1} \
 %{vdr_vardir}/themes/ElchiHD-*.theme
 
 %changelog
+* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 1.2.5-1
+- Rebuilt for new VDR API version 2.7.2
+- Update to 1.2.5
+
+* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 1.2.4-0.8.20241008git56fc173
+- Rebuilt for new VDR API version 2.7.2
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.2.4-0.7.20231222git53f8c87
 - convert license to SPDX
 

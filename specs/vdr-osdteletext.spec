@@ -1,19 +1,21 @@
 %global pname   osdteletext
 %global __provides_exclude_from ^%{vdr_plugindir}/.*\\.so.*$
-# version we want build against
+# version we want to build against
 %global vdr_version 2.6.3
-%if 0%{?fedora} >= 40
+# Set vdr_version based on Fedora version
+%if 0%{?fedora} >= 42
+%global vdr_version 2.7.2
+%elif 0%{?fedora} >= 40
 %global vdr_version 2.6.9
 %endif
 
 Name:           vdr-%{pname}
 Version:        2.3.1
-Release:        16%{?dist}
+Release:        17%{?dist}
 Summary:        OSD teletext plugin for VDR
 
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
-URL:            http://projects.vdr-developer.org/projects/show/plg-osdteletext
+URL:            https://github.com/vdr-projects/vdr-plugin-osdteletext
 Source0:        https://github.com/vdr-projects/vdr-plugin-osdteletext/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Source1:        %{name}.conf
 
@@ -63,6 +65,9 @@ install -Dpm 644 teletext2.ttf \
 %attr(-,%{vdr_user},root) %{vdr_rundir}/%{pname}/
 
 %changelog
+* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 2.3.1-17
+- Rebuilt for new VDR API version 2.7.2
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 2.3.1-16
 - convert license to SPDX
 

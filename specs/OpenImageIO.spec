@@ -3,7 +3,7 @@
 
 Name:           OpenImageIO
 Version:        2.5.16.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library for reading and writing images
 
 License:        BSD-3-Clause AND MIT
@@ -204,6 +204,9 @@ cp -a src/doc/*.1 %{buildroot}%{_mandir}/man1
 
 
 %changelog
+* Wed Oct 09 2024 Richard Shaw <hobbes1069@gmail.com> - 2.5.16.0-2
+- Rebuild for OpenColorIO 2.4.0.
+
 * Thu Oct 03 2024 Richard Shaw <hobbes1069@gmail.com> - 2.5.16.0-1
 - Update to 2.5.16.0.
 

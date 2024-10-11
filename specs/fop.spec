@@ -1,6 +1,6 @@
 Name:           fop
 Summary:        XSL-driven print formatter
-Version:        2.9
+Version:        2.10
 Release:        %autorelease
 # ASL 1.1:
 # several files in fop-core/src/main/resources/org/apache/fop/render/awt/viewer/resources

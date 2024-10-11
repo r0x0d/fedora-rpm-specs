@@ -25,17 +25,16 @@
 %global vdr_user  vdr
 %global vdr_group video
 # From APIVERSION in config.h
-%global apiver    2.6.9
+%global apiver    5
 
 Name:           vdr
-Version:        2.6.9
-Release:        3%{?dist}
+Version:        2.7.2
+Release:        1%{?dist}
 Summary:        Video Disk Recorder
 
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://www.tvdr.de/
-# Get vdr source from http://git.tvdr.de/?p=vdr.git;a=snapshot;h=refs/tags/2.6.9;sf=tbz2
+# Get vdr source from http://git.tvdr.de/?p=vdr.git;a=snapshot;h=refs/tags/2.7.2;sf=tbz2
 Source0:        %{name}-%{version}.tar.bz2
 Source1:        %{name}.service
 Source2:        %{name}.sysconfig
@@ -67,10 +66,10 @@ Patch2:         http://www.saunalahti.fi/~rahrenbe/vdr/patches/vdr-2.4.6-editrec
 # Extracted from http://copperhead.htpc-forum.de/downloads/extensionpatch/extpngvdr1.7.21v1.diff.gz
 Patch3:         %{name}-1.7.21-plugin-missing.patch
 Patch4:         %{name}-2.4.0-paths.patch
+# https://www.vdr-portal.de/forum/index.php?thread/136461-announce-vdr-version-2-7-2-freigegeben/&postID=1375048#post1375048
+Patch5:         %{name}-2.7.2-remux-PTS.patch
 # http://vdrportal.de/board/thread.php?postid=343665#post343665
 Patch7:         12_osdbase-maxitems.patch
-# https://www.vdr-portal.de/index.php?attachment/46192-opt-42-x-mainmenuhooks-v1-0-3-patch
-Patch11:        opt-42-x_MainMenuHooks-v1.0.3.patch
 # Sent upstream 2016-06-17
 Patch15:        %{name}-1.7.37-fedora-pkgconfig.patch
 # https://www.vdr-portal.de/index.php?attachment/44831-vdr-2-4-6-clearobsoletechannels-diff
@@ -196,8 +195,8 @@ sed \
     -e 's|__VARDIR__|%{vardir}|'       \
     -e 's|__VIDEODIR__|%{videodir}|'   \
     %{PATCH4} | %{__patch} -p1
+%patch 5 -p0
 %patch 7 -p1
-%patch 11 -p1
 %patch 15 -p1
 %patch 99 -p1
 
@@ -546,8 +545,9 @@ systemctl daemon-reload
 
 
 %changelog
-* Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 2.6.9-3
-- convert license to SPDX
+* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 2.7.2-1
+- Update to 2.7.2
+- Add vdr-2.7.2-remux-PTS.patch
 
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.6.9-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild

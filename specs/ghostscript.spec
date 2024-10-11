@@ -39,8 +39,8 @@
 
 Name:             ghostscript
 Summary:          Interpreter for PostScript language & PDF
-Version:          10.03.1
-Release:          3%{?dist}
+Version:          10.04.0
+Release:          1%{?dist}
 
 License:          AGPL-3.0-or-later
 
@@ -110,8 +110,8 @@ BuildRequires:    make
 # Upstream patches -- official upstream patches released by upstream since the
 # ----------------    last rebase that are necessary for any reason:
 #Patch000: example000.patch
-# https://cgit.ghostscript.com/cgi-bin/cgit.cgi/ghostpdl.git/commit/?id=b721bd1d9f1
-Patch001: gs-opvp-vectordriver.patch
+# reported upstream https://bugs.ghostscript.com/show_bug.cgi?id=708044
+Patch001: ps2epsi-permit-devices.patch
 
 # Downstream patches -- these should be always included when doing rebase:
 # ------------------
@@ -460,6 +460,9 @@ done
 # =============================================================================
 
 %changelog
+* Thu Sep 19 2024 Zdenek Dohnal <zdohnal@redhat.com> - 10.04.0-1
+- 2313408 - ghostscript-10.04.0 is available (fedora#2313408)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 10.03.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

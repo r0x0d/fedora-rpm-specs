@@ -1,17 +1,19 @@
 %global pname   extrecmenung
 %global __provides_exclude_from ^%{vdr_plugindir}/.*\\.so.*$
-# version we want build against
+# version we want to build against
 %global vdr_version 2.6.3
-%if 0%{?fedora} >= 40
+# Set vdr_version based on Fedora version
+%if 0%{?fedora} >= 42
+%global vdr_version 2.7.2
+%elif 0%{?fedora} >= 40
 %global vdr_version 2.6.9
 %endif
 
 Name:           vdr-%{pname}
-Version:        2.0.12
-Release:        6%{?dist}
+Version:        2.0.13
+Release:        1%{?dist}
 Summary:        Powerful next generation recordings menu replacement plugin for VDR
 
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            https://gitlab.com/kamel5/extrecmenung
 Source0:        https://gitlab.com/kamel5/extrecmenung/-/archive/v%{version}/extrecmenung-v%{version}.tar.gz
@@ -30,7 +32,7 @@ adds several functions, such as additional commands for "rename" and "move"
 This is the next generation version based on the original "extrecmenu"
 
 %prep
-%setup -q -n %{pname}-v%{version}
+%autosetup -p1 -n %{pname}-v%{version}
 iconv -f iso-8859-1 -t utf-8 HISTORY > HISTORY.utf8 ; mv HISTORY.utf8 HISTORY
 
 %build
@@ -51,6 +53,10 @@ install -Dpm 644 %{SOURCE1} \
 %{vdr_plugindir}/libvdr-*.so.%{vdr_apiversion}
 
 %changelog
+* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 2.0.13-1
+- Rebuilt for new VDR API version 2.7.2
+- Update 2.0.13
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 2.0.12-6
 - convert license to SPDX
 

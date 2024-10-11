@@ -4,7 +4,7 @@
 %global crate cbindgen
 
 Name:           rust-cbindgen
-Version:        0.26.0
+Version:        0.27.0
 Release:        %autorelease
 Summary:        Tool for generating C bindings to Rust code
 
@@ -12,13 +12,9 @@ License:        MPL-2.0
 URL:            https://crates.io/crates/cbindgen
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * bump clap dependency from 3.1 to 4
 # * bump heck dependency from 0.4 to 0.5
-# * bump serial_test dev-dependency from 0.5 to 3.1
+# * bump serial_test dev-dependency from 2.0 to 3.1
 Patch:          cbindgen-fix-metadata.diff
-# * https://github.com/mozilla/cbindgen/commit/d490485
-# * https://github.com/mozilla/cbindgen/commit/61d4112
-Patch:          0001-backport-support-for-clap-v4.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 %if %{with check}

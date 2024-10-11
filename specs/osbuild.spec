@@ -1,7 +1,7 @@
 %global         forgeurl https://github.com/osbuild/osbuild
 %global         selinuxtype targeted
 
-Version:        130
+Version:        131
 
 %forgemeta
 
@@ -27,7 +27,6 @@ Requires:       bash
 Requires:       bubblewrap
 Requires:       coreutils
 Requires:       curl
-Requires:       dnf
 Requires:       e2fsprogs
 Requires:       glibc
 Requires:       policycoreutils
@@ -137,8 +136,8 @@ manifests and osbuild.
 Summary:        Dependency solving support for DNF
 Requires:       %{name} = %{version}-%{release}
 
-# Fedora 41 and later use libdnf5, RHEL and Fedora < 41 use dnf
-%if 0%{?fedora} >= 41
+# RHEL 11 and Fedora 41 and later use libdnf5, RHEL < 11 and Fedora < 41 use dnf
+%if 0%{?fedora} >= 41 || 0%{?rhel} >= 11
 Requires: python3-libdnf5 >= 5.2.1
 %else
 Requires: python3-dnf
@@ -226,8 +225,8 @@ install -p -m 0755 tools/osbuild-depsolve-dnf %{buildroot}%{_libexecdir}/osbuild
 
 # Configure the solver for dnf
 mkdir -p %{buildroot}%{_datadir}/osbuild
-# Fedora 41 and later use dnf5, RHEL and Fedora < 41 use dnf
-%if 0%{?fedora} >= 41
+# RHEL 11 and Fedora 41 and later use dnf5, RHEL < 11 and Fedora < 41 use dnf
+%if 0%{?fedora} >= 41 || 0%{?rhel} >= 11
 install -p -m 0644 tools/solver-dnf5.json %{buildroot}%{pkgdir}/solver.json
 %else
 install -p -m 0644 tools/solver-dnf.json %{buildroot}%{pkgdir}/solver.json
@@ -310,6 +309,19 @@ fi
 %{pkgdir}/solver.json
 
 %changelog
+* Wed Oct 09 2024 Packit <hello@packit.dev> - 131-1
+Changes with 131
+----------------
+  * spec: remove unneeded dnf depedendency (#1896)
+    * Author: Ondřej Budai, Reviewers: Michael Vogt, Simon de Vlieger
+  * spec: use python3-libdnf5 in RHEL 11 and ELN (#1894)
+    * Author: Yaakov Selkowitz, Reviewers: Michael Vogt, Ondřej Budai
+  * stages(tar): expose new `transform` option to tar stage (#1886)
+    * Author: Michael Vogt, Reviewers: Achilleas Koutsou, Ondřej Budai
+
+— Somewhere on the Internet, 2024-10-09
+
+
 * Wed Sep 25 2024 Packit <hello@packit.dev> - 130-1
 Changes with 130
 ----------------

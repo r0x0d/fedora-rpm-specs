@@ -1,7 +1,7 @@
 %bcond_without tests
 
 Name:           conda
-Version:        24.7.1
+Version:        24.9.1
 Release:        %autorelease
 Summary:        Cross-platform, Python-agnostic binary package manager
 
@@ -16,8 +16,6 @@ Source1:        https://raw.githubusercontent.com/tartansandal/conda-bash-comple
 Patch0:         0001-conda_sys_prefix.patch.patch
 # Use main entry point for conda and re-add conda-env entry point, no need to run conda init
 Patch1:         0002-Use-main-entry-point-for-conda-and-re-add-conda-env-.patch
-# Use system cpuinfo
-Patch3:         conda-cpuinfo.patch
 # Python 3.13 lock support
 Patch4:         https://github.com/conda/conda/pull/14117.patch
 
@@ -70,6 +68,7 @@ BuildRequires:  python-unversioned-command
 BuildRequires:  python%{python3_pkgversion}-boto3
 BuildRequires:  python%{python3_pkgversion}-flask
 BuildRequires:  python%{python3_pkgversion}-jsonpatch
+BuildRequires:  python%{python3_pkgversion}-pexpect
 BuildRequires:  python%{python3_pkgversion}-pytest-mock
 BuildRequires:  python%{python3_pkgversion}-pytest-rerunfailures
 BuildRequires:  python%{python3_pkgversion}-pytest-timeout
@@ -94,19 +93,9 @@ sed -i -e '/ruamel.yaml/s/,<[0-9.]*//' pyproject.toml
 # pytest-split/xdoctest not packaged, store-duration not needed
 sed -i -e '/splitting-algorithm/d' -e '/store-durations/d' -e '/xdoctest/d' pyproject.toml
 
-# delete interpreter line, the user can always call the file
-# explicitly as python3 /usr/lib/python3.6/site-packages/conda/_vendor/appdirs.py
-# or so.
-sed -r -i '1 {/#![/]usr[/]bin[/]env/d}' conda/_vendor/appdirs.py
-
-# Use Fedora's cpuinfo since it supports more arches
-rm -r conda/_vendor/cpuinfo
-sed -i -e '/^dependencies = /a\ \ "py-cpuinfo",' pyproject.toml
-
 # Use system versions
-rm -r conda/_vendor/{distro.py,frozendict}
-find conda -name \*.py | xargs sed -i -e 's/^\( *\)from .*_vendor\.\(\(distro\|frozendict\).*\) import/\1from \2 import/'
-sed -i -e '/^dependencies = /a\ \ "distro",' pyproject.toml
+rm -r conda/_vendor/frozendict
+find conda -name \*.py | xargs sed -i -e 's/^\( *\)from .*_vendor\.\(frozendict.*\) import/\1from \2 import/'
 sed -i -e '/^dependencies = /a\ \ "frozendict",' pyproject.toml
 
 # Unpackaged - use vendored version
@@ -138,12 +127,14 @@ sed -i -e '/"--cov/d' pyproject.toml
 
 %install
 %pyproject_install
-%py3_shebang_fix %{buildroot}%{python3_sitelib}/conda/shell/bin/conda
+#py3_shebang_fix %{buildroot}%{python3_sitelib}/conda/shell/bin/conda
 %pyproject_save_files conda*
 
 mkdir -p %{buildroot}%{_sysconfdir}/conda/condarc.d
 mkdir -p %{buildroot}%{_datadir}/conda/condarc.d
 cat >%{buildroot}%{_datadir}/conda/condarc.d/defaults.yaml <<EOF
+channels:
+ - https://conda.anaconda.org/conda-forge
 pkgs_dirs:
  - /var/cache/conda/pkgs
  - ~/.conda/pkgs
@@ -180,19 +171,20 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} conda info
 # test_cli.py::TestRun.test_run_returns_int
 # test_cli.py::TestRun.test_run_returns_nonzero_errorlevel
 # test_cli.py::TestRun.test_run_returns_zero_errorlevel
-
 # test_ProgressiveFetchExtract_prefers_conda_v2_format, test_subdir_data_prefers_conda_to_tar_bz2,
 # test_use_only_tar_bz2 fail in F31 koji, but not with mock --enablerepo=local. Let's disable
 # them for now.
-# tests/env/test_create.py::test_create_env_json requires network access
-# tests/env/test_create.py::test_create_update_remote_env_file requires network access
 # tests/cli/test_conda_argparse.py::test_list_through_python_api does not recognize /usr as a conda environment
-# tests/cli/test_main_{clean,info,list,list_reverse,rename}.py tests require network access
+# tests/cli/test_main_{clean,info,install,list,list_reverse,rename}.py tests require network access
 # tests/cli/test_main_notices.py::test_notices_appear_once_when_running_decorated_commands needs a conda_build fixture that we remove
 # tests/cli/test_main_notices.py::test_notices_cannot_read_cache_files - TypeError: '<' not supported between instances of 'MagicMock' and 'int'
 # tests/cli/test_main_run.py require /usr/bin/conda to be installed
 # tests/cli/test_subcommands.py tests require network access
+# tests/cli/test_subcommands.py::test_doctor- conda.exceptions.EnvironmentLocationNotFound: Not a conda environment: /usr
 # tests/cli/test_subcommands.py::test_rename seems to need an active environment
+# tests/env/test_create.py::test_create_env_json requires network access
+# tests/env/test_create.py::test_create_update_remote_env_file requires network access
+# tests/env/test_create.py::test_protected_dirs_error_for_env_create - requires network access
 # tests/test_activate.py::test_activate_same_environment - requries network
 # tests/test_activate.py::test_build_activate_dont_activate_unset_var - requires network
 # tests/test_activate.py::test_build_activate_restore_unset_env_vars - requries network
@@ -204,12 +196,22 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} conda info
 # tests/test_activate.py::test_build_deactivate_shlvl_1 - requries network
 # tests/test_activate.py::test_build_stack_shlvl_1 - requries network
 # tests/test_activate.py::test_get_env_vars_big_whitespace/test_get_env_vars_empty_file require network access
+# tests/test_activate.py::test_pre_post_command_invoked[hook] - requires conda to be installed
+# tests/test_activate.py::test_pre_post_command_raises[hook] - requires conda to be installed
 # tests/test_misc.py::test_explicit_missing_cache_entries requires network access
 # tests/core/test_initialize.py tries to unlink /usr/bin/python3 and fails when python is a release candidate
 # tests/core/test_solve.py::test_cuda_fail_1 fails on non-x86_64
 # tests/core/test_solve.py libmamba - some depsolving differences - TODO
 # tests/core/test_solve.py libmamba - some depsolving differences - TODO
 # tests/core/test_prefix_graph.py libmamba - some depsolving differences - TODO
+# tests/plugins/subcommands/doctor/test_cli.py::test_conda_doctor_happy_path - conda.exceptions.EnvironmentLocationNotFound: Not a conda environment: /usr
+# tests/plugins/subcommands/doctor/test_cli.py::test_conda_doctor_happy_path_verbose - conda.exceptions.EnvironmentLocationNotFound: Not a conda environment: /usr
+# tests/plugins/test_health_checks.py::test_health_check_ran - conda.exceptions.EnvironmentLocationNotFound: Not a conda environment: /usr
+# tests/plugins/test_subcommands.py::test_help - Difference in whitespace
+# tests/testing/test_fixtures.py::test_tmp_env - requires network access
+# tests/testing/test_fixtures.py::test_session_tmp_env - requires network access
+# tests/testing/test_fixtures.py::test_env - requires network tests to succeed
+# tests/testing/test_fixtures.py::test_tmp_channel - requires network access
 # tests/trust/test_signature_verification.py requires conda_content_trust - not yet packaged
 py.test-%{python3_version} -vv -m "not integration" \
     --deselect=tests/test_activate.py::test_activate_same_environment \
@@ -224,6 +226,8 @@ py.test-%{python3_version} -vv -m "not integration" \
     --deselect=tests/test_activate.py::test_build_stack_shlvl_1 \
     --deselect=tests/test_activate.py::test_get_env_vars_big_whitespace \
     --deselect=tests/test_activate.py::test_get_env_vars_empty_file \
+    --deselect=tests/test_activate.py::test_pre_post_command_invoked[hook] \
+    --deselect=tests/test_activate.py::test_pre_post_command_raises[hook] \
     --deselect=tests/test_cli.py::TestJson::test_list \
     --deselect=tests/test_cli.py::test_run_returns_int \
     --deselect=tests/test_cli.py::test_run_returns_nonzero_errorlevel \
@@ -234,9 +238,6 @@ py.test-%{python3_version} -vv -m "not integration" \
     --deselect=tests/test_install.py::test_install_mkdir \
     --deselect=tests/test_misc.py::test_explicit_missing_cache_entries \
     --ignore=tests/env/specs/test_binstar.py \
-    --deselect=tests/env/test_create.py::test_create_env_json[example/environment.yml] \
-    --deselect=tests/env/test_create.py::test_create_env_json[example/environment_with_pip.yml] \
-    --deselect=tests/env/test_create.py::test_create_update_remote_env_file \
     --deselect='tests/cli/test_common.py::test_is_active_prefix[active_prefix-True]' \
     --deselect=tests/cli/test_config.py::test_conda_config_describe \
     --deselect=tests/cli/test_config.py::test_conda_config_validate \
@@ -245,6 +246,9 @@ py.test-%{python3_version} -vv -m "not integration" \
     --deselect=tests/cli/test_main_clean.py \
     --deselect=tests/cli/test_main_info.py::test_info_python_output \
     --deselect=tests/cli/test_main_info.py::test_info_conda_json \
+    --deselect=tests/cli/test_main_install.py::test_conda_pip_interop_dependency_satisfied_by_pip \
+    --deselect=tests/cli/test_main_install.py::test_install_from_extracted_package \
+    --deselect=tests/cli/test_main_install.py::test_install_mkdir \
     --deselect=tests/cli/test_main_list.py::test_list \
     --deselect=tests/cli/test_main_list.py::test_list_reverse \
     --deselect=tests/cli/test_main_notices.py::test_notices_appear_once_when_running_decorated_commands \
@@ -254,6 +258,7 @@ py.test-%{python3_version} -vv -m "not integration" \
     --deselect=tests/cli/test_main_rename.py \
     --deselect=tests/cli/test_main_run.py \
     --deselect=tests/cli/test_subcommands.py::test_create[libmamba] \
+    --deselect=tests/cli/test_subcommands.py::test_doctor \
     --deselect=tests/cli/test_subcommands.py::test_env_create \
     --deselect=tests/cli/test_subcommands.py::test_env_update \
     --deselect=tests/cli/test_subcommands.py::test_init \
@@ -280,6 +285,10 @@ py.test-%{python3_version} -vv -m "not integration" \
     --deselect=tests/core/test_solve.py::test_fast_update_with_update_modifier_not_set[libmamba] \
     --deselect=tests/core/test_solve.py::test_timestamps_1[libmamba] \
     --deselect=tests/core/test_solve.py::test_remove_with_constrained_dependencies[libmamba] \
+    --deselect=tests/env/test_create.py::test_create_env_json[example/environment.yml] \
+    --deselect=tests/env/test_create.py::test_create_env_json[example/environment_with_pip.yml] \
+    --deselect=tests/env/test_create.py::test_create_update_remote_env_file \
+    --deselect=tests/env/test_create.py::test_protected_dirs_error_for_env_create \
     --deselect=tests/gateways/test_jlap.py::test_download_and_hash \
     --deselect=tests/gateways/test_jlap.py::test_jlap_fetch_ssl[True] \
     --deselect=tests/gateways/test_jlap.py::test_jlap_fetch_ssl[False] \
@@ -306,10 +315,18 @@ py.test-%{python3_version} -vv -m "not integration" \
     --deselect=tests/plugins/test_pre_solves.py::test_pre_solve_invoked \
     --deselect=tests/plugins/test_post_solves.py::test_post_solve_action_raises_exception \
     --deselect=tests/plugins/test_post_solves.py::test_post_solve_invoked \
+    --deselect=tests/plugins/subcommands/doctor/test_cli.py::test_conda_doctor_happy_path \
+    --deselect=tests/plugins/subcommands/doctor/test_cli.py::test_conda_doctor_happy_path_verbose \
     --deselect=tests/plugins/subcommands/doctor/test_cli.py::test_conda_doctor_with_test_environment \
+    --deselect=tests/plugins/test_health_checks.py::test_health_check_ran \
+    --deselect=tests/plugins/test_subcommands.py::test_help \
     --deselect=tests/core/test_prefix_data.py::test_get_environment_env_vars \
     --deselect=tests/core/test_prefix_data.py::test_set_unset_environment_env_vars \
     --deselect=tests/core/test_prefix_data.py::test_set_unset_environment_env_vars_no_exist \
+    --deselect=tests/testing/test_fixtures.py::test_tmp_env \
+    --deselect=tests/testing/test_fixtures.py::test_session_tmp_env \
+    --deselect=tests/testing/test_fixtures.py::test_env \
+    --deselect=tests/testing/test_fixtures.py::test_tmp_channel \
     --ignore=tests/trust \
     conda tests
 %endif

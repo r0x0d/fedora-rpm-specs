@@ -1,6 +1,6 @@
 Name:           OpenColorIO
-Version:        2.3.2
-Release:        5%{?dist}
+Version:        2.4.0
+Release:        1%{?dist}
 Summary:        Enables color transforms and image display across graphics apps
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -171,6 +171,9 @@ find %{buildroot} -type f -name "*.a" -exec rm -f {} \;
 
 
 %changelog
+* Tue Oct 08 2024 Richard Shaw <hobbes1069@gmail.com> - 2.4.0-1
+- Update to 2.4.0.
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 2.3.2-5
 - convert license to SPDX
 

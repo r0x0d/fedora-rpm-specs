@@ -50,7 +50,7 @@
 Summary: A dynamic adaptive system tuning daemon
 Name: tuned
 Version: 2.24.0
-Release: 2%{?prerel1}%{?git_suffix:.%{git_suffix}}%{?dist}
+Release: 3%{?prerel1}%{?git_suffix:.%{git_suffix}}%{?dist}
 License: GPL-2.0-or-later AND CC-BY-SA-3.0
 %if 0%{?git_commit:1}
 Source0: https://github.com/redhat-performance/%{name}/archive/%{git_commit}/%{name}-%{version}-%{git_suffix}.tar.gz
@@ -277,6 +277,7 @@ Additional TuneD profile(s) optimized for OpenShift.
 %package ppd
 Summary: PPD compatibility daemon
 Requires: %{name} = %{version}
+Obsoletes: power-profiles-daemon < 0.23
 # The compatibility daemon is swappable for power-profiles-daemon
 Provides: ppd-service
 Conflicts: ppd-service
@@ -623,6 +624,10 @@ fi
 %config(noreplace) %{_sysconfdir}/tuned/ppd.conf
 
 %changelog
+* Wed Oct  9 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 2.24.0-3
+- Obsolete power-profiles-daemon, patch by Kate Hsuan <hpa@redhat.com>
+  Resolves: rhbz#2293628
+
 * Thu Aug 15 2024 Adam Williamson <awilliam@redhat.com> - 2.24.0-2
 - Backport PR #672 to fix a crash on startup
 

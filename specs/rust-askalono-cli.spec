@@ -21,7 +21,10 @@ Source:         askalono-cache-3.22.bin.zstd
 # Manually created patch for downstream crate metadata changes
 # * bump env_logger dependency from 0.7 to 0.11:
 #   https://github.com/jpeddicord/askalono/pull/97
+# * port from structopt 0.2 to clap 4:
+#   https://github.com/jpeddicord/askalono/pull/98
 Patch:          askalono-cli-fix-metadata.diff
+Patch:          0001-cli-port-from-structopt-v0.2-to-clap-v4.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 

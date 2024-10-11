@@ -29,6 +29,8 @@ BuildRequires:  python3-devel
 BuildRequires:  gcc
 
 BuildRequires:  %{py3_dist pytest}
+# for %%pyproject_buildrequires -p
+BuildRequires:  pyproject-rpm-macros >= 1.15.1
 
 %global _description %{expand:
 Simframe is a Python framework to facilitate scientific simulations.
@@ -59,13 +61,11 @@ find . -type f -perm /0111 -exec chmod -v a-x '{}' '+'
 
 
 %generate_buildrequires
-%pyproject_buildrequires -w
+%pyproject_buildrequires -p
 
 
-# No %%build section is required because the wheel was already built in
-# %%generate_buildrequires. Omitting the second build saves time/resources.
-#%%build
-#%%pyproject_wheel
+%build
+%pyproject_wheel
 
 
 %install

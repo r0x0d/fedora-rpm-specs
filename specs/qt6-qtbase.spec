@@ -45,8 +45,8 @@ BuildRequires: pkgconfig(libsystemd)
 
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
-Version: 6.7.2
-Release: 6%{?dist}
+Version: 6.8.0
+Release: 2%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
@@ -104,14 +104,12 @@ Patch58: qtbase-libglvnd.patch
 Patch100: qtbase-use-qgnomeplatform-as-default-platform-theme-on-gnome.patch
 %endif
 
-# TODO
+# TODO: still needed?
 # Revert for now until we figure out how to fix Zeal package
-Patch110: qtbase-revert-consider-versioned-targets-when-checking-existens-in-qt-internal-walk-libs.patch
+# Patch110: qtbase-revert-consider-versioned-targets-when-checking-existens-in-qt-internal-walk-libs.patch
 
 ## upstream patches
-Patch200: qtbase-qgtk3theme-add-support-for-xdp-to-get-color-scheme.patch
-Patch201: CVE-2024-39936.patch
-Patch202: qtbase-store-initial-screen-as-qpointer.patch
+Patch200: qtbase-qabstractitemmodelprivate-add-resetting-member.patch
 
 # Do not check any files in %%{_qt6_plugindir}/platformthemes/ for requires.
 # Those themes are there for platform integration. If the required libraries are
@@ -443,7 +441,7 @@ translationdir=%{_qt6_translationdir}
 
 Name: Qt6
 Description: Qt6 Configuration
-Version: 6.7.2
+Version: 6.8.0
 EOF
 
 # rpm macros
@@ -582,6 +580,7 @@ make check -k ||:
 %dir %{_qt6_libdir}/cmake/Qt6EglFSDeviceIntegrationPrivate
 %dir %{_qt6_libdir}/cmake/Qt6EglFsKmsGbmSupportPrivate
 %dir %{_qt6_libdir}/cmake/Qt6EglFsKmsSupportPrivate
+%dir %{_qt6_libdir}/cmake/Qt6ExamplesAssetDownloaderPrivate
 %dir %{_qt6_libdir}/cmake/Qt6ExampleIconsPrivate
 %dir %{_qt6_libdir}/cmake/Qt6FbSupportPrivate
 %dir %{_qt6_libdir}/cmake/Qt6Gui
@@ -637,6 +636,7 @@ make check -k ||:
 %{_qt6_headerdir}/QtDBus/
 %{_qt6_headerdir}/QtInputSupport
 %{_qt6_headerdir}/QtExampleIcons
+%{_qt6_headerdir}/QtExamplesAssetDownloader
 %{_qt6_headerdir}/QtGui/
 %{_qt6_headerdir}/QtNetwork/
 %{_qt6_headerdir}/QtOpenGL/
@@ -717,6 +717,7 @@ make check -k ||:
 %{_qt6_libdir}/cmake/Qt6EglFsKmsGbmSupportPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6EglFsKmsSupportPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6ExampleIconsPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6ExamplesAssetDownloaderPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6FbSupportPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6Gui/*.cmake
 %{_qt6_libdir}/cmake/Qt6GuiTools/*.cmake
@@ -754,6 +755,8 @@ make check -k ||:
 %{_qt6_libdir}/libQt6DeviceDiscoverySupport.prl
 %{_qt6_libdir}/libQt6ExampleIcons.a
 %{_qt6_libdir}/libQt6ExampleIcons.prl
+%{_qt6_libdir}/libQt6ExamplesAssetDownloader.a
+%{_qt6_libdir}/libQt6ExamplesAssetDownloader.prl
 %{_qt6_headerdir}/QtFbSupport
 %{_qt6_libdir}/libQt6FbSupport.*a
 %{_qt6_libdir}/libQt6FbSupport.prl
@@ -843,6 +846,12 @@ make check -k ||:
 
 
 %changelog
+* Wed Oct 09 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- Backport fix for QAbstractItemModel (kdebz#493116)
+
+* Wed Oct 09 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
+
 * Wed Sep 04 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-6
 - Backport - QWidget: store initialScreen as QPointer
 

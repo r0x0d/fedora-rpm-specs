@@ -16,7 +16,7 @@
 #
 
 Name:           cockpit-machines
-Version:        320
+Version:        321
 Release:        1%{?dist}
 Summary:        Cockpit user interface for virtual machines
 License:        LGPL-2.1-or-later AND MIT
@@ -43,7 +43,6 @@ Requires: libvirt-daemon-driver-qemu
 Requires: libvirt-daemon-driver-network
 Requires: libvirt-daemon-driver-nodedev
 Requires: libvirt-daemon-driver-storage-core
-Requires: (libvirt-daemon-driver-interface if virt-install)
 Requires: (libvirt-daemon-config-network if virt-install)
 Recommends: libvirt-daemon-driver-storage-disk
 %if 0%{?rhel}
@@ -71,12 +70,12 @@ Suggests: (qemu-virtiofsd or virtiofsd)
 
 Provides: bundled(npm(@novnc/novnc)) = 1.4.0
 Provides: bundled(npm(@novnc/novnc)) = 1.5.0
-Provides: bundled(npm(@patternfly/patternfly)) = 5.4.0
+Provides: bundled(npm(@patternfly/patternfly)) = 5.4.1
 Provides: bundled(npm(@patternfly/react-console)) = 5.1.0
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.0
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.1
 Provides: bundled(npm(@patternfly/react-icons)) = 5.4.0
 Provides: bundled(npm(@patternfly/react-styles)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.0
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.1
 Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.0
 Provides: bundled(npm(@spice-project/spice-html5)) = 0.2.1
 Provides: bundled(npm(@xterm/addon-canvas)) = 0.7.0
@@ -92,7 +91,7 @@ Provides: bundled(npm(loose-envify)) = 1.4.0
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
 Provides: bundled(npm(react-dom)) = 18.3.1
-Provides: bundled(npm(react-dropzone)) = 14.2.3
+Provides: bundled(npm(react-dropzone)) = 14.2.9
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.3.1
 Provides: bundled(npm(redux-thunk)) = 3.1.0
@@ -127,6 +126,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 
 # The changelog is automatically generated and merged
 %changelog
+* Wed Oct 09 2024 Packit <hello@packit.dev> - 321-1
+- Drop usage of virtinterfaced
+
 * Wed Sep 25 2024 Packit <hello@packit.dev> - 320-1
 - Improve snapshot memory path handling
 - Add support for VM descriptions

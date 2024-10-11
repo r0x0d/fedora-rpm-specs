@@ -18,7 +18,7 @@
 
 # https://github.com/cyphar/filepath-securejoin
 %global goipath         github.com/cyphar/filepath-securejoin
-Version:                0.3.3
+Version:                0.3.4
 
 %gometa -L -f
 

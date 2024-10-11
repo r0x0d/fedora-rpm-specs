@@ -1,6 +1,6 @@
 Name: pulp-cli
 Version: 0.29.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: Command line interface to talk to the Pulp 3 REST API
 
 License: GPL-2.0-or-later
@@ -77,6 +77,9 @@ done
 
 
 %changelog
+* Wed Oct 09 2024 Lumír Balhar <lbalhar@redhat.com> - 0.29.2-3
+- Allow newer tomli-w
+
 * Wed Sep 25 2024 Matthias Dellweg <x9c4@redhat.com> - 0.29.2-2
 - Added shell completion macros.
 
