@@ -1,9 +1,9 @@
 %global srcname level-zero
-%global lib_version 1.17
-%global patch_version 44
+%global lib_version 1.18
+%global patch_version 2
 
 Name:           oneapi-%{srcname}
-Version:        1.17.44
+Version:        1.18.2
 Release:        %{autorelease}
 Summary:        OneAPI Level Zero Specification Headers and Loader
 

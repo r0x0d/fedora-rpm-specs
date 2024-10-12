@@ -1,6 +1,6 @@
 %global pypi_name parver
 Name:           python-%{pypi_name}
-Version:        0.4
+Version:        0.5
 Release:        %autorelease
 Summary:        Parse and manipulate version numbers
 

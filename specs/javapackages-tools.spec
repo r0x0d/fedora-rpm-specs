@@ -10,7 +10,7 @@
 %global maven_home %{_usr}/share/xmvn
 
 Name:           javapackages-tools
-Version:        6.3.3
+Version:        6.3.4
 Release:        %autorelease
 Summary:        Macros and scripts for Java packaging support
 License:        BSD-3-Clause

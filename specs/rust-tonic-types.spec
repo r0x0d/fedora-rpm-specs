@@ -5,7 +5,7 @@
 %global crate tonic-types
 
 Name:           rust-tonic-types
-Version:        0.12.2
+Version:        0.12.3
 Release:        %autorelease
 Summary:        Collection of useful protobuf types that can be used with tonic
 
@@ -19,7 +19,7 @@ Source2:        LICENSE-APACHE
 # * Add Apache-2.0 license metadata
 Patch:          tonic-types-fix-metadata.diff
 # * Move codegen to inside the crate
-Patch10:        rust-tonic-types-0.12.2-0001-Add-build_rs.patch
+Patch10:       rust-tonic-types-0.12.2-0001-Add-build_rs.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 BuildRequires:  protobuf-devel

@@ -20,7 +20,7 @@ https://uqfoundation.github.io/project/pathos/query.}
 %global forgeurl https://github.com/uqfoundation/ppft/
 
 Name:           python-ppft
-Version:        1.7.6.8
+Version:        1.7.6.9
 Release:        %autorelease
 Summary:        Distributed and parallel python
 
@@ -31,9 +31,6 @@ Summary:        Distributed and parallel python
 License:        BSD-3-Clause
 URL:            %{forgeurl}
 Source:         %{forgesource}
-# Fix tests for Python 3.13
-# https://github.com/uqfoundation/ppft/issues/61
-Patch:          %{url}/pull/65.patch
 
 BuildArch:      noarch
 

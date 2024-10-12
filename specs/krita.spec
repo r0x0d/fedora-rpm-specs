@@ -13,7 +13,7 @@
 
 Name:           krita
 Version:        5.2.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 Summary:        Krita is a sketching and painting program
 License:        GPL-2.0-or-later
@@ -220,6 +220,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.krita.des
 
 
 %changelog
+* Thu Oct 10 2024 Richard Shaw <hobbes1069@gmail.com> - 5.2.3-2
+- Rebuild for OpenColorIO 2.4.0.
+
 * Thu Sep 12 2024 Neal Gompa <ngompa@fedoraproject.org> - 5.2.3-1
 - Update to 5.2.3
 - Add patch from Robert-André Mauchin to fix build with Python 3.13

@@ -1,12 +1,11 @@
 Summary:       Fast, high-quality sample rate conversion library
 Name:          zita-resampler
-Version:       1.8.0
-Release:       10%{?dist}
+Version:       1.11.2
+Release:       1%{?dist}
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:       GPL-3.0-or-later
 URL:           http://kokkinizita.linuxaudio.org/linuxaudio/zita-resampler/resampler.html
-Source0:       http://kokkinizita.linuxaudio.org/linuxaudio/downloads/zita-resampler-%{version}.tar.bz2
-Patch0:        zita-resampler-1.6.2-destdir.patch
+Source0:       http://kokkinizita.linuxaudio.org/linuxaudio/downloads/zita-resampler-%{version}.tar.xz
 BuildRequires: gcc-c++
 BuildRequires: libsndfile-devel
 BuildRequires: make
@@ -34,7 +33,6 @@ This package contains the headers and development libraries for %{name}.
 
 %prep
 %setup -q
-%patch -P0 -p1 -b .destdir
 
 # To make sure to have the correct Fedora specific flags:
 sed -i -e 's|-O[23]||' -e 's|ldconfig||' -e 's|-march=native||' -e '/^CPPFLAGS += -DENABLE_SSE2/d' source/Makefile
@@ -79,6 +77,9 @@ chmod 755 %{buildroot}/%{_libdir}/lib%{name}.so.%{version}
 %{_libdir}/lib%{name}.so
 
 %changelog
+* Thu Oct 10 2024 Guido Aulisi <guido.aulisi@inps.it> - 1.11.2-1
+- Version 1.11.2
+
 * Thu Jul  25 2024 Miroslav Suchý <msuchy@redhat.com> - 1.8.0-10
 - convert license to SPDX
 

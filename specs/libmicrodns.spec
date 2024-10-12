@@ -1,18 +1,14 @@
 Name:           libmicrodns
 Version:        0.2.0
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Minimal mDNS resolver library
 
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.1-or-later
 URL:            https://github.com/videolabs/libmicrodns
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  meson
 BuildRequires:  gcc
-%if 0%{?el7}
-BuildRequires:  devtoolset-8-toolchain, devtoolset-8-libatomic-devel
-%endif
 
 
 %description
@@ -29,18 +25,10 @@ developing applications that use %{name}.
 
 
 %prep
-%autosetup
-%if 0%{?rhel}
-# lower the meson requirement there
-sed -i -e 's/0.50.0/0.47.2/' meson.build
-sed -i -e "/subdir('examples')/d" meson.build
-%endif
+%autosetup -p1
 
 
 %build
-%if 0%{?el7}
-. /opt/rh/devtoolset-8/enable
-%endif
 %meson
 %meson_build
 
@@ -68,6 +56,9 @@ sed -i -e "/subdir('examples')/d" meson.build
 
 
 %changelog
+* Thu Oct 10 2024 Nicolas Chauvet <kwizart@gmail.com> - 0.2.0-12
+- Clean-up
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 0.2.0-11
 - convert license to SPDX
 

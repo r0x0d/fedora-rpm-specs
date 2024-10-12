@@ -5,7 +5,7 @@
 
 Name:       nodejs-%{npm_name}
 Summary:    A very fast lexer used to detect the named exports of a CommonJS module
-Version:    1.3.1
+Version:    1.4.1
 Release:    %autorelease
 
 License:    MIT

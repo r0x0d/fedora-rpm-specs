@@ -12,8 +12,7 @@ Version:        3.0.4
 Release:        %autorelease
 Summary:        Comprehensive WSGI web application library
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            https://werkzeug.palletsprojects.com
 Source0:        %{pypi_source}
 

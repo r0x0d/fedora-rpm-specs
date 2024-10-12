@@ -1,7 +1,7 @@
 Summary:	Drag-and-drop support for Java
 URL:		http://iharder.sourceforge.net/current/java/filedrop/
 Name:		filedrop
-License:	Public Domain
+License:	LicenseRef-Fedora-Public-Domain
 Version:	1.1
 Release:	25%{?dist}
 

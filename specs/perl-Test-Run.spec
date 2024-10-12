@@ -1,6 +1,6 @@
 Name:           perl-Test-Run
-Version:        0.0305
-Release:        13%{?dist}
+Version:        0.0306
+Release:        1%{?dist}
 Summary:        Extensible and object-oriented test harness for TAP scripts
 # Build.PL:                         MIT
 # lib/Test/Run.pm:                  MIT
@@ -175,6 +175,9 @@ export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print
 %{_libexecdir}/%{name}
 
 %changelog
+* Thu Oct 10 2024 Petr Pisar <ppisar@redhat.com> - 0.0306-1
+- 0.0306 bump
+
 * Wed Aug 07 2024 Petr Pisar <ppisar@redhat.com> - 0.0305-13
 - Correct a license tag to "(GPL-1.0-or-later OR Artistic-1.0-Perl) AND
   GPL-2.0-only AND MIT"

@@ -2,8 +2,8 @@
 %global modname munch
 
 Name:               python-munch
-Version:            2.5.0
-Release:            17%{?dist}
+Version:            4.0.0
+Release:            1%{?dist}
 Summary:            A dot-accessible dictionary (a la JavaScript objects)
 
 License:            MIT
@@ -78,6 +78,9 @@ rm -rf %{modname}.egg-info
 
 
 %changelog
+* Thu Oct 10 2024 Kevin Fenzi <kevin@scrye.com> - 4.0.0-1
+- Update to 4.0.0. Fixes rhbz#2203603
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.5.0-17
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

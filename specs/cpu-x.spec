@@ -3,7 +3,7 @@
 %global appid io.github.thetumultuousunicornofdarkness.%{name}
 
 Name:           cpu-x
-Version:        5.0.4
+Version:        5.1.0
 %forgemeta
 Release:        %autorelease
 Summary:        Free software that gathers information on CPU, motherboard and more
@@ -17,6 +17,7 @@ Source0:        %{forgesource}
 BuildRequires:  cmake >= 3.12
 BuildRequires:  desktop-file-utils
 BuildRequires:  gcc-c++
+BuildRequires:  libatomic
 BuildRequires:  gettext-devel
 BuildRequires:  libappstream-glib
 BuildRequires:  nasm

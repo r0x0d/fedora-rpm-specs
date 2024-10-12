@@ -9,7 +9,7 @@ Release:        0.14.%{commitdate}git%{shortcommit}%{?dist}
 Summary:        A fork of FLTK for the non audio suite
 
 # themes are GPLv2+, FLTK derived code is LGPLv2+
-License:        LGPLv2+ with exceptions and GPLv2+
+License:        LGPL-2.0-or-later WITH FLTK-exception AND GPL-2.0-or-later
 URL:            http://non.tuxfamily.org/
 Source0:        %{name}-%{commitdate}-git%{shortcommit}.%{patch}.tar.xz
 # script to create source tarball from git

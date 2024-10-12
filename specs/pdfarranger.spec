@@ -1,10 +1,9 @@
 Name:           pdfarranger
-Version:        1.11.0
+Version:        1.11.1
 Release:        %autorelease
 Summary:        PDF file merging, rearranging, and splitting
 
-# Automatically converted from old format: GPLv3 - review is highly recommended.
-License:        GPL-3.0-only
+License:        GPL-3.0-or-later
 URL:            https://github.com/pdfarranger/%{name}
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildArch:      noarch

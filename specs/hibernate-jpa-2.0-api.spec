@@ -5,7 +5,7 @@ Name:             hibernate-jpa-2.0-api
 Version:          1.0.1
 Release:          41%{?dist}
 Summary:          Java Persistence 2.0 (JSR 317) API
-License:          EPL and BSD
+License:          EPL-1.0 OR BSD-3-Clause
 URL:              http://www.hibernate.org/
 # svn export http://anonsvn.jboss.org/repos/hibernate/jpa-api/tags/hibernate-jpa-2.0-api-1.0.1.Final/ hibernate-jpa-2.0-api-1.0.1.Final
 # tar -zcvf hibernate-jpa-2.0-api-1.0.1.Final.tar.gz hibernate-jpa-2.0-api-1.0.1.Final

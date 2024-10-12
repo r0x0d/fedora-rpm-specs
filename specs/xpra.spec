@@ -156,7 +156,8 @@ Requires: js-jquery
 
 # python3-opencv is required for webcam forwarding support, client-side only.
 # Available on Fedora only.
-%{?fedora:Requires: python3-opencv}
+# https://github.com/Xpra-org/xpra/issues/4035#issuecomment-2405430577
+#%%{?fedora:Requires: python3-opencv}
 
 # Needed to create the xpra group
 Requires(pre):  shadow-utils

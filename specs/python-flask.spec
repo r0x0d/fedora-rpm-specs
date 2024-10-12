@@ -7,8 +7,7 @@ Release:        %autorelease
 Epoch:          1
 Summary:        A micro-framework for Python based on Werkzeug, Jinja 2 and good intentions
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            http://flask.pocoo.org/
 Source0:        %{pypi_source}
 

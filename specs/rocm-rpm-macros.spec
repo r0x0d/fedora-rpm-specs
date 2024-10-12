@@ -49,7 +49,11 @@ between different GPU families.
 install -pm 644 %{SOURCE0} .
 install -pm 644 %{SOURCE1} .
 mkdir modules
+%if 0%{?rhel}
+install -pm 644 %{SOURCE17} modules/default
+%else
 install -pm 644 %{SOURCE2} modules
+%endif
 install -pm 644 %{SOURCE3} modules
 install -pm 644 %{SOURCE4} modules
 install -pm 644 %{SOURCE5} modules

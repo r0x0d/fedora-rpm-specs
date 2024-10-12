@@ -1,7 +1,7 @@
 %global         modname greenlet
 
 Name:           python-%{modname}
-Version:        3.1.0
+Version:        3.1.1
 Release:        1%{?dist}
 Summary:        Lightweight in-process concurrent programming
 License:        MIT AND PSF-2.0
@@ -67,6 +67,9 @@ PYTHONPATH="%{buildroot}%{python3_sitearch}" \
 %{_includedir}/python%{python3_version}*/%{modname}/
 
 %changelog
+* Thu Oct 10 2024 Orion Poplawski <orion@nwra.com> - 3.1.1-1
+- Update to 3.1.1
+
 * Tue Sep 17 2024 Orion Poplawski <orion@nwra.com> - 3.1.0-1
 - Update to 3.1.0
 

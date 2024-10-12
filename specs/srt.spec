@@ -1,8 +1,8 @@
-%global rc -rc.1
+%global rc -rc.2
 
 Name:           srt
 Version:        1.5.4
-Release:        0.rc1%{?dist}
+Release:        0.rc2%{?dist}
 Summary:        Secure Reliable Transport protocol tools
 
 License:        MPL-2.0
@@ -63,10 +63,9 @@ rm -f %{buildroot}/%{_libdir}/pkgconfig/haisrt.pc
 
 %check
 # tests do not work in parallel as of 1.5.4 rc0
-%define _smp_build_ncpus 1
 # - TestIPv6 are known broken due to v4_v6 mapping differnces between platforms
 #   https://github.com/Haivision/srt/issues/1972#
-%ctest -E TestIPv6
+%ctest -j1 -E TestIPv6
 
 
 %ldconfig_scriptlets libs
@@ -92,6 +91,9 @@ rm -f %{buildroot}/%{_libdir}/pkgconfig/haisrt.pc
 
 
 %changelog
+* Thu Oct 10 2024 Yanko Kaneti <yaneti@declera.com> - 1.5.4-0.rc2
+- Update to 1.5.4-rc2
+
 * Tue Oct  1 2024 Yanko Kaneti <yaneti@declera.com> - 1.5.4-0.rc1
 - Update to 1.5.4-rc1
 

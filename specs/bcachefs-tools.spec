@@ -1,6 +1,3 @@
-# Note that this blocks 32-bit arch builds
-%bcond rust 1
-
 # Requires forked dependencies, particularly a forked bindgen
 # Related: https://github.com/rust-lang/rust/issues/118018
 %bcond rust_vendorized 1
@@ -15,7 +12,7 @@
 %global make_opts VERSION="%{version}" %{?with_fuse:BCACHEFS_FUSE=1} %{!?with_rust:NO_RUST=1} BUILD_VERBOSE=1 PREFIX=%{_prefix} ROOT_SBINDIR=%{_sbindir}
 
 Name:           bcachefs-tools
-Version:        1.11.0
+Version:        1.13.0
 Release:        1%{?dist}
 Summary:        Userspace tools for bcachefs
 
@@ -66,14 +63,12 @@ BuildRequires:  pkgconfig(uuid)
 BuildRequires:  pkgconfig(zlib)
 BuildRequires:  systemd-rpm-macros
 
-%if %{with rust}
 BuildRequires:  cargo-rpm-macros >= 25
 BuildRequires:  cargo
 BuildRequires:  rust
 %if %{with rust_vendorized}
 BuildRequires:  clang-devel
 BuildRequires:  llvm-devel
-%endif
 %endif
 
 %description
@@ -82,12 +77,10 @@ check, modify and correct any inconsistencies in the bcachefs filesystem.
 
 %files
 %license COPYING
-%if %{with rust}
 %license LICENSE.rust-deps
 %if %{with rust_vendorized}
 %license cargo-vendor.txt
 %license COPYING.rust-dependencies
-%endif
 %endif
 %doc doc/bcachefs-principles-of-operation.tex
 %doc doc/bcachefs.5.rst.tmpl
@@ -135,7 +128,7 @@ rm -rf vendor
 %endif
 
 
-%if %{with rust} && ! %{with rust_vendorized}
+%if ! %{with rust_vendorized}
 %generate_buildrequires
 %cargo_generate_buildrequires
 cd bch_bindgen
@@ -146,13 +139,11 @@ cd ../
 
 %build
 %make_build %{make_opts}
-%if %{with rust}
 %cargo_prep %{?with_rust_vendorized:-v vendor}
 %cargo_build
 %{cargo_license_summary}
 %{cargo_license} > LICENSE.rust-deps
 %{?with_rust_vendorized:%cargo_vendor_manifest}
-%endif
 
 
 %install
@@ -169,6 +160,10 @@ rm -rf %{buildroot}%{_sbindir}/*.fuse.bcachefs
 
 
 %changelog
+* Thu Oct 10 2024 Neal Gompa <ngompa@fedoraproject.org> - 1.13.0-1
+- Update to 1.13.0
+- Remove unusable condition to build without rust (it's been required for a while)
+
 * Thu Aug 29 2024 Neal Gompa <ngompa@fedoraproject.org> - 1.11.0-1
 - Update to 1.11.0
 

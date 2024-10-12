@@ -1,6 +1,6 @@
 Name:           nox
-Version:        2024.04.15
-Release:        3%{?dist}
+Version:        2024.10.09
+Release:        %autorelease
 Summary:        Flexible test automation
 
 License:        Apache-2.0
@@ -46,54 +46,4 @@ file for configuration.
 %{_bindir}/tox-to-nox
 
 %changelog
-* Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2024.04.15-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Sun Jun 09 2024 Python Maint <python-maint@redhat.com> - 2024.04.15-2
-- Rebuilt for Python 3.13
-
-* Mon Apr 15 2024 Lumír Balhar <lbalhar@redhat.com> - 2024.04.15-1
-- Update to 2024.04.15 (rhbz#2275137)
-
-* Mon Mar 04 2024 Lumír Balhar <lbalhar@redhat.com> - 2024.03.02-1
-- Update to 2024.03.02 (rhbz#2267571)
-
-* Thu Jan 25 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2023.04.22-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Sun Jan 21 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2023.04.22-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Thu Jul 20 2023 Fedora Release Engineering <releng@fedoraproject.org> - 2023.04.22-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Thu Jun 29 2023 Python Maint <python-maint@redhat.com> - 2023.04.22-2
-- Rebuilt for Python 3.12
-
-* Tue May 02 2023 Lumír Balhar <lbalhar@redhat.com> - 2023.04.22-1
-- Update to 2023.04.22 (rhbz#2188881)
-- Use SPDX license identifier
-
-* Thu Feb 16 2023 Lumír Balhar <lbalhar@redhat.com> - 2022.11.21-4
-- Fix tox_to_nox for tox 4
-
-* Tue Jan 24 2023 Lumír Balhar <lbalhar@redhat.com> - 2022.11.21-3
-- Fix FTBFS
-
-* Thu Jan 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 2022.11.21-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
-
-* Thu Dec 01 2022 ondaaak <ondaaak@gmail.com> - 2022.11.21-1
-- Update to 2022.11.21
-
-* Mon Aug 22 2022 ondaaak <ondaaak@gmail.com> - 2022.8.7-1
-- Update to 2022.8.7
-
-* Fri Jul 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2022.1.7-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
-
-* Wed Jun 15 2022 Python Maint <python-maint@redhat.com> - 2022.1.7-2
-- Rebuilt for Python 3.11
-
-* Wed Mar 23 2022 ondaaak <ondaaak@gmail.com> - 2022.1.7-1
-- Initial package for Fedora
+%autochangelog

@@ -8,18 +8,11 @@
 # Not currently in EPEL10:
 %bcond msgpack %{expr:!0%{?el10}}
 
-# python-msgspec: FTBFS in Fedora rawhide/f41
-# https://bugzilla.redhat.com/show_bug.cgi?id=2301180
-# Also, initial packages for F39/F40 have not yet reached stable.
 # Not currently in EPEL10:
-%bcond msgspec %{expr:0%{?fedora} < 41 && !0%{?el10}}
+%bcond msgspec %{expr:!0%{?el10}}
 
 # Not currently in EPEL10:
 %bcond orjson %{expr:!0%{?el10}}
-
-# Please branch and build python-pytest-xdist in epel10
-# https://bugzilla.redhat.com/show_bug.cgi?id=2305164
-%bcond xdist %{expr:!0%{?el10}}
 
 # Sphinx-generated HTML documentation is not suitable for packaging; see
 # https://bugzilla.redhat.com/show_bug.cgi?id=2006555 for discussion.
@@ -74,10 +67,8 @@ BuildRequires:  %{py3_dist typing-extensions} >= 4.7.1
 #    "coverage>=7.4.0",
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 # BuildRequires:  %%{py3_dist coverage} >= 7.4.0
-%if %{with xdist}
 #    "pytest-xdist>=3.4.0",
 BuildRequires:  %{py3_dist pytest-xdist} >= 3.4
-%endif
 #]
 
 %if %{with doc_pdf}
@@ -241,7 +232,7 @@ ignore="${ignore-} --ignore=tests/preconf/test_msgspec_cpython.py"
 # https://github.com/python-attrs/cattrs/issues/547#issuecomment-2397173866
 k="${k-}${k+ and }not test_simple_roundtrip_defaults"
 
-%pytest --ignore-glob='bench/*' ${ignore-} -k "${k-}" %{?with_xdist:-n auto}
+%pytest --ignore-glob='bench/*' ${ignore-} -k "${k-}" -n auto
 
 
 %files -n python3-cattrs -f %{pyproject_files}

@@ -1,5 +1,5 @@
 Name:           python-pytest-subprocess
-Version:        1.5.0
+Version:        1.5.2
 Release:        %autorelease
 Summary:        A plugin to fake subprocess for pytest
 

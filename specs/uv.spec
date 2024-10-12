@@ -20,7 +20,7 @@
 %constrain_build -m 4096
 
 Name:           uv
-Version:        0.4.10
+Version:        0.4.16
 Release:        %autorelease
 Summary:        An extremely fast Python package installer and resolver, written in Rust
 
@@ -57,11 +57,6 @@ Summary:        An extremely fast Python package installer and resolver, written
 # licenses of the binary RPMs. Note that ecosystem/ contains only
 # pyproject.toml files used for testing, not complete bundled projects.
 #
-# Since the following is still under legal review,
-# https://gitlab.com/fedora/legal/fedora-license-data/-/issues/559,
-# we omit it from the source RPM by uploading a filtered source archive.
-# AGPL-3.0-only WITH <custom exception> AND Apache-2.0:
-#   - ecosystem/pretix/
 # Apache-2.0:
 #   - ecosystem/airflow/
 #   - ecosystem/home-assistant-core/
@@ -71,6 +66,8 @@ Summary:        An extremely fast Python package installer and resolver, written
 #   - ecosystem/packse/
 # BSD-2-Clause-Patent:
 #   - ecosystem/github-wikidata-bot/
+# BSD-3-Clause:
+#   - ecosystem/saleor/
 # MIT:
 #   - crates/uv-python/fetch-download-metadata.py is derived from
 #     https://github.com/mitsuhiko/rye/tree/f9822267a7f00332d15be8551f89a212e7bc9017
@@ -136,16 +133,7 @@ License:        %{shrink:
                 }
 # LICENSE.dependencies contains a full license breakdown
 URL:            https://github.com/astral-sh/uv
-# Since ecosystem/pretix/ is licensed (AGPL-3.0-only WITH <custom exception>
-# AND Apache-2.0), and the custom exception is still under legal review,
-# https://gitlab.com/fedora/legal/fedora-license-data/-/issues/559, we omit it
-# from the source RPM by uploading a filtered source archive, created by
-# calling the script from Source1 as:
-#   ./get_source %%{version}
-%dnl Source0:        %{url}/archive/%{version}/uv-%{version}.tar.gz
-Source0:        uv-%{version}-filtered.tar.zst
-# See notes above Source0.
-Source1:        get_source
+Source0:        %{url}/archive/%{version}/uv-%{version}.tar.gz
 
 # Currently, uv must use a fork of async_zip, as explained in:
 #   Restore central directory buffering
@@ -577,6 +565,15 @@ tomcli set crates/uv/Cargo.toml del dependencies.tracing-durations-export
 # #   currently packaged: 0.1.2
 # #   https://bugzilla.redhat.com/show_bug.cgi?id=1234567
 # tomcli set crates/uv/Cargo.toml str dev-dependencies.foocrate.version 0.1.2
+
+# unicode-width
+#   wanted: 0.1.13
+#   currently packaged: 0.1.12 (or 0.1.13+really0.1.12)
+# This is a whole mess: https://github.com/unicode-rs/unicode-width/issues/55,
+# https://github.com/unicode-rs/unicode-width/issues/66
+# Hopefully, the sordid details will not start mattering too much for uv.
+tomcli set Cargo.toml str \
+    workspace.dependencies.unicode-width.version '0.1.12'
 
 # mailparse
 #   wanted: 0.15.0

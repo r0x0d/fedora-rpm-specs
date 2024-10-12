@@ -21,6 +21,7 @@ BuildRequires:  cmake
 # Hipify doesn't need hipcc, but this is the easiest way to pull in the same
 # llvm/lld/clang/compiler-rt version as hipcc:
 BuildRequires:  hipcc
+BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  perl
 BuildRequires:  zlib-devel
 
@@ -37,7 +38,21 @@ HIP C++ automatically.
 %autosetup -p1 -n %{upstreamname}-rocm-%{version}
 
 %build
-%cmake
+
+LLVM_CMAKEDIR=`llvm-config-%{rocmllvm_version} --cmakedir`
+if [ ! -d ${LLVM_CMAKEDIR} ]; then
+    echo "Something wrong with llvm-config"
+    false
+fi
+LLVM_BINDIR=`llvm-config-%{rocmllvm_version} --bindir`
+if [ ! -x ${LLVM_BINDIR}/clang ]; then
+    echo "Something wrong with llvm-config"
+    false
+fi
+export CC=${LLVM_BINDIR}/clang
+export CXX=${LLVM_BINDIR}/clang
+
+%cmake -DCMAKE_PREFIX_PATH=${LLVM_CMAKEDIR}/..
 %cmake_build
 
 %check

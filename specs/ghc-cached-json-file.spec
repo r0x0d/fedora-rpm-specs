@@ -7,7 +7,7 @@
 
 Name:           ghc-%{pkg_name}
 Version:        0.1.1
-Release:        %autorelease
+Release:        %autorelease -b 10
 Summary:        Locally cache a json file obtained by http
 
 License:        BSD-3-Clause

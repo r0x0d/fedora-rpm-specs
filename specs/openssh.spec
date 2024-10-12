@@ -46,10 +46,10 @@
 %{?static_openssl:%global static_libcrypto 1}
 
 # Do not forget to bump pam_ssh_agent_auth release if you rewind the main package release to 1
-%global openssh_ver 9.8p1
-%global openssh_rel 4
+%global openssh_ver 9.9p1
+%global openssh_rel 2
 %global pam_ssh_agent_ver 0.10.4
-%global pam_ssh_agent_rel 10
+%global pam_ssh_agent_rel 11
 
 Summary: An open source implementation of SSH protocol version 2
 Name: openssh
@@ -188,9 +188,6 @@ Patch953: openssh-7.8p1-scp-ipv6.patch
 # Mention crypto-policies in manual pages (#1668325)
 # clarify rhbz#2068423 on the man page of ssh_config
 Patch962: openssh-8.0p1-crypto-policies.patch
-# Use OpenSSL high-level API to produce and verify signatures (#1707485)
-# TODO fix the comment above ^
-Patch963: openssh-9.3p1-merged-openssl-evp.patch
 # Use OpenSSL KDF (#1631761)
 Patch964: openssh-8.0p1-openssl-kdf.patch
 # sk-dummy.so built with -fvisibility=hidden does not work
@@ -226,8 +223,7 @@ Patch1002: openssh-8.7p1-ssh-manpage.patch
 # https://github.com/openssh/openssh-portable/pull/323
 Patch1006: openssh-8.7p1-negotiate-supported-algs.patch
 
-Patch1012: openssh-9.0p1-evp-fips-dh.patch
-Patch1013: openssh-9.0p1-evp-fips-ecdh.patch
+Patch1012: openssh-9.0p1-evp-fips-kex.patch
 Patch1014: openssh-8.7p1-nohostsha1proof.patch
 
 Patch1015: openssh-9.6p1-pam-rhost.patch
@@ -407,7 +403,7 @@ popd
 %patch -P 951 -p1 -b .pkcs11-uri
 %patch -P 953 -p1 -b .scp-ipv6
 %patch -P 962 -p1 -b .crypto-policies
-%patch -P 963 -p1 -b .openssl-evp
+#%patch -P 963 -p1 -b .openssl-evp
 %patch -P 964 -p1 -b .openssl-kdf
 %patch -P 965 -p1 -b .visibility
 %patch -P 966 -p1 -b .x11-ipv6
@@ -431,7 +427,6 @@ popd
 %patch -P 1006 -p1 -b .negotiate-supported-algs
 
 %patch -P 1012 -p1 -b .evp-fips-dh
-%patch -P 1013 -p1 -b .evp-fips-ecdh
 %patch -P 1014 -p1 -b .nosha1hostproof
 %patch -P 1015 -p1 -b .pam-rhost
 
@@ -549,7 +544,7 @@ popd
 %endif
 
 %check
-%{SOURCE22} %{SOURCE23}  # ./parallel_tests.sh parallel_tests.Makefile
+OPENSSL_CONF=/dev/null %{SOURCE22} %{SOURCE23}  # ./parallel_tests.sh parallel_tests.Makefile
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -741,6 +736,12 @@ test -f %{sysconfig_anaconda} && \
 %endif
 
 %changelog
+* Thu Oct 10 2024 Dmitry Belyavskiy <dbelyavs@redhat.com> - 9.9p1-2
+- Update version of pam_ssh_agent_auth
+
+* Tue Oct 08 2024 Dmitry Belyavskiy <dbelyavs@redhat.com> - 9.9p1-1
+- Update to OpenSSH 9.9p1
+
 * Tue Sep 03 2024 Dmitry Belyavskiy <dbelyavs@redhat.com> - 9.8p1-4
 - Synchronize patches from Red Hat
 

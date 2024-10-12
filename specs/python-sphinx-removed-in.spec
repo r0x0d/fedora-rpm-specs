@@ -1,17 +1,13 @@
 %global pypi_name sphinx-removed-in
 
 Name:           python-%{pypi_name}
-Version:        0.2.1
+Version:        0.2.3
 Release:        %autorelease
 Summary:        versionremoved and removed-in directives for Sphinx
 # Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
 URL:            https://github.com/MrSenko/sphinx-removed-in
 Source:         %{url}/archive/v%{version}/%{pypi_name}-%{version}.tar.gz
-
-# Drop the dependency on deprecated sphinx-testing
-# From https://github.com/MrSenko/sphinx-removed-in/pull/9
-Patch:          %{url}/commit/52457154d7.patch
 
 BuildArch:      noarch
 
@@ -40,8 +36,6 @@ directives.
 
 %install
 %py3_install
-# https://github.com/MrSenko/sphinx-removed-in/pull/10
-rm -rf %{buildroot}%{python3_sitelib}/tests
 
 %check
 %pytest

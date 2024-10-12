@@ -1,5 +1,5 @@
 Name:           python-lxml-html-clean
-Version:        0.2.2
+Version:        0.3.1
 Release:        %autorelease
 Summary:        HTML cleaner from lxml project
 License:        BSD-3-Clause

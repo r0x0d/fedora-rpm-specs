@@ -16,6 +16,8 @@ URL:            %{forgeurl}
 
 Source:         %{forgesource}
 
+BuildRequires:  (tree-sitter >= 0.24.0 or /usr/bin/g++)
+BuildRequires:  /usr/bin/tree-sitter
 BuildRequires:  gcc
 BuildRequires:  libtree-sitter-devel
 BuildRequires:  make
@@ -55,6 +57,10 @@ Libraries and header files for developing applications that use
 find $RPM_BUILD_ROOT -name '*.a' -delete
 
 
+%check
+%{__make} test
+
+
 %{?ldconfig_scriptlets}
 
 
@@ -64,9 +70,9 @@ find $RPM_BUILD_ROOT -name '*.a' -delete
 %{_libdir}/%{libname}.so.*
 
 %files -n %{libname}-devel
-%{_includedir}/*
+%{_includedir}/tree_sitter/%{name}.h
 %{_libdir}/%{libname}.so
-%{_libdir}/pkgconfig/*.pc
+%{_libdir}/pkgconfig/%{name}.pc
 
 
 %changelog

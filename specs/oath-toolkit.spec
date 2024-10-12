@@ -1,6 +1,6 @@
 Name:          oath-toolkit
-Version:       2.6.11
-Release:       6%{?dist}
+Version:       2.6.12
+Release:       1%{?dist}
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:       GPL-3.0-or-later
 Summary:       One-time password components
@@ -20,7 +20,7 @@ Source1:       https://download.savannah.nongnu.org/releases/%{name}/%{name}-%{v
 # gpg2 --armor --export D73CF638C53C06BE > keyring.asc
 Source2:       keyring.asc
 URL:           https://www.nongnu.org/oath-toolkit/
-Patch0:        oath-toolkit-2.6.9-lockfile.patch
+Patch0:        oath-toolkit-2.6.12-lockfile.patch
 
 %description
 The OATH Toolkit provide components for building one-time password
@@ -189,6 +189,12 @@ mkdir -p -m 0600 %{buildroot}%{_sysconfdir}/liboath
 %{_libdir}/security/pam_oath.so
 
 %changelog
+* Thu Oct 10 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 2.6.12-1
+- New version
+  Resolves: rhbz#2316447
+- Dropped privileges when operating on user files
+  Resolves: CVE-2024-47191
+
 * Thu Jul  25 2024 Miroslav Suchý <msuchy@redhat.com> - 2.6.11-6
 - convert license to SPDX
 

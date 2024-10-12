@@ -5,7 +5,7 @@
 %global crate tonic
 
 Name:           rust-tonic
-Version:        0.12.2
+Version:        0.12.3
 Release:        %autorelease
 Summary:        GRPC over HTTP/2 implementation
 

@@ -3,7 +3,7 @@
 %bcond_without tests
 
 Name:           python-chaospy
-Version:        4.3.16
+Version:        4.3.17
 Release:        %autorelease
 Summary:        Numerical tool for performing uncertainty quantification
 %forgemeta

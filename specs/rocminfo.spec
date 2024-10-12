@@ -12,11 +12,10 @@ Release:    %autorelease
 Summary:    ROCm system info utility
 
 License:    NCSA
-URL:        https://github.com/RadeonOpenCompute/rocminfo
-Source0:    https://github.com/RadeonOpenCompute/rocminfo/archive/rocm-%{version}.tar.gz
+URL:        https://github.com/ROCm/rocminfo
+Source0:    %{url}/archive/rocm-%{version}.tar.gz
 Patch0:     0001-adjust-CMAKE_CXX_FLAGS.patch
 Patch1:     0002-fix-buildtype-detection.patch
-
 
 ExclusiveArch:  x86_64
 
@@ -31,7 +30,6 @@ Requires:       kmod
 
 %description
 ROCm system info utility
-
 
 %prep
 %autosetup -n %{name}-rocm-%{version} -p1

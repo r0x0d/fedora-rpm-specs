@@ -10,6 +10,9 @@ Source1:    smoke-test.c
 
 # Allow using artifacts from %%build in %%install instead of recompiling
 Patch:      0001-make-don-t-rebuild-files-on-make-install.patch
+# Update Makefile for LLVM 19
+# Re-created from upstream commits; remove on update
+Patch:      0002-Adjust-Makefile-for-LLVM-19.patch
 
 # This contains parts of the musl C library; specify as bundled so we get notified about potential vulnerabilities
 %global     musl_version 1.2.3

@@ -1,5 +1,5 @@
 Name:		    secvarctl
-Version:	    1.0.0
+Version:	    1.1.0
 Release:	    %autorelease
 Summary:	    Suite of tools to manipulate and generate Secure Boot variables on POWER
 License:	    Apache-2.0

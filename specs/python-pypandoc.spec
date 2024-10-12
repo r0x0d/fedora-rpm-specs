@@ -1,5 +1,5 @@
 Name:           python-pypandoc
-Version:        1.13
+Version:        1.14
 Release:        %autorelease
 Summary:        Thin wrapper for pandoc
 

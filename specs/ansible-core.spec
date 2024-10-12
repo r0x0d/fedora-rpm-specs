@@ -14,7 +14,7 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.16.11
+Version: 2.16.12
 %global uversion %{version_no_tilde %{quote:%nil}}
 Release: 1%{?dist}
 # The main license is GPLv3+. Many of the files in lib/ansible/module_utils
@@ -278,6 +278,9 @@ install -Dpm 0644 licenses/* -t %{buildroot}%{_pkglicensedir}
 
 
 %changelog
+* Fri Oct 11 2024 Maxwell G <maxwell@gtmx.me> - 2.16.12-1
+- Update to 2.16.12.
+
 * Tue Sep 10 2024 Maxwell G <maxwell@gtmx.me> - 2.16.11-1
 - Update to 2.16.11.
 

@@ -5,17 +5,14 @@
 
 %global crate tower
 
-Name:           rust-tower
-Version:        0.5.1
+Name:           rust-tower0.4
+Version:        0.4.13
 Release:        %autorelease
 Summary:        Modular and reusable components for building robust clients and servers
 
 License:        MIT
 URL:            https://crates.io/crates/tower
 Source:         %{crates_source}
-# Manually created patch for downstream crate metadata changes
-# * bump sync_wrapper dependency from 0.1.1 to 1
-Patch:          tower-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -244,6 +241,18 @@ use the "make" feature of the "%{crate}" crate.
 %files       -n %{name}+make-devel
 %ghost %{crate_instdir}/Cargo.toml
 
+%package     -n %{name}+pin-project-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+pin-project-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "pin-project" feature of the "%{crate}" crate.
+
+%files       -n %{name}+pin-project-devel
+%ghost %{crate_instdir}/Cargo.toml
+
 %package     -n %{name}+pin-project-lite-devel
 Summary:        %{summary}
 BuildArch:      noarch
@@ -254,6 +263,18 @@ This package contains library source intended for building other packages which
 use the "pin-project-lite" feature of the "%{crate}" crate.
 
 %files       -n %{name}+pin-project-lite-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+rand-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+rand-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "rand" feature of the "%{crate}" crate.
+
+%files       -n %{name}+rand-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+ready-cache-devel
@@ -326,18 +347,6 @@ This package contains library source intended for building other packages which
 use the "steer" feature of the "%{crate}" crate.
 
 %files       -n %{name}+steer-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+sync_wrapper-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+sync_wrapper-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "sync_wrapper" feature of the "%{crate}" crate.
-
-%files       -n %{name}+sync_wrapper-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+timeout-devel

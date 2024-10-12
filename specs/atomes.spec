@@ -88,8 +88,8 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/fr.ipcms.%{nam
 %{_metainfodir}/fr.ipcms.%{name}.appdata.xml
 
 %changelog
-* Fri Oct 04 2024 Sébastien Le Roux <sebastien.leroux@ipcms.unistra.fr> - 1.1.15-2
-- Package spec file update
+* Thu Oct 10 2024 Sébastien Le Roux <sebastien.leroux@ipcms.unistra.fr> - 1.1.15-2
+- Package correction
 
 * Fri Oct 04 2024 Sébastien Le Roux <sebastien.leroux@ipcms.unistra.fr> - 1.1.15-1
 - Bug corrections and improvements (see: https://github.com/Slookeur/Atomes-GNU/releases/tag/v1.1.15)

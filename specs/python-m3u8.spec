@@ -3,8 +3,8 @@
 %bcond_without  tests
 
 Name:           python-%{srcname}
-Version:        3.6.0
-Release:        5%{?dist}
+Version:        6.0.0
+Release:        1%{?dist}
 Summary:        Python module %srcname parser
 License:        MIT
 Url:            https://github.com/globocom/m3u8
@@ -47,11 +47,12 @@ Python module %srcname parser
 %if %{with tests}
 %check
 # 3 deselected tests require internet connection
-%pytest -vv -k "not (test_load_should_ and (uri or redirect))"
+#%%pytest -vv -k "not (test_load_should_ and (uri or redirect))"
+%pytest -vv -k "not (test_load_should_ and (uri or redirect)) and not test_raise_timeout_exception_if_timeout_happens_when_loading_from_uri"
 %endif
 
 %files -n python3-%{srcname}
-%doc README.rst
+%doc README.md
 %license LICENSE
 %dir %{python3_sitelib}/%{srcname}/
 %dir %{python3_sitelib}/%{srcname}/__pycache__/
@@ -60,6 +61,9 @@ Python module %srcname parser
 %{python3_sitelib}/%{srcname}/*.py
 
 %changelog
+* Thu Oct 10 2024 Martin Gansser <martinkg@fedoraproject.org> 6.0.0-1
+- Update to 6.0.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.6.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

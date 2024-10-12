@@ -10,7 +10,7 @@
 
 Name:           ghc-%{pkg_name}
 Version:        1.0.9
-Release:        %autorelease
+Release:        %autorelease -b 25
 Summary:        A portable alternative to GNU Readline
 
 License:        MIT

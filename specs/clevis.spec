@@ -49,8 +49,9 @@ Requires:       jq
 Requires(pre):  shadow-utils
 Requires(post): systemd
 Requires:       clevis-pin-tpm2
-Requires:  pcsc-lite
-Requires:  opensc
+
+Recommends:     pcsc-lite
+Recommends:     opensc
 
 %description
 Clevis is a framework for automated decryption. It allows you to encrypt

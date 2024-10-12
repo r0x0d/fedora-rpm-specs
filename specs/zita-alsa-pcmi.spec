@@ -31,7 +31,7 @@ Summary:       ALSA utilities using the %{name} library
 Requires:      %{name}%{?_isa} = %{version}-%{release}
 # The following are GPLv2+ licensed:
 # /apps/alsa_delay.cc, /apps/alsa_loopback.cc, /apps/mtmd.cc /apps/mtdm.cc
-License:       GPLv2+ and GPLv3+
+License:       GPL-2.0-or-later AND GPL-3.0-or-later
 
 %description   utils
 This package contains the headers and development libraries for %{name}.

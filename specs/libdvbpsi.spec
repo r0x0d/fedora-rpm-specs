@@ -1,12 +1,11 @@
-%global commit0 26bdfd4c0dc58f0f4917461cdf31dae24f9e1463
+%global commit0 d3792daa31d61c71b248e3b1a0a63f7fb05a2380
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Summary:	Library for MPEG TS and DVB PSI tables decoding and generation
 Name:		libdvbpsi
 Version:	1.3.3
-Release:	13%{?dist}
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:	LicenseRef-Callaway-LGPLv2+
+Release:	14%{?dist}
+License:	LGPL-2.0-or-later
 URL:		http://www.videolan.org/developers/libdvbpsi.html
 Source0:        https://code.videolan.org/videolan/libdvbpsi/-/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
 
@@ -70,6 +69,9 @@ rm -f %{buildroot}%{_libdir}/lib*.la
 
 
 %changelog
+* Thu Oct 10 2024 Nicolas Chauvet <kwizart@gmail.com> - 1.3.3-14
+- Update snapshot
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.3.3-13
 - convert license to SPDX
 

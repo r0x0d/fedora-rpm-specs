@@ -1,6 +1,6 @@
 Name:           linkchecker
 
-Version:        10.4.0
+Version:        10.5.0
 Release:        %autorelease
 Summary:        Check HTML documents for broken links
 License:        GPL-2.0-or-later
@@ -43,10 +43,6 @@ different formats
 
 %prep
 %autosetup -p1 -n LinkChecker-%{version}
-# Adjust tests for recently (Python 3.13, 3.12.4+) added text/markdown mimetype
-# https://github.com/linkchecker/linkchecker/issues/823
-sed -i 's@application/octet-stream@text/markdown@' tests/checker/data/file.markdown.result
-
 
 %generate_buildrequires
 %pyproject_buildrequires

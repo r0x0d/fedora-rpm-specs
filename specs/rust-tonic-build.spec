@@ -5,7 +5,7 @@
 %global crate tonic-build
 
 Name:           rust-tonic-build
-Version:        0.12.2
+Version:        0.12.3
 Release:        %autorelease
 Summary:        Codegen module of tonic gRPC implementation
 

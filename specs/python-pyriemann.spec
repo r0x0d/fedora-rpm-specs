@@ -2,7 +2,7 @@
 %global forgeurl https://github.com/alexandrebarachant/pyRiemann
 
 Name:           python-pyriemann
-Version:        0.6
+Version:        0.7
 Release:        %autorelease
 Summary:        Riemannian Geometry for Python
 %forgemeta

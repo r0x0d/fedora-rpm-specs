@@ -1,9 +1,9 @@
 Name: docbook-utils
-Version: 0.6.14
-Release: 62%{?dist}
+Version: 0.6.15
+Release: 1%{?dist}
 
 Summary: Shell scripts for managing DocBook documents
-URL: http://sources.redhat.com/docbook-tools/
+URL: https://github.com/devexp-db/docbook-utils
 
 License: GPL-2.0-or-later
 
@@ -21,7 +21,7 @@ BuildRequires: perl-SGMLSpm, openjade, docbook-style-dsssl
 BuildRequires: make
 
 BuildArch: noarch
-Source0: ftp://sources.redhat.com/pub/docbook-tools/new-trials/SOURCES/%{name}-%{version}.tar.gz
+Source0: https://github.com/devexp-db/docbook-utils/releases/download/v%{version}/%{name}-%{version}.tar.xz
 Source1: db2html
 Source2: gdp-both.dsl
 #We will ship newer version of docbook2man-spec.pl for better handling of docbook2man conversion
@@ -30,16 +30,6 @@ Source3: docbook2man-spec.pl
 
 Obsoletes: stylesheets < %{version}-%{release}
 Provides: stylesheets = %{version}-%{release}
-
-Patch0: docbook-utils-spaces.patch
-Patch1: docbook-utils-2ndspaces.patch
-Patch2: docbook-utils-w3mtxtconvert.patch
-Patch3: docbook-utils-grepnocolors.patch
-Patch4: docbook-utils-sgmlinclude.patch
-Patch5: docbook-utils-rtfmanpage.patch
-Patch6: docbook-utils-papersize.patch
-Patch7: docbook-utils-nofinalecho.patch
-Patch8: docbook-utils-newgrep.patch
 
 %description
 This package contains scripts are for easy conversion from DocBook
@@ -64,15 +54,6 @@ PDF format.
 
 %prep
 %setup -q
-%patch -P0 -p1 -b .spaces
-%patch -P1 -p1 -b .2ndspaces
-%patch -P2 -p1 -b .w3mtxtconvert
-%patch -P3 -p1 -b .grepnocolors
-%patch -P4 -p1 -b .sgmlinclude
-%patch -P5 -p1 -b .rtfman
-%patch -P6 -p1 -b .papersize
-%patch -P7 -p1 -b .finalecho
-%patch -P8 -p1 -b .newgrep
 
 %build
 ./configure --prefix=%{_prefix} --mandir=%{_mandir} --libdir=%{_libdir}
@@ -135,6 +116,10 @@ rm -rf $RPM_BUILD_ROOT/tmp
 %{_mandir}/*/docbook2ps.*
 
 %changelog
+* Wed Oct 9 2024 Ales Nezbeda <anezbeda@redhat.com> - 0.6.15-1
+- Switch to an active upstream
+- Remove patches as they are now upstream
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.6.14-62
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -16,8 +16,8 @@ Release:    %autorelease
 Summary:    ROCm Runtime Library
 
 License:    NCSA
-URL:        https://github.com/RadeonOpenCompute/ROCR-Runtime
-Source0:    https://github.com/RadeonOpenCompute/ROCR-Runtime/archive/refs/tags/rocm-%{version}.tar.gz#/%{name}-%{version}.tar.gz
+URL:        https://github.com/ROCm/ROCR-Runtime
+Source0:    %{url}/archive/rocm-%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 ExclusiveArch:  x86_64
 

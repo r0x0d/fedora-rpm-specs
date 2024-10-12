@@ -1,10 +1,9 @@
 Name:           liboggz
 Version:        1.1.1
-Release:        30%{?dist}
+Release:        32%{?dist}
 Summary:        Simple programming interface for Ogg files and streams
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            http://www.xiph.org/oggz/
 Source0:        http://downloads.xiph.org/releases/liboggz/%{name}-%{version}.tar.gz
 # Always have oggz_off_t == loff_t even on 64-bit platforms
@@ -59,7 +58,7 @@ liboggz.
 %configure --disable-static
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-make %{?_smp_mflags}
+%make_build
 
 
 %check
@@ -67,11 +66,10 @@ make %{?_smp_mflags}
 #make check
 
 %install
-rm -rf $RPM_BUILD_ROOT
 %makeinstall docdir=$PWD/__docs_staging INSTALL="%{__install} -p"
 
 # remove unpackaged files from the buildroot
-rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
+rm -f %{buildroot}%{_libdir}/*.la
 
 # not particularly interested in the tex docs, the html version has everything
 rm -rf __docs_staging/latex
@@ -80,15 +78,13 @@ rm -rf __docs_staging/latex
 # independent of build time
 (cd include/oggz &&
     touch -r oggz_off_t_generated.h.in.multilib \
-      $RPM_BUILD_ROOT%{_includedir}/oggz/oggz_off_t_generated.h
+      %{buildroot}%{_includedir}/oggz/oggz_off_t_generated.h
 )
 
 
-%ldconfig_scriptlets
-
-                                                                                
 %files
-%doc AUTHORS ChangeLog COPYING README
+%doc AUTHORS ChangeLog README
+%license COPYING
 # 0 length NEWS file
 # %doc NEWS
 %{_libdir}/liboggz.so.*
@@ -105,6 +101,9 @@ rm -rf __docs_staging/latex
 
 
 %changelog
+* Thu Oct 10 2024 Nicolas Chauvet <kwizart@gmail.com> - 1.1.1-32
+- clean-up
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.1.1-30
 - convert license to SPDX
 

@@ -2,7 +2,7 @@ Name:       ddate
 Version:    0.2.2
 Release:    20%{?dist}
 Summary:    Convert Gregorian dates to Discordian dates
-License:    Public Domain
+License:    LicenseRef-Fedora-Public-Domain
 URL:        https://github.com/bo0ts/%{name}
 Source0:    %{url}/archive/v%{version}.tar.gz
 BuildRequires:  cmake   

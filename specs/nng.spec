@@ -1,7 +1,7 @@
 Name:     nng
-Version:  1.8.0
-Release:  2%{?dist}
-Summary:  nanomsg next generation: light-weight brokerless messaging
+Version:  1.9.0
+Release:  1%{?dist}
+Summary:  Light-weight brokerless messaging
 
 License:  MIT
 URL:      https://nanomsg.github.io/nng/
@@ -72,6 +72,9 @@ rm -rf %{buildroot}/%{_mandir}/man[3-7]*
 %{_mandir}/man1/nngcat.1.gz
 
 %changelog
+* Thu Oct 10 2024 Fabian Affolter <mail@fabian-affolter.ch> - 1.9.0-1
+- Update to latest upstream release (closes rhbz#2317733)
+
 * Thu Sep 19 2024 Jan Ruzicka <jan.ruzicka@comtech.com> - 1.8.0-2
 - Add dependency on main library to subpackage nng-utils
 

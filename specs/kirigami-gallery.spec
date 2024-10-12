@@ -1,6 +1,6 @@
 Name:    kirigami-gallery
-Version: 24.08.1
-Release: 1%{?dist}
+Version: 24.08.2
+Release: 2%{?dist}
 Summary: Gallery application built using Kirigami
 License: LGPL-2.1-or-later
 URL:     https://apps.kde.org/en/kirigami2.gallery
@@ -53,19 +53,15 @@ code examples on invent.
 
 %build
 %cmake_kf6
-
 %cmake_build
 
 
 %install
 %cmake_install
-
 %find_lang kirigamigallery --with-qt
-
 
 %check
 appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.kirigami2.gallery.appdata.xml
-appstreamcli validate --no-net %{buildroot}%{_datadir}/metainfo/org.kde.kirigami2.gallery.appdata.xml
 desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.kirigami2.gallery.desktop
 
 
@@ -78,6 +74,12 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.kirigami2.gal
 
 
 %changelog
+* Fri Oct 11 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-2
+- Readded the patches back in
+
+* Thu Oct 10 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
+- 24.08.2
+
 * Wed Sep 25 2024 Alessandro Astone <ales.astone@gmail.com> - 24.08.1-1
 - 24.08.1
 

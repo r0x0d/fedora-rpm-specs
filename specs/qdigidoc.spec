@@ -8,8 +8,8 @@
 
 
 Name:           qdigidoc
-Version:        4.5.1
-Release:        4%{?dist}
+Version:        4.6.0
+Release:        1%{?dist}
 Summary:        Estonian digital signature and encryption application
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-LGPLv2+
@@ -21,8 +21,6 @@ Source1:        EE.xml
 Source2:        eu-lotl.xml
 
 Patch0:         sandbox.patch
-Patch1:         1251.patch
-# read https://github.com/open-eid/DigiDoc4-Client/issues/1119
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 # Dependency flatbuffers already not available on x86
@@ -32,7 +30,7 @@ BuildRequires:  make
 BuildRequires:  cmake3 >= 3.5
 BuildRequires:  desktop-file-utils
 BuildRequires:  gettext
-BuildRequires:  libdigidocpp-devel >= 3.16.0
+BuildRequires:  libdigidocpp-devel >= 4.0.0
 BuildRequires:  flatbuffers-compiler
 BuildRequires:  openldap-devel
 BuildRequires:  pkgconfig(openssl)
@@ -71,10 +69,7 @@ extension for the nautilus file manager.
 %prep
 %setup -q -n %{upstream_name}-%{version}
 %patch 0 -p1
-%patch 1 -p1
 
-#cp %{S:1} %{S:2} %{S:3} %{S:4} common/
-#cp %{S:5} %{S:6} %{S:7} client/
 cp %{S:1} %{S:2} client/
 
 %build
@@ -131,7 +126,7 @@ pushd %{_target_platform}
 popd
 %endif
 
-desktop-file-validate %{buildroot}/%{_datadir}/applications/qdigidoc4.desktop
+desktop-file-validate %{buildroot}/%{_datadir}/applications/ee.ria.qdigidoc4.desktop
 
 %find_lang nautilus-qdigidoc
 
@@ -140,6 +135,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/qdigidoc4.desktop
 %license COPYING LICENSE.LGPL
 %{_bindir}/*
 %{_datadir}/applications/*.desktop
+%{_datadir}/metainfo/*.xml
 %{_datadir}/mime/packages/*.xml
 %{_datadir}/icons/hicolor/*/*/*.png
 %{_datadir}/icons/Yaru/*/*/*.png
@@ -150,6 +146,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/qdigidoc4.desktop
 %{_datadir}/nautilus-python/extensions/*
 
 %changelog
+* Wed Oct 09 2024 Dmitri Smirnov <dmitri@smirnov.ee> - 4.6.0-1
+- Upstream release 4.6.0
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 4.5.1-4
 - convert license to SPDX
 

@@ -21,7 +21,9 @@ tox-uv is a tox plugin, which replaces virtualenv and pip with uv in your tox
 environments. Note that you will get both the benefits (performance)
 or downsides (bugs) of uv.
 
-Installing this package changes the behavior of tox.}
+Installing this package changes the behavior of tox.
+It also makes it impossible to use tox with a Python version
+not supported by uv.}
 
 %description %_description
 

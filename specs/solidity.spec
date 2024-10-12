@@ -1,8 +1,8 @@
-%global git_hash 40a35a097cb1e03550c7ce415f2b46ad81e882a6
+%global git_hash 7893614a31fbeacd1966994e310ed4f760772658
 
 Summary:	Object-oriented, high-level language for implementing smart contracts
 Name:		solidity
-Version:	0.8.27
+Version:	0.8.28
 Release:	%autorelease
 ExcludeArch:	%{ix86}
 URL:		https://docs.soliditylang.org/
@@ -29,17 +29,14 @@ BuildRequires:	help2man
 # for /usr/bin/cvc5
 Requires:	cvc5
 
-
 %description
 Solidity is an object-oriented, high-level language for implementing smart
 contracts. Smart contracts are programs which govern the behavior of accounts
 within the Ethereum state.
 
-
 %prep
 %autosetup -p1
 echo %{git_hash} > commit_hash.txt
-
 
 %build
 %{cmake} \
@@ -51,7 +48,6 @@ echo %{git_hash} > commit_hash.txt
 
 help2man --no-discard-stderr --no-info "%{__cmake_builddir}/solc/solc" --version-string=%{version} --output=solc.1
 help2man --no-discard-stderr --no-info "%{__cmake_builddir}/tools/yul-phaser" --version-string=%{version} --output=yul-phaser.1
-
 
 %install
 %cmake_install
@@ -68,7 +64,6 @@ install -D -pv -m 0644 -t %{buildroot}%{_mandir}/man1/ solc.1 yul-phaser.1
 %license LICENSE.txt
 %{_mandir}/man1/solc.1.*
 %{_mandir}/man1/yul-phaser.1.*
-
 
 %changelog
 %autochangelog

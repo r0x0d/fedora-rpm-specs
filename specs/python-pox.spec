@@ -7,7 +7,7 @@
 %global forgeurl https://github.com/uqfoundation/pox
 
 Name:           python-pox
-Version:        0.3.4
+Version:        0.3.5
 Release:        %autorelease
 Summary:        Utilities for filesystem exploration and automated builds
 

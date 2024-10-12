@@ -43,7 +43,7 @@ https://uqfoundation.github.io/project/pathos/query.}
 %global forgeurl https://github.com/uqfoundation/pathos/
 
 Name:           python-pathos
-Version:        0.3.2
+Version:        0.3.3
 Release:        %autorelease
 Summary:        Parallel graph management and execution in heterogeneous computing
 

@@ -40,9 +40,18 @@
 %global build_tensile OFF
 %endif
 
+%if 0%{?rhel} && 0%{?rhel} < 10
+# On CS9: /usr/bin/debugedit: Cannot handle 8-byte build ID
+%global debug_package %{nil}
+%endif
+
 Name:           rocblas
 Version:        %{rocm_version}
+%if 0%{?rhel} && 0%{?rhel} < 10
+Release:        1%{?dist}
+%else
 Release:        %autorelease
+%endif
 Summary:        BLAS implementation for ROCm
 Url:            https://github.com/ROCmSoftwarePlatform/%{upstreamname}
 License:        MIT AND BSD-3-Clause

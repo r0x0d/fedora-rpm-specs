@@ -1,5 +1,5 @@
 ### Abstract ###
-%bcond tests %{undefined rhel}
+%bcond servers %{undefined rhel}
 
 # global prerelease b4
 
@@ -14,6 +14,8 @@ Summary: An object-oriented API to access LDAP directory servers
 URL: https://python-ldap.org/
 Source0: %{pypi_source}
 
+# Conditionally applied paches, numbereed > 100
+Patch101: 0101-Disable-openldap-servers-tests.patch
 
 ### Build Dependencies ###
 BuildRequires: gcc
@@ -23,10 +25,10 @@ BuildRequires: cyrus-sasl-devel
 BuildRequires: python3-devel
 BuildRequires: python3-setuptools
 # Test dependencies
-%if %{with tests}
+%if %{with servers}
 BuildRequires: openldap-servers >= %{openldap_version}
-BuildRequires: openldap-clients >= %{openldap_version}
 %endif
+BuildRequires: openldap-clients >= %{openldap_version}
 BuildRequires: python3-pyasn1 >= 0.3.7
 BuildRequires: python3-pyasn1-modules >= 0.1.5
 
@@ -55,7 +57,12 @@ Provides:  python3-pyldap%{?_isa} = %{version}-%{release}
 
 
 %prep
-%autosetup -p1 -n %{name}-%{version}%{?prerelease}
+%autosetup -p1 -n %{name}-%{version}%{?prerelease} -N
+%autopatch -p1 -M100
+%if %{without servers}
+%autopatch -p1 101
+%endif
+
 # Fix interpreter
 find . -name '*.py' | xargs sed -i '1s|^#!/usr/bin/env python|#!%{__python3}|'
 
@@ -65,11 +72,7 @@ find . -name '*.py' | xargs sed -i '1s|^#!/usr/bin/env python|#!%{__python3}|'
 
 
 %check
-%if %{with tests}
 PYTHONPATH=%{buildroot}%{python3_sitearch} %{__python3} -m unittest discover -v -s Tests -p 't_*'
-%else
-%py3_check_import ldap ldap.controls ldap.extop ldap.schema ldapurl ldif
-%endif
 
 
 %install

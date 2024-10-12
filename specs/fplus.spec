@@ -8,8 +8,8 @@
 Summary:        Functional Programming Library for C++
 Name:           fplus
 License:        BSL-1.0
-Version:        0.2.22
-Release:        4%{?dist}
+Version:        0.2.25
+Release:        %autorelease
 
 URL:            https://github.com/Dobiasd/FunctionalPlus
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/FunctionalPlus-%{version}.tar.gz
@@ -72,18 +72,4 @@ rm -rf api_search
 %_libdir/cmake/FunctionalPlus/
 
 %changelog
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.22-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Wed Jan 24 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.22-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Fri Jan 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.22-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Sat Jan 13 2024 Tom Rix <trix@redhat.com> - 0.2.22-1
-- Update to 0.2.22
-- Fix summary
-
-* Fri Dec 15 2023 Tom Rix <trix@redhat.com> - 0.2.20-1
-- Initial package
+%autochangelog

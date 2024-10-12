@@ -4,7 +4,7 @@ Release:        12%{?dist}
 Summary:        iucode_tool is a program to manipulate microcode update collections for Intel i686 and X86-64 system processors, and prepare them for use by the Linux kernel
 
 # Automatically converted from old format: GPlv2+ - review is highly recommended.
-License:        Warning: we do not have SPDX identifier for GPlv2+
+License:        GPL-2.0-or-later
 URL:            https://gitlab.com/iucode-tool/iucode-tool
 Source0:	https://gitlab.com/iucode-tool/iucode-tool/-/archive/v%{version}/iucode-tool-v%{version}.tar.gz
 

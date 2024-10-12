@@ -9,7 +9,7 @@
 
 Name:           ghc-%{pkg_name}
 Version:        2.9.4.1
-Release:        %autorelease
+Release:        %autorelease -b 13
 Summary:        Obtain minified chart.js code
 
 License:        MIT

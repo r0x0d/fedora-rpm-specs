@@ -1,8 +1,5 @@
-# Some tests (and some VTK integration features) require python-pyvista, which
-# cannot be packaged until (at least) python3-vtk is not broken. See:
-#
-# vtk Python bindings: segmentation fault on import
-# https://bugzilla.redhat.com/show_bug.cgi?id=2310520
+# Some tests (and some VTK integration features) require python-pyvista, but we
+# do not find it worthwhile to package it for that purpose alone.
 %bcond pyvista 0
 
 %bcond tests 1

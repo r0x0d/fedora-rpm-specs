@@ -1,11 +1,11 @@
 %global forgeurl https://gitlab.com/Teuniz/EDFlib
-%global version0 1.26
+%global version0 1.27
 %global tag0 v%{version0}
 %forgemeta
 
 Name:           edflib
 Version:        %{forgeversion}
-%global so_version 1
+%global so_version 2
 Release:        %autorelease
 Summary:        C/C++ library to read/write EDF+ and BDF+ files
 
@@ -29,8 +29,12 @@ Source:         %{forgesource}
 
 # Library makefile: make more amenable to distribution packaging
 # https://gitlab.com/Teuniz/EDFlib/-/merge_requests/7
-# This PR seems to have languished upstream; rebased locally on 1.26:
-Patch:          edflib-1.26-makefile.patch
+# This PR seems to have languished upstream, and the project appears to have
+# disabled merge requests at some point, so the link above is broken.
+#
+# - 1.27 broke ABI by changing EDFLIB_MAXSIGNALS, which affects the structure
+#   edflib_hdr_t in the public API, this patch now sets an SONAME
+Patch:          edflib-1.27-makefile.patch
 
 # Big-endian support was proposed upstream, but a patch was declined, and
 # beginning with version 1.23, “non-support” of big-endian architectures is
@@ -91,7 +95,7 @@ sed -r -i 's/-O[23]//' lib/makefile
 %files
 %license LICENSE
 %doc README.md
-%{_libdir}/libedf.so.%{so_version}{,.*}
+%{_libdir}/libedf.so.%{so_version}
 
 
 %files devel

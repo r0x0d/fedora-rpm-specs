@@ -1,5 +1,5 @@
 Name:           python-time-machine
-Version:        2.14.1
+Version:        2.16.0
 Release:        %autorelease
 Summary:        Travel through time in your Python tests
 License:        MIT
@@ -23,14 +23,14 @@ Summary:        %{summary}
 
 %prep
 %autosetup -p1 -n time-machine-%{version}
-sed -i '/coverage/d' requirements/requirements.in
+sed -i '/coverage/d' tests/requirements/requirements.in
 
 
 %generate_buildrequires
 # tox uses a pinned version of requirements/requirements.in and also uses coverage
 # so we bypass it.
 # This also saves us one dependency cycle as tox uses time-machine for tests.
-%pyproject_buildrequires requirements/requirements.in
+%pyproject_buildrequires tests/requirements/requirements.in
 
 
 %build

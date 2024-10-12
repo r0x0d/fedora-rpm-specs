@@ -5,8 +5,8 @@
 
 %global crate tower-http
 
-Name:           rust-tower-http
-Version:        0.6.1
+Name:           rust-tower-http0.5
+Version:        0.5.2
 Release:        %autorelease
 Summary:        Tower middleware and utilities for HTTP clients and servers
 
@@ -14,7 +14,9 @@ License:        MIT
 URL:            https://crates.io/crates/tower-http
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
+# * bump base64 dependency from 0.21 to 0.22
 # * bump brotli dependency from 6 to 7
+# * bump sync_wrapper dependency from 0.1.1 to 1
 Patch:          tower-http-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

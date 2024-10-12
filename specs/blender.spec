@@ -53,7 +53,7 @@ URL:            https://www.blender.org
 Source0:        https://download.%{name}.org/source/%{name}-%{version}.tar.xz
 
 # Rename macros extension to avoid clashing with upstream version
-Source1:        %{name}-macros.tar.xz
+Source1:        %{name}-macros-source
 # FFmpeg 7 compatibility patch with syntax error fixed
 # https://projects.blender.org/blender/blender/pulls/121947
 Patch0:         %{name}-ffmpeg7.patch
@@ -341,7 +341,6 @@ packages to extend Blender.
 # %%autosetup -a1 failed to extract all tarball #2495
 # https://github.com/rpm-software-management/rpm/issues/2495
 %autosetup -N
-%__rpmuncompress -x %{SOURCE1}
 %autopatch -p1
 
 # Delete the bundled FindOpenJPEG to make find_package use the system version
@@ -446,7 +445,8 @@ install -Dm755 release/bin/%{name}-softwaregl %{buildroot}%{_bindir}/%{name}-sof
 
 # rpm macros
 mkdir -p %{buildroot}%{macrosdir}
-sed -e 's/@VERSION@/%{blender_api}/g' %{SOURCE1} > %{buildroot}%{macrosdir}/%{name}-macros
+install -pm 644 %{SOURCE1} %{buildroot}%{macrosdir}/%{name}-macros
+sed -e 's/@VERSION@/%{blender_api}/g' %{buildroot}%{macrosdir}/%{name}-macros
 
 # Metainfo
 install -p -m 644 -D release/freedesktop/org.%{name}.Blender.metainfo.xml \

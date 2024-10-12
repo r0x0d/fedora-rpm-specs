@@ -42,9 +42,6 @@ Source0:        https://bitbucket.org/icl/magma/get/%{commit}.tar.gz
 Patch0:         0001-Prepare-magma-cmake-for-fedora.patch
 
 BuildRequires:  blas-devel
-# Redundant BuildRequires:clang17 to make fedora-review happy
-# clang17 or similar is part of requires for rocm-hip-devel
-BuildRequires:  clang17
 BuildRequires:  cmake
 BuildRequires:  hipblas-devel
 BuildRequires:  hipsparse-devel
@@ -165,6 +162,11 @@ do
     %cmake_install
 done
 
+echo s@%{buildroot}@@ > br.sed
+find %{buildroot}%{_libdir} -name '*.so.*.[0-9]' | sed -f br.sed >  %{name}.files
+find %{buildroot}%{_libdir} -name '*.so.[0-9]'   | sed -f br.sed >> %{name}.files
+find %{buildroot}%{_libdir} -name '*.so'         | sed -f br.sed >  %{name}.devel
+
 %if %{with test}
 %check
 gpu=default
@@ -191,21 +193,12 @@ gpu=default
 #  7232  7232  7232   11764.14 (  64.31)    20683.31 (  36.58)     ---   (  ---  )    5.11e-10        ---    ok
 %endif
 
-%files
+%files -f %{name}.files
 %license COPYRIGHT
-%{_libdir}/lib%{name}.so.*
-%{_libdir}/lib%{name}_sparse.so.*
-%{_libdir}/rocm/gfx*/lib/lib%{name}.so.*
-%{_libdir}/rocm/gfx*/lib/lib%{name}_sparse.so.*
 
-%files devel
+%files devel -f %{name}.devel
 %{_includedir}/*.h
-%{_libdir}/lib%{name}.so
-%{_libdir}/lib%{name}_sparse.so
-%{_libdir}/rocm/gfx*/lib/lib%{name}.so
-%{_libdir}/rocm/gfx*/lib/lib%{name}_sparse.so
 %{_libdir}/pkgconfig/%{name}.pc
-%exclude %{_libdir}/rocm/gfx*/lib/pkgconfig/%{name}.pc
 
 %changelog
 %autochangelog

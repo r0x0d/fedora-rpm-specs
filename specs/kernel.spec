@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc2.20241009git75b607fab38d.26
+%define pkgrelease 0.rc2.20241010gitd3d1556696c1.27
 %define kversion 6
-%define tarfile_release 6.12-rc2-58-g75b607fab38d
+%define tarfile_release 6.12-rc2-74-gd3d1556696c1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc2.20241009git75b607fab38d.26%{?buildid}%{?dist}
+%define specrelease 0.rc2.20241010gitd3d1556696c1.27%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4136,6 +4136,13 @@ fi\
 #
 #
 %changelog
+* Thu Oct 10 2024 Justin M. Forbes <jforbes@fedoraproject.org> [6.12.0-0.rc2.20241010gitd3d1556696c1.27]
+- tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
+- tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Thu Oct 10 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc2.d3d1556696c1.27]
+- Linux v6.12.0-0.rc2.d3d1556696c1
+
 * Wed Oct 09 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc2.75b607fab38d.26]
 - Turn on ZRAM_WRITEBACK for Fedora (Justin M. Forbes)
 - Linux v6.12.0-0.rc2.75b607fab38d

@@ -1,7 +1,7 @@
 %global pypi_name check-manifest
 
 Name:           python-%{pypi_name}
-Version:        0.49
+Version:        0.50
 Release:        1%{?dist}
 Summary:        Check MANIFEST.in in a Python source package
 
@@ -65,6 +65,9 @@ sed -i -e '/^#!\//, 1d' check_manifest.py
 %{_bindir}/check-manifest
 
 %changelog
+* Thu Oct 10 2024 Fabian Affolter <mail@fabian-affolter.ch> - 0.50-1
+- Update to latest upstream release (closes rhbz#2317517)
+
 * Sat Sep 28 2024 Fabian Affolter <mail@fabian-affolter.ch> - 0.49-1
 - Update to latest upstream release (closes rhbz#2150733)
 
