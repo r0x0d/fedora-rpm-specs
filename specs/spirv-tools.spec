@@ -1,6 +1,6 @@
 %undefine __cmake_in_source_build
 
-%global sdkver 1.3.290.0
+%global sdkver 1.3.296.0
 
 Name:           spirv-tools
 Version:        2024.3
@@ -12,9 +12,6 @@ URL:            https://github.com/KhronosGroup/SPIRV-Tools
 Source0:        %url/archive/vulkan-sdk-%{sdkver}.tar.gz#/SPIRV-Tools-sdk-%{sdkver}.tar.gz
 
 Patch0: fix-gcc12-build.patch
-
-# fix spirv linking with llvm opaque ptrs
-Patch10: 0001-spirv-link-allow-linking-functions-with-different-po.patch
 
 BuildRequires:  cmake3
 BuildRequires:  gcc-c++

@@ -101,7 +101,8 @@ use the "win_crlf" feature of the "%{crate}" crate.
 
 %if %{with check}
 %check
-%cargo_test
+# * skip a test that fails due to formatting diff with recent unicode-width
+%cargo_test -- -- --skip tests::test_panic
 %endif
 
 %changelog

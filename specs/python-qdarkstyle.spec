@@ -1,6 +1,9 @@
-# Per the Web Assets guidelines, we really need to recompile at least .qss
-# files (which are CSS) as part of the build (“It is not acceptable to include
-# pre-compiled CSS in Fedora packages.”).
+# Per the Web Assets guidelines, we should try to recompile at least .qss files
+# (which are CSS) as part of the build. Historically, this was absolutely
+# required (“It is not acceptable to include pre-compiled CSS in Fedora
+# packages.”), but even though the requirement has been relaxed
+# (https://pagure.io/fesco/issue/3269), recompiling is still best practice
+# where it is feasible.
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Web_Assets/#_css
 %bcond recompile_assets 1
 
@@ -9,7 +12,12 @@ Version:        3.2.3
 Release:        %autorelease
 Summary:        The most complete dark/light style sheet for C++/Python and Qt applications
 
-License:        MIT
+# From README.rst:
+#   This project is licensed under the MIT license. Images contained in this
+#   project is licensed under CC-BY license.
+# Therefore, the entire source is (SPDX) MIT except for those files with .png
+# or .svg extensions, which are CC-BY-4.0.
+License:        MIT AND CC-BY-4.0
 URL:            https://github.com/ColinDuquesnoy/QDarkStyleSheet
 # The PyPI sdist does not have all of the files (such as SVG files) needed to
 # rebuild the generated assets.

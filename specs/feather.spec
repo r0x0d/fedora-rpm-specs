@@ -1,5 +1,5 @@
 Name:          feather
-Version:       2.6.8
+Version:       2.7.0
 Release:       %autorelease
 Summary:       Monero desktop wallet
 

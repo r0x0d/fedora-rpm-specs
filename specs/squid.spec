@@ -2,7 +2,7 @@
 
 Name:     squid
 Version:  6.11
-Release:  1%{?dist}
+Release:  2%{?dist}
 Summary:  The Squid proxy caching server
 Epoch:    7
 # See CREDITS for breakdown of non GPLv2+ code
@@ -38,6 +38,8 @@ Patch203: squid-6.1-perlpath.patch
 Patch204: squid-6.1-symlink-lang-err.patch
 # Upstream PR: https://github.com/squid-cache/squid/pull/1442
 Patch205: squid-6.1-crash-half-closed.patch
+# Upstream PR: https://github.com/squid-cache/squid/pull/1914
+Patch206: squid-6.11-ignore-wsp-after-chunk-size.patch
 
 # cache_swap.sh
 Requires: bash gawk
@@ -324,6 +326,9 @@ fi
 
 
 %changelog
+* Fri Oct 11 2024 Luboš Uhliarik <luhliari@redhat.com> - 7:6.11-2
+- ignore SP and HTAB chars after chunk-size
+
 * Wed Sep 25 2024 Luboš Uhliarik <luhliari@redhat.com> - 7:6.11-1
 - new version 6.11
 

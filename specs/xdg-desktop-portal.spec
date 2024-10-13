@@ -5,7 +5,7 @@
 %global pipewire_version 0.2.90
 
 Name:    xdg-desktop-portal
-Version: 1.18.4
+Version: 1.19.0
 Release: %autorelease
 Summary: Portal frontend service to flatpak
 
@@ -28,12 +28,16 @@ BuildRequires: pkgconfig(libpipewire-0.3) >= %{pipewire_version}
 BuildRequires: pkgconfig(libportal)
 BuildRequires: pkgconfig(libsystemd)
 BuildRequires: python3-dbusmock
+BuildRequires: python3-furo
 BuildRequires: python3-gobject-base
 BuildRequires: python3-pytest
 %if %{undefined rhel}
 BuildRequires: python3-pytest-xdist
 %endif
+BuildRequires: python3-sphinx-copybutton
+BuildRequires: python3-sphinxext-opengraph
 BuildRequires: /usr/bin/rst2man
+BuildRequires: /usr/bin/sphinx-build
 BuildRequires: /usr/bin/xmlto
 
 Requires:      dbus

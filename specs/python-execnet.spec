@@ -3,7 +3,7 @@
 # Some of the BuildRequires are used in tests only when installed.
 # To speedup bootstrap of the next Python version in Fedora
 # we allow disabling them.
-%bcond optional_test_deps 1
+%bcond optional_test_deps %{undefined rhel}
 
 Name:           python-%{srcname}
 Version:        2.1.1

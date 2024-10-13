@@ -3,13 +3,9 @@
 
 Summary:	LZMA compression utilities
 Name:		xz
-# **PLEASE NOTE**: when bumping xz version, please rebuild
-# perl-Compress-Raw-Lzma, it has a strict xz version dep
-# do this on a side tag, according to
-# https://docs.fedoraproject.org/en-US/package-maintainers/Package_Update_Guide/#multiple_packages
 Epoch:		1
 Version:	5.6.3
-Release:	1%{?dist}
+Release:	2%{?dist}
 
 # liblzma - 0BSD
 # xz{,dec}, lzma{dec,info} - 0BSD
@@ -180,6 +176,10 @@ LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
 
 
 %changelog
+* Fri Oct 11 2024 Richard W.M. Jones <rjones@redhat.com> - 1:5.6.3-2
+- perl-Compress-Raw-Lzma dep has been removed, rebuild
+  https://src.fedoraproject.org/rpms/perl-Compress-Raw-Lzma/pull-request/3
+
 * Wed Oct 02 2024 Richard W.M. Jones <rjones@redhat.com> - 1:5.6.3-1
 - New upstream version 5.6.3 (RHBZ#2316069)
 

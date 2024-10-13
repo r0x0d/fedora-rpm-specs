@@ -3,8 +3,8 @@
 
 # https://github.com/facebook/time
 %global goipath         github.com/facebook/time
-%global date            20240814
-%global commit          6f52fff5d9ff2ed65e75c1c8318e1dd435d82f66
+%global date            20241010
+%global commit          9fbb4552f593d61c1893ae3a50752b861cf01caf
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Version:        0^%{date}git%{shortcommit}

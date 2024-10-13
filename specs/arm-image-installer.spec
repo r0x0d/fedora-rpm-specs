@@ -3,16 +3,13 @@
 # git archive --format=tar --prefix=%{name}-%{version}/ %{version} | xz > ~/%{name}-%{version}.tar.xz
 
 Name:		arm-image-installer
-Version:	4.1
-Release:	6%{?dist}
+Version:	4.2
+Release:	1%{?dist}
 Summary:	Writes binary image files to any specified block device
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:	GPL-2.0-or-later
 Url:		https://pagure.io/arm-image-installer
 Source0:	%{name}-%{version}.tar.xz
-Patch1:		pvresize-add-devices.patch
-Patch2:		remove-no-args-rpi-update.patch
-Patch3:		fix-spi-flash-tool.patch
 
 BuildArch:	noarch
 
@@ -33,7 +30,7 @@ destination block device should then be selected for final installation.
 
 
 %prep
-%autosetup -p1
+%autosetup
 
 %build
 echo "skipping..."
@@ -63,6 +60,9 @@ ln -s /usr/bin/arm-image-installer %{buildroot}%{_bindir}/fedora-arm-image-insta
 %{_datadir}/arm-image-installer/
 
 %changelog
+* Fri Oct 11 2024 Paul Whalen <pwhalen@fedoraproject.org> - 4.2-1
+- Update to 4.2
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 4.1-6
 - convert license to SPDX
 

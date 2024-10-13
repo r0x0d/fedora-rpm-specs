@@ -1,6 +1,6 @@
 Name:		ndctl
-Version:	79
-Release:	4%{?dist}
+Version:	80
+Release:	1%{?dist}
 Summary:	Manage "libnvdimm" subsystem devices (Non-volatile Memory)
 License:	GPL-2.0-only AND LGPL-2.1-only AND CC0-1.0 AND MIT
 Url:		https://github.com/pmem/ndctl
@@ -10,7 +10,7 @@ Requires:	ndctl-libs%{?_isa} = %{version}-%{release}
 Requires:	daxctl-libs%{?_isa} = %{version}-%{release}
 Requires:	cxl-libs%{?_isa} = %{version}-%{release}
 BuildRequires:	autoconf
-%if 0%{?rhel} < 9
+%if 0%{?rhel} && 0%{?rhel} < 9
 BuildRequires:	asciidoc
 %define asciidoctor -Dasciidoctor=disabled
 %define libtracefs -Dlibtracefs=disabled
@@ -240,6 +240,9 @@ fi
 
 
 %changelog
+* Fri Oct 11 2024 Alison Schofield <alison.schofield@intel.com> - 80-1
+- release v80
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 79-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

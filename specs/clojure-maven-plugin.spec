@@ -3,8 +3,8 @@
 %global artifactId  clojure-maven-plugin
 
 Name:           %{artifactId}
-Version:        1.9.2
-Release:        7%{?dist}
+Version:        1.9.3
+Release:        1%{?dist}
 Summary:        Clojure plugin for Maven
 
 License:        EPL-1.0
@@ -41,17 +41,6 @@ possible, when working in a mixed language, enterprise project.
 %pom_remove_plugin :ossindex-maven-plugin
 %pom_remove_plugin :cyclonedx-maven-plugin
 
-# trivial port to commons-lang3
-%pom_remove_dep :commons-lang
-%pom_add_dep org.apache.commons:commons-lang3
-
-sed -i "s/org.apache.commons.lang./org.apache.commons.lang3./g" \
-    src/main/java/com/theoryinpractise/clojure/AbstractClojureCompilerMojo.java
-sed -i "s/org.apache.commons.lang./org.apache.commons.lang3./g" \
-    src/main/java/com/theoryinpractise/clojure/ClojureNReplMojo.java
-sed -i "s/org.apache.commons.lang./org.apache.commons.lang3./g" \
-    src/main/java/com/theoryinpractise/clojure/ClojureSwankMojo.java
-
 %build
 # test1.clj does not get discovered if LANG=C
 # also, using 'package' instead of 'install' to avoid
@@ -72,6 +61,10 @@ export LANG=en_US.utf8
 
 
 %changelog
+* Wed Oct 09 2024 Markku Korkeala <markku.korkeala@iki.fi> - 1.9.3-1
+- Update to upstream release 1.9.3, closes rhbz#2312181
+- Remove porting to commons-lang3
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.9.2-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

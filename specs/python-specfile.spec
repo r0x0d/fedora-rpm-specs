@@ -7,7 +7,7 @@ Main focus is on modifying existing spec files, any change should result
 in a minimal diff.}
 
 
-%global base_version 0.32.3
+%global base_version 0.32.4
 #global prerelease   rc1
 
 %global package_version %{base_version}%{?prerelease:~%{prerelease}}
@@ -77,6 +77,9 @@ sed -i 's/setuptools_scm\[toml\]>=7/setuptools_scm[toml]/' pyproject.toml
 
 
 %changelog
+* Fri Oct 11 2024 Packit <hello@packit.dev> - 0.32.4-1
+- NEVR and NEVRA classes are now hashable (#416)
+
 * Mon Sep 30 2024 Packit <hello@packit.dev> - 0.32.3-1
 - specfile can now handle multi-line tag values (enclosed in a macro body, e.g. `%%shrink`). (#412)
 - Resolves: rhbz#2299289

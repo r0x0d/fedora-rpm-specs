@@ -9,7 +9,7 @@
 
 Name:          budgie-control-center
 Version:       1.4.0
-Release:       4%{?dist}
+Release:       5%{?dist}
 Summary:       A fork of GNOME Control Center for the Budgie 10 Series
 
 # Automatically converted from old format: GPLv2+ and CC-BY-SA - review is highly recommended.
@@ -114,7 +114,12 @@ Requires: fprintd
 Recommends: gnome-color-manager
 
 # For the power panel
-Recommends: tuned-ppd
+Recommends: ppd-service
+%if 0%{?fedora} && 0%{?fedora} < 41
+Suggests: power-profiles-daemon
+%else
+Suggests: tuned-ppd
+%endif
 
 %description
 A fork of GNOME Control Center for the Budgie 10 Series.
@@ -198,6 +203,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/%{name}.a
 %{_datadir}/sounds/budgie/default/alerts/*.ogg
 
 %changelog
+* Fri Oct 11 2024 Joshua Strobl <me@joshuastrobl.com> - 1.4.0-5
+- Add ppd-service as recommends, tuned-ppd as suggests
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 1.4.0-4
 - convert license to SPDX
 

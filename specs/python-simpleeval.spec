@@ -1,13 +1,13 @@
 %global srcname simpleeval
 
 Name:           python-%{srcname}
-Version:        0.9.13
-Release:        7%{?dist}
+Version:        1.0.0
+Release:        1%{?dist}
 Summary:        An expression evaluator library for Python
 
 License:        MIT
 URL:            https://github.com/danthedeckie/simpleeval
-Source0:        https://github.com/danthedeckie/%{srcname}/archive/%{version}.tar.gz#/%{srcname}-%{version}.tar.gz
+Source0:        %{url}/archive/%{version}.tar.gz#/%{srcname}-%{version}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
@@ -56,6 +56,9 @@ eval() or other unsafe or needlessly complex linguistics.
 
 
 %changelog
+* Fri Oct 11 2024 Dan Horák <dan[at]danny.cz> - 1.0.0-1
+- updated to 1.0.0 (rhbz#2316880)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.13-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

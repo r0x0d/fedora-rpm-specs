@@ -1,11 +1,14 @@
 Name:           xnvme
-Version:        0.7.4
-Release:        4%{?dist}
+Version:        0.7.5
+Release:        3%{?dist}
 Summary:        Unified API and tools for traditional and emerging I/O interfaces
 
 License:        BSD-3-Clause
-URL:            https://github.com/OpenMPDK/xNVMe
+URL:            https://github.com/xnvme/xnvme
 Source:         %{url}/releases/download/v%{version}/xnvme-%{version}.tar.gz
+
+# Remove rpath from binaries
+Patch1: 0001-remove-rpath.patch
 
 # The package makes 64 bit assumptions so exclude 32 bit i686.
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
@@ -44,17 +47,17 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %{summary}.
 
 %prep
-%autosetup
+%autosetup -p1
 
 %build
-%meson -Dforce_completions=true -Dwith-libvfn=disabled -Dwith-isal=disabled -Dwith-spdk=false -Dexamples=false -Dtests=false
+%meson -Dforce_completions=true -Dwith-libvfn=disabled -Dwith-isal=disabled -Dwith-spdk=disabled -Dexamples=false -Dtests=false
 %meson_build
 
 %install
 %meson_install
 
 %check
-%meson_test
+%meson_test --num-processes 1
 
 %files
 %license LICENSE
@@ -96,6 +99,9 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %{bash_completions_dir}/zoned-completions
 
 %changelog
+* Fri Oct 11 2024 Karl B. Torp <k.torp@samsung.com> - 0.7.5-1
+- Bump to v0.7.5
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.7.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -20,7 +20,7 @@
 %constrain_build -m 4096
 
 Name:           uv
-Version:        0.4.16
+Version:        0.4.20
 Release:        %autorelease
 Summary:        An extremely fast Python package installer and resolver, written in Rust
 
@@ -31,8 +31,8 @@ Summary:        An extremely fast Python package installer and resolver, written
 #     crate(glibc_version)
 #
 # Apache-2.0 OR BSD-2-Clause:
-#   - crates/pep440-rs/ is vendored and forked from crate(pep440_rs)
-#   - crates/pep508-rs/ is vendored and forked from crate(pep508_rs)
+#   - crates/uv-pep440/ is vendored and forked from crate(pep440_rs)
+#   - crates/uv-pep508/ is vendored and forked from crate(pep508_rs)
 #   - crates/uv-python/packaging/ is vendored and forked from
 #     python3dist(packaging)
 #
@@ -199,9 +199,8 @@ Source400:      %{tl_git}/archive/%{tl_rev}/tl-%{tl_rev}.tar.gz
 # using tikv-jemallocator improved benchmarks by 10%. However, this would
 # require packaging at least the tikv-jemalloc-sys, tikv-jemalloc-ctl, and
 # tikv-jemallocator crates, and this is expected to be not quite trivial.
-# Instead of blocking uv packaging on tikv-jemallocator packaging, we use the
-# default allocator for now, and reserve tikv-jemallocaator packaging as
-# optional future work.
+# We use the default allocator for now, and reserve tikv-jemallocaator
+# packaging as optional future work.
 Patch:          0001-Downstream-only-do-not-override-the-default-allocato.patch
 
 # Downstream-only: Always find the system-wide uv executable
@@ -209,6 +208,14 @@ Patch:          0001-Downstream-only-do-not-override-the-default-allocato.patch
 #   Should uv.find_uv_bin() be able to find /usr/bin/uv?
 #   https://github.com/astral-sh/uv/issues/4451
 Patch:          0001-Downstream-patch-always-find-the-system-wide-uv-exec.patch
+
+# Downstream-only: use the zlib-ng backend for flate2 on all architectures
+#
+# Upstream excludes s390x and ppc64le because there are issues with the
+# build system for the bundled zlib-ng in the libz-ng-sys crate on those
+# platforms, but we have no such issues because we always link the system
+# zlib-ng, which works fine on these architectures.
+Patch:          0001-Downstream-only-use-the-zlib-ng-backend-for-flate2-o.patch
 
 # This patch is for the forked, bundled pubsub crate.
 #
@@ -262,12 +269,13 @@ Provides:       bundled(crate(tl)) = %{tl_version}
 # are only passively maintained, uv requires these custom versions and can't
 # use a system copy.”
 #
-# crates/pep440-rs/
+# crates/uv-pep440/
 # Version number from Cargo.toml:
-Provides:       bundled(crate(pep440_rs)) = 0.6.0
-# crates/pep508-rs/
-# Version number from Cargo.toml:
-Provides:       bundled(crate(pep508_rs)) = 0.6.0
+Provides:       bundled(crate(pep440_rs)) = 0.7.0
+# crates/uv-pep508/
+# Cargo.toml has 0.6.0, but Changelog.md shows 0.7.0, and the source reflects
+# the changes for 0.7.0:
+Provides:       bundled(crate(pep508_rs)) = 0.7.0
 # crates/uv-virtualenv/
 # As a whole, this crate is derived from https://github.com/konstin/gourgeist
 # 0.0.4, which was published as https://crates.io/crates/gourgeist. It looks
@@ -467,8 +475,8 @@ tomcli set crates/tl/Cargo.toml del dev-dependencies.criterion
 # Collect license files of vendored dependencies in the main source archive
 install -t LICENSE.bundled/packaging -D -p -m 0644 \
     crates/uv-python/python/packaging/LICENSE.*
-install -t LICENSE.bundled/pep440_rs -D -p -m 0644 crates/pep440-rs/License-*
-install -t LICENSE.bundled/pep508_rs -D -p -m 0644 crates/pep508-rs/License-*
+install -t LICENSE.bundled/pep440_rs -D -p -m 0644 crates/uv-pep440/License-*
+install -t LICENSE.bundled/pep508_rs -D -p -m 0644 crates/uv-pep508/License-*
 install -t LICENSE.bundled/ripunzip -D -p -m 0644 \
     crates/uv-extract/src/vendor/LICENSE
 # The original license text from rattler_installs_packages is present in a
@@ -510,15 +518,16 @@ tomcli set Cargo.toml false profile.release.strip
 
 # Exclude the bench crate from the workspace. We don’t need to build and run
 # benchmarks, and it brings in unwanted additional dev dependencies.
-tomcli set Cargo.toml append workspace.exclude crates/bench
+tomcli set Cargo.toml append workspace.exclude crates/uv-bench
 # The uv-dev crate provides “development utilities for uv,” which should not be
 # needed here, and it also brings in extra dependencies that we would prefer to
 # do without.
 tomcli set Cargo.toml append workspace.exclude crates/uv-dev
 
-# Do not request static linking of liblzma.
+# Do not request static linking of liblzma – not even when the performance
+# feature is enabled.
 tomcli set crates/uv-extract/Cargo.toml lists delitem \
-    dependencies.xz2.features 'static'
+    features.performance 'xz2/static'
 
 # The pypi feature, described as “Introduces a dependency on PyPI,” in practice
 # controls whether we build and run tests that want to talk to PyPI. In an
@@ -526,10 +535,10 @@ tomcli set crates/uv-extract/Cargo.toml lists delitem \
 # default features.
 tomcli set crates/uv/Cargo.toml lists delitem features.default 'pypi'
 
-# Omit some tests that are not gated with the pypi feature, but require
-# multiple specific Python interpreter versions (down to patch release number),
-# which upstream normally downloads, precompiled, into the build area. In many
-# cases, these tests also require network access.
+# These test modules are not gated with the pypi feature, but require specific
+# Python interpreter versions (down to patch release number), which upstream
+# normally downloads, precompiled, into the build area. They may also require
+# network access.
 mv crates/uv-client/tests/remote_metadata.rs{,.disabled}
 mv crates/uv/tests/branching_urls.rs{,.disabled}
 mv crates/uv/tests/pip_check.rs{,.disabled}
@@ -571,7 +580,11 @@ tomcli set crates/uv/Cargo.toml del dependencies.tracing-durations-export
 #   currently packaged: 0.1.12 (or 0.1.13+really0.1.12)
 # This is a whole mess: https://github.com/unicode-rs/unicode-width/issues/55,
 # https://github.com/unicode-rs/unicode-width/issues/66
-# Hopefully, the sordid details will not start mattering too much for uv.
+#
+# Once upstream switches to 0.2.0, https://github.com/astral-sh/uv/pull/7632,
+# we will no longer need to patch this; however, for now the upstream change is
+# waiting for textwrap to make a release that includes
+# https://github.com/mgeisler/textwrap/commit/ef91a27bcf5f4cf50ee12993032b227982ecf52e.
 tomcli set Cargo.toml str \
     workspace.dependencies.unicode-width.version '0.1.12'
 
@@ -581,13 +594,6 @@ tomcli set Cargo.toml str \
 #   https://bugzilla.redhat.com/show_bug.cgi?id=2258714
 tomcli set Cargo.toml str \
     workspace.dependencies.mailparse.version '>=0.14,<0.16'
-
-# tracing-tree
-#   wanted: 0.4.0
-#   currently packaged: 0.3.1
-#   https://bugzilla.redhat.com/show_bug.cgi?id=2297915
-tomcli set Cargo.toml str \
-    workspace.dependencies.tracing-tree.version '>=0.3.1,<0.5.0'
 
 %cargo_prep
 
@@ -604,6 +610,19 @@ tomcli set Cargo.toml str \
 # Since maturin always checks for dev-dependencies, we need -t so that they are
 # generated even when the “check” bcond is disabled.
 %cargo_generate_buildrequires -a -t
+# These crates are excluded from the workspace – upstream writes:
+#   Only used to pull in features, allocators, etc. — we specifically don't
+#   want them to be part of a workspace-wide cargo check, cargo clippy, etc.
+# – but they are still needed to support features, and the build will fail if
+# we do not generate their dependencies, too:
+for cratedir in \
+    crates/uv-performance-memory-allocator \
+    crates/uv-performance-flate2-backend
+do
+  pushd "${cratedir}" >/dev/null
+  %cargo_generate_buildrequires -a -t
+  popd >/dev/null
+done
 %pyproject_buildrequires
 
 
@@ -638,13 +657,16 @@ then
 fi
 
 # generate and install shell completions
-target/rpm/uv --generate-shell-completion bash > uv.bash
-target/rpm/uv --generate-shell-completion fish > uv.fish
-target/rpm/uv --generate-shell-completion zsh > _uv
- 
-install -Dpm 0644 uv.bash -t %{buildroot}/%{bash_completions_dir}
-install -Dpm 0644 uv.fish -t %{buildroot}/%{fish_completions_dir}
-install -Dpm 0644 _uv -t %{buildroot}/%{zsh_completions_dir}
+for cmd in uv uvx
+do
+  target/rpm/${cmd} --generate-shell-completion bash > ${cmd}.bash
+  target/rpm/${cmd} --generate-shell-completion fish > ${cmd}.fish
+  target/rpm/${cmd} --generate-shell-completion zsh > _${cmd}
+
+  install -Dpm 0644 ${cmd}.bash -t %{buildroot}/%{bash_completions_dir}
+  install -Dpm 0644 ${cmd}.fish -t %{buildroot}/%{fish_completions_dir}
+  install -Dpm 0644 _${cmd} -t %{buildroot}/%{zsh_completions_dir}
+done
 
 
 %check
@@ -656,6 +678,12 @@ install -Dpm 0644 _uv -t %{buildroot}/%{zsh_completions_dir}
 skip="${skip-} --skip keyring::test::fetch_url_no_host"
 skip="${skip-} --skip keyring::test::fetch_url_with_no_username"
 skip="${skip-} --skip keyring::test::fetch_url_with_password"
+
+# These tests are not gated with the pypi feature, but require specific Python
+# interpreter versions (down to patch release number), which upstream normally
+# downloads, precompiled, into the build area. They may also require network
+# access.
+skip="${skip-} --skip uv_backend_direct"
 
 %cargo_test -- -- --exact ${skip-}
 %endif
@@ -673,9 +701,9 @@ skip="${skip-} --skip keyring::test::fetch_url_with_password"
 # Equivalent to “uv tool run”:
 %{_bindir}/uvx
 
-%{bash_completions_dir}/uv.bash
-%{fish_completions_dir}/uv.fish
-%{zsh_completions_dir}/_uv
+%{bash_completions_dir}/{uv,uvx}.bash
+%{fish_completions_dir}/{uv,uvx}.fish
+%{zsh_completions_dir}/_{uv,uvx}
 
 
 %files -n python3-uv -f %{pyproject_files}

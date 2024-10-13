@@ -6,8 +6,8 @@
 %global firefox_inst_dir %{_datadir}/mozilla/extensions/%{firefox_app_id}
 
 Name:           mozilla-ublock-origin
-Version:        1.58.0
-Release:        3%{?dist}
+Version:        1.60.0
+Release:        1%{?dist}
 Summary:        An efficient blocker for Firefox
 
 # Automatically converted from old format: GPLv3 and MIT and OFL and Unlicense - review is highly recommended.
@@ -111,6 +111,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{name}.metain
 %{_metainfodir}/%{name}.metainfo.xml
 
 %changelog
+* Fri Oct 11 2024 Dominik Mierzejewski <dominik@greysector.net> - 1.60.0-1
+- update to 1.60.0 (#2302506)
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.58.0-3
 - convert license to SPDX
 

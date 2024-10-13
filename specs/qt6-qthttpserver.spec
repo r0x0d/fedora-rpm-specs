@@ -4,8 +4,8 @@
 %global examples 1
 
 Name:       qt6-qthttpserver
-Version:    6.7.2
-Release:    2%{?dist}
+Version:    6.8.0
+Release:    1%{?dist}
 Summary:    Library to facilitate the creation of an http server with Qt
 
 License:    BSD-3-Clause AND GFDL-1.3-no-invariants-only AND GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -90,6 +90,9 @@ to the usage of %{name}.
 %endif
 
 %changelog
+* Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

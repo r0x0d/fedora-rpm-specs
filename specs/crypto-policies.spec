@@ -1,5 +1,5 @@
-%global git_date 20240927
-%global git_commit 93b72514d5c35f66565af004a42674480d6e768a
+%global git_date 20241010
+%global git_commit 8baf55743b6f68ae889584b194970f8f3f613a8c
 %{?git_commit:%global git_commit_hash %(c=%{git_commit}; echo ${c:0:7})}
 
 %global _python_bytecompile_extra 0
@@ -295,6 +295,10 @@ exit 0
 %{_mandir}/man8/fips-finish-install.8*
 
 %changelog
+* Thu Oct 10 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20241010-1.git8baf557
+- LEGACY: enable 192-bit ciphers for nss pkcs12/smime
+- openssl: map NULL to TLS_SHA256_SHA256:TLS_SHA384_SHA384
+
 * Fri Sep 27 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20240927-1.git93b7251
 - nss: be stricter with new purposes
 

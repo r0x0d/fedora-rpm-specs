@@ -4,9 +4,6 @@
 # We can generate PDF documentation as a substitute.
 %bcond doc 1
 
-# Missing python3dist(coverage) for the coverage_plugin extra in EPEL10.
-%bcond coverage_plugin %{expr:!0%{?el10}}
-
 Name:           python-nose2
 Version:        0.15.1
 Release:        %autorelease
@@ -57,9 +54,7 @@ Summary:        Documentation for %{name}
 %endif
 
 
-%if %{with coverage_plugin}
 %pyproject_extras_subpkg -n python3-nose2 coverage_plugin
-%endif
 
 
 %prep
@@ -90,9 +85,7 @@ find nose2/ -type f -name '*.py' \
 
 
 %generate_buildrequires
-# We do not run coverage analysis, but we want to ensure the metapackage for
-# the coverage_plugin is installable.
-%pyproject_buildrequires -e %{toxenv}-nocov %{?coverage_plugin:-x coverage_plugin}
+%pyproject_buildrequires -e %{toxenv}-nocov
 
 
 %build

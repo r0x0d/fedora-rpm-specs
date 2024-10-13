@@ -10,8 +10,8 @@
 
 Summary: Qt6 - Wayland platform support and QtCompositor module
 Name:    qt6-%{qt_module}
-Version: 6.7.2
-Release: 4%{?dist}
+Version: 6.8.0
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -25,12 +25,9 @@ Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submod
 %endif
 
 # Upstream patches
-Patch0:  qtwayland-client-ensure-guessed-popup-parent-has-shell-surface.patch
-Patch1:  qtwayland-client-guard-against-windows-being-on-null-screen.patch
-Patch2:  qtwayland-client-improve-thread-safety-determining-window-size.patch
+Patch0:  qtwayland-update-wayland-xml-to-version-1.23.0.patch
 
 # Upstreamable patches
-Patch10: qtwayland-use-adwaita-decorations-by-default.patch
 
 # filter qml provides
 %global __provides_exclude_from ^%{_qt6_archdatadir}/qml/.*\\.so$
@@ -43,6 +40,8 @@ BuildRequires: qt6-qtbase-static
 BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
 BuildRequires: qt6-qtdeclarative-devel
+# For Adwaita decorations
+BuildRequires: qt6-qtsvg-devel
 
 BuildRequires: pkgconfig(xkbcommon)
 BuildRequires: pkgconfig(wayland-scanner)
@@ -57,7 +56,10 @@ BuildRequires: pkgconfig(xrender)
 BuildRequires: pkgconfig(libudev)
 BuildRequires: pkgconfig(libinput)
 
-BuildRequires:  libXext-devel
+BuildRequires: libXext-devel
+
+Obsoletes:     qadwaitadecorations-qt6
+Provides:      qadwaitadecorations-qt6
 
 %description
 %{summary}.
@@ -115,6 +117,10 @@ popd
 %{_qt6_libdir}/libQt6WaylandCompositor.so.6*
 %{_qt6_libdir}/libQt6WaylandClient.so.6*
 %{_qt6_libdir}/libQt6WaylandCompositor.so.6*
+%{_qt6_libdir}/libQt6WaylandCompositorIviapplication.so.6*
+%{_qt6_libdir}/libQt6WaylandCompositorPresentationTime.so.6*
+%{_qt6_libdir}/libQt6WaylandCompositorWLShell.so.6*
+%{_qt6_libdir}/libQt6WaylandCompositorXdgShell.so.6*
 %{_qt6_libdir}/libQt6WaylandClient.so.6*
 %{_qt6_libdir}/libQt6WaylandEglClientHwIntegration.so.6*
 %{_qt6_libdir}/libQt6WaylandEglCompositorHwIntegration.so.6*
@@ -132,12 +138,24 @@ popd
 %files devel
 %{_qt6_libexecdir}/qtwaylandscanner
 %{_qt6_headerdir}/QtWaylandCompositor/
+%{_qt6_headerdir}/QtWaylandCompositorIviapplication/
+%{_qt6_headerdir}/QtWaylandCompositorPresentationTime/
+%{_qt6_headerdir}/QtWaylandCompositorWLShell/
+%{_qt6_headerdir}/QtWaylandCompositorXdgShell/
 %{_qt6_headerdir}/QtWaylandClient/
 %{_qt6_headerdir}/QtWaylandEglClientHwIntegration/
 %{_qt6_headerdir}/QtWaylandEglCompositorHwIntegration/
 %{_qt6_headerdir}/QtWlShellIntegration/
 %{_qt6_headerdir}/QtWaylandGlobal/
 %{_qt6_libdir}/libQt6WaylandCompositor.so
+%{_qt6_libdir}/libQt6WaylandCompositorIviapplication.prl
+%{_qt6_libdir}/libQt6WaylandCompositorIviapplication.so
+%{_qt6_libdir}/libQt6WaylandCompositorPresentationTime.prl
+%{_qt6_libdir}/libQt6WaylandCompositorPresentationTime.so
+%{_qt6_libdir}/libQt6WaylandCompositorWLShell.prl
+%{_qt6_libdir}/libQt6WaylandCompositorWLShell.so
+%{_qt6_libdir}/libQt6WaylandCompositorXdgShell.prl
+%{_qt6_libdir}/libQt6WaylandCompositorXdgShell.so
 %{_qt6_libdir}/libQt6WaylandClient.so
 %{_qt6_libdir}/libQt6WaylandEglClientHwIntegration.so
 %{_qt6_libdir}/libQt6WaylandEglCompositorHwIntegration.so
@@ -155,6 +173,14 @@ popd
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6WaylandCompositor/
 %{_qt6_libdir}/cmake/Qt6WaylandCompositor/
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositorIviapplication/
+%{_qt6_libdir}/cmake/Qt6WaylandCompositorIviapplication/
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositorPresentationTime/
+%{_qt6_libdir}/cmake/Qt6WaylandCompositorPresentationTime/
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositorWLShell/
+%{_qt6_libdir}/cmake/Qt6WaylandCompositorWLShell/
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositorXdgShell/
+%{_qt6_libdir}/cmake/Qt6WaylandCompositorXdgShell/
 %dir %{_qt6_libdir}/cmake/Qt6WaylandClient/
 %{_qt6_libdir}/cmake/Qt6WaylandClient/
 %dir %{_qt6_libdir}/cmake/Qt6WaylandScannerTools/
@@ -178,6 +204,9 @@ popd
 %endif
 
 %changelog
+* Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
+
 * Tue Aug 06 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-4
 - Backport upstream fixes to avoid crashes on Plasma 6
 

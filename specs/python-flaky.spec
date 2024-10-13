@@ -2,11 +2,9 @@ Name:           python-flaky
 Version:        3.8.1
 Release:        %autorelease
 Summary:        Plugin for pytest that automatically reruns flaky tests
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://github.com/box/flaky
-
-Source0:        %{pypi_source flaky}
+Source:         %{pypi_source flaky}
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
@@ -39,7 +37,7 @@ sed -i -e 's/import mock/from unittest import mock/' \
 
 
 %generate_buildrequires
-%pyproject_buildrequires -r
+%pyproject_buildrequires
 
 
 %build
@@ -48,7 +46,7 @@ sed -i -e 's/import mock/from unittest import mock/' \
 
 %install
 %pyproject_install
-%pyproject_save_files flaky
+%pyproject_save_files -l flaky
 
 
 %check

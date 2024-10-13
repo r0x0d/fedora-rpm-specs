@@ -13,8 +13,8 @@ Summary:        HTTP Client interface for ruby
 Name:           rubygem-%{gem_name}
 Version:        2.8.3
 Release:        13%{?dist}
-# Automatically converted from old format: (Ruby or BSD) and Public Domain - review is highly recommended.
-License:        (Ruby OR LicenseRef-Callaway-BSD) AND LicenseRef-Callaway-Public-Domain
+# httpclient is licensed under Ruby license from 2003 or later.
+License:        Ruby
 URL:            https://github.com/nahi/httpclient
 Source0:        http://gems.rubyforge.org/gems/%{gem_name}-%{version}.gem
 Requires:       ruby(release)

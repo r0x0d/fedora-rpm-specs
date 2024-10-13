@@ -1,42 +1,62 @@
 %undefine __cmake_in_source_build
 
+# shared objects version: API
+%global major 3
+%global minor 5
+%global patch 0
+
 Name:       vxl
-Version:    2.0.2
+Version:    3.5.0
 Release:    %autorelease
 Summary:    C++ Libraries for Computer Vision Research and Implementation
-# Automatically converted from old format: BSD - review is highly recommended.
-License:    LicenseRef-Callaway-BSD
+
+# see licenses.txt for a complete break down of licenses (using licensecheck)
+# other licenses are not included because the files they refer to are not used/included in our build
+License:    BSD-3-Clause AND NTP AND BSL-1.0 AND BSD-2-Clause AND MIT AND Apache-2.0 AND LicenseRef-Fedora-Public-Domain AND SMLNJ
+
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+ExcludeArch: %{ix86}
+
 URL:        https://vxl.github.io/
 # Need to remove the non-free lena image from the sources
 # tar xf vxl-%%{version}.tar.gz
 # rm -rf vxl-%%{version}/contrib/prip/vdtop/tests/lena.org.pgm
 # tar cfz vxl-%%{version}-clean.tar.gz vxl-%%{version}/
-# Source0:  https://github.com/vxl/vxl/archive/v%%{version}/%%{name}-%%{version}.tar.gz
+#Source0:  https://github.com/vxl/vxl/archive/v%%{version}/%%{name}-%%{version}.tar.gz
 Source0:    %{name}-%{version}-clean.tar.gz
 
 # Patches generated from tree here:
-# https://github.com/sanjayankur31/vxl/tree/fedora-v2.0.2-f32
+# https://github.com/sanjayankur31/vxl/tree/fedora-3.5.0
 # use system rply and don't use mpeg2
-Patch1:     0001-v2.0.2-unbundle-rply.patch
-Patch2:     0002-v2.0.2-Use-Fedora-expat-and-expatpp.patch
-Patch3:     0003-v2.0.2-Use-Fedora-minizip.patch
-# Submitted upstream https://github.com/vxl/vxl/pull/626
-Patch4:     0004-v2.0.2-Version-shared-objects.patch
-Patch5:     0005-v2.0.2-Add-cmake-module-to-find-RPLY.patch
-Patch6:     0006-v2.0.2-bbas-baio-Update-function-arguments-in-declar.patch
-Patch7:     0007-v2.0.2-fix-bkml-test.patch
-Patch8:     0008-v2.0.2-Correct-rply-includedir.patch
-
-# Fixes https://github.com/vxl/vxl/issues/638
-# Thanks jjames@fedoraproject.org for pointing it out
-Patch9:     0001-BUG-Logic-for-conditional-compilation-was-exactly-wr.patch
-
-# Remove obsolete boxm library that fails to build on ARM
-# https://github.com/vxl/vxl/commit/cdf414000606af4bad322f7ff4c1fcdeaaa286ad
-Patch10:    0009-removed-the-obsolete-octree-library-boxm.patch
+Patch:     0001-v3.5.0-unbundle-rply.patch
+Patch:     0002-v3.5.0-Use-Fedora-expat-and-expatpp.patch
+Patch:     0003-v3.5.0-Use-Fedora-minizip.patch
+Patch:     0004-v3.5.0-Add-cmake-module-to-find-RPLY.patch
+Patch:     0005-v3.5.0-fix-bkml-test.patch
+Patch:     0006-v3.5.0-Correct-rply-includedir.patch
+Patch:     0007-v3.5.0-remove-triangle.patch
+Patch:     0008-v3.5.0-remove-bits-using-triangle.patch
+Patch:     0009-v3.5.0-indent-to-keep-gcc-happy.patch
+# otherwise we get:
+# /usr/bin/ld: ../../../../../lib/libimesh.so.3.5.0.0: undefined reference to `brdb_value::registrar::registrar(brdb_value const*)'
+# collect2: error: ld returned 1 exit status
+# gmake[2]: *** [contrib/brl/bseg/baml/tests/CMakeFiles/baml_test_all.dir/build.make:172: bin/baml_test_all] Error 1
+# gmake[2]: Leaving directory '/builddir/build/BUILD/vxl-3.5.0/redhat-linux-build'
+# gmake[1]: *** [CMakeFiles/Makefile2:46025: contrib/brl/bseg/baml/tests/CMakeFiles/baml_test_all.dir/all] Error 2
+Patch:     0010-v3.5.0-more-linker-fixes.patch
 
 # Fix missing #include caught by gcc-11
-Patch11:     0010-gcc11.patch
+Patch:     0011-v3.5.0-fix-for-gcc11.patch
+# For linker error
+Patch:     0012-v3.5.0-link-against-acal.patch
+Patch:     0013-v3.5.0-more-linkage-fixes.patch
+Patch:     0014-v3.5.0-use-system-zlib-tiff-minizip-compat.patch
+Patch:     0015-v3.5.0-fix-linking.patch
+Patch:     0016-v3.5.0-fix-linking.patch
+# remove more bits that used triangle
+Patch:     0017-v3.5.0-remove-boxm2-processes-that-use-sdnet-that-re.patch
+# remove ctest dashboard config
+Patch:     0018-chore-remove-ctest-dashboard-config.patch
 
 BuildRequires:  cmake
 BuildRequires:  Coin2-devel
@@ -47,9 +67,11 @@ BuildRequires:  freeglut-devel
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  git
+
 # Use bundled dcmtk until upstream updates their code to use newer dcmtk
 # https://github.com/vxl/vxl/issues/550
 # BuildRequires:  dcmtk-devel
+
 BuildRequires:  libpng-devel
 BuildRequires:  libtiff-devel
 BuildRequires:  libXmu-devel
@@ -61,9 +83,13 @@ BuildRequires:  libdc1394-devel
 BuildRequires:  libgeotiff-devel
 BuildRequires:  libjpeg-turbo-devel
 BuildRequires:  minizip-ng-compat-devel
+
 # Does not build with latest version
 # https://github.com/vxl/vxl/issues/627
 # BuildRequires:  openjpeg2-devel
+# Bundled
+Provides:  bundled(libopenjpeg2) = 2.0.0
+
 
 # Py2 only from the looks of it
 # BuildRequires:  python3-devel
@@ -72,10 +98,7 @@ BuildRequires:  rply-devel
 BuildRequires:  SIMVoleon-devel
 BuildRequires:  shapelib-devel
 BuildRequires:  texi2html
-BuildRequires:  zlib-devel
-
-# Bundled
-Provides:  bundled(libopenjpeg2) = 2.0.0
+BuildRequires:  zlib-ng-compat-devel
 
 #GUI needs wx, a desktop file and an icon
 
@@ -108,32 +131,18 @@ develop code based on VXL.
 %prep
 %autosetup -S git
 
-# Remove bundled library (let's use FEDORA's ones)
-# v3p/netlib (made by f2c) dependency not removed because of heavily modifications
-# QV is a Silicon Graphics' VRML parser from the 90s. Now unmantained.
+# remove bundled bits
+# triangle removed in patch (bad license: https://github.com/vxl/vxl/issues/752#issuecomment-655526696)
 
-# Bundled: dcmtk
-# Requires VXL_FORCE_V3P_DCMTK:BOOL=ON
-
-# Also bundled: openjpeg2
-# Requires VXL_FORCE_V3P_OPENJPEG2:BOOL=ON \
-# Also may be needed
-# -DOPENJPEG2_INCLUDE_DIR:PATH=%%{_includedir}/openjpeg-2.3 \
-# -DOPENJPEG2_LIBRARIES:PATH=%%{_libdir}/libopenjp2.so \
-
-
-# for l in jpeg png zlib tiff geotiff rply dcmtk bzlib openjpeg2
+# remove other bits, only leave CMakeLists.txt
 for l in jpeg png zlib tiff geotiff bzlib
 do
-    find v3p/$l -type f ! -name 'CMakeLists.txt' -execdir rm {} +
+    find v3p/$l -type f ! -name 'CMakeLists.txt' -execdir rm -fv {} +
 done
-
-find contrib/brl/b3p/shapelib -type f ! -name 'CMakeLists.txt' -execdir rm {} +
-find contrib/brl/b3p/minizip -type f ! -name 'CMakeLists.txt' -execdir rm {} +
-find contrib/brl/b3p/expat -type f ! -name 'CMakeLists.txt' -execdir rm {} +
-find contrib/brl/b3p/expatpp -type f ! -name 'CMakeLists.txt' -execdir rm {} +
-
-# v3p/mpeg2 lib in fedora is not enough to build the target. Moreover it is in rpmfusion repo
+find contrib/brl/b3p/shapelib -type f ! -name 'CMakeLists.txt' -execdir rm -fv {} +
+find contrib/brl/b3p/minizip -type f ! -name 'CMakeLists.txt' -execdir rm -fv {} +
+find contrib/brl/b3p/expat -type f ! -name 'CMakeLists.txt' -execdir rm -fv {} +
+find contrib/brl/b3p/expatpp -type f ! -name 'CMakeLists.txt' -execdir rm -fv {} +
 
 # Fix executable permissions on source file
 # not using "." for find since it sometimes crashes within the .git folder
@@ -143,55 +152,53 @@ for f in config contrib core scripts v3p vcl; do
     find $f -name "*.txx" -execdir chmod -x '{}' \;
 done
 
-# Do not use bundled minizip
-sed -i '/add_subdirectory(minizip)/ d' contrib/brl/b3p/CMakeLists.txt
-
 %build
 %cmake -DVXL_INSTALL_LIBRARY_DIR:PATH=%{_lib} \
-    -DBUILD_SHARED_LIBS:BOOL=ON \
-    -DVXL_USE_GEOTIFF:BOOL=ON \
-    -DVXL_FORCE_B3P_EXPAT:BOOL=OFF \
-    -DVXL_FORCE_V3P_DCMTK:BOOL=ON \
-    -DVXL_FORCE_V3P_GEOTIFF:BOOL=OFF \
-    -DVXL_FORCE_V3P_JPEG:BOOL=OFF \
-    -DVXL_FORCE_V3P_PNG:BOOL=OFF \
-    -DVXL_FORCE_V3P_TIFF:BOOL=OFF \
-    -DVXL_FORCE_V3P_ZLIB:BOOL=OFF \
-    -DVXL_FORCE_V3P_RPLY:BOOL=OFF \
-    -DVXL_FORCE_V3P_OPENJPEG2:BOOL=ON \
-    -DVXL_USING_NATIVE_ZLIB:BOOL=ON \
-    -DVXL_USING_NATIVE_JPEG:BOOL=ON \
-    -DVXL_USING_NATIVE_PNG:BOOL=ON \
-    -DVXL_USING_NATIVE_TIFF:BOOL=ON \
-    -DVXL_USING_NATIVE_GEOTIFF:BOOL=ON \
-    -DVXL_USING_NATIVE_EXPAT:BOOL=ON \
-    -DVXL_USING_NATIVE_EXPATPP:BOOL=ON \
-    -DVXL_USING_NATIVE_SHAPELIB:BOOL=ON \
-    -DVXL_USING_NATIVE_BZLIB2:BOOL=ON \
-    -DVXL_BUILD_VGUI:BOOL=OFF \
-    -DVXL_BUILD_BGUI3D:BOOL=OFF \
-    -DVXL_BUILD_OXL:BOOL=ON \
-    -DVXL_BUILD_BRL:BOOL=ON \
-    -DVXL_BUILD_BRL_PYTHON:BOOL=OFF \
-    -DVXL_BUILD_GEL:BOOL=ON \
-    -DVXL_BUILD_PRIP:BOOL=ON \
-    -DVXL_BUILD_CONVERSIONS:BOOL=ON \
-    -DVXL_BUILD_CUL:BOOL=ON \
-    -DVXL_BUILD_RPL:BOOL=ON \
-    -DVXL_BUILD_CONTRIB:BOOL=ON \
-    -DVXL_BUILD_CORE_SERIALISATION:BOOL=ON \
-    -DVXL_BUILD_CORE_GEOMETRY:BOOL=ON \
-    -DVXL_BUILD_CORE_IMAGING:BOOL=ON \
-    -DVXL_BUILD_CORE_NUMERICS:BOOL=ON \
-    -DVXL_BUILD_CORE_PROBABILITY:BOOL=ON \
-    -DVXL_BUILD_CORE_UTILITIES:BOOL=ON \
-    -DVXL_BUILD_CORE_VIDEO:BOOL=ON \
-    -DVXL_BUILD_EXAMPLES:BOOL=OFF \
-    -DBUILD_TESTING:BOOL=ON \
-    -DVXL_BUILD_DOCUMENTATION:BOOL=ON \
+    -DCMAKE_INSTALL_DATAROOTDIR:PATH=%{_datadir}/%{name} \
+    -DBUILD_SHARED_LIBS:BOOL=TRUE \
+    -DVXL_USE_GEOTIFF:BOOL=TRUE \
+    -DVXL_FORCE_B3P_EXPAT:BOOL=FALSE \
+    -DVXL_FORCE_V3P_DCMTK:BOOL=TRUE \
+    -DVXL_FORCE_V3P_GEOTIFF:BOOL=FALSE \
+    -DVXL_FORCE_V3P_JPEG:BOOL=FALSE \
+    -DVXL_FORCE_V3P_PNG:BOOL=FALSE \
+    -DVXL_FORCE_V3P_TIFF:BOOL=FALSE \
+    -DVXL_FORCE_V3P_ZLIB:BOOL=FALSE \
+    -DVXL_FORCE_V3P_RPLY:BOOL=FALSE \
+    -DVXL_FORCE_V3P_OPENJPEG2:BOOL=TRUE \
+    -DVXL_USING_NATIVE_ZLIB:BOOL=TRUE \
+    -DVXL_USING_NATIVE_JPEG:BOOL=TRUE \
+    -DVXL_USING_NATIVE_PNG:BOOL=TRUE \
+    -DVXL_USING_NATIVE_TIFF:BOOL=TRUE \
+    -DVXL_USING_NATIVE_GEOTIFF:BOOL=TRUE \
+    -DVXL_USING_NATIVE_EXPAT:BOOL=TRUE \
+    -DVXL_USING_NATIVE_EXPATPP:BOOL=TRUE \
+    -DVXL_USING_NATIVE_SHAPELIB:BOOL=TRUE \
+    -DVXL_USING_NATIVE_BZLIB2:BOOL=TRUE \
+    -DVXL_BUILD_VGUI:BOOL=FALSE \
+    -DVXL_BUILD_BGUI3D:BOOL=FALSE \
+    -DVXL_BUILD_OXL:BOOL=TRUE \
+    -DVXL_BUILD_BRL:BOOL=TRUE \
+    -DVXL_BUILD_BRL_PYTHON:BOOL=FALSE \
+    -DVXL_BUILD_GEL:BOOL=TRUE \
+    -DVXL_BUILD_PRIP:BOOL=TRUE \
+    -DVXL_BUILD_CONVERSIONS:BOOL=TRUE \
+    -DVXL_BUILD_CUL:BOOL=TRUE \
+    -DVXL_BUILD_RPL:BOOL=TRUE \
+    -DVXL_BUILD_CONTRIB:BOOL=TRUE \
+    -DVXL_BUILD_CORE_SERIALISATION:BOOL=TRUE \
+    -DVXL_BUILD_CORE_GEOMETRY:BOOL=TRUE \
+    -DVXL_BUILD_CORE_IMAGING:BOOL=TRUE \
+    -DVXL_BUILD_CORE_NUMERICS:BOOL=TRUE \
+    -DVXL_BUILD_CORE_PROBABILITY:BOOL=TRUE \
+    -DVXL_BUILD_CORE_UTILITIES:BOOL=TRUE \
+    -DVXL_BUILD_CORE_VIDEO:BOOL=TRUE \
+    -DVXL_BUILD_EXAMPLES:BOOL=FALSE \
+    -DBUILD_TESTING:BOOL=TRUE \
+    -DVXL_BUILD_DOCUMENTATION:BOOL=TRUE \
     -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" \
     -DCMAKE_CXX_FLAGS:STRING="$RPM_OPT_FLAGS -fpermissive" \
-    -DVNL_CONFIG_LEGACY_METHODS:BOOL=ON
+    -DVNL_CONFIG_LEGACY_METHODS:BOOL=TRUE
 
 # Other stuff
 # -DEXPATPP_INCLUDE_DIR:PATH=%%{_includedir} \
@@ -212,584 +219,579 @@ sed -i '/add_subdirectory(minizip)/ d' contrib/brl/b3p/CMakeLists.txt
 rm -fv %{buildroot}/usr/contrib/brl/bseg/boxm2/ocl/boxm2_ocl_where_root_dir.h
 
 %check
-# 5/985 fail:
-# 713 - bil_algo_test_detect_ridges (SEGFAULT)
-# 781 - bkml_test_bkml (Child aborted)
-# 801 - volm_test_candidate_region_parser (Child aborted)
-# 967 - vifa_test_int_faces_attr (Child aborted)
-# 968 - vifa_test_int_faces_adj_attr (Child aborted)
-ctest %{_vpath_builddir} || exit 0
+# different tests fail on different arches
 
-%ldconfig_scriptlets
+%ifarch x86_64
+# 99% tests passed, 5 tests failed out of 997
+# Total Test time (real) =  23.64 sec
+# The following tests FAILED:
+#        781 - acal_test_metadata (Failed)
+#        816 - bkml_test_bkml (Subprocess aborted)
+#        836 - volm_test_candidate_region_parser (Subprocess aborted)
+#        979 - vifa_test_int_faces_attr (Subprocess aborted)
+#        980 - vifa_test_int_faces_adj_attr (Subprocess aborted)
+%ctest -E "(acal_test_metadata|bkml_test_bkml|volm_test_candidate_region_parser|vifa_test_int_faces_attr|vifa_test_int_faces_adj_attr)"
+%else
+# A number of test fail, but not deterministically on aarch and ppc64le etc, e.g:
+
+#    183 - vgl_test_frustum_3d (Failed)
+#    557 - m23d_test_ortho_flexible_builder (Failed)
+#    638 - vepl_test_gradient_dir (Failed)
+#    732 - bil_test_warp (Failed)
+#    748 - vsph_test_camera_bounds (Failed)
+#    768 - icam_test_transform (Failed)
+#    812 - imesh_test_imls_surface (Failed)
+#    886 - breg3d_test_ekf_camera_optimizer (Failed)
+# Do not make build fail for this arch
+%ctest || true
+%endif
 
 %files
 %doc core/vxl_copyright.h
 %{_bindir}/octree
-%{_libdir}/libclipper.so.2.0
-%{_libdir}/libtestlib.so.2.0
-%{_libdir}/libvcl.so.2.0
-%{_libdir}/libvgl.so.2.0
-%{_libdir}/libvidl.so.2.0
-%{_libdir}/libvil_io.so.2.0
-%{_libdir}/libvnl.so.2.0
-%{_libdir}/libvpgl_file_formats.so.2.0
-%{_libdir}/libvpl.so.2.0
-%{_libdir}/libclipper.so.2.0.2
-%{_libdir}/libtestlib.so.2.0.2
-%{_libdir}/libvcl.so.2.0.2
-%{_libdir}/libvgl.so.2.0.2
-%{_libdir}/libvidl.so.2.0.2
-%{_libdir}/libvil_io.so.2.0.2
-%{_libdir}/libvnl.so.2.0.2
-%{_libdir}/libvpgl_file_formats.so.2.0.2
-%{_libdir}/libvpl.so.2.0.2
-%{_libdir}/libnetlib.so.2.0
-%{_libdir}/libv3p_netlib.so.2.0
-%{_libdir}/libvcsl.so.2.0
-%{_libdir}/libvgl_xio.so.2.0
-%{_libdir}/libvil.so.2.0
-%{_libdir}/libvnl_xio.so.2.0
-%{_libdir}/libvpgl_io.so.2.0
-%{_libdir}/libvsl.so.2.0
-%{_libdir}/libnetlib.so.2.0.2
-%{_libdir}/libv3p_netlib.so.2.0.2
-%{_libdir}/libvcsl.so.2.0.2
-%{_libdir}/libvgl_xio.so.2.0.2
-%{_libdir}/libvil.so.2.0.2
-%{_libdir}/libvnl_xio.so.2.0.2
-%{_libdir}/libvpgl_io.so.2.0.2
-%{_libdir}/libvsl.so.2.0.2
-%{_libdir}/libvbl_io.so.2.0
-%{_libdir}/libvgl_algo.so.2.0
-%{_libdir}/libvil1.so.2.0
-%{_libdir}/libvnl_algo.so.2.0
-%{_libdir}/libvpdl.so.2.0
-%{_libdir}/libvpgl.so.2.0
-%{_libdir}/libvul_io.so.2.0
-%{_libdir}/libvbl_io.so.2.0.2
-%{_libdir}/libvgl_algo.so.2.0.2
-%{_libdir}/libvil1.so.2.0.2
-%{_libdir}/libvnl_algo.so.2.0.2
-%{_libdir}/libvpdl.so.2.0.2
-%{_libdir}/libvpgl.so.2.0.2
-%{_libdir}/libvul_io.so.2.0.2
-%{_libdir}/libvbl.so.2.0
-%{_libdir}/libvgl_io.so.2.0
-%{_libdir}/libvil_algo.so.2.0
-%{_libdir}/libvnl_io.so.2.0
-%{_libdir}/libvpgl_algo.so.2.0
-%{_libdir}/libvpgl_xio.so.2.0
-%{_libdir}/libvul.so.2.0
-%{_libdir}/libvbl.so.2.0.2
-%{_libdir}/libvgl_io.so.2.0.2
-%{_libdir}/libvil_algo.so.2.0.2
-%{_libdir}/libvnl_io.so.2.0.2
-%{_libdir}/libvpgl_algo.so.2.0.2
-%{_libdir}/libvpgl_xio.so.2.0.2
-%{_libdir}/libvul.so.2.0.2
-%{_libdir}/libbaio.so.2.0
-%{_libdir}/libbaio.so.2.0.2
-%{_libdir}/libbaml.so.2.0
-%{_libdir}/libbaml.so.2.0.2
-%{_libdir}/libbapl.so.2.0
-%{_libdir}/libbapl.so.2.0.2
-%{_libdir}/libbapl_io.so.2.0
-%{_libdir}/libbapl_io.so.2.0.2
-%{_libdir}/libbapl_pro.so.2.0
-%{_libdir}/libbapl_pro.so.2.0.2
-%{_libdir}/libbbas_pro.so.2.0
-%{_libdir}/libbbas_pro.so.2.0.2
-%{_libdir}/libbbgm.so.2.0
-%{_libdir}/libbbgm.so.2.0.2
-%{_libdir}/libbbgm_pro.so.2.0
-%{_libdir}/libbbgm_pro.so.2.0.2
-%{_libdir}/libbcvr.so.2.0
-%{_libdir}/libbcvr.so.2.0.2
-%{_libdir}/libbdgl.so.2.0
-%{_libdir}/libbdgl.so.2.0.2
-%{_libdir}/libbdpg.so.2.0
-%{_libdir}/libbdpg.so.2.0.2
-%{_libdir}/libbetr.so.2.0
-%{_libdir}/libbetr.so.2.0.2
-%{_libdir}/libbetr_pro.so.2.0
-%{_libdir}/libbetr_pro.so.2.0.2
-%{_libdir}/libbgrl.so.2.0
-%{_libdir}/libbgrl.so.2.0.2
-%{_libdir}/libbgrl2.so.2.0
-%{_libdir}/libbgrl2.so.2.0.2
-%{_libdir}/libbgrl2_algo.so.2.0
-%{_libdir}/libbgrl2_algo.so.2.0.2
-%{_libdir}/libbil.so.2.0
-%{_libdir}/libbil.so.2.0.2
-%{_libdir}/libbil_algo.so.2.0
-%{_libdir}/libbil_algo.so.2.0.2
-%{_libdir}/libbjson.so.2.0
-%{_libdir}/libbjson.so.2.0.2
-%{_libdir}/libbkml.so.2.0
-%{_libdir}/libbkml.so.2.0.2
-%{_libdir}/libbmdl.so.2.0
-%{_libdir}/libbmdl.so.2.0.2
-%{_libdir}/libbmdl_pro.so.2.0
-%{_libdir}/libbmdl_pro.so.2.0.2
-%{_libdir}/libbmsh3d.so.2.0
-%{_libdir}/libbmsh3d.so.2.0.2
-%{_libdir}/libbmsh3d_algo.so.2.0
-%{_libdir}/libbmsh3d_algo.so.2.0.2
-%{_libdir}/libbmsh3d_pro.so.2.0
-%{_libdir}/libbmsh3d_pro.so.2.0.2
-%{_libdir}/libbnabo.so.2.0
-%{_libdir}/libbnabo.so.2.0.2
-%{_libdir}/libbnl.so.2.0
-%{_libdir}/libbnl.so.2.0.2
-%{_libdir}/libbnl_algo.so.2.0
-%{_libdir}/libbnl_algo.so.2.0.2
-%{_libdir}/libboct.so.2.0
-%{_libdir}/libboct.so.2.0.2
-%{_libdir}/libboxm2.so.2.0
-%{_libdir}/libboxm2.so.2.0.2
-%{_libdir}/libboxm2_basic.so.2.0
-%{_libdir}/libboxm2_basic.so.2.0.2
-%{_libdir}/libboxm2_class.so.2.0
-%{_libdir}/libboxm2_class.so.2.0.2
-%{_libdir}/libboxm2_cpp.so.2.0
-%{_libdir}/libboxm2_cpp.so.2.0.2
-%{_libdir}/libboxm2_cpp_algo.so.2.0
-%{_libdir}/libboxm2_cpp_algo.so.2.0.2
-%{_libdir}/libboxm2_cpp_pro.so.2.0
-%{_libdir}/libboxm2_cpp_pro.so.2.0.2
-%{_libdir}/libboxm2_io.so.2.0
-%{_libdir}/libboxm2_io.so.2.0.2
-%{_libdir}/libboxm2_pro.so.2.0
-%{_libdir}/libboxm2_pro.so.2.0.2
-%{_libdir}/libboxm2_util.so.2.0
-%{_libdir}/libboxm2_util.so.2.0.2
-%{_libdir}/libboxm2_vecf.so.2.0
-%{_libdir}/libboxm2_vecf.so.2.0.2
-%{_libdir}/libboxm2_volm.so.2.0
-%{_libdir}/libboxm2_volm.so.2.0.2
-%{_libdir}/libboxm2_volm_conf.so.2.0
-%{_libdir}/libboxm2_volm_conf.so.2.0.2
-%{_libdir}/libboxm2_volm_desc.so.2.0
-%{_libdir}/libboxm2_volm_desc.so.2.0.2
-%{_libdir}/libboxm2_volm_io.so.2.0
-%{_libdir}/libboxm2_volm_io.so.2.0.2
-%{_libdir}/libboxm2_volm_pro.so.2.0
-%{_libdir}/libboxm2_volm_pro.so.2.0.2
-%{_libdir}/libbpgl.so.2.0
-%{_libdir}/libbpgl.so.2.0.2
-%{_libdir}/libbpgl_algo.so.2.0
-%{_libdir}/libbpgl_algo.so.2.0.2
-%{_libdir}/libbprb.so.2.0
-%{_libdir}/libbprb.so.2.0.2
-%{_libdir}/libbrad.so.2.0
-%{_libdir}/libbrad.so.2.0.2
-%{_libdir}/libbrad_io.so.2.0
-%{_libdir}/libbrad_io.so.2.0.2
-%{_libdir}/libbrad_pro.so.2.0
-%{_libdir}/libbrad_pro.so.2.0.2
-%{_libdir}/libbrdb.so.2.0
-%{_libdir}/libbrdb.so.2.0.2
-%{_libdir}/libbrec.so.2.0
-%{_libdir}/libbrec.so.2.0.2
-%{_libdir}/libbrec_pro.so.2.0
-%{_libdir}/libbrec_pro.so.2.0.2
-%{_libdir}/libbreg3d.so.2.0
-%{_libdir}/libbreg3d.so.2.0.2
-%{_libdir}/libbreg3d_pro.so.2.0
-%{_libdir}/libbreg3d_pro.so.2.0.2
-%{_libdir}/libbrip.so.2.0
-%{_libdir}/libbrip.so.2.0.2
-%{_libdir}/libbrip_pro.so.2.0
-%{_libdir}/libbrip_pro.so.2.0.2
-%{_libdir}/libbsgm.so.2.0
-%{_libdir}/libbsgm.so.2.0.2
-%{_libdir}/libbsgm_pro.so.2.0
-%{_libdir}/libbsgm_pro.so.2.0.2
-%{_libdir}/libbsl.so.2.0
-%{_libdir}/libbsl.so.2.0.2
-%{_libdir}/libbsol.so.2.0
-%{_libdir}/libbsol.so.2.0.2
-%{_libdir}/libbsta.so.2.0
-%{_libdir}/libbsta.so.2.0.2
-%{_libdir}/libbsta_algo.so.2.0
-%{_libdir}/libbsta_algo.so.2.0.2
-%{_libdir}/libbsta_io.so.2.0
-%{_libdir}/libbsta_io.so.2.0.2
-%{_libdir}/libbsta_pro.so.2.0
-%{_libdir}/libbsta_pro.so.2.0.2
-%{_libdir}/libbsta_vis.so.2.0
-%{_libdir}/libbsta_vis.so.2.0.2
-%{_libdir}/libbstm.so.2.0
-%{_libdir}/libbstm.so.2.0.2
-%{_libdir}/libbstm_basic.so.2.0
-%{_libdir}/libbstm_basic.so.2.0.2
-%{_libdir}/libbstm_cpp_algo.so.2.0
-%{_libdir}/libbstm_cpp_algo.so.2.0.2
-%{_libdir}/libbstm_cpp_pro.so.2.0
-%{_libdir}/libbstm_cpp_pro.so.2.0.2
-%{_libdir}/libbstm_io.so.2.0
-%{_libdir}/libbstm_io.so.2.0.2
-%{_libdir}/libbstm_multi.so.2.0
-%{_libdir}/libbstm_multi.so.2.0.2
-%{_libdir}/libbstm_multi_basic.so.2.0
-%{_libdir}/libbstm_multi_basic.so.2.0.2
-%{_libdir}/libbstm_multi_io.so.2.0
-%{_libdir}/libbstm_multi_io.so.2.0.2
-%{_libdir}/libbstm_pro.so.2.0
-%{_libdir}/libbstm_pro.so.2.0.2
-%{_libdir}/libbstm_util.so.2.0
-%{_libdir}/libbstm_util.so.2.0.2
-%{_libdir}/libbsvg.so.2.0
-%{_libdir}/libbsvg.so.2.0.2
-%{_libdir}/libbsvg_pro.so.2.0
-%{_libdir}/libbsvg_pro.so.2.0.2
-%{_libdir}/libbtol.so.2.0
-%{_libdir}/libbtol.so.2.0.2
-%{_libdir}/libbugl.so.2.0
-%{_libdir}/libbugl.so.2.0.2
-%{_libdir}/libbundler.so.2.0
-%{_libdir}/libbundler.so.2.0.2
-%{_libdir}/libbvgl.so.2.0
-%{_libdir}/libbvgl.so.2.0.2
-%{_libdir}/libbvgl_algo.so.2.0
-%{_libdir}/libbvgl_algo.so.2.0.2
-%{_libdir}/libbvgl_pro.so.2.0
-%{_libdir}/libbvgl_pro.so.2.0.2
-%{_libdir}/libbvpl.so.2.0
-%{_libdir}/libbvpl.so.2.0.2
-%{_libdir}/libbvpl_functors.so.2.0
-%{_libdir}/libbvpl_functors.so.2.0.2
-%{_libdir}/libbvpl_kernels.so.2.0
-%{_libdir}/libbvpl_kernels.so.2.0.2
-%{_libdir}/libbvpl_kernels_io.so.2.0
-%{_libdir}/libbvpl_kernels_io.so.2.0.2
-%{_libdir}/libbvpl_kernels_pro.so.2.0
-%{_libdir}/libbvpl_kernels_pro.so.2.0.2
-%{_libdir}/libbvpl_pro.so.2.0
-%{_libdir}/libbvpl_pro.so.2.0.2
-%{_libdir}/libbvpl_util.so.2.0
-%{_libdir}/libbvpl_util.so.2.0.2
-%{_libdir}/libbvpl_util_io.so.2.0
-%{_libdir}/libbvpl_util_io.so.2.0.2
-%{_libdir}/libbvrml.so.2.0
-%{_libdir}/libbvrml.so.2.0.2
-%{_libdir}/libbvrml_pro.so.2.0
-%{_libdir}/libbvrml_pro.so.2.0.2
-%{_libdir}/libbvxm.so.2.0
-%{_libdir}/libbvxm.so.2.0.2
-%{_libdir}/libbvxm_algo.so.2.0
-%{_libdir}/libbvxm_algo.so.2.0.2
-%{_libdir}/libbvxm_algo_pro.so.2.0
-%{_libdir}/libbvxm_algo_pro.so.2.0.2
-%{_libdir}/libbvxm_grid.so.2.0
-%{_libdir}/libbvxm_grid.so.2.0.2
-%{_libdir}/libbvxm_grid_io.so.2.0
-%{_libdir}/libbvxm_grid_io.so.2.0.2
-%{_libdir}/libbvxm_grid_pro.so.2.0
-%{_libdir}/libbvxm_grid_pro.so.2.0.2
-%{_libdir}/libbvxm_io.so.2.0
-%{_libdir}/libbvxm_io.so.2.0.2
-%{_libdir}/libbvxm_pro.so.2.0
-%{_libdir}/libbvxm_pro.so.2.0.2
-%{_libdir}/libbwm_video.so.2.0
-%{_libdir}/libbwm_video.so.2.0.2
-%{_libdir}/libbxml.so.2.0
-%{_libdir}/libbxml.so.2.0.2
-%{_libdir}/libclsfy.so.2.0
-%{_libdir}/libclsfy.so.2.0.2
-%{_libdir}/libdepth_map.so.2.0
-%{_libdir}/libdepth_map.so.2.0.2
-%{_libdir}/libfhs.so.2.0
-%{_libdir}/libfhs.so.2.0.2
-%{_libdir}/libgeml.so.2.0
-%{_libdir}/libgeml.so.2.0.2
-%{_libdir}/libgevd.so.2.0
-%{_libdir}/libgevd.so.2.0.2
-%{_libdir}/libgmvl.so.2.0
-%{_libdir}/libgmvl.so.2.0.2
-%{_libdir}/libgst.so.2.0
-%{_libdir}/libgst.so.2.0.2
-%{_libdir}/libgtrl.so.2.0
-%{_libdir}/libgtrl.so.2.0.2
-%{_libdir}/libicam.so.2.0
-%{_libdir}/libicam.so.2.0.2
-%{_libdir}/libicam_pro.so.2.0
-%{_libdir}/libicam_pro.so.2.0.2
-%{_libdir}/libihog.so.2.0
-%{_libdir}/libihog.so.2.0.2
-%{_libdir}/libihog_pro.so.2.0
-%{_libdir}/libihog_pro.so.2.0.2
-%{_libdir}/libimesh.so.2.0
-%{_libdir}/libimesh.so.2.0.2
-%{_libdir}/libimesh_algo.so.2.0
-%{_libdir}/libimesh_algo.so.2.0.2
-%{_libdir}/libipts.so.2.0
-%{_libdir}/libipts.so.2.0.2
-%{_libdir}/libm23d.so.2.0
-%{_libdir}/libm23d.so.2.0.2
-%{_libdir}/libmbl.so.2.0
-%{_libdir}/libmbl.so.2.0.2
-%{_libdir}/libmcal.so.2.0
-%{_libdir}/libmcal.so.2.0.2
-%{_libdir}/libmfpf.so.2.0
-%{_libdir}/libmfpf.so.2.0.2
-%{_libdir}/libmipa.so.2.0
-%{_libdir}/libmipa.so.2.0.2
-%{_libdir}/libmmn.so.2.0
-%{_libdir}/libmmn.so.2.0.2
-%{_libdir}/libmsdi.so.2.0
-%{_libdir}/libmsdi.so.2.0.2
-%{_libdir}/libmsm.so.2.0
-%{_libdir}/libmsm.so.2.0.2
-%{_libdir}/libmsm_utils.so.2.0
-%{_libdir}/libmsm_utils.so.2.0.2
-%{_libdir}/libmvl.so.2.0
-%{_libdir}/libmvl.so.2.0.2
-%{_libdir}/libmvl2.so.2.0
-%{_libdir}/libmvl2.so.2.0.2
-%{_libdir}/libosl.so.2.0
-%{_libdir}/libosl.so.2.0.2
-%{_libdir}/libouel.so.2.0
-%{_libdir}/libouel.so.2.0.2
-%{_libdir}/libouml.so.2.0
-%{_libdir}/libouml.so.2.0.2
-%{_libdir}/liboxl_vrml.so.2.0
-%{_libdir}/liboxl_vrml.so.2.0.2
-%{_libdir}/libpdf1d.so.2.0
-%{_libdir}/libpdf1d.so.2.0.2
-%{_libdir}/librgrl.so.2.0
-%{_libdir}/librgrl.so.2.0.2
-%{_libdir}/librrel.so.2.0
-%{_libdir}/librrel.so.2.0.2
-%{_libdir}/librsdl.so.2.0
-%{_libdir}/librsdl.so.2.0.2
-%{_libdir}/libsdet.so.2.0
-%{_libdir}/libsdet.so.2.0.2
-%{_libdir}/libsdet_pro.so.2.0
-%{_libdir}/libsdet_pro.so.2.0.2
-%{_libdir}/libvcon_pro.so.2.0
-%{_libdir}/libvcon_pro.so.2.0.2
-%{_libdir}/libvdgl.so.2.0
-%{_libdir}/libvdgl.so.2.0.2
-%{_libdir}/libvdtop.so.2.0
-%{_libdir}/libvdtop.so.2.0.2
-%{_libdir}/libvepl.so.2.0
-%{_libdir}/libvepl.so.2.0.2
-%{_libdir}/libvidl_pro.so.2.0
-%{_libdir}/libvidl_pro.so.2.0.2
-%{_libdir}/libvifa.so.2.0
-%{_libdir}/libvifa.so.2.0.2
-%{_libdir}/libvil3d.so.2.0
-%{_libdir}/libvil3d.so.2.0.2
-%{_libdir}/libvil3d_algo.so.2.0
-%{_libdir}/libvil3d_algo.so.2.0.2
-%{_libdir}/libvil3d_io.so.2.0
-%{_libdir}/libvil3d_io.so.2.0.2
-%{_libdir}/libvil_pro.so.2.0
-%{_libdir}/libvil_pro.so.2.0.2
-%{_libdir}/libvimt.so.2.0
-%{_libdir}/libvimt.so.2.0.2
-%{_libdir}/libvimt3d.so.2.0
-%{_libdir}/libvimt3d.so.2.0.2
-%{_libdir}/libvimt_algo.so.2.0
-%{_libdir}/libvimt_algo.so.2.0.2
-%{_libdir}/libvipl.so.2.0
-%{_libdir}/libvipl.so.2.0.2
-%{_libdir}/libvmal.so.2.0
-%{_libdir}/libvmal.so.2.0.2
-%{_libdir}/libvmap.so.2.0
-%{_libdir}/libvmap.so.2.0.2
-%{_libdir}/libvolm.so.2.0
-%{_libdir}/libvolm.so.2.0.2
-%{_libdir}/libvolm_conf.so.2.0
-%{_libdir}/libvolm_conf.so.2.0.2
-%{_libdir}/libvolm_desc.so.2.0
-%{_libdir}/libvolm_desc.so.2.0.2
-%{_libdir}/libvolm_pro.so.2.0
-%{_libdir}/libvolm_pro.so.2.0.2
-%{_libdir}/libvpdfl.so.2.0
-%{_libdir}/libvpdfl.so.2.0.2
-%{_libdir}/libvpgl_pro.so.2.0
-%{_libdir}/libvpgl_pro.so.2.0.2
-%{_libdir}/libvpyr.so.2.0
-%{_libdir}/libvpyr.so.2.0.2
-%{_libdir}/libvsol.so.2.0
-%{_libdir}/libvsol.so.2.0.2
-%{_libdir}/libvsph.so.2.0
-%{_libdir}/libvsph.so.2.0.2
-%{_libdir}/libvtol.so.2.0
-%{_libdir}/libvtol.so.2.0.2
-%{_libdir}/libvtol_algo.so.2.0
-%{_libdir}/libvtol_algo.so.2.0.2
-# Bundles
-%{_libdir}/libopenjpeg2.so.2.0
-%{_libdir}/libopenjpeg2.so.2.0.0
+%{_libdir}/libacal.so.%{major}.%{minor}
+%{_libdir}/libacal.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libacal_io.so.%{major}.%{minor}
+%{_libdir}/libacal_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbaio.so.%{major}.%{minor}
+%{_libdir}/libbaio.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbaml.so.%{major}.%{minor}
+%{_libdir}/libbaml.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbapl.so.%{major}.%{minor}
+%{_libdir}/libbapl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbapl_io.so.%{major}.%{minor}
+%{_libdir}/libbapl_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbapl_pro.so.%{major}.%{minor}
+%{_libdir}/libbapl_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbbas_pro.so.%{major}.%{minor}
+%{_libdir}/libbbas_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbbgm.so.%{major}.%{minor}
+%{_libdir}/libbbgm.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbbgm_pro.so.%{major}.%{minor}
+%{_libdir}/libbbgm_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbcvr.so.%{major}.%{minor}
+%{_libdir}/libbcvr.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbdgl.so.%{major}.%{minor}
+%{_libdir}/libbdgl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbdpg.so.%{major}.%{minor}
+%{_libdir}/libbdpg.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbetr.so.%{major}.%{minor}
+%{_libdir}/libbetr.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbetr_pro.so.%{major}.%{minor}
+%{_libdir}/libbetr_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbgrl.so.%{major}.%{minor}
+%{_libdir}/libbgrl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbgrl2.so.%{major}.%{minor}
+%{_libdir}/libbgrl2.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbgrl2_algo.so.%{major}.%{minor}
+%{_libdir}/libbgrl2_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbil.so.%{major}.%{minor}
+%{_libdir}/libbil.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbil_algo.so.%{major}.%{minor}
+%{_libdir}/libbil_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbjson.so.%{major}.%{minor}
+%{_libdir}/libbjson.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbkml.so.%{major}.%{minor}
+%{_libdir}/libbkml.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbmdl.so.%{major}.%{minor}
+%{_libdir}/libbmdl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbmdl_pro.so.%{major}.%{minor}
+%{_libdir}/libbmdl_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbmsh3d.so.%{major}.%{minor}
+%{_libdir}/libbmsh3d.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbmsh3d_algo.so.%{major}.%{minor}
+%{_libdir}/libbmsh3d_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbmsh3d_pro.so.%{major}.%{minor}
+%{_libdir}/libbmsh3d_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbnabo.so.%{major}.%{minor}
+%{_libdir}/libbnabo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbnl.so.%{major}.%{minor}
+%{_libdir}/libbnl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbnl_algo.so.%{major}.%{minor}
+%{_libdir}/libbnl_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboct.so.%{major}.%{minor}
+%{_libdir}/libboct.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2.so.%{major}.%{minor}
+%{_libdir}/libboxm2.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_basic.so.%{major}.%{minor}
+%{_libdir}/libboxm2_basic.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_class.so.%{major}.%{minor}
+%{_libdir}/libboxm2_class.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_cpp.so.%{major}.%{minor}
+%{_libdir}/libboxm2_cpp.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_cpp_algo.so.%{major}.%{minor}
+%{_libdir}/libboxm2_cpp_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_cpp_pro.so.%{major}.%{minor}
+%{_libdir}/libboxm2_cpp_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_io.so.%{major}.%{minor}
+%{_libdir}/libboxm2_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_pro.so.%{major}.%{minor}
+%{_libdir}/libboxm2_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_util.so.%{major}.%{minor}
+%{_libdir}/libboxm2_util.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_vecf.so.%{major}.%{minor}
+%{_libdir}/libboxm2_vecf.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_volm.so.%{major}.%{minor}
+%{_libdir}/libboxm2_volm.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_volm_conf.so.%{major}.%{minor}
+%{_libdir}/libboxm2_volm_conf.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_volm_desc.so.%{major}.%{minor}
+%{_libdir}/libboxm2_volm_desc.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_volm_io.so.%{major}.%{minor}
+%{_libdir}/libboxm2_volm_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libboxm2_volm_pro.so.%{major}.%{minor}
+%{_libdir}/libboxm2_volm_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbpgl.so.%{major}.%{minor}
+%{_libdir}/libbpgl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbpgl_algo.so.%{major}.%{minor}
+%{_libdir}/libbpgl_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbprb.so.%{major}.%{minor}
+%{_libdir}/libbprb.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbrad.so.%{major}.%{minor}
+%{_libdir}/libbrad.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbrad_io.so.%{major}.%{minor}
+%{_libdir}/libbrad_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbrad_pro.so.%{major}.%{minor}
+%{_libdir}/libbrad_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbrdb.so.%{major}.%{minor}
+%{_libdir}/libbrdb.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbrec.so.%{major}.%{minor}
+%{_libdir}/libbrec.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbrec_pro.so.%{major}.%{minor}
+%{_libdir}/libbrec_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbreg3d.so.%{major}.%{minor}
+%{_libdir}/libbreg3d.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbreg3d_pro.so.%{major}.%{minor}
+%{_libdir}/libbreg3d_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbres.so.%{major}.%{minor}
+%{_libdir}/libbres.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbrip.so.%{major}.%{minor}
+%{_libdir}/libbrip.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbrip_pro.so.%{major}.%{minor}
+%{_libdir}/libbrip_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbsgm.so.%{major}.%{minor}
+%{_libdir}/libbsgm.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbsgm_pro.so.%{major}.%{minor}
+%{_libdir}/libbsgm_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbsl.so.%{major}.%{minor}
+%{_libdir}/libbsl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbsol.so.%{major}.%{minor}
+%{_libdir}/libbsol.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbsta.so.%{major}.%{minor}
+%{_libdir}/libbsta.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbsta_algo.so.%{major}.%{minor}
+%{_libdir}/libbsta_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbsta_io.so.%{major}.%{minor}
+%{_libdir}/libbsta_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbsta_pro.so.%{major}.%{minor}
+%{_libdir}/libbsta_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbsta_vis.so.%{major}.%{minor}
+%{_libdir}/libbsta_vis.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbstm.so.%{major}.%{minor}
+%{_libdir}/libbstm.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbstm_basic.so.%{major}.%{minor}
+%{_libdir}/libbstm_basic.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbstm_cpp_algo.so.%{major}.%{minor}
+%{_libdir}/libbstm_cpp_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbstm_cpp_pro.so.%{major}.%{minor}
+%{_libdir}/libbstm_cpp_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbstm_io.so.%{major}.%{minor}
+%{_libdir}/libbstm_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbstm_multi.so.%{major}.%{minor}
+%{_libdir}/libbstm_multi.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbstm_multi_basic.so.%{major}.%{minor}
+%{_libdir}/libbstm_multi_basic.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbstm_multi_io.so.%{major}.%{minor}
+%{_libdir}/libbstm_multi_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbstm_pro.so.%{major}.%{minor}
+%{_libdir}/libbstm_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbstm_util.so.%{major}.%{minor}
+%{_libdir}/libbstm_util.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbsvg.so.%{major}.%{minor}
+%{_libdir}/libbsvg.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbsvg_pro.so.%{major}.%{minor}
+%{_libdir}/libbsvg_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbtol.so.%{major}.%{minor}
+%{_libdir}/libbtol.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbugl.so.%{major}.%{minor}
+%{_libdir}/libbugl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbundler.so.%{major}.%{minor}
+%{_libdir}/libbundler.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvgl.so.%{major}.%{minor}
+%{_libdir}/libbvgl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvgl_algo.so.%{major}.%{minor}
+%{_libdir}/libbvgl_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvgl_pro.so.%{major}.%{minor}
+%{_libdir}/libbvgl_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvpl.so.%{major}.%{minor}
+%{_libdir}/libbvpl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvpl_functors.so.%{major}.%{minor}
+%{_libdir}/libbvpl_functors.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvpl_kernels.so.%{major}.%{minor}
+%{_libdir}/libbvpl_kernels.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvpl_kernels_io.so.%{major}.%{minor}
+%{_libdir}/libbvpl_kernels_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvpl_kernels_pro.so.%{major}.%{minor}
+%{_libdir}/libbvpl_kernels_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvpl_pro.so.%{major}.%{minor}
+%{_libdir}/libbvpl_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvpl_util.so.%{major}.%{minor}
+%{_libdir}/libbvpl_util.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvpl_util_io.so.%{major}.%{minor}
+%{_libdir}/libbvpl_util_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvrml.so.%{major}.%{minor}
+%{_libdir}/libbvrml.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvrml_pro.so.%{major}.%{minor}
+%{_libdir}/libbvrml_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvxm.so.%{major}.%{minor}
+%{_libdir}/libbvxm.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvxm_algo.so.%{major}.%{minor}
+%{_libdir}/libbvxm_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvxm_algo_pro.so.%{major}.%{minor}
+%{_libdir}/libbvxm_algo_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvxm_grid.so.%{major}.%{minor}
+%{_libdir}/libbvxm_grid.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvxm_grid_io.so.%{major}.%{minor}
+%{_libdir}/libbvxm_grid_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvxm_grid_pro.so.%{major}.%{minor}
+%{_libdir}/libbvxm_grid_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvxm_io.so.%{major}.%{minor}
+%{_libdir}/libbvxm_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbvxm_pro.so.%{major}.%{minor}
+%{_libdir}/libbvxm_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbwm_video.so.%{major}.%{minor}
+%{_libdir}/libbwm_video.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libbxml.so.%{major}.%{minor}
+%{_libdir}/libbxml.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libclipper.so.%{major}.%{minor}
+%{_libdir}/libclipper.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libclsfy.so.%{major}.%{minor}
+%{_libdir}/libclsfy.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libdepth_map.so.%{major}.%{minor}
+%{_libdir}/libdepth_map.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libfhs.so.%{major}.%{minor}
+%{_libdir}/libfhs.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libgeml.so.%{major}.%{minor}
+%{_libdir}/libgeml.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libgevd.so.%{major}.%{minor}
+%{_libdir}/libgevd.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libgmvl.so.%{major}.%{minor}
+%{_libdir}/libgmvl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libgst.so.%{major}.%{minor}
+%{_libdir}/libgst.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libgtrl.so.%{major}.%{minor}
+%{_libdir}/libgtrl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libicam.so.%{major}.%{minor}
+%{_libdir}/libicam.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libicam_pro.so.%{major}.%{minor}
+%{_libdir}/libicam_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libihog.so.%{major}.%{minor}
+%{_libdir}/libihog.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libihog_pro.so.%{major}.%{minor}
+%{_libdir}/libihog_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libimesh.so.%{major}.%{minor}
+%{_libdir}/libimesh.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libimesh_algo.so.%{major}.%{minor}
+%{_libdir}/libimesh_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libipts.so.%{major}.%{minor}
+%{_libdir}/libipts.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libm23d.so.%{major}.%{minor}
+%{_libdir}/libm23d.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libmbl.so.%{major}.%{minor}
+%{_libdir}/libmbl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libmcal.so.%{major}.%{minor}
+%{_libdir}/libmcal.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libmfpf.so.%{major}.%{minor}
+%{_libdir}/libmfpf.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libmipa.so.%{major}.%{minor}
+%{_libdir}/libmipa.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libmmn.so.%{major}.%{minor}
+%{_libdir}/libmmn.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libmsdi.so.%{major}.%{minor}
+%{_libdir}/libmsdi.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libmsm.so.%{major}.%{minor}
+%{_libdir}/libmsm.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libmsm_utils.so.%{major}.%{minor}
+%{_libdir}/libmsm_utils.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libmvl.so.%{major}.%{minor}
+%{_libdir}/libmvl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libmvl2.so.%{major}.%{minor}
+%{_libdir}/libmvl2.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libopenjpeg2.so.2.%{patch}.0
+%{_libdir}/libopenjpeg2.so.%{major}.%{minor}
+%{_libdir}/libosl.so.%{major}.%{minor}
+%{_libdir}/libosl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libouel.so.%{major}.%{minor}
+%{_libdir}/libouel.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libouml.so.%{major}.%{minor}
+%{_libdir}/libouml.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/liboxl_vrml.so.%{major}.%{minor}
+%{_libdir}/liboxl_vrml.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libpdf1d.so.%{major}.%{minor}
+%{_libdir}/libpdf1d.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/librgrl.so.%{major}.%{minor}
+%{_libdir}/librgrl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/librrel.so.%{major}.%{minor}
+%{_libdir}/librrel.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/librsdl.so.%{major}.%{minor}
+%{_libdir}/librsdl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libsdet.so.%{major}.%{minor}
+%{_libdir}/libsdet.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libsdet_algo.so.%{major}.%{minor}
+%{_libdir}/libsdet_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libsdet_pro.so.%{major}.%{minor}
+%{_libdir}/libsdet_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libtestlib.so.%{major}.%{minor}
+%{_libdir}/libtestlib.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libv3p_netlib.so.%{major}.%{minor}
+%{_libdir}/libv3p_netlib.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvbl.so.%{major}.%{minor}
+%{_libdir}/libvbl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvbl_io.so.%{major}.%{minor}
+%{_libdir}/libvbl_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvcl.so.%{major}.%{minor}
+%{_libdir}/libvcl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvcon_pro.so.%{major}.%{minor}
+%{_libdir}/libvcon_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvcsl.so.%{major}.%{minor}
+%{_libdir}/libvcsl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvdgl.so.%{major}.%{minor}
+%{_libdir}/libvdgl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvdtop.so.%{major}.%{minor}
+%{_libdir}/libvdtop.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvepl.so.%{major}.%{minor}
+%{_libdir}/libvepl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvgl.so.%{major}.%{minor}
+%{_libdir}/libvgl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvgl_algo.so.%{major}.%{minor}
+%{_libdir}/libvgl_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvgl_io.so.%{major}.%{minor}
+%{_libdir}/libvgl_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvgl_xio.so.%{major}.%{minor}
+%{_libdir}/libvgl_xio.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvidl.so.%{major}.%{minor}
+%{_libdir}/libvidl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvidl_pro.so.%{major}.%{minor}
+%{_libdir}/libvidl_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvifa.so.%{major}.%{minor}
+%{_libdir}/libvifa.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvil.so.%{major}.%{minor}
+%{_libdir}/libvil.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvil1.so.%{major}.%{minor}
+%{_libdir}/libvil1.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvil3d.so.%{major}.%{minor}
+%{_libdir}/libvil3d.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvil3d_algo.so.%{major}.%{minor}
+%{_libdir}/libvil3d_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvil3d_io.so.%{major}.%{minor}
+%{_libdir}/libvil3d_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvil_algo.so.%{major}.%{minor}
+%{_libdir}/libvil_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvil_io.so.%{major}.%{minor}
+%{_libdir}/libvil_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvil_pro.so.%{major}.%{minor}
+%{_libdir}/libvil_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvimt.so.%{major}.%{minor}
+%{_libdir}/libvimt.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvimt3d.so.%{major}.%{minor}
+%{_libdir}/libvimt3d.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvimt_algo.so.%{major}.%{minor}
+%{_libdir}/libvimt_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvipl.so.%{major}.%{minor}
+%{_libdir}/libvipl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvmal.so.%{major}.%{minor}
+%{_libdir}/libvmal.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvmap.so.%{major}.%{minor}
+%{_libdir}/libvmap.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvnl.so.%{major}.%{minor}
+%{_libdir}/libvnl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvnl_algo.so.%{major}.%{minor}
+%{_libdir}/libvnl_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvnl_io.so.%{major}.%{minor}
+%{_libdir}/libvnl_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvnl_xio.so.%{major}.%{minor}
+%{_libdir}/libvnl_xio.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvolm.so.%{major}.%{minor}
+%{_libdir}/libvolm.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvolm_conf.so.%{major}.%{minor}
+%{_libdir}/libvolm_conf.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvolm_desc.so.%{major}.%{minor}
+%{_libdir}/libvolm_desc.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvolm_pro.so.%{major}.%{minor}
+%{_libdir}/libvolm_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvpdfl.so.%{major}.%{minor}
+%{_libdir}/libvpdfl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvpdl.so.%{major}.%{minor}
+%{_libdir}/libvpdl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvpgl.so.%{major}.%{minor}
+%{_libdir}/libvpgl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvpgl_algo.so.%{major}.%{minor}
+%{_libdir}/libvpgl_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvpgl_file_formats.so.%{major}.%{minor}
+%{_libdir}/libvpgl_file_formats.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvpgl_io.so.%{major}.%{minor}
+%{_libdir}/libvpgl_io.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvpgl_pro.so.%{major}.%{minor}
+%{_libdir}/libvpgl_pro.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvpgl_xio.so.%{major}.%{minor}
+%{_libdir}/libvpgl_xio.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvpl.so.%{major}.%{minor}
+%{_libdir}/libvpl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvpyr.so.%{major}.%{minor}
+%{_libdir}/libvpyr.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvsl.so.%{major}.%{minor}
+%{_libdir}/libvsl.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvsol.so.%{major}.%{minor}
+%{_libdir}/libvsol.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvsph.so.%{major}.%{minor}
+%{_libdir}/libvsph.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvtol.so.%{major}.%{minor}
+%{_libdir}/libvtol.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvtol_algo.so.%{major}.%{minor}
+%{_libdir}/libvtol_algo.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvul.so.%{major}.%{minor}
+%{_libdir}/libvul.so.%{major}.%{minor}.%{patch}.0
+%{_libdir}/libvul_io.so.%{major}.%{minor}
+%{_libdir}/libvul_io.so.%{major}.%{minor}.%{patch}.0
 
 %files devel
 %{_datadir}/%{name}
 %{_includedir}/%{name}
-%{_libdir}/libclipper.so
-%{_libdir}/libvbl_io.so
-%{_libdir}/libvcsl.so
-%{_libdir}/libvgl.so
-%{_libdir}/libvil_algo.so
-%{_libdir}/libvnl_algo.so
-%{_libdir}/libvnl_xio.so
-%{_libdir}/libvpgl_file_formats.so
-%{_libdir}/libvpgl_xio.so
-%{_libdir}/libvul_io.so
-%{_libdir}/libnetlib.so
-%{_libdir}/libtestlib.so
-%{_libdir}/libvbl.so
-%{_libdir}/libvgl_algo.so
-%{_libdir}/libvgl_xio.so
-%{_libdir}/libvil_io.so
-%{_libdir}/libvnl_io.so
-%{_libdir}/libvpdl.so
-%{_libdir}/libvpgl_io.so
-%{_libdir}/libvpl.so
-%{_libdir}/libvul.so
-%{_libdir}/libopenjpeg2.so
-%{_libdir}/libv3p_netlib.so
-%{_libdir}/libvcl.so
-%{_libdir}/libvgl_io.so
-%{_libdir}/libvidl.so
-%{_libdir}/libvil1.so
-%{_libdir}/libvil.so
-%{_libdir}/libvnl.so
-%{_libdir}/libvpgl_algo.so
-%{_libdir}/libvpgl.so
-%{_libdir}/libmipa.so
-%{_libdir}/libmfpf.so
-%{_libdir}/libmcal.so
-%{_libdir}/libmbl.so
-%{_libdir}/libm23d.so
-%{_libdir}/libipts.so
-%{_libdir}/libimesh_algo.so
-%{_libdir}/libimesh.so
-%{_libdir}/libihog_pro.so
-%{_libdir}/libihog.so
-%{_libdir}/libicam_pro.so
-%{_libdir}/libicam.so
-%{_libdir}/libgst.so
-%{_libdir}/libgmvl.so
-%{_libdir}/libgevd.so
-%{_libdir}/libgtrl.so
-%{_libdir}/libgeml.so
-%{_libdir}/libfhs.so
-%{_libdir}/libdepth_map.so
-%{_libdir}/libclsfy.so
-%{_libdir}/libbxml.so
-%{_libdir}/libbwm_video.so
-%{_libdir}/libbvxm_pro.so
-%{_libdir}/libbvxm_io.so
-%{_libdir}/libbvxm_grid_pro.so
-%{_libdir}/libbvxm_grid_io.so
-%{_libdir}/libbvxm_grid.so
-%{_libdir}/libbvxm_algo_pro.so
-%{_libdir}/libbvxm_algo.so
-%{_libdir}/libbvxm.so
-%{_libdir}/libbvrml_pro.so
-%{_libdir}/libbvrml.so
-%{_libdir}/libbvpl_util_io.so
-%{_libdir}/libbvpl_util.so
-%{_libdir}/libbvpl_pro.so
-%{_libdir}/libbvpl_kernels_pro.so
-%{_libdir}/libbvpl_kernels_io.so
-%{_libdir}/libbvpl_kernels.so
-%{_libdir}/libbvpl_functors.so
-%{_libdir}/libbvpl.so
-%{_libdir}/libvsl.so
-%{_libdir}/libbvgl_pro.so
-%{_libdir}/libbvgl_algo.so
-%{_libdir}/libbvgl.so
-%{_libdir}/libbundler.so
-%{_libdir}/libbugl.so
-%{_libdir}/libbtol.so
-%{_libdir}/libbsvg_pro.so
-%{_libdir}/libbsvg.so
-%{_libdir}/libbstm_util.so
-%{_libdir}/libbstm_pro.so
-%{_libdir}/libbstm_multi_io.so
-%{_libdir}/libbstm_multi_basic.so
-%{_libdir}/libbstm_multi.so
-%{_libdir}/libbstm_io.so
-%{_libdir}/libbstm_cpp_pro.so
-%{_libdir}/libbstm_cpp_algo.so
-%{_libdir}/libbstm_basic.so
-%{_libdir}/libbstm.so
-%{_libdir}/libbsta_vis.so
-%{_libdir}/libbsta_pro.so
-%{_libdir}/libbsta_io.so
-%{_libdir}/libbsta_algo.so
-%{_libdir}/libbsta.so
-%{_libdir}/libbsol.so
-%{_libdir}/libbsl.so
-%{_libdir}/libbsgm_pro.so
-%{_libdir}/libbsgm.so
-%{_libdir}/libbrip_pro.so
-%{_libdir}/libbrip.so
-%{_libdir}/libbreg3d_pro.so
-%{_libdir}/libbreg3d.so
-%{_libdir}/libbrec_pro.so
-%{_libdir}/libbrec.so
-%{_libdir}/libbrdb.so
-%{_libdir}/libbrad_pro.so
-%{_libdir}/libbrad_io.so
-%{_libdir}/libbrad.so
-%{_libdir}/libbprb.so
-%{_libdir}/libbpgl_algo.so
-%{_libdir}/libbpgl.so
-%{_libdir}/libboxm2_volm_pro.so
-%{_libdir}/libboxm2_volm_io.so
-%{_libdir}/libboxm2_volm_conf.so
-%{_libdir}/libboxm2_volm.so
-%{_libdir}/libboxm2_vecf.so
-%{_libdir}/libboxm2_util.so
-%{_libdir}/libboxm2_pro.so
-%{_libdir}/libboxm2_io.so
-%{_libdir}/libboxm2_cpp_pro.so
-%{_libdir}/libboxm2_cpp_algo.so
-%{_libdir}/libboxm2_cpp.so
-%{_libdir}/libboxm2_class.so
-%{_libdir}/libboxm2_basic.so
-%{_libdir}/libboxm2.so
-%{_libdir}/libboct.so
-%{_libdir}/libbnl_algo.so
-%{_libdir}/libbnl.so
-%{_libdir}/libbnabo.so
-%{_libdir}/libbmsh3d_pro.so
-%{_libdir}/libbmsh3d_algo.so
-%{_libdir}/libboxm2_volm_desc.so
-%{_libdir}/libbmsh3d.so
-%{_libdir}/libbmdl_pro.so
-%{_libdir}/libbmdl.so
-%{_libdir}/libbkml.so
-%{_libdir}/libbjson.so
-%{_libdir}/libbil_algo.so
-%{_libdir}/libbil.so
-%{_libdir}/libbgrl2_algo.so
-%{_libdir}/libbgrl2.so
-%{_libdir}/libbgrl.so
-%{_libdir}/libbetr_pro.so
-%{_libdir}/libbetr.so
-%{_libdir}/libbdpg.so
-%{_libdir}/libbdgl.so
-%{_libdir}/libbcvr.so
-%{_libdir}/libbbgm_pro.so
-%{_libdir}/libbbgm.so
 %{_libdir}/libbbas_pro.so
 %{_libdir}/libbapl_pro.so
 %{_libdir}/libbapl_io.so
-%{_libdir}/libbapl.so
-%{_libdir}/libbaml.so
+%{_libdir}/libacal.so
+%{_libdir}/libacal_io.so
 %{_libdir}/libbaio.so
+%{_libdir}/libbaml.so
+%{_libdir}/libbapl.so
+%{_libdir}/libbbgm.so
+%{_libdir}/libbbgm_pro.so
+%{_libdir}/libbcvr.so
+%{_libdir}/libbdgl.so
+%{_libdir}/libbdpg.so
+%{_libdir}/libbetr.so
+%{_libdir}/libbetr_pro.so
+%{_libdir}/libbgrl.so
+%{_libdir}/libbgrl2.so
+%{_libdir}/libbgrl2_algo.so
+%{_libdir}/libbil.so
+%{_libdir}/libbil_algo.so
+%{_libdir}/libbjson.so
+%{_libdir}/libbkml.so
+%{_libdir}/libbmdl.so
+%{_libdir}/libbmdl_pro.so
+%{_libdir}/libbmsh3d.so
+%{_libdir}/libbmsh3d_algo.so
+%{_libdir}/libbmsh3d_pro.so
+%{_libdir}/libbnabo.so
+%{_libdir}/libbnl.so
+%{_libdir}/libbnl_algo.so
+%{_libdir}/libboct.so
+%{_libdir}/libboxm2.so
+%{_libdir}/libboxm2_basic.so
+%{_libdir}/libboxm2_class.so
+%{_libdir}/libboxm2_cpp.so
+%{_libdir}/libboxm2_cpp_algo.so
+%{_libdir}/libboxm2_cpp_pro.so
+%{_libdir}/libboxm2_io.so
+%{_libdir}/libboxm2_pro.so
+%{_libdir}/libboxm2_util.so
+%{_libdir}/libboxm2_vecf.so
+%{_libdir}/libboxm2_volm.so
+%{_libdir}/libboxm2_volm_conf.so
+%{_libdir}/libboxm2_volm_desc.so
+%{_libdir}/libboxm2_volm_io.so
+%{_libdir}/libboxm2_volm_pro.so
+%{_libdir}/libbpgl.so
+%{_libdir}/libbpgl_algo.so
+%{_libdir}/libbprb.so
+%{_libdir}/libbrad.so
+%{_libdir}/libbrad_io.so
+%{_libdir}/libbrad_pro.so
+%{_libdir}/libbrdb.so
+%{_libdir}/libbrec.so
+%{_libdir}/libbrec_pro.so
+%{_libdir}/libbreg3d.so
+%{_libdir}/libbreg3d_pro.so
+%{_libdir}/libbres.so
+%{_libdir}/libbrip.so
+%{_libdir}/libbrip_pro.so
+%{_libdir}/libbsgm.so
+%{_libdir}/libbsgm_pro.so
+%{_libdir}/libbsl.so
+%{_libdir}/libbsol.so
+%{_libdir}/libbsta.so
+%{_libdir}/libbsta_algo.so
+%{_libdir}/libbsta_io.so
+%{_libdir}/libbsta_pro.so
+%{_libdir}/libbsta_vis.so
+%{_libdir}/libbstm.so
+%{_libdir}/libbstm_basic.so
+%{_libdir}/libbstm_cpp_algo.so
+%{_libdir}/libbstm_cpp_pro.so
+%{_libdir}/libbstm_io.so
+%{_libdir}/libbstm_multi.so
+%{_libdir}/libbstm_multi_basic.so
+%{_libdir}/libbstm_multi_io.so
+%{_libdir}/libbstm_pro.so
+%{_libdir}/libbstm_util.so
+%{_libdir}/libbsvg.so
+%{_libdir}/libbsvg_pro.so
+%{_libdir}/libbtol.so
+%{_libdir}/libbugl.so
+%{_libdir}/libbundler.so
+%{_libdir}/libbvgl.so
+%{_libdir}/libbvgl_algo.so
+%{_libdir}/libbvgl_pro.so
+%{_libdir}/libbvpl.so
+%{_libdir}/libbvpl_functors.so
+%{_libdir}/libbvpl_kernels.so
+%{_libdir}/libbvpl_kernels_io.so
+%{_libdir}/libbvpl_kernels_pro.so
+%{_libdir}/libbvpl_pro.so
+%{_libdir}/libbvpl_util.so
+%{_libdir}/libbvpl_util_io.so
+%{_libdir}/libbvrml.so
+%{_libdir}/libbvrml_pro.so
+%{_libdir}/libbvxm.so
+%{_libdir}/libbvxm_algo.so
+%{_libdir}/libbvxm_algo_pro.so
+%{_libdir}/libbvxm_grid.so
+%{_libdir}/libbvxm_grid_io.so
+%{_libdir}/libbvxm_grid_pro.so
+%{_libdir}/libbvxm_io.so
+%{_libdir}/libbvxm_pro.so
+%{_libdir}/libbwm_video.so
+%{_libdir}/libbxml.so
+%{_libdir}/libclipper.so
+%{_libdir}/libclsfy.so
+%{_libdir}/libdepth_map.so
+%{_libdir}/libfhs.so
+%{_libdir}/libgeml.so
+%{_libdir}/libgevd.so
+%{_libdir}/libgmvl.so
+%{_libdir}/libgst.so
+%{_libdir}/libgtrl.so
+%{_libdir}/libicam.so
+%{_libdir}/libicam_pro.so
+%{_libdir}/libihog.so
+%{_libdir}/libihog_pro.so
+%{_libdir}/libimesh.so
+%{_libdir}/libimesh_algo.so
+%{_libdir}/libipts.so
+%{_libdir}/libm23d.so
+%{_libdir}/libmbl.so
+%{_libdir}/libmcal.so
+%{_libdir}/libmfpf.so
+%{_libdir}/libmipa.so
 %{_libdir}/libmmn.so
 %{_libdir}/libmsdi.so
 %{_libdir}/libmsm.so
 %{_libdir}/libmsm_utils.so
 %{_libdir}/libmvl.so
 %{_libdir}/libmvl2.so
+%{_libdir}/libopenjpeg2.so
 %{_libdir}/libosl.so
 %{_libdir}/libouel.so
 %{_libdir}/libouml.so
@@ -799,16 +801,32 @@ ctest %{_vpath_builddir} || exit 0
 %{_libdir}/librrel.so
 %{_libdir}/librsdl.so
 %{_libdir}/libsdet.so
+%{_libdir}/libsdet_algo.so
 %{_libdir}/libsdet_pro.so
+%{_libdir}/libtestlib.so
+%{_libdir}/libv3p_netlib.so
+%{_libdir}/libvbl.so
+%{_libdir}/libvbl_io.so
+%{_libdir}/libvcl.so
 %{_libdir}/libvcon_pro.so
+%{_libdir}/libvcsl.so
 %{_libdir}/libvdgl.so
 %{_libdir}/libvdtop.so
 %{_libdir}/libvepl.so
+%{_libdir}/libvgl.so
+%{_libdir}/libvgl_algo.so
+%{_libdir}/libvgl_io.so
+%{_libdir}/libvgl_xio.so
+%{_libdir}/libvidl.so
 %{_libdir}/libvidl_pro.so
 %{_libdir}/libvifa.so
+%{_libdir}/libvil.so
+%{_libdir}/libvil1.so
 %{_libdir}/libvil3d.so
 %{_libdir}/libvil3d_algo.so
 %{_libdir}/libvil3d_io.so
+%{_libdir}/libvil_algo.so
+%{_libdir}/libvil_io.so
 %{_libdir}/libvil_pro.so
 %{_libdir}/libvimt.so
 %{_libdir}/libvimt3d.so
@@ -816,17 +834,32 @@ ctest %{_vpath_builddir} || exit 0
 %{_libdir}/libvipl.so
 %{_libdir}/libvmal.so
 %{_libdir}/libvmap.so
+%{_libdir}/libvnl.so
+%{_libdir}/libvnl_algo.so
+%{_libdir}/libvnl_io.so
+%{_libdir}/libvnl_xio.so
 %{_libdir}/libvolm.so
 %{_libdir}/libvolm_conf.so
 %{_libdir}/libvolm_desc.so
 %{_libdir}/libvolm_pro.so
 %{_libdir}/libvpdfl.so
+%{_libdir}/libvpdl.so
+%{_libdir}/libvpgl.so
+%{_libdir}/libvpgl_algo.so
+%{_libdir}/libvpgl_file_formats.so
+%{_libdir}/libvpgl_io.so
 %{_libdir}/libvpgl_pro.so
+%{_libdir}/libvpgl_xio.so
+%{_libdir}/libvpl.so
 %{_libdir}/libvpyr.so
+%{_libdir}/libvsl.so
 %{_libdir}/libvsol.so
 %{_libdir}/libvsph.so
 %{_libdir}/libvtol.so
 %{_libdir}/libvtol_algo.so
+%{_libdir}/libvul.so
+%{_libdir}/libvul_io.so
+
 
 %files doc
 %doc core/vxl_copyright.h

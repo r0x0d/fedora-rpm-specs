@@ -8,11 +8,11 @@
 # don't require bundled modules
 %global __requires_exclude_from ^(%{nodejs_sitelib}/yarn/lib/.*|%{nodejs_sitelib}/yarn/bin/yarn(|\\.cmd|\\.ps1|pkg.*))$
 
-%global bundledate 20240704
+%global bundledate 20241010
 
 Name:           yarnpkg
 Version:        1.22.22
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Fast, reliable, and secure dependency management.
 License:        BSD-2-Clause
 URL:            https://github.com/yarnpkg/yarn
@@ -25,6 +25,7 @@ Source1:        yarnpkg-tarball.sh
 # minimatch-CVE-2022-3517.prebundle.patch
 # thenify-CVE-2020-7677.prebundle.patch
 # decode-uri-component-CVE-2022-38900.prebundle.patch
+# CVE-2024-48949.prebundle.patch
 
 Patch0:         CVE-2023-26136.patch
 Patch1:         CVE-2022-37599.patch
@@ -85,6 +86,9 @@ if [[ $(%{buildroot}%{_bindir}/yarn --version) == %{version} ]] ; then echo PASS
 %{nodejs_sitelib}/%{npm_name}/
 
 %changelog
+* Thu Oct 10 2024 Sandro Mani <manisandro@gmail.com> - 1.22.22-4
+- Update bundled elliptic (CVE-2024-48949)
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.22.22-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

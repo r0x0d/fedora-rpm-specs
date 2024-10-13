@@ -1,3 +1,10 @@
+# EPEL10 does not have kf5
+%if 0%{?rhel} && 0%{?rhel} >= 10
+%bcond_with kf5
+%else
+%bcond_without kf5
+%endif
+
 Name:    plasma-integration
 Summary: Qt Platform Theme integration plugin for Plasma
 Version: 6.2.0
@@ -33,6 +40,7 @@ BuildRequires:  cmake(KF6WindowSystem)
 BuildRequires:  cmake(KF6GuiAddons)
 BuildRequires:  cmake(KF6StatusNotifierItem)
 
+%if %{with kf5}
 # Qt5 build
 BuildRequires:  cmake(Qt5WaylandClient)
 BuildRequires:  cmake(Qt5Widgets)
@@ -54,6 +62,9 @@ BuildRequires:  cmake(KF5WindowSystem)
 BuildRequires:  cmake(KF5Wayland)
 BuildRequires:  cmake(KF5GuiAddons)
 
+Requires:       (%{name}-qt5 if qt5-qtbase-gui)
+%endif
+
 Requires:       plasma-breeze%{?_isa}
 Requires:       breeze-cursor-theme
 Requires:       breeze-icon-theme
@@ -63,17 +74,17 @@ Recommends:     plasma-workspace
 Requires:       qqc2-breeze-style%{?_isa}
 Requires:       kf6-qqc2-desktop-style%{?_isa}
 
-Requires:       (%{name}-qt5 if qt5-qtbase-gui)
-
 %description
 %{summary}.
 
+%if %{with kf5}
 %package        qt5
 Summary:        Qt5 support for %{name}
 # The default QtQuick style
 Requires:       qqc2-desktop-style%{?_isa}
 %description    qt5
 %{summary}.
+%endif
 
 %prep
 %autosetup -p1
@@ -83,17 +94,21 @@ Requires:       qqc2-desktop-style%{?_isa}
 %cmake_kf6 -DBUILD_QT5=OFF -DBUILD_QT6=ON
 %cmake_build
 
+%if %{with kf5}
 %global _vpath_builddir %{_target_platform}-qt5
 %cmake_kf5 -DBUILD_QT5=ON  -DBUILD_QT6=OFF
 %cmake_build
+%endif
 
 
 %install
 %global _vpath_builddir %{_target_platform}-qt6
 %cmake_install
 
+%if %{with kf5}
 %global _vpath_builddir %{_target_platform}-qt5
 %cmake_install
+%endif
 
 %find_lang plasmaintegration5
 
@@ -102,8 +117,10 @@ Requires:       qqc2-desktop-style%{?_isa}
 %license LICENSES
 %{_qt6_plugindir}/platformthemes/KDEPlasmaPlatformTheme6.so
 
+%if %{with kf5}
 %files qt5
 %{_qt5_plugindir}/platformthemes/KDEPlasmaPlatformTheme5.so
+%endif
 
 %changelog
 * Thu Oct 03 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.2.0-1

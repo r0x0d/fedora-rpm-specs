@@ -6,6 +6,7 @@ Version:        2.9.2
 Release:        %autorelease
 Summary:        Data validation using Python type hinting
 
+# SPDX
 License:        MIT
 URL:            https://github.com/pydantic/pydantic
 Source:         %{url}/archive/v%{srcversion}/pydantic-%{srcversion}.tar.gz

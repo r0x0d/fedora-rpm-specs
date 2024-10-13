@@ -1,6 +1,6 @@
 Name:           nftables
-Version:        1.0.9
-Release:        7%{?dist}
+Version:        1.1.1
+Release:        1%{?dist}
 # Upstream released a 0.100 version, then 0.4. Need Epoch to get back on track.
 Epoch:          1
 Summary:        Netfilter Tables userspace utilites
@@ -26,7 +26,7 @@ BuildRequires: flex
 BuildRequires: bison
 BuildRequires: pkgconfig(libmnl) >= 1.0.4
 BuildRequires: gmp-devel
-BuildRequires: pkgconfig(libnftnl) >= 1.2.3
+BuildRequires: pkgconfig(libnftnl) >= 1.2.8
 BuildRequires: systemd
 BuildRequires: asciidoc
 BuildRequires: pkgconfig(xtables) >= 1.6.1
@@ -131,6 +131,9 @@ cd py/
 %files -n python3-nftables -f %{pyproject_files}
 
 %changelog
+* Thu Oct 10 2024 Kevin Fenzi <kevin@scrye.com> - 1:1.1.1-1
+- Update to 1.1.1. Fixes rhbz#2298277
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:1.0.9-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -39,7 +39,9 @@ BuildRequires: python3-sphinxcontrib-qthelp
 # Qt5Core is needed for tests to run properly (As-of 5.246.1).
 BuildRequires: pkgconfig(Qt5Core)
 BuildRequires: pkgconfig(Qt6Core)
+%if 0%{?fedora} || 0%{?rhel} < 10
 Requires: (kf5-rpm-macros if qt5-qtbase-devel)
+%endif
 Requires: (kf6-rpm-macros if qt6-qtbase-devel)
 Recommends: appstream
 

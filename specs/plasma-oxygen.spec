@@ -1,4 +1,9 @@
 %global         base_name oxygen
+%if 0%{?rhel} && 0%{?rhel} >= 10
+%bcond_with kf5
+%else
+%bcond_without kf5
+%endif
 
 Name:    plasma-%{base_name}
 Version: 6.2.0
@@ -17,6 +22,7 @@ BuildRequires:  gettext
 BuildRequires:  libxcb-devel
 BuildRequires:  cmake(Plasma)
 
+%if %{with kf5}
 # Qt5
 BuildRequires:  kf5-rpm-macros
 BuildRequires:  cmake(KF5Completion)
@@ -32,6 +38,9 @@ BuildRequires:  cmake(Qt5DBus)
 BuildRequires:  cmake(Qt5Quick)
 BuildRequires:  cmake(Qt5Widgets)
 BuildRequires:  cmake(Qt5X11Extras)
+
+Requires:       (%{name}-qt5 if qt5-qtbase-gui)
+%endif
 
 # Qt6
 BuildRequires:  kf6-rpm-macros
@@ -54,7 +63,6 @@ BuildRequires:  qt6-qtbase-private-devel
 
 Requires:       kf6-filesystem
 
-Requires:       (%{name}-qt5 if qt5-qtbase-gui)
 Requires:       %{name}-qt6
 
 Requires:       oxygen-cursor-themes >= %{version}
@@ -70,12 +78,14 @@ Conflicts:      plasma-desktop < 5.16.90
 %description
 %{summary}.
 
+%if %{with kf5}
 %package        qt5
 Summary:        Oxygen widget style for Qt 5
 Obsoletes:      qt5-style-oxygen < %{version}-%{release}
 Provides:       qt5-style-oxygen = %{version}-%{release}
 %description    qt5
 %{summary}.
+%endif
 
 %package        qt6
 Summary:        Oxygen widget style for Qt 6
@@ -101,20 +111,24 @@ pushd qt6build
 %cmake_build
 popd
 
+%if %{with kf5}
 mkdir -p qt5build
 pushd qt5build
 %cmake_kf5 -S .. -DBUILD_QT6=OFF -DBUILD_QT5=ON
 %cmake_build
 popd
+%endif
 
 %install
 pushd qt6build
 %cmake_install
 popd
 
+%if %{with kf5}
 pushd qt5build
 %cmake_install
 popd
+%endif
 
 %find_lang oxygen --with-qt --all-name
 
@@ -134,11 +148,13 @@ popd
 %{_kf6_qtplugindir}/org.kde.kdecoration2.kcm/kcm_oxygendecoration.so
 %{_kf6_qtplugindir}/org.kde.kdecoration2/org.kde.oxygen.so
 
+%if %{with kf5}
 %files qt5
 %{_bindir}/oxygen-demo5
 %{_libdir}/liboxygenstyle5.so.*
 %{_libdir}/liboxygenstyleconfig5.so.*
 %{_kf5_qtplugindir}/styles/oxygen5.so
+%endif
 
 %files qt6
 %{_bindir}/oxygen-demo6

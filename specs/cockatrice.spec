@@ -28,7 +28,7 @@ Summary:	A cross-platform virtual tabletop software for multi-player card games
 # * ASL 2.0 (webclient/js/protobuf.js, webclient/js/long.js,
 # webclient/js/bytebuffer.js)
 # * MIT (webclient/js/jquery-*.js)
-License:	GPLv2 and Public Domain
+License:	GPL-2.0-or-later AND GPL-2.0-only AND LicenseRef-Fedora-Public-Domain
 URL:		https://%{name}.github.io
 Source0:	https://github.com/%{name}/%{name}/archive/%{gittag0}.tar.gz
 Source1:	cockatrice.appdata.xml

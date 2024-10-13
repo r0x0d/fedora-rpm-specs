@@ -17,7 +17,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        9.rocm%{rocm_version}%{?dist}
+Release:        10.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -117,8 +117,7 @@ LLVM devel files used when building ROCm.
 %package -n hipcc-libomp-devel
 Summary:        OpenMP header files for hipcc
 Requires:       hipcc = %{version}-%{release}
-# TODO: is this too hacky? :)
-Requires:       /usr/lib/clang/%{llvm_maj_ver}/include/omp.h
+Requires:       libomp-devel(major) = %{llvm_maj_ver}
 
 %description -n hipcc-libomp-devel
 OpenMP header files compatible with HIPCC.
@@ -299,7 +298,10 @@ popd
 %files -n hipcc-libomp-devel
 
 %changelog
-* Mon Oct 07 2024 Tom Rix <Tom.Rix@amd.com> - 18.8.rocm6.2.0
+* Thu Oct 10 2024 Tom Rix <Tom.Rix@amd.com> - 18-10.rocm6.2.0
+- Fix hipcc-libomp-devel
+
+* Mon Oct 07 2024 Tom Rix <Tom.Rix@amd.com> - 18-9.rocm6.2.0
 - Work around broken clang++-18 link
 
 * Tue Oct 01 2024 Jeremy Newton <alexjnewt at hotmail dot com> - 18-8.rocm6.2.0

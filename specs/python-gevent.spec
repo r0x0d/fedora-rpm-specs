@@ -3,18 +3,13 @@
 %global optflags %(echo %{optflags} -I%{_includedir}/libev)
 
 Name:          python-%{modname}
-Version:       24.10.1
+Version:       24.10.2
 Release:       1%{?dist}
 Summary:       A coroutine-based Python networking library
 
 License:       MIT
 URL:           http://www.gevent.org/
-Source0:       https://github.com/gevent/gevent/archive/%{version}/%{modname}-%{version}.tar.gz
-# No pypi source for 24.10.1 yet - https://github.com/gevent/gevent/issues/2063
-#Source0:       %{pypi_source %{modname} %{version} tar.gz}
-# avoid incompatible types error with Cython 3.0.10
-# https://github.com/gevent/gevent/issues/2031
-Patch0:        cython3010.patch
+Source0:       %{pypi_source %{modname} %{version} tar.gz}
 
 BuildRequires: gcc
 BuildRequires: c-ares-devel
@@ -101,6 +96,9 @@ cd src/gevent/tests && GEVENT_FILE=thread %__python3 -mgevent.tests test__*subpr
 %{python3_sitearch}/%{modname}*
 
 %changelog
+* Fri Oct 11 2024 Orion Poplawski <orion@nwra.com> - 24.10.2-1
+- Update to 24.10.2
+
 * Thu Oct 10 2024 Orion Poplawski <orion@nwra.com> - 24.10.1-1
 - Update to 24.10.1
 

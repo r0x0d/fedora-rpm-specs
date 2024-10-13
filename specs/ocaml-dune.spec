@@ -14,7 +14,7 @@
 
 Name:           ocaml-dune
 Version:        3.16.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Composable build system for OCaml and Reason
 
 # Dune itself is MIT.  Some bundled libraries have a different license:
@@ -49,6 +49,10 @@ Patch:          %{name}-no-lwt.patch
 # See https://github.com/ocaml/dune/issues/6929
 Patch:          %{name}-debuginfo.patch
 
+# Change to the furo theme for the docs
+# https://github.com/ocaml/dune/commit/9f3da04c1c27ff80e8d1ab71de15c53a0ca953da
+Patch:          use-furo-theme.patch
+
 # OCaml packages not built on i686 since OCaml 5 / Fedora 39.
 ExcludeArch:    %{ix86}
 
@@ -66,7 +70,7 @@ BuildRequires:  ocaml-rpm-macros
 BuildRequires:  %{py3_dist sphinx}
 BuildRequires:  %{py3_dist sphinx-copybutton}
 BuildRequires:  %{py3_dist sphinx-design}
-BuildRequires:  %{py3_dist sphinx-rtd-theme}
+BuildRequires:  %{py3_dist furo}
 %endif
 
 %if %{with lwt}
@@ -477,9 +481,6 @@ rm -fr otherlibs/dune-rpc-lwt dune-rpc-lwt.opam
 %endif
 %autopatch -m1 -p1
 
-# Allow use of Sphinx 6
-sed -i 's/, < 6//'g doc/requirements.txt
-
 %build
 ./configure \
   --bindir %{_bindir} \
@@ -597,6 +598,9 @@ cd -
 %files -n ocaml-xdg-devel -f .ofiles-xdg-devel
 
 %changelog
+* Thu Oct 10 2024 Charalampos Stratakis <cstratak@redhat.com> - 3.16.0-5
+- Use the furo theme for docs build
+
 * Tue Oct 08 2024 Richard W.M. Jones <rjones@redhat.com> - 3.16.0-4
 - Rebuild for ocaml-lwt 5.8.0
 

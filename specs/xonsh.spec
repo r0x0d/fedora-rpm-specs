@@ -1,5 +1,5 @@
 Name:           xonsh
-Version:        0.14.1
+Version:        0.18.3
 Release:        %autorelease
 Summary:        A general purpose, Python-ish shell
 
@@ -9,8 +9,6 @@ License:        BSD-2-Clause AND MIT
 URL:            https://xon.sh
 Source0:        %pypi_source
 BuildArch:      noarch
-
-Patch1: 0001-Do-not-use-custom-xinstall.patch
 
 BuildRequires:  python3-devel
 # needed for tests:
@@ -22,6 +20,7 @@ BuildRequires:  %{py3_dist pytest}
 BuildRequires:  %{py3_dist pytest-mock}
 BuildRequires:  %{py3_dist pytest-subprocess}
 BuildRequires:  %{py3_dist pytest-rerunfailures}
+BuildRequires:  %{py3_dist requests}
 BuildRequires:  %{py3_dist virtualenv}
 BuildRequires:  bash-completion
 BuildRequires:  git-core
@@ -60,12 +59,11 @@ alike.
 %autosetup -p1 -n %{name}-%{version}
 
 # Unbundle ply
-sed --in-place '/xonsh\.ply/d' setup.py
-sed --in-place '/xonsh\.ply/d' pyproject.toml
-sed --in-place -e 's/xonsh\.ply\.ply/ply/' \
-               -e 's/from xonsh\.ply //' \
-               $(grep -rl --include='*.py' 'xonsh\.ply')
-rm -r xonsh/ply
+sed --in-place '/xonsh\.parsers\.ply/d' pyproject.toml
+sed --in-place -e 's/xonsh\.parsers\.ply/ply/' \
+               -e 's/from xonsh\.parsers import ply/import ply/' \
+               $(grep -Erl --include='*.py' 'xonsh\.parsers( import |\.)ply')
+rm -r xonsh/parsers/ply
 
 # Remove shebang.
 sed --in-place "s:#!\s*/usr.*::" xonsh/xoreutils/_which.py xonsh/webconfig/main.py
@@ -75,7 +73,6 @@ sed --in-place "s:#!\s*/usr.*::" xonsh/xoreutils/_which.py xonsh/webconfig/main.
 
 %build
 %pyproject_wheel
-%py3_build
 
 %install
 %pyproject_install
@@ -85,7 +82,8 @@ sed --in-place "s:#!\s*/usr.*::" xonsh/xoreutils/_which.py xonsh/webconfig/main.
 # Altering PYTHONPATH makes the tests importable.
 %global __pytest PYTHONPATH="$PYTHONPATH:$(pwd)" %{python3} -m xonsh run-tests.xsh test --
 # TODO: broken tests
-%pytest -v -k "not test_complete_dots and not test_equal_sign_arg and not test_is_tok_color_dict and not test_vox"
+# deselected test_integrations fail due to unexpected DeprecationWarning in output, setting PYTHONWARNINGS does not help
+%pytest -v -k "not test_complete_dots and not test_equal_sign_arg and not test_is_tok_color_dict and not test_vox and not test_ptk_prompt and not (test_integrations and (test_script or test_ampersand_argument or test_redirect_argument or test_aliases_print or test_shebang_cr))"
 
 %post
 if [ "$1" -ge 1 ]; then

@@ -1,5 +1,5 @@
 Name:           vulkan-tools
-Version:        1.3.290.0
+Version:        1.3.296.0
 Release:        %autorelease
 Summary:        Vulkan tools
 

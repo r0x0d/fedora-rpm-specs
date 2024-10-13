@@ -128,6 +128,7 @@ Patch0016: 0016-OvmfPkg-set-PcdVariableStoreSize-PcdMaxVolatileVaria.patch
 %if 0%{?fedora} >= 38 || 0%{?rhel} >= 10
 Patch0017: 0017-silence-.-has-a-LOAD-segment-with-RWX-permissions-wa.patch
 %endif
+Patch0018: 0018-CVE-2023-6237.patch
 Patch0099: edk2-platform-build-fix.patch
 
 
@@ -335,6 +336,12 @@ you probably want to install edk2-tools only.
 # We init the git dir ourselves, then tell %%autosetup not to blow it away.
 %setup -q -n edk2-%{GITCOMMIT}
 tar -xf %{SOURCE4} --strip-components=1 "*/Drivers" "*/Features" "*/Platform" "*/Silicon"
+# extract submodules into place, allow patching them from main repo
+tar -C CryptoPkg/Library/OpensslLib -a -f %{SOURCE2} -x
+tar -xf %{SOURCE3} --strip-components=1 --directory ArmPkg/Library/ArmSoftFloatLib/berkeley-softfloat-3/
+tar -xf %{SOURCE5} --strip-components=1 --directory RedfishPkg/Library/JsonLib/jansson
+tar -xf %{SOURCE6} --strip-components=1 --directory MdePkg/Library/BaseFdtLib/libfdt
+find . -name ".git" | xargs rm -rf
 git init -q
 git config core.whitespace cr-at-eol
 git config am.keepcr true
@@ -343,11 +350,6 @@ git config am.keepcr true
 %autosetup -T -D -n edk2-%{GITCOMMIT} -S git_am
 
 cp -a -- %{SOURCE1} .
-tar -C CryptoPkg/Library/OpensslLib -a -f %{SOURCE2} -x
-# extract softfloat into place
-tar -xf %{SOURCE3} --strip-components=1 --directory ArmPkg/Library/ArmSoftFloatLib/berkeley-softfloat-3/
-tar -xf %{SOURCE5} --strip-components=1 --directory RedfishPkg/Library/JsonLib/jansson
-tar -xf %{SOURCE6} --strip-components=1 --directory MdePkg/Library/BaseFdtLib/libfdt
 # include paths pointing to unused submodules
 mkdir -p MdePkg/Library/MipiSysTLib/mipisyst/library/include
 mkdir -p CryptoPkg/Library/MbedTlsLib/mbedtls/include

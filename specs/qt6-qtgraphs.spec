@@ -1,8 +1,8 @@
 %global        qt_module qtgraphs
 
 Name:          qt6-qtgraphs
-Version:       6.7.2
-Release:       2%{?dist}
+Version:       6.8.0
+Release:       1%{?dist}
 
 %global examples 1
 
@@ -82,19 +82,28 @@ popd
 %files
 %license LICENSES/BSD-3-Clause.txt LICENSES/GFDL*.txt LICENSES/GPL-*.txt
 %{_qt6_libdir}/libQt6Graphs.so.6*
+%{_qt6_libdir}/libQt6GraphsWidgets.so.6*
 %{_qt6_libdir}/qt6/metatypes/qt6graphs_relwithdebinfo_metatypes.json
 %{_qt6_libdir}/qt6/modules/Graphs.json
 %{_qt6_qmldir}/QtGraphs
 
 %files devel
 %{_qt6_headerdir}/QtGraphs
+%{_qt6_headerdir}/QtGraphsWidgets
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtGraphsTestsConfig.cmake
-%{_qt6_libdir}/cmake/Qt6Graphs
+%dir %{_qt6_libdir}/cmake/Qt6Graphs
+%{_qt6_libdir}/cmake/Qt6Graphs/*.cmake
+%dir %{_qt6_libdir}/cmake/Qt6GraphsWidgets
+%{_qt6_libdir}/cmake/Qt6GraphsWidgets/*.cmake
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6Graphsplugin*.cmake
 %{_qt6_libdir}/libQt6Graphs.so
-%{_qt6_libdir}/pkgconfig/Qt6Graphs.pc
+%{_qt6_libdir}/pkgconfig/Qt6Graphs*.pc
 %{_qt6_libdir}/libQt6Graphs.prl
+%{_qt6_libdir}/libQt6GraphsWidgets.prl
+%{_qt6_libdir}/libQt6GraphsWidgets.so
 %{_qt6_libdir}/qt6/mkspecs/modules/qt_lib_graphs*.pri
+%{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
+%{_qt6_libdir}/qt6/modules/*.json
 
 %if 0%{?examples}
 %files examples
@@ -102,6 +111,9 @@ popd
 %endif
 
 %changelog
+* Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -20,8 +20,8 @@
 
 Summary: Qt6 - Multimedia support
 Name:    qt6-%{qt_module}
-Version: 6.7.2
-Release: 3%{?dist}
+Version: 6.8.0
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -33,6 +33,8 @@ Source0: https://download.qt.io/development_releases/qt/%{majmin}/%{qt_version}/
 %else
 Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
 %endif
+
+Patch0:  qtmultimedia-fix-build-on-x86-arch.patch
 
 # filter plugin/qml provides
 %global __provides_exclude_from ^(%{_qt6_archdatadir}/qml/.*\\.so|%{_qt6_plugindir}/.*\\.so)$
@@ -156,15 +158,13 @@ popd
 %endif
 
 %files devel
-%{_qt6_headerdir}/QtQGstreamerMediaPlugin/
 %{_qt6_headerdir}/QtMultimedia/
 %{_qt6_headerdir}/QtMultimediaQuick/
 %{_qt6_headerdir}/QtMultimediaWidgets/
 %{_qt6_headerdir}/QtSpatialAudio/
 %{_qt6_headerdir}/QtQuick3DSpatialAudio/
+%{_qt6_headerdir}/QtQGstreamerMediaPluginImpl/
 %{_qt6_libdir}/libQt6BundledResonanceAudio.a
-%{_qt6_libdir}/libQt6QGstreamerMediaPlugin.a
-%{_qt6_libdir}/libQt6QGstreamerMediaPlugin.prl
 %{_qt6_libdir}/libQt6Multimedia.so
 %{_qt6_libdir}/libQt6Multimedia.prl
 %{_qt6_libdir}/libQt6MultimediaQuick.so
@@ -175,12 +175,12 @@ popd
 %{_qt6_libdir}/libQt6SpatialAudio.prl
 %{_qt6_libdir}/libQt6Quick3DSpatialAudio.so
 %{_qt6_libdir}/libQt6Quick3DSpatialAudio.prl
+%{_qt6_libdir}/libQt6QGstreamerMediaPluginImpl.a
+%{_qt6_libdir}/libQt6QGstreamerMediaPluginImpl.prl
 %{_qt6_libdir}/cmake/Qt6/*.cmake
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6BundledResonanceAudio/
 %{_qt6_libdir}/cmake/Qt6BundledResonanceAudio/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6QGstreamerMediaPluginPrivate/
-%{_qt6_libdir}/cmake/Qt6QGstreamerMediaPluginPrivate/*.cmake
 %dir  %{_qt6_libdir}/cmake/Qt6MultimediaQuickPrivate
 %{_qt6_libdir}/cmake/Qt6MultimediaQuickPrivate/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6Multimedia
@@ -191,6 +191,8 @@ popd
 %{_qt6_libdir}/cmake/Qt6SpatialAudio/*cmake
 %dir %{_qt6_libdir}/cmake/Qt6Quick3DSpatialAudioPrivate
 %{_qt6_libdir}/cmake/Qt6Quick3DSpatialAudioPrivate/*cmake
+%dir %{_qt6_libdir}/cmake/Qt6QGstreamerMediaPluginImplPrivate
+%{_qt6_libdir}/cmake/Qt6QGstreamerMediaPluginImplPrivate/*cmake
 %dir %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
@@ -206,6 +208,9 @@ popd
 
 
 %changelog
+* Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
+
 * Mon Sep 23 2024 Fabio Valentini <decathorpe@gmail.com> - 6.7.2-3
 - Rebuild for ffmpeg 7
 

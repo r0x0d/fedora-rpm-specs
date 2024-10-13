@@ -1,14 +1,11 @@
 Name:           python-tox-uv
-Version:        1.11.4
+Version:        1.15.0
 Release:        %autorelease
 Summary:        Integration of uv with tox
 
 License:        MIT
 URL:            https://github.com/tox-dev/tox-uv
 Source:         %{pypi_source tox_uv}
-
-# Make a test fixture work without /usr/bin/python
-Patch:          https://github.com/tox-dev/tox-uv/pull/103.patch
 
 # as with python-tox, those tests run ont he CI only, as they need internet access
 %bcond ci_tests 0

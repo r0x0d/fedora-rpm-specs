@@ -11,8 +11,8 @@
 
 Summary: Qt6 - QtTool components
 Name:    qt6-qttools
-Version: 6.7.2
-Release: 4%{?dist}
+Version: 6.8.0
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -33,8 +33,6 @@ Patch1: qttools-run-qttools-with-qt6-suffix.patch
 Patch2: qttools-add-libatomic.patch
 
 ## upstream patches
-# LLVM/Clang 19 compatibility (several commits)
-Patch3: qttools-llvm19.patch
 
 Source20: assistant.desktop
 Source21: designer.desktop
@@ -385,6 +383,9 @@ popd
 
 
 %changelog
+* Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
+
 * Tue Oct 01 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 6.7.2-4
 - Rebuilt for LLVM 19
 

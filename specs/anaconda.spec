@@ -1,6 +1,6 @@
 Summary: Graphical system installer
 Name:    anaconda
-Version: 42.6
+Version: 42.7
 Release: 1%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
@@ -36,7 +36,6 @@ Source0: https://github.com/rhinstaller/%{name}/releases/download/%{name}-%{vers
 %define libarchivever 3.0.4
 %define libblockdevver 2.1
 %define libreportanacondaver 2.0.21-1
-%define libxklavierver 5.4
 %define mehver 0.23-1
 %define nmver 1.0
 %define pykickstartver 3.58-1
@@ -58,7 +57,6 @@ BuildRequires: gobject-introspection-devel
 %if %{with glade}
 BuildRequires: glade-devel
 %endif
-BuildRequires: libxklavier-devel >= %{libxklavierver}
 BuildRequires: make
 BuildRequires: pango-devel
 BuildRequires: python3-devel
@@ -142,7 +140,7 @@ Requires: python3-pid
 Requires: crypto-policies
 Requires: crypto-policies-scripts
 
-# required because of the rescue mode and VNC question
+# required because of the rescue mode and RDP question
 Requires: anaconda-tui = %{version}-%{release}
 
 # Make sure we get the en locale one way or another
@@ -178,7 +176,6 @@ BuildRequires: desktop-file-utils
 # live installation currently implies a graphical installation
 Requires: anaconda-gui = %{version}-%{release}
 Requires: zenity
-Requires: xisxwayland
 Recommends: xhost
 
 %description live
@@ -258,16 +255,19 @@ Requires: zram-generator
 # needed for proper driver disk support - if RPMs must be installed, a repo is needed
 Requires: createrepo_c
 # Display stuff moved from lorax templates
-Requires: xorg-x11-drivers
-Requires: xorg-x11-server-Xorg
-Requires: xrandr
-Requires: xrdb
-Requires: dbus-x11
 Requires: gsettings-desktop-schemas
 Requires: nm-connection-editor
 Requires: librsvg2
 Requires: gnome-kiosk
+Requires: gnome-remote-desktop
+# needed to generate RDP certs at runtime
+Requires: openssl
+# needed by GNOME kiosk but not declared a as explicit dep,
+# instead expected to be declared like this according to the
+# maintainers
+Requires: mesa-dri-drivers
 Requires: brltty
+Requires: python3-pam
 # dependencies for rpm-ostree payload module
 Requires: rpm-ostree >= %{rpmostreever}
 Requires: ostree
@@ -292,8 +292,6 @@ Requires: python3-meh-gui >= %{mehver}
 Requires: python3-xkbregistry
 Requires: adwaita-icon-theme
 Requires: tecla
-Requires: tigervnc-server-minimal
-Requires: libxklavier >= %{libxklavierver}
 Requires: nm-connection-editor
 %ifnarch s390 s390x
 Requires: NetworkManager-wifi
@@ -305,6 +303,8 @@ Requires: system-logos
 
 # Needed to compile the gsettings files
 BuildRequires: gsettings-desktop-schemas
+# Needed for gdbus-codegen
+BuildRequires: glib2-devel
 
 %description gui
 This package contains graphical user interface for the Anaconda installer.
@@ -411,6 +411,7 @@ rm -rf \
 %{_sbindir}/anaconda
 %{_sbindir}/handle-sshpw
 %{_datadir}/anaconda
+%{_sysconfdir}/pam.d/anaconda
 %{_prefix}/libexec/anaconda
 %exclude %{_datadir}/anaconda/gnome
 %exclude %{_datadir}/anaconda/pixmaps
@@ -425,12 +426,15 @@ rm -rf \
 %exclude %{python3_sitearch}/pyanaconda/ui/gui/*
 %exclude %{python3_sitearch}/pyanaconda/ui/tui/*
 %{_bindir}/anaconda-cleanup
+# Installer configuration files aren’t updated post-installation,
+# so the noreplace flag doesn't offer a practical benefit in this context.
+# It is added to silence the rpmlint conffile-without-noreplace-flag warning.
 %dir %{_sysconfdir}/%{name}
-%config %{_sysconfdir}/%{name}/*
+%config(noreplace) %{_sysconfdir}/%{name}/*
 %dir %{_sysconfdir}/%{name}/conf.d
-%config %{_sysconfdir}/%{name}/conf.d/*
+%config(noreplace) %{_sysconfdir}/%{name}/conf.d/*
 %dir %{_sysconfdir}/%{name}/profile.d
-%config %{_sysconfdir}/%{name}/profile.d/*
+%config(noreplace) %{_sysconfdir}/%{name}/profile.d/*
 
 %if %{with live}
 # do not provide the live subpackage on RHEL
@@ -483,6 +487,56 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Thu Oct 10 2024 Packit <hello@packit.dev> - 42.7-1
+- Add GRD test coverage (jkonecny)
+- Improve docs in gnome_remote_desktop source (jkonecny)
+- Check return values from GRD calls (jkonecny)
+- Create a shortcut method for GRD failure (jkonecny)
+- Obtain hostname for RDP asynchronously (jkonecny)
+- Print connect info after starting GRD server (jkonecny)
+- Fix starting anaconda on z/VM and LPAR s390x (jstodola)
+- Create GRDServer class only when required (jkonecny)
+- Disable fedora-cisco repository in our containers (jkonecny)
+- Fix typo in the GRD source file name (jkonecny)
+- Do not change compositor options when not defined (jkonecny)
+- Add release-notes for Wayland migration (jkonecny)
+- Set --rdp in liveinst unsupported (jkonecny)
+- Remove Wayland detection logic from code (jkonecny)
+- Do not create GRDServer on Live ISO (jkonecny)
+- Remove dead spice_vd_agent code (jkonecny)
+- Switch keyboard management to Localed (jkonecny)
+- Add localed signal support to LocaledWrapper (jkonecny)
+- Add missing support to localed for compositor (jkonecny)
+- Redirect output of various GNOME related tools to Journal (mkolman)
+- Remove leftover debugging message (mkolman)
+- Redirect Anaconda main process stderr to Journal (mkolman)
+- Cleanup remaining Xorg and VNC references and dead code (mkolman)
+- Handle inst.rdp in Dracut (mkolman)
+- Adjust to freerdp and GNOME package changes (mkolman)
+- Replace VNC support with GNOME remote desktop (mkolman)
+- Add RDP boot options & deprecate VNC boot options (mkolman)
+- Introduce GNOME remote desktop support (mkolman)
+- Rename usevnc flag & similar variables (mkolman)
+- Drop xrdb (jexposit)
+- Drop xrandr (jexposit)
+- Add unit tests for GkKeyboardManager and its API in localization module
+  (rvykydal)
+- Drop the X.Org server dependency (jexposit)
+- Drop libxklavier (jexposit)
+- Use GNOME Kiosk's API in LayoutIndicator (jexposit)
+- Setup gdbus-codegen (jexposit)
+- Use GNOME Kiosk's API in XklWrapper (jexposit)
+- Add GNOME Kiosk keyboard manager class (jexposit)
+- home reuse: add unit tests (rvykydal)
+- home reuse: define static and class methods (rvykydal)
+- home reuse: reuse mount options of reused mountpoins (rvykydal)
+- home reuse: check autopartitioning scheme against reused mountpoints
+  (rvykydal)
+- home reuse: require removing of bootloader partition explicitly (rvykydal)
+- home reuse: remove bootloader partitions implicitly (rvykydal)
+- home reuse: update existing OSs when applying partitioning (rvykydal)
+- home reuse: add support for /home reuse to automatic partitioning (rvykydal)
+
 * Tue Oct 08 2024 Packit <hello@packit.dev> - 42.6-1
 - Update to version 42.6
 

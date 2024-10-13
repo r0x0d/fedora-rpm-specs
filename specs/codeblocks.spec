@@ -1,5 +1,5 @@
-%global svndate 20240815
-%global svnrev 13542
+%global svndate 20240914
+%global svnrev 13570
 %global snapshot 0%{?svndate}
 %if %{snapshot}
 %global svnrelease .%{svndate}svn%{svnrev}
@@ -7,7 +7,7 @@
 
 Name:		codeblocks
 Version:	20.03
-Release:	26%{?svnrelease}%{?dist}
+Release:	27%{?svnrelease}%{?dist}
 Summary:	An open source, cross platform, free C++ IDE
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:	GPL-3.0-or-later
@@ -342,6 +342,10 @@ rm -f %{buildroot}/%{pkgdatadir}/docs/index.ini
 
 
 %changelog
+* Fri Oct 11 2024 Dan Horák <dan[at]danny.cz> - 20.03-27.20240914svn13570
+- updated to nightly 20240914 rev 13570
+- rebuilt for astyle 3.6.3 (rhbz#2311785)
+
 * Fri Sep 06 2024 Dan Horák <dan[at]danny.cz> - 20.03-26.20240815svn13542
 - updated to nightly 20240815 rev 13542
 - rebuilt for astyle 3.6.1 (rhbz#2303916)

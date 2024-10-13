@@ -81,7 +81,7 @@ open-sourced by HP and UNLV in 2005.}
 
 %package devel
 Summary:       Development files for %{name}
-Requires:      %{name}%{?_isa} = %{version}-%{release}
+Requires:      %{name}-libs%{?_isa} = %{version}-%{release}
 
 %description devel %_description
 

@@ -47,7 +47,7 @@
 
 # Do not forget to bump pam_ssh_agent_auth release if you rewind the main package release to 1
 %global openssh_ver 9.9p1
-%global openssh_rel 2
+%global openssh_rel 3
 %global pam_ssh_agent_ver 0.10.4
 %global pam_ssh_agent_rel 11
 
@@ -227,6 +227,7 @@ Patch1012: openssh-9.0p1-evp-fips-kex.patch
 Patch1014: openssh-8.7p1-nohostsha1proof.patch
 
 Patch1015: openssh-9.6p1-pam-rhost.patch
+Patch1016: openssh-9.9p1-separate-keysign.patch
 
 License: BSD-3-Clause AND BSD-2-Clause AND ISC AND SSH-OpenSSH AND ssh-keyscan AND sprintf AND LicenseRef-Fedora-Public-Domain AND X11-distribute-modifications-variant
 Requires: /sbin/nologin
@@ -279,6 +280,10 @@ Summary: An open source SSH client applications
 Requires: openssh = %{version}-%{release}
 Requires: crypto-policies >= 20220824-1
 
+%package keysign
+Summary: A helper program used for host-based authentication
+Requires: openssh = %{version}-%{release}
+
 %package server
 Summary: An open source SSH server daemon
 Requires: openssh = %{version}-%{release}
@@ -323,6 +328,11 @@ install openssh-clients, openssh-server, or both.
 OpenSSH is a free version of SSH (Secure SHell), a program for logging
 into and executing commands on a remote machine. This package includes
 the clients necessary to make encrypted connections to SSH servers.
+
+%description keysign
+OpenSSH is a free version of SSH (Secure SHell), a program for logging
+into and executing commands on a remote machine. ssh-keysign is a
+helper program used for host-based authentication disabled by default.
 
 %description server
 OpenSSH is a free version of SSH (Secure SHell), a program for logging
@@ -429,6 +439,7 @@ popd
 %patch -P 1012 -p1 -b .evp-fips-dh
 %patch -P 1014 -p1 -b .nosha1hostproof
 %patch -P 1015 -p1 -b .pam-rhost
+%patch -P 1016 -p1 -b .sep-keysign
 
 %patch -P 100 -p1 -b .coverity
 
@@ -658,8 +669,6 @@ test -f %{sysconfig_anaconda} && \
 %attr(0755,root,root) %{_bindir}/ssh-keygen
 %attr(0644,root,root) %{_mandir}/man1/ssh-keygen.1*
 %attr(0755,root,root) %dir %{_libexecdir}/openssh
-%attr(4555,root,root) %{_libexecdir}/openssh/ssh-keysign
-%attr(0644,root,root) %{_mandir}/man8/ssh-keysign.8*
 
 %files clients
 %attr(0755,root,root) %{_bindir}/ssh
@@ -686,6 +695,10 @@ test -f %{sysconfig_anaconda} && \
 %attr(0644,root,root) %{_mandir}/man8/ssh-sk-helper.8*
 %attr(0644,root,root) %{_userunitdir}/ssh-agent.service
 %attr(0644,root,root) %{_userunitdir}/ssh-agent.socket
+
+%files keysign
+%attr(4555,root,root) %{_libexecdir}/openssh/ssh-keysign
+%attr(0644,root,root) %{_mandir}/man8/ssh-keysign.8*
 
 %files server
 %dir %attr(0711,root,root) %{_datadir}/empty.sshd
@@ -736,6 +749,10 @@ test -f %{sysconfig_anaconda} && \
 %endif
 
 %changelog
+* Fri Oct 11 2024 Dmitry Belyavskiy <dbelyavs@redhat.com> - 9.9p1-3
+- Separate ssh-keysign to a dedicated package
+- Use FIPS KEX defaults in FIPS mode
+
 * Thu Oct 10 2024 Dmitry Belyavskiy <dbelyavs@redhat.com> - 9.9p1-2
 - Update version of pam_ssh_agent_auth
 

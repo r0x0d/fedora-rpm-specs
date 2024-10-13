@@ -1,5 +1,5 @@
 Name:           python-ogr
-Version:        0.50.0
+Version:        0.50.1
 Release:        1%{?dist}
 Summary:        One API for multiple git forges
 
@@ -48,6 +48,10 @@ One Git library to Rule!
 
 
 %changelog
+* Fri Oct 11 2024 Packit <hello@packit.dev> - 0.50.1-1
+- We have fixed an issue that caused inconsistencies with the expected behavior stated by the documentation when adding duplicate reactions to GitLab comments. (#861)
+- Resolves: rhbz#2318010
+
 * Mon Sep 16 2024 Packit <hello@packit.dev> - 0.50.0-1
 - A new` get_commits` method was implemented for GitHub and Gitlab projects. (#857)
 - An issue with silently ignoring error (#760) was fixed. (#855)

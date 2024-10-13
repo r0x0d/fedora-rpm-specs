@@ -49,7 +49,7 @@
 %endif
 
 Name:           xpra
-Version:        5.0.6
+Version:        5.0.10
 Release:        %autorelease
 Summary:        Remote display server for applications and desktops
 # Automatically converted from old format: GPLv2+ and BSD and LGPLv3+ and MIT - review is highly recommended.
@@ -182,7 +182,12 @@ Xpra is usable over reasonably slow links and does its best to adapt to changing
 network bandwidth constraints.
 
 %prep
-%autosetup -p1 -n %{name}-%{version}
+%setup -q -n %{name}-%{version}
+
+%patch -P1 -p1
+%if 0%{?fedora} >= 41
+%patch -P2 -p1
+%endif
 
 # cc1: error: unrecognized compiler option ‘-mfpmath=387’
 %ifarch %{arm}

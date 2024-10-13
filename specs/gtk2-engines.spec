@@ -2,9 +2,8 @@ Summary:        Theme engines for GTK+ 2.0
 Name:           gtk2-engines
 Version:        2.20.2
 Release:        31%{?dist}
-# for details on which engines are GPL vs LGPL, see COPYING
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+# This release of gtk-engines is now solely LGPL 2.1 or any later version.
+License:        LGPL-2.1-or-later
 #VCS: git:git://git.gnome.org/gtk-engines
 Source:         http://download.gnome.org/sources/gtk-engines/2.20/gtk-engines-%{version}.tar.bz2
 

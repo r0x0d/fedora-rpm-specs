@@ -3,7 +3,7 @@
 
 Name:		perl-Compress-Raw-Lzma
 Version:	2.213
-Release:	2%{?dist}
+Release:	4%{?dist}
 Summary:	Low-level interface to lzma compression library
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:		https://metacpan.org/release/Compress-Raw-Lzma
@@ -47,20 +47,25 @@ BuildRequires:	xz
 %endif
 # Dependencies
 Requires:	perl(XSLoader)
-# Built-against version is embedded in module, so we have a strict version dependency
-%if 0%{?fedora} < 40 && 0%{?rhel} < 10
-%global xz_epoch %{nil}
-%else
-%global xz_epoch 1:
-%endif
-Requires:	xz-libs%{?_isa} = %{xz_epoch}%((pkg-config --modversion liblzma 2>/dev/null || echo 0) | tr -dc '[0-9.]')
 
 # Don't "provide" private Perl libs
 %{?perl_default_filter}
+# Filter modules bundled for tests
+%global __provides_exclude_from %{?__provides_exclude_from:%__provides_exclude_from|}^%{_libexecdir}
+%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\(CompTestUtils\\)
 
 %description
 This module provides a Perl interface to the lzma compression library.
 It is used by IO::Compress::Lzma.
+
+%package tests
+Summary:        Tests for %{name}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       perl-Test-Harness
+
+%description tests
+Tests from %{name}. Execute them
+with "%{_libexecdir}/%{name}/test".
 
 %prep
 %setup -q -n Compress-Raw-Lzma-%{version}
@@ -68,6 +73,12 @@ It is used by IO::Compress::Lzma.
 # Remove bundled test modules
 rm -rv t/Test/
 perl -i -ne 'print $_ unless m{^t/Test/}' MANIFEST
+
+# Help generators to recognize Perl scripts
+for F in t/*.t; do
+    perl -i -MConfig -ple 'print $Config{startperl} if $. == 1 && !s{\A#!.*perl\b}{$Config{startperl}}' "$F"
+    chmod +x "$F"
+done
 
 %build
 perl Makefile.PL \
@@ -82,7 +93,30 @@ perl Makefile.PL \
 find %{buildroot} -type f -name '*.bs' -empty -delete
 %{_fixperms} -c %{buildroot}
 
+# Install tests
+mkdir -p %{buildroot}%{_libexecdir}/%{name}
+cp -a t %{buildroot}%{_libexecdir}/%{name}
+rm %{buildroot}%{_libexecdir}/%{name}/t/99pod.t
+rm %{buildroot}%{_libexecdir}/%{name}/t/meta*
+cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
+#!/bin/bash
+export TEST_SKIP_VERSION_CHECK=1
+set -e
+# Some tests write into temporary files/directories. The easiest solution
+# is to copy the tests into a writable directory and execute them from there.
+DIR=$(mktemp -d)
+pushd "$DIR"
+cp -a %{_libexecdir}/%{name}/* ./
+prove -I . -j "$(getconf _NPROCESSORS_ONLN)"
+popd
+rm -rf "$DIR"
+EOF
+chmod +x %{buildroot}%{_libexecdir}/%{name}/test
+
 %check
+# See https://src.fedoraproject.org/rpms/perl-Compress-Raw-Lzma/pull-request/3
+export TEST_SKIP_VERSION_CHECK=1
+export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print $1} else {print 1}' -- '%{?_smp_mflags}')
 make test
 
 %files
@@ -91,7 +125,16 @@ make test
 %{perl_vendorarch}/Compress/
 %{_mandir}/man3/Compress::Raw::Lzma.3*
 
+%files tests
+%{_libexecdir}/%{name}
+
 %changelog
+* Fri Oct 11 2024 Michal Josef Špaček <mspacek@redhat.com> - 2.213-4
+- Package tests
+
+* Thu Oct 03 2024 Richard W.M. Jones <rjones@redhat.com> - 2.213-3
+- Remove hard dependency on build NVR of xz-libs
+
 * Wed Oct 02 2024 Richard W.M. Jones <rjones@redhat.com> - 2.213-2
 - Rebuild against xz 5.6.3
 

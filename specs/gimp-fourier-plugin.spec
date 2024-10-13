@@ -2,8 +2,8 @@
 # gimp-2.99 branch:
 #
 # https://github.com/rpeyron/plugin-gimp-fourier/tree/gimp2.99
-%global commit 3ee5462c17d83b6c91c0d5f78ce55b8fa13b4763
-%global snapdate 20240812
+%global commit 29d3400540812314d7a43cd471b8e8dbbf10ccfb
+%global snapdate 20241010
 
 Name:           gimp-fourier-plugin
 Version:        0.4.5^%{snapdate}git%{sub %{commit} 1 7}
@@ -16,7 +16,10 @@ URL:            https://www.lprp.fr/gimp_plugin_en/
 Source:         %{forgeurl}/archive/%{commit}/plugin-gimp-fourier-%{commit}.tar.gz
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
-ExcludeArch:    %{ix86}
+# The gimp package dropped s390x support in
+# https://src.fedoraproject.org/rpms/gimp/c/778e871c1051ea063ce679b18ae84f0a3c47b6f7.
+# We have asked the maintainer to create a tracking bug.
+ExcludeArch:    %{ix86} s390x
 
 BuildRequires:  gcc
 BuildRequires:  make

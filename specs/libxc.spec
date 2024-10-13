@@ -11,16 +11,16 @@
 %endif
 
 # Shared library version
-%global soversion 12
+%global soversion 15
 
 Name:           libxc
 Summary:        Library of exchange and correlation functionals for density-functional theory
-Version:        6.2.2
-Release:        8%{?dist}
+Version:        7.0.0
+Release:        1%{?dist}
 License:        MPL-2.0
 Source0:        https://gitlab.com/libxc/libxc/-/archive/%{version}/%{name}-%{version}.tar.gz
 # Don't rebuild libxc for pylibxc
-Patch0:         libxc-5.1.4-pylibxc.patch
+Patch0:         libxc-7.0.0-pylibxc.patch
 URL:            http://www.tddft.org/programs/octopus/wiki/index.php/Libxc
 
 BuildRequires:  make
@@ -109,25 +109,24 @@ rm -f %{buildroot}%{_includedir}/libxc.bib
 %license COPYING
 %{_bindir}/xc-info
 %{_libdir}/libxc.so.%{soversion}*
-%{_libdir}/libxcf90.so.%{soversion}*
 %{_libdir}/libxcf03.so.%{soversion}*
 
 %files devel
 %{_libdir}/libxc.so
-%{_libdir}/libxcf90.so
 %{_libdir}/libxcf03.so
 %{_includedir}/xc*.h
-%{_fmoddir}/xc_f90_*.mod
 %{_fmoddir}/xc_f03_*.mod
 %{_libdir}/pkgconfig/libxc.pc
 %{_libdir}/pkgconfig/libxcf03.pc
-%{_libdir}/pkgconfig/libxcf90.pc
 %{_libdir}/cmake/Libxc/
 
 %files -n python3-%{name}
 %{python3_sitearch}/pylibxc/
 
 %changelog
+* Fri Oct 11 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 7.0.0-1
+- Update to 7.0.0.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.2.2-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

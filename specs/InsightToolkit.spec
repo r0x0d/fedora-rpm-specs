@@ -12,7 +12,7 @@ Summary:        Insight Toolkit library for medical image processing
 Version:        %{version_major_minor}.3
 %global version_doc_major_minor 4.13
 %global version_doc %{version_doc_major_minor}.0
-Release:        21%{?dist}
+Release:        22%{?dist}
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 Source0:        https://github.com/InsightSoftwareConsortium/ITK/releases/download/v%{version}/InsightToolkit-%{version}.tar.gz
@@ -25,6 +25,9 @@ Patch2:         InsightToolkit-sse.patch
 Patch3:         remove-test.diff
 # https://github.com/InsightSoftwareConsortium/ITK/pull/1599
 Patch4:         InsightToolkit-pr1599-fix-invalid-const-member-func.patch
+# https://github.com/InsightSoftwareConsortium/ITK/pull/1920/files: remove use of triangle from vxl (patched out in vxl system package also)
+# backported
+Patch5:         InsightToolkit-remove-vxl-netlib.patch
 
 BuildRequires:  cmake
 BuildRequires:  doxygen
@@ -272,6 +275,9 @@ cp -ar Examples/* %{buildroot}%{_datadir}/%{name}/examples/
 %{_libdir}/cmake/%{name}/Modules/ITKVtkGlue.cmake
 
 %changelog
+* Fri Oct 11 2024 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 4.13.3-22
+- Include patch to remove vxl netlib usage
+
 * Sat Oct 05 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 4.13.3-21
 - Backport upstream patch for FTBFS with invalid const member func
 

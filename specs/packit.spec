@@ -6,7 +6,7 @@
 %endif
 
 Name:           packit
-Version:        0.102.0
+Version:        0.102.1
 Release:        1%{?dist}
 Summary:        A tool for integrating upstream projects with Fedora operating system
 
@@ -79,6 +79,12 @@ cp files/bash-completion/packit %{buildroot}%{bash_completions_dir}/packit
 %doc README.md
 
 %changelog
+* Fri Oct 11 2024 Packit <hello@packit.dev> - 0.102.1-1
+- We have fixed an issue that was introduced during the unification of the interface for passing resolved Bugzillas / Jira tickets to the `sync-release` or `bodhi_update` jobs. (#2442)
+- `packit validate-config` now checks for the existence of downstream package. (#2436)
+- Packit now allows building VM images via CLI without any Copr repository specified. (#2434)
+- Resolves: rhbz#2318003
+
 * Fri Oct 04 2024 Packit <hello@packit.dev> - 0.102.0-1
 - Check for `upstream_project_url` presence in the configuration when `pull_from_upstream` job is configured was removed from `validate-config`, as this is no longer required. (#2423)
 - `packit init` now adds working directories that are used in `packit prepare-sources` into the `.gitignore` file in the same directory where Packit config resides. (#2431)

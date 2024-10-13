@@ -6,19 +6,14 @@
 # qdigidoc release URLs are troublesome, to download the tar.gz use the following command
 # spectool -g -s 0 qdigidoc.spec
 
-
 Name:           qdigidoc
 Version:        4.6.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Estonian digital signature and encryption application
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-LGPLv2+
 URL:            https://github.com/open-eid/DigiDoc4-Client
-Source0:        %{url}/releases/download/v%{version}/%{upstream_name}-%{version}.tar.gz
-# https://github.com/open-eid/DigiDoc4-Client/wiki/DeveloperTips
-Source1:        EE.xml
-# https://ec.europa.eu/tools/lotl/eu-lotl.xml`
-Source2:        eu-lotl.xml
+Source0:        %{url   }/releases/download/v%{version}/%{upstream_name}-%{version}.tar.gz
 
 Patch0:         sandbox.patch
 
@@ -69,8 +64,6 @@ extension for the nautilus file manager.
 %prep
 %setup -q -n %{upstream_name}-%{version}
 %patch 0 -p1
-
-cp %{S:1} %{S:2} client/
 
 %build
 %if 0%{?el7}
@@ -146,6 +139,10 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/ee.ria.qdigidoc4.des
 %{_datadir}/nautilus-python/extensions/*
 
 %changelog
+* Fri Oct 11 2024 Dmitri Smirnov <dmitri@smirnov.ee> - 4.6.0-2
+- Move pre-downloaded files to patch to avoid issues when building 
+- Remove pqtch 1251 which is no longer needed
+
 * Wed Oct 09 2024 Dmitri Smirnov <dmitri@smirnov.ee> - 4.6.0-1
 - Upstream release 4.6.0
 

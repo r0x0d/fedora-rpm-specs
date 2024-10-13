@@ -5,7 +5,7 @@
 
 Name:           clojure
 Epoch:          1
-Version:        1.11.3
+Version:        1.12.0
 Release:        1%{?dist}
 Summary:        A dynamic programming language that targets the Java Virtual Machine
 
@@ -59,6 +59,9 @@ can avoid reflection.
 %{_bindir}/%{name}
 
 %changelog
+* Fri Oct 11 2024 Markku Korkeala <markku.korkeala@iki.fi> - 1:1.12.0-1
+- Update to upstream release 1.12.0, closes rhbz#2186974
+
 * Tue Oct 8 2024 Markku Korkeala <markku.korkeala@iki.fi> - 1:1.11.3-1
 - Update to upstream release 1.11.3
 

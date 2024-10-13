@@ -3,7 +3,7 @@
 
 Name:      optee_os
 Version:   4.3.0
-Release:   3%{?dist}
+Release:   4%{?dist}
 Summary:   Trusted side of the TEE
 
 # The TEE core of optee_os is provided under the BSD 2-Clause license. But
@@ -67,12 +67,15 @@ mkdir -p %{buildroot}%{_datadir}/%{name}
 # At the moment we just support adding tee-raw.bin
 mkdir -p %{buildroot}%{_datadir}/%{name}/k3-j721e/
 install -p -m 0644 out/k3-j721e/core/tee-raw.bin  /%{buildroot}%{_datadir}/%{name}/k3-j721e/
+install -p -m 0644 out/k3-j721e/core/tee-pager_v2.bin  /%{buildroot}%{_datadir}/%{name}/k3-j721e/
 
 mkdir -p %{buildroot}%{_datadir}/%{name}/k3-j784s4/
 install -p -m 0644 out/k3-j784s4/core/tee-raw.bin  /%{buildroot}%{_datadir}/%{name}/k3-j784s4/
+install -p -m 0644 out/k3-j784s4/core/tee-pager_v2.bin  /%{buildroot}%{_datadir}/%{name}/k3-j784s4/
 
 mkdir -p %{buildroot}%{_datadir}/%{name}/k3-am62x/
 install -p -m 0644 out/k3-am62x/core/tee-raw.bin  /%{buildroot}%{_datadir}/%{name}/k3-am62x/
+install -p -m 0644 out/k3-am62x/core/tee-pager_v2.bin  /%{buildroot}%{_datadir}/%{name}/k3-am62x/
 
 # rk3399 expects the .elf
 mkdir -p %{buildroot}%{_datadir}/%{name}/rockchip-rk3399
@@ -92,6 +95,9 @@ install -p -m 0644 out/sunxi-sun50i_a64/core/tee-pager_v2.bin /%{buildroot}%{_da
 %endif
 
 %changelog
+* Fri Oct 11 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 4.3.0-4
+- Ship tee-pager_v2.bin for all targets
+
 * Thu Aug 1 2024 Enric Balletbo i Serra <eballetbo@redhat.com> - 4.3.0-3
 - Make optee-os-firmware-armv8 noarch
 
