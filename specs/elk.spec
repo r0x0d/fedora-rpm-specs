@@ -35,20 +35,23 @@ ExclusiveArch:          x86_64 %{ix86} aarch64 %{arm} %{power64}
 %endif
 %global FFTW -L%{_libdir} -lfftw3 -lfftw3f
 %if 0%{?fedora} >= 25 || 0%{?rhel} >= 9
-%global LIBXC -L%{_libdir} -lxc -lxcf90
+%global LIBXC -L%{_libdir} -lxc -lxcf03
 %else
 %global LIBXC -L%{_libdir} -lxc
 %endif
 
 Name:			elk
 Version:		9.2.12
-Release:		3%{?dist}
+Release:		4%{?dist}
 Summary:		An all-electron full-potential linearised augmented-plane wave code
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:		GPL-3.0-or-later
 URL:			http://elk.sourceforge.net/
 Source0:		https://downloads.sourceforge.net/project/%{name}/%{name}-%{version}.tgz
+
+# Patch for libxc 7 compatibility: standard Fortran interface has been called libxcf03 since libxc 3
+Patch0:                 elk-9.2.12-libxc7.patch
 
 BuildRequires:		patch
 BuildRequires:		time
@@ -127,6 +130,12 @@ This package contains the common binaries.
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch 0 -p 1 -b .libxc7
+
+%if 0%{?fedora} >= 42
+# Libxc 7 split off the functionals into a different module
+sed -i 's|use xc_f03_lib_m|use xc_f03_lib_m\nuse xc_f03_funcs_m|g' src/libxcifc.f90
+%endif
 
 # create common make.inc.common
 # default serial fortran
@@ -144,7 +153,7 @@ echo "SRC_W90S = w90_stub.f90" >> make.inc.common
 echo "F90_LIB = -L%{_libdir} -l%{BLASLAPACK} %{FFTW}" >> make.inc.common
 echo "SRC_FFT = zfftifc_fftw.f90 cfftifc_fftw.f90" >> make.inc.common
 echo "LIB_LIBXC = %LIBXC" >> make.inc.common
-echo "SRC_LIBXC = libxcf90.f90 libxcifc.f90" >> make.inc.common
+echo "SRC_LIBXC = libxcifc.f90" >> make.inc.common
 
 # remove bundling of BLAS/LAPACK/FFTW/LIBXC/ERF
 sed -i "s/blas lapack fft elk/elk/" src/Makefile
@@ -152,7 +161,7 @@ sed -i "s/erf.f90//" src/Makefile
 sed -i "s/,erf//" src/stheta_mp.f90
 # remove bundled sources
 rm -rf src/LAPACK src/BLAS src/fftlib
-rm -f src/libxc_funcs.f90 src/libxc.f90
+rm -f src/libxc_funcs.f90 src/libxc.f90 src/libxcf90.f90
 rm -f src/erf.f90
 
 
@@ -310,6 +319,9 @@ mv tests.orig tests
 
 
 %changelog
+* Sat Oct 12 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 9.2.12-4
+- Remove bunded Libxc sources and patch for libxc 7 compatibility.
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 9.2.12-3
 - convert license to SPDX
 

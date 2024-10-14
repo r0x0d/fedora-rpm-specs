@@ -45,6 +45,7 @@ Requires:       mesa-libGL
 Requires:       glx-utils
 Requires:       gvfs
 Requires:       webkit2gtk4.1
+Requires:       protobuf
 Recommends: 	p7zip, curl
 Recommends:	fluid-soundfont-gs
 Recommends:     wine-core

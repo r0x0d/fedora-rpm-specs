@@ -1,5 +1,5 @@
 Name:           rocm-rpm-macros
-Version:        6.2.1
+Version:        6.2.2
 Release:        %autorelease
 Summary:        ROCm RPM macros
 License:        GPL-2.0-or-later

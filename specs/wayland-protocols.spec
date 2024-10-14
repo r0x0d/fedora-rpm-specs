@@ -1,13 +1,14 @@
+# Header-only library
+%global debug_package %{nil}
+
 Name:           wayland-protocols
-Version:        1.37
+Version:        1.38
 Release:        1%{?dist}
 Summary:        Wayland protocols that adds functionality not available in the core protocol
 
 License:        MIT
 URL:            https://wayland.freedesktop.org/
 Source0:        https://gitlab.freedesktop.org/wayland/%{name}/-/releases/%{version}/downloads/%{name}-%{version}.tar.xz
-
-BuildArch:      noarch
 
 BuildRequires:  gcc
 BuildRequires:  gcc-g++
@@ -23,6 +24,8 @@ wayland-protocols.
 
 %package devel
 Summary:        Wayland protocols that adds functionality not available in the core protocol
+Provides:       %{name}-static = %{version}-%{release}
+BuildArch:      noarch
 
 %description devel
 wayland-protocols contains Wayland protocols that adds functionality not
@@ -46,8 +49,12 @@ wayland-protocols.
 %doc README.md
 %{_datadir}/pkgconfig/%{name}.pc
 %{_datadir}/%{name}/
+%{_includedir}/%{name}/
 
 %changelog
+* Sat Oct 12 2024 Neal Gompa <ngompa@fedoraproject.org> - 1.38-1
+- Update to 1.38
+
 * Sat Aug 31 2024 Neal Gompa <ngompa@fedoraproject.org> - 1.37-1
 - Update to 1.37
 

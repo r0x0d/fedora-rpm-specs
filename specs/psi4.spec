@@ -15,7 +15,7 @@ ExcludeArch: %{ix86}
 Name:           psi4
 Epoch:          1
 Version:        1.9.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An ab initio quantum chemistry package
 # Automatically converted from old format: LGPLv3 and MIT - review is highly recommended.
 License:        LGPL-3.0-only AND LicenseRef-Callaway-MIT
@@ -34,6 +34,8 @@ Patch3:         psi4-1.9.1-noqcetest.patch
 Patch4:         psi4-1.9.1-noecpgrad.patch
 # Don't strip the library
 Patch5:         psi4-1.9.1-nostrip.patch
+# Patch build system so that libxc 7.0.0 is accepted
+Patch6:         psi4-1.9.1-libxc7.patch
 
 BuildRequires:  cmake
 BuildRequires:  bison-devel
@@ -130,6 +132,7 @@ and the quadrature grids.
 %patch 3 -p1 -b .noqcetest
 %patch 4 -p1 -b .noecpgrad
 %patch 5 -p1 -b .nostrip
+%patch 6 -p1 -b .libxc7
 
 %build
 export F77=gfortran
@@ -182,6 +185,9 @@ ctest -L smoketests --output-on-failure
 %{_datadir}/psi4/
 
 %changelog
+* Sat Oct 12 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 1:1.9.1-3
+- Patch for libxc 7.0.0 compatibility in rawhide.
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1:1.9.1-2
 - convert license to SPDX
 

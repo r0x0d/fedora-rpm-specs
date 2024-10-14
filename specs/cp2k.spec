@@ -43,6 +43,8 @@ Patch:         cp2k-data.patch
 # Allow testing-farm to run do_regtest.py
 # https://github.com/cp2k/cp2k/pull/3268
 Patch:         fix_regtest.patch
+# Patch for libxc 7 support
+Patch:         cp2k-2024.1-libxc7.patch
 
 # Build dependencies
 BuildRequires: cmake
@@ -57,6 +59,7 @@ BuildRequires: fftw-devel
 %if %{with libxsmm}
 BuildRequires: libxsmm-devel >= 1.8.1-3
 %endif
+# needs at least libxc 5.1.0 but works fine with later releases
 BuildRequires: libxc-devel >= 5.1.0
 BuildRequires: spglib-devel
 # Test dependencies

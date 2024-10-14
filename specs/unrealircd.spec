@@ -6,7 +6,7 @@
 
 Summary:        Open Source IRC server
 Name:           unrealircd
-Version:        6.1.7.2
+Version:        6.1.8
 Release:        1%{?dist}
 # UnrealIRCd declares itself as GPL-2.0-or-later as it's the common denominator for
 # a GPL-1.0-or-later and GPL-2.0-or-later mixture, breakdown of other source codes:
@@ -25,7 +25,7 @@ Source5:        %{name}.sysusersd
 # Apply Fedora system-wide crypto policy
 Patch0:         unrealircd-6.0.6-crypto-policy.patch
 # Disable GeoIP to avoid dependency to legacy GeoIP
-Patch1:         unrealircd-6.1.7-geoip.patch
+Patch1:         unrealircd-6.1.8-geoip.patch
 # Same options like in unrealircd(ctl) shell script
 Patch2:         unrealircd-6.0.3-unrealircdctl.patch
 BuildRequires:  gnupg2
@@ -81,6 +81,9 @@ touch -c -r doc/conf/examples/example.conf{.crypto-policy,}
 %patch -P1 -p1 -b .geoip
 touch -c -r doc/conf/modules.default.conf{.geoip,}
 %patch -P2 -p1 -b .unrealircdctl
+
+# Ensure the bundled PCRE2 tarball matches the version in this spec file
+! tar tfz extras/pcre2.tar.gz | grep -E -m 1 -v '^pcre2-%{pcre2}/'
 
 %build
 %if 0%{?rhel} == 8
@@ -227,6 +230,9 @@ fi
 %endif
 
 %changelog
+* Sat Oct 12 2024 Robert Scheck <robert@fedoraproject.org> 6.1.8-1
+- Upgrade to 6.1.8 (#2315105)
+
 * Sat Sep 14 2024 Robert Scheck <robert@fedoraproject.org> 6.1.7.2-1
 - Upgrade to 6.1.7.2 (#2297919)
 

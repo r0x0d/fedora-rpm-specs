@@ -1,12 +1,12 @@
-%global commit0 e8951aba29faf774e475f20c1405162993235d7f
+%global commit0 a00137c2f691c02011db4d75e55c4e366f2b1938
 %global shortcommit0 %%(c=%%{commit0}; echo ${c:0:7})
 
-%global snapdate 20240905
+%global snapdate 20241011
 
 %global __python %{__python3}
 
 Name:           yosys
-Version:        0.45
+Version:        0.46
 Release:        1.%{snapdate}git%{shortcommit0}%{?dist}
 Summary:        Yosys Open SYnthesis Suite, including Verilog synthesizer
 License:        ISC and MIT
@@ -41,7 +41,7 @@ BuildRequires:  make
 BuildRequires:  gcc-c++
 BuildRequires:  bison flex readline-devel pkgconfig
 BuildRequires:  tcl-devel libffi-devel
-BuildRequires:  yosyshq-abc >= 0.45
+BuildRequires:  yosyshq-abc >= 0.46
 BuildRequires:  iverilog >= 12.0
 BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  txt2man
@@ -181,6 +181,9 @@ make test ABCEXTERNAL=%{_bindir}/abc SEED=314159265359
 
 
 %changelog
+* Fri Oct 11 2024 Gabriel Somlo <gsomlo@gmail.com> - 0.46.1.20241011gita00137c
+- update to 0.46 snapshot
+
 * Thu Sep 05 2024 Gabriel Somlo <gsomlo@gmail.com> - 0.45.1.20240905gite8951ab
 - update to 0.45 snapshot
 - add patch to remove badge image network download during doc build

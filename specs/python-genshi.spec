@@ -1,18 +1,16 @@
-%global srcname Genshi
-
 Name:           python-genshi
 Version:        0.7.9
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Toolkit for stream-based generation of output for the web
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            https://genshi.edgewall.org/
 
-Source0:        %pypi_source
+Source0:        %{pypi_source Genshi}
 
 BuildRequires:  gcc
 BuildRequires:  python3-devel
+BuildRequires:  python3dist(pytest)
 
 %description
 Genshi is a Python library that provides an integrated set of
@@ -32,7 +30,7 @@ a template language, which is heavily inspired by Kid.
 
 
 %prep
-%autosetup -p1 -n %{srcname}-%{version}
+%autosetup -p1 -n Genshi-%{version}
 
 # Remove bundled egg-info in case it exists
 rm -rf %{modname}.egg-info
@@ -56,7 +54,7 @@ sed -i -e '/_speedups.c/d' %{pyproject_files}
 
 
 %check
-%{python3} setup.py test
+%pytest
 
 
 %files -n python3-genshi -f %{pyproject_files}
@@ -68,6 +66,10 @@ sed -i -e '/_speedups.c/d' %{pyproject_files}
 
 
 %changelog
+* Sat Oct 12 2024 Felix Schwarz <fschwarz@fedoraproject.org> - 0.7.9-4
+- modernize macro usage
+- use "BSD-3-Clause" license identifier
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.7.9-3
 - convert license to SPDX
 

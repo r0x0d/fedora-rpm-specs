@@ -58,6 +58,7 @@ Name:           gimp
 Epoch:          2
 Version:        2.99.19^20241011giteddaa13ad5
 Release:        %autorelease
+# https://bugzilla.redhat.com/show_bug.cgi?id=2318369
 ExcludeArch:    s390x
 
 # Compute some version related macros.

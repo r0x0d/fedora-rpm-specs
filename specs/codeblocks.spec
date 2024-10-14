@@ -1,5 +1,5 @@
-%global svndate 20240914
-%global svnrev 13570
+%global svndate 20241012
+%global svnrev 13584
 %global snapshot 0%{?svndate}
 %if %{snapshot}
 %global svnrelease .%{svndate}svn%{svnrev}
@@ -7,7 +7,7 @@
 
 Name:		codeblocks
 Version:	20.03
-Release:	27%{?svnrelease}%{?dist}
+Release:	28%{?svnrelease}%{?dist}
 Summary:	An open source, cross platform, free C++ IDE
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:	GPL-3.0-or-later
@@ -19,7 +19,6 @@ Source0:	%{name}-svn%{svnrev}.tar.bz2
 Source0:	https://sourceforge.net/projects/%{name}/files/Sources/%{version}/%{name}-%{version}.tar.xz
 %endif
 Patch0:		codeblocks-autorev.patch
-Patch1:		codeblocks-smartindent-notparallel.patch
 
 BuildRequires:	astyle-devel >= 3.1
 BuildRequires:	boost-devel
@@ -108,7 +107,6 @@ Additional Code::Blocks plug-ins.
 %else
 %setup -q
 %endif
-%patch -P 1 -p1
 
 
 %if %{snapshot}
@@ -342,6 +340,9 @@ rm -f %{buildroot}/%{pkgdatadir}/docs/index.ini
 
 
 %changelog
+* Sat Oct 12 2024 Dan Horák <dan[at]danny.cz> - 20.03-28.20241012svn13584
+- updated to nightly 20241012 rev 13584
+
 * Fri Oct 11 2024 Dan Horák <dan[at]danny.cz> - 20.03-27.20240914svn13570
 - updated to nightly 20240914 rev 13570
 - rebuilt for astyle 3.6.3 (rhbz#2311785)

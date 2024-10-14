@@ -1,4 +1,4 @@
-%global candidate rc6
+#global candidate rc0
 %if 0%{?rhel}
 %bcond_with toolsonly
 %else
@@ -7,7 +7,7 @@
 
 Name:     uboot-tools
 Version:  2024.10
-Release:  0.8%{?candidate:.%{candidate}}%{?dist}
+Release:  1%{?candidate:.%{candidate}}%{?dist}
 Epoch:    1
 Summary:  U-Boot utilities
 # Automatically converted from old format: GPLv2+ BSD LGPL-2.1+ LGPL-2.0+ - review is highly recommended.
@@ -32,10 +32,11 @@ Patch5:   enable-bootmenu-by-default.patch
 # Rockchips improvements
 Patch10:  rockchip-Enable-preboot-start-for-pci-usb.patch
 Patch11:  FUSB302-USB-C-controller-support.patch
+Patch12:  rockchip-Modernise-Geekbox-config.patch
 # QCom
 Patch15:  Qualcomm-add-support-for-SC7280-and-the-RB3-Gen-2.patch
 # RPi
-Patch20:  0001-board-rpi-Pass-CMA-through-from-firmware-DT.patch
+Patch20:  rpi-Pass-CMA-through-from-firmware-DT.patch
 
 BuildRequires:  bc
 BuildRequires:  bison
@@ -209,6 +210,11 @@ install -p -m 0755 builds/tools/env/fw_printenv %{buildroot}%{_bindir}
 %endif
 
 %changelog
+* Fri Oct 11 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1:2024.10-1
+- Update to 2024.10 GA
+- Fix passing RPi firmware CMA setting to kernel DT
+- Update Geekbox
+
 * Thu Oct 03 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1:2024.10-0.8.rc6
 - Pass CMA FW setting through to kernel DT for Raspberry Pi
 

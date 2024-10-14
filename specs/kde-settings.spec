@@ -80,7 +80,7 @@ Requires: breeze-cursor-theme
 %package pulseaudio
 Summary: Enable pulseaudio support in KDE
 # nothing here to license
-License: Public Domain
+License: LicenseRef-Not-Copyrightable
 Requires: %{name} = %{version}-%{release}
 %if 0%{?rhel} && 0%{?rhel} < 9
 Requires: pulseaudio

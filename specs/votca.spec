@@ -2,7 +2,7 @@ Name:           votca
 Version:        2024.2
 %global         uversion %{version}
 %global         sover 2024
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Versatile Object-oriented Toolkit for Coarse-graining Applications
 License:        Apache-2.0
 URL:            http://www.votca.org
@@ -251,6 +251,9 @@ export PYTHONPATH="${MPI_PYTHON3_SITEARCH}${PYTHONPATH:+:}${PYTHONPATH}"
 %{_datadir}/bash-completion/completions/votca
 
 %changelog
+* Sat Oct 12 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 2024.2-2
+- Rebuild against libxc 7.0.0 in rawhide.
+
 * Sun Sep 29 2024 Christoph Junghans <junghans@votca.org> - 2024.2-1
 - Version bump to v2024.2 (bug #2315578)
 

@@ -9,6 +9,10 @@
 
 %bcond orjson 1
 %bcond uvicorn 1
+# Not yet packaged: https://pypi.org/project/sqlmodel/
+%bcond sqlmodel 0
+# Not yet packaged: https://pypi.org/project/PyJWT/
+%bcond pyjwt 0
 
 # For translations, check docs/*/docs/index.md
 # Note that there are many other localized versions of the documentation
@@ -31,7 +35,7 @@
 %global sum_zh  FastAPI 框架
 
 Name:           python-fastapi
-Version:        0.115.0
+Version:        0.115.2
 Release:        %autorelease
 Summary:        %{sum_en}
 
@@ -45,10 +49,6 @@ BuildArch:      noarch
 # Downstream-only: run test_fastapi_cli without coverage
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 Patch:          0001-Downstream-only-run-test_fastapi_cli-without-coverag.patch
-
-# ⬆️ Allow Starlette 0.39.x, update the pin to >=0.37.2,<0.40.0
-# https://github.com/fastapi/fastapi/pull/12256
-Patch:          %{url}/pull/12256.patch
 
 BuildRequires:  python3-devel
 
@@ -66,15 +66,24 @@ BuildRequires:  %{py3_dist httpx} >= 0.23
 # requirements-tests.txt:
 BuildRequires:  %{py3_dist pytest} >= 7.1.3
 BuildRequires:  %{py3_dist dirty-equals} >= 0.6
-# https://github.com/fastapi/fastapi/pull/5799
-BuildRequires:  %{py3_dist sqlalchemy} >= 1.4.42
-BuildRequires:  %{py3_dist databases[sqlite]} >= 0.7
+# Omit sqlmodel, https://pypi.org/project/sqlmodel/, because it is not yet
+# packaged and only has very limited use in the tests.
+%if %{with sqlmodel}
+BuildRequires:  %{py3_dist sqlmodel} >= 0.0.22
+%endif
 BuildRequires:  %{py3_dist flask} >= 1.1.2
 BuildRequires:  %{py3_dist anyio[trio]} >= 3.2.1
-# Omit PyJWT, https://pypi.org/project/PyJWT/, because it has limited use in
+# Omit PyJWT, https://pypi.org/project/PyJWT/, because it is not packaged and
+# only has very limited use in the tests.
+%if %{with pyjwt}
+BuildRequires:  %{py3_dist PyJWT} >= 2.8
+%endif
 BuildRequires:  %{py3_dist pyyaml} >= 5.3.1
 BuildRequires:  %{py3_dist passlib[bcrypt]} >= 1.7.2
 BuildRequires:  %{py3_dist inline-snapshot} >= 0.13
+# This is still needed in the tests even if we do not have sqlmodel to bring it
+# in as an indirect dependency.
+BuildRequires:  %{py3_dist sqlalchemy}
 
 Summary(bn):    %{sum_bn}
 Summary(de):    %{sum_de}
@@ -717,8 +726,14 @@ ignore="${ignore-} --ignore=tests/test_tutorial/test_custom_response/test_tutori
 ignore="${ignore-} --ignore=tests/test_tutorial/test_custom_response/test_tutorial009c.py"
 %endif
 
-# These require python-PyJWT, which is not packaged.
+# These require python-pyjwt, which is not packaged.
 ignore="${ignore-} --ignore-glob=tests/test_tutorial/test_security/test_tutorial005*"
+
+%if %{without sqlmodel}
+# These require python-sqlmodel, which is not packaged.
+ignore="${ignore-} --ignore-glob=tests/test_tutorial/test_sql_databases/test_tutorial001.py"
+ignore="${ignore-} --ignore-glob=tests/test_tutorial/test_sql_databases/test_tutorial002.py"
+%endif
 
 # Ignore all DeprecationWarning messages, as they pop up from various
 # dependencies in practice. Upstream deals with this by tightly controlling

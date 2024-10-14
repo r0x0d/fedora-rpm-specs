@@ -7,16 +7,13 @@ supports pickling for lambda expressions, functions and classes defined \
 interactively in the __main__ module.
 
 Name:           python-cloudpickle
-Version:        3.0.0
+Version:        3.1.0
 Release:        %autorelease
 Summary:        Extended pickling support for Python objects
 
 License:        BSD-3-Clause
 URL:            https://github.com/cloudpipe/cloudpickle
-Source0:        %{url}/archive/%{version}/cloudpickle-%{version}.tar.gz
-
-# Proposed upstream: https://github.com/cloudpipe/cloudpickle/pull/534
-Patch:          py313b1.patch
+Source0:        %{url}/archive/v%{version}/cloudpickle-v%{version}.tar.gz
 
 BuildArch:      noarch
 

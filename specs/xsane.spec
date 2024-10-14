@@ -175,6 +175,10 @@ export CFLAGS
 
 pushd build-with-gimp
 %configure --enable-gimp
+if grep -Fq '#undef HAVE_ANY_GIMP' include/config.h; then
+    echo "The configure script didn’t detect GIMP" >&2
+    exit 1
+fi
 %make_build
 popd
 

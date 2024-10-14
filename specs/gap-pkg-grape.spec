@@ -2,7 +2,7 @@
 %global giturl  https://github.com/gap-packages/grape
 
 Name:           gap-pkg-%{pkgname}
-Version:        4.9.1
+Version:        4.9.2
 Release:        %autorelease
 Summary:        GRaph Algorithms using PErmutation groups
 

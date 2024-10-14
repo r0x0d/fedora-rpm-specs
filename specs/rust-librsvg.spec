@@ -6,7 +6,7 @@
 %global crate librsvg
 
 Name:           rust-librsvg
-Version:        2.58.1
+Version:        2.59.1
 Release:        %autorelease
 Summary:        Library to render SVG images to Cairo surfaces
 
@@ -14,8 +14,8 @@ License:        LGPL-2.1-or-later
 URL:            https://crates.io/crates/librsvg
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * bump markup5ever dependency to 0.14 and xml5ever dependency to 0.20
-# * bump nalgebra dependency from 0.32 to 0.33
+# * bump markup5ever dependency from 0.12 to 0.14
+# * bump xml5ever dependency from 0.18 to 0.20
 Patch:          librsvg-fix-metadata.diff
 Patch:          0001-port-to-markup5ever-0.14-and-xml5ever-0.20.patch
 
@@ -54,16 +54,16 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+c-api-devel
+%package     -n %{name}+capi-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+c-api-devel %{_description}
+%description -n %{name}+capi-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "c-api" feature of the "%{crate}" crate.
+use the "capi" feature of the "%{crate}" crate.
 
-%files       -n %{name}+c-api-devel
+%files       -n %{name}+capi-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep

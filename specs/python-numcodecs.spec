@@ -1,12 +1,12 @@
 %global srcname numcodecs
 
 Name:           python-%{srcname}
-Version:        0.13.0
+Version:        0.13.1
 Release:        %autorelease
 Summary:        Buffer compression and transformation for data storage and communication
 
 License:        MIT
-URL:            https://github.com/alimanfoo/numcodecs
+URL:            https://github.com/zarr-developers/numcodecs
 Source0:        %pypi_source %{srcname}
 # Fedora specific
 Patch:          0001-Unbundle-blosc.patch
@@ -16,10 +16,6 @@ Patch:          0003-Unbundle-lz4.patch
 Patch:          0004-Re-add-Snappy-to-tests.patch
 # We don't need coverage reports.
 Patch:          0005-Remove-coverage-from-testing-requirements.patch
-# https://github.com/zarr-developers/numcodecs/pull/552
-Patch:          0006-Remove-Sphinx-pinning.patch
-# Fix Python 3.13 compatibility (note this is a breaking change.)
-Patch:          https://github.com/zarr-developers/numcodecs/pull/578.patch
 
 # Stop building on i686
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval

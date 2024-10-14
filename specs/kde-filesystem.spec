@@ -21,7 +21,7 @@ Name: kde-filesystem
 Version: 5
 Release: 4%{?dist}
 
-License: Public Domain
+License: LicenseRef-Not-Copyrightable
 
 # noarch->arch transition
 Obsoletes: kde-filesystem < 4-36
@@ -46,7 +46,6 @@ This package provides some directories that are required/used by KDE.
 
 %package -n kde3-filesystem
 Summary: Filesystem for KDE 3
-License: Public Domain
 Requires: %{name} = %{version}-%{release}
 
 %description -n kde3-filesystem
@@ -54,7 +53,6 @@ This package provides some directories that are required/used by KDE 3 applicati
 
 %package -n kde4-filesystem
 Summary: Filesystem and RPM macros for KDE 4
-License: Public Domain
 Provides: kde4-macros(api) = %{_kde4_macros_api}
 Requires: %{name} = %{version}-%{release}
 
