@@ -1,7 +1,7 @@
 %global apiver 2.8
 
 Name:          rygel
-Version:       0.44.0
+Version:       0.44.1
 Release:       1%{?dist}
 Summary:       A collection of UPnP/DLNA services
 
@@ -16,6 +16,7 @@ BuildRequires: gobject-introspection-devel
 BuildRequires: gtk-doc
 BuildRequires: libunistring-devel
 BuildRequires: meson
+BuildRequires: systemd-rpm-macros
 BuildRequires: vala
 BuildRequires: valadoc
 BuildRequires: pkgconfig(gee-0.8)
@@ -68,6 +69,14 @@ A plugin for rygel to use tracker to locate media on the local machine.
 %meson_install
 
 %find_lang %{name}
+
+%systemd_user_post %{name}.service
+
+%preun
+%systemd_user_preun %{name}.service
+
+%postun
+%systemd_user_postun_with_restart %{name}.service
 
 %check
 # Verify the desktop files
@@ -138,6 +147,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/rygel-preferences.de
 %{_datadir}/vala/vapi/rygel*.vapi
 
 %changelog
+* Sun Oct 13 2024 David King <amigadave@amigadave.com> - 0.44.1-1
+- Update to 0.44.1
+
 * Wed Sep 18 2024 nmontero <nmontero@redhat.com> - 0.44.0-1
 - Update to 0.44.0
 

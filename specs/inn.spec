@@ -2,11 +2,29 @@
 
 Summary: The InterNetNews system, an Usenet news server
 Name: inn
-Version: 2.7.1
-Release: 10%{?dist}
-#see LICENSE file for details
-# Automatically converted from old format: GPLv2+ and BSD and MIT and Public Domain - review is highly recommended.
-License: GPL-2.0-or-later AND LicenseRef-Callaway-BSD AND LicenseRef-Callaway-MIT AND LicenseRef-Callaway-Public-Domain
+Version: 2.7.2
+Release: 1%{?dist}
+# most files are under ISC, except:
+# contrib/analyze-traffic.in: public-domain
+# contrib/mm_ckpasswd: GPL-2.0-or-later
+# contrib/nnrp.access2readers.conf.in: public-domain
+# contrib/tunefeed.in: Perl
+# control/perl-nocem.in: GPL
+# control/pgpverify.in: BSD-4-Clause
+# innd/tinyleaf.c: MIT
+# innfeed/config_y.[ch]: GPL-3.0-or-later with Bison-exception-2.2 exception
+# lib/hashtab.c: public-domain
+# lib/md5.c: NTP
+# lib/newsuser.c: public-domain
+# lib/sd-daemon.c: FSFAP
+# lib/vector.c: FSFAP
+# include/inn/hashtab.h: public-domain
+# include/inn/md5.h: NTP
+# include/inn/newsuser.h: public-domain
+# include/inn/tst.h: BSD-3-Clause
+# include/inn/vector.h: FSFAP
+# include/portable/sd-daemon.h: FSFAP
+License: ISC AND BSD-3-Clause AND BSD-4-Clause AND FSFAP AND (GPL-1.0-or-later OR Artistic-1.0-Perl) AND GPL-3.0-or-later WITH Bison-exception-2.2 AND LicenseRef-Fedora-Public-Domain AND MIT AND NTP
 URL: https://www.eyrie.org/~eagle/software/inn/
 Source0: https://downloads.isc.org/isc/inn/inn-%{version}.tar.gz
 Source1: https://downloads.isc.org/isc/inn/inn-%{version}.tar.gz.asc
@@ -23,7 +41,8 @@ Source24: innd-nntpsend.timer
 Source25: innd-rnews.service
 Source26: innd-rnews.timer
 Source30: inn.rsyslog
-Patch1: inn-2.7.0-fedora.patch
+# Fedora-specific paths and configuration settings
+Patch0: inn-fedora.patch
 BuildRequires: autoconf
 BuildRequires: byacc
 BuildRequires: cyrus-sasl-devel
@@ -114,8 +133,7 @@ This package contains dynamic libraries provided by INN project
 
 %prep
 gpgv2 --keyring %{S:3} %{S:1} %{S:0}
-%setup -q -n inn-%{version}
-%patch -P1 -p1 -b .rh
+%autosetup -p1
 
 %build
 %configure \
@@ -153,7 +171,7 @@ sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 %install
 mkdir -p $RPM_BUILD_ROOT%{_libdir}
 mkdir -p $RPM_BUILD_ROOT%{_sharedstatedir}/news/http
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 
 # -- Install man pages needed by suck et al.
 mkdir -p $RPM_BUILD_ROOT%{_includedir}/inn
@@ -335,6 +353,7 @@ fi
 %dir %{_sysconfdir}/rsyslog.d
 %{_sysconfdir}/rsyslog.d/inn.conf
 %{_mandir}/man1/c*.1.gz
+%{_mandir}/man1/delayer.1.gz
 %{_mandir}/man1/f*.1.gz
 %{_mandir}/man1/g*.1.gz
 %{_mandir}/man1/inn*.1.gz
@@ -401,6 +420,7 @@ fi
 %dir %{_libexecdir}/news
 %{_libexecdir}/news/controlbatch
 %attr(4510,root,news) %{_libexecdir}/news/innbind
+%{_libexecdir}/news/delayer
 %{_libexecdir}/news/docheckgroups
 %{_libexecdir}/news/imapfeed
 %{_libexecdir}/news/actmerge
@@ -529,6 +549,7 @@ fi
 %dir %{perl_vendorlib}/INN
 %{perl_vendorlib}/INN/Config.pm
 %{perl_vendorlib}/INN/Utils/Shlock.pm
+%{perl_vendorlib}/INN/ovsqlite_client.pm
 
 %defattr(-,news,news,-)
 %dir /var/spool/news
@@ -565,6 +586,9 @@ fi
 %{_mandir}/man1/inews*
 
 %changelog
+* Sun Oct 13 2024 Dominik Mierzejewski <dominik@greysector.net> - 2.7.2-1
+- update to 2.7.2 (#2293907)
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 2.7.1-10
 - convert license to SPDX
 

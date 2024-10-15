@@ -68,16 +68,6 @@ ExclusiveArch:  x86_64
 
 Patch0: 0001-cmake-use-gnu-installdirs.patch
 
-# the kernel cache is desired in most cases but it takes a long time to build
-# and there are cases where it's nice to be able to disable that part of the 
-# build
-
-# https://github.com/ROCmSoftwarePlatform/rocFFT/pull/443
-# Patch2: 0002-add-kernel-cache-option.patch
-
-# upstream hardcodes rpath for the tests
-# Patch3: 0003-remove-tests-hardcoded-rpath.patch
-
 %description
 A library for computing Fast Fourier Transforms (FFT), part of ROCm.
 

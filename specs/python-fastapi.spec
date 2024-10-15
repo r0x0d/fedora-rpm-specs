@@ -677,9 +677,8 @@ export TIANGOLO_BUILD_PACKAGE='fastapi-slim'
 %pyproject_buildrequires -x standard,all
 (
   export TIANGOLO_BUILD_PACKAGE='fastapi'
-  %pyproject_buildrequires
+  %pyproject_buildrequires -x all
 ) | grep -vE '\bfastapi-slim\b'
-%pyproject_buildrequires -x all
 
 
 %build
@@ -765,9 +764,6 @@ warningsfilter="${warningsfilter-} -W ignore::pytest.PytestUnraisableExceptionWa
 ignore="${ignore-} --ignore=tests/test_callable_endpoint.py"
 %endif
 
-# Ignore all DeprecationWarning messages, as they pop up from various
-# dependencies in practice. Upstream deals with this by tightly controlling
-# dependency versions in CI.
 %pytest ${warningsfilter-} -k "${k-}" ${ignore-}
 
 

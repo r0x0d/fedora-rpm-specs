@@ -2,7 +2,7 @@ Name:       clpeak
 Version:    1.1.2
 Release:    7%{?checkout}%{?dist}
 Summary:    Find peak OpenCL capacities like bandwidth & compute
-License:    Public Domain
+License:    Unlicense
 URL:        https://github.com/krrishnarraj/%{name}
 Source0:    %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 

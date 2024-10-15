@@ -7,7 +7,7 @@ who want access to the video stream data. This project was forked from
 Livestreamer, which is no longer maintained.}
 
 Name:           python-%{srcname}
-Version:        6.9.0
+Version:        6.11.0
 Release:        1%{?dist}
 Summary:        Python library for extracting streams from various websites
 
@@ -116,6 +116,9 @@ install -Dpm 0644 -t $RPM_BUILD_ROOT%{zsh_completions_dir} completions/zsh/_%{sr
 
 
 %changelog
+* Sun Oct 13 2024 Mohamed El Morabity <melmorabity@fedoraproject.org> - 6.11.0-1
+- Update to 6.11.0
+
 * Thu Aug 22 2024 Mohamed El Morabity <melmorabity@fedoraproject.org> - 6.9.0-1
 - Update to 6.9.0
 

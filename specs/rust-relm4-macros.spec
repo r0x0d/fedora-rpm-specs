@@ -9,16 +9,13 @@
 %global crate relm4-macros
 
 Name:           rust-relm4-macros
-Version:        0.9.0
+Version:        0.9.1
 Release:        %autorelease
 Summary:        Idiomatic GUI library inspired by Elm and based on gtk4-rs
 
 License:        Apache-2.0 OR MIT
 URL:            https://crates.io/crates/relm4-macros
 Source:         %{crates_source}
-# https://github.com/Relm4/Relm4/issues/655
-Source100:      https://raw.githubusercontent.com/Relm4/Relm4/main/LICENSE-APACHE
-Source101:      https://raw.githubusercontent.com/Relm4/Relm4/main/LICENSE-MIT
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -69,10 +66,6 @@ use the "relm4" feature of the "%{crate}" crate.
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
-# https://github.com/Relm4/Relm4/pull/683
-sed -i 's@../LICENSE-APACHE@LICENSE-APACHE@' Cargo.toml
-sed -i 's@../LICENSE-MIT@LICENSE-MIT@' Cargo.toml
-cp -pav %{SOURCE100} %{SOURCE101} .
 
 %generate_buildrequires
 %cargo_generate_buildrequires

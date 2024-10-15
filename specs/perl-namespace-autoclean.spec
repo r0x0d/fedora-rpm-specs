@@ -6,8 +6,8 @@
 %endif
 
 Name:           perl-namespace-autoclean
-Version:        0.29
-Release:        19%{?dist}
+Version:        0.31
+Release:        1%{?dist}
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 Summary:        Keep imports out of your namespace
 URL:            https://metacpan.org/release/namespace-autoclean
@@ -25,7 +25,7 @@ BuildRequires:  perl(B::Hooks::EndOfScope) >= 0.12
 BuildRequires:  perl(List::Util)
 BuildRequires:  perl(namespace::clean) >= 0.20
 BuildRequires:  perl(strict)
-BuildRequires:  perl(Sub::Identify)
+BuildRequires:  perl(Sub::Util) >= 1.40
 BuildRequires:  perl(warnings)
 # Test Suite
 BuildRequires:  perl(Carp)
@@ -35,19 +35,18 @@ BuildRequires:  perl(File::Spec)
 BuildRequires:  perl(FindBin)
 BuildRequires:  perl(overload)
 BuildRequires:  perl(Scalar::Util)
-BuildRequires:  perl(Test::More) >= 0.94
+BuildRequires:  perl(Test::More) >= 0.88
 BuildRequires:  perl(Test::Needs)
 %if %{with perl_namespace_autoclean_enables_optional_test}
 # Optional Tests
 BuildRequires:  perl(CPAN::Meta) >= 2.120900
-%if 0%{?fedora} || 0%{?rhel} > 7
 BuildRequires:  perl(Moo) >= 1.004000
-%endif
 %if ! %{defined perl_bootstrap}
 # Break build-cycle: perl-namespace-autoclean → perl-Moose
 # → perl-Package-DeprecationManager → perl-namespace-autoclean
 # Break build-cycle: perl-namespace-autoclean → perl-Mouse → perl-Moose
 # → perl-Package-DeprecationManager → perl-namespace-autoclean
+BuildRequires:  perl(Class::MOP)
 BuildRequires:  perl(Moose) >= 0.56
 BuildRequires:  perl(Moose::Role)
 BuildRequires:  perl(MooseX::Role::WithOverloading) >= 0.09
@@ -57,7 +56,7 @@ BuildRequires:  perl(Sub::Install)
 BuildRequires:  perl(Sub::Name)
 %endif
 # Dependencies
-Requires:       perl(Sub::Identify)
+Requires:       perl(Sub::Util) >= 1.40
 
 %description
 When you import a function into a Perl package, it will naturally also be
@@ -91,6 +90,11 @@ make test
 %{_mandir}/man3/namespace::autoclean.3*
 
 %changelog
+* Sun Oct 13 2024 Paul Howarth <paul@city-fan.org> - 0.31-1
+- Update to 0.31 (rhbz#2318345)
+  - Switch from Sub::Identify to Sub::Util (core in modern perls), falling back
+    to B.pm as needed
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.29-19
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -2,11 +2,10 @@
 %bcond_without perl_CGI_FormBuilder_enables_optional_test
 
 Name:           perl-CGI-FormBuilder
-%global         cpanversion 3.10
+%global         cpanversion 3.20
 Version:        %{cpanversion}00
-Release:        27%{?dist}
+Release:        1%{?dist}
 Summary:        Easily generate and process stateful forms
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/CGI-FormBuilder
 Source0:        https://cpan.metacpan.org/authors/id/B/BI/BIGPRESH/CGI-FormBuilder-%{cpanversion}.tar.gz
@@ -63,9 +62,6 @@ to generate and process entire CGI form-based applications.
 %setup -q -n CGI-FormBuilder-%{cpanversion}
 # Fix permissions
 chmod 0644 lib/CGI/FormBuilder/Messages/*
-# skip failing tests due to hash randomization
-# see https://rt.cpan.org/Public/Bug/Display.html?id=81650
-rm -f t/2d-template-fast.t
 perl -i -ne 'print $_ unless m{\At/2d-template-fast\.t\b}' MANIFEST
 
 %build
@@ -86,6 +82,10 @@ make test
 %{_mandir}/man3/*.3*
 
 %changelog
+* Sun Oct 13 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 3.2000-1
+- Update to 3.20
+- Enable no-longer-failing tests
+
 * Mon Aug 05 2024 Miroslav Suchý <msuchy@redhat.com> - 3.1000-27
 - convert license to SPDX
 

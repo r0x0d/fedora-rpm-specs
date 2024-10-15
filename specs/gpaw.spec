@@ -20,7 +20,7 @@ ExcludeArch: %{ix86}
 
 Name:			gpaw
 Version:		24.6.0
-Release:		1%{?dist}
+Release:		2%{?dist}
 Summary:		A grid-based real-space PAW method DFT code
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -31,6 +31,8 @@ Source0:		https://gitlab.com/%{name}/%{name}/-/archive/%{version}/%{name}-%{vers
 # but this spec does not use install https://gitlab.com/gpaw/gpaw/-/issues/264
 Source1:		gpaw
 
+# Simple fix to BZ#2140559 with libxc 7.0.0; a more complicated solution is already adopted upstream
+Patch0:                 gpaw-24.6.0-libxc7.patch
 
 # https://pagure.io/releng/issue/12359
 BuildRequires:		environment-modules
@@ -111,6 +113,10 @@ This package contains the mpich Python 3 version.
 
 %prep
 %setup -qTc -a 0
+pushd %{name}-%{version}
+%patch 0 -p1 -b .libxc7
+popd
+
 pushd %{name}-%{version}
 popd
 mv %{name}-%{version} python3
@@ -290,6 +296,9 @@ popd
 
 
 %changelog
+* Sun Oct 13 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 24.6.0-2
+- Rebuild against libxc 7 in rawhide and fix BZ#2140559.
+
 * Tue Sep 24 2024 Marcin Dulak <marcindulak@fedoraproject.org> - 24.6.0-1
 - New upstream release
 

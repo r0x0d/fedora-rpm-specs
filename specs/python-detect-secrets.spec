@@ -12,6 +12,12 @@ URL:            https://github.com/Yelp/detect-secrets
 Source:         %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 
+# https://bugzilla.redhat.com/show_bug.cgi?id=2296177
+# Dependency python-pyahocorasick does not support big-endian platforms; we can
+# only support the same architectures that it does (plus noarch). See:
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/#_noarch_with_unported_dependencies
+ExclusiveArch:  x86_64 %{arm64} ppc64le riscv64 noarch
+
 BuildRequires:  help2man
 BuildRequires:  python3-devel
 BuildRequires:  sed

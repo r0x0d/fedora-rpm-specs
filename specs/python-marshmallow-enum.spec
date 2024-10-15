@@ -32,6 +32,8 @@ A Python enum serializer/deserializer for use with Marshmallow.
 %prep
 %autosetup -n %{modname}-%{version}
 rm -vf tox.ini
+# Compatibility with pytest 8
+sed -i "s/setup(/setup_method(/" tests/test_enum_field.py
 
 %build
 %py3_build

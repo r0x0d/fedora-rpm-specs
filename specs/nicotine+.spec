@@ -2,8 +2,8 @@
 %global appdata_id org.nicotine_plus.Nicotine
 
 Name:           nicotine+
-Version:        3.3.4
-Release:        4%{?dist}
+Version:        3.3.5
+Release:        1%{?dist}
 Summary:        A graphical client for Soulseek
 
 # - pynicotine/external/ip2location.py and pynicotine/external/tinytag.py are
@@ -79,6 +79,9 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_metainfodir}/%{appdata_i
 
 
 %changelog
+* Sun Oct 13 2024 Mohamed El Morabity <melmorabity@fedoraproject.org> - 3.3.5-1
+- Update to 3.3.5
+
 * Fri Aug 23 2024 Mohamed El Morabity <melmorabity@fedoraproject.org> - 3.3.4-4
 - Fix FTBFS on Fedora >= 41 (RHBZ #2300994)
 - Add bundled Provides

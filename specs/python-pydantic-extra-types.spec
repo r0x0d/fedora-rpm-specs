@@ -4,7 +4,7 @@
 Name:           python-pydantic-extra-types
 Version:        2.9.0
 %forgemeta
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Extra types for Pydantic
 
 License:        MIT
@@ -29,6 +29,11 @@ Patch:          0001-Assume-zoneinfo-has-system-tzdata.patch
 # Adjust test_json_schema() for Pydantic 2.9
 # https://github.com/pydantic/pydantic-extra-types/pull/215
 Patch:          %{forgeurl}/pull/215.patch
+
+# Allow python-ulid 3.0
+# https://github.com/pydantic/pydantic-extra-types/pull/222
+# Cherry-picked to v2.9.0
+Patch:          0001-Allow-python-ulid-3.0-222.patch
 
 BuildArch:      noarch
 
@@ -89,6 +94,9 @@ tomcli set pyproject.toml lists delitem --type regex --no-first \
 
 
 %changelog
+* Sun Oct 13 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.9.0-5
+- Allow python-ulid 3.0
+
 * Wed Sep 11 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.9.0-4
 - Adjust test_json_schema() for Pydantic 2.9
 

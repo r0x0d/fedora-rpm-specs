@@ -1,8 +1,7 @@
 Name:           perl-Catalyst-Action-RenderView
 Summary:        Sensible default end action for view rendering
-Version:        0.16
-Release:        39%{?dist}
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
+Version:        0.17
+Release:        1%{?dist}
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 Source0:        https://cpan.metacpan.org/authors/id/B/BO/BOBTFISH/Catalyst-Action-RenderView-%{version}.tar.gz 
 URL:            https://metacpan.org/release/Catalyst-Action-RenderView
@@ -23,7 +22,6 @@ BuildRequires:  perl(Catalyst::View)
 BuildRequires:  perl(Data::Visitor) >= 0.24
 BuildRequires:  perl(Data::Visitor::Callback)
 BuildRequires:  perl(FindBin)
-BuildRequires:  perl(inc::Module::Install) >= 0.91
 BuildRequires:  perl(HTTP::Request::AsCGI)
 BuildRequires:  perl(Module::Install::Metadata)
 BuildRequires:  perl(Module::Install::WriteAll)
@@ -44,31 +42,25 @@ Requires:       perl(MRO::Compat)
 %description
 This action implements a sensible default end action, which will forward to
 the first available view, unless status is set to 3xx, or there is a
-response body. It also allows you to pass dump_info=1 to the url in order
+response body. It also allows you to pass dump_info=1 to the URL in order
 to force a debug screen, while in debug mode.
 
 %prep
 %setup -q -n Catalyst-Action-RenderView-%{version}
-# Remove bundled libraries
-rm -r inc
-sed -i -e '/^inc\// d' MANIFEST
 
 # correct line encoding and an errant interperter setting
-find t/ -type f -exec perl -pi -e 's|^#!perl|#!%{__perl}|; s/\r//' {} +
+find t/ -type f -exec perl -pi -e 's|^#!perl|#!/usr/bin/perl|; s/\r//' {} +
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+/usr/bin/perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -exec rm -f {} +
-find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null ';'
-
+%{make_install}
 %{_fixperms} %{buildroot}/*
 
 %check
-make test
+%{make_build} test
 
 %files
 %doc Changes README
@@ -76,6 +68,12 @@ make test
 %{_mandir}/man3/*
 
 %changelog
+* Sun Oct 13 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 0.17-1
+- Update to 0.17
+- Use %%{make_build} and %%{make_install} where appropriate
+- Replace %%{__perl} with /usr/bin/perl
+- Pass NO_PACKLIST and NO_PERLLOCAL to Makefile.PL
+
 * Mon Aug 05 2024 Miroslav Suchý <msuchy@redhat.com> - 0.16-39
 - convert license to SPDX
 

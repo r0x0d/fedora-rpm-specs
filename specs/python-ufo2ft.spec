@@ -1,8 +1,6 @@
 %global         srcname         ufo2ft
 %global         forgeurl        https://github.com/googlefonts/ufo2ft
-%global         commit          04e2fa7fa332642049fc7b0ba9ebfcfe45ff34f9
-%global         shortcommit %(c=%{commit}; echo ${c:0:7})
-Version:        3.3.0^20241007git04e2fa7
+Version:        3.3.1
 %global         tag             v%{version}
 %forgemeta
 
@@ -14,13 +12,10 @@ Summary:        A bridge from UFOs to FontTool objects
 #   - Lib/ufo2ft/filters/propagateAnchors.py is Apache-2.0
 License:        MIT AND Apache-2.0
 URL:            %forgeurl
-Source:         %{srcname}.tar.gz
-# Need git history, so build sources independently
-Source:         prepare.sh
+Source:         %{pypi_source %{srcname}}
 # Relax version requirements
 Patch:          relax-versions.patch
 
-BuildRequires:  git
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(pytest)
 BuildRequires:  python3dist(ufolib2)
@@ -44,7 +39,7 @@ Summary:        %{summary}
 %pyproject_extras_subpkg -n python3-%{srcname} cffsubr compreffor
 
 %prep
-%autosetup -n %{srcname} -p 1
+%autosetup -n %{srcname}-%{version} -p 1
 
 %generate_buildrequires
 %pyproject_buildrequires -x cffsubr,compreffor
@@ -64,6 +59,9 @@ k="${k-}${k+ and }not (IntegrationTest and test_removeOverlaps_pathops)"
 k="${k-}${k+ and }not (IntegrationTest and test_removeOverlaps_CFF_pathops)"
 k="${k-}${k+ and }not (TTFPreProcessorTest and test_custom_filters_as_argument)"
 k="${k-}${k+ and }not (TTFInterpolatablePreProcessorTest and test_custom_filters_as_argument)"
+# Test can fail when updates are not synchronized, but is not essential
+# https://github.com/googlefonts/ufo2ft/issues/877
+k="${k-}${k+ and }not (test_kern_zyyy_zinh)"
 
 %pytest -k "${k-}" tests
 
@@ -72,6 +70,9 @@ k="${k-}${k+ and }not (TTFInterpolatablePreProcessorTest and test_custom_filters
 %doc README.rst
  
 %changelog
+* Sat Oct 12 2024 Benson Muite <benson_muite@emailplus.org> - 3.3.1-1
+- Update to latest release
+
 * Wed Oct 09 2024 Benson Muite <benson_muite@emailplus.org> - 3.3.0^20241007git0e2fa7-1
 - Update to latest release
 

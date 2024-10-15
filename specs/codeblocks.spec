@@ -19,6 +19,8 @@ Source0:	%{name}-svn%{svnrev}.tar.bz2
 Source0:	https://sourceforge.net/projects/%{name}/files/Sources/%{version}/%{name}-%{version}.tar.xz
 %endif
 Patch0:		codeblocks-autorev.patch
+# use distro compiler standards
+Patch1:		codeblocks-flags.patch
 
 BuildRequires:	astyle-devel >= 3.1
 BuildRequires:	boost-devel
@@ -107,6 +109,7 @@ Additional Code::Blocks plug-ins.
 %else
 %setup -q
 %endif
+%patch -P 1 -p1
 
 
 %if %{snapshot}

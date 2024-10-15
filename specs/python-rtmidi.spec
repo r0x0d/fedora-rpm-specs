@@ -26,6 +26,8 @@ Summary:        %{summary}
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-Cython
+# for %%pyproject-buildrequires -p
+BuildRequires:  pyproject-rpm-macros >= 1.15.1
 #BuildRequires:  python3-tox
 %{?python_provide:%python_provide python3-%{srcname}}
 
@@ -40,7 +42,7 @@ Python package naming structure.
 %autosetup -n %{pypi_name}-%{version}
 
 %generate_buildrequires
-%pyproject_buildrequires -w
+%pyproject_buildrequires -p
 
 %build
 %pyproject_wheel

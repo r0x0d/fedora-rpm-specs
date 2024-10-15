@@ -14,6 +14,7 @@ URL:            https://crates.io/crates/below-model
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * bump enum-iterator from 1.4.1 to 2
+# * drop unused futures/compat dev-dependency feature
 Patch:          below-model-fix-metadata.diff
 
 # Many dependencies not available on 32-bit architectures

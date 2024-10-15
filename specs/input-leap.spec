@@ -1,22 +1,13 @@
-%global with_snapshot 1
-%global gitdate 20240928
-%global commit b7bceeb242b435f40c4236d5e0e0564dfd00342c
-%global shortcommit %(c=%{commit}; echo ${c:0:8})
-
 %global rdnn_name io.github.input_leap.InputLeap
 
-Name:			input-leap
-Version:		2.4.0%{?with_snapshot:^%{gitdate}git%{shortcommit}}
-Release:		%autorelease
-Summary:		Share mouse and keyboard between multiple computers over the network
+Name:		input-leap
+Version:	3.0.2
+Release:	%autorelease
+Summary:	Share mouse and keyboard between multiple computers over the network
 
-License:		GPL-2.0-only
-URL:			https://github.com/%{name}/%{name}
-%if %{with_snapshot}
-Source0:		%{url}/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
-%else
-Source0:		%{url}/archive/v%{version}/%{name}-%{version}.tar.gz
-%endif
+License:	GPL-2.0-only
+URL:		https://github.com/%{name}/%{name}
+Source:		%{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:	cmake >= 3.12
 BuildRequires:	desktop-file-utils
@@ -64,20 +55,11 @@ keypress to switch focus to a different system.
 
 
 %prep
-%if %{with_snapshot}
-%autosetup -n %{name}-%{commit} -p1
-# version stage = snapshot
-sed -i -e "s|release|snapshot|" cmake/Version.cmake
-%else
 %autosetup -p1
-%endif
 
 
 %build
 %cmake \
-%if %{with_snapshot}
-	-DINPUTLEAP_REVISION=%{shortcommit} \
-%endif
 	-DINPUTLEAP_BUILD_LIBEI=ON \
 	-DINPUTLEAP_BUILD_TESTS=ON \
 	-DINPUTLEAP_USE_EXTERNAL_GTEST=True \

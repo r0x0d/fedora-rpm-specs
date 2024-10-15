@@ -20,8 +20,9 @@
 
 %define	radicale_major	3
 
-%define	radicale_version	3.2.3
+%define	radicale_version	3.3.0
 %define	radicale_release	1
+#define gitcommit 8e9fdf391acb79d3fb1cb6e6b8f882f8999192cf
 
 %define	radicale_name	radicale
 
@@ -37,7 +38,6 @@ Name:             radicale
 Version:          %{radicale_version}
 Release:          %{radicale_release}%{?gittag}%{?dist}
 Summary:          A simple CalDAV (calendar) and CardDAV (contact) server
-# Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:          GPL-3.0-or-later
 URL:              https://radicale.org
 
@@ -64,16 +64,18 @@ Summary:          %{summary}
 
 BuildRequires:    python3-devel
 BuildRequires:    python3-setuptools
+BuildRequires:    python3-pip
+BuildRequires:    python3-wheel
 BuildRequires:    systemd
 BuildRequires:    checkpolicy
 BuildRequires:    selinux-policy-devel
 BuildRequires:    hardlink
 
 # for 'make check' of major version 3.0.6
-BuildRequires:    python3-defusedxml
-BuildRequires:    python3-passlib
+BuildRequires:    python3-defusedxml >= 0.7.1
+BuildRequires:    python3-passlib >= 1.7.4
 BuildRequires:    python3-vobject >= 0.9.6
-BuildRequires:    python3-dateutil >= 2.7.3
+BuildRequires:    python3-dateutil >= 2.8.1
 
 Conflicts:        radicale < 3.0.0
 Conflicts:        radicale2
@@ -187,13 +189,13 @@ cp -p %{SOURCE4} %{SOURCE5} %{SOURCE6} SELinux
 sed -i 's|\(/var/run\)|%{_rundir}|' SELinux/%{name}.fc
 
 # restore original version after applying patches
-sed -i 's|VERSION = "%{radicale_major}.dev"|VERSION = "%{radicale_version}"|' setup.py
+%{__sed} -i 's|version = "%{radicale_major}.dev"|version = "%{radicale_version}"|' pyproject.toml
 
 
 %build
-%py3_build
-cd SELinux
+%pyproject_wheel
 
+cd SELinux
 for selinuxvariant in %{selinux_variants}
 do
     make NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile
@@ -204,7 +206,7 @@ cd -
 
 
 %install
-%py3_install
+%pyproject_install
 
 # move scripts away from _bindir to avoid conflicts and create a wrapper scripts
 install -d -p %{buildroot}%{_libexecdir}/%{name}
@@ -406,7 +408,7 @@ fi
 %files -n python3-%{radicale_package_name}
 %license COPYING.md
 %{python3_sitelib}/%{name}
-%{python3_sitelib}/Radicale-*.egg-info
+%{python3_sitelib}/Radicale-*-info
 
 
 %files -n %{radicale_package_name}-httpd
@@ -415,6 +417,10 @@ fi
 
 
 %changelog
+* Sun Oct 13 2024 Peter Bieringer <pb@bieringer.de> - 3.3.0-0.test.3
+- Update to 3.3.0
+- Align minimum requirements with EL9: defusedxml >= 0.7.1 / passlib >= 1.7.4 / dateutil >= 2.8.1
+
 * Fri Aug 30 2024 Peter Bieringer <pb@bieringer.de> - 3.2.3-1
 - Update to 3.2.3
 

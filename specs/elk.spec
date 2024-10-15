@@ -42,7 +42,7 @@ ExclusiveArch:          x86_64 %{ix86} aarch64 %{arm} %{power64}
 
 Name:			elk
 Version:		9.2.12
-Release:		4%{?dist}
+Release:		5%{?dist}
 Summary:		An all-electron full-potential linearised augmented-plane wave code
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -319,6 +319,9 @@ mv tests.orig tests
 
 
 %changelog
+* Sat Oct 12 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 9.2.12-5
+- Missed an explicit libxc version check.
+
 * Sat Oct 12 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 9.2.12-4
 - Remove bunded Libxc sources and patch for libxc 7 compatibility.
 

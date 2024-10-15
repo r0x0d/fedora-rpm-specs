@@ -1,11 +1,10 @@
 Name:           perl-DBICx-AutoDoc
 Version:        0.09
-Release:        22%{?dist}
+Release:        23%{?dist}
 Summary:        Generate automatic documentation of DBIx::Class::Schema objects
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
-URL:            https://metacpan.org/release/DBICx-AutoDoc
+URL:            https://metacpan.org/dist/DBICx-AutoDoc
 Source0:        https://cpan.metacpan.org/authors/id/I/IL/ILMARI/DBICx-AutoDoc-%{version}.tar.gz
 
 BuildArch:      noarch
@@ -45,15 +44,15 @@ with from templates.
 %setup -q -n DBICx-AutoDoc-%{version}
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1
-make %{?_smp_mflags}
+/usr/bin/perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=$RPM_BUILD_ROOT
+%{make_install}
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 %check
-make test
+%{make_build} test
 
 %files
 %doc Changes README
@@ -63,6 +62,11 @@ make test
 %{perl_vendorlib}/*
 
 %changelog
+* Sun Oct 13 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 0.09-23
+- Replace %%{__perl} with /usr/bin/perl
+- Use %%{make_build} and %%{make_install} where appropriate
+- Pass NO_PERLLOCAL to Makefile.PL
+
 * Mon Aug 05 2024 Miroslav Suchý <msuchy@redhat.com> - 0.09-22
 - convert license to SPDX
 

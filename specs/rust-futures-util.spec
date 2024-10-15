@@ -13,6 +13,10 @@ Summary:        Common utilities and extension traits for the futures-rs library
 License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/futures-util
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+# * drop unused compat support for futures 0.1
+# * drop unused compat support for tokio 0.1
+Patch:          futures-util-fix-metadata.diff
 # * revert upstream change that broke compilation with Rust < 1.81:
 #   https://github.com/rust-lang/futures-rs/issues/2892
 Patch10:        0001-revert-removal-of-unstable-io_slice_advance-feature-.patch
@@ -123,18 +127,6 @@ use the "channel" feature of the "%{crate}" crate.
 %files       -n %{name}+channel-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+compat-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+compat-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "compat" feature of the "%{crate}" crate.
-
-%files       -n %{name}+compat-devel
-%ghost %{crate_instdir}/Cargo.toml
-
 %package     -n %{name}+futures-channel-devel
 Summary:        %{summary}
 BuildArch:      noarch
@@ -183,18 +175,6 @@ use the "futures-sink" feature of the "%{crate}" crate.
 %files       -n %{name}+futures-sink-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+futures_01-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+futures_01-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "futures_01" feature of the "%{crate}" crate.
-
-%files       -n %{name}+futures_01-devel
-%ghost %{crate_instdir}/Cargo.toml
-
 %package     -n %{name}+io-devel
 Summary:        %{summary}
 BuildArch:      noarch
@@ -205,18 +185,6 @@ This package contains library source intended for building other packages which
 use the "io" feature of the "%{crate}" crate.
 
 %files       -n %{name}+io-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+io-compat-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+io-compat-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "io-compat" feature of the "%{crate}" crate.
-
-%files       -n %{name}+io-compat-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+memchr-devel
@@ -277,18 +245,6 @@ This package contains library source intended for building other packages which
 use the "std" feature of the "%{crate}" crate.
 
 %files       -n %{name}+std-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+tokio-io-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+tokio-io-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "tokio-io" feature of the "%{crate}" crate.
-
-%files       -n %{name}+tokio-io-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+unstable-devel

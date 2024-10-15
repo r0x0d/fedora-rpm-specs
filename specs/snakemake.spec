@@ -53,6 +53,10 @@ License:        MIT AND Unlicense
 URL:            https://snakemake.readthedocs.io/en/stable/index.html
 Source:         https://github.com/snakemake/snakemake/archive/v%{version}/snakemake-%{version}.tar.gz
 
+# chore(deps): allow pulp 2.9
+# https://github.com/snakemake/snakemake/pull/3138
+Patch:          https://github.com/snakemake/snakemake/pull/3138.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel

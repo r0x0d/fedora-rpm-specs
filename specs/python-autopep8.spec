@@ -4,7 +4,7 @@
 Name:           python-%{pypi_name}
 Version:        2.2.0
 Release:        %autorelease
-Summary:        Automatically formats Python code to conform to the PEP 8 style
+Summary:        Automatically formats Python code to conform to the PEP 8 style guide
 
 License:        MIT
 URL:            http://pypi.python.org/pypi/autopep8

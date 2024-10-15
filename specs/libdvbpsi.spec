@@ -57,7 +57,7 @@ rm -f %{buildroot}%{_libdir}/lib*.la
 %files
 %doc AUTHORS ChangeLog README
 %license COPYING
-%{_libdir}/%{name}.so.*
+%{_libdir}/%{name}.so.11{,.*}
 
 %files devel
 %{_includedir}/dvbpsi/

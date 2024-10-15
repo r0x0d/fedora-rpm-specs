@@ -14,9 +14,10 @@ URL:            https://crates.io/crates/futures
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * add missing futures-test dev-dependency
+# * drop unused compat support for futures 0.1
 # * drop unused compat support for tokio 0.1
 Patch:          futures-fix-metadata.diff
-Patch10:        0001-Fix-compiling-tests-with-io-compat-feature-removed.patch
+Patch10:        0001-Fix-compiling-tests-with-compat-and-io-compat-featur.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -99,18 +100,6 @@ This package contains library source intended for building other packages which
 use the "cfg-target-has-atomic" feature of the "%{crate}" crate.
 
 %files       -n %{name}+cfg-target-has-atomic-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+compat-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+compat-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "compat" feature of the "%{crate}" crate.
-
-%files       -n %{name}+compat-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+executor-devel

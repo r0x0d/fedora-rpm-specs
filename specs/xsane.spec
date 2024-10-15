@@ -1,15 +1,17 @@
 %if ! 0%{?fedora} || 0%{?fedora} >= 41
-%bcond gimp3 1
+%bcond gimp 0
 %bcond pixbuf_extra_modules 1
 %else
-%bcond gimp3 0
-%bcond pixbuf_extra_modules 1
+%bcond gimp 1
+%bcond pixbuf_extra_modules 0
 %endif
 
 # if you rebuild, please change bugtracker_url accordingly:
 %global bugtracker_url https://bugzilla.redhat.com
 
+%if %{with gimp}
 %global gimpplugindir %(%___build_pre; gimptool --gimpplugindir 2>/dev/null || echo INVALID)/plug-ins
+%endif
 %global iconrootdir %{_datadir}/icons/hicolor
 
 # needed for off-root building
@@ -92,7 +94,9 @@ URL: http://www.xsane.org/
 BuildRequires: gcc
 # uses make
 BuildRequires: make
+%if %{with gimp}
 BuildRequires: gimp-devel
+%endif
 BuildRequires: gtk2-devel
 BuildRequires: lcms2-devel
 BuildRequires: libjpeg-devel
@@ -106,6 +110,9 @@ Requires: hicolor-icon-theme
 %if %{with pixbuf_extra_modules}
 Requires: gdk-pixbuf2-modules-extra%{?_isa}
 %endif
+%if %{without gimp}
+Obsoletes: xsane-gimp < %{version}-%{release}
+%endif
 
 %description
 XSane is an X based interface for the SANE (Scanner Access Now Easy)
@@ -113,6 +120,7 @@ library, which provides access to scanners, digital cameras, and other
 capture devices. XSane is written in GTK+ and provides control for
 performing the scan and then manipulating the captured image.
 
+%if %{with gimp}
 %package gimp
 Summary: GIMP plug-in providing the SANE scanner interface
 Requires: gimp >= 2:2.2.12-4
@@ -125,6 +133,7 @@ Requires: gdk-pixbuf2-modules-extra%{?_isa}
 This package provides the regular XSane frontend for the SANE scanner
 interface, but it works as a GIMP plug-in. You must have GIMP
 installed to use this package.
+%endif
 
 %package common
 Summary: Common files for xsane packages
@@ -173,6 +182,7 @@ mkdir build-without-gimp
 CFLAGS='%optflags -fno-strict-aliasing -DXSANE_BUGTRACKER_URL=\"%{bugtracker_url}\"'
 export CFLAGS
 
+%if %{with gimp}
 pushd build-with-gimp
 %configure --enable-gimp
 if grep -Fq '#undef HAVE_ANY_GIMP' include/config.h; then
@@ -181,6 +191,7 @@ if grep -Fq '#undef HAVE_ANY_GIMP' include/config.h; then
 fi
 %make_build
 popd
+%endif
 
 pushd build-without-gimp
 %configure --disable-gimp
@@ -195,12 +206,11 @@ pushd build-without-gimp
 %make_install
 popd
 
+%if %{with gimp}
 # install GIMP plugin
 install -m 0755 -d %{buildroot}%{gimpplugindir}
-%if %{with gimp3}
-install -m 0755 -d %{buildroot}%{gimpplugindir}/%{name}
-%endif
 install -m 0755 build-with-gimp/src/xsane %{buildroot}%{gimpplugindir}/%{name}
+%endif
 
 # install customized desktop file
 rm %{buildroot}%{_datadir}/applications/xsane.desktop
@@ -263,11 +273,8 @@ EOF
 %{_datadir}/pixmaps/xsane.xpm
 %{iconrootdir}/*/apps/%{name}.png
 
+%if %{with gimp}
 %files gimp
-%if %{with gimp3}
-%dir %{gimpplugindir}/%{name}
-%{gimpplugindir}/%{name}/%{name}
-%else
 %{gimpplugindir}/%{name}
 %endif
 
