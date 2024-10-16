@@ -50,7 +50,7 @@
 Summary: A dynamic adaptive system tuning daemon
 Name: tuned
 Version: 2.24.0
-Release: 3%{?prerel1}%{?git_suffix:.%{git_suffix}}%{?dist}
+Release: 4%{?prerel1}%{?git_suffix:.%{git_suffix}}%{?dist}
 License: GPL-2.0-or-later AND CC-BY-SA-3.0
 %if 0%{?git_commit:1}
 Source0: https://github.com/redhat-performance/%{name}/archive/%{git_commit}/%{name}-%{version}-%{git_suffix}.tar.gz
@@ -58,6 +58,8 @@ Source0: https://github.com/redhat-performance/%{name}/archive/%{git_commit}/%{n
 Source0: https://github.com/redhat-performance/%{name}/archive/v%{version}%{?prerel2}/%{name}-%{version}%{?prerel2}.tar.gz
 %endif
 Patch: 0001-controller-init-set-_on_battery-before-switching-pro.patch
+# https://github.com/redhat-performance/tuned/pull/684
+Patch: 0001-tuned-ppd-Support-the-new-UPower-PPD-namespace.patch
 URL: http://www.tuned-project.org/
 BuildArch: noarch
 BuildRequires: systemd, desktop-file-utils
@@ -621,9 +623,15 @@ fi
 %{_datadir}/dbus-1/system-services/net.hadess.PowerProfiles.service
 %{_datadir}/dbus-1/system.d/net.hadess.PowerProfiles.conf
 %{_datadir}/polkit-1/actions/net.hadess.PowerProfiles.policy
+%{_datadir}/dbus-1/system-services/org.freedesktop.UPower.PowerProfiles.service
+%{_datadir}/dbus-1/system.d/org.freedesktop.UPower.PowerProfiles.conf
+%{_datadir}/polkit-1/actions/org.freedesktop.UPower.PowerProfiles.policy
 %config(noreplace) %{_sysconfdir}/tuned/ppd.conf
 
 %changelog
+* Mon Oct 14 2024 Pavol Žáčik <pzacik@redhat.com> - 2.24.0-4
+- Support the new UPower PPD namespace in tuned-ppd
+
 * Wed Oct  9 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 2.24.0-3
 - Obsolete power-profiles-daemon, patch by Kate Hsuan <hpa@redhat.com>
   Resolves: rhbz#2293628

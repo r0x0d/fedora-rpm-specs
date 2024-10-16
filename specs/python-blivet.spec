@@ -5,13 +5,13 @@ Version: 3.11.0
 
 #%%global prerelease .b2
 # prerelease, if defined, should be something like .a1, .b1, .b2.dev1, or .c2
-Release: 3%{?prerelease}%{?dist}
+Release: 4%{?prerelease}%{?dist}
 Epoch: 1
 License: LGPL-2.1-or-later
 %global realname blivet
 %global realversion %{version}%{?prerelease}
-Source0: http://github.com/storaged-project/blivet/archive/%{realname}-%{realversion}.tar.gz
-Source1: http://github.com/storaged-project/blivet/archive/%{realname}-%{realversion}-tests.tar.gz
+Source0: http://github.com/storaged-project/blivet/releases/download/%{realname}-%{realversion}/%{realname}-%{realversion}.tar.gz
+Source1: http://github.com/storaged-project/blivet/releases/download/%{realname}-%{realversion}/%{realname}-%{realversion}-tests.tar.gz
 
 %if 0%{?rhel} >= 9
 Patch0: 0001-remove-btrfs-plugin.patch
@@ -19,6 +19,7 @@ Patch0: 0001-remove-btrfs-plugin.patch
 
 Patch1: 0002-Do-not-raise-libblockdev-errors-in-FSMinSize-tasks.patch
 Patch2: 0003-free_space_estimate-adjust-for-compression-on-btrfs.patch
+Patch3: 0004-consolidated-s390-device-configuration.patch
 
 # Versions of required components (done so we make sure the buildrequires
 # match the requires versions of things).
@@ -28,6 +29,7 @@ Patch2: 0003-free_space_estimate-adjust-for-compression-on-btrfs.patch
 %global libblockdevver 3.2.0
 %global libbytesizever 0.3
 %global pyudevver 0.18
+%global s390utilscorever 2.31.0
 
 BuildArch: noarch
 
@@ -75,10 +77,8 @@ Recommends: libblockdev-mpath >= %{libblockdevver}
 Recommends: libblockdev-nvme >= %{libblockdevver}
 Recommends: libblockdev-part >= %{libblockdevver}
 Recommends: libblockdev-swap >= %{libblockdevver}
-
-%ifarch s390 s390x
 Recommends: libblockdev-s390 >= %{libblockdevver}
-%endif
+Recommends: s390utils-core >= %{s390utilscorever}
 
 Requires: python3-bytesize >= %{libbytesizever}
 Requires: util-linux >= %{utillinuxver}
@@ -117,6 +117,9 @@ make DESTDIR=%{buildroot} install
 %{python3_sitelib}/*
 
 %changelog
+* Mon Oct 14 2024 Vojtech Trefny <vtrefny@redhat.com> - 3.11.0-4
+- Consolidated s390 device configuration
+
 * Wed Oct 09 2024 Vojtech Trefny <vtrefny@redhat.com> - 3.11.0-3
 - free_space_estimate: adjust for compression on btrfs (#2315638)
 

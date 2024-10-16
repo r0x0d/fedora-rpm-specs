@@ -34,6 +34,9 @@ Summary: Interactive Jira shell
 Interactive Jira shell using jira Python library.
 
 
+%pyproject_extras_subpkg -n python3-jira cli,docs,async
+
+
 %prep
 %autosetup -p1 -n jira-%{version}
 

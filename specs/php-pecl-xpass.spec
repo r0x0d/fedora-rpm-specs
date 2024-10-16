@@ -21,7 +21,7 @@
 Summary:        Extended password extension
 Name:           php-pecl-%{pecl_name}
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        PHP-3.01
 URL:            https://pecl.php.net/package/%{pecl_name}
 Source0:        https://pecl.php.net/get/%{sources}.tgz
@@ -132,6 +132,9 @@ TEST_PHP_ARGS="-n -d extension=%{buildroot}/%{php_extdir}/%{pecl_name}.so" \
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.1.0-2
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Thu Sep 26 2024 Remi Collet <remi@remirepo.net> - 1.1.0-1
 - update to 1.1.0
 

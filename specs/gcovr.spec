@@ -3,7 +3,7 @@
 %bcond_without  docs
 
 Name:           gcovr
-Version:        8.0
+Version:        8.2
 Release:        %autorelease
 Summary:        A code coverage report generator using GNU gcov
 

@@ -6,7 +6,7 @@
 
 Name:		php-pecl-oauth	
 Version:	2.0.9
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	PHP OAuth consumer extension
 License:	BSD-3-Clause
 URL:		https://pecl.php.net/package/oauth
@@ -116,6 +116,9 @@ TEST_PHP_ARGS="-n -d extension=posix.so -d extension=%{buildroot}%{php_extdir}/%
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 2.0.9-2
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Tue Oct  8 2024 Remi Collet <remi@remirepo.net> - 2.0.9-1
 - update to 2.0.9
 - modernize spec file

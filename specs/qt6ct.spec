@@ -9,9 +9,9 @@
 Name:    qt6ct
 Version: 0.9
 %if 0%{?usesnapshot}
-Release: 0.10%{?snapshottag}%{?dist}
+Release: 0.11%{?snapshottag}%{?dist}
 %else
-Release: 10%{?dist}
+Release: 11%{?dist}
 %endif
 Summary: Qt6 - Configuration Tool
 
@@ -84,6 +84,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 %{_libdir}/libqt6ct-common.so.%{version}*
 
 %changelog
+* Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 0.9-11
+- Rebuild (qt6)
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.9-10
 - convert license to SPDX
 

@@ -1,24 +1,18 @@
 %global commandt_so_dir %{ruby_vendorarchdir}/command-t
 
-%global appdata_dir %{_datadir}/appdata
-
 Name: vim-command-t
-Version: 5.0.3
-Release: 13%{?dist}
+Version: 5.0.5
+Release: 1%{?dist}
 Summary: An extremely fast, intuitive mechanism for opening files in VIM
-# Automatically converted from old format: BSD - review is highly recommended.
-License: LicenseRef-Callaway-BSD
+License: BSD-2-Clause
 URL: https://github.com/wincent/command-t
 Source0: https://github.com/wincent/command-t/archive/%{version}/command-t-%{version}.tar.gz
 # Relax the Command-T version checking.
 # https://github.com/wincent/command-t/issues/192
 Patch0: vim-3.0.2-Check-RUBY_LIB_VERSION-instead-of-RUBY_VERSION.patch
-# Use rspec-mock for stubbing to fix the build failures with RR 1.2+.
-# https://github.com/wincent/command-t/pull/375
-Patch1: vim-command-t-5.0.3-Use-rspec-mock-for-stubbing.patch
-# Fix `CommandT::Scanner::BufferScanner` test.
-# https://github.com/wincent/command-t/commit/52adb808e2db85035e9a5a214cb147280c2f10e0
-Patch2: vim-command-t-5.0.3-fix-tests.patch
+# Use SPDX identifier in the AppStream data.
+# https://github.com/wincent/command-t/pull/427
+Patch1: vim-command-t-5.0.5-Use-SPDX-identifier-in-AppStream-metadata.patch
 # https://github.com/wincent/command-t/commit/5147a93a4b6cdb60cfa0ed1b792de711f44cd7b4
 # Ruby3.2 finally removes Fixnum
 Patch3: vim-command-t-5.0.3-ruby32-Fixnum-removal.patch
@@ -38,6 +32,7 @@ BuildRequires: rubygem(rspec) >= 3
 BuildRequires: gcc
 # Defines %%vimfiles_root
 BuildRequires: vim-filesystem
+BuildRequires: %{_bindir}/appstream-util
 
 %description
 The Command-T plug-in for VIM provides an extremely fast, intuitive mechanism
@@ -55,7 +50,6 @@ more weight.
 
 %patch 0 -p1
 %patch 1 -p1
-%patch 2 -p1
 %patch 3 -p1
 
 %build
@@ -80,14 +74,22 @@ mv %{buildroot}%{vimfiles_root}/ruby/command-t/ext/command-t/ext.so %{buildroot}
 find %{buildroot}%{vimfiles_root} -name '.*' -delete
 
 # Install AppData.
-mkdir -p %{buildroot}%{appdata_dir}
-install -m 644 appstream/vim-command-t.metainfo.xml %{buildroot}%{appdata_dir}
+mkdir -p %{buildroot}%{_metainfodir}
+install -m 644 appstream/vim-command-t.metainfo.xml %{buildroot}%{_metainfodir}
+
+# GVim ID in Fedora was changed by:
+# https://src.fedoraproject.org/rpms/vim/pull-request/25
+# therefore extend also the new ID.
+# TODO: Submit this upstream if it proves to work.
+sed -i '/<\/extends>/a <extends>org.vim.Vim</extends>' %{buildroot}%{_metainfodir}/vim-command-t.metainfo.xml
 
 %check
 # Get rid of Bundler
 sed -i '/Bundler/,/^end$/ s/^/#/' spec/spec_helper.rb
 
 rspec -Iruby spec
+
+appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 
 %files
 %license LICENSE
@@ -96,18 +98,22 @@ rspec -Iruby spec
 %{vimfiles_root}/autoload/*
 %{vimfiles_root}/doc/*
 %{vimfiles_root}/plugin/*
-%exclude %{vimfiles_root}/ruby/command-t/ext*
-%exclude %{vimfiles_root}/ruby/command-t/*.o
-%exclude %{vimfiles_root}/ruby/command-t/*.h
-%exclude %{vimfiles_root}/ruby/command-t/*.c
-%exclude %{vimfiles_root}/ruby/command-t/Makefile
-%exclude %{vimfiles_root}/ruby/command-t/mkmf.log
-%exclude %{vimfiles_root}/ruby/command-t/depend
+%exclude %{vimfiles_root}/ruby/command-t/ext/command-t/ext*
+%exclude %{vimfiles_root}/ruby/command-t/ext/command-t/*.o
+%exclude %{vimfiles_root}/ruby/command-t/ext/command-t/*.h
+%exclude %{vimfiles_root}/ruby/command-t/ext/command-t/*.c
+%exclude %{vimfiles_root}/ruby/command-t/ext/command-t/Makefile
+%exclude %{vimfiles_root}/ruby/command-t/ext/command-t/mkmf.log
+%exclude %{vimfiles_root}/ruby/command-t/ext/command-t/depend
 %{vimfiles_root}/ruby
-%{appdata_dir}/vim-command-t.metainfo.xml
+%{_metainfodir}/vim-command-t.metainfo.xml
 
 
 %changelog
+* Tue Oct 01 2024 Vít Ondruch <vondruch@redhat.com> - 5.0.5-1
+- Update to Command-T 5.0.5.
+  Resolves: rhbz#2091276
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 5.0.3-13
 - convert license to SPDX
 

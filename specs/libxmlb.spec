@@ -5,13 +5,11 @@
 
 Summary:   Library for querying compressed XML metadata
 Name:      libxmlb
-Version:   0.3.19
+Version:   0.3.20
 Release:   %autorelease
 License:   LGPL-2.1-or-later
 URL:       https://github.com/hughsie/%{name}
 Source0:   https://github.com/hughsie/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
-
-Patch1:    0001-Fix-writing-files-on-Windows.patch
 
 BuildRequires: glib2-devel >= %{glib2_version}
 BuildRequires: gtk-doc

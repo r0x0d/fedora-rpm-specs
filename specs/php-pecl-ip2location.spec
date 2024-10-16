@@ -21,7 +21,7 @@ Summary:        Get geo location information of an IP address
 Name:           php-pecl-%{pecl_name}
 License:        PHP-3.01
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:        7%{?dist}
+Release:        8%{?dist}
 URL:            https://pecl.php.net/package/%{pecl_name}
 Source0:        https://pecl.php.net/get/%{pecl_name}-%{upstream_version}%{?upstream_prever}.tgz
 
@@ -158,6 +158,9 @@ TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so" \
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 8.2.0-8
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 8.2.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

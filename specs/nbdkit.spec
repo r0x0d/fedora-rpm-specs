@@ -54,7 +54,7 @@
 %global source_directory 1.41-development
 
 Name:           nbdkit
-Version:        1.41.7
+Version:        1.41.8
 Release:        1%{?dist}
 Summary:        NBD server
 
@@ -279,8 +279,6 @@ nbdkit-info-plugin          Serve client and server information.
 
 nbdkit-memory-plugin        A virtual memory plugin.
 
-nbdkit-ondemand-plugin      Create filesystems on demand.
-
 nbdkit-ones-plugin          Fill disk with repeated 0xff or other bytes.
 
 nbdkit-pattern-plugin       Fixed test pattern.
@@ -456,6 +454,21 @@ Requires:       %{name}-ocaml-plugin%{?_isa} = %{version}-%{release}
 %description ocaml-plugin-devel
 This package lets you write OCaml plugins for %{name}.
 %endif
+
+
+%package ondemand-plugin
+Summary:        Create filesystems on demand for %{name}
+Requires:       %{name}-server%{?_isa} = %{version}-%{release}
+# For mkfs and mke2fs (defaults).
+Requires:       util-linux, e2fsprogs
+# For other filesystems.
+Suggests:       xfsprogs
+%if !0%{?rhel}
+Suggests:       ntfsprogs, dosfstools
+%endif
+
+%description ondemand-plugin
+This package is a plugin to create filesystems on demand for %{name}.
 
 
 %if !0%{?rhel}
@@ -1081,7 +1094,6 @@ fi
 %{_libdir}/%{name}/plugins/nbdkit-full-plugin.so
 %{_libdir}/%{name}/plugins/nbdkit-info-plugin.so
 %{_libdir}/%{name}/plugins/nbdkit-memory-plugin.so
-%{_libdir}/%{name}/plugins/nbdkit-ondemand-plugin.so
 %{_libdir}/%{name}/plugins/nbdkit-ones-plugin.so
 %{_libdir}/%{name}/plugins/nbdkit-partitioning-plugin.so
 %{_libdir}/%{name}/plugins/nbdkit-pattern-plugin.so
@@ -1097,7 +1109,6 @@ fi
 %{_mandir}/man1/nbdkit-full-plugin.1*
 %{_mandir}/man1/nbdkit-info-plugin.1*
 %{_mandir}/man1/nbdkit-memory-plugin.1*
-%{_mandir}/man1/nbdkit-ondemand-plugin.1*
 %{_mandir}/man1/nbdkit-ones-plugin.1*
 %{_mandir}/man1/nbdkit-partitioning-plugin.1*
 %{_mandir}/man1/nbdkit-pattern-plugin.1*
@@ -1223,6 +1234,13 @@ fi
 %{_mandir}/man3/nbdkit-ocaml-plugin.3*
 %{_mandir}/man3/NBDKit.3*
 %endif
+
+
+%files ondemand-plugin
+%doc README.md
+%license LICENSE
+%{_libdir}/%{name}/plugins/nbdkit-ondemand-plugin.so
+%{_mandir}/man1/nbdkit-ondemand-plugin.1*
 
 
 %if !0%{?rhel}
@@ -1498,6 +1516,9 @@ fi
 
 
 %changelog
+* Mon Oct 14 2024 Richard W.M. Jones <rjones@redhat.com> - 1.41.8-1
+- New upstream development branch version 1.41.8
+
 * Fri Oct 04 2024 Richard W.M. Jones <rjones@redhat.com> - 1.41.7-1
 - New upstream development branch version 1.41.7
 

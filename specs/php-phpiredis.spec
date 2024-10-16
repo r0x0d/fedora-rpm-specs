@@ -30,7 +30,7 @@
 
 Name:           php-%{pecl_name}
 Version:        1.0.1
-Release:        19%{?dist}
+Release:        20%{?dist}
 
 Summary:        Client extension for Redis
 
@@ -192,6 +192,9 @@ exit $ret
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.0.1-20
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.1-19
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

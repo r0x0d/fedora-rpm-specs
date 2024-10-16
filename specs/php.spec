@@ -7,9 +7,9 @@
 #
 
 # API/ABI check
-%global apiver      20230831
-%global zendver     20230831
-%global pdover      20170320
+%global apiver      20240924
+%global zendver     20240924
+%global pdover      20240423
 
 # we don't want -z defs linker flag
 %undefine _strict_symbol_defs_build
@@ -18,7 +18,7 @@
 %global _hardened_build 1
 
 # version used for php embedded library soname
-%global embed_version 8.3
+%global embed_version 8.4
 
 %global mysql_sock %(mysql_config --socket 2>/dev/null || echo /var/lib/mysql/mysql.sock)
 
@@ -44,7 +44,6 @@
 %endif
 %bcond_without   freetds
 %bcond_without   sodium
-%bcond_without   pspell
 %bcond_without   tidy
 %bcond_without   db4
 %bcond_without   qdbm
@@ -53,23 +52,21 @@
 %bcond_with      firebird
 %bcond_with      freetds
 %bcond_with      sodium
-%bcond_with      pspell
 %bcond_with      tidy
 %bcond_with      db4
 %bcond_with      qdbm
 %endif
 %bcond_with      zts
 %bcond_with      modphp
-%bcond_with      imap
 %bcond_without   lmdb
 
-%global upver        8.3.12
-#global rcver        RC1
+%global upver        8.4.0
+%global rcver        RC2
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php
 Version: %{upver}%{?rcver:~%{rcver}}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
 # TSRM is licensed under BSD
@@ -101,29 +98,27 @@ Source51: opcache-default.blacklist
 Source53: 20-ffi.ini
 
 # Build fixes
-Patch1: php-7.4.0-httpd.patch
-Patch5: php-7.2.0-includedir.patch
-Patch6: php-8.0.0-embed.patch
-Patch8: php-8.1.0-libdb.patch
+Patch1: php-8.4.0-httpd.patch
+Patch5: php-8.4.0-includedir.patch
+Patch6: php-8.4.0-embed.patch
+Patch8: php-8.4.0-libdb.patch
 
 # Functional changes
 # Use system nikic/php-parser
 Patch41: php-8.3.3-parser.patch
 # use system tzdata
-Patch42: php-8.3.11-systzdata-v24.patch
+Patch42: php-8.4.0-systzdata-v24.patch
 # See http://bugs.php.net/53436
 # + display PHP version backported from 8.4
-Patch43: php-7.4.0-phpize.patch
+Patch43: php-8.4.0-phpize.patch
 # Use -lldap_r for OpenLDAP
-Patch45: php-7.4.0-ldap_r.patch
+Patch45: php-8.4.0-ldap_r.patch
 # drop "Configure command" from phpinfo output
 # and only use gcc (instead of full version)
-Patch47: php-8.1.0-phpinfo.patch
+Patch47: php-8.4.0-phpinfo.patch
 # Always warn about missing curve_name
 # Both Fedora and RHEL do not support arbitrary EC parameters
 Patch48: php-8.3.0-openssl-ec-param.patch
-# Backport Argon2 password hashing in OpenSSL ext
-Patch49: php-8.3.7-argon2.patch
 
 # Upstream fixes (100+)
 
@@ -354,23 +349,6 @@ optimization. It improves PHP performance by storing precompiled script
 bytecode in the shared memory. This eliminates the stages of reading code from
 the disk and compiling it on future access. In addition, it applies a few
 bytecode optimization patterns that make code execution faster.
-
-%if %{with imap}
-%package imap
-Summary: A module for PHP applications that use IMAP
-# All files licensed under PHP version 3.01
-License:  PHP-3.01
-Requires: php-common%{?_isa} = %{version}-%{release}
-BuildRequires: pkgconfig(krb5)
-BuildRequires: pkgconfig(krb5-gssapi)
-BuildRequires: openssl-devel >= 1.0.2
-BuildRequires: libc-client-devel
-
-%description imap
-The php-imap module will add IMAP (Internet Message Access Protocol)
-support to PHP. IMAP is a protocol for retrieving and uploading e-mail
-messages on mail servers. PHP is an HTML-embedded scripting language.
-%endif
 
 %package ldap
 Summary: A module for PHP applications that use LDAP
@@ -643,19 +621,6 @@ Provides: php-embedded-devel%{?_isa} = %{version}-%{release}
 The php-embedded package contains a library which can be embedded
 into applications to provide PHP scripting language support.
 
-%if %{with pspell}
-%package pspell
-Summary: A module for PHP applications for using pspell interfaces
-# All files licensed under PHP version 3.01
-License:  PHP-3.01
-Requires: php-common%{?_isa} = %{version}-%{release}
-BuildRequires: aspell-devel >= 0.50.0
-
-%description pspell
-The php-pspell package contains a dynamic shared object that will add
-support for using the pspell library to PHP.
-%endif
-
 %package intl
 Summary: Internationalization extension for PHP applications
 # All files licensed under PHP version 3.01
@@ -730,7 +695,6 @@ in pure PHP.
 %patch -P45 -p1 -b .ldap_r
 %patch -P47 -p1 -b .phpinfo
 %patch -P48 -p1 -b .ec-param
-%patch -P49 -p1 -b .argon2
 
 # upstream patches
 
@@ -891,6 +855,7 @@ ln -sf ../configure
     --with-exec-dir=%{_bindir} \
     --without-gdbm \
     --with-openssl \
+    --with-openssl-argon2 \
     --with-system-ciphers \
     --with-external-pcre \
     --with-external-libcrypt \
@@ -899,7 +864,6 @@ ln -sf ../configure
 %endif
     --with-zlib \
     --with-layout=GNU \
-    --with-kerberos \
     --with-libxml \
     --with-system-tzdata \
     --with-mhash \
@@ -924,9 +888,6 @@ build --libdir=%{_libdir}/php \
       --enable-opcache \
       --with-capstone \
       --enable-phpdbg --enable-phpdbg-readline \
-%if %{with imap}
-      --with-imap=shared --with-imap-ssl \
-%endif
       --enable-mbstring=shared \
       --enable-mbregex \
       --enable-gd=shared \
@@ -979,9 +940,6 @@ build --libdir=%{_libdir}/php \
       --with-sqlite3=shared \
       --without-readline \
       --with-libedit \
-%if %{with pspell}
-      --with-pspell=shared \
-%endif
       --enable-phar=shared \
 %if %{with tidy}
       --with-tidy=shared,%{_prefix} \
@@ -1009,7 +967,6 @@ without_shared="--without-gd \
       --disable-xmlreader --disable-xmlwriter \
       --without-sodium \
       --without-sqlite3 --disable-phar --disable-fileinfo \
-      --without-pspell \
       --without-curl --disable-posix --disable-xml \
       --disable-simplexml --disable-exif --without-gettext \
       --without-iconv --disable-ftp --without-bz2 --disable-ctype \
@@ -1061,9 +1018,6 @@ build --includedir=%{_includedir}/php-zts \
       --enable-pcntl \
       --enable-opcache \
       --with-capstone \
-%if %{with imap}
-      --with-imap=shared --with-imap-ssl \
-%endif
       --enable-mbstring=shared \
       --enable-mbregex \
       --enable-gd=shared \
@@ -1117,9 +1071,6 @@ build --includedir=%{_includedir}/php-zts \
       --with-sqlite3=shared \
       --without-readline \
       --with-libedit \
-%if %{with pspell}
-      --with-pspell=shared \
-%endif
       --enable-phar=shared \
 %if %{with tidy}
       --with-tidy=shared,%{_prefix} \
@@ -1263,9 +1214,6 @@ TESTCMD="$TESTCMD --define extension_dir=$RPM_BUILD_ROOT%{_libdir}/php/modules"
 
 # Generate files lists and stub .ini files for each subpackage
 for mod in pgsql odbc ldap snmp \
-%if %{with imap}
-    imap \
-%endif
     mysqlnd mysqli \
     mbstring gd dom xsl soap bcmath dba \
     simplexml bz2 calendar ctype exif ftp gettext gmp iconv \
@@ -1275,9 +1223,6 @@ for mod in pgsql odbc ldap snmp \
     ffi \
 %if %{with tidy}
     tidy \
-%endif
-%if %{with pspell}
-    pspell \
 %endif
     curl \
 %if %{with sodium}
@@ -1514,9 +1459,6 @@ systemctl try-restart php-fpm.service >/dev/null 2>&1 || :
 
 %files pgsql -f files.pgsql
 %files odbc -f files.odbc
-%if %{with imap}
-%files imap -f files.imap
-%endif
 %files ldap -f files.ldap
 %files snmp -f files.snmp
 %files xml -f files.xml
@@ -1534,9 +1476,6 @@ systemctl try-restart php-fpm.service >/dev/null 2>&1 || :
 %endif
 %if %{with freetds}
 %files pdo-dblib -f files.pdo_dblib
-%endif
-%if %{with pspell}
-%files pspell -f files.pspell
 %endif
 %files intl -f files.intl
 %files process -f files.process
@@ -1558,6 +1497,14 @@ systemctl try-restart php-fpm.service >/dev/null 2>&1 || :
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@remirepo.net> - 8.4.0~RC2-2
+- refresh default configuration
+
+* Mon Oct 14 2024 Remi Collet <remi@remirepo.net> - 8.4.0~RC2-1
+- Update to 8.4.0RC2 for https://fedoraproject.org/wiki/Changes/php84
+- bump ABI/API numbers
+- drop pspell and imap extensions
+
 * Wed Sep 25 2024 Remi Collet <remi@remirepo.net> - 8.3.12-1
 - Update to 8.3.12 - http://www.php.net/releases/8_3_12.php
 

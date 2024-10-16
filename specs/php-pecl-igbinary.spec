@@ -19,11 +19,13 @@
 Summary:        Replacement for the standard PHP serializer
 Name:           php-pecl-igbinary
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Source0:        https://pecl.php.net/get/%{sources}.tgz
 License:        BSD-3-Clause
 
 URL:            https://pecl.php.net/package/igbinary
+
+Patch0:         393.patch
 
 ExcludeArch:    %{ix86}
 
@@ -68,6 +70,8 @@ These are the files needed to compile programs using Igbinary
 sed -e '/COPYING/s/role="doc"/role="src"/' -i package.xml
 
 cd %{sources}
+%patch -P0 -p1 -b .pr393
+
 # Check version
 subdir="php$(%{__php} -r 'echo (PHP_MAJOR_VERSION < 7 ? 5 : 7);')"
 extver=$(sed -n '/#define PHP_IGBINARY_VERSION/{s/.* "//;s/".*$//;p}' src/$subdir/igbinary.h)
@@ -196,6 +200,9 @@ TEST_PHP_ARGS="-n $MOD -d extension=$PWD/../ZTS/modules/%{pecl_name}.so" \
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 3.2.16-2
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Mon Aug 12 2024 Remi Collet <remi@remirepo.net> - 3.2.16-1
 - update to 3.2.16 (no change)
 

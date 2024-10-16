@@ -1,5 +1,5 @@
 Name:           virtme-ng
-Version:        1.29
+Version:        1.30
 Release:        %autorelease
 Summary:        Quickly build and run kernels inside a virtualized snapshot of your live system
 
@@ -10,7 +10,6 @@ Source:         %{pypi_source %{name}}
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
-BuildRequires:  argparse-manpage
 
 Recommends:     qemu-kvm
 Recommends:     busybox
@@ -59,11 +58,41 @@ rm -f virtme/guest/bin/virtme-ng-init
 %install
 %pyproject_install
 
-# Work around Python's inability to install global files
-mv %{buildroot}%{python3_sitelib}/etc       %{buildroot}%{_sysconfdir}
-mv %{buildroot}%{python3_sitelib}/usr/share %{buildroot}%{_datadir}
-
 %pyproject_save_files virtme virtme_ng
+
+# since version 1.30 we need to install completion scripts manually
+function install_completion() {
+    local shell="$1"
+    local bin="$2"
+    local dest="$3"
+
+    register-python-argcomplete -s $shell $bin | \
+        install -Dpm 0644 /dev/stdin $RPM_BUILD_ROOT"$dest"
+}
+
+function install_completion_bash() {
+    local bin="$1"
+
+    install_completion bash "$bin" %{bash_completions_dir}/$bin.bash
+}
+
+function install_completion_fish() {
+    local bin="$1"
+
+    install_completion fish "$bin" %{fish_completions_dir}/$bin.fish
+}
+
+function install_completion_zsh() {
+    local bin="$1"
+
+    install_completion zsh "$bin" %{zsh_completions_dir}/_$bin
+}
+
+for bin in virtme-ng vng; do
+    install_completion_bash $bin
+    install_completion_fish $bin
+    install_completion_zsh  $bin
+done
 
 %check
 %pyproject_check_import
@@ -71,14 +100,15 @@ mv %{buildroot}%{python3_sitelib}/usr/share %{buildroot}%{_datadir}
 %files -f %{pyproject_files}
 %license LICENSE
 %doc README.md
-%config(noreplace) %{_sysconfdir}/virtme-ng.conf
 %{_bindir}/vng
 %{_bindir}/virtme-ng
 %{_bindir}/virtme-run
 %{_bindir}/virtme-configkernel
 %{_bindir}/virtme-mkinitramfs
 %{_bindir}/virtme-prep-kdir-mods
-%{bash_completions_dir}/{virtme-ng,vng}-prompt
+%{bash_completions_dir}/{virtme-ng,vng}.bash
+%{fish_completions_dir}/{virtme-ng,vng}.fish
+%{zsh_completions_dir}/_{virtme-ng,vng}
 %{_mandir}/man1/vng.1*
 
 %changelog

@@ -50,8 +50,8 @@
 
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
-Version: 6.7.2
-Release: 4%{?dist}
+Version: 6.8.0
+Release: 1%{?dist}
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
 # See also http://qt-project.org/doc/qt-5.0/qtdoc/licensing.html
@@ -84,8 +84,8 @@ Patch3: qtwebengine-aarch64-new-stat.patch
 Patch50: qtwebengine-fix-build.patch
 
 ## Upstream patches:
-# Fixes build with FFmpeg 7
-Patch80:  qtwebengine-fix-building-with-system-ffmpeg.patch
+# https://bugreports.qt.io/browse/QTBUG-129985
+Patch80:  qtwebengine-fix-arm-build.patch
 
 ## Upstreamable patches:
 Patch110: qtwebengine-webrtc-system-openh264.patch
@@ -181,7 +181,9 @@ BuildRequires: pkgconfig(xkbcommon)
 BuildRequires: pkgconfig(xkbfile)
 BuildRequires: pkgconfig(xrandr)
 BuildRequires: pkgconfig(xrender)
+%if ! (0%{?rhel} >= 10)
 BuildRequires: pkgconfig(xscrnsaver)
+%endif
 BuildRequires: pkgconfig(xshmfence)
 BuildRequires: pkgconfig(xtst)
 BuildRequires: pkgconfig(zlib)
@@ -380,9 +382,7 @@ popd
 %patch -P50 -p1 -b .fix-build.patch
 
 ## upstream patches
-%if 0%{?fedora} >= 41 || 0%{?rhel} >= 10
-%patch -P80 -p1 -b .fix-building-with-system-ffmpeg
-%endif
+%patch -P80 -p1 -b .fix-arm-build
 
 ## upstreamable patches
 %patch -P110 -p1 -b .webrtc-system-openh264
@@ -671,6 +671,9 @@ done
 %endif
 
 %changelog
+* Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
+
 * Mon Sep 23 2024 Fabio Valentini <decathorpe@gmail.com> - 6.7.2-4
 - Rebuild for ffmpeg 7
 

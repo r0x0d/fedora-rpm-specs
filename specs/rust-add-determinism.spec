@@ -15,6 +15,9 @@ License:        GPL-3.0-or-later
 URL:            https://crates.io/crates/add-determinism
 Source:         %{crates_source}
 
+Patch:          https://github.com/keszybz/add-determinism/pull/38/commits/4656defaaed8868630d8a72261f6fdf20ad068ad.patch
+Patch:          https://github.com/keszybz/add-determinism/pull/38/commits/8be6d2889dcfdac72742d028fa72f4f4ddec206a.patch
+
 BuildRequires:  cargo-rpm-macros >= 26
 
 %global _description %{expand:

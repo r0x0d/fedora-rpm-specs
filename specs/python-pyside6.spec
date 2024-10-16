@@ -10,7 +10,7 @@
 
 Name:           python-%{pypi_name}
 Version:        6.7.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Python bindings for the Qt 6 cross-platform application and UI framework
 
 License:        LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -319,6 +319,9 @@ export LD_LIBRARY_PATH="%{buildroot}%{_libdir}"
 
 
 %changelog
+* Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-5
+- Rebuild (qt6)
+
 * Fri Aug 09 2024 Federico Pellegrin <fede@evolware.org> - 6.7.2-4
 - Fix pyside6-tools dependencies on python3-pyside
 

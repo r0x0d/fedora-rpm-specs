@@ -28,13 +28,13 @@
 %global apiver    5
 
 Name:           vdr
-Version:        2.7.2
+Version:        2.7.3
 Release:        1%{?dist}
 Summary:        Video Disk Recorder
 
 License:        GPL-2.0-or-later
 URL:            http://www.tvdr.de/
-# Get vdr source from http://git.tvdr.de/?p=vdr.git;a=snapshot;h=refs/tags/2.7.2;sf=tbz2
+# Get vdr source from http://git.tvdr.de/?p=vdr.git;a=snapshot;h=refs/tags/2.7.3;sf=tbz2
 Source0:        %{name}-%{version}.tar.bz2
 Source1:        %{name}.service
 Source2:        %{name}.sysconfig
@@ -56,7 +56,7 @@ Source18:       http://cdn.debian.net/debian/pool/main/v/vdr/vdr_2.2.0-5.debian.
 Source19:       %{name}-check-setup.sh
 Source20:       %{name}-rcu.conf
 Source21:       %{name}-set-wakeup.sh
-Source30:       https://bitbucket.org/powARman/dvbhddevice/get/2ea854ae8c7a.zip
+Source30:       https://bitbucket.org/powARman/dvbhddevice/get/3473a7b939d7.zip
 Source31:       ftp://ftp.tvdr.de/vdr/Plugins/vdr-dvbsddevice-2.2.0.tgz
 Source32:       ftp://ftp.tvdr.de/vdr/Plugins/vdr-rcu-2.2.0.tgz
 
@@ -66,10 +66,12 @@ Patch2:         http://www.saunalahti.fi/~rahrenbe/vdr/patches/vdr-2.4.6-editrec
 # Extracted from http://copperhead.htpc-forum.de/downloads/extensionpatch/extpngvdr1.7.21v1.diff.gz
 Patch3:         %{name}-1.7.21-plugin-missing.patch
 Patch4:         %{name}-2.4.0-paths.patch
-# https://www.vdr-portal.de/forum/index.php?thread/136461-announce-vdr-version-2-7-2-freigegeben/&postID=1375048#post1375048
-Patch5:         %{name}-2.7.2-remux-PTS.patch
 # http://vdrportal.de/board/thread.php?postid=343665#post343665
-Patch7:         12_osdbase-maxitems.patch
+Patch5:         12_osdbase-maxitems.patch
+
+# https://www.vdr-portal.de/forum/index.php?thread/136501-vdr-2-7-3-bei-radioaufnahmen-werden-viele-fehler-gez%C3%A4hlt/&postID=1375464#post1375464
+Patch6:         %{name}-2.7.3-remux-radio.patch
+
 # Sent upstream 2016-06-17
 Patch15:        %{name}-1.7.37-fedora-pkgconfig.patch
 # https://www.vdr-portal.de/index.php?attachment/44831-vdr-2-4-6-clearobsoletechannels-diff
@@ -169,7 +171,7 @@ window, using only plain text output.
 %setup -q -a 18
 # dvbhddevice
 unzip -o %{SOURCE30} -d $RPM_BUILD_DIR/vdr-%{version}/PLUGINS/src
-mv $RPM_BUILD_DIR/vdr-%{version}/PLUGINS/src/powARman-dvbhddevice-2ea854ae8c7a $RPM_BUILD_DIR/vdr-%{version}/PLUGINS/src/dvbhddevice
+mv $RPM_BUILD_DIR/vdr-%{version}/PLUGINS/src/powARman-dvbhddevice-3473a7b939d7 $RPM_BUILD_DIR/vdr-%{version}/PLUGINS/src/dvbhddevice
 cd PLUGINS/src
 %patch 0 -p3
 cd ../..
@@ -195,8 +197,8 @@ sed \
     -e 's|__VARDIR__|%{vardir}|'       \
     -e 's|__VIDEODIR__|%{videodir}|'   \
     %{PATCH4} | %{__patch} -p1
-%patch 5 -p0
-%patch 7 -p1
+%patch 5 -p1
+%patch 6 -p0
 %patch 15 -p1
 %patch 99 -p1
 
@@ -545,9 +547,10 @@ systemctl daemon-reload
 
 
 %changelog
-* Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 2.7.2-1
-- Update to 2.7.2
-- Add vdr-2.7.2-remux-PTS.patch
+* Mon Oct 14 2024 Martin Gansser <martinkg@fedoraproject.org> - 2.7.3-1
+- Update to 2.7.3
+- Use recent dvbhddevice Source file 3473a7b939d7.zip
+- Add %%{name}-2.7.3-remux-radio.patch
 
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.6.9-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild

@@ -23,7 +23,7 @@
 
 Name:           php-smbclient
 Version:        1.1.1
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        PHP wrapper for libsmbclient
 
 License:        BSD-2-Clause
@@ -171,6 +171,9 @@ cp %{SOURCE2} phpunit.xml
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.1.1-10
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Thu Aug 22 2024 Remi Collet <remi@remirepo.net> - 1.1.1-9
 - rebuild for broken ABI in 8.3.10, fixed in 8.3.11RC2
 

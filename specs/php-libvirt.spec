@@ -17,8 +17,8 @@
 %global  ini_name            40-%{extname}.ini
 
 Name:		php-libvirt
-Version:	0.5.7
-Release:	6%{?dist}
+Version:	0.5.8
+Release:	1%{?dist}
 Summary:	PHP language bindings for Libvirt
 
 # libvirt-php is under the same terms as libvirt
@@ -34,7 +34,6 @@ BuildRequires:	php-devel >= 7.0
 BuildRequires:	libvirt-devel >= %{req_libvirt_version}
 BuildRequires:	libxml2-devel
 BuildRequires:	libxslt
-BuildRequires:	php-pecl-imagick
 BuildRequires:	xhtml1-dtds
 
 Requires:	libvirt >= %{req_libvirt_version}
@@ -108,6 +107,10 @@ rm %{buildroot}%{php_extdir}/%{extname}.la
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 0.5.8-1
+- update to 0.5.8
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.5.7-6
 - convert license to SPDX
 

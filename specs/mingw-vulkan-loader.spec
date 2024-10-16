@@ -6,7 +6,7 @@
 %define baseversion %(echo %{version} | awk -F'.' '{print $1"."$2"."$3}')
 
 Name:          mingw-%{pkgname}
-Version:       1.3.290.0
+Version:       1.3.296.0
 Release:       1%{?dist}
 Summary:       MinGW Windows %{pkgname} library
 
@@ -19,11 +19,11 @@ Source0:       https://github.com/KhronosGroup/%{srcname}/archive/vulkan-sdk-%{v
 BuildRequires: cmake
 BuildRequires: ninja-build
 
-BuildRequires: mingw32-filesystem >= 95
+BuildRequires: mingw32-filesystem
 BuildRequires: mingw32-gcc-c++
 BuildRequires: mingw32-vulkan-headers >= %{baseversion}
 
-BuildRequires: mingw64-filesystem >= 95
+BuildRequires: mingw64-filesystem
 BuildRequires: mingw64-gcc-c++
 BuildRequires: mingw64-vulkan-headers >= %{baseversion}
 
@@ -81,6 +81,9 @@ MinGW Windows %{pkgname} library.
 
 
 %changelog
+* Mon Oct 14 2024 Sandro Mani <manisandro@gmail.com> - 1.3.296.0-1
+- Update to 1.3.296.0
+
 * Sat Aug 03 2024 Sandro Mani <manisandro@gmail.com> - 1.3.290.0-1
 - Update to 1.3.290.0
 

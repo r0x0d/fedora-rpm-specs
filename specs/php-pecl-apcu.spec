@@ -16,7 +16,7 @@
 Name:           php-pecl-apcu
 Summary:        APC User Cache
 Version:        5.1.24
-Release:        1%{?dist}
+Release:        2%{?dist}
 Source0:        https://pecl.php.net/get/%{sources}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
@@ -212,6 +212,9 @@ TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so" \
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 5.1.24-2
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Mon Sep 23 2024 Remi Collet <remi@remirepo.net> - 5.1.24-1
 - update to 5.1.24
 

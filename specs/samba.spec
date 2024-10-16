@@ -150,7 +150,7 @@
 
 %define samba_requires_eq()  %(LC_ALL="C" echo '%*' | xargs -r rpm -q --qf 'Requires: %%{name} = %%{epoch}:%%{version}\\n' | sed -e 's/ (none):/ /' -e 's/ 0:/ /' | grep -v "is not")
 
-%global samba_version 4.21.0
+%global samba_version 4.21.1
 
 # The release field is extended:
 # <pkgrel>[.<extraver>][.<snapinfo>]%%{?dist}[.<minorbump>]
@@ -252,10 +252,7 @@ Source18:       samba-winbind-systemd-sysusers.conf
 Source201:      README.downgrade
 Source202:      samba.abignore
 
-Patch0:         samba-4.21.0-backport-freeipa-support.patch
-# https://gitlab.com/samba-team/samba/-/merge_requests/3807
-Patch1:         samba-4.21.0-ldb-lmdb.patch
-Patch2:         samba-4-21-fix-libldb-deepbind.patch
+Patch0:         samba-4.21.0-s3-notifyd.patch
 
 Requires(pre): %{name}-common = %{samba_depver}
 Requires: %{name}-common = %{samba_depver}

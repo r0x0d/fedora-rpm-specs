@@ -2,7 +2,7 @@
 
 Name:    kde-connect
 Version: 24.08.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPL-2.0-or-later
 Summary: KDE Connect client for communication with smartphones
 
@@ -192,6 +192,9 @@ done
 
 
 %changelog
+* Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 24.08.2-2
+- Rebuild (qt6)
+
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
 - 24.08.2
 

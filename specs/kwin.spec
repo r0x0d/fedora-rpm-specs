@@ -3,7 +3,7 @@
 
 Name:    kwin
 Version: 6.2.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: KDE Window manager
 
 License: BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND GPL-3.0-or-later AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only) AND MIT
@@ -143,7 +143,9 @@ Requires:   %{name}-wayland = %{version}-%{release}
 Summary:        KDE Window Manager with Wayland support
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 Requires:       %{name}-common%{?_isa} = %{version}-%{release}
-Requires:       kwayland-integration%{?_isa}
+%if ! 0%{?rhel} >= 10
+Requires:       (kwayland-integration%{?_isa} if kf5-kwindowsystem%{?_isa})
+%endif
 %if ! 0%{?bootstrap}
 BuildRequires:  xorg-x11-server-Xwayland
 %endif
@@ -307,6 +309,9 @@ rm -v %{buildroot}%{_kf6_bindir}/kwin_x11 %{buildroot}%{_userunitdir}/plasma-kwi
 
 
 %changelog
+* Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 6.2.0-3
+- Rebuild (qt6)
+
 * Sun Oct 13 2024 Neal Gompa <ngompa@fedoraproject.org> - 6.2.0-2
 - Backport patches from upstream
   + Disable triple buffering with NVIDIA

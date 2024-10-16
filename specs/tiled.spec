@@ -2,7 +2,7 @@ Name:           tiled
 Summary:        Tiled Map Editor
 
 Version:        1.11.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 
 # tiled itself is GPLv2+, libtiled and tmxviewer are BSD
 License:        GPL-2.0-or-later AND BSD-2-Clause
@@ -276,6 +276,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/org.mape
 %{_libdir}/%{name}/plugins/libtscn.so
 
 %changelog
+* Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 1.11.0-4
+- Rebuild (qt6)
+
 * Thu Jul 25 2024 Artur Frenszek-Iwicki <fedora@svgames.pl> - 1.11.0-3
 - Switch from building with Qt5 to Qt6 (rhbz#2298214)
 - Build in release mode (rhbz#2260307)

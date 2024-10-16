@@ -23,8 +23,7 @@ Patch1:         0001-Skip-tests-that-fail-on-s390x.patch
 
 Patch3:         0001-Skip-failing-test.patch
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            https://www.pytables.org
 
 BuildRequires:  hdf5-devel >= 1.8

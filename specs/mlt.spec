@@ -21,7 +21,7 @@
 
 Name:           mlt
 Version:        7.28.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Toolkit for broadcasters, video editors, media players, transcoders
 
 # mlt/src/win32/fnmatch.{c,h} are BSD-licensed.
@@ -287,6 +287,9 @@ test "$(pkg-config --modversion mlt++-7)" = "%{version}"
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 7.28.0-4
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Wed Sep 25 2024 Dan Horák <dan[at]danny.cz> - 7.28.0-3
 - export missing APIs on i686
 

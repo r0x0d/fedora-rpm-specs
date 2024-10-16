@@ -4,7 +4,7 @@
 
 # https://github.com/yuin/goldmark-emoji
 %global goipath         github.com/yuin/goldmark-emoji
-Version:                1.0.3
+Version:                1.0.4
 
 %gometa -L
 

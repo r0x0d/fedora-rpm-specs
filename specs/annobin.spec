@@ -1,7 +1,7 @@
 
 Name:    annobin
 Summary: Annotate and examine compiled binary files
-Version: 12.70
+Version: 12.71
 Release: 1%{?dist}
 License: GPL-3.0-or-later AND LGPL-2.0-or-later AND (GPL-2.0-or-later WITH GCC-exception-2.0) AND (LGPL-2.0-or-later WITH GCC-exception-2.0) AND GFDL-1.3-or-later
 URL: https://sourceware.org/annobin/
@@ -532,6 +532,9 @@ make check
 #---------------------------------------------------------------------------------
 
 %changelog
+* Mon Oct 14 2024 Nick Clifton  <nickc@redhat.com> - 12.71-1
+- GCC Plugin: Change type of the .annobin.notes section from SHT_STRTAB to SHT_PROGBITS.
+
 * Tue Aug 13 2024 Nick Clifton  <nickc@redhat.com> - 12.70-1
 - Clang & LLVM Plugins: Include install directory in binary.  (RHEL-54069)
 

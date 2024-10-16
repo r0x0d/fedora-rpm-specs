@@ -2,7 +2,7 @@ Name:           libqtxdg
 Summary:        QtXdg, a Qt5 implementation of XDG standards
 Version:        4.0.0
 
-Release:        2%{?dist}
+Release:        3%{?dist}
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-LGPLv2+
 URL:            https://lxqt-project.org
@@ -68,6 +68,9 @@ Files used for developing and building software that uses qtxdg.
 %{_qt6_archdatadir}/plugins/iconengines/libQt6XdgIconPlugin.so
 
 %changelog
+* Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 4.0.0-3
+- Rebuild (qt6)
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 4.0.0-2
 - convert license to SPDX
 

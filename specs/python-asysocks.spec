@@ -10,34 +10,35 @@ URL:            https://github.com/skelsec/asysocks
 Source0:        %{pypi_source}
 BuildArch:      noarch
 
-%description
-A Python Socks5/Socks4 client and server library.
+%global _description %{expand:
+A Python Socks5/Socks4 client and server library.}
+
+%description %_description
 
 %package -n     python3-%{pypi_name}
 Summary:        %{summary}
 
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
 
-%description -n python3-%{pypi_name}
-A Python Socks5/Socks4 client and server library.
+%description -n python3-%{pypi_name} %_description
 
 %prep
 %autosetup -n %{pypi_name}-%{version}
 sed -i -e '/^#!\//, 1d' asysocks/__init__.py
 
+%generate_buildrequires
+%pyproject_buildrequires -t
+
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files %{pypi_name}
 
-%files -n python3-%{pypi_name}
-%doc README.md
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %license LICENSE
 %{_bindir}/asysock*
-%{python3_sitelib}/%{pypi_name}/
-%{python3_sitelib}/%{pypi_name}-%{version}-py*.egg-info/
 
 %changelog
 %autochangelog

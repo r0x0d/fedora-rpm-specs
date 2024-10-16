@@ -34,7 +34,7 @@
 
 Name:           obs-studio
 Version:        31.0.0~beta1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Open Broadcaster Software Studio
 
 # OBS itself is GPL-2.0-or-later, while various plugin dependencies are of various other licenses
@@ -361,6 +361,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.metainf
 
 
 %changelog
+* Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 31.0.0~beta1-3
+- Rebuild (qt6)
+
 * Sat Oct 05 2024 Neal Gompa <ngompa@fedoraproject.org> - 31.0.0~beta1-2
 - Directly recommend the openh264 package
 

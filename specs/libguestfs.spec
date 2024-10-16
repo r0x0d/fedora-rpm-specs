@@ -42,7 +42,7 @@ Summary:       Access and modify virtual machine disk images
 Name:          libguestfs
 Epoch:         1
 Version:       1.54.0
-Release:       1%{?dist}
+Release:       2%{?dist}
 License:       LGPL-2.1-or-later
 
 # Build only for architectures that have a kernel
@@ -1100,6 +1100,9 @@ rm ocaml/html/.gitignore
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1:1.54.0-2
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Tue Oct 08 2024 Richard W.M. Jones <rjones@redhat.com> - 1:1.54.0-1
 - New upstream stable version 1.54.0
 

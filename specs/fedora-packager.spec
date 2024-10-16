@@ -23,6 +23,7 @@ Source16:       stg_fedoraproject_ipa_ca.crt
 BuildRequires:  python3-devel
 
 Requires:       koji >= 1.11.0
+Requires:       python3-koji-cli-plugins
 Requires:       bodhi-client
 Requires:       rpm-build rpmdevtools rpmlint
 Requires:       rpmautospec
@@ -32,7 +33,8 @@ Requires:       fedpkg >= 1.0
 Requires:       systemd
 Obsoletes:      fedora-cert < 0.6.0.3-4
 Obsoletes:      fedora-packager-yubikey < 0.6.0.7-3
-Requires:       fedora-packager-kerberos == %{version}-%{release}
+Recommends:     fedora-packager-kerberos
+Requires:       (fedora-packager-kerberos = %{version}-%{release} if fedora-packager-kerberos)
 
 # A CLI tool to query Fedora and EPEL repositories
 Recommends:     fedrq
@@ -40,6 +42,9 @@ Recommends:     fedrq
 Recommends:     fedora-repoquery
 # Yet another CLI tool to query Fedora, ELN, Alma, CentoOS Stream, etc.
 Recommends:     rpmdistro-repoquery
+
+# Needed for koji edit-sidetag
+Recommends:     python3-koji-cli-plugins
 
 BuildArch:      noarch
 

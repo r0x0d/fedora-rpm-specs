@@ -30,7 +30,7 @@
 
 Name:           php-pecl-http
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Extended HTTP support
 
 License:        BSD-2-Clause
@@ -41,6 +41,8 @@ Source0:        https://pecl.php.net/get/%{sources}.tgz
 Source1:        %{proj_name}.ini
 
 Patch0:         %{proj_name}-build.patch
+Patch1:         %{proj_name}-php84.patch
+Patch2:         %{proj_name}-curl.patch
 
 ExcludeArch:    %{ix86}
 
@@ -112,6 +114,8 @@ sed -e '/LICENSE/s/role="doc"/role="src"/' -i package.xml
 
 cd %{sources}
 %patch -P0 -p1
+%patch -P1 -p1
+%patch -P2 -p1
 
 extver=$(sed -n '/#define PHP_PECL_HTTP_VERSION/{s/.* "//;s/".*$//;p}' php_http.h)
 if test "x${extver}" != "x%{upstream_version}%{?upstream_prever}%{?gh_date:dev}"; then
@@ -251,6 +255,12 @@ TEST_PHP_ARGS="-n $modules -d extension=$PWD/../NTS/modules/%{pecl_name}.so" \
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 4.2.4-8
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+- add upstream patch for libcurl 8.9
+- Fix build with PHP 8.4 using patch from
+  https://github.com/m6w6/ext-http/pull/135
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.2.4-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

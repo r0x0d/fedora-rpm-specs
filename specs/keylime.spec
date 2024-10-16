@@ -1,5 +1,5 @@
 %global srcname keylime
-%global policy_version 38.1.0
+%global policy_version 40.1.0
 
 # Package is actually noarch, but it has an optional dependency that is
 # arch-specific.
@@ -8,7 +8,7 @@
 %global selinuxtype targeted
 
 Name:    keylime
-Version: 7.10.0
+Version: 7.11.0
 Release: %autorelease
 Summary: Open source TPM software for Bootstrapping and Maintaining Trust
 
@@ -17,6 +17,10 @@ Source0:        https://github.com/keylime/keylime/archive/refs/tags/v%{version}
 Source1:        %{srcname}.sysusers
 # The selinux policy for keylime is distributed via this repo: https://github.com/RedHat-SP-Security/keylime-selinux
 Source2:        https://github.com/RedHat-SP-Security/%{name}-selinux/archive/v%{policy_version}/keylime-selinux-%{policy_version}.tar.gz
+
+Patch: 0001-Include-Authority-Key-Identifier-in-KL-generated-cer.patch
+Patch: 0002-ca_impl_openssl-Mark-extensions-as-critical-followin.patch
+Patch: 0003-revocation_notifier-Use-web_util-to-generate-TLS-con.patch
 
 # Main program: Apache-2.0
 # Icons: MIT

@@ -1,16 +1,18 @@
 Name:           python-icalendar
-Version:        5.0.13
-Release:        2%{?dist}
+Version:        6.0.1
+Release:        1%{?dist}
 Summary:        Parser/generator of iCalendar files following the RFC 2445
 
 License:        BSD-2-Clause
 URL:            http://pypi.python.org/pypi/icalendar
 Source0:        https://github.com/collective/icalendar/archive/v%{version}/%{version}.tar.gz
 
+Patch0:         hatch.patch
+Patch1:         tzdata.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
 BuildRequires:  python3-pytz
 BuildRequires:  python3-dateutil
 BuildRequires:  python3-hypothesis
@@ -43,20 +45,26 @@ well designed, simple to use and well documented.\
 %prep
 %setup -q -n icalendar-%{version}%{?veradd}
 
+%patch -P 0 -p0
+%patch -P 1 -p0
+
 # we have only 2.7 and 3.3
 sed -i 's/py26,//' tox.ini
 
 rm -rf %{py3dir}
 cp -a . %{py3dir}
 
+%generate_buildrequires
+%pyproject_buildrequires
+
 %build
 pushd %{py3dir}
-%{__python3} setup.py build
+%pyproject_wheel
 popd
 
 %install
 pushd %{py3dir}
-%{__python3} setup.py install --skip-build --root $RPM_BUILD_ROOT
+%pyproject_install
 popd
 
 
@@ -68,10 +76,13 @@ popd
 %files -n python3-icalendar
 %doc README.rst CHANGES.rst LICENSE.rst
 %{python3_sitelib}/icalendar
-%{python3_sitelib}/*.egg-info
+%{python3_sitelib}/*.dist-info
 %{_bindir}/icalendar
 
 %changelog
+* Mon Oct 14 2024 Gwyn Ciesla <gwync@protonmail.com> - 6.0.1-1
+- 6.0.1
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.13-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -9,7 +9,7 @@
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 Name:           snapshot
-Version:        47.0.1
+Version:        47.1
 Release:        %autorelease
 Summary:        Take pictures and videos
 

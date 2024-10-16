@@ -8,7 +8,7 @@ ExclusiveArch: %{ocaml_native_compiler}
 
 Name:           why3
 Version:        1.7.2
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Software verification platform
 
 License:        LGPL-2.1-only WITH OCaml-LGPL-linking-exception
@@ -200,9 +200,9 @@ mkdir -p %{buildroot}%{_datadir}/applications
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
 
 # Install the icon
-mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable
+mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/apps
 cp -p share/images/src/logo-kim.svg \
-      %{buildroot}%{_datadir}/icons/hicolor/scalable/%{name}.svg
+      %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 
 # Install the AppStream metadata
 mkdir -p %{buildroot}%{_metainfodir}
@@ -243,7 +243,7 @@ chmod 0755 %{buildroot}%{_bindir}/* \
 %{_datadir}/gtksourceview-3.0/language-specs/%{name}.lang
 %{_datadir}/gtksourceview-3.0/language-specs/%{name}c.lang
 %{_datadir}/gtksourceview-3.0/language-specs/%{name}py.lang
-%{_datadir}/icons/hicolor/scalable/%{name}.svg
+%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 %{_datadir}/vim/vimfiles/ftdetect/%{name}.vim
 %{_datadir}/vim/vimfiles/syntax/%{name}.vim
 %{_texmf}/tex/latex/why3/
@@ -283,6 +283,9 @@ chmod 0755 %{buildroot}%{_bindir}/* \
 %files all
 
 %changelog
+* Mon Oct 14 2024 Jerry James <loganjerry@gmail.com> - 1.7.2-10
+- Fix the location of the icon
+
 * Sun Oct  6 2024 Jerry James <loganjerry@gmail.com> - 1.7.2-9
 - Rebuild for ocaml-re 1.13.3
 

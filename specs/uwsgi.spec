@@ -250,7 +250,7 @@
 
 Name:           uwsgi
 Version:        2.0.27
-Release:        2%{?dist}
+Release:        4%{?dist}
 Summary:        Fast, self-healing, application container server
 # uwsgi is licensed under GPLv2 with a linking exception
 # docs are licensed under MIT
@@ -280,6 +280,8 @@ Patch6:         uwsgi_v8-314_compatibility.patch
 Patch7:         uwsgi_fix_mono.patch
 Patch13:        uwsgi_fix_chroot_chdir.patch
 Patch14:        uwsgi_python312-2.patch
+# https://github.com/unbit/uwsgi/issues/2681
+Patch15:        uwsgi-2.0.27-graceful-reload.patch
 
 BuildRequires:  curl, libxml2-devel, libuuid-devel, jansson-devel
 BuildRequires:  libyaml-devel, ruby-devel
@@ -1339,6 +1341,7 @@ cp -p %{SOURCE5} README.Fedora
 %endif
 %patch -P13 -p1
 %patch -P14 -p1
+%patch -P15 -p1
 
 %build
 CFLAGS="%{optflags} -Wno-error -Wno-unused-but-set-variable -fPIC" %{__python} uwsgiconfig.py --verbose --build fedora.ini
@@ -1964,6 +1967,12 @@ exit 0
 
 
 %changelog
+* Mon Oct 14 2024 Ralf Ertzinger <ralf@skytale.net> - 2.0.27-4
+- Fix uWSGI auto-reloading on config change
+
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 2.0.27-3
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Fri Sep 27 2024 Ralf Ertzinger <ralf@skytale.net> - 2.0.27-2
 - Only build fiber plugin when rack plugin is also built
 

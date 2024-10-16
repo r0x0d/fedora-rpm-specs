@@ -20,7 +20,7 @@
 %endif
 
 Name:           buildbot
-Version:        4.0.3
+Version:        4.1.0
 Release:        1%{?dist}
 
 Summary:        Build/test automation system
@@ -40,8 +40,6 @@ Source8:        %{pypi_source buildbot_pkg}
 # Service template units for buildbot instances
 Source10:       buildbot-master@.service
 Source11:       buildbot-worker@.service
-
-Patch0:         73cb7a9170e33c55855b150a101a41ff6cd7c59f.patch
 
 BuildArch:      noarch
 
@@ -332,7 +330,6 @@ Summary:        Buildbot documentation
 %setup -q -b0 -b1 -b2 -b3 -b4 -b5 -b6 -b7 -b8
 cd ..
 cd buildbot_worker-%{version}
-%patch -P 0 -p2
 
 %build
 %py3_build
@@ -409,6 +406,9 @@ trial buildbot.test
 %endif
 
 %changelog
+* Mon Oct 14 2024 Gwyn Ciesla <gwync@protonmail.com> - 4.1.0-1
+- 4.1.0
+
 * Mon Sep 30 2024 Gwyn Ciesla <gwync@protonmail.com> - 4.0.3-1
 - 4.0.3
 

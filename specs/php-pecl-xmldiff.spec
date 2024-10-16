@@ -15,12 +15,14 @@
 
 Name:             php-pecl-%peclName
 Version:          1.1.3
-Release:          13%{?dist}
+Release:          14%{?dist}
 Summary:          Pecl package for XML diff and merge
 
 License:          BSD-2-Clause
 URL:              http://pecl.php.net/package/%peclName
 Source0:          http://pecl.php.net/get/%peclName-%{version}.tgz
+
+Patch0:           2.patch
 
 ExcludeArch:      %{ix86}
 
@@ -59,11 +61,15 @@ memory can be processed.
 %prep
 %setup -qc
 
+cd %peclName-%{version}
+%patch -P0 -p1
+
 #rm bundled diffmark
-rm -rf %peclName-%{version}/diffmark
+rm -rf diffmark
 
 # to make rpmlint happy
-dos2unix --keepdate %peclName-%{version}/LICENSE
+dos2unix --keepdate LICENSE
+
 
 %build
 cd %peclName-%{version}
@@ -126,6 +132,11 @@ fi
 %{pecl_xmldir}/%{name}.xml
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.1.3-14
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+- fix PHP 8.4 build using patch from
+  https://github.com/php/pecl-xml-xmldiff/pull/2
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.3-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

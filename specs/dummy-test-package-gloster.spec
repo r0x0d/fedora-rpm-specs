@@ -3,7 +3,7 @@
 Name:           dummy-test-package-gloster
 
 Version:        0
-Release:        16170%{?dist}
+Release:        16190%{?dist}
 Summary:        Dummy Test Package called Gloster
 # Automatically converted from old format: CC0 - review is highly recommended.
 License:        CC0-1.0
@@ -33,6 +33,66 @@ cp -p uuid %{buildroot}%{_datadir}/%{name}
 %{_datadir}/%{name}
 
 %changelog
+* Tue Oct 15 2024 packagerbot <admin@fedoraproject.org> - 0-16190
+- rebuilt
+
+* Tue Oct 15 2024 packagerbot <admin@fedoraproject.org> - 0-16189
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16188
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16187
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16186
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16185
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16184
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16183
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16182
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16181
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16180
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16179
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16178
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16177
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16176
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16175
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16174
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16173
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16172
+- rebuilt
+
+* Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16171
+- rebuilt
+
 * Mon Oct 14 2024 packagerbot <admin@fedoraproject.org> - 0-16170
 - rebuilt
 

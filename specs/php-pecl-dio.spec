@@ -19,7 +19,7 @@
 Summary:        Direct I/O functions
 Name:           php-pecl-%{pecl_name}
 Version:        0.3.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        PHP-3.01
 URL:            https://pecl.php.net/package/%{pecl_name}
 Source0:        https://pecl.php.net/get/%{sources}.tgz
@@ -165,6 +165,9 @@ TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_ztysextdir}/%{pecl_name}.so" \
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 0.3.0-4
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.3.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

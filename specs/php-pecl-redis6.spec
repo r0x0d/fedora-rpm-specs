@@ -26,7 +26,7 @@
 Summary:       PHP extension for interfacing with key-value stores
 Name:          php-pecl-redis6
 Version:       %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:       1%{?dist}
+Release:       2%{?dist}
 License:       PHP-3.01
 URL:           https://pecl.php.net/package/redis
 Source0:       https://pecl.php.net/get/%{sources}.tgz
@@ -283,6 +283,9 @@ exit $ret
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 6.1.0-2
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Mon Oct  7 2024 Remi Collet <remi@remirepo.net> - 6.1.0-1
 - update to 6.1.0
 

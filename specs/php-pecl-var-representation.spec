@@ -15,7 +15,7 @@
 %global pecl_name   var_representation
 %global ini_name    40-%{pecl_name}.ini
 
-%global upstream_version 0.1.4
+%global upstream_version 0.1.5
 #global upstream_prever  RC1
 %global sources          %{pecl_name}-%{upstream_version}%{?upstream_prever}
 %global _configure       ../%{sources}/configure
@@ -23,7 +23,7 @@
 Summary:        A compact, more readable alternative to var_export
 Name:           php-pecl-var-representation
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:        9%{?dist}
+Release:        1%{?dist}
 
 License:        BSD-3-Clause
 URL:            https://pecl.php.net/package/%{pecl_name}
@@ -162,6 +162,10 @@ TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 0.1.5-1
+- update to 0.1.5
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.1.4-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

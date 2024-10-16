@@ -1,5 +1,5 @@
 %global forgeurl https://gitlab.com/inkscape/lib2geom
-Version:        1.3
+Version:        1.4
 %forgemeta
 
 Name:           lib2geom
@@ -56,12 +56,16 @@ export CXXFLAGS="%{optflags} -ffp-contract=off"
 %cmake_install
 
 %check
+%ifarch %{ix86} x86_64
 %ctest
+#%%else
+#%%ctest -E CoincidingIntersect
+%endif
 
 %files
 %license COPYING-LGPL-2.1 COPYING-MPL-1.1
 %doc README.md
-%{_libdir}/lib2geom.so.1*
+%{_libdir}/lib2geom.so.1.4*
 
 %files devel
 %dir %{_includedir}/2geom-*

@@ -1,6 +1,6 @@
 Name:          maui-mauikit-documents
 Version:       4.0.0
-Release:       1%{?dist}
+Release:       2%{?dist}
 License:       MIT AND GPL-3.0-or-later AND LGPL-2.0-or-later AND CC0-1.0 AND BSD-2-Clause AND LGPL-2.1-or-later
 Summary:       MauiKit QtQuick plugins for text editing
 URL:           https://invent.kde.org/maui/mauikit-documents/
@@ -63,5 +63,8 @@ on %{name}.
 %{_kf6_libdir}/libMauiKitDocuments4.so
 
 %changelog
+* Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 4.0.0-2
+- Rebuild (qt6)
+
 * Tue May 14 2024 Steve Cossette <farchord@gmail.com> - 4.0.0-1
 - 4.0.0

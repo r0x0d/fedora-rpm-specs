@@ -7,8 +7,7 @@ Version:        0.25^%{gitdate}.%{shortcommit0}
 Release:        4%{?dist}
 Summary:        OAuth2 plugin for the Accounts framework
 
-# Automatically converted from old format: LGPLv2 - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2
+License:        LGPL-2.1-or-later
 URL:            https://gitlab.com/accounts-sso/signon-plugin-oauth2
 
 Source0:        https://gitlab.com/accounts-sso/signon-plugin-oauth2/-/archive/%{commit0}/%{name}-%{commit0}.tar.gz

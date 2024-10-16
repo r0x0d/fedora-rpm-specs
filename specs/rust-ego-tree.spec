@@ -5,7 +5,7 @@
 %global crate ego-tree
 
 Name:           rust-ego-tree
-Version:        0.6.2
+Version:        0.9.0
 Release:        %autorelease
 Summary:        Vec-backed ID-tree
 
@@ -44,6 +44,18 @@ This package contains library source intended for building other packages which
 use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+serde-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+serde-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "serde" feature of the "%{crate}" crate.
+
+%files       -n %{name}+serde-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep

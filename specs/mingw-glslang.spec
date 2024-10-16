@@ -4,7 +4,7 @@
 
 Name:          mingw-%{pkgname}
 Epoch:         1
-Version:       1.3.290.0
+Version:       1.3.296.0
 Release:       1%{?dist}
 Summary:       MinGW Windows %{pkgname} library
 
@@ -91,6 +91,9 @@ MinGW Windows %{pkgname} library.
 
 
 %changelog
+* Mon Oct 14 2024 Sandro Mani <manisandro@gmail.com> - 1:1.3.296.0-1
+- Update to 1.3.296.0
+
 * Sat Aug 03 2024 Sandro Mani <manisandro@gmail.com> - 1:1.3.290.0-1
 - Update to 1.3.290.0
 

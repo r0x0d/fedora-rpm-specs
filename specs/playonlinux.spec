@@ -1,7 +1,7 @@
 Summary:       Graphical front-end for Wine
 Name:          playonlinux
 Version:       4.4
-Release:       12%{?dist}
+Release:       13%{?dist}
 # playonlinux itself is GPL-3.0-only but uses other source codes, breakdown:
 # GPL-2.0-or-later: python/{configurewindow/ConfigureWindow,debug,mainwindow,options,wrapper}.py
 # GPL-2.0-or-later: python/{install/InstallWindow,setupwindow/{POL_SetupFrame,gui_server}}.py
@@ -11,7 +11,7 @@ License:       GPL-3.0-only AND GPL-2.0-or-later AND MIT
 URL:           https://www.playonlinux.com/
 Source0:       https://github.com/PlayOnLinux/POL-POM-4/archive/%{version}/POL-POM-4-%{version}.tar.gz
 # Upstream changes since last release
-Patch0:        https://github.com/PlayOnLinux/POL-POM-4/compare/4.4...2b2eb7e.patch#/playonlinux-4.4-git2b2eb7e.patch
+Patch0:        https://github.com/PlayOnLinux/POL-POM-4/compare/4.4...76a6580.patch#/playonlinux-4.4-git76a6580.patch
 BuildRequires: gcc
 BuildRequires: make
 BuildRequires: gzip
@@ -100,6 +100,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/appdata/PlayOnLinu
 %{_mandir}/man1/%{name}-pkg.1*
 
 %changelog
+* Mon Oct 14 2024 Robert Scheck <robert@fedoraproject.org> 4.4-13
+- Add patch to replace pipes.quote() from deprecated Python
+  pipes (#2318435, thanks to Sean Carlos and Patrick Scheck)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.4-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

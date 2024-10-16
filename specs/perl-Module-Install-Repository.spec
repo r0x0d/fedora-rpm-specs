@@ -1,40 +1,44 @@
 Name:           perl-Module-Install-Repository
-Version:        0.06
-Release:        36%{?dist}
+Version:        0.08
+Release:        1%{?dist}
 Summary:        Automatically sets repository URL from Svn/Svk/Git checkout
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Module-Install-Repository
-Source0:        https://cpan.metacpan.org/authors/id/M/MI/MIYAGAWA/Module-Install-Repository-%{version}.tar.gz
+Source0:        https://cpan.metacpan.org/modules/by-module/Module/Module-Install-Repository-%{version}.tar.gz
 Patch0:         Module-Install-Repository-0.06-Fix-building-on-Perl-without-dot-in-INC.patch
 BuildArch:      noarch
+# Build
 BuildRequires:  coreutils
 BuildRequires:  findutils
 BuildRequires:  make
-BuildRequires:  perl-interpreter >= 0:5.005
 BuildRequires:  perl-generators
-BuildRequires:  perl(base)
+BuildRequires:  perl-interpreter >= 0:5.005
 BuildRequires:  perl(Carp)
+BuildRequires:  perl(Config)
 BuildRequires:  perl(Cwd)
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.36
+BuildRequires:  perl(Fcntl)
 BuildRequires:  perl(File::Find)
 BuildRequires:  perl(File::Path)
+BuildRequires:  perl(File::Temp)
 BuildRequires:  perl(FindBin)
+# Run-time
+BuildRequires:  perl(base)
 BuildRequires:  perl(strict)
 BuildRequires:  perl(vars)
 # Tests
-BuildRequires:  perl(File::Temp)
 BuildRequires:  perl(Path::Class)
 BuildRequires:  perl(Test::More)
+BuildRequires:  perl(warnings)
 
 %description
 Module::Install::Repository is a Module::Install plugin to automatically
-figure out repository URL and set it via repository() which then will be
+figure out repository URL and set it via repository(), which then will be
 added to resources under META.yml.
 
 %prep
 %setup -q -n Module-Install-Repository-%{version}
 %patch -P0 -p1
-find -type f -exec chmod -x {} +
 
 %build
 perl Makefile.PL INSTALLDIRS=vendor
@@ -43,17 +47,20 @@ make %{?_smp_mflags}
 %install
 make pure_install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -type f -name .packlist -delete
-%{_fixperms} $RPM_BUILD_ROOT/*
+%{_fixperms} -c $RPM_BUILD_ROOT
 
 %check
 make test
 
 %files
 %doc Changes README
-%{perl_vendorlib}/*
-%{_mandir}/man3/*
+%{perl_vendorlib}/Module/
+%{_mandir}/man3/Module::Install::Repository.3*
 
 %changelog
+* Mon Oct 14 2024 Paul Howarth <paul@city-fan.org> - 0.08-1
+- 0.08 bump (rhbz#2318481)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.06-36
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

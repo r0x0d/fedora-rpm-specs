@@ -3,39 +3,11 @@
 #  --with integrationtests	enable integration tests (not fully maintained, likely to fail)
 #
 
-# sqlite 3.8.5 available from Fedora 20, EL-8 onwards, needed for mod_proxy
-%if (0%{?rhel} && 0%{?rhel} >= 8) || (0%{?fedora} && 0%{?fedora} >= 20)
-%global mod_proxy_support mod_proxy:
-%endif
-
-# pcre2 available from Fedora 27, EL-8 onwards
-%if (0%{?rhel} && 0%{?rhel} >= 8) || (0%{?fedora} && 0%{?fedora} >= 27)
-%global pcre2_support 1
-%endif
-
-# Switch from mysql-devel to mariadb-connector-c-devel from Fedora 28 onwards
-# Also disable tcp_wrappers support from Fedora 28 onwards (#1518776)
-%if (0%{?rhel} && 0%{?rhel} <= 7) || (0%{?fedora} && 0%{?fedora} <= 27)
-%global mysql_lib mysql
-%global mysql_devel_pkg mysql-devel
-%global libwrap_support 1
+# Switch from libmemcached to libmemcached-awesome from Fedora 35 onwards
+%if (0%{?rhel} && 0%{?rhel} <= 8) || (0%{?fedora} && 0%{?fedora} <= 34)
+%global libmemcached_pkg libmemcached
 %else
-%global mysql_lib mariadb
-%global mysql_devel_pkg mariadb-connector-c-devel
-%endif
-
-# Drop legacy GeoIP support from F-32, EL-8 onwards
-# See http://bugs.proftpd.org/show_bug.cgi?id=4053
-#     https://github.com/proftpd/proftpd/issues/605
-%if (0%{?rhel} && 0%{?rhel} <= 7) || (0%{?fedora} && 0%{?fedora} <= 31)
-%global geoip_support 1
-%endif
-
-# Switch from postgresql-devel to libpq-devel from Fedora 30 onwards
-%if (0%{?rhel} && 0%{?rhel} <= 7) || (0%{?fedora} && 0%{?fedora} <= 29)
-%global postgresql_devel_pkg postgresql-devel
-%else
-%global postgresql_devel_pkg libpq-devel
+%global libmemcached_pkg libmemcached-awesome
 %endif
 
 # Do a hardened build where possible
@@ -45,7 +17,7 @@
 %undefine _strict_symbol_defs_build
 
 #global prever rc4
-%global baserelease 7
+%global baserelease 8
 %global mod_proxy_version 0.9.4
 %global mod_vroot_version 0.9.11
 
@@ -70,8 +42,6 @@ Source11:		http://github.com/Castaglia/proftpd-mod_proxy/archive/v%{mod_proxy_ve
 
 Patch1:			proftpd-1.3.8-shellbang.patch
 Patch3:			proftpd-1.3.4rc1-mod_vroot-test.patch
-Patch4:			proftpd-1.3.6-no-mod-wrap.patch
-Patch5:			proftpd-1.3.6-no-mod-geoip.patch
 Patch7:			proftpd-1.3.8-configure-c99.patch
 Patch8:			proftpd-configure-c99-2.patch
 Patch9:			https://patch-diff.githubusercontent.com/raw/proftpd/proftpd/pull/1677.patch
@@ -82,44 +52,28 @@ Patch13:		proftpd-1.3.8b-format-overflow.patch
 
 BuildRequires:		coreutils
 BuildRequires:		gcc
-%if 0%{?geoip_support:1}
-BuildRequires:		GeoIP-devel
-%endif
 BuildRequires:		gettext
 BuildRequires:		libacl-devel
 BuildRequires:		libcap-devel
 BuildRequires:		libidn2-devel
-BuildRequires:		libmemcached-devel >= 0.41
+BuildRequires:		%{libmemcached_pkg}-devel >= 0.41
+BuildRequires:		libpq-devel
 BuildRequires:		libsodium-devel >= 1.0
 BuildRequires:		logrotate
 BuildRequires:		make
-BuildRequires:		%{mysql_devel_pkg}
+BuildRequires:		mariadb-connector-c-devel
 BuildRequires:		ncurses-devel
 BuildRequires:		openldap-devel
 BuildRequires:		openssl-devel
 BuildRequires:		pam-devel
-%if 0%{?pcre2_support:1}
 BuildRequires:		pcre2-devel >= 10.30
-%endif
 BuildRequires:		perl-generators
-%if (0%{?rhel} && 0%{?rhel} <= 7) || (0%{?fedora} && 0%{?fedora} <= 25)
-BuildRequires:		perl
-%else
 BuildRequires:		perl-interpreter
-%endif
 BuildRequires:		pkgconfig
-BuildRequires:		%{postgresql_devel_pkg}
 BuildRequires:		sed
-%if 0%{?mod_proxy_support:1}
 BuildRequires:		sqlite-devel >= 3.8.5
-%else
-BuildRequires:		sqlite-devel
-%endif
 BuildRequires:		systemd-rpm-macros
 BuildRequires:		tar
-%if 0%{?libwrap_support:1}
-BuildRequires:		tcp_wrappers-devel
-%endif
 BuildRequires:		zlib-devel
 
 # Test suite requirements
@@ -171,27 +125,19 @@ Requires:	%{name} = %{version}-%{release}
 # devel package requires the same devel packages as were build-required
 # for the main package
 Requires:	gcc, libtool
-%if 0%{?geoip_support:1}
-Requires:	GeoIP-devel
-%endif
 Requires:	libacl-devel
 Requires:	libcap-devel
-Requires:	libmemcached-devel >= 0.41
+Requires:	%{libmemcached_pkg}-devel >= 0.41
+Requires:	libpq-devel
 Requires:	libsodium-devel >= 1.0
-Requires:	%{mysql_devel_pkg}
+Requires:	mariadb-connector-c-devel
 Requires:	ncurses-devel
 Requires:	openldap-devel
 Requires:	openssl-devel
 Requires:	pam-devel
-%if 0%{?pcre2_support:1}
 Requires:	pcre2-devel >= 10.30
-%endif
 Requires:	pkgconfig
-Requires:	%{postgresql_devel_pkg}
 Requires:	sqlite-devel
-%if 0%{?libwrap_support:1}
-Requires:	tcp_wrappers-devel
-%endif
 Requires:	zlib-devel
 
 %description devel
@@ -218,14 +164,12 @@ Requires:	%{name} = %{version}-%{release}
 %description postgresql
 Module to add PostgreSQL support to the ProFTPD FTP server.
 
-%if 0%{?mod_proxy_support:1}
 %package proxy
 Summary:	Module to add proxying support to the ProFTPD FTP server
 Requires:	%{name} = %{version}-%{release}
 
 %description proxy
 Module to add proxying support to the ProFTPD FTP server.
-%endif
 
 %package sqlite
 Summary:	Module to add SQLite support to the ProFTPD FTP server
@@ -282,16 +226,6 @@ mv contrib/README contrib/README.contrib
 # If we're running the full test suite, include the mod_vroot test
 %patch -P 3 -p1 -b .test_vroot
 
-# Remove references to mod_wrap from the configuration file if necessary
-%if 0%{!?libwrap_support:1}
-%patch -P 4 -b .nowrappers
-%endif
-
-# Remove references to mod_geoip from the configuration file if necessary
-%if 0%{!?geoip_support:1}
-%patch -P 5 -b .nogeoip
-%endif
-
 # Port configure script to C99: https://github.com/proftpd/proftpd/pull/1665
 %patch -P 7 -p1 -b .c99
 
@@ -317,18 +251,8 @@ mv contrib/README contrib/README.contrib
 # https://github.com/proftpd/proftpd/pull/1817
 %patch -P 13 -p1 -b .format-overflow
 
-# OpenSSL Cipher Profiles introduced in Fedora 21
-# Elsewhere, we use the default of DEFAULT:!ADH:!EXPORT:!DES
-%if (0%{?rhel} && 0%{?rhel} <= 7) || (0%{?fedora} && 0%{?fedora} <= 20)
-sed -i -e '/^[[:space:]]*TLSCipherSuite[[:space:]]*PROFILE=SYSTEM$/d' mod_tls.conf
-%endif
-
 # Tweak logrotate script for systemd compatibility (#802178)
-%if (0%{?rhel} && 0%{?rhel} <= 7) || (0%{?fedora} && 0%{?fedora} <= 23)
-sed -i -e '/killall/s/test.*/systemctl reload proftpd.service/' \
-%else
 sed -i -e '/killall/s/test.*/systemctl try-reload-or-restart proftpd.service/' \
-%endif
 	contrib/dist/rpm/proftpd.logrotate
 
 # Avoid docfile dependencies
@@ -344,11 +268,11 @@ find doc/ contrib/ -name '*.orig' -delete
 # Modules to be built as DSO's (excluding mod_ifsession, always specified last)
 SMOD1=mod_sql:mod_sql_passwd:mod_sql_mysql:mod_sql_postgres:mod_sql_sqlite
 SMOD2=mod_quotatab:mod_quotatab_file:mod_quotatab_ldap:mod_quotatab_radius:mod_quotatab_sql
-SMOD3=mod_ldap:mod_ban%{?libwrap_support::mod_wrap}:mod_ctrls_admin:mod_facl:mod_load:mod_vroot
-SMOD4=mod_radius:mod_ratio:mod_rewrite:mod_site_misc:mod_exec:mod_shaper%{?geoip_support::mod_geoip}
+SMOD3=mod_ldap:mod_ban:mod_ctrls_admin:mod_facl:mod_load:mod_vroot
+SMOD4=mod_radius:mod_ratio:mod_rewrite:mod_site_misc:mod_exec:mod_shaper
 SMOD5=mod_wrap2:mod_wrap2_file:mod_wrap2_sql:mod_copy:mod_deflate:mod_ifversion:mod_qos
 SMOD6=mod_sftp:mod_sftp_pam:mod_sftp_sql:mod_tls_shmcache:mod_tls_memcache
-SMOD7=%{?mod_proxy_support}mod_unique_id
+SMOD7=mod_proxy:mod_unique_id
 
 %configure \
 			--libexecdir="%{_libexecdir}/proftpd" \
@@ -362,12 +286,12 @@ SMOD7=%{?mod_proxy_support}mod_unique_id
 			--enable-nls \
 			--enable-openssl \
 			--disable-pcre \
-%{?pcre2_support:	--enable-pcre2} \
+			--enable-pcre2 \
 			--enable-sodium \
 			--disable-redis \
 			--enable-shadow \
 			--enable-tests=nonetwork \
-			--with-libraries="%{_libdir}/%{mysql_lib}" \
+			--with-libraries="%{_libdir}/mariadb" \
 			--with-includes="%{_includedir}/mysql" \
 			--with-modules=mod_readme:mod_auth_pam:mod_tls \
 			--with-shared=${SMOD1}:${SMOD2}:${SMOD3}:${SMOD4}:${SMOD5}:${SMOD6}:${SMOD7}:mod_ifsession
@@ -398,9 +322,7 @@ mkdir -p %{buildroot}%{_localstatedir}/{ftp/{pub,uploads},log/proftpd}
 touch %{buildroot}%{_sysconfdir}/ftpusers
 
 # We'll be using the system certificate database, not the one provided by mod_proxy
-%if 0%{?mod_proxy_support:1}
 rm %{buildroot}%{_sysconfdir}/cacerts.pem
-%endif
 
 # Make sure /run/proftpd exists at boot time for systems where it's on tmpfs (#656675)
 install -d -m 755 %{buildroot}%{_prefix}/lib/tmpfiles.d
@@ -495,7 +417,6 @@ fi
 %{_libexecdir}/proftpd/mod_deflate.so
 %{_libexecdir}/proftpd/mod_exec.so
 %{_libexecdir}/proftpd/mod_facl.so
-%{?geoip_support:%{_libexecdir}/proftpd/mod_geoip.so}
 %{_libexecdir}/proftpd/mod_ifsession.so
 %{_libexecdir}/proftpd/mod_ifversion.so
 %{_libexecdir}/proftpd/mod_load.so
@@ -518,7 +439,6 @@ fi
 %{_libexecdir}/proftpd/mod_tls_shmcache.so
 %{_libexecdir}/proftpd/mod_unique_id.so
 %{_libexecdir}/proftpd/mod_vroot.so
-%{?libwrap_support:%{_libexecdir}/proftpd/mod_wrap.so}
 %{_libexecdir}/proftpd/mod_wrap2.so
 %{_libexecdir}/proftpd/mod_wrap2_file.so
 %{_libexecdir}/proftpd/mod_wrap2_sql.so
@@ -545,11 +465,9 @@ fi
 %files postgresql
 %{_libexecdir}/proftpd/mod_sql_postgres.so
 
-%if 0%{?mod_proxy_support:1}
 %files proxy
 %doc contrib/mod_proxy/README.md
 %{_libexecdir}/proftpd/mod_proxy.so
-%endif
 
 %files sqlite
 %{_libexecdir}/proftpd/mod_sql_sqlite.so
@@ -570,6 +488,18 @@ fi
 %{_mandir}/man1/ftpwho.1*
 
 %changelog
+* Fri Oct 11 2024 Paul Howarth <paul@city-fan.org> - 1.3.8b-8
+- Drop EL-7 support
+  - Drop mod_geoip support
+  - Drop mod_wrap support
+  - Always build mod_proxy
+  - Always use libpcre2
+  - Always use maridb client library in preference to mysql
+  - Always use libpq client library in preference to postgresql
+  - Always use OpenSSL Cipher Profiles
+- Explicitly switch from libmemcached to libmemcached-awesome from Fedora 35
+  onwards
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.8b-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

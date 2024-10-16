@@ -12,16 +12,14 @@
 %bcond_without     tests
 
 %global pecl_name  xdebug
-%global with_zts   0%{!?_without_zts:%{?__ztsphp:1}}
-%global gh_commit  e978d755861a3a8d9dcef615bb6649b85f266658
+%global gh_commit  921255659710b07db816bc0c71941a5a00b6bf6c
 %global gh_short   %(c=%{gh_commit}; echo ${c:0:7})
 
 # version/release
-%global upstream_version 3.3.2
-#global upstream_prever  alpha3
-#global upstream_lower   %%(echo %%{upstream_prever} | tr '[:upper:]' '[:lower:]')
+%global upstream_version 3.4.0
+%global upstream_prever  beta1
+%global upstream_lower   %(echo %{upstream_prever} | tr '[:upper:]' '[:lower:]')
 %global sources          src
-%global _configure       ../%{sources}/configure
 
 # XDebug should be loaded after opcache
 %global ini_name  15-%{pecl_name}.ini
@@ -29,8 +27,10 @@
 Name:           php-pecl-xdebug3
 Summary:        Provides functions for function traces and profiling
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_lower}}
-Release:        2%{?dist}
+Release:        1%{?dist}
 Source0:        https://github.com/%{pecl_name}/%{pecl_name}/archive/%{gh_commit}/%{pecl_name}-%{upstream_version}%{?upstream_prever}-%{gh_short}.tar.gz
+# file is corrupted in 3.4.0beta1 tag
+Source1:        https://raw.githubusercontent.com/%{pecl_name}/%{pecl_name}/refs/tags/3.4.0alpha1/xdebug.ini
 
 License:        Xdebug-1.03
 URL:            https://xdebug.org/
@@ -39,7 +39,7 @@ ExcludeArch:    %{ix86}
 
 BuildRequires:  gcc
 BuildRequires:  make
-BuildRequires:  php-devel >= 8.0
+BuildRequires: (php-devel >= 8.0 with php-devel < 8.5)
 BuildRequires:  php-pear
 BuildRequires:  php-simplexml
 BuildRequires:  libtool
@@ -89,6 +89,8 @@ mv %{sources}/package.xml .
 sed -e '/LICENSE/s/role="doc"/role="src"/' -i package.xml
 
 cd %{sources}
+cp %{SOURCE1} xdebug.ini
+
 # Check extension version
 ver=$(sed -n '/XDEBUG_VERSION/{s/.* "//;s/".*$//;p}' php_xdebug.h)
 if test "$ver" != "%{upstream_version}%{?upstream_prever}%{?gh_date:-dev}"; then
@@ -96,11 +98,6 @@ if test "$ver" != "%{upstream_version}%{?upstream_prever}%{?gh_date:-dev}"; then
    exit 1
 fi
 cd ..
-
-mkdir NTS
-%if %{with_zts}
-mkdir ZTS
-%endif
 
 cat << 'EOF' >%{ini_name}
 ; Enable xdebug extension module
@@ -117,43 +114,30 @@ head -n15 <%{ini_name}
 %build
 cd %{sources}
 %{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-cd ../NTS
 %configure \
     --enable-xdebug  \
     --with-xdebug-compression \
     --with-php-config=%{__phpconfig}
-make %{?_smp_mflags}
 
-%if %{with_zts}
-cd ../ZTS
-%configure \
-    --enable-xdebug  \
-    --with-xdebug-compression \
-    --with-php-config=%{__ztsphpconfig}
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-# install NTS extension
-make -C NTS install INSTALL_ROOT=%{buildroot}
 
-# install package registration file
+: Install package registration file
 install -Dpm 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-# install config file
+: Install config file
 install -Dpm 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-%if %{with_zts}
-# Install ZTS extension
-make -C ZTS install INSTALL_ROOT=%{buildroot}
 
-install -Dpm 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
-
-# Documentation
+: Install the extension
 cd %{sources}
+%make_install
+
+: Install the Documentation
 for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
 do
   [ -f contrib/$i ] && j=contrib/$i || j=$i
@@ -170,7 +154,7 @@ for mod in simplexml; do
   fi
 done
 
-: check if NTS extension can be loaded
+: check if the extension can be loaded
 %{__php} \
     --no-php-ini \
     --define zend_extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
@@ -191,29 +175,19 @@ if [ -s err.log ]; then
     exit 1
 fi
 
-%if %{with_zts}
-: check if ZTS extension can be loaded
-%{__ztsphp} \
-    --no-php-ini \
-    --define zend_extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep '^Xdebug$'
-%endif
-
 %if %{with tests}
 cd %{sources}
-: Upstream test suite NTS extension
+: Upstream test suite
 
 # see https://bugs.xdebug.org/view.php?id=2048
-rm tests/base/bug02036.phpt
+rm tests/base/bug02036*.phpt
 # Erratic result
 rm tests/debugger/bug00998-ipv6.phpt
 
 # bug00886 is marked as slow as it uses a lot of disk space
 TEST_OPTS="-q -x --show-diff"
 
-TEST_PHP_EXECUTABLE=%{__php} \
 TEST_PHP_ARGS="-n $modules -d zend_extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
-REPORT_EXIT_STATUS=1 \
 %{__php} -n run-xdebug-tests.php $TEST_OPTS
 %else
 : Test suite disabled
@@ -228,14 +202,10 @@ REPORT_EXIT_STATUS=1 \
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %changelog
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.3.2-2
+- update to 3.4.0beta1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
 * Tue Apr 16 2024 Remi Collet <remi@remirepo.net> - 3.3.2-1

@@ -1,7 +1,7 @@
-%bcond_without  tests
+%bcond tests 1
 
 Name:           python-immutables
-Version:        0.20
+Version:        0.21
 Release:        %autorelease
 Summary:        Immutable Collections
 # The entire source code is Apache-2.0, except pythoncapi_compat.h, which is
@@ -15,21 +15,6 @@ Summary:        Immutable Collections
 License:        Apache-2.0 AND 0BSD
 URL:            https://github.com/MagicStack/immutables
 Source:         %{pypi_source immutables}
-
-# Replace _PyLong_Format with PyNumber_ToBase
-# https://github.com/MagicStack/immutables/pull/118
-#
-# Fixes:
-#
-# Segfault with Python 3.13.0b1
-# https://github.com/MagicStack/immutables/issues/116
-#
-# python-immutables fails to build with Python 3.13: multiple unknown names:
-# ‘_PyUnicodeWriter’, ‘_PyUnicodeWriter_Init’, ‘_map_dump_format’,
-# ‘map_node_dump’, ‘_PyUnicodeWriter_Finish’, ‘_PyUnicodeWriter_Dealloc’,
-# ‘_PyUnicodeWriter_WriteASCIIString’
-# https://bugzilla.redhat.com/show_bug.cgi?id=2246142
-Patch:          %{url}/pull/118.patch
 
 BuildRequires:  gcc
 

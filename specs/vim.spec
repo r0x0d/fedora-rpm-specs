@@ -635,7 +635,7 @@ install -p -m644 %{SOURCE6} \
 # See http://www.freedesktop.org/software/appstream/docs/ for more details.
 #
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/metainfo
-cat > $RPM_BUILD_ROOT%{_datadir}/metainfo/gvim.appdata.xml <<EOF
+cat > $RPM_BUILD_ROOT%{_datadir}/metainfo/gvim.appdata.xml <<"EOF"
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2014 Richard Hughes <richard@hughsie.com> -->
 <!--
@@ -678,6 +678,14 @@ SentUpstream: 2014-05-22
   </screenshots>
   <url type="homepage">http://www.vim.org/</url>
   <content_rating type="oars-1.1"/>
+  <!--
+    Without this tag, the G-S does not display icon properly. But also the
+    `appstream-builder` inserts into metadata generic
+    `<launchable type="desktop-id">org.vim.Vim.desktop</launchable>`,
+    which cannot be found. This results in `Vetos: Has no Icon` and
+    therefore rejection of GVim from `appstream-data` package.
+  -->
+  <launchable type="desktop-id">gvim.desktop</launchable>
 </component>
 EOF
 

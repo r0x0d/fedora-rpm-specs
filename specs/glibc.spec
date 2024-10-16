@@ -1,4 +1,4 @@
-%global glibcsrcdir glibc-2.40.9000-224-ga36814e145
+%global glibcsrcdir glibc-2.40.9000-247-g9d4b4515a8
 %global glibcversion 2.40.9000
 # Pre-release tarballs are pulled in from git using a command that is
 # effectively:
@@ -169,7 +169,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 6
+%global baserelease 7
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -2586,6 +2586,33 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Mon Oct 14 2024 DJ Delorie <dj@redhat.com> - 2.40.9000-7
+- Auto-sync with upstream branch master,
+  commit 9d4b4515a88c5d0bbfc7809374f322c507c2d779.
+- locale: Fix some spelling typos
+- LoongArch: Regenerate loongarch/arch-syscall.h by build-many-glibcs.py update-syscalls.
+- manual: Fix and test @deftypef* function formatting
+- replace tgammaf by the CORE-MATH implementation
+- Add IPPROTO_SMC from Linux 6.11 to netinet/in.h
+- misc: Add support for Linux uio.h RWF_ATOMIC flag
+- linux: Update stat-generic.h with linux 6.11
+- Update kernel version to 6.11 in header constant tests
+- linux: Add MAP_DROPPABLE from Linux 6.11
+- Update PIDFD_* constants for Linux 6.11
+- Update syscall lists for Linux 6.11
+- Use Linux 6.11 in build-many-glibcs.py
+- Fix header guard in sysdeps/mach/hurd/x86_64/vm_param.h
+- rt: more clock_nanosleep tests addendum
+- rt: more clock_nanosleep tests
+- stdlib: Make abort/_Exit AS-safe (BZ 26275)
+- linux: Use GLRO(dl_vdso_time) on time
+- linux: Use GLRO(dl_vdso_gettimeofday) on gettimeofday
+- S390: Don't use r11 for cu-instructions as used as frame-pointer. [BZ# 32192]
+- stdio-common/Makefile: Fix FAIL: lint-makefiles
+- Fix whitespace related license issues.
+- Add freopen special-case tests: thread cancellation
+- hurd: Add missing va_end call in fcntl implementation. [BZ #32234]
+
 * Wed Oct 02 2024 Carlos O'Donell <carlos@redhat.com> - 2.40.9000-6
 - Auto-sync with upstream branch master,
   commit a36814e1455093fc9ebfcdf6ef39bb0cf3d447da.

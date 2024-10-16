@@ -21,7 +21,7 @@
 %define	radicale_major	3
 
 %define	radicale_version	3.3.0
-%define	radicale_release	1
+%define	radicale_release	2
 #define gitcommit 8e9fdf391acb79d3fb1cb6e6b8f882f8999192cf
 
 %define	radicale_name	radicale
@@ -417,6 +417,9 @@ fi
 
 
 %changelog
+* Mon Oct 14 2024 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 3.3.0-2
+- Rebuild for rust-add-determinism-0.4.0-2.fc42
+
 * Sun Oct 13 2024 Peter Bieringer <pb@bieringer.de> - 3.3.0-0.test.3
 - Update to 3.3.0
 - Align minimum requirements with EL9: defusedxml >= 0.7.1 / passlib >= 1.7.4 / dateutil >= 2.8.1

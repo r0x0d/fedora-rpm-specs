@@ -16,10 +16,12 @@
 Summary:        Code coverage driver
 Name:           php-pecl-%{pecl_name}
 Version:        1.0.11
-Release:        11%{?dist}
+Release:        12%{?dist}
 License:        PHP-3.01
 URL:            https://pecl.php.net/package/%{pecl_name}
 Source0:        https://pecl.php.net/get/%{pecl_name}-%{version}.tgz
+
+Patch0:         %{pecl_name}-php84.patch
 
 ExcludeArch:    %{ix86}
 
@@ -51,6 +53,8 @@ sed -e 's/role="test"/role="src"/' \
     -i package.xml
 
 cd NTS
+%patch -P0 -p1
+
 # Sanity check, really often broken
 extver=$(sed -n '/#define PHP_PCOV_VERSION/{s/.* "//;s/".*$//;p}' php_pcov.h)
 if test "x${extver}" != "x%{version}%{?prever:-%{prever}}"; then
@@ -167,6 +171,11 @@ TEST_PHP_ARGS="-n -d extension=$PWD/modules/%{pecl_name}.so" \
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.0.11-12
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+- add patch for PHP 8.4 from
+  https://github.com/krakjoe/pcov/pull/111
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.11-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

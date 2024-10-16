@@ -10,20 +10,19 @@
 # Please, preserve the changelog entries
 #
 
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
-
 %global with_zts       0%{!?_without_zts:%{?__ztsphp:1}}
 %global pecl_name      mcrypt
 %global ini_name       30-%{pecl_name}.ini
 
 Summary:      Bindings for the libmcrypt library
 Name:         php-pecl-mcrypt
-Version:      1.0.6
-Release:      7%{?dist}
+Version:      1.0.7
+Release:      1%{?dist}
 License:      PHP-3.01
 URL:          https://pecl.php.net/package/mcrypt
 Source0:      https://pecl.php.net/get/%{pecl_name}-%{version}%{?prever}.tgz
+
+Patch0:       19.patch
 
 ExcludeArch:   %{ix86}
 
@@ -56,6 +55,8 @@ sed -e 's/role="test"/role="src"/' \
     -i package.xml
 
 cd NTS
+%patch -P0 -p1
+
 # Sanity check, really often broken
 extver=$(sed -n '/#define PHP_MCRYPT_VERSION/{s/.* "//;s/".*$//;p}' php_mcrypt.h)
 if test "x${extver}" != "x%{version}%{?prever}"; then
@@ -159,6 +160,12 @@ make test
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.0.7-14
+- update to 1.0.7
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+- fix build with PHP 8.4 using patch from
+  https://github.com/php/pecl-encryption-mcrypt/pull/19
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.6-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

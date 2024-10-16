@@ -2,7 +2,7 @@
 %global repo onedrive
 
 Name:           onedrive
-Version:        2.5.0
+Version:        2.5.2
 Release:        1%{?dist}
 Summary:        OneDrive Free Client written in D
 # Automatically converted from old format: GPLv3 - review is highly recommended.
@@ -32,7 +32,7 @@ sed -i "s|std\.c\.|core\.stdc\.|" src/sqlite.d
 echo %{version} > version
 
 %build
-%configure --enable-otifications
+%configure --enable-notifications
 export DFLAGS="%{_d_optflags}"
 export PREFIX="%{_prefix}"
 make DC=ldmd2 %{?_smp_mflags}
@@ -60,6 +60,10 @@ chmod a-x %{buildroot}/%{_mandir}/man1/%{name}*
 %config %{_sysconfdir}/logrotate.d/onedrive
 
 %changelog
+* Mon Oct 14 2024 Zamir SUN <sztsian@gmail.com> - 2.5.2-1
+- Update to 2.5.2
+- Fixes RHBZ#2315073 RHBZ#2258756
+
 * Wed Sep 18 2024 Zamir SUN <sztsian@gmail.com> - 2.5.0-1
 - Update to 2.5.0 (#2268779)
 

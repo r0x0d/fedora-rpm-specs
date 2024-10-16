@@ -8,11 +8,14 @@
 Summary:        Provides a wrapper to the ImageMagick library
 Name:           php-pecl-%pecl_name
 Version:        3.7.0
-Release:        13%{?dist}
+Release:        14%{?dist}
 License:        PHP-3.01
 URL:            https://pecl.php.net/package/%pecl_name
 
 Source0:        https://pecl.php.net/get/%pecl_name-%{version}%{?prever}.tgz
+
+Patch0:        %{pecl_name}-tests.patch
+Patch1:        %{pecl_name}-pr690.patch
 
 ExcludeArch:    %{ix86}
 
@@ -63,6 +66,9 @@ then : "Font files detected!"
 fi
 
 cd NTS
+%patch -P0 -p1
+%patch -P1 -p1
+
 : Avoid arginfo to be regenerated
 rm *.stub.php
 
@@ -193,6 +199,11 @@ cd ../ZTS
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 3.7.0-14
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+- add patch for PHP 8.4 from
+  https://github.com/Imagick/imagick/pull/690
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.7.0-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

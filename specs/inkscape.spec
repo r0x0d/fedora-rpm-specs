@@ -22,7 +22,7 @@
 %global shortcommit %(c=%{commit}; echo ${c:0:10})
 
 Name:           inkscape
-Version:        1.3.2
+Version:        1.4
 Release:        %autorelease
 Summary:        Vector-based drawing program using SVG
 
@@ -31,7 +31,7 @@ URL:            https://inkscape.org/
 Source0:        https://media.inkscape.org/dl/resources/file/inkscape-%{version}.tar.xz
 
 # The signatures were uploaded by the responsible release manager, and includes release date and commit, not using macros because it's inconsistent.
-Source1:        https://media.inkscape.org/media/resources/sigs/inkscape-1.3.2_2023-11-25_091e20ef0f.tar.xz.sig
+Source1:        https://media.inkscape.org/media/resources/sigs/inkscape-1.4_2024-10-09_e7c3feb100.tar.xz.sig
 
 # Keyring(s)
 Source10:       https://inkscape.org/~MarcJeanmougin/gpg/#/MarcJeanmougin.gpg
@@ -41,11 +41,6 @@ Source10:       https://inkscape.org/~MarcJeanmougin/gpg/#/MarcJeanmougin.gpg
 # to clarify the upstream license for this package? -- mochaa, 2023-10-23
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source100:      Fedora-Color-Palette.gpl
-
-Patch0:         0001-add-xmlmemory-include.patch
-Patch1:         inkscape-1.3.2-c++20.patch
-Patch2:         inkscape-1.3.2-gettype-enum.patch
-Patch3:         inkscape-1.3.2-unicode-marker.patch
 
 
 # Don't drop i686 until at least texlive no longer needs it -GC, 2023-08-10
@@ -184,7 +179,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %prep
 %{gpgverify} --keyring='%{SOURCE10}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
 
-%autosetup -n inkscape-1.3.2_2023-11-25_091e20ef0f -p1
+%autosetup -n inkscape-1.4_2024-10-09_e7c3feb100 -p1
 %py3_shebang_fix .
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
@@ -256,13 +251,11 @@ end
 %{_datadir}/inkscape/branding
 %{_datadir}/inkscape/extensions
 %{_datadir}/inkscape/filters
-%{_datadir}/inkscape/fonts
 %{_datadir}/inkscape/icons
 %{_datadir}/inkscape/keys
 %{_datadir}/inkscape/markers
 %{_datadir}/inkscape/palettes
 %{_datadir}/inkscape/paint
-%{_datadir}/inkscape/pixmaps
 %{_datadir}/inkscape/screens
 %{_datadir}/inkscape/symbols
 %{_datadir}/inkscape/templates

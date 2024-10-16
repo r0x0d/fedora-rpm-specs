@@ -5,7 +5,7 @@
 %define debug_package %{nil}
 
 Name:          nagios-plugins-check-updates
-Version:       2.0.5
+Version:       2.0.6
 Release:       %autorelease
 Summary:       A Nagios plugin to check if Red Hat or Fedora system is up-to-date
 

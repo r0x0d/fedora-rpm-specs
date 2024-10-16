@@ -22,7 +22,7 @@
 %global libbpf_version 1.5^%{libbpf_date}git%{libbpf_shortcommit}
 
 Name:           retsnoop
-Version:        0.10
+Version:        0.10.1
 Release:        %autorelease
 Summary:        A tool for investigating kernel error call stacks
 

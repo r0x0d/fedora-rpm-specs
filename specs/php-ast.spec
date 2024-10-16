@@ -20,7 +20,7 @@
 Summary:       Abstract Syntax Tree
 Name:          php-ast
 Version:       1.1.2
-Release:       1%{?dist}
+Release:       2%{?dist}
 License:       BSD-3-Clause
 URL:           https://pecl.php.net/package/ast
 Source0:       httpd://pecl.php.net/get/%{sources}.tgz
@@ -151,6 +151,9 @@ TEST_PHP_ARGS="-n -d extension=tokenizer.so -d extension=%{buildroot}%{php_ztsex
 
 
 %changelog
+* Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.1.2-2
+- rebuild for https://fedoraproject.org/wiki/Changes/php84
+
 * Mon Aug 12 2024 Remi Collet <remi@remirepo.net> - 1.1.2-1
 - update to 1.1.2
 

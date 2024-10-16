@@ -5,7 +5,7 @@
 %global crate avt
 
 Name:           rust-avt
-Version:        0.11.1
+Version:        0.14.0
 Release:        %autorelease
 Summary:        Asciinema virtual terminal
 
@@ -15,7 +15,6 @@ Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # - Drop unused, benchmark-only criterion dev-dependency
 # - Exclude some files that are only useful for upstream development
-# - Temporarily relax unicode-width dependency from 0.1.13 to 0.1.12
 Patch:          avt-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

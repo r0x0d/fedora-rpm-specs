@@ -2,7 +2,7 @@
 
 Name:    gjots2
 Version: 3.2.1
-Release: 7%{?dist}
+Release: 8%{?dist}
 Summary: A hierarchical note jotter - organize your ideas, notes, facts in a tree
 License: GPL-2.0-only
 URL:     http://bhepple.freeshell.org/gjots
@@ -13,7 +13,6 @@ BuildArch: noarch
 BuildRequires: python3-devel
 BuildRequires: libappstream-glib
 BuildRequires: desktop-file-utils
-BuildRequires: python3-setuptools
 
 Requires: python3-gobject
 Requires: gtk3
@@ -44,11 +43,14 @@ for file in doc/man/man1/*.1; do
     mv $file.new $file
 done
 
+%generate_buildrequires
+%pyproject_buildrequires
+
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
 
 rm -rf %{buildroot}%{_datadir}/doc/gjots2-%{version}/
 
@@ -84,7 +86,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.metainf
 %{_bindir}/gjots2emacs
 %{_bindir}/gjots2lpr
 %{python3_sitelib}/%{name}/
-%{python3_sitelib}/%{name}-%{version}-py%{python3_version}.egg-info
+%{python3_sitelib}/%{name}-%{version}.dist-info
 %{_datadir}/%{name}/
 %{_datadir}/pixmaps/gjots2.png
 %{_datadir}/metainfo/gjots2.metainfo.xml
@@ -94,6 +96,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.metainf
 %{_mandir}/man1/docbook2gjots*
 
 %changelog
+* Mon Oct 14 2024 Bob Hepple <bob.hepple@gmail.com> - 3.2.1-8
+- rebuilt
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.1-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

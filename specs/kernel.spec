@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc2.20241010gitd3d1556696c1.27
+%define pkgrelease 0.rc3.20241014git6485cf5ea253.31
 %define kversion 6
-%define tarfile_release 6.12-rc2-74-gd3d1556696c1
+%define tarfile_release 6.12-rc3-7-g6485cf5ea253
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc2.20241010gitd3d1556696c1.27%{?buildid}%{?dist}
+%define specrelease 0.rc3.20241014git6485cf5ea253.31%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4136,9 +4136,25 @@ fi\
 #
 #
 %changelog
-* Thu Oct 10 2024 Justin M. Forbes <jforbes@fedoraproject.org> [6.12.0-0.rc2.20241010gitd3d1556696c1.27]
+* Mon Oct 14 2024 Justin M. Forbes <jforbes@fedoraproject.org> [6.12.0-0.rc3.20241014git6485cf5ea253.31]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Mon Oct 14 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc3.6485cf5ea253.31]
+- Linux v6.12.0-0.rc3.6485cf5ea253
+
+* Sun Oct 13 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc2.36c254515dc6.30]
+- Linux v6.12.0-0.rc2.36c254515dc6
+
+* Sat Oct 12 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc2.09f6b0c8904b.29]
+- fedora: distable RTL8192E wifi driver (Peter Robinson)
+- common: arm64: Fixup and cleanup some SCMI options (Peter Robinson)
+- common: Cleanup ARM_SCMI_TRANSPORT options (Peter Robinson)
+- Linux v6.12.0-0.rc2.09f6b0c8904b
+
+* Fri Oct 11 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc2.1d227fcc7222.28]
+- configs: fedora/x86: Set CONFIG_CRYPTO_DEV_CCP_DD=y (Hans de Goede)
+- Linux v6.12.0-0.rc2.1d227fcc7222
 
 * Thu Oct 10 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc2.d3d1556696c1.27]
 - Linux v6.12.0-0.rc2.d3d1556696c1

@@ -9,7 +9,7 @@
 %global crate addr2line
 
 Name:           rust-addr2line
-Version:        0.24.1
+Version:        0.24.2
 Release:        %autorelease
 Summary:        Cross-platform symbolication library written in Rust, using gimli
 

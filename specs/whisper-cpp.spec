@@ -8,13 +8,13 @@ License:        MIT
 # examples/whisper.android/gradlew*
 # These are not distributed
 
-Version:        1.6.2
+Version:        1.7.1
 Release:        %autorelease
 
 URL:            https://github.com/ggerganov/whisper.cpp
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/whisper.cpp-%{version}.tar.gz
 # https://github.com/ggerganov/whisper.cpp/pull/1791
-Patch0:         0001-Generalize-install-locations.patch
+# Patch0:         0001-Generalize-install-locations.patch
 
 ExclusiveArch:  x86_64 aarch64 ppc64le
 %global toolchain clang
@@ -65,8 +65,8 @@ recognition (ASR) model:
 %prep
 %autosetup -p1 -n whisper.cpp-%{version}
 
-# verson the *.so
-sed -i -e 's/POSITION_INDEPENDENT_CODE ON/POSITION_INDEPENDENT_CODE ON SOVERSION %{version}/' CMakeLists.txt
+# verson the ggml *.so
+sed -i -e 's@POSITION_INDEPENDENT_CODE ON@POSITION_INDEPENDENT_CODE ON SOVERSION ${SOVERSION}@' ggml/src/CMakeLists.txt
 
 %build
 
@@ -82,18 +82,23 @@ sed -i -e 's/POSITION_INDEPENDENT_CODE ON/POSITION_INDEPENDENT_CODE ON SOVERSION
 %install
 %cmake_install
 
+find %{buildroot} -name 'whisper.pc' -delete
+
 %check
 %ctest
 
 %files
 %license LICENSE
-%{_libdir}/libwhisper.so.%{version}
+%{_libdir}/libggml.so.*
+%{_libdir}/libwhisper.so.*
 
 %files devel
 %doc README.md
-%{_includedir}/ggml.h
+%{_includedir}/ggml*.h
 %{_includedir}/whisper.h
+%{_libdir}/libggml.so
 %{_libdir}/libwhisper.so
+%{_libdir}/cmake/whisper/*.cmake
 
 %changelog
 %autochangelog

@@ -2,7 +2,7 @@
 
 Name:           libportal
 Version:        0.8.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Flatpak portal library
 # doc/urlmap.js is LGPL-2.1-or-later
 # everything else is LGPL-3.0-only
@@ -217,6 +217,9 @@ This package provides development documentations for libportal.
 %{_datadir}/doc/libportal-1
 
 %changelog
+* Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 0.8.1-2
+- Rebuild (qt6)
+
 * Sun Sep 29 2024 Neal Gompa <ngompa@fedoraproject.org> - 0.8.1-1
 - Update to 0.8.1
 
