@@ -1,10 +1,12 @@
-# F41FailsToInstall: blender
-# https://bugzilla.redhat.com/show_bug.cgi?id=2291492
-%bcond blender 0
+%bcond blender 1
 %bcond skimage 1
 
+# Not yet packaged: https://pypi.org/project/pymeshlab/
+# Enables some additional integration tests.
+%bcond pymeshlab 0
+
 Name:           python-trimesh
-Version:        4.4.9
+Version:        4.5.0
 Release:        %autorelease
 Summary:        Import, export, process, analyze and view triangular meshes
 
@@ -15,7 +17,18 @@ Summary:        Import, export, process, analyze and view triangular meshes
 # overall source, but with a different copyright statement:
 License:        MIT AND BSD-3-Clause AND Zlib
 URL:            https://trimsh.org
-Source:         https://github.com/mikedh/trimesh/archive/%{version}/trimesh-%{version}.tar.gz
+Source0:        https://github.com/mikedh/trimesh/archive/%{version}/trimesh-%{version}.tar.gz
+# Man page hand-written for Fedora in groff_man(7) format based on --help
+# output and on the docstring of trimesh.__main__.main
+Source1:        trimesh.1
+
+# Do test_multiple_difference with all engines
+#
+# A useful side effect is that this allows the test to run without
+# manifold3d, which is the default engine in this case.
+#
+# https://github.com/mikedh/trimesh/pull/2298
+Patch:          https://github.com/mikedh/trimesh/pull/2298.patch
 
 # The combination of an arched package with only noarch binary packages makes
 # it easier for us to detect arch-dependent test failures, since the tests will
@@ -38,8 +51,29 @@ ExcludeArch:    %{ix86}
 BuildRequires:  python3-devel
 BuildRequires:  tomcli
 
+# Test dependencies from the test and test_more extras; we list these manually
+# because so many are unavailable or are unwanted under
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
+# and would have to be patched out – it is easier to list what we *do* want.
+#
+# test extra:
+#   pytest-cov: linters/coverage/etc.
+BuildRequires:  %{py3_dist pytest}
+#   pyinstrument: not packaged; see “stub” workaround in %%prep
+#   ruff: linters/coverage/etc.
+#
+# test_more extra:
+#   coveralls: linters/coverage/etc.
+#   pyright: linters/coverage/etc.
+BuildRequires:  %{py3_dist ezdxf}
+#   pytest-beartype: linters/coverage/etc.
+%if %{with pymeshlab}
+BuildRequires:  %{py3_dist pymeshlab}
+%endif
+#   triangle: nonfree license
+
 # Run tests in parallel:
-BuildRequires:  python3dist(pytest-xdist)
+BuildRequires:  %{py3_dist pytest-xdist}
 
 # Command-line tools that are (optional) test dependencies:
 # tests/test_gltf.py
@@ -185,8 +219,6 @@ EOF
 #            require version 2.x of embree, which was once available in a
 #            compat package (https://src.fedoraproject.org/rpms/embree2) but
 #            was retired; the current version was 4.x.
-#   glooey: not yet packaged, https://github.com/kxgames/glooey; needs fonts
-#           that are not currently packaged unbundled from its assets
 #   manifold3d: not yet packaged, https://github.com/elalish/manifold/
 #   pyglet: incompatible version 2.x, beginning with F41. See “Path to
 #           supporting Pyglet 2?” https://github.com/mikedh/trimesh/issues/2155
@@ -194,9 +226,6 @@ EOF
 #           depends on https://github.com/jpcy/xatlas, also not yet packaged
 tomcli set pyproject.toml lists delitem --type regex --no-first \
     'project.optional-dependencies.easy' '(embreex|manifold3d|xatlas)\b.*'
-tomcli set pyproject.toml lists delitem --type regex --no-first \
-    'project.optional-dependencies.recommend' \
-    '(glooey)\b.*'
 %ifarch s390x
 # The python-cascadio package is currently ExcludeArch: s390x
 # python-cascadio: Tests for cascadio fail on s390x, wrong endianness
@@ -211,24 +240,11 @@ tomcli set pyproject.toml lists delitem --type regex --no-first \
 tomcli set pyproject.toml lists delitem --type regex --no-first \
     'project.optional-dependencies.recommend' 'scikit-image\b.*'
 %endif
-# Those listed below are test-only dependencies: some are unavailable; the rest
-# are unwanted under
-# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters.
-#
-#   coveralls: linters/coverage/etc.
-#   pyright: linters/coverage/etc.
-#   pyinstrument: not packaged; see preceding “stub” patch
-#   pytest-cov: linters/coverage/etc.
-#   ruff: linters/coverage/etc.
-#   pytest-beartype: linters/coverage/etc.
-tomcli set pyproject.toml lists delitem --type regex --no-first \
-    'project.optional-dependencies.test' \
-    '(coveralls|py(instrument|right)|pytest-(beartype|cov)|ruff)\b.*'
 
 
 %generate_buildrequires
-# With v4, [all] = [easy,recommend,test,deprecated].
-%pyproject_buildrequires -x easy,recommend,test
+# With v4, [all] = [easy,recommend,test,test_more,deprecated].
+%pyproject_buildrequires -x easy,recommend
 
 
 %build
@@ -246,6 +262,8 @@ find '%{buildroot}%{python3_sitelib}/trimesh' -type f \
   done
 # Cannot handle skipping byte-compilation for blender_boolean.py:
 #pyproject_save_files trimesh
+
+install -t '%{buildroot}%{_mandir}/man1' -p -m 0644 -D '%{SOURCE1}'
 
 
 %check
@@ -279,8 +297,10 @@ PlyTest::test_vertex_attributes
 # https://github.com/mikedh/trimesh/issues/2267
 # Fixed in trimesh 4.4.7, except on s390x:
 # https://github.com/mikedh/trimesh/issues/2267#issuecomment-2302365583
-BooleanTest::test_boolean
-BooleanTest::test_multiple
+# https://github.com/mikedh/trimesh/issues/2267#issuecomment-2414122193
+test_boolean
+test_multiple
+test_multiple_difference
 %endif
 EOF
 )
@@ -296,6 +316,9 @@ export PYTHONPATH="${PWD}/_stub:%{buildroot}%{python3_sitelib}"
 # blender_boolean.py, so we list files manually:
 %{python3_sitelib}/trimesh
 %{python3_sitelib}/trimesh-%{version}.dist-info
+
+%{_bindir}/trimesh
+%{_mandir}/man1/trimesh.1*
 
 
 %changelog

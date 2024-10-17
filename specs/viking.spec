@@ -13,6 +13,7 @@ Patch:          https://github.com/viking-gps/viking/commit/443fe78cb097ae219651
 # Fails to build on s390x, not needed for multilib
 ExcludeArch:    s390x %{ix86}
 
+BuildRequires:  autoconf
 BuildRequires:  make
 BuildRequires:  gcc-c++
 BuildRequires:  intltool
@@ -54,6 +55,7 @@ using Mapnik, control items, etc.
 %prep
 %autosetup -p1
 cp %{SOURCE1} . && chmod +x autogen.sh
+NOCONFIGURE=1 ./autogen.sh
 # Convert to utf-8
 for file in ChangeLog NEWS TODO; do
     mv $file timestamp
@@ -62,7 +64,6 @@ for file in ChangeLog NEWS TODO; do
 done
 
 %build
-NOCONFIGURE=1 ./autogen.sh
 %configure
 %make_build CFLAGS="${RPM_OPT_FLAGS} -fcommon"
 

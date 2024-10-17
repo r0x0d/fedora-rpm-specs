@@ -1,5 +1,5 @@
-%define pkg_version 6.6
-%define api_version 0.8.5
+%define pkg_version 6.7
+%define api_version 0.8.6
 
 # minimal means brltty-minimal subpackage with minimal deps for
 # braille support in Anaconda installer
@@ -36,8 +36,8 @@
 %global __requires_exclude ^(%{_privatelibs})$
 
 Name: brltty
-Version: 6.6
-Release: 20%{?dist}
+Version: 6.7
+Release: 1%{?dist}
 License: LGPL-2.0-or-later AND LGPL-2.1-or-later AND GPL-2.0-or-later
 URL: http://brltty.app/
 Source0: http://brltty.app/archive/%{name}-%{version}.tar.xz
@@ -48,10 +48,6 @@ Source4: brltty.sysusers
 Patch1: brltty-6.3-loadLibrary.patch
 # libspeechd.h moved in latest speech-dispatch (NOT sent upstream)
 Patch2: brltty-6.3-libspeechd.patch
-# https://brltty.app/pipermail/brltty/2023-August/020048.html
-# thanks to Lukáš Tyrychtr for the diagnosis and initial patch, and
-# Samuel Thibault for this improved patch
-Patch3: brltty-6.6-cython3.patch
 Summary: Braille display driver for Linux/Unix
 BuildRequires: byacc
 BuildRequires: glibc-kernheaders
@@ -74,6 +70,7 @@ BuildRequires: polkit-devel
 BuildRequires: libicu-devel
 BuildRequires: doxygen
 BuildRequires: linuxdoc-tools
+BuildRequires: ncurses-devel
 %if %{with python2}
 BuildRequires: python2-docutils
 BuildRequires: python2-setuptools
@@ -259,7 +256,6 @@ mv %{name}-%{version} python2
 pushd python2
 %patch -P 1 -p1 -b .loadLibrary
 %patch -P 2 -p1 -b .libspeechd
-%patch -P 3 -p1 -b .cython3
 
 # remove packaged binary file
 rm -f Programs/brltty-ktb
@@ -677,6 +673,9 @@ fi
 %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/brltty/Initramfs/cmdline
 
 %changelog
+* Tue Oct 15 2024 Gwyn Ciesla <gwync@protonmail.com> - 6.7-1
+- 6.7
+
 * Mon Aug 05 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 6.6-20
 - Use bcond consistently
 - Disable java and ocaml bindings in RHEL

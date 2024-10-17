@@ -58,6 +58,10 @@ TCL wrapper for OGDI.
 # include documentation
 %{__cp} -p %{SOURCE1} .
 
+# remove unbundled stuff
+rm -rf external
+sed -i '/^subdirs/s/external //' makefile
+
 
 %build
 TOPDIR=`pwd`; TARGET=Linux; export TOPDIR TARGET

@@ -1,20 +1,18 @@
-# CGAL-5.x is now a header-only library, with dependencies. It no
-# longer has any binary to build, but cannot be noarch because of
-# arch-specific dependencies
+# CGAL is a header-only library, with dependencies.
 %global debug_package %{nil}
 
 # Min dependencies
-%global boost_version 1.66
-%global qt_version 5.9
-%global cmake_version 3.14
+%global boost_version 1.72
+%global qt_version 6.4
+%global cmake_version 3.22
 
 %global fullversion %{version}
 #global fullversion 5.6-beta1
 
 
 Name:           CGAL
-Version:        5.6.1
-Release:        3%{?dist}
+Version:        6.0
+Release:        1%{?dist}
 Summary:        Computational Geometry Algorithms Library
 
 # Automatically converted from old format: LGPLv3+ and GPLv3+ and Boost - review is highly recommended.
@@ -28,10 +26,10 @@ BuildRequires: gcc-c++
 BuildRequires: gmp-devel
 BuildRequires: boost-devel >= %{boost_version}
 BuildRequires: mpfr-devel
-BuildRequires: qt5-qtbase-devel >= %{qt_version}
-BuildRequires: qt5-qtsvg-devel >= %{qt_version}
-BuildRequires: qt5-qtscript-devel >= %{qt_version}
-BuildRequires: qt5-qttools-devel >= %{qt_version}
+BuildRequires: qt6-qtbase-devel >= %{qt_version}
+BuildRequires: qt6-qtsvg-devel >= %{qt_version}
+BuildRequires: qt6-qtdeclarative-devel >= %{qt_version}
+BuildRequires: qt6-qttools-devel >= %{qt_version}
 BuildRequires: make
 
 %description
@@ -64,16 +62,16 @@ develop applications using CGAL.
 
 
 
-%package qt5-devel
-Summary:        Development files and tools for CGAL applications using CGAL_Qt5
+%package qt6-devel
+Summary:        Development files and tools for CGAL applications using CGAL_qt6
 Requires:       %{name}-devel = %{version}-%{release}
-Requires:       qt5-qtbase-devel%{?_isa} >= %{qt_version}
-Requires:       qt5-qtsvg-devel%{?_isa} >= %{qt_version}
-Requires:       qt5-qtscript-devel%{?_isa} >= %{qt_version}
-Requires:       qt5-qttools-devel%{?_isa} >= %{qt_version}
-%description qt5-devel
-The %{name}-qt5-devel package provides the headers files and tools you
-may need to develop applications using the CGAL_Qt5 component of CGAL.
+Requires:       qt6-qtbase-devel%{?_isa} >= %{qt_version}
+Requires:       qt6-qtsvg-devel%{?_isa} >= %{qt_version}
+Requires:       qt6-qtdeclarative-devel%{?_isa} >= %{qt_version}
+Requires:       qt6-qttools-devel%{?_isa} >= %{qt_version}
+%description qt6-devel
+The %{name}-qt6-devel package provides the headers files and tools you
+may need to develop applications using the CGAL_qt6 component of CGAL.
 
 
 %package demos-source
@@ -150,7 +148,7 @@ ldd ./constrained_plus
 %exclude %{_bindir}/cgal_make_macosx_app
 %{_mandir}/man1/cgal_create_cmake_script.1.gz
 
-%files qt5-devel
+%files qt6-devel
 %{_includedir}/CGAL/Qt
 %{_datadir}/cmake/CGAL/demo
 
@@ -160,6 +158,10 @@ ldd ./constrained_plus
 %exclude %{_datadir}/CGAL/*/*/skip_vcproj_auto_generation
 
 %changelog
+
+* Tue Oct 15 2024 Laurent Rineau <laurent.rineau@cgal.org> - 6.0-1
+- Update CGAL to version 6.0 and adjust dependencies
+
 * Wed Aug  7 2024 Miroslav Suchý <msuchy@redhat.com> - 5.6.1-3
 - convert license to SPDX
 

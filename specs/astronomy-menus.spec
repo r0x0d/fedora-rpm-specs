@@ -2,7 +2,7 @@ Name:           astronomy-menus
 Version:        1.0
 Release:        30%{?dist}
 Summary:        Astronomy menu for the Desktop
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            http://fedoraproject.org/wiki/SIGs/Astronomy
 # git clone git://git.fedorahosted.org/git/astronomy.git
 # make -C astronomy/projects/astronomy-menus dist

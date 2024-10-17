@@ -7,7 +7,9 @@
 
 %bcond autoreconf 1
 
-%bcond mingw 1
+# Not (yet) in EPEL10:
+# mingw{32,64}-{expat,libcharset,minizip}
+%bcond mingw %{expr:!0%{?el10}}
 
 Name:           freexl
 Version:        2.0.0

@@ -1,5 +1,5 @@
 Name:           python-irodsclient
-Version:        2.1.0
+Version:        2.2.0
 Release:        %autorelease
 Summary:        A python API for iRODS
 
@@ -7,10 +7,6 @@ Summary:        A python API for iRODS
 License:        BSD-3-Clause
 URL:            https://github.com/irods/python-irodsclient
 Source:         %{pypi_source python-irodsclient}
-
-# Fix an import in the tests that doesn’t seem to work as intended
-# https://github.com/irods/python-irodsclient/pull/612
-Patch:          %{url}/pull/612.patch
 
 BuildArch:      noarch
 
@@ -65,7 +61,7 @@ find 'irods' -type f -name '*.py' \
 
 
 %files -n python3-irodsclient -f %{pyproject_files}
-%doc CHANGELOG.rst
+%doc CHANGELOG.md
 %doc README.md
 
 

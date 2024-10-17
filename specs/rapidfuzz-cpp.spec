@@ -14,7 +14,7 @@
 %endif
 
 %global forgeurl https://github.com/maxbachmann/rapidfuzz-cpp
-Version: 2.2.3
+Version: 3.0.5
 %forgemeta
 
 Name: rapidfuzz-cpp

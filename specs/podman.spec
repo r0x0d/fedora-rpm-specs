@@ -65,6 +65,7 @@ Summary: Manage Pods, Containers and Container Images
 URL: https://%{name}.io/
 # All SourceN files fetched from upstream
 Source0: %{git0}/archive/v%{version_no_tilde}.tar.gz
+Patch0: 0001-upstream-c-common-PR-2194-to-podman.patch
 Provides: %{name}-manpages = %{epoch}:%{version}-%{release}
 BuildRequires: %{_bindir}/envsubst
 %if %{defined build_with_btrfs}
@@ -341,9 +342,4 @@ ln -s ../virtiofsd %{buildroot}%{_libexecdir}/%{name}
 %{_libexecdir}/%{name}/virtiofsd
 
 %changelog
-%if %{defined autochangelog}
 %autochangelog
-%else
-* Mon May 01 2023 RH Container Bot <rhcontainerbot@fedoraproject.org>
-- Placeholder changelog for envs that are not autochangelog-ready
-%endif

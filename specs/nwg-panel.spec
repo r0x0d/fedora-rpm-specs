@@ -2,7 +2,7 @@
 %global sys_name nwg_panel
 
 Name:       nwg-panel
-Version:    0.9.42
+Version:    0.9.44
 %forgemeta
 Release:    %autorelease
 Summary:    GTK3-based panel for sway and Hyprland Wayland compositors
@@ -11,6 +11,9 @@ BuildArch:  noarch
 License:    MIT
 URL:        %{forgeurl}
 Source0:    %{forgesource}
+
+# Add miraclewm support
+Patch0:     https://github.com/nwg-piotr/nwg-panel/pull/330.patch
 
 BuildRequires: desktop-file-utils
 BuildRequires: python3-devel >= 3.4

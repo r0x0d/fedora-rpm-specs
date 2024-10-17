@@ -8,11 +8,11 @@
 # don't require bundled modules
 %global __requires_exclude_from ^(%{nodejs_sitelib}/yarn/lib/.*|%{nodejs_sitelib}/yarn/bin/yarn(|\\.cmd|\\.ps1|pkg.*))$
 
-%global bundledate 20241010
+%global bundledate 20241015
 
 Name:           yarnpkg
 Version:        1.22.22
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Fast, reliable, and secure dependency management.
 License:        BSD-2-Clause
 URL:            https://github.com/yarnpkg/yarn
@@ -26,6 +26,7 @@ Source1:        yarnpkg-tarball.sh
 # thenify-CVE-2020-7677.prebundle.patch
 # decode-uri-component-CVE-2022-38900.prebundle.patch
 # CVE-2024-48949.prebundle.patch
+# CVE-2024-37890.prebundle.patch
 
 Patch0:         CVE-2023-26136.patch
 Patch1:         CVE-2022-37599.patch
@@ -36,7 +37,11 @@ Patch3:         CVE-2024-4067.patch
 ExclusiveArch:  %{nodejs_arches}
 
 BuildRequires:  nodejs-packaging
+%if 0%{?fedora}
 BuildRequires:  nodejs-npm
+%else
+BuildRequires:  npm
+%endif
 
 %description
 Fast, reliable, and secure dependency management.
@@ -86,6 +91,9 @@ if [[ $(%{buildroot}%{_bindir}/yarn --version) == %{version} ]] ; then echo PASS
 %{nodejs_sitelib}/%{npm_name}/
 
 %changelog
+* Tue Oct 15 2024 Sandro Mani <manisandro@gmail.com> - 1.22.22-5
+- Update bundled ws (CVE-2024-37890)
+
 * Thu Oct 10 2024 Sandro Mani <manisandro@gmail.com> - 1.22.22-4
 - Update bundled elliptic (CVE-2024-48949)
 

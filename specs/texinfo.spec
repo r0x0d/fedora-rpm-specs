@@ -3,7 +3,7 @@
 Summary: Tools needed to create Texinfo format documentation files
 Name: texinfo
 Version: 7.1.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPL-3.0-or-later
 Url: http://www.gnu.org/software/texinfo/
 Source0: ftp://ftp.gnu.org/gnu/texinfo/texinfo-%{version}.tar.xz
@@ -15,6 +15,10 @@ Patch0: info-6.5-sync-fix-info-dir.patch
 Patch1: texinfo-6.5-fix-info-dir.patch
 # Patch2: fixes issues detected by static analysis
 Patch2: texinfo-6.5-covscan-fixes.patch
+# Patch3: fixes issues detected by static analysis
+Patch3: texinfo-7.1-various-sast-fixes.patch
+# Patch4: fixes issues detected by static analysis
+Patch4: texinfo-7.1-make-tainted-data-safe.patch
 
 BuildRequires: make
 BuildRequires: gcc
@@ -148,6 +152,9 @@ export ALL_TESTS=yes
 %{_mandir}/man1/pdftexi2dvi.1*
 
 %changelog
+* Tue Oct 15 2024 Vitezslav Crhonek <vcrhonek@redhat.com> - 7.1.1-2
+- Another batch of fixes for issues detected by static analysis
+
 * Mon Sep 09 2024 Vitezslav Crhonek <vcrhonek@redhat.com> - 7.1.1-1
 - Update to texinfo-7.1.1
   Resolves: #2310652

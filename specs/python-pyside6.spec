@@ -6,25 +6,23 @@
 
 %global pypi_name pyside6
 %global camel_name PySide6
-%global qt6ver 6.7
+%global qt6ver 6.8
 
 Name:           python-%{pypi_name}
-Version:        6.7.2
-Release:        5%{?dist}
+Version:        6.8.0
+Release:        1%{?dist}
 Summary:        Python bindings for the Qt 6 cross-platform application and UI framework
 
 License:        LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 URL:            https://wiki.qt.io/Qt_for_Python
 
-Source0:        https://download.qt.io/official_releases/QtForPython/%{pypi_name}/%{camel_name}-%{version}-src/pyside-setup-everywhere-src-%{version}.tar.xz
+Source0:        https://download.qt.io/official_releases/QtForPython/%{pypi_name}/%{camel_name}-%{version}-src/pyside-setup-everywhere-src-%{qt6ver}.tar.xz
 
 #https://bugreports.qt.io/browse/PYSIDE-2491
 Patch0:         147389_fix-build.patch
-#https://bugreports.qt.io/browse/PYSIDE-2751
-Patch1:         shiboken-Fix-a-warning-crash-that-is-present-in-Pyth.patch
-Patch2:         Do-the-transition-to-Python-3.13-GIL-part.patch
-#https://codereview.qt-project.org/c/pyside/pyside-setup/+/568335
-Patch3:         Add-shibokenmodule-dependency-for-all-_pyi-modules.patch
+# https://bugreports.qt.io/browse/PYSIDE-2888
+Patch1:         0001-Lazy-Init-Support-Lazy-Subtypes-amended.patch
+Patch2:         0001-signature-Fix-pointers-to-signature-bytes-with-the-h.patch
 
 BuildRequires:  cmake
 BuildRequires:  ninja-build
@@ -201,7 +199,7 @@ Python.
 
 
 %prep
-%autosetup -p1 -n pyside-setup-everywhere-src-%{version}
+%autosetup -p1 -n pyside-setup-everywhere-src-%{qt6ver}
 # https://build.opensuse.org/package/view_file/KDE:Qt6/python3-pyside6/python3-pyside6.spec?expand=1
 # Restore 6.6.1 RPATH value. rpmlint will complain otherwise
 sed -i 's#${base}/../shiboken6/##' sources/pyside6/CMakeLists.txt
@@ -279,7 +277,7 @@ export LD_LIBRARY_PATH="%{buildroot}%{_libdir}"
 %files -n python%{python3_pkgversion}-%{pypi_name}
 %license LICENSES/*
 %doc README.md
-%{_libdir}/libpyside6*.so.6.7*
+%{_libdir}/libpyside6*.so.6.8*
 %{python3_sitelib}/%{camel_name}/
 %{python3_sitearch}/%{camel_name}-%{version}-py%{python3_version}.egg-info/
 
@@ -304,7 +302,7 @@ export LD_LIBRARY_PATH="%{buildroot}%{_libdir}"
 %files -n python%{python3_pkgversion}-shiboken6
 %doc README.shiboken6.md
 %license LICENSES/*
-%{_libdir}/libshiboken6*.so.6.7*
+%{_libdir}/libshiboken6*.so.6.8*
 %{python3_sitelib}/shiboken6/
 %{python3_sitearch}/shiboken6-%{version}-py%{python3_version}.egg-info/
 
@@ -319,6 +317,9 @@ export LD_LIBRARY_PATH="%{buildroot}%{_libdir}"
 
 
 %changelog
+* Tue Oct 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
+
 * Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-5
 - Rebuild (qt6)
 

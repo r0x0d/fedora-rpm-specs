@@ -10,7 +10,7 @@
 %bcond_with libsodium_crypt
 %endif
 
-%define patchlevel 737
+%define patchlevel 785
 
 %if %{?WITH_SELINUX:0}%{!?WITH_SELINUX:1}
 %define WITH_SELINUX 1
@@ -99,8 +99,6 @@ Patch3003: vim-python3-tests.patch
 Patch3004: vim-crypto-warning.patch
 # don't ever set mouse (Fedora downstream patch)
 Patch3005: vim-8.0-copy-paste.patch
-# https://github.com/vim/vim/pull/15711
-Patch3006: 0001-if_py_both.h-Reset-severity-for-empty-messages.patch
 
 
 # uses autoconf in spec file
@@ -428,7 +426,7 @@ perl -pi -e "s,bin/nawk,bin/awk,g" runtime/tools/mve.awk
 %patch -P 3003 -p1 -b .python-tests
 %patch -P 3004 -p1 -b .fips-warning
 %patch -P 3005 -p1 -b .copypaste
-%patch -P 3006 -p1 -b .reset-emsg-severity
+
 
 %build
 cd src
@@ -861,6 +859,7 @@ touch %{buildroot}/%{_datadir}/%{name}/vimfiles/doc/tags
 %endif
 
 %lang(af) %{_datadir}/%{name}/%{vimdir}/lang/af
+%lang(am) %{_datadir}/%{name}/%{vimdir}/lang/am
 %lang(ca) %{_datadir}/%{name}/%{vimdir}/lang/ca
 %lang(cs) %{_datadir}/%{name}/%{vimdir}/lang/cs
 %lang(cs.cp1250) %{_datadir}/%{name}/%{vimdir}/lang/cs.cp1250
@@ -1074,6 +1073,9 @@ touch %{buildroot}/%{_datadir}/%{name}/vimfiles/doc/tags
 
 
 %changelog
+* Tue Oct 15 2024 Zdenek Dohnal <zdohnal@redhat.com> - 2:9.1.785-1
+- patchlevel 785
+
 * Fri Sep 20 2024 Zdenek Dohnal <zdohnal@redhat.com> - 2:9.1.737-1
 - patchlevel 737 (fedora#2311860)
 

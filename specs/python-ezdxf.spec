@@ -6,7 +6,7 @@
 %bcond doc_pdf 1
 
 Name:           python-ezdxf
-Version:        1.3.3
+Version:        1.3.4
 Release:        %autorelease
 Summary:        Python package to create/manipulate DXF drawings
 

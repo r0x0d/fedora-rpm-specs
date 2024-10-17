@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc3.20241014git6485cf5ea253.31
+%define pkgrelease 0.rc3.20241015giteca631b8fe80.32
 %define kversion 6
-%define tarfile_release 6.12-rc3-7-g6485cf5ea253
+%define tarfile_release 6.12-rc3-13-geca631b8fe80
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc3.20241014git6485cf5ea253.31%{?buildid}%{?dist}
+%define specrelease 0.rc3.20241015giteca631b8fe80.32%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4136,9 +4136,14 @@ fi\
 #
 #
 %changelog
-* Mon Oct 14 2024 Justin M. Forbes <jforbes@fedoraproject.org> [6.12.0-0.rc3.20241014git6485cf5ea253.31]
+* Tue Oct 15 2024 Justin M. Forbes <jforbes@fedoraproject.org> [6.12.0-0.rc3.20241015giteca631b8fe80.32]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Tue Oct 15 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc3.eca631b8fe80.32]
+- redhat: configs: decrease CONFIG_PCP_BATCH_SCALE_MAX (Rafael Aquini)
+- redhat/configs: Enable CONFIG_RCU_TRACE in Fedora/REHL kernels (Waiman Long)
+- Linux v6.12.0-0.rc3.eca631b8fe80
 
 * Mon Oct 14 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc3.6485cf5ea253.31]
 - Linux v6.12.0-0.rc3.6485cf5ea253

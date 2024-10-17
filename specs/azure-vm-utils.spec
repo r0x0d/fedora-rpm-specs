@@ -1,5 +1,5 @@
 Name:           azure-vm-utils
-Version:        0.3.0
+Version:        0.4.0
 Release:        %autorelease
 Summary:        Core utilities and configuration for Linux VMs on Azure
 
@@ -27,12 +27,16 @@ configuration to support Linux VMs on Azure.
 
 %install
 %cmake_install
+install -D -m 0755 initramfs/dracut/modules.d/97azure-disk/module-setup.sh %{buildroot}%{_prefix}/lib/dracut/modules.d/97azure-disk/module-setup.sh
 
 %check
 %ctest
 
 %files
+%defattr(-,root,root,-)
 %{_mandir}/man8/azure-nvme-id.8.gz
+%dir %{_prefix}/lib/dracut/modules.d/97azure-disk
+%{_prefix}/lib/dracut/modules.d/97azure-disk/module-setup.sh
 %{_sbindir}/azure-nvme-id
 %{_udevrulesdir}/80-azure-disk.rules
 

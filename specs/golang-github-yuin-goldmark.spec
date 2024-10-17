@@ -37,8 +37,8 @@ Source0:        %{gosource}
 
 %if %{with check}
 %check
-%ifarch aarch64 %{ix86}
-export GOLDMARK_TEST_TIMEOUT_MULTIPLIER=6
+%ifarch aarch64 %{ix86} riscv64
+export GOLDMARK_TEST_TIMEOUT_MULTIPLIER=10
 %endif
 %gocheck
 %endif

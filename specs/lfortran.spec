@@ -1,6 +1,6 @@
-Version:        0.38.0
+Version:        0.41.0
 Name:           lfortran
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        A modern Fortran compiler
 
 # Main code is BSD-3-Clause
@@ -8,7 +8,7 @@ Summary:        A modern Fortran compiler
 # License with LLVM exception
 License:        BSD-3-Clause AND Apache-2.0 WITH LLVM-exception
 URL:            https://lfortran.org/
-Source0:        https://lfortran.github.io/tarballs/release/lfortran-%{version}.tar.gz
+Source0:        https://github.com/lfortran/lfortran/releases/download/v%{version}/lfortran-%{version}.tar.gz
 # https://github.com/lfortran/lfortran/issues/2981
 ExclusiveArch: x86_64
 
@@ -32,7 +32,7 @@ BuildRequires: libffi-devel
 BuildRequires: libunwind-devel
 BuildRequires: libuuid-devel
 %if 0%{?fedora} > 38
-BuildRequires: llvm16-devel
+BuildRequires: llvm17-devel
 %else
 BuildRequires: llvm-devel
 %endif
@@ -118,7 +118,7 @@ This package contains the jupyter kernel for %{name}.
 # WITH_ZSD is just used to fix static linking of llvm
 # not needed on Fedora
 # WASM=OFF due to lfortran/lfortran#3899
-%cmake -DCMAKE_PREFIX_PATH=%{_libdir}/llvm16/ \
+%cmake -DCMAKE_PREFIX_PATH=%{_libdir}/llvm17/ \
        -DWITH_LLVM=ON \
        -DWITH_RUNTIME_LIBRARY=ON \
        -DWITH_FMT=ON \
@@ -170,6 +170,9 @@ This package contains the jupyter kernel for %{name}.
 %endif
 
 %changelog
+* Mon Oct 14 2024 Christoph Junghans <junghans@votca.org> - 0.41.0-1
+- Version bump v0.41.0 (bug #2304184)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.38.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

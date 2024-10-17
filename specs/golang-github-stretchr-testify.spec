@@ -46,7 +46,7 @@ Source:         %{gosource}
 
 %if %{with check}
 %check
-%ifarch %{ix86} %{arm} s390x
+%ifarch %{ix86} %{arm} s390x riscv64
 # TestFailfastSuiteFailFastOn fails on i686 and s390x
 for test in "TestFailfastSuiteFailFastOn" \
 ; do

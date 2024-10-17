@@ -117,7 +117,7 @@ License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 Epoch:          %{perl_epoch}
 Version:        %{perl_version}
 # release number must be even higher, because dual-lived modules will be broken otherwise
-Release:        511%{?dist}
+Release:        512%{?dist}
 Summary:        Practical Extraction and Report Language
 Url:            https://www.perl.org/
 Source0:        https://www.cpan.org/src/5.0/perl-%{perl_version}.tar.xz
@@ -4496,16 +4496,6 @@ rm $RPM_BUILD_ROOT%{_mandir}/man3/File::Spec::VMS.3*
 rm %{build_privlib}/ExtUtils/PL2Bat.pm
 rm $RPM_BUILD_ROOT%{_mandir}/man3/ExtUtils::PL2Bat.3*
 
-# Fix some manpages to be UTF-8
-mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1/
-pushd $RPM_BUILD_ROOT%{_mandir}/man1/
-  for i in perl588delta.1 perldelta.1 ; do
-    iconv -c -f MS-ANSI -t UTF-8 $i --output new-$i
-    rm $i
-    mv new-$i $i
-  done
-popd
-
 # for now, remove Bzip2:
 # Why? Now is missing Bzip2 files and provides
 ##find $RPM_BUILD_ROOT -name Bzip2 | xargs rm -r
@@ -7291,6 +7281,9 @@ ln -s /app/bin/perl %{buildroot}/usr/bin/perl
 
 # Old changelog entries are preserved in CVS.
 %changelog
+* Tue Oct 15 2024 Jitka Plesnikova <jplesnik@redhat.com> - 4:5.40.0-512
+- Removed unnecessary conversion (rhbz#2318488)
+
 * Tue Jul 23 2024 Lumír Balhar <lbalhar@redhat.com> - 4:5.40.0-511
 - Add new systemtap-sdt-dtrace to build deps
 

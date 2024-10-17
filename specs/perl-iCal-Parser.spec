@@ -1,17 +1,17 @@
 Name:           perl-iCal-Parser
 Version:        1.21
-Release:        25%{?dist}
+Release:        26%{?dist}
 Summary:        Parse iCalendar files into a data structure
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/iCal-Parser
 Source0:        https://cpan.metacpan.org/authors/id/R/RI/RIXED/iCal-Parser-%{version}.tar.gz
 BuildArch:      noarch
-BuildRequires:  findutils
+BuildRequires:  coreutils
 BuildRequires:  make
-BuildRequires:  perl-interpreter
 BuildRequires:  perl-generators
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl-interpreter
+BuildRequires:  perl(Config)
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 # Run-time:
 BuildRequires:  perl(DateTime::Format::ICal) >= 0.08
 BuildRequires:  perl(DateTime::TimeZone)
@@ -29,7 +29,9 @@ Requires:       perl(DateTime::Format::ICal) >= 0.08
 Requires:       perl(Text::vFile::asData) >= 0.02
 
 # Remove under-specified dependencies
-%global __requires_exclude %{?__requires_exclude:%{__requires_exclude}|}^perl\\((DateTime::Format::ICal|Text::vFile::asData)\\)$
+%global __requires_exclude %{?__requires_exclude:%{__requires_exclude}|}^perl\\((DateTime::Format::ICal|FreezeThaw|Test::More|Text::vFile::asData)\\)$
+# Hide private modules
+%global __requires_exclude %{__requires_exclude}|^perl\\(t::Defrost\\)
 
 %description
 This Perl module processes iCalendar (vCalendar 2.0) files as specified in
@@ -38,28 +40,61 @@ RFC 2445 into a data structure. It handles recurrences (RRULEs), exclusions
 structures (ATTENDEES and VALARMs). It currently ignores the VTIMEZONE,
 VJOURNAL and VFREEBUSY entry types.
 
+%package tests
+Summary:        Tests for %{name}
+BuildArch:      noarch
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       perl-Test-Harness
+Requires:       perl(FreezeThaw) >= 0.43
+Requires:       perl(Test::More) >= 0.54
+
+%description tests
+Tests from %{name}. Execute them
+with "%{_libexecdir}/%{name}/test".
+
 %prep
 %setup -q -n iCal-Parser-%{version}
+# Help generators to recognize Perl scripts
+for F in t/*.t; do
+    perl -i -MConfig -ple 'print $Config{startperl} if $. == 1 && !s{\A#!\s*perl}{$Config{startperl}}' "$F"
+    chmod +x "$F"
+done
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=$RPM_BUILD_ROOT
-find $RPM_BUILD_ROOT -type f -name .packlist -delete
+%{make_install}
 %{_fixperms} $RPM_BUILD_ROOT/*
+# Install tests
+mkdir -p $RPM_BUILD_ROOT%{_libexecdir}/%{name}
+cp -a t $RPM_BUILD_ROOT%{_libexecdir}/%{name}
+cat > $RPM_BUILD_ROOT%{_libexecdir}/%{name}/test << 'EOF'
+#!/bin/sh
+cd %{_libexecdir}/%{name} && exec prove -I . -j "$(getconf _NPROCESSORS_ONLN)"
+EOF
+chmod +x $RPM_BUILD_ROOT%{_libexecdir}/%{name}/test
 
 %check
+export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print $1} else {print 1}' -- '%{?_smp_mflags}')
 make test
 
 %files
 %license LICENSE
 %doc ChangeLog README
-%{perl_vendorlib}/*
-%{_mandir}/man3/*
+%dir %{perl_vendorlib}/iCal
+%{perl_vendorlib}/iCal/Parser.pm
+%{_mandir}/man3/iCal::Parser.*
+
+%files tests
+%{_libexecdir}/%{name}
 
 %changelog
+* Tue Oct 15 2024 Petr Pisar <ppisar@redhat.com> - 1.21-26
+- Modernize a spec file
+- Package the tests
+
 * Tue Aug 06 2024 Miroslav Suchý <msuchy@redhat.com> - 1.21-25
 - convert license to SPDX
 

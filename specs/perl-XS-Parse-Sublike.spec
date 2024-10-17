@@ -9,7 +9,7 @@
 %endif
 
 Name:           perl-XS-Parse-Sublike
-Version:        0.28
+Version:        0.29
 Release:        1%{?dist}
 Summary:        XS functions to assist in parsing sub-like syntax
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -30,6 +30,7 @@ BuildRequires:  perl(Module::Build)
 BuildRequires:  perl(strict)
 BuildRequires:  perl(warnings)
 # Run-time:
+BuildRequires:  perl(Carp)
 # File::ShareDir 1.00 not used at tests
 BuildRequires:  perl(File::Spec)
 BuildRequires:  perl(XSLoader)
@@ -37,6 +38,7 @@ BuildRequires:  perl(XSLoader)
 BuildRequires:  perl(B::Deparse)
 BuildRequires:  perl(feature)
 BuildRequires:  perl(Sub::Util)
+BuildRequires:  perl(Test2::Require::Module)
 BuildRequires:  perl(Test2::V0)
 %if %{optional_tests}
 # Optional tests:
@@ -53,6 +55,8 @@ BuildRequires:  perl(Test::Pod) >= 1
 Provides:       perl(:XS_Parse_Sublike_ABI) = 5
 Provides:       perl(:XS_Parse_Sublike_ABI) = 6
 
+# Filter under-specified dependencies
+%global __requires_exclude %{?__requires_exclude:%{__requires_exclude}|}^perl\\((Future::AsyncAwait|Object::Pad)\\)$
 # Filter private modules
 %global __requires_exclude %{?__requires_exclude:%{__requires_exclude}|}^perl\\(testcase\\)
 %global __provides_exclude %{?__provides_exclude:%{__provides_exclude}|}^perl\\(testcase\\)
@@ -134,8 +138,6 @@ export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print
 %files
 %license LICENSE
 %doc Changes README
-%dir %{perl_vendorarch}/auto/Sublike
-%{perl_vendorarch}/auto/Sublike/Extended
 %dir %{perl_vendorarch}/auto/XS
 %dir %{perl_vendorarch}/auto/XS/Parse
 %{perl_vendorarch}/auto/XS/Parse/Sublike
@@ -159,6 +161,9 @@ export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print
 %{_libexecdir}/%{name}
 
 %changelog
+* Tue Oct 15 2024 Petr Pisar <ppisar@redhat.com> - 0.29-1
+- 0.29 bump
+
 * Wed Oct 09 2024 Petr Pisar <ppisar@redhat.com> - 0.28-1
 - 0.28 bump
 

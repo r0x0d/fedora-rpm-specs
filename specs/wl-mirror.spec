@@ -1,5 +1,5 @@
 Name:           wl-mirror
-Version:        0.16.5
+Version:        0.17.0
 Release:        %autorelease
 Summary:        Simple Wayland output mirror client
 
@@ -15,6 +15,7 @@ BuildRequires:  gcc
 BuildRequires:  gnupg2
 BuildRequires:  pkgconfig(egl)
 BuildRequires:  pkgconfig(glesv2)
+BuildRequires:  pkgconfig(libdecor-0)
 BuildRequires:  pkgconfig(wayland-client)
 BuildRequires:  pkgconfig(wayland-egl)
 BuildRequires:  pkgconfig(wayland-scanner)
@@ -42,7 +43,8 @@ rm -rf proto/wayland-protocols
 %cmake \
     -DFORCE_SYSTEM_WL_PROTOCOLS:BOOL=ON \
     -DINSTALL_DOCUMENTATION:BOOL=ON \
-    -DINSTALL_EXAMPLE_SCRIPTS:BOOL=ON
+    -DINSTALL_EXAMPLE_SCRIPTS:BOOL=ON \
+    -DWITH_LIBDECOR:BOOL=ON
 %cmake_build
 
 

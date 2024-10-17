@@ -9,8 +9,8 @@
 %global db_ver %(sed '/DB_VERSION_STRING/!d;s/.*Berkeley DB[[:space:]]*\\([^:]*\\):.*/\\1/' /usr/include/db.h 2>/dev/null || echo 4.0.0)
 
 Name:           perl-BerkeleyDB
-Version:        0.65
-Release:        10%{?dist}
+Version:        0.66
+Release:        1%{?dist}
 Summary:        Interface to Berkeley DB
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/BerkeleyDB
@@ -28,6 +28,7 @@ BuildRequires:  perl(Config)
 BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 BuildRequires:  sed
 # Module Runtime
+BuildRequires:  perl(Carp)
 BuildRequires:  perl(Exporter)
 BuildRequires:  perl(IO::File)
 BuildRequires:  perl(strict)
@@ -35,7 +36,6 @@ BuildRequires:  perl(UNIVERSAL)
 BuildRequires:  perl(vars)
 BuildRequires:  perl(XSLoader)
 # Test Suite
-BuildRequires:  perl(Carp)
 BuildRequires:  perl(charnames)
 BuildRequires:  perl(constant)
 BuildRequires:  perl(Cwd)
@@ -44,10 +44,9 @@ BuildRequires:  perl(lib)
 BuildRequires:  perl(overload)
 BuildRequires:  perl(Symbol)
 BuildRequires:  perl(Test::More)
-BuildRequires:  perl(threads::shared)
 %if %{with perl_BerkeleyDB_enables_optional_test}
 # Optional Tests
-BuildRequires:  perl(Data::Dumper)
+BuildRequires:  perl(Data::Dumper) >= 2.08
 BuildRequires:  perl(Encode)
 BuildRequires:  perl(MLDBM)
 BuildRequires:  perl(Test::CPAN::Meta)
@@ -77,7 +76,6 @@ supported by Berkeley DB.
 %prep
 %setup -q -n BerkeleyDB-%{version}
 
-perl -pi -e 's,/local/,/, if ($. == 1)' dbinfo
 chmod -c -x Changes README
 
 %build
@@ -106,6 +104,12 @@ make test
 %{_mandir}/man3/BerkeleyDB.3*
 
 %changelog
+* Tue Oct 15 2024 Jitka Plesnikova <jplesnik@redhat.com> - 0.66-1
+- 0.66 bump (rhbz#2318577)
+  - Remove bundled Test::More
+  - Possible precedence problem between ! and string eq
+  - Silence clang warnings
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.65-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

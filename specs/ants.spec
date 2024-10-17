@@ -2,7 +2,7 @@ Name:           ants
 Version:        1.4
 Release:        39%{?dist}
 Summary:        Guide the insects safely home before they drop of the cliff
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            http://www.allegro.cc/depot/Ants
 Source0:        http://games.linux.sk/files/ants-1.4.tar.gz
 Source1:        ants.desktop

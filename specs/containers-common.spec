@@ -71,6 +71,7 @@ Source14: %{raw_github_url}/storage/%{storage_branch}/storage.conf
 # a copy in repo or dist-git. Depending on distribution-gpg-keys rpm is also
 # not an option because that package doesn't exist on CentOS Stream.
 Source15: https://access.redhat.com/security/data/fd431d51.txt
+Patch0: 0001-disable-zstd-chunked-on-fedora.patch
 
 %description
 This package contains common configuration files and documentation for container

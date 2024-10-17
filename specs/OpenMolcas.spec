@@ -1,9 +1,9 @@
 # git commit appears in the directory name of the tarball...
-%global commit ff0b5d1cb86ae8766625b9018d18260f07e46f52
+%global commit f643684aa4a440f47f7853e4148f2ea03f951426
 
 Name:           OpenMolcas
-Version:        24.06
-Release:        3%{?dist}
+Version:        24.10
+Release:        1%{?dist}
 Summary:        A multiconfigurational quantum chemistry software package
 # Automatically converted from old format: LGPLv2 - review is highly recommended.
 License:        LicenseRef-Callaway-LGPLv2
@@ -14,6 +14,8 @@ Source0:        https://gitlab.com/Molcas/OpenMolcas/-/archive/v%{version}/%{nam
 Patch0:         OpenMolcas-23.06-fedora.patch
 # Read python modules from system directory
 Patch1:         OpenMolcas-19.11-pymodule.patch
+# Patch for libxc 7
+Patch2:         https://gitlab.com/Molcas/OpenMolcas/-/merge_requests/728.patch
 
 # OpenMolcas is only supported on 64-bit architectures
 ExclusiveArch:  x86_64 aarch64 ppc64le s390x
@@ -63,6 +65,7 @@ therefore not included in OpenMolcas.
 %setup -q -n %{name}-v%{version}-%{commit}
 %patch 0 -p1 -b .fedora
 %patch 1 -p1 -b .pymodule
+%patch 2 -p1 -b .libxc7
 
 # Name of OpenBLAS library to use is
 %if 0%{?fedora} >= 33
@@ -141,6 +144,9 @@ cp -p Tools/pymolcas/pymolcas.py %{buildroot}%{_bindir}/pymolcas
 %{_bindir}/pymolcas
 
 %changelog
+* Tue Oct 15 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 24.10-1
+- Update to 24.10.
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 24.06-3
 - convert license to SPDX
 

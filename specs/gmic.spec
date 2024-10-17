@@ -66,6 +66,8 @@ Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 # The C library binding was mistakenly put in a -static
 # package despite being a shared library
 Obsoletes:     gmic-static <= 2.1.8
+# we no longer have gimp-devel-tools on s390x
+ExcludeArch:    s390x
 
 %description
 G'MIC is an open and full-featured framework for image processing, providing

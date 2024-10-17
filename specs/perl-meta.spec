@@ -2,7 +2,7 @@
 %bcond_without perl_meta_enables_optional_test
 
 Name:           perl-meta
-Version:        0.011
+Version:        0.012
 Release:        1%{?dist}
 Summary:        Meta-programming API
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -91,6 +91,9 @@ export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print
 %{_libexecdir}/%{name}
 
 %changelog
+* Tue Oct 15 2024 Petr Pisar <ppisar@redhat.com> - 0.012-1
+- 0.012 bump
+
 * Tue Oct 08 2024 Petr Pisar <ppisar@redhat.com> - 0.011-1
 - 0.011 bump
 

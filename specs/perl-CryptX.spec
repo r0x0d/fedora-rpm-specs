@@ -4,8 +4,8 @@
 %bcond_without perl_CryptX_enables_optional_test
 
 Name:           perl-CryptX
-Version:        0.080
-Release:        5%{?dist}
+Version:        0.083
+Release:        1%{?dist}
 Summary:        Cryptographic toolkit
 # src/ltc/*:    Unlicense
 # src/ltm/*:    Unlicense
@@ -22,7 +22,7 @@ BuildRequires:  perl-devel
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(Config)
-BuildRequires:  perl(ExtUtils::MakeMaker) %{!?el7:>= 6.76}
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 BuildRequires:  perl(strict)
 BuildRequires:  perl(warnings)
 # Run-time:
@@ -43,14 +43,16 @@ BuildRequires:  perl(Test::More)
 %if %{with perl_CryptX_enables_optional_test}
 # Optional tests:
 BuildRequires:  perl(File::Find)
-%{!?el7:BuildRequires:  perl(Math::BigFloat) >= 1.999715}
-BuildRequires:  perl(Math::BigInt) >= 1.999831
+%if 0%{?fedora} || 0%{?rhel} >= 10
+BuildRequires:  perl(Math::BigFloat) >= 1.999827
+BuildRequires:  perl(Math::BigInt) >= 1.999827
+%endif
 BuildRequires:  perl(Math::Complex)
 BuildRequires:  perl(Storable) >= 2.0
 BuildRequires:  perl(Test::Pod)
 %endif
 
-Provides:       bundled(libtomcrypt) = 1.18.2-1.20230622git1e629e6f
+Provides:       bundled(libtomcrypt) = 1.18.2-1.20241014gitcbb01b37
 Provides:       bundled(libtommath) = 1.2.0-1.20180923git8b9f98ba
 
 # Remove under-specified dependencies
@@ -72,8 +74,10 @@ Requires:       perl(JSON)
 %endif
 %if %{with perl_CryptX_enables_optional_test}
 Requires:       perl(File::Find)
-%{!?el7:Requires:       perl(Math::BigFloat) >= 1.999715}
-Requires:       perl(Math::BigInt) >= 1.9997
+%if 0%{?fedora} || 0%{?rhel} >= 10
+Requires:       perl(Math::BigFloat) >= 1.999827
+Requires:       perl(Math::BigInt) >= 1.999827
+%endif
 Requires:       perl(Math::Complex)
 Requires:       perl(Storable) >= 2.0
 %endif
@@ -107,16 +111,12 @@ cp -a src/ltc/LICENSE LICENSE.libtomcrypt
 cp -a src/ltm/LICENSE LICENSE.libtommath
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor %{!?el7:NO_PACKLIST=1 NO_PERLLOCAL=1} OPTIMIZE="$RPM_OPT_FLAGS"
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1 OPTIMIZE="$RPM_OPT_FLAGS"
 %{make_build}
 
 %install
 %{make_install}
 find $RPM_BUILD_ROOT -type f -name '*.bs' -empty -delete
-%if 0%{?el7}
-find $RPM_BUILD_ROOT -type f \( -name perllocal.pod -o \
-  -name .packlist \) -exec rm -f {} ';'
-%endif
 %{_fixperms} $RPM_BUILD_ROOT/*
 # Install tests
 mkdir -p %{buildroot}%{_libexecdir}/%{name}
@@ -154,6 +154,11 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Tue Oct 15 2024 Xavier Bachelot <xavier@bachelot.org> - 0.083-1
+- Update to 0.083 (RHBZ#2310725)
+- Drop EL7 support
+- Fix Math::BigInt/BigFloat versions and conditionals
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.080-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

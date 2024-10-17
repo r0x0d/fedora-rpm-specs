@@ -3,7 +3,7 @@
 %endif
 
 Name: mbedtls
-Version: 3.6.1
+Version: 3.6.2
 Release: 1%{?dist}
 Summary: Light-weight cryptographic and SSL/TLS library
 License: Apache-2.0
@@ -97,6 +97,9 @@ chmod 755 %{buildroot}%{_libdir}/*.so.*
 %doc apidoc/*
 
 %changelog
+* Tue Oct 15 2024 Morten Stevens <mstevens@fedoraproject.org> - 3.6.2-1
+- Update to 3.6.2
+
 * Tue Sep 03 2024 Morten Stevens <mstevens@fedoraproject.org> - 3.6.1-1
 - Update to 3.6.1
 

@@ -4,7 +4,7 @@
 %global dracutdir %(pkg-config --variable=dracutdir dracut)
 
 Name:           stratisd
-Version:        3.7.1
+Version:        3.7.2
 Release:        1%{?dist}
 Summary:        Daemon that manages block devices to create filesystems
 
@@ -182,7 +182,10 @@ a2x -f manpage docs/stratis-dumpmetadata.txt
 %{_mandir}/man8/stratis-dumpmetadata.8*
 
 %changelog
-* Tue Oct 08 2024 Bryan Gurney <bgurney@redhat.com> - 3.7.0-1
+* Tue Oct 15 2024 Bryan Gurney <bgurney@redhat.com> - 3.7.2-1
+- Update to 3.7.2
+
+* Tue Oct 08 2024 Bryan Gurney <bgurney@redhat.com> - 3.7.1-1
 - Update to 3.7.1
 
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.6.8-2

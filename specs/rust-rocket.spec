@@ -2,36 +2,28 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate pyo3-ffi
+%global crate rocket
 
-Name:           rust-pyo3-ffi
-Version:        0.22.4
+Name:           rust-rocket
+Version:        0.5.1
 Release:        %autorelease
-Summary:        Python-API bindings for the PyO3 ecosystem
+Summary:        Web framework with a focus on usability, security, extensibility, and speed
 
 License:        MIT OR Apache-2.0
-URL:            https://crates.io/crates/pyo3-ffi
+URL:            https://crates.io/crates/rocket
 Source:         %{crates_source}
 
-# Downstream-only patch: always allow unsupported versions of Python.
-# We constantly attempt to integrate alpha and beta releases of Python
-# and need to rebuild all dependent packages in Copr, also those that
-# use pyo3-ffi without patching each and every one of them,
-# hence we explicitly allow to skip version check when building RPMs.
-Patch:          Allow-unsupported-Python-versions-in-RPM-builds.patch
-
 BuildRequires:  cargo-rpm-macros >= 24
-BuildRequires:  python3-devel >= 3.7
 
 %global _description %{expand:
-Python-API bindings for the PyO3 ecosystem.}
+Web framework with a focus on usability, security, extensibility, and
+speed.}
 
 %description %{_description}
 
 %package        devel
 Summary:        %{summary}
 BuildArch:      noarch
-Requires:       python3-devel >= 3.7
 
 %description    devel %{_description}
 
@@ -56,100 +48,112 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-devel
+%package     -n %{name}+http2-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-devel %{_description}
+%description -n %{name}+http2-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3" feature of the "%{crate}" crate.
+use the "http2" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-devel
+%files       -n %{name}+http2-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-py310-devel
+%package     -n %{name}+json-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-py310-devel %{_description}
+%description -n %{name}+json-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3-py310" feature of the "%{crate}" crate.
+use the "json" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-py310-devel
+%files       -n %{name}+json-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-py311-devel
+%package     -n %{name}+msgpack-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-py311-devel %{_description}
+%description -n %{name}+msgpack-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3-py311" feature of the "%{crate}" crate.
+use the "msgpack" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-py311-devel
+%files       -n %{name}+msgpack-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-py312-devel
+%package     -n %{name}+rmp-serde-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-py312-devel %{_description}
+%description -n %{name}+rmp-serde-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3-py312" feature of the "%{crate}" crate.
+use the "rmp-serde" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-py312-devel
+%files       -n %{name}+rmp-serde-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-py37-devel
+%package     -n %{name}+secrets-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-py37-devel %{_description}
+%description -n %{name}+secrets-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3-py37" feature of the "%{crate}" crate.
+use the "secrets" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-py37-devel
+%files       -n %{name}+secrets-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-py38-devel
+%package     -n %{name}+serde_json-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-py38-devel %{_description}
+%description -n %{name}+serde_json-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3-py38" feature of the "%{crate}" crate.
+use the "serde_json" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-py38-devel
+%files       -n %{name}+serde_json-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-py39-devel
+%package     -n %{name}+tls-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-py39-devel %{_description}
+%description -n %{name}+tls-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3-py39" feature of the "%{crate}" crate.
+use the "tls" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-py39-devel
+%files       -n %{name}+tls-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+extension-module-devel
+%package     -n %{name}+uuid-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+extension-module-devel %{_description}
+%description -n %{name}+uuid-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "extension-module" feature of the "%{crate}" crate.
+use the "uuid" feature of the "%{crate}" crate.
 
-%files       -n %{name}+extension-module-devel
+%files       -n %{name}+uuid-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+uuid_-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+uuid_-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "uuid_" feature of the "%{crate}" crate.
+
+%files       -n %{name}+uuid_-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep

@@ -15,7 +15,7 @@ information and access to the image data is made available via NumPy arrays.
 }
 
 Name:           python-nibabel
-Version:        5.2.1
+Version:        5.3.0
 Release:        %autorelease
 Summary:        Python package to access a cacophony of neuro-imaging file formats
 %global tag %{version}
@@ -23,12 +23,6 @@ Summary:        Python package to access a cacophony of neuro-imaging file forma
 License:        MIT and PDDL-1.0
 URL:            http://nipy.org/nibabel/
 Source0:        %forgesource
-# Fix failing docstring tests (Python >= 3.13)
-# https://github.com/nipy/nibabel/issues/1311
-Patch:          %{forgeurl}/pull/1315.patch
-# Fix failing tests
-# https://github.com/nipy/nibabel/pull/1325
-Patch:          https://github.com/nipy/nibabel/pull/1325.patch
 
 BuildArch:      noarch
 
@@ -73,7 +67,7 @@ rm -fv nibabel/{tests/data/,}.gitignore
 
 %install
 %pyproject_install
-%pyproject_save_files -l nibabel nisext
+%pyproject_save_files -l nibabel
 
 for binary in "parrec2nii" "nib-conform" "nib-convert" "nib-diff" "nib-dicomfs" "nib-ls" "nib-nifti-dx" "nib-roi" "nib-stats" "nib-tck2trk" "nib-trk2tck"
 do

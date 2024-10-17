@@ -7,8 +7,8 @@
 
 Summary:    Xorg X11 evdev input driver
 Name:       xorg-x11-drv-evdev
-Version:    2.10.6
-Release:    16%{?gitdate:.%{gitdate}git%{gitversion}}%{?dist}
+Version:    2.11.0
+Release:    1%{?gitdate:.%{gitdate}git%{gitversion}}%{?dist}
 URL:        http://www.x.org
 License:    HPND-sell-variant AND MIT
 
@@ -17,7 +17,7 @@ Source0:    %{tarball}-%{gitdate}.tar.bz2
 Source1:    make-git-snapshot.sh
 Source2:    commitid
 %else
-Source0:    ftp://ftp.x.org/pub/individual/driver/%{tarball}-%{version}.tar.bz2
+Source0:    https://www.x.org/pub/individual/driver/%{tarball}-%{version}.tar.xz
 %endif
 
 BuildRequires: make
@@ -73,6 +73,9 @@ X.Org X11 evdev input driver development files.
 
 
 %changelog
+* Tue Oct 15 2024 Peter Hutterer <peter.hutterer@redhat.com> - 2.11.0-1
+- xf86-input-evdev 2.11.0
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.10.6-16
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

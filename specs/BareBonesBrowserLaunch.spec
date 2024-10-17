@@ -2,7 +2,7 @@ Name:          BareBonesBrowserLaunch
 Version:       3.1
 Release:       34%{?dist}
 Summary:       Simple library to launch a browser window from Java
-License:       Public Domain
+License:       LicenseRef-Fedora-Public-Domain
 URL:           http://www.centerkey.com/java/browser/
 Source0:       http://www.centerkey.com/java/browser/myapp/real/bare-bones-browser-launch-%{version}.jar
 

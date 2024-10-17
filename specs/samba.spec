@@ -261,6 +261,7 @@ Requires: %{name}-common-tools = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
 Requires: %{name}-dcerpc = %{samba_depver}
+Requires: libldb = %{samba_depver}
 Requires: libnetapi = %{samba_depver}
 %if %{with libwbclient}
 Requires(post): libwbclient = %{samba_depver}
@@ -438,6 +439,7 @@ Requires(pre): %{name}-common = %{samba_depver}
 Requires: %{name}-common = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 %if %{with libsmbclient}
 Requires: libsmbclient = %{samba_depver}
 %endif
@@ -464,6 +466,7 @@ Summary: Samba client libraries
 Requires(pre): %{name}-common = %{samba_depver}
 Requires: %{name}-common = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 %if %{with libwbclient}
 Requires: libwbclient = %{samba_depver}
 %endif
@@ -498,6 +501,7 @@ Summary: Libraries used by both Samba servers and clients
 Requires(pre): samba-common = %{samba_depver}
 Requires: samba-common = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 %if %{with libwbclient}
 Requires: libwbclient = %{samba_depver}
 %endif
@@ -538,6 +542,7 @@ Requires: samba-common-libs = %{samba_depver}
 Requires: samba-client-libs = %{samba_depver}
 Requires: samba-libs = %{samba_depver}
 Requires: samba-ldb-ldap-modules = %{samba_depver}
+Requires: libldb = %{samba_depver}
 Requires: libnetapi = %{samba_depver}
 %if %{with libwbclient}
 Requires: libwbclient = %{samba_depver}
@@ -574,6 +579,7 @@ Summary: DCE RPC binaries
 Requires: samba-common-libs = %{samba_depver}
 Requires: samba-client-libs = %{samba_depver}
 Requires: samba-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 Requires: libnetapi = %{samba_depver}
 %if %{with libwbclient}
 Requires: libwbclient = %{samba_depver}
@@ -634,6 +640,7 @@ Summary: Samba AD Domain Controller Libraries
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 
 Provides: samba4-dc-libs = %{samba_depver}
 Obsoletes: samba4-dc-libs < %{samba_depver}
@@ -654,6 +661,7 @@ Requires: %{name}-dc-libs = %{samba_depver}
 Requires: %{name}-dc = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
 Requires: bind
+Requires: libldb = %{samba_depver}
 
 Provides: bundled(libreplace)
 
@@ -688,6 +696,7 @@ Summary: Samba VFS module for Ceph distributed storage system
 Requires: %{name} = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 
 Provides: bundled(libreplace)
 
@@ -703,6 +712,7 @@ Summary: Samba VFS module for io_uring
 Requires: %{name} = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 
 Provides: bundled(libreplace)
 
@@ -721,6 +731,7 @@ Requires: %{name} = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 %if %{with libwbclient}
 Requires: libwbclient = %{samba_depver}
 %endif
@@ -772,6 +783,7 @@ the Kerberos credentials cache of the user issuing the print job.
 Summary: Samba ldap modules for ldb
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 
 %description ldb-ldap-modules
 This package contains the ldb ldap modules required by samba-tool and
@@ -782,6 +794,7 @@ samba-gpupdate.
 Summary: Samba libraries
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 %if %{with libwbclient}
 Requires: libwbclient = %{samba_depver}
 %endif
@@ -802,6 +815,7 @@ Requires(pre): %{name}-common = %{samba_depver}
 Requires: %{name}-common = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 
 %description -n libnetapi
 This contains the NETAPI library from the Samba suite.
@@ -822,6 +836,7 @@ Requires(pre): %{name}-common = %{samba_depver}
 Requires: %{name}-common = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 %if %{with libwbclient}
 Requires: libwbclient = %{samba_depver}
 %endif
@@ -879,6 +894,7 @@ Requires: python3-requests
 Requires: python3-talloc
 Requires: python3-tdb
 Requires: python3-tevent
+Requires: libldb = %{samba_depver}
 %if %{with libsmbclient}
 Requires: libsmbclient = %{samba_depver}
 %endif
@@ -909,6 +925,7 @@ Requires: %{name}-dc-libs = %{samba_depver}
 Requires: python3-%{name} = %{samba_depver}
 # for ms_forest_updates_markdown.py and ms_schema_markdown.py
 Requires: python3-markdown
+Requires: libldb = %{samba_depver}
 
 %description -n python3-samba-dc
 The python3-%{name}-dc package contains the Python libraries needed by programs
@@ -944,6 +961,7 @@ Requires: %{name}-test-libs = %{samba_depver}
 Requires: %{name}-dc-libs = %{samba_depver}
 %endif
 Requires: %{name}-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 Requires: libnetapi = %{samba_depver}
 %if %{with libsmbclient}
 Requires: libsmbclient = %{samba_depver}
@@ -969,6 +987,7 @@ Summary: Libraries need by the testing tools for Samba servers and clients
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 %if %{with libwbclient}
 Requires: libwbclient = %{samba_depver}
 %endif
@@ -1006,6 +1025,7 @@ Requires: %{name}-libs = %{samba_depver}
 Requires(post): %{name}-libs = %{samba_depver}
 Requires: %{name}-winbind-modules = %{samba_depver}
 Suggests: %{name}-tools = %{samba_depver}
+Requires: libldb = %{samba_depver}
 
 %if %{with libwbclient}
 Requires(post): libwbclient = %{samba_depver}
@@ -1034,6 +1054,7 @@ Requires: %{name}-common-libs = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
 Requires: %{name}-winbind = %{samba_depver}
+Requires: libldb = %{samba_depver}
 %if %{with libwbclient}
 Requires: libwbclient = %{samba_depver}
 %endif
@@ -1057,6 +1078,7 @@ Requires: %{name}-winbind = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
 %endif
 Requires: samba-client-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 
 Provides: samba4-winbind-krb5-locator = %{samba_depver}
 Obsoletes: samba4-winbind-krb5-locator < %{samba_depver}
@@ -1099,6 +1121,7 @@ Summary: Samba Winexe Windows Binary
 License: GPL-3.0-only
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
+Requires: libldb = %{samba_depver}
 
 Provides: bundled(libreplace)
 
@@ -1219,8 +1242,8 @@ Requires: libtdb%{?_isa} >= %{tdb_version}
 Requires: libtevent%{?_isa} >= %{tevent_version}
 
 Provides: bundled(libreplace)
-Obsoletes: libldb < 2.10
-Provides: libldb = 2.10
+Obsoletes: libldb < 0:2.10
+Provides: libldb = 0:2.10
 Provides: libldb = %{samba_depver}
 
 %description -n libldb
@@ -1236,8 +1259,8 @@ Requires: libtdb-devel%{?_isa} >= %{tdb_version}
 Requires: libtalloc-devel%{?_isa} >= %{talloc_version}
 Requires: libtevent-devel%{?_isa} >= %{tevent_version}
 
-Obsoletes: libldb-devel < 2.10
-Provides: libldb-devel = 2.10
+Obsoletes: libldb-devel < 0:2.10
+Provides: libldb-devel = 0:2.10
 Provides: libldb-devel = %{samba_depver}
 
 %description -n libldb-devel
@@ -1248,7 +1271,7 @@ Header files needed to develop programs that link against the LDB library.
 Summary: Tools to manage LDB files
 License: LGPL-3.0-or-later
 Requires: libldb%{?_isa} = %{samba_depver}
-Obsoletes: ldb-tools < 2.10
+Obsoletes: ldb-tools < 0:2.10
 Provides: ldb-tools = %{samba_depver}
 
 %description -n ldb-tools
@@ -1262,7 +1285,7 @@ Requires: libldb%{?_isa} = %{samba_depver}
 Requires: python3-tdb%{?_isa} >= %{tdb_version}
 %{?python_provide:%python_provide python3-ldb}
 
-Obsoletes: python3-ldb < 2.10
+Obsoletes: python3-ldb < 0:2.10
 Provides: python3-ldb = %{samba_depver}
 # These were the C bindings, only used by Samba
 Obsoletes: python-ldb-devel-common < 2.10

@@ -16,6 +16,9 @@ Source:         %{crates_source}
 Source1:        https://raw.githubusercontent.com/gyscos/cursive/main/LICENSE
 # Manually created patch for downstream crate metadata changes
 # * bump ahash dependency from 0.6 to 0.7
+# * drop unused bear-lib-terminal backend
+# * drop unused crossterm backend
+# * drop unused pancurses backend
 # * remove reference to readme file that is not included in published crates
 Patch:          cursive-fix-metadata.diff
 
@@ -49,30 +52,6 @@ This package contains library source intended for building other packages which
 use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+crossterm-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+crossterm-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "crossterm" feature of the "%{crate}" crate.
-
-%files       -n %{name}+crossterm-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+crossterm-backend-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+crossterm-backend-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "crossterm-backend" feature of the "%{crate}" crate.
-
-%files       -n %{name}+crossterm-backend-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+maplit-devel
@@ -121,30 +100,6 @@ This package contains library source intended for building other packages which
 use the "ncurses-backend" feature of the "%{crate}" crate.
 
 %files       -n %{name}+ncurses-backend-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+pancurses-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+pancurses-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "pancurses" feature of the "%{crate}" crate.
-
-%files       -n %{name}+pancurses-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+pancurses-backend-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+pancurses-backend-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "pancurses-backend" feature of the "%{crate}" crate.
-
-%files       -n %{name}+pancurses-backend-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+term_size-devel

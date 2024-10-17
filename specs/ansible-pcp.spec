@@ -1,6 +1,6 @@
 Name:             ansible-pcp
-Version:          2.3.0
-Release:          4%{?dist}
+Version:          2.4.0
+Release:          1%{?dist}
 Summary:          Ansible Metric collection for Performance Co-Pilot
 License:          MIT
 URL:              https://github.com/performancecopilot/ansible-pcp
@@ -35,23 +35,24 @@ BuildRequires:  ansible-packaging-tests
 
 %description
 A collection containing roles for Performance Co-Pilot (PCP) and related
-software such as Redis and Grafana.  The collection is made up of several
-Ansible roles, including:
+software such as Grafana and Valkey.
+
+The collection is made up of several Ansible roles, including:
 
 %{collection_namespace}.%{collection_name}.pcp
 A role for core PCP capabilities, configuring live performance analysis
 with a large base set of metrics from the kernel and system services, as
 well as data recording and rule inference.
 
-%{collection_namespace}.%{collection_name}.redis
-A role for configuring a local Redis server, suitable for use with a
-Performance Co-Pilot archive repository (for single or many hosts) and
-fast, scalable querying of metrics.
+%{collection_namespace}.%{collection_name}.keyserver
+A role for configuring a local key server (Valkey/Redis), suitable for
+use with a Performance Co-Pilot archive repository (for single or many
+hosts) and fast, scalable querying of metrics.
 
 %{collection_namespace}.%{collection_name}.grafana
 A role for configuring a local Grafana server, providing web frontend
 visuals for Performance Co-Pilot metrics, both live and historically.
-Data sources for Vector (live), Redis (historical) and interactive
+Data sources for Vector (live), Valkey (historical) and interactive
 bpftrace (eBPF) scripts can be configured by this role.  The PCP REST
 API service (from the core pcp role) should be configured in order to
 use this role.
@@ -115,6 +116,9 @@ ansible-lint `find roles -name \*.yml`
 %{ansible_collection_files}
 
 %changelog
+* Tue Oct 15 2024 Nathan Scott <nathans@redhat.com> 2.4.0-1
+- Latest upstream release
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.3.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

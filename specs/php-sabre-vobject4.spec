@@ -12,7 +12,7 @@
 # For compatibility with SCL
 %undefine __brp_mangle_shebangs
 
-%global gh_commit    7148cf57d25aaba0a49f6656d37c35e8175b3087
+%global gh_commit    900266bb3bd448a9f7f41f82344ad0aba237cb27
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     sabre-io
 %global gh_project   vobject
@@ -20,8 +20,8 @@
 
 Name:           php-sabre-vobject4
 Summary:        Library to parse and manipulate iCalendar and vCard objects
-Version:        4.5.5
-Release:        2%{?dist}
+Version:        4.5.6
+Release:        1%{?dist}
 
 URL:            http://sabre.io/vobject/
 License:        BSD-3-Clause
@@ -43,10 +43,10 @@ BuildRequires:  php-spl
 BuildRequires:  php-xml
 # From composer.json, "require-dev"
 #        "friendsofphp/php-cs-fixer": "^2.17.1",
-#        "phpunit/phpunit" : "^7.5 || ^8.5 || ^9.0",
+#        "phpunit/phpunit" : "^7.5 || ^8.5 || ^9.6",
 #        "phpunit/php-invoker" : "^2.0 || ^3.1",
-#        "phpstan/phpstan": "^0.12"
-BuildRequires:  phpunit9
+#        "phpstan/phpstan": "^0.12 || ^1.11"
+BuildRequires:  phpunit9 >= 9.6
 %global phpunit %{_bindir}/phpunit9
 %endif
 # Autoloader
@@ -145,7 +145,7 @@ fi
 
 : Run upstream test suite against installed library
 ret=0
-for cmdarg in "php %{phpunit}" php81 php82 php83; do
+for cmdarg in "php %{phpunit}" php81 php82 php83 php84; do
   if which $cmdarg; then
     set $cmdarg
     $1 ${2:-%{_bindir}/phpunit9} $opt || ret=1
@@ -168,6 +168,9 @@ exit $ret
 %endif
 
 %changelog
+* Tue Oct 15 2024 Remi Collet <remi@remirepo.net> - 4.5.6-1
+- update to 4.5.6
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.5.5-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

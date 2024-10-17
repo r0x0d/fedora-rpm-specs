@@ -488,6 +488,8 @@ Source4:          389-ds-base.sysusers
 Source5:          https://fedorapeople.org/groups/389ds/libdb-5.3.28-59.tar.bz2
 %endif
 
+Patch1:           0001-Issue-6356-On-LMDB-after-an-update-the-impact-VLV-in.patch
+
 %description
 389 Directory Server is an LDAPv3 compliant server.  The base package includes
 the LDAP server and command line utilities for server administration.

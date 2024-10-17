@@ -8,6 +8,8 @@ License:        LicenseRef-Callaway-LGPLv2+
 URL:            https://lxqt-project.org
 Source0:        https://github.com/lxqt/libqtxdg/archive/%{version}/%{name}-%{version}.tar.gz
 
+# https://github.com/lxqt/libqtxdg/pull/307
+Patch0:         libqtxdg-fix-build-against-qt-6.8.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake

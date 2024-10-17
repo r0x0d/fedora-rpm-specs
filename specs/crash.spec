@@ -42,6 +42,15 @@ Patch21: 0003-arm64-Introduction-of-support-for-16K-page-with-2-le.patch
 Patch22: 0004-arm64-fix-for-help-m-M-to-correctly-display-the-pmd-.patch
 Patch23: 0005-arm64-cleanup-the-pud-description.patch
 Patch24: 0006-Fix-a-Bus-error-issue-caused-by-crash-osrelease-or-c.patch
+Patch25: 0001-kmem-address-not-working-properly-when-redzone-is-en.patch
+Patch26: 0002-arm64-fix-indent-issue-and-refactor-PTE_TO_PHYS.patch
+Patch27: 0003-arm64-use-the-same-expression-to-indicate-ptrs_per_p.patch
+Patch28: 0004-arm64-fix-64K-page-and-52-bits-VA-support.patch
+Patch29: 0005-arm64-Support-16K-page-48-VA-bits-and-4-level-page-t.patch
+Patch30: 0006-x86_64-Fix-the-bug-of-getting-incorrect-framesize.patch
+Patch31: 0007-kmem-fix-the-determination-for-slab-page.patch
+Patch32: 0008-X86-64-improve-the-method-of-determining-whether-kas.patch
+Patch33: 0009-Revert-arm64-section_size_bits-compatible-with-macro.patch
 
 %description
 The core analysis suite is a self-contained tool that can be used to
@@ -86,6 +95,15 @@ offered by Mission Critical Linux, or the LKCD kernel patch.
 %patch -P 22 -p1
 %patch -P 23 -p1
 %patch -P 24 -p1
+%patch -P 25 -p1
+%patch -P 26 -p1
+%patch -P 27 -p1
+%patch -P 28 -p1
+%patch -P 29 -p1
+%patch -P 30 -p1
+%patch -P 31 -p1
+%patch -P 32 -p1
+%patch -P 33 -p1
 
 %build
 

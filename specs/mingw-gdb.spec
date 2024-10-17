@@ -1,7 +1,7 @@
 %{?mingw_package_header}
 
 Name:           mingw-gdb
-Version:        15.1
+Version:        15.2
 Release:        1%{?dist}
 Summary:        MinGW Windows port of the GDB debugger
 
@@ -112,6 +112,9 @@ rm %{buildroot}%{mingw32_bindir}/gdb-add-index
 
 
 %changelog
+* Tue Oct 15 2024 Sandro Mani <manisandro@gmail.com> - 15.2-1
+- Update to 15.2
+
 * Thu Aug 08 2024 Sandro Mani <manisandro@gmail.com> - 15.1-1
 - Update to 15.1
 

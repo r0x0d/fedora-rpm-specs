@@ -1,7 +1,7 @@
 Summary: Graphical system installer
 Name:    anaconda
-Version: 42.7
-Release: 1%{?dist}
+Version: 42.8
+Release: 2%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
 URL:     http://fedoraproject.org/wiki/Anaconda
@@ -27,7 +27,7 @@ Source0: https://github.com/rhinstaller/%{name}/releases/download/%{name}-%{vers
 %define dasbusver 1.3
 %define dbusver 1.2.3
 %define dnfver 3.6.0
-%define dracutver 034-7
+%define dracutver 102-3
 %define fcoeutilsver 1.0.12-3.20100323git
 %define gettextver 0.19.8
 %define gtk3ver 3.22.17
@@ -46,6 +46,7 @@ Source0: https://github.com/rhinstaller/%{name}/releases/download/%{name}-%{vers
 %define subscriptionmanagerver 1.26
 %define utillinuxver 2.15.1
 %define rpmostreever 2023.2
+%define s390utilscorever 2.31.0
 
 BuildRequires: libtool
 BuildRequires: gettext-devel >= %{gettextver}
@@ -125,6 +126,8 @@ Requires: NetworkManager-team
 %endif
 %ifarch s390 s390x
 Requires: openssh
+Requires: s390utils-core >= %{s390utilscorever}
+Requires: dracut-network >= %{dracutver}
 %endif
 Requires: NetworkManager >= %{nmver}
 Requires: NetworkManager-libnm >= %{nmver}
@@ -487,6 +490,19 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Tue Oct 15 2024 Gwyn Ciesla <gwync@protonmail.com> - 42.8-2
+- brltty rebuild
+
+* Tue Oct 15 2024 Packit <hello@packit.dev> - 42.8-1
+- Fix journal redirect on systems without journal (jkonecny)
+- unit_tests: drop DASDDevice.opts like in related blivet change (maier)
+- network: use consolidated s390 device configuration (#1802482,#1937049)
+  (maier)
+- write persistent config of any (dasd,zfcp,znet) s390 devices to sysroot
+  (#1802482,#1937049) (maier)
+- DASDDiscoverTask: use consolidated device configuration with zdev
+  (#1802482,#1937049) (maier)
+
 * Thu Oct 10 2024 Packit <hello@packit.dev> - 42.7-1
 - Add GRD test coverage (jkonecny)
 - Improve docs in gnome_remote_desktop source (jkonecny)

@@ -3,7 +3,7 @@
 %endif
 
 Name: mbedtls3.6
-Version: 3.6.1
+Version: 3.6.2
 Release: 1%{?dist}
 Summary: Light-weight cryptographic and SSL/TLS library
 # Note: The BSD Clause is for configs/ext/crypto_config_profile_medium.h is relicensed
@@ -123,8 +123,12 @@ mv %{buildroot}/%{_libdir}/cmake/MbedTLS %{buildroot}/%{_libdir}/cmake/MbedTLS3.
 %doc apidoc/*
 
 %changelog
+* Tue Oct 15 2024 Morten Stevens <mstevens@fedoraproject.org> - 3.6.2-1
+- Update to 3.6.2
+
 * Fri Sep 06 2024 Bill Roberts <bill.roberts@arm.com> - 3.6.1-1
 - Update to 3.6.1
   - Notably Fixes CVE-2024-45157
+
 * Tue Apr 02 2024 Bill Roberts <bill.roberts@arm.com> - 3.6.0-1
 - Update to 3.6.0

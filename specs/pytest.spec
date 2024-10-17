@@ -9,6 +9,10 @@ License:        MIT
 URL:            https://pytest.org
 Source:         %{pypi_source pytest %{base_version}%{?prerelease}}
 
+# Fixes failing tests with Python 3.13
+# test_pdb_used_in_generate_tests test_pdb_used_outside_test
+Patch:          https://github.com/pytest-dev/pytest/commit/52135b0.patch
+
 # Remove -s from Python shebang,
 # ensure that packages installed with pip to user locations are testable
 # https://bugzilla.redhat.com/2152171
@@ -154,9 +158,7 @@ find %{buildroot}%{python3_sitelib} \
 %if %{with tests}
 %global __pytest %{buildroot}%{_bindir}/pytest
 # optional_tests deps contain pytest-xdist, so we can use it to run tests faster
-# upstream issue regarding skipped tests: https://github.com/pytest-dev/pytest/issues/12497
-%pytest testing %{?with_timeout:--timeout=30} %{?with_optional_tests:-n auto} -k \
-    "not test_pdb_used_in_generate_tests and not test_pdb_used_outside_test" -rs
+%pytest testing %{?with_timeout:--timeout=30} %{?with_optional_tests:-n auto} -rs
 %else
 %pyproject_check_import
 %endif

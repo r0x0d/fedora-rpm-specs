@@ -1,7 +1,7 @@
 %bcond tests 1
 
 Name:           python-crc32c
-Version:        2.7.post1
+Version:        2.7.1
 Release:        %autorelease
 Summary:        A python package implementing the crc32c algorithm in hardware and software
 

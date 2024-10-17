@@ -5,7 +5,7 @@
 %global crate pyo3
 
 Name:           rust-pyo3
-Version:        0.22.3
+Version:        0.22.4
 Release:        %autorelease
 Summary:        Bindings to Python interpreter
 

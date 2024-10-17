@@ -1,15 +1,3 @@
-%ifnarch s390x
-%bcond gimp 1
-%else
-%bcond gimp 0
-%endif
-
-%if ! 0%{?fedora} || 0%{?fedora} >= 41
-%define gimpver 3.0
-%else
-%define gimpver 2.0
-%endif
-
 %global srcname icons
 %global appname io.elementary.icons
 
@@ -31,25 +19,23 @@ BuildRequires:  libappstream-glib
 BuildRequires:  librsvg2-tools
 BuildRequires:  meson
 BuildRequires:  xcursorgen
-%if %{without gimp}
-Obsoletes:      %{name}-gimp-palette < %{version}-%{release}
-%endif
 
 %description
 This is an icon theme designed to be smooth, sexy, clear, and efficient.
 
 
-%if %{with gimp}
 %package        gimp-palette
 Summary:        Icons from the Elementary Project (GIMP palette)
 Requires:       %{name} = %{version}-%{release}
 Requires:       gimp
+%if ! 0%{?fedora} || 0%{?fedora} >= 41
+ExcludeArch:    s390x
+%endif
 
 %description    gimp-palette
 This is an icon theme designed to be smooth, sexy, clear, and efficient.
 
 This package contains a palette file for the GIMP.
-%endif
 
 
 %package        inkscape-palette
@@ -79,13 +65,6 @@ done
 
 %install
 %meson_install
-%if %{with gimp}
-%if "%{gimpver}" != "2.0"
-mv %{buildroot}%{_datadir}/gimp/2.0 %{buildroot}%{_datadir}/gimp/%{gimpver}
-%endif
-%else
-rm -rf %{buildroot}%{_datadir}/gimp
-%endif
 
 # Create icon cache file
 touch %{buildroot}/%{_datadir}/icons/elementary/icon-theme.cache
@@ -130,10 +109,8 @@ gtk-update-icon-cache --force %{_datadir}/icons/elementary &>/dev/null || :
 %{_datadir}/icons/elementary/index.theme
 
 
-%if %{with gimp}
 %files gimp-palette
-%{_datadir}/gimp/%{gimpver}/palettes/elementary.gpl
-%endif
+%{_datadir}/gimp/2.0/palettes/elementary.gpl
 
 %files inkscape-palette
 %{_datadir}/inkscape/palettes/elementary.gpl

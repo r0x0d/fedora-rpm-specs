@@ -15,9 +15,10 @@ URL:     https://www.kde.org/applications/graphics/spectacle/
 %endif
 Source0: https://download.kde.org/%{stable}/release-service/%{version}/src/%{name}-%{version}.tar.xz
 
-## downstream patches
-
 ## upstream patches
+Patch0: https://invent.kde.org/graphics/spectacle/-/commit/7f0a1cc0e8afb1589fb6f37e17a80c824f17a52f.patch
+
+## downstream patches
 
 %global majmin %(echo %{version} | cut -d. -f1,2)
 
@@ -118,6 +119,7 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.spectacle
 %changelog
 * Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 24.08.2-2
 - Rebuild (qt6)
+- Add patch to work around broken qmlcachegen in qt6.8
 
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
 - 24.08.2

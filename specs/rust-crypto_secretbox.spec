@@ -2,36 +2,29 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate pyo3-ffi
+%global crate crypto_secretbox
 
-Name:           rust-pyo3-ffi
-Version:        0.22.4
+Name:           rust-crypto_secretbox
+Version:        0.1.1
 Release:        %autorelease
-Summary:        Python-API bindings for the PyO3 ecosystem
+Summary:        Implementation of the XSalsa20Poly1305 and XChaCha20Poly1305 ciphers
 
-License:        MIT OR Apache-2.0
-URL:            https://crates.io/crates/pyo3-ffi
+License:        Apache-2.0 OR MIT
+URL:            https://crates.io/crates/crypto_secretbox
 Source:         %{crates_source}
 
-# Downstream-only patch: always allow unsupported versions of Python.
-# We constantly attempt to integrate alpha and beta releases of Python
-# and need to rebuild all dependent packages in Copr, also those that
-# use pyo3-ffi without patching each and every one of them,
-# hence we explicitly allow to skip version check when building RPMs.
-Patch:          Allow-unsupported-Python-versions-in-RPM-builds.patch
-
 BuildRequires:  cargo-rpm-macros >= 24
-BuildRequires:  python3-devel >= 3.7
 
 %global _description %{expand:
-Python-API bindings for the PyO3 ecosystem.}
+Pure Rust implementation of the XSalsa20Poly1305 (a.k.a. NaCl
+crypto_secretbox) authenticated encryption cipher as well as the
+libsodium variant of XChaCha20Poly1305.}
 
 %description %{_description}
 
 %package        devel
 Summary:        %{summary}
 BuildArch:      noarch
-Requires:       python3-devel >= 3.7
 
 %description    devel %{_description}
 
@@ -41,6 +34,7 @@ use the "%{crate}" crate.
 %files          devel
 %license %{crate_instdir}/LICENSE-APACHE
 %license %{crate_instdir}/LICENSE-MIT
+%doc %{crate_instdir}/CHANGELOG.md
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
@@ -56,100 +50,100 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-devel
+%package     -n %{name}+alloc-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-devel %{_description}
+%description -n %{name}+alloc-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3" feature of the "%{crate}" crate.
+use the "alloc" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-devel
+%files       -n %{name}+alloc-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-py310-devel
+%package     -n %{name}+chacha20-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-py310-devel %{_description}
+%description -n %{name}+chacha20-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3-py310" feature of the "%{crate}" crate.
+use the "chacha20" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-py310-devel
+%files       -n %{name}+chacha20-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-py311-devel
+%package     -n %{name}+getrandom-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-py311-devel %{_description}
+%description -n %{name}+getrandom-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3-py311" feature of the "%{crate}" crate.
+use the "getrandom" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-py311-devel
+%files       -n %{name}+getrandom-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-py312-devel
+%package     -n %{name}+heapless-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-py312-devel %{_description}
+%description -n %{name}+heapless-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3-py312" feature of the "%{crate}" crate.
+use the "heapless" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-py312-devel
+%files       -n %{name}+heapless-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-py37-devel
+%package     -n %{name}+rand_core-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-py37-devel %{_description}
+%description -n %{name}+rand_core-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3-py37" feature of the "%{crate}" crate.
+use the "rand_core" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-py37-devel
+%files       -n %{name}+rand_core-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-py38-devel
+%package     -n %{name}+salsa20-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-py38-devel %{_description}
+%description -n %{name}+salsa20-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3-py38" feature of the "%{crate}" crate.
+use the "salsa20" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-py38-devel
+%files       -n %{name}+salsa20-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+abi3-py39-devel
+%package     -n %{name}+std-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+abi3-py39-devel %{_description}
+%description -n %{name}+std-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "abi3-py39" feature of the "%{crate}" crate.
+use the "std" feature of the "%{crate}" crate.
 
-%files       -n %{name}+abi3-py39-devel
+%files       -n %{name}+std-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+extension-module-devel
+%package     -n %{name}+stream-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+extension-module-devel %{_description}
+%description -n %{name}+stream-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "extension-module" feature of the "%{crate}" crate.
+use the "stream" feature of the "%{crate}" crate.
 
-%files       -n %{name}+extension-module-devel
+%files       -n %{name}+stream-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep
@@ -157,17 +151,17 @@ use the "extension-module" feature of the "%{crate}" crate.
 %cargo_prep
 
 %generate_buildrequires
-%cargo_generate_buildrequires
+%cargo_generate_buildrequires -a
 
 %build
-%cargo_build
+%cargo_build -a
 
 %install
-%cargo_install
+%cargo_install -a
 
 %if %{with check}
 %check
-%cargo_test
+%cargo_test -a
 %endif
 
 %changelog

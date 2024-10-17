@@ -5,7 +5,7 @@
 %endif
 
 Name:           nextcloud
-Version:        29.0.6
+Version:        29.0.8
 Release:        %autorelease
 Summary:        Private file sync and share server
 # Automatically converted from old format: AGPLv3+ and MIT and BSD and ASL 2.0 and WTFPL and CC-BY-SA and GPLv3+ and Adobe - review is highly recommended.
@@ -86,7 +86,7 @@ Requires:       php-session
 Requires:       php-simplexml
 Requires:       php-smbclient
 Requires:       php-spl
-Requires:       php-sodium
+Recommends:     php-sodium
 Requires:       php-opcache
 Requires:       php-xmlwriter
 Requires:       php-zip
