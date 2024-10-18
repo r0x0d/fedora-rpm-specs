@@ -6,6 +6,9 @@ License:        LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dtk6core
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
+# https://github.com/linuxdeepin/dtkcore/pull/438
+Patch0:         dtk6core-add-qt6.8-support.patch
+
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
 BuildRequires:  ninja-build

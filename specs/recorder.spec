@@ -1,6 +1,6 @@
 Name:           recorder
 Version:        1.2.2
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Lock-free, real-time flight recorder for C or C++ programs
 License:        LGPLv2+
 Url:            https://github.com/tao-3D/%{name}
@@ -72,6 +72,9 @@ collected by the flight_recorder library.
 %{_mandir}/man1/*.1.*
 
 %changelog
+* Wed Oct 16 2024 Jan Grulich <jgrulich@redhat.com> - 1.2.2-9
+- Rebuild (qt6)
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 1.2.2-8
 - convert license to SPDX
 

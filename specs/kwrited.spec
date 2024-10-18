@@ -1,6 +1,6 @@
 Name:    kwrited
 Summary: KDE Write Daemon
-Version: 6.2.0
+Version: 6.2.1
 Release: 1%{?dist}
 
 License: CC0-1.0 AND GPL-2.0-or-later
@@ -44,6 +44,9 @@ Conflicts:      kde-workspace < 5.0.0-1
 %{_kf6_datadir}/knotifications6/kwrited.notifyrc
 
 %changelog
+* Tue Oct 15 2024 Steve Cossette <farchord@gmail.com> - 6.2.1-1
+- 6.2.1
+
 * Thu Oct 03 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.2.0-1
 - 6.2.0
 

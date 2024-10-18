@@ -17,7 +17,7 @@
 Summary:    X.Org X11 X server
 Name:       xorg-x11-server
 Version:    21.1.13
-Release:    5%{?dist}
+Release:    6%{?dist}
 URL:        http://www.x.org
 # SPDX
 License:    Adobe-Display-PostScript AND BSD-3-Clause AND DEC-3-Clause AND HPND AND HPND-sell-MIT-disclaimer-xserver AND HPND-sell-variant AND ICU AND ISC AND MIT AND MIT-open-group AND NTP AND SGI-B-2.0 AND SMLNJ AND X11 AND X11-distribute-modifications-variant
@@ -149,6 +149,7 @@ Obsoletes:      xorg-x11-server-Xdmx < 1.20.15
 # https://fedoraproject.org/wiki/Changes/ReplaceFbdevDrivers
 Obsoletes:      xorg-x11-drv-fbdev < 0.5.0-19
 Obsoletes:      xorg-x11-drv-vesa < 2.6.0-3
+Obsoletes:      xorg-x11-drv-armsoc < 1.4.1-10
 
 %description    Xorg
 X.org X11 is an open source implementation of the X Window System. It provides
@@ -417,6 +418,9 @@ find %{buildroot} -type f -name '*.la' -delete
 
 
 %changelog
+* Wed Oct 16 2024 Peter Robinson <pbrobinson@fedoraproject.org>
+- Obsolete xorg-x11-drv-armsoc
+
 * Mon Sep 30 2024 Simone Caronni <negativo17@gmail.com> - 21.1.13-5
 - After removal of int10/vbe, obsolete vesa and fbdev X drivers:
   https://fedoraproject.org/wiki/Changes/ReplaceFbdevDrivers

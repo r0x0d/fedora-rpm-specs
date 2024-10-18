@@ -641,6 +641,7 @@ Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
 Requires: libldb = %{samba_depver}
+Requires: libwbclient = %{samba_depver}
 
 Provides: samba4-dc-libs = %{samba_depver}
 Obsoletes: samba4-dc-libs < %{samba_depver}
@@ -662,6 +663,7 @@ Requires: %{name}-dc = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
 Requires: bind
 Requires: libldb = %{samba_depver}
+Requires: libwbclient = %{samba_depver}
 
 Provides: bundled(libreplace)
 
@@ -697,6 +699,7 @@ Requires: %{name} = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
 Requires: libldb = %{samba_depver}
+Requires: libwbclient = %{samba_depver}
 
 Provides: bundled(libreplace)
 
@@ -713,6 +716,7 @@ Requires: %{name} = %{samba_depver}
 Requires: %{name}-libs = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: libldb = %{samba_depver}
+Requires: libwbclient = %{samba_depver}
 
 Provides: bundled(libreplace)
 
@@ -784,6 +788,7 @@ Summary: Samba ldap modules for ldb
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: libldb = %{samba_depver}
+Requires: libwbclient = %{samba_depver}
 
 %description ldb-ldap-modules
 This package contains the ldb ldap modules required by samba-tool and
@@ -816,6 +821,7 @@ Requires: %{name}-common = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: libldb = %{samba_depver}
+Requires: libwbclient = %{samba_depver}
 
 %description -n libnetapi
 This contains the NETAPI library from the Samba suite.
@@ -926,6 +932,7 @@ Requires: python3-%{name} = %{samba_depver}
 # for ms_forest_updates_markdown.py and ms_schema_markdown.py
 Requires: python3-markdown
 Requires: libldb = %{samba_depver}
+Requires: libwbclient = %{samba_depver}
 
 %description -n python3-samba-dc
 The python3-%{name}-dc package contains the Python libraries needed by programs
@@ -1122,6 +1129,7 @@ License: GPL-3.0-only
 Requires: %{name}-client-libs = %{samba_depver}
 Requires: %{name}-common-libs = %{samba_depver}
 Requires: libldb = %{samba_depver}
+Requires: libwbclient = %{samba_depver}
 
 Provides: bundled(libreplace)
 
@@ -1283,6 +1291,7 @@ Summary: Python bindings for the LDB library
 License: LGPL-3.0-or-later
 Requires: libldb%{?_isa} = %{samba_depver}
 Requires: python3-tdb%{?_isa} >= %{tdb_version}
+Requires: samba-client-libs = %{samba_depver}
 %{?python_provide:%python_provide python3-ldb}
 
 Obsoletes: python3-ldb < 0:2.10

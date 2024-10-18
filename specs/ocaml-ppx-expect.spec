@@ -5,7 +5,7 @@ ExcludeArch: %{ix86}
 %bcond test 0
 
 Name:           ocaml-ppx-expect
-Version:        0.17.1
+Version:        0.17.2
 Release:        %autorelease
 Summary:        Framework for writing tests in OCaml
 

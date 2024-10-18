@@ -80,18 +80,11 @@ Summary:        %{summary}
 # however it launches other Python versions as subprocesses.
 # It recommends all Python versions it supports. (This is an exception to
 # the rule that Fedora packages may not require the alternative interpreters.)
-Recommends:     python3.6
-Recommends:     python3.7
 Recommends:     python3.8
 Recommends:     python3.9
 Recommends:     python3.10
-Recommends:     pypy2-devel
 Recommends:     pypy3-devel
 Recommends:     python3-devel
-%if 0%{?fedora} && 0%{?fedora} < 41
-Recommends:     python2.7
-Recommends:     python2-devel
-%endif
 # Instead of adding new Pythons here, add `Supplements: tox` to them, see:
 # https://lists.fedoraproject.org/archives/list/python-devel@lists.fedoraproject.org/thread/NVVUXSVSPFQOWIGBE2JNI67HEO7R63ZQ/
 

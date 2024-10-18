@@ -187,9 +187,14 @@ Source0:    README
 %obsolete celestia 1.7.0~320231229.git6899839-6
 %obsolete celestia-data 1.7.0~320231125.gitdb53ae3-4
 
-# https://src.fedoraproject.org/rpms/module-build-service/c/920f1845d372ffa78b3b0ef93bc9a26821ace667
-%obsolete_ticket https://bugzilla.redhat.com/2291560
-%obsolete module-build-service 3.9.2-10
+# Remove in F43
+%obsolete_ticket https://src.fedoraproject.org/rpms/libomxil-bellagio/c/3684f6e28
+%obsolete libomxil-bellagio 0.9.3-34
+%obsolete libomxil-bellagio-devel 0.9.3-34
+%obsolete libomxil-bellagio-test 0.9.3-34
+%obsolete_ticket https://src.fedoraproject.org/rpms/guile/c/b148178cb
+%obsolete guile 2.0.14-37
+%obsolete guile-devel 2.0.14-37
 
 # Remove in F43
 # Removed packages with broken dependencies on Python 3.12
@@ -199,14 +204,21 @@ Source0:    README
 %obsolete ccnet 6.1.8-19
 %obsolete ccnet-devel 6.1.8-19
 %obsolete container-workflow-tool 1.2.0-10
+%obsolete copr-distgit-client 0.72-2
+%obsolete csound-devel 6.16.2-13
+%obsolete csound-java 6.16.2-13
 %obsolete deepin-dock-onboard-plugin 5.5.81-2
 %obsolete dlrn 0.14.0-16
+%obsolete dmlite-dpmhead-domeonly 1.15.2-21
+%obsolete dmlite-shell 1.15.2-21
 %obsolete esphomeflasher 1.4.0-9
 %obsolete fedmod 0.6.6-6
+%obsolete fedmsg 1.1.7-7
 %obsolete fontdump 1.3.0-30
 %obsolete glue 0.13-14
 %obsolete gofer 3.0.0-0.22
 %obsolete gofer-tools 3.0.0-0.22
+%obsolete goobook 3.5-13
 %obsolete heat-cfntools 1.4.2-25
 %obsolete hgview 1.14.0-15
 %obsolete hgview-common 1.14.0-15
@@ -214,19 +226,19 @@ Source0:    README
 %obsolete kf5-kapidox 5.111.0-2
 %obsolete kismon 1.0.2-12
 %obsolete komikku 1.36.0-2
-%obsolete libomxil-bellagio 0.9.3-34
-%obsolete libomxil-bellagio-devel 0.9.3-34
-%obsolete libomxil-bellagio-test 0.9.3-34
 %obsolete mailman3-fedmsg-plugin 0.5-28
 %obsolete mkosi14 14-5
+%obsolete module-build-service 3.9.2-10
 %obsolete onboard 1.4.1-35
 %obsolete onboard-data 1.4.1-35
 %obsolete oraculum 0.2.4-13
+%obsolete oval-graph 1.3.3-10
 %obsolete pipenv 2023.2.18-5
-%obsolete prelude-correlator 5.2.0-14
 %obsolete python-ZConfig-doc 4.1-2
+%obsolete python-idna-ssl 1.1.0-22
 %obsolete python-limits-doc 3.9.0-3
 %obsolete python3-BTrees 5.2-2
+%obsolete python3-EvoPreprocess 0.5.0-7
 %obsolete python3-GridDataFormats 1.0.1-8
 %obsolete python3-SALib 1.4.7-5
 %obsolete python3-ZConfig 4.1-2
@@ -236,6 +248,7 @@ Source0:    README
 %obsolete python3-ZEO+uvloop 6.0.0-4
 %obsolete python3-ZODB 6.0-2
 %obsolete python3-ZODB3 3.11.0-29
+%obsolete python3-abrt-container-addon 2.17.6-2
 %obsolete python3-adb 1.3.0-16
 %obsolete python3-aiomqtt 0.1.3-21
 %obsolete python3-amico 1.0.1-30
@@ -256,19 +269,24 @@ Source0:    README
 %obsolete python3-azure-mgmt-fluidrelay 1.0.0-6
 %obsolete python3-azure-mgmt-hybridcompute 7.0.0-9
 %obsolete python3-azure-mgmt-reservations 1:2.0.0-10
+%obsolete python3-bash-kernel 0.9.3-4
 %obsolete python3-boututils+mayavi 0.1.10-5
+%obsolete python3-case 1.5.3-21
 %obsolete python3-catch22 0.4.0-14
 %obsolete python3-cle 9.2.39-4
 %obsolete python3-colorcet 3.0.1^20221003git809e291-13
 %obsolete python3-colorcet+examples 3.0.1^20221003git809e291-10
 %obsolete python3-compressed-rtf 1.0.6-3
+%obsolete python3-csound 6.16.2-13
 %obsolete python3-cython0.29 0.29.35-4
+%obsolete python3-datadog 0.44.0-10
 %obsolete python3-devicely 1.1.1-11
 %obsolete python3-devtools 0.12.2-2
 %obsolete python3-django-auth-ldap 4.1.0-9
 %obsolete python3-django-pyscss 2.0.2-35
 %obsolete python3-djvulibre 0.8.7-5
 %obsolete python3-dlrn 0.14.0-16
+%obsolete python3-dmlite 1.15.2-21
 %obsolete python3-dns-lexicon+ddns 3.13.0-2
 %obsolete python3-dns-lexicon+duckdns 3.13.0-2
 %obsolete python3-dukpy 0.3-25
@@ -278,6 +296,9 @@ Source0:    README
 %obsolete python3-f5-icontrol-rest 1.3.16-2
 %obsolete python3-f5-sdk 3.0.21-23
 %obsolete python3-fdb 2.0.1-11
+%obsolete python3-fedmsg 1.1.7-7
+%obsolete python3-fedmsg-meta-fedora-infrastructure 0.31.0-13
+%obsolete python3-ffmpeg-python 0.2.0-7
 %obsolete python3-flake8-docstrings 1.6.0-9
 %obsolete python3-flask-basicauth 0.2.0-7
 %obsolete python3-flask-htmlmin 2.2.1-5
@@ -340,7 +361,7 @@ Source0:    README
 %obsolete python3-google-cloud-shell 1.6.1-4
 %obsolete python3-google-cloud-source-context 1.4.3-3
 %obsolete python3-google-cloud-spanner 3.40.1-2
-%obsolete python3-google-cloud-testutils 1.3.3-7
+%obsolete python3-grabbit 0.2.6-29
 %obsolete python3-grafeas 1.8.1-4
 %obsolete python3-guizero 1.3.0-7
 %obsolete python3-gunicorn+eventlet 21.2.0-5
@@ -348,12 +369,16 @@ Source0:    README
 %obsolete python3-gunicorn+setproctitle 21.2.0-5
 %obsolete python3-hdmf+zarr 3.14.3-2
 %obsolete python3-htmlmin 0.1.12-23
+%obsolete python3-hypothesis-fspaths 0.1-19
+%obsolete python3-ipdb 0.13.13-7
+%obsolete python3-iptools 0.7.0-14
 %obsolete python3-j1m.sphinxautozconfig 0.1.0-23
 %obsolete python3-jose 3.3.0-30
 %obsolete python3-jose+cryptography 3.3.0-30
 %obsolete python3-jsonschema-spec 0.2.4-2
 %obsolete python3-jupyter-collaboration 1.0.0-4
 %obsolete python3-jupyter-server-fileid 0.9.0-3
+%obsolete python3-jupyter-sphinx 0.5.3-4
 %obsolete python3-jupyter-ydoc 1.0.2-4
 %obsolete python3-kaitaistruct 0.10-6
 %obsolete python3-limits 3.9.0-3
@@ -362,20 +387,26 @@ Source0:    README
 %obsolete python3-limits+mongodb 3.9.0-3
 %obsolete python3-limits+redis 3.9.0-3
 %obsolete python3-limits+rediscluster 3.9.0-3
+%obsolete python3-m2crypto 0.41.0^git20240613.3156614-2
 %obsolete python3-matplotlib-venn 0.11.9-4
 %obsolete python3-maya 0.6.1-11
 %obsolete python3-metaextract 1.0.9-5
 %obsolete python3-mglob 0.4-43
 %obsolete python3-mysql-debug 1.4.6-15
+%obsolete python3-nb2plots 0.7.2-4
 %obsolete python3-openapi-spec-validator+requests 0.5.7-5
 %obsolete python3-openipmi 2.0.32-11
 %obsolete python3-openopt 0.5629-14
 %obsolete python3-opentelemetry-instrumentation-grpc 1:0.39~b0-27
 %obsolete python3-opentelemetry-instrumentation-grpc+instruments 1:0.39~b0-27
+%obsolete python3-opentracing 2.4.0-13
+%obsolete python3-opentype-sanitizer 9.1.0-12
 %obsolete python3-orderedset 2.0.3-12
 %obsolete python3-oslo-db 14.1.0-4
 %obsolete python3-oslo-db+mysql 14.1.0-4
 %obsolete python3-oslo-db-tests 14.1.0-4
+%obsolete python3-oslo-service 3.1.1-11
+%obsolete python3-oslo-service-tests 3.1.1-11
 %obsolete python3-oslo-sphinx 4.18.0-20
 %obsolete python3-param 2.0.2-6
 %obsolete python3-pep517 0.13.0-6
@@ -384,9 +415,7 @@ Source0:    README
 %obsolete python3-persistent-doc 5.2-2
 %obsolete python3-pplpy 0.8.10-2
 %obsolete python3-pplpy-devel 0.8.10-2
-%obsolete python3-prelude 5.2.0-24
-%obsolete python3-prelude-correlator 5.2.0-14
-%obsolete python3-preludedb 5.2.0-14
+%obsolete python3-prelude 5.2.0-27
 %obsolete python3-preprocess 2.0.0-12
 %obsolete python3-primecountpy 0.1.0-14
 %obsolete python3-py-gql 0.6.1-15
@@ -395,8 +424,10 @@ Source0:    README
 %obsolete python3-pyct+cmd 0.5.0-9
 %obsolete python3-pyfastnoisesimd 0.4.2-13
 %obsolete python3-pyhirte 0.4.0-4
+%obsolete python3-pykdl 1.5.1-11
 %obsolete python3-pyliblo 0.10.0-31
 %obsolete python3-pymoc 0.5.0-26
+%obsolete python3-pyswarms 1.3.0-23
 %obsolete python3-pytest-bdd5 5.0.0-6
 %obsolete python3-pytest-cython 0.2.2-2
 %obsolete python3-pytest-grpc 0.8.0^20210806git3f21554-15
@@ -405,9 +436,11 @@ Source0:    README
 %obsolete python3-r128gain 1.0.7-6
 %obsolete python3-ratelimiter 1.2.0-13
 %obsolete python3-rdflib-jsonld 0.6.0-10
+%obsolete python3-receptor-python-worker 1.4.4-3
 %obsolete python3-red-black-tree-mod 1.21-2
 %obsolete python3-remctl 3.18-9
 %obsolete python3-ruffus 2.8.4-17
+%obsolete python3-scripttester 0.1-22
 %obsolete python3-scss 1.4.0-4
 %obsolete python3-setuptools_scm_git_archive 1.4-5
 %obsolete python3-signature-dispatch 1.0.1-8
@@ -420,9 +453,9 @@ Source0:    README
 %obsolete python3-sphinxcontrib-openapi 0.7.0-12
 %obsolete python3-sphinxcontrib-zopeext 0.4.3-4
 %obsolete python3-sphinxext-rediraffe 0.2.7-9
-%obsolete python3-sqlalchemy+aioodbc 2.0.32-2
-%obsolete python3-sqlalchemy+mssql_pyodbc 2.0.32-2
-%obsolete python3-sqlalchemy+postgresql_pg8000 2.0.32-2
+%obsolete python3-sqlalchemy+aioodbc 2.0.35-2
+%obsolete python3-sqlalchemy+mssql_pyodbc 2.0.35-2
+%obsolete python3-sqlalchemy+postgresql_pg8000 2.0.35-2
 %obsolete python3-stompest 2.3.0-17
 %obsolete python3-stompest-twisted 2.3.0-17
 %obsolete python3-subvertpy 0.10.1-23
@@ -443,6 +476,7 @@ Source0:    README
 %obsolete python3-vagrantpy 0.6.0-14
 %obsolete python3-vecrec 0.3.1-18
 %obsolete python3-vitrageclient 4.8.0-2
+%obsolete python3-webpy 0.62-11
 %obsolete python3-woffTools 0.1-0.40
 %obsolete python3-wsaccel 0.6.6-4
 %obsolete python3-wtforms-sqlalchemy 0.3.0-8
@@ -451,11 +485,14 @@ Source0:    README
 %obsolete python3-zanata-client 1.5.3-19
 %obsolete python3-zanata2fedmsg 0.2-30
 %obsolete python3-zbase32 1.1.5-33
+%obsolete python3-zdaemon 4.2.0-27
 %obsolete python3-zodbpickle 3.2-3
 %obsolete python3-zope-fixers 1.1.2-33
 %obsolete python3-zopeundo 6.0-6
 %obsolete qpid-dispatch-console 1.19.0-10
 %obsolete qpid-dispatch-router 1.19.0-10
+%obsolete receptor 1.4.4-3
+%obsolete receptorctl 1.4.4-3
 %obsolete ruff-lsp 0.0.53-2
 %obsolete tmt-all 1.27.0-2
 %obsolete tmt-provision-beaker 1.27.0-2

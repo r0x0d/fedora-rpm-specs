@@ -1,11 +1,10 @@
 Name:           perl-Convert-PEM
-Version:        0.08
-Release:        47%{?dist}
+Version:        0.09
+Release:        1%{?dist}
 Summary:        Read/write encrypted ASN.1 PEM files
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Convert-PEM
 Source0:        https://cpan.metacpan.org/modules/by-module/Convert/Convert-PEM-%{version}.tar.gz
-Patch0:         Convert-PEM-0.08-Do-not-test-the-reason-for-decryption-failure-on-bad.patch
 BuildArch:      noarch
 # Build
 BuildRequires:  coreutils
@@ -13,17 +12,12 @@ BuildRequires:  make
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
-BuildRequires:  perl(inc::Module::Install)
-BuildRequires:  perl(Module::Install::AuthorTests)
-BuildRequires:  perl(Module::Install::ReadmeFromPod)
-BuildRequires:  perl(Module::Install::Repository)
-BuildRequires:  perl(Module::Install::TestBase)
-BuildRequires:  sed
+BuildRequires:  perl(warnings)
 # Runtime
 BuildRequires:  perl(base)
 BuildRequires:  perl(Carp)
 BuildRequires:  perl(Class::ErrorHandler)
-BuildRequires:  perl(Convert::ASN1) >= 0.10
+BuildRequires:  perl(Convert::ASN1) >= 0.34
 BuildRequires:  perl(Crypt::DES_EDE3)
 BuildRequires:  perl(Digest::MD5)
 BuildRequires:  perl(MIME::Base64)
@@ -34,9 +28,10 @@ BuildRequires:  perl(Math::BigInt)
 BuildRequires:  perl(Test::Exception)
 BuildRequires:  perl(Test::More)
 # Dependencies
-Requires:       perl(Convert::ASN1) >= 0.10
+Requires:       perl(Convert::ASN1) >= 0.34
 Requires:       perl(Crypt::DES_EDE3)
 
+# Remove underspecified dependencies
 %global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\(Convert::ASN1\\)$
 
 %description
@@ -45,13 +40,6 @@ to ASN.1-encoded PEM files (with optional encryption).
 
 %prep
 %setup -q -n Convert-PEM-%{version}
-
-# Disable tests relying on probabilistic output (#1136745, CPAN RT#27574)
-%patch -P0 -p1
-
-# Remove bundled dependencies
-rm -rv inc/
-sed -i -e '/^inc\// d' MANIFEST
 
 %build
 perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
@@ -65,12 +53,19 @@ perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
 make test
 
 %files
+%license LICENSE
 %doc Changes README
 %{perl_vendorlib}/Convert/
 %{_mandir}/man3/Convert::PEM.3*
 %{_mandir}/man3/Convert::PEM::CBC.3*
 
 %changelog
+* Wed Oct 16 2024 Paul Howarth <paul@city-fan.org> - 0.09-1
+- Update to 0.09 (rhbz#2319049)
+  - Fix flaky encode test (CPAN RT#27574)
+  - Convert build to Dist::Zilla
+- Package LICENSE file
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.08-47
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

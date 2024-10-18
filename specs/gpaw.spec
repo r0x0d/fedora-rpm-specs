@@ -20,7 +20,7 @@ ExcludeArch: %{ix86}
 
 Name:			gpaw
 Version:		24.6.0
-Release:		2%{?dist}
+Release:		3%{?dist}
 Summary:		A grid-based real-space PAW method DFT code
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -296,6 +296,9 @@ popd
 
 
 %changelog
+* Wed Oct 16 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 24.6.0-3
+- Bump release
+
 * Sun Oct 13 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 24.6.0-2
 - Rebuild against libxc 7 in rawhide and fix BZ#2140559.
 

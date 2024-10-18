@@ -1,7 +1,7 @@
 Summary: Graphical system installer
 Name:    anaconda
-Version: 42.8
-Release: 2%{?dist}
+Version: 42.9
+Release: 1%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
 URL:     http://fedoraproject.org/wiki/Anaconda
@@ -490,6 +490,10 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Wed Oct 16 2024 Packit <hello@packit.dev> - 42.9-1
+- Log stderr to journal only on supported platforms (jkonecny)
+- logging: fix the length limit of packages info dbg message (rvykydal)
+
 * Tue Oct 15 2024 Gwyn Ciesla <gwync@protonmail.com> - 42.8-2
 - brltty rebuild
 

@@ -2,7 +2,7 @@
 
 Name:           pungi
 Version:        4.7.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Distribution compose tool
 
 License:        GPL-2.0-only
@@ -11,6 +11,8 @@ Source0:        https://pagure.io/releases/%{name}/%{name}-%{version}.tar.bz2
 Patch:          https://pagure.io/pungi/pull-request/1780.patch
 Patch:          https://pagure.io/pungi/pull-request/1782.patch
 Patch:          https://pagure.io/pungi/pull-request/1788.patch
+Patch:          https://pagure.io/pungi/pull-request/1789.patch
+Patch:          https://pagure.io/pungi/pull-request/1790.patch
 
 BuildRequires:  make
 BuildRequires:  python3-pytest
@@ -144,6 +146,10 @@ rm %{buildroot}%{_bindir}/pungi
 %{_bindir}/%{name}-cache-cleanup
 
 %changelog
+* Wed Oct 16 2024 Adam Williamson <awilliam@redhat.com> - 4.7.0-5
+- Backport patches for subvariant and filename for ostree_container
+- Backport patch to split ostree phases out and improve compose speed
+
 * Mon Oct 07 2024 Adam Williamson <awilliam@redhat.com> - 4.7.0-4
 - Backport patches to fix GCE image format not to be 'docker'
 

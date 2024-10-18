@@ -47,7 +47,7 @@
 
 # Do not forget to bump pam_ssh_agent_auth release if you rewind the main package release to 1
 %global openssh_ver 9.9p1
-%global openssh_rel 3
+%global openssh_rel 4
 %global pam_ssh_agent_ver 0.10.4
 %global pam_ssh_agent_rel 11
 
@@ -90,8 +90,6 @@ Patch200: openssh-7.6p1-audit.patch
 Patch201: openssh-7.1p2-audit-race-condition.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=2049947
 Patch202: openssh-9.0p1-audit-log.patch
-# Correctly audit hostname and IP address
-Patch203: openssh-8.7p1-audit-hostname.patch
 
 # --- pam_ssh-agent ---
 # make it build reusing the openssh sources
@@ -429,7 +427,6 @@ popd
 %patch -P 200 -p1 -b .audit
 %patch -P 201 -p1 -b .audit-race
 %patch -P 202 -p1 -b .audit-log
-%patch -P 203 -p1 -b .audit-hostname
 %patch -P 700 -p1 -b .fips
 
 %patch -P 1002 -p1 -b .ssh-manpage
@@ -749,6 +746,10 @@ test -f %{sysconfig_anaconda} && \
 %endif
 
 %changelog
+* Wed Oct 16 2024 Dmitry Belyavskiy <dbelyavs@redhat.com> - 9.9p1-4
+- Resolve memory management issues after rebase
+- Define OPTIONS env in systemd modules (https://src.fedoraproject.org/rpms/openssh/pull-request/92)
+
 * Fri Oct 11 2024 Dmitry Belyavskiy <dbelyavs@redhat.com> - 9.9p1-3
 - Separate ssh-keysign to a dedicated package
 - Use FIPS KEX defaults in FIPS mode

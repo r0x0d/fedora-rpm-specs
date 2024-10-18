@@ -6,7 +6,7 @@
 
 Name:       bitcoin-core
 Version:    28.0
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Peer to Peer Cryptographic Currency
 License:    MIT
 URL:        https://bitcoincore.org/
@@ -99,7 +99,8 @@ to run a Bitcoin wallet, this is probably the package you want.
 %package devel
 Summary:    Peer-to-peer digital currency
 Conflicts:  bitcoin-devel
-Requires:   %{name}-libs%{?_isa} = %{version}-%{release}
+Provides:   %{name}-libs = %{version}-%{release}
+Obsoletes:  %{name}-libs < %{version}-%{release}
 
 %description devel
 This package contains the bitcoin utility tool.
@@ -319,6 +320,10 @@ exit 0
 %{_userunitdir}/%{project_name}.service
 
 %changelog
+* Wed Oct 16 2024 Simone Caronni <negativo17@gmail.com> - 28.0-3
+- Remove leftover of bitcoin-libs being erroneusly required by the devel
+  subpackage.
+
 * Tue Oct 08 2024 Simone Caronni <negativo17@gmail.com> - 28.0-2
 - Rebuild for updated miniupnpc 2.2.8.
 

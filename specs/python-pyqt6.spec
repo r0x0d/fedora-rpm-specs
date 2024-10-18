@@ -2,12 +2,12 @@
 %global python3_dbus_dir %(%{__python3} -c "import dbus.mainloop; print(dbus.mainloop.__path__[0])" 2>/dev/null || echo "%{python3_sitearch}/dbus/mainloop")
 %endif
 
-#define snap dev2404051544
+%define snap dev2410141303
 
 Summary: PyQt6 is Python bindings for Qt6
 Name:    python-pyqt6
-Version: 6.7.1
-Release: 2%{?dist}
+Version: 6.8.0
+Release: 0.1%{?dist}
 
 License: gpl-3.0-only
 Url:     http://www.riverbankcomputing.com/software/pyqt/
@@ -241,6 +241,9 @@ sed -i \
 
 
 %changelog
+* Wed Oct 16 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-0.1^dev2410141303
+- Update to snapshot of 6.8.0
+
 * Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-2
 - Rebuild (qt6)
 

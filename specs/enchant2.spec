@@ -2,12 +2,20 @@
 
 Name:          enchant2
 Version:       2.8.2
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       An Enchanting Spell Checking Library
 
 License:       LGPL-2.0-or-later
 URL:           https://github.com/AbiWord/enchant
 Source0:       https://github.com/AbiWord/enchant/releases/download/v%{version}/enchant-%{version}.tar.gz
+
+%if !0%{?rhel}
+# Look for aspell using pkg-config, instead of AC_CHECK_LIB which adds -laspell
+# to the global LIBS and over-links libenchant (#1574893).  This patch
+# can't currently go upstream, because aspell.pc is a Fedora addition
+# that itself has not gone upstream.
+Patch:         0001-Use-pkg-config-to-configure-Aspell.patch
+%endif
 
 BuildRequires: automake autoconf libtool
 BuildRequires: gcc-c++
@@ -15,10 +23,12 @@ BuildRequires: make
 BuildRequires: glib2-devel
 BuildRequires: hunspell-devel
 BuildRequires: libvoikko-devel
+BuildRequires: vala
+
 %if !0%{?rhel}
+BuildRequires: aspell-devel
 BuildRequires: nuspell-devel
 %endif
-BuildRequires: vala
 
 %if %{with mingw}
 BuildRequires: mingw32-filesystem
@@ -40,7 +50,6 @@ BuildRequires: mingw64-nuspell
 %endif
 
 Provides:      bundled(gnulib)
-Obsoletes:     enchant2-aspell < 2.5.0-2
 
 
 %description
@@ -48,6 +57,14 @@ A library that wraps other spell checking backends.
 
 
 %if !0%{?rhel}
+%package aspell
+Summary:       Integration with aspell for libenchant
+Requires:      enchant2%{?_isa} = %{version}-%{release}
+Supplements:   (enchant2 and aspell)
+
+%description aspell
+Libraries necessary to integrate applications using libenchant with aspell.
+
 %package nuspell
 Summary:       Integration with Nuspell for libenchant
 Requires:      enchant2%{?_isa} = %{version}-%{release}
@@ -100,7 +117,7 @@ MinGW Windows %{name} library.
 %prep
 %autosetup -p1 -n enchant-%{version}
 
-# Needed for Patch0
+# Needed for 0001-Use-pkg-config-to-configure-Aspell.patch
 autoreconf -ifv
 
 
@@ -110,10 +127,11 @@ mkdir build_native
 pushd build_native
 %define _configure ../configure
 %configure \
-    --with-hunspell-dir=%{_datadir}/hunspell \
 %if !0%{?rhel}
+    --with-aspell \
     --with-nuspell \
 %endif
+    --with-hunspell-dir=%{_datadir}/hunspell \
     --without-hspell \
     --disable-static \
     --docdir=%{_defaultdocdir}/%{name}
@@ -165,6 +183,9 @@ find %{buildroot} -name '*.la' -delete
 %{_datadir}/enchant-2-2
 
 %if !0%{?rhel}
+%files aspell
+%{_libdir}/enchant-2/enchant_aspell.so*
+
 %files nuspell
 %{_libdir}/enchant-2/enchant_nuspell.so*
 %endif
@@ -220,6 +241,9 @@ find %{buildroot} -name '*.la' -delete
 
 
 %changelog
+* Wed Oct 16 2024 Peter Oliver <rpm@mavit.org.uk> - 2.8.2-2
+- Restore enchant2-aspell subpackage
+
 * Thu Aug 15 2024 Sandro Mani <manisandro@gmail.com> - 2.8.2-1
 - Update to 2.8.2
 

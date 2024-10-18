@@ -6,7 +6,7 @@
 %global crate ratatui
 
 Name:           rust-ratatui
-Version:        0.26.3
+Version:        0.28.1
 Release:        %autorelease
 Summary:        Library that's all about cooking up terminal user interfaces
 
@@ -14,11 +14,8 @@ License:        MIT
 URL:            https://crates.io/crates/ratatui
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * Update compact_str to 0.8.0
+# * temporarily downgrade palette dependency from 0.7.6 to 0.7.5
 Patch:          ratatui-fix-metadata.diff
-# * Backport 6d210b3b6b195101e701630a916a253b6d16ad70 to 0.26.3: minor code
-#   changes for compact_str 0.8.0
-Patch10:       0001-chore-deps-update-compact_str-requirement-from-0.7.1.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -40,6 +37,8 @@ use the "%{crate}" crate.
 %license %{crate_instdir}/LICENSE
 %doc %{crate_instdir}/BREAKING-CHANGES.md
 %doc %{crate_instdir}/CHANGELOG.md
+%doc %{crate_instdir}/CODE_OF_CONDUCT.md
+%doc %{crate_instdir}/MAINTAINERS.md
 %doc %{crate_instdir}/README.md
 %doc %{crate_instdir}/RELEASE.md
 %doc %{crate_instdir}/SECURITY.md
@@ -103,6 +102,18 @@ This package contains library source intended for building other packages which
 use the "macros" feature of the "%{crate}" crate.
 
 %files       -n %{name}+macros-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+palette-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+palette-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "palette" feature of the "%{crate}" crate.
+
+%files       -n %{name}+palette-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+serde-devel

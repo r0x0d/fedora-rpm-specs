@@ -5,7 +5,7 @@
 
 Name:           elementary-music
 Summary:        Music player and library designed for elementary
-Version:        7.1.0
+Version:        8.0.0
 Release:        %autorelease
 License:        GPL-3.0-or-later AND LGPL-3.0-or-later
 
@@ -24,6 +24,7 @@ BuildRequires:  pkgconfig(gstreamer-1.0)
 BuildRequires:  pkgconfig(gstreamer-pbutils-1.0)
 BuildRequires:  pkgconfig(gstreamer-tag-1.0)
 BuildRequires:  pkgconfig(gtk4)
+BuildRequires:  pkgconfig(libadwaita-1) >= 1.4.0
 
 Requires:       hicolor-icon-theme
 

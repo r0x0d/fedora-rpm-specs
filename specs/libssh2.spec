@@ -5,8 +5,8 @@
 %endif
 
 Name:		libssh2
-Version:	1.11.0
-Release:	8%{?dist}
+Version:	1.11.1
+Release:	1%{?dist}
 Summary:	A library implementing the SSH2 protocol
 License:	BSD-3-Clause
 URL:		https://www.libssh2.org/
@@ -14,9 +14,6 @@ Source0:	https://libssh2.org/download/libssh2-%{version}.tar.gz
 Source1:	https://libssh2.org/download/libssh2-%{version}.tar.gz.asc
 # Daniel Stenberg's GPG keys; linked from https://daniel.haxx.se/address.html
 Source2:	https://daniel.haxx.se/mykey.asc
-Patch1:		libssh2-1.11.0-strict-modes.patch
-Patch2:		libssh2-1.11.0-ssh-rsa-test.patch
-Patch3:		https://patch-diff.githubusercontent.com/raw/libssh2/libssh2/pull/1433.patch
 
 BuildRequires:	coreutils
 BuildRequires:	findutils
@@ -35,9 +32,7 @@ BuildRequires:	groff
 # We run the OpenSSH server and try to connect to it
 BuildRequires:	openssh-server
 # Need a valid locale to run the mansyntax check
-%if 0%{?fedora} > 23 || 0%{?rhel} > 7
 BuildRequires:	glibc-langpack-en
-%endif
 
 %description
 libssh2 is a library implementing the SSH2 protocol as defined by
@@ -67,35 +62,15 @@ developing applications that use libssh2.
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
 %setup -q
 
-# Group-writeable directories in the hierarchy above where we
-# run the tests from can cause failures due to openssh's strict
-# permissions checks. Adding this option helps the tests to run
-# more reliably on a variety of build systems.
-%patch -P 1
-
-# In 8.8 OpenSSH disabled sha1 rsa-sha keys out of the box,
-# so we need to re-enable them as a workaround for the test
-# suite until upstream updates the tests.
-# See: https://github.com/libssh2/libssh2/issues/630
-%if 0%{?fedora} > 33 || 0%{?rhel} > 8
-%patch -P 2
-%endif
-
-# Support for ssh-dss, ssh-dss-cert-* host and user keys is disabled
-# by default in OpenSSH 9.8p1
-# https://github.com/libssh2/libssh2/pull/1433
-%patch -P 3 -p1
-
 # Replace hard wired port number in the test suite to avoid collisions
 # between 32-bit and 64-bit builds running on a single build-host
 sed -i s/4711/47%{?__isa_bits}/ tests/{openssh_fixture.c,test_ssh{2.c,d.test}}
 
 %build
-# Test suite fails to compile if we use --disable-static
-# https://github.com/libssh2/libssh2/issues/1056
 %configure \
 	--disable-rpath \
 	--disable-silent-rules \
+	--disable-static \
 	--enable-shared \
 	--disable-docker-tests
 %{make_build}
@@ -103,9 +78,6 @@ sed -i s/4711/47%{?__isa_bits}/ tests/{openssh_fixture.c,test_ssh{2.c,d.test}}
 %install
 %{make_install} INSTALL="install -p"
 find %{buildroot} -name '*.la' -delete
-
-# Remove static library that we only built for testing
-rm -v %{buildroot}%{_libdir}/libssh2.a
 
 # Clean things up a bit for packaging
 make -C example clean
@@ -144,6 +116,12 @@ LC_ALL=en_US.UTF-8 make -C tests check
 %{_libdir}/pkgconfig/libssh2.pc
 
 %changelog
+* Wed Oct 16 2024 Paul Howarth <paul@city-fan.org> - 1.11.1-1
+- Update to 1.11.1 (rhbz#2319104)
+  - This is an enhancement and bugfix release - see RELEASE_NOTES for details
+  - Note also that various algorithms are now deprecated and not built by
+    default, which affects this package
+
 * Sat Jul 27 2024 Paul Howarth <paul@city-fan.org> - 1.11.0-8
 - Fix test suite failures with OpenSSH 9.8p1
 

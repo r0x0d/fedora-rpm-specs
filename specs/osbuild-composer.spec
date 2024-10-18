@@ -12,7 +12,7 @@
 
 %global goipath         github.com/osbuild/osbuild-composer
 
-Version:        122
+Version:        123
 
 %gometa
 
@@ -684,6 +684,25 @@ Integration tests to be run on a pristine-dedicated system to test the osbuild-c
 %endif
 
 %changelog
+* Wed Oct 16 2024 Packit <hello@packit.dev> - 123-1
+Changes with 123
+----------------
+  * cloud/aws: add a third secure instance fallback across AZs (#4401)
+    * Author: Sanne Raymaekers, Reviewers: Florian Schüller
+  * cloud/awscloud: retry CreateFleet regardless of the error code (#4413)
+    * Author: Sanne Raymaekers, Reviewers: Florian Schüller, Lukáš Zapletal
+  * repositories: add rhel-9.6 (#4408)
+    * Author: Sanne Raymaekers, Reviewers: Ondřej Budai
+  * test: disable ostree-remount service checking since /sysroot is ro and /var rw already (#4394)
+    * Author: mcattamoredhat, Reviewers: Sayan Paul, Simon de Vlieger
+  * tests/filesystem: increase /usr size (#4400)
+    * Author: Jakub Rusz, Reviewers: Achilleas Koutsou
+  * tests/regression: Add config for v3 certificates (#4395)
+    * Author: Jakub Rusz, Reviewers: Florian Schüller
+
+— Somewhere on the Internet, 2024-10-16
+
+
 * Wed Oct 02 2024 Packit <hello@packit.dev> - 122-1
 Changes with 122
 ----------------

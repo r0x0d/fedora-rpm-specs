@@ -4,8 +4,8 @@ provides complex widgets and convenience functions designed for use in
 apps built for elementary OS.}
 
 Name:           granite-7
-Version:        7.4.0
-Release:        4%{?dist}
+Version:        7.5.0
+Release:        %autorelease
 Summary:        Extend GTK with common widgets and utilities
 License:        LGPL-3.0-or-later AND LGPL-2.1-or-later AND GPL-2.0-or-later AND GPL-3.0-or-later
 
@@ -73,6 +73,8 @@ appstream-util validate-relax --nonet \
 %{_libdir}/libgranite-7.so.7.*
 %{_libdir}/girepository-1.0/Granite-7.0.typelib
 
+%{_datadir}/themes/Granite/
+
 %{_metainfodir}/%{name}.metainfo.xml
 
 %files devel
@@ -91,18 +93,4 @@ appstream-util validate-relax --nonet \
 
 
 %changelog
-* Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.4.0-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Wed Jan 24 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.4.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Sat Jan 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.4.0-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Sat Nov 18 2023 Fabio Valentini <decathorpe@gmail.com> - 7.4.0-1
-- Update to version 7.4.0.
-
-* Tue May 23 2023 Fabio Valentini <decathorpe@gmail.com> - 7.2.0-1
-- Initial packaging
-
+%autochangelog

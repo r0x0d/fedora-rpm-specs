@@ -3,14 +3,14 @@
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
-Version: 6.2.0
-Release: 3%{?dist}
+Version: 6.2.1.1
+Release: 1%{?dist}
 
 # Automatically converted from old format: BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND LGPL-3.0-or-later AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only) AND MIT - review is highly recommended.
 License: BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND LGPL-3.0-or-later AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only) AND MIT
 URL:     https://invent.kde.org/plasma/%{name}
 
-Source0: https://download.kde.org/%{stable_kf6}/plasma/%{version}/%{name}-%{version}.tar.xz
+Source0: https://download.kde.org/%{stable_kf6}/plasma/%{maj_ver_kf6}.%{min_ver_kf6}.%{bug_ver_kf6}/%{name}-%{version}.tar.xz
 
 Source11:       startkderc
 Source15:       fedora-lookandfeel.json
@@ -35,8 +35,6 @@ Source41:       spice-vdagent.conf
 Patch106:       plasma-workspace-5.27.80-enable-open-terminal-action.patch
 # default to enable the lock/logout actions
 Patch107:       plasma-workspace-5.27.80-enable-lock-logout-action.patch
-# /usr/bin/qtpaths-qt6
-Patch109:       qtpaths-binary-name.patch
 
 # udev
 BuildRequires:  zlib-devel
@@ -509,7 +507,7 @@ cat *.lang | sort | uniq -u > %{name}.lang
 
 
 %check
-desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.{plasmashell,kcolorschemeeditor,kfontview,plasmawindowed}.desktop
+desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.{plasmashell,kcolorschemeeditor,kfontview,plasmawindowed,klipper}.desktop
 
 %post
 if [ -s /usr/sbin/setsebool ] ; then
@@ -587,6 +585,7 @@ fi
 %{_kf6_datadir}/applications/org.kde.kfontinst.desktop
 %{_kf6_datadir}/applications/org.kde.plasmawindowed.desktop
 %{_kf6_datadir}/applications/org.kde.plasma-fallback-session-save.desktop
+%{_kf6_datadir}/applications/org.kde.klipper.desktop
 %{_kf6_datadir}/kio/servicemenus/installfont.desktop
 %{_kf6_datadir}/qlogging-categories6/*.categories
 %{_sysconfdir}/xdg/plasmanotifyrc
@@ -714,6 +713,12 @@ fi
 
 
 %changelog
+* Wed Oct 16 2024 Steve Cossette <farchord@gmail.com> - 6.2.1.1-1
+- 6.2.1.1
+
+* Tue Oct 15 2024 Steve Cossette <farchord@gmail.com> - 6.2.1-1
+- 6.2.1
+
 * Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 6.2.0-3
 - Rebuild (qt6)
 
@@ -733,6 +738,9 @@ fi
 
 * Tue Sep 10 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.1.5-1
 - 6.1.5
+- Add missing dependency on xsetroot.
+  Fixes cursor in some XWayland apps.
+  (https://pagure.io/fedora-kde/SIG/issue/562)
 
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 6.1.4-3
 - convert license to SPDX

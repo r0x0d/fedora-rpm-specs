@@ -1,7 +1,7 @@
 Summary: Utilities for managing accounts and shadow password files
 Name: shadow-utils
 Version: 4.16.0
-Release: 5%{?dist}
+Release: 6%{?dist}
 Epoch: 2
 License: BSD-3-Clause AND GPL-2.0-or-later
 URL: https://github.com/shadow-maint/shadow
@@ -294,6 +294,9 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libsubid.a
 %{_libdir}/libsubid.so
 
 %changelog
+* Wed Oct 16 2024 Iker Pedrosa <ipedrosa@redhat.com> - 2:4.16.0-6
+- Rebuilt for libeconf soname bump
+
 * Mon Oct  7 2024 Iker Pedrosa <ipedrosa@redhat.com> - 2:4.16.0-5
 - useradd: fix write_full() return value. Resolves: #2313559
 

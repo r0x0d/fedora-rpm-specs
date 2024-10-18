@@ -10,6 +10,9 @@ License:        GPL-2.0-or-later AND BSD-2-Clause
 URL:            http://www.mapeditor.org
 Source0:        https://github.com/mapeditor/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
+# https://github.com/mapeditor/tiled/pull/4077
+Patch1:         tiled-fix-build-against-qt6.8.patch
+
 BuildRequires:  desktop-file-utils
 BuildRequires:  gcc-c++
 BuildRequires:  libappstream-glib
@@ -173,6 +176,8 @@ as Godot Engine 4 scene files (.tscn).
 
 %prep
 %setup -q
+
+%patch -P1 -p1 -b .fix-build-against-qt6.8
 
 # Remove copy of zlib
 rm -rf src/zlib

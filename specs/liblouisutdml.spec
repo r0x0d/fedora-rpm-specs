@@ -46,7 +46,7 @@ libraries and header files for developing applications that use %{name}.
 
 %package utils
 Summary: Utilities that convert various file formats into braille
-License: GPLv3+
+License: GPL-3.0-or-later
 Requires: antiword
 Requires: poppler-utils
 Requires: %{name}%{?_isa} = %{version}-%{release}

@@ -14,7 +14,7 @@
 Summary:            Distributed Monitoring System
 Name:               ganglia
 Version:            %{gangver}
-Release:            53%{?dist}
+Release:            54%{?dist}
 # Automatically converted from old format: BSD - review is highly recommended.
 License:            LicenseRef-Callaway-BSD
 URL:                http://ganglia.sourceforge.net/
@@ -32,8 +32,12 @@ Patch20:            ganglia-web-3.7.2-path.patch
 Patch21:            ganglia-web-3.7.6-pr-379.patch
 Patch22:            ganglia-web-3.7.6-php8.patch
 Patch30:            ganglia-gmond-python2to3.patch
-Patch31:            ganglia-gmond-python2to3-modules.patch
-Patch32:            ganglia-3.7.2-autoconf-python3.patch
+Patch31:            0002-2to3-pass.patch
+Patch32:            0003-Ruff-pass.patch
+Patch33:            0004-Use-raw-strings.patch
+Patch34:            0001-Fix-return-value-from-mod_python-init.patch
+Patch40:            ganglia-3.7.2-autoconf-python3.patch
+Patch50:            ganglia-3.7.2-pcre2.patch
 %if 0%{?systemd}
 BuildRequires:      systemd
 %endif
@@ -54,8 +58,10 @@ BuildRequires:      libconfuse-devel
 BuildRequires:      libmemcached-devel
 BuildRequires:      libpng-devel
 BuildRequires:      make
-%if 0%{?fedora} < 38 || 0%{?rhel}
+%if 0%{?rhel}
 BuildRequires:      pcre-devel
+%else
+BuildRequires:      pcre2-devel
 %endif
 %{?py2:BuildRequires:      python2-devel}
 %{?py3:BuildRequires:      python3-devel}
@@ -171,9 +177,15 @@ programmers can use to build scalable cluster or grid applications
 %patch -P 1 -p1
 %patch -P 30 -p1
 %{?py3:%patch -P 31 -p1}
-%patch -P 32 -p1
+%{?py3:%patch -P 32 -p1}
+%{?py3:%patch -P 33 -p1}
+%{?py3:%patch -P 34 -p1}
+%patch -P 40 -p1
 %if 0%{?fedora} || 0%{?rhel} > 7
 %patch -P 10 -p1
+%endif
+%if 0%{?fedora}
+%patch -P 50 -p1
 %endif
 # fix broken systemd support
 install -m 0644 %{SOURCE2} gmond/gmond.service.in
@@ -218,9 +230,7 @@ export CFLAGS="%{optflags} -fcommon"
     --with-memcached \
     --disable-static \
     --enable-shared \
-%if 0%{?fedora} > 37
-    --with-libpcre=no \
-%endif
+    --with-libpcre=yes \
 %if 0%{?with_python}
     --enable-python \
 %if 0%{?py2}
@@ -454,6 +464,10 @@ end
 %dir %attr(0755,apache,apache) %{_localstatedir}/lib/%{name}-web/dwoo/compiled
 
 %changelog
+* Tue Oct 15 2024 Terje Rosten <terjeros@gmail.com> - 3.7.6-54
+- Various fixes to improve Python 3 support
+- Add back regex support on Fedora (patch from Debian, thanks!)
+
 * Sat Sep 28 2024 Terje Rosten <terjeros@gmail.com> - 3.7.6-53
 - Add patch to improve compat with PHP 8
 

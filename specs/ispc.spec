@@ -1,42 +1,28 @@
-%global with_snapshot 0
-%global commit ec62d6cbef2fab4c49003c0206716d3d6248b59e
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
-
 Name:		ispc
-Version:	1.24.0
-%if %{with_snapshot}
-Release:	%autorelease -p -s 20230102git%{shortcommit}
-%else
+Version:	1.25.0
 Release:	%autorelease
-%endif
 Summary:	C-based SPMD programming language compiler
 
 License:	BSD-3-Clause
 URL:		https://ispc.github.io/
-%if %{with_snapshot}
-Source0:	https://github.com/%{name}/%{name}/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
-%else
 Source0:	https://github.com/%{name}/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
-%endif
+
+Patch0:		aarch64-tests.patch
 
 BuildRequires:	bison
 BuildRequires:	cmake
 BuildRequires:	clang-devel
-BuildRequires:	doxygen
 BuildRequires:	flex 
 BuildRequires:	gcc-c++
-BuildRequires:	libomp-devel
 BuildRequires:	llvm-devel
-BuildRequires:	pkgconfig(libffi)
-BuildRequires:	pkgconfig(ncurses)
 BuildRequires:	pkgconfig(python3)
 %ifarch x86_64
 # Koji 64-bit buildroots do not contain packages from 32-bit builds, therefore
 # the 'glibc-devel.i686' variant is provided as 'glibc32'.
 BuildRequires: (glibc32 or glibc-devel(%__isa_name-32))
+BuildRequires:	oneapi-level-zero-devel
 %endif
 BuildRequires:  pkgconfig(tbb)
-BuildRequires:	pkgconfig(zlib)
 
 # Upstream only supports these architectures
 ExclusiveArch:	x86_64 aarch64
@@ -62,21 +48,10 @@ The %{name}-static package includes static libraries needed
 to develop programs that use %{name}.
 
 %prep
-%if %{with_snapshot}
-%autosetup -n %{name}-%{commit} -p1
-%else
-%autosetup -n %{name}-%{version} -p1
-%endif
-
-# Use gcc rather clang by default
-sed -i 's|set(CMAKE_C_COMPILER "clang")|set(CMAKE_C_COMPILER "gcc")|g' CMakeLists.txt
-sed -i 's|set(CMAKE_CXX_COMPILER "clang++")|set(CMAKE_CXX_COMPILER "g++")|g' CMakeLists.txt
+%autosetup -p1 -n %{name}-%{version}
 
 # Delete unrecognized command options from gcc-c++
 sed -i 's|-Wno-c99-extensions -Wno-deprecated-register||g' CMakeLists.txt
-
-# Suppress warning message as error
-sed -i 's| -Werror ||g' CMakeLists.txt 
 
 # Fix all Python shebangs recursively in .
 %py3_shebang_fix .
@@ -84,17 +59,26 @@ sed -i 's| -Werror ||g' CMakeLists.txt
 %build
 %cmake \
 	-DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
+	-DCMAKE_C_COMPILER=gcc \
+	-DCMAKE_CXX_COMPILER=g++ \
 	-DCMAKE_EXE_LINKER_FLAGS="%{optflags} -fPIE" \
 	-DISPC_INCLUDE_EXAMPLES=OFF \
-	-DISPC_INCLUDE_TESTS=OFF \
+	-DISPC_INCLUDE_TESTS=ON \
+%ifarch x86_64
 	-DLEVEL_ZERO_INCLUDE_DIR=%{_includedir} \
-	-DLEVEL_ZERO_LIB_LOADER=%{_libddir} \
-	-DLLVM_ENABLE_ASSERTIONS=OFF 
+	-DLEVEL_ZERO_LIB_LOADER=%{_libdir}/libze_loader.so.1 \
+	-DISPCRT_BUILD_CPU=ON \
+	-DISPCRT_BUILD_GPU=ON \
+	-DISPCRT_BUILD_TESTS=OFF \
+%endif
+	-DLLVM_ENABLE_ASSERTIONS=OFF
 %cmake_build
 
 %install
 %cmake_install
+
+%check
+PATH="${PATH}:%{buildroot}%{_bindir}" %{python3} scripts/run_tests.py
 
 %files
 %license LICENSE.txt
@@ -102,11 +86,18 @@ sed -i 's| -Werror ||g' CMakeLists.txt
 %{_bindir}/check_isa
 %{_libdir}/lib%{name}rt.so.{1,%{version}}
 %{_libdir}/lib%{name}rt_device_cpu.so.{1,%{version}}
+%ifarch x86_64
+%{_libdir}/lib%{name}rt_device_gpu.so.{1,%{version}}
+%endif
+
 %files devel
 %{_includedir}/%{name}rt/
 %{_libdir}/cmake/%{name}rt-%{version}/
 %{_libdir}/lib%{name}rt.so
 %{_libdir}/lib%{name}rt_device_cpu.so
+%ifarch x86_64
+%{_libdir}/lib%{name}rt_device_gpu.so
+%endif
 
 %files static
 %license LICENSE.txt

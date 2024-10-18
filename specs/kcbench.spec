@@ -1,6 +1,6 @@
 Name:           kcbench
-Version:        0.9.10
-Release:        2%{?dist}
+Version:        0.9.11
+Release:        1%{?dist}
 Summary:        Benchmark that compiles a Linux kernel
 
 License:        MIT:Modern Style with sublicense
@@ -52,6 +52,9 @@ echo "Nothing to build"
 %{_docdir}/kcbench/
 
 %changelog
+* Wed Oct 16 2024 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0.9.11-1
+- Update to 0.9.11
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.10-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

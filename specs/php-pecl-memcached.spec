@@ -7,11 +7,8 @@
 # Please, preserve the changelog entries
 #
 
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
+%bcond_without      tests
 
-%global with_zts    0%{!?_without_zts:%{?__ztsphp:1}}
-%global with_tests  0%{!?_without_tests:1}
 %global pecl_name   memcached
 # After 40-igbinary, 40-json, 40-msgpack
 %global ini_name    50-%{pecl_name}.ini
@@ -22,12 +19,11 @@
 # make RPM happy  DEV => alpha => beta => rc
 #global upstream_lower   rc1
 %global sources    %{pecl_name}-%{upstream_version}%{?upstream_prever}
-%global _configure ../%{sources}/configure
 
 Summary:      Extension to work with the Memcached caching daemon
 Name:         php-pecl-memcached
 Version:      %{upstream_version}%{?upstream_prever:~%{upstream_lower}}
-Release:      12%{?dist}
+Release:      13%{?dist}
 License:      PHP-3.01
 URL:          https://pecl.php.net/package/%{pecl_name}
 
@@ -53,7 +49,7 @@ BuildRequires: libmemcached-devel >= 1.0.18
 BuildRequires: zlib-devel
 BuildRequires: cyrus-sasl-devel
 BuildRequires: fastlz-devel
-%if %{with_tests}
+%if %{with tests}
 BuildRequires: memcached
 %endif
 
@@ -127,14 +123,12 @@ EOF
 # default options with description from upstream
 cat %{sources}/memcached.ini >>%{ini_name}
 
-mkdir NTS
-%if %{with_zts}
-mkdir ZTS
-%endif
-
 
 %build
-peclconf() {
+cd %{sources}
+%{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
+
 %configure --enable-memcached-igbinary \
            --enable-memcached-json \
            --enable-memcached-sasl \
@@ -143,41 +137,24 @@ peclconf() {
 %endif
            --enable-memcached-protocol \
            --with-system-fastlz \
-           --with-php-config=$1
-}
-cd %{sources}
-%{__phpize}
+           --with-php-config=%{__phpconfig}
 
-cd ../NTS
-peclconf %{__phpconfig}
-make %{?_smp_mflags}
-
-%if %{with_zts}
-cd ../ZTS
-peclconf %{__ztsphpconfig}
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-# Install the NTS extension
-make install -C NTS INSTALL_ROOT=%{buildroot}
-
-# Drop in the bit of configuration
-# rename to z-memcached to be load after msgpack
-install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
-
-# Install XML package description
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
-
-# Install the ZTS extension
-%if %{with_zts}
-make install -C ZTS INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
-
-# Documentation
 cd %{sources}
+
+: Install the extension
+%make_install
+
+: Drop in the bit of configuration
+install -D -m 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+
+: Install XML package description
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+
+: Install the Documentation
 for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
 do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
@@ -194,14 +171,7 @@ OPT="-n"
     -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --modules | grep '^%{pecl_name}$'
 
-%if %{with_zts}
-: Minimal load test for ZTS extension
-%{__ztsphp} $OPT \
-    -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep '^%{pecl_name}$'
-%endif
-
-%if %{with_tests}
+%if %{with tests}
 cd %{sources}
 # XFAIL and very slow so no value
 rm tests/expire.phpt
@@ -221,14 +191,6 @@ TEST_PHP_ARGS="$OPT -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
 REPORT_EXIT_STATUS=1 \
 %{__php} -n run-tests.php -q -x --show-diff || ret=1
 
-%if %{with_zts}
-: Run the upstream test Suite for ZTS extension
-TEST_PHP_EXECUTABLE=%{__ztsphp} \
-TEST_PHP_ARGS="$OPT -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so" \
-REPORT_EXIT_STATUS=1 \
-%{__ztsphp} -n run-tests.php -q -x --show-diff || ret=1
-%endif
-
 # Cleanup
 if [ -f memcached.pid ]; then
    kill $(cat memcached.pid)
@@ -247,13 +209,11 @@ exit $ret
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %changelog
+* Wed Oct 16 2024 Remi Collet <remi@fedoraproject.org> - 3.2.0-13
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 3.2.0-12
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

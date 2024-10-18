@@ -10,8 +10,8 @@
 # Please, preserve the changelog entries
 #
 %global pecl_name  ip2location
-%global with_zts   0%{!?_without_zts:%{?__ztsphp:1}}
 %global ini_name   40-%{pecl_name}.ini
+%global sources    %{pecl_name}-%{upstream_version}%{?upstream_prever}
 
 %global upstream_version 8.2.0
 #global upstream_prever  RC1
@@ -21,9 +21,9 @@ Summary:        Get geo location information of an IP address
 Name:           php-pecl-%{pecl_name}
 License:        PHP-3.01
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:        8%{?dist}
+Release:        9%{?dist}
 URL:            https://pecl.php.net/package/%{pecl_name}
-Source0:        https://pecl.php.net/get/%{pecl_name}-%{upstream_version}%{?upstream_prever}.tgz
+Source0:        https://pecl.php.net/get/%{sources}.tgz
 
 ExcludeArch:    %{ix86}
 
@@ -55,7 +55,6 @@ weather station name, mobile country code (MCC), mobile network code
 
 %prep
 %setup -q -c
-mv %{pecl_name}-%{upstream_version}%{?upstream_prever} NTS
 
 # Don't install tests
 sed -e 's/role="test"/role="src"/' \
@@ -63,9 +62,8 @@ sed -e 's/role="test"/role="src"/' \
     -e '/README.TXT/s/role="doc"/role="test"/' \
     -i package.xml
 
-cd NTS
+cd %{sources}
 sed -e "s/\r//" -i LICENSE CREDITS *.md *.c *.h
-
 
 # Check version
 extver=$(sed -n '/#define PHP_IP2LOCATION_VERSION/{s/.* "//;s/".*$//;p}' php_ip2location.h)
@@ -75,10 +73,6 @@ if test "x${extver}" != "x%{upstream_version}%{?upstream_prever}"; then
 fi
 cd ..
 
-%if %{with_zts}
-cp -r NTS ZTS
-%endif
-
 cat <<EOF | tee %{ini_name}
 ; Enable %{pecl_name} extension module
 extension=%{pecl_name}.so
@@ -86,62 +80,39 @@ EOF
 
 
 %build
-cd NTS
-%{_bindir}/phpize
-%configure --with-php-config=%{_bindir}/php-config
-%make_build
+cd %{sources}
+%{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-%if %{with_zts}
-cd ../ZTS
-%{_bindir}/zts-phpize
-%configure --with-php-config=%{_bindir}/zts-php-config
+%configure --with-php-config=%{__phpconfig}
 %make_build
-%endif
 
 
 %install
-make install -C NTS INSTALL_ROOT=%{buildroot}
 
 install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
 install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-# Install the ZTS stuff
-%if %{with_zts}
-make install -C ZTS INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
+cd %{sources}
+%make_install
 
 # Documentation
-for i in $(grep 'role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 NTS/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
 %check
-: simple NTS module load test
-%{_bindir}/php --no-php-ini \
+: simple module load test
+%{__php} --no-php-ini \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --modules | grep '^%{pecl_name}$'
 
 : upstream test suite
-cd NTS
-TEST_PHP_EXECUTABLE=%{_bindir}/php \
+cd %{sources}
 TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
-%{_bindir}/php -n run-tests.php -q --show-diff
-
-%if %{with_zts}
-: simple ZTS module load test
-%{__ztsphp} --no-php-ini \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep '^%{pecl_name}$'
-
-: upstream test suite
-cd ../ZTS
-TEST_PHP_EXECUTABLE=%{__ztsphp} \
-TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so" \
-%{__ztsphp} -n run-tests.php -q --show-diff
-%endif
+%{__php} -n run-tests.php -q --show-diff
 
 
 %files
@@ -151,13 +122,11 @@ TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so" \
 %{php_extdir}/%{pecl_name}.so
 %{pecl_xmldir}/%{name}.xml
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %changelog
+* Wed Oct 16 2024 Remi Collet <remi@fedoraproject.org> - 8.2.0-9
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 8.2.0-8
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

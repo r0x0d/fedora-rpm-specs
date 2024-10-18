@@ -2,9 +2,9 @@
 %global forgeurl https://github.com/pydantic/pydantic-extra-types
 
 Name:           python-pydantic-extra-types
-Version:        2.9.0
+Version:        2.10.0
 %forgemeta
-Release:        5%{?dist}
+Release:        1%{?dist}
 Summary:        Extra types for Pydantic
 
 License:        MIT
@@ -24,16 +24,13 @@ Source:         %{forgesource}
 # "all" extra in %%prep.
 #
 # All of this works because python3-libs depends on the system tzdata package.
-Patch:          0001-Assume-zoneinfo-has-system-tzdata.patch
+Patch0:         0001-Assume-zoneinfo-has-system-tzdata.patch
 
-# Adjust test_json_schema() for Pydantic 2.9
-# https://github.com/pydantic/pydantic-extra-types/pull/215
-Patch:          %{forgeurl}/pull/215.patch
-
-# Allow python-ulid 3.0
-# https://github.com/pydantic/pydantic-extra-types/pull/222
-# Cherry-picked to v2.9.0
-Patch:          0001-Allow-python-ulid-3.0-222.patch
+# For Fedora 40 only: Revert ":sparkles: Adjust `test_json_schema()` for
+# Pydantic 2.9 (#215)" (except changes to pyproject.txt, to reduce future
+# conflicts). Fedora 40 will remain at Pydantic 2.8 since 2.9 contained a
+# breaking change.
+Patch140:       0001-Revert-sparkles-Adjust-test_json_schema-for-Pydantic.patch
 
 BuildArch:      noarch
 
@@ -61,7 +58,11 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -p1 %{forgesetupargs}
+%autosetup %{forgesetupargs} -N
+%autopatch -p1 -M99
+%if 0%{?fc40}
+%patch -P140 -p1
+%endif
 # See notes above 0001-Assume-zoneinfo-has-system-tzdata.patch.
 tomcli set pyproject.toml lists delitem --type regex --no-first \
     project.optional-dependencies.all '(tzdata|pytz)\b.*'
@@ -82,7 +83,7 @@ tomcli set pyproject.toml lists delitem --type regex --no-first \
 
 %check
 %if %{with tests}
-%pytest -Wdefault
+%pytest -Wdefault -v
 %endif
 
 
@@ -94,6 +95,9 @@ tomcli set pyproject.toml lists delitem --type regex --no-first \
 
 
 %changelog
+* Wed Oct 16 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.10.0-1
+- Update to 2.10.0 (close RHBZ#2319061)
+
 * Sun Oct 13 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.9.0-5
 - Allow python-ulid 3.0
 

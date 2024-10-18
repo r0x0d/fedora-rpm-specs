@@ -367,14 +367,30 @@ Obsoletes: sgabios-bin <= 1:0.20180715git-10.fc38
 %endif
 
 # To prevent rpmdev-bumpspec breakage
-%global baserelease 2
+%global baserelease 3
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
 Version: 9.1.0
 Release: %{baserelease}%{?rcrel}%{?dist}
 Epoch: 2
-License: Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND FSFAP AND GPL-1.0-or-later AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-2.0-or-later WITH GCC-exception-2.0 AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND MIT AND LicenseRef-Fedora-Public-Domain AND CC-BY-3.0
+License: %{shrink:
+    Apache-2.0 AND
+    BSD-2-Clause AND
+    BSD-3-Clause AND
+    FSFAP AND
+    GPL-1.0-or-later AND
+    GPL-2.0-only AND
+    GPL-2.0-or-later AND
+    GPL-2.0-or-later WITH GCC-exception-2.0 AND
+    LGPL-2.0-only AND
+    LGPL-2.0-or-later AND
+    LGPL-2.1-only AND
+    LGPL-2.1-or-later AND
+    MIT AND
+    LicenseRef-Fedora-Public-Domain AND
+    CC-BY-3.0
+}
 URL: http://www.qemu.org/
 
 %global dlurl https://download.qemu.org
@@ -404,6 +420,8 @@ Source36: README.tests
 # Skip failing test in copr
 # https://gitlab.com/qemu-project/qemu/-/issues/2541
 Patch: 0001-Disable-9p-local-tests-that-fail-on-copr-aarch64.patch
+# Fix compat with new glibc (not upstream yet)
+Patch: schedattr.patch
 
 BuildRequires: gnupg2
 BuildRequires: meson >= %{meson_version}
@@ -3150,6 +3168,10 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Wed Oct 16 2024 Daniel P. Berrangé <berrange@redhat.com> - 9.1.0-3
+- Replace BLACKLIST_RPC with QEMU_GA_ARGS in sysconfig file
+- Related rhbz #2258100
+
 * Mon Sep 16 2024 Richard W.M. Jones <rjones@redhat.com> - 2:9.1.0-2
 - Replace qemu --blacklist option with -b (related: RHBZ#2258100)
 

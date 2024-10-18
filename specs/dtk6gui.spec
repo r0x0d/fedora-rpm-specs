@@ -6,6 +6,9 @@ License:        LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dtk6gui
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
+# https://github.com/linuxdeepin/dtkgui/pull/259
+Patch0:         dtk6gui-add-qt6.8-support.patch
+
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
 BuildRequires:  ninja-build

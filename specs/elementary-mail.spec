@@ -5,7 +5,7 @@
 
 Name:           elementary-mail
 Summary:        Mail app designed for elementary
-Version:        7.2.0
+Version:        8.0.0
 Release:        %autorelease
 License:        GPL-3.0-or-later AND LGPL-3.0-or-later AND LGPL-2.1-or-later AND LGPL-2.1-only
 
@@ -60,6 +60,9 @@ Requires:       hicolor-icon-theme
 %meson_install
 
 %find_lang %{appname}
+
+# drop unused AppArmor settings
+rm -r %{buildroot}/%{_sysconfdir}/apparmor.d
 
 
 %check

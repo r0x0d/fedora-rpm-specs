@@ -1,9 +1,9 @@
 %global srcname level-zero
 %global lib_version 1.18
-%global patch_version 2
+%global patch_version 3
 
 Name:           oneapi-%{srcname}
-Version:        1.18.2
+Version:        1.18.3
 Release:        %{autorelease}
 Summary:        OneAPI Level Zero Specification Headers and Loader
 
@@ -16,8 +16,6 @@ ExclusiveArch:  x86_64
 BuildRequires:  chrpath
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
-BuildRequires:  make
-BuildRequires:  opencl-headers
 BuildRequires:  spdlog-devel
 
 # Useful for a quick oneAPI Level-Zero testing
@@ -53,7 +51,7 @@ of the oneAPI Level-Zero driver and dumping out the basic device and driver char
 %build
 # spdlog uses fmt, but since this doesn't setup linking, use it in header only mode
 export CXXFLAGS="%{build_cxxflags} -DFMT_HEADER_ONLY=1"
-%cmake -DSYSTEM_SPDLOG=ON
+%cmake -DSYSTEM_SDPLOG=ON
 %cmake_build
 
 %install

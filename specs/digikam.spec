@@ -32,6 +32,8 @@ Source0: http://download.kde.org/stable/digikam/%{version}/digiKam-%{version}.ta
 Source10: digikam-import.desktop
 
 ## upstream patches
+# Fix build against Qt 6.8
+Patch0:   digikam-use-qurl-matches-instead-equal-operator.patch
 
 ## upstreamable patches
 

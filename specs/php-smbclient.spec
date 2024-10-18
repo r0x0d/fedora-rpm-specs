@@ -10,20 +10,15 @@
 # Please, preserve the changelog entries
 #
 
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
-
 %global pecl_name  smbclient
-%global with_zts   0%{?__ztsphp:1}
 %global ini_name   40-%{pecl_name}.ini
 # Test suite requires a Samba server and configuration file
 %bcond_with        tests
 %global sources    %{pecl_name}-%{version}%{?prever}
-%global _configure ../%{sources}/configure
 
 Name:           php-smbclient
 Version:        1.1.1
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        PHP wrapper for libsmbclient
 
 License:        BSD-2-Clause
@@ -91,63 +86,43 @@ cat  << 'EOF' | tee %{ini_name}
 extension=%{pecl_name}.so
 EOF
 
-mkdir NTS
-%if %{with_zts}
-mkdir ZTS
-%endif
-
 
 %build
 cd %{sources}
 %{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-cd ../NTS
 %configure --with-php-config=%{__phpconfig}
-make %{?_smp_mflags}
 
-%if %{with_zts}
-cd ../ZTS
-%configure --with-php-config=%{__ztsphpconfig}
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-make -C NTS install INSTALL_ROOT=%{buildroot}
+cd %{sources}
 
-# install configuration
-install -Dpm 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+: Install the extension
+%make_install
 
-# Install XML package description
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+: Install configuration
+install -Dpm 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-%if %{with_zts}
-make -C ZTS install INSTALL_ROOT=%{buildroot}
-install -Dpm 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
+: Install XML package description
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-# Documentation
-for i in $(grep 'role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 %{sources}/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+: Install the Documentation
+for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
 %check
-: Minimal load test for NTS extension
+: Minimal load test for the extension
 %{__php} --no-php-ini \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --modules | grep %{pecl_name}
 
-%if %{with_zts}
-: Minimal load test for ZTS extension
-%{__ztsphp} --no-php-ini \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep %{pecl_name}
-%endif
-
 %if %{with tests}
-: Upstream test suite for NTS extension
-cd NTS
+: Upstream test suite for the extension
 cp %{SOURCE2} phpunit.xml
 
 %{__php} \
@@ -164,13 +139,11 @@ cp %{SOURCE2} phpunit.xml
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %changelog
+* Wed Oct 16 2024 Remi Collet <remi@fedoraproject.org> - 1.1.1-11
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.1.1-10
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

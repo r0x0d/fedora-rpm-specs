@@ -1,5 +1,5 @@
 Name:    dosbox-staging
-Version: 0.81.2
+Version: 0.82.0
 Release: %autorelease
 Summary: Modern continuation of DOSBox with advanced features
 URL:     https://www.dosbox-staging.org/
@@ -142,7 +142,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.xml
 %dir %{_datadir}/bash-completion/completions
 %{_datadir}/bash-completion/completions/dosbox
 %{_datadir}/%{name}
-%{_datadir}/icons/hicolor/*/apps/dosbox-staging.*
+%{_datadir}/icons/hicolor/*/apps/org.dosbox-staging.*
 %{_metainfodir}/*
 
 

@@ -3,7 +3,7 @@
 
 Name:           elementary-camera
 Summary:        Camera app designed for elementary
-Version:        6.2.2
+Version:        8.0.0
 Release:        %autorelease
 License:        GPL-3.0-or-later
 
@@ -14,18 +14,17 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  gcc
 BuildRequires:  gettext
 BuildRequires:  libappstream-glib
-BuildRequires:  meson >= 0.46
+BuildRequires:  meson >= 0.57
 BuildRequires:  vala
 
 BuildRequires:  pkgconfig(gee-0.8)
 BuildRequires:  pkgconfig(gio-2.0)
 BuildRequires:  pkgconfig(glib-2.0)
-BuildRequires:  pkgconfig(granite) >= 6.0.0
+BuildRequires:  pkgconfig(granite-7) >= 7.2.0
 BuildRequires:  pkgconfig(gstreamer-1.0)
 BuildRequires:  pkgconfig(gstreamer-pbutils-1.0)
-BuildRequires:  pkgconfig(gtk+-3.0)
+BuildRequires:  pkgconfig(gtk4)
 BuildRequires:  pkgconfig(libcanberra)
-BuildRequires:  pkgconfig(libhandy-1) >= 0.90.0
 
 Requires:       hicolor-icon-theme
 

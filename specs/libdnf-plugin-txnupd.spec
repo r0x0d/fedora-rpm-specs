@@ -4,11 +4,10 @@
 
 Name:           libdnf-plugin-txnupd
 Version:        0.1.3
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        libdnf plugin to implement transactional updates
 
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.1-or-later
 URL:            https://code.opensuse.org/microos/libdnf-plugin-txnupd
 #Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 # Use pagure.io mirror as code.opensuse.org doesn't have on-demand archives yet
@@ -65,6 +64,10 @@ echo "%{name}" > %{buildroot}%{_sysconfdir}/dnf/protected.d/txnupd.conf
 
 
 %changelog
+* Wed Oct 16 2024 Neal Gompa <ngompa@fedoraproject.org> - 0.1.3-11
+- Rebuild for transactional-update 4.8
+- Use correct SPDX identifiers
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 0.1.3-10
 - convert license to SPDX
 

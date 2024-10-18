@@ -14,11 +14,12 @@ License:        MIT
 URL:            https://crates.io/crates/ratatui
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * Update compact_str to 0.8.0
+# * port to compact_str 0.8
+# * bump termion from 3 to 4
 Patch:          ratatui-fix-metadata.diff
 # * Backport 6d210b3b6b195101e701630a916a253b6d16ad70 to 0.26.3: minor code
 #   changes for compact_str 0.8.0
-Patch10:       0001-chore-deps-update-compact_str-requirement-from-0.7.1.patch
+Patch10:        0001-chore-deps-update-compact_str-requirement-from-0.7.1.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 

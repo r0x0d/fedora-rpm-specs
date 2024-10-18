@@ -1,5 +1,5 @@
 Name:           tellico
-Version:        4.0
+Version:        4.0.1
 Release:        1%{?dist}
 Summary:        A collection manager
 
@@ -63,6 +63,7 @@ BuildRequires:  perl-Text-BibTeX
 BuildRequires:  libcdio-devel
 BuildRequires:  libcsv-devel
 BuildRequires:  libv4l-devel
+BuildRequires:  cups-devel
 
 Requires: python3
 
@@ -118,6 +119,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.te
 
 
 %changelog
+* Tue Oct 15 2024 Pavel Solovev <daron439@gmail.com> - 4.0.1-1
+- Update to 4.0.1
+
 * Wed Sep 04 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 4.0-1
 - Update to 4.0
 

@@ -1,26 +1,32 @@
 %global __provides_exclude_from ^%{_libdir}/gala/.*\\.so$
 
-%global commit      e1389404478b1d6797020791a210f2dda5bcc0e6
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global commitdate  20240416
-
 Name:           gala
-Version:        7.1.3
-Release:        %autorelease -s %{commitdate}.git%{shortcommit}
+Version:        8.0.1
+Release:        %autorelease
 Summary:        Gala window manager
 License:        GPL-3.0-or-later AND LGPL-3.0-or-later
 
 URL:            https://github.com/elementary/gala
-Source:         %{url}/archive/%{commit}/gala-%{shortcommit}.tar.gz
+Source:         %{url}/archive/%{version}/gala-%{version}.tar.gz
+
+Patch:          0001-Modify-default-settings-for-Fedora.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  gcc
 BuildRequires:  libappstream-glib
-BuildRequires:  meson
+BuildRequires:  meson >= 0.59
 BuildRequires:  systemd-rpm-macros
 BuildRequires:  vala >= 0.46
+BuildRequires:  wayland-devel
 
-%if 0%{?fedora} >= 40
+%if 0%{?fedora} >= 41
+BuildRequires:  pkgconfig(libmutter-15)
+BuildRequires:  pkgconfig(mutter-clutter-15)
+BuildRequires:  pkgconfig(mutter-cogl-15)
+BuildRequires:  pkgconfig(mutter-cogl-pango-15)
+BuildRequires:  pkgconfig(mutter-mtk-15)
+%endif
+%if 0%{?fedora} == 40
 BuildRequires:  pkgconfig(libmutter-14)
 BuildRequires:  pkgconfig(mutter-clutter-14)
 BuildRequires:  pkgconfig(mutter-cogl-14)
@@ -34,24 +40,19 @@ BuildRequires:  pkgconfig(mutter-cogl-13)
 BuildRequires:  pkgconfig(mutter-cogl-pango-13)
 BuildRequires:  pkgconfig(mutter-mtk-13)
 %endif
-%if 0%{?fedora} == 38
-BuildRequires:  pkgconfig(libmutter-12)
-BuildRequires:  pkgconfig(mutter-clutter-12)
-BuildRequires:  pkgconfig(mutter-cogl-12)
-BuildRequires:  pkgconfig(mutter-cogl-pango-12)
-%endif
 
+BuildRequires:  pkgconfig(atk-bridge-2.0)
 BuildRequires:  pkgconfig(gee-0.8)
-BuildRequires:  pkgconfig(gexiv2)
-BuildRequires:  pkgconfig(gio-2.0) >= 2.44.0
-BuildRequires:  pkgconfig(gio-unix-2.0) >= 2.44.0
-BuildRequires:  pkgconfig(glib-2.0) >= 2.44.0
+BuildRequires:  pkgconfig(gio-2.0) >= 2.74.0
+BuildRequires:  pkgconfig(gio-unix-2.0) >= 2.74.0
+BuildRequires:  pkgconfig(glib-2.0) >= 2.74.0
 BuildRequires:  pkgconfig(gmodule-2.0)
 BuildRequires:  pkgconfig(gnome-desktop-3.0)
-BuildRequires:  pkgconfig(gnome-settings-daemon) >= 3.15.2
-BuildRequires:  pkgconfig(gobject-2.0) >= 2.44.0
-BuildRequires:  pkgconfig(granite) >= 5.4.0
-BuildRequires:  pkgconfig(gtk+-3.0) >= 3.10.0
+BuildRequires:  pkgconfig(gobject-2.0) >= 2.74.0
+BuildRequires:  pkgconfig(granite)
+BuildRequires:  pkgconfig(granite-7)
+BuildRequires:  pkgconfig(gtk+-3.0)
+BuildRequires:  pkgconfig(gtk4)
 BuildRequires:  pkgconfig(libcanberra)
 BuildRequires:  pkgconfig(libhandy-1)
 BuildRequires:  pkgconfig(libsystemd)
@@ -108,7 +109,7 @@ This package contains the development headers.
 
 
 %prep
-%autosetup -n gala-%{commit} -p1
+%autosetup -n gala-%{version} -p1
 
 
 %build
@@ -123,6 +124,9 @@ This package contains the development headers.
 
 # remove the specified stock icon from appdata (invalid in libappstream-glib)
 sed -i '/icon type="stock"/d' %{buildroot}/%{_datadir}/metainfo/%{name}.metainfo.xml
+
+# drop strange file from /etc/xdg
+rm %{buildroot}/%{_sysconfdir}/xdg/io.elementary.desktop.wm.shell
 
 
 %check
@@ -160,6 +164,7 @@ appstream-util validate-relax --nonet \
 
 %{_bindir}/gala
 %{_bindir}/gala-daemon
+%{_bindir}/gala-daemon-gtk3
 
 %{_libdir}/gala/
 %{_libdir}/libgala.so.0

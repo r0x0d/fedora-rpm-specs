@@ -2,8 +2,8 @@
 %bcond x11 0
 
 Name:    kwin
-Version: 6.2.0
-Release: 3%{?dist}
+Version: 6.2.1.1
+Release: 1%{?dist}
 Summary: KDE Window manager
 
 License: BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND GPL-3.0-or-later AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only) AND MIT
@@ -14,9 +14,6 @@ URL:     https://userbase.kde.org/KWin
 Source0: http://download.kde.org/%{stable_kf6}/plasma/%{maj_ver_kf6}.%{min_ver_kf6}.%{bug_ver_kf6}/%{name}-%{version}.tar.xz
 
 ## upstream patches
-### From: https://invent.kde.org/plasma/kwin/-/commit/b3358350b67b39ecea8fd4234df4ad8c0fa99017
-### Drop with 6.2.1
-Patch: 0001-backends-drm-disable-triple-buffering-on-NVidia-by-d.patch
 ### From: https://invent.kde.org/plasma/kwin/-/commit/1830494db118d0493937a2e442c6a0a986ae3d51
 ### Drop with 6.3.0
 Patch: 0001-backends-drm-if-no-cursor-plane-is-available-fall-ba.patch
@@ -309,6 +306,15 @@ rm -v %{buildroot}%{_kf6_bindir}/kwin_x11 %{buildroot}%{_userunitdir}/plasma-kwi
 
 
 %changelog
+* Wed Oct 16 2024 Steve Cossette <farchord@gmail.com> - 6.2.1.1-1
+- 6.2.1.1
+
+* Wed Oct 16 2024 Adam Williamson <awilliam@redhat.com> - 6.2.1-2
+- Re-apply backport of MR #6409 (it was not in 6.2.0 or 6.2.1) (rhbz#2312900)
+
+* Tue Oct 15 2024 Steve Cossette <farchord@gmail.com> - 6.2.1-1
+- 6.2.1
+
 * Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 6.2.0-3
 - Rebuild (qt6)
 

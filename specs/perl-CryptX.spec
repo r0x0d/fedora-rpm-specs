@@ -4,7 +4,7 @@
 %bcond_without perl_CryptX_enables_optional_test
 
 Name:           perl-CryptX
-Version:        0.083
+Version:        0.084
 Release:        1%{?dist}
 Summary:        Cryptographic toolkit
 # src/ltc/*:    Unlicense
@@ -154,6 +154,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Wed Oct 16 2024 Xavier Bachelot <xavier@bachelot.org> - 0.084-1
+- Update to 0.084 (RHBZ#2319152)
+
 * Tue Oct 15 2024 Xavier Bachelot <xavier@bachelot.org> - 0.083-1
 - Update to 0.083 (RHBZ#2310725)
 - Drop EL7 support

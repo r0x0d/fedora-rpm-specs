@@ -33,7 +33,7 @@ Version:       0.0.99.6
 %endif
 %endif
 
-Release:       5%{?dist}
+Release:       6%{?dist}
 Summary:       Tool for interactive command line environments on Linux
 
 License:       Apache-2.0
@@ -90,6 +90,7 @@ BuildRequires: pkgconfig(fish)
 # BuildRequires: ShellCheck
 %endif
 
+Recommends:    fuse-overlayfs
 Recommends:    skopeo
 
 Requires:      containers-common
@@ -215,6 +216,9 @@ install -m0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/containers/%{name}.conf
 
 
 %changelog
+* Wed Oct 16 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.0.99.6-6
+- Recommend fuse-overlayfs because old containers created with it need it
+
 * Mon Oct 07 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.0.99.6-5
 - Don't use slirp4netns(1) in tests to work around bug in pasta(1)
 

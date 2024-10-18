@@ -16,7 +16,7 @@
 
 Name:           python-pyscf
 Version:        2.7.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Python module for quantum chemistry
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
@@ -132,6 +132,9 @@ export PYTHONPATH=$PWD
 %{python3_sitearch}/pyscf/
 
 %changelog
+* Wed Oct 16 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 2.7.0-3
+- Bump release
+
 * Sat Oct 12 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 2.7.0-2
 - Bump release to rebuild against libxc 7 in rawhide (f42).
 

@@ -5,7 +5,7 @@ Summary:    Font compiler for the X server and font server
 
 License:    MIT-open-group
 URL:        https://www.x.org
-Source0:    https://www.x.org/pub/individual/util/%{name}-%{version}.tar.xz
+Source0:    https://www.x.org/archive/individual/util/%{name}-%{version}.tar.xz
 
 BuildRequires:  gcc make libtool
 BuildRequires:  pkgconfig(x11) pkgconfig(fontsproto)

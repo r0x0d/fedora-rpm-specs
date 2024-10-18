@@ -67,12 +67,6 @@ Source1700:     hatch-test.1
 # Add pytest.mark.requires_internet to a few more tests
 # https://github.com/pypa/hatch/pull/1665
 Patch:          %{url}/pull/1665.patch
-# Fedora only: Loosen virtualenv version bound to 20.21.1
-#
-# In Fedora, we are currently unable to upgrade virtualenv at all
-# (https://bugzilla.redhat.com/show_bug.cgi?id=2188155#c6), and therefore
-# any fixes Hatch needs must instead be backported individually.
-Patch:          0001-Fedora-only-Loosen-virtualenv-version-bound-to-20.21.patch
 
 BuildArch:      noarch
 
@@ -107,18 +101,6 @@ BuildRequires:  cargo
 
 BuildRequires:  git-core
 Requires:       git-core
-
-# Since python-virtualenv currently cannot be updated in Fedora
-# (https://bugzilla.redhat.com/show_bug.cgi?id=2188155#c6), we cannot rely on a
-# minimum version, as Hatch upstream does (see
-# 0001-Fedora-only-Loosen-virtualenv-version-bound-to-20.21.patch); instead, we
-# have backported the necessary fixes for built-in interpreter discovery via
-# https://src.fedoraproject.org/rpms/python-virtualenv/pull-request/116 (which
-# contains more details and supporting links). Note that Hatch’s tests pass
-# with or without the fixes. The following is the minimum EVR to contain the
-# backported fixes.
-BuildRequires:  python3-virtualenv >= 20.21.1-22
-Requires:       python3-virtualenv >= 20.21.1-22
 
 %description
 Hatch is a modern, extensible Python project manager.

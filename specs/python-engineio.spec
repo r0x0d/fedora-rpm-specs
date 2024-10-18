@@ -1,11 +1,5 @@
-# Run eventlet integration tests?
-# python-eventlet fails to build with Python 3.13: AttributeError: module
-# 'eventlet.green.thread' has no attribute 'start_joinable_thread'
-# https://bugzilla.redhat.com/show_bug.cgi?id=2290561
-%bcond eventlet %{expr:0%{?fedora} < 41}
-
 Name:           python-engineio
-Version:        4.9.1
+Version:        4.10.1
 Release:        %autorelease
 Summary:        Python Engine.IO server and client
 
@@ -54,10 +48,6 @@ Obsoletes:      python-engineio-doc < 4.9.1-3
 # not shipped.
 find examples -type f -name 'engine.io.js' -print -delete
 
-%if %{without eventlet}
-sed -r -i 's/^([[:blank:]]+)(eventlet)\b/\1# \2/' tox.ini
-%endif
-
 
 %generate_buildrequires
 %pyproject_buildrequires -x client,asyncio_client -t
@@ -74,18 +64,14 @@ sed -r -i 's/^([[:blank:]]+)(eventlet)\b/\1# \2/' tox.ini
 
 %check
 # Since we may skip some tests, let’s do a “smoke test” for completeness. We
-# omit the async drivers for gevent and uwsgi since there are no integration
-# tests for them and they are not otherwise BuildRequires, and we don’t want to
-# add them solely for this purpose.
+# omit the async drivers for eventlet (retired in Fedora 41 and later), gevent,
+# and uwsgi, since there are no integration tests for them and they are not
+# otherwise BuildRequires, and we don’t want to add them solely for this
+# purpose.
 %{pyproject_check_import \
-    %{?!with_eventlet:-e engineio.async_drivers.eventlet} \
+    -e engineio.async_drivers.eventlet \
     -e engineio.async_drivers.gevent \
     -e engineio.async_drivers.gevent_uwsgi }
-
-%if %{without eventlet}
-ignore="${ignore-} --ignore=tests/common/test_async_eventlet.py"
-k="${k-}${k+ and }not (TestServer and test_async_mode_eventlet)"
-%endif
 
 %pytest ${ignore-} -k "${k-}"
 

@@ -7,23 +7,22 @@
 # Please, preserve the changelog entries
 #
 
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
-
-%global with_zts   0%{?__ztsphp:1}
-%global pecl_name  raphf
 # tests disabled because of circular dependency on pecl/http
 # tests requires pecl/http 2.0.0
-%global with_tests %{?_with_tests:1}%{!?_with_tests:0}
-%global ini_name  40-%{pecl_name}.ini
+%bcond_with       tests
+
+%global pecl_name  raphf
+%global ini_name   40-%{pecl_name}.ini
+%global sources    %{pecl_name}-%{version}
+%global _configure ../%{sources}/configure
 
 Summary:        Resource and persistent handles factory
 Name:           php-pecl-%{pecl_name}
 Version:        2.0.1
-Release:        18%{?dist}
+Release:        19%{?dist}
 License:        BSD-2-Clause
 URL:            http://pecl.php.net/package/%{pecl_name}
-Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
+Source0:        http://pecl.php.net/get/%{sources}.tgz
 
 Patch0:         https://patch-diff.githubusercontent.com/raw/m6w6/ext-raphf/pull/9.patch
 
@@ -31,7 +30,7 @@ ExcludeArch:    %{ix86}
 
 BuildRequires:  php-devel > 7
 BuildRequires:  php-pear
-%if %{with_tests}
+%if %{with tests}
 BuildRequires:  php-pecl-http >= 2.0.0
 %endif
 
@@ -60,9 +59,10 @@ These are the files needed to compile programs using %{name}.
 
 %prep
 %setup -q -c
-mv %{pecl_name}-%{version} NTS
 
-cd NTS
+sed -e '/LICENSE/s/role="doc"/role="src"/' -i package.xml
+
+cd %{sources}
 %patch -P0 -p1 -b .pr9
 
 # Sanity check, really often broken
@@ -72,11 +72,6 @@ if test "x${extver}" != "x%{version}%{?prever:-%{prever}}"; then
    exit 1
 fi
 cd ..
-
-%if %{with_zts}
-# Duplicate source tree for NTS / ZTS build
-cp -pr NTS ZTS
-%endif
 
 # Create configuration file
 cat << 'EOF' | tee %{ini_name}
@@ -89,55 +84,44 @@ EOF
 
 
 %build
-cd NTS
-%{_bindir}/phpize
-%configure \
-    --with-php-config=%{_bindir}/php-config
-make %{?_smp_mflags}
+cd %{sources}
+%{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-%if %{with_zts}
-cd ../ZTS
-%{_bindir}/zts-phpize
 %configure \
-    --with-php-config=%{_bindir}/zts-php-config
-make %{?_smp_mflags}
-%endif
+    --with-php-config=%{__phpconfig}
+%make_build
 
 
 %install
-make -C NTS \
-     install INSTALL_ROOT=%{buildroot}
+cd %{sources}
 
-# install config file
-install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+: Install config file
+install -D -m 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-# Install XML package description
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+: Install XML package description
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-%if %{with_zts}
-make -C ZTS \
-     install INSTALL_ROOT=%{buildroot}
+: Install the extension
+%make_install
 
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
-
-# Test & Documentation
-for i in $(grep 'role="test"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 NTS/$i %{buildroot}%{pecl_testdir}/%{pecl_name}/$i
+: Install Test and Documentation
+for i in $(grep 'role="test"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_testdir}/%{pecl_name}/$i
 done
-for i in $(grep 'role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 NTS/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
 %check
-cd NTS
+cd %{sources}
 : Minimal load test for NTS extension
 %{__php} --no-php-ini \
     --define extension=modules/%{pecl_name}.so \
     --modules | grep %{pecl_name}
 
-%if %{with_tests}
+%if %{with tests}
 for mod in json hash iconv propro; do
   if [ -f %{php_extdir}/${mod}.so ]; then
     modules="$modules -d extension=${mod}.so"
@@ -152,47 +136,25 @@ REPORT_EXIT_STATUS=1 \
 %{__php} -n run-tests.php
 %endif
 
-%if %{with_zts}
-cd ../ZTS
-: Minimal load test for ZTS extension
-%{__ztsphp} --no-php-ini \
-    --define extension=modules/%{pecl_name}.so \
-    --modules | grep %{pecl_name}
-
-%if %{with_tests}
-: Upstream test suite for ZTS extension
-TEST_PHP_EXECUTABLE=%{__ztsphp} \
-TEST_PHP_ARGS="-n $modules -d extension=$PWD/modules/%{pecl_name}.so -d extension=http.so" \
-NO_INTERACTION=1 \
-REPORT_EXIT_STATUS=1 \
-%{__ztsphp} -n run-tests.php
-%endif
-%endif
-
-
 
 
 %files
+%license %{sources}/LICENSE
 %doc %{pecl_docdir}/%{pecl_name}
 %{pecl_xmldir}/%{name}.xml
+
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
-
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
 
 %files devel
 %doc %{pecl_testdir}/%{pecl_name}
 %{php_incldir}/ext/%{pecl_name}
 
-%if %{with_zts}
-%{php_ztsincldir}/ext/%{pecl_name}
-%endif
-
 
 %changelog
+* Wed Oct 16 2024 Remi Collet <remi@fedoraproject.org> - 2.0.1-19
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 2.0.1-18
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

@@ -22,13 +22,6 @@ BuildRequires:  python3-devel
 BuildRequires:  tomcli
 BuildRequires:  cargo-rpm-macros >= 24
 
-# The Python extension module now gets a SONAME of libcramjam.so; we
-# must ensure it is not used to generate automatic Provides. See:
-#   Rust 1.81+ implicitly / automatically sets soname on cdylib targets
-#   https://bugzilla.redhat.com/show_bug.cgi?id=2314879
-# https://docs.fedoraproject.org/en-US/packaging-guidelines/AutoProvidesAndRequiresFiltering/#_filtering_provides_and_requires_after_scanning
-%global __provides_exclude ^libcramjam\\.so.*$
-
 %global common_description %{expand:
 %{summary}.}
 

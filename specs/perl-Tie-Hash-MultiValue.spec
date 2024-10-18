@@ -1,6 +1,6 @@
 Name:           perl-Tie-Hash-MultiValue
-Version:        1.06
-Release:        15%{?dist}
+Version:        1.07
+Release:        1%{?dist}
 Summary:        Store multiple values per key
 # LICENSE:      "Perl itself, GPL-2.0-or-later OR Artistic-1.0-Perl", CPAN RT#125581
 # lib/Tie/Hash/MultiValue.pm:  "same terms as Perl, see LICENSE"
@@ -12,7 +12,6 @@ BuildRequires:  coreutils
 BuildRequires:  make
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
-BuildRequires:  perl(:VERSION) >= 5.8
 BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 # Run-time:
 BuildRequires:  perl(strict)
@@ -77,6 +76,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Wed Oct 16 2024 Petr Pisar <ppisar@redhat.com> - 1.07-1
+- 1.07 bump
+
 * Thu Aug 08 2024 Petr Pisar <ppisar@redhat.com> - 1.06-15
 - Convert a license tag to SPDX
 - Package the tests

@@ -1,26 +1,22 @@
 # spec file for fastlz
 #
-# Copyright (c) 2014-2018 Remi Collet
-# License: CC-BY-SA
+# Copyright (c) 2014-2024 Remi Collet
+# License: CC-BY-SA-4.0
 # http://creativecommons.org/licenses/by-sa/3.0/
 #
 # Please, preserve the changelog entries
 #
 
-%global date   20070619
-%global svnrev 12
 %global abi    0
 
 Name:      fastlz
 Summary:   Portable real-time compression library
-Version:   0.1.0
-Release:   0.23.%{date}svnrev%{svnrev}%{?dist}
+Version:   0.5.0
+Release:   1%{?dist}
 License:   MIT
 URL:       http://fastlz.org/
 
-# svn export -r 12 http://fastlz.googlecode.com/svn/trunk/ fastlz-12
-# tar cjf fastlz-12.tar.bz2 fastlz-12
-Source0:   %{name}-%{svnrev}.tar.bz2
+Source0:   https://github.com/ariya/FastLZ/archive/refs/tags/0.5.0.tar.gz
 
 BuildRequires: gcc
 
@@ -42,7 +38,7 @@ for %{name}.
 
 
 %prep
-%setup -q -n %{name}-%{svnrev}
+%setup -q -n FastLZ-%{version}
 
 
 %build
@@ -54,8 +50,9 @@ gcc %optflags -fPIC -shared \
 ln -s lib%{name}.so.%{abi} lib%{name}.so
 
 # Build the commands for test
-gcc %optflags -fPIC 6pack.c   -L. -l%{name} -o 6pack
-gcc %optflags -fPIC 6unpack.c -L. -l%{name} -o 6unpack
+cd examples
+gcc %optflags -fPIC 6pack.c   -I.. -L.. -l%{name} -o 6pack
+gcc %optflags -fPIC 6unpack.c -I.. -L.. -l%{name} -o 6unpack
 
 
 %install
@@ -68,7 +65,9 @@ install -D -pm 0644 %{name}.h           %{buildroot}%{_includedir}/%{name}.h
 
 %check
 export LD_LIBRARY_PATH=$PWD
-cp %{name}.c tmpin
+
+cd examples
+cp ../%{name}.c tmpin
 ./6pack -v
 ./6unpack -v
 
@@ -79,25 +78,30 @@ cp %{name}.c tmpin
 : Uncompress 1
 rm tmpin
 ./6unpack tmpout1
-diff %{name}.c tmpin
+diff ../%{name}.c tmpin
 
 : Uncompress 2
 rm tmpin
 ./6unpack tmpout2
-diff %{name}.c tmpin
+diff ../%{name}.c tmpin
 
 
 
 %files
-%license LICENSE
+%license LICENSE.MIT
 %{_libdir}/lib%{name}.so.%{abi}
 
 %files devel
+%doc README.md
+%doc ChangeLog
 %{_libdir}/lib%{name}.so
 %{_includedir}/%{name}.h
 
 
 %changelog
+* Wed Oct 16 2024 Remi Collet <remi@remirepo.net> - 0.5.0-1
+- update to 0.5.0
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.1.0-0.23.20070619svnrev12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

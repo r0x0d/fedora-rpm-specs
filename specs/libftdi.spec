@@ -1,6 +1,6 @@
 Name:		libftdi
 Version:	1.5
-Release:	15%{?dist}
+Release:	16%{?dist}
 Summary:	Library to program and control the FTDI USB controller
 
 # Automatically converted from old format: LGPLv2 - review is highly recommended.
@@ -14,6 +14,8 @@ Patch0:		libftdi-1.5-fix_pkgconfig_path.patch
 Patch1:		libftdi-1.5-no-distutils.patch
 # http://developer.intra2net.com/mailarchive/html/libftdi/2023/msg00005.html
 Patch2:		libftdi-1.5-cmake-deps.patch
+# Fix for SWIG 4.3.0
+Patch3:		libftdi-1.5-swig-4.3.patch
 
 BuildRequires:	cmake
 BuildRequires:	gcc
@@ -124,6 +126,9 @@ rm -f %{buildroot}%{_datadir}/doc/libftdipp1/example.conf
 
 
 %changelog
+* Wed Oct 16 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1.5-16
+- Fix for SWIG 4.3.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.5-15
 - convert license to SPDX
 

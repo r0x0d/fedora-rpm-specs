@@ -15,18 +15,16 @@ Release:        %{baserelease}.%{pyversion}%{?dist}
 Summary:        Python %{pyversion} implementation with a Just-In-Time compiler
 
 # PyPy is MIT
-# Python standard library is Python
-# pypy/module/unicodedata is UCD
+# Python standard library is Python-2.0.1
+# pyrepl is MIT-CMU
+# pypy/module/unicodedata is Unicode-3.0
 # Bundled cffi is is MIT
-# Bundled pycparser is is BSD
-# Bundled pycparser.ply is BSD
-# Bundled bits from cryptography are ASL 2.0 or BSD
+# Bundled pycparser is is BSD-3-Clause
+# Bundled pycparser.ply is BSD-3-Clause
+# Bundled bits from cryptography are Apache-2.0 OR BSD-3-Clause
 # Bundled hpy is MIT
-# LGPL and another free license we'd need to ask spot about are present in some
-# java jars that we're not building with atm (in fact, we're deleting them
-# before building).  If we restore those we'll have to work out the new
-# licensing terms
-License:        MIT and Python and UCD and BSD and (ASL 2.0 or BSD)
+# Bundled libmpdec is BSD-2-Clause, but currently unused
+License:        MIT AND MIT-CMU AND Python-2.0.1 AND Unicode-3.0 AND BSD-3-Clause AND (Apache-2.0 OR BSD-3-Clause)
 URL:            https://www.pypy.org/
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval

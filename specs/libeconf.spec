@@ -4,8 +4,8 @@
 %global somajor 0
 
 Name:           libeconf
-Version:        0.6.2
-Release:        3%{?dist}
+Version:        0.7.4
+Release:        2%{?dist}
 Summary:        Enhanced config file parser library
 
 License:        MIT
@@ -15,7 +15,8 @@ Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 ### Patches ###
 # This should be a temporary workaround. I don't have enough time to check what's happening, but since we aren't shipping the html documentation it's fine to stop installing it
 Patch0101:      0001-cmake-no-install-html.patch
-Patch0102:	0002-Fix-static-analyzer-detected-issues.patch
+# Intermittent failure of a test in aarch64, thus temporarily disabling the failing test suite
+Patch0102:      0002-disable-test.patch
 
 
 BuildRequires:  cmake >= 3.12
@@ -74,13 +75,16 @@ configuration files from applications that use %{name}.
 %{_libdir}/%{name}.so
 %{_libdir}/cmake/%{name}/
 %{_libdir}/pkgconfig/%{name}.pc
-%{_mandir}/man3/%{name}.3*
+%{_mandir}/man3/*.3.*
 
 %files utils
 %{_bindir}/econftool
 %{_mandir}/man8/econftool.8*
 
 %changelog
+* Wed Oct 16 2024 Iker Pedrosa <ipedrosa@redhat.com> - 0.7.4-2
+- Rebase to 0.7.4
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.6.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

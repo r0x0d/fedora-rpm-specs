@@ -1,6 +1,6 @@
 Name:    oz
 Version: 0.18.1
-Release: 16%{?dist}
+Release: 17%{?dist}
 Summary: Library and utilities for automated guest OS installs
 # Automatically converted from old format: LGPLv2 - review is highly recommended.
 License: LicenseRef-Callaway-LGPLv2
@@ -11,33 +11,40 @@ ExcludeArch: %{ix86}
 
 Source0: https://github.com/clalancette/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
-
-# Upstream patch to enable the usb controller for aarch64
-Patch: 0001-Enable-USB-controller-and-keyboard-for-aarch64-for-a.patch
 # All upstream patches to current master
-Patch: 0002-Revert-Don-t-write-kickstart-so-initial-setup-won-t-.patch
-Patch: 0003-Don-t-abort-when-the-data-in-_wait_for_install_finis.patch
-Patch: 0004-Fix-for-running-on-python3-and-building-on-EL8-or-hi.patch
-Patch: 0005-Fix-RHEL-templates-to-pass-required-useuefi-paramete.patch
-Patch: 0006-Use-discard-unmap-for-images.patch
-Patch: 0007-Don-t-write-kickstart-so-initial-setup-won-t-think-r.patch
-Patch: 0008-Python-3-compat-fixes-py.test-and-ConfigParser.patch
-Patch: 0009-Unpick-unnecessary-useuefi-arg-on-the-Guest-classes.patch
-Patch: 0010-Python-compat-Callable-is-in-collections.abc-since-P.patch
-Patch: 0011-Tests-multiple-fixes-to-expected-guest-XML.patch
-Patch: 0012-Add-testing-instructions-to-README.patch
-Patch: 0013-Add-monotonic-to-requirements.patch
-Patch: 0014-Update-oz.spec.in-to-match-current-Fedora.patch
-Patch: 0015-tests-handle-libvirt_type-not-being-kvm.patch
-Patch: 0016-tests-handle-guest-image-path-being-the-system-one.patch
-Patch: 0017-Update-pylint-and-flake8-commands-in-Makefile.patch
-Patch: 0018-Add-ability-to-run-the-unit-tests-in-Fedora-and-EL7-.patch
-Patch: 0019-Add-a-Github-Action-workflow-to-run-CI-checks.patch
-Patch: 0020-CI-use-sudo-assume-docker-is-present-always-pass-lin.patch
-Patch: 0021-Allow-image-size-specification-using-any-SI-or-IEC-u.patch
+Patch: 0001-Move-oz-examples.1-to-man-page-section-5-instead.patch
+Patch: 0002-Enable-USB-controller-and-keyboard-for-aarch64-for-a.patch
+Patch: 0003-Revert-Don-t-write-kickstart-so-initial-setup-won-t-.patch
+Patch: 0004-Don-t-abort-when-the-data-in-_wait_for_install_finis.patch
+Patch: 0005-Fix-for-running-on-python3-and-building-on-EL8-or-hi.patch
+Patch: 0006-Fix-RHEL-templates-to-pass-required-useuefi-paramete.patch
+Patch: 0007-Use-discard-unmap-for-images.patch
+Patch: 0008-Don-t-write-kickstart-so-initial-setup-won-t-think-r.patch
+Patch: 0009-Wait-for-boot-even-in-case-of-missing-IP.patch
+Patch: 0010-Python-3-compat-fixes-py.test-and-ConfigParser.patch
+Patch: 0011-Unpick-unnecessary-useuefi-arg-on-the-Guest-classes.patch
+Patch: 0012-Python-compat-Callable-is-in-collections.abc-since-P.patch
+Patch: 0013-Tests-multiple-fixes-to-expected-guest-XML.patch
+Patch: 0014-Add-testing-instructions-to-README.patch
+Patch: 0015-Add-monotonic-to-requirements.patch
+Patch: 0016-Update-oz.spec.in-to-match-current-Fedora.patch
+Patch: 0017-tests-handle-libvirt_type-not-being-kvm.patch
+Patch: 0018-tests-handle-guest-image-path-being-the-system-one.patch
+Patch: 0019-Update-pylint-and-flake8-commands-in-Makefile.patch
+Patch: 0020-Add-ability-to-run-the-unit-tests-in-Fedora-and-EL7-.patch
+Patch: 0021-Add-a-Github-Action-workflow-to-run-CI-checks.patch
+Patch: 0022-Allow-image-size-specification-using-any-SI-or-IEC-u.patch
+Patch: 0023-Replace-M2Crypto-with-cryptography.patch
+Patch: 0024-CI-use-sudo-assume-docker-present-use-diff-quality-c.patch
+Patch: 0025-CI-convert-EL-7-test-to-an-EL-8-test-using-Alma.patch
 
 # https://github.com/clalancette/oz/pull/312
-Patch: 0001-tests-mock-network-functions-so-tests-work-with-no-n.patch
+# Fix tests in mock environment
+Patch: 0026-tests-mock-network-functions-so-tests-work-with-no-n.patch
+
+# https://github.com/clalancette/oz/pull/316
+# Rename a man page (missed in 0001-Move-oz-examples.1-to-man-page-section-5-instead.patch )
+Patch: 0001-Really-rename-oz-examples.1-to-oz-examples.5.patch
 
 BuildArch: noarch
 
@@ -46,10 +53,7 @@ BuildRequires: python3-devel
 BuildRequires: python3-setuptools
 # test dependencies
 BuildRequires: python3-requests
-BuildRequires: python3-m2crypto
-# currently an undeclared dependency of m2crypto in F39/Rawhide:
-# https://bugzilla.redhat.com/show_bug.cgi?id=2259967
-BuildRequires: python3-setuptools
+BuildRequires: python3-cryptography
 BuildRequires: python3-libvirt
 BuildRequires: python3-lxml
 BuildRequires: python3-libguestfs
@@ -64,7 +68,7 @@ Requires: python3
 Requires: python3-lxml
 Requires: python3-libguestfs >= 1.18
 Requires: python3-libvirt
-Requires: python3-m2crypto
+Requires: python3-cryptography
 Requires: python3-monotonic
 Requires: python3-requests
 # in theory, oz doesn't really require libvirtd to be local to operate
@@ -132,10 +136,15 @@ libvirtd -d
 %{_bindir}/oz-customize
 %{_bindir}/oz-cleanup-cache
 %{_mandir}/man1/*
+%{_mandir}/man5/*
 %{python3_sitelib}/oz
 %{python3_sitelib}/%{name}*.egg-info
 
 %changelog
+* Wed Oct 16 2024 Adam Williamson <awilliam@redhat.com> - 0.18.1-17
+- Update to latest git master, drops retired m2crypto dep (#2318309)
+- Backport PR #316 to fix build with one of the master patches
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 0.18.1-16
 - convert license to SPDX
 

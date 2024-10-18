@@ -2,8 +2,8 @@
 %bcond_with network
 
 Name:           python-%{pypi_name}
-Version:        0.22.3
-Release:        4%{?dist}
+Version:        0.23.1
+Release:        1%{?dist}
 Summary:        FTP client/server for asyncio
 
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
@@ -57,6 +57,9 @@ BuildRequires:  %{py3_dist trustme}
 %doc README.rst
 
 %changelog
+* Wed Oct 16 2024 Fabian Affolter <mail@fabian-affolter.ch> - 0.23.1-1
+- Update to latest upstream release (closes rhbz#2318613)
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0.22.3-4
 - convert license to SPDX
 

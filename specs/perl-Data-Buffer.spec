@@ -1,7 +1,7 @@
 Summary:	Read/write buffer class for perl
 Name:		perl-Data-Buffer
-Version:	0.04
-Release:	50%{?dist}
+Version:	0.06
+Release:	1%{?dist}
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:		https://metacpan.org/release/Data-Buffer
 Source0:	https://cpan.metacpan.org/modules/by-module/Data/Data-Buffer-%{version}.tar.gz
@@ -12,12 +12,13 @@ BuildRequires:	findutils
 BuildRequires:	make
 BuildRequires:	perl-generators
 BuildRequires:	perl-interpreter
-BuildRequires:	perl(ExtUtils::MakeMaker)
+BuildRequires:	perl(ExtUtils::MakeMaker) >= 6.76
+BuildRequires:	perl(warnings)
 # Module Runtime
 BuildRequires:	perl(strict)
 BuildRequires:	perl(vars)
 # Test Suite
-BuildRequires:	perl(Test)
+BuildRequires:	perl(Test2::V0)
 # Dependencies
 # (none)
 
@@ -31,23 +32,31 @@ built-in functions.
 %setup -q -n Data-Buffer-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 %{_fixperms} -c %{buildroot}
 
 %check
 make test
 
 %files
+%license LICENSE
 %doc Changes
 %{perl_vendorlib}/Data/
 %{_mandir}/man3/Data::Buffer.3*
 
 %changelog
+* Wed Oct 16 2024 Paul Howarth <paul@city-fan.org> - 0.06-1
+- Update to 0.06
+  - Move to more modern structure
+  - Use Dist::Zilla for build
+  - Move tests to Test2::v0
+- Package LICENSE file
+- Use %%{make_build} and %%{make_install}
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.04-50
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

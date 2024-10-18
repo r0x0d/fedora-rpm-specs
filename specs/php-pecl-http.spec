@@ -7,30 +7,26 @@
 # Please, preserve the changelog entries
 #
 
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
-
 # The project is pecl_http but the extension is only http
 %global proj_name pecl_http
 %global pecl_name http
-%global with_zts  0%{?__ztsphp:1}
 # after 20-iconv 40-raphf
 %global ini_name  50-%{pecl_name}.ini
+
 %ifarch %{arm} aarch64
 # Test suite disabled because of erratic results on slow ARM (timeout)
-%global with_tests 0%{?_with_tests:1}
+%bcond_with    tests
 %else
-%global with_tests 0%{!?_without_tests:1}
+%bcond_without tests
 %endif
 
 %global upstream_version 4.2.4
 #global upstream_prever  RC1
 %global sources          %{proj_name}-%{upstream_version}%{?upstream_prever}
-%global _configure       ../%{sources}/configure
 
 Name:           php-pecl-http
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Extended HTTP support
 
 License:        BSD-2-Clause
@@ -127,14 +123,12 @@ cd ..
 
 cp %{SOURCE1} %{ini_name}
 
-mkdir NTS
-%if %{with_zts}
-mkdir ZTS
-%endif
-
 
 %build
-peclconf() {
+cd %{sources}
+%{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
+
 %configure \
   --with-http \
   --with-http-zlib-dir=%{_prefix} \
@@ -147,40 +141,23 @@ peclconf() {
   --with-http-libevent-dir=%{_prefix} \
   --with-http-libbrotli-dir=%{_prefix} \
   --with-libdir=%{_lib} \
-  --with-php-config=$1
-grep IDNA config.h
-}
+  --with-php-config=%{__phpconfig}
 
-cd %{sources}
-%{__phpize}
-
-cd ../NTS
-peclconf %{__phpconfig}
-make %{?_smp_mflags}
-
-%if %{with_zts}
-cd ../ZTS
-peclconf %{__ztsphpconfig}
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-make -C NTS install INSTALL_ROOT=%{buildroot}
-
-# Install XML package description
+: Install XML package description
 install -Dpm 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-# install config file
+: Install config file
 install -Dpm644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-%if %{with_zts}
-make -C ZTS install INSTALL_ROOT=%{buildroot}
-install -Dpm644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
-
-# Test & Documentation
 cd %{sources}
+: Install the extension
+%make_install
+
+: Install Test and Documentation
 for i in $(grep 'role="test"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
 do install -Dpm 644 $i %{buildroot}%{pecl_testdir}/%{proj_name}/$i
 done
@@ -211,25 +188,17 @@ for mod in iconv raphf; do
   fi
 done
 
-: Minimal load test for NTS extension
+: Minimal load test for the extension
 %{__php} --no-php-ini \
     $modules \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --modules | grep '^%{pecl_name}$'
 
-%if %{with_tests}
-: Upstream test suite NTS extension
+%if %{with tests}
+: Upstream test suite for the extension
 TEST_PHP_EXECUTABLE=%{__php} \
-TEST_PHP_ARGS="-n $modules -d extension=$PWD/../NTS/modules/%{pecl_name}.so" \
+TEST_PHP_ARGS="-n $modules -d extension=$PWD/modules/%{pecl_name}.so" \
 %{__php} -n run-tests.php -q --show-diff
-%endif
-
-%if %{with_zts}
-: Minimal load test for ZTS extension
-%{__ztsphp} --no-php-ini \
-    $modules \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep '^%{pecl_name}$'
 %endif
 
 
@@ -240,21 +209,15 @@ TEST_PHP_ARGS="-n $modules -d extension=$PWD/../NTS/modules/%{pecl_name}.so" \
 %{php_extdir}/%{pecl_name}.so
 %{pecl_xmldir}/%{name}.xml
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 %files devel
 %doc %{pecl_testdir}/%{proj_name}
 %{php_incldir}/ext/%{pecl_name}
 
-%if %{with_zts}
-%{php_ztsincldir}/ext/%{pecl_name}
-%endif
-
 
 %changelog
+* Wed Oct 16 2024 Remi Collet <remi@fedoraproject.org> - 4.2.4-9
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 4.2.4-8
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 - add upstream patch for libcurl 8.9

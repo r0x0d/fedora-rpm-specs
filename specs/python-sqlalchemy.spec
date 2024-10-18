@@ -41,7 +41,7 @@
 %endif
 
 Name:           python-%{canonicalname}
-Version:        2.0.35
+Version:        2.0.36
 # cope with pre-release versions containing tildes
 %global srcversion %{lua: srcversion, num = rpm.expand("%{version}"):gsub("~", ""); print(srcversion);}
 Release:        %autorelease

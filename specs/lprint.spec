@@ -3,7 +3,7 @@
 
 Name: lprint
 Version: 1.3.1
-Release: 5%{?dist}
+Release: 6%{?dist}
 Summary: A Label Printer Application
 
 License: Apache-2.0
@@ -74,7 +74,7 @@ then
     if test ! -f /var/lib/lprint.state -a -f /etc/lprint.conf
     then
         # if the lprint.conf is the default one from RPM, do not move
-        grep -q "^# Default configuration" lprint.conf || mv -f /etc/lprint.conf /var/lib/lprint.state
+        grep -q "^# Default configuration" /etc/lprint.conf || mv -f /etc/lprint.conf /var/lib/lprint.state
     fi
 fi
 
@@ -112,6 +112,9 @@ fi
 
 
 %changelog
+* Wed Oct 16 2024 Zdenek Dohnal <zdohnal@redhat.com> - 1.3.1-6
+- fix the scriptlet - missing the full path
+
 * Thu Aug 08 2024 Zdenek Dohnal <zdohnal@redhat.com> - 1.3.1-5
 - rebuild with new pappl
 

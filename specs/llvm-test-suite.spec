@@ -6,7 +6,7 @@
 
 Name:		llvm-test-suite
 Version:	%{llvm_test_suite_version}%{?rc_ver:~rc%{rc_ver}}
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	C/C++ Compiler Test Suite
 
 # Automatically converted from old format: NCSA and BSD and GPLv1 and GPLv2+ and GPLv2 and MIT and Python and Public Domain and CRC32 and AML and Rdisc and ASL 2.0 and LGPLv3 - review is highly recommended.
@@ -81,6 +81,9 @@ cp -R %{_builddir}/%{test_suite_srcdir}/* %{buildroot}%{_datadir}/llvm-test-suit
 
 
 %changelog
+* Tue Oct 15 2024 Konrad Kleine <kkleine@redhat.com> - 19.1.0-3
+- Remove MultiSource/Applications/ClamAV directory because of viruses in input files
+
 * Wed Oct 09 2024 Konrad Kleine <kkleine@redhat.com> - 19.1.0-2
 - Remove broken links in source tarball
 

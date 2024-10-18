@@ -25,27 +25,16 @@ License: Python-2.0.1
 # Conditionals controlling the build
 # ==================================
 
-# Note that the bcond macros are named for the CLI option they create.
-# "%%bcond_without" means "ENABLE by default and create a --without option"
-
 # Main Python, i.e. whether this is the main Python version in the distribution
 # that owns /usr/bin/python3 and other unique paths
 # This also means the built subpackages are called python3 rather than python3X
 # By default, this is determined by the %%__default_python3_pkgversion value
-%if "%{?__default_python3_pkgversion}" == "%{pybasever}"
-%bcond_without main_python
-%else
-%bcond_with main_python
-%endif
+%bcond main_python %["%{?__default_python3_pkgversion}" == "%{pybasever}"]
 
 # If this is *not* Main Python, should it contain `Provides: python(abi) ...`?
 # In Fedora no package shall depend on an alternative Python via this tag, so we do not provide it.
 # In ELN/RHEL/CentOS we want to allow building against alternative stacks, so the Provide is enabled.
-%if 0%{?fedora}
-%bcond_with python_abi_provides_for_alt_pythons
-%else
-%bcond_without python_abi_provides_for_alt_pythons
-%endif
+%bcond python_abi_provides_for_alt_pythons %{undefined fedora}
 
 # When bootstrapping python3, we need to build python3-packaging.
 # but packaging BR python3-devel and that brings in python3-rpm-generators;
@@ -58,11 +47,11 @@ License: Python-2.0.1
 #   IMPORTANT: When bootstrapping, it's very likely python-pip-wheel is
 #   not available. Turn off the rpmwheels bcond until
 #   python-pip is built with a wheel to get around the issue.
-%bcond_with bootstrap
+%bcond bootstrap 0
 
 # Whether to use RPM build wheels from the python-{pip,setuptools,wheel}-wheel packages
 # Uses upstream bundled prebuilt wheels otherwise
-%bcond_without rpmwheels
+%bcond rpmwheels 1
 # If the rpmwheels condition is disabled, we use the bundled wheel packages
 # from Python with the versions below.
 # This needs to be manually updated when we update Python.
@@ -119,50 +108,32 @@ Provides: bundled(python3dist(packaging)) = 24
 }
 
 # Expensive optimizations (mainly, profile-guided optimizations)
-%bcond_without optimizations
+%bcond optimizations 1
 
 # Run the test suite in %%check
-%bcond_without tests
+%bcond tests 1
 
 # Extra build for debugging the interpreter or C-API extensions
 # (the -debug subpackages)
-%bcond_without debug_build
+%bcond debug_build 1
 
 # Extra build without GIL, the freethreading PEP 703 provisional way
 # (the -freethreading subpackage)
-%bcond_without freethreading_build
+%bcond freethreading_build 1
 
 # PEP 744: JIT Compilation
 # Whether to build with the experimental JIT compiler
 # We can only have this on Fedora 40+, where clang 18+ is available
 # And only on certain architectures: https://peps.python.org/pep-0744/#support
 # The freethreading build (when enabled) does not support JIT yet
-%bcond_with jit
-%ifarch x86_64 aarch64
-%if 0%{?fedora} >= 40 || 0%{?rhel} >= 10
-%bcond_without jit
-%endif
-%endif
+%bcond jit %[(0%{?fedora} >= 40 || 0%{?rhel} >= 10) && ("%{_arch}" == "x86_64" || "%{_arch}" == "aarch64")]
 %if %{with jit}
 # When built with JIT, it still needs to be enabled on runtime via PYTHON_JIT=1
 %global jit_flag --enable-experimental-jit=yes-off
 %endif
 
-# Support for the GDB debugger
-%bcond_without gdb_hooks
-
-# The dbm.gnu module (key-value database)
-%bcond_without gdbm
-
 # Main interpreter loop optimization
-%bcond_without computed_gotos
-
-# Support for the Valgrind debugger/profiler
-%ifarch %{valgrind_arches}
-%bcond_without valgrind
-%else
-%bcond_with valgrind
-%endif
+%bcond computed_gotos 1
 
 # =====================
 # General global macros
@@ -277,6 +248,7 @@ BuildRequires: bzip2-devel
 BuildRequires: expat-devel >= 2.6
 BuildRequires: findutils
 BuildRequires: gcc
+BuildRequires: gdbm-devel
 BuildRequires: git-core
 BuildRequires: glibc-devel
 BuildRequires: gnupg2
@@ -315,12 +287,8 @@ BuildRequires: clang(major) = 18
 BuildRequires: llvm(major) = 18
 %endif
 
-%if %{with valgrind}
+%ifarch %{valgrind_arches}
 BuildRequires: valgrind-devel
-%endif
-
-%if %{with gdbm}
-BuildRequires: gdbm-devel
 %endif
 
 %if %{with main_python}
@@ -901,7 +869,7 @@ BuildPython() {
 %if %{with rpmwheels}
   --with-wheel-pkg-dir=%{python_wheel_dir} \
 %endif
-%if %{with valgrind}
+%ifarch %{valgrind_arches}
   --with-valgrind \
 %endif
   $ExtraConfigArgs \
@@ -977,10 +945,8 @@ topdir=$(pwd)
 # See https://fedoraproject.org/wiki/Features/EasierPythonDebugging for more
 # information
 
-%if %{with gdb_hooks}
 DirHoldingGdbPy=%{_usr}/lib/debug/%{_libdir}
 mkdir -p %{buildroot}$DirHoldingGdbPy
-%endif # with gdb_hooks
 
 # When the actual %%{dynload_dir} exists (it does when python3.X is installed for regen-all)
 # %%{buildroot}%%{dynload_dir} is not created by make install and the extension modules are missing
@@ -1017,11 +983,9 @@ InstallPython() {
 
   popd
 
-%if %{with gdb_hooks}
   # See comment on $DirHoldingGdbPy above
   PathOfGdbPy=$DirHoldingGdbPy/$PyInstSoName-%{version}-%{release}.%{_arch}.debug-gdb.py
   cp Tools/gdb/libpython.py %{buildroot}$PathOfGdbPy
-%endif # with gdb_hooks
 
   # Rename the -devel script that differs on different arches to arch specific name
   mv %{buildroot}%{_bindir}/python${LDVersion}-{,`uname -m`-}config
@@ -1128,7 +1092,7 @@ LD_LIBRARY_PATH=./build/optimized ./build/optimized/python \
   -i "%{_bindir}/python%{pybasever}" -pn \
   %{buildroot} \
   %{buildroot}%{_bindir}/*%{pybasever}.py \
-  %{?with_gdb_hooks:%{buildroot}$DirHoldingGdbPy/*.py}
+  %{buildroot}$DirHoldingGdbPy/*.py
 
 # Remove shebang lines from .py files that aren't executable, and
 # remove executability from .py files that don't have a shebang line:
@@ -1438,9 +1402,7 @@ CheckPython freethreading
 %{1}/_curses_panel.%{2}.so\
 %{1}/_datetime.%{2}.so\
 %{1}/_dbm.%{2}.so\
-%if %{with gdbm}\
 %{1}/_gdbm.%{2}.so\
-%endif\
 %{1}/_decimal.%{2}.so\
 %{1}/_elementtree.%{2}.so\
 %{1}/_hashlib.%{2}.so\

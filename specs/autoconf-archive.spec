@@ -1,6 +1,6 @@
 Name:           autoconf-archive
-Version:        2023.02.20
-Release:        7%{?dist}
+Version:        2024.10.16
+Release:        1%{?dist}
 Summary:        The Autoconf Macro Archive
 
 # The following licenses were seen in the binary rpm.
@@ -44,6 +44,9 @@ rm -frv %{buildroot}%{_datadir}/doc/%{name}
 %{_infodir}/autoconf-archive.info*
 
 %changelog
+* Wed Oct 16 2024 David King <amigadave@amigadave.com> - 2024.10.16-1
+- Update to 2024.10.16 (#2319116)
+
 * Mon Jul 22 2024 Frédéric Bérat <fberat@redhat.com> - 2023.02.20-7
 - Update License string with the correct Exception name
 

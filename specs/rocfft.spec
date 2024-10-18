@@ -22,10 +22,10 @@
 %global build_type RelWithDebInfo
 %endif
 
-# It is necessary to use this with a local build
-# export QA_RPATHS=0xff
 %bcond_with test
 %if %{with test}
+# Disable rpatch checks for a local build
+%global __brp_check_rpaths %{nil}
 %global build_test ON
 %else
 %global build_test OFF
@@ -57,7 +57,7 @@ BuildRequires:  gtest-devel
 BuildRequires:  rocrand-devel
 BuildRequires:  fftw-devel
 BuildRequires:  boost-devel
-BuildRequires:  libomp-devel
+BuildRequires:  hipcc-libomp-devel
 BuildRequires:  hiprand-devel
 %endif
 

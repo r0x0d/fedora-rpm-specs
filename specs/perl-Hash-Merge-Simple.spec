@@ -1,6 +1,6 @@
 Name:           perl-Hash-Merge-Simple
-Version:        0.051
-Release:        29%{?dist}
+Version:        0.052
+Release:        1%{?dist}
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 Summary:        Recursively merge two or more hashes, simply
 URL:            https://metacpan.org/release/Hash-Merge-Simple
@@ -18,14 +18,16 @@ BuildRequires:  perl(warnings)
 BuildRequires:  perl(Clone)
 BuildRequires:  perl(Exporter)
 BuildRequires:  perl(Storable)
-BuildRequires:  perl(vars)
 # Tests only
-BuildRequires:  perl(Test::Deep)
-BuildRequires:  perl(Test::More)
-BuildRequires:  perl(Test::Most)
+BuildRequires:  perl(blib)
+BuildRequires:  perl(File::Spec)
+BuildRequires:  perl(IO::Handle)
+BuildRequires:  perl(IPC::Open3)
+BuildRequires:  perl(Test::More) >= 0.88
+# Optional tests
+BuildRequires:  perl(CPAN::Meta) >= 2.120900
 # Dependencies
 Requires:       perl(Clone)
-Requires:       perl(Exporter)
 
 %description
 Hash::Merge::Simple will recursively merge two or more hashes and return
@@ -52,11 +54,19 @@ perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
 make test
 
 %files
+%license LICENSE
 %doc Changes README
 %{perl_vendorlib}/Hash/
 %{_mandir}/man3/Hash::Merge::Simple.3*
 
 %changelog
+* Wed Oct 16 2024 Paul Howarth <paul@city-fan.org> - 0.052-1
+- Update to 0.052 (rhbz#2319039)
+  - Drop Test::Most prereq, just use Test::More
+  - Use "our" rather than "use vars"
+  - Revised Dist::Zilla configuration
+- Package LICENSE file
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.051-29
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

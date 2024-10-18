@@ -14,7 +14,7 @@
 
 Name: fail2ban
 Version: 1.1.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: Daemon to ban hosts that cause multiple authentication errors
 
 License: GPL-2.0-or-later
@@ -48,6 +48,8 @@ Patch1: fail2ban-nftables.patch
 Patch2: https://github.com/fail2ban/fail2ban/commit/ab9d41e5309b417a3c7a84fa8f03cf4f93831f1b.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=2315252
 Patch3: https://patch-diff.githubusercontent.com/raw/fail2ban/fail2ban/pull/3782.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=2295265
+Patch4: https://patch-diff.githubusercontent.com/raw/fail2ban/fail2ban/pull/3728.patch
 
 
 BuildArch: noarch
@@ -470,6 +472,9 @@ fi
 
 
 %changelog
+* Wed Oct 16 2024 Richard Shaw <hobbes1069@gmail.com> - 1.1.0-5
+- Add upstream patch for python distutils removal.
+
 * Sat Sep 28 2024 Richard Shaw <hobbes1069@gmail.com> - 1.1.0-4
 - Add patch to deal with changes to OpenSSL log output.
 

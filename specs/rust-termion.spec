@@ -6,7 +6,7 @@
 %global crate termion
 
 Name:           rust-termion
-Version:        3.0.0
+Version:        4.0.3
 Release:        %autorelease
 Summary:        Bindless library for manipulating terminals
 
@@ -15,12 +15,6 @@ URL:            https://crates.io/crates/termion
 Source:         %{crates_source}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          termion-fix-metadata-auto.diff
-# Manually created patch for downstream crate metadata changes
-# * bump numtoa from 0.1 to 0.2.3
-Patch:          termion-fix-metadata.diff
-# * port to numtoa 0.2:
-#   https://gitlab.redox-os.org/redox-os/termion/merge_requests/153
-Patch:          0001-Update-numtoa.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 

@@ -2,8 +2,8 @@
 %global appname io.elementary.notifications
 
 Name:           elementary-notifications
-Version:        7.0.1
-Release:        4%{?dist}
+Version:        8.0.0
+Release:        %autorelease
 Summary:        GTK Notifications Server
 License:        GPL-3.0-or-later
 
@@ -52,9 +52,6 @@ sed -i '/icon type="stock"/d' %{buildroot}/%{_datadir}/metainfo/%{appname}.metai
 
 
 %check
-desktop-file-validate \
-    %{buildroot}/%{_sysconfdir}/xdg/autostart/%{appname}.desktop
-
 appstream-util validate-relax --nonet \
     %{buildroot}/%{_datadir}/metainfo/%{appname}.metainfo.xml
 
@@ -62,8 +59,6 @@ appstream-util validate-relax --nonet \
 %files
 %license LICENSE
 %doc README.md
-
-%config(noreplace) %{_sysconfdir}/xdg/autostart/%{appname}.desktop
 
 %{_bindir}/%{appname}
 
@@ -77,15 +72,4 @@ appstream-util validate-relax --nonet \
 
 
 %changelog
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.1-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Wed Jan 24 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.1-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Fri Jan 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.1-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Sun Nov 12 2023 Fabio Valentini <decathorpe@gmail.com> - 7.0.1-1
-- Initial packaging
-
+%autochangelog

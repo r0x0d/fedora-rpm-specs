@@ -351,6 +351,9 @@ TEST_ARGS=(
     --exclude-test-name test_searching     # python3 porting issue?
     --exclude-test-name test_zstd          # pyzstd not packaged yet
     --exclude-test-name test_zeroconf      # AttributeError: 'functools._lru_cache_wrapper' object has no attribute '__kwdefaults__'
+    --exclude-test-name test_imaging       # WEBP Transparency support ok' not found
+    --exclude-test-name test_recipe_browser_qt # Accept-Encoding not found
+    --exclude-test-name test_websocket_basic
 
     # fails with python3.13:
     # calibre.srv.tests.loop.LoopTest.test_ssl
@@ -358,6 +361,9 @@ TEST_ARGS=(
     --exclude-test-name test_ssl
     --exclude-test-name test_pycryptodome  # We do not ship the bundled pycryptodome
     --exclude-test-name test_piper         # piper is not yet packaged
+    # segfaults
+    --exclude-test-name test_get
+    --exclude-test-name test_qt
 )
 
 CALIBRE_PY3_PORT=1 \

@@ -1,15 +1,18 @@
 Name: libdap
 Summary: The C++ DAP2 and DAP4 library from OPeNDAP
-Version: 3.21.0.27
-Release: 2%{?dist}
+Version: 3.21.0.120
+Release: 1%{?dist}
 
-%global libdap_tag 3.21.0-27
+%global libdap_tag 3.21.0-120
 
 License: LGPL-2.1-or-later
 URL: http://www.opendap.org/
 Source0: https://github.com/OPENDAP/libdap4/archive/%{libdap_tag}/%{name}-%{version}.tar.gz
-#Don't run HTTP tests - builders don't have network connections
+# Don't run HTTP tests - builders don't have network connections
 Patch0: libdap-offline.patch
+# Add missing includes
+# https://github.com/OPENDAP/libdap4/pull/258
+Patch1: libdap-include.patch
 
 BuildRequires: make
 BuildRequires: gcc-c++
@@ -131,6 +134,9 @@ make check || :
 
 
 %changelog
+* Tue Oct 15 2024 Orion Poplawski <orion@nwra.com> - 3.21.0.120-1
+- Update to 3.21.0-120
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.21.0.27-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

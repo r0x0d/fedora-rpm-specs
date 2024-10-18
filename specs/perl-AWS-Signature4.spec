@@ -3,7 +3,7 @@ Version:        1.02
 Release:        23%{?dist}
 Summary:        Create a version4 signature for Amazon Web Services
 
-License:        GPL+ or Artistic 2.0
+License:        GPL-1.0-or-later OR Artistic-2.0
 URL:            https://metacpan.org/release/AWS-Signature4
 Source0:        https://cpan.metacpan.org/authors/id/L/LD/LDS/AWS-Signature4-%{version}.tar.gz
 

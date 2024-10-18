@@ -132,7 +132,7 @@ This package contains the common binaries.
 %setup -q -n %{name}-%{version}
 %patch 0 -p 1 -b .libxc7
 
-%if 0%{?fedora} >= 42
+%if 0%{?fedora} >= 41
 # Libxc 7 split off the functionals into a different module
 sed -i 's|use xc_f03_lib_m|use xc_f03_lib_m\nuse xc_f03_funcs_m|g' src/libxcifc.f90
 %endif

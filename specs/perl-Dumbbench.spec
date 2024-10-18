@@ -2,8 +2,8 @@
 %bcond_with perl_Dumbbench_enables_SOOT
 
 Name:           perl-Dumbbench
-Version:        0.504
-Release:        2%{?dist}
+Version:        0.505
+Release:        1%{?dist}
 Summary:        More reliable bench-marking with the least amount of thinking
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Dumbbench
@@ -139,6 +139,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Wed Oct 16 2024 Petr Pisar <ppisar@redhat.com> - 0.505-1
+- 5.505 bump
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.504-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -9,8 +9,8 @@
 
 Summary: Printer Application Framework (PAPPL)
 Name: pappl
-Version: 1.4.6
-Release: 5%{?dist}
+Version: 1.4.7
+Release: 1%{?dist}
 License: Apache-2.0 WITH LLVM-exception
 Source: https://github.com/michaelrsweet/pappl/releases/download/v%{version}/pappl-%{version}.tar.gz
 Url: https://www.msweet.org/pappl
@@ -19,11 +19,9 @@ Url: https://www.msweet.org/pappl
 # Add listing raw sockets
 # https://github.com/michaelrsweet/pappl/pull/341
 Patch001: 0001-List-raw-sockets-during-printers-subcommand-if-avail.patch
-# https://github.com/michaelrsweet/pappl/commit/3f1c329fdd
-Patch002: 0001-Fix-port-number-user-input-when-adding-a-printer-Iss.patch
 # raise MAX_VENDOR https://sourceforge.net/p/gimp-print/mailman/gimp-print-devel/thread/e24b2385-6576-a949-a40d-3786c8067520%40gmail.com/#msg37353830
 # downstream only, Mike does not want to merge the change
-Patch003: pappl-max-vendors.patch
+Patch002: pappl-max-vendors.patch
 
 
 BuildRequires: avahi-devel
@@ -113,6 +111,9 @@ make test
 %{_mandir}/man3/pappl-system.3.gz
 
 %changelog
+* Wed Oct 16 2024 Zdenek Dohnal <zdohnal@redhat.com> - 1.4.7-1
+- 1.4.7 (fedora#2319037)
+
 * Thu Aug 08 2024 Zdenek Dohnal <zdohnal@redhat.com> - 1.4.6-5
 - have to rebuilt in side-tag to avoid crashes
 
