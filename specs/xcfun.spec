@@ -70,8 +70,9 @@ This package contains the Python bindings for XCFun.
 
 %prep
 %setup -q
-%patch 0 -p1 -b .overflow
-%patch 1 -p1 -b .32bit
+# EPEL does not support the new patch syntax
+%patch0 -p1 -b .overflow
+%patch1 -p1 -b .32bit
 
 %build
 %cmake -B %{_host} -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLIB=%{_lib} -DXCFUN_PYTHON_INTERFACE=ON -DPYMOD_INSTALL_LIBDIR=../../%{python3_sitearch}

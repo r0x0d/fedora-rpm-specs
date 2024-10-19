@@ -5,14 +5,14 @@
 Summary: Tool Command Language, pronounced tickle
 Name: tcl
 Version: %{vers}
-Release: 1%{?dist}
+Release: 2%{?dist}
 Epoch: 1
 License: TCL AND GPL-3.0-or-later WITH bison-exception-2.2 AND BSD-3-Clause
 URL: http://tcl.sourceforge.net/
 Source0: http://downloads.sourceforge.net/sourceforge/tcl/tcl-core%{version}-src.tar.gz
 BuildRequires: make
 Buildrequires: autoconf
-BuildRequires:  gcc
+BuildRequires: gcc
 BuildRequires: zlib-devel
 Provides: tcl(abi) = %{majorver}
 Obsoletes: tcl-tcldict <= %{vers}
@@ -23,6 +23,7 @@ Patch3: tcl-8.6.13-tcltests-path-fix.patch
 Patch4: tcl-8.6.13-configure-c99.patch
 
 %if %sdt
+BuildRequires: systemtap-sdt-dtrace
 BuildRequires: systemtap-sdt-devel
 %endif
 
@@ -146,6 +147,9 @@ ln -s %{_bindir}/tclsh %{_bindir}/tclsh%{majorver} %{buildroot}%{_usr}/bin/
 %{_datadir}/%{name}%{majorver}/tclAppInit.c
 
 %changelog
+* Thu Oct 17 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 1:8.6.15-2
+- Fixed systemtap probes to be built-in
+
 * Tue Oct  1 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 1:8.6.15-1
 - New version
   Resolves: rhbz#2315271

@@ -1,7 +1,8 @@
 Name:       xmag
-Version:    1.0.7
-Release:    7%{?dist}
+Version:    1.0.8
+Release:    2%{?dist}
 Summary:    Display a magnified snapshot of an X11 screen
+# COPYING:      MIT-open-group AND X11 texts
 # CutPaste.c:   MIT-open-group
 # CutPaste.h:   X11
 # man/xmag.man: MIT-open-group
@@ -13,22 +14,23 @@ Summary:    Display a magnified snapshot of an X11 screen
 # ScaleP.h:     MIT-open-group
 # xmag.c:       MIT-open-group
 ## Not in any binary package
-# aclocal.m4:   FSFULLR AND GPL-2.0-or-later WITH Autoconf-exception-2.0 AND
-#               MIT AND GPL-3.0-or-later WITH Autoconf-exception-3.0 and MIT-open-group
-# compile:      GPL-2.0-or-later WITH Autoconf-exception-2.0
-# config.guess: GPL-3.0-or-later WITH Autoconf-exception-3.0
-# config.sub:   GPL-3.0-or-later WITH Autoconf-exception-3.0
+# aclocal.m4:   FSFULLR AND FSFULLRWD AND
+#               GPL-2.0-or-later WITH Autoconf-exception-generic AND MIT AND
+#               GPL-3.0-or-later WITH Autoconf-exception-macro AND MIT-open-group
+# compile:      GPL-2.0-or-later WITH Autoconf-exception-generic
+# config.guess: GPL-3.0-or-later WITH Autoconf-exception-generic-3.0
+# config.sub:   GPL-3.0-or-later WITH Autoconf-exception-generic-3.0
 # configure:    FSFUL
 # configure.ac: MIT-CMU
-# COPYING:      MIT-open-group AND MIT
-# depcomp:      GPL-2.0-or-later WITH Autoconf-exception-2.0
+# depcomp:      GPL-2.0-or-later WITH Autoconf-exception-generic
 # INSTALL:      FSFAP
-# install-sh:   MIT
+# install-sh:   X11
 # Makefile.am:  MIT-CMU
-# Makefile.in:  FSFULLR
-# man/Makefile.in:  FSFULLR
-# missing:      GPL-2.0-or-later WITH Autoconf-exception-2.0
+# Makefile.in:  FSFULLRWD
+# man/Makefile.in:  FSFULLRWD
+# missing:      GPL-2.0-or-later WITH Autoconf-exception-generic
 License:    MIT-open-group AND X11
+SourceLicense:  FSFAP AND FSFUL AND FSFULLR AND FSFULLRWD AND GPL-2.0-or-later WITH Autoconf-exception-generic AND GPL-3.0-or-later WITH Autoconf-exception-generic-3.0 AND GPL-3.0-or-later WITH Autoconf-exception-macro AND MIT AND MIT-CMU AND MIT-open-group AND X11
 URL:        https://gitlab.freedesktop.org/xorg/app/xmag
 Source0:    https://www.x.org/pub/individual/app/%{name}-%{version}.tar.xz
 Source1:    https://www.x.org/pub/individual/app/%{name}-%{version}.tar.xz.sig
@@ -36,6 +38,7 @@ Source1:    https://www.x.org/pub/individual/app/%{name}-%{version}.tar.xz.sig
 Source2:    gpgkey-4A193C06D35E7C670FA4EF0BA2FB9E081F2D130E.gpg
 BuildRequires:  autoconf
 BuildRequires:  automake
+BuildRequires:  coreutils
 BuildRequires:  gcc
 BuildRequires:  gnupg2
 BuildRequires:  libtool
@@ -43,6 +46,7 @@ BuildRequires:  make
 BuildRequires:  pkgconfig(xaw7)
 BuildRequires:  pkgconfig(xmu)
 BuildRequires:  pkgconfig(xorg-macros) >= 1.8
+BuildRequires:  pkgconfig(xproto) >= 7.0.22
 BuildRequires:  pkgconfig(xt)
 BuildRequires:  pkgconfig(x11)
 Obsoletes:      xorg-x11-apps < 7.7-31
@@ -52,7 +56,9 @@ xmag displays a magnified snapshot of a portion of an X11 screen.
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup
+%autosetup -p1
+rm aclocal.m4 compile config.guess config.sub configure depcomp install-sh \
+    Makefile.in man/Makefile.in missing
 
 %build
 autoreconf --force --install
@@ -70,6 +76,12 @@ autoreconf --force --install
 %{_datadir}/X11/app-defaults/Xmag
 
 %changelog
+* Thu Oct 17 2024 Petr Pisar <ppisar@redhat.com> - 1.0.8-2
+- Correct a source license declaration
+
+* Thu Oct 17 2024 Petr Pisar <ppisar@redhat.com> - 1.0.8-1
+- 1.0.8 bump
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.7-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

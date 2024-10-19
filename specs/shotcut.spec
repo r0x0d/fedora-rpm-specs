@@ -4,7 +4,7 @@
 
 Name:           shotcut
 Version:        24.10.13
-Release:        2%{dist}
+Release:        3%{dist}
 Summary:        A free, open source, cross-platform video editor
 # Main code is GPLv3+
 License:        GPL-3.0-or-later AND LGPL-2.1-only AND Apache-2.0 AND MIT
@@ -127,6 +127,7 @@ Supplements:    (%{name} = %{version}-%{release} and langpacks-%{1})\
 %lang_subpkg en English
 %lang_subpkg es Spanish
 %lang_subpkg et Estonian
+%lang_subpkg eu Euskara
 %lang_subpkg fi Finnish
 %lang_subpkg fr French
 %lang_subpkg gd "(Scottish Gaelic)"
@@ -233,6 +234,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/%{org_name_sh
 %doc doc
 
 %changelog
+* Thu Oct 17 2024 Martin Gansser <martinkg@fedoraproject.org> - 24.10.13-3
+- Add Euskara language
+
 * Wed Oct 16 2024 Jan Grulich <jgrulich@redhat.com> - 24.10.13-2
 - Rebuild (qt6)
 

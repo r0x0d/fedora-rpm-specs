@@ -2,8 +2,8 @@
 %bcond_without perl_Time_Out_enables_optional_test
 
 Name:           perl-Time-Out
-Version:        0.24
-Release:        4%{?dist}
+Version:        1.0.0
+Release:        1%{?dist}
 Summary:        Easily time out long running operations
 # lib/Time/Out.pod: GPL-1.0-or-later OR Artistic-1.0-Perl
 # LICENSE:          GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -22,25 +22,29 @@ BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 BuildRequires:  perl(strict)
 BuildRequires:  perl(warnings)
 # Run-time:
-BuildRequires:  perl(Carp)
+BuildRequires:  perl(Carp) >= 1.32
 BuildRequires:  perl(Exporter)
 BuildRequires:  perl(overload)
 BuildRequires:  perl(Scalar::Util)
 BuildRequires:  perl(Try::Tiny)
+BuildRequires:  perl(version) >= 0.9915
 # Tests:
 BuildRequires:  perl(IO::Handle)
 BuildRequires:  perl(POSIX)
 BuildRequires:  perl(Test::Fatal)
-BuildRequires:  perl(Test::More)
+BuildRequires:  perl(Test::More) >= 1.001005
 %if %{with perl_Time_Out_enables_optional_test}
 # Optional tests:
-BuildRequires:  perl(Test::Needs)
 BuildRequires:  perl(Time::HiRes) >= 1.9726
 %endif
-Requires:       perl(Carp)
+Requires:       perl(Carp) >= 1.32
+Provides:       perl(Time::Out) = %{version}
+Provides:       perl(Time::Out::Exception) = %{version}
+Provides:       perl(Time::Out::ParamConstraints) = %{version}
 
 # Remove under-specified modules
-%global __requires_exclude %{?__requires_exclude:%{__requires_exclude}|}^perl\\(Time::HiRes\\)$
+%global __requires_exclude %{?__requires_exclude:%{__requires_exclude}|}^perl\\((Test::More|Time::HiRes)\\)$
+%global __provides_exclude %{?__provides_exclude:%{__provides_exclude}|}^perl\\(Time::Out(|::Exception|::ParamConstraints)\\)$
 
 %description
 The Time::Out module provides an easy interface to alarm(2) based timeouts.
@@ -51,6 +55,7 @@ Summary:        Tests for %{name}
 Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 Requires:       perl-Test-Harness
 Requires:       perl(IO::Handle)
+Requires:       perl(Test::More) >= 1.001005
 %if %{with perl_Time_Out_enables_optional_test}
 Requires:       perl(Time::HiRes) >= 1.9726
 %endif
@@ -110,6 +115,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Thu Oct 17 2024 Petr Pisar <ppisar@redhat.com> - 1.0.0-1
+- 1.0.0 bump
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.24-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

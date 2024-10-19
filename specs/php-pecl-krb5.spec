@@ -7,19 +7,14 @@
 # Please, preserve the changelog entries
 #
 
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
-
 %global pecl_name   krb5
-%global with_zts    0%{?__ztsphp:1}
 %global ini_name    40-%{pecl_name}.ini
 %global sources     %{pecl_name}-%{version}
-%global _configure  ../%{sources}/configure
 
 Summary:        Kerberos authentification extension
 Name:           php-pecl-%{pecl_name}
 Version:        1.2.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        MIT
 URL:            https://pecl.php.net/package/%{pecl_name}
 Source0:        https://pecl.php.net/get/%{sources}.tgz
@@ -74,11 +69,6 @@ if test "x${extver}" != "x%{version}"; then
 fi
 cd ..
 
-mkdir NTS
-%if %{with_zts}
-mkdir ZTS
-%endif
-
 # Create configuration file
 cat << 'EOF' | tee %{ini_name}
 ; Enable the '%{pecl_name}' extension module
@@ -89,65 +79,46 @@ EOF
 %build
 export CFLAGS="%{optflags} $(pkg-config --cflags com_err)"
 
-peclbuild() {
+cd %{sources}
+%{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
+
 %configure \
     --with-krb5 \
     --with-krb5config=%{_bindir}/krb5-config \
     --with-krb5kadm \
-    --with-php-config=$1
-make %{?_smp_mflags}
-}
+    --with-php-config=%{__phpconfig}
 
-cd %{sources}
-%{__phpize}
+%make_build
 
-cd ../NTS
-peclbuild %{__phpconfig}
-
-%if %{with_zts}
-cd ../ZTS
-peclbuild %{__ztsphpconfig}
-%endif
 
 
 %install
-make -C NTS install INSTALL_ROOT=%{buildroot}
+cd %{sources}
 
-# install config file
-install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+: Install the extension
+%make_install
 
-# Install XML package description
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+: Install config file
+install -D -m 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-%if %{with_zts}
-make -C ZTS install INSTALL_ROOT=%{buildroot}
+: Install XML package description
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
-
-# Test & Documentation
-for i in $(grep 'role="test"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 %{sources}/$i %{buildroot}%{pecl_testdir}/%{pecl_name}/$i
+: Install Test and Documentation
+for i in $(grep 'role="test"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_testdir}/%{pecl_name}/$i
 done
-for i in $(grep 'role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 %{sources}/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
 %check
-cd NTS
 : Minimal load test for NTS extension
 %{__php} --no-php-ini \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --modules | grep '^%{pecl_name}$'
-
-%if %{with_zts}
-cd ../ZTS
-: Minimal load test for ZTS extension
-%{__ztsphp} --no-php-ini \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep '^%{pecl_name}$'
-%endif
 
 
 %files
@@ -158,23 +129,17 @@ cd ../ZTS
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %files devel
 %doc %{pecl_testdir}/%{pecl_name}
 
 %{php_incldir}/ext/%{pecl_name}
 
-%if %{with_zts}
-%{php_ztsincldir}/ext/%{pecl_name}
-%endif
-
 
 %changelog
+* Thu Oct 17 2024 Remi Collet <remi@fedoraproject.org> - 1.2.2-4
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.2.2-3
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

@@ -11,7 +11,6 @@
 #
 
 %bcond_without      tests
-%global with_zts    0%{!?_without_zts:%{?__ztsphp:1}}
 %global pecl_name   var_representation
 %global ini_name    40-%{pecl_name}.ini
 
@@ -23,7 +22,7 @@
 Summary:        A compact, more readable alternative to var_export
 Name:           php-pecl-var-representation
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 License:        BSD-3-Clause
 URL:            https://pecl.php.net/package/%{pecl_name}
@@ -72,11 +71,6 @@ if test "x${extver}" != "x%{upstream_version}%{?upstream_prever}%{?gh_date:-dev}
 fi
 cd ..
 
-mkdir NTS
-%if %{with_zts}
-mkdir ZTS
-%endif
-
 # Create configuration file
 cat > %{ini_name} << 'EOF'
 ; Enable %{pecl_name} extension module
@@ -93,35 +87,27 @@ peclconf() {
 
 cd %{sources}
 %{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-cd ../NTS
 peclconf %{__phpconfig}
-make %{?_smp_mflags}
-
-%if %{with_zts}
-cd ../ZTS
-peclconf %{__ztsphpconfig}
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-# Install the NTS stuff
-make -C NTS install INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+cd %{sources}
 
-# Install XML package description
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+: Install the extension
+%make_install
 
-# Install the ZTS stuff
-%if %{with_zts}
-make -C ZTS install INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
+: Install the configuration
+install -D -m 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-# Documentation
-for i in $(grep 'role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do [ -f %{sources}/$i ] &&  install -Dpm 644 %{sources}/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+: Install XML package description
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+
+: Install Documentation
+for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
@@ -130,13 +116,6 @@ done
 %{__php} --no-php-ini \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --modules | grep '^%{pecl_name}$'
-
-%if %{with_zts}
-: Minimal load test for ZTS extension
-%{__ztsphp} --no-php-ini \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep '^%{pecl_name}$'
-%endif
 
 %if %{with tests}
 cd %{sources}
@@ -155,13 +134,11 @@ TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%{php_ztsextdir}/%{pecl_name}.so
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%endif
-
 
 %changelog
+* Thu Oct 17 2024 Remi Collet <remi@fedoraproject.org> - 0.1.5-2
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 0.1.5-1
 - update to 0.1.5
 - rebuild for https://fedoraproject.org/wiki/Changes/php84

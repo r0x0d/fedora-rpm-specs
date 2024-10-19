@@ -50,9 +50,6 @@ Requires(pre):  shadow-utils
 Requires(post): systemd
 Requires:       clevis-pin-tpm2
 
-Recommends:     pcsc-lite
-Recommends:     opensc
-
 %description
 Clevis is a framework for automated decryption. It allows you to encrypt
 data using sophisticated unlocking policies which enable decryption to
@@ -111,6 +108,17 @@ Requires:       %{name}-luks%{?_isa} = %{version}-%{release}
 Automatically unlocks LUKS block devices in desktop environments that
 use UDisks2 or storaged (like GNOME).
 
+%package pin-pkcs11
+Summary:        PKCS#11 for clevis
+Requires:       %{name}-systemd%{?_isa} = %{version}-%{release}
+Requires:       %{name}-luks%{?_isa} = %{version}-%{release}
+Requires:       %{name}-dracut%{?_isa} = %{version}-%{release}
+Requires:       pcsc-lite
+Requires:       opensc
+
+%description pin-pkcs11
+Automatically unlocks LUKS block devices through a PKCS#11 device.
+
 %prep
 %autosetup -S git
 
@@ -142,20 +150,15 @@ exit 0
 %{_bindir}/%{name}-decrypt-tpm2
 %{_bindir}/%{name}-decrypt-sss
 %{_bindir}/%{name}-decrypt-null
-%{_bindir}/%{name}-decrypt-pkcs11
 %{_bindir}/%{name}-decrypt
 %{_bindir}/%{name}-encrypt-tang
 %{_bindir}/%{name}-encrypt-tpm2
 %{_bindir}/%{name}-encrypt-sss
 %{_bindir}/%{name}-encrypt-null
-%{_bindir}/%{name}-encrypt-pkcs11
-%{_bindir}/%{name}-pkcs11-afunix-socket-unlock
-%{_bindir}/%{name}-pkcs11-common
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}-encrypt-tang.1*
 %{_mandir}/man1/%{name}-encrypt-tpm2.1*
 %{_mandir}/man1/%{name}-encrypt-sss.1*
-%{_mandir}/man1/%{name}-encrypt-pkcs11.1*
 %{_mandir}/man1/%{name}-decrypt.1*
 %{_mandir}/man1/%{name}.1*
 %{_sysusersdir}/clevis.conf
@@ -183,26 +186,40 @@ exit 0
 %files systemd
 %{_libexecdir}/%{name}-luks-askpass
 %{_libexecdir}/%{name}-luks-unlocker
-%{_libexecdir}/%{name}-luks-pkcs11-askpass
-%{_libexecdir}/%{name}-luks-pkcs11-askpin
 %{_unitdir}/%{name}-luks-askpass.path
 %{_unitdir}/%{name}-luks-askpass.service
-%{_unitdir}/%{name}-luks-pkcs11-askpass.service
-%{_unitdir}/%{name}-luks-pkcs11-askpass.socket
 
 %files dracut
-%{_prefix}/lib/dracut/modules.d/60%{name}
+%dir %{_prefix}/lib/dracut/modules.d/60%{name}
+%{_prefix}/lib/dracut/modules.d/60%{name}/clevis-hook.sh
+%{_prefix}/lib/dracut/modules.d/60%{name}/module-setup.sh
+%dir %{_prefix}/lib/dracut/modules.d/60%{name}-pin-null
 %{_prefix}/lib/dracut/modules.d/60%{name}-pin-null/module-setup.sh
+%dir %{_prefix}/lib/dracut/modules.d/60%{name}-pin-sss
 %{_prefix}/lib/dracut/modules.d/60%{name}-pin-sss/module-setup.sh
+%dir %{_prefix}/lib/dracut/modules.d/60%{name}-pin-tang
 %{_prefix}/lib/dracut/modules.d/60%{name}-pin-tang/module-setup.sh
+%dir %{_prefix}/lib/dracut/modules.d/60%{name}-pin-tpm2
 %{_prefix}/lib/dracut/modules.d/60%{name}-pin-tpm2/module-setup.sh
-%{_prefix}/lib/dracut/modules.d/60%{name}-pin-pkcs11/module-setup.sh
-%{_prefix}/lib/dracut/modules.d/60%{name}-pin-pkcs11/%{name}-pkcs11-hook.sh
-%{_prefix}/lib/dracut/modules.d/60%{name}-pin-pkcs11/%{name}-pkcs11-prehook.sh
 
 %files udisks2
 %{_sysconfdir}/xdg/autostart/%{name}-luks-udisks2.desktop
 %attr(4755, root, root) %{_libexecdir}/%{name}-luks-udisks2
+
+%files pin-pkcs11
+%{_libexecdir}/%{name}-luks-pkcs11-askpass
+%{_libexecdir}/%{name}-luks-pkcs11-askpin
+%{_bindir}/%{name}-decrypt-pkcs11
+%{_bindir}/%{name}-encrypt-pkcs11
+%{_bindir}/%{name}-pkcs11-afunix-socket-unlock
+%{_bindir}/%{name}-pkcs11-common
+%{_unitdir}/%{name}-luks-pkcs11-askpass.service
+%{_unitdir}/%{name}-luks-pkcs11-askpass.socket
+%{_mandir}/man1/%{name}-encrypt-pkcs11.1*
+%dir %{_prefix}/lib/dracut/modules.d/60%{name}-pin-pkcs11
+%{_prefix}/lib/dracut/modules.d/60%{name}-pin-pkcs11/module-setup.sh
+%{_prefix}/lib/dracut/modules.d/60%{name}-pin-pkcs11/%{name}-pkcs11-hook.sh
+%{_prefix}/lib/dracut/modules.d/60%{name}-pin-pkcs11/%{name}-pkcs11-prehook.sh
 
 %post systemd
 systemctl preset %{name}-luks-askpass.path >/dev/null 2>&1 || :

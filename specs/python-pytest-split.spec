@@ -4,17 +4,13 @@
 
 Name:           python-%{srcname}
 Summary:        Pytest plugin to split the test suite into sub-suites
-Version:        0.8.2
+Version:        0.10.0
 Release:        %autorelease
 
 License:         MIT
 URL:             https://github.com/jerry-git/pytest-split
-Source:          %{url}/archive/refs/tags/%{version}.tar.gz
+Source:          %{url}/archive/refs/tags/%{version}/%{srcname}-%{version}.tar.gz
 BuildArch:       noarch
-
-# The patched issue is reported to the upstream
-# https://github.com/jerry-git/pytest-split/issues/96
-Patch0:          01-fix-license-file-name.patch
 
 BuildRequires:   python3-devel
 BuildRequires:   help2man

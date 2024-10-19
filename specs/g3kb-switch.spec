@@ -10,6 +10,7 @@ Summary:        CLI keyboard layout switcher for GNOME Shell
 License:        BSD-2-Clause AND GPL-2.0-only
 URL:            https://github.com/lyokha/g3kb-switch
 Source:         %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+Patch:          gnome-47.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc

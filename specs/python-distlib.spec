@@ -2,17 +2,14 @@
 %bcond_without check
 
 Name:       python-distlib
-Version:    0.3.8
-Release:    4%{?dist}
+Version:    0.3.9
+Release:    1%{?dist}
 Summary:    Low-level components of distutils2/packaging, augmented with higher-level APIs
 
 # Automatically converted from old format: Python - review is highly recommended.
 License:    LicenseRef-Callaway-Python
 URL:        https://readthedocs.org/projects/distlib/
 Source0:    %pypi_source %{srcname} %{version}
-
-# Update representation of interpreter in test for Python 3.13.0
-Patch:      https://github.com/pypa/distlib/commit/1c08845b05.patch
 
 BuildArch:  noarch
 
@@ -72,6 +69,10 @@ export SKIP_ONLINE=1
 %doc README.rst
 
 %changelog
+* Tue Oct 15 2024 Charalampos Stratakis <cstratak@redhat.com> - 0.3.9-1
+- Update to 0.3.9
+Resolves: rhbz#2317657
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.3.8-4
 - convert license to SPDX
 

@@ -1,6 +1,6 @@
 Name:           opensc
 Version:        0.25.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Smart card library and applications
 
 License:        LGPL-2.1-or-later AND BSD-3-Clause
@@ -12,6 +12,8 @@ Patch1:         opensc-0.19.0-pinpad.patch
 Patch8:         %{name}-0.22.0-file-cache.patch
 # https://github.com/OpenSC/OpenSC/pull/3194
 Patch9:         %{name}-0.25.1-no-engine.patch
+# https://github.com/OpenSC/OpenSC/pull/3150
+Patch10:        %{name}-0.25.1-pcsc-reconnect.patch
 
 BuildRequires:  make
 BuildRequires:  pcsc-lite-devel
@@ -57,6 +59,7 @@ every software/card that does so, too.
 %patch 1 -p1 -b .pinpad
 %patch 8 -p1 -b .file-cache
 %patch 9 -p1 -b .no-engine
+%patch 10 -p1 -b .pcsc-reconnect
 
 # The test-pkcs11-tool-allowed-mechanisms already works in Fedora
 sed -i -e '/XFAIL_TESTS/,$ {
@@ -211,6 +214,9 @@ rm %{buildroot}%{_mandir}/man1/opensc-notify.1*
 
 
 %changelog
+* Wed Oct 16 2024 Veronika Hanulikova <vhanulik@redhat.com> - 0.25.1-5
+- Fix unhandled error on reconnection in PCSC driver (#2316432)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.25.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

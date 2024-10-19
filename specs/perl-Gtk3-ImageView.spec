@@ -1,5 +1,5 @@
 Name:           perl-Gtk3-ImageView
-Version:        11
+Version:        12
 Release:        1%{?dist}
 Summary:        Image viewer widget for GTK 3
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -18,7 +18,6 @@ BuildRequires:  perl(warnings)
 BuildRequires:  perl(base)
 BuildRequires:  perl(Cairo)
 BuildRequires:  perl(Carp)
-BuildRequires:  perl(feature)
 BuildRequires:  perl(Glib) >= 1.2100
 BuildRequires:  perl(Glib::Object::Subclass)
 BuildRequires:  perl(Gtk3)
@@ -64,9 +63,6 @@ with "%{_libexecdir}/%{name}/test".
 
 %prep
 %autosetup -p1 -n Gtk3-ImageView-%{version}
-# Remove author tests
-rm t/91_critic.t
-perl -i -ne 'print $_ unless m{\A\Qt/91_critic.t\E\b}' MANIFEST
 # Help generators to recognize Perl scripts
 for F in t/*.t; do
     perl -i -MConfig -ple 'print $Config{startperl} if $. == 1 && !s{\A#!\s*perl}{$Config{startperl}}' "$F"
@@ -105,8 +101,11 @@ xvfb-run -d make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Thu Oct 17 2024 Petr Pisar <ppisar@redhat.com> - 12-1
+- 12 version bump
+
 * Wed Oct 02 2024 Petr Pisar <ppisar@redhat.com> - 11-1
-- 0.11 bump
+- 11 version bump
 
 * Thu Aug 01 2024 Petr Pisar <ppisar@redhat.com> - 10-11
 - Adapt to changes in Perl 5.38 (upstream GH#30)

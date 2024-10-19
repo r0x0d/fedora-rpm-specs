@@ -1,6 +1,6 @@
 Name:           libmamba
-Version:        1.5.8
-Release:        2%{?dist}
+Version:        1.5.10
+Release:        1%{?dist}
 Summary:        C++ API for mamba depsolving library
 
 License:        BSD-3-Clause
@@ -14,8 +14,6 @@ Patch0:         libmamba-csh.patch
 Patch1:         libmamba-deps.patch
 # Use Fedora versions of yaml-cpp and zstd
 Patch2:         libmamba-fedora.patch
-# fmt 11 support - https://github.com/mamba-org/mamba/pull/3386
-Patch3:         libmamba-fmt11.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -167,6 +165,9 @@ cp -p %{_vpath_builddir}/micromamba/micromamba.1 %{buildroot}%{_mandir}/man1/
 
 
 %changelog
+* Fri Oct 18 2024 Orion Poplawski <orion@nwra.com> - 1.5.10-1
+- Update to 1.5.10
+
 * Fri Aug 02 2024 Orion Poplawski <orion@nwra.com> - 1.5.8-2
 - Add patch for fmt 11 support (FTBFS bz#2300904)
 

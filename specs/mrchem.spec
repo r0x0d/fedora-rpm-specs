@@ -17,6 +17,10 @@ Patch3:         mrchem-1.1.2-object.patch
 
 # mrcpp doesn't build on s390x which is not supported by upstream (BZ#2035671)
 ExcludeArch:    s390x
+%if 0%{?rhel} == 9
+# mrcpp compile fails on ppc64le
+ExcludeArch:    ppc64le
+%endif
 
 # We need the data files
 Requires:       %{name}-data = %{version}-%{release}
@@ -71,10 +75,11 @@ This package contains the data files for MRChem.
 
 %prep
 %setup -q
-%patch 0 -p1 -b .eigen3
-%patch 1 -p1 -b .pythonpath
-%patch 2 -p1 -b .rpath
-%patch 3 -p1 -b .object
+# EPEL9 doesn't support the new patch syntax
+%patch0 -p1 -b .eigen3
+%patch1 -p1 -b .pythonpath
+%patch2 -p1 -b .rpath
+%patch3 -p1 -b .object
 # Remove bundled catch
 rm -rf external/catch/
 

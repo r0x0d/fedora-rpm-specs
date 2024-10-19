@@ -1,4 +1,4 @@
-%{!?octave_api:%global octave_api %(octave-config -p API_VERSION || echo 0)}
+%{!?octave_api:%global octave_api %(octave-c onfig -p API_VERSION || echo 0)}
 # Set to bcond_with or use --without doc to disable doc build
 %bcond_without doc
 # Set to bcond_with or use --without octave to disable octave support
@@ -64,7 +64,7 @@
 
 Name:           plplot
 Version:        5.15.0
-Release:        71%{?dist}
+Release:        72%{?dist}
 Summary:        Library of functions for making scientific plots
 
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
@@ -92,6 +92,8 @@ Patch11:        plplot-sip-build-support.patch
 Patch12:        plplot-cmake-c99.patch
 # Update OCaml link invocations for OCaml 5.0.0
 Patch13:        plplot-ocaml-link.patch
+# Fix for SWIG 4.3.0
+Patch14:        plplot-5.15.0-swig-4.3.patch
 
 
 BuildRequires:  cmake >= 3.13.2
@@ -417,6 +419,7 @@ Requires:       wxGTK-devel%{?_isa}
 %patch -P11 -p1 -b .sip-build
 %patch -P12 -p1
 %patch -P13 -p1 -b .ocamlmklib
+%patch -P14 -p1
 # Use cmake FindLua
 rm cmake/modules/FindLua.cmake
 
@@ -774,6 +777,9 @@ export LD_LIBRARY_PATH=$PWD/%{_vpath_builddir}/bindings/ocaml:$RPM_BUILD_ROOT%{_
 
 
 %changelog
+* Wed Oct 16 2024 Jitka Plesnikova <jplesnik@redhat.com> - 5.15.0-72
+- Fix for SWIG 4.3.0
+
 * Thu Sep 19 2024 Orion Poplawski <orion@nwra.com> - 5.15.0-71
 - Add patch to support Python 3.13 (rhbz#2272975)
 

@@ -1,6 +1,6 @@
 # spec file for ssdeep
 #
-# Copyright (c) 2014-2019 Remi Collet
+# Copyright (c) 2014-2024 Remi Collet
 # License: CC-BY-SA
 # http://creativecommons.org/licenses/by-sa/4.0/
 #
@@ -9,10 +9,9 @@
 
 Name:      ssdeep
 Version:   2.14.1
-Release:   18%{?dist}
+Release:   19%{?dist}
 Summary:   Compute context triggered piecewise hashes
 
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:   GPL-2.0-or-later
 URL:       https://ssdeep-project.github.io/ssdeep/
 Source0:   https://github.com/ssdeep-project/ssdeep/releases/download/release-%{version}/ssdeep-%{version}.tar.gz
@@ -64,11 +63,11 @@ touch -r aclocal.m4 configure configure.ac
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-make %{?_smp_mflags}
+%make_build
 
 
 %install
-make install DESTDIR=%{buildroot}
+%make_install
 
 rm %{buildroot}%{_libdir}/libfuzzy.la
 
@@ -90,6 +89,9 @@ rm %{buildroot}%{_libdir}/libfuzzy.la
 
 
 %changelog
+* Thu Oct 17 2024 Remi Collet <remi@fedoraproject.org> - 2.14.1-19
+- modernize the spec file
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 2.14.1-18
 - convert license to SPDX
 

@@ -1,19 +1,21 @@
 Name:           perl-Boost-Geometry-Utils
 Version:        0.15
-Release:        41%{?dist}
+Release:        42%{?dist}
 Summary:        Bindings for the Boost Geometry library
 # README:               GPL+ or Artistic
 # src/medial_axis.hpp:  Boost
 # src/ppport.h:         GPL+ or Artistic
 ## Unbundled
 # src/boost/type.hpp:   Boost
-License:        (GPL+ or Artistic) and Boost
+License:        (GPL-1.0-or-later OR Artistic-1.0-Perl) AND BSL-1.0
 URL:            https://metacpan.org/release/Boost-Geometry-Utils
 Source0:        https://cpan.metacpan.org/authors/id/A/AA/AAR/Boost-Geometry-Utils-%{version}.tar.gz
 # Fix for RT#96145
 Patch0:         Boost-Geometry-Utils-0.15-multi_linestring2perl-only-extend-the-array-if-needed.patch
 # Fix building with Boost 1.73.0, CPAN RT#133057
 Patch1:         Boost-Geometry-Utils-0.15-Port-Boost-1.73.0.patch
+# Correct shellbangs in the tests, CPAN RT#156188
+Patch2:         Boost-Geometry-Utils-0.15-Normalize-shellbangs.patch
 BuildRequires:  boost-devel
 BuildRequires:  coreutils
 BuildRequires:  findutils
@@ -33,25 +35,35 @@ BuildRequires:  perl(XSLoader)
 BuildRequires:  perl(constant)
 BuildRequires:  perl(File::Find)
 BuildRequires:  perl(File::Temp)
-# List::Util not used
 BuildRequires:  perl(Test::More)
-# Optional tests:
-# Pod::Coverage::TrustPod not used
-# Test::Pod not used
-# Test::Pod::Coverage not used
-# Test::Script not helpful because of no script files
 
 %description
 This Perl module provides bindings to perform some geometric operations using
 the Boost Geometry library. It does not aim at providing full bindings.
 
+%package tests
+Summary:        Tests for %{name}
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
+BuildArch:      noarch
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       perl-Test-Harness
+
+%description tests
+Tests from %{name}. Execute them
+with "%{_libexecdir}/%{name}/test".
+
 %prep
-%setup -q -n Boost-Geometry-Utils-%{version}
-%patch -P0 -p1
-%patch -P1 -p1
+%autosetup -p1 -n Boost-Geometry-Utils-%{version}
 # Unbundle Boost
 rm -r src/boost
 perl -i -ne 'print $_ unless m{^src/boost/}' MANIFEST
+# Remove always skipped tests
+for T in t/release-pod-* t/05_medial_axis_visual.t; do
+    rm -- "$T"
+    perl -i -ne 'print $_ unless m{^\Q'"$T"'\E}' MANIFEST
+done
+# Correct permissions
+chmod a+x t/*.t
 
 %build
 perl Build.PL installdirs=vendor optimize="$RPM_OPT_FLAGS"
@@ -61,19 +73,40 @@ perl Build.PL installdirs=vendor optimize="$RPM_OPT_FLAGS"
 ./Build install destdir=%{buildroot} create_packlist=0
 find %{buildroot} -type f -name '*.bs' -size 0 -delete
 %{_fixperms} %{buildroot}/*
+# Install tests
+mkdir -p %{buildroot}%{_libexecdir}/%{name}
+cp -a t %{buildroot}%{_libexecdir}/%{name}
+# Remove tests which search modules in CWD
+rm %{buildroot}%{_libexecdir}/%{name}/t/00-compile.t
+cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
+#!/bin/sh
+cd %{_libexecdir}/%{name} && exec prove -I . -j "$(getconf _NPROCESSORS_ONLN)"
+EOF
+chmod +x %{buildroot}%{_libexecdir}/%{name}/test
 
 %check
-unset RELEASE_TESTING
+export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print $1} else {print 1}' -- '%{?_smp_mflags}')
 ./Build test
 
 %files
 %license LICENSE
 %doc CHANGES README
-%{perl_vendorarch}/auto/*
-%{perl_vendorarch}/Boost*
-%{_mandir}/man3/*
+%dir %{perl_vendorarch}/auto/Boost
+%dir %{perl_vendorarch}/auto/Boost/Geometry
+%{perl_vendorarch}/auto/Boost/Geometry/Utils
+%dir %{perl_vendorarch}/Boost
+%dir %{perl_vendorarch}/Boost/Geometry
+%{perl_vendorarch}/Boost/Geometry/Utils.pm
+%{_mandir}/man3/Boost::Geometry::Utils.*
+
+%files tests
+%{_libexecdir}/%{name}
 
 %changelog
+* Thu Oct 17 2024 Petr Pisar <ppisar@redhat.com> - 0.15-42
+- Remove always skipped tests
+- Package the tests
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.15-41
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

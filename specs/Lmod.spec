@@ -3,7 +3,7 @@
 %global debug_package %{nil}
 
 Name:           Lmod
-Version:        8.7.51
+Version:        8.7.53
 Release:        1%{?dist}
 Summary:        Environmental Modules System in Lua
 
@@ -149,6 +149,9 @@ fi
 
 
 %changelog
+* Thu Oct 17 2024 Orion Poplawski <orion@nwra.com> - 8.7.53-1
+- Update to 8.7.53
+
 * Thu Oct 10 2024 Orion Poplawski <orion@nwra.com> - 8.7.51-1
 - Update to 8.7.51
 

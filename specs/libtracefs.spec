@@ -1,6 +1,6 @@
 Name: libtracefs
-Version: 1.8.0
-Release: 5%{?dist}
+Version: 1.8.1
+Release: 1%{?dist}
 License: LGPL-2.1-or-later AND GPL-2.0-or-later AND GPL-2.0-only
 Summary: Library for access kernel tracefs
 
@@ -40,7 +40,7 @@ rm -rf %{buildroot}/%{_libdir}/libtracefs.a
 %license LICENSES/LGPL-2.1
 %license LICENSES/GPL-2.0
 %{_libdir}/%{name}.so.1
-%{_libdir}/%{name}.so.1.8.0
+%{_libdir}/%{name}.so.1.8.1
 %{_docdir}/libtracefs-doc
 %{_mandir}/man1/sqlhist.1.gz
 %{_mandir}/man3/libtracefs.3.gz
@@ -51,6 +51,9 @@ rm -rf %{buildroot}/%{_libdir}/libtracefs.a
 %{_libdir}/%{name}.so
 
 %changelog
+* Thu Oct 17 2024 Zamir SUN <sztsian@gmail.com> - 1.8.1-1
+- Update to 1.8.1
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.8.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,7 +1,7 @@
 Summary: The GNU disk partition manipulation program
 Name:    parted
 Version: 3.6
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: GPL-3.0-or-later
 URL:     http://www.gnu.org/software/parted
 
@@ -12,6 +12,7 @@ Source3: pubkey.brian.lane
 
 Patch0001: 0001-parted-Print-the-Fixing.-message-to-stderr.patch
 Patch0002: 0002-doc-Document-IEC-unit-behavior-in-the-manpage.patch
+Patch0003: 0003-libparted-Fail-early-when-detecting-nilfs2.patch
 
 BuildRequires: gcc
 BuildRequires: e2fsprogs-devel
@@ -116,6 +117,9 @@ make check
 
 
 %changelog
+* Thu Oct 17 2024 Brian C. Lane <bcl@redhat.com> - 3.6-8
+- libparted: Fail early when detecting nilfs2 (oldium.pro)
+
 * Fri Aug 23 2024 Brian C. Lane <bcl@redhat.com> - 3.6-7
 - tests: Move to tmt tests and switch to a functional test (bcl)
 

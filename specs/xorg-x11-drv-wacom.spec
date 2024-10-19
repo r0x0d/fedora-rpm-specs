@@ -9,7 +9,7 @@
 Summary:    Xorg X11 wacom input driver
 Name:       xorg-x11-drv-wacom
 Version:    1.2.2
-Release:    2%{?gitdate:.%{gitdate}git%{gitversion}}%{?dist}
+Release:    3%{?gitdate:.%{gitdate}git%{gitversion}}%{?dist}
 URL:        http://www.x.org
 License:    GPL-2.0-or-later
 
@@ -20,6 +20,11 @@ Source2: commitid
 %else
 Source0: https://github.com/linuxwacom/xf86-input-wacom/releases/download/xf86-input-wacom-%{version}/xf86-input-wacom-%{version}.tar.bz2
 %endif
+
+# first two are just to apply the third one easily
+Patch01: 0001-conf-add-huion-and-xp-pen-to-our-default-snippet.patch
+Patch02: 0001-conf-add-support-for-Surface-IPTS-device.patch
+Patch03: 0001-conf-bind-this-driver-to-all-tablets-by-default.patch
 
 BuildRequires: make
 BuildRequires: xorg-x11-server-devel >= 1.10.99.902
@@ -39,7 +44,7 @@ Obsoletes: linuxwacom <= 0.8.4.3
 X.Org X11 wacom input driver for Wacom tablets.
 
 %prep
-%setup -q -n %{tarball}-%{?gitdate:%{gitdate}}%{!?gitdate:%{version}}
+%autosetup -p 1 -n %{tarball}-%{?gitdate:%{gitdate}}%{!?gitdate:%{version}}
 
 %build
 autoreconf --force -v --install || exit 1
@@ -102,6 +107,9 @@ will be available as normal evdev node.
 %{_unitdir}/wacom-inputattach@.service
 
 %changelog
+* Thu Oct 17 2024 Peter Hutterer <peter.hutterer@redhat.com> - 1.2.2-3
+- Bind to all tablets if this driver is installed 
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

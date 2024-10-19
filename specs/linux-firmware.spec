@@ -4,7 +4,7 @@
 %define _binaries_in_noarch_packages_terminate_build 0
 
 Name:		linux-firmware
-Version:	20240909
+Version:	20241017
 Release:	1%{?dist}
 Summary:	Firmware files used by the Linux kernel
 # Automatically converted from old format: GPL+ and GPLv2+ and MIT and Redistributable, no modification permitted - review is highly recommended.
@@ -16,6 +16,7 @@ Source0:	https://www.kernel.org/pub/linux/kernel/firmware/%{name}-%{version}.tar
 
 BuildRequires:	make
 BuildRequires:	git-core
+BuildRequires:	python3
 %if %{undefined rhel}
 # Not required but de-dupes FW so reduces size
 BuildRequires:	rdfind
@@ -630,6 +631,41 @@ sed -e 's/^/%%dir /' linux-firmware.dirs >> linux-firmware.files
 %{_firmwarepath}/v4l-cx2*
 
 %changelog
+* Thu Oct 17 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 20241017-1
+- Update to upstream 20241017
+- rtlwifi: Update firmware for RTL8192FU to v7.3
+- Remove execute bit from firmware files
+- rtl_nic: add firmware rtl8125d-1
+- iwlwifi: add gl/Bz FW for core91-69 release
+- iwlwifi: update ty/So/Ma firmwares for core91-69 release
+- iwlwifi: update cc/Qu/QuZ firmwares for core91-69 release
+- cirrus: cs35l56: Add firmware for Cirrus CS35L56 for somt7996me ASUS/HP/Lenovo Laptops
+- update firmware for en8811h 2.5G ethernet phy
+- mtk_wed: add firmware for mt7988 Wireless Ethernet Dispatcher
+- ath12k: WCN7850 hw2.0: update board-2.bin
+- ath12k: QCN9274 hw2.0: add to WLAN.WBE.1.3.1-00162-QCAHKSWPL_SILICONZ-1
+- ath12k: QCN9274 hw2.0: add board-2.bin
+- Add a link from TAS2XXX1EB3.bin -> ti/tas2781/TAS2XXX1EB30.bin
+- tas2781: Upload dsp firmware for ASUS laptop 1EB30 & 1EB31
+- rtlwifi: Add firmware v39.0 for RTL8192DU
+- Revert "ath12k: WCN7850 hw2.0: update board-2.bin"
+- QCA: Add Bluetooth firmwares for WCN785x with UART transport
+- amdgpu: DMCUB DCN35 update
+- brcm: Add BCM4354 NVRAM for Jetson TX1
+- brcm: Link FriendlyElec NanoPi M4 to AP6356S nvram
+- add firmware for MediaTek Bluetooth chip (MT7920)
+- add firmware for MT7920
+- amdgpu: update numerous firmware
+- qcom: update gpu firmwares for qcm6490 chipset
+- mt76: mt7996: add firmware files for mt7992/mt7996 chipset variants
+- qcom: add gpu firmwares for sa8775p chipset
+- rtw89: 8922a: add fw format-2 v0.35.42.1
+- WHENCE: Fix battmgr.jsn entry type
+- qcom: qcm6490: add ADSP and CDSP firmware
+- Update firmware file for various Intel Bluetooth
+- rtl_bt: Update RTL8852B BT USB FW to 0x0447_9301
+- realtek: rt1320: Add patch firmware of MCU
+
 * Mon Sep  9 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 20240909-1
 - Update to upstream 20240909
 - i915: Update MTL DMC v2.23

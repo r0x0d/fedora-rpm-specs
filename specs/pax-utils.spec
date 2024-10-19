@@ -2,15 +2,17 @@
 
 Summary: ELF utils that can check files for security relevant properties
 Name: pax-utils
-Version: 1.3.7
-Release: 7%{?dist}
+Version: 1.3.8
+Release: 1%{?dist}
 # http://packages.gentoo.org/package/app-misc/pax-utils
 URL: https://wiki.gentoo.org/wiki/Hardened/PaX_Utilities
-Source0: https://distfiles.gentoo.org/distfiles/%{name}-%{version}.tar.xz
+#Source0: https://distfiles.gentoo.org/distfiles/%{name}-%{version}.tar.xz
+Source0: https://github.com/gentoo/pax-utils/archive/v%{version}/%{name}-%{version}.tar.gz
 # fix python shebang in lddtree.py and pylint
 Patch0: %{name}-py3shebang.patch
-# Automatically converted from old format: GPLv2 - review is highly recommended.
-License: GPL-2.0-only
+# elf.h is from glibc: LGPLv2.1+
+# pspax.c is Beerware
+License: GPL-2.0-only AMD LGPL-2.1-or-later AND Beerware
 BuildRequires:  gcc
 BuildRequires: meson
 BuildRequires: libcap-devel
@@ -33,8 +35,7 @@ expanded to be generally security focused.  It still has a good number of
 PaX helpers for people interested in that.
 
 %prep
-%setup -q
-%patch 0 -p1
+%autosetup -p1
 
 %build
 %meson \
@@ -71,6 +72,12 @@ export LD_LIBRARY_PATH=%{_libdir}
 %{_mandir}/man1/scanmacho.1*
 
 %changelog
+* Thu Oct 17 2024 Dominik Mierzejewski <dominik@greysector.net> - 1.3.8-1
+- update to 1.3.8 (resolves rhbz#2314222)
+- switch to GitHub source URL
+- correct License tag after license review
+- switch to autosetup macro
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 1.3.7-7
 - convert license to SPDX
 

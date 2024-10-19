@@ -7,7 +7,7 @@
 %global crate add-determinism
 
 Name:           rust-add-determinism
-Version:        0.4.1
+Version:        0.4.2
 Release:        %autorelease
 Summary:        RPM buildroot helper to strip nondeterministic bits in files
 

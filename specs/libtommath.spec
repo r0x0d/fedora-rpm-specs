@@ -2,7 +2,7 @@ Name:           libtommath
 Version:        1.3.1~rc1
 Release:        %autorelease
 Summary:        A portable number theoretic multiple-precision integer library
-License:        Public Domain
+License:        Unlicense
 URL:            http://www.libtom.net/
 
 Source0:        https://github.com/libtom/%{name}/archive/v%{version_no_tilde}.tar.gz#/%{name}-%{version_no_tilde}.tar.gz

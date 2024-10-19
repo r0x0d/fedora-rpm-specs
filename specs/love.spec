@@ -10,9 +10,7 @@ Version:        11.5
 Release:        4%{?dist}
 Summary:        A free 2D game engine which enables easy game creation in Lua
 
-#All is licensed as zlib with one exception:
-#SOURCE/platform/unix/ltmain.sh is public domain
-License:        zlib and Public Domain
+License:        Zlib
 URL:            http://love2d.org
 Source0:        https://github.com/love2d/love/archive/refs/tags/%{version}.tar.gz#/%{name}-%{version}.tar.gz
 

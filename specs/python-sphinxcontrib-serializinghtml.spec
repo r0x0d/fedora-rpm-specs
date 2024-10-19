@@ -1,5 +1,7 @@
+%bcond tests 1
+
 Name:           python-sphinxcontrib-serializinghtml
-Version:        1.1.9
+Version:        2.0.0
 Release:        %autorelease
 Summary:        Sphinx extension for serialized HTML
 License:        BSD-2-Clause
@@ -25,7 +27,7 @@ HTML files (json and pickle).
 
 
 %generate_buildrequires
-%pyproject_buildrequires -x test
+%pyproject_buildrequires %{?with_tests: -x test, -x standalone}
 
 
 %prep
@@ -59,12 +61,14 @@ popd
 %find_lang sphinxcontrib.serializinghtml
 
 
+%if %{with tests}
 %check
 %pytest
+%endif
 
 
 %files -n python%{python3_pkgversion}-sphinxcontrib-serializinghtml -f sphinxcontrib.serializinghtml.lang
-%license LICENSE
+%license LICENCE.rst
 %doc README.rst
 %{python3_sitelib}/sphinxcontrib/
 %{python3_sitelib}/sphinxcontrib_serializinghtml-%{version}.dist-info/

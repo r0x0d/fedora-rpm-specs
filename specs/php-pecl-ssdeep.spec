@@ -7,20 +7,17 @@
 # Please, preserve the changelog entries
 #
 
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
-
-%global with_zts  0%{?__ztsphp:1}
 %global pecl_name ssdeep
 %global ini_name  40-%{pecl_name}.ini
+%global sources   %{pecl_name}-%{version}
 
 Summary:        Wrapper for libfuzzy library
 Name:           php-pecl-%{pecl_name}
 Version:        1.1.0
-Release:        23%{?dist}
+Release:        24%{?dist}
 License:        BSD-2-Clause
 URL:            https://pecl.php.net/package/%{pecl_name}
-Source0:        https://pecl.php.net/get/%{pecl_name}-%{version}.tgz
+Source0:        https://pecl.php.net/get/%{sources}.tgz
 
 Patch0:         https://patch-diff.githubusercontent.com/raw/php/pecl-text-ssdeep/pull/2.patch
 
@@ -58,14 +55,13 @@ Documentation: http://php.net/ssdeep
 
 %prep
 %setup -q -c
-mv %{pecl_name}-%{version} NTS
 
 # Don't install/register tests
 sed -e 's/role="test"/role="src"/' \
     -e '/LICENSE/s/role="doc"/role="src"/' \
     -i package.xml
 
-pushd NTS
+pushd %{sources}
 %patch -P0 -p1 -b .pr2
 
 # Sanity check, really often broken
@@ -76,11 +72,6 @@ if test "x${extver}" != "x%{version}%{?versuf}"; then
 fi
 popd
 
-%if %{with_zts}
-# Duplicate source tree for NTS / ZTS build
-cp -pr NTS ZTS
-%endif
-
 # Create configuration file
 cat << 'EOF' | tee %{ini_name}
 ; Enable %{summary} extension module
@@ -89,49 +80,40 @@ EOF
 
 
 %build
-cd NTS
-%{_bindir}/phpize
-%configure \
-    --with-ssdeep=%{_prefix} \
-    --with-php-config=%{_bindir}/php-config \
-    --with-libdir=%{_lib}
-make %{?_smp_mflags}
+cd %{sources}
 
-%if %{with_zts}
-cd ../ZTS
-%{_bindir}/zts-phpize
+%{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
+
 %configure \
     --with-ssdeep=%{_prefix} \
-    --with-php-config=%{_bindir}/zts-php-config \
+    --with-php-config=%{__phpconfig} \
     --with-libdir=%{_lib}
-make %{?_smp_mflags}
-%endif
+
+%make_build
 
 
 %install
-make -C NTS install INSTALL_ROOT=%{buildroot}
+cd %{sources}
 
-# install config file
-install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+: Install the extension
+%make_install
 
-# Install XML package description
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+: Install the config file
+install -D -m 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-%if %{with_zts}
-make -C ZTS install INSTALL_ROOT=%{buildroot}
+: Install the XML package description
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
-
-# Test & Documentation
-for i in $(grep 'role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 NTS/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
-   sed -e 's/\r//'      -i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+: Install Test and Documentation
+for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+   sed -e 's/\r//'  -i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
 %check
-cd NTS
+cd %{sources}
 : Minimal load test for NTS extension
 %{__php} --no-php-ini \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
@@ -144,36 +126,19 @@ NO_INTERACTION=1 \
 REPORT_EXIT_STATUS=1 \
 %{__php} -n run-tests.php
 
-%if %{with_zts}
-cd ../ZTS
-: Minimal load test for ZTS extension
-%{__ztsphp} --no-php-ini \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep %{pecl_name}
-
-: Upstream test suite  for ZTS extension
-TEST_PHP_EXECUTABLE=%{_bindir}/zts-php \
-TEST_PHP_ARGS="-n -d extension=$PWD/modules/%{pecl_name}.so" \
-NO_INTERACTION=1 \
-REPORT_EXIT_STATUS=1 \
-%{_bindir}/zts-php -n run-tests.php
-%endif
-
 
 %files
-%license NTS/LICENSE
+%license %{sources}/LICENSE
 %doc %{pecl_docdir}/%{pecl_name}
 %{pecl_xmldir}/%{name}.xml
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %changelog
+* Thu Oct 17 2024 Remi Collet <remi@fedoraproject.org> - 1.1.0-24
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.1.0-23
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

@@ -1,7 +1,7 @@
 %global srcname colcon-core
 
 Name:           python-%{srcname}
-Version:        0.18.1
+Version:        0.18.2
 Release:        1%{?dist}
 Summary:        Command line tool to build sets of software packages
 
@@ -82,6 +82,9 @@ and sets up the environment to use the packages.
 
 
 %changelog
+* Thu Oct 17 2024 Scott K Logan <logans@cottsay.net> - 0.18.2-1
+- Update to 0.18.2
+
 * Wed Oct 02 2024 Scott K Logan <logans@cottsay.net> - 0.18.1-1
 - Update to 0.18.1 (rhbz#2300129)
 - Drop RHEL 7 spec support

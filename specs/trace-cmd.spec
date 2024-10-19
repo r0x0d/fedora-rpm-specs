@@ -2,11 +2,11 @@
 #%%global git_commit trace-cmd-v2.6.2
 #%%global git_commit 57371aaa2f469d0ba15fd85276deca7bfdd7ce36
 
-%global srcversion 3.2
+%global srcversion 3.3.1
 
 Name: trace-cmd
 Version: %{srcversion}
-Release: 4%{?dist}
+Release: 1%{?dist}
 License: LGPL-2.1-only AND LGPL-2.1-or-later AND GPL-2.0-only AND GPL-2.0-or-later
 Summary: A user interface to Ftrace
 
@@ -21,7 +21,6 @@ Source0: https://git.kernel.org/pub/scm/utils/trace-cmd/trace-cmd.git/snapshot/t
 Source1: trace-cmd.conf
 Source2: trace-cmd.service
 Source3: 98-trace-cmd.rules
-Patch0:  0001-python313.patch
 
 BuildRequires: make
 BuildRequires: gcc
@@ -53,7 +52,7 @@ BuildRequires: python3-devel
 Python plugin support for trace-cmd
 
 %prep
-%autosetup -n %{name}-v%{srcversion} -p1
+%autosetup -n %{name}-v%{srcversion}
 cp %{SOURCE1} .
 cp %{SOURCE2} .
 cp %{SOURCE3} .
@@ -103,6 +102,9 @@ rm -rf %{buildroot}/%{_mandir}/man3/*
 %{_libdir}/%{name}/python/
 
 %changelog
+* Thu Oct 17 2024 Zamir SUN <sztsian@gmail.com> - 3.3.1-1
+- Update to 3.3
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.2-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

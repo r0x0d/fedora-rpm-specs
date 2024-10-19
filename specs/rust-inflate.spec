@@ -2,21 +2,21 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate zbus_names
+%global crate inflate
 
-Name:           rust-zbus_names2
-Version:        2.6.1
+Name:           rust-inflate
+Version:        0.4.5
 Release:        %autorelease
-Summary:        Collection of D-Bus bus names types
+Summary:        DEFLATE decoding
 
 License:        MIT
-URL:            https://crates.io/crates/zbus_names
+URL:            https://crates.io/crates/inflate
 Source:         %{crates_source}
 
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-A collection of D-Bus bus names types.}
+DEFLATE decoding.}
 
 %description %{_description}
 
@@ -44,6 +44,18 @@ This package contains library source intended for building other packages which
 use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+unstable-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+unstable-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "unstable" feature of the "%{crate}" crate.
+
+%files       -n %{name}+unstable-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep

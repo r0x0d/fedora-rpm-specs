@@ -1,6 +1,6 @@
 %global pypi_name elementpath
 Name:           python-%{pypi_name}
-Version:        4.4.0
+Version:        4.5.0
 Release:        %autorelease
 Summary:        XPath 1.0/2.0 parsers and selectors for ElementTree and lxml
 

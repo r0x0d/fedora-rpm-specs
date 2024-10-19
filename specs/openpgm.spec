@@ -7,9 +7,7 @@ Version:       5.2.122
 Release:       36%{?dist}
 Summary:       An implementation of the PGM reliable multicast protocol
 
-# The license is LGPLv2.1
-# Automatically converted from old format: LGPLv2 - review is highly recommended.
-License:       LicenseRef-Callaway-LGPLv2
+License:       LGPL-2.1-or-later
 # New URL is https://github.com/steve-o/openpgm
 # The files are now on https://code.google.com/archive/p/openpgm/downloads
 URL:           https://github.com/steve-o/%{name}

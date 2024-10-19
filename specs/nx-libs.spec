@@ -11,7 +11,7 @@
 
 Name:           nx-libs
 Version:        3.5.99.27
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        NX X11 protocol compression libraries
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -63,6 +63,8 @@ BuildRequires:  python-rpm-macros
 %if !(0%{?fedora} >= 38 || 0%{?rhel} >= 8)
 BuildRequires:  /usr/bin/pathfix.py
 %endif
+
+ExcludeArch:    %{ix86}
 
 Obsoletes:      nx < 3.5.0-19
 Provides:       nx = %{version}-%{release}
@@ -483,6 +485,9 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" %{buildroot}%{_bindir}/nxdialo
 
 
 %changelog
+* Fri Oct 18 2024 Orion Poplawski <orion@nwra.com> - 3.5.99.27-6
+- Drop i686 builds (FTBFS rhbz#2301004)
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 3.5.99.27-5
 - convert license to SPDX
 

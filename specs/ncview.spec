@@ -1,6 +1,6 @@
 Name:           ncview
 Version:        2.1.10
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A visual browser for netCDF format files
 # Automatically converted from old format: GPLv3 - review is highly recommended.
 License:        GPL-3.0-only
@@ -8,6 +8,8 @@ URL:            https://cirrus.ucsd.edu/ncview/
 Source0:        https://cirrus.ucsd.edu/~pierce/ncview/ncview-%{version}.tar.gz
 # Remove RPATH
 Patch0:         ncview-rpath.patch
+# Fix const args
+Patch1:         ncview-const.patch
 
 BuildRequires: make
 BuildRequires:  xorg-x11-proto-devel libXaw-devel libXt-devel libXext-devel
@@ -62,6 +64,9 @@ chrpath -l -d %{buildroot}%{_bindir}/ncview
 
 
 %changelog
+* Fri Oct 18 2024 Orion Poplawski <orion@nwra.com> - 2.1.10-4
+- Add patch to fix FTBFS (rhbz#2300985)
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 2.1.10-3
 - convert license to SPDX
 

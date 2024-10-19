@@ -1,5 +1,5 @@
 Name: conan
-Version: 2.8.0
+Version: 2.8.1
 Release: %autorelease
 
 License: MIT
@@ -20,26 +20,19 @@ Requires: ninja-build
 Conan is a package manager for C and C++ developers.
 
 It is fully decentralized. Users can host their packages on their servers,
-privately. Integrates with Artifactory and Bintray.
+privately.
 
-Works across all platforms, including Linux, OSX, Windows (with native and
-first-class support, WSL, MinGW), Solaris, FreeBSD, embedded and
-cross-compiling, docker, WSL.
+Works across all platforms. It can create, upload and download binaries for
+any configuration and platform, even cross-compiling, saving lots of time in
+development and continuous integration. The binary compatibility can be
+configured and customized. Manage all your artifacts in the same way on all
+platforms.
 
-It can create, upload and download binaries for any configuration and
-platform, even cross-compiling, saving lots of time in development and
-continuous integration. The binary compatibility can be configured and
-customized. Manage all your artifacts in the same way on all platforms.
-
-Integrates with any build system. Provides tested support for major build
-systems (CMake, MSBuild, Makefiles, Meson, etc).
+Integrates with any build system. Provides tested support for most major
+build systems.
 
 Its python based recipes, together with extensions points allows for great
 power and flexibility.
-
-Large and active community, especially in Github and Slack. This community
-also creates and maintains packages in ConanCenter and Bincrafters
-repositories in Bintray.
 
 %prep
 %autosetup -p1

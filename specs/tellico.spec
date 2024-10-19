@@ -63,7 +63,6 @@ BuildRequires:  perl-Text-BibTeX
 BuildRequires:  libcdio-devel
 BuildRequires:  libcsv-devel
 BuildRequires:  libv4l-devel
-BuildRequires:  cups-devel
 
 Requires: python3
 

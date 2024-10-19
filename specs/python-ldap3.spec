@@ -2,14 +2,13 @@
 
 Name:           python-%{pypi_name}
 Version:        2.9.1
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Strictly RFC 4511 conforming LDAP V3 pure Python client
 
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-3.0-or-later
 URL:            https://github.com/cannatag/ldap3
-Source0:        %{pypi_source}
-Patch0002:      0002-unbundle-ordereddict.patch
+# The PyPI tarball is missing several files needed for running the test suite.
+Source:         %{url}/archive/v%{version}/%{pypi_name}-%{version}.tar.gz
 
 BuildArch:      noarch
 
@@ -21,6 +20,8 @@ ldap3 is a strictly RFC 4510 conforming LDAP V3 pure Python client library.
 %package     -n python3-%{pypi_name}
 Summary:        %{summary}
 BuildRequires:  python3-devel
+# Needed for the import check of ldap3.protocol.sasl.kerberos
+BuildRequires:  python3-gssapi
 
 %description -n python3-%{pypi_name} %{_description}
 
@@ -29,7 +30,7 @@ Python 3 version.
 %prep
 %autosetup -n %{pypi_name}-%{version} -p1
 
-# remove bundled ordereddict
+# Remove bundled ordereddict, which was only needed on Python < 2.7 anyways.
 rm -vf %{pypi_name}/utils/ordDict.py
 
 %generate_buildrequires
@@ -40,13 +41,23 @@ rm -vf %{pypi_name}/utils/ordDict.py
 
 %install
 %pyproject_install
-%pyproject_save_files %{pypi_name}
+%pyproject_save_files -l %{pypi_name}
+
+%check
+# The upstream test coverage isn't great, so we are going to do both an import
+# check and run what tests we can.
+%pyproject_check_import
+SERVER='NONE' %{py3_test_envvars} %{python3} -m unittest discover -s test
 
 %files -n python3-%{pypi_name} -f %{pyproject_files}
-%license COPYING.LESSER.txt
 %doc README.rst
 
 %changelog
+* Thu Oct 10 2024 Carl George <carlwgeorge@fedoraproject.org> - 2.9.1-10
+- Update license tag to LGPL-3.0-or-later
+- Remove duplicate COPYING.LESSER.txt license file
+- Run an import check and the upstream test suite in %%check
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.9.1-9
 - convert license to SPDX
 

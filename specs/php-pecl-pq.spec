@@ -13,19 +13,14 @@
 # Build using "--without tests" to disable tests
 %bcond_without     tests
 
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
-
-%global with_zts   0%{?__ztsphp:1}
 %global pecl_name  pq
 %global ini_name   50-%{pecl_name}.ini
 %global sources    %{pecl_name}-%{version}
-%global _configure ../%{sources}/configure
 
 Summary:        PostgreSQL client library (libpq) binding
 Name:           php-pecl-%{pecl_name}
 Version:        2.2.3
-Release:        4%{?dist}
+Release:        5%{?dist}
 License:        BSD-2-Clause
 URL:            https://pecl.php.net/package/%{pecl_name}
 Source0:        https://pecl.php.net/get/%{pecl_name}-%{version}%{?rcver}.tgz
@@ -84,11 +79,6 @@ if test "x${extver}" != "x%{version}%{?rcver}"; then
 fi
 cd ..
 
-mkdir NTS
-%if %{with_zts}
-mkdir  ZTS
-%endif
-
 # Create configuration file
 cat << 'EOF' | tee %{ini_name}
 ; Enable "%{summary}" extension module
@@ -99,40 +89,30 @@ EOF
 %build
 cd %{sources}
 %{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-cd ../NTS
 %configure \
     --with-libdir=%{_lib} \
     --with-php-config=%{__phpconfig}
-make %{?_smp_mflags}
 
-%if %{with_zts}
-cd ../ZTS
-%configure \
-    --with-libdir=%{_lib} \
-    --with-php-config=%{__ztsphpconfig}
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-make -C NTS install INSTALL_ROOT=%{buildroot}
+cd %{sources}
 
-# install config file
-install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+: Install the extension
+%make_install
 
-# Install XML package description
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+: Install config file
+install -D -m 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-%if %{with_zts}
-make -C ZTS install INSTALL_ROOT=%{buildroot}
+: Install XML package description
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
-
-# Documentation
-for i in $(grep 'role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 %{sources}/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+: Install  Documentation
+for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
@@ -150,13 +130,6 @@ OPT="-n"
 %{__php} $OPT \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --modules | grep '^%{pecl_name}$'
-
-%if %{with_zts}
-: Minimal load test for ZTS extension
-%{__ztsphp} $OPT \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep '^%{pecl_name}$'
-%endif
 
 %if %{with tests}
 RET=0
@@ -186,14 +159,6 @@ TEST_PHP_ARGS="$OPT -d extension=$PWD/../NTS/modules/%{pecl_name}.so" \
 REPORT_EXIT_STATUS=1 \
 %{__php} -n run-tests.php -q --show-diff || RET=1
 
-%if %{with_zts}
-: Upstream test suite  for ZTS extension
-TEST_PHP_EXECUTABLE=%{__ztsphp} \
-TEST_PHP_ARGS="$OPT -d extension=$PWD/../ZTS/modules/%{pecl_name}.so" \
-REPORT_EXIT_STATUS=1 \
-%{__ztsphp} -n run-tests.php -q --show-diff || RET=1
-%endif
-
 cd ..
 : Cleanup
 psql -h localhost -p $PORT -c "SELECT version()" rpmtest
@@ -212,13 +177,11 @@ exit $RET
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %changelog
+* Thu Oct 17 2024 Remi Collet <remi@fedoraproject.org> - 2.2.3-5
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 2.2.3-4
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

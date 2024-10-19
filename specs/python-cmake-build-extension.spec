@@ -12,6 +12,10 @@ License:        MIT AND BSD-3-Clause
 URL:            https://github.com/diegoferigo/cmake-build-extension
 Source:         %{pypi_source cmake_build_extension}
 
+# Update numpy.i for SWIG 4.3 compatibility
+# https://github.com/diegoferigo/cmake-build-extension/pull/55
+Patch:          https://github.com/diegoferigo/cmake-build-extension/pull/55.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel

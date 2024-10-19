@@ -12,7 +12,7 @@
 
 Name: criu
 Version: 4.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Tool for Checkpoint/Restore in User-space
 License: GPL-2.0-only AND LGPL-2.1-only AND MIT
 URL: http://criu.org/
@@ -42,6 +42,8 @@ BuildRequires: gnutls-devel
 BuildRequires: libdrm-devel
 # Checkpointing containers with a tmpfs requires tar
 Recommends: tar
+# CRIU requires some version of iptables-restore for network locking
+Recommends: iptables
 %if 0%{?fedora}
 BuildRequires: libbsd-devel
 BuildRequires: nftables-devel
@@ -188,6 +190,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libcriu.a
 %tmpfiles_create %{name}.conf
 
 %changelog
+* Thu Oct 17 2024 Adrian Reber <adrian@lisas.de> - 4.0-2
+- Recommends: iptables
+
 * Thu Sep 26 2024 Radostin Stoyanov <rstoyanov@fedoraproject.org> - 4.0-1
 - Update to 4.0
 - Add package for cuda-plugin

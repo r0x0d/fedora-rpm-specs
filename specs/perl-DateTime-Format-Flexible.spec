@@ -2,14 +2,11 @@
 %bcond_with perl_DateTime_Format_Flexible_enables_extra_test
 
 Name:       perl-DateTime-Format-Flexible
-Version:    0.34
-Release:    12%{?dist}
+Version:    0.36
+Release:    2%{?dist}
 License:    GPL-1.0-or-later OR Artistic-1.0-Perl
 Summary:    Flexibly parse strings and turn them into DateTime objects
 Source:     https://cpan.metacpan.org/authors/id/T/TH/THINC/DateTime-Format-Flexible-%{version}.tar.gz
-# Adapt tests to changes in DateTime-TimeZone-2.63, bug #2312863, CPAN RT#155591,
-# proposed to the upstream
-Patch0:     DateTime-Format-Flexible-0.34-Use-America-Panama-instead-of-EST-in-tests.patch
 Url:        https://metacpan.org/release/DateTime-Format-Flexible
 BuildArch:  noarch
 BuildRequires:  coreutils
@@ -107,6 +104,15 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Thu Oct 17 2024 Petr Pisar <ppisar@redhat.com> - 0.36-2
+- Remove an unnecesary version restriction from a DateTime::TimeZone dependency
+
+* Thu Oct 17 2024 Petr Pisar <ppisar@redhat.com> - 0.36-1
+- 0.36 bump
+
+* Mon Oct 07 2024 Petr Pisar <ppisar@redhat.com> - 0.35-1
+- 0.35 bump
+
 * Tue Sep 17 2024 Petr Pisar <ppisar@redhat.com> - 0.34-12
 - Adapt tests to changes in DateTime-TimeZone-2.63 (bug #2312863)
 

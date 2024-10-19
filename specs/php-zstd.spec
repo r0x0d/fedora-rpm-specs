@@ -11,15 +11,13 @@
 #
 
 %global pecl_name   zstd
-%global with_zts    0%{!?_without_zts:%{?__ztsphp:1}}
 %global ini_name    40-%{pecl_name}.ini
 %global sources     %{pecl_name}-%{version}
-%global _configure  ../%{sources}/configure
 
 Summary:       Zstandard extension
 Name:          php-%{pecl_name}
 Version:       0.13.3
-Release:       4%{?dist}
+Release:       5%{?dist}
 License:       MIT
 URL:           https://pecl.php.net/package/%{pecl_name}
 Source0:       https://pecl.php.net/get/%{sources}.tgz
@@ -73,11 +71,6 @@ if test "x${extver}" != "x%{version}%{?gh_date:-dev}"; then
 fi
 cd ..
 
-mkdir NTS
-%if %{with_zts}
-mkdir ZTS
-%endif
-
 # Drop in the bit of configuration
 cat << 'EOF' | tee %{ini_name}
 ; Enable '%{summary}' extension module
@@ -86,48 +79,32 @@ EOF
 
 
 %build
-%{?dtsenable}
-
 cd %{sources}
 %{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-cd ../NTS
 %configure \
     --with-php-config=%{__phpconfig} \
     --with-libzstd \
     --with-libdir=%{_lib} \
     --enable-zstd
-make %{?_smp_mflags}
 
-%if %{with_zts}
-cd ../ZTS
-%configure \
-    --with-php-config=%{__ztsphpconfig} \
-    --with-libzstd \
-    --with-libdir=%{_lib} \
-    --enable-zstd
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-%{?dtsenable}
-
-# Install the NTS stuff
-make -C NTS install INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
-
-# Install XML package description
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
-
-%if %{with_zts}
-# Install the ZTS stuff
-make -C ZTS install INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
-
-# Test & Documentation
 cd %{sources}
+
+: Install the extension
+%make_install
+
+: Install Configuration
+install -D -m 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+
+: Install XML package description
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+
+: Install Test and Documentation
 for i in $(grep 'role="test"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
 do install -Dpm 644 $i %{buildroot}%{pecl_testdir}/%{pecl_name}/$i
 done
@@ -145,7 +122,7 @@ export REPORT_EXIT_STATUS=1
 rm tests/streams_*phpt
 %endif
 
-: Minimal load test for NTS extension
+: Minimal load test for the extension
 %{__php} --no-php-ini \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --modules | grep %{pecl_name}
@@ -158,22 +135,10 @@ rm tests/streams_*phpt
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --ri apcu | grep '%{pecl_name}'
 
-: Upstream test suite  for NTS extension
+: Upstream test suite for the extension
 TEST_PHP_EXECUTABLE=%{__php} \
 TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
 %{__php} -n run-tests.php -q --offline --show-diff
-
-%if %{with_zts}
-: Minimal load test for ZTS extension
-%{__ztsphp} --no-php-ini \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep %{pecl_name}
-
-: Upstream test suite  for ZTS extension
-TEST_PHP_EXECUTABLE=%{__ztsphp} \
-TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so" \
-%{__ztsphp} -n run-tests.php -q --offline --show-diff
-%endif
 
 
 %files
@@ -184,22 +149,16 @@ TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so" \
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %files devel
 %doc %{pecl_testdir}/%{pecl_name}
 %{php_incldir}/ext/%{pecl_name}
 
-%if %{with_zts}
-%{php_ztsincldir}/ext/%{pecl_name}
-%endif
-
 
 %changelog
+* Thu Oct 17 2024 Remi Collet <remi@fedoraproject.org> - 0.13.3-5
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 0.13.3-4
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

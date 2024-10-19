@@ -2,7 +2,7 @@
 %global sum ANSI Color formatting for output in terminal
 
 Name:           python-%{pypi_name}
-Version:        2.4.0
+Version:        2.5.0
 Release:        %autorelease
 Summary:        %{sum}
 
@@ -27,6 +27,9 @@ A Python 3 version of ANSI Color formatting for output in terminal.
 
 %prep
 %setup -q -n %{pypi_name}-%{version}
+
+# Avoid dependency in coverage module
+sed -i 's/, using default core:coverage.exceptions.CoverageWarning//' pyproject.toml
 
 %generate_buildrequires
 %pyproject_buildrequires

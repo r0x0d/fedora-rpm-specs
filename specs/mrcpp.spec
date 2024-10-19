@@ -15,6 +15,11 @@ Patch1:         mrcpp-1.4.0-rpath.patch
 # Patch in catchv3 support, see https://github.com/MRChemSoft/mrcpp/pull/213
 Patch2:         mrcpp-1.5.0-catchv3.patch
 
+%if 0%{?rhel} == 9
+# Compile fails on ppc64le with the error /usr/include/eigen3/Eigen/src/Core/arch/AltiVec/MatrixProduct.h:1199:26: error: inlining failed in call to 'always_inline' 'Eigen::internal::bload<Eigen::internal::blas_data_mapper<double, long, 0, 0, 1>, double __vector(2), long, 2l, 0, 0>(Eigen::internal::PacketBlock<double __vector(2), 4>&, Eigen::internal::blas_data_mapper<double, long, 0, 0, 1> const&, long, long)void': target specific option mismatch
+ExcludeArch:    ppc64le
+%endif
+
 # We need the data
 Requires:       %{name}-data = %{version}-%{release}
 
@@ -68,9 +73,10 @@ This package contains the runtime data.
 
 %prep
 %setup -q
-%patch 0 -p1 -b .eigen3
-%patch 1 -p1 -b .rpath
-%patch 2 -p1 -b .catchv3
+# EPEL still can't handle the new patch style
+%patch0 -p1 -b .eigen3
+%patch1 -p1 -b .rpath
+%patch2 -p1 -b .catchv3
 # Remove bundled catch
 rm -rf external/catch/
 

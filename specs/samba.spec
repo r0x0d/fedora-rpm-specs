@@ -353,7 +353,7 @@ BuildRequires: zlib-devel >= 1.2.3
 
 BuildRequires: pkgconfig(libsystemd)
 
-%ifnarch riscv64
+%ifnarch i686 riscv64
 %if 0%{?fedora} >= 37
 BuildRequires: mold
 %endif
@@ -1365,13 +1365,13 @@ export python_LDFLAGS="$(echo %{__global_ldflags} | sed -e 's/-Wl,-z,defs//g')"
 # Use the mold linker if possible
 export python_LDFLAGS="$(echo %{__global_ldflags} | sed -e 's/-Wl,-z,defs//g')"
 
-%ifnarch riscv64
+%ifnarch i686 riscv64
 %if 0%{?fedora} >= 37
 export LDFLAGS="%{__global_ldflags} -fuse-ld=mold"
 export python_LDFLAGS="$(echo ${LDFLAGS} | sed -e 's/-Wl,-z,defs//g')"
 #endif fedora >= 37
 %endif
-#endif narch riscv64
+#endif narch i686
 %endif
 
 # Add support for mock ccache plugin

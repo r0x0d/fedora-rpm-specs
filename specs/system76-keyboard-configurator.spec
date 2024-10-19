@@ -29,6 +29,8 @@ Patch0:        0001-update-i18n-embed-and-rust-embed-dependencies.patch
 # Submitted for inclusion upstream.
 # https://github.com/pop-os/keyboard-configurator/pull/117
 Patch1:        0002-update-palette-dependency-to-0.6.patch
+# not upstreamable due to MSRV policy
+Patch2:        0003-update-zbus-dependency-to-4.patch
 
 BuildRequires: cargo-rpm-macros >= 24
 BuildRequires: desktop-file-utils

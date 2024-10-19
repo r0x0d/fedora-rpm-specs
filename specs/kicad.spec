@@ -1,6 +1,6 @@
 Name:           kicad
 Version:        8.0.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 Epoch:          1
 Summary:        EDA software suite for creation of schematic diagrams and PCBs
 
@@ -14,6 +14,8 @@ Source3:        https://gitlab.com/kicad/libraries/kicad-symbols/-/archive/%{ver
 Source4:        https://gitlab.com/kicad/libraries/kicad-footprints/-/archive/%{version}/kicad-footprints-%{version}.tar.gz
 Source5:        https://gitlab.com/kicad/libraries/kicad-packages3D/-/archive/%{version}/kicad-packages3D-%{version}.tar.gz
 
+# Fix for SWIG 4.3.0
+Patch1:         kicad-8.0.6-swig-4.3.patch
 
 # https://gitlab.com/kicad/code/kicad/-/issues/237
 ExclusiveArch:  x86_64 aarch64 ppc64le
@@ -86,6 +88,7 @@ Documentation for KiCad.
 %prep
 %setup -q -a 1 -a 2 -a 3 -a 4 -a 5
 
+%patch -P1 -p2
 
 %build
 
@@ -213,6 +216,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 
 
 %changelog
+* Thu Oct 17 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1:8.0.6-2
+- Fix for SWIG 4.3.0
+
 * Mon Oct 14 2024 Steven A. Falco <stevenfalco@gmail.com> - 1:8.0.6-1
 - Update to 8.0.6
 

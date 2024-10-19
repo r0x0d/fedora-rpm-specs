@@ -1,6 +1,6 @@
 Name:           qmmp-plugin-pack
-Version:        2.1.2
-Release:        2%{?dist}
+Version:        2.2.1
+Release:        1%{?dist}
 Summary:        A set of extra plugins for Qmmp
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -8,7 +8,7 @@ License:        GPL-2.0-or-later
 URL:            http://qmmp.ylsoftware.com/plugins.php
 Source0:        http://qmmp.ylsoftware.com/files/plugins/%{name}-%{version}.tar.bz2
 
-BuildRequires:  qmmp-devel >= 2.0.0
+BuildRequires:  qmmp-devel >= 2.2.0
 BuildRequires:  cmake
 BuildRequires:  ffmpeg-free-devel
 BuildRequires:  libmodplug-devel
@@ -60,6 +60,10 @@ Plugin pack is a set of extra plugins for Qmmp.
 
 
 %changelog
+* Tue Oct 15 2024 Karel Volný <kvolny@redhat.com> 2.2.1-1
+- new version 2.2.1 (rhbz#2316648)
+- see the upstream changelog at http://qmmp.ylsoftware.com/
+
 * Mon Sep 23 2024 Fabio Valentini <decathorpe@gmail.com> - 2.1.2-2
 - Rebuild for ffmpeg 7
 

@@ -1,7 +1,7 @@
 Name:             adobe-mappings-cmap
 Summary:          CMap resources for Adobe's character collections
-Version:          20230622
-Release:          4%{?dist}
+Version:          20231115
+Release:          1%{?dist}
 License:          BSD-3-Clause
 
 URL:              https://www.adobe.com/
@@ -100,6 +100,7 @@ _EOF
 %{_datadir}/adobe/resources/mapping/Japan1
 %{_datadir}/adobe/resources/mapping/Korea1
 %{_datadir}/adobe/resources/mapping/KR
+%{_datadir}/adobe/resources/mapping/Manga1
 
 %files deprecated
 %{_datadir}/adobe/resources/mapping/deprecated
@@ -110,6 +111,9 @@ _EOF
 # =============================================================================
 
 %changelog
+* Thu Oct 17 2024 Zdenek Dohnal <zdohnal@redhat.com> - 20231115-1
+- 20231115 (fedora#2239976)
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 20230622-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

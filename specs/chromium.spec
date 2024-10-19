@@ -84,7 +84,7 @@
 %endif
 %endif
 
-%if 0%{?fedora} >= 40
+%if 0%{?fedora} >= 40 || 0%{?rhel} >= 9
 %global noopenh264 1
 %endif
 
@@ -273,7 +273,7 @@
 %endif
 
 Name:	chromium%{chromium_channel}
-Version: 129.0.6668.100
+Version: 130.0.6723.58
 Release: 1%{?dist}
 Summary: A WebKit (Blink) powered web browser that Google doesn't want you to use
 Url: http://www.chromium.org/Home
@@ -350,6 +350,13 @@ Patch353: chromium-127-aarch64-duplicate-case-value.patch
 
 # remove flag split-threshold-for-reg-with-hint, it's not supported in clang <= 17
 Patch354: chromium-126-split-threshold-for-reg-with-hint.patch
+
+# fix build error: no member named 'hardware_destructive_interference_size' in namespace 'std'
+Patch355: chromium-130-hardware_destructive_interference_size.patch
+
+# fix build error on ppc64le
+# error: static assertion failed due to requirement 'sizeof(blink::MatchedProperties) <= 12': MatchedProperties should not grow without thinking
+Patch356: chromium-130-size-assertions.patch
 
 # set clang_lib path
 Patch358: chromium-127-rust-clanglib.patch
@@ -491,15 +498,6 @@ BuildRequires: pkgconfig(libavcodec)
 BuildRequires: pkgconfig(libavfilter)
 BuildRequires: pkgconfig(libavformat)
 BuildRequires: pkgconfig(libavutil)
-# chromium fail to start for rpmfusion users due to ABI break in ffmpeg-free-6.0.1
-# bethween fedora and rpmfussion.
-%if 0%{?rhel} == 9 || 0%{?fedora} == 37
-Conflicts: libavformat-free%{_isa} < 5.1.4
-Conflicts: ffmpeg-libs%{_isa} < 5.1.4
-%else
-Conflicts: libavformat-free%{_isa} < 6.0.1
-Conflicts: ffmpeg-libs%{_isa} < 6.0.1-2
-%endif
 %endif
 
 %if 0%{?noopenh264}
@@ -1063,6 +1061,8 @@ Qt6 UI for chromium.
 %patch -P354 -p1 -b .split-threshold-for-reg-with-hint
 %endif
 
+%patch -P355 -p1 -b .hardware_destructive_interference_size
+%patch -P356 -p1 -b .size-assertions
 %patch -P358 -p1 -b .rust-clang_lib
 
 %ifarch ppc64le
@@ -1915,6 +1915,22 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Wed Oct 16 2024 Than Ngo <than@redhat.com> - 130.0.6723.58-1
+- update to 130.0.6723.58
+  * High CVE-2024-9954: Use after free in AI
+  * Medium CVE-2024-9955: Use after free in Web Authentication
+  * Medium CVE-2024-9956: Inappropriate implementation in Web Authentication
+  * Medium CVE-2024-9957: Use after free in UI
+  * Medium CVE-2024-9958: Inappropriate implementation in PictureInPicture
+  * Medium CVE-2024-9959: Use after free in DevTools
+  * Medium CVE-2024-9960: Use after free in Dawn
+  * Medium CVE-2024-9961: Use after free in Parcel Tracking
+  * Medium CVE-2024-9962: Inappropriate implementation in Permissions
+  * Medium CVE-2024-9963: Insufficient data validation in Downloads
+  * Low CVE-2024-9964: Inappropriate implementation in Payments
+  * Low CVE-2024-9965: Insufficient data validation in DevTools
+  * Low CVE-2024-9966: Inappropriate implementation in Navigations
+
 * Wed Oct 09 2024 Than Ngo <than@redhat.com> - 129.0.6668.100-1
 - update to 129.0.6668.100
   * CVE-2024-9602: Type Confusion in V8
@@ -2189,9 +2205,12 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 * Wed Mar 06 2024 Than Ngo <than@redhat.com> - 122.0.6261.111-1
 - upstream security release 122.0.6261.111
-   * High CVE-2024-2173: Out of bounds memory access in V8 
+   * High CVE-2024-2173: Out of bounds memory access in V8
    * High CVE-2024-2174: Inappropriate implementation in V8
    * High CVE-2024-2176: Use after free in FedCM
+
+* Sat Mar 02 2024 Jiri Vanek <jvanek@redhat.com> - 122.0.6261.94-2
+- Rebuilt for java-21-openjdk as system jdk
 
 * Wed Feb 28 2024 Than Ngo <than@redhat.com> - 122.0.6261.94-1
 - upstream security release 122.0.6261.94
