@@ -18,6 +18,9 @@ License:        BSD-3-Clause AND BSD-2-Clause
 URL:            https://flit.pypa.io/
 Source:         %{pypi_source flit_core}
 
+# ast.Str has been removed in Python 3.14.0a1
+Patch:          https://github.com/pypa/flit/pull/684.patch
+
 BuildArch:      noarch
 BuildRequires:  python3-devel
 

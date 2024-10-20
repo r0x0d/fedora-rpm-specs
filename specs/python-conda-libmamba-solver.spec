@@ -3,8 +3,8 @@
 %bcond tests 1
 
 Name:           python-%{srcname}
-Version:        23.11.1
-Release:        6%{?dist}
+Version:        24.9.0
+Release:        1%{?dist}
 Summary:        The libmamba based solver for conda
 
 License:        BSD-3-Clause
@@ -69,11 +69,15 @@ export CONDA_TEST_DATA_DIR=/usr/share/conda/tests/data
   --deselect=tests/test_channels.py::test_channel_matchspec \
   --deselect=tests/test_channels.py::test_channels_prefixdata \
   --deselect=tests/test_channels.py::test_channels_installed_unavailable \
+  --deselect=tests/test_channels.py::test_http_server_auth_token_in_defaults \
+  --deselect=tests/test_channels.py::test_local_spec \
   --deselect=tests/test_channels.py::test_mirrors_do_not_leak_channels\[_setup_channels_alias\] \
   --deselect=tests/test_channels.py::test_mirrors_do_not_leak_channels\[_setup_channels_custom\] \
   --deselect=tests/test_channels.py::test_jax_and_jaxlib \
   --deselect=tests/test_channels.py::test_encoding_file_paths \
   --deselect=tests/test_channels.py::test_conda_build_with_aliased_channels \
+  --deselect=tests/test_channels.py::test_unknown_channels_do_not_crash \
+  --deselect=tests/test_channels.py::test_use_cache_works_offline_fresh_install_keep \
   --deselect=tests/test_downstream.py::test_build_recipe\[jedi] \
   --deselect=tests/test_downstream.py::test_build_recipe\[multioutput] \
   --deselect=tests/test_downstream.py::test_build_recipe\[stackvana] \
@@ -144,6 +148,9 @@ export CONDA_TEST_DATA_DIR=/usr/share/conda/tests/data
 %doc README.*
 
 %changelog
+* Fri Oct 18 2024 Orion Poplawski <orion@nwra.com> - 24.9.0-1
+- Update to 24.9.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 23.11.1-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,7 +1,7 @@
 Summary:        Generic RADIUS proxy with RadSec support
 Name:           radsecproxy
-Version:        1.10.1
-Release:        2%{?dist}
+Version:        1.11.0
+Release:        1%{?dist}
 License:        BSD-3-Clause
 URL:            https://radsecproxy.github.io/
 Source0:        https://github.com/radsecproxy/radsecproxy/releases/download/%{version}/%{name}-%{version}.tar.gz
@@ -16,11 +16,7 @@ BuildRequires:  gnupg2
 BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  nettle-devel
-%if 0%{?fedora} || 0%{?rhel} >= 8
 BuildRequires:  openssl-devel
-%else
-BuildRequires:  openssl11-devel
-%endif
 BuildRequires:  systemd-rpm-macros
 Requires:       logrotate
 %{?systemd_requires}
@@ -37,10 +33,6 @@ at the same time to be small, efficient and easy to configure.
 %setup -q
 
 %build
-%if 0%{?rhel} == 7
-sed -e 's/ openssl / openssl11 /g' -i configure
-%endif
-
 %configure
 %make_build
 
@@ -90,6 +82,9 @@ make check
 %dir %attr(0750,%{name},%{name}) %{_localstatedir}/log/%{name}/
 
 %changelog
+* Sat Oct 19 2024 Robert Scheck <robert@fedoraproject.org> 1.11.0-1
+- Upgrade to 1.11.0 (#2290989)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.10.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

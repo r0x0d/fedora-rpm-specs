@@ -7,13 +7,13 @@
 
 Summary: X.Org X11 developmental X transport library
 Name: xorg-x11-xtrans-devel
-Version: 1.4.0
-Release: 14%{?dist}
+Version: 1.5.1
+Release: 1%{?dist}
 License: HPND AND HPND-sell-variant AND MIT AND MIT-open-group AND X11
 URL: http://www.x.org
 BuildArch: noarch
 
-Source0: https://xorg.freedesktop.org/archive/individual/lib/xtrans-%{version}.tar.bz2
+Source0: https://xorg.freedesktop.org/archive/individual/lib/xtrans-%{version}.tar.gz
 
 # Fedora specific patch
 Patch1: xtrans-1.0.3-avoid-gethostname.patch
@@ -53,6 +53,9 @@ make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 %{_datadir}/pkgconfig/xtrans.pc
 
 %changelog
+* Fri Oct 18 2024 José Expósito <jexposit@redhat.com> - 1.5.1-1
+- xtrans 1.5.1
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.0-14
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,5 +1,7 @@
 %bcond tests 1
 %bcond desktop_tests 1
+# Currently unavailable in EPEL10, and used only for a single doctest
+%bcond pyfakefs %{expr:!0%{?el10}}
 
 Name:           python-keyring
 Version:        25.4.1
@@ -18,11 +20,6 @@ BuildRequires:  python3-devel
 BuildRequires:  help2man
 
 %if %{with tests}
-# The “testing” extra mostly brings in linters and similar, which we would have
-# to patch out. Instead, we BR pytest manually. See:
-# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
-BuildRequires:  python3dist(pytest)
-BuildRequires:  python3dist(pyfakefs)
 %if %{with desktop_tests}
 # Run graphical tests in non-graphical build environment.
 BuildRequires:  xwayland-run
@@ -87,9 +84,13 @@ be installed.
 # the shebang should be removed.
 sed -r -i '1{/^#!/d}' keyring/cli.py
 
+%if %{without pyfakefs}
+sed -r -i 's/"pyfakefs",?/# &/' pyproject.toml
+%endif
+
 
 %generate_buildrequires
-%pyproject_buildrequires -x completion
+%pyproject_buildrequires -x %{?with_tests:test,}completion
 
 
 %build
@@ -124,10 +125,16 @@ PYTHONPATH='%{buildroot}%{python3_sitelib}' help2man \
 
 %check
 %if %{with tests}
+%if %{without pyfakefs}
+# Used only for a single doctest
+k="${k-}${k+ and }not keyring.core.disable"
+%endif
+
 %if %{with desktop_tests}
 %global __pytest xwfb-run -- pytest
 %endif
-%pytest -rs
+
+%pytest -k "${k-}" -rs
 %endif
 
 

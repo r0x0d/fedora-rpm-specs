@@ -44,6 +44,8 @@ Patch8:         python-nose-py311-doctest.patch
 Patch9:         python-nose-py312.patch
 # Python 3.13 removes 2to3, so we have a patch instead
 Patch10:        python-nose-2to3.patch
+# Minimal fix for setuptools 74+
+Patch11:        python-nose-setuptools74.patch
 
 BuildRequires:  dos2unix
 

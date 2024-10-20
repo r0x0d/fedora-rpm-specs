@@ -8,8 +8,8 @@
 %global pkgname tcl
 
 Name: mingw-%{pkgname}
-Version: 8.6.14
-Release: 2%{?dist}
+Version: 8.6.15
+Release: 1%{?dist}
 Summary: MinGW Windows Tool Command Language, pronounced tickle
 
 License: TCL
@@ -33,14 +33,14 @@ BuildRequires: mingw64-filesystem
 BuildRequires: mingw64-gcc
 BuildRequires: mingw64-zlib
 
-Patch0: tcl-8.6.10-autopath.patch
-Patch1: tcl-8.6.10-conf.patch
-Patch2: tcl-8.6.10-hidden.patch
-Patch3: tcl-8.6.10-tcltests-path-fix.patch
-Patch4: tcl-8.5.6-mingw.patch
+Patch0: tcl-8.6.15-autopath.patch
+Patch1: tcl-8.6.15-conf.patch
+Patch2: tcl-8.6.13-tcltests-path-fix.patch
+Patch3: tcl-8.6.13-configure-c99.patch
+Patch4: tcl-mingw.patch
 Patch5: tcl-nativetclsh.patch
 Patch6: tcl-mingw-w64-compatibility.patch
-Patch7: tcl-8.6.1-nativezlib.patch
+Patch7: tcl-nativezlib.patch
 
 
 %description
@@ -190,6 +190,9 @@ rm -f %{buildroot}/%{mingw64_bindir}/zlib1.dll
 
 
 %changelog
+* Fri Oct 18 2024 Sandro Mani <manisandro@gmail.com> - 8.6.15-1
+- Update to 8.6.15
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 8.6.14-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

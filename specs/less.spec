@@ -1,7 +1,7 @@
 Summary: A text file browser similar to more, but better
 Name: less
-Version: 661
-Release: 2%{?dist}
+Version: 668
+Release: 1%{?dist}
 License: GPL-3.0-only and BSD-2-Clause
 Source0: https://www.greenwoodsoftware.com/less/%{name}-%{version}.tar.gz
 Source1: lesspipe.sh
@@ -14,9 +14,6 @@ Patch8: less-458-lessecho-usage.patch
 Patch9: less-458-less-filters-man.patch
 Patch10: less-458-lesskey-usage.patch
 Patch11: less-458-old-bot-in-help.patch
-# from upstream, for <=661, fixes regression in file-types sanity chack post v590
-# https://github.com/gwsw/less/commit/ed454a217da417dc052723ea70da8efde0f2e66c
-Patch12: less-661-pipefix.patch
 Patch13: less-436-help.patch
 URL: https://www.greenwoodsoftware.com/less/
 BuildRequires: ncurses-devel
@@ -42,7 +39,6 @@ files, and you'll use it frequently.
 %patch -P 9 -p1 -b .less-filters-man
 %patch -P 10 -p1 -b .lesskey-usage
 %patch -P 11 -p1 -b .old-bot
-%patch -P 12 -p1 -b .pipefix
 %patch -P 13 -p1 -b .help
 
 
@@ -67,6 +63,9 @@ install -p -m 644 %{SOURCE3} $RPM_BUILD_ROOT/etc/profile.d
 %{_mandir}/man1/*
 
 %changelog
+* Fri Oct 18 2024 Michal Hlavinka <mhlavink@redhat.com> - 668-1
+- updated to 668 (#2319532)
+
 * Mon Aug 12 2024 Michal Hlavinka <mhlavink@redhat.com> - 661-2
 - fix post-v590 regression causing reading only part of pipe when stdin is null (upstream#558)
 

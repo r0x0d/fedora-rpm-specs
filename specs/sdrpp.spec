@@ -4,7 +4,7 @@
 
 Name:           sdrpp
 Version:        1.0.4
-Release:        23%{?dist}
+Release:        24%{?dist}
 Summary:        SDRPlusPlus bloat-free SDR receiver software
 
 # Automatically converted from old format: GPLv3 and MIT and WTFPL and Public Domain - review is highly recommended.
@@ -166,6 +166,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Fri Oct 18 2024 Richard Shaw <hobbes1069@gmail.com> - 1.0.4-24
+- Rebuild for new rtaudio.
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.4-23
 - convert license to SPDX
 

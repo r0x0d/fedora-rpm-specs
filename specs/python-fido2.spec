@@ -1,8 +1,8 @@
 %global srcname fido2
 
 Name:           python-%{srcname}
-Version:        1.1.2
-Release:        7%{?dist}
+Version:        1.1.3
+Release:        1%{?dist}
 Summary:        Functionality for FIDO 2.0, including USB device communication
 
 # Main code is BSD
@@ -12,6 +12,8 @@ Summary:        Functionality for FIDO 2.0, including USB device communication
 License:        LicenseRef-Callaway-BSD AND Apache-2.0 AND MPL-2.0
 URL:            https://github.com/Yubico/python-fido2
 Source0:        https://github.com/Yubico/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
+# Fix upstream's attempt to skip SHA1 test
+Patch0:         https://github.com/Yubico/python-fido2/pull/235.patch
 BuildArch:      noarch
 
 %global _description\
@@ -69,6 +71,10 @@ BuildRequires:  python%{python3_pkgversion}-pytest
 
 
 %changelog
+* Fri Oct 18 2024 Orion Poplawski <orion@nwra.com> - 1.1.3-1
+- Update to 1.1.3
+- Add patch to properly skip SHA1 test (FTBFS rhbz#2301146)
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.1.2-7
 - convert license to SPDX
 

@@ -1,5 +1,5 @@
 Name:           glib2
-Version:        2.82.1
+Version:        2.82.2
 Release:        %autorelease
 Summary:        A library of handy utility functions
 
@@ -163,11 +163,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/girepository-1.0/Gio-2.0.typelib
 %{_libdir}/girepository-1.0/GioUnix-2.0.typelib
 %dir %{_datadir}/bash-completion
-%dir %{_datadir}/bash-completion/completions
-%{_datadir}/bash-completion/completions/gapplication
-%{_datadir}/bash-completion/completions/gdbus
-%{_datadir}/bash-completion/completions/gio
-%{_datadir}/bash-completion/completions/gsettings
+%dir %{bash_completions_dir}
+%{bash_completions_dir}/gapplication
+%{bash_completions_dir}/gdbus
+%{bash_completions_dir}/gio
+%{bash_completions_dir}/gsettings
 %dir %{_datadir}/glib-2.0
 %dir %{_datadir}/glib-2.0/schemas
 %dir %{_libdir}/gio
@@ -198,7 +198,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/gettext
 %{_datadir}/glib-2.0/schemas/gschema.dtd
 %{_datadir}/glib-2.0/valgrind/glib.supp
-%{_datadir}/bash-completion/completions/gresource
+%{bash_completions_dir}/gresource
 %{_bindir}/glib-genmarshal
 %{_bindir}/glib-gettextize
 %{_bindir}/glib-mkenums

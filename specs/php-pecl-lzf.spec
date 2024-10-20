@@ -3,7 +3,7 @@
 
 Name:           php-pecl-lzf
 Version:        1.7.0
-Release:        13%{?dist}
+Release:        14%{?dist}
 Summary:        Extension to handle LZF de/compression
 License:        PHP-3.01
 URL:            https://pecl.php.net/package/%{pecl_name}
@@ -44,13 +44,16 @@ EOF
 
 %build
 cd %{pecl_name}-%{version}
-phpize
-%configure --enable-lzf --with-liblzf
+%{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
+
+%configure --enable-lzf --with-liblzf --with-php-config=%{__phpconfig}
 %make_build
 
 
 %install
-make -C %{pecl_name}-%{version} install INSTALL_ROOT=%{buildroot}
+%make_install -C %{pecl_name}-%{version}
+
 install -D -p -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
 install -D -p -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
@@ -76,6 +79,9 @@ cd %{pecl_name}-%{version}
 
 
 %changelog
+* Fri Oct 18 2024 Remi Collet <remi@fedoraproject.org> - 1.7.0-14
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.7.0-13
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

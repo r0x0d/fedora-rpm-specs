@@ -1,12 +1,14 @@
 Name:		xerces-c
-Version:	3.2.5
+Version:	3.3.0
 Release:	%autorelease
 Summary:	Validating XML Parser
+
 License:	Apache-2.0
 URL:		https://xerces.apache.org/xerces-c/
 Source0:	https://downloads.apache.org/xerces/c/3/sources/xerces-c-%{version}.tar.xz
 Source1:	https://downloads.apache.org/xerces/c/3/sources/xerces-c-%{version}.tar.xz.asc
 Source2:	https://downloads.apache.org/xerces/c/KEYS
+
 BuildRequires:	dos2unix
 BuildRequires:	gcc-c++
 BuildRequires:	gnupg2
@@ -74,7 +76,7 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %files
 %license LICENSE
-%{_libdir}/libxerces-c-3.2.so
+%{_libdir}/libxerces-c-3.3.so
 
 %files devel
 %{_libdir}/libxerces-c.so

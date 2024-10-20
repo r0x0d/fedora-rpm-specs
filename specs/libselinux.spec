@@ -24,6 +24,7 @@ Patch0002: 0002-libselinux-set-free-d-data-to-NULL.patch
 Patch0003: 0003-libselinux-restorecon-Include-selinux-label.h.patch
 Patch0004: 0004-libselinux-Fix-integer-comparison-issues-when-compil.patch
 Patch0005: 0005-libselinux-deprecate-security_disable-3.patch
+Patch0006: 0006-libselinux-fix-swig-bindings-for-4.3.0.patch
 # Patch list end
 BuildRequires: gcc make
 BuildRequires: ruby-devel ruby libsepol-static >= %{libsepolver} swig pcre2-devel

@@ -9,7 +9,7 @@
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 Name:           loupe
-Version:        47.0
+Version:        47.1
 Release:        %autorelease
 Summary:        Image viewer
 

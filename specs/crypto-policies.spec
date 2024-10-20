@@ -1,5 +1,5 @@
-%global git_date 20241010
-%global git_commit 8baf55743b6f68ae889584b194970f8f3f613a8c
+%global git_date 20241018
+%global git_commit ce922cb23b79263b597f77ec56afc70c900854c6
 %{?git_commit:%global git_commit_hash %(c=%{git_commit}; echo ${c:0:7})}
 
 %global _python_bytecompile_extra 0
@@ -37,7 +37,7 @@ BuildRequires: systemd-rpm-macros
 Conflicts: openssl-libs < 3.0.2-2
 Conflicts: nss < 3.101
 Conflicts: libreswan < 3.28
-Conflicts: openssh < 9.0p1-5
+Conflicts: openssh < 9.9
 Conflicts: gnutls < 3.8.6-6
 
 # Most users want this, the split is mostly for Fedora CoreOS
@@ -295,6 +295,13 @@ exit 0
 %{_mandir}/man8/fips-finish-install.8*
 
 %changelog
+* Fri Oct 18 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20241018-1.gitce922cb
+- openssh, TEST-PQ: rename MLKEM key-exchange to MLKEM768
+
+* Fri Oct 18 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20241018-1.git66c17d1
+- openssh: add support for sntrup761x25519-sha512 and mlkem768x25519-sha256
+- TEST-PQ: enable sntrup761x25519-sha512 and mlkem768x25519-sha256 for openssh
+
 * Thu Oct 10 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20241010-1.git8baf557
 - LEGACY: enable 192-bit ciphers for nss pkcs12/smime
 - openssl: map NULL to TLS_SHA256_SHA256:TLS_SHA384_SHA384

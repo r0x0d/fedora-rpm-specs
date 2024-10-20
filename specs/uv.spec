@@ -20,7 +20,7 @@
 %constrain_build -m 4096
 
 Name:           uv
-Version:        0.4.20
+Version:        0.4.24
 Release:        %autorelease
 Summary:        An extremely fast Python package installer and resolver, written in Rust
 
@@ -155,9 +155,9 @@ Source100:      %{async_zip_git}/archive/%{async_zip_rev}/rs-async-zip-%{async_z
 # We therefore bundle the fork as prescribed in
 #   https://docs.fedoraproject.org/en-US/packaging-guidelines/Rust/#_replacing_git_dependencies
 %global pubgrub_git https://github.com/astral-sh/pubgrub
-%global pubgrub_rev 388685a8711092971930986644cfed152d1a1f6c
+%global pubgrub_rev 19c77268c0ad5f69d7e12126e0cfacfbba466481
 %global pubgrub_baseversion 0.2.1
-%global pubgrub_snapdate 20240823
+%global pubgrub_snapdate 20241016
 Source200:      %{pubgrub_git}/archive/%{pubgrub_rev}/pubgrub-%{pubgrub_rev}.tar.gz
 
 # Similarly, uv now forks reqwest-middleware/reqwest-retry with an incompatible
@@ -535,27 +535,27 @@ tomcli set crates/uv-extract/Cargo.toml lists delitem \
 # default features.
 tomcli set crates/uv/Cargo.toml lists delitem features.default 'pypi'
 
-# These test modules are not gated with the pypi feature, but require specific
-# Python interpreter versions (down to patch release number), which upstream
-# normally downloads, precompiled, into the build area. They may also require
-# network access.
-mv crates/uv-client/tests/remote_metadata.rs{,.disabled}
-mv crates/uv/tests/branching_urls.rs{,.disabled}
-mv crates/uv/tests/pip_check.rs{,.disabled}
-mv crates/uv/tests/pip_list.rs{,.disabled}
-mv crates/uv/tests/pip_show.rs{,.disabled}
-mv crates/uv/tests/pip_tree.rs{,.disabled}
-mv crates/uv/tests/pip_uninstall.rs{,.disabled}
-mv crates/uv/tests/python_dir.rs{,.disabled}
-mv crates/uv/tests/venv.rs{,.disabled}
-mv crates/uv/tests/workspace.rs{,.disabled}
-
 # Omit tests requiring wiremock; its dependency tree is too large and complex
 # to consider packaging it right now. The conditional #[cfg(any())] is always
 # false.
 sed -r -i 's/^#\[cfg\(test\)\]/#[cfg(any())]\r&/' \
     crates/uv-auth/src/middleware.rs
 tomcli set crates/uv-auth/Cargo.toml del dev-dependencies.wiremock
+
+# Integration tests (it crate) all require specific Python interpreter versions
+# (down to patch release number), which upstream normally downloads,
+# precompiled, into the build area – except for the handful of help::* tests in
+# crates/uv/tests/it/help.rs. Some may also require network access.
+# -p uv --test it:
+mods="${mods-}${mods+|}branching_urls"
+mods="${mods-}${mods+|}build_backend"
+mods="${mods-}${mods+|}pip_(check|list|show|tree|uninstall)"
+mods="${mods-}${mods+|}python_dir"
+mods="${mods-}${mods+|}venv"
+mods="${mods-}${mods+|}workspace"
+comment='Downstream-only: skip, needs specific Python interpreter versions'
+sed -r -i "s@mod (${mods});@// ${comment}\n#[cfg(any())]\n&@" \
+    crates/uv/tests/it/main.rs
 
 # For unclear reasons, maturin checks for the presence of optional crate
 # dependencies that correspond to features we have not enabled. We need to
@@ -564,6 +564,27 @@ tomcli set crates/uv-auth/Cargo.toml del dev-dependencies.wiremock
 tomcli set crates/uv/Cargo.toml del dependencies.axoupdater
 tomcli set crates/uv/Cargo.toml del features.self-update
 tomcli set crates/uv/Cargo.toml del dependencies.tracing-durations-export
+
+# Since uv 0.4.21, upstream uses the rust-netrc crate as a git snapshot
+# dependency in order to get bugfixes from
+# https://github.com/gribouille/netrc/pull/3, fixing issues for Windows users,
+# https://github.com/astral-sh/uv/issues/8003.
+#
+# Close examination of the changes since 0.1.1 shows that there should be no
+# behavioral changes on non-Windows platforms, so we can safely patch the
+# dependency to use the released crate.
+#
+# At the same time, we have filed https://github.com/gribouille/netrc/issues/7
+# to encourage rust-netrc to make a new release so that uv upstream can use it,
+# as we would prefer not to carry this patch indefinitely.
+#
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Rust/#_replacing_git_dependencies
+#
+# See the git2path shell function we defined earlier, except we are replacing
+# the git dependency with a version dependency rather than a path one.
+tomcli set Cargo.toml del workspace.dependencies.rust-netrc.git
+tomcli set Cargo.toml del workspace.dependencies.rust-netrc.rev
+tomcli set Cargo.toml str workspace.dependencies.rust-netrc.version '0.1.1'
 
 # Loosen some version bounds that were aggressively updated upstream by the
 # renovate bot. We retain this comment and the following example even when
@@ -675,15 +696,15 @@ done
 # release mode:
 #
 # cargo test -p uv-auth --lib:
-skip="${skip-} --skip keyring::test::fetch_url_no_host"
-skip="${skip-} --skip keyring::test::fetch_url_with_no_username"
-skip="${skip-} --skip keyring::test::fetch_url_with_password"
+skip="${skip-} --skip keyring::tests::fetch_url_no_host"
+skip="${skip-} --skip keyring::tests::fetch_url_with_no_username"
+skip="${skip-} --skip keyring::tests::fetch_url_with_password"
 
-# These tests are not gated with the pypi feature, but require specific Python
-# interpreter versions (down to patch release number), which upstream normally
-# downloads, precompiled, into the build area. They may also require network
-# access.
-skip="${skip-} --skip uv_backend_direct"
+# These tests require specific Python interpreter versions (down to patch
+# release number), which upstream normally downloads, precompiled, into the
+# build area; they might also require network access.
+# -p uv-client --test it:
+skip="${skip-} --skip remote_metadata::remote_metadata_with_and_without_cache"
 
 %cargo_test -- -- --exact ${skip-}
 %endif

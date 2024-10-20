@@ -2,8 +2,8 @@
 ExcludeArch: %{ix86}
 
 Name:           galera
-Version:        26.4.18
-Release:        4%{?dist}
+Version:        26.4.19
+Release:        1%{?dist}
 Summary:        Synchronous multi-master wsrep provider (replication engine)
 
 License:        GPL-2.0-only
@@ -98,6 +98,8 @@ sed -i 's;/usr/bin/garbd;/usr/sbin/garbd;g' %{buildroot}/usr/sbin/garb-systemd
 ##   specific to this service, either statically via systemd-sysusers or dynamically
 ##   via the DynamicUser= service setting.
 sed -i 's/User=nobody/User=garb/g' %{buildroot}%{_unitdir}/garb.service
+# Maintainers from other distributions also tries to resolve it on the upstream:
+#   https://github.com/codership/galera/pull/633
 
 
 %check
@@ -145,6 +147,9 @@ unlink /etc/systemd/system/garb.service || :
 
 
 %changelog
+* Fri Oct 18 2024 Michal Schorm <mschorm@redhat.com> - 26.4.19-1
+- Rebase to 26.4.19
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 26.4.18-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

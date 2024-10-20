@@ -2,7 +2,7 @@
 %bcond_with check
 
 Name:           nispor
-Version:        1.2.19
+Version:        1.2.21
 Release:        %autorelease
 Summary:        Unified interface for Linux network state querying
 License:        Apache-2.0
@@ -37,6 +37,7 @@ BuildRequires:  (crate(serde_json/default) >= 1.0 with crate(serde_json/default)
 BuildRequires:  (crate(serde_yaml/default) >= 0.9 with crate(serde_yaml/default) < 0.10)
 BuildRequires:  (crate(tokio/macros) >= 1.18 with crate(tokio/macros) < 2.0)
 BuildRequires:  (crate(tokio/rt) >= 1.18 with crate(tokio/rt) < 2.0)
+BuildRequires:  (crate(wl-nl80211/default) >= 0.2 with crate(wl-nl80211/default) < 0.3)
 %endif
 
 %description

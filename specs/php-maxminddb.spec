@@ -15,7 +15,6 @@
 %global gh_project  MaxMind-DB-Reader-php
 # Extension
 %global pecl_name   maxminddb
-%global with_zts    0%{!?_without_zts:%{?__ztsphp:1}}
 %global ini_name    40-%{pecl_name}.ini
 # pure PHP library
 %global pk_vendor    maxmind-db
@@ -31,7 +30,7 @@
 Summary:       MaxMind DB Reader extension
 Name:          php-maxminddb
 Version:       1.11.1
-Release:       6%{?dist}
+Release:       7%{?dist}
 License:       Apache-2.0
 URL:           https://github.com/%{gh_owner}/%{gh_project}
 
@@ -142,11 +141,6 @@ if test "x${extver}" != "x%{version}%{?gh_date:-dev}"; then
 fi
 cd ..
 
-mkdir NTS
-%if %{with_zts}
-mkdir ZTS
-%endif
-
 # Drop in the bit of configuration
 cat << 'EOF' | tee %{ini_name}
 ; Enable '%{pecl_name}' extension module
@@ -157,38 +151,27 @@ EOF
 %build
 cd ext
 %{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-cd ../NTS
 %configure \
     --with-php-config=%{__phpconfig} \
     --with-libdir=%{_lib} \
     --with-maxminddb
-make %{?_smp_mflags}
 
-%if %{with_zts}
-cd ../ZTS
-%configure \
-    --with-php-config=%{__ztsphpconfig} \
-    --with-libdir=%{_lib} \
-    --with-maxminddb
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-# Install XML package description
+: Install the extension
+%make_install -C ext
+
+: Install XML package description
 install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-# Install the NTS stuff
-make -C NTS install INSTALL_ROOT=%{buildroot}
+: Install the extension
 install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-%if %{with_zts}
-# Install the ZTS stuff
-make -C ZTS install INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
-
+: Install the library
 mkdir -p                %{buildroot}%{_datadir}/php/MaxMind
 cp -pr src/MaxMind/Db   %{buildroot}%{_datadir}/php/MaxMind/Db
 
@@ -199,12 +182,6 @@ cp -pr src/MaxMind/Db   %{buildroot}%{_datadir}/php/MaxMind/Db
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --modules | grep '^%{pecl_name}$'
 
-%if %{with_zts}
-: Minimal load test for ZTS extension
-%{__ztsphp} --no-php-ini \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep '^%{pecl_name}$'
-%endif
 ret=0
 
 cd ext
@@ -213,17 +190,10 @@ TEST_PHP_EXECUTABLE=%{__php} \
 TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
 %{__php} -n run-tests.php -q --show-diff || ret=1
 
-%if %{with_zts}
-: Upstream test suite for ZTS extension
-TEST_PHP_EXECUTABLE=%{__ztsphp} \
-TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so" \
-%{__ztsphp} -n run-tests.php -q --show-diff || ret=1
-%endif
-
 %if %{with tests}
 cd ..
 : Upstream test suite for the library
-for cmd in php php80 php81 php82 php83; do
+for cmd in php80 php81 php82 php83 php84; do
   if which $cmd; then
     $cmd %{_bindir}/phpunit8 \
       --bootstrap %{buildroot}%{_datadir}/php/MaxMind/Db/Reader/autoload.php \
@@ -248,11 +218,6 @@ exit $ret
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %files -n php-%{pk_vendor}-%{pk_project}
 %license LICENSE
@@ -263,6 +228,9 @@ exit $ret
 
 
 %changelog
+* Fri Oct 18 2024 Remi Collet <remi@fedoraproject.org> - 1.11.1-7
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.11.1-6
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

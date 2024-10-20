@@ -1,13 +1,17 @@
 Name:           perl-Module-Install-AuthorRequires
 Version:        0.02
-Release:        35%{?dist}
+Release:        36%{?dist}
 Summary:        Declare author-only dependencies
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Module-Install-AuthorRequires
 Source0:        https://cpan.metacpan.org/authors/id/F/FL/FLORA/Module-Install-AuthorRequires-%{version}.tar.gz
 BuildArch:      noarch
+# Build
+BuildRequires:  coreutils
 BuildRequires:  make
 BuildRequires:  perl-generators
+BuildRequires:  perl-interpreter
+BuildRequires:  perl(Config)
 BuildRequires:  perl(inc::Module::Install)
 BuildRequires:  perl(Module::Install)
 # Run-time:
@@ -24,11 +28,25 @@ work properly.
 Simply using this module "author_requires" command allows to specify such
 developer specific dependencies in a proper way.
 
+%package tests
+Summary:        Tests for %{name}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       perl-Test-Harness
+
+%description tests
+Tests from %{name}. Execute them
+with "%{_libexecdir}/%{name}/test".
+
 %prep
 %setup -q -n Module-Install-AuthorRequires-%{version}
 # Remove bundled module
 rm -r inc
 sed -i -e '/^inc/ d' MANIFEST 
+# Help generators to recognize Perl scripts
+for F in t/*.t; do
+    perl -i -MConfig -ple 'print $Config{startperl} if $. == 1 && !s{\A#!.*perl\b}{$Config{startperl}}' "$F"
+    chmod +x "$F"
+done
 
 %build
 perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
@@ -37,6 +55,14 @@ perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
 %install
 %{make_install}
 %{_fixperms} %{buildroot}/*
+# Install tests
+mkdir -p %{buildroot}%{_libexecdir}/%{name}
+cp -a t %{buildroot}%{_libexecdir}/%{name}
+cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
+#!/bin/sh
+cd %{_libexecdir}/%{name} && exec prove -I . -j "$(getconf _NPROCESSORS_ONLN)"
+EOF
+chmod +x %{buildroot}%{_libexecdir}/%{name}/test
 
 %check
 make test
@@ -46,7 +72,13 @@ make test
 %{perl_vendorlib}/*
 %{_mandir}/man3/*
 
+%files tests
+%{_libexecdir}/%{name}
+
 %changelog
+* Fri Oct 18 2024 Michal Josef Špaček <mspacek@redhat.com> - 0.02-36
+- Package tests
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.02-35
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

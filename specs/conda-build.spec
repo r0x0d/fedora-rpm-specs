@@ -1,7 +1,7 @@
 %bcond_without tests
 
 Name:           conda-build
-Version:        24.7.1
+Version:        24.9.0
 Release:        %autorelease
 Summary:        Commands and tools for building conda packages
 # version.py is BSD-2-Clause
@@ -93,7 +93,8 @@ export PATH=%{buildroot}%{_bindir}:$PATH
 # tests/test_post.py::test_menuinst_* - conda_build.environ.InvalidEnvironment: Unable to load environment /usr
 # tests/test_api_render.py::test_get_output_file_paths_jinja2 - Requires GIT/CI env
 # tests/test_api_render.py::test_noarch_with_no_platform_deps - fails in koji for an unknown reason
-py.test-%{python3_version} -vv -W ignore::DeprecationWarning --ignore tests/test_api_build.py --ignore tests/cli/test_main_skeleton.py \
+py.test-%{python3_version} -vv -W ignore::DeprecationWarning -W ignore::PendingDeprecationWarning \
+  --ignore tests/test_api_build.py --ignore tests/cli/test_main_skeleton.py \
   --deselect='tests/test_api_build_conda_v2.py::test_conda_pkg_format[None-.tar.bz2]' \
   --deselect='tests/test_api_build_conda_v2.py::test_conda_pkg_format[2-.conda]' \
   --deselect='tests/test_api_build_dll_package.py::test_recipe_build' \

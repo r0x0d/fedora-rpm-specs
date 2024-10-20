@@ -1166,9 +1166,10 @@ function buildjdk() {
 
 function stripjdk() {
     local outputdir=${1}
-    local jdkimagepath=${outputdir}/images/%{jdkimage}
-    local jreimagepath=${outputdir}/images/%{jreimage}
-    local jmodimagepath=${outputdir}/images/jmods
+    local jdkimagepath=images/%{jdkimage}
+    local jreimagepath=images/%{jreimage}
+    local jmodimagepath=images/jmods
+    local modulefile=lib/modules
     local supportdir=${outputdir}/support
     local modulebuildpath=${outputdir}/jdk/modules
     local jdkoutdir=${outputdir}/${jdkimagepath}
@@ -1176,7 +1177,7 @@ function stripjdk() {
 
     if [ "x$suffix" = "x" ] ; then
         # Keep the unstripped version for consumption by RHEL RPMs
-        cp -a ${jdkimagepath}{,.unstripped}
+        cp -a ${jdkoutdir}{,.unstripped}
 
         # Strip the files
         for file in $(find ${jdkoutdir} ${jreoutdir} ${supportdir} ${modulebuildpath} -type f) ; do

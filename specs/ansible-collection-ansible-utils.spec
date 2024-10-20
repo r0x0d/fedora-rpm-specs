@@ -2,8 +2,8 @@
 %global collection_name utils
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
-Version:        4.0.0
-Release:        3%{?dist}
+Version:        5.0.0
+Release:        1%{?dist}
 Summary:        Ansible Network Collection for Common Code
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -37,6 +37,9 @@ find -type f -name '.gitignore' -print -delete
 %{ansible_collection_files}
 
 %changelog
+* Fri Jul 26 2024 Orion Poplawski <orion@nwra.com> - 5.0.0-1
+- Update to 5.0.0
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 4.0.0-3
 - convert license to SPDX
 

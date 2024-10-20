@@ -1,7 +1,7 @@
 %define _root_libdir    /%{_lib}
 
 Name:			libtirpc
-Version:		1.3.5
+Version:		1.3.6
 Release:		0%{?dist}
 Summary:		Transport Independent RPC Library
 License:		SISSL AND BSD-3-Clause
@@ -112,6 +112,9 @@ mv %{buildroot}%{_mandir}/man3 %{buildroot}%{_mandir}/man3t
 %{_mandir}/*/*
 
 %changelog
+* Fri Oct 18 2024 Steve Dickson <steved@redhat.com> - 1.3.6
+- Updated to latest upstream release: libtirpc-1-3-6 (bz 2299673)
+
 * Tue Jul 23 2024 Steve Dickson <steved@redhat.com> - 1.3.5-0
 - Updated to latest upstream release: libtirpc-1-3-5
 

@@ -7,7 +7,7 @@ Name:           pgadmin4
 # NOTE: Also regenerate requires as indicated below when updating!
 # Verify Patch4 on next update
 Version:        8.12
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Administration tool for PostgreSQL
 
 # i686, armv7hl: The webpack terser plugin aborts with JS heap memory exhaustion on these arches
@@ -274,6 +274,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Fri Oct 18 2024 Sandro Mani <manisandro@gmail.com> - 8.12-3
+- Handle file downloads in pgadmin4-qt
+
 * Thu Oct 03 2024 Sandro Mani <manisandro@gmail.com> - 8.12-2
 - Relax socketio requirement
 

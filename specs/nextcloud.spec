@@ -80,7 +80,7 @@ Requires:       php-pdo
 Requires:       php-pecl-apcu
 Requires:       php-pecl-imagick
 Requires:       php-pecl-memcached
-Requires:       php-pecl-redis5
+Requires:       (php-pecl-redis6 or php-pecl-redis5)
 Requires:       php-process
 Requires:       php-session
 Requires:       php-simplexml

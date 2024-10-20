@@ -10,7 +10,7 @@
 # https://github.com/ns1/ns1-go
 %global goipath         gopkg.in/ns1/ns1-go.v2
 %global forgeurl        https://github.com/ns1/ns1-go
-Version:                2.12.1
+Version:                2.12.2
 
 %gometa -f
 

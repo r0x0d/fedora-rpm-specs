@@ -1,6 +1,6 @@
 Name:           xqilla
 Version:        2.3.3
-Release:        16%{?dist}
+Release:        17%{?dist}
 Summary:        XQuery and XPath 2.0 library, built on top of Xerces-C
 
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
@@ -95,6 +95,9 @@ install -D -p -m0664 %{SOURCE1} %{buildroot}/%{_mandir}/man1/%{name}.1
 
 
 %changelog
+* Fri Oct 18 2024 Pete Walter <pwalter@fedoraproject.org> - 2.3.3-17
+- Rebuild for xerces-c 3.3
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 2.3.3-16
 - convert license to SPDX
 

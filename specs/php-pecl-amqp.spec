@@ -8,7 +8,6 @@
 #
 
 %bcond_with         tests
-%global with_zts    0%{?__ztsphp:1}
 %global pecl_name   amqp
 %global ini_name    40-%{pecl_name}.ini
 
@@ -21,7 +20,7 @@
 Summary:       Communicate with any AMQP compliant server
 Name:          php-pecl-amqp
 Version:       %{upstream_version}%{?upstream_prever:~%{upstream_lower}}
-Release:       5%{?dist}
+Release:       6%{?dist}
 License:       PHP-3.01
 URL:           https://pecl.php.net/package/amqp
 Source0:       https://pecl.php.net/get/%{pecl_name}-%{upstream_version}%{?upstream_prever}.tgz
@@ -124,60 +123,39 @@ extension = %{pecl_name}.so
 ;amqp.deserialization_depth = 128
 EOF
 
-mkdir NTS
-%if %{with_zts}
-mkdir ZTS
-%endif
-
 
 %build
 cd %{sources}
 %{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-cd ../NTS
 %configure --with-php-config=%{__phpconfig}
-make %{?_smp_mflags}
-
-%if %{with_zts}
-cd ../ZTS
-%configure --with-php-config=%{__ztsphpconfig}
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-make -C NTS install INSTALL_ROOT=%{buildroot}
-
-# Drop in the bit of configuration
-install -Dpm 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
-
-# Install XML package description
-install -Dpm 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
-
-%if %{with_zts}
-make -C ZTS install INSTALL_ROOT=%{buildroot}
-install -Dpm 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
-
-# Documentation
 cd %{sources}
+
+: Install the extension
+%make_install
+
+: Drop in the bit of configuration
+install -Dpm 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+
+: Install XML package description
+install -Dpm 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+
+: Install the Documentation
 for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
 do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
 %check
-: Minimal load test for NTS extension
+: Minimal load test for the extension
 %{__php} --no-php-ini \
-    --define extension=NTS/modules/%{pecl_name}.so \
+    --define extension=%{sources}/modules/%{pecl_name}.so \
     -m | grep '^%{pecl_name}$'
-
-%if %{with_zts}
-: Minimal load test for ZTS extension
-%{__ztsphp} --no-php-ini \
-    --define extension=ZTS/modules/%{pecl_name}.so \
-    -m | grep '^%{pecl_name}$'
-%endif
 
 %if %{with tests}
 mkdir log run base
@@ -192,15 +170,9 @@ export PHP_AMQP_HOST=localhost
 
 ret=0
 pushd %{sources}
-: Run the upstream test Suite for NTS extension
-TEST_PHP_ARGS="-n -d extension=$PWD/../NTS/modules/%{pecl_name}.so" \
+: Run the upstream test Suite for the extension
+TEST_PHP_ARGS="-n -d extension=$PWD/modules/%{pecl_name}.so" \
 %{__php} -n run-tests.php -q --show-diff || ret=1
-
-%if %{with_zts}
-: Run the upstream test Suite for ZTS extension
-TEST_PHP_ARGS="-n -d extension=$PWD/../ZTS/modules/%{pecl_name}.so" \
-%{__ztsphp} -n run-tests.php -q --show-diff || ret=1
-%endif
 popd
 
 : Cleanup
@@ -221,13 +193,11 @@ exit $ret
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %changelog
+* Fri Oct 18 2024 Remi Collet <remi@fedoraproject.org> - 2.1.2-6
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 2.1.2-5
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

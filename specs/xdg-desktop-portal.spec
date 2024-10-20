@@ -1,3 +1,5 @@
+%bcond docs %{undefined rhel}
+
 %global flatpak_version 1.5.0
 %global geoclue_version 2.5.2
 %global glib_version 2.69.1
@@ -28,17 +30,19 @@ BuildRequires: pkgconfig(libpipewire-0.3) >= %{pipewire_version}
 BuildRequires: pkgconfig(libportal)
 BuildRequires: pkgconfig(libsystemd)
 BuildRequires: python3-dbusmock
-BuildRequires: python3-furo
 BuildRequires: python3-gobject-base
 BuildRequires: python3-pytest
 %if %{undefined rhel}
 BuildRequires: python3-pytest-xdist
 %endif
+%if %{with docs}
+BuildRequires: python3-furo
 BuildRequires: python3-sphinx-copybutton
 BuildRequires: python3-sphinxext-opengraph
-BuildRequires: /usr/bin/rst2man
 BuildRequires: /usr/bin/sphinx-build
-BuildRequires: /usr/bin/xmlto
+%endif
+# for man-pages
+BuildRequires: /usr/bin/rst2man
 
 Requires:      dbus
 Requires:      geoclue2 >= %{geoclue_version}
@@ -74,7 +78,7 @@ The pkg-config file for %{name}.
 
 
 %build
-%meson
+%meson %{!?with_docs:-Ddocumentation=disabled}
 %meson_build
 
 

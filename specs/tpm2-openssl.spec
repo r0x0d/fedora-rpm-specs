@@ -1,6 +1,6 @@
 Name:tpm2-openssl
 Version: 1.2.0
-Release: 4%{?candidate:.%{candidate}}%{?dist}
+Release: 5%{?candidate:.%{candidate}}%{?dist}
 Summary: Provider for integration of TPM 2.0 to OpenSSL 3.0
 
 License: BSD-3-Clause
@@ -10,7 +10,10 @@ Source1: https://github.com/tpm2-software/%{name}/%{?candidate:archive/refs/tags
 Source2: gpgkey-B7201FE8031B07AF11F5423C6329CFCB6BE6FD76.gpg
 # Will be included in Source0 after https://github.com/tpm2-software/tpm2-openssl/pull/100
 Source3: run-with-simulator
-Patch0: 0001-tests-workaround-for-tpm2-tools-bug.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=2301337
+Patch1: 0001-tests-rsa_pki-default-to-sha256.patch
+Patch2: 0002-tests-do-not-test-sha1-by-default.patch
 
 BuildRequires: gnupg2
 BuildRequires: gcc
@@ -60,6 +63,10 @@ cp %{SOURCE3} %{_builddir}/%{name}-%{version}%{?candidate:-%{candidate}}/test/
 %{_libdir}/ossl-modules/tpm2.so
 
 %changelog
+* Fri Oct 18 2024 Adrian Freihofer <adrian.freihofer@gmail.com> 1.2.0-5
+- Fix tests for F41 https://bugzilla.redhat.com/show_bug.cgi?id=2301337
+- Revert exclude broken test on s390
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

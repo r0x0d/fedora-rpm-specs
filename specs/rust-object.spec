@@ -5,7 +5,7 @@
 %global crate object
 
 Name:           rust-object
-Version:        0.36.4
+Version:        0.36.5
 Release:        %autorelease
 Summary:        Unified interface for reading and writing object file formats
 

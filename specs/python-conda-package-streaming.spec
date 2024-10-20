@@ -5,8 +5,8 @@
 %bcond_with bootstrap
 
 Name:           python-%{srcname}
-Version:        0.10.0
-Release:        4%{?dist}
+Version:        0.11.0
+Release:        1%{?dist}
 Summary:        Extract metadata from remote conda packages without downloading whole file
 
 License:        BSD-3-Clause
@@ -80,6 +80,9 @@ export CONDA_EXE
 
 
 %changelog
+* Fri Oct 18 2024 Orion Poplawski <orion@nwra.com> - 0.11.0-1
+- Update to 0.11.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.10.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -2,7 +2,7 @@
 %global giturl  https://github.com/gap-packages/recog
 
 Name:           gap-pkg-%{pkgname}
-Version:        1.4.2
+Version:        1.4.3
 Release:        %autorelease
 Summary:        Group recognition methods
 
@@ -54,7 +54,6 @@ This package contains documentation for gap-pkg-%{pkgname}.
 %autosetup -n %{pkgname}-%{version} -b 1
 
 %build
-export LC_ALL=C.UTF-8
 gap makedoc.g
 
 %install
@@ -63,8 +62,6 @@ cp -a *.g contrib examples gap tst %{buildroot}%{gap_libdir}/pkg/%{pkgname}
 %gap_copy_docs
 
 %check
-export LC_ALL=C.UTF-8
-
 # Tell ATLAS where to find downloaded files
 mkdir ~/.gap
 cat > ~/.gap/gap.ini << EOF
@@ -72,15 +69,17 @@ SetUserPreference( "AtlasRep", "AtlasRepDataDirectory", "%{_builddir}/atlasrep/"
 EOF
 
 # Do not run the very slow tests
-gap -l "%{buildroot}%{gap_libdir};" tst/testquick.g
-gap -l "%{buildroot}%{gap_libdir};" tst/testslow.g
+gap -l '%{buildroot}%{gap_libdir};' tst/testquick.g
+gap -l '%{buildroot}%{gap_libdir};' tst/testslow.g
 
 %files
 %doc CHANGES NOTES README.md TODO WISHLIST
 %license COPYRIGHT LICENSE
-%{gap_libdir}/pkg/%{pkgname}/
-%exclude %{gap_libdir}/pkg/%{pkgname}/doc/
-%exclude %{gap_libdir}/pkg/%{pkgname}/examples/
+%dir %{gap_libdir}/pkg/%{pkgname}/
+%{gap_libdir}/pkg/%{pkgname}/*.g
+%{gap_libdir}/pkg/%{pkgname}/contrib/
+%{gap_libdir}/pkg/%{pkgname}/gap/
+%{gap_libdir}/pkg/%{pkgname}/tst/
 
 %files doc
 %docdir %{gap_libdir}/pkg/%{pkgname}/doc/

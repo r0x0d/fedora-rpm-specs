@@ -4,7 +4,7 @@
 %endif
 
 Name:           centpkg
-Version:        0.8.12
+Version:        0.8.13
 Release:        1%{?dist}
 Summary:        CentOS utility for working with dist-git
 License:        GPL-2.0-or-later
@@ -78,6 +78,11 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} %{python3} -m unittest discover --verb
 
 
 %changelog
+* Fri Oct 18 2024 Troy Dawson <tdawson@redhat.com> - 0.8.13-1
+- define centos in rpmdefines section
+- undefine fedora in rpmdefines section
+- resolves centpkg issue #111 and #112
+
 * Tue Sep 24 2024 Troy Dawson <tdawson@redhat.com> - 0.8.12-1
 - Properly handle non-standard branch names
 

@@ -14,7 +14,7 @@ Summary:       Midi/Audio Music Sequencer
 # See: https://fedoraproject.org/wiki/AudioCreation
 Epoch:         1
 Version:       %{majorver}.1
-Release:       4%{?dist}
+Release:       5%{?dist}
 # original freeverb plugin was public domain
 # givertcap (not built) is GPLv2
 # The rest, including the core of muse is distributed under GPLv2+
@@ -99,6 +99,9 @@ appstream-util validate-relax --nonet \
 %{_datadir}/metainfo/io.github.muse_sequencer.Muse.appdata.xml
 
 %changelog
+* Fri Oct 18 2024 Richard Shaw <hobbes1069@gmail.com> - 1:4.2.1-5
+- Rebuild for new rtaudio.
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1:4.2.1-4
 - convert license to SPDX
 

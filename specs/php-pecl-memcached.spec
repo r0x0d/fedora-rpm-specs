@@ -13,7 +13,7 @@
 # After 40-igbinary, 40-json, 40-msgpack
 %global ini_name    50-%{pecl_name}.ini
 
-%global upstream_version 3.2.0
+%global upstream_version 3.3.0
 #global upstream_prever  RC1
 # upstream use    dev => alpha => beta => RC
 # make RPM happy  DEV => alpha => beta => rc
@@ -23,15 +23,11 @@
 Summary:      Extension to work with the Memcached caching daemon
 Name:         php-pecl-memcached
 Version:      %{upstream_version}%{?upstream_prever:~%{upstream_lower}}
-Release:      13%{?dist}
+Release:      1%{?dist}
 License:      PHP-3.01
 URL:          https://pecl.php.net/package/%{pecl_name}
 
 Source0:      https://pecl.php.net/get/%{sources}.tgz
-
-# upstream patch for PHP 8.2
-Patch0:        %{pecl_name}-upstream.patch
-Patch1:        %{pecl_name}-build.patch
 
 ExcludeArch:   %{ix86}
 
@@ -49,6 +45,7 @@ BuildRequires: libmemcached-devel >= 1.0.18
 BuildRequires: zlib-devel
 BuildRequires: cyrus-sasl-devel
 BuildRequires: fastlz-devel
+BuildRequires: libzstd-devel
 %if %{with tests}
 BuildRequires: memcached
 %endif
@@ -88,8 +85,6 @@ sed -e 's/role="test"/role="src"/' \
 
 cd %{sources}
 rm -r fastlz
-%patch -P0 -p1 -b .up
-%patch -P1 -p1 -b .pr555
 
 # Chech version as upstream often forget to update this
 extver=$(sed -n '/#define PHP_MEMCACHED_VERSION/{s/.* "//;s/".*$//;p}' php_memcached.h)
@@ -137,6 +132,7 @@ sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 %endif
            --enable-memcached-protocol \
            --with-system-fastlz \
+           --with-zstd \
            --with-php-config=%{__phpconfig}
 
 %make_build
@@ -185,6 +181,10 @@ port=$(%{__php} -r 'echo 10000 + PHP_MAJOR_VERSION*100 + PHP_MINOR_VERSION*10 + 
 memcached -p $port -U $port      -d -P $PWD/memcached.pid
 sed -e "s/11211/$port/" -i tests/*
 
+: Port for MemcachedServer
+port=$(%{__php} -r 'echo 11000 + PHP_MAJOR_VERSION*100 + PHP_MINOR_VERSION*10 + PHP_INT_SIZE;')
+sed -e "s/3434/$port/" -i tests/*
+
 : Run the upstream test Suite for NTS extension
 TEST_PHP_EXECUTABLE=%{__php} \
 TEST_PHP_ARGS="$OPT -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
@@ -211,6 +211,10 @@ exit $ret
 
 
 %changelog
+* Fri Oct 18 2024 Remi Collet <remi@remirepo.net> - 3.3.0-1
+- update to 3.3.0
+- enable zstd compression support
+
 * Wed Oct 16 2024 Remi Collet <remi@fedoraproject.org> - 3.2.0-13
 - modernize the spec file
 

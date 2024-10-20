@@ -50,6 +50,26 @@ Summary:        %{summary}
 %description -n python3-%{srcname} %{_description}
 
 
+%pyproject_extras_subpkg -n python3-%{srcname} arrow
+%pyproject_extras_subpkg -n python3-%{srcname} dask
+%pyproject_extras_subpkg -n python3-%{srcname} entrypoints
+%pyproject_extras_subpkg -n python3-%{srcname} fuse
+%if %{without bootstrap}
+%pyproject_extras_subpkg -n python3-%{srcname} gcs
+%endif
+%pyproject_extras_subpkg -n python3-%{srcname} git
+%pyproject_extras_subpkg -n python3-%{srcname} github
+%if %{without bootstrap}
+%pyproject_extras_subpkg -n python3-%{srcname} gs
+%endif
+%pyproject_extras_subpkg -n python3-%{srcname} hdfs
+%pyproject_extras_subpkg -n python3-%{srcname} http
+%pyproject_extras_subpkg -n python3-%{srcname} libarchive
+%pyproject_extras_subpkg -n python3-%{srcname} sftp
+%pyproject_extras_subpkg -n python3-%{srcname} smb
+%pyproject_extras_subpkg -n python3-%{srcname} ssh
+
+
 %prep
 %autosetup -n filesystem_spec-%{tag} -p1
 
@@ -57,7 +77,6 @@ Summary:        %{summary}
 # Skipped extras:
 # - (when bootstrapping) gcs and gs: Don't have gcsfs
 # - abfs and adl: Don't have adlfs
-# - arrow and hdfs: Don't have pyarrow
 # - dropbox: Don't have dropboxdrivefs
 # - fuse: Won't work in a build since it requires the kernel module to be loaded.
 # - gui: Don't have panel

@@ -281,7 +281,7 @@
 # Define version of OpenJDK 8 used
 %global project openjdk
 %global repo shenandoah-jdk8u
-%global openjdk_revision jdk8u422-b05
+%global openjdk_revision jdk8u432-b06
 %global shenandoah_revision shenandoah-%{openjdk_revision}
 # Define IcedTea version used for SystemTap tapsets and desktop file
 # Define current Git revision for the FIPS support patches
@@ -608,8 +608,6 @@ Patch539: pr2888-rh2055274-support_system_cacerts-%{cacertsver}.patch
 Patch541: rh1684077-openjdk_should_depend_on_pcsc-lite-libs_instead_of_pcsc-lite-devel.patch
 # RH1750419: Enable build of speculative store bypass hardened alt-java (CVE-2018-3639)
 Patch600: rh1750419-redhat_alt_java.patch
-# JDK-8281098, PR3836: Extra compiler flags not passed to adlc build
-Patch112: jdk8281098-pr3836-pass_compiler_flags_to_adlc.patch
 
 #############################################
 #
@@ -933,7 +931,9 @@ sh %{SOURCE12}
 #%patch -P130
 
 # x86 fixes
-%patch -P105
+pushd %{top_level_dir_name}
+%patch -P105 -p1
+popd
 
 # Upstreamable fixes
 %patch -P512
@@ -941,7 +941,6 @@ sh %{SOURCE12}
 %patch -P528
 %patch -P571
 %patch -P574
-%patch -P112
 %patch -P581
 %patch -P541
 %patch -P12

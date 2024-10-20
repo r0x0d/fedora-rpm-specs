@@ -1,7 +1,7 @@
 Summary:        In memory VT-compatible terminal emulator
 Name:           python-pyte
 Version:        0.8.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 # Automatically converted from old format: LGPLv3 - review is highly recommended.
 License:        LGPL-3.0-only
 URL:            https://github.com/selectel/pyte
@@ -11,6 +11,7 @@ BuildArch:      noarch
 BuildRequires:  make
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
+BuildRequires:  python3-pytest
 BuildRequires:  python3-pytest-runner
 BuildRequires:  python3-sphinx
 BuildRequires:  python3-wcwidth
@@ -41,7 +42,8 @@ pushd docs && make all
 %py3_install
 
 %check
-%{__python3} setup.py test
+export PYTHONPATH=%{buildroot}%{python3_sitelib}
+%{pytest} --color=yes
 
 %files -n python3-pyte
 %license LICENSE
@@ -55,6 +57,9 @@ pushd docs && make all
 %doc docs/_build/html
 
 %changelog
+* Fri Oct 18 2024 Terje Rosten <terjeros@gmail.com> - 0.8.2-7
+- Use pytest
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 0.8.2-6
 - convert license to SPDX
 

@@ -3,13 +3,16 @@ Summary: Show documentation for KDE applications
 # Override khelpcenter subpackage from kde-runtime-15.04 (no longer built)
 Epoch:   1
 Version: 24.08.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # Automatically converted from old format: GPLv2 or GPLv3 - review is highly recommended.
 License: GPL-2.0-only OR GPL-3.0-only
 URL:     https://invent.kde.org/system/%{name}
 
 Source0: https://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
+
+# https://invent.kde.org/system/khelpcenter/-/merge_requests/53
+Patch1:  0001-searchhandlers-Replace-Perl-manpage-script-with-Pyth.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  extra-cmake-modules
@@ -51,7 +54,7 @@ ExclusiveArch: %{qt6_qtwebengine_arches}
 
 
 %prep
-%autosetup
+%autosetup -p1
 
 
 %build
@@ -85,7 +88,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.%{name}.deskt
 %license LICENSES/*
 %{_bindir}/%{name}
 %{_kf6_datadir}/qlogging-categories6/%{name}.*
-%{_libexecdir}/khc_mansearch.pl
+%{_libexecdir}/khc_mansearch.py
 %{_libexecdir}/khc_xapianindexer
 %{_libexecdir}/khc_xapiansearch
 %{_kf6_datadir}/%{name}/
@@ -99,6 +102,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.%{name}.deskt
 
 
 %changelog
+* Fri Oct 11 2024 Timothée Ravier <tim@siosm.fr> - 1:24.08.2-2
+- Backport Perl->Python manpage search conversion
+
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 1:24.08.2-1
 - 24.08.2
 

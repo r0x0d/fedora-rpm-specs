@@ -1,6 +1,6 @@
 Name:           perl-Glib-Object-Introspection
 Version:        0.051
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Dynamically create Perl language bindings
 License:        LGPL-2.1-or-later
 URL:            https://metacpan.org/release/Glib-Object-Introspection
@@ -9,6 +9,8 @@ Patch1:         perl-Glib-Object-Introspection_lib_pattern.patch
 # Use system-wide compiler flags when building test libraries. It's silents
 # annocheck gating tests, CPAN RT#147466, proposed to the upstream.
 Patch4:         Glib-Object-Introspection-0.050-Use-CFLAGS-and-LDFLAGS-from-the-envirnoment-for-buil.patch
+# https://gitlab.gnome.org/GNOME/perl-glib-object-introspection/-/issues/7
+Patch5:         Glib-Object-Introspection-0.051-Handle-pointer-types.patch
 BuildRequires:  coreutils
 BuildRequires:  findutils
 BuildRequires:  make
@@ -131,6 +133,9 @@ LANG=C.UTF-8 make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Fri Oct 18 2024 Michal Josef Špaček <mspacek@redhat.com> - 0.051-4
+- Fix handling of pointer types (#2310793)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.051-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

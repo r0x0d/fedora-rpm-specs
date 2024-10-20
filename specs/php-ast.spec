@@ -11,16 +11,14 @@
 #
 
 %global pecl_name   ast
-%global with_zts    0%{!?_without_zts:%{?__ztsphp:1}}
 # After 20-tokenizer.ini
 %global ini_name    40-%{pecl_name}.ini
 %global sources     %{pecl_name}-%{version}
-%global _configure  ../%{sources}/configure
 
 Summary:       Abstract Syntax Tree
 Name:          php-ast
 Version:       1.1.2
-Release:       2%{?dist}
+Release:       3%{?dist}
 License:       BSD-3-Clause
 URL:           https://pecl.php.net/package/ast
 Source0:       httpd://pecl.php.net/get/%{sources}.tgz
@@ -65,8 +63,6 @@ if test "x${extver}" != "x%{version}"; then
 fi
 cd ..
 
-mkdir NTS ZTS
-
 # Drop in the bit of configuration
 cat << 'EOF' | tee %{ini_name}
 ; Enable '%{summary}' extension module
@@ -77,63 +73,44 @@ EOF
 %build
 cd %{sources}
 %{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-cd ../NTS
 %configure \
     --with-php-config=%{__phpconfig} \
     --enable-ast
-make %{?_smp_mflags}
 
-%if %{with_zts}
-cd ../ZTS
-%configure \
-    --with-php-config=%{__ztsphpconfig} \
-    --enable-ast
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-# Install XML package description
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+cd %{sources}
 
-# Install the NTS stuff
-make -C NTS install INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+: Install the extension
+%make_install
 
-%if %{with_zts}
-# Install the ZTS stuff
-make -C ZTS install INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
+: Install XML package description
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-# Documentation
-for i in $(grep 'role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 %{sources}/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+: Install the configuration file
+install -D -m 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+
+: Documentation
+for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
 %check
 cd %{sources}
-: Minimal load test for NTS extension
+
+: Minimal load test for the extension
 %{__php} --no-php-ini \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --modules | grep '^%{pecl_name}$'
 
-: Upstream test suite  for NTS extension
+: Upstream test suite  for the extension
 TEST_PHP_ARGS="-n -d extension=tokenizer.so -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
 %{__php} -n run-tests.php -q --show-diff %{?_smp_mflags}
-
-%if %{with_zts}
-: Minimal load test for ZTS extension
-%{__ztsphp} --no-php-ini \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep '^%{pecl_name}$'
-
-: Upstream test suite  for ZTS extension
-TEST_PHP_ARGS="-n -d extension=tokenizer.so -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so" \
-%{__ztsphp} -n run-tests.php -q --show-diff %{?_smp_mflags}
-%endif
 
 
 %files
@@ -144,13 +121,11 @@ TEST_PHP_ARGS="-n -d extension=tokenizer.so -d extension=%{buildroot}%{php_ztsex
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %changelog
+* Fri Oct 18 2024 Remi Collet <remi@fedoraproject.org> - 1.1.2-3
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.1.2-2
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

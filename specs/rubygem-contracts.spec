@@ -1,7 +1,7 @@
 %global	gem_name	contracts
 
 Name:		rubygem-%{gem_name}
-Version:	0.17.1
+Version:	0.17.2
 Release:	1%{?dist}
 
 Summary:	Contracts for Ruby
@@ -78,6 +78,9 @@ popd
 %{gem_instdir}/benchmarks/
 
 %changelog
+* Fri Oct 18 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.17.2-1
+- 0.17.2
+
 * Tue Oct 08 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.17.1-1
 - 0.17.1
 

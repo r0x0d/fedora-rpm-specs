@@ -2,7 +2,7 @@
 #global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           sqlitebrowser
-Version:        3.13.0
+Version:        3.13.1
 Release:        1%{?dist}
 Summary:        Create, design, and edit SQLite database files
 
@@ -75,6 +75,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Fri Oct 18 2024 Sandro Mani <manisandro@gmail.com> - 3.13.1-1
+- Update to 3.13.1
+
 * Tue Jul 23 2024 Sandro Mani <manisandro@gmail.com> - 3.13.0-1
 - Update to 3.13.0
 

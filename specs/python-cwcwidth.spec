@@ -1,7 +1,7 @@
 Summary:        Python bindings for wc(s)width
 Name:           python-cwcwidth
 Version:        0.1.9
-Release:        5%{?dist}
+Release:        6%{?dist}
 License:        MIT
 URL:            https://github.com/sebastinas/cwcwidth
 Source0:        %{pypi_source cwcwidth}
@@ -32,7 +32,7 @@ rm -rf cwcwidth.egg-info
 %py3_install
 
 %check
-%{__python3} setup.py test
+(cd tests ; PYTHONPATH=%{buildroot}%{python3_sitearch} %{__python3} -m unittest -v)
 
 %files -n python3-cwcwidth
 %license LICENSE
@@ -41,6 +41,9 @@ rm -rf cwcwidth.egg-info
 %{python3_sitearch}/cwcwidth-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Fri Oct 18 2024 Terje Rosten <terje.rosten@ntnu.no> - 0.1.8-6
+- Avoid test subcommand
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.1.9-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

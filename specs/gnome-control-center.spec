@@ -120,7 +120,12 @@ Recommends: switcheroo-control
 Requires: /usr/bin/tecla
 %if 0%{?fedora} >= 35 || 0%{?rhel} >= 9
 # For the power panel
-Recommends: tuned-ppd
+Recommends: ppd-service
+%if 0%{?fedora} && 0%{?fedora} < 41
+Suggests: power-profiles-daemon
+%else
+Suggests: tuned-ppd
+%endif
 %endif
 
 # Renamed in F28

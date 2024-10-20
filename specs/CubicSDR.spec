@@ -1,6 +1,6 @@
 Name:           CubicSDR
 Version:        0.2.7
-Release:        17%{?dist}.1
+Release:        18%{?dist}.1
 Summary:        Cross-Platform Software-Defined Radio Panadapter
 
 # The primary license of CubicSDR is GPLv2+.
@@ -77,6 +77,9 @@ install -D -p -m644 %{SOURCE2} %{buildroot}%{_metainfodir}/com.cubicsdr.CubicSDR
 
 
 %changelog
+* Fri Oct 18 2024 Richard Shaw <hobbes1069@gmail.com> - 0.2.7-18.1
+- Rebuild for new rtaudio.
+
 * Sun Oct 13 2024 Richard Shaw <hobbes1069@gmail.com> - 0.2.7-17.1
 - Rebuild for liquid-dsp-1.6.0 now that it's in the repos.
 

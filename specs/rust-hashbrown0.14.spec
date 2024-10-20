@@ -4,8 +4,8 @@
 
 %global crate hashbrown
 
-Name:           rust-hashbrown
-Version:        0.15.0
+Name:           rust-hashbrown0.14
+Version:        0.14.5
 Release:        %autorelease
 Summary:        Rust port of Google's SwissTable hash map
 
@@ -48,6 +48,18 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
+%package     -n %{name}+ahash-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+ahash-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "ahash" feature of the "%{crate}" crate.
+
+%files       -n %{name}+ahash-devel
+%ghost %{crate_instdir}/Cargo.toml
+
 %package     -n %{name}+allocator-api2-devel
 Summary:        %{summary}
 BuildArch:      noarch
@@ -58,18 +70,6 @@ This package contains library source intended for building other packages which
 use the "allocator-api2" feature of the "%{crate}" crate.
 
 %files       -n %{name}+allocator-api2-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+default-hasher-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+default-hasher-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "default-hasher" feature of the "%{crate}" crate.
-
-%files       -n %{name}+default-hasher-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+equivalent-devel
@@ -96,16 +96,16 @@ use the "inline-more" feature of the "%{crate}" crate.
 %files       -n %{name}+inline-more-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+raw-entry-devel
+%package     -n %{name}+raw-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+raw-entry-devel %{_description}
+%description -n %{name}+raw-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "raw-entry" feature of the "%{crate}" crate.
+use the "raw" feature of the "%{crate}" crate.
 
-%files       -n %{name}+raw-entry-devel
+%files       -n %{name}+raw-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+rayon-devel
@@ -118,6 +118,18 @@ This package contains library source intended for building other packages which
 use the "rayon" feature of the "%{crate}" crate.
 
 %files       -n %{name}+rayon-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+rkyv-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+rkyv-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "rkyv" feature of the "%{crate}" crate.
+
+%files       -n %{name}+rkyv-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+serde-devel

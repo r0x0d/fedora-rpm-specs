@@ -7,20 +7,17 @@
 # Please, preserve the changelog entries
 #
 
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
+%bcond_without     tests
 
 %global pecl_name  memcache
-# Not ready, some failed UDP tests. Neded investigation.
-%global with_tests 0%{!?_without_tests:1}
-%global with_zts   0%{?__ztsphp:1}
-%global ini_name  40-%{pecl_name}.ini
+%global ini_name   40-%{pecl_name}.ini
+%global sources    %{pecl_name}-%{version}
 
 Summary:      Extension to work with the Memcached caching daemon
 Name:         php-pecl-memcache
 Version:      8.2
-Release:      8%{?dist}
-Source0:      https://pecl.php.net/get/%{pecl_name}-%{version}%{?prever}.tgz
+Release:      9%{?dist}
+Source0:      https://pecl.php.net/get/%{sources}.tgz
 License:      PHP-3.01
 Group:        Development/Languages
 URL:          https://pecl.php.net/package/%{pecl_name}
@@ -32,7 +29,7 @@ BuildRequires: gcc
 BuildRequires: php-devel >= 8.0
 BuildRequires: php-pear
 BuildRequires: zlib-devel
-%if %{with_tests}
+%if %{with tests}
 BuildRequires: memcached
 %endif
 
@@ -58,14 +55,13 @@ Memcache can be used as a PHP session handler.
 
 %prep 
 %setup -c -q
-mv %{pecl_name}-%{version} NTS
 
 # Don't install/register tests
 sed -e 's/role="test"/role="src"/' \
     -e '/LICENSE/s/role="doc"/role="src"/' \
     -i package.xml
 
-pushd NTS
+pushd %{sources}
 extver=$(sed -n '/#define PHP_MEMCACHE_VERSION/{s/.* "//;s/".*$//;p}' src/php_memcache.h)
 if test "x${extver}" != "x%{version}%{?prever:-%{prever}}"; then
    : Error: Upstream version is now ${extver}, expecting %{version}%{?prever:-%{prever}}
@@ -127,61 +123,42 @@ extension=%{pecl_name}.so
 ;memcache.session_save_path = ''
 EOF
 
-%if %{with_zts}
-cp -r NTS ZTS
-%endif
-
 
 %build
-cd NTS
-%{_bindir}/phpize
-%configure --with-php-config=%{_bindir}/php-config
-make %{?_smp_mflags}
+cd %{sources}
+%{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-%if %{with_zts}
-cd ../ZTS
-%{_bindir}/zts-phpize
-%configure --with-php-config=%{_bindir}/zts-php-config
-make %{?_smp_mflags}
-%endif
+%configure --with-php-config=%{__phpconfig}
+%make_build
 
 
 %install
-make -C NTS install INSTALL_ROOT=%{buildroot}
+cd %{sources}
 
-# Drop in the bit of configuration
-install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+: Install the extension
+%make_install
 
-%if %{with_zts}
-make -C ZTS install INSTALL_ROOT=%{buildroot}
+: Drop in the bit of configuration
+install -D -m 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
+: Install XML package description
+install -Dpm 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-# Install XML package description
-install -Dpm 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
-
-# Documentation
-for i in $(grep '<file .* role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 NTS/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+: Install the Documentation
+for i in $(grep '<file .* role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
 %check
-: Minimal load test for NTS extension
+: Minimal load test for the extension
 %{__php} --no-php-ini \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     -m | grep %{pecl_name}
 
-%if %{with_zts}
-: Minimal load test for ZTS extension
-%{__ztsphp} --no-php-ini \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    -m | grep %{pecl_name}
-%endif
-
-%if %{with_tests}
-cd NTS
+%if %{with tests}
+cd %{sources}
 : ignore test with erratic results
 rm tests/040.phpt
 rm tests/056.phpt
@@ -196,13 +173,13 @@ memcached -p 11211 -U 11211      -d -P $PWD/memcached1.pid
 memcached -p 11212 -U 11212      -d -P $PWD/memcached2.pid
 memcached -s $PWD/memcached.sock -d -P $PWD/memcached3.pid
 
-: Upstream test suite for NTS extension
+: Upstream test suite for the extension
 ret=0
-TEST_PHP_EXECUTABLE=%{_bindir}/php \
+TEST_PHP_EXECUTABLE=%{__php} \
 TEST_PHP_ARGS="-n -d extension_dir=$PWD/modules -d extension=%{pecl_name}.so" \
 NO_INTERACTION=1 \
 REPORT_EXIT_STATUS=1 \
-%{_bindir}/php -n run-tests.php --show-diff || ret=1
+%{__php} -n run-tests.php --show-diff || ret=1
 
 : Cleanup
 if [ -f memcached2.pid ]; then
@@ -214,17 +191,11 @@ exit $ret
 
 
 %files
-%license NTS/LICENSE
+%license %{sources}/LICENSE
 %doc %{pecl_docdir}/%{pecl_name}
 %{pecl_xmldir}/%{name}.xml
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
-
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 
 %changelog

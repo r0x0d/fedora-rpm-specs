@@ -1,8 +1,8 @@
 %global _docdir_fmt %{name}
 
 Name:           ansible-collection-ansible-netcommon
-Version:        6.0.0
-Release:        4%{?dist}
+Version:        6.1.3
+Release:        1%{?dist}
 Summary:        Ansible Network Collection for Common Code
 
 # All files are licensed under GPL-3.0-or-later except:
@@ -96,6 +96,9 @@ EOF
 %doc docs
 
 %changelog
+* Fri Jul 19 2024 Orion Poplawski <orion@nwra.com> - 6.1.3-1
+- Update to 6.1.3
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.0.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

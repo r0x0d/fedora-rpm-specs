@@ -13,6 +13,7 @@ Source2: https://github.com/bachradsusi.gpg
 # i=1; for j in 00*patch; do printf "Patch%04d: %s\n" $i $j; i=$((i+1));done
 # Patch list start
 Patch0001: 0001-libsemanage-Preserve-file-context-and-ownership-in-p.patch
+Patch0002: 0002-libsemanage-fix-swig-bindings-for-4.3.0.patch
 # Patch list end
 URL: https://github.com/SELinuxProject/selinux/wiki
 Source3: semanage.conf

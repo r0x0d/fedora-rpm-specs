@@ -1,6 +1,6 @@
 Name:           perl-Excel-Writer-XLSX
-Version:        1.12
-Release:        2%{?dist}
+Version:        1.13
+Release:        1%{?dist}
 Summary:        Create a new file in the Excel 2007+ XLSX format
 # LICENSE_Artistic_Perl:    Artistic-1.0-Perl text
 # LICENSE_GPL_1.0:          GPL-1.0 text
@@ -91,7 +91,7 @@ cp -a t %{buildroot}%{_libexecdir}/%{name}
 cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
 #!/bin/bash
 set -e
-# Many tests, e.g. t/regression/chart_axis25.t, create filed under CWD
+# Many tests, e.g. t/regression/chart_axis25.t, create files under CWD
 DIR=$(mktemp -d)
 cp -a %{_libexecdir}/%{name}/* "$DIR"
 pushd "$DIR"
@@ -122,6 +122,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Fri Oct 18 2024 Petr Pisar <ppisar@redhat.com> - 1.13-1
+- 1.13 bump
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.12-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

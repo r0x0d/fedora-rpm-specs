@@ -15,6 +15,8 @@ Patch1:		libftdi-1.5-no-distutils.patch
 # http://developer.intra2net.com/mailarchive/html/libftdi/2023/msg00005.html
 Patch2:		libftdi-1.5-cmake-deps.patch
 # Fix for SWIG 4.3.0
+# https://bugzilla.redhat.com/show_bug.cgi?id=2319133
+# http://developer.intra2net.com/mailarchive/html/libftdi/2024/msg00024.html
 Patch3:		libftdi-1.5-swig-4.3.patch
 
 BuildRequires:	cmake
@@ -127,7 +129,7 @@ rm -f %{buildroot}%{_datadir}/doc/libftdipp1/example.conf
 
 %changelog
 * Wed Oct 16 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1.5-16
-- Fix for SWIG 4.3.0
+- Fix for SWIG 4.3.0 (rhbz#2319133)
 
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.5-15
 - convert license to SPDX

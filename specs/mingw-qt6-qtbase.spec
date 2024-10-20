@@ -19,8 +19,8 @@
 %define release_version %(echo %{version} | awk -F. '{print $1"."$2}')
 
 Name:           mingw-qt6-qtbase
-Version:        6.7.2
-Release:        3%{?dist}
+Version:        6.8.0
+Release:        1%{?dist}
 Summary:        Qt6 for Windows - QtBase component
 # Can't make package noarch as it could lead to -DQT_HOST_PATH_CMAKE_DIR=%%{_libdir}/cmake ponting to the wrong libdir
 
@@ -44,8 +44,8 @@ Patch2:         qtbase-include-toolchain.patch
 Patch3:         qtbase-qmakeconf.patch
 # Fix mingw build
 Patch4:         qtbase-mingw.patch
-# Fix for CVE-2024-39936
-Patch5:         CVE-2024-39936.patch
+# Fix mismatching ucalTimeZoneDisplayName signature in definition
+Patch5:         qtbase-ucalTimeZoneDisplayName.patch
 
 
 BuildRequires:  cmake
@@ -247,6 +247,7 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 %{mingw32_libdir}/libQt6Core.dll.a
 %{mingw32_libdir}/libQt6DBus.dll.a
 %{mingw32_libdir}/libQt6ExampleIcons.a
+%{mingw32_libdir}/libQt6ExamplesAssetDownloader.a
 %{mingw32_libdir}/libQt6Gui.dll.a
 %{mingw32_libdir}/libQt6Network.dll.a
 %{mingw32_libdir}/libQt6OpenGL.dll.a
@@ -265,6 +266,7 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 %{mingw32_libdir}/Qt6DeviceDiscoverySupport.prl
 %{mingw32_libdir}/Qt6EntryPoint.prl
 %{mingw32_libdir}/Qt6ExampleIcons.prl
+%{mingw32_libdir}/Qt6ExamplesAssetDownloader.prl
 %{mingw32_libdir}/Qt6FbSupport.prl
 %{mingw32_libdir}/Qt6Gui.prl
 %{mingw32_libdir}/Qt6Network.prl
@@ -289,6 +291,7 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 %{mingw32_libdir}/qt6/metatypes/qt6dbus_relwithdebinfo_metatypes.json
 %{mingw32_libdir}/qt6/metatypes/qt6devicediscoverysupportprivate_relwithdebinfo_metatypes.json
 %{mingw32_libdir}/qt6/metatypes/qt6exampleiconsprivate_relwithdebinfo_metatypes.json
+%{mingw32_libdir}/qt6/metatypes/qt6examplesassetdownloaderprivate_relwithdebinfo_metatypes.json
 %{mingw32_libdir}/qt6/metatypes/qt6fbsupportprivate_relwithdebinfo_metatypes.json
 %{mingw32_libdir}/qt6/metatypes/qt6gui_relwithdebinfo_metatypes.json
 %{mingw32_libdir}/qt6/metatypes/qt6network_relwithdebinfo_metatypes.json
@@ -348,6 +351,7 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 %{mingw32_libdir}/cmake/Qt6DeviceDiscoverySupportPrivate/
 %{mingw32_libdir}/cmake/Qt6EntryPointPrivate/
 %{mingw32_libdir}/cmake/Qt6ExampleIconsPrivate/
+%{mingw32_libdir}/cmake/Qt6ExamplesAssetDownloaderPrivate/
 %{mingw32_libdir}/cmake/Qt6FbSupportPrivate/
 %{mingw32_libdir}/cmake/Qt6Gui/
 %{mingw32_libdir}/cmake/Qt6HostInfo/
@@ -406,6 +410,7 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 %{mingw64_libdir}/libQt6Core.dll.a
 %{mingw64_libdir}/libQt6DBus.dll.a
 %{mingw64_libdir}/libQt6ExampleIcons.a
+%{mingw64_libdir}/libQt6ExamplesAssetDownloader.a
 %{mingw64_libdir}/libQt6Gui.dll.a
 %{mingw64_libdir}/libQt6Network.dll.a
 %{mingw64_libdir}/libQt6OpenGL.dll.a
@@ -424,6 +429,7 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 %{mingw64_libdir}/Qt6DeviceDiscoverySupport.prl
 %{mingw64_libdir}/Qt6EntryPoint.prl
 %{mingw64_libdir}/Qt6ExampleIcons.prl
+%{mingw64_libdir}/Qt6ExamplesAssetDownloader.prl
 %{mingw64_libdir}/Qt6FbSupport.prl
 %{mingw64_libdir}/Qt6Gui.prl
 %{mingw64_libdir}/Qt6Network.prl
@@ -448,6 +454,7 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 %{mingw64_libdir}/qt6/metatypes/qt6dbus_relwithdebinfo_metatypes.json
 %{mingw64_libdir}/qt6/metatypes/qt6devicediscoverysupportprivate_relwithdebinfo_metatypes.json
 %{mingw64_libdir}/qt6/metatypes/qt6exampleiconsprivate_relwithdebinfo_metatypes.json
+%{mingw64_libdir}/qt6/metatypes/qt6examplesassetdownloaderprivate_relwithdebinfo_metatypes.json
 %{mingw64_libdir}/qt6/metatypes/qt6fbsupportprivate_relwithdebinfo_metatypes.json
 %{mingw64_libdir}/qt6/metatypes/qt6gui_relwithdebinfo_metatypes.json
 %{mingw64_libdir}/qt6/metatypes/qt6network_relwithdebinfo_metatypes.json
@@ -507,6 +514,7 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 %{mingw64_libdir}/cmake/Qt6DeviceDiscoverySupportPrivate/
 %{mingw64_libdir}/cmake/Qt6EntryPointPrivate/
 %{mingw64_libdir}/cmake/Qt6ExampleIconsPrivate/
+%{mingw64_libdir}/cmake/Qt6ExamplesAssetDownloaderPrivate/
 %{mingw64_libdir}/cmake/Qt6FbSupportPrivate/
 %{mingw64_libdir}/cmake/Qt6Gui/
 %{mingw64_libdir}/cmake/Qt6HostInfo/
@@ -546,6 +554,9 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 
 
 %changelog
+* Wed Oct 16 2024 Sandro Mani <manisandro@gmail.com> - 6.8.0-1
+- Update to 6.8.0
+
 * Tue Jul 30 2024 Sandro Mani <manisandro@gmail.com> - 6.7.2-3
 - Apply fix for CVE-2024-39936
 
