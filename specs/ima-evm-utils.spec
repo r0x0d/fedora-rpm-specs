@@ -8,7 +8,7 @@
 
 Name:    ima-evm-utils
 Version: 1.6.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: IMA/EVM support utilities
 License: GPL-2.0-or-later
 Url:     https://github.com/linux-integrity/
@@ -54,6 +54,10 @@ ima-evm-utils is used to prepare the file system for these extended attributes.
 %package libs
 Summary: Libraries for %{name}
 License: LGPL-2.0-or-later
+
+# to avoid ima-evm-utils and rpm-plugin-ima being installed on upgrade
+# to Fedora 41 - https://bugzilla.redhat.com/show_bug.cgi?id=2319827
+Obsoletes: ima-evm-utils < 1.6
 
 %description libs
 This package contains the libraries for applications to use
@@ -141,6 +145,9 @@ install -D %{SOURCE4} $RPM_BUILD_ROOT%{_bindir}/ima-setup
 %{_libdir}/libimaevm.so
 
 %changelog
+* Fri Oct 18 2024 Adam Williamson <awilliam@redhat.com> - 1.6.2-2
+- ima-evm-utils-libs obsoletes ima-evm-utils < 1.6 for rhbz#2319827
+
 * Sat Aug 31 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1.6.2-1
 - Update to 1.6.2
 

@@ -1,8 +1,8 @@
 %global srcname calcephpy
 
 Name:           python-%{srcname}
-Version:        4.0.0
-Release:        3%{?dist}
+Version:        4.0.1
+Release:        1%{?dist}
 Summary:        Astronomical library to access planetary ephemeris files
 
 License:        CECILL-2.0 OR CECILL-B OR CECILL-C
@@ -36,6 +36,8 @@ BuildRequires:  python36-Cython
 %else
 BuildRequires:  python3-Cython
 %endif
+# For import smoke test
+BuildRequires:  python3dist(numpy)
 
 # Needed by EPEL7
 %py_provides python3-%{srcname}
@@ -59,13 +61,21 @@ export CPPFLAGS="$CXXFLAGS"
 %py3_install
 
 
+%check
+# Provided tests are only for the C library
+%py3_check_import calcephpy
+
+
 %files -n       python3-%{srcname}
 %license COPYING_CECILL_V2.1.LIB COPYING_CECILL_B.LIB COPYING_CECILL_C.LIB
-%{python3_sitearch}/*.so
-%{python3_sitearch}/*egg-info/
+%{python3_sitearch}/calcephpy*.so
+%{python3_sitearch}/calcephpy*.egg-info/
 
 
 %changelog
+* Sat Oct 19 2024 Mattia Verga <mattia.verga@proton.me> - 4.0.1-1
+- Update to 4.0.1 (fedora#2316475)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.0.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

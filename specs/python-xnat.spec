@@ -15,7 +15,7 @@ get, head, put, post, delete methods for more directly calling the REST
 API.}
 
 Name:           python-xnat
-Version:        0.5.3
+Version:        0.6.2
 Release:        %autorelease
 Summary:        XNAT client that exposes XNAT objects/functions as python objects/functions
 # Only expand forge macros in fedora >= 40 since %%forgesource is broken
@@ -37,9 +37,6 @@ Source0:        https://gitlab.com/radiology/infrastructure/xnatpy/-/archive/%{v
 # package it either, since it's licensed under CC0-1.0
 # https://github.com/Australian-Imaging-Service/xnat4tests/issues/17
 Patch:          no_xnat4tests.patch
-# Fix %%Pyproject_check_import failing
-# https://gitlab.com/radiology/infrastructure/xnatpy/-/issues/57
-Patch:          https://gitlab.com/radiology/infrastructure/xnatpy/-/commit/bafa2c7ad0d12cf841446705b1d597059ce2a6b0.patch
 
 BuildArch:      noarch
 
@@ -62,6 +59,10 @@ BuildRequires:  python3-requests-mock
 
 %prep
 %autosetup -p1 -n xnatpy-%{version}
+
+# Strip version constraints
+# We are either ahead or behind
+sed -r -i 's/[~<>=]=[0-9.]*//g' requirements.txt
 
 # remove shebang from non executable scripts
 sed -i '1d' xnat/scripts/copy_project.py

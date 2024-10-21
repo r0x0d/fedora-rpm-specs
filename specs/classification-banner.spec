@@ -51,7 +51,7 @@ contrib/%{name}.desktop
 
 %check
 export DISPLAY=":0.0"
-%{__python3} setup.py test
+%pyproject_check_import
 
 %files -f %{pyproject_files}
 %license LICENSE

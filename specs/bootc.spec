@@ -1,7 +1,7 @@
 %bcond_without check
 
 Name:           bootc
-Version:        0.1.16
+Version:        1.1.0
 Release:        %{autorelease}
 Summary:        Bootable container system
 

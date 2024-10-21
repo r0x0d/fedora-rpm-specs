@@ -1,5 +1,5 @@
 Name:           zsh-lovers
-Version:        0.10.0
+Version:        0.10.1
 Release:        %autorelease
 Summary:        A collection of tips, tricks and examples for the Z shell
 # Automatically converted from old format: GPLv2 - review is highly recommended.

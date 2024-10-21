@@ -1,7 +1,7 @@
 %{!?_pkgdocdir: %global _pkgdocdir %{_docdir}/%{name}-%{version}}
 
 %global forgeurl https://github.com/dmtcp/dmtcp
-Version:        3.1.1
+Version:        3.1.2
 %global tag %{version}
 %forgemeta
 

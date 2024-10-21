@@ -1,5 +1,5 @@
 Name:       virtualbox-guest-additions
-Version:    7.1.2
+Version:    7.1.4
 Release:    1%{?dist}
 Summary:    VirtualBox Guest Additions
 License:    GPL-3.0-only AND (GPL-3.0-only OR CDDL-1.0)
@@ -189,6 +189,9 @@ getent passwd vboxadd >/dev/null || \
 
 
 %changelog
+* Sat Oct 19 2024 Sérgio Basto <sergio@serjux.com> - 7.1.4-1
+- Update virtualbox-guest-additions to 7.1.4 (#2315230)
+
 * Sat Sep 28 2024 Sérgio Basto <sergio@serjux.com> - 7.1.2-1
 - Update virtualbox-guest-additions to 7.1.2 (#2311545)
 

@@ -4,13 +4,13 @@
 A collection of custom wx widgets and utilities used by FSLeyes.}
 
 Name:           python-fsleyes-widgets
-Version:        0.14.3
+Version:        0.14.7
 Release:        %autorelease
 Summary:        A collection of custom wx widgets and utilities used by FSLeyes
 
 License:        Apache-2.0
 URL:            https://pypi.python.org/pypi/fsleyes-widgets
-Source0:        %{pypi_source fsleyes-widgets}
+Source:         %{pypi_source fsleyes_widgets}
 
 BuildArch:      noarch
 
@@ -21,9 +21,6 @@ BuildRequires:  xorg-x11-server-Xvfb
 # pertain to coverage analysis
 # (https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters)
 # or to Sphinx documentation (which we do not build).
-#
-# However, we’re currently trying to run tests without pytest, so this is
-# commented out:
 BuildRequires:  %{py3_dist pytest}
 %endif
 
@@ -39,13 +36,16 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -n fsleyes-widgets-%{version}
+%autosetup -n fsleyes_widgets-%{version}
 
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 sed -r -i 's/[[:blank:]]--cov=[^[:blank:]]+//' setup.cfg
 
 # remove unneeded shebangs
 find fsleyes_widgets -type f -name '*.py' -exec sed -r -i '1{/^#!/d}' '{}' '+'
+
+# Don't run coverage when running tests
+sed -r -i 's/ ?--cov=fsleyes_widgets//' pyproject.toml
 
 
 %generate_buildrequires
@@ -65,7 +65,7 @@ find fsleyes_widgets -type f -name '*.py' -exec sed -r -i '1{/^#!/d}' '{}' '+'
 %if %{with xvfb_tests}
 # From https://git.fmrib.ox.ac.uk/fsl/fsleyes/widgets/blob/master/.ci/test_template.sh
 %global __pytest xvfb-run -a -s '-screen 0 1920x1200x24' pytest
-%pytest tests -m 'not dodgy'
+%pytest -m 'not dodgy'
 %else
 %pyproject_check_import
 %endif

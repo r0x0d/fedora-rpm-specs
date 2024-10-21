@@ -29,6 +29,13 @@ Source11:       pydicom-codify.1
 Source12:       pydicom-help.1
 Source13:       pydicom-show.1
 
+# Patch for fixes to non-compressed imaging + RLE (pydicom + numpy)
+# https://github.com/pydicom/pydicom/issues/2147#issuecomment-2421048992
+Patch:          pydicom-3.0.1-endian-numpy.patch
+# Patch for compressed imaging with (pydicom + numpy + pillow)
+# https://github.com/pydicom/pydicom/issues/2147#issuecomment-2423736084
+Patch:          pydicom-3.0.1-endian-pillow.patch
+
 # The package contains no compiled code, and the binary RPMs are noarch, but
 # the base package is arched because there are arch-dependent test failures and
 # we need to test on all architectures.
@@ -66,7 +73,7 @@ Recommends:     python3-pillow
 %description -n python3-pydicom %_description
 
 %prep
-%autosetup -n pydicom-%{version}
+%autosetup -n pydicom-%{version} -p1
 
 %generate_buildrequires
 %pyproject_buildrequires
@@ -119,17 +126,6 @@ k="${k-}${k+ and }not (TestDatasetWithBufferedData and test_deepcopy_bufferedrea
 %ifarch s390x
 # A number of tests fail on big-endian hosts (s390x)
 # https://github.com/pydicom/pydicom/issues/2147
-k="${k-}${k+ and }not (TestApplyColorLUT and test_16_allocated_8_entries)"
-k="${k-}${k+ and }not (TestApplyColorLUT and test_alpha)"
-k="${k-}${k+ and }not (TestApplyColorLUT and test_first_map_negative)"
-k="${k-}${k+ and }not (TestApplyColorLUT and test_first_map_positive)"
-k="${k-}${k+ and }not (TestApplyColorLUT and test_uint08_16)"
-k="${k-}${k+ and }not (TestApplyColorLUT and test_uint08_16_2frame)"
-k="${k-}${k+ and }not (TestApplyPresentationLUT and test_sequence_8bit_unsigned)"
-k="${k-}${k+ and }not (TestApplyPresentationLUT and test_sequence_bit_shift)"
-k="${k-}${k+ and }not (TestAsArray and test_reference_expl[CT_small.dcm])"
-k="${k-}${k+ and }not (TestAsArray and test_reference_expl_binary[CT_small.dcm])"
-k="${k-}${k+ and }not (TestDecodeRunner and test_pixel_dtype_float)"
 k="${k-}${k+ and }not (TestDecoding and test_bits_allocated_mismatch)"
 k="${k-}${k+ and }not (TestDecoding and test_j2k[693_J2KI.dcm])"
 k="${k-}${k+ and }not (TestDecoding and test_j2k[JPEG2000.dcm])"
@@ -144,52 +140,16 @@ k="${k-}${k+ and }not (TestDecoding and test_j2k_lossless[RG1_J2KR.dcm])"
 k="${k-}${k+ and }not (TestDecoding and test_j2k_lossless[RG3_J2KR.dcm])"
 k="${k-}${k+ and }not (TestDecoding and test_j2k_lossless[emri_small_jpeg_2k_lossless.dcm])"
 k="${k-}${k+ and }not (TestDecoding and test_jls_lossless[JLSL_16_15_1_1F.dcm])"
-k="${k-}${k+ and }not (TestDecoding and test_jls_lossless[MR_small_jpeg_ls_lossless.dcm)"
+k="${k-}${k+ and }not (TestDecoding and test_jls_lossless[MR_small_jpeg_ls_lossless.dcm])"
 k="${k-}${k+ and }not (TestDecoding and test_jls_lossless[emri_small_jpeg_ls_lossless.dcm])"
 k="${k-}${k+ and }not (TestDecoding and test_jls_lossy[JPEGLSNearLossless_16.dcm])"
 k="${k-}${k+ and }not (TestDecoding and test_jpg_lossless_sv1[JPEG-LL.dcm])"
-k="${k-}${k+ and }not (TestEncodeRunner and test_set_source_ndarray)"
-k="${k-}${k+ and }not (TestEncodeRunner_GetFrame and test_arr_i16)"
-k="${k-}${k+ and }not (TestEncodeRunner_GetFrame and test_arr_i32)"
-k="${k-}${k+ and }not (TestEncodeRunner_GetFrame and test_arr_u16)"
-k="${k-}${k+ and }not (TestEncodeRunner_GetFrame and test_arr_u32)"
-k="${k-}${k+ and }not (TestHandlerGenerateMultiplex and test_as_raw)"
-k="${k-}${k+ and }not (TestHandlerGenerateMultiplex and test_not_as_raw)"
-k="${k-}${k+ and }not (TestHandlerMultiplexArray and test_as_raw)"
-k="${k-}${k+ and }not (TestHandlerMultiplexArray and test_not_as_raw)"
-k="${k-}${k+ and }not (TestIterArray and test_reference_expl[CT_small.dcm])"
-k="${k-}${k+ and }not (TestIterArray and test_reference_expl_binary[CT_small.dcm])"
-k="${k-}${k+ and }not (TestNumpy_GetPixelData and test_double_float_pixel_data)"
-k="${k-}${k+ and }not (TestNumpy_GetPixelData and test_float_pixel_data)"
-k="${k-}${k+ and }not (TestNumpy_NumpyHandler and test_endianness_not_set)"
-k="${k-}${k+ and }not (TestNumpy_NumpyHandler and test_little_16bit_1sample_1frame_padded)"
-k="${k-}${k+ and }not (TestNumpy_NumpyHandler and test_properties[ and MR_small.dcm-data8])"
-k="${k-}${k+ and }not (TestNumpy_NumpyHandler and test_properties[ and SC_rgb_16bit.dcm-data10])"
-k="${k-}${k+ and }not (TestNumpy_NumpyHandler and test_properties[ and SC_rgb_16bit_2frame.dcm-data11])"
-k="${k-}${k+ and }not (TestNumpy_NumpyHandler and test_properties[ and SC_rgb_32bit.dcm-data14])"
-k="${k-}${k+ and }not (TestNumpy_NumpyHandler and test_properties[ and SC_rgb_32bit_2frame.dcm-data15])"
-k="${k-}${k+ and }not (TestNumpy_NumpyHandler and test_properties[ and emri_small.dcm-data9])"
-k="${k-}${k+ and }not (TestNumpy_NumpyHandler and test_properties[ and rtdose.dcm-data13])"
-k="${k-}${k+ and }not (TestNumpy_NumpyHandler and test_properties[ and rtdose_1frame.dcm-data12])"
-k="${k-}${k+ and }not (TestOpenJpegDecoder and test_j2k[MR2_J2KI.dcm])"
-k="${k-}${k+ and }not (TestOpenJpegDecoder and test_j2k[RG1_J2KI.dcm])"
-k="${k-}${k+ and }not (TestOpenJpegDecoder and test_j2k[RG3_J2KI.dcm])"
-k="${k-}${k+ and }not (TestOpenJpegDecoder and test_j2k_lossless[J2K_pixelrep_mismatch.dcm])"
-k="${k-}${k+ and }not (TestOpenJpegDecoder and test_j2k_lossless[MR2_J2KR.dcm])"
-k="${k-}${k+ and }not (TestOpenJpegDecoder and test_j2k_lossless[RG1_J2KR.dcm])"
-k="${k-}${k+ and }not (TestOpenJpegDecoder and test_j2k_lossless[RG3_J2KR.dcm])"
-k="${k-}${k+ and }not (TestPillowHandler_JPEG2K and test_decompress_using_pillow)"
-k="${k-}${k+ and }not (TestPillowHandler_JPEG2K and test_properties[ and 693_J2KI.dcm-data20])"
-k="${k-}${k+ and }not (TestPillowHandler_JPEG2K and test_properties[ and JPEG2000.dcm-data21])"
-k="${k-}${k+ and }not (TestPillowHandler_JPEG2K and test_properties[ and MR_small_jp2klossless.dcm-data14])"
-k="${k-}${k+ and }not (TestPillowHandler_JPEG2K and test_properties[ and emri_small_jpeg_2k_lossless.dcm-data12])"
 k="${k-}${k+ and }not (TestRLELossless and test_cycle_i16_1s_1f)"
 k="${k-}${k+ and }not (TestRLELossless and test_cycle_u16_3s_1f)"
 k="${k-}${k+ and }not (TestRLELossless and test_cycle_u32_1s_1f)"
 k="${k-}${k+ and }not (TestRLELossless and test_cycle_u32_3s_1f)"
 k="${k-}${k+ and }not (TestRLELossless and test_cycle_u8_1s_1f)"
 k="${k-}${k+ and }not (TestRLELossless and test_cycle_u8_3s_1f)"
-k="${k-}${k+ and }not (TestSetPixelData and test_grayscale_16bit_signed)"
 k="${k-}${k+ and }not (Test_JPEG_LS_Lossless_transfer_syntax and test_read_emri_with_gdcm)"
 k="${k-}${k+ and }not (Test_JPEG_LS_Lossless_transfer_syntax and test_read_mr_with_gdcm)"
 k="${k-}${k+ and }not (TestsWithGDCM and test_JPEG2000PixelArray[File])"

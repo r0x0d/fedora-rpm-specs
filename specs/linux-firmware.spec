@@ -5,7 +5,7 @@
 
 Name:		linux-firmware
 Version:	20241017
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Firmware files used by the Linux kernel
 # Automatically converted from old format: GPL+ and GPLv2+ and MIT and Redistributable, no modification permitted - review is highly recommended.
 License:	GPL-1.0-or-later AND GPL-2.0-or-later AND LicenseRef-Callaway-MIT AND LicenseRef-Callaway-Redistributable-no-modification-permitted
@@ -331,8 +331,10 @@ Terratec H5 DRX-K, ITEtech IT9135 Ax and Bx, and av7110.
 mkdir -p %{buildroot}/%{_firmwarepath}
 mkdir -p %{buildroot}/%{_firmwarepath}/updates
 
-make COPYOPTS="-v %{?rhel:--ignore-duplicates} --xz" \
-	DESTDIR=%{buildroot}/ FIRMWAREDIR=%{_firmwarepath} install
+make DESTDIR=%{buildroot}/ FIRMWAREDIR=%{_firmwarepath} install-xz
+%if %{undefined rhel}
+make DESTDIR=%{buildroot}/ FIRMWAREDIR=%{_firmwarepath} dedup
+%endif
 
 #Cleanup files we don't want to ship
 pushd %{buildroot}/%{_firmwarepath}
@@ -631,6 +633,9 @@ sed -e 's/^/%%dir /' linux-firmware.dirs >> linux-firmware.files
 %{_firmwarepath}/v4l-cx2*
 
 %changelog
+* Sat Oct 19 2024 Adam Williamson <awilliam@redhat.com> - 20241017-2
+- Fix compression / deduplication for upstream changes in 20241017
+
 * Thu Oct 17 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 20241017-1
 - Update to upstream 20241017
 - rtlwifi: Update firmware for RTL8192FU to v7.3

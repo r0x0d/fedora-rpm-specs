@@ -5,9 +5,13 @@
 %bcond_without doc_pdf
 
 Name:           python-transforms3d
-Version:        0.4.1
+Version:        0.4.2
 Release:        %autorelease
 Summary:        Functions for 3D coordinate transformations
+
+%global forgeurl https://github.com/matthew-brett/transforms3d
+%global tag %{version}
+%forgemeta
 
 # The entire source is BSD-2-Clause, except:
 #   - transforms3d/_gohlketransforms.py is derived from a BSD-3-Clause original
@@ -16,10 +20,7 @@ Summary:        Functions for 3D coordinate transformations
 #     not contribute to the license of the binary RPMs.
 License:        BSD-2-Clause AND BSD-3-Clause
 URL:            https://matthew-brett.github.io/transforms3d/
-%global forgeurl https://github.com/matthew-brett/transforms3d
-Source0:        %{forgeurl}/archive/%{version}/transforms3d-%{version}.tar.gz
-
-Patch:          %{forgeurl}/pull/50.patch
+Source:         %{forgesource}
 
 BuildArch:      noarch
 
@@ -57,7 +58,7 @@ Summary:        Documentation and examples for transforms3d
 %description doc %{common_description}
 
 %prep
-%autosetup -n transforms3d-%{version} -p1
+%forgeautosetup -p1
 
 %generate_buildrequires
 %{pyproject_buildrequires %{?with_doc_pdf:doc-requirements.txt} \

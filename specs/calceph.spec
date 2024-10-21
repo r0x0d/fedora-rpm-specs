@@ -1,5 +1,5 @@
 Name:           calceph
-Version:        4.0.0
+Version:        4.0.1
 Release:        2%{?dist}
 Summary:        Astronomical library to access planetary ephemeris files
 
@@ -95,6 +95,9 @@ Requires:       gcc-gfortran
 
 
 %changelog
+* Sat Oct 19 2024 Mattia Verga <mattia.verga@proton.me> - 4.0.1-1
+- Update to 4.0.1 (fedora#2316258)
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.0.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

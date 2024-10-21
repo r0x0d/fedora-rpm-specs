@@ -16,7 +16,6 @@ BuildRequires:  pyproject-rpm-macros
 # Required for tests
 BuildRequires:  python3dist(factory-boy)
 BuildRequires:  python3dist(numpy)
-BuildRequires:  python3dist(pytest-forked)
 BuildRequires:  python3dist(pytest-xdist)
 
 %description

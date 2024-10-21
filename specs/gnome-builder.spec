@@ -6,10 +6,10 @@
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 %global glib2_version 2.75.0
-%global gtk4_version 4.10
+%global gtk4_version 4.15.5
 %global json_glib_version 1.2.0
 %global jsonrpc_glib_version 3.43.0
-%global libadwaita_version 1.5~alpha
+%global libadwaita_version 1.6~alpha
 %global libdex_version 0.2
 %global libpeas_version 1.99.0
 %global libspelling_version 0.3.0
@@ -17,7 +17,7 @@
 %global template_glib_version 3.36.1
 
 Name:           gnome-builder
-Version:        47.1
+Version:        47.2
 Release:        %autorelease
 Summary:        IDE for writing GNOME-based software
 

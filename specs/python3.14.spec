@@ -17,7 +17,7 @@ URL: https://www.python.org/
 %global prerel a1
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Python-2.0.1
 
 
@@ -47,7 +47,7 @@ License: Python-2.0.1
 #   IMPORTANT: When bootstrapping, it's very likely python-pip-wheel is
 #   not available. Turn off the rpmwheels bcond until
 #   python-pip is built with a wheel to get around the issue.
-%bcond bootstrap 1
+%bcond bootstrap 0
 
 # Whether to use RPM build wheels from the python-{pip,setuptools,wheel}-wheel packages
 # Uses upstream bundled prebuilt wheels otherwise
@@ -1694,6 +1694,9 @@ CheckPython freethreading
 # ======================================================
 
 %changelog
+* Fri Oct 18 2024 Karolina Surma <ksurma@redhat.com> - 3.14.0~a1-2
+- Build Python 3.14 using Python 3.14
+
 * Thu Oct 17 2024 Karolina Surma <ksurma@redhat.com> - 3.14.0~a1-1
 - Initial Python 3.14 package forked from Python 3.13
 

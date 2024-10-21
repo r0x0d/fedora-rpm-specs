@@ -3,28 +3,26 @@
 
 # https://github.com/msprev/fzf-bibtex
 %global goipath         github.com/msprev/fzf-bibtex
-%global commit          d5df2c6e93cc683573cb8c6d5bcc690ea50de9ae
+%global commit          64316c26eb01e7620a3fe91676f8417206cf7e74
 
 %gometa
 
 %global common_description %{expand:
-A BibTeX source for fzf. fzf-bibtex uses BibTool parse BibTeX files, caches 
-the results, and supports vim integration for users of the fzf.vim plugin. It 
-includes support for Markdown and LaTeX citation formats.}
+A BibTeX source for fzf. fzf-bibtex uses BibTool to parse BibTeX files, caches
+the results, and supports vim integration for users of the fzf.vim or fzf-lua
+plugins. It includes support for Markdown and LaTeX citation formats.}
 
 %global golicenses      LICENSE.txt
 %global godocs          readme.md
 
 Name:           %{goname}
 # Upstream includes release notes for past releases, but does not post 
-# tarballs or use git tags, so we ship the latest Git.
+# tarballs or use git tags, so we ship the latest Git snapshot.
 Version:        1.1
-Release:        14%{?dist}
+Release:        15%{?dist}
 Summary:        A BibTeX source for fzf
 
-# Upstream license specification: BSD-3-Clause
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            %{gourl}
 Source0:        %{gosource}
 
@@ -57,6 +55,9 @@ install -m 0755 -vp %{gobuilddir}/bin/* %{buildroot}%{_bindir}/
 %{_bindir}/*
 
 %changelog
+* Sat Oct 19 2024 Daniel Moerner <dmoerner@gmail.com> - 1.1-15.20241019git64316c2
+- Update to latest upstream snapshot. Includes fzf-lua support.
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.1-14
 - convert license to SPDX
 

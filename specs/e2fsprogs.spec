@@ -1,7 +1,7 @@
 Summary: Utilities for managing ext2, ext3, and ext4 file systems
 Name: e2fsprogs
 Version: 1.47.1
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 # License tags based on COPYING file distinctions for various components
 # Automatically converted from old format: GPLv2 - review is highly recommended.
@@ -52,6 +52,7 @@ BuildRequires: make
 BuildRequires: gnupg2 xz
 
 Patch 0:	0001-remove-local-PATH.patch
+Patch 1:	e2fsck-dont-skip-checks-if-orphan-file-present.patch 
 
 %description
 The e2fsprogs package contains a number of utilities for creating,
@@ -350,6 +351,10 @@ make PRINT_FAILED=yes fullcheck
 %{_udevdir}/96-e2scrub.rules
 
 %changelog
+* Sat Oct 19 2024 Eric Sandeen <sandeen@redhat.com> - 1.47.1-5
+- e2fsck: don't skip checks if the orphan file is present in the filesystem
+  (RHBZ#2318710)
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 1.47.1-4
 - convert license to SPDX
 

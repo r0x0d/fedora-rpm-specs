@@ -5,7 +5,7 @@
 %global crate bitvec_helpers
 
 Name:           rust-bitvec_helpers
-Version:        3.1.5
+Version:        3.1.6
 Release:        %autorelease
 Summary:        BitVec based bitstream reader and writer
 

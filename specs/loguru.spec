@@ -121,6 +121,13 @@ popd
 install -D -p -m 0644 lnav_format_loguru_cpp.json \
     '%{buildroot}%{_sysconfdir}/lnav/formats/loguru_cpp.json'
 
+# By default, the upstream CMake build system installs headers to the
+# %%{_includedir}/loguru/ directory; however, documentation (such as README.md)
+# implies that "#include <loguru.hpp>" (rather than "#include
+# <loguru/loguru.hpp>") should suffice. Since there is only a single API
+# header, we can support both usages by adding a symbolic link.
+ln -s loguru/loguru.hpp '%{buildroot}%{_includedir}/loguru.hpp'
+
 
 %check
 pushd test
@@ -135,7 +142,10 @@ popd
 
 
 %files devel
-%{_includedir}/loguru/
+%dir %{_includedir}/loguru/
+%{_includedir}/loguru/loguru.hpp
+# Symbolic link
+%{_includedir}/loguru.hpp
 
 %{_libdir}/libloguru.so
 

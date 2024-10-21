@@ -16,8 +16,8 @@
 %global release_version %(echo %{version} | awk -F. '{print $1"."$2}')
 
 Name:           mingw-qt6-%{qt_module}
-Version:        6.7.2
-Release:        2%{?dist}
+Version:        6.8.0
+Release:        1%{?dist}
 Summary:        Qt6 for Windows - QtMultimedia component
 
 License:        LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -106,6 +106,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_includedir}/qt6/QtSpatialAudio/
 %{mingw32_libdir}/cmake/Qt6/FindAVFoundation.cmake
 %{mingw32_libdir}/cmake/Qt6/FindFFmpeg.cmake
+%{mingw32_libdir}/cmake/Qt6/FindPipeWire.cmake
 %{mingw32_libdir}/cmake/Qt6/FindGObject.cmake
 %{mingw32_libdir}/cmake/Qt6/FindGStreamer.cmake
 %{mingw32_libdir}/cmake/Qt6/FindMMRendererCore.cmake
@@ -156,6 +157,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_includedir}/qt6/QtSpatialAudio/
 %{mingw64_libdir}/cmake/Qt6/FindAVFoundation.cmake
 %{mingw64_libdir}/cmake/Qt6/FindFFmpeg.cmake
+%{mingw64_libdir}/cmake/Qt6/FindPipeWire.cmake
 %{mingw64_libdir}/cmake/Qt6/FindGObject.cmake
 %{mingw64_libdir}/cmake/Qt6/FindGStreamer.cmake
 %{mingw64_libdir}/cmake/Qt6/FindMMRendererCore.cmake
@@ -196,6 +198,9 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 
 
 %changelog
+* Sat Oct 19 2024 Sandro Mani <manisandro@gmail.com> - 6.8.0-1
+- Update to 6.8.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

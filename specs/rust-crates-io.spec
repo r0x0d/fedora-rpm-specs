@@ -5,7 +5,7 @@
 %global crate crates-io
 
 Name:           rust-crates-io
-Version:        0.40.4
+Version:        0.40.5
 Release:        %autorelease
 Summary:        Helpers for interacting with crates.io
 

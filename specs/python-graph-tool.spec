@@ -27,6 +27,9 @@ Summary:        Efficient network analysis tool written in Python
 # treated as static libraries; their licenses do contribute to that of the
 # binary RPMs:
 #   - CGAL is: LGPL-3.0-or-later AND GPL-3.0-or-later AND BSL-1.0 AND MIT
+#     (and possibly a few tiny bits of other things – this package could use a
+#     good license audit – but it is a sprawling package, and the preceding
+#     expression is slightly better than the one it currently carries)
 #   - pcg-cpp is: MIT OR Apache-2.0
 # Additionally, the following are under other licenses but do not contribute to
 # the licenses of the binary RPMs:

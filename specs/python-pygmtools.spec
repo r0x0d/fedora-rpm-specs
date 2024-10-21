@@ -1,18 +1,19 @@
 %global         pypi_name       pygmtools
 %global         forgeurl        https://github.com/Thinklab-SJTU/pygmtools
-Version:        0.4.0
+Version:        0.5.3
 %global         tag             %{version}
 %forgemeta
 
 Name:           python-%{pypi_name}
-Release:        5%{?dist}
+Release:        3%{?dist}
 Summary:        A library of Python graph matching solvers
 
 License:        MulanPSL-2.0
 URL:            https://pygmtools.readthedocs.io/en/latest/
-Source0:        %{forgesource}
-# https://github.com/Thinklab-SJTU/pygmtools/pull/79
-Patch:          checkimport.patch
+Source:         %{forgesource}
+# bdist_wheel has moved into setuptools
+# https://github.com/Thinklab-SJTU/pygmtools/pull/105
+Patch:          bdist_wheel.patch
 
 BuildRequires:  python3-devel
 # Documentation
@@ -49,7 +50,7 @@ Summary:        %{summary}
 Documentation files for %{pypi_name}
 
 %prep
-%forgeautosetup -p1
+%forgeautosetup -p 1
 # Remove for now, but maybe needed when Pytorch is available
 rm -f %{pypi_name}/astar/priority_queue.hpp
 
@@ -81,6 +82,15 @@ rm -f %{pypi_name}/astar/priority_queue.hpp
 %doc examples
 
 %changelog
+* Sat Oct 19 2024 Benson Muite <benson_muite@emailplus.org> - 0.5.3-3
+- Ensure also builds with older versions of wheel than 0.44
+
+* Sat Oct 19 2024 Benson Muite <benson_muite@emailplus.org> - 0.5.3-2
+- Ensure builds with wheel 0.44
+
+* Sat Oct 19 2024 Benson Muite <benson_muite@emailplus.org> - 0.5.3-1
+- Update to latest release
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

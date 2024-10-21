@@ -1,12 +1,12 @@
 Name:		squeekboard
-Version:	1.41.0
+Version:	1.42.0
 Release:	1%{?dist}
 Summary:	a Wayland virtual keyboard
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:	GPL-3.0-or-later
 URL:		https://gitlab.gnome.org/World/Phosh/squeekboard
-Source0:	https://gitlab.gnome.org/World/Phosh/squeekboard/-/archive/v%{version}/%{name}-v%{version}.tar.gz
+Source0:	https://gitlab.gnome.org/World/Phosh/squeekboard/-/archive/v%{version}/%{name}-v%{version}.tar.bz2
 Source1:	squeekboard.desktop
 
 BuildRequires:	gcc
@@ -67,11 +67,15 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/sm.puri.Squeekboard.
 %{_bindir}/squeekboard-test-layout
 %{_bindir}/squeekboard-restyled
 %{_datadir}/applications/sm.puri.Squeekboard.desktop
+%{_datadir}/glib-2.0/schemas/sm.puri.Squeekboard.gschema.xml
 %{_sysconfdir}/xdg/autostart/squeekboard.desktop
 %doc README.md
 %license COPYING
 
 %changelog
+* Tue Oct 01 2024 David Bold <davidsch@fedoraproject.org> - 1.42.0-1
+- Update to 1.42.0
+
 * Tue Aug 20 2024 David Bold <davidsch@fedoraproject.org> - 1.41.0-1
 - Update to 1.41.0
 

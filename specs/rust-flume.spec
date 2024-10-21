@@ -5,7 +5,7 @@
 %global crate flume
 
 Name:           rust-flume
-Version:        0.11.0
+Version:        0.11.1
 Release:        %autorelease
 Summary:        Blazingly fast multi-producer channel
 
@@ -16,8 +16,6 @@ Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * drop unused, benchmark-only criterion dev-dependency
 Patch:          flume-fix-metadata.diff
-# * upstream patch to fix compiling tests with crossbeam-channel >=0.5.13
-Patch:          https://github.com/zesterer/flume/pull/149.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 
