@@ -5,7 +5,7 @@
 %global crate newtype-uuid
 
 Name:           rust-newtype-uuid
-Version:        1.1.0
+Version:        1.1.2
 Release:        %autorelease
 Summary:        Newtype wrapper around UUIDs
 

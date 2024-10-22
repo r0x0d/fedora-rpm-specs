@@ -5,15 +5,13 @@
 %global crate imgref
 
 Name:           rust-imgref
-Version:        1.10.1
+Version:        1.11.0
 Release:        %autorelease
 Summary:        Two-dimensional slice for safe and convenient handling of pixel buffers
 
 License:        Apache-2.0
 URL:            https://crates.io/crates/imgref
 Source:         %{crates_source}
-# https://github.com/kornelski/imgref/pull/25
-Source:         https://github.com/kornelski/imgref/raw/8ed002c/LICENSE-APACHE
 # Manually created patch for downstream crate metadata changes
 # * remove CC0-1.0 from license metadata (not acceptable for code in Fedora)
 Patch:          imgref-fix-metadata.diff
@@ -68,8 +66,6 @@ use the "deprecated" feature of the "%{crate}" crate.
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
-mv LICENSE LICENSE-CC0
-cp -pav %{SOURCE1} .
 
 %generate_buildrequires
 %cargo_generate_buildrequires

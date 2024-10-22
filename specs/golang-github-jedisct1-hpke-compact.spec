@@ -52,5 +52,4 @@ BuildRequires:  golang(github.com/powerman/check)
 %gopkgfiles
 
 %changelog
-* dim. oct. 03 2021 Robert-André Mauchin <zebob.m@gmail.com> 0.9.0-1
-- Initial release
+%autochangelog

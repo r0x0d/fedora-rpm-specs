@@ -2,10 +2,10 @@
 
 Name: iperf
 Version: 2.2.0
-Release: 3%{?alphatag:.%{alphatag}}%{?dist}
+Release: 4%{?alphatag:.%{alphatag}}%{?dist}
 Summary: Measurement tool for TCP/UDP bandwidth performance
 # Automatically converted from old format: BSD - review is highly recommended.
-License: LicenseRef-Callaway-BSD
+License: BSD-3-Clause
 URL: http://sourceforge.net/projects/iperf2
 Source: http://sourceforge.net/projects/iperf2/files/%{name}-%{version}%{?alphatag:-%{alphatag}}.tar.gz
 Patch0: iperf-2.2.0-debuginfo.patch
@@ -35,6 +35,9 @@ jitter, datagram loss.
 %{_mandir}/man*/*
 
 %changelog
+* Sun Oct 20 2024 Gabriel Somlo <gsomlo@gmail.com> - 2.2.0-4
+- fix SPDX license
+
 * Fri Oct 18 2024 Gabriel Somlo <gsomlo@gmail.com> - 2.2.0-3
 - backport upstream patch to fix buffer overflow (BZ #2297736)
 

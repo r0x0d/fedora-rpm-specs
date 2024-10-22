@@ -43,5 +43,4 @@ Source0:        %{gosource}
 %gopkgfiles
 
 %changelog
-* jeu. janv. 27 2022 Robert-André Mauchin <zebob.m@gmail.com> 4.2.0-1
-- Initial release
+%autochangelog

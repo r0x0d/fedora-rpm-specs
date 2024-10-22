@@ -1,7 +1,7 @@
 %bcond tests 1
 
 Name:           python-aiohttp
-Version:        3.10.6
+Version:        3.10.10
 Release:        %autorelease
 Summary:        Python HTTP client/server for asyncio
 

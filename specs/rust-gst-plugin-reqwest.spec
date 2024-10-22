@@ -4,7 +4,7 @@
 %global crate gst-plugin-reqwest
 
 Name:           rust-gst-plugin-reqwest
-Version:        0.13.1
+Version:        0.13.2
 Release:        %autorelease
 Summary:        GStreamer reqwest HTTP Source Plugin
 

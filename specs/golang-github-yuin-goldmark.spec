@@ -4,7 +4,7 @@
 
 # https://github.com/yuin/goldmark
 %global goipath         github.com/yuin/goldmark
-Version:                1.7.4
+Version:                1.7.8
 
 %gometa -L
 

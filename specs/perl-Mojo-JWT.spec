@@ -1,8 +1,7 @@
 Name:           perl-Mojo-JWT
-Version:        0.09
-Release:        13%{?dist}
+Version:        1.01
+Release:        1%{?dist}
 Summary:        JSON Web Token the Mojo way
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 URL:            https://metacpan.org/release/Mojo-JWT
@@ -16,12 +15,15 @@ BuildRequires:  perl(Module::Build::Tiny)
 # runtime requirements
 BuildRequires:  perl(:VERSION) >= 5.10
 BuildRequires:  perl(Carp)
-BuildRequires:  perl(Crypt::OpenSSL::RSA)
-BuildRequires:  perl(Digest::SHA)
-BuildRequires:  perl(MIME::Base64) >= 3.11
+BuildRequires:  perl(Crypt::Mac::HMAC)
+BuildRequires:  perl(Crypt::Misc)
+BuildRequires:  perl(Crypt::PK::RSA)
+BuildRequires:  perl(List::Util)
 BuildRequires:  perl(Mojo::Base) >= 5.00
 BuildRequires:  perl(Mojo::JSON)
+BuildRequires:  perl(Scalar::Util)
 # test requirements
+BuildRequires:  perl(Crypt::OpenSSL::RSA)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(warnings)
 Requires:       perl(Crypt::OpenSSL::RSA)
@@ -55,6 +57,9 @@ string rather than a cookie.
 %{_mandir}/man3/Mojo*
 
 %changelog
+* Sun Oct 20 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 1.01
+- Update to 1.01
+
 * Tue Aug 06 2024 Miroslav Suchý <msuchy@redhat.com> - 0.09-13
 - convert license to SPDX
 

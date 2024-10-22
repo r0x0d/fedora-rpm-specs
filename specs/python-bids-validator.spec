@@ -1,6 +1,6 @@
 # do not use github sources, they include the js web sources and so on also
 Name:           python-bids-validator
-Version:        1.14.5
+Version:        1.14.7.post0
 Release:        %autorelease
 Summary:        Validator for the Brain Imaging Data Structure
 
@@ -8,7 +8,7 @@ Summary:        Validator for the Brain Imaging Data Structure
 # and, strictly speaking, is distributed under the same Unlicense terms.
 License:        MIT AND Unlicense
 URL:            https://github.com/bids-standard/bids-validator
-Source:         %{pypi_source bids-validator}
+Source:         %{pypi_source bids_validator}
 
 BuildArch:      noarch
 
@@ -28,7 +28,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -n bids-validator-%{version}
+%autosetup -n bids_validator-%{version}
 
 
 %generate_buildrequires

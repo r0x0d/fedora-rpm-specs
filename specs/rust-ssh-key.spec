@@ -5,7 +5,7 @@
 %global crate ssh-key
 
 Name:           rust-ssh-key
-Version:        0.6.6
+Version:        0.6.7
 Release:        %autorelease
 Summary:        Pure Rust implementation of SSH key file format decoders/encoders
 

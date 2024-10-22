@@ -9,7 +9,7 @@
 %bcond bigtest 0
 
 Name:           gap-pkg-%{pkgname}
-Version:        5.3.7
+Version:        5.4.0
 Release:        %autorelease
 Summary:        GAP methods for semigroups
 
@@ -107,8 +107,7 @@ sed -i '/rpath/s/\(LIBSEMIGROUPS_RPATH=\).*/\1/' configure
 sed -i 's/GAP_CXX :=.*/& -Wl,--as-needed/' Makefile.gappkg
 
 %build
-export LC_ALL=C.UTF-8
-export CPPFLAGS="-I%{_includedir}/eigen3"
+export CPPFLAGS='-I%{_includedir}/eigen3'
 %configure --with-gaproot=%{gap_archdir} --disable-silent-rules \
   --with-external-libsemigroups --without-march-native
 
@@ -127,15 +126,14 @@ cp -a *.g bin data gap tst %{buildroot}%{gap_archdir}/pkg/%{pkgname}
 %gap_copy_docs
 
 %check
-export LC_ALL=C.UTF-8
 cd tst
-gap -l "%{buildroot}%{gap_archdir};" << EOF
+gap -l '%{buildroot}%{gap_archdir};' << EOF
 LoadPackage("semigroups");
 GAP_EXIT_CODE(Test("testinstall.tst", rec( compareFunction := "uptowhitespace" )));
 EOF
 
 %if %{with bigtest}
-gap -l "%{buildroot}%{gap_archdir};" teststandard.g
+gap -l '%{buildroot}%{gap_archdir};' teststandard.g
 %endif
 
 cd -

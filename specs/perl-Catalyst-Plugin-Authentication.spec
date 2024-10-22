@@ -1,56 +1,54 @@
 Name:           perl-Catalyst-Plugin-Authentication
 Summary:        Infrastructure plugin for the Catalyst authentication framework
-Version:        0.10023
-Release:        30%{?dist}
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
+Version:        0.10024
+Release:        1%{?dist}
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
-Source0:        https://cpan.metacpan.org/authors/id/B/BO/BOBTFISH/Catalyst-Plugin-Authentication-%{version}.tar.gz
+Source0:        https://cpan.metacpan.org/authors/id/J/JJ/JJNAPIORK/Catalyst-Plugin-Authentication-%{version}.tar.gz
 URL:            https://metacpan.org/release/Catalyst-Plugin-Authentication
 BuildArch:      noarch
 
+# build requirements
+BuildRequires:  coreutils
 BuildRequires:  make
 BuildRequires:  perl-interpreter
 BuildRequires:  perl-generators
-BuildRequires:  perl(Catalyst::Plugin::Session) >= 0.10
-BuildRequires:  perl(Catalyst::Plugin::Session::State::Cookie)
-BuildRequires:  perl(Catalyst::Runtime)
-BuildRequires:  perl(Class::Inspector)
-BuildRequires:  perl(Class::MOP)
-BuildRequires:  perl(CPAN)
-BuildRequires:  perl(Digest::MD5)
-BuildRequires:  perl(Digest::SHA1)
-BuildRequires:  perl(inc::Module::Install)
-BuildRequires:  perl(Module::Install::Authority)
-BuildRequires:  perl(Module::Install::AuthorRequires)
-BuildRequires:  perl(Module::Install::AuthorTests)
-BuildRequires:  perl(Module::Install::AutoInstall)
-BuildRequires:  perl(Module::Install::Metadata)
-BuildRequires:  perl(Module::Install::WriteAll)
+BuildRequires:  perl(ExtUtils::MakeMaker)
+# runtime requirements
+BuildRequires:  perl(Carp)
+BuildRequires:  perl(Catalyst::Exception)
+BuildRequires:  perl(Digest)
+BuildRequires:  perl(MRO::Compat)
 BuildRequires:  perl(Moose)
 BuildRequires:  perl(MooseX::Emulate::Class::Accessor::Fast)
-BuildRequires:  perl(namespace::clean)
-BuildRequires:  perl(MRO::Compat)
-BuildRequires:  perl(strict)
+BuildRequires:  perl(Scalar::Util)
 BuildRequires:  perl(String::RewritePrefix)
-BuildRequires:  perl(Test::EOL)
-BuildRequires:  perl(Test::Exception)
-BuildRequires:  perl(Test::MockObject)
-BuildRequires:  perl(Test::More) >= 0.88
-BuildRequires:  perl(Test::NoTabs)
-BuildRequires:  perl(Test::Pod) >= 1.14
-BuildRequires:  perl(Test::Pod::Coverage) >= 1.04
-BuildRequires:  perl(Test::WWW::Mechanize::Catalyst)
 BuildRequires:  perl(Try::Tiny)
+BuildRequires:  perl(base)
+BuildRequires:  perl(namespace::autoclean)
+BuildRequires:  perl(namespace::clean)
+BuildRequires:  perl(strict)
+BuildRequires:  perl(utf8)
 BuildRequires:  perl(warnings)
-BuildRequires:  sed
-Requires:       perl(Catalyst::Plugin::Session) >= 0.10
+# test requirements
+BuildRequires:  perl(Catalyst)
+BuildRequires:  perl(Catalyst::Controller)
+BuildRequires:  perl(Catalyst::Engine)
+BuildRequires:  perl(Catalyst::Plugin::Session) >= 0.10
+BuildRequires:  perl(Catalyst::Plugin::Session::State::Cookie)
+BuildRequires:  perl(Catalyst::Test)
+BuildRequires:  perl(Class::MOP)
+BuildRequires:  perl(Class::MOP::Class)
+BuildRequires:  perl(Digest::MD5)
+BuildRequires:  perl(Digest::SHA)
+BuildRequires:  perl(HTTP::Cookies)
+BuildRequires:  perl(HTTP::Request::Common)
+BuildRequires:  perl(Moose::Object)
+BuildRequires:  perl(Moose::Role)
+BuildRequires:  perl(Test::Fatal)
+BuildRequires:  perl(Test::More) >= 0.88
+BuildRequires:  perl(lib)
 Requires:       perl(Catalyst::Runtime)
 Requires:       perl(MooseX::Emulate::Class::Accessor::Fast)
-
-# obsolete/provide old tests subpackage
-# can be removed during F19 development cycle
-Obsoletes:      %{name}-tests < 0.10018-3
-Provides:       %{name}-tests = %{version}-%{release}
 
 %{?perl_default_filter}
 
@@ -62,30 +60,33 @@ authorizes them to do).
 
 %prep
 %setup -q -n Catalyst-Plugin-Authentication-%{version}
-# Remove bundled libraries
-rm -r inc
-sed -i -e '/^inc\// d' MANIFEST
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+/usr/bin/perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-
-find %{buildroot} -type f -name .packlist -exec rm -f {} \;
-
+%{make_install}
 %{_fixperms} %{buildroot}/*
 
 %check
-TEST_POD=1 make test
+%{make_build} test
 
 %files
 %doc Changes README t/
+%license LICENSE
 %{perl_vendorlib}/*
 %{_mandir}/man3/*
 
 %changelog
+* Sun Oct 20 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 0.10024-1
+- Update to 0.10024
+- Overhaul dependecies
+- Drop -test subpackage
+- Use %%{make_build} and %%{make_install} where appropriate
+- Drop use of %%{__perl}
+- Use %%license tag
+
 * Mon Aug 05 2024 Miroslav Suchý <msuchy@redhat.com> - 0.10023-30
 - convert license to SPDX
 

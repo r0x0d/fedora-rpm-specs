@@ -11,6 +11,9 @@ Summary:        pytest support for PyQt and PySide applications
 License:        MIT AND (LGPL-3.0-only OR GPL-2.0-or-later)
 URL:            %forgeurl
 Source:         %forgesource
+# Stop gap measure for one failing test after PySide 6.8.0 has landed.
+# https://github.com/pytest-dev/pytest-qt/issues/575
+Patch:          fix_test_failing_with_PySide-6.8.0.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -62,9 +65,6 @@ k="${k-}${k+ and }not test_qt_api_ini_config"
 k="${k-}${k+ and }not test_basic_logging"
 k="${k-}${k+ and }not test_qtlog_fixture"
 k="${k-}${k+ and }not test_logging_fails_tests"
-# Test fails with `PySide6>=6.7.0`
-# https://github.com/pytest-dev/pytest-qt/issues/552
-k="${k-}${k+ and }not test_destroyed"
 
 %tox -- -- ${k+-k }"${k-}"
 

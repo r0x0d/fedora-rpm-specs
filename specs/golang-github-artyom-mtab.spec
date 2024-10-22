@@ -42,5 +42,4 @@ Source0:        %{gosource}
 %gopkgfiles
 
 %changelog
-* mar. déc. 21 2021 Robert-André Mauchin <zebob.m@gmail.com> 0-0.1
-- Initial release
+%autochangelog

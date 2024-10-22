@@ -1,27 +1,26 @@
 Name: zswap-cli
-Version: 0.9.1
+Version: 1.0.0
 Release: %autorelease
 
 License: MIT
-Summary: Command-line tool to control zswap options
+Summary: Command-line tool to control the zswap options
 URL: https://github.com/xvitaly/%{name}
 Source0: %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires: boost-devel
-BuildRequires: cmake
-BuildRequires: fmt-devel
-BuildRequires: gcc-c++
 BuildRequires: glibc-headers
 BuildRequires: kernel-headers
+
+BuildRequires: cmake
+BuildRequires: gcc-c++
 BuildRequires: ninja-build
 BuildRequires: pandoc
-BuildRequires: semver-devel
 BuildRequires: systemd
 
 %{?systemd_requires}
 
 %description
-Zswap-cli is a command-line tool to control zswap Linux kernel module
+Zswap-cli is a command-line tool to control the zswap kernel module
 options.
 
 Zswap is a compressed cache for swap pages. It takes pages that are in the
@@ -32,7 +31,7 @@ It trades CPU cycles for a significant performance boost since reading from
 a compressed cache is much faster than reading from a swap device.
 
 %prep
-%autosetup
+%autosetup -p1
 
 %build
 %cmake -G Ninja \
@@ -57,7 +56,7 @@ a compressed cache is much faster than reading from a swap device.
 %files
 %doc docs/*
 %license LICENSE
-%{_sbindir}/%{name}
+%{_bindir}/%{name}
 %{_unitdir}/%{name}.service
 %{_mandir}/man1/%{name}.*
 %dir %{_sysconfdir}/%{name}

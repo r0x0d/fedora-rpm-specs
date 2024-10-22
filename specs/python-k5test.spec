@@ -1,5 +1,5 @@
 Name:           python-k5test
-Version:        0.10.3
+Version:        0.10.4
 Release:        %autorelease
 Summary:        Library for testing Python apps in self-contained Kerberos 5 environments
 # main source code is ISC
@@ -7,8 +7,6 @@ Summary:        Library for testing Python apps in self-contained Kerberos 5 env
 License:        ISC AND HPND-export-US-modify
 URL:            https://github.com/pythongssapi/k5test
 Source:         %{pypi_source k5test}
-# https://github.com/pythongssapi/k5test/pull/26
-Patch:          0001-Include-both-license-files.patch
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
@@ -43,7 +41,7 @@ Summary:        %{summary}
 
 %install
 %pyproject_install
-%pyproject_save_files k5test
+%pyproject_save_files -l k5test
 
 
 %check

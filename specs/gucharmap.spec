@@ -3,7 +3,7 @@
 %define gtk3_version 3.15.9
 
 Name:           gucharmap
-Version:        16.0.1
+Version:        16.0.2
 Release:        1%{?dist}
 Summary:        Unicode character picker and font browser
 
@@ -93,6 +93,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{name}.metain
 %{_datadir}/vala/vapi/gucharmap-2.90.vapi
 
 %changelog
+* Sun Oct 20 2024 Alexander Ploumistos <alexpl@fedoraproject.org> - 16.0.2-1
+- Update to 16.0.2 (#2319945)
+
 * Tue Sep 24 2024 Alexander Ploumistos <alexpl@fedoraproject.org> - 16.0.1-1
 - Update to 16.0.1 (#2311318)
 

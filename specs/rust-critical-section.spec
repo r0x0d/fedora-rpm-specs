@@ -5,7 +5,7 @@
 %global crate critical-section
 
 Name:           rust-critical-section
-Version:        1.1.3
+Version:        1.2.0
 Release:        %autorelease
 Summary:        Cross-platform critical section
 

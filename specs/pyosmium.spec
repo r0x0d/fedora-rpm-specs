@@ -2,7 +2,7 @@
 %global pybind_version 2.11.1
 
 Name:           pyosmium
-Version:        4.0.1
+Version:        4.0.2
 Release:        %autorelease
 Summary:        Python bindings for libosmium
 

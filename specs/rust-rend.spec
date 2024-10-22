@@ -5,7 +5,7 @@
 %global crate rend
 
 Name:           rust-rend
-Version:        0.5.1
+Version:        0.5.2
 Release:        %autorelease
 Summary:        Cross-platform, endian-aware primitives for Rust
 

@@ -24,7 +24,7 @@ BuildRequires: pkgconfig(gtk4)
 BuildRequires: pkgconfig(gobject-introspection-1.0)
 BuildRequires: gjs
 BuildRequires: desktop-file-utils
-BuildRequires: libappstream-glib
+BuildRequires: appstream
 
 Requires:      gjs%{_isa}
 Requires:      libadwaita%{_isa} >= %{adwaita_version}

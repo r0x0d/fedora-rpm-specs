@@ -1,25 +1,17 @@
-%global commit f539cfad329859ffd0d99e1ae03dd06da35aadf7
-%global gittag 1.0.4
+%global commit fe4a7b32a7656de8c8f4c4efa926cf6f21a9c1d9
+%global gittag 1.2.0
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           sdrpp
-Version:        1.0.4
-Release:        24%{?dist}
+Version:        1.2.0
+Release:        1%{?dist}
 Summary:        SDRPlusPlus bloat-free SDR receiver software
 
 # Automatically converted from old format: GPLv3 and MIT and WTFPL and Public Domain - review is highly recommended.
 License:        GPL-3.0-only AND LicenseRef-Callaway-MIT AND WTFPL AND LicenseRef-Callaway-Public-Domain
 URL:            https://github.com/AlexandreRouma/SDRPlusPlus/
 Source0:        https://github.com/AlexandreRouma/SDRPlusPlus/archive/%{commit}/%{name}-%{version}.tar.gz
-# Note: the changes which these patches perform are discussed in upstream issue
-# https://github.com/AlexandreRouma/SDRPlusPlus/issues/292
-# Becuase upstream intends to rework their whole cmake build system
-# as noted in this issue, I merely provided suggestions as to what to change
-# rather than specific patches which aren't likely exactly what upstream will
-# do.
-#
-# Remove rapidjson in favor of system library
-Patch0:         remove-rapidjson.patch
+
 # Changes to top-level and core CMakeLists.txt to complete the above changes.
 # Set soname on libsdrpp_core.so
 # Install libsdrpp_core.so in _libdir
@@ -28,12 +20,11 @@ Patch1:         cmake-top.patch
 Patch2:         add-libraries.patch
 # Move the config file to libdir
 Patch3:         configfile-libdir.patch
-# Remove libcorrect
-Patch4:         remove-libcorrect.patch
 # std::runtime_error requires <stdexcept>
 # https://github.com/AlexandreRouma/SDRPlusPlus/issues/970
 Patch5:         sdrpp-stdexcept.patch
 
+ExcludeArch:    i686
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -43,6 +34,8 @@ BuildRequires:  spdlog-devel fmt-devel
 # Need to BR -static packages for header-only libraries for tracking, per
 BuildRequires:  rapidjson-devel rapidjson-static
 BuildRequires:  json-devel json-static
+BuildRequires:  libcorrect-devel
+BuildRequires:  libzstd-devel
 # Enforce the the minimum EVR to contain fixes for all of:
 # CVE-2021-28021
 # CVE-2021-42715
@@ -100,8 +93,9 @@ Features
 - Full waterfall update when possible. Makes browsing signals
   easier and more pleasant
 
+
 %prep
-%autosetup -p1 -n SDRPlusPlus-%{version}
+%autosetup -p1 -n SDRPlusPlus-%{commit}
 # Install plugins to _lib
 grep -rl 'lib/sdrpp/plugins' . | xargs sed -i -e 's:lib/sdrpp/plugins:%{_lib}/sdrpp/plugins:g'
 # Delete local copy of spdlog. We're using the system library copy.
@@ -127,8 +121,8 @@ rm -rf core/libcorrect/
 # Use system-provided roboto font
 sed -i -e 's:resDir + "/fonts/Roboto-Medium.ttf":"%{_datadir}/fonts/google-roboto/Roboto-Medium.ttf":'   core/src/gui/style.cpp
 
-%build
 
+%build
 # Not building Falcon9 decoder as it requires ffplay which is in rpmfusion
 # Not building hardware support which does not have libraries in Fedora
 # Building for new PortAudio
@@ -137,10 +131,10 @@ sed -i -e 's:resDir + "/fonts/Roboto-Medium.ttf":"%{_datadir}/fonts/google-robot
        -DOPT_BUILD_PLUTOSDR_SOURCE=OFF \
        -DOPT_BUILD_NEW_PORTAUDIO_SINK=ON \
        -DOPT_BUILD_M17_DECODER=ON \
+	   -DUSE_INTERNAL_LIBCORRECT=OFF \
        -DBUILD_SHARED_LIBS=0
 
 %cmake_build
-
 
 
 %install
@@ -164,8 +158,10 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %{_bindir}/%{name}
 
 
-
 %changelog
+* Sun Oct 20 2024 Richard Shaw <hobbes1069@gmail.com> - 1.2.0-1
+- Update to 1.2.0.
+
 * Fri Oct 18 2024 Richard Shaw <hobbes1069@gmail.com> - 1.0.4-24
 - Rebuild for new rtaudio.
 

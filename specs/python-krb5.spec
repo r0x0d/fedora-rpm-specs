@@ -1,12 +1,10 @@
 Name:           python-krb5
-Version:        0.5.1
+Version:        0.7.0
 Release:        %autorelease
 Summary:        Kerberos API bindings for Python
 License:        MIT
 URL:            https://github.com/jborean93/pykrb5
 Source:         %{pypi_source krb5}
-# https://github.com/jborean93/pykrb5/pull/32
-Patch:          0001-Exclude-header-files-from-package-data.patch
 
 BuildRequires:  gcc
 BuildRequires:  krb5-devel
@@ -48,7 +46,7 @@ BuildRequires:  python3-k5test
 
 %install
 %pyproject_install
-%pyproject_save_files krb5
+%pyproject_save_files -l krb5
 
 
 %check

@@ -1,14 +1,14 @@
-%global glib2_version 2.73
-%global gtk4_version 4.12
+%global glib2_version 2.80
+%global gtk4_version 4.15
 %global gtksourceview_version 5.10.0
 %global enchant_version 2.2.0
-%global libadwaita_version 1.5~alpha
+%global libadwaita_version 1.6~alpha
 %global libspelling_version 0.3.0
 
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 Name:		gnome-text-editor
-Version:	47.0
+Version:	47.1
 Release:	1%{?dist}
 Summary:	A simple text editor for the GNOME desktop
 
@@ -79,6 +79,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.gnome.TextEditor.
 
 
 %changelog
+* Sat Oct 19 2024 David King <amigadave@amigadave.com> - 47.1-1
+- Update to 47.1
+
 * Mon Sep 16 2024 nmontero <nmontero@redhat.com> - 47.0-1
 - Update to 47.0
 

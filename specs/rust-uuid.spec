@@ -5,7 +5,7 @@
 %global crate uuid
 
 Name:           rust-uuid
-Version:        1.10.0
+Version:        1.11.0
 Release:        %autorelease
 Summary:        Library to generate and parse UUIDs
 
@@ -16,6 +16,7 @@ Source:         %{crates_source}
 Patch:          uuid-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * drop unused optional dependency for borsh support
+# * drop unused optional dependency for zerocopy support
 # * drop WASM-specific features and dependencies
 # * drop internal-only features
 Patch:          uuid-fix-metadata.diff
@@ -256,18 +257,6 @@ This package contains library source intended for building other packages which
 use the "v8" feature of the "%{crate}" crate.
 
 %files       -n %{name}+v8-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+zerocopy-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+zerocopy-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "zerocopy" feature of the "%{crate}" crate.
-
-%files       -n %{name}+zerocopy-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep

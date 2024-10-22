@@ -1,8 +1,7 @@
 Name:           perl-HTML-Form
-Version:        6.11
-Release:        7%{?dist}
+Version:        6.12
+Release:        1%{?dist}
 Summary:        Class that represents an HTML form element
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/HTML-Form
 Source0:        https://cpan.metacpan.org/authors/id/S/SI/SIMBABQUE/HTML-Form-%{version}.tar.gz
@@ -61,6 +60,9 @@ passed to the request() method of LWP::UserAgent.
 %{_mandir}/man3/*
 
 %changelog
+* Sun Oct 20 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 6.12-1
+- Update to 6.12
+
 * Tue Aug 06 2024 Miroslav Suchý <msuchy@redhat.com> - 6.11-7
 - convert license to SPDX
 

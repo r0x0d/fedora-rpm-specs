@@ -1,5 +1,5 @@
 Name:           iwd
-Version:        2.22
+Version:        3.0
 Release:        %autorelease
 Summary:        Wireless daemon for Linux
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.

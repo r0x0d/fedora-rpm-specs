@@ -2,7 +2,7 @@
 %global debug_package %{nil}
 
 Name:     elixir
-Version:  1.17.2
+Version:  1.17.3
 Release:  %autorelease
 Summary:  A modern approach to programming for the Erlang VM
 License:  Apache-2.0

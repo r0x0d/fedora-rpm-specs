@@ -21,12 +21,15 @@
 
 Name:           publican
 Version:        4.3.2
-Release:        30%{?dist}
+Release:        31%{?dist}
 Summary:        Common files and scripts for publishing with DocBook XML
 # For a breakdown of the licensing, refer to LICENSE
 License:        (GPL-2.0-or-later OR Artistic-1.0-Perl) AND CC0-1.0
 URL:            https://publican.fedorahosted.org
 Source0:        https://fedorahosted.org/released/publican/Publican-v%{version}.tar.gz
+Patch0:         file-spec-fix.patch
+Patch1:		    xsl.patch
+
 BuildArch:      noarch
 Provides:       publican-common = %{version}
 Provides:       publican-common-db5 = %{version}
@@ -209,6 +212,7 @@ Website style for common brand for DocBook5 content
 
 %prep
 %setup -q -n Publican-v%{version}
+%autopatch -p1
 
 %build
 sed -i -e 's,PATH,%{DBPATH},g' catalog
@@ -319,6 +323,10 @@ fi
 %{wwwdir}/common-db5
 
 %changelog
+* Mon Oct 21 2024 Jeff Fearn <jfearn@redhat.com> - 4.3.2-31
+- Patch broken html simple build
+- Patch File::Spec warning
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.3.2-30
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

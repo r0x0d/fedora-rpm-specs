@@ -8,6 +8,9 @@ Summary:        Build OAuth and OpenID Connect servers in Python
 License:        BSD-3-Clause
 URL:            https://github.com/lepture/authlib
 Source0:        %{url}/archive/v%{version}/authlib-%{version}.tar.gz
+# Fix tests for Python 3.13
+# Upstream PR: https://github.com/lepture/authlib/pull/682
+Patch:          0001-tests-Dereference-LocalProxy-before-serialization.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -26,6 +29,14 @@ Summary:        %{summary}
 
 %prep
 %autosetup -p1 -n authlib-%{version}
+
+# Remove OAuth 1 tests, because they require support for SHA1.
+sed -i '/tests\.django\.test_oauth1/d' tests/django/settings.py
+rm -rf \
+  tests/django/test_oauth1 \
+  tests/flask/test_oauth1 \
+  tests/clients/test_requests/test_oauth1_session.py \
+  tests/clients/test_httpx/test_oauth1_client.py
 
 
 %generate_buildrequires

@@ -5,7 +5,7 @@
 %global crate append-only-vec
 
 Name:           rust-append-only-vec
-Version:        0.1.6
+Version:        0.1.7
 Release:        %autorelease
 Summary:        Append-only, concurrent vector
 

@@ -1,6 +1,6 @@
 Name:		perl-Rose-DB-Object
-Version:	0.820
-Release:	12%{?dist}
+Version:	0.821
+Release:	1%{?dist}
 Summary:	Extensible, high performance object-relational mapper (ORM)
 # Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -78,6 +78,9 @@ make test
 %{_mandir}/man3/Rose::DB::Object*.3pm*
 
 %changelog
+* Sun Oct 20 2024 Bill Pemberton <wfp5p@worldbroken.com> - 0.821-1
+- update to version 0.821
+
 * Tue Aug 06 2024 Miroslav Suchý <msuchy@redhat.com> - 0.820-12
 - convert license to SPDX
 

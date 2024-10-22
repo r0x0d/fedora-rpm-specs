@@ -1,17 +1,17 @@
 %global         srcname         pyembroidery
 %global         forgeurl        https://github.com/EmbroidePy/pyembroidery
-Version:        1.4.36
+Version:        1.5.1
 %global         tag             %{version}
 %forgemeta
 
 Name:           python-%{srcname}
-Release:        7%{?dist}
+Release:        1%{?dist}
 Summary:        Library for reading and writing a variety of embroidery formats
 
 License:        MIT
 URL:            %{forgeurl}
 # Use source from GitHub to get license files
-Source0:        %{forgesource}
+Source:         %{forgesource}
 
 
 BuildRequires:  python3-devel
@@ -61,6 +61,9 @@ sed -i 's/\r$//' README.md
 %exclude %{python3_sitelib}/test
  
 %changelog
+* Sun Oct 20 2024 Benson Muite <benson_muite@emailplus.org> - 1.5.1-1
+- Upgrade to 1.5.1
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.36-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

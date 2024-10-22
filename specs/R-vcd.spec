@@ -2,7 +2,7 @@
 
 %global packname vcd
 %global ver 1.4
-%global packrel 12
+%global packrel 13
 
 %global _description %{expand:
 Visualization techniques, data sets, summary and inference procedures aimed
@@ -14,7 +14,7 @@ by Michael Friendly and David Meyer (2015).}
 
 Name:             R-%{packname}
 Version:          %{ver}.%{packrel}
-Release:          4%{?dist}
+Release:          1%{?dist}
 Source0:          ftp://cran.r-project.org/pub/R/contrib/main/%{packname}_%{ver}-%{packrel}.tar.gz
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License:          GPL-2.0-only
@@ -65,6 +65,9 @@ export _R_CHECK_FORCE_SUGGESTS_=0 LANG=C.UTF-8
 
 
 %changelog
+* Sun Oct 20 2024 Iztok Fister Jr. <iztokf AT fedoraproject DOT org> - 1.4.13-1
+- Update to 1.4-13
+
 * Mon Jul  29 2024 Miroslav Suchý <msuchy@redhat.com> - 1.4.12-4
 - convert license to SPDX
 

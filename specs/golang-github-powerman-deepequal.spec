@@ -44,8 +44,4 @@ Source0:        %{gosource}
 %gopkgfiles
 
 %changelog
-* Mon Sep 2 2024 Miroslav Suchý <msuchy@redhat.com> - 0.1.0-1
-- convert license to SPDX
-
-* dim. oct. 03 2021 Robert-André Mauchin <zebob.m@gmail.com> 0.1.0-1
-- Initial release
+%autochangelog

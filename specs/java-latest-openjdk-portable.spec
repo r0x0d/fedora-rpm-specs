@@ -337,12 +337,12 @@
 # New Version-String scheme-style defines
 %global featurever 23
 %global interimver 0
-%global updatever 0
+%global updatever 1
 %global patchver 0
 # buildjdkver is usually same as %%{featurever},
 # but in time of bootstrap of next jdk, it is featurever-1,
 # and this it is better to change it here, on single place
-%global buildjdkver 22
+%global buildjdkver 23
 # We don't add any LTS designator for STS packages (Fedora and EPEL).
 # We need to explicitly exclude EPEL as it would have the %%{rhel} macro defined.
 %if 0%{?rhel} && !0%{?epel}
@@ -401,8 +401,8 @@
 %global origin_nice     OpenJDK
 %global top_level_dir_name   %{vcstag}
 %global top_level_dir_name_backup %{top_level_dir_name}-backup
-%global buildver        37
-%global rpmrelease      2
+%global buildver        11
+%global rpmrelease      %(echo "%autorelease" | sed 's;%{?dist};;')
 #%%global tagsuffix     %%{nil}
 # Priority must be 8 digits in total; up to openjdk 1.8, we were using 18..... so when we moved to 11, we had to add another digit
 %if %is_system_jdk
@@ -1785,227 +1785,4 @@ done
 %endif
 
 %changelog
-* Tue Sep 24 2024 Jiri Vanek <jvanek@redhat.com> - 1:23.0.0.37-1.rolling
-- updated to jdk23
-- udpated NEWS (for JEPS) and README.md for 23 links
-
-* Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1:22.0.2.0.9-2.rolling.1
-- convert license to SPDX
-
-* Sat Jul 20 2024 Jiri Vanek <jvanek@redhat.com> - 1:22.0.2.9-2.rolling
-- July CPU
-- updated NEWS
-
-* Tue Apr 30 2024 Jiri Vanek <jvanek@redhat.com> - 1:22.0.1.8-1.rolling
-- April CPU
-
-* Wed Feb 21 2024 Songsong Zhang <U2FsdGVkX1@gmail.com> - 1:22.0.0.0.36-3.rolling
-- Add riscv64 support
-
-* Fri Feb 16 2024 Jiri Vanek <jvanek@redhat.com> - 1:22.0.0.0.36-2.rolling
-- bumped build jdk to 22
-
-* Fri Feb 16 2024 Jiri Vanek <jvanek@redhat.com> - 1:22.0.0.0.36-1.rolling
-- updated to 22+36
-- tmp comment out of ea exit 17
-- fixed condition for taspets
-
-* Wed Jan 24 2024 Jiri Vanek <jvanek@redhat.com> - 1:22.0.0.0.32-2.rolling
-- Move to -P<n> usage for patch macro which works on all RPM versions
-- generate_source_tarball.sh: Add note on network usage of OPENJDK_LATEST
-- generate_source_tarball.sh: Remove unneeded FIXME
-- generate_source_tarball.sh: Add --sort=name to tar invocation for reproducibility
-- generate_source_tarball.sh: Add WITH_TEMP environment variable
-- generate_source_tarball.sh: Multithread xz on all available cores
-- generate_source_tarball.sh: Add OPENJDK_LATEST environment variable
-- generate_source_tarball.sh: Update comment about tarball naming
-- generate_source_tarball.sh: Remove REPO_NAME from FILE_NAME_ROOT
-- generate_source_tarball.sh: Set compile-command in Emacs
-- generate_source_tarball.sh: Reformat comment header
-- generate_source_tarball.sh: Reformat and update help output
-- generate_source_tarball.sh: Move PROJECT_NAME and REPO_NAME checks
-- generate_source_tarball.sh: Do a shallow clone, for speed
-- generate_source_tarball.sh: Append -ea designator when required
-- generate_source_tarball.sh: Eliminate some removal prompting
-- generate_source_tarball.sh: Make tarball reproducible
-- generate_source_tarball.sh: Prefix temporary directory with temp-
-- generate_source_tarball.sh: shellcheck: Remove x-prefixes since we use Bash
-- generate_source_tarball.sh: shellcheck: Double-quote variable references
-- generate_source_tarball.sh: shellcheck: Do not use -a
-- generate_source_tarball.sh: shellcheck: Do not use $ in expression
-- generate_source_tarball.sh: Remove temporary directory exit conditions
-
-* Mon Jan 22 2024 Jiri Vanek <jvanek@redhat.com> - 1:22.0.0.0.32-1.rolling
-- bumped to jdk22 (jdk-22+32)
-- manually renamed generated sources openjdk-jdk22u-jdk-22+32.tar.xz -> openjdk-22+32-ea.tar.xz
-- disabled patch 10001 fips patch for a short timebeing
--- removed --disable-sysconf-nss v acordingly
-- removed patch6 jdk8009550-rh910107-fail_to_load_pcsc_library.patch; upstreamed
-- removed incorrect versioned java-devel requirements
-- disabled locales tests, as they currenlty (correctly fails)
-
-* Tue Jan 09 2024 Andrew Hughes <gnu.andrew@redhat.com> - 1:21.0.2.0.13-1
-- Update to jdk-21.0.2+13 (GA)
-- Update release notes to 21.0.2+13
-- Drop no longer needed local patch to fix versioning
-- ** This tarball is embargoed until 2024-01-16 @ 1pm PT. **
-
-* Wed Dec 13 2023 Jiri Vanek <jvanek@redhat.com> - 1:21.0.1.0.12-3.rolling
-- packing generated sources
-
-* Wed Nov 22 2023 Jiri Vanek <jvanek@redhat.com> - 1:21.0.1.0.12-2.rolling
-- updated to OpenJDK 21.0.1 (2023-10-17)
-- adjsuted generate_source_tarball
-- removed icedtea_sync
-- dropped standalone licenses
-- added usntripped subpkg
-- added docs subpkg
-- adjsuted versions of bundled libraries
-- build refactored to several solid methods following gnu_andrew
-- removed no longer needed jdk8296108-tzdata2022f.patch, jdk8296715-cldr2022f.patch, rh1648644-java_access_bridge_privileged_security.patch
-- added jdk8311630-s390_ffmapi.patch to support virtual threads on s390x
-- aligned fips-21u-75ffdc48eda.patch (gnu_andrew)
-- fixed '--without release' build-ability by moving docs and misc to if-release only
-
-* Wed Sep 20 2023 Jiri Vanek <jvanek@redhat.com> - 1:21.0.0.0.35-4.rolling
-- removed %{1} from miscportablename
-
-* Fri Sep 15 2023 Andrew Hughes <gnu.andrew@redhat.com> - 1:21.0.0.0.35-3.rolling
-- Update documentation (README.md, add missing JEP to release notes)
-- Replace alt-java patch with a binary separate from the JDK
-- Drop stale patches that are of little use any more:
-- * nss.cfg has been disabled since early PKCS11 work and long superseded by FIPS work
-- * No accessibility subpackage to warrant RH1648242 patch any more
-- * No use of system libjpeg turbo to warrant RH649512 patch any more
-- Replace RH1684077 pcsc-lite-libs patch with better JDK-8009550 fix being upstreamed
-- Update generate_tarball.sh to sync with upstream vanilla script
-- Change top_level_dir_name to use the VCS tag, matching new upstream release style tarball
-- Use upstream release URL for OpenJDK source
-- Port misc tarball from RHEL to house alt-java outside the JDK tree
-- Port improved tarball creation and checking from RHEL so tarballs are verified
-
-* Thu Sep 14 2023 Andrew Hughes <gnu.andrew@redhat.com> - 1:21.0.0.0.35-2.rolling
-- Bump buildjdkver now that java-21-openjdk is available in the buildroot
-
-* Tue Aug 08 2023 Petra Alice Mikova <pmikova@redhat.com> 1:21.0.0.0.35-1.rolling
-- updated to jdk-21+35, which is no longer EA
-
-* Tue Aug 08 2023 Petra Alice Mikova <pmikova@redhat.com> 1:21.0.0.0.34-0.1.ea.rolling
-- initial update to jdk21
-- commented out fips patches
-- updated to jdk21 ea
-- updated patch 1001 - rh1648249-add_commented_out_nss_cfg_provider_to_java_security
-- replace smoketests in staticlibs test, as the previous files used were removed by a patch in JDK
-- require tzdata 2023c
-- Update FIPS support to bring in latest changes
-- * RH2048582: Support PKCS#12 keystores
-- * RH2020290: Support TLS 1.3 in FIPS mode
-- * Add nss.fips.cfg support to OpenJDK tree
-- * RH2117972: Extend the support for NSS DBs (PKCS11) in FIPS mode
-- * Remove forgotten dead code from RH2020290 and RH2104724
-- * OJ1357: Fix issue on FIPS with a SecurityManager in place
-- * RH2134669: Add missing attributes when registering services in FIPS mode.
-- * test/jdk/sun/security/pkcs11/fips/VerifyMissingAttributes.java: fixed jtreg main class
-- * RH1940064: Enable XML Signature provider in FIPS mode
-- * Remove GCC minor versioning (JDK-8284772) to unbreak testing
-- Drop local nss.fips.cfg.in handling now this is handled in the patched OpenJDK build
-
-* Thu Aug 03 2023 Jiri Vanek <jvanek@redhat.com> - 1:20.0.2.0.9-1.rolling
-- Update to jdk-20.0.2+9
-- Update release notes to 20.0.2+9
-
-* Thu Jul 20 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1:20.0.1.0.9-5.rolling.1
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Tue Jun 27 2023 Kalev Lember <klember@redhat.com> - 1:20.0.1.0.9-5.rolling
-- Simplify portable archive name macros
-
-* Mon May 15 2023 Jiri Vanek <jvanek@redhat.com> - 1:20.0.1.0.9-4.rolling
-- Redeclared ForFiles release sections as %%nil no longer works with %%1
-- RPM 4.19 no longer accept our double percentaged %%{nil} passed to %%{1}
-- so we have to pass in "" but evaluate it, otherwise files record will include it
-
-* Mon May 15 2023 Jiri Vanek <jvanek@redhat.com> - 1:20.0.1.0.9-3.rolling
-- no longer using system cacerts during build
-- they are already mv-ed as .upstream in rpms
-
-* Wed May 10 2023 Jiri Vanek <gnu.andrew@redhat.com> - 1:20.0.1.0.9-2.rolling
-- enabled all crypto
-
-* Wed Apr 26 2023 Andrew Hughes <gnu.andrew@redhat.com> - 1:20.0.1.0.9-1.rolling
-- Update to jdk-20.0.1+9
-- Update release notes to 20.0.1+9
-
-* Fri Apr 14  2023 Jiri Vanek <jvanek@redhat.com> - 1:20.0.0.0.36-3.rolling
-- introduced archfull src archive
-- replaced nasty handling of icons.
-- needed for icons and src reference for rpms (debuginfo, src subpkg)
-- licences moved to proper sharable noarch
-
-* Mon Apr 10 2023 Andrew Hughes <gnu.andrew@redhat.com> - 1:20.0.0.0.36-2.rolling
-- Complete update to OpenJDK 20
-- Update NEWS
-- Update system crypto policy & FIPS patch from new fips-20u tree
-- * RH2104724: Avoid import/export of DH private keys
-- * RH2092507: P11Key.getEncoded does not work for DH keys in FIPS mode
-- * Build the systemconf library on all platforms
-- Update generate_tarball.sh ICEDTEA_VERSION and add support for passing a boot JDK to the configure run
-- Revert changes to generate_tarball.sh which break error handling
-- Add POSIX-friendly error codes to generate_tarball.sh and fix whitespace
-- Remove .jcheck and GitHub support when generating tarballs, as done in upstream release tarballs
-- Revert changes to patch macro which break on older versions of rpm (4.16)
-- Revert changes to configure run
-- Revert RH1648429 patch changes
-- Update CLDR reference data following update to 42 (Rocky Mountain-Normalzeit => Rocky-Mountain-Normalzeit)
-- Re-enable disabled translation test
-- Automatically turn off building a fresh HotSpot first, if the bootstrap JDK is not the same major version as that being built
-
-* Tue Mar 28  2023 Jiri Vanek <jvanek@redhat.com> - 1:20.0.0.0.36-1.rolling
-- moved to jdk20
-- remvoed already upstreamed patches patch2006,2007,2008,2009
-- commented out not yet adapted patch1001 - fips support
-- removed --disable-sysconf-nss due to missing patch 1001 from configure
--- todo return both patch1001 and disable-sysconf-nss!
-- adapted rh1648249-add_commented_out_nss_cfg_provider_to_java_security.patch and rh1750419-redhat_alt_java.patch patches
-- inverted fresh_libjvm behavior to be disabled by default. fails:
--- See: https://koji.fedoraproject.org/koji/taskinfo?taskID=99242677
-- commented out tzdata tests
-- moved from deprecated patchN to patch N
-
-* Tue Feb 07  2023 Jiri Vanel <jvanek@redhat.com> - 1:19.0.2.0.7-2.rolling
-- added png icons from x11 source package, so they can be reused by rpms
-
- * Thu Jan 26 2023 Andrew Hughes <gnu.andrew@redhat.com> - 1:19.0.2.0.7-1.rolling
-- Update to jdk-19.0.2 release
-- Update release notes to 19.0.2
-- Drop JDK-8293834 (CLDR update for Kyiv) which is now upstream
-- Drop JDK-8294357 (tzdata2022d), JDK-8295173 (tzdata2022e) & JDK-8296108 (tzdata2022f) local patches which are now upstream
-- Drop JDK-8296715 (CLDR update for 2022f) which is now upstream
-- Add local patch JDK-8295447 (javac NPE) which was accepted into 19u upstream but not in the GA tag
-- Add local patches for JDK-8296239 & JDK-8299439 (Croatia Euro update) which are present in 8u, 11u & 17u releases
-
-* Thu Jan 19 2023 Andrew Hughes <gnu.andrew@redhat.com> - 1:19.0.1.0.10-3.rolling
- - Update in-tree tzdata & CLDR to 2022g with JDK-8296108, JDK-8296715 & JDK-8297804
- - Update TestTranslations.java to test the new America/Ciudad_Juarez zone
-
-* Thu Jan 19 2023 Stephan Bergmann <sbergman@redhat.com> - 1:19.0.1.0.10-3.rolling
- - Fix flatpak builds by disabling TestTranslations test due to missing tzdb.dat
-
-* Thu Jan 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1:19.0.1.0.10-3.rolling.1
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
-
-* Thu Jan 12 2023 Jiri Vanel <jvanek@redhat.com> - 1:19.0.1.0.10-3.rolling
-- keep system crypto policy honoring disabled (test adapted)
-- keep upstream cacerts
-- call  installjdk also for jreimage.
-- add alt-java man page conditionaly (se install openjdk for jre above)
-- convert man pages to utf8 (conditionally, man pages are not in jre)
-- stabilised permissions as was in rpms
-- use NEWS both in tarball and outside
-- for release sdk use javadoc archive.
-- remove STRIP_KEEP_SYMTAB=libjvm* and all todo as it is going to continue in rpms only
-  (hopefully)
-
-* Thu Dec 01 2022 Petra Alice Mikova <pmikova@redhat.com> - 1:19.0.1.0.10-2.rolling
-- initial import
-
+%autochangelog

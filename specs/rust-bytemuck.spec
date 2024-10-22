@@ -5,7 +5,7 @@
 %global crate bytemuck
 
 Name:           rust-bytemuck
-Version:        1.18.0
+Version:        1.19.0
 Release:        %autorelease
 Summary:        Muck around with piles of bytes
 
@@ -167,6 +167,18 @@ This package contains library source intended for building other packages which
 use the "nightly_stdsimd" feature of the "%{crate}" crate.
 
 %files       -n %{name}+nightly_stdsimd-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+track_caller-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+track_caller-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "track_caller" feature of the "%{crate}" crate.
+
+%files       -n %{name}+track_caller-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+unsound_ptr_pod_impl-devel

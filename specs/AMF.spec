@@ -1,6 +1,6 @@
 Name:           AMF
-Version:        1.4.34
-Release:        2%{?dist}
+Version:        1.4.35
+Release:        1%{?dist}
 Summary:        Advanced Media Framework (AMF) SDK
 License:        MIT
 URL:            https://gpuopen.com/advanced-media-framework/
@@ -33,6 +33,14 @@ Summary:        Sample files for %{name}
 The %{name}-samples package contains sample programs and source for applications
 that use %{name}.
 
+%package        docs
+Summary:        PDF documentation for %{name}
+
+%description    docs
+The %{name}-docs package contains the development documentation in PDF format
+that is available in the main %{name}-devel package in Markdown format.
+
+
 %prep
 %autosetup -p1
 
@@ -45,15 +53,28 @@ cp -fr amf/public/* %{buildroot}%{_usrsrc}/%{name}/
 rm -fr %{buildroot}%{_usrsrc}/%{name}/include
 ln -sf ../../include/AMF %{buildroot}%{_usrsrc}/%{name}/include
 
+# Split out PDF docs
+mkdir pdf
+mv amf/doc/*pdf pdf/
+
 %files devel
 %license LICENSE.txt
 %doc amf/doc/*
 %{_includedir}/%{name}/
 
 %files samples
+%license LICENSE.txt
 %{_usrsrc}/%{name}
 
+%files docs
+%license LICENSE.txt
+%doc pdf/*
+
 %changelog
+* Sun Oct 20 2024 Simone Caronni <negativo17@gmail.com> - 1.4.35-1
+- Update to 1.4.35.
+- Split out PDF docs.
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.34-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

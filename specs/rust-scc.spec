@@ -5,7 +5,7 @@
 %global crate scc
 
 Name:           rust-scc
-Version:        2.2.0
+Version:        2.2.2
 Release:        %autorelease
 Summary:        Containers and utilities for concurrent and asynchronous programming
 

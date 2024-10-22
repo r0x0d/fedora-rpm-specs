@@ -4,7 +4,7 @@
 %global crate cargo-vendor-filterer
 
 Name:           rust-cargo-vendor-filterer
-Version:        0.5.14
+Version:        0.5.15
 Release:        %autorelease
 Summary:        Cargo vendor, but with filtering for platforms and more
 
@@ -75,13 +75,10 @@ use the "default" feature of the "%{crate}" crate.
 
 %prep
 %autosetup -n %{crate}-%{version} -p1
-# the tests download from crates.io
-rm -f tests/integration.rs
 # remove unwanted features
 tomcli set Cargo.toml del features.vendored-openssl
-# update dependencies to current versions
+# builds with cargo-lock@10 but not yet available in Fedora
 tomcli set Cargo.toml str dependencies.cargo-lock.version 9
-tomcli set Cargo.toml str dependencies.cargo_metadata.version 0.18.0
 # builds with toml@0.8, but cargo-lock@9 still uses toml@0.7
 tomcli set Cargo.toml str dependencies.toml.version 0.7
 %cargo_prep
@@ -99,7 +96,8 @@ tomcli set Cargo.toml str dependencies.toml.version 0.7
 
 %if %{with check}
 %check
-%cargo_test
+# some tests download from crates.io
+%cargo_test -- -- --skip vendor_filterer::
 %endif
 
 %changelog

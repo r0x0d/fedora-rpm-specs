@@ -5,7 +5,7 @@
 %global crate once_cell
 
 Name:           rust-once_cell
-Version:        1.20.1
+Version:        1.20.2
 Release:        %autorelease
 Summary:        Single assignment cells and lazy values
 

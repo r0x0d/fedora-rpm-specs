@@ -1,7 +1,7 @@
 %bcond_without tests
 
 Name:       python-pybids
-Version:    0.16.5
+Version:    0.17.2
 Release:    %autorelease
 Summary:    Interface with datasets conforming to BIDS
 

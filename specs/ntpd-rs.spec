@@ -2,7 +2,7 @@
 %bcond_without check
 
 Name:           ntpd-rs
-Version:        1.2.0
+Version:        1.3.0
 Release:        %autorelease
 Summary:        Full-featured implementation of NTP with NTS support
 
@@ -84,9 +84,10 @@ mkdir -p %{buildroot}/%{_rundir}/ntpd-rs
 
 %if %{with check}
 %check
+# * limit parallelism to avoid tests failing due to resource limits or timeouts
 # * skip tests that fails to panic in release mode
 # * skip tests that fails in containerized environments
-%cargo_test -- -- --skip algorithm::kalman::peer::tests::test_offset_steering_and_measurements --skip hwtimestamp::tests::get_hwtimestamp --skip socket::tests::test_send_timestamp --skip daemon::ntp_source::tests::test_deny_stops_poll --skip daemon::ntp_source::tests::test_timeroundtrip
+%cargo_test -- -- --test-threads 2 --skip algorithm::kalman::peer::tests::test_offset_steering_and_measurements --skip hwtimestamp::tests::get_hwtimestamp --skip socket::tests::test_send_timestamp --skip daemon::ntp_source::tests::test_deny_stops_poll --skip daemon::ntp_source::tests::test_timeroundtrip
 %endif
 
 %pre

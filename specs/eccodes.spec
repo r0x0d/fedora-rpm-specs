@@ -3,7 +3,7 @@
 %endif
 
 Name:           eccodes
-Version:        2.38.0
+Version:        2.38.3
 Release:        1%{?dist}
 Summary:        WMO data format decoding and encoding
 
@@ -361,6 +361,9 @@ ctest3 -V %{?_smp_mflags}
 %doc %{_datadir}/doc/%{name}/
 
 %changelog
+* Sun Oct 20 2024 Jos de Kloe <josdekloe@gmail.com> - 2.38.3-1
+- Update to 2.38.3
+
 * Sun Sep 29 2024 Jos de Kloe <josdekloe@gmail.com> - 2.38.0-1
 - Update to 2.38.0
 

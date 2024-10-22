@@ -41,10 +41,10 @@ Recommends: python-%{srcname}-doc
 Requires: python3-binaryornot
 Requires: python3-click
 Requires: python3-jinja2
-Requires: python3-jinja2-time
 Requires: python3-pyyaml
 Requires: python3-requests
 Requires: python3-slugify
+Requires: python3-arrow
 
 %description -n python3-%{srcname} %{common_description}
 

@@ -5,7 +5,7 @@
 %global crate human-panic
 
 Name:           rust-human-panic
-Version:        2.0.1
+Version:        2.0.2
 Release:        %autorelease
 Summary:        Panic messages for humans
 

@@ -21,8 +21,8 @@
 %global udisks2_version 1.97
 
 Name:    gvfs
-Version: 1.56.0
-Release: 2%{?dist}
+Version: 1.56.1
+Release: 1%{?dist}
 Summary: Backends for the gio framework in GLib
 
 License: LGPL-2.0-or-later AND GPL-3.0-only AND MPL-2.0 AND BSD-3-Clause-Sun
@@ -430,6 +430,9 @@ killall -USR1 gvfsd >&/dev/null || :
 
 
 %changelog
+* Sat Oct 19 2024 David King <amigadave@amigadave.com> - 1.56.1-1
+- Update to 1.56.1
+
 * Sun Sep 29 2024 David King <amigadave@amigadave.com> - 1.56.0-2
 - Rebuild against libimobiledevice
 

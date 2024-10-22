@@ -1,8 +1,7 @@
 Name:           perl-HTTP-DAV
-Version:        0.49
-Release:        19%{?dist}
+Version:        0.50
+Release:        1%{?dist}
 Summary:        WebDAV client library for Perl5
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/HTTP-DAV
 Source0:        https://cpan.metacpan.org/authors/id/C/CO/COSIMO/HTTP-DAV-%{version}.tar.gz
@@ -76,6 +75,9 @@ PERLDAV_TEST=default make test
 %{_mandir}/man3/*
 
 %changelog
+* Sun Oct 20 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 0.50-1
+- Update to 0.50
+
 * Tue Aug 06 2024 Miroslav Suchý <msuchy@redhat.com> - 0.49-19
 - convert license to SPDX
 
