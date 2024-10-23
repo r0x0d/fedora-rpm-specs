@@ -2201,6 +2201,13 @@ do
     # build environment. See also the similar test skips in
     # python-opentelemetry.
     k="${k-}${k+ and }not (TestLoadingAioHttpInstrumentor and test_loading_instrumentor)"
+    # Test failures in opentelemetry-instrumentation-aiohttp-client with latest
+    # yarl, aiohttp
+    # https://github.com/open-telemetry/opentelemetry-python-contrib/issues/2917
+    k="${k-}${k+ and }not (TestAioHttpIntegration and test_basic_exception_both_semconv)"
+    k="${k-}${k+ and }not (TestAioHttpIntegration and test_basic_exception_new_semconv)"
+    k="${k-}${k+ and }not (TestAioHttpIntegration and test_connection_errors)"
+    k="${k-}${k+ and }not (TestAioHttpIntegration and test_basic_exception)"
     ;;
   instrumentation/opentelemetry-instrumentation-aws-lambda)
     # TODO: Why is this happening? What does it mean?

@@ -1,6 +1,6 @@
 Name:           fonts-compare
-Version:        1.5.2
-Release:        3%{?dist}
+Version:        1.5.3
+Release:        1%{?dist}
 Summary:        Tool to compare fonts for a language
 
 License:        GPL-2.0-or-later
@@ -77,6 +77,12 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.github.sudipshil9
 %{_datadir}/icons/hicolor/*/apps/%{name}.*
 
 %changelog
+* Tue Oct 22 2024 Sudip Shil <sshil@redhat.com> - 1.5.3-1
+- Fixed: First font button selects a font even when no fonts are installed.
+- Returns the language name if no Pango sample text is available for the language.
+- Added support for RHEL ZhongYi Song fonts and fonts with special characters like //-.
+- Font button font list and font size now support RHEL ZhongYi Song fonts.
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

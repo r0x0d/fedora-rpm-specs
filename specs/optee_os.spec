@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 
 Name:      optee_os
-Version:   4.3.0
-Release:   4%{?dist}
+Version:   4.4.0
+Release:   1%{?dist}
 Summary:   Trusted side of the TEE
 
 # The TEE core of optee_os is provided under the BSD 2-Clause license. But
@@ -95,6 +95,9 @@ install -p -m 0644 out/sunxi-sun50i_a64/core/tee-pager_v2.bin /%{buildroot}%{_da
 %endif
 
 %changelog
+* Mon Oct 21 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 4.4.0-1
+- Update to 4.4.0
+
 * Fri Oct 11 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 4.3.0-4
 - Ship tee-pager_v2.bin for all targets
 

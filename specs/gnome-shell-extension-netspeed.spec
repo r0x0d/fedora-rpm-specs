@@ -11,15 +11,14 @@
 %global uuid netspeed@hedayaty.gmail.com
 
 Name:           gnome-shell-extension-netspeed
-Version:        44
-Release:        %autorelease.3
+Version:        47
+Release:        %autorelease
 Summary:        A gnome-shell extension to show speed of the internet
 BuildArch:      noarch
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
 URL:            https://github.com/martinkg/NetSpeed
-Source0:        %{name}-%{version}.tar.gz
-
+Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/gnome-shell-extension-netspeed-47.tar.gz
 
 BuildRequires: gettext
 BuildRequires: glib2
@@ -27,7 +26,7 @@ BuildRequires: jq
 BuildRequires: meson
 
 Requires: gnome-shell >= 3.14.0
-Requires: libappindicator-gtk3
+# Requires: libappindicator-gtk3
 
 %description
 Add an Internet speed indicator to status area.
@@ -38,7 +37,7 @@ You can use gnome-tweaks (additional package) or run in terminal:
 
 
 %prep
-%autosetup -p1 -n %{name}-44
+%autosetup -n NetSpeed-%{version}
 
 
 %build
@@ -61,6 +60,9 @@ rm %{buildroot}%{_datadir}/glib-2.0/schemas/gschemas.compiled
 
 
 %changelog
+* Sun Oct 20 2024 Martin Gansser <martinkg@fedoraproject.org> - 47-1
+- Add gnome 47 Support
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 44-1.3
 - convert license to SPDX
 

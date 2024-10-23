@@ -4,7 +4,7 @@ Version:        1.6.1
 Release:        20%{?dist}
 Summary:        Python(ic) interface to the linux prctl syscall
 
-License:        GPLv3+
+License:        GPL-3.0-or-later
 URL:            https://pythonhosted.org/python-prctl/
 Source0:        https://files.pythonhosted.org/packages/source/p/%{srcname}/%{srcname}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/seveas/python-prctl/master/COPYING

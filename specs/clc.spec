@@ -3,7 +3,7 @@ Version:	0.03
 Release:	30%{?dist}
 Summary:	Command-line client for MUDs
 
-License:	Public Domain
+License:	LicenseRef-Fedora-Public-Domain
 URL:		http://github.com/elanthis/clc/tree/master
 Source0:	http://cloud.github.com/downloads/elanthis/clc/%{name}-%{version}.tar.gz
 

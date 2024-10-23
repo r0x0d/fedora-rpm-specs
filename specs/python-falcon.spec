@@ -1,30 +1,24 @@
-%global common_description %{expand:
-Falcon is a minimalist ASGI/WSGI framework for building mission-critical REST
-APIs and microservices, with a focus on reliability, correctness, and
-performance at scale.  When it comes to building HTTP APIs, other frameworks
-weigh you down with tons of dependencies and unnecessary abstractions. Falcon
-cuts to the chase with a clean design that embraces HTTP and the REST
-architectural style.}
-
 Name:           python-falcon
 Epoch:          1
-Version:        3.1.3
+Version:        4.0.0
 Release:        %autorelease
-Summary:        Fast ASGI+WSGI framework for building data plane APIs at scale
+Summary:        ASGI+WSGI framework for building data plane APIs
 License:        Apache-2.0
 URL:            https://falconframework.org
 Source:         %{pypi_source falcon}
 
-# downstream-only patch to remove bundled library
-Patch:          0001-Use-system-mimeparse.patch
-# downstream-only patch to fix %%pyproject_buildrequires
-Patch:          0002-Use-actual-path-to-version-attribute-in-setup.cfg.patch
 # downstream-only patch to remove coverage build requirement
-Patch:          0003-Remove-coverage-test-requirement.patch
-# https://github.com/falconry/falcon/pull/2217
-Patch:          0004-feat-parse_header-provide-our-own-implementation-of-parse_header-2217.patch
+Patch:          0001-Remove-coverage-test-requirement.patch
 
 BuildRequires:  gcc
+
+%global common_description %{expand:
+Falcon is a minimalist ASGI/WSGI framework for building mission-critical REST
+APIs and microservices, with a focus on reliability, correctness, and
+performance at scale.  When it comes to building HTTP APIs, other frameworks
+weigh you down with tons of dependencies and unnecessary abstractions.  Falcon
+cuts to the chase with a clean design that embraces HTTP and the REST
+architectural style.}
 
 
 %description %{common_description}
@@ -40,7 +34,6 @@ BuildRequires:  python3-devel
 
 %prep
 %autosetup -p 1 -n falcon-%{version}
-rm -rf falcon/vendor
 
 
 %generate_buildrequires
@@ -53,7 +46,15 @@ rm -rf falcon/vendor
 
 %install
 %pyproject_install
-%pyproject_save_files falcon
+%pyproject_save_files -l falcon
+
+# remove unnecessary files
+rm -rf %{buildroot}%{python3_sitearch}/docs/
+rm -rf %{buildroot}%{python3_sitearch}/e2e-tests/
+rm -rf %{buildroot}%{python3_sitearch}/examples/
+rm -rf %{buildroot}%{python3_sitearch}/requirements/
+rm -rf %{buildroot}%{python3_sitearch}/tests/
+rm -rf %{buildroot}%{python3_sitearch}/tools/
 
 
 %check

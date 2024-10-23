@@ -287,7 +287,7 @@
 # New Version-String scheme-style defines
 %global featurever 23
 %global interimver 0
-%global updatever 0
+%global updatever 1
 %global patchver 0
 
 # We don't add any LTS designator for STS packages (Fedora and EPEL).
@@ -336,7 +336,7 @@
 %global origin_nice     OpenJDK
 %global top_level_dir_name   %{vcstag}
 %global top_level_dir_name_backup %{top_level_dir_name}-backup
-%global buildver        37
+%global buildver        11
 %global rpmrelease      %(echo "%autorelease" | sed 's;%{?dist};;')
 # Priority must be 8 digits in total; up to openjdk 1.8, we were using 18..... so when we moved to 11, we had to add another digit
 %if %is_system_jdk

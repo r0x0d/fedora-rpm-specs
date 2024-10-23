@@ -2,7 +2,7 @@
 
 Name:           asdcplib
 Version:        2.13.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        AS-DCP file access libraries
 # Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
@@ -113,6 +113,9 @@ rm -fr  %{buildroot}%{_prefix}/targets
 %{_bindir}/wavesplit
 
 %changelog
+* Mon Oct 21 2024 Pete Walter <pwalter@fedoraproject.org> - 2.13.0-3
+- Rebuild for xerces-c 3.3
+
 * Fri Oct 18 2024 Pete Walter <pwalter@fedoraproject.org> - 2.13.0-2
 - Rebuild for xerces-c 3.3
 

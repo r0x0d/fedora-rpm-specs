@@ -38,7 +38,7 @@ ExcludeArch: %{ix86}
 Summary:       Tool for creating supermin appliances
 Name:          supermin
 Version:       5.3.5
-Release:       1%{?dist}
+Release:       2%{?dist}
 License:       GPL-2.0-or-later
 
 ExclusiveArch: %{kernel_arches}
@@ -52,6 +52,11 @@ Source0:       http://download.libguestfs.org/supermin/%{source_directory}/%{nam
 Source1:       http://download.libguestfs.org/supermin/%{source_directory}/%{name}-%{version}.tar.gz.sig
 # Keyring used to verify tarball signature.
 Source2:       libguestfs.keyring
+
+# Use stable owner, group and mtime in base.tar.gz
+# Upstream in > 5.3.5
+# https://bugzilla.redhat.com/show_bug.cgi?id=2320025
+Patch1:        0001-prepare-Use-stable-owner-group-and-mtime-in-base.tar.patch
 
 BuildRequires: gcc
 BuildRequires: make
@@ -206,6 +211,9 @@ make check || {
 
 
 %changelog
+* Mon Oct 21 2024 Richard W.M. Jones <rjones@redhat.com> - 5.3.5-2
+- Use stable owner, group and mtime in base.tar.gz (RHBZ#2320025)
+
 * Sat Aug 31 2024 Richard W.M. Jones <rjones@redhat.com> - 5.3.5-1
 - New upstream version 5.3.5
 

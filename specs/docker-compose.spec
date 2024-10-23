@@ -25,9 +25,22 @@ Source2:        go-vendor-tools.toml
 BuildRequires:  go-vendor-tools
 BuildRequires:  moby-rpm-macros
 
-Requires:       docker-cli
+# This fixes the issue in https://bugzilla.redhat.com/2316333.
+# The boolean Requires along with the Suggests will make sure docker-cli is
+# installed unless podman-docker is already installed.
+# Note that the "podman compose" command is not officially supported by the
+# `docker-compose` maintainers,
+# and any bugs that cannot be reproduced with `docker compose`
+# (where `docker` is provided by docker-cli and not podman-docker)
+# should be reported to the podman maintainers.
+Requires:       (docker-cli or podman-docker)
+Suggests:       docker-cli
+# Ensure that %%{moby_cli_plugins_dir} is owned when podman-docker is installed
+# by Requiring moby-filesystem explicitly.
+Requires:       moby-filesystem
+
 # Provides /usr/bin/docker-compose wrapper for backwards compatibility
-Requires:       docker-compose-switch
+Recommends:       docker-compose-switch
 
 # Conflict with upstream package
 Conflicts:      docker-compose-plugin

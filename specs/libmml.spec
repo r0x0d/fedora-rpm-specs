@@ -17,7 +17,7 @@ Name:           libmml
 Version:        2.4
 Release:        21.%{commitdate}git%{shortcommit}%{?dist}
 Summary:        MML Widget
-License:        GPLv3 or LGPLv2 with exceptions
+License:        GPL-3.0-only OR LGPL-2.1-only WITH Qt-LGPL-exception-1.1
 URL:            https://github.com/copasi/copasi-dependencies/tree/master/src/mml
 Source0:        https://gitlab.com/anto.trande/mml/-/archive/%{commit}/mml-%{commit}.tar.gz
 

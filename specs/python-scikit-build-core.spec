@@ -9,7 +9,7 @@
 %global debug_package %{nil}
 
 Name:           python-scikit-build-core
-Version:        0.10.6
+Version:        0.10.7
 Release:        %autorelease
 Summary:        Build backend for CMake based projects
 

@@ -2,7 +2,7 @@ Name:           perl-Data-Random
 Version:        0.13
 Release:        20%{?dist}
 Summary:        Perl module to generate random data
-License:        GPL+ or Artistic
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 URL:            https://metacpan.org/release/Data-Random
 Source0:        https://cpan.metacpan.org/authors/id/B/BA/BAREFOOT/Data-Random-%{version}.tar.gz

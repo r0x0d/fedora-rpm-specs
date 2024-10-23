@@ -2,7 +2,7 @@ Name:           surfraw
 Version:        2.3.0
 Release:        14%{?dist}
 Summary:        Shell Users Revolutionary Front Rage Against the Web
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            https://gitlab.com/surfraw/Surfraw
 Source0:        http://surfraw.alioth.debian.org/dist/surfraw_%{version}.orig.tar.gz
 BuildArch:      noarch

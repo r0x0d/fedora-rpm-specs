@@ -5,7 +5,7 @@
 %global crate rust-netrc
 
 Name:           rust-rust-netrc
-Version:        0.1.1
+Version:        0.1.2
 Release:        %autorelease
 Summary:        Netrc support for Rust with support for reqwest
 

@@ -1,8 +1,8 @@
 %global cardsets_minimal_ver 3.0.0
 
 Name:           PySolFC
-Version:        3.0.0
-Release:        3%{?dist}
+Version:        3.1.0
+Release:        1%{?dist}
 Summary:        A collection of solitaire card games
 License:        GPL-2.0-or-later
 URL:            https://pysolfc.sourceforge.io
@@ -88,6 +88,10 @@ find "$RPM_BUILD_ROOT%{python3_sitelib}/pysollib" -name '*.py' | xargs -L1 perl 
 
 
 %changelog
+* Mon Oct 21 2024 Packit <hello@packit.dev> - 3.1.0-1
+- Update to version 3.1.0
+- Resolves: rhbz#2319948
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

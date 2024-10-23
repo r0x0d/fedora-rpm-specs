@@ -2,7 +2,7 @@
 
 Name:           bmap-tools
 Version:        3.7
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Tools to generate and flash sparse images using the "block map" (bmap) format
 
 License:        GPL-2.0-or-later
@@ -13,7 +13,7 @@ BuildArch:      noarch
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-pytest
-Requires:       python3-%{module_name} = %{version}-%{release}
+BuildRequires:  gnupg2
 Requires:       bzip2
 Requires:       pbzip2
 Requires:       gzip
@@ -47,6 +47,15 @@ Python library to manipulate sparse images in the "block map" (bmap) format.
 sed -i -e '/^#!/,1d' bmaptools/CLI.py
 sed -i -e '/^#!/,1d' bmaptools/__main__.py
 
+# https://github.com/yoctoproject/bmaptool/pull/1#issuecomment-1986205242
+export GNUPGHOME=$PWD/tests/test-data/gnupg
+echo 'expire
+50y
+key 1
+expire
+50y
+save' | gpg --command-fd=0 --batch --edit-key 927FF9746434704C5774BE648D49DFB1163BDFB4
+
 %generate_buildrequires
 %pyproject_buildrequires -r
 
@@ -72,6 +81,9 @@ install -m644 docs/man1/bmaptool.1 %{buildroot}/%{_mandir}/man1
 %files -n python3-%{module_name} -f %{pyproject_files}
 
 %changelog
+* Mon Oct 21 2024 Ali Erdinc Koroglu <aekoroglu@fedoraproject.org> - 3.7-6
+- Resolves: rhbz#2300579
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.7-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -2,8 +2,8 @@
 %global pkgdatadir      %{_datadir}/dpkg
 
 Name:           dpkg
-Version:        1.22.6
-Release:        3%{?dist}
+Version:        1.22.11
+Release:        1%{?dist}
 Summary:        Package maintenance system for Debian Linux
 # The entire source code is GPLv2+ with exception of the following
 # lib/dpkg/md5.c, lib/dpkg/md5.h - Public domain
@@ -349,6 +349,7 @@ make VERBOSE=1 TESTSUITEFLAGS=--verbose \
 %{_libdir}/pkgconfig/libdpkg.pc
 %{_includedir}/dpkg/*.h
 %{_datadir}/aclocal/dpkg-*.m4
+%{_mandir}/man7/libdpkg.7.gz
 
 %files dev -f dpkg-dev.lang
 %doc doc/README.feature-removal-schedule doc/README.api doc/spec
@@ -493,6 +494,10 @@ make VERBOSE=1 TESTSUITEFLAGS=--verbose \
 
 
 %changelog
+* Mon Oct 21 2024 Packit <hello@packit.dev> - 1.22.11-1
+- Update to version 1.22.11
+- Resolves: rhbz#2298391
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 1.22.6-3
 - convert license to SPDX
 

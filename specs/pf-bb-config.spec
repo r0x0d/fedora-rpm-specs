@@ -1,12 +1,11 @@
 Name:           pf-bb-config
-Version:        22.11
-Release:        7%{?dist}
+Version:        24.07
+Release:        1%{?dist}
 Summary:        PF BBDEV (baseband device) Configuration Application
 
 License:        Apache-2.0
 URL:            https://github.com/intel/pf-bb-config
 Source0:        %{url}/archive/v%{version}/pf-bb-config-%{version}.tar.gz
-Patch0:         %{url}/commit/2b02af16cdd0b704d49fe0cc621a3b5845c2ee2a.patch
 
 # Currently big endian is not supported due to a bug
 ExcludeArch:    s390x
@@ -32,12 +31,12 @@ sed -i "s/#VERSION_STRING#/%{version}/g" config_app.c
 
 
 %install
+for dir in acc100 agx100 fpga_5gnr fpga_lte vrb1 vrb2; do
+	install -d -m 755 %{buildroot}%{_datadir}/pf-bb-config/$dir/
+	cp -a $dir/*.cfg %{buildroot}%{_datadir}/pf-bb-config/$dir/
+done
 install -d -m 755 %{buildroot}%{_bindir}
-install -d -m 755 %{buildroot}%{_datadir}/pf-bb-config/acc100/
-install -d -m 755 %{buildroot}%{_datadir}/pf-bb-config/acc200/
 install -p -D -m 755 pf_bb_config %{buildroot}%{_bindir}/pf_bb_config
-cp -a acc100/*.cfg %{buildroot}%{_datadir}/pf-bb-config/acc100/
-cp -a acc200/*.cfg %{buildroot}%{_datadir}/pf-bb-config/acc200/
 
 
 %files
@@ -48,6 +47,9 @@ cp -a acc200/*.cfg %{buildroot}%{_datadir}/pf-bb-config/acc200/
 
 
 %changelog
+* Fri Sep 27 2024 Timothy Redaelli <tredaelli@redhat.com> - 24.07-1
+- Update to 24.07
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 22.11-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

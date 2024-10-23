@@ -2,7 +2,7 @@
 
 Name:       distcc
 Version:    3.4
-Release:    6%{?dist}
+Release:    7%{?dist}
 Summary:    Distributed C/C++ compilation
 License:    GPL-2.0-or-later
 URL:        https://github.com/distcc/distcc
@@ -11,6 +11,7 @@ Source1:    hosts.sample
 Source2:    distccd.service
 Patch0:     distcc-localhost.patch
 Patch1:     crash.patch
+Patch2:     479.patch
 
 BuildRequires: automake
 BuildRequires: autoconf
@@ -58,6 +59,7 @@ This package contains the compilation server needed to use %{name}.
 %setup -q
 %patch -P 0 -p0
 %patch -P 1 -p0
+%patch -P 2 -p1
 
 %build
 export PYTHON='/usr/bin/python3'
@@ -141,6 +143,9 @@ rm -rf $RPM_BUILD_ROOT%{_docdir}/*
 %dir /usr/lib/gcc-cross
 
 %changelog
+* Mon Oct 21 2024 Gwyn Ciesla <gwync@protonmail.com> - 3.4-7
+- Patch for Py_ssize_t
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.4-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

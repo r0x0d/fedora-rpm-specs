@@ -3,7 +3,7 @@
 %global _python_bytecompile_extra 0
 
 Name:           calibre
-Version:        7.19.0
+Version:        7.20.0
 Release:        %autorelease
 Summary:        E-book converter and library manager
 # see COPYRIGHT file for a listing
@@ -18,6 +18,11 @@ Patch1:         calibre-no-update.patch
 # Do not display multiple apps in desktop files, only the main app
 # This is so gnome-software only 'sees' calibre once.
 Patch3:         calibre-nodisplay.patch
+
+# Fix build reproduciblity
+Patch4:         0001-Use-stable-ordering-when-writing-shell-completions.patch
+Patch5:         0002-build-sort-objects-in-link-commands.patch
+Patch6:         0003-build-sort-headers-and-sources-in-plugin-builds.patch
 
 ExclusiveArch: aarch64 x86_64
 
@@ -87,6 +92,7 @@ BuildRequires:  poppler-utils
 BuildRequires:  qt6-qtspeech-devel
 BuildRequires:  qt6-qtmultimedia-devel
 BuildRequires:  qt6-qtspeech-flite
+BuildRequires:  ffmpeg-free-devel
 # Those are only used for tests. Do not add to runtime deps.
 BuildRequires:  /usr/bin/jpegtran
 BuildRequires:  jxrlib
@@ -341,7 +347,7 @@ ln --symbolic --relative \
 # Remove these 2 appdata files, we can only include one
 rm %{buildroot}/%{_datadir}/metainfo/calibre-ebook-edit.metainfo.xml
 rm %{buildroot}/%{_datadir}/metainfo/calibre-ebook-viewer.metainfo.xml
- 
+
 %check
 TEST_ARGS=(
     # skip failing tests:

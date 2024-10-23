@@ -1,8 +1,7 @@
 Name:           perl-DBIx-Connector
-Version:        0.59
-Release:        5%{?dist}
+Version:        0.60
+Release:        1%{?dist}
 Summary:        Fast, safe DBI connection and transaction management
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/DBIx-Connector
 
@@ -68,6 +67,9 @@ make test
 
 
 %changelog
+* Mon Oct 21 2024 Denis Fateyev <denis@fateyev.com> - 0.60-1
+- Update to 0.60 release
+
 * Mon Aug 05 2024 Miroslav Suchý <msuchy@redhat.com> - 0.59-5
 - convert license to SPDX
 

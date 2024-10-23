@@ -1,11 +1,10 @@
 Name:               python-llfuse
-Version:            1.5.0
-Release:            6%{?dist}
+Version:            1.5.1
+Release:            1%{?dist}
 Summary:            Python Bindings for the low-level FUSE API
 Source0:            https://files.pythonhosted.org/packages/source/l/llfuse/llfuse-%{version}.tar.gz
 URL:                https://pypi.python.org/pypi/llfuse
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:            LicenseRef-Callaway-LGPLv2+
+License:            LGPL-2.0-or-later
 
 BuildRequires:      gcc
 BuildRequires:      libattr-devel
@@ -57,6 +56,9 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-3 -v test
 
 
 %changelog
+* Mon Oct 21 2024 Denis Fateyev <denis@fateyev.com> - 1.5.1-1
+- Update to 1.5.1 release
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.5.0-6
 - convert license to SPDX
 

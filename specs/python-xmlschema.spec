@@ -12,6 +12,11 @@ BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  pyproject-rpm-macros
 
+# tox -e py313 misses the lxml dependency
+# when omitted, some tests are skipped
+# https://github.com/sissaschool/xmlschema/issues/423
+BuildRequires:  python3-lxml
+
 %global _description %{expand:
 The xmlschema library is an implementation of XML Schema for Python.
 

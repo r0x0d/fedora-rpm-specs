@@ -1,6 +1,6 @@
 Name:           duply
-Version:        2.5.2
-Release:        5%{?dist}
+Version:        2.5.3
+Release:        1%{?dist}
 Summary:        Wrapper for duplicity
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License:        GPL-2.0-only
@@ -53,6 +53,9 @@ mv gpl-2.0.txt LICENSE
 
 
 %changelog
+* Tue Oct 22 2024 Thomas Moschny <thomas.moschny@gmx.de> - 2.5.3-1
+- Update to 2.5.3.
+
 * Mon Jul  29 2024 Miroslav Suchý <msuchy@redhat.com> - 2.5.2-5
 - convert license to SPDX
 

@@ -3,7 +3,7 @@
 
 Name:           python-%{pypi_name}
 Version:        0.9.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Runtime inspection utilities for typing module
 
 License:        MIT
@@ -13,7 +13,6 @@ BuildArch:      noarch
 
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(mypy-extensions) >= 0.3.0
-BuildRequires:  python3dist(setuptools)
 BuildRequires:  python3dist(typing-extensions) >= 3.7.4
 BuildRequires:  python3dist(pytest)
 
@@ -23,7 +22,6 @@ inspection of types defined in the standard "typing" module.
 
 %package -n     python3-%{pypi_name}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{pypi_name}}
 
 Requires:       python3dist(mypy-extensions) >= 0.3.0
 Requires:       python3dist(typing-extensions) >= 3.7.4
@@ -34,26 +32,27 @@ inspection of types defined in the standard "typing" module.
 
 %prep
 %autosetup -n %{pypi_srcname}-%{version}
-# Remove bundled egg-info
-rm -rf %{pypi_name}.egg-info
+
+%generate_buildrequires
+%pyproject_buildrequires
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l %{pypi_srcname}
 
 %check
-%{__python3} setup.py test
+%pytest
 
-%files -n python3-%{pypi_name}
-%license LICENSE
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %doc README.md
-%{python3_sitelib}/__pycache__/%{pypi_srcname}.*.pyc
-%{python3_sitelib}/%{pypi_srcname}.py
-%{python3_sitelib}/%{pypi_srcname}-%{version}-py*.egg-info
 
 %changelog
+* Mon Oct 21 2024 Gwyn Ciesla <gwync@protonmail.com> - 0.9.0-7
+- pyprojectize
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

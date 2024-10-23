@@ -6,8 +6,8 @@
 %endif
 
 Name:		perl-Perl-Critic
-Version:	1.152
-Release:	4%{?dist}
+Version:	1.154
+Release:	2%{?dist}
 Summary:	Critique Perl source code for best-practices
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:		https://metacpan.org/release/Perl-Critic
@@ -35,6 +35,7 @@ BuildRequires:	perl(Config::Tiny) >= 2
 BuildRequires:	perl(English)
 BuildRequires:	perl(Exception::Class) >= 1.23
 BuildRequires:	perl(Exporter) >= 5.58
+BuildRequires:	perl(ExtUtils::Manifest)
 BuildRequires:	perl(File::Find)
 BuildRequires:	perl(File::Path)
 BuildRequires:	perl(File::Spec)
@@ -91,6 +92,7 @@ BuildRequires:	perl(Test::Without::Module)
 # Optional/not automatically detected runtime dependencies
 Requires:	hunspell >= 1.2.12
 Requires:	perl(B::Keywords) >= 1.23
+Requires:	perl(ExtUtils::Manifest)
 Requires:	perl(File::Which)
 Requires:	perl(Module::Pluggable) >= 3.1
 Requires:	perl(PPI) >= 1.277
@@ -158,6 +160,23 @@ LC_ALL=en_US ./Build test
 %{_mandir}/man3/Test::Perl::Critic::Policy.3*
 
 %changelog
+* Mon Oct 21 2024 Petr Pisar <ppisar@redhat.com> - 1.154-2
+- Require ExtUtils::Manifest for Perl::Critic::TestUtils::bundled_policy_names()
+
+* Mon Oct 21 2024 Paul Howarth <paul@city-fan.org> - 1.154-1
+- Update to 1.154 (rhbz#2320114)
+  Enhancements
+  - ProhibitedUnusedCapture now recognizes %%+, %%-, %%{^CAPTURE} and
+    %%LAST_PAREN_MATCH (GH#1065)
+  - Fixed a deprecation warning in the extras/perlcritic.el Emacs script
+    (GH#1067)
+  - RequireExplicitPackage now accepts a use VERSION as the first line
+    (GH#1070)
+  Fixes
+  - Fix some false positives for function calls as a hash index (GH#1071)
+  Documentation
+  - Clarify package_exemptions rules (GH#1043)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.152-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

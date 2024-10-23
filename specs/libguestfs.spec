@@ -42,7 +42,7 @@ Summary:       Access and modify virtual machine disk images
 Name:          libguestfs
 Epoch:         1
 Version:       1.54.0
-Release:       2%{?dist}
+Release:       3%{?dist}
 License:       LGPL-2.1-or-later
 
 # Build only for architectures that have a kernel
@@ -75,6 +75,16 @@ Source7:       libguestfs.keyring
 
 # Maintainer script which helps with handling patches.
 Source8:       copy-patches.sh
+
+# All patches upstream in > 1.54.0
+Patch:         0001-website-Add-links-for-1.54-and-1.55-download-locatio.patch
+Patch:         0002-tests-gdisk-test-expand-gpt.pl-Implement-SKIP-rule-f.patch
+# Add support for Windows Server 2025
+Patch:         0003-lib-inspect-osinfo.c-Add-Windows-Server-2025-osinfo.patch
+Patch:         0004-build-Assume-__attribute__-cleanup-always-works.patch
+# Use stable owner, group and mtime in appliance tarballs
+# https://bugzilla.redhat.com/show_bug.cgi?id=2320025
+Patch:         0005-appliance-Use-stable-owner-group-and-mtime-in-applia.patch
 
 BuildRequires: autoconf, automake, libtool, gettext-devel
 
@@ -1100,6 +1110,10 @@ rm ocaml/html/.gitignore
 
 
 %changelog
+* Mon Oct 21 2024 Richard W.M. Jones <rjones@redhat.com> - 1:1.54.0-3
+- Use stable owner, group and mtime in appliance tarballs (RHBZ#2320025)
+- Add support for Windows Server 2025
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1:1.54.0-2
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

@@ -34,6 +34,7 @@ BuildRequires:  python3dist(notebook)
 BuildRequires:  python3dist(numpy)
 BuildRequires:  python3dist(python-snappy)
 BuildRequires:  python3dist(zstandard)
+BuildRequires:  fuse
 BuildRequires:  git-core
 
 %global _description %{expand:
@@ -68,6 +69,7 @@ Summary:        %{summary}
 %pyproject_extras_subpkg -n python3-%{srcname} sftp
 %pyproject_extras_subpkg -n python3-%{srcname} smb
 %pyproject_extras_subpkg -n python3-%{srcname} ssh
+%pyproject_extras_subpkg -n python3-%{srcname} tqdm
 
 
 %prep
@@ -78,14 +80,11 @@ Summary:        %{summary}
 # - (when bootstrapping) gcs and gs: Don't have gcsfs
 # - abfs and adl: Don't have adlfs
 # - dropbox: Don't have dropboxdrivefs
-# - fuse: Won't work in a build since it requires the kernel module to be loaded.
 # - gui: Don't have panel
 # - oci: Don't have ocifs
 # - s3: Don't have s3fs
-# - sftp and ssh: Requires a running SSH server in a container
-# - smb: Requires a running SMB server in a container.
 export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
-%pyproject_buildrequires -x %{?!with_bootstrap:dask,gcs,gs,}git,github,http,libarchive,tqdm
+%pyproject_buildrequires -x arrow,%{?!with_bootstrap:dask,gcs,gs,}entrypoints,fuse,git,github,hdfs,http,libarchive,sftp,smb,ssh,tqdm
 
 %build
 export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
@@ -96,7 +95,12 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %pyproject_save_files -l %{srcname}
 
 %check
-%{pytest} -vra
+# fuse tests fail on koji builders due to missing kernel modules
+%{pytest} -vra \
+  --deselect=fsspec/tests/test_fuse.py::test_basic \
+  --deselect=fsspec/tests/test_fuse.py::test_chmod \
+  --deselect=fsspec/tests/test_fuse.py::test_seek_rw
+
 
 %files -n python3-%{srcname} -f %{pyproject_files}
 %doc README.md

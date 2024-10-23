@@ -4,7 +4,7 @@
 Name:           python-pydantic-extra-types
 Version:        2.10.0
 %forgemeta
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Extra types for Pydantic
 
 License:        MIT
@@ -25,6 +25,14 @@ Source:         %{forgesource}
 #
 # All of this works because python3-libs depends on the system tzdata package.
 Patch0:         0001-Assume-zoneinfo-has-system-tzdata.patch
+
+# Allow build with python-ulid 3.0.0
+# https://github.com/pydantic/pydantic-extra-types/pull/225
+#
+# Originally attempted in
+# https://github.com/pydantic/pydantic-extra-types/pull/222, which was released
+# in 2.10.0, but I missed one of the two version bounds.
+Patch1:         %{forgeurl}/pull/225.patch
 
 # For Fedora 40 only: Revert ":sparkles: Adjust `test_json_schema()` for
 # Pydantic 2.9 (#215)" (except changes to pyproject.txt, to reduce future
@@ -95,6 +103,9 @@ tomcli set pyproject.toml lists delitem --type regex --no-first \
 
 
 %changelog
+* Mon Oct 21 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.10.0-2
+- Another patch for python-ulid 3.0.0 (fix RHBZ#2320153)
+
 * Wed Oct 16 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.10.0-1
 - Update to 2.10.0 (close RHBZ#2319061)
 

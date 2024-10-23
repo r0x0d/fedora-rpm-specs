@@ -4,7 +4,7 @@ Name:           rubygem-%{gem_name}
 Version:        2.5.1
 Release:        9%{?dist}
 Summary:        Ruby shadow password module
-License:        Public Domain
+License:        LicenseRef-Fedora-UltraPermissive OR Unlicense
 URL:            https://github.com/apalmblad/ruby-shadow
 Source0:        http://rubygems.org/gems/%{gem_name}-%{version}.gem
 Source1:        https://raw.githubusercontent.com/apalmblad/ruby-shadow/master/test/basic_test.rb

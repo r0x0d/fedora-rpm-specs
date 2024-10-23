@@ -3,7 +3,7 @@ Name: perl-Fsdb
 Version: 3.9
 Epoch: 2
 Release: 1%{?dist}
-License: GPLv2
+License: GPL-2.0-only
 URL: http://www.isi.edu/~johnh/SOFTWARE/FSDB/
 Source0: http://www.isi.edu/~johnh/SOFTWARE/FSDB/Fsdb-%{version}.tar.gz
 BuildArch: noarch

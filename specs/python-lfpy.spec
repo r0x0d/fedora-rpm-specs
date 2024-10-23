@@ -7,14 +7,13 @@ extracellular potentials arising from activity in your model neuron. If you
 have a model...}
 
 Name:           python-lfpy
-Version:        2.3
+Version:        2.3.2
 Release:        %autorelease
 Summary:        Model extracellular potentials of multicompartment neuron models built on NEURON
 
-# Automatically converted from old format: GPLv3 - review is highly recommended.
-License:        GPL-3.0-only
-URL:            http://LFPy.readthedocs.io
-Source0:        %{pypi_source LFPy}
+License:        GPL-3.0-or-later
+URL:            http://lfpy.readthedocs.io
+Source0:        %{pypi_source lfpy}
 
 # Requires NEURON, so limited to arches that NEURON and Random123 support
 ExcludeArch:    mips64r2 mips32r2
@@ -26,22 +25,13 @@ ExcludeArch:    %{power64} %{ix86} armv7hl
 
 
 BuildRequires:  python3-devel
-BuildRequires:  python3-wheel
-BuildRequires:  python3-pip
 
-# Automatic dep generator doesn't like the mod files mentioned in the setup.py file, and tries to parse them as deps:
-# error: Dependency tokens must begin with alpha-numeric, '_' or '/': "./expsyni.mod" "./sinsyn.mod"
-# Should maybe reported as a pyproject rpm macro bug?
-# So we install these manually
-
+# setup.py tries to import (from) numpy and Cython. If that fails
+# dependency generation also fails. Specifying Cython and numpy as BRs
+# explicitly, allows to use %%pyproject_buildrequires to determine all
+# other dependencies in %%generate_buildrequires dynamically.
 BuildRequires:  python3-Cython
 BuildRequires:  python3-numpy
-BuildRequires:  python3-scipy
-BuildRequires:  python3-lfpykit >= 0.4
-BuildRequires:  python3-h5py
-BuildRequires:  python3-neuron
-BuildRequires:  neuron-devel
-BuildRequires:  python3-pytest
 
 # not included in setup.py
 BuildRequires:  python3-mpi4py-openmpi
@@ -51,6 +41,9 @@ BuildRequires:  python3-neuron-mpich
 BuildRequires:  mpich-devel
 BuildRequires:  openmpi-devel
 BuildRequires:  rpm-mpi-hooks
+
+# Runtime requirement also required for the tests
+BuildRequires:  neuron-devel
 
 %description
 %{desc}
@@ -67,25 +60,29 @@ Requires:   neuron-devel
 %description -n python3-lfpy
 %{desc}
 
+
 %prep
-%autosetup -n LFPy-%{version}
+%autosetup -n lfpy-%{version}
 
-# Remove mpi4py from requirements
-sed -i '/mpi4py/ d' setup.py
-
-for lib in $(find . -type f -name "*.py"); do
+# Remove shebangs from .py/.pyx files
+for lib in $(find . -type f -name "*.py*"); do
  sed '1{\@^#!/usr/bin/env python@d}' $lib > $lib.new &&
  touch -r $lib $lib.new &&
  mv $lib.new $lib
 done
 
+
+%generate_buildrequires
+%pyproject_buildrequires -x tests
+
+
 %build
 %pyproject_wheel
 
+
 %install
 %pyproject_install
-
-%pyproject_save_files LFPy
+%pyproject_save_files -l LFPy
 
 
 %check

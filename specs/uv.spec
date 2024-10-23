@@ -20,7 +20,7 @@
 %constrain_build -m 4096
 
 Name:           uv
-Version:        0.4.24
+Version:        0.4.25
 Release:        %autorelease
 Summary:        An extremely fast Python package installer and resolver, written in Rust
 
@@ -155,26 +155,27 @@ Source100:      %{async_zip_git}/archive/%{async_zip_rev}/rs-async-zip-%{async_z
 # We therefore bundle the fork as prescribed in
 #   https://docs.fedoraproject.org/en-US/packaging-guidelines/Rust/#_replacing_git_dependencies
 %global pubgrub_git https://github.com/astral-sh/pubgrub
-%global pubgrub_rev 19c77268c0ad5f69d7e12126e0cfacfbba466481
+%global pubgrub_rev 7243f4faf8e54837aa8a401a18406e7173de4ad5
 %global pubgrub_baseversion 0.2.1
-%global pubgrub_snapdate 20241016
+%global pubgrub_snapdate 20241017
 Source200:      %{pubgrub_git}/archive/%{pubgrub_rev}/pubgrub-%{pubgrub_rev}.tar.gz
 
-# Similarly, uv now forks reqwest-middleware/reqwest-retry with an incompatible
-# change, as described in
+# We must use a git snapshot of reqwest-middleware/reqwest-retry because a
+# necessary incompatible change (originally carried in a uv-specific fork) is
+# now present upstream but has not yet appeared in a release, as described in
 #   https://github.com/astral-sh/uv/commit/4b193194858707795b5b64dd479f65ef22fed312
-# See branch:
-#   https://github.com/astral-sh/reqwest-middleware/tree/konsti/add-retries-to-error
-# The path to no longer bundling these crates is:
+# See issue:
 #   Add retries to error message
 #   https://github.com/TrueLayer/reqwest-middleware/pull/159
 # See also: https://github.com/astral-sh/uv/issues/5588#issuecomment-2257474183
-# For now, we must bundle the fork as prescribed in
+# It should be possible for uv to stop using a snapshot, and for us to stop
+# bundling, as soon as these changes appear in a new upstream release.
+# For now, we must bundle the snapshot as prescribed in
 #   https://docs.fedoraproject.org/en-US/packaging-guidelines/Rust/#_replacing_git_dependencies
-%global reqwest_middleware_git https://github.com/astral-sh/reqwest-middleware
-%global reqwest_middleware_rev 5e3eaf254b5bd481c75d2710eed055f95b756913
+%global reqwest_middleware_git https://github.com/TrueLayer/reqwest-middleware
+%global reqwest_middleware_rev d95ec5a99fcc9a4339e1850d40378bbfe55ab121
 %global reqwest_middleware_baseversion 0.3.3
-%global reqwest_middleware_snapdate 20240819
+%global reqwest_middleware_snapdate 20241017
 %global reqwest_retry_baseversion 0.7.1
 Source300:      %{reqwest_middleware_git}/archive/%{reqwest_middleware_rev}/reqwest-middleware-%{reqwest_middleware_rev}.tar.gz
 
@@ -534,6 +535,8 @@ tomcli set crates/uv-extract/Cargo.toml lists delitem \
 # offline build, we definitely don’t want that, so we remove it from the
 # default features.
 tomcli set crates/uv/Cargo.toml lists delitem features.default 'pypi'
+# Similarly, but for crates.io:
+tomcli set crates/uv/Cargo.toml lists delitem features.default 'crates-io'
 
 # Omit tests requiring wiremock; its dependency tree is too large and complex
 # to consider packaging it right now. The conditional #[cfg(any())] is always

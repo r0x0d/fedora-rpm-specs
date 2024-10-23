@@ -47,7 +47,7 @@ developing applications that use %{name}.
 
 %package        doc
 Summary:        Documentation for %{name}
-License:        GPLv3+
+License:        GPL-3.0-or-later
 BuildArch:      noarch
 
 %description    doc

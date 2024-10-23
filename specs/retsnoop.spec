@@ -42,6 +42,9 @@ Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:        %{bpftool_url}/archive/%{bpftool_commit}/bpftool-%{bpftool_version}.tar.gz
 Source2:        %{libbpf_url}/archive/%{libbpf_commit}/libbpf-%{libbpf_version}.tar.gz
 Source3:        README.Fedora
+# Use memmap2 rather than the deprecated memmap
+# Based on https://github.com/anakryiko/retsnoop/pull/86
+Patch:          %{name}-use-memmap2.diff
 
 # has a Rust component
 ExclusiveArch:  %{rust_arches}

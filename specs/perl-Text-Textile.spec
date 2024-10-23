@@ -5,7 +5,7 @@ Summary:        A humane web text generator
 # <https://github.com/bradchoate/text-textile/issues/15>
 # lib/Text/Textile.pm:      GPL+ or Artistic 2.0
 # ARTISTIC:                 text of Artistic 1.0
-License:        GPL+ or Artistic 2.0
+License:        GPL-1.0-or-later OR Artistic-2.0
 URL:            https://metacpan.org/release/Text-Textile
 Source0:        https://cpan.metacpan.org/authors/id/B/BC/BCHOATE/Text-Textile-%{version}.tar.gz
 BuildArch:      noarch

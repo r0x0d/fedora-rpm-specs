@@ -1,7 +1,7 @@
 %global srcname fedfind
 
 Name:           fedfind
-Version:        6.0.3
+Version:        6.0.4
 Release:        1%{?dist}
 Summary:        Fedora compose and image finder
 
@@ -60,6 +60,9 @@ sed -i -e 's., "setuptools-scm"..g' pyproject.toml
 %{python3_sitelib}/%{srcname}*
 
 %changelog
+* Mon Oct 21 2024 Adam Williamson <awilliam@redhat.com> - 6.0.4-1
+- New release 6.0.4: add several new subvariants to const
+
 * Wed Sep 18 2024 Adam Williamson <awilliam@redhat.com> - 6.0.3-1
 - New release 6.0.3: extend EPEL compose filtering
 

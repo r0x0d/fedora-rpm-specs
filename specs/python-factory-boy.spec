@@ -21,14 +21,13 @@ Its features include:\
 
 Name: python-factory-boy
 Version: 3.3.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: A versatile test fixtures replacement based on thoughtbot's factory_girl
 License: MIT
 URL: https://github.com/rbarrois/factory_boy
 Source0: https://github.com/rbarrois/%{srcname}/archive/%{version}/%{srcname}-%{version}.tar.gz
 BuildArch: noarch
 BuildRequires: python3-devel
-BuildRequires: python3-setuptools
 %if %{with tests}
 BuildRequires: python3-pytest
 BuildRequires: python3-faker >= 0.7.0
@@ -49,7 +48,6 @@ BuildRequires: python3-flask-sqlalchemy
 
 %package -n python3-factory-boy
 Summary: A versatile test fixtures replacement based on thoughtbot's factory_girl
-%{?python_provide:%python_provide python3-factory-boy}
 Suggests: %{name}-doc = %{version}-%{release}
 
 %description -n python3-factory-boy
@@ -64,31 +62,35 @@ Documentation for the %{name} API
 %prep
 %autosetup -n %{srcname}-%{version} -p1
 
+%generate_buildrequires
+%pyproject_buildrequires
+
 %build
-%py3_build
+%pyproject_wheel
 # Clean the doc dir
 rm -f docs/Makefile
 rm -rf docs/_static
 find examples -type f -print0 | xargs -0 chmod 0644
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l factory
 
 %if %{with tests}
 %check
 SKIP_MONGOENGINE=1 %pytest
 %endif
 
-%files -n python3-factory-boy
-%license LICENSE
-%{python3_sitelib}/factory
-%{python3_sitelib}/%{srcname}-%{version}-py*.egg-info
+%files -n python3-factory-boy -f %{pyproject_files}
 
 %files doc
 %doc README.rst CODE_OF_CONDUCT.md CONTRIBUTING.rst CREDITS docs examples
 %license LICENSE
 
 %changelog
+* Mon Oct 21 2024 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 3.3.1-2
+- Convert to pyproject macros
+
 * Wed Sep 04 2024 Juan Orti Alcaine <jortialc@redhat.com> - 3.3.1-1
 - Version 3.3.1 (RHBZ#2306033)
 

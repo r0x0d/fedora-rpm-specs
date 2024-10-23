@@ -6,7 +6,7 @@
 Name:           clazy
 Summary:        Qt oriented code checker based on clang framework
 Version:        1.11%{?commitdate:^git%{commitdate}.%{shortcommit}}
-Release:        6%{?dist}
+Release:        7%{?dist}
 License:        LGPL-2.0-or-later
 URL:            https://invent.kde.org/sdk/%{name}
 
@@ -59,6 +59,9 @@ refactoring.
 
 
 %changelog
+* Mon Oct 21 2024 Jan Grulich <jgrulich@redhat.com> - 1.11^git20240128.69fedb4-7
+- Rebuild (LLVM-19)
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.11^git20240128.69fedb4-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

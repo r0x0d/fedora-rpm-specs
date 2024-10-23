@@ -1,11 +1,11 @@
 Name:     gsequencer
-Version:  6.13.4
-Release:  2%{?dist}
+Version:  6.16.23
+Release:  0%{?dist}
 Summary:  Audio processing engine
 # Automatically converted from old format: GPLv3+ and AGPLv3+ and GFDL - review is highly recommended.
 License:  GPL-3.0-or-later AND AGPL-3.0-or-later AND LicenseRef-Callaway-GFDL
 URL:      http://nongnu.org/gsequencer
-Source:   http://download.savannah.gnu.org/releases/gsequencer/6.13.x/%{name}-%{version}.tar.gz
+Source:   http://download.savannah.gnu.org/releases/gsequencer/6.16.x/%{name}-%{version}.tar.gz
 ExcludeArch:        i686
 BuildRequires:      make
 BuildRequires:      libtool
@@ -153,6 +153,9 @@ Advanced Gtk+ Sequencer library development documentation.
 %{_datadir}/doc/libags-audio-doc/
 
 %changelog
+* Sun Oct 13 2024 Joël Krähemann <jkraehemann@gmail.com> 6.16.23-0
+- updated Source to point to new minor version directory
+
 * Mon Sep  2 2024 Miroslav Suchý <msuchy@redhat.com> - 6.13.4-2
 - convert license to SPDX
 

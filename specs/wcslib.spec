@@ -1,4 +1,3 @@
-
 Name: wcslib
 Version: 8.2.2
 Release: 4%{?dist}
@@ -30,7 +29,7 @@ These are the files needed to develop an application using %{name}.
 
 %package utils
 Summary: Utility programs provided by %{name}
-License: GPLv3+
+License: GPL-3.0-or-later
 Requires: wcslib = %{version}-%{release}
 %description utils
 Utils provided with %{name}

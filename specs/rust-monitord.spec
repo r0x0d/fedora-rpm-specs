@@ -4,15 +4,16 @@
 %global crate monitord
 
 Name:           rust-monitord
-Version:        0.8.4
+Version:        0.10.1
 Release:        %autorelease
 Summary:        Know how happy your systemd is
 
 License:        GPL-2.0-or-later
 URL:            https://crates.io/crates/monitord
 Source:         %{crates_source}
-# * Switch license file from LGPL 2.1 to GPL 2
-Patch2:        https://github.com/cooperlees/monitord/commit/8ced4d5c5fe507cd583e6518d88ae6e2b5a45cec.patch
+# Manually created patch for downstream crate metadata changes
+# * Drop tokio/tracing, still unstable
+Patch:          monitord-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -27,13 +28,14 @@ Summary:        %{summary}
 # Apache-2.0 OR BSL-1.0
 # Apache-2.0 OR MIT
 # Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
+# BSD-2-Clause OR Apache-2.0 OR MIT
 # GPL-2.0-or-later
 # MIT
 # MIT OR Apache-2.0
 # MIT OR LGPL-3.0-or-later
 # MIT OR Zlib OR Apache-2.0
 # Unlicense OR MIT
-License:        (0BSD OR MIT OR Apache-2.0) AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND GPL-2.0-or-later AND MIT AND (MIT OR Apache-2.0) AND (MIT OR LGPL-3.0-or-later) AND (MIT OR Zlib OR Apache-2.0) AND (Unlicense OR MIT)
+License:        GPL-2.0-or-later AND (0BSD OR MIT OR Apache-2.0) AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND (BSD-2-Clause OR Apache-2.0 OR MIT) AND MIT AND (MIT OR LGPL-3.0-or-later) AND (MIT OR Zlib OR Apache-2.0) AND (Unlicense OR MIT)
 # LICENSE.dependencies contains a full license breakdown
 
 %description -n %{crate} %{_description}
@@ -90,7 +92,8 @@ install -Dpm0644 -t %{buildroot}%{_sysconfdir} monitord.conf
 
 %if %{with check}
 %check
-%cargo_test
+# * skip tests requiring D-Bus
+%cargo_test -- -- --exact --skip networkd::tests::test_parse_interface_state_files --skip networkd::tests::test_parse_interface_state_files_json
 %endif
 
 %changelog

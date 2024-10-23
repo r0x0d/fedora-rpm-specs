@@ -32,11 +32,11 @@ size and clickable hyperlinks.
 %autosetup
 
 %build
-%make_build PREFIX=/usr/
+%make_build PREFIX=%{_prefix}
 
 
 %install
-%make_install PREFIX=/usr/
+%make_install PREFIX=%{_prefix}
 
 desktop-file-install                                        \
     --add-category="TextTools;"                             \

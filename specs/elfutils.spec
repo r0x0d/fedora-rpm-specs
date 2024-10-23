@@ -3,8 +3,8 @@
 %bcond_with static
 
 Name: elfutils
-Version: 0.191
-%global baserelease 8
+Version: 0.192
+%global baserelease 2
 Release: %{baserelease}%{?dist}
 URL: http://elfutils.org/
 %global source_url ftp://sourceware.org/pub/elfutils/%{version}/
@@ -39,6 +39,8 @@ BuildRequires: pkgconfig(libmicrohttpd) >= 0.9.33
 BuildRequires: pkgconfig(libcurl) >= 7.29.0
 BuildRequires: pkgconfig(sqlite3) >= 3.7.17
 BuildRequires: pkgconfig(libarchive) >= 3.1.2
+# For debugindod metadata query
+BuildRequires: pkgconfig(json-c) >= 0.11
 
 # For tests need to bunzip2 test files.
 BuildRequires: bzip2
@@ -74,12 +76,6 @@ BuildRequires: gettext-devel
 
 # For s390x... FDO package notes are bogus.
 Patch1: elfutils-0.186-fdo-swap.patch
-
-# https://sourceware.org/bugzilla/show_bug.cgi?id=31142
-Patch2: elfutils-0.190-riscv-flatten.patch
-
-# https://sourceware.org/bugzilla/show_bug.cgi?id=31562
-Patch3: elfutils-0.190-profile-empty-urls.patch
 
 %description
 Elfutils is a collection of utilities, including stack (to show
@@ -430,6 +426,9 @@ fi
 %{_libdir}/libelf.so
 %{_libdir}/pkgconfig/libelf.pc
 %{_mandir}/man3/elf_*.3*
+%{_mandir}/man3/elf32_*.3*
+%{_mandir}/man3/elf64_*.3*
+%{_mandir}/man3/libelf.3*
 
 %if %{with static}
 %files libelf-devel-static
@@ -450,6 +449,7 @@ fi
 %config(noreplace) %{_sysconfdir}/profile.d/*
 %if "%{?dist_debuginfod_url}"
 %config(noreplace) %{_sysconfdir}/debuginfod/*
+%config(noreplace) %{_datadir}/fish/vendor_conf.d/*
 %endif
 
 %files debuginfod-client-devel
@@ -489,6 +489,15 @@ exit 0
 %systemd_postun_with_restart debuginfod.service
 
 %changelog
+* Mon Oct 21 2024 Aaron Merey <amerey@fedoraproject.org> - 0.192-2
+- Add BuildRequires for json-c
+
+* Mon Oct 21 2024 Aaron Merey <amerey@fedoraproject.org> - 0.192-1
+- Upgrade to upstream elfutils 0.192
+- Drop upstreamed patches
+  Add elfutils-0.190-profile-empty-urls.patch
+  Add elfutils-0.190-riscv-flatten.patch
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.191-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

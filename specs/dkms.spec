@@ -1,14 +1,13 @@
 Summary:        Dynamic Kernel Module Support Framework
 Name:           dkms
-Version:        3.1.0
-Release:        2%{?dist}
+Version:        3.1.1
+Release:        1%{?dist}
 License:        GPL-2.0-or-later
 URL:            http://linux.dell.com/dkms
 
 BuildArch:      noarch
 
 Source0:        https://github.com/dell/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
-Patch0:         0001-Remove-last-remnants-of-log_action_msg-from-dkms_aut.patch
 
 BuildRequires:  make
 BuildRequires:  systemd
@@ -79,6 +78,9 @@ sed -i -e 's/# modprobe_on_install="true"/modprobe_on_install="true"/g' %{buildr
 %{_unitdir}/%{name}.service
 
 %changelog
+* Mon Oct 21 2024 Simone Caronni <negativo17@gmail.com> - 3.1.1-1
+- Update to 3.1.1.
+
 * Sat Oct 05 2024 Simone Caronni <negativo17@gmail.com> - 3.1.0-2
 - Add fix from upstream.
 

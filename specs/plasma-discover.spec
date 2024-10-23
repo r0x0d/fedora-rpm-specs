@@ -29,8 +29,10 @@ Source10: discoverrc
 # It is double the time that Fedora repos are set to in DNF (6h).
 Patch200: discover-pk-refresh-timer.patch
 
-
 ## upstreamable patches
+
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+ExcludeArch: %{ix86}
 
 BuildRequires: appstream-qt-devel >= 1.0.0~
 BuildRequires: flatpak-devel >= %{flatpak_version}

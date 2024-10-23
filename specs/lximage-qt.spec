@@ -2,7 +2,7 @@ Name:           lximage-qt
 Version:        2.0.1
 Release:        1%{?dist}
 Summary:        The image viewer and screenshot tool for LXQt
-License:        GPLv2+
+License:        GPL-2.0-or-later
 URL:            https://lxqt-project.org/
 Source0:        https://github.com/lxqt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 

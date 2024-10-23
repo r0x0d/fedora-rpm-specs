@@ -360,6 +360,7 @@ EOF
 install -D -m0644 macros.gimp %{buildroot}%{_rpmconfigdir}/macros.d/macros.gimp
 
 echo "%{__python3}=%{__python3}" >> %{buildroot}%{_libdir}/gimp/%{api_version}/interpreters/pygimp.interp
+echo "%{_bindir}/gimp-script-fu-interpreter-%{api_version}=%{_bindir}/gimp-script-fu-interpreter-%{api_version}" >> %{buildroot}%{_libdir}/gimp/%{api_version}/interpreters/gimp-script-fu-interpreter.interp
 
 #
 # Plugins and modules change often (grab the executeable ones)
@@ -409,6 +410,14 @@ grep -E -rl '^#!\s*/usr/bin/env\s+python' --include=\*.py "%{buildroot}" |
     while read file; do
         sed -r '1s,^#!\s*/usr/bin/env\s+python$,#!%{__python3},' -i "$file"
         sed -r '1s,^#!\s*/usr/bin/env\s+python3$,#!%{__python3},' -i "$file"
+    done
+
+# Hardcode Script Fu interpreter path in shipped Scheme plug-ins. This preempts
+# brp-mangle-shebangs and so prevents it from mangling this to /usr/bin/... in
+# Flatpak builds (the interpreter comes with GIMP and is put into /app/bin).
+grep -E -rl '^#!\s*/usr/bin/env\s+gimp-script-fu' --include=\*.scm "%{buildroot}" |
+    while read file; do
+        sed -r '1s,^#!\s*/usr/bin/env\s+(gimp-script-fu-interpreter.*)$,#!%{_bindir}/\1,' -i "$file"
     done
 
 rm -rf devel-docs/gimp-%{bin_version}

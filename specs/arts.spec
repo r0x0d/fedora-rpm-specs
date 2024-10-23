@@ -8,7 +8,7 @@ Name:    arts
 Summary: aRts (analog realtime synthesizer) - the KDE sound system 
 Epoch:   8
 Version: 1.5.10
-Release: 62%{?dist}
+Release: 63%{?dist}
 
 License: LGPL-2.0-or-later
 Url: http://www.kde.org
@@ -32,6 +32,7 @@ Patch51: kde-3.5-libtool-shlibext.patch
 Patch52: arts-1.5.8-glibc-libio.patch
 Patch53: arts-autoconf-2.7x.patch
 Patch54: arts-c99.patch
+Patch55: kde3-autoconf-2.72.patch
 
 # upstream patches
 
@@ -113,6 +114,7 @@ Install %{name}-devel if you intend to write applications using aRts.
 %patch -P52 -p1 -b .glibc-libio
 %patch -P53 -p1 -b .autoconf2.7x
 %patch -P54 -p1 -b .c99
+%patch -P55 -p1 -b .autoconf-2.72
 
 %patch -P200 -p1 -b .CVE-2009-3736
 %patch -P201 -p1 -b .CVE-2015-7543
@@ -220,6 +222,9 @@ test -z "$(chrpath --list %{buildroot}%{_bindir}/artsd 2>/dev/null | grep RPATH=
 
 
 %changelog
+* Mon Oct 21 2024 Than Ngo <than@redhat.com> - 8:1.5.10-63
+- Fix rhbz#2300566, FTBFS
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 8:1.5.10-62
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

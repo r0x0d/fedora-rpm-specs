@@ -5,8 +5,8 @@
 %global __requires_exclude_from ^%{python3_sitelib}/gns3server/compute/docker/resources/.*$
 
 Name:           gns3-server
-Version:        2.2.49
-Release:        2%{?dist}
+Version:        2.2.50
+Release:        1%{?dist}
 Summary:        Graphical Network Simulator 3
 
 # Automatically converted from old format: GPLv3 - review is highly recommended.
@@ -27,7 +27,7 @@ BuildRequires: python3-sphinx
 BuildRequires: make
 
 Requires(post): edk2-ovmf
-Recommends: docker busybox
+Recommends: docker busybox util-linux-script
 Recommends: qemu-kvm
 Requires: ubridge >= 0.9.14
 Requires: cpulimit
@@ -56,7 +56,7 @@ sed -i -r 's/==/>=/g' requirements.txt
 sed -i -r 's/distro>=1.9.*/distro>=1.5.0/' requirements.txt
 sed -i -r 's/psutil>=6.0.0/psutil>=5.8.0/' requirements.txt
 sed -i -r 's/aiofiles>=24.1.0,<25.0/aiofiles>=0.7/' requirements.txt
-sed -i -r 's/aiohttp>=3.9.5,<3.10/aiohttp>=3.9.3/' requirements.txt
+sed -i -r 's/aiohttp>=3.10.3,<3.11/aiohttp>=3.9.3/' requirements.txt
 sed -i -r 's/Jinja2>=3.1.4,<3.2/jinja2>=2.11.3/' requirements.txt
 sed -i -r 's/jsonschema>=4.23,<4.24/jsonschema>=3.2.0/' requirements.txt
 sed -i -r 's/py-cpuinfo>=9.0.0,<10.0/py-cpuinfo>=8.0.0/' requirements.txt
@@ -131,6 +131,9 @@ cp -fp %{_datadir}/edk2/ovmf/OVMF_VARS.fd %{python3_sitelib}/gns3server/disks/OV
 %systemd_postun_with_restart gns3.service
 
 %changelog
+* Mon Oct 21 2024 Alexey Kurov <nucleo@fedoraproject.org> - 2.2.50-1
+- Update to 2.2.50
+
 * Mon Aug 26 2024 Alexey Kurov <nucleo@fedoraproject.org> - 2.2.49-2
 - lower aiohttp requirements
 

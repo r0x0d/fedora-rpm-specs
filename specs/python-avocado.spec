@@ -45,7 +45,7 @@ Summary: Framework with tools and libraries for Automated Testing
 # optional_plugins/html/avocado_result_html/templates/bootstrap.min.js: MIT
 # selftests/.data/jenkins-junit.xsd: MIT
 # Other files: GPLv2 and GPLv2+
-License: GPLv2+ and GPLv2 and MIT
+License: GPL-2.0-or-later AND GPL-2.0-only AND MIT
 URL: https://avocado-framework.github.io/
 Source0: https://github.com/avocado-framework/avocado/archive/%{gitref}/%{gittar}
 BuildArch: noarch

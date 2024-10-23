@@ -1,6 +1,6 @@
 Name:           munin
 Version:        2.0.76
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Network-wide resource monitoring tool
 License:        GPL-2.0-only
 URL:            http://munin-monitoring.org/
@@ -485,7 +485,6 @@ if [ "$1" = "1" ]; then
         done
     fi
 fi
-%firewalld_reload
 %systemd_post munin-node.service munin-asyncd.service
 
 
@@ -660,6 +659,9 @@ exit 0
 
 
 %changelog
+* Mon Oct 21 2024 Kim B. Heino <b@bbbs.net> - 2.0.76-3
+- Don't restart firewalld on package update, rhbz #2295597
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.76-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

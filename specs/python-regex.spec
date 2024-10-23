@@ -1,8 +1,8 @@
 %global srcname regex
 
 Name:           python-%{srcname}
-Version:        2024.4.28
-Release:        2%{?dist}
+Version:        2024.9.11
+Release:        1%{?dist}
 Summary:        Alternative regular expression module, to replace re
 # see also https://code.google.com/p/mrab-regex-hg/issues/detail?id=124
 # Automatically converted from old format: Python and CNRI - review is highly recommended.
@@ -54,6 +54,9 @@ rst2html README.rst > README.html
 
 
 %changelog
+* Tue Oct 22 2024 Thomas Moschny <thomas.moschny@gmx.de> - 2024.9.11-1
+- Update to 2024.9.11.
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2024.4.28-2
 - convert license to SPDX
 

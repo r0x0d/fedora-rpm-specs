@@ -10,7 +10,7 @@
 # disabled until phpunit10 available
 %bcond_without       tests
 
-%global gh_commit    2d3e04c3b4c1e84a5e7382221ad8883c8fbc4f53
+%global gh_commit    a18251eb0b7a2dcd2f7aa3d6078b18545ef0558e
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     sebastianbergmann
 %global gh_project   comparator
@@ -24,7 +24,7 @@
 %global ns_project   Comparator
 
 Name:           php-%{pk_vendor}-%{pk_project}%{major}
-Version:        5.0.2
+Version:        5.0.3
 Release:        1%{?dist}
 Summary:        Compare PHP values for equality, version %{major}
 
@@ -45,8 +45,8 @@ BuildRequires:  (php-composer(%{pk_vendor}/exporter) >= 5.0   with php-composer(
 BuildRequires:  php-fedora-autoloader-devel
 %if %{with tests}
 # from composer.json, "require-dev": {
-#        "phpunit/phpunit": "^10.4"
-BuildRequires:  phpunit10 >= 10.4
+#        "phpunit/phpunit": "^10.5"
+BuildRequires:  phpunit10 >= 10.5
 %endif
 
 # from composer.json
@@ -126,6 +126,9 @@ exit $ret
 
 
 %changelog
+* Mon Oct 21 2024 Remi Collet <remi@remirepo.net> - 5.0.3-1
+- update to 5.0.3
+
 * Mon Aug 12 2024 Remi Collet <remi@remirepo.net> - 5.0.2-1
 - update to 5.0.2
 

@@ -13,7 +13,7 @@
 %global std_version 0.10
 
 Name:           python-nifti-mrs
-Version:        1.3.0
+Version:        1.3.1
 Release:        %autorelease
 Summary:        Software tools for the NIfTI-MRS data format
 

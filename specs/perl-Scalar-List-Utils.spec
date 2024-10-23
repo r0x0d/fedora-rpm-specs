@@ -1,6 +1,6 @@
 Name:           perl-Scalar-List-Utils
 Epoch:          5
-Version:        1.66
+Version:        1.68
 Release:        1%{?dist}
 Summary:        A selection of general-utility scalar and list subroutines
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -110,6 +110,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Mon Oct 21 2024 Jitka Plesnikova <jplesnik@redhat.com> - 5:1.68-1
+- 1.68 bump (rhbz#2319765)
+
 * Mon Sep 23 2024 Jitka Plesnikova <jplesnik@redhat.com> - 5:1.66-1
 - 1.66 bump (rhbz#2313658)
 

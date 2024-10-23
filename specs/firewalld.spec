@@ -1,7 +1,7 @@
 Summary: A firewall daemon with D-Bus interface providing a dynamic firewall
 Name: firewalld
 Version: 2.2.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 URL:     http://www.firewalld.org
 License: GPL-2.0-or-later
 Source0: https://github.com/firewalld/firewalld/releases/download/v%{version}/firewalld-%{version}.tar.bz2
@@ -72,6 +72,7 @@ are required by other packages that add firewalld configuration files.
 
 %package -n firewalld-test
 Summary: Firewalld testsuite
+Requires: firewalld-filesystem = %{version}-%{release}
 
 %description -n firewalld-test
 This package provides the firewalld testsuite.
@@ -81,6 +82,7 @@ Summary: Firewall panel applet
 %if !0%{?flatpak}
 Requires: %{name} = %{version}-%{release}
 %endif
+Requires: firewalld-filesystem = %{version}-%{release}
 Requires: firewall-config = %{version}-%{release}
 Requires: python3-firewall = %{version}-%{release}
 Requires: hicolor-icon-theme
@@ -106,6 +108,7 @@ Summary: Firewall configuration application
 Requires: %{name} = %{version}-%{release}
 %endif
 Requires: python3-firewall = %{version}-%{release}
+Requires: firewalld-filesystem = %{version}-%{release}
 Requires: hicolor-icon-theme
 Requires: gtk3
 Requires: python3-gobject
@@ -299,6 +302,7 @@ fi
 %dir %{_prefix}/lib/firewalld/services
 %dir %{_prefix}/lib/firewalld/zones
 %dir %{_prefix}/lib/firewalld/xmlschema
+%dir %{_datadir}/firewalld
 %{_rpmmacrodir}/macros.firewalld
 
 %files -n firewalld-test
@@ -326,6 +330,7 @@ fi
 %{_bindir}/firewall-config
 %defattr(0644,root,root)
 %{_datadir}/firewalld/firewall-config.glade
+%attr(0755,root,root) %dir %{_datadir}/firewalld/__pycache__
 %pycached %{_datadir}/firewalld/gtk3_chooserbutton.py
 %pycached %{_datadir}/firewalld/gtk3_niceexpander.py
 %{_datadir}/applications/firewall-config.desktop
@@ -335,6 +340,9 @@ fi
 %{_mandir}/man1/firewall-config*.1*
 
 %changelog
+* Mon Oct 21 2024 Eric Garver <eric@garver.life> - 2.2.3-2
+- add missing datadir to package (RHBZ#2283504)
+
 * Thu Oct 17 2024 Eric Garver <eric@garver.life> - 2.2.3-1
 - rebase package to v2.2.3
 

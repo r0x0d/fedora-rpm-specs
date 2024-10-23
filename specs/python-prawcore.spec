@@ -1,14 +1,13 @@
 %global pypi_name prawcore
 
 Name:           python-%{pypi_name}
-Version:        2.3.0
-Release:        12%{?dist}
+Version:        2.4.0
+Release:        1%{?dist}
 Summary:        Low-level communication layer for PRAW 4+ library
 
-# Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
 URL:            https://github.com/praw-dev/prawcore
-Source0:        %{pypi_source}
+Source0:        https://github.com/praw-dev/prawcore/archive/v%{version}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
 
 %description
@@ -18,16 +17,15 @@ Low-level communication layer for PRAW 4+ library.
 Summary:        %{summary}
 
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
+BuildRequires:  python3dist(flit-core)
+BuildRequires:  python3dist(pytest)
+BuildRequires:  python3dist(betamax)
+BuildRequires:  python3dist(betamax-matchers)
+BuildRequires:  python3dist(requests)
+BuildRequires:  python3dist(betamax-serializers)
+BuildRequires:  python3dist(testfixtures)
+BuildRequires:  python3dist(mock)
 BuildRequires:  mock
-BuildRequires:  python3-mock
-BuildRequires:  python3-betamax
-BuildRequires:  python3-betamax-matchers
-BuildRequires:  python3-betamax-serializers
-BuildRequires:  python3-pytest
-BuildRequires:  python3-pytest-runner
-BuildRequires:  python3-testfixtures
-%{?python_provide:%python_provide python3-nng}
 
 %description -n python3-%{pypi_name}
 Low-level communication layer for PRAW 4+ library.
@@ -35,22 +33,31 @@ Low-level communication layer for PRAW 4+ library.
 %prep
 %autosetup -n %{pypi_name}-%{version}
 
+%generate_buildrequires
+%pyproject_buildrequires -p
+
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files %{pypi_name}
 
 %check
-%pytest -v tests
+%pytest -k "not test_request__patch \
+  and not test_revoke__access_token_with_refresh_set \
+  and not test_revoke__access_token_without_refresh_set \
+  and not test_refresh__with_scopes \
+  and not test_revoke__refresh_token_with_access_set"
 
-%files -n python3-%{pypi_name}
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %doc AUTHORS.rst CHANGES.rst README.rst
 %license LICENSE.txt
-%{python3_sitelib}/*.egg-info
-%{python3_sitelib}/%{pypi_name}/
 
 %changelog
+* Mon Oct 21 2024 Fabian Affolter <mail@fabian-affolter.ch> - 2.4.0-1
+- Update to latest upstream release
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.3.0-12
 - convert license to SPDX
 

@@ -1,5 +1,5 @@
-%global commit 3721ee4e4964a7bd20a62593a4890c2299ee379e
-%global commitdate 20240909
+%global commit cece62d8f565e57f74188227eddaaac212320acc
+%global commitdate 20241021
 %global shortcommit %{sub %{commit} 1 7}
 
 Name:           miracle-wm-config
@@ -19,7 +19,7 @@ Requires:       swaync
 Requires:       nwg-bar >= 0.1.6-3
 Requires:       nwg-dock >= 0.4.1-3
 Requires:       nwg-drawer >= 0.4.9-2
-Requires:       nwg-panel
+Requires:       nwg-panel >= 0.9.47
 
 BuildArch:      noarch
 
@@ -98,6 +98,9 @@ install -pm 0644 sddm/miracle-wm.conf %{buildroot}%{_prefix}/lib/sddm/sddm.conf.
 
 
 %changelog
+* Mon Oct 21 2024 Neal Gompa <ngompa@fedoraproject.org> - 0~git.20241021.1.cece62d-1
+- Bump to new git snapshot
+
 * Mon Sep 09 2024 Neal Gompa <ngompa@fedoraproject.org> - 0~git.20240909.1.3721ee4-1
 - Bump to new git snapshot
 

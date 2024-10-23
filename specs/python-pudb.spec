@@ -1,7 +1,7 @@
 %global srcname pudb
 
 Name:          python-pudb
-Version:       2024.1.2
+Version:       2024.1.3
 Release:       1%{?dist}
 Summary:       A full-screen, console-based Python debugger
 License:       MIT
@@ -54,6 +54,9 @@ sed -i '1{\@^#! /usr/bin/env python@d}' pudb/debugger.py
 %{_bindir}/pudb
 
 %changelog
+* Mon Oct 21 2024 Lumír Balhar <lbalhar@redhat.com> - 2024.1.3-1
+- Update to 2024.1.3 (rhbz#2319825)
+
 * Mon Jul 22 2024 Lumír Balhar <lbalhar@redhat.com> - 2024.1.2-1
 - Update to 2024.1.2 (rhbz#2299348)
 

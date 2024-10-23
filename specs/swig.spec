@@ -67,8 +67,8 @@
 
 Summary: Connects C/C++/Objective C to some high-level programming languages
 Name:    swig
-Version: 4.2.1
-Release: 8%{?dist}
+Version: 4.3.0
+Release: 1%{?dist}
 License: GPL-3.0-or-later AND BSD-3-Clause
 URL:     https://www.swig.org/
 Source0: http://downloads.sourceforge.net/project/swig/swig/swig-%{version}/swig-%{version}.tar.gz
@@ -79,15 +79,6 @@ Source2: description-ccache.h2m
 Source3: ccache-swig.sh
 Source4: ccache-swig.csh
 %endif
-# Small fixes for java tests, in upstream after 4.2.1
-Patch0:  swig-java-Avoid-using-deprecated-API-in-doxygen-example.patch
-Patch1:  swig-java-Suppress-System.runFinalization-removal-warning.patch
-# Fix gcc's -Wformat-security warning in R Raise function
-# https://github.com/swig/swig/pull/2896
-Patch2:  swig-R-Fix-gcc-s-Wformat-security-warning-in-R-Raise-functi.patch
-# Python 3.13 support: https://github.com/swig/swig/pull/2925
-Patch3:  swig-python-Python-3.13-strips-docstring-indent.patch
-Patch4:  swig-python-Python-3.13-deprecates-PyWeakref_GET_OBJECT.patch
 
 BuildRequires: coreutils
 BuildRequires: findutils
@@ -371,6 +362,9 @@ install -pm 644 Tools/swig.gdb %{buildroot}%{_datadir}/%{name}/gdb
 %{_datadir}/%{name}/gdb
 
 %changelog
+* Mon Oct 21 2024 Jitka Plesnikova <jplesnik@redhat.com> - 4.3.0-1
+- 4.3.0 bump (rhbz#2320047)
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.2.1-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

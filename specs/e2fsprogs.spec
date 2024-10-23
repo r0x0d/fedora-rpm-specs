@@ -1,7 +1,7 @@
 Summary: Utilities for managing ext2, ext3, and ext4 file systems
 Name: e2fsprogs
 Version: 1.47.1
-Release: 5%{?dist}
+Release: 6%{?dist}
 
 # License tags based on COPYING file distinctions for various components
 # Automatically converted from old format: GPLv2 - review is highly recommended.
@@ -183,6 +183,7 @@ xzcat '%{SOURCE0}' | %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}
 %setup -q
 
 %patch -P0 -p1
+%patch -P1 -p1
 # Remove flawed tests
 rm -rf tests/m_rootdir_acl
 
@@ -351,6 +352,10 @@ make PRINT_FAILED=yes fullcheck
 %{_udevdir}/96-e2scrub.rules
 
 %changelog
+* Mon Oct 21 2024 Eric Sandeen <sandeen@redhat.com> - 1.47.1-6
+- Actually apply the new patch to handle orphan inode file
+  (RHBZ#2318710)
+
 * Sat Oct 19 2024 Eric Sandeen <sandeen@redhat.com> - 1.47.1-5
 - e2fsck: don't skip checks if the orphan file is present in the filesystem
   (RHBZ#2318710)

@@ -7,9 +7,7 @@
 ExcludeArch: i686
 
 # Disabled due to build failures
-%if 0%{?fedora} < 40
 ExcludeArch: ppc64le
-%endif
 
 # Run Mozilla test suite as a part of compile rpm section. Turn off when
 # building locally and don't want to spend 24 hours waiting for results.
@@ -202,7 +200,7 @@ ExcludeArch: ppc64le
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        131.0.3
-Release:        1%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 # Automatically converted from old format: MPLv1.1 or GPLv2+ or LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-MPLv1.1 OR GPL-2.0-or-later OR LicenseRef-Callaway-LGPLv2+
@@ -294,6 +292,18 @@ Patch423:        D210159.1715685538.diff
 Patch424:        D210430.1715848796.diff
 Patch425:        D220671.patch
 Patch426:        D224089.patch
+
+Patch430:        D220551.1729586452.diff
+Patch431:        D221617.1729589907.diff
+Patch432:        D221931.1729587190.diff
+Patch433:        D222280.1729587199.diff
+Patch434:        D222363.1729589473.diff
+Patch435:        D223313.1729587212.diff
+Patch436:        D223285.1729586039.diff
+Patch437:        D224842.1729586219.diff
+Patch438:        D225439.1729586066.diff
+Patch439:        D225760.1729586239.diff
+Patch440:        D225868.1729586247.diff
 
 # PipeWire camera upstream patches
 # https://phabricator.services.mozilla.com/D219224
@@ -617,6 +627,20 @@ export LIBCLANG_RT=`pwd`/wasi-sdk-20/build/compiler-rt/lib/wasi/libclang_rt.buil
 
 %patch -P425 -p1 -b .D220671
 %patch -P426 -p1 -b .D224089
+
+%if 0%{?fedora} > 40
+%patch -P430 -p1 -b .D220551
+%patch -P431 -p1 -b .D221617
+%patch -P432 -p1 -b .D221931
+%patch -P433 -p1 -b .D222280
+%patch -P434 -p1 -b .D222363
+%patch -P435 -p1 -b .D223285
+%patch -P436 -p1 -b .D223313
+%patch -P437 -p1 -b .D224842
+%patch -P438 -p1 -b .D225439
+%patch -P439 -p1 -b .D225760
+%patch -P440 -p1 -b .D225868
+%endif
 
 %patch -P500 -p1 -b .filter-out-devices-with-no-capabilities
 %patch -P501 -p1 -b .always-query-information-about-camera-availability
@@ -1256,6 +1280,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Oct 21 2024 Martin Stransky <stransky@redhat.com> - 131.0.3-3
+- Backported hi-res mouse scrolling and
+  hold touchpad gesture support for Fedora 41
+
 * Tue Oct 15 2024 Martin Stransky <stransky@redhat.com> - 131.0.3-1
 - Updated to 131.0.3
 

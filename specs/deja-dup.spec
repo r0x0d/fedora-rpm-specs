@@ -1,6 +1,6 @@
 Name:           deja-dup
 Version:        46.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Simple backup tool and frontend for duplicity
 
 License:        GPL-3.0-or-later
@@ -26,9 +26,9 @@ BuildRequires:  libadwaita-devel
 Requires:       duplicity >= 0.6.23
 Requires:       python3-gobject-base
 Requires:       python3-PyDrive2
+Requires:       rclone
 Recommends:     gvfs-fuse
 Recommends:     restic
-Recommends:     rclone
 
 %description
 Déjà Dup is a simple backup tool. It hides the complexity of doing backups the
@@ -76,6 +76,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*.metain
 %{_datadir}/help/*
 
 %changelog
+* Mon Oct 21 2024 Gwyn Ciesla <gwync@protonmail.com> - 46.1-3
+- Require rclone
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 46.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

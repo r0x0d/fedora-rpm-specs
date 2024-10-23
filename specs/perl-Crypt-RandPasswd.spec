@@ -2,7 +2,7 @@ Name:           perl-Crypt-RandPasswd
 Version:        0.07
 Release:        10%{?dist}
 Summary:        Random password generator based on FIPS-181
-License:        GPL+ or Artistic
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 URL:            https://metacpan.org/release/Crypt-RandPasswd
 Source0:        https://cpan.metacpan.org/authors/id/J/JA/JANITOR/Crypt-RandPasswd-%{version}.tar.gz

@@ -2,11 +2,10 @@
 %global debug_package %{nil}
 
 Name:           reposurgeon
-Version:        5.1
-Release:        2%{?dist}
+Version:        5.2
+Release:        1%{?dist}
 Summary:        SCM Repository Manipulation Tool
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-2-Clause
 URL:            http://www.catb.org/~esr/reposurgeon/
 Source0:        http://www.catb.org/~esr/reposurgeon/%{name}-%{version}.tar.xz
 
@@ -91,6 +90,9 @@ make check
 %{_mandir}/man1/repotool.1*
 
 %changelog
+* Mon Oct 21 2024 Denis Fateyev <denis@fateyev.com> - 5.2-1
+- Update to 5.2
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 5.1-2
 - convert license to SPDX
 

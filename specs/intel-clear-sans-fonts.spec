@@ -5,7 +5,7 @@ Release: 18%{?dist}
 URL:     https://01.org/%{projectname}
 
 %global foundry           Intel
-%global fontlicense       ASL 2.0
+%global fontlicense       Apache-2.0
 %global fontlicenses      LICENSE-2.0.txt
 
 %global fontfamily        Clear Sans

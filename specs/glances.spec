@@ -12,7 +12,7 @@ system. It is based on an open architecture where developers can add new
 plugins or exports modules.}
 
 Name:		glances	
-Version:	4.1.2
+Version:	4.2.0
 Release:	%autorelease
 Summary:	A cross-platform system monitoring tool
 
@@ -22,8 +22,6 @@ Source0:	https://github.com/nicolargo/glances/archive/v%{version}/%{name}-%{vers
 Source1:	%{name}.service
 
 Patch0:		disable-update-check.patch
-# https://github.com/nicolargo/glances/pull/2683/commits/0f40f9cc118fe4513bf8c22fae3b8bad56000c7e
-Patch1:		CVE-2024-21501.patch
 
 BuildArch:	noarch
 

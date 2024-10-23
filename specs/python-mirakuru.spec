@@ -1,7 +1,7 @@
 %global pypi_name mirakuru
 
 Name:           python-%{pypi_name}
-Version:        2.5.2
+Version:        2.5.3
 Release:        %autorelease
 Summary:        A process orchestration tool designed for functional and integration tests
 

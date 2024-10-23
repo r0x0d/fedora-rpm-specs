@@ -2,7 +2,7 @@ Name:           perl-DBIx-Class-DeploymentHandler
 Version:        0.002234
 Release:        1%{?dist}
 Summary:        Extensible DBIx::Class deployment
-License:        GPL+ or Artistic
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 URL:            https://metacpan.org/release/DBIx-Class-DeploymentHandler
 Source0:        https://cpan.metacpan.org/authors/id/M/MM/MMCCLIMON/DBIx-Class-DeploymentHandler-%{version}.tar.gz

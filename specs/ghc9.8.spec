@@ -20,7 +20,7 @@
 # to handle RCs
 %global ghc_release %{version}
 
-%global base_ver 4.19.1.0
+%global base_ver 4.19.2.0
 %global ghc_bignum_ver 1.3
 %global ghc_compact_ver 0.1.0.0
 %global hpc_ver 0.7.0.0
@@ -28,7 +28,9 @@
 %global xhtml_ver 3000.2.2.1
 
 # bootstrap needs 9.4+
+%if 0%{?fedora} < 41 && 0%{?rhel} < 10
 %global ghcboot_major 9.6
+%endif
 %global ghcboot ghc%{?ghcboot_major}
 
 # make sure ghc libraries' ABI hashes unchanged
@@ -38,16 +40,7 @@
 %bcond_with testsuite
 
 # ld
-%if 0%{fedora} >= 40
 %bcond ld_gold 0
-%else
-# actually no f39 builds
-%ifnarch riscv64
-%bcond ld_gold 1
-%else
-%bcond ld_gold 0
-%endif
-%endif
 
 # 9.8 needs llvm 11-15
 # rhel9 binutils too old for llvm13:
@@ -62,19 +55,19 @@
 %global ghc_unregisterized_arches s390 %{mips}
 
 Name: %{ghc_name}
-Version: 9.8.2
+Version: 9.8.3
 # Since library subpackages are versioned:
 # - release can only be reset if *all* library versions get bumped simultaneously
 #   (sometimes after a major release)
 # - minor release numbers for a branch should be incremented monotonically
-Release: 10%{?dist}
+Release: 11%{?dist}
 Summary: Glasgow Haskell Compiler
 
 License: BSD-3-Clause AND HaskellReport
 URL: https://haskell.org/ghc/
-Source0: https://downloads.haskell.org/ghc/%{ghc_release}/ghc-%{version}-src.tar.lz
+Source0: https://downloads.haskell.org/ghc/%{ghc_release}/ghc-%{version}-src.tar.xz
 %if %{with testsuite}
-Source1: https://downloads.haskell.org/ghc/%{ghc_release}/ghc-%{version}-testsuite.tar.lz
+Source1: https://downloads.haskell.org/ghc/%{ghc_release}/ghc-%{version}-testsuite.tar.xz
 %endif
 Source5: ghc-pkg.man
 Source6: haddock.man
@@ -98,10 +91,6 @@ Patch16: ghc-hadrian-s390x-rts--qg.patch
 Patch26: no-missing-haddock-file-warning.patch
 Patch27: haddock-remove-googleapis-fonts.patch
 
-# ppc64le FFI miscompilation
-# https://gitlab.haskell.org/ghc/ghc/-/issues/23034
-Patch35: https://gitlab.haskell.org/ghc/ghc/-/merge_requests/12885.patch
-
 # RISCV64 added to Cabal
 # See: https://github.com/haskell/cabal/pull/9062
 Patch40: cabal-add-riscv64.patch
@@ -110,6 +99,8 @@ Patch40: cabal-add-riscv64.patch
 # Upstream in >= 9.9.
 Patch41: https://gitlab.haskell.org/ghc/ghc/-/commit/dd38aca95ac25adc9888083669b32ff551151259.patch
 
+# https://github.com/haskell/directory/pull/184
+Patch50: https://patch-diff.githubusercontent.com/raw/haskell/directory/pull/184.patch
 # https://gitlab.haskell.org/ghc/ghc/-/wikis/platforms
 
 # fedora ghc has been bootstrapped on
@@ -142,7 +133,6 @@ BuildRequires: %{ghcboot}-unix-devel
 BuildRequires: binutils%{?with_ld_gold:-gold}
 BuildRequires: gmp-devel
 BuildRequires: libffi-devel
-BuildRequires: lzip
 BuildRequires: make
 BuildRequires: gcc-c++
 # for terminfo
@@ -323,15 +313,15 @@ This provides the hadrian tool which can be used to build ghc.
 
 # use "./libraries-versions.sh" to check versions
 %if %{defined ghclibdir}
-%ghc_lib_subpackage -d -l BSD-3-Clause Cabal-3.10.2.0
-%ghc_lib_subpackage -d -l BSD-3-Clause Cabal-syntax-3.10.2.0
-%ghc_lib_subpackage -d -l %BSDHaskellReport array-0.5.6.0
+%ghc_lib_subpackage -d -l BSD-3-Clause Cabal-3.10.3.0
+%ghc_lib_subpackage -d -l BSD-3-Clause Cabal-syntax-3.10.3.0
+%ghc_lib_subpackage -d -l %BSDHaskellReport array-0.5.8.0
 %ghc_lib_subpackage -d -l %BSDHaskellReport -c gmp-devel%{?_isa},libffi-devel%{?_isa} base-%{base_ver}
 %ghc_lib_subpackage -d -l BSD-3-Clause binary-0.8.9.1
 %ghc_lib_subpackage -d -l BSD-3-Clause bytestring-0.12.1.0
 %ghc_lib_subpackage -d -l %BSDHaskellReport containers-0.6.8
-%ghc_lib_subpackage -d -l %BSDHaskellReport deepseq-1.5.0.0
-%ghc_lib_subpackage -d -l %BSDHaskellReport directory-1.3.8.1
+%ghc_lib_subpackage -d -l %BSDHaskellReport deepseq-1.5.1.0
+%ghc_lib_subpackage -d -l %BSDHaskellReport directory-1.3.8.5
 %ghc_lib_subpackage -d -l %BSDHaskellReport exceptions-0.10.7
 %ghc_lib_subpackage -d -l BSD-3-Clause filepath-1.4.200.1
 # in ghc not ghc-libraries:
@@ -349,10 +339,10 @@ This provides the hadrian tool which can be used to build ghc.
 %ghc_lib_subpackage -d -l BSD-3-Clause mtl-2.3.1
 %ghc_lib_subpackage -d -l BSD-3-Clause parsec-3.1.17.0
 %ghc_lib_subpackage -d -l BSD-3-Clause pretty-1.1.3.6
-%ghc_lib_subpackage -d -l %BSDHaskellReport process-1.6.18.0
+%ghc_lib_subpackage -d -l %BSDHaskellReport process-1.6.25.0
 # see below for rts
 %ghc_lib_subpackage -d -l BSD-3-Clause semaphore-compat-1.0.0
-%ghc_lib_subpackage -d -l BSD-3-Clause stm-2.5.2.1
+%ghc_lib_subpackage -d -l BSD-3-Clause stm-2.5.3.1
 %ghc_lib_subpackage -d -l BSD-3-Clause template-haskell-2.21.0.0
 %ghc_lib_subpackage -d -l BSD-3-Clause -c ncurses-devel%{?_isa} terminfo-0.4.1.6
 %ghc_lib_subpackage -d -l BSD-3-Clause text-2.1.1
@@ -414,16 +404,18 @@ rm libffi-tarballs/libffi-*.tar.gz
 %patch -P26 -p1 -b .orig
 %patch -P27 -p1 -b .orig
 
-%ifarch ppc64le
-%patch -P 35 -p1 -b .orig
-%endif
-
 %ifarch riscv64
 #RISCV64 cabal support
 %patch -P40 -p1 -b .orig
 #GHCi support
 %patch -P41 -p1 -b .orig
 %endif
+
+# https://github.com/haskell/directory/pull/184
+(
+cd libraries/directory
+%patch -P50 -p1 -b .orig
+)
 
 
 %build
@@ -851,6 +843,11 @@ make test
 
 
 %changelog
+* Mon Oct 21 2024 Jens Petersen <petersen@redhat.com> - 9.8.3-11
+- Update to 9.8.3
+- https://downloads.haskell.org/~ghc/9.8.3/docs/users_guide/9.8.3-notes.html
+- use ld.bfd
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 9.8.2-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

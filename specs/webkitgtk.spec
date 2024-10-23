@@ -19,7 +19,7 @@
 %endif
 
 Name:           webkitgtk
-Version:        2.46.1
+Version:        2.46.2
 Release:        %autorelease
 Summary:        GTK web content engine library
 
@@ -56,13 +56,6 @@ Source1:        https://webkitgtk.org/releases/webkitgtk-%{version}.tar.xz.asc
 # $ gpg --import aperez.key carlosgc.key
 # $ gpg --export --export-options export-minimal 013A0127AC9C65B34FFA62526C1009B693975393 5AA3BC334FD7E3369E7C77B291C559DBE4C9123B > webkitgtk-keys.gpg
 Source2:        webkitgtk-keys.gpg
-
-# Work around a missing implementation of musttail in clang for ppc64le
-# https://github.com/llvm/llvm-project/issues/108014
-Patch:          webkitgtk-skia-musttail.patch
-
-# https://bugs.webkit.org/show_bug.cgi?id=280642
-Patch:          llvm19.patch
 
 BuildRequires:  bison
 BuildRequires:  bubblewrap
@@ -240,6 +233,8 @@ This package contains developer documentation for webkit2gtk4.1.
 
 %package -n     javascriptcoregtk6.0
 Summary:        JavaScript engine from webkitgtk6.0
+Provides:       bundled(simde)
+Provides:       bundled(simdutf)
 Obsoletes:      javascriptcoregtk5.0 < %{version}-%{release}
 
 %description -n javascriptcoregtk6.0
@@ -247,6 +242,8 @@ This package contains the JavaScript engine from webkitgtk6.0.
 
 %package -n     javascriptcoregtk4.1
 Summary:        JavaScript engine from webkit2gtk4.1
+Provides:       bundled(simde)
+Provides:       bundled(simdutf)
 Obsoletes:      webkit2gtk4.1-jsc < %{version}-%{release}
 
 %description -n javascriptcoregtk4.1

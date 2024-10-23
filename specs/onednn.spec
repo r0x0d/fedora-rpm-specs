@@ -53,13 +53,11 @@ developing applications that use %{name}.
 
 %build
 %cmake \
-%ifarch ppc64le
-  -DDNNL_ARCH_OPT_FLAGS=""
-%endif
-%ifarch aarch64 x86_64 s390x
   -DDNNL_ARCH_OPT_FLAGS="" \
+  -DDNNL_BUILD_EXAMPLES=OFF \
+  -DCMAKE_C_STD=11 \
+  -DCMAKE_CPP_STD=17 \
   -DONEDNN_GPU_RUNTIME=OCL
-%endif
 
 %cmake_build
 

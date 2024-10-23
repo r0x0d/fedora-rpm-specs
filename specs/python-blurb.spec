@@ -1,14 +1,11 @@
 Name:           python-blurb
-Version:        1.2.1
+Version:        1.3.0
 Release:        %autorelease
 Summary:        Command-line tool to manage CPython Misc/NEWS.d entries
 
 License:        BSD-3-Clause
 URL:            https://github.com/python/blurb
 Source:         %{pypi_source blurb %{version}}
-
-# Allow running blurb test from blurb-* directories
-Patch:          https://github.com/python/blurb/pull/24.patch
 
 BuildArch:      noarch
 

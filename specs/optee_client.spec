@@ -1,6 +1,6 @@
 Name:      optee_client
-Version:   4.3.0
-Release:   2%{?dist}
+Version:   4.4.0
+Release:   1%{?dist}
 Summary:   OP-TEE Client API and supplicant
 License:   BSD
 URL:       https://www.trustedfirmware.org/
@@ -58,6 +58,9 @@ Development file for optee_client
 %{_libdir}/libteec.so
 
 %changelog
+* Mon Oct 21 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 4.4.0-1
+- Update to 4.4.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.3.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

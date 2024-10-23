@@ -46,7 +46,7 @@ BuildRequires: pkgconfig(libsystemd)
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
 Version: 6.8.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
@@ -111,6 +111,8 @@ Patch100: qtbase-use-qgnomeplatform-as-default-platform-theme-on-gnome.patch
 ## upstream patches
 Patch200: qtbase-qabstractitemmodelprivate-add-resetting-member.patch
 Patch201: qtbase-mark-cups-optional-target.patch
+# https://codereview.qt-project.org/c/qt/qtbase/+/598549
+Patch202: qtbase-a11y-atspi-watch-for-enabled-status-change.patch
 
 # Do not check any files in %%{_qt6_plugindir}/platformthemes/ for requires.
 # Those themes are there for platform integration. If the required libraries are
@@ -847,6 +849,9 @@ make check -k ||:
 
 
 %changelog
+* Mon Oct 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-4
+- Backport - a11y atspi: Watch for enabled status change
+
 * Wed Oct 16 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-3
 - QtPrintSupport: make cups optional target
 

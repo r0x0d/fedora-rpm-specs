@@ -3,7 +3,7 @@
 
 Name:           python-asyncpg
 Summary:        A fast PostgreSQL Database Client Library for Python/asyncio
-Version:        0.29.0
+Version:        0.30.0
 Release:        %autorelease
 
 # The entire source is Apache-2.0, except:
@@ -15,48 +15,18 @@ License:        Apache-2.0 AND PSF-2.0
 URL:            https://github.com/MagicStack/asyncpg
 Source:         %{pypi_source asyncpg}
 
-# Downstream-only: use uvloop for tests even on Python 3.12+
-#
-# Upstream has disabled it because uvloop has not released binary wheels
-# for Python 3.12 yet, but we use the python3-uvloop package
-#
-# Related:
-#
-# Allow testing with uvloop on Python 3.12
-# https://github.com/MagicStack/asyncpg/pull/1182
-#
-# (The downstream patch is stronger, as it removes the upper bound on the
-# Python version for using uvloop entirely.)
-Patch:          0001-Downstream-only-use-uvloop-for-tests-even-on-Python-.patch
-
-# Allow Cython 3
-# https://github.com/MagicStack/asyncpg/pull/1101
-#
-# Fixes:
-#
-# RFE: please provide cython 3.x support
-# https://github.com/MagicStack/asyncpg/issues/1083
-Patch:          %{url}/pull/1101.patch
-
-# Replace obsolete, unsafe Py_TRASHCAN_SAFE_BEGIN/END
-#
-# Use Py_TRASHCAN_BEGIN/END instead.
-#
-# https://bugs.python.org/issue44874
-#
-# These are removed from the limited C API in Python 3.9, deprecated in
-# 3.11, and removed in Python 3.13:
-#
-# https://docs.python.org/3.13/whatsnew/3.13.html#id8
-#
-# https://github.com/MagicStack/asyncpg/pull/1150
-Patch:          %{url}/pull/1150.patch
-
 BuildRequires:  gcc
 BuildRequires:  python3-devel
+BuildRequires:  tomcli
 
 # For tests:
 BuildRequires:  %{py3_dist pytest}
+# For krb5-config binary
+BuildRequires:  krb5-devel
+# For /usr/sbin/kdb5_util binary
+BuildRequires:  krb5-server
+# For kinit binary
+BuildRequires:  krb5-workstation
 # For pg_config binary
 BuildRequires:  libpq-devel
 # For pg_ctl binary
@@ -89,6 +59,9 @@ Obsoletes:      %{name}-doc < 0.27.0-5
 %description -n python3-asyncpg %{common_description}
 
 
+%pyproject_extras_subpkg -n python3-asyncpg gssauth
+
+
 %prep
 %autosetup -n asyncpg-%{version} -p1
 
@@ -97,18 +70,19 @@ Obsoletes:      %{name}-doc < 0.27.0-5
 # and must not be removed!
 find asyncpg -type f -name '*.c' ! -name 'recordobj.c' -print -delete
 
-# We will not run style linting tests since they are brittle, so we might as
-# well drop the corresponding dependencies.
-sed -r -i '/(flake8)/d' pyproject.toml
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
+tomcli set pyproject.toml lists delitem --no-first --type regex \
+    'project.optional-dependencies.test' '(flake8|mypy)\b.*'
 
 %if %{without uvloop}
-sed -r -i 's/^([[:blank:]])(.*uvloop)/\1# \2/' pyproject.toml
+tomcli set pyproject.toml lists delitem --no-first --type regex \
+    'project.optional-dependencies.test' '(uvloop)\b.*'
 %endif
 
 
 %generate_buildrequires
 export ASYNCPG_BUILD_CYTHON_ALWAYS=1
-%pyproject_buildrequires -x test
+%pyproject_buildrequires -x gssauth,test
 
 
 %build
@@ -129,20 +103,13 @@ export ASYNCPG_BUILD_CYTHON_ALWAYS=1
 rm -rf asyncpg
 ln -s %{buildroot}%{python3_sitearch}/asyncpg/
 
-# Do not run flake8 code style tests, which may fail; besides, we have patched
-# flake8 out of the test dependencies.
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 k="${k-}${k+ and }not TestFlake8"
 
 # Test failure in test_executemany_server_failure_during_writes
 # https://github.com/MagicStack/asyncpg/issues/1099
 # This may be flaky and/or arch-dependent.
 k="${k-}${k+ and }not test_executemany_server_failure_during_writes"
-
-%if v"0%{?python3_version}" >= v"3.13"
-# https://github.com/MagicStack/asyncpg/pull/1150#issuecomment-2091253134
-k="${k-}${k+ and }not (TestClientSSLConnection and test_ssl_connection_client_auth_custom_context)"
-k="${k-}${k+ and }not (TestClientSSLConnection and test_ssl_connection_client_auth_fails_with_wrong_setup)"
-%endif
 
 # See the “test” target in the Makefile:
 PYTHONASYNCIODEBUG=1 %pytest -k "${k-}"
