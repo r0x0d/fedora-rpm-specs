@@ -1,3 +1,5 @@
+%bcond mingw %[0%{?fedora} && !0%{?flatpak}]
+
 Summary:        Library for accessing USB devices
 Name:           libusb1
 Version:        1.0.27
@@ -12,6 +14,13 @@ BuildRequires:  gcc
 # libusbx was removed in F34
 Provides:       libusbx = %{version}-%{release}
 Obsoletes:      libusbx < %{version}-%{release}
+
+%if %{with mingw}
+BuildRequires:  mingw32-filesystem >= 95
+BuildRequires:  mingw32-gcc-c++
+BuildRequires:  mingw64-filesystem >= 95
+BuildRequires:  mingw64-gcc-c++
+%endif
 
 %description
 This package provides a way for applications to access USB devices.
@@ -55,6 +64,19 @@ Obsoletes:      libusbx-tests-examples < %{version}-%{release}
 %description tests-examples
 This package contains tests and examples for %{name}.
 
+%if %{with mingw}
+%package -n mingw32-%{name}
+Summary:       MinGW Windows %{name} library
+
+%description -n mingw32-%{name}
+MinGW Windows %{name} library.
+
+%package -n mingw64-%{name}
+Summary:       MinGW Windows %{name} library
+
+%description -n mingw64-%{name}
+MinGW Windows %{name} library.
+%endif
 
 %prep
 %autosetup -p1 -n libusb-%{version}
@@ -64,6 +86,9 @@ sed -i '/AM_LDFLAGS = -static/d' tests/Makefile.am
 
 
 %build
+mkdir %{_target_os}
+pushd %{_target_os}
+%define _configure ../configure
 %configure --disable-static --enable-examples-build
 %{make_build}
 pushd doc
@@ -72,9 +97,17 @@ popd
 pushd tests
 make
 popd
+popd
+
+%if %{with mingw}
+# MinGW build
+%mingw_configure --disable-static
+%mingw_make_build
+%endif
 
 
 %install
+pushd %{_target_os}
 %{make_install}
 mkdir -p $RPM_BUILD_ROOT%{_bindir}
 install -m 755 tests/.libs/init_context $RPM_BUILD_ROOT%{_bindir}/libusb-test-init_context
@@ -91,9 +124,15 @@ for i in fxload listdevs xusb; do
         $RPM_BUILD_ROOT%{_bindir}/libusb-example-$i
 done
 rm $RPM_BUILD_ROOT%{_libdir}/*.la
+popd
+
+%if %{with mingw}
+%mingw_make_install
+%endif
 
 
 %check
+pushd %{_target_os}
 LD_LIBRARY_PATH=libusb/.libs ldd $RPM_BUILD_ROOT%{_bindir}/libusb-test-stress
 LD_LIBRARY_PATH=libusb/.libs $RPM_BUILD_ROOT%{_bindir}/libusb-test-init_context
 LD_LIBRARY_PATH=libusb/.libs $RPM_BUILD_ROOT%{_bindir}/libusb-test-set_option
@@ -101,6 +140,7 @@ LD_LIBRARY_PATH=libusb/.libs $RPM_BUILD_ROOT%{_bindir}/libusb-test-stress
 LD_LIBRARY_PATH=libusb/.libs $RPM_BUILD_ROOT%{_bindir}/libusb-test-umockdev
 LD_LIBRARY_PATH=libusb/.libs $RPM_BUILD_ROOT%{_bindir}/libusb-test-libusb
 LD_LIBRARY_PATH=libusb/.libs $RPM_BUILD_ROOT%{_bindir}/libusb-example-listdevs
+popd
 
 
 %ldconfig_scriptlets
@@ -117,7 +157,7 @@ LD_LIBRARY_PATH=libusb/.libs $RPM_BUILD_ROOT%{_bindir}/libusb-example-listdevs
 %{_libdir}/pkgconfig/libusb-1.0.pc
 
 %files devel-doc
-%doc doc/api-1.0 examples/*.c
+%doc %{_target_os}/doc/api-1.0 examples/*.c
 
 %files tests-examples
 %{_bindir}/libusb-example-fxload
@@ -130,6 +170,23 @@ LD_LIBRARY_PATH=libusb/.libs $RPM_BUILD_ROOT%{_bindir}/libusb-example-listdevs
 %{_bindir}/libusb-test-umockdev
 %{_bindir}/libusb-test-libusb
 
+%if %{with mingw}
+%files -n mingw32-libusb1
+%license COPYING
+%doc AUTHORS README ChangeLog
+%{mingw32_bindir}/libusb-1.0.dll
+%{mingw32_includedir}/libusb-1.0
+%{mingw32_libdir}/*.dll.a
+%{mingw32_libdir}/pkgconfig/libusb-1.0.pc
+
+%files -n mingw64-libusb1
+%license COPYING
+%doc AUTHORS README ChangeLog
+%{mingw64_bindir}/libusb-1.0.dll
+%{mingw64_includedir}/libusb-1.0
+%{mingw64_libdir}/*.dll.a
+%{mingw64_libdir}/pkgconfig/libusb-1.0.pc
+%endif
 
 %changelog
 %autochangelog

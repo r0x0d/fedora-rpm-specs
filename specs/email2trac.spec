@@ -1,19 +1,24 @@
 # This spec file was derived from the upstream .spec file written by
 # Jon Topper <jon at topper dot me dot uk>
+
+# for now, Python3 support is on the main branch only
+%global commit 0747a5a167ab236e86dcbd72f566457c4c28e29a
+%global snapdate 20240910
+
 Name:           email2trac
-Version:        2.12.2
-Release:        16%{?dist}
+Version:        2.14.0^%{snapdate}git%{sub %{commit} 1 7}
+Release:        1%{?dist}
 Summary:        Utilities for converting emails to trac tickets
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
-URL:            https://oss.trac.surfsara.nl/email2trac
-Source0:        ftp://ftp.sara.nl/pub/outgoing/email2trac-%{version}.tar.gz
-BuildRequires:  python2-devel
+URL:            https://gitlab.com/surfsara/email2trac
+# Source0:        https://mirror.ia.surf.nl/opensource/email2trac/email2trac-%%{version}.tar.gz
+Source0:        https://gitlab.com/surfsara/email2trac/-/archive/%{commit}/email2trac-%{commit}.tar.gz
+BuildRequires:  python3-devel
 BuildRequires:  gcc
-BuildRequires: make
+BuildRequires:  make
 Requires:       trac
 Patch0:         email2trac-2.8.4-installperms.patch
-Patch1:         email2trac-2.12.2-honor-cflags.patch
 
 %description
 This is a release of the SARA package email2trac that contains
@@ -34,11 +39,11 @@ extend the initial setup, with the following extensions:
 
 
 %prep
-%autosetup
+%autosetup -p1 -n email2trac-%{commit}
 
 
 %build
-export PYTHON=%{__python2}
+export PYTHON=%{__python3}
 %configure --with-trac_user=apache
 %make_build
 
@@ -48,7 +53,7 @@ make install DESTDIR=%{buildroot}
 
 
 %files
-%doc AUTHORS ChangeLog NOTICE README
+%doc AUTHORS ChangeLog NOTICE README.md
 %license LICENSE
 %{_bindir}/delete_spam
 %{_bindir}/email2trac
@@ -57,6 +62,16 @@ make install DESTDIR=%{buildroot}
 
 
 %changelog
+* Tue Oct 22 2024 Thomas Moschny <thomas.moschny@gmx.de> - 2.14.0^20240910git0747a5a-1
+- Use git snapshot with Python3 support.
+
+* Tue Oct 22 2024 Thomas Moschny <thomas.moschny@gmx.de> - 2.14.0-2
+- Update URLs.
+
+* Tue Oct 22 2024 Thomas Moschny <thomas.moschny@gmx.de> - 2.14.0-1
+- Update to 2.14.0
+- Use Python3.
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 2.12.2-16
 - convert license to SPDX
 

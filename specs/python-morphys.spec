@@ -1,4 +1,4 @@
-%global git_tag 0642a71126c32cd26b3a443a5cac27e4e1f7240f
+%global git_commit 0642a71126c32cd26b3a443a5cac27e4e1f7240f
 %global pypi_name morphys
 %global common_description %{expand:
 Smart conversions between unicode and bytes types for common cases in python.}
@@ -11,7 +11,7 @@ Summary:       Smart conversions between unicode and bytes types
 License:       MPL-2.0
 URL:           https://github.com/mkalinski/%{pypi_name}
 VCS:           git:%{url}.git
-Source0:       %{url}/archive/%{git_tag}/morphys-1.0.tar.gz
+Source0:       %{url}/archive/%{git_commit}/morphys-1.0.tar.gz
 BuildRequires: python3-devel
 
 %description %{common_description}
@@ -22,7 +22,7 @@ Summary: %{summary}
 %description -n python3-%{pypi_name} %{common_description}
 
 %prep
-%autosetup -p1 -n %{pypi_name}-%{git_tag}
+%autosetup -p1 -n %{pypi_name}-%{git_commit}
 
 %generate_buildrequires
 %pyproject_buildrequires -t

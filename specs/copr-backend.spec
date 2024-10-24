@@ -9,7 +9,7 @@
 %global copr_common_version 0.25.1~~dev0
 
 Name:       copr-backend
-Version:    2.0
+Version:    2.1
 Release:    1%{?dist}
 Summary:    Backend for Copr
 
@@ -59,6 +59,7 @@ BuildRequires: python3-zstandard
 BuildRequires: python3-cachetools
 BuildRequires: modulemd-tools >= 0.6
 BuildRequires: prunerepo >= %prunerepo_version
+BuildRequires: resalloc-server
 BuildRequires: dnf
 
 Requires:   (copr-selinux if selinux-policy-targeted)
@@ -238,6 +239,10 @@ useradd -r -g copr -G lighttpd -s /bin/bash -c "COPR user" copr
 %exclude %{_pkgdocdir}/lighttpd
 
 %changelog
+* Tue Oct 22 2024 Jakub Kadlcik <frostyx@email.cz> 2.1-1
+- Activate Red Hat subscription on demand
+- Fix copr-backend-unknown-resalloc-tickets
+
 * Wed Oct 02 2024 Jiri Kyjovsky <j1.kyjovsky@gmail.com> 2.0-1
 - Implement project, build, chroot deletion and creation in Pulp
 - Fix timeout fail-safe in case copr-rpmbuild hangs up

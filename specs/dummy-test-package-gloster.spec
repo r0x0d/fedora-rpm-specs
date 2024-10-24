@@ -3,7 +3,7 @@
 Name:           dummy-test-package-gloster
 
 Version:        0
-Release:        16321%{?dist}
+Release:        16341%{?dist}
 Summary:        Dummy Test Package called Gloster
 # Automatically converted from old format: CC0 - review is highly recommended.
 License:        CC0-1.0
@@ -33,6 +33,66 @@ cp -p uuid %{buildroot}%{_datadir}/%{name}
 %{_datadir}/%{name}
 
 %changelog
+* Wed Oct 23 2024 packagerbot <admin@fedoraproject.org> - 0-16341
+- rebuilt
+
+* Wed Oct 23 2024 packagerbot <admin@fedoraproject.org> - 0-16340
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16339
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16338
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16337
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16336
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16335
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16334
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16333
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16332
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16331
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16330
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16329
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16328
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16327
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16326
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16325
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16324
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16323
+- rebuilt
+
+* Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16322
+- rebuilt
+
 * Tue Oct 22 2024 packagerbot <admin@fedoraproject.org> - 0-16321
 - rebuilt
 

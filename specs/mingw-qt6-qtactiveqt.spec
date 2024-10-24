@@ -30,6 +30,12 @@ Source0:        http://download.qt.io/%{?pre:development}%{?!pre:official}_relea
 %endif
 # Add -qt6 suffix to tools to avoid collision with qt5 tools
 Patch0:         qtactiveqt_qt6suffix.patch
+# From ArchLinux package: Fix compile error about missing QStringView overload
+Patch1:         0001-Handle-win64-in-dumpcpp-and-MetaObjectGenerator-read.patch
+# From ArchLinux package: don't attempt to build non-portable tools on host platform
+Patch2:         0002-Build-tools-for-the-target-platform.patch
+# From ArchLinux package: Fix compile error about missing QStringView overload
+Patch3:         0003-Fix-compile-error-about-missing-QStringView-overload.patch
 
 BuildArch:      noarch
 
@@ -40,10 +46,12 @@ BuildRequires:  ninja-build
 BuildRequires:  mingw32-filesystem >= 96
 BuildRequires:  mingw32-gcc-c++
 BuildRequires:  mingw32-qt6-qtbase = %{version}
+BuildRequires:  mingw32-qt6-qtdeclarative = %{version}
 
 BuildRequires:  mingw64-filesystem >= 96
 BuildRequires:  mingw64-gcc-c++
 BuildRequires:  mingw64-qt6-qtbase = %{version}
+BuildRequires:  mingw64-qt6-qtdeclarative = %{version}
 
 
 %description
@@ -89,7 +97,7 @@ Fedora Windows cross-compiler.
 export MINGW32_CXXFLAGS="%{mingw32_cflags} -msse2"
 export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 # Need QT_BUILD_TOOLS_WHEN_CROSSCOMPILING to avoid cmake aborting with Qt6::idc target not found
-%mingw_cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DQT_BUILD_TOOLS_WHEN_CROSSCOMPILING=YES
+%mingw_cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo
 %mingw_ninja
 
 
@@ -110,9 +118,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_libdir}/cmake/Qt6ActiveQt/
 %{mingw32_libdir}/cmake/Qt6AxBasePrivate/
 %{mingw32_libdir}/cmake/Qt6AxContainer/
-%{mingw32_libdir}/cmake/Qt6AxContainerTools/
 %{mingw32_libdir}/cmake/Qt6AxServer/
-%{mingw32_libdir}/cmake/Qt6AxServerTools/
 %{mingw32_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtActiveQtTestsConfig.cmake
 %{mingw32_libdir}/pkgconfig/Qt6ActiveQt.pc
 %{mingw32_libdir}/pkgconfig/Qt6AxContainer.pc
@@ -151,9 +157,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_libdir}/cmake/Qt6ActiveQt/
 %{mingw64_libdir}/cmake/Qt6AxBasePrivate/
 %{mingw64_libdir}/cmake/Qt6AxContainer/
-%{mingw64_libdir}/cmake/Qt6AxContainerTools/
 %{mingw64_libdir}/cmake/Qt6AxServer/
-%{mingw64_libdir}/cmake/Qt6AxServerTools/
 %{mingw64_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtActiveQtTestsConfig.cmake
 %{mingw64_libdir}/pkgconfig/Qt6ActiveQt.pc
 %{mingw64_libdir}/pkgconfig/Qt6AxContainer.pc

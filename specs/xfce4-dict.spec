@@ -4,7 +4,7 @@
 %global xfceversion 4.16
 
 Name:           xfce4-dict
-Version:        0.8.7
+Version:        0.8.8
 Release:        %autorelease
 Summary:        A Dictionary Client for the Xfce desktop environment
 Summary(de):    Ein Wörterbuch-Client für die Xfce Desktop-Umgebung

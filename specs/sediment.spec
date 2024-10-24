@@ -1,15 +1,11 @@
 Name:		sediment
-Version:	0.9.1
-Release:	17%{?dist}
+Version:	0.9.2
+Release:	1%{?dist}
 Summary:	A function reordering tool set
 
-# Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:	GPL-3.0-or-later
 URL:		https://github.com/wcohen/sediment
-# rpmbuild doesn't like it, but actual GitHub URL is:
-# https://github.com/wcohen/sediment/archive/%%{version}.tar.gz
-Source0:	https://github.com/wcohen/sediment/archive/sediment-%{version}.tar.gz
-Patch1:		sediment-directory.patch
+Source0:	https://github.com/wcohen/sediment/archive/%{version}/%{name}-%{version}.tar.gz
 
 # sphinx is used for building documentation:
 BuildRequires: make
@@ -28,8 +24,7 @@ call graphs from program execution and converts the call graphs into
 link order information to improve code locality.
 
 %prep
-%setup -q
-%patch -P1 -p1 -b .directory
+%autosetup -n sediment-%{version}
 
 
 %build
@@ -53,6 +48,9 @@ make
 
 
 %changelog
+* Mon Oct 21 2024 William Cohen <wcohen@redhat.com> - 0.9.2-1
+- Update to use binutil 2.43 ld for linking.
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 0.9.1-17
 - convert license to SPDX
 

@@ -3,7 +3,7 @@
 
 Name:           plotnetcfg
 Version:        0.4.1
-Release:        24%{?dist}
+Release:        25%{?dist}
 Summary:        A tool to plot network configuration
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -36,6 +36,10 @@ make %{?_smp_mflags} CFLAGS="%{optflags}"
 %{_mandir}/man8/*
 
 %changelog
+* Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 0.4.1-25
+- Rebuild for Jansson 2.14
+  (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 0.4.1-24
 - convert license to SPDX
 

@@ -2,6 +2,13 @@
 %global projname %{modname}
 
 %bcond_without tests
+# Change the build backend in EPEL9 because `setuptools>=61.2`
+# is needed for PEP621
+%if 0%{?epel} == 9
+%bcond_without hatch
+%else
+%bcond_with    hatch
+%endif
 
 Name:           python-%{projname}
 Version:        20.5.0
@@ -15,6 +22,9 @@ Source0:        %{pypi_source %{projname}}
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
+%if %{with hatch}
+BuildRequires:  tomcli
+%endif
 
 %global _description %{expand:
 This library provides a low-level implementation of the IRC protocol for
@@ -34,9 +44,11 @@ Summary:        %{summary}
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 sed -E -i '/\t"pytest-/d' pyproject.toml
 
-%if 0%{?rhel}
-# relax setuptools requirement in EPEL
-sed -i 's/setuptools>=56/setuptools/' pyproject.toml
+%if %{with hatch}
+tomcli set pyproject.toml lists str "build-system.requires" "hatchling" "hatch-vcs"
+tomcli set pyproject.toml str "build-system.build-backend" "hatchling.build"
+tomcli set pyproject.toml str "tool.hatch.version.source" "vcs"
+tomcli set pyproject.toml lists str "tool.hatch.build.targets.wheel.packages" %{modname}
 %endif
 
 %generate_buildrequires

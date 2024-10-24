@@ -1,5 +1,5 @@
 Name:           perl-Perl-Critic-StricterSubs
-Version:        0.07
+Version:        0.08
 Release:        1%{?dist}
 Summary:        Perl::Critic plugin for stricter subroutine checks
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -9,7 +9,7 @@ BuildArch:      noarch
 BuildRequires:  coreutils
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
-BuildRequires:  perl(:VERSION) >= 5.6.1
+BuildRequires:  perl(:VERSION) >= 5.10.1
 BuildRequires:  perl(Config)
 BuildRequires:  perl(Module::Build)
 BuildRequires:  perl(strict)
@@ -29,6 +29,7 @@ BuildRequires:  perl(Readonly)
 # Tests:
 BuildRequires:  perl(Perl::Critic::TestUtils) >= 1.082
 BuildRequires:  perl(Test::More)
+BuildRequires:  perl(Test::Warnings)
 Requires:       perl(Perl::Critic::Policy) >= 1.082
 Requires:       perl(Perl::Critic::Utils) >= 1.082
 
@@ -108,6 +109,9 @@ export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print
 %{_libexecdir}/%{name}
 
 %changelog
+* Tue Oct 22 2024 Petr Pisar <ppisar@redhat.com> - 0.08-1
+- 0.08 bump
+
 * Tue Oct 01 2024 Petr Pisar <ppisar@redhat.com> - 0.07-1
 - 0.07 bump
 

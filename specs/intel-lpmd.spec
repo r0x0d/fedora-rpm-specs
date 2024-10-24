@@ -1,7 +1,7 @@
 %global daemon_name intel_lpmd
 
 Name:		intel-lpmd
-Version:	0.0.7
+Version:	0.0.8
 Release:	%autorelease
 Summary:	Intel Low Power Mode Daemon
 
@@ -19,6 +19,7 @@ BuildRequires:	gtk-doc
 BuildRequires:	libnl3-devel
 BuildRequires:	libxml2-devel
 BuildRequires:	libtool
+BuildRequires:	upower-devel
 BuildRequires:	systemd-devel
 BuildRequires:	systemd-units
 
@@ -63,6 +64,7 @@ install -D -p -m 644 src/%{daemon_name}_dbus_interface.xml %{buildroot}/%{_datad
 %{_sbindir}/%{daemon_name}
 %dir %{_sysconfdir}/%{daemon_name}
 %config(noreplace) %{_sysconfdir}/%{daemon_name}/%{daemon_name}_config.xml
+%config(noreplace) %{_sysconfdir}/%{daemon_name}/%{daemon_name}_config_F6_M170.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.%{daemon_name}.xml
 %{_datadir}/dbus-1/system.d/org.freedesktop.%{daemon_name}.conf
 %{_datadir}/dbus-1/system-services/org.freedesktop.%{daemon_name}.service

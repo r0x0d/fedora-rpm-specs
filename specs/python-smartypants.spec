@@ -2,7 +2,7 @@
 
 Name:           python-%{pypi_name}
 Version:        2.0.1
-Release:        21%{?dist}
+Release:        22%{?dist}
 Summary:        plug-in that easily translates ASCII punctuation characters into smart entities
 
 License:        BSD-3-Clause AND BSD-2-Clause
@@ -10,10 +10,14 @@ URL:            https://github.com/leohemsted/smartypants.py
 Source0:        %url/archive/v%{version}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
 
+# https://github.com/leohemsted/smartypants.py/pull/21
+Patch:          0001-Fix-regexps-and-tests-for-python3.12.patch
+
 BuildRequires: make
 BuildRequires:  python3-devel
-BuildRequires:  python3dist(setuptools)
-BuildRequires:  python3dist(sphinx)
+BuildRequires:  python3-docutils
+BuildRequires:  python3-sphinx
+
 
 %description
 SmartyPants is a free web publishing plug-in for Movable
@@ -24,9 +28,8 @@ entities.
 
 %package -n     python3-%{pypi_name}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{pypi_name}}
 
-Requires:       python3dist(setuptools)
+
 %description -n python3-%{pypi_name}
 SmartyPants is a free web publishing plug-in for Movable
 Type, Blosxom, and BBEdit that easily translates plain ASCII
@@ -41,17 +44,18 @@ Documentation for python-smartypants
 
 
 %prep
-%autosetup -n %{pypi_name}.py-%{version}
-# Remove bundled egg-info
-rm -rf %{pypi_name}.egg-info
-for lib in $(find -type f -name '*.py'); do
- sed -i.python -e '1{\@^#!@d}' $lib
-done
-sed -i.python -e 's|#!/usr/bin/env python|#!/usr/bin/python3|' smartypants
+%autosetup -p 1 -n %{pypi_name}.py-%{version}
+# This is automatically on scripts in %%{_bindir}, but the tests run this
+# script from the working directory so we need to fix it earlier.
+%py3_shebang_fix smartypants
+
+
+%generate_buildrequires
+%pyproject_buildrequires
 
 
 %build
-%py3_build
+%pyproject_wheel
 # generate html documentation
 cd docs
 make html
@@ -60,26 +64,29 @@ rm -rf _build/html/.{doctrees,buildinfo}
 
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l %{pypi_name}
+
 
 %check
-%{__python3} setup.py test
+%{py3_test_envvars} %{python3} -m unittest discover --verbose --start-directory tests
 
 
-%files -n python3-%{pypi_name}
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %doc README.rst
 %doc CHANGES.rst
-%license COPYING
 %{_bindir}/%{pypi_name}
-%{python3_sitelib}/__pycache__/*
-%{python3_sitelib}/%{pypi_name}.py
-%{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
+
 
 %files -n python-%{pypi_name}-doc
 %doc docs/_build/html
 %license COPYING
 
 %changelog
+* Tue Oct 15 2024 Carl George <carlwgeorge@fedoraproject.org> - 2.0.1-22
+- Convert to pyproject macros
+- Fix test invocation
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.1-21
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,25 +1,24 @@
-Name:           perl-CSS
-Version:        1.09
-Release:        33%{?dist}
-Summary:        Object oriented access to Cascading Style Sheets (CSS)
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
-License:        GPL-1.0-or-later OR Artistic-1.0-Perl
-URL:            https://metacpan.org/release/CSS
-Source0:        https://cpan.metacpan.org/modules/by-module/CSS/CSS-%{version}.tar.gz
-Source1:        perl-CSS-build-grammar.pl
-BuildArch:      noarch
-BuildRequires:  coreutils
-BuildRequires:  findutils
-BuildRequires:  make
-BuildRequires:  perl-interpreter
-BuildRequires:  perl-generators
-BuildRequires:  perl(Carp)
-BuildRequires:  perl(Data::Dumper)
-BuildRequires:  perl(ExtUtils::MakeMaker) 
-BuildRequires:  perl(Parse::RecDescent)
-BuildRequires:  perl(Test::Simple)
-BuildRequires:  dos2unix
-BuildRequires:  glibc-common
+Name:          perl-CSS
+Version:       1.09
+Release:       34%{?dist}
+Summary:       Object oriented access to Cascading Style Sheets (CSS)
+License:       GPL-1.0-or-later OR Artistic-1.0-Perl
+URL:           https://metacpan.org/release/CSS
+Source0:       https://cpan.metacpan.org/modules/by-module/CSS/CSS-%{version}.tar.gz
+Source1:       perl-CSS-build-grammar.pl
+BuildArch:     noarch
+BuildRequires: coreutils
+BuildRequires: dos2unix
+BuildRequires: findutils
+BuildRequires: glibc-common
+BuildRequires: make
+BuildRequires: perl(Carp)
+BuildRequires: perl(Data::Dumper)
+BuildRequires: perl(ExtUtils::MakeMaker) 
+BuildRequires: perl(Parse::RecDescent)
+BuildRequires: perl(Test::Simple)
+BuildRequires: perl-generators
+BuildRequires: perl-interpreter
 
 %description
 This module can be used, along with a CSS::Parse::* module, to parse
@@ -28,9 +27,9 @@ CSS::Adaptor::* module, the CSS data tree can then be transformed into
 other formats.
 
 %prep
-%setup -q -n CSS-%{version}
+%autosetup -n CSS-%{version}
 # Regenerate CSS::Parse::CompiledGrammar (#564808, CPAN RT#53948)
-%{__perl} %{SOURCE1}
+%{__perl} %{SOURCE1} 
 mv CompiledGrammar.pm CSS/Parse/
 
 mv Changes Changes.iso88591
@@ -61,6 +60,9 @@ make test
 %{_mandir}/man3/CSS::*
 
 %changelog
+* Tue Oct 22 2024 Terje Rosten <terje.rosten@ntnu.no> - 1.09-34
+- Use autosetup macro
+
 * Mon Aug 05 2024 Miroslav Suchý <msuchy@redhat.com> - 1.09-33
 - convert license to SPDX
 

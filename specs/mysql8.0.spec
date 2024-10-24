@@ -1,6 +1,6 @@
 # Name of the package without any prefixes
 %global majorname mysql
-%global package_version 8.0.39
+%global package_version 8.0.40
 %define majorversion %(echo %{package_version} | cut -d'.' -f1-2 )
 %global pkgnamepatch mysql
 
@@ -19,7 +19,7 @@
 # The last version on which the full testsuite has been run
 # In case of further rebuilds of that version, don't require full testsuite to be run
 # run only "main" suite
-%global last_tested_version 8.0.39
+%global last_tested_version 8.0.40
 # Set to 1 to force run the testsuite even if it was already tested in current version
 %global force_run_testsuite 0
 
@@ -484,23 +484,12 @@ the MySQL sources.
 
 
 %prep
-%setup -q -n mysql-%{version}
-%patch -P1 -p1
-%patch -P3 -p1
-%patch -P4 -p1
-%patch -P5 -p1
-%patch -P51 -p1
-%patch -P52 -p1
-%patch -P53 -p1
-%patch -P55 -p1
-%patch -P56 -p1
-%patch -P57 -p1
+%autosetup -N -n mysql-%{version}
+%autopatch -M 100 -p1
 
 # Patch Boost
 pushd boost/boost_$(echo %{boost_bundled_version}| tr . _)
-%patch -P111 -p0
-%patch -P112 -p1
-%patch -P113 -p2
+%autopatch -m 100 -p1
 popd
 
 # Remove bundled code that is unused (all cases in which we use the system version of the library instead)
@@ -1116,6 +1105,10 @@ fi
 %endif
 
 %changelog
+* Mon Oct 21 2024 Lars Tangvald <lars.tangvald@oracle.com> - 8.0.40-1
+- Update to MySQL 8.0.40
+- Use auto* macros to simplify patch mgt
+
 * Sat Aug 10 2024 Michal Schorm <mschorm@redhat.com> - 8.0.39-1
 - Rebase to MySQL 8.0.39
 

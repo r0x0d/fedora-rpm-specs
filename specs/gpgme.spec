@@ -32,6 +32,11 @@ Patch1003:      0001-fix-stupid-ax_python_devel.patch
 # Allow extra options to be passed to setup.py during installation
 Patch1004:      0002-setup_py_extra_opts.patch
 
+# 3x fix F41+ setuptools74 compatibility, from upstream, for <=1.23.2, rhbz#2319628
+Patch1005:      gpgme-1.23.2-distutils.patch
+Patch1006:      gpgme-1.23.2-setuptools72.patch
+Patch1007:      gpgme-1.23.2-noegg.patch
+
 ## temporary downstream fixes
 # Skip lang/qt/tests/t-remarks on gnupg 2.4+
 Patch3001:      1001-qt-skip-test-remarks-for-gnupg2-2.4.patch

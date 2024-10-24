@@ -9,9 +9,9 @@
 
 # https://github.com/fatih/semgroup
 %global goipath         github.com/fatih/semgroup
-Version:                1.2.0
+Version:                1.3.0
 
-%gometa -L
+%gometa -L -f
 
 %global common_description %{expand:
 Like errgroup/waitgroup, but only runs a maximum of tasks at any time.}
@@ -26,8 +26,6 @@ Summary:        Like errgroup/waitgroup, but only runs a maximum of tasks at any
 License:        BSD-3-Clause
 URL:            %{gourl}
 Source:         %{gosource}
-# https://github.com/fatih/semgroup/pull/7
-Patch:          7.patch
 
 %description %{common_description}
 

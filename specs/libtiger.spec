@@ -1,18 +1,17 @@
 Name:           libtiger
 Version:        0.3.4
-Release:        30%{?dist}
+Release:        31%{?dist}
 Summary:        Rendering library for Kate streams using Pango and Cairo
 
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.1-or-later
 URL:            http://libtiger.googlecode.com
-Source0:        http://libtiger.googlecode.com/files/libtiger-%{version}.tar.gz
+Source0:        %{url}/files/libtiger-%{version}.tar.gz
 
 BuildRequires: make
 BuildRequires:  gcc
 BuildRequires:  libkate-devel >= 0.2.7
 BuildRequires:  pango-devel
-%ifarch %{ix86} x86_64 ppc ppc64 s390x %{arm}
+%ifarch %{valgrind_arches}
 BuildRequires:  valgrind
 %endif
 BuildRequires:  doxygen
@@ -50,27 +49,26 @@ The %{name}-doc package contains Documentation for %{name}.
 
 %build
 %configure --disable-static
-make %{?_smp_mflags}
+%make_build
 
 
 %install
-rm -rf $RPM_BUILD_ROOT __doc
-make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
-find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
+rm -rf __doc
+%make_install
+find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 # Fix timestramps change
-touch -r include/tiger/tiger.h.in $RPM_BUILD_ROOT%{_includedir}/tiger/tiger.h
+touch -r include/tiger/tiger.h.in %{buildroot}%{_includedir}/tiger/tiger.h
 
 # Move docdir
-mv $RPM_BUILD_ROOT%{_docdir}/%{name} __doc
+mv %{buildroot}%{_docdir}/%{name} __doc
 
-
-%ldconfig_scriptlets
 
 
 %files
-%doc AUTHORS COPYING ChangeLog README
-%{_libdir}/*.so.*
+%doc AUTHORS ChangeLog README
+%license COPYING
+%{_libdir}/*.so.5{,.*}
 
 %files devel
 %{_includedir}/tiger/
@@ -82,6 +80,9 @@ mv $RPM_BUILD_ROOT%{_docdir}/%{name} __doc
 
 
 %changelog
+* Tue Oct 22 2024 Nicolas Chauvet <kwizart@gmail.com> - 0.3.4-31
+- Spec file clean-up
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 0.3.4-30
 - convert license to SPDX
 

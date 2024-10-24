@@ -2,7 +2,7 @@
 
 Name:      cptutils
 Version:   1.82
-Release:   1%{?dist}
+Release:   2%{?dist}
 Summary:   Utilities to manipulate and translate color gradients
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:   GPL-2.0-or-later
@@ -49,6 +49,10 @@ make install DESTDIR=%{buildroot}
 
 
 %changelog
+* Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 1.82-2
+- Rebuild for Jansson 2.14
+  (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)
+
 * Tue Sep 17 2024 Sandipan Roy <bytehackr@fedoraproject.org> - 1.82-1
 - rhbz#2293677, rhbz#2248573, rhbz#2246859 rhbz#2300609 rhbz#2261048
 - New upstream release

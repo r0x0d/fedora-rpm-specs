@@ -3,13 +3,14 @@
 
 Name:           python-jinja2-time
 Version:        0.2.0
-Release:        26%{?dist}
+Release:        27%{?dist}
 Summary:        Jinja2 Extension for Dates and Times
 
 License:        MIT
 URL:            https://github.com/hackebrot/jinja2-time
 Source0:        https://github.com/hackebrot/%{pkgname}/archive/%{version}.tar.gz
-
+# Comaptibility on newer arrow modules, from upstream MR: https://github.com/hackebrot/jinja2-time/pull/19
+Patch0:         arrow-compat.patch
 BuildArch:      noarch
 
 %description
@@ -22,13 +23,16 @@ BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-arrow
 BuildRequires:  python3-jinja2
+# Required for tests
+BuildRequires:  python3dist(pytest)
+BuildRequires:  python3dist(freezegun)
 
 %description -n python3-%{pkgname}
 Jinja2 Extension for Dates and Times.
 
 
 %prep
-%autosetup -n %{pkgname}-%{version}
+%autosetup -p 1 -n %{pkgname}-%{version}
 
 %build
 
@@ -39,8 +43,7 @@ Jinja2 Extension for Dates and Times.
 %{py3_install}
 
 %check
-
-%{__python3} setup.py test
+%pytest tests
 
 
 %files -n python3-%{pkgname}
@@ -49,6 +52,10 @@ Jinja2 Extension for Dates and Times.
 %{python3_sitelib}/*
 
 %changelog
+* Tue Oct 22 2024 Federico Pellegrin <fede@evolware.org> - 0.2.0-27
+- Fix compatibility with new versions of Arrow
+- Run tests directly with pytest (#2319387)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.0-26
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

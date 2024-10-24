@@ -3,8 +3,8 @@
 %global mozjs128_version 128.1
 
 Name:           gjs
-Version:        1.82.0
-Release:        2%{?dist}
+Version:        1.82.1
+Release:        1%{?dist}
 Summary:        Javascript Bindings for GNOME
 
 # The following files contain code from Mozilla which
@@ -16,11 +16,6 @@ Summary:        Javascript Bindings for GNOME
 License:        MIT AND BSD-3-Clause AND (MIT OR LGPL-2.0-or-later) AND (MPL-1.1 OR GPL-2.0-or-later OR LGPL-2.1-or-later)
 URL:            https://wiki.gnome.org/Projects/Gjs
 Source0:        https://download.gnome.org/sources/%{name}/1.82/%{name}-%{version}.tar.xz
-# https://bugzilla.redhat.com/show_bug.cgi?id=2319028
-# https://gitlab.gnome.org/GNOME/gjs/-/issues/647
-# https://gitlab.gnome.org/GNOME/gjs/-/merge_requests/955
-# Fix a crash that sometimes happens on user switch
-Patch:          955.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  meson
@@ -103,6 +98,9 @@ the functionality of the installed gjs package.
 %{_datadir}/installed-tests/
 
 %changelog
+* Mon Oct 21 2024 nmontero <nmontero@redhat.com> - 1.82.1-1
+- Update to 1.82.1
+
 * Tue Oct 15 2024 Adam Williamson <awilliam@redhat.com> - 1.82.0-2
 - Backport MR #955 to fix user switch crasher (#2319028)
 

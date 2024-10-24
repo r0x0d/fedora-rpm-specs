@@ -6,10 +6,17 @@
 %bcond_with docs
 # Not all test dependencies are available yet
 %bcond_with tests
+# Change the build backend in EPEL9 because `setuptools>=61.2`
+# is needed for PEP621
+%if 0%{?epel} == 9
+%bcond_without hatch
+%else
+%bcond_with    hatch
+%endif
 
 Name:           python-%{pkg_name}
 Version:        4.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Module for text manipulation
 
 License:        MIT
@@ -18,6 +25,9 @@ Source0:        %{pypi_source}
 BuildArch:      noarch
  
 BuildRequires:  python3-devel
+%if %{with hatch}
+BuildRequires:  tomcli
+%endif
 %generate_buildrequires
 %pyproject_buildrequires
 
@@ -54,6 +64,13 @@ Documentation for jaraco.text
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
+%if %{with hatch}
+tomcli set pyproject.toml lists str "build-system.requires" "hatchling" "hatch-vcs"
+tomcli set pyproject.toml str "build-system.build-backend" "hatchling.build"
+tomcli set pyproject.toml str "tool.hatch.version.source" "vcs"
+tomcli set pyproject.toml lists str "tool.hatch.build.targets.wheel.packages" "jaraco"
+%endif
+
 %build
 %pyproject_wheel
 
@@ -67,8 +84,9 @@ rm -rf html/.{doctrees,buildinfo}
 
 %install
 %pyproject_install
-install jaraco/text/Lorem\ ipsum.txt \
+install -pm 0644 jaraco/text/Lorem\ ipsum.txt \
     %{buildroot}%{python3_sitelib}/jaraco/text/
+%pyproject_save_files jaraco
 
 %if 0%{?with_tests}
 %check
@@ -76,12 +94,9 @@ install jaraco/text/Lorem\ ipsum.txt \
 # with tests
 %endif
 
-%files -n python3-%{pkg_name}
+%files -n python3-%{pkg_name} -f %{pyproject_files}
 %license LICENSE
 %doc README.rst
-# These excludes are provided by python3-jaraco
-%{python3_sitelib}/jaraco/text/
-%{python3_sitelib}/jaraco.text-%{version}.dist-info
 
 %if %{with docs}
 %files -n python-%{pkg_name}-doc
@@ -91,6 +106,11 @@ install jaraco/text/Lorem\ ipsum.txt \
 %endif
 
 %changelog
+* Sat Oct 05 2024 Ondrej Mosnáček <omosnacek@gmail.com> - 4.0.0-2
+- Fix the install command to comply with guidelines
+- Use %%{pyproject_[save_]files}
+- Fix EPEL9 build
+
 * Thu Aug 01 2024 Dan Radez <dradez@redhat.com> - 4.0.0-1
 - update to upstream 4.0.0 rhbz#2300119
 

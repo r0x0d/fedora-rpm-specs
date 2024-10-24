@@ -1,3 +1,7 @@
+# Note that we *do* need mypy for some of the tests; it is not just a
+# “typechecking linter.” However, we can optionally skip those tests.
+%bcond mypy 1
+
 Name:           python-typeguard
 Version:        4.3.0
 Release:        %autorelease
@@ -42,8 +46,18 @@ tomcli set pyproject.toml lists delitem \
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 tomcli set pyproject.toml lists delitem --type regex \
     'project.optional-dependencies.test' 'coverage\b.*'
-# Note that we *do* need mypy for some of the tests; it is not just a
-# “typechecking linter.”
+
+%if 0%{?el10}
+# Loosen the typing_extensions dependency version bound. Upstream needed 4.10.0
+# for Python 3.13 support. EPEL10 has only 4.9.0, but it also has Python 3.12,
+# so this should be OK.
+tomcli set pyproject.toml lists replace --type regex project.dependencies \
+    'typing_extensions >= 4\..*' 'typing_extensions >= 4.9.0'
+%endif
+%if %{without mypy}
+tomcli set pyproject.toml lists delitem --type regex \
+    project.optional-dependencies.test 'mypy\b.*'
+%endif
 
 
 %generate_buildrequires
@@ -63,7 +77,12 @@ export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 
 
 %check
-%pytest -v -rs
+%if %{without mypy}
+k="${k-}${k+ and }not test_negative"
+k="${k-}${k+ and }not test_positive"
+%endif
+
+%pytest -k "${k-}" -v -rs
 
 
 %files -n python3-typeguard -f %{pyproject_files}

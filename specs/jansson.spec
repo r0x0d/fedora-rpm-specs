@@ -1,20 +1,24 @@
+%global forgeurl https://github.com/akheron/jansson
+Version:        2.14
+%forgemeta
+
 Name:		jansson
-Version:	2.13.1
-Release:	10%{?dist}
+Release:	1%{?dist}
 Summary:	C library for encoding, decoding and manipulating JSON data
 
 # src/lookup3.h is LicenseRef-Fedora-Public-Domain
 License:	MIT AND LicenseRef-Fedora-Public-Domain
-URL:		http://www.digip.org/jansson/
-Source0:	http://www.digip.org/jansson/releases/jansson-%{version}.tar.bz2
+URL:		%{forgeurl}
+Source0:	%{forgesource}
 
-# Fix docs build failures with Sphinx 3
-# Resolved upstream: https://github.com/akheron/jansson/pull/543
-Patch0:     fix-docs-build-with-sphinx-3.patch
+# Fix the tests.
+# Upstream commit 0677666f65b988b2dd44d02966a08fea490d5883
+Patch:          0001-Fix-the-check-exports-tests-for-versioned-symbols.patch
 
 BuildRequires:	gcc
 BuildRequires:	python3-sphinx
-BuildRequires: make
+BuildRequires:  make
+BuildRequires:  autoconf, automake, libtool
 
 %description
 Small library for parsing and writing JSON documents.
@@ -34,13 +38,14 @@ BuildArch: noarch
 Development documentation for jansson.
 
 %prep
-%autosetup -p1
+%forgeautosetup -p1
 
 %if 0%{?rhel} == 6
 %{__sed} -i 's/code-block:: shell/code-block:: none/g' doc/*.rst
 %endif
 
 %build
+autoreconf -f -i -v
 %configure --disable-static
 %make_build
 make html
@@ -51,8 +56,6 @@ make check
 %install
 %make_install
 rm "$RPM_BUILD_ROOT%{_libdir}"/*.la
-
-%ldconfig_scriptlets
 
 %files
 %license LICENSE
@@ -68,6 +71,13 @@ rm "$RPM_BUILD_ROOT%{_libdir}"/*.la
 %doc doc/_build/html/*
 
 %changelog
+* Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 2.14-1
+- New upstream version 2.14
+- Switch to using forge macros for easier maintenance.
+- Fix upstream URL and source.
+- Unconditionally run autoreconf.
+- Remove obsolete %%ldconfig_scriptlets macro.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.13.1-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,8 +1,8 @@
 %{?mingw_package_header}
 
 Name:           mingw-xerces-c
-Version:        3.2.5
-Release:        4%{?dist}
+Version:        3.3.0
+Release:        1%{?dist}
 Summary:        MingGW Windows validating XML parser
 
 License:        Apache-2.0
@@ -85,7 +85,7 @@ rm -rf %{buildroot}%{mingw64_datadir}/doc/
 %files -n mingw32-xerces-c
 %license LICENSE
 %{mingw32_includedir}/xercesc/
-%{mingw32_bindir}/libxerces-c-3.2.dll
+%{mingw32_bindir}/libxerces-c-3.3.dll
 %{mingw32_libdir}/libxerces-c.dll.a
 %{mingw32_libdir}/pkgconfig/xerces-c.pc
 %{mingw32_libdir}/cmake/XercesC/
@@ -93,13 +93,16 @@ rm -rf %{buildroot}%{mingw64_datadir}/doc/
 %files -n mingw64-xerces-c
 %license LICENSE
 %{mingw64_includedir}/xercesc/
-%{mingw64_bindir}/libxerces-c-3.2.dll
+%{mingw64_bindir}/libxerces-c-3.3.dll
 %{mingw64_libdir}/libxerces-c.dll.a
 %{mingw64_libdir}/pkgconfig/xerces-c.pc
 %{mingw64_libdir}/cmake/XercesC/
 
 
 %changelog
+* Tue Oct 22 2024 Sandro Mani <manisandro@gmail.com> - 3.3.0-1
+- Update to 3.3.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.5-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

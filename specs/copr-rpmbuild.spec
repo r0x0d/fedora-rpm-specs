@@ -14,7 +14,7 @@ Requires: %1 \
 %{expand: %%global latest_requires_packages %1 %%{?latest_requires_packages}}
 
 Name:    copr-rpmbuild
-Version: 1.0
+Version: 1.1
 Summary: Run COPR build tasks
 Release: 1%{?dist}
 URL: https://github.com/fedora-copr/copr
@@ -41,9 +41,13 @@ BuildRequires: %{python_pfx}-jinja2
 BuildRequires: %{python_pfx}-specfile >= 0.21.0
 BuildRequires: python3-backoff >= 1.9.0
 BuildRequires: python3-pyyaml
+%if 0%{?fedora} || 0%{?rhel} >= 9
+BuildRequires: subscription-manager
+%endif
 
 BuildRequires: /usr/bin/argparse-manpage
 BuildRequires: python-rpm-macros
+BuildRequires: systemd-rpm-macros
 
 %if "%{?python}" == "python2"
 BuildRequires: python2-configparser
@@ -61,6 +65,7 @@ Requires: python3-backoff >= 1.9.0
 Requires: python3-pyyaml
 
 Requires: mock >= 5.0
+Requires(pre): mock-filesystem
 Requires: git
 Requires: git-svn
 # for the /bin/unbuffer binary
@@ -230,8 +235,7 @@ EOF
 
 install -d %{buildroot}%{_mandir}/man1
 install -p -m 644 man/copr-rpmbuild.1 %{buildroot}/%{_mandir}/man1/
-install -p -m 755 bin/copr-builder %buildroot%_bindir
-install -p -m 755 bin/copr-builder-cleanup %buildroot%_bindir
+install -p -m 755 bin/copr-builder* %buildroot%_bindir
 install -p -m 755 bin/copr-sources-custom %buildroot%_bindir
 install -p -m 755 bin/copr-rpmbuild-cancel %buildroot%_bindir
 install -p -m 755 bin/copr-rpmbuild-log %buildroot%_bindir
@@ -249,6 +253,11 @@ install -p -m 755 copr-update-builder %buildroot%_bindir
     install -p -m 644 "$line" "$dir"
   done
 )
+
+mkdir %{buildroot}%{_tmpfilesdir}
+cat > %{buildroot}%{_tmpfilesdir}/copr-builder.conf <<EOF
+d /run/copr-builder 0775 root mock -
+EOF
 
 
 %files
@@ -278,12 +287,23 @@ install -p -m 755 copr-update-builder %buildroot%_bindir
 %_bindir/copr-builder
 %_bindir/copr-update-builder
 %_bindir/copr-builder-cleanup
+%_bindir/copr-builder-rhsm-subscribe
+%_bindir/copr-builder-rhsm-subscribe-daemon
+%_bindir/copr-builder-ready
 %_sysconfdir/copr-builder
 %dir %mock_config_overrides
 %doc %mock_config_overrides/README
+%ghost %attr(775,root,mock) %dir %_rundir/copr-builder
+%_tmpfilesdir/copr-builder.conf
 
 
 %changelog
+* Tue Oct 22 2024 Jakub Kadlcik <frostyx@email.cz> 1.1-1
+- Make_srpmbuild, set recursive safe.directory
+- Activate Red Hat subscription on demand
+- Drop six usage (this is a Python 3 only package)
+- Add tooling for "safer" RH subscription
+
 * Wed Oct 02 2024 Jiri Kyjovsky <j1.kyjovsky@gmail.com> 1.0-1
 - Specify snippets to mock config via copr-rpmbuild config file
 - Increase the custom method timeout to 90 minutes

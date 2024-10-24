@@ -7,6 +7,10 @@ License:        Apache-2.0
 URL:            https://github.com/KhronosGroup/Vulkan-Tools
 Source0:        %url/archive/vulkan-sdk-%{version}.tar.gz#/Vulkan-Tools-sdk-%{version}.tar.gz       
 
+# vkcube runtime selection support
+Patch00:        0001-vkcube-Remove-unused-command-line-option.patch
+Patch01:        0001-cube-Support-runtime-selection-of-WSI-platform.patch
+
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  cmake3

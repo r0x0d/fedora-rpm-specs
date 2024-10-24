@@ -15,7 +15,7 @@
 
 Summary:       Tools to access and modify virtual machine disk images
 Name:          guestfs-tools
-Version:       1.53.3
+Version:       1.53.4
 Release:       1%{?dist}
 License:       GPL-2.0-or-later AND LGPL-2.0-or-later
 
@@ -53,7 +53,7 @@ BuildRequires: /usr/bin/pod2text
 BuildRequires: po4a
 BuildRequires: pcre2-devel
 BuildRequires: libxml2-devel
-BuildRequires: jansson-devel
+BuildRequires: json-c-devel
 BuildRequires: libvirt-devel
 BuildRequires: libosinfo-devel
 BuildRequires: libxcrypt-devel
@@ -392,6 +392,14 @@ end
 
 
 %changelog
+* Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 1.53.4-1
+- New upstream development version 1.53.4
+- Replace Jansson with json-c
+
+* Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 1.53.3-2
+- Rebuild for Jansson 2.14
+  (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)
+
 * Tue Aug 20 2024 Richard W.M. Jones <rjones@redhat.com> - 1.53.3-1
 - New upstream development version 1.53.3
 - Pull in some upstream fixes that improve reliability of firstboot on Windows

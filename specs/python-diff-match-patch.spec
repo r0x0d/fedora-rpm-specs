@@ -1,15 +1,16 @@
-%global        srcname diff-match-patch
+%global        projname diff-match-patch
+%global        srcname diff_match_patch
 %global        desc The Diff Match and Patch libraries offer robust algorithms to perform the \
 operations required for synchronizing plain text.
 
-Name:          python-%{srcname}
-Version:       20230430
-Release:       6%{?dist}
+Name:          python-diff-match-patch
+Version:       20241021
+Release:       1%{?dist}
 Summary:       Algorithms for synchronizing plain text
 
 License:       Apache-2.0
 URL:           https://pypi.python.org/pypi/diff-match-patch/
-Source0:       https://pypi.python.org/packages/source/d/%{srcname}/%{srcname}-%{version}.tar.gz
+Source0:       %{pypi_source %{srcname}}
 
 BuildArch:     noarch
 BuildRequires: python3-devel
@@ -18,11 +19,11 @@ BuildRequires: python3dist(pytest)
 %description
 %{desc}
 
-%package -n python3-%{srcname}
+%package -n python3-%{projname}
 Summary:       %{summary}
-%{?python_provide:%python_provide python3-%{srcname}}
+%{?python_provide:%python_provide python3-%{projname}}
 
-%description -n python3-%{srcname}
+%description -n python3-%{projname}
 %{desc}
 
 
@@ -38,7 +39,7 @@ Summary:       %{summary}
 
 %install
 %pyproject_install
-%pyproject_save_files diff_match_patch
+%pyproject_save_files %{srcname}
 
 
 %check
@@ -46,11 +47,14 @@ Summary:       %{summary}
 %pytest
 
 
-%files -n python3-%{srcname} -f %{pyproject_files}
+%files -n python3-%{projname} -f %{pyproject_files}
 %license LICENSE
 
 
 %changelog
+* Tue Oct 22 2024 David King <amigadave@amigadave.com> - 20241021-1
+- Update to 20241221 (#2320599)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 20230430-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

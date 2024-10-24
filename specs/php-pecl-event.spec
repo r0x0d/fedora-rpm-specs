@@ -9,19 +9,17 @@
 
 %global with_tests  0%{!?_without_tests:1}
 %global pecl_name   event
-%global with_zts    0%{?__ztsphp:1}
 %global ini_name    40-%{pecl_name}.ini
 
 %global upstream_version 3.1.4
 #global upstream_prever  RC3
 #global upstream_postver r1
 %global sources          %{pecl_name}-%{upstream_version}%{?upstream_prever}
-%global _configure       ../%{sources}/configure
 
 Summary:       Provides interface to libevent library
 Name:          php-pecl-%{pecl_name}
 Version:       %{upstream_version}%{?upstream_prever:~%{upstream_prever}}%{?upstream_postver:+%{upstream_postver}}
-Release:       3%{?dist}
+Release:       4%{?dist}
 License:       PHP-3.01
 URL:           https://pecl.php.net/package/event
 Source0:       https://pecl.php.net/get/%{sources}.tgz
@@ -76,11 +74,6 @@ if test "x${extver}" != "x%{upstream_version}%{?upstream_prever}%{?upstream_post
 fi
 cd ..
 
-mkdir NTS
-%if %{with_zts}
-mkdir ZTS
-%endif
-
 # Drop in the bit of configuration
 cat > %{ini_name} << 'EOF'
 ; Enable %{pecl_name} extension module
@@ -91,8 +84,8 @@ EOF
 %build
 cd %{sources}
 %{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
-cd ../NTS
 %configure \
     --with-event-libevent-dir=%{_prefix} \
     --with-openssl-dir=%{_prefix} \
@@ -101,67 +94,45 @@ cd ../NTS
     --with-event-extra \
     --with-event-openssl \
     --with-php-config=%{__phpconfig}
-make %{?_smp_mflags}
 
-%if %{with_zts}
-cd ../ZTS
-%configure \
-    --with-event-libevent-dir=%{_prefix} \
-    --with-openssl-dir=%{_prefix} \
-    --with-libdir=%{_lib} \
-    --with-event-core \
-    --with-event-extra \
-    --with-event-openssl \
-    --with-event-pthreads \
-    --with-php-config=%{__ztsphpconfig}
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-# use z-event.ini to ensure event.so load "after" sockets.so
-: Install the NTS stuff
-make -C NTS install INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+cd %{sources}
 
-%if %{with_zts}
-: Install the ZTS stuff
-make -C ZTS install INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
+: Install the extension
+%make_install
+
+: Install the configuration file
+install -D -m 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
 : Install the package XML file
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-: Documentation
-for i in $(grep 'role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 %{sources}/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+: Install the Documentation
+for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
 %check
+cd %{sources}
+
 if [ -f %{php_extdir}/sockets.so ]; then
   OPTS="-d extension=sockets.so"
 fi
 
-: Minimal load test for NTS extension
+: Minimal load test for the extension
 %{__php} --no-php-ini $OPTS  \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --modules | grep '^%{pecl_name}$'
 
-%if %{with_zts}
-: Minimal load test for ZTS extension
-%{__ztsphp} --no-php-ini $OPTS  \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep '^%{pecl_name}$'
-%endif
-
 %if %{with_tests}
-cd %{sources}
-: Upstream test suite for NTS extension
+: Upstream test suite for the extension
 SKIP_ONLINE_TESTS=1 \
 TEST_PHP_EXECUTABLE=%{__php} \
-TEST_PHP_ARGS="-n $OPTS -d extension=$PWD/../NTS/modules/%{pecl_name}.so" \
+TEST_PHP_ARGS="-n $OPTS -d extension=$PWD/modules/%{pecl_name}.so" \
 %{__php} -n run-tests.php -q --show-diff
 %endif
 
@@ -174,13 +145,11 @@ TEST_PHP_ARGS="-n $OPTS -d extension=$PWD/../NTS/modules/%{pecl_name}.so" \
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %changelog
+* Tue Oct 22 2024 Remi Collet <remi@fedoraproject.org> - 3.1.4-4
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 3.1.4-3
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

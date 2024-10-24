@@ -1,17 +1,11 @@
-%global commit0 2297dd8224ccf42882a2546f2c7ee02e7ab0d1ba
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global commitdate0 20240917
-
 Name:           libmysofa
-Version:        1.3.2
-Release:        3.%{commitdate0}git%{shortcommit0}%{?dist}
+Version:        1.3.3
+Release:        1%{?dist}
 Summary:        C functions for reading HRTFs
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            https://github.com/hoene/libmysofa
-#Source0:        %%{url}/archive/v%%{version}/%%{name}-%%{version}.tar.gz
-Source0:        %{url}/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
+Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  cmake
 BuildRequires:  gcc
@@ -44,7 +38,7 @@ Tools for %{name}.
 
 
 %prep
-%autosetup -p1 -n %{name}-%{commit0}
+%autosetup -p1
 
 
 %build
@@ -63,9 +57,7 @@ Tools for %{name}.
 %{?!_without_tests:
 %check
 export MYSOFA2JSON=%{_builddir}/%{buildsubdir}/%{_vpath_builddir}/src/mysofa2json
-# Tests are not paralle compatible
-# https://github.com/hoene/libmysofa/issues/224
-%ctest -j1
+%ctest
 }
 
 
@@ -94,6 +86,9 @@ export MYSOFA2JSON=%{_builddir}/%{buildsubdir}/%{_vpath_builddir}/src/mysofa2jso
 
 
 %changelog
+* Tue Oct 22 2024 Nicolas Chauvet <kwizart@gmail.com> - 1.3.3-1
+- Update to 1.3.3
+
 * Mon Oct 07 2024 Nicolas Chauvet <kwizart@gmail.com> - 1.3.2-3.20240917git2297dd8
 - Update snapshot - rhbz#2316036
 

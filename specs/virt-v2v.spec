@@ -2,11 +2,11 @@
 %global verify_tarball_signature 1
 
 # The source directory.
-%global source_directory 2.6-stable
+%global source_directory 2.7-development
 
 Name:          virt-v2v
 Epoch:         1
-Version:       2.6.0
+Version:       2.7.1
 Release:       1%{?dist}
 Summary:       Convert a virtual machine to run on KVM
 
@@ -51,7 +51,7 @@ BuildRequires: augeas-devel
 BuildRequires: bash-completion, bash-completion-devel
 BuildRequires: file-devel
 BuildRequires: gettext-devel
-BuildRequires: jansson-devel
+BuildRequires: json-c-devel
 BuildRequires: libnbd-devel
 BuildRequires: libosinfo-devel
 BuildRequires: libvirt-daemon-kvm
@@ -310,6 +310,14 @@ done
 
 
 %changelog
+* Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 1:2.7.1-1
+- New upstream development version 2.7.1
+- Replace jansson with json-c
+
+* Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 1:2.6.0-2
+- Rebuild for Jansson 2.14
+  (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)
+
 * Tue Oct 08 2024 Richard W.M. Jones <rjones@redhat.com> - 1:2.6.0-1
 - New upstream stable version 2.6.0
 

@@ -1,6 +1,6 @@
 Name: gretl	
-Version: 2024b
-Release: 3%{?dist}
+Version: 2024c
+Release: 1%{?dist}
 Summary: A tool for econometric analysis
 
 %if 0%{?fedora} >= 33
@@ -150,6 +150,9 @@ desktop-file-install						\
 %{_libdir}/openmpi/bin/gretl_openmpi
 
 %changelog
+* Tue Oct 22 2024 Johannes Lips <hannes@fedoraproject.org> - 2024c-1
+- Update to 2024c
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 2024b-3
 - convert license to SPDX
 

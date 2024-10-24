@@ -12,7 +12,7 @@
 %global pipewire_version 0.3.49
 
 Name:           gnome-remote-desktop
-Version:        47.0
+Version:        47.1
 Release:        1%{?dist}
 Summary:        GNOME Remote Desktop screen share service
 
@@ -147,6 +147,9 @@ GNOME desktop environment.
 
 
 %changelog
+* Tue Oct 22 2024 nmontero <nmontero@redhat.com> - 47.1-1
+- Update to 47.1
+
 * Mon Sep 16 2024 nmontero <nmontero@redhat.com> - 47.0-1
 - Update to 47.0
 

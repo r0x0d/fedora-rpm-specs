@@ -11,20 +11,13 @@
 
 Name:           python-meson-python
 Summary:        Meson Python build backend (PEP 517)
-Version:        0.16.0
+Version:        0.17.0
 Release:        %autorelease
 
 # SPDX
 License:        MIT
 URL:            https://github.com/mesonbuild/meson-python
 Source:         %{pypi_source meson_python}
-
-# TST: adapt to changes in pyproject-metadata 0.8.0
-# https://github.com/mesonbuild/meson-python/commit/225a26d8c854987897448b17478166570c7be777
-Patch0:         %{url}/commit/225a26d8c854987897448b17478166570c7be777.patch
-# MAINT: adjust typing annotations to pyproject-metadata 0.8.0
-# https://github.com/mesonbuild/meson-python/commit/6aa97735de80943a61aecea59963bdb685d7c324
-Patch1:         %{url}/commit/6aa97735de80943a61aecea59963bdb685d7c324.patch
 
 # Downstream-only patch to remove the patchelf dependency (and corresponding
 # functionality), controlled by the patchelf build conditional
@@ -71,7 +64,9 @@ Requires:       /usr/bin/patchelf
 
 
 %prep
-%autosetup -n meson_python-%{version} -N
+# We need “-S git” because test_reproducible uses “meson dist,” which only
+# works in a git or mercurial repo.
+%autosetup -n meson_python-%{version} -N -S git
 %autopatch -M 99 -p1
 %if %{without patchelf}
 %patch 100 -p1

@@ -1,6 +1,6 @@
 Name:		lua-penlight
-Version:	1.13.1
-Release:	6%{?dist}
+Version:	1.14.0
+Release:	1%{?dist}
 Summary:	Penlight Lua Libraries
 License:	MIT
 URL:		https://github.com/lunarmodules/Penlight
@@ -106,6 +106,9 @@ cp -av examples %{buildroot}%{_pkgdocdir}
 
 
 %changelog
+* Tue Oct 22 2024 Thomas Moschny <thomas.moschny@gmx.de> - 1.14.0-1
+- Update to 1.14.0.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.13.1-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,6 +1,6 @@
 Name:           python-falcon
 Epoch:          1
-Version:        4.0.0
+Version:        4.0.1
 Release:        %autorelease
 Summary:        ASGI+WSGI framework for building data plane APIs
 License:        Apache-2.0
@@ -47,14 +47,6 @@ BuildRequires:  python3-devel
 %install
 %pyproject_install
 %pyproject_save_files -l falcon
-
-# remove unnecessary files
-rm -rf %{buildroot}%{python3_sitearch}/docs/
-rm -rf %{buildroot}%{python3_sitearch}/e2e-tests/
-rm -rf %{buildroot}%{python3_sitearch}/examples/
-rm -rf %{buildroot}%{python3_sitearch}/requirements/
-rm -rf %{buildroot}%{python3_sitearch}/tests/
-rm -rf %{buildroot}%{python3_sitearch}/tools/
 
 
 %check

@@ -2,7 +2,7 @@
 
 Name:           python-%{srcname}
 Version:        1.1.2
-Release:        18%{?dist}
+Release:        19%{?dist}
 Summary:        Make Sphinx better at documenting Python functions and methods
 # Automatically converted from old format: MIT or ASL 2.0 - review is highly recommended.
 License:        LicenseRef-Callaway-MIT OR Apache-2.0
@@ -53,10 +53,6 @@ rst2html README.rst README.html
 %py3_install
 
 
-%check
-%{__python3} setup.py test
-
-
 %files -n python3-%{srcname}
 %license LICENSE LICENSE.MIT LICENSE.APACHE2
 %doc README.rst README.html
@@ -65,6 +61,9 @@ rst2html README.rst README.html
 
 
 %changelog
+* Tue Oct 22 2024 Thomas Moschny <thomas.moschny@gmx.de> - 1.1.2-19
+- Remove %%check section, as there are no tests.
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.1.2-18
 - convert license to SPDX
 

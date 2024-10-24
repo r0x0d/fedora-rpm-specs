@@ -200,7 +200,7 @@
 
 Name:           %{package_name}
 Version:        %{IPA_VERSION}
-Release:        4%{?rc_version:.%rc_version}%{?dist}
+Release:        5%{?rc_version:.%rc_version}%{?dist}
 Summary:        The Identity, Policy and Audit system
 
 License:        GPL-3.0-or-later
@@ -1861,6 +1861,10 @@ fi
 %endif
 
 %changelog
+* Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 4.12.2-5
+- Rebuild for Jansson 2.14
+  (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)
+
 * Fri Oct  4 2024 Alexander Bokovoy <abokovoy@redhat.com> - 4.12.2-4
 - Bump release to handle F41 updates which went out of sync due to rebuilds
 - Fix CA uninstall in case ACME instance is available

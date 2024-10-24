@@ -1,6 +1,6 @@
 Name:		lgogdownloader
-Version:	3.12
-Release:	3%{?dist}
+Version:	3.15
+Release:	1%{?dist}
 Summary:	GOG.com download client
 
 License:	WTFPL
@@ -11,6 +11,7 @@ BuildRequires:	cmake
 BuildRequires:	gcc-c++
 BuildRequires:	help2man
 BuildRequires:	binutils
+BuildRequires:	pkgconfig(tidy)
 BuildRequires:	pkgconfig(htmlcxx)
 BuildRequires:	pkgconfig(jsoncpp)
 BuildRequires:	pkgconfig(libcrypto)
@@ -47,6 +48,9 @@ same API as the official GOG Galaxy.
 %{_mandir}/man1/lgogdownloader.1.*
 
 %changelog
+* Tue Oct 22 2024 Benjamin Lowry <ben@ben.gmbh> - 3.15-1
+- lgogdownloader 3.15
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.12-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

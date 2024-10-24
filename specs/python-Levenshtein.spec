@@ -1,7 +1,7 @@
 %global srcname Levenshtein
 
 %global forgeurl https://github.com/maxbachmann/%{srcname}
-Version:        0.23.0
+Version:        0.26.0
 %forgemeta
 
 Name:         python-%{srcname}
@@ -45,6 +45,10 @@ sed 's/Cython>=3.0.0[ab0-9]\+/Cython>=0.29.26/' -i pyproject.toml
 
 
 %build
+# To avoid empty debugsourcefiles.list, we need to build the package
+# with RelWithDebInfo
+# Upstream issue: https://github.com/scikit-build/scikit-build-core/issues/915
+export SKBUILD_CMAKE_BUILD_TYPE=RelWithDebInfo
 %pyproject_wheel
 
 %install

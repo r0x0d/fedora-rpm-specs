@@ -4,7 +4,7 @@
 
 Name:           python-%{module_name}
 Version:        1.5.2
-Release:        1%{?dist}
+Release:        3%{?dist}
 Summary:        %{sum}
 
 License:        BSD-3-Clause
@@ -13,7 +13,6 @@ Source0:        %{pypi_source %{srcname}}
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
 
 %description
 %{name} is a library to write SQL queries in a pythonic way.
@@ -28,32 +27,40 @@ Summary:        %{sum}
 
 
 %prep
-%setup -q -n %{srcname}-%{version}
+%autosetup -n %{srcname}-%{version}
 
 # remove upstream egg-info
 rm -rf */*.egg-info
 
+%generate_buildrequires
+%pyproject_buildrequires
+
 
 %build
-%py3_build
+%pyproject_wheel
 
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files %{module_name}
 
 
 %check
-%{__python3} setup.py test
+%{py3_test_envvars} %{python3} -m unittest discover -s sql.tests
 
 
-%files -n python3-%{module_name}
+%files -n python3-%{module_name} -f %{pyproject_files}
 %doc {CHANGELOG,README}
-%{python3_sitelib}/%{srcname}*.egg-info/
-%{python3_sitelib}/%{module_name}/
 %exclude %{python3_sitelib}/*/tests
 
 
 %changelog
+* Tue Oct 22 2024 Dan Horák <dan[at]danny.cz> - 1.5.2-3
+- tox is not required at all (rhbz#2319722)
+
+* Tue Oct 22 2024 Dan Horák <dan[at]danny.cz> - 1.5.2-2
+- update to modern Python guidelines (rhbz#2319722)
+
 * Tue Oct 01 2024 Dan Horák <dan[at]danny.cz> - 1.5.2-1
 - updated to 1.5.2 (rhbz#2315775)
 

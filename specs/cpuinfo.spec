@@ -18,10 +18,10 @@ Version:        24.09.26
 
 %else
 
-# commit is what PyTorch 2.3 at its gitcommit expects
-%global commit0 d6860c477c99f1fce9e28eb206891af3c0e1a1d7
-Version:        23.11.04
-%define patch_level 0
+# For PyTorch 2.5
+%global commit0 1e83a2fdd3102f65c6f1fb602c1b320486218a99
+Version:        24.09.26
+%define patch_level 1
 
 %endif
 
@@ -30,7 +30,7 @@ Version:        23.11.04
 Summary:        A library to detect information about host CPU
 Name:           cpuinfo
 License:        BSD-2-Clause
-Release:        %{patch_level}.git%{?shortcommit0}%{?dist}.1
+Release:        %{patch_level}.git%{?shortcommit0}%{?dist}
 
 
 URL:            https://github.com/pytorch/%{name}
@@ -88,9 +88,8 @@ for cpuinfo.
 %prep
 %autosetup -p1 -n %{name}-%{commit0}
 
-%if %{with gitcommit}
+# Patch the version patch
 sed -i -e 's@cpuinfo_VERSION 23.11.04@cpuinfo_VERSION %{version}@' CMakeLists.txt
-%endif
 
 %build
 %cmake \

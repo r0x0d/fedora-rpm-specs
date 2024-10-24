@@ -4,8 +4,8 @@
 %bcond_without  server
 
 Name:           seatd
-Version:        0.8.0
-Release:        3%{?dist}
+Version:        0.9.0
+Release:        1%{?dist}
 Summary:        Minimal seat management daemon
 
 License:        MIT
@@ -119,6 +119,9 @@ install -D -m 0644 -pv %{SOURCE1} \
 
 
 %changelog
+* Tue Oct 22 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 0.9.0-1
+- Update to 0.9.0
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

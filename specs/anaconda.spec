@@ -1,6 +1,6 @@
 Summary: Graphical system installer
 Name:    anaconda
-Version: 42.9
+Version: 42.10
 Release: 1%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
@@ -490,6 +490,9 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Tue Oct 22 2024 Packit <hello@packit.dev> - 42.10-1
+- Fix crash on continue after a missing package non-critical error (mkolman)
+
 * Wed Oct 16 2024 Packit <hello@packit.dev> - 42.9-1
 - Log stderr to journal only on supported platforms (jkonecny)
 - logging: fix the length limit of packages info dbg message (rvykydal)

@@ -4,12 +4,11 @@
 
 Name:           libkate
 Version:        0.4.1
-Release:        31%{?dist}
+Release:        32%{?dist}
 Summary:        Libraries to handle the Kate bitstream format
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
-URL:            http://git.xiph.org/?p=users/oggk/kate.git;a=summary
+License:        BSD-3-Clause
+URL:            https://gitlab.xiph.org/xiph/kate
 Source0:        http://libkate.googlecode.com/files/libkate-%{version}.tar.gz
 
 BuildRequires: make
@@ -110,9 +109,6 @@ rm -rf %{buildroot}%{_mandir}/man1/KateDJ.1*
 make check
 
 
-%ldconfig_scriptlets
-
-
 %files
 %exclude %{_docdir}/libkate/html
 %doc %{_docdir}/libkate
@@ -142,6 +138,9 @@ make check
 
 
 %changelog
+* Tue Oct 22 2024 Nicolas Chauvet <kwizart@gmail.com> - 0.4.1-32
+- Bump
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 0.4.1-31
 - convert license to SPDX
 

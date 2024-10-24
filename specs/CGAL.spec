@@ -11,7 +11,7 @@
 
 
 Name:           CGAL
-Version:        6.0
+Version:        6.0.1
 Release:        1%{?dist}
 Summary:        Computational Geometry Algorithms Library
 
@@ -145,7 +145,6 @@ ldd ./constrained_plus
 %{_datadir}/cmake/CGAL
 %exclude %{_datadir}/cmake/CGAL/demo
 %{_bindir}/*
-%exclude %{_bindir}/cgal_make_macosx_app
 %{_mandir}/man1/cgal_create_cmake_script.1.gz
 
 %files qt6-devel
@@ -158,6 +157,8 @@ ldd ./constrained_plus
 %exclude %{_datadir}/CGAL/*/*/skip_vcproj_auto_generation
 
 %changelog
+* Tue Oct 22 2024 Laurent Rineau <laurent.rineau@cgal.org> - 6.0.1-1
+- Update to new upstream version 6.0.1 (#2321007)
 
 * Tue Oct 15 2024 Laurent Rineau <laurent.rineau@cgal.org> - 6.0-1
 - Update CGAL to version 6.0 and adjust dependencies

@@ -1,56 +1,48 @@
 %global srcname textile
 
 Name:           python-%{srcname}
-Version:        4.0.2
-Release:        12%{?dist}
+Version:        4.0.3
+Release:        1%{?dist}
 Summary:        A Humane Web Text Generator
 # Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
 URL:            https://pypi.python.org/pypi/%{srcname}
 Source0:        https://pypi.io/packages/source/t/%{srcname}/%{srcname}-%{version}.tar.gz
 BuildArch:      noarch
-BuildRequires:  sed
-BuildRequires:  findutils
+BuildRequires:  python3-devel
+BuildRequires:  python3dist(pytest)
+BuildRequires:  python3dist(pytest-cov)
 
-
-%description
+%global _description %{expand:
 Textile is a XHTML generator using a simple markup developed by Dean
 Allen. This is a Python port with support for code validation, itex to
-MathML translation, Python code coloring and much more.
+MathML translation, Python code coloring and much more.}
 
+%description %_description
 
 %package -n python3-%{srcname}
 Summary:        A Humane Web Text Generator
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-pytest
-BuildRequires:  python3-pytest-cov
-BuildRequires:  python3-pytest-runner
-BuildRequires:  python3-regex
-BuildRequires:  python3-six
-BuildRequires:  python3-pillow
-BuildRequires:  python3-html5lib >= 0.999999999
-Requires:       python3-regex
-Requires:       python3-six
-Requires:       python3-pillow
-%{?python_provide:%python_provide python3-%{srcname}}
 
-%description -n python3-%{srcname}
-Textile is a XHTML generator using a simple markup developed by Dean
-Allen. This is a Python port with support for code validation, itex to
-MathML translation, Python code coloring and much more.
+%description -n python3-%{srcname} %_description
+
+%pyproject_extras_subpkg -n python3-%{srcname} imagesize
 
 
 %prep
 %autosetup -n %{srcname}-%{version}
 
 
+%generate_buildrequires
+%pyproject_buildrequires -t -x imagesize
+
+
 %build
-%py3_build
+%pyproject_wheel
 
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files %{srcname}
 
 for f in README CHANGELOG ; do
   PYTHONPATH=%{buildroot}%{python3_sitelib} \
@@ -58,25 +50,22 @@ for f in README CHANGELOG ; do
     pytextile < ${f}.textile > ${f}.html
 done
 
-# remove shebangs
-find %{buildroot}%{python3_sitelib} -name '*.py' \
-     -exec sed -i -e '1{/^#!/d}' {} \;
-
 
 %check
-# run the testsuite and log results, but do not fail the build
-%{__python3} ./setup.py test || :
+%pytest -k 'not test_imagesize'
 
 
-%files -n python3-%{srcname}
+%files -n python3-%{srcname} -f %{pyproject_files}
 %doc README.* CONTRIBUTORS.txt CHANGELOG.*
 %license LICENSE.txt
-%{python3_sitelib}/%{srcname}
-%{python3_sitelib}/%{srcname}-%{version}-*.egg-info
 %{_bindir}/pytextile
 
 
 %changelog
+* Tue Oct 22 2024 Thomas Moschny <thomas.moschny@gmx.de> - 4.0.3-1
+- Update to 4.0.3.
+- Update for current Python packaging guidelines.
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 4.0.2-12
 - convert license to SPDX
 

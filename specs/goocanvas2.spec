@@ -10,6 +10,9 @@ Summary:        A new canvas widget for GTK+ that uses cairo for drawing
 License:        LicenseRef-Callaway-LGPLv2+
 URL:            http://live.gnome.org/GooCanvas
 Source0:        https://download.gnome.org/sources/goocanvas/2.0/goocanvas-%{version}.tar.xz
+# Adapt to GCC 14, bug #2261209, proposed to the upstream,
+# <https://gitlab.gnome.org/GNOME/goocanvas/-/merge_requests/15>
+Patch0:         goocanvas-2.0.4-Fix-building-with-GCC-14.patch
 
 BuildRequires:  gettext, pkgconfig
 BuildRequires:  gtk3-devel >= 2.91.3
@@ -32,7 +35,7 @@ The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 %prep
-%setup -q -n goocanvas-%{version}
+%autosetup -p1 -n goocanvas-%{version}
 
 
 %build
@@ -74,6 +77,9 @@ find %buildroot -name '*.la' -exec rm -f {} ';'
 
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.4-16
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Wed Jan 31 2024 Petr Pisar <ppisar@redhat.com> - 2.0.4-16
+- Adapt to GCC 14 (bug #2261209)
 
 * Wed Jan 24 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.4-15
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild

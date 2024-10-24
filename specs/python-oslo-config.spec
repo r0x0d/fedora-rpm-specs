@@ -1,3 +1,5 @@
+%global repo_bootstrap 0
+
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
 %global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
 %global sname oslo.config

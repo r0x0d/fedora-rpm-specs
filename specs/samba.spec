@@ -685,6 +685,8 @@ Requires: libnetapi = %{samba_depver}
 
 Provides: samba4-devel = %{samba_depver}
 Obsoletes: samba4-devel < %{samba_depver}
+Provides: python3-samba-devel = %{samba_depver}
+Obsoletes: python3-samba-devel < %{samba_depver}
 
 %description devel
 The %{name}-devel package contains the header files for the libraries

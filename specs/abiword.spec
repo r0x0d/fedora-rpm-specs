@@ -3,7 +3,7 @@
 
 Name: abiword
 Version: 3.0.5
-Release: 16%{?dist}
+Release: 17%{?dist}
 Epoch: 1
 Summary: Word processing program
 License: GPL-2.0-or-later
@@ -157,6 +157,8 @@ install -p -m 0644 -D %{SOURCE13} $RPM_BUILD_ROOT%{_datadir}/mime/packages/abiwo
 find %{buildroot} -name '*.la' -delete
 find %{buildroot} -name '*.a' -delete
 
+mv %{buildroot}%{_datadir}/applications/abiword.desktop %{buildroot}%{_datadir}/applications/com.abisource.AbiWord.desktop
+
 mkdir -p %{buildroot}%{_metainfodir}/
 mv %{buildroot}%{_datadir}/appdata/abiword.appdata.xml %{buildroot}%{_metainfodir}/
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/abiword.appdata.xml
@@ -197,6 +199,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/abiword.appdat
 %pycached %{python3_sitelib}/gi/overrides/Abi.py
 
 %changelog
+* Tue Oct 22 2024 Gwyn Ciesla <gwync@protonmail.com> - 1:3.0.5-17
+- Fix desktop filename
+
 * Tue Sep 24 2024 Gwyn Ciesla <gwync@protonmail.com> - 1:3.0.5-16
 - Fix metainfo
 

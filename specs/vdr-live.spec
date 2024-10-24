@@ -1,7 +1,7 @@
-# https://github.com/MarkusEh/vdr-plugin-live/commit/80b8da8af509fc0c4e93338b0a680b05d7d1e550
-%global commit0 80b8da8af509fc0c4e93338b0a680b05d7d1e550
+# https://github.com/MarkusEh/vdr-plugin-live/commit/8b97db3483f03d6ba150ba4cf43820a888c99295
+%global commit0 8b97db3483f03d6ba150ba4cf43820a888c99295
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global gitdate 20241008
+%global gitdate 20241022
 # version we want to build against
 %global vdr_version 2.6.3
 # Set vdr_version based on Fedora version
@@ -13,7 +13,7 @@
 
 Name:           vdr-live
 Version:        3.3.8
-Release:        0.1.%{gitdate}git%{shortcommit0}%{?dist}
+Release:        0.2.%{gitdate}git%{shortcommit0}%{?dist}
 # Release:        1%%{?dist}
 Summary:        An interactive web interface with HTML5 live stream support for VDR
 
@@ -87,6 +87,9 @@ install -Dpm 644 %{SOURCE1} \
 %{vdr_resdir}/plugins/live/
 
 %changelog
+* Tue Oct 22 2024 Martin Gansser <martinkg@fedoraproject.org> - 3.3.8-0.2.20241022git8b97db3
+- Update to 3.3.8-0.2.20241022git8b97db3
+
 * Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 3.3.8-0.1.20241008git80b8da8
 - Rebuilt for new VDR API version 2.7.2
 - Update to 3.3.8-0.1.20241008git80b8da8

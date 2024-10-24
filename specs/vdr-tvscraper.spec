@@ -10,7 +10,7 @@
 
 Name:           vdr-%{pname}
 Version:        1.2.10
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Collects metadata for all available EPG events
 # The entire source code is GPLv2+ except tools/curlfuncs.* which is BSD (3 clause)
 License:        GPL-2.0-or-later AND MIT
@@ -75,6 +75,10 @@ install -dm 755 %{buildroot}%{vdr_cachedir}/%{pname}
 %attr(-,%{vdr_user},root) %dir %{vdr_cachedir}/%{pname}/
 
 %changelog
+* Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 1.2.10-2
+- Rebuild for Jansson 2.14
+  (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)
+
 * Wed Oct 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 1.2.10-1
 - Rebuilt for new VDR API version 2.7.2
 - Update to 1.2.10

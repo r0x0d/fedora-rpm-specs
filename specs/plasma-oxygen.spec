@@ -6,7 +6,7 @@
 %endif
 
 Name:    plasma-%{base_name}
-Version: 6.2.1
+Version: 6.2.2
 Release: 1%{?dist}
 Summary: Plasma and Qt widget style and window decorations for Plasma
 
@@ -172,6 +172,9 @@ popd
 
 
 %changelog
+* Tue Oct 22 2024 Steve Cossette <farchord@gmail.com> - 6.2.2-1
+- 6.2.2
+
 * Tue Oct 15 2024 Steve Cossette <farchord@gmail.com> - 6.2.1-1
 - 6.2.1
 

@@ -1,6 +1,6 @@
 Name:           python3-lxc
 Version:        5.0.0
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Python binding for LXC
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-LGPLv2+
@@ -51,10 +51,6 @@ chmod -x examples/*.py
 sed -i -e '1 s@^#!.*@#!%{__python3}@' examples/*.py
 
 
-%check
-%{__python3} setup.py test
-
-
 %files %{?subpkg}
 %license COPYING
 %doc README.md examples
@@ -62,6 +58,9 @@ sed -i -e '1 s@^#!.*@#!%{__python3}@' examples/*.py
 
 
 %changelog
+* Tue Oct 22 2024 Thomas Moschny <thomas.moschny@gmx.de> - 5.0.0-9
+- Remove %%check section, as there are no tests.
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 5.0.0-8
 - convert license to SPDX
 

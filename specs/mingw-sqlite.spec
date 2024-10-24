@@ -10,8 +10,8 @@
 %global tclversion 8.6
 
 Name:           mingw-%{name1}
-Version:        3.46.0
-Release:        2%{?dist}
+Version:        3.46.1
+Release:        1%{?dist}
 Summary:        MinGW Windows port of sqlite embeddable SQL database engine
 
 License:        blessing
@@ -211,6 +211,9 @@ find %{buildroot} -name "*.la" -delete
 
 
 %changelog
+* Tue Oct 22 2024 Sandro Mani <manisandro@gmail.com> - 3.46.1-1
+- Update to 3.46.1
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.46.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

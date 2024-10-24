@@ -1,7 +1,7 @@
 %global dracut_modname 97walinuxagent
 
 Name:           WALinuxAgent
-Version:        2.11.1.4
+Version:        2.11.1.12
 Release:        %autorelease
 Summary:        The Microsoft Azure Linux Agent
 

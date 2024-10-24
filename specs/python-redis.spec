@@ -15,13 +15,11 @@ BuildArch:      noarch
 BuildRequires:  python3-devel
 
 %if %{with tests}
-BuildRequires:  redis
+BuildRequires:  valkey
 BuildRequires:  python3dist(pytest)
 BuildRequires:  python3dist(pytest-asyncio)
-BuildRequires:  python3dist(async-timeout)
 BuildRequires:  python3dist(pytest-timeout)
 BuildRequires:  python3dist(numpy)
-BuildRequires:  python3dist(coverage)
 %endif
 
 %global _description\
@@ -31,13 +29,15 @@ This is a Python interface to the Redis key-value store.
 
 %package -n     python3-%{upstream_name}
 Summary:        Python 3 interface to the Redis key-value store
-%{?python_provide:%python_provide python3-%{upstream_name}}
 
 %description -n python3-%{upstream_name}
 This is a Python 3 interface to the Redis key-value store.
 
 %prep
 %autosetup -n redis-py-%{version} -p1
+
+# remove pytest filter for CoverageWarning so we don't need coverage installed
+sed -e '/CoverageWarning/d' -i pytest.ini
 
 # This test passes locally but fails in koji...
 rm tests/test_commands.py*
@@ -69,14 +69,9 @@ rm tests/test_asyncio/test_timeseries.py
 
 %if %{with tests}
 %check
-%if 0%{?fedora} >= 37 || 0%{?rhel} > 9
-# redis 7+
-redis-server --enable-debug-command yes &
-%else
-redis-server &
-%endif
+valkey-server --enable-debug-command yes --daemonize yes
 %pytest -m 'not onlycluster and not redismod and not ssl'
-kill %1
+valkey-cli shutdown
 %endif
 
 %files -n python3-%{upstream_name} -f %{pyproject_files}

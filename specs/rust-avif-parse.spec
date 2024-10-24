@@ -5,7 +5,7 @@
 %global crate avif-parse
 
 Name:           rust-avif-parse
-Version:        1.0.0
+Version:        1.3.0
 Release:        %autorelease
 Summary:        Parser for AVIF image files
 
@@ -33,8 +33,6 @@ use the "%{crate}" crate.
 %license %{crate_instdir}/LICENSE
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
-# https://github.com/kornelski/avif-parse/pull/1
-%exclude %{crate_instdir}/av1-avif/
 
 %package     -n %{name}+default-devel
 Summary:        %{summary}

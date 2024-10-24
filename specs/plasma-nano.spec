@@ -1,7 +1,7 @@
 %global orig_name org.kde.plasma.nano
 
 Name:    plasma-nano
-Version: 6.2.1
+Version: 6.2.2
 Release: 1%{?dist}
 License: CC0-1.0 AND GPL-2.0-or-later AND LGPL-2.0-or-later AND MIT
 URL:     https://invent.kde.org/plasma/plasma-nano
@@ -70,6 +70,9 @@ Requires: qt6-qtdeclarative
 
 
 %changelog
+* Tue Oct 22 2024 Steve Cossette <farchord@gmail.com> - 6.2.2-1
+- 6.2.2
+
 * Tue Oct 15 2024 Steve Cossette <farchord@gmail.com> - 6.2.1-1
 - 6.2.1
 

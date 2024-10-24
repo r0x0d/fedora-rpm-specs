@@ -1,5 +1,5 @@
 Name:           libspelling
-Version:        0.4.2
+Version:        0.4.4
 Release:        %autorelease
 Summary:        Spellcheck library for GTK 4
 License:        LGPL-2.1-or-later
@@ -8,6 +8,7 @@ Source:         https://download.gnome.org/sources/libspelling/0.4/libspelling-%
 
 BuildRequires:  meson
 BuildRequires:  gcc
+BuildRequires:  gettext
 BuildRequires:  pkgconfig(gio-2.0)
 BuildRequires:  pkgconfig(gtk4)
 BuildRequires:  pkgconfig(gtksourceview-5)
@@ -45,13 +46,14 @@ applications that use %{name}.
 
 %install
 %meson_install
+%find_lang libspelling
 
 
 %check
 %meson_test
 
 
-%files
+%files -f libspelling.lang
 %license COPYING
 %doc NEWS
 %{_libdir}/libspelling-1.so.2*

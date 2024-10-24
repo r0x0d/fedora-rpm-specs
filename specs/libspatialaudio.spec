@@ -4,11 +4,10 @@
 
 Name:           libspatialaudio
 Version:        3.1
-Release:        18.%{date0}git%{?shortcommit0}%{?dist}
+Release:        19.%{date0}git%{?shortcommit0}%{?dist}
 Summary:        Ambisonic encoding / decoding and binauralization library
 
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.1-or-later
 URL:            https://github.com/videolabs/libspatialaudio
 Source0:        %{url}/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
 
@@ -65,6 +64,9 @@ developing applications that use %{name}.
 
 
 %changelog
+* Tue Oct 22 2024 Nicolas Chauvet <kwizart@gmail.com> - 3.1-19.20240506git0b6b25e
+- Bump
+
 * Mon Oct 07 2024 Nicolas Chauvet <kwizart@gmail.com> - 3.1-18.20240506git0b6b25e
 - Update snapshot
 

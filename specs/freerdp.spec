@@ -32,7 +32,7 @@
 
 Name:           freerdp
 Epoch:          2
-Version:        3.8.0
+Version:        3.9.0
 Release:        1%{?dist}
 Summary:        Free implementation of the Remote Desktop Protocol (RDP)
 
@@ -187,16 +187,14 @@ find . -name "*.c" -exec chmod 664 {} \;
     -DWITH_AAD=ON \
     -DWITH_CAIRO=ON \
     -DWITH_CUPS=ON \
-    -DWITH_CHANNELS=ON -DBUILTIN_CHANNELS=OFF \
+    -DWITH_CHANNELS=ON \
     -DWITH_CLIENT=ON \
     -DWITH_CLIENT_SDL=%{?_with_sdl_client:ON}%{?!_with_sdl_client:OFF} \
-    -DWITH_DIRECTFB=OFF \
     -DWITH_DSP_FFMPEG=%{?_with_ffmpeg:ON}%{?!_with_ffmpeg:OFF} \
     -DWITH_FDK_AAC=ON \
     -DWITH_FFMPEG=%{?_with_ffmpeg:ON}%{?!_with_ffmpeg:OFF} \
     -DWITH_FUSE=ON \
     -DWITH_GSM=ON \
-    -DWITH_ICU=ON \
     -DWITH_IPP=OFF \
     -DWITH_JPEG=ON \
     -DWITH_JSONC_REQUIRED=ON \
@@ -368,6 +366,9 @@ find %{buildroot} -name "*.a" -delete
 %{_libdir}/pkgconfig/winpr-tools3.pc
 
 %changelog
+* Tue Oct 22 2024 Ondrej Holy <oholy@redhat.com> - 2:3.9.0-1
+- Update to 3.9.0
+
 * Thu Sep 05 2024 Ondrej Holy <oholy@redhat.com> - 2:3.8.0-1
 - Update to 3.8.0
 

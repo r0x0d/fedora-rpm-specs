@@ -1,5 +1,5 @@
 Name:           perl-Excel-Writer-XLSX
-Version:        1.13
+Version:        1.14
 Release:        1%{?dist}
 Summary:        Create a new file in the Excel 2007+ XLSX format
 # LICENSE_Artistic_Perl:    Artistic-1.0-Perl text
@@ -122,6 +122,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Tue Oct 22 2024 Petr Pisar <ppisar@redhat.com> - 1.14-1
+- 1.14 bump
+
 * Fri Oct 18 2024 Petr Pisar <ppisar@redhat.com> - 1.13-1
 - 1.13 bump
 

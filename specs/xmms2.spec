@@ -1,7 +1,7 @@
 Name:			xmms2
 Summary: 		A modular audio framework and plugin architecture
-Version:		0.9.3
-Release:		7%{?dist}
+Version:		0.9.4
+Release:		1%{?dist}
 License:		LGPL-2.1-or-later AND GPL-2.0-or-later AND BSD-3-Clause
 # We can't use the upstream source tarball as-is, because it includes an mp4 decoder.
 # Also, the ogg sample included is not under a FOSS license.
@@ -12,12 +12,19 @@ Source1:		xmms2-client-launcher.sh
 # CC-BY
 # taken from http://ccmixter.org/files/unreal_dm/38156
 Source2:		unreal_dm-free.music.and.free.beer.ogg
+# Apply c++ client fix from gentoo
+Patch2:			xmms2-0.9.3-gentoo-cpp-client.patch
+# Apply fix to faad plugin from gentoo
+Patch3:			xmms2-0.9.3-gentoo-faad.patch
+# Apply fix for curl buffer overrun
+Patch4:			xmms2-0.9.3-curl-buffer-overrun-fix.patch
 # Swap mind.in.a.box for free.music.and.free.beer
 Patch11:		xmms2-0.9.3-no-mind-in-a-box.patch
 URL:			http://wiki.xmms2.xmms.se/
 BuildRequires:		git
 BuildRequires:		python3-devel
 BuildRequires:		python3-cython
+BuildRequires:		python-unversioned-command
 BuildRequires:		sqlite-devel
 BuildRequires:		flac-devel
 BuildRequires:		libofa-devel
@@ -67,6 +74,7 @@ BuildRequires:		perl-ExtUtils-ParseXS
 BuildRequires:		gcc
 BuildRequires:		gcc-c++
 BuildRequires:		waf
+BuildRequires:		openssl-devel-engine, openssl-devel
 
 Obsoletes:		xmms2-mad < 0.8-26
 Provides:		xmms2-mad = %{version}-%{release}
@@ -133,6 +141,9 @@ Ruby bindings for XMMS2.
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch -P2 -p1 -b .cpp-client
+%patch -P3 -p1 -b .faad
+%patch -P4 -p1 -b .overrun
 %patch -P11 -p1 -b .nomind
 cp %{SOURCE2} .
 
@@ -145,16 +156,16 @@ export CPPFLAGS="%{optflags}"
 export LIBDIR="%{_libdir}"
 export XSUBPP="%{_bindir}/xsubpp"
 
-waf configure --prefix=%{_prefix} --libdir=%{_libdir} --with-ruby-libdir=%{ruby_vendorlibdir} --with-ruby-archdir=%{ruby_vendorarchdir} \
+./waf configure --prefix=%{_prefix} --libdir=%{_libdir} --with-ruby-libdir=%{ruby_vendorlibdir} --with-ruby-archdir=%{ruby_vendorarchdir} \
 --with-perl-archdir=%{perl_archlib} --with-pkgconfigdir=%{_libdir}/pkgconfig -j1
-waf build -v %{?_smp_mflags}
+./waf build -v %{?_smp_mflags}
 
 # make the docs
 doxygen
 
 %install
 export LIBDIR="%{_libdir}"
-waf install --destdir=%{buildroot} --prefix=%{_prefix} --libdir=%{_libdir} --with-ruby-libdir=%{ruby_vendorlibdir} --with-ruby-archdir=%{ruby_vendorarchdir} \
+./waf install --destdir=%{buildroot} --prefix=%{_prefix} --libdir=%{_libdir} --with-ruby-libdir=%{ruby_vendorlibdir} --with-ruby-archdir=%{ruby_vendorarchdir} \
   --with-perl-archdir=%{perl_archlib} --with-pkgconfigdir=%{_libdir}/pkgconfig
 
 # exec flags for debuginfo
@@ -210,6 +221,9 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %{ruby_vendorarchdir}/xmmsclient_glib.so
 
 %changelog
+* Tue Oct 22 2024 Tom Callaway <spot@fedoraproject.org> - 0.9.4-1
+- update to 0.9.4
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.3-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

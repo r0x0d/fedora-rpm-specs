@@ -3,7 +3,7 @@
 
 Name:           alure
 Version:        1.2
-Release:        31%{?dist}
+Release:        32%{?dist}
 Summary:        Audio Library Tools REloaded
 # ALURE code is LGPLv2+; note -devel subpackage has its own license tag
 License:        LGPL-2.1-or-later
@@ -11,6 +11,8 @@ URL:            http://kcat.strangesoft.net/alure.html
 Source0:        http://kcat.strangesoft.net/%{name}-releases/%{name}-%{version}.tar.bz2
 Patch0:         alure-gcc47.patch
 Patch1:         alure-1.2-fluidsynth-cflags-fix.patch
+Patch2:		alure-1.2-use-unique_ptr.patch
+Patch3:		alure-1.2-sndfile-cflags-fix.patch
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  cmake, libvorbis-devel, libsndfile-devel, openal-soft-devel, flac-devel, dumb-devel, fluidsynth-devel
@@ -35,6 +37,8 @@ developing applications that use %{name}.
 %setup -q
 %patch -P0
 %patch -P1 -p1 -b .fluidsynth-cflags-fix
+%patch -P2 -p1 -b .unique_ptr
+%patch -P3 -p1 -b .sndfile-cflags-fix
 
 %build
 %cmake -DBUILD_STATIC:BOOL=OFF
@@ -61,6 +65,9 @@ rm -rf %{buildroot}%{_docdir}/alure/html
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Tue Oct 22 2024 Tom Callaway <spot@fedoraproject.org> - 1.2-32
+- fix FTBFS, apply a minor C++ cleanup
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2-31
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

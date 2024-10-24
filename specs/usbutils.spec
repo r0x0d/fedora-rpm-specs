@@ -1,5 +1,5 @@
 Name:    usbutils
-Version: 017
+Version: 018
 Release: %autorelease
 Summary: Linux USB utilities
 URL:     http://www.linux-usb.org/
@@ -7,7 +7,7 @@ License: GPL-2.0-or-later
 
 Source0: https://www.kernel.org/pub/linux/utils/usb/usbutils/%{name}-%{version}.tar.xz
 
-BuildRequires: make
+BuildRequires: meson
 BuildRequires: gcc
 BuildRequires: libusb1-devel
 BuildRequires: systemd-devel
@@ -21,11 +21,11 @@ USB bus.
 %autosetup -p1
 
 %build
-%configure --sbindir=%{_sbindir} --datadir=%{_datadir}/hwdata --disable-usbids
-%make_build
+%meson --sbindir=%{_sbindir} --datadir=%{_datadir}/hwdata
+%meson_build
 
 %install
-%make_install
+%meson_install
 rm -rf %{buildroot}/%{_libdir}/pkgconfig/usbutils.pc
 
 %files

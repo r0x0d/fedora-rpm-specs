@@ -1,4 +1,4 @@
-%global	majorver	3.13.1
+%global	majorver	3.13.2
 #%%global	preminorver	.rc6
 %global	rpmminorver	.%(echo %preminorver | sed -e 's|^\\.\\.*||')
 %global	fullver	%{majorver}%{?preminorver}
@@ -208,6 +208,9 @@ done
 %{gem_docdir}
 
 %changelog
+* Mon Oct 21 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.13.2-1
+- 3.13.2
+
 * Thu Sep 05 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.13.1-1
 - 3.13.1
 

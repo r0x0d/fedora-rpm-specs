@@ -1,5 +1,5 @@
 Name:           electrum
-Version:        4.5.6
+Version:        4.5.7
 Release:        1%{?dist}
 Summary:        A lightweight Bitcoin Client
 
@@ -97,6 +97,12 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 %{_metainfodir}/%{name}.metainfo.xml
 
 %changelog
+* Tue Oct 22 2024 Jonathan Schleifer <js@nil.im> - 4.5.7-1
+- Updated to version 4.5.7.
+
+* Thu Oct 17 2024 Jonathan Schleifer <js@nil.im> - 4.5.6-1
+- Updated to version 4.5.6.
+
 * Tue Sep 03 2024 Jonathan Schleifer <js@nil.im> - 4.5.5-3
 - Added patch to fix Electrum with python-trezor 0.13.9
 

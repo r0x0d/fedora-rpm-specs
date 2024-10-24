@@ -7,8 +7,7 @@ Version:        8.2
 Release:        %autorelease
 Summary:        A code coverage report generator using GNU gcov
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            https://gcovr.com/
 Source0:        https://github.com/gcovr/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 

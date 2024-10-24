@@ -94,6 +94,11 @@ Patch3:         runtime-re-enable-implicit-rejection.patch
 Patch4:         msbuild-9449-exec-stop-setting-a-locale.patch
 # TODO
 Patch5:         runtime-clang-19.patch
+# We disable checking the signature of the last certificate in a chain if the certificate is supposedly self-signed.
+# A side effect of not checking the self-signature of such a certificate is that disabled or unsupported message
+# digests used for the signature are not treated as fatal errors.
+# https://issues.redhat.com/browse/RHEL-25254
+Patch6:         runtime-openssl-sha1.patch
 
 
 ExclusiveArch:  aarch64 ppc64le s390x x86_64

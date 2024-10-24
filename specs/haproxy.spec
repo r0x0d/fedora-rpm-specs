@@ -7,7 +7,7 @@
 %global _hardened_build 1
 
 Name:           haproxy
-Version:        3.0.4
+Version:        3.0.5
 Release:        1%{?dist}
 Summary:        HAProxy reverse proxy for high availability environments
 
@@ -127,6 +127,9 @@ done
 %{_sysusersdir}/%{name}.conf
 
 %changelog
+* Tue Oct 22 2024 Ryan O'Hara <rohara@redhat.com> - 3.0.5-1
+- Update to 3.0.5 (#2313555)
+
 * Tue Sep 03 2024 Ryan O'Hara <rohara@redhat.com> - 3.0.4-1
 - Update to 3.0.4 (CVE-2024-45506, #2309472)
 

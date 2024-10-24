@@ -1,5 +1,5 @@
 Name:           perl-Convert-PEM
-Version:        0.09
+Version:        0.12
 Release:        1%{?dist}
 Summary:        Read/write encrypted ASN.1 PEM files
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -19,6 +19,7 @@ BuildRequires:  perl(Carp)
 BuildRequires:  perl(Class::ErrorHandler)
 BuildRequires:  perl(Convert::ASN1) >= 0.34
 BuildRequires:  perl(Crypt::DES_EDE3)
+BuildRequires:  perl(Crypt::PRNG)
 BuildRequires:  perl(Digest::MD5)
 BuildRequires:  perl(MIME::Base64)
 BuildRequires:  perl(strict)
@@ -27,6 +28,12 @@ BuildRequires:  perl(vars)
 BuildRequires:  perl(Math::BigInt)
 BuildRequires:  perl(Test::Exception)
 BuildRequires:  perl(Test::More)
+# Optional tests
+# Not available in Fedora: perl(Crypt::Camellia), perl(Crypt::Rijndael_PP), perl(Crypt::SEED)
+BuildRequires:  openssl
+BuildRequires:  perl(Crypt::IDEA)
+BuildRequires:  perl(Crypt::OpenSSL::AES)
+BuildRequires:  perl(Crypt::Rijndael)
 # Dependencies
 Requires:       perl(Convert::ASN1) >= 0.34
 Requires:       perl(Crypt::DES_EDE3)
@@ -60,6 +67,27 @@ make test
 %{_mandir}/man3/Convert::PEM::CBC.3*
 
 %changelog
+* Tue Oct 22 2024 Paul Howarth <paul@city-fan.org> - 0.12-1
+- Update to 0.12 (rhbz#2320853)
+  - Add extra cipher support (GH#1)
+  - Add DES support
+  - Add AES 128/192/256 support
+  - Add IDEA support
+  - Add SEED Support
+  - Add Camellia 128/192/256 support
+  - Add tests and test files for additional ciphers and alternate cipher
+    modules (if available)
+  - Add supporting function(s)/method(s) for additional ciphers
+  - Add tests to verify OpenSSL can read files encrypted by Convert::PEM (if
+    available)
+  - Change key bytes_to_key in Convert::PEM::CBC to match openssl algorithm
+  - Make some modifications to accommodate SEED and IDEA (really old) cipher
+    modules
+  - Make ASN optional
+  - Add DER support and documentation
+  - Add other access methods to documentation
+  - Additional encode/decode testing with DER
+
 * Wed Oct 16 2024 Paul Howarth <paul@city-fan.org> - 0.09-1
 - Update to 0.09 (rhbz#2319049)
   - Fix flaky encode test (CPAN RT#27574)

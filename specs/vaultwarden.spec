@@ -6,7 +6,7 @@
 %global cargo_install_lib 0
 
 Name:           vaultwarden
-Version:        1.32.0
+Version:        1.32.2
 Release:        1%{?dist}
 Summary:        Unofficial Bitwarden compatible server
 
@@ -153,6 +153,9 @@ install -Dp %{SOURCE2} %{buildroot}%{_unitdir}/%{name}.service
 
 
 %changelog
+* Tue Oct 22 2024 Jonathan Wright <jonathan@almalinux.org> - 1.32.2-1
+- update to 1.32.2 rhbz#2316657
+
 * Sun Aug 11 2024 Jonathan Wright <jonathan@almalinux.org> - 1.32.0-1
 - update to 1.32.0 rhbz#2304045
   Resolves CVE-2024-39924

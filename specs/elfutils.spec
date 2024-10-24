@@ -4,7 +4,7 @@
 
 Name: elfutils
 Version: 0.192
-%global baserelease 2
+%global baserelease 3
 Release: %{baserelease}%{?dist}
 URL: http://elfutils.org/
 %global source_url ftp://sourceware.org/pub/elfutils/%{version}/
@@ -76,6 +76,9 @@ BuildRequires: gettext-devel
 
 # For s390x... FDO package notes are bogus.
 Patch1: elfutils-0.186-fdo-swap.patch
+
+# Include libeu.a objects in libelf.a for static linking.
+Patch2: elfutils-0.192-libelf-static.patch
 
 %description
 Elfutils is a collection of utilities, including stack (to show
@@ -489,6 +492,9 @@ exit 0
 %systemd_postun_with_restart debuginfod.service
 
 %changelog
+* Tue Oct 22 2024 Aaron Merey <amerey@fedoraproject.org> - 0.192-3
+- Add elfutils-0.192-libelf-static.patch
+
 * Mon Oct 21 2024 Aaron Merey <amerey@fedoraproject.org> - 0.192-2
 - Add BuildRequires for json-c
 

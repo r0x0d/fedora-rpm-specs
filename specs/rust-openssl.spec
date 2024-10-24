@@ -5,7 +5,7 @@
 %global crate openssl
 
 Name:           rust-openssl
-Version:        0.10.66
+Version:        0.10.68
 Release:        %autorelease
 Summary:        OpenSSL bindings
 
@@ -15,7 +15,6 @@ Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * drop feature and dependencies for unstable BoringSSL support
 # * drop feature and dependencies for building against vendored OpenSSL sources
-# * bump hex dev-dependency from 0.3 to 0.4
 Patch:          openssl-fix-metadata.diff
 # * set "PROFILE=SYSTEM" as default argument for SSL_CTX_set_cipher_list
 #   so applications that use the "default" context follow system crypto policy

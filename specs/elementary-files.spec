@@ -5,7 +5,7 @@
 
 Name:           elementary-files
 Summary:        File manager from elementary
-Version:        6.5.3
+Version:        7.1.0
 Release:        %autorelease
 License:        GPL-3.0-or-later AND GPL-3.0-only AND GPL-2.0-or-later AND LGPL-3.0-or-later AND LGPL-3.0-only AND LGPL-2.1-or-later
 
@@ -33,6 +33,8 @@ BuildRequires:  pkgconfig(gtk+-3.0) >= 3.22.25
 BuildRequires:  pkgconfig(libcanberra) >= 0.30
 BuildRequires:  pkgconfig(libgit2-glib-1.0)
 BuildRequires:  pkgconfig(libhandy-1) >= 0.83.0
+BuildRequires:  pkgconfig(libportal)
+BuildRequires:  pkgconfig(libportal-gtk3)
 BuildRequires:  pkgconfig(pango) >= 1.1.2
 BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  pkgconfig(systemd) >= 206
@@ -81,9 +83,6 @@ This package contains the development headers.
 
 %find_lang %{appname}
 
-# remove unused pixmaps
-rm -r %{buildroot}/%{_datadir}/pixmaps
-
 
 %check
 desktop-file-validate \
@@ -110,7 +109,7 @@ appstream-util validate-relax --nonet \
 %{_bindir}/%{appname}-pkexec
 
 %{_libdir}/%{appname}/
-%{_libdir}/libpantheon-files-core.so.6{,.*}
+%{_libdir}/libpantheon-files-core.so.7{,.*}
 
 %{_datadir}/applications/%{appname}.desktop
 %{_datadir}/dbus-1/services/%{appname}.service

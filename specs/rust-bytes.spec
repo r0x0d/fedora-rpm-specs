@@ -5,7 +5,7 @@
 %global crate bytes
 
 Name:           rust-bytes
-Version:        1.7.2
+Version:        1.8.0
 Release:        %autorelease
 Summary:        Types and traits for working with bytes
 

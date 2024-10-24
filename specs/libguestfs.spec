@@ -30,7 +30,7 @@ ExcludeArch: %{ix86}
 %global verify_tarball_signature 1
 
 # The source directory.
-%global source_directory 1.54-stable
+%global source_directory 1.55-development
 
 # Filter perl provides.
 %{?perl_default_filter}
@@ -41,8 +41,8 @@ ExcludeArch: %{ix86}
 Summary:       Access and modify virtual machine disk images
 Name:          libguestfs
 Epoch:         1
-Version:       1.54.0
-Release:       3%{?dist}
+Version:       1.55.1
+Release:       1%{?dist}
 License:       LGPL-2.1-or-later
 
 # Build only for architectures that have a kernel
@@ -75,16 +75,6 @@ Source7:       libguestfs.keyring
 
 # Maintainer script which helps with handling patches.
 Source8:       copy-patches.sh
-
-# All patches upstream in > 1.54.0
-Patch:         0001-website-Add-links-for-1.54-and-1.55-download-locatio.patch
-Patch:         0002-tests-gdisk-test-expand-gpt.pl-Implement-SKIP-rule-f.patch
-# Add support for Windows Server 2025
-Patch:         0003-lib-inspect-osinfo.c-Add-Windows-Server-2025-osinfo.patch
-Patch:         0004-build-Assume-__attribute__-cleanup-always-works.patch
-# Use stable owner, group and mtime in appliance tarballs
-# https://bugzilla.redhat.com/show_bug.cgi?id=2320025
-Patch:         0005-appliance-Use-stable-owner-group-and-mtime-in-applia.patch
 
 BuildRequires: autoconf, automake, libtool, gettext-devel
 
@@ -136,7 +126,7 @@ BuildRequires: libcap-devel
 %if !0%{?rhel}
 BuildRequires: libldm-devel
 %endif
-BuildRequires: jansson-devel
+BuildRequires: json-c-devel
 BuildRequires: systemd-devel
 BuildRequires: bash-completion-devel
 BuildRequires: /usr/bin/ping
@@ -295,7 +285,7 @@ Requires:      (%{name}-appliance = %{epoch}:%{version}-%{release} or %{name}-no
 # The daemon dependencies are not included automatically, because it
 # is buried inside the appliance, so list them here.
 Requires:      augeas-libs%{?_isa} >= 1.7.0
-Requires:      jansson%{?_isa}
+Requires:      json-c%{?_isa}
 Requires:      libacl%{?_isa}
 Requires:      libcap%{?_isa}
 Requires:      libselinux%{?_isa}
@@ -1110,6 +1100,14 @@ rm ocaml/html/.gitignore
 
 
 %changelog
+* Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 1:1.55.1-1
+- New upstream development version 1.55.1
+- Replace jansson with json-c
+
+* Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 1:1.54.0-4
+- Rebuild for Jansson 2.14
+  (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)
+
 * Mon Oct 21 2024 Richard W.M. Jones <rjones@redhat.com> - 1:1.54.0-3
 - Use stable owner, group and mtime in appliance tarballs (RHBZ#2320025)
 - Add support for Windows Server 2025

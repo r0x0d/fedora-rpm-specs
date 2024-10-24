@@ -6,7 +6,7 @@
 
 Summary: Experimental HTTP/2 client, server and proxy
 Name: nghttp2
-Version: 1.63.0
+Version: 1.64.0
 Release: 1%{?dist}
 
 # Parts of ruby bindings are additionally under GPL-2.0-or-later, MIT and
@@ -212,6 +212,9 @@ popd
 
 
 %changelog
+* Tue Oct 22 2024 Jan Macku <jamacku@redhat.com> 1.64.0-1
+- update to the latest upstream release
+
 * Tue Aug 27 2024 Jan Macku <jamacku@redhat.com> 1.63.0-1
 - update to the latest upstream release
 

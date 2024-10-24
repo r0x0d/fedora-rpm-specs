@@ -250,7 +250,7 @@
 
 Name:           uwsgi
 Version:        2.0.27
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Fast, self-healing, application container server
 # uwsgi is licensed under GPLv2 with a linking exception
 # docs are licensed under MIT
@@ -1967,6 +1967,10 @@ exit 0
 
 
 %changelog
+* Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 2.0.27-5
+- Rebuild for Jansson 2.14
+  (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)
+
 * Mon Oct 14 2024 Ralf Ertzinger <ralf@skytale.net> - 2.0.27-4
 - Fix uWSGI auto-reloading on config change
 

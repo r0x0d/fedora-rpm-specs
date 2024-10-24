@@ -101,6 +101,7 @@ BuildRequires: pkgconfig(Qt5Multimedia)
 BuildRequires: pkgconfig(Qt5XmlPatterns)
 BuildRequires: pkgconfig(Qt5X11Extras)
 BuildRequires: pkgconfig(Qt5WebEngine)
+BuildRequires: cmake(KSaneCore)
 BuildRequires: kf5-libksane-devel >= 16.03
 BuildRequires: kf5-kcalendarcore-devel
 BuildRequires: kf5-kconfig-devel
@@ -138,7 +139,6 @@ BuildRequires: pkgconfig(opencv) >= 3.3
 BuildRequires: flex
 BuildRequires: bison
 %if 0%{?fedora} || 0%{?rhel} > 8
-BuildRequires: cmake(KSaneCore)
 BuildRequires: pkgconfig(libheif)
 BuildRequires: pkgconfig(lqr-1)
 # MediaPlayer dependencies

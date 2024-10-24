@@ -2,7 +2,7 @@
 # Deprecated RHEL/Fedora support dropped, no need to track package versioning there
 
 %if 0%{?fedora} >= 41
-%global sqlite_version 3.45.3
+%global sqlite_version 3.46.1
 %global uprel 0
 %global pkg_version %{sqlite_version}.%{uprel}
 %endif
@@ -73,6 +73,9 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} %{__python3} setup.py test
 
 
 %changelog
+* Wed Aug 21 2024 Denis Fateyev <denis@fateyev.com> - 3.46.1.0-1
+- Bump upstream version to 3.46.1.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.45.1.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

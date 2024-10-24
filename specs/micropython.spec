@@ -9,8 +9,8 @@
 %global _warning_options %_warning_options -Wformat
 
 Name:           micropython
-Version:        1.22.2
-Release:        2%{?dist}
+Version:        1.23.0
+Release:        1%{?dist}
 Summary:        Implementation of Python 3 with very low memory footprint
 
 # micorpython itself is MIT
@@ -22,23 +22,26 @@ License:        MIT AND BSD-4-Clause-UC AND Apache-2.0
 URL:            http://micropython.org/
 Source0:        https://github.com/micropython/micropython/archive/v%{version}.tar.gz
 
-%global berkley_commit 35aaec4418ad78628a3b935885dd189d41ce779b
+%global berkley_commit 85373b548f1fb0119a463582570b44189dfb09ae
 Source1:       https://github.com/pfalcon/berkeley-db-1.xx/archive/%{berkley_commit}/berkeley-db-1.xx-%{berkley_commit}.tar.gz
 
-%global mbedtls_commit 981743de6fcdbe672e482b6fd724d31d0a0d2476
+%global mbedtls_commit edb8fec9882084344a314368ac7fd957a187519c
 Source2:       https://github.com/Mbed-TLS/mbedtls/archive/%{mbedtls_commit}/mbedtls-%{mbedtls_commit}.tar.gz
 
-%global micropython_lib_commit 7cdf70881519c73667efbc4a61a04d9c1a49babb
+%global micropython_lib_commit 50ed36fbeb919753bcc26ce13a8cffd7691d06ef
 Source3: https://github.com/micropython/micropython-lib/archive/%{micropython_lib_commit}/micropython-lib-%{micropython_lib_commit}.tar.gz
+
+# Security fix for CVE-2024-8946: micropython: heap buffer overflow via mp_vfs_umount
+# Resolved upstream: https://github.com/micropython/micropython/pull/13325
+Patch:        CVE-2024-8946.patch
+
+# Security fix for CVE-2024-8948: heap buffer overflow via int_to_bytes
+# Resolved upstream: https://github.com/micropython/micropython/pull/13087
+Patch:        CVE-2024-8948.patch
 
 # Other arches need active porting, i686 removed via:
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExclusiveArch:  %{arm} x86_64 riscv64
-
-# py/nlr: Add "memory" to asm clobbers list in nlr_jump
-# Fixes FTBFS with GCC >= 14
-# Fixed upstream: https://github.com/micropython/micropython/commit/35f3f0a87db2580041dd0f7dfd4361df48887796
-Patch:          fix-GCC14-ftbfs.patch
 
 BuildRequires:  make
 BuildRequires:  gcc
@@ -121,6 +124,11 @@ install -pm 755 ports/unix/build-standard/micropython %{buildroot}%{_bindir}
 %{_bindir}/micropython
 
 %changelog
+* Thu Oct 17 2024 Charalampos Stratakis <cstratak@redhat.com> - 1.23.0-1
+- Update to 1.23.0
+- Security fixes for CVE-2024-8946, CVE-2024-8947, CVE-2024-8948
+Resolves: rhbz#2312926, rhbz#2312923, rhbz#2312921
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.22.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
