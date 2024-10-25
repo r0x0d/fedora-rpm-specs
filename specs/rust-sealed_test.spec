@@ -5,7 +5,7 @@
 %global crate sealed_test
 
 Name:           rust-sealed_test
-Version:        1.0.0
+Version:        1.1.0
 Release:        %autorelease
 Summary:        Procmacro attribute to run your test in an isolated environment
 

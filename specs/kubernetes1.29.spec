@@ -15,13 +15,13 @@
 # **** release metadata ****
 # populated by envsubst in newrelease
 %global k8s_name                kubernetes1.29
-%global k8s_ver                 1.29.9
+%global k8s_ver                 1.29.10
 # major:minor version substring
 %global k8s_minver              1.29
 %global k8s_nextver             1.30
-%global k8s_tag                 v1.29.9
+%global k8s_tag                 v1.29.10
 # golang 'built with' version
-%global golangver               1.22.6
+%global golangver               1.22.7
 
 # k8builddir is the default kubernetes build dir - current _output
 # setting this macro should simplify the build/install process
@@ -99,13 +99,11 @@ BuildRequires:  rsync
 
 # additonal kubelet requirements
 Requires:       conntrack-tools
-Requires:       socat
 Requires:       iptables >= 1.4.21
 Requires:       iproute
 Requires:       iproute-tc
 Requires:       util-linux
 Requires:       ethtool
-Requires:       ebtables
 Requires:       conntrack
 
 # used to be Requires containerd or cri-0; other choices now available

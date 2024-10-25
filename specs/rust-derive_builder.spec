@@ -5,7 +5,7 @@
 %global crate derive_builder
 
 Name:           rust-derive_builder
-Version:        0.20.1
+Version:        0.20.2
 Release:        %autorelease
 Summary:        Rust macro to automatically implement the builder pattern for arbitrary structs
 
@@ -14,9 +14,6 @@ URL:            https://crates.io/crates/derive_builder
 Source:         %{crates_source}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          derive_builder-fix-metadata-auto.diff
-# Manually created patch for downstream crate metadata changes
-# * bump pretty_assertions dev-dependency from 0.6 to 1
-Patch:          derive_builder-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

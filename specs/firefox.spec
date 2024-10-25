@@ -199,14 +199,14 @@ ExcludeArch: ppc64le
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        131.0.3
-Release:        3%{?pre_tag}%{?dist}
+Version:        132.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 # Automatically converted from old format: MPLv1.1 or GPLv2+ or LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-MPLv1.1 OR GPL-2.0-or-later OR LicenseRef-Callaway-LGPLv2+
 Source0:        https://archive.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.xz
 %if %{with langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20241015.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20241023.tar.xz
 %endif
 Source2:        cbindgen-vendor.tar.xz
 Source3:        dump_syms-vendor.tar.xz
@@ -290,38 +290,12 @@ Patch421:        D209911.1715685535.diff
 Patch422:        D210158.1715685536.diff
 Patch423:        D210159.1715685538.diff
 Patch424:        D210430.1715848796.diff
-Patch425:        D220671.patch
-Patch426:        D224089.patch
 
-Patch430:        D220551.1729586452.diff
-Patch431:        D221617.1729589907.diff
-Patch432:        D221931.1729587190.diff
-Patch433:        D222280.1729587199.diff
-Patch434:        D222363.1729589473.diff
-Patch435:        D223313.1729587212.diff
 Patch436:        D223285.1729586039.diff
 Patch437:        D224842.1729586219.diff
 Patch438:        D225439.1729586066.diff
 Patch439:        D225760.1729586239.diff
 Patch440:        D225868.1729586247.diff
-
-# PipeWire camera upstream patches
-# https://phabricator.services.mozilla.com/D219224
-# Part of Firefox 131
-Patch500:        libwebrtc-pipewire-camera-filter-out-devices-with-no-capabilities.patch
-# Part of Firefox 132
-# https://phabricator.services.mozilla.com/D219062
-Patch501:        pipewire-camera-always-query-information-about-camera-availability.patch
-# https://phabricator.services.mozilla.com/D219060
-Patch502:        pipewire-camera-always-register-video-input-feedback-for-newly-created-deviceinfo.patch
-# https://phabricator.services.mozilla.com/D220895
-Patch503:        libwebrtc-pipewire-camera-make-member-variable-with-pipewire-status-updated.patch
-# https://phabricator.services.mozilla.com/D219218
-Patch504:        pipewire-camera-add-missing-support-for-device-change-notification.patch
-# https://phabricator.services.mozilla.com/D223112
-Patch505:        libwebrtc-pipewire-camera-get-max-fps-for-each-format-when-specified-as-list.patch
-# https://phabricator.services.mozilla.com/D223112
-Patch506:        libwebrtc-pipewire-camera-use-exact-stream-parameters-specified-by-capability.patch
 
 # PGO/LTO patches
 Patch600:        pgo.patch
@@ -625,30 +599,13 @@ export LIBCLANG_RT=`pwd`/wasi-sdk-20/build/compiler-rt/lib/wasi/libclang_rt.buil
 %patch -P402 -p1 -b .1196777
 %patch -P407 -p1 -b .1667096
 
-%patch -P425 -p1 -b .D220671
-%patch -P426 -p1 -b .D224089
-
 %if 0%{?fedora} > 40
-%patch -P430 -p1 -b .D220551
-%patch -P431 -p1 -b .D221617
-%patch -P432 -p1 -b .D221931
-%patch -P433 -p1 -b .D222280
-%patch -P434 -p1 -b .D222363
-%patch -P435 -p1 -b .D223285
 %patch -P436 -p1 -b .D223313
 %patch -P437 -p1 -b .D224842
 %patch -P438 -p1 -b .D225439
 %patch -P439 -p1 -b .D225760
 %patch -P440 -p1 -b .D225868
 %endif
-
-%patch -P500 -p1 -b .filter-out-devices-with-no-capabilities
-%patch -P501 -p1 -b .always-query-information-about-camera-availability
-%patch -P502 -p1 -b .always-register-video-input-feedback-for-newly-created-deviceinfo
-%patch -P503 -p1 -b .make-member-variable-with-pipewire-status-updated
-%patch -P504 -p1 -b .add-missing-support-for-device-change-notification
-%patch -P505 -p1 -b .get-max-fps-for-each-format-when-specified-as-list
-%patch -P506 -p1 -b .use-exact-stream-parameters-specified-by-capability
 
 # PGO patches
 %if %{build_with_pgo}
@@ -1280,6 +1237,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Oct 23 2024 Martin Stransky <stransky@redhat.com> - 132.0-1
+- Updated to 132.0
+
 * Mon Oct 21 2024 Martin Stransky <stransky@redhat.com> - 131.0.3-3
 - Backported hi-res mouse scrolling and
   hold touchpad gesture support for Fedora 41

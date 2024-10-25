@@ -5,8 +5,8 @@
 
 Name: totem
 Epoch: 1
-Version: 43.0
-Release: 7%{?dist}
+Version: 43.1
+Release: 1%{?dist}
 Summary: Movie player for GNOME
 
 # Automatically converted from old format: GPLv2+ with exceptions - review is highly recommended.
@@ -183,6 +183,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.gnome.Totem.de
 %{_datadir}/gir-1.0/Totem-1.0.gir
 
 %changelog
+* Wed Oct 23 2024 David King <amigadave@amigadave.com> - 1:43.1-1
+- Update to 43.1
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1:43.0-7
 - convert license to SPDX
 

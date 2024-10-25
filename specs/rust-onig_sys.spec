@@ -13,7 +13,7 @@ License:        MIT
 URL:            https://crates.io/crates/onig_sys
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * bump bindgen build-dependency from 0.59 to 0.63
+# * bump bindgen build-dependency from 0.59 to 0.69
 # * remove reference to readme file that is not included in published crates
 Patch:          onig_sys-fix-metadata.diff
 # * unconditionally use bindgen and dynamic linking with pkg-config

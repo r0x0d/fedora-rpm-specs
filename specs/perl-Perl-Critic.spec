@@ -6,8 +6,8 @@
 %endif
 
 Name:		perl-Perl-Critic
-Version:	1.154
-Release:	2%{?dist}
+Version:	1.156
+Release:	1%{?dist}
 Summary:	Critique Perl source code for best-practices
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:		https://metacpan.org/release/Perl-Critic
@@ -160,6 +160,11 @@ LC_ALL=en_US ./Build test
 %{_mandir}/man3/Test::Perl::Critic::Policy.3*
 
 %changelog
+* Wed Oct 23 2024 Paul Howarth <paul@city-fan.org> - 1.156-1
+- Update to 1.156 (rhbz#2321227)
+  - Subroutines::ProhibitManyArgs no longer gets confused by underscores in
+    variable names (GH#1027)
+
 * Mon Oct 21 2024 Petr Pisar <ppisar@redhat.com> - 1.154-2
 - Require ExtUtils::Manifest for Perl::Critic::TestUtils::bundled_policy_names()
 

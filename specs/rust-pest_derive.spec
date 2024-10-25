@@ -5,7 +5,7 @@
 %global crate pest_derive
 
 Name:           rust-pest_derive
-Version:        2.7.12
+Version:        2.7.14
 Release:        %autorelease
 Summary:        Pest's derive macro
 

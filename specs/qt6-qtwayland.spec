@@ -11,7 +11,7 @@
 Summary: Qt6 - Wayland platform support and QtCompositor module
 Name:    qt6-%{qt_module}
 Version: 6.8.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -26,6 +26,7 @@ Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submod
 
 # Upstream patches
 Patch0:  qtwayland-update-wayland-xml-to-version-1.23.0.patch
+Patch1:  qtwayland-client-update-cached-buffer-size-on-startup.patch
 
 # Upstreamable patches
 
@@ -204,6 +205,9 @@ popd
 %endif
 
 %changelog
+* Tue Oct 22 2024 Alessandro Astone <ales.astone@gmail.com> - 6.8.0-2
+- Backport fix for rhbz#2318535
+
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
 - 6.8.0
 

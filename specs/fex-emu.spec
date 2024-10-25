@@ -27,7 +27,7 @@
 %bcond x86_debug 0
 
 Name:       fex-emu
-Version:    2409%{?commit:^%{date}git%{commit}}
+Version:    2410%{?commit:^%{date}git%{commit}}
 Release:    %autorelease
 Summary:    Fast usermode x86 and x86-64 emulator for ARM64
 
@@ -40,14 +40,8 @@ Source0:    %{forgeurl}/commit/%{commit}/%{srcname}-%{commit}.tar.gz
 Source0:    %{forgeurl}/archive/%{srcname}-%{version}/%{srcname}-%{srcname}-%{version}.tar.gz
 Source1:    README.fedora
 %endif
-# Build host tools without jemalloc
-# Backport of https://github.com/FEX-Emu/FEX/pull/4028
-Patch:      fex-no-jemalloc-host-tools.patch
-# SoftFloat: fix FPREM
-Patch:      %{forgeurl}/commit/aa3c963df1ea09cee4de5a45c1d77ad0ed25007e.patch
 # Add support for using a prctl to opt-in for receiving compat input events
-# Backport of https://github.com/FEX-Emu/FEX/pull/4106
-Patch:      fex-compat-input-prctl.patch
+Patch:      %{forgeurl}/commit/6a07ea73a819a5ce4357721b4359956131d1b11e.patch
 
 # Bundled dependencies managed as git submodules upstream
 # These are too entangled with the build system to unbundle for now
@@ -56,7 +50,7 @@ Patch:      fex-compat-input-prctl.patch
 local externals = {
   { name="Catch2", ref="8ac8190", owner="catchorg", version="3.5.3", license="BSL-1.0", bcond="check" },
   { name="cpp-optparse", ref="eab4212", owner="Sonicadvance1", path="../Source/Common/cpp-optparse", license="MIT" },
-  { name="drm-headers", ref="34a2039", owner="FEX-Emu", package="kernel", version="6.8", license="GPL-2.0-only" },
+  { name="drm-headers", ref="8efb6dc", owner="FEX-Emu", package="kernel", version="6.8", license="GPL-2.0-only" },
   --Exclude these altogether for now, as they're prebuilt binaries only needed for the integration tests
   --{ name="fex-gcc-target-tests-bins", ref="442678a", owner="FEX-Emu", license="GPL-2.0-or-later", bcond="integration" },
   --{ name="fex-gvisor-tests-bins", ref="71349ae", owner="FEX-Emu", license="Apache-2.0", bcond="integration" },
@@ -66,10 +60,9 @@ local externals = {
   --{ name="imgui", ref="4c986ec", owner="Sonicadvance1", version="1.73", license="MIT" },
   { name="jemalloc", ref="02ca52b", owner="FEX-Emu", version="5.3.0", license="MIT" },
   { name="jemalloc", ref="4043539", owner="FEX-Emu", path="jemalloc_glibc", version="5.3.0", license="MIT" },
-  { name="json-maker", ref="8ecb8ec", owner="Sonicadvance1", license="MIT" },
   { name="robin-map", ref="d5683d9", owner="FEX-Emu", version="1.3.0", license="MIT" },
   { name="vixl", ref="a90f5d5", owner="FEX-Emu", version="5.1.0", license="BSD-3-Clause" },
-  { name="Vulkan-Headers", ref="31aa7f6", owner="KhronosGroup", package="vulkan-headers", license="Apache-2.0" },
+  { name="Vulkan-Headers", ref="29f979e", owner="KhronosGroup", package="vulkan-headers", license="Apache-2.0" },
   { name="xbyak", ref="f17cb9d", owner="herumi", version="6.68", license="BSD-3-Clause", bcond="x86_debug" },
   { name="xxhash", ref="bbb27a5", owner="Cyan4973", version="0.8.1", license="BSD-2-Clause" },
 }

@@ -18,7 +18,7 @@
 
 Name: %{repo}
 Epoch: 2
-Version: 1.1.12
+Version: 1.1.15
 Release: %autorelease
 Summary: CLI for running Open Containers
 License: Apache-2.0 and BSD-2-Clause and BSD-3-Clause and MIT
@@ -31,28 +31,7 @@ BuildRequires: pkgconfig(libseccomp)
 BuildRequires: go-md2man
 BuildRequires: make
 Provides: oci-runtime
-# vendored libraries
-# awk '{print "Provides: bundled(golang("$1")) = "$2}' go.mod | sort | uniq | sed -e 's/-/_/g' -e '/bundled(golang())/d' -e '/bundled(golang(go\|module\|replace\|require))/d'
-Provides: bundled(golang(github.com/checkpoint_restore/go_criu/v5)) = v5.3.0
-Provides: bundled(golang(github.com/cilium/ebpf)) = v0.7.0
-Provides: bundled(golang(github.com/containerd/console)) = v1.0.3
-Provides: bundled(golang(github.com/coreos/go_systemd/v22)) = v22.3.2
-Provides: bundled(golang(github.com/cpuguy83/go_md2man/v2)) = v2.0.0_20190314233015_f79a8a8ca69d
-Provides: bundled(golang(github.com/cyphar/filepath_securejoin)) = v0.2.3
-Provides: bundled(golang(github.com/docker/go_units)) = v0.4.0
-Provides: bundled(golang(github.com/godbus/dbus/v5)) = v5.0.6
-Provides: bundled(golang(github.com/moby/sys/mountinfo)) = v0.5.0
-Provides: bundled(golang(github.com/mrunalp/fileutils)) = v0.5.0
-Provides: bundled(golang(github.com/opencontainers/runtime_spec)) = v1.0.3_0.20210326190908_1c3f411f0417
-Provides: bundled(golang(github.com/opencontainers/selinux)) = v1.10.0
-Provides: bundled(golang(github.com/russross/blackfriday/v2)) = v2.0.1
-Provides: bundled(golang(github.com/seccomp/libseccomp_golang)) = v0.9.2_0.20220502022130_f33da4d89646
-Provides: bundled(golang(github.com/shurcooL/sanitized_anchor_name)) = v1.0.0
-Provides: bundled(golang(github.com/sirupsen/logrus)) = v1.8.1
-Provides: bundled(golang(github.com/syndtr/gocapability)) = v0.0.0_20200815063812_42c35b437635
-Provides: bundled(golang(github.com/urfave/cli)) = v1.22.1
-Provides: bundled(golang(github.com/vishvananda/netlink)) = v1.1.0
-Provides: bundled(golang(github.com/vishvananda/netns)) = v0.0.0_20191106174202_0a2b9b5464df
+
 Recommends: container-selinux >= 2:2.85-1
 
 %ifnarch s390x
@@ -89,7 +68,7 @@ popd
 pushd GOPATH/src/%{import_path}
 export GOPATH=$(pwd)/GOPATH
 
-make BUILDTAGS="seccomp selinux" all
+%make_build runc
 
 sed -i '/\#\!\/bin\/bash/d' contrib/completions/bash/%{name}
 
@@ -111,7 +90,7 @@ install -p -m 0644 contrib/completions/bash/%{name} %{buildroot}%{_datadir}/bash
 %{!?_licensedir:%global license %doc}
 
 %files
-%license LICENSE
+%license LICENSE vendor/modules.txt
 %doc MAINTAINERS_GUIDE.md PRINCIPLES.md README.md CONTRIBUTING.md
 %{_bindir}/%{name}
 %{_mandir}/man8/%{name}*

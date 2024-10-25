@@ -1,5 +1,5 @@
 Name:           hyfetch
-Version:        1.4.11
+Version:        1.99.0
 Release:        %autorelease
 Summary:        Customizable Linux System Information Tool
 

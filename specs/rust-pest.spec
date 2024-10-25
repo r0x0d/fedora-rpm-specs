@@ -5,7 +5,7 @@
 %global crate pest
 
 Name:           rust-pest
-Version:        2.7.12
+Version:        2.7.14
 Release:        %autorelease
 Summary:        Elegant Parser
 
@@ -72,6 +72,18 @@ This package contains library source intended for building other packages which
 use the "memchr" feature of the "%{crate}" crate.
 
 %files       -n %{name}+memchr-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+miette-error-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+miette-error-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "miette-error" feature of the "%{crate}" crate.
+
+%files       -n %{name}+miette-error-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+pretty-print-devel

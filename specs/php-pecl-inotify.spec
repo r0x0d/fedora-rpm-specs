@@ -10,20 +10,17 @@
 # Please, preserve the changelog entries
 #
 
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
-
-%global with_zts   0%{!?_without_zts:%{?__ztsphp:1}}
 %global pecl_name  inotify
 %global ini_name   40-%{pecl_name}.ini
+%global sources    %{pecl_name}-%{version}
 
 Summary:        Inotify
 Name:           php-pecl-%{pecl_name}
 Version:        3.0.0
-Release:        14%{?dist}
+Release:        15%{?dist}
 License:        PHP-3.01
 URL:            https://pecl.php.net/package/%{pecl_name}
-Source0:        https://pecl.php.net/get/%{pecl_name}-%{version}.tgz
+Source0:        https://pecl.php.net/get/%{sources}.tgz
 
 ExcludeArch:    %{ix86}
 
@@ -47,7 +44,6 @@ The inotify extension allows to use inotify functions in a PHP script.
 
 %prep
 %setup -q -c
-mv %{pecl_name}-%{version} NTS
 
 sed -e '/inotify.php/s/role="php"/role="doc"/' \
     -e '/tail.php/s/role="php"/role="doc"/' \
@@ -55,8 +51,7 @@ sed -e '/inotify.php/s/role="php"/role="doc"/' \
     -e '/LICENSE/s/role="doc"/role="src"/' \
     -i package.xml
 
-cd NTS
-
+cd %{sources}
 # Sanity check, really often broken
 extver=$(sed -n '/#define PHP_INOTIFY_VERSION/{s/.* "//;s/".*$//;p}' php_inotify.h)
 if test "x${extver}" != "x%{version}%{?prever:-%{prever}}"; then
@@ -64,11 +59,6 @@ if test "x${extver}" != "x%{version}%{?prever:-%{prever}}"; then
    exit 1
 fi
 cd ..
-
-%if %{with_zts}
-# Duplicate source tree for NTS / ZTS build
-cp -pr NTS ZTS
-%endif
 
 # Create configuration file
 cat > %{ini_name} << 'EOF'
@@ -78,55 +68,43 @@ EOF
 
 
 %build
-cd NTS
-%{_bindir}/phpize
+cd %{sources}
+%{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
+
 %configure \
     --with-libdir=%{_lib} \
-    --with-php-config=%{_bindir}/php-config
+    --with-php-config=%{__phpconfig}
 
-make %{?_smp_mflags}
-
-%if %{with_zts}
-cd ../ZTS
-%{_bindir}/zts-phpize
-%configure \
-    --with-libdir=%{_lib} \
-    --with-php-config=%{_bindir}/zts-php-config
-
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-make -C NTS install INSTALL_ROOT=%{buildroot}
+cd %{sources}
 
-# install config file
-install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+: Install the extension
+%make_install
 
-# Install XML package description
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+: Install config file
+install -D -m 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-%if %{with_zts}
-make -C ZTS install INSTALL_ROOT=%{buildroot}
+: Install XML package description
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
-
-# Documentation
-cd NTS
+: Install the Documentation
 for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
 do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
 %check
-: Minimal load test for NTS extension
-cd NTS
+: Minimal load test for the extension
+cd %{sources}
 %{__php} --no-php-ini \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --modules | grep %{pecl_name}
 
-: Upstream test suite for NTS extension
+: Upstream test suite for the extension
 TEST_PHP_EXECUTABLE=%{__php} \
 TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
 NO_INTERACTION=1 \
@@ -134,37 +112,19 @@ REPORT_EXIT_STATUS=1 \
 %{__php} -n run-tests.php
 
 
-%if %{with_zts}
-: Minimal load test for ZTS extension
-cd ../ZTS
-%{__ztsphp} --no-php-ini \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep %{pecl_name}
-
-: Upstream test suite for ZTS extension
-TEST_PHP_EXECUTABLE=%{__ztsphp} \
-TEST_PHP_ARGS="-n extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so" \
-NO_INTERACTION=1 \
-REPORT_EXIT_STATUS=1 \
-%{__ztsphp} -n run-tests.php
-%endif
-
-
 %files
-%license NTS/LICENSE
+%license %{sources}/LICENSE
 %doc %{pecl_docdir}/%{pecl_name}
 %{pecl_xmldir}/%{name}.xml
 
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%{php_ztsextdir}/%{pecl_name}.so
-%endif
-
 
 %changelog
+* Wed Oct 23 2024 Remi Collet <remi@fedoraproject.org> - 3.0.0-15
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 3.0.0-14
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

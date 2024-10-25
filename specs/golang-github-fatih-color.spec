@@ -9,7 +9,7 @@
 
 # https://github.com/fatih/color
 %global goipath         github.com/fatih/color
-Version:                1.17.0
+Version:                1.18.0
 
 %gometa -L -f
 

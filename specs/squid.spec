@@ -1,8 +1,8 @@
 %define __perl_requires %{SOURCE98}
 
 Name:     squid
-Version:  6.11
-Release:  2%{?dist}
+Version:  6.12
+Release:  1%{?dist}
 Summary:  The Squid proxy caching server
 Epoch:    7
 # See CREDITS for breakdown of non GPLv2+ code
@@ -40,6 +40,8 @@ Patch204: squid-6.1-symlink-lang-err.patch
 Patch205: squid-6.1-crash-half-closed.patch
 # Upstream PR: https://github.com/squid-cache/squid/pull/1914
 Patch206: squid-6.11-ignore-wsp-after-chunk-size.patch
+# https://bugs.squid-cache.org/show_bug.cgi?id=5214
+Patch207: squid-6.12-large-upload-buffer-dies.patch
 
 # cache_swap.sh
 Requires: bash gawk
@@ -326,6 +328,10 @@ fi
 
 
 %changelog
+* Wed Oct 23 2024 Luboš Uhliarik <luhliari@redhat.com> - 7:6.12-1
+- new version 6.12
+- Fix TCP_MISS_ABORTED/100 erros when uploading
+
 * Fri Oct 11 2024 Luboš Uhliarik <luhliari@redhat.com> - 7:6.11-2
 - ignore SP and HTAB chars after chunk-size
 

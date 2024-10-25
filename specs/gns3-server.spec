@@ -6,7 +6,7 @@
 
 Name:           gns3-server
 Version:        2.2.50
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Graphical Network Simulator 3
 
 # Automatically converted from old format: GPLv3 - review is highly recommended.
@@ -15,6 +15,7 @@ URL:            http://gns3.com
 Source0:        https://github.com/GNS3/gns3-server/archive/v%{git_tag}/%{name}-%{git_tag}.tar.gz
 Source1:        gns3.service
 Patch0:         0001-changing-busybox-udhcpc-script-path.patch
+Patch1:         https://github.com/GNS3/gns3-server/commit/6e66b26b88708d61dd3d90ea5836fe27d7709d2a.patch
 
 BuildArch:      noarch
 
@@ -131,6 +132,9 @@ cp -fp %{_datadir}/edk2/ovmf/OVMF_VARS.fd %{python3_sitelib}/gns3server/disks/OV
 %systemd_postun_with_restart gns3.service
 
 %changelog
+* Thu Oct 24 2024 Alexey Kurov <nucleo@fedoraproject.org> - 2.2.50-2
+- Backport init.sh fix
+
 * Mon Oct 21 2024 Alexey Kurov <nucleo@fedoraproject.org> - 2.2.50-1
 - Update to 2.2.50
 

@@ -5,7 +5,7 @@
 %global crate endian-num
 
 Name:           rust-endian-num
-Version:        0.1.1
+Version:        0.1.2
 Release:        %autorelease
 Summary:        Byte-order-aware numeric types
 
@@ -112,12 +112,7 @@ use the "zerocopy" feature of the "%{crate}" crate.
 
 %if %{with check}
 %check
-# Some tests on 32bit are currently broken (https://github.com/rust-osdev/endian-num/issues/3).
-%ifarch %{ix86}
-%cargo_test -- -- --skip isize --skip usize
-%else
 %cargo_test
-%endif
 %endif
 
 %changelog

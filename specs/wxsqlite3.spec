@@ -1,14 +1,10 @@
 # wx-config
-%if 0%{?fedora} >= 37
 %global wxversion %(wx-config-3.2 --release)
-%else
-%global wxversion %(wx-config-3.1 --release)
-%endif
 %global wxincdir %{_includedir}/wx-%{wxversion}
 
 Name:           wxsqlite3
-Version:        4.9.11
-Release:        3%{?dist}
+Version:        4.9.12
+Release:        1%{?dist}
 Summary:        C++ wrapper around the SQLite 3.x database
 
 License:        LGPL-3.0-or-later WITH WxWindows-exception-3.1
@@ -93,12 +89,7 @@ autoreconf
           --enable-codec=sqlcipher --enable-codec=rc4 --enable-codec=aes256 \
           --enable-codec=aes128
 # use correct wx-config file
-%if 0%{?fedora} >= 37
 sed -i -e 's|WX_CONFIG_NAME=wx-config|WX_CONFIG_NAME=wx-config-3.2|g' configure
-%else
-sed -i -e 's|WX_CONFIG_NAME=wx-config|WX_CONFIG_NAME=wx-config-3.1|g' configure
-%endif
-
 
 %make_build
 
@@ -139,6 +130,8 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 
 %changelog
+* Wed Oct 23 2024 Martin Gansser <martinkg@fedoraproject.org> 4.9.12-1
+- Update to 4.9.12
 
 * Mon Sep 23 2024 Martin Gansser <martinkg@fedoraproject.org> - 4.9.11-3
 - Migrate to SPDX license

@@ -1,7 +1,7 @@
 %global __brp_check_rpaths %{nil}
 
 Name:          toolbox
-Version:       0.0.99.6
+Version:       0.1.0
 
 %global goipath github.com/containers/%{name}
 
@@ -20,7 +20,7 @@ Version:       0.0.99.6
 %global toolbx_go 1.20
 
 %if 0%{?fedora}
-%global toolbx_go 1.22
+%global toolbx_go 1.22.7
 %endif
 
 %if 0%{?rhel}
@@ -33,7 +33,7 @@ Version:       0.0.99.6
 %endif
 %endif
 
-Release:       6%{?dist}
+Release:       1%{?dist}
 Summary:       Tool for interactive command line environments on Linux
 
 License:       Apache-2.0
@@ -42,11 +42,6 @@ Source0:       https://github.com/containers/%{name}/releases/download/%{version
 
 # RHEL specific
 Source1:       %{name}.conf
-
-# Upstream
-Patch0:        toolbox-Unbreak-downstream-Fedora-CI.patch
-Patch1:        toolbox-Update-fallback-release-to-40-for-non-fedo.patch
-Patch2:        toolbox-Revert-Work-around-bug-in-past.patch
 
 # Fedora specific
 Patch100:      toolbox-Make-the-build-flags-match-Fedora.patch
@@ -90,8 +85,10 @@ BuildRequires: pkgconfig(fish)
 # BuildRequires: ShellCheck
 %endif
 
-Recommends:    fuse-overlayfs
 Recommends:    skopeo
+%if ! 0%{?rhel}
+Recommends:    fuse-overlayfs
+%endif
 
 Requires:      containers-common
 Requires:      podman >= 1.6.4
@@ -138,9 +135,6 @@ The %{name}-tests package contains system tests for %{name}.
 
 %prep
 %setup -q
-%patch -P0 -p1
-%patch -P1 -p1
-%patch -P2 -p1
 
 %if 0%{?fedora}
 %patch -P100 -p1
@@ -216,6 +210,9 @@ install -m0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/containers/%{name}.conf
 
 
 %changelog
+* Tue Oct 22 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.1.0-1
+- Update to 0.1.0
+
 * Wed Oct 16 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.0.99.6-6
 - Recommend fuse-overlayfs because old containers created with it need it
 

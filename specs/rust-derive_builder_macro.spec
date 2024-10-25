@@ -5,7 +5,7 @@
 %global crate derive_builder_macro
 
 Name:           rust-derive_builder_macro
-Version:        0.20.1
+Version:        0.20.2
 Release:        %autorelease
 Summary:        Rust macro to automatically implement the builder pattern for arbitrary structs
 

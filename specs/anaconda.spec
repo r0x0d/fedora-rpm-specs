@@ -1,6 +1,6 @@
 Summary: Graphical system installer
 Name:    anaconda
-Version: 42.10
+Version: 42.11
 Release: 1%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
@@ -414,7 +414,7 @@ rm -rf \
 %{_sbindir}/anaconda
 %{_sbindir}/handle-sshpw
 %{_datadir}/anaconda
-%{_sysconfdir}/pam.d/anaconda
+%config(noreplace) %{_sysconfdir}/pam.d/anaconda
 %{_prefix}/libexec/anaconda
 %exclude %{_datadir}/anaconda/gnome
 %exclude %{_datadir}/anaconda/pixmaps
@@ -448,7 +448,7 @@ rm -rf \
 %{_libexecdir}/liveinst-setup.sh
 %{_datadir}/applications/*.desktop
 %{_datadir}/anaconda/gnome
-%{_sysconfdir}/xdg/autostart/*.desktop
+%config(noreplace) %{_sysconfdir}/xdg/autostart/*.desktop
 
 %endif
 
@@ -490,6 +490,14 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Wed Oct 23 2024 Packit <hello@packit.dev> - 42.11-1
+- Fix permission errors from liveinst exit (jkonecny)
+- Remove redundant line in DNF payload (mkolman)
+- Fix vconsole layout doesn't work for ostree (jkonecny)
+- Fix checking whether a disk can be cleared during autopart (vtrefny)
+- Update spec config files list (ppolawsk)
+- Update makefile clean file list with RPMs (ppolawsk)
+
 * Tue Oct 22 2024 Packit <hello@packit.dev> - 42.10-1
 - Fix crash on continue after a missing package non-critical error (mkolman)
 

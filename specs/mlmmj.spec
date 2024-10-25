@@ -3,8 +3,8 @@
 %global selinuxtype targeted
 
 Name:           mlmmj
-Version:        1.4.5
-Release:        3%{?dist}
+Version:        1.4.7
+Release:        1%{?dist}
 Summary:        A simple and slim mailing list manager inspired by ezmlm
 License:        MIT
 URL:            https://codeberg.org/mlmmj/mlmmj
@@ -60,7 +60,7 @@ BuildRequires:  selinux-policy-devel
 This package adds SELinux enforcement support to mlmmj.
 
 %prep
-%setup -q
+%autosetup
 # SELinux
 mkdir selinux
 cp -p %{SOURCE1} selinux/%{modulename}.te
@@ -106,7 +106,7 @@ fi
 
 %files
 %license COPYING
-%doc AUTHORS ChangeLog FAQ README* TODO TUNABLES UPGRADE
+%doc AUTHORS ChangeLog FAQ README* TODO TUNABLES.md UPGRADE
 %doc contrib/web/
 %{_bindir}/*
 %{_mandir}/man1/mlmmj*.1*
@@ -119,6 +119,9 @@ fi
 %ghost %verify(not md5 size mode mtime) %{_sharedstatedir}/selinux/%{selinuxtype}/active/modules/200/%{modulename}
 
 %changelog
+* Wed Aug 21 2024 Denis Fateyev <denis@fateyev.com> - 1.4.7-1
+- Update to 1.4.7 release
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.5-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

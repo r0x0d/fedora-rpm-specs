@@ -9,11 +9,14 @@
 %global _vpath_builddir %{_vendor}-%{_target_os}-build
 
 Name: dpdk
-Version: 23.11
-Release: 6%{?dist}
+Version: 23.11.2
+Release: 1%{?dist}
 Epoch: 2
 URL: http://dpdk.org
 Source: https://fast.dpdk.org/rel/dpdk-%{version}.tar.xz
+
+Patch1: 0001-net-gve-base-fix-build-with-Fedora-Rawhide.patch
+Patch2: 0002-net-ionic-fix-build-with-Fedora-Rawhide.patch
 
 BuildRequires: meson
 BuildRequires: python3-pyelftools
@@ -117,7 +120,7 @@ for i,path in ipairs(directories) do
   end
 end
 %prep
-%setup -q -n dpdk%(awk -F. '{ if (NF > 2) print "-stable" }' <<<%{version})-%{version}
+%autosetup -p1 -n dpdk%(awk -F. '{ if (NF > 2) print "-stable" }' <<<%{version})-%{version}
 
 %build
 CFLAGS="$(echo %{optflags} -fcommon)" \
@@ -200,6 +203,9 @@ find %{buildroot}%{_mandir}/ -type f -a ! -iname "*rte_*" -delete
 %endif
 
 %changelog
+* Wed Oct 23 2024 Timothy Redaelli <tredaelli@redhat.com> - 2:23.11.2-1
+- Update to 23.11.2
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 2:23.11-6
 - convert license to SPDX
 

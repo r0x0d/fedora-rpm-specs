@@ -1,3 +1,6 @@
+# There's a dependency loop with psi4 which needs to be broken for new Python bootstrap
+%bcond tests 1
+
 Name:           python-qcengine
 Version:        0.30.0
 Release:        %autorelease
@@ -15,11 +18,13 @@ BuildRequires:  python3-pytest
 # https://kojipkgs.fedoraproject.org//work/tasks/9840/108019840/build.log
 BuildRequires:  python3-msgpack
 
+%if %{with tests}
 # For running the tests
 #BuildRequires:  xtb # requires xtb-python which is not available in Fedora and whose development appears to be ceased
 BuildRequires:  psi4
 BuildRequires:  mrchem
 #BuildRequires: python3-dftd4 # Package still in review https://bugzilla.redhat.com/show_bug.cgi?id=2310392
+%endif
 
 %global _description %{expand:
 Quantum chemistry program executor and IO standardizer (QCSchema) for quantum
@@ -50,7 +55,10 @@ Summary:        %{summary}
 %pyproject_save_files qcengine
 
 %check
+%pyproject_check_import -e *.tests.*
+%if %{with tests}
 %pytest
+%endif
 
 %files -n python3-qcengine -f %{pyproject_files}
 %license LICENSE

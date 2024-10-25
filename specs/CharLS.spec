@@ -2,8 +2,7 @@ Name:		CharLS
 Version:	2.4.2
 Release:	7%{?dist}
 Summary:	An optimized implementation of the JPEG-LS standard
-# Automatically converted from old format: BSD - review is highly recommended.
-License:	LicenseRef-Callaway-BSD
+License:	BSD-3-Clause
 URL:		https://github.com/team-charls/charls
 Source0:	https://github.com/team-charls/charls/archive/%{version}/%{name}-%{version}.tar.gz
 

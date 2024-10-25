@@ -1,93 +1,181 @@
-%global pypi_name fonttools
-%global desc \
-fontTools is a library for manipulating fonts, written in Python. The project \
-includes the TTX tool, that can convert TrueType and OpenType fonts to and \
-from an XML text format, which is also called TTX. It supports TrueType, \
-OpenType, AFM and to an extent Type 1 and some Mac-specific formats.
+%bcond tests 1
+
+# Some extras are disabled in RHEL to avoid bringing in additional
+# dependencies.
+#
+# Requires python-lz4:
+%bcond graphite_extra %{expr:%{undefined rhel} || %{defined epel}}
+# Requires python-skia-pathops, not packaged:
+%bcond pathops_extra 0
+# Requires python-matplotlib (not yet in EPEL10):
+%bcond plot_extra %{expr:%{undefined rhel} || (%{defined epel} && !%{defined el10})}
+# Requires python-uharfbuzz, not packaged:
+%bcond repacker_extra 0
+# Requires python-sympy (not yet in any EPEL):
+%bcond symfont_extra %{expr:%{undefined rhel}}
+# Requires python-fs (not yet in EPEL10):
+%bcond ufo_extra %{expr:%{undefined rhel} || (%{defined epel} && !%{defined el10})}
+# Requires python-brotli, python-zopfli:
+%bcond woff_extra %{expr:%{undefined rhel} || %{defined epel}}
+
+%global desc %{expand:
+fontTools is a library for manipulating fonts, written in Python. The project
+includes the TTX tool, that can convert TrueType and OpenType fonts to and from
+an XML text format, which is also called TTX. It supports TrueType, OpenType,
+AFM and to an extent Type 1 and some Mac-specific formats.}
 
 Name:           fonttools
 Version:        4.54.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Tools to manipulate font files
 
 # https://spdx.org/licenses/MIT.html
 License:        MIT
 URL:            https://github.com/fonttools/fonttools/
-Source0:        https://github.com/%{name}/%{name}/archive/%{version}/%{name}-%{version}.tar.gz#/%{pypi_name}-%{version}.tar.gz
+Source:         %{url}/archive/%{version}/fonttools-%{version}.tar.gz
 
-Requires:       python3-fonttools
-Requires:       python3-setuptools
+Requires:       python3-fonttools = %{version}-%{release}
 Provides:       ttx = %{version}-%{release}
 
-%description
-%{desc}
+BuildRequires:  python3-devel
+BuildRequires:  gcc
+
+%if %{with tests}
+# A few additional requirements for specific tests, noted in requirements.txt:
+
+# For Tests/cu2qu/{ufo,cli}_test.py
+# Not yet in EPEL10:
+%if %{undefined rhel} || (%{defined epel} && !%{defined el10})
+BuildRequires:  %{py3_dist ufoLib2}
+%endif
+# Not yet in any EPEL:
+%if %{undefined rhel}
+BuildRequires:  %{py3_dist ufo2ft}
+%endif
+
+# For Tests/pens/freetypePen_test.py
+%if %{undefined rhel} || (%{defined epel} && !%{defined el10})
+BuildRequires:  %{py3_dist freetype-py}
+%global have_freetype_py 1
+%endif
+
+# For Tests/varLib/interpolatable_test.py
+# Not yet in any EPEL:
+%if %{undefined rhel}
+BuildRequires:  %{py3_dist glyphsLib}
+%endif
+%endif
+
+%description %{desc}
 
 %package -n python3-fonttools
 Summary:        Python 3 fonttools library
-%{?python_provide:%python_provide python3-%{name}}
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-setuptools_scm
-
-BuildRequires:  python3-Cython
-BuildRequires:  gcc
-
-Requires:       python3-brotli
-Requires:       python3-lxml
-Requires:       python3-scipy
-Requires:       python3-fs
-
-# test requirements
-%bcond_without tests
-%if %{with tests}
-# Need to run test files in %%check
-BuildRequires:  python3-pytest
-BuildRequires:  python3-brotli
-BuildRequires:  python3-scipy
-BuildRequires:  python3-fs
-BuildRequires:  python3-lxml
-%if %{undefined rhel}
-BuildRequires:  python3-ufoLib2
-BuildRequires:  python3-zopfli
-%endif
-%endif
 
 # From 3.31.0 and on, python3-fonttools incorporated the ufolib project under fontTools.ufoLib
 # python-ufolib has been retired and fontTools.ufoLib should be used instead.
 # See https://github.com/fonttools/fonttools/releases/tag/3.31.0 for further reference
 Obsoletes: python3-ufolib <= 2.1.1-11
 
-%description -n python3-fonttools
-%{desc}
+%description -n python3-fonttools %{desc}
 
-# We are not providing extra fonttools packages as they
-# require some other Fedora packages to be added in RHEL
-%if 0%{?fedora}
-# Cannot package “pathops” extra until python3dist(skia-pathops) is packaged;
-# cannot package “all” extra without the “pathops” extra
-%{?python_extras_subpkg:%python_extras_subpkg -n python3-fonttools -i %{python3_sitearch}/%{name}-%{version}-py%{python3_version}.egg-info graphite interpolatable lxml plot symfont type1 ufo unicode woff}
+# Cannot package “all” extra unless dependencies for all individual extras
+# become satisfiable.
+%if %{with graphite_extra}
+%pyproject_extras_subpkg -n python3-fonttools graphite
+%endif
+%pyproject_extras_subpkg -n python3-fonttools interpolatable
+%pyproject_extras_subpkg -n python3-fonttools lxml
+%if %{with pathops_extra}
+%pyproject_extras_subpkg -n python3-fonttools pathops
+%endif
+%if %{with plot_extra}
+%pyproject_extras_subpkg -n python3-fonttools plot
+%endif
+%if %{with repacker_extra}
+%pyproject_extras_subpkg -n python3-fonttools repacker
+%endif
+%if %{with symfont_extra}
+%pyproject_extras_subpkg -n python3-fonttools symfont
+%endif
+%pyproject_extras_subpkg -n python3-fonttools type1
+%if %{with ufo_extra}
+%pyproject_extras_subpkg -n python3-fonttools ufo
+%endif
+%pyproject_extras_subpkg -n python3-fonttools unicode
+%if %{with woff_extra}
+%pyproject_extras_subpkg -n python3-fonttools woff
 %endif
 
 %prep
 %autosetup -p1
-rm -rf *.egg-info
 
-sed -i '1d' Lib/fontTools/mtiLib/__init__.py
+# Remove shebang
+sed -r -i '1{/^#!/d}' Lib/fontTools/mtiLib/__init__.py
 
-# Remove version limit from lxml
-sed -i 's/"lxml >=.*",/"lxml",/' setup.py
-sed -i 's/lxml==.*/lxml/' requirements.txt
+# Not yet in EPEL10:
+%if %{defined rhel} && (!%{defined epel} || %{defined el10})
+sed -r -i 's/^([[:blank:]]*)(pytest-randomly)\b/\1# \2/' tox.ini
+%endif
+
+%generate_buildrequires
+export FONTTOOLS_WITH_CYTHON=1
+# We use tox to get things like pytest, but we add extras manually since not
+# all dependencies from requirements.txt might be satisfiable and not all
+# extras might be packaged; plus, requirements.txt pins exact versions.
+%{pyproject_buildrequires \
+    %{?with_graphite_extra:-x graphite} \
+    -x interpolatable \
+    -x lxml \
+    %{?with_pathops_extra:-x pathops} \
+    %{?with_plot_extra:-x plot} \
+    %{?with_repacker_extra:-x repacker} \
+    %{?with_symfont_extra:-x symfont} \
+    -x type1 \
+    %{?with_ufo_extra:-x ufo} \
+    -x unicode \
+    %{?with_woff_extra:-x woff} \
+    -e %{toxenv}-noextra}
 
 %build
 export FONTTOOLS_WITH_CYTHON=1
-%py3_build
+%pyproject_wheel
 
 %install
-%{__python3} setup.py install --skip-build --root %{buildroot}
+%pyproject_install
+%pyproject_save_files -l fontTools
+
+%check
+# - fontTools.misc.symfont requires python3dist(sympy), i.e., the symfont extra
+# - fontTools.pens.freetypePen requires python3dist(freetype-py)
+# - fontTools.pens.quartzPen only works on Darwin
+# - fontTools.pens.reportLabPen requires python3dist(reportlab), and it is not
+#   worth adding the BuildRequires just for the import check
+# - fontTools.ttLib.removeOverlaps requires python3dist(skia-pathops), i.e., the
+#   pathops extra
+# - fontTools.ufoLib(.*) requires python3dist(fs), i.e., the ufo extra
+# - fontTools.varLib.plot requires python3dist(matplotlib), i.e., the plot
+#   extra
+%{pyproject_check_import \
+    %{?!with_symfont_extra:-e fontTools.misc.symfont} \
+    %{?!have_freetype_pen:-e fontTools.pens.freetypePen} \
+    -e fontTools.pens.quartzPen \
+    -e fontTools.pens.reportLabPen \
+    %{?!with_pathops_extra:-e fontTools.ttLib.removeOverlaps} \
+    %{?!with_ufo_extra:-e fontTools.ufoLib*} \
+    %{?!with_plot_extra:-e fontTools.varLib.plot} \
+    %{nil}}
 
 %if %{with tests}
-%check
-PYTHONPATH=%{buildroot}%{python3_sitearch} %{python3} -m pytest --ignore Tests/otlLib/optimize_test.py --ignore Tests/varLib/merger_test.py --ignore Tests/varLib/varLib_test.py --ignore Tests/svgLib/path/path_test.py
+%if %{without ufo_extra}
+# These tests pertain to the interpolatable extra, but also require the ufo
+# extra (even though the interpolatable extra as a whole does not):
+k="${k-}${k+ and }not (InterpolatableTest and test_designspace)"
+k="${k-}${k+ and }not (InterpolatableTest and test_interpolatable_ufo)"
+k="${k-}${k+ and }not (InterpolatableTest and test_sparse_designspace)"
+k="${k-}${k+ and }not (InterpolatableTest and test_sparse_interpolatable_ufos)"
+%endif
+
+%pytest ${ignore-} -k "${k-}" -rs -v
 %endif
 
 %files
@@ -97,13 +185,13 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} %{python3} -m pytest --ignore Tests/o
 %{_bindir}/fonttools
 %{_mandir}/man1/ttx.1*
 
-%files -n python3-fonttools
-%license LICENSE
+%files -n python3-fonttools -f %{pyproject_files}
 %doc NEWS.rst README.rst
-%{python3_sitearch}/fontTools
-%{python3_sitearch}/%{name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Fri Oct 11 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 4.54.1-2
+- Port to pyproject-rpm-macros (modern Python guidelines)
+
 * Wed Sep 25 2024 Parag Nemade <pnemade AT redhat DOT com> - 4.54.1-1
 - Update to 4.54.1 version (#2314462)
 

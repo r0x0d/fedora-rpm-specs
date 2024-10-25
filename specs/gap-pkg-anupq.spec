@@ -7,7 +7,7 @@
 %global _fortify_level 2
 
 Name:           gap-pkg-%{pkgname}
-Version:        3.3.0
+Version:        3.3.1
 Release:        %autorelease
 Summary:        ANU p-Quotient for GAP
 
@@ -59,7 +59,6 @@ This package contains documentation for gap-pkg-%{pkgname}.
 cp -p standalone-doc/README README.standalone
 
 %build
-export LC_ALL=C.UTF-8
 %configure --with-gaproot=%{gap_archdir} --disable-silent-rules
 %make_build
 
@@ -86,15 +85,18 @@ cp -a bin examples lib standalone testPq tst *.g  %{buildroot}%{gap_archdir}/pkg
 %gap_copy_docs
 
 %check
-export LC_ALL=C.UTF-8
-gap -l "%{buildroot}%{gap_archdir};" tst/testinstall.g
+gap -l '%{buildroot}%{gap_archdir};' tst/testinstall.g
 
 %files
 %doc CHANGES README.md README.standalone standalone-doc/guide.pdf
 %license LICENSE
-%{gap_archdir}/pkg/%{pkgname}/
-%exclude %{gap_archdir}/pkg/%{pkgname}/doc/
-%exclude %{gap_archdir}/pkg/%{pkgname}/examples/
+%dir %{gap_archdir}/pkg/%{pkgname}/
+%{gap_archdir}/pkg/%{pkgname}/*.g
+%{gap_archdir}/pkg/%{pkgname}/bin/
+%{gap_archdir}/pkg/%{pkgname}/lib/
+%{gap_archdir}/pkg/%{pkgname}/standalone/
+%{gap_archdir}/pkg/%{pkgname}/testPq
+%{gap_archdir}/pkg/%{pkgname}/tst/
 
 %files doc
 %docdir %{gap_archdir}/pkg/%{pkgname}/doc/

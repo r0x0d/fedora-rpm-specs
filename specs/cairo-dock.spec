@@ -4,13 +4,13 @@
 %global	plugin_least_ver	3.5.99
 
 %global	use_git	1
-%global	gitdate	20241013
-%global	githash	032472070e3a5bf1a8aa8167e2219da25c7ab6fd
+%global	gitdate	20241024
+%global	githash	9f9421ee507515d5fe7241d28957be8772ee1161
 %global	shorthash	%(c=%{githash} ; echo ${c:0:7})
 
 %global	tarballver	%{mainver}%{?use_git:-%{gitdate}git%{shorthash}}
-%global	baserelease	1
 
+%global	baserelease	1
 
 %undefine _ld_strict_symbol_defs
 %undefine __brp_mangle_shebangs
@@ -255,6 +255,12 @@ popd
 %{_libdir}/pkgconfig/gldi.pc
 
 %changelog
+* Thu Oct 24 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.5.99^20241024git9f9421e-1
+- Update to the latest git (20241024git9f9421e)
+
+* Sun Oct 20 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.5.99^20241016gitea5d37e-1
+- Update to the latest git (20241016gitea5d37e)
+
 * Mon Oct 14 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.5.99^20241013git0324720-1
 - Update to the latest git (20241013git0324720)
 

@@ -5,7 +5,7 @@
 %global crate serde_derive_internals
 
 Name:           rust-serde_derive_internals
-Version:        0.29.0
+Version:        0.29.1
 Release:        %autorelease
 Summary:        AST representation used by Serde derive macros
 

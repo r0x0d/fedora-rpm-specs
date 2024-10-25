@@ -18,11 +18,13 @@ Patch:          bat-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * port from path_abs to path-absolutize:
 #   https://github.com/sharkdp/bat/pull/1025
+# * bump nix from 0.26 to 0.29
 # * bump nu-ansi-term from 0.49.0 to 0.50.0
-# * relax os_str_bytes dependency from ~6.4 to ^6.4
 # * adapt license tag to reflect bundled content
+# * drop unused lessopen feature and its dependencies
 Patch:          bat-fix-metadata.diff
 Patch:          0001-port-from-path_abs-to-path-absolutize.patch
+Patch:          0001-port-from-nix-0.26-to-0.29.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -359,18 +361,6 @@ use the "grep-cli" feature of the "%{crate}" crate.
 %files       -n %{name}+grep-cli-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+lessopen-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+lessopen-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "lessopen" feature of the "%{crate}" crate.
-
-%files       -n %{name}+lessopen-devel
-%ghost %{crate_instdir}/Cargo.toml
-
 %package     -n %{name}+minimal-application-devel
 Summary:        %{summary}
 BuildArch:      noarch
@@ -381,18 +371,6 @@ This package contains library source intended for building other packages which
 use the "minimal-application" feature of the "%{crate}" crate.
 
 %files       -n %{name}+minimal-application-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+os_str_bytes-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+os_str_bytes-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "os_str_bytes" feature of the "%{crate}" crate.
-
-%files       -n %{name}+os_str_bytes-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+paging-devel
@@ -441,18 +419,6 @@ This package contains library source intended for building other packages which
 use the "regex-onig" feature of the "%{crate}" crate.
 
 %files       -n %{name}+regex-onig-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+run_script-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+run_script-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "run_script" feature of the "%{crate}" crate.
-
-%files       -n %{name}+run_script-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+shell-words-devel

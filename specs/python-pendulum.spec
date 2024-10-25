@@ -20,13 +20,6 @@ BuildRequires:  %{py3_dist pytz}
 BuildRequires:  %{py3_dist time-machine}
 %endif
 
-# The Python extension module now gets a SONAME of lib_pendulum.so; we
-# must ensure it is not used to generate automatic Provides. See:
-#   Rust 1.81+ implicitly / automatically sets soname on cdylib targets
-#   https://bugzilla.redhat.com/show_bug.cgi?id=2314879
-# https://docs.fedoraproject.org/en-US/packaging-guidelines/AutoProvidesAndRequiresFiltering/#_filtering_provides_and_requires_after_scanning
-%global __provides_exclude ^lib_pendulum\\.so.*$
-
 %description
 Unlike other datetime libraries for Python, Pendulum is a drop-in replacement
 for the standard datetime class (it inherits from it), so, basically, you can

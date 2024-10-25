@@ -6,7 +6,7 @@
 %endif
 
 Name:           packit
-Version:        0.102.1
+Version:        0.102.2
 Release:        1%{?dist}
 Summary:        A tool for integrating upstream projects with Fedora operating system
 
@@ -79,6 +79,10 @@ cp files/bash-completion/packit %{buildroot}%{bash_completions_dir}/packit
 %doc README.md
 
 %changelog
+* Tue Oct 22 2024 Packit <hello@packit.dev> - 0.102.2-1
+- Fixed passing list of resolved bugs when running `packit propose-downstream` or `packit pull-from-upstream`. (#2447)
+- Resolves: rhbz#2321004
+
 * Fri Oct 11 2024 Packit <hello@packit.dev> - 0.102.1-1
 - We have fixed an issue that was introduced during the unification of the interface for passing resolved Bugzillas / Jira tickets to the `sync-release` or `bodhi_update` jobs. (#2442)
 - `packit validate-config` now checks for the existence of downstream package. (#2436)

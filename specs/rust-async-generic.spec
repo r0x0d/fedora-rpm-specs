@@ -5,16 +5,13 @@
 %global crate async-generic
 
 Name:           rust-async-generic
-Version:        1.1.1
+Version:        1.1.2
 Release:        %autorelease
 Summary:        Write code that can be both async and synchronous without duplicating it
 
 License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/async-generic
 Source:         %{crates_source}
-# https://github.com/scouten/async-generic/pull/13
-Source1:        https://github.com/scouten/async-generic/raw/async-generic-v%{version}/LICENSE-APACHE
-Source2:        https://github.com/scouten/async-generic/raw/async-generic-v%{version}/LICENSE-MIT
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -54,7 +51,6 @@ use the "default" feature of the "%{crate}" crate.
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
-cp -pav %{SOURCE1} %{SOURCE2} .
 
 %generate_buildrequires
 %cargo_generate_buildrequires

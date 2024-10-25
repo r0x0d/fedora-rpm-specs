@@ -1,7 +1,7 @@
 %global         forgeurl https://github.com/osbuild/osbuild
 %global         selinuxtype targeted
 
-Version:        131
+Version:        132
 
 %forgemeta
 
@@ -120,6 +120,7 @@ containers it uses to build OS artifacts.
 Summary:        Extra tools and utilities
 Requires:       %{name} = %{version}-%{release}
 Requires:       python3-pyyaml
+Requires:       python3-dnf
 
 # These are required for `osbuild-dev`, only packaged for Fedora
 %if 0%{?fedora}
@@ -309,6 +310,23 @@ fi
 %{pkgdir}/solver.json
 
 %changelog
+* Wed Oct 23 2024 Packit <hello@packit.dev> - 132-1
+Changes with 132
+----------------
+  * CI: Update excluded tests list (#1899)
+    * Author: Paweł Poławski, Reviewers: Brian C. Lane, Florian Schüller
+  * chore: add dicussions link to README (#1901)
+    * Author: Lukáš Zapletal, Reviewers: Paweł Poławski, Simon de Vlieger
+  * meta: use pathlib to join paths in `class Index` (#1903)
+    * Author: Michael Vogt, Reviewers: Paweł Poławski, Simon de Vlieger
+  * osbuild.spec: Add python3-dnf dependency for osbuild-tools (#1908)
+    * Author: Renata Ravanelli, Reviewers: Achilleas Koutsou, Simon de Vlieger
+  * sources: MTLS and proxy support for ostree (#1892)
+    * Author: Lukáš Zapletal, Reviewers: Achilleas Koutsou, Simon de Vlieger
+
+— Somewhere on the Internet, 2024-10-23
+
+
 * Wed Oct 09 2024 Packit <hello@packit.dev> - 131-1
 Changes with 131
 ----------------

@@ -5,7 +5,7 @@
 
 Name:           python-whoosh
 Version:        2.7.4
-Release:        34%{?dist}
+Release:        35%{?dist}
 Summary:        Fast, pure-Python full text indexing, search, and spell checking library 
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -57,7 +57,7 @@ rm -rf docs/html/.doctrees
 %py3_install
 
 %check
-%{__python3} setup.py test
+%pytest
 
 %files -n python%{python3_pkgversion}-whoosh
 %license LICENSE.txt
@@ -69,6 +69,10 @@ rm -rf docs/html/.doctrees
 %{python3_sitelib}/*.egg-info/
 
 %changelog
+* Wed Oct 23 2024 Alexander Bokovoy <abokovoy@redhat.com> - 2.7.4-35
+- Switch from 'setup.py test' to '%pytest'
+- Resolves: rhbz#2319736
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.7.4-34
 - convert license to SPDX
 

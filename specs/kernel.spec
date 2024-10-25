@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc4.20241022gitc2ee9f594da8.40
+%define pkgrelease 0.rc4.20241023gitc2ee9f594da8.41
 %define kversion 6
 %define tarfile_release 6.12-rc4-47-gc2ee9f594da8
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc4.20241022gitc2ee9f594da8.40%{?buildid}%{?dist}
+%define specrelease 0.rc4.20241023gitc2ee9f594da8.41%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4136,9 +4136,14 @@ fi\
 #
 #
 %changelog
-* Tue Oct 22 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc4.c2ee9f594da8.40]
+* Wed Oct 23 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc4.c2ee9f594da8.41]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Wed Oct 23 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc4.c2ee9f594da8.40]
+- Enable CONFIG_SECURITY_IPE for Fedora (Zbigniew Jędrzejewski-Szmek)
+- redhat: allow to override VERSION_ON_UPSTREAM from command line (Jan Stancek)
+- redhat: configs: Enable CONFIG_SECURITY_TOMOYO in Fedora kernels (Tetsuo Handa)
 
 * Tue Oct 22 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc4.c2ee9f594da8.39]
 - Revert "Merge branch 'enablement/gpio-expander' into 'os-build'" (Justin M. Forbes)

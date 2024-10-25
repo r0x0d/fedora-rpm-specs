@@ -2,26 +2,23 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate fixed
+%global crate google-cloud-storage
 
-Name:           rust-fixed
-Version:        1.28.0
+Name:           rust-google-cloud-storage
+Version:        0.22.1
 Release:        %autorelease
-Summary:        Fixed-point numbers
+Summary:        Google Cloud Platform storage client library
 
-# Upstream license specification: MIT/Apache-2.0
-License:        MIT OR Apache-2.0
-URL:            https://crates.io/crates/fixed
+License:        MIT
+URL:            https://crates.io/crates/google-cloud-storage
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * drop unused optional support for borsh
-# * drop nightly-only features
-Patch:          fixed-fix-metadata.diff
+Patch:          google-cloud-storage-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-Fixed-point numbers.}
+Google Cloud Platform storage client library.}
 
 %description %{_description}
 
@@ -35,10 +32,8 @@ This package contains library source intended for building other packages which
 use the "%{crate}" crate.
 
 %files          devel
-%license %{crate_instdir}/LICENSE-APACHE
-%license %{crate_instdir}/LICENSE-MIT
+%license %{crate_instdir}/LICENSE
 %doc %{crate_instdir}/README.md
-%doc %{crate_instdir}/RELEASES.md
 %{crate_instdir}/
 
 %package     -n %{name}+default-devel
@@ -53,100 +48,100 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+arbitrary-devel
+%package     -n %{name}+auth-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+arbitrary-devel %{_description}
+%description -n %{name}+auth-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "arbitrary" feature of the "%{crate}" crate.
+use the "auth" feature of the "%{crate}" crate.
 
-%files       -n %{name}+arbitrary-devel
+%files       -n %{name}+auth-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+az-devel
+%package     -n %{name}+default-tls-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+az-devel %{_description}
+%description -n %{name}+default-tls-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "az" feature of the "%{crate}" crate.
+use the "default-tls" feature of the "%{crate}" crate.
 
-%files       -n %{name}+az-devel
+%files       -n %{name}+default-tls-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+f16-devel
+%package     -n %{name}+external-account-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+f16-devel %{_description}
+%description -n %{name}+external-account-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "f16" feature of the "%{crate}" crate.
+use the "external-account" feature of the "%{crate}" crate.
 
-%files       -n %{name}+f16-devel
+%files       -n %{name}+external-account-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+fail-on-warnings-devel
+%package     -n %{name}+google-cloud-auth-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+fail-on-warnings-devel %{_description}
+%description -n %{name}+google-cloud-auth-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "fail-on-warnings" feature of the "%{crate}" crate.
+use the "google-cloud-auth" feature of the "%{crate}" crate.
 
-%files       -n %{name}+fail-on-warnings-devel
+%files       -n %{name}+google-cloud-auth-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+num-traits-devel
+%package     -n %{name}+google-cloud-metadata-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+num-traits-devel %{_description}
+%description -n %{name}+google-cloud-metadata-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "num-traits" feature of the "%{crate}" crate.
+use the "google-cloud-metadata" feature of the "%{crate}" crate.
 
-%files       -n %{name}+num-traits-devel
+%files       -n %{name}+google-cloud-metadata-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+serde-devel
+%package     -n %{name}+hickory-dns-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+serde-devel %{_description}
+%description -n %{name}+hickory-dns-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "serde" feature of the "%{crate}" crate.
+use the "hickory-dns" feature of the "%{crate}" crate.
 
-%files       -n %{name}+serde-devel
+%files       -n %{name}+hickory-dns-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+serde-str-devel
+%package     -n %{name}+rustls-tls-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+serde-str-devel %{_description}
+%description -n %{name}+rustls-tls-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "serde-str" feature of the "%{crate}" crate.
+use the "rustls-tls" feature of the "%{crate}" crate.
 
-%files       -n %{name}+serde-str-devel
+%files       -n %{name}+rustls-tls-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+std-devel
+%package     -n %{name}+trace-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+std-devel %{_description}
+%description -n %{name}+trace-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "std" feature of the "%{crate}" crate.
+use the "trace" feature of the "%{crate}" crate.
 
-%files       -n %{name}+std-devel
+%files       -n %{name}+trace-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep
@@ -164,7 +159,9 @@ use the "std" feature of the "%{crate}" crate.
 
 %if %{with check}
 %check
-%cargo_test
+# these tests require setting up tokens + net access etc.
+# %%cargo_test -- --lib
+%cargo_test -- --doc
 %endif
 
 %changelog

@@ -2,7 +2,7 @@
 %global giturl  https://github.com/gap-packages/design
 
 Name:           gap-pkg-%{pkgname}
-Version:        1.8
+Version:        1.8.1
 Release:        %autorelease
 Summary:        Construct, classify, partition, and study block designs
 
@@ -13,6 +13,8 @@ ExcludeArch:    %{ix86}
 URL:            https://gap-packages.github.io/design/
 VCS:            git:%{giturl}.git
 Source:         %{giturl}/archive/v%{version}/%{pkgname}-%{version}.tar.gz
+# Fix a BibTeX error
+Patch:          %{name}-bibtex.patch
 
 BuildRequires:  gap-devel
 BuildRequires:  gap-pkg-grape
@@ -41,7 +43,7 @@ Requires:       gap-online-help
 This package contains documentation for gap-pkg-%{pkgname}.
 
 %prep
-%autosetup -n %{pkgname}-%{version}
+%autosetup -n %{pkgname}-%{version} -p1
 
 # There is no longer an ext manual
 sed -i '/UseReferences.*ext/d' doc/manual.tex
@@ -61,14 +63,15 @@ cp -a *.g htm lib tst %{buildroot}%{gap_libdir}/pkg/%{pkgname}
 %gap_copy_docs
 
 %check
-gap -l "%{buildroot}%{gap_libdir};" tst/testall.g
+gap -l '%{buildroot}%{gap_libdir};' tst/testall.g
 
 %files
 %doc CHANGES.md README.md
 %license LICENSE
-%{gap_libdir}/pkg/%{pkgname}/
-%exclude %{gap_libdir}/pkg/%{pkgname}/doc/
-%exclude %{gap_libdir}/pkg/%{pkgname}/htm/
+%dir %{gap_libdir}/pkg/%{pkgname}/
+%{gap_libdir}/pkg/%{pkgname}/*.g
+%{gap_libdir}/pkg/%{pkgname}/lib/
+%{gap_libdir}/pkg/%{pkgname}/tst/
 
 %files doc
 %docdir %{gap_libdir}/pkg/%{pkgname}/doc/

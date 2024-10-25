@@ -1,6 +1,6 @@
 %global majorversion 1
 %global minorversion 2
-%global microversion 5
+%global microversion 6
 
 %global apiversion   0.3
 %global spaversion   0.2
@@ -641,7 +641,7 @@ systemctl --no-reload preset --global pipewire.socket >/dev/null 2>&1 || :
 %dir %{_datadir}/pipewire/client-rt.conf.d/
 %{_datadir}/pipewire/client-rt.conf.avail/20-upmix.conf
 %{_mandir}/man5/pipewire-client.conf.5.gz
-%{_mandir}/man7/pipewire-devices.7.gz
+%{_mandir}/man7/pipewire-props.7.gz
 %{_mandir}/man7/libpipewire-module-access.7.gz
 %{_mandir}/man7/libpipewire-module-adapter.7.gz
 %{_mandir}/man7/libpipewire-module-avb.7.gz
@@ -888,6 +888,9 @@ systemctl --no-reload preset --global pipewire.socket >/dev/null 2>&1 || :
 %endif
 
 %changelog
+* Wed Oct 23 2024 Wim Taymans <wtaymans@redhat.com> - 1.2.6-1
+- Update version to 1.2.6
+
 * Fri Sep 27 2024 Wim Taymans <wtaymans@redhat.com> - 1.2.5-1
 - Update version to 1.2.5
 - Add config packages

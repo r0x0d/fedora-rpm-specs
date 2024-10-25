@@ -60,18 +60,17 @@
 %global dbus_python_version 0.83.0
 
 Name:           ibus
-Version:        1.5.31~beta2
+Version:        1.5.31~rc1
 # https://github.com/fedora-infra/rpmautospec/issues/101
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        Intelligent Input Bus for Linux OS
 License:        LGPL-2.1-or-later
 URL:            https://github.com/ibus/%name/wiki
 Source0:        https://github.com/ibus/%name/releases/download/%{source_version}/%{name}-%{source_version}.tar.gz
-Source1:        https://github.com/ibus/%name/releases/download/%{source_version}/%{name}-%{source_version}.tar.gz.sum
+Source1:        https://github.com/ibus/%name/releases/download/%{source_version}/%{name}.tar.gz.sum
 Source2:        %{name}-xinput
 Source3:        %{name}.conf.5
 # Patch0:         %%{name}-HEAD.patch
-Patch0:         %{name}-HEAD.patch
 # Under testing #1349148 #1385349 #1350291 #1406699 #1432252 #1601577
 Patch1:         %{name}-1385349-segv-bus-proxy.patch
 
@@ -332,7 +331,6 @@ if test x"$SAVED_SUM" != x"$MY_SUM" ; then
     abort
 fi
 %autosetup -S git -n %{name}-%{source_version}
-rm bus/marshalers.[ch]
 # cp client/gtk2/ibusimcontext.c client/gtk3/ibusimcontext.c || :
 # cp client/gtk2/ibusim.c client/gtk3/ibusim.c || :
 # cp client/gtk2/ibusimcontext.c client/gtk4/ibusimcontext.c || :
@@ -616,6 +614,11 @@ dconf update || :
 %{_datadir}/installed-tests/ibus
 
 %changelog
+* Wed Oct 23 2024 Takao Fujiwara <tfujiwar@redhat.com> - 1.5.31~rc1-1
+- Update compose tables
+- Fix Unicode logic
+- Update translations
+
 * Fri Oct 04 2024 Takao Fujiwara <tfujiwar@redhat.com> - 1.5.31~beta2-3
 - Add --with-python-overrides-dir configure option for Flatpak
 - Use va_marshaller to avoid GValue boxing

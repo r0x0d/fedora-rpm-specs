@@ -7,7 +7,7 @@
 
 Name:           yosys
 Version:        0.46
-Release:        2.%{snapdate}git%{shortcommit0}%{?dist}
+Release:        3.%{snapdate}git%{shortcommit0}%{?dist}
 Summary:        Yosys Open SYnthesis Suite, including Verilog synthesizer
 License:        ISC and MIT
 URL:            http://www.clifford.at/yosys/
@@ -181,6 +181,9 @@ make test ABCEXTERNAL=%{_bindir}/abc SEED=314159265359
 
 
 %changelog
+* Wed Oct 23 2024 Zbigniew Jedrzejewski-Szmek <zbyszek@in.waw.pl> - 0.46-3.20241011gita00137c
+- Rebuild for rust-add-determinism-0.4.3-1.fc42
+
 * Mon Oct 14 2024 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.46-2.20241011gita00137c
 - Rebuild for rust-add-determinism-0.4.0-2.fc42
 

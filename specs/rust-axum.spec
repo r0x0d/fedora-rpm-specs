@@ -5,7 +5,7 @@
 %global crate axum
 
 Name:           rust-axum
-Version:        0.7.5
+Version:        0.7.7
 Release:        %autorelease
 Summary:        Web framework that focuses on ergonomics and modularity
 
@@ -14,7 +14,7 @@ URL:            https://crates.io/crates/axum
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * remove documentation-specific feature
-# * bump tokio-tungstenite dependency from 0.21 to 0.23
+# * relax tokio-tungstenite dependency from ^0.24 to >=0.23,<0.25
 Patch:          axum-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

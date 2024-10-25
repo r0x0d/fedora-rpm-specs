@@ -8,6 +8,9 @@ Summary:        Tools to help build and install Jupyter Python packages
 License:        BSD-3-Clause
 URL:            https://github.com/jupyter/jupyter-packaging
 Source0:        %{pypi_source}
+# Compatibility with new wheel/setuptools
+Patch:          https://github.com/jupyter/jupyter-packaging/commit/e963fb.patch
+Patch:          https://github.com/jupyter/jupyter-packaging/pull/186.patch
 BuildArch:      noarch
 
 %global _description %{expand:

@@ -5,7 +5,7 @@
 %global crate test-tag
 
 Name:           rust-test-tag
-Version:        0.1.3
+Version:        0.1.4
 Release:        %autorelease
 Summary:        #[tag] attribute for convenient tagging/grouping of #[test] tests
 

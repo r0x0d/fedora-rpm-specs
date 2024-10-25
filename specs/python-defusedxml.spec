@@ -1,15 +1,10 @@
-%global pypi_name    defusedxml
-%global base_version 0.7.1
-#global prerel       ...
-%global upstream_version %{base_version}%{?prerel}
-Name:           python-%{pypi_name}
-Version:        %{base_version}%{?prerel:~%{prerel}}
+Name:           python-defusedxml
+Version:        0.7.1
 Release:        %autorelease
 Summary:        XML bomb protection for Python stdlib modules
-# Automatically converted from old format: Python - review is highly recommended.
-License:        LicenseRef-Callaway-Python
+License:        PSF-2.0
 URL:            https://github.com/tiran/defusedxml
-Source0:        %{pypi_source %{pypi_name} %{upstream_version}}
+Source:         %{pypi_source defusedxml}
 
 # Drop deprecated unittest.makeSuite()
 # From https://github.com/tiran/defusedxml/commit/4e6cea5f5b
@@ -18,48 +13,47 @@ Patch:          drop-makeSuite.patch
 
 BuildArch:      noarch
 
-BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-setuptools
-BuildRequires:  python%{python3_pkgversion}-lxml
+BuildRequires:  python3-devel
+BuildRequires:  python3-lxml
 
-%description
+%global _description %{expand:
 The defusedxml package contains several Python-only workarounds and fixes for
 denial of service and other vulnerabilities in Python's XML libraries. In order
 to benefit from the protection you just have to import and use the listed
 functions / classes from the right defusedxml module instead of the original
-module.
+module.}
 
+%description %_description
 
-%package -n python%{python3_pkgversion}-%{pypi_name}
+%package -n python3-defusedxml
 Summary:        %{summary}
-%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
-%description -n python%{python3_pkgversion}-%{pypi_name}
-The defusedxml package contains several Python-only workarounds and fixes for
-denial of service and other vulnerabilities in Python's XML libraries. In order
-to benefit from the protection you just have to import and use the listed
-functions / classes from the right defusedxml module instead of the original
-module. This is the python%{python3_pkgversion} build.
+%description -n python3-defusedxml %_description
 
 
 %prep
-%autosetup -p1 -n %{pypi_name}-%{upstream_version}
+%autosetup -p1 -n defusedxml-%{version}
+
+
+%generate_buildrequires
+%pyproject_buildrequires
+
 
 %build
-%py3_build
+%pyproject_wheel
+
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l defusedxml
+
 
 %check
-%{python3} tests.py
+%{py3_test_envvars} %{python3} tests.py
 
 
-%files -n python%{python3_pkgversion}-%{pypi_name}
+%files -n python3-defusedxml -f %{pyproject_files}
 %doc README.txt README.html CHANGES.txt
-%license LICENSE
-%{python3_sitelib}/%{pypi_name}/
-%{python3_sitelib}/%{pypi_name}-%{upstream_version}-py%{python3_version}.egg-info/
 
 
 %changelog

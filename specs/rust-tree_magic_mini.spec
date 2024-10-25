@@ -7,7 +7,7 @@
 %global crate tree_magic_mini
 
 Name:           rust-tree_magic_mini
-Version:        3.1.5
+Version:        3.1.6
 Release:        %autorelease
 Summary:        Determines the MIME type of a file by traversing a filetype tree
 
@@ -47,18 +47,6 @@ This package contains library source intended for building other packages which
 use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+tree_magic_db-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+tree_magic_db-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "tree_magic_db" feature of the "%{crate}" crate.
-
-%files       -n %{name}+tree_magic_db-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+with-gpl-data-devel

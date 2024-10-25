@@ -50,11 +50,16 @@ Summary: Python binding for LXC
 chmod -x examples/*.py
 sed -i -e '1 s@^#!.*@#!%{__python3}@' examples/*.py
 
+%check
+%py3_check_import lxc _lxc
+
 
 %files %{?subpkg}
 %license COPYING
 %doc README.md examples
-%{python3_sitearch}/*
+%{python3_sitearch}/lxc/
+%{python3_sitearch}/_lxc.cpython-*.so
+%{python3_sitearch}/python3_lxc-%{version}-py%{python3_version}.egg-info/
 
 
 %changelog

@@ -1,7 +1,7 @@
 Summary: A C programming language indexing and/or cross-reference tool
 Name: ctags
-Version: 6.0.0
-Release: 7%{?dist}
+Version: 6.1.0
+Release: 1%{?dist}
 License: GPL-2.0-or-later
 URL: https://ctags.io/
 Source0: https://github.com/universal-ctags/ctags/releases/download/v%{version}/universal-%{name}-%{version}.tar.gz
@@ -62,6 +62,9 @@ Install ctags if you are going to use your system for C programming.
 %{_mandir}/man7/*
 
 %changelog
+* Wed Oct 23 2024 Than Ngo <than@redhat.com> - 6.1.0-1
+- update to 6.1.0
+
 * Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 6.0.0-7
 - Rebuild for Jansson 2.14
   (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)

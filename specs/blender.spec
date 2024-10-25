@@ -59,6 +59,9 @@ Source1:        %{name}-macros-source
 Patch0:         %{name}-ffmpeg7.patch
 # FFmpeg 7 compatibility for audaspace plugin
 Patch1:         https://projects.blender.org/blender/blender/pulls/121960.patch
+# Python 3.13 compatibility
+# https://projects.blender.org/blender/blender/pulls/129191
+Patch2:         %{name}-python3.13.patch
 
 # Development stuff
 BuildRequires:  boost-devel
@@ -94,15 +97,7 @@ BuildRequires:  pkgconfig(libpcre)
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(pugixml)
-# Blender failed to build with Python 3.13
-# https://bugzilla.redhat.com/show_bug.cgi?id=2291492
-# Use python3.12 instead for Fedora 41 and Rawhide
-# Thanks commanderjeanluc for the suggestion
-%if 0%{?fedora} > 40
-BuildRequires:  pkgconfig(python-3.12)
-%else
 BuildRequires:  pkgconfig(python3) >= 3.7
-%endif
 %if %{with vulkan}
 BuildRequires:  vulkan-headers
 BuildRequires:  vulkan-loader
@@ -388,11 +383,7 @@ export PATH=${PATH}:%{_libdir}/llvm%{llvm_compat}/bin
     -DCMAKE_CXX_FLAGS="%{optflags} -Wl,--as-needed" \
     -DCMAKE_SKIP_RPATH=ON \
     -DEMBREE_INCLUDE_DIR=%{_includedir} \
-%if 0%{?fedora} > 40
-    -DPYTHON_VERSION=3.12 \
-%else
     -DPYTHON_VERSION=%{python3_version} \
-%endif
     -DWITH_COMPILER_CCACHE=ON \
     -DWITH_CYCLES=%{cyclesflag} \
 %ifnarch x86_64

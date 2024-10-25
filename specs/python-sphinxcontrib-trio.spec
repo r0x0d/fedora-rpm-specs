@@ -2,7 +2,7 @@
 
 Name:           python-%{srcname}
 Version:        1.1.2
-Release:        19%{?dist}
+Release:        20%{?dist}
 Summary:        Make Sphinx better at documenting Python functions and methods
 # Automatically converted from old format: MIT or ASL 2.0 - review is highly recommended.
 License:        LicenseRef-Callaway-MIT OR Apache-2.0
@@ -31,6 +31,9 @@ especially inadequate in this case.)
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-sphinx
+BuildRequires:  python3-cssselect
+BuildRequires:  python3-lxml
+BuildRequires:  python3-pytest
 BuildRequires:  %{_bindir}/rst2html
 BuildRequires:  make
 Summary: %{summary}
@@ -57,10 +60,20 @@ rst2html README.rst README.html
 %license LICENSE LICENSE.MIT LICENSE.APACHE2
 %doc README.rst README.html
 %doc docs/build/html
-%{python3_sitelib}/*
+%{python3_sitelib}/sphinxcontrib_trio
+%{python3_sitelib}/sphinxcontrib_trio-*.egg-info
+
+
+%check
+# https://github.com/python-trio/sphinxcontrib-trio/issues/398
+%pytest -k 'not test_end_to_end'
 
 
 %changelog
+* Wed Oct 23 2024 Thomas Moschny <thomas.moschny@gmx.de> - 1.1.2-20
+- Run tests (excluding one known to fail).
+- Avoid globs in %%files.
+
 * Tue Oct 22 2024 Thomas Moschny <thomas.moschny@gmx.de> - 1.1.2-19
 - Remove %%check section, as there are no tests.
 

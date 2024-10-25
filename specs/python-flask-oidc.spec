@@ -2,7 +2,7 @@
 %global mod_name flask_oidc
 
 Name:           python-%{project_name}
-Version:        2.2.0
+Version:        2.2.1
 Release:        1%{?dist}
 Summary:        OpenID Connect extension for Flask
 
@@ -53,6 +53,9 @@ Summary:        %{summary}
 
 
 %changelog
+* Wed Oct 23 2024 Packit <hello@packit.dev> - 2.2.1-1
+- Update to version 2.2.1
+
 * Tue Jul 30 2024 Gwyn Ciesla <gwync@protonmail.com> - 2.2.0-1
 - 2.2.0
 

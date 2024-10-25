@@ -37,7 +37,7 @@
 Summary: Low-level DNS(SEC) library with API
 Name: ldns
 Version: 1.8.3
-Release: 17%{?dist}
+Release: 18%{?dist}
 
 License: BSD-3-Clause
 Url: https://www.nlnetlabs.nl/%{name}/
@@ -56,6 +56,8 @@ Patch4: ldns-swig-4.2.patch
 Patch5: ldns-swig-32bit.patch
 # https://github.com/NLnetLabs/ldns/pull/242
 Patch6: ldns-1.8-openssl-engine.patch
+# Fix for SWIG 4.3.0
+Patch7: ldns-1.8.3-swig-4.3.patch
 
 BuildRequires: libtool
 BuildRequires: autoconf
@@ -368,6 +370,9 @@ rm -rf doc/man
 %doc doc/*.dox
 
 %changelog
+* Wed Oct 16 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1.8.3-18
+- Fix for SWIG 4.3.0
+
 * Fri Jul 19 2024 Petr Menšík <pemensik@redhat.com> - 1.8.3-17
 - Remove unneeded openssl/engine.h causing build failures
 - Explicitly disable openssl engine (rhbz#2295742)

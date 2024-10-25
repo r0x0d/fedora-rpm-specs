@@ -1,21 +1,19 @@
-#define prerelease rc1
+%define prerelease beta1
 
 # We need avoid oython byte compiler to not crash over template .py file which
 # is not a valid python file, only for the IDE
 %global _python_bytecompile_errors_terminate_build 0
 
 Name:           qt-creator
-Version:        14.0.2
-Release:        2%{?dist}
+Version:        15.0.0
+Release:        0.1%{?prerelease:.%prerelease}%{?dist}
 Summary:        Cross-platform IDE for Qt
 
 License:        GPL-3.0-only WITH Qt-GPL-exception-1.0
 URL:            https://www.qt.io/ide/
-Source0:        https://download.qt.io/%{?prerelease:development}%{?!prerelease:official}_releases/qtcreator/14.0/%{version}%{?prerelease:-%prerelease}/qt-creator-opensource-src-%{version}%{?prerelease:-%prerelease}.tar.xz
+Source0:        https://download.qt.io/%{?prerelease:development}%{?!prerelease:official}_releases/qtcreator/15.0/%{version}%{?prerelease:-%prerelease}/qt-creator-opensource-src-%{version}%{?prerelease:-%prerelease}.tar.xz
 Source1:        qt-creator-Fedora-privlibs
 
-# In Fedora, the ninja command is called ninja-build
-Patch0:         qt-creator_ninja-build.patch
 # Fix leading whitespace in desktop file
 Patch1:         qt-creator_desktop.patch
 # Limit qmake names to avoid the rpm macro wrapper qmake-qt5.sh getting picked up (#1644989)
@@ -24,8 +22,8 @@ Patch2:         qt-creator_qmake-names.patch
 Patch3:         qt-creator-debuginfod.patch
 # Drop refereces to unbundled yaml-cpp
 Patch4:         qt-creator_unbundle.patch
-# Fix compability with LLVM>=19.x
-Patch5:         https://github.com/qt-creator/qt-creator/commit/f175ec933f1c5c5d7a345edbaacc8ff90202aee2.patch
+# Fix invalid overload on i686
+Patch5:         qt-creator_overload.patch
 
 BuildRequires:  chrpath
 BuildRequires:  cmake
@@ -213,7 +211,10 @@ diff -u %{SOURCE1} $outfile
 
 
 %changelog
-* Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com>
+* Tue Oct 22 2024 Sandro Mani <manisandro@gmail.com> - 15.0.0-0.1.beta1
+- Update to 15.0.0-beta1
+
+* Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 14.0.2-2
 - Rebuild (qt6)
 
 * Thu Oct 03 2024 Sandro Mani <manisandro@gmail.com> - 14.0.2-1

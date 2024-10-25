@@ -5,8 +5,8 @@
 %bcond server 1
 
 Name:           tigervnc
-Version:        1.14.0
-Release:        8%{?dist}
+Version:        1.14.1
+Release:        1%{?dist}
 Summary:        A TigerVNC remote display system
 
 %global _hardened_build 1
@@ -27,11 +27,7 @@ Source5:        vncserver
 Patch1:         tigervnc-vncsession-restore-script-systemd-service.patch
 
 # Upstream patches
-Patch50:        tigervnc-vncsession-use-bin-sh-when-shell-not-set.patch
-Patch51:        tigervnc-add-missing-coma-in-default-security-type-list.patch
-Patch52:        tigervnc-vncsession-move-existing-log-to-log-old-if-present.patch
-Patch53:        tigervnc-handle-existing-config-directory-in-vncpasswd.patch
-Patch54:        tigervnc-correctly-handle-zrle-cursors.patch
+Patch50:        tigervnc-vncsession-move-existing-log-to-log-old-if-present.patch
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -192,11 +188,7 @@ runs properly under an environment with SELinux enabled.
 %patch -P1 -p1 -b .vncsession-restore-script-systemd-service
 
 # Upstream patches
-%patch -P50 -p1 -b .vncsession-use-bin-sh-when-shell-not-set.patch
-%patch -P51 -p1 -b .add-missing-coma-in-default-security-type-list.patch
-%patch -P52 -p1 -b .vncsession-move-existing-log-to-log-old-if-present.patch
-%patch -P53 -p1 -b .handle-existing-config-directory-in-vncpasswd.patch
-%patch -P54 -p1 -b .correctly-handle-zrle-cursors.patch
+%patch -P50 -p1 -b .vncsession-move-existing-log-to-log-old-if-present.patch
 
 %if %{with server}
 cp -r /usr/share/xorg-x11-server-source/* unix/xserver
@@ -204,7 +196,12 @@ pushd unix/xserver
 for all in `find . -type f -perm -001`; do
         chmod -x "$all"
 done
+# EPEL 10 possibly too in the future
+%if 0%{?fedora} && 0%{?fedora} > 40
 cat ../xserver21.patch | patch -p1
+%else
+cat ../xserver120.patch | patch -p1
+%endif
 popd
 %else
 sed -i -e '/add_subdirectory.*vnc/d' unix/CMakeLists.txt
@@ -396,6 +393,9 @@ fi
 %{_datadir}/icons/hicolor/*/apps/*
 
 %changelog
+* Wed Oct 23 2024 Jan Grulich <jgrulich@redhat.com> - 1.14.1-1
+- 1.14.1
+
 * Sat Oct 05 2024 Neal Gompa <ngompa@fedoraproject.org> - 1.14.0-8
 - Rebuild for ffmpeg 7
 

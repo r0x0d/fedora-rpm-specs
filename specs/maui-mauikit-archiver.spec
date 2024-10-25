@@ -1,6 +1,6 @@
 Name:          maui-mauikit-archiver
 Version:       4.0.0
-Release:       1%{?dist}
+Release:       2%{?dist}
 # Ignored the Mainpage.dox's LGPL-2.0-or-later as it's not used by us in any way
 License:       LGPL-2.1-or-later AND BSD-2-Clause AND GPL-3.0-or-later
 Summary:       Maui plugin for online archived/compressed files management
@@ -52,6 +52,9 @@ on %{name}.
 
 %install
 %cmake_install
+# Workaround https://invent.kde.org/maui/index-fm/-/issues/76
+# Thanks to Onuralp!
+sed -e '/prefer/d' -i %{buildroot}%{_kf6_qmldir}/org/mauikit/archiver/qmldir
 
 %files
 %license LICENSES/*
@@ -66,5 +69,8 @@ on %{name}.
 %{_includedir}/MauiKit4/Archiver/
 
 %changelog
+* Thu Oct 24 2024 Steve Cossette <farchord@gmail.com> - 4.0.0-2
+- Fix for https://invent.kde.org/maui/index-fm/-/issues/76 (Obtained from Arch)
+
 * Tue May 14 2024 Steve Cossette <farchord@gmail.com> - 4.0.0-1
 - 4.0.0

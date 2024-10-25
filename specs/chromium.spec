@@ -274,7 +274,7 @@
 
 Name:	chromium%{chromium_channel}
 Version: 130.0.6723.58
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: A WebKit (Blink) powered web browser that Google doesn't want you to use
 Url: http://www.chromium.org/Home
 License: BSD-3-Clause AND LGPL-2.1-or-later AND Apache-2.0 AND IJG AND MIT AND GPL-2.0-or-later AND ISC AND OpenSSL AND (MPL-1.1 OR GPL-2.0-only OR LGPL-2.0-only)
@@ -435,6 +435,7 @@ Patch412: add-ppc64-architecture-to-extensions.diff
 # Suppress harmless compiler warning messages that appear on ppc64 due to arch-specific warning flags being passed
 Patch413: fix-unknown-warning-option-messages.diff
 Patch414: cargo-add-ppc64.diff
+Patch415: add-ppc64-pthread-stack-size.patch
 
 # upstream patches
 
@@ -550,7 +551,7 @@ BuildRequires:	libgcrypt-devel
 BuildRequires:	libudev-devel
 BuildRequires:	libuuid-devel
 
-%if 0%{?fedora} >= 37
+%if 0%{?fedora} >= 37 || 0%{?rhel} > 9
 BuildRequires:	libusb-compat-0.1-devel
 %else
 BuildRequires:	libusb-devel
@@ -1121,6 +1122,7 @@ Qt6 UI for chromium.
 %patch -P412 -p1 -b .add-ppc64-architecture-to-extensions
 %patch -P413 -p1 -b .fix-unknown-warning-option-messages
 %patch -P414 -p1 -b .rust-add-ppc64-case
+%patch -P415 -p1 -b .add-ppc64-pthread-stack-size
 %endif
 
 # Change shebang in all relevant files in this directory and all subdirectories
@@ -1915,6 +1917,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Mon Oct 21 2024 Than Ngo <than@redhat.com> - 130.0.6723.58-2
+- Add missing pthread stack size for ppc64 (openpower-patches)
+
 * Wed Oct 16 2024 Than Ngo <than@redhat.com> - 130.0.6723.58-1
 - update to 130.0.6723.58
   * High CVE-2024-9954: Use after free in AI

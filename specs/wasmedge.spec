@@ -1,4 +1,4 @@
-%global version 0.14.0
+%global version 0.14.1
 %global reponame WasmEdge
 %global capi_soname 0
 %global capi_version 0.1.0
@@ -12,16 +12,15 @@ Summary: High performance WebAssembly Virtual Machine
 License: Apache-2.0 AND CC0-1.0
 URL:     https://github.com/%{reponame}/%{reponame}
 Source0: %{url}/releases/download/%{version}/%{reponame}-%{version}-src.tar.gz
-Patch0:  0001-Common-include-spdlog-fmt-ranges.h-for-fmt-join.patch
 BuildRequires: cmake
 BuildRequires: gcc-c++
 BuildRequires: git
-BuildRequires: lld-devel
-BuildRequires: llvm-devel
+BuildRequires: lld18-devel
+BuildRequires: llvm18-devel
 BuildRequires: ninja-build
 BuildRequires: spdlog-devel
-Requires:      lld
-Requires:      llvm
+Requires:      lld18
+Requires:      llvm18
 Requires:      spdlog
 # Currently wasmedge could only be built on specific arches
 ExclusiveArch: x86_64 aarch64
@@ -56,15 +55,15 @@ Provides: %{reponame}-devel = %{version}-%{release}
 This package contains necessary header files for %{reponame} development.
 
 %prep
-%autosetup -p1 -n %{name}
+%autosetup -n %{name}
 [ -f VERSION ] || echo -n %{version} > VERSION
 
 %build
-%cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=OFF -DWASMEDGE_BUILD_TESTS=OFF
+%cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=OFF -DWASMEDGE_BUILD_TESTS=OFF -DLLVM_DIR=/usr/lib64/llvm18/lib/cmake/llvm
 %cmake_build
 mkdir rt
 cd rt
-%cmake -S .. -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=OFF -DWASMEDGE_BUILD_TESTS=OFF -DWASMEDGE_BUILD_AOT_RUNTIME=OFF
+%cmake -S .. -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=OFF -DWASMEDGE_BUILD_TESTS=OFF -DWASMEDGE_BUILD_AOT_RUNTIME=OFF -DLLVM_DIR=/usr/lib64/llvm18/lib/cmake/llvm
 %cmake_build
 
 %install

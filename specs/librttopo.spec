@@ -1,4 +1,13 @@
+# MinGW ist x86_64 only in EPEL9+
+%if 0%{?rhel} >= 9
+%ifarch x86_64
 %bcond_without mingw
+%else
+%bcond_with mingw
+%endif
+%else
+%bcond_without mingw
+%endif
 
 Name:           librttopo
 Version:        1.1.0
@@ -19,11 +28,11 @@ BuildRequires: libtool
 BuildRequires: make
 
 %if %{with mingw}
-BuildRequires: mingw32-filesystem >= 95
+BuildRequires: mingw32-filesystem
 BuildRequires: mingw32-gcc
 BuildRequires: mingw32-geos
 
-BuildRequires: mingw64-filesystem >= 95
+BuildRequires: mingw64-filesystem
 BuildRequires: mingw64-gcc
 BuildRequires: mingw64-geos
 %endif
@@ -58,10 +67,10 @@ BuildArch:     noarch
 
 %description -n mingw64-%{name}
 MinGW Windows %{name} library.
-%endif
 
 
 %{?mingw_debug_package}
+%endif
 
 
 %prep
@@ -98,7 +107,9 @@ MINGW64_CONFIGURE_ARGS="PKGCONFIG=%{mingw64_target}-pkg-config" \
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 
-%{?mingw_debug_install_post}
+%if %{with mingw}
+%mingw_debug_install_post
+%endif
 
 
 %files

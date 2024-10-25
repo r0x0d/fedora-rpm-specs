@@ -10,6 +10,12 @@
 # Not (yet) in EPEL10, https://bugzilla.redhat.com/show_bug.cgi?id=2315454
 %bcond vlc %{expr:!0%{?el10}}
 
+# The rich-dependency trick for an arch-dependent dependency on
+# gstreamer1-svt-vp9 in a noarch package works well in Fedora, but it causes
+# problems on EPEL10, perhaps due to something to do with alternative Python
+# stacks. It’s easiest just to omit this weak dependency in EPEL10.
+%bcond vp9 %{expr:!0%{?el10}}
+
 # We do not have xvfb-run in EPEL10. We can use xwfb-run or wlheadless-run
 # instead, but a number of tests crash with no useful output, so we only do
 # that where we have no choice. Interactive testing in a GNOME/Wayland session
@@ -60,6 +66,8 @@ BuildRequires:  libappstream-glib
 # Matches what gnome-software and others use:
 BuildRequires:  appstream
 
+BuildRequires:  iso-codes
+
 %if %{with tests}
 
 BuildRequires:  python3dist(pygobject) >= 3.12
@@ -70,16 +78,16 @@ BuildRequires:  gstreamer1 >= 1.6
 BuildRequires:  gstreamer1-plugins-base >= 1.6
 BuildRequires:  gstreamer1-plugins-good >= 1.6
 BuildRequires:  gstreamer1-plugins-good-gtk >= 1.6
-# svt-av1 is ExclusiveArch: x86_64
-BuildRequires:  (gstreamer1-svt-av1 if python3(x86-64))
+BuildRequires:  gstreamer1-svt-av1
+%if %{with vp9}
 # svt-vp9 is ExclusiveArch: x86_64
 BuildRequires:  (gstreamer1-svt-vp9 if python3(x86-64))
+%endif
 %if %{with mpv}
 BuildRequires:  mpv
 %elif %{with vlc}
 BuildRequires:  vlc
 %endif
-BuildRequires:  iso-codes
 %if %{with gspell}
 BuildRequires:  gspell >= 1.0.0
 %endif
@@ -118,10 +126,11 @@ Recommends:     gstreamer1-plugins-good
 Requires:       (gstreamer1-plugins-good >= 1.6 if gstreamer1-plugins-good)
 Recommends:     gstreamer1-plugins-good-gtk
 Requires:       (gstreamer1-plugins-good-gtk >= 1.6 if gstreamer1-plugins-good-gtk)
-# svt-av1 is ExclusiveArch: x86_64
-Recommends:     (gstreamer1-svt-av1 if python3(x86-64))
+Recommends:     gstreamer1-svt-av1
+%if %{with vp9}
 # svt-vp9 is ExclusiveArch: x86_64
 Recommends:     (gstreamer1-svt-vp9 if python3(x86-64))
+%endif
 %if %{with mpv}
 # Default preview video player on non-Windows systems. Also supported are
 # mplayer (not packaged in Fedora) and vlc.

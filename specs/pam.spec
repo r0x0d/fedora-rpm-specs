@@ -6,7 +6,7 @@
 Summary: An extensible library which provides authentication for applications
 Name: pam
 Version: 1.6.1
-Release: 7%{?dist}
+Release: 8%{?dist}
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
 # pam_timestamp and pam_loginuid modules are GPLv2+.
@@ -31,6 +31,8 @@ Patch3:  pam-1.5.3-unix-nomsg.patch
 Patch4:  pam-1.6.1-sast-fixes.patch
 # https://github.com/linux-pam/linux-pam/commit/aabd5314a6d76968c377969b49118a2df3f97003
 Patch5:  pam-1.6.1-pam-env-econf-read-file-fixes.patch
+# https://github.com/linux-pam/linux-pam/commit/641dfd1084508c63f3590e93a35b80ffc50774e5
+Patch6:  pam-1.6.1-pam-access-local.patch
 
 %{load:%{SOURCE3}}
 
@@ -129,6 +131,7 @@ cp %{SOURCE18} .
 %patch -P 3 -p1 -b .nomsg
 %patch -P 4 -p1 -b .static-analyzer
 %patch -P 5 -p1 -b .pam-env-econf-read-file-fixes
+%patch -P 6 -p1 -b .pam-access-local
 
 autoreconf -i
 
@@ -369,6 +372,9 @@ done
 %{_pam_libdir}/libpam_misc.so.%{so_ver}*
 
 %changelog
+* Wed Oct 23 2024 Iker Pedrosa <ipedrosa@redhat.com> - 1.6.1-8
+- pam_access: always match local address and clarify LOCAL keyword behaviour
+
 * Wed Oct 16 2024 Iker Pedrosa <ipedrosa@redhat.com> - 1.6.1-7
 - Rebuilt for libeconf soname bump
 

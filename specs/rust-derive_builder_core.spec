@@ -5,7 +5,7 @@
 %global crate derive_builder_core
 
 Name:           rust-derive_builder_core
-Version:        0.20.1
+Version:        0.20.2
 Release:        %autorelease
 Summary:        Internal helper library for the derive_builder crate
 

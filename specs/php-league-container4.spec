@@ -11,8 +11,8 @@
 
 %global github_owner     thephpleague
 %global github_name      container
-%global github_version   4.2.2
-%global github_commit    ff346319ca1ff0e78277dc2311a42107cc1aab88
+%global github_version   4.2.3
+%global github_commit    72f9bebe7bd623007782a40f5ec305661ab706d8
 
 %global major            4
 
@@ -32,7 +32,7 @@
 
 Name:          php-%{composer_vendor}-%{composer_project}%{major}
 Version:       %{github_version}
-Release:       2%{?github_release}%{?dist}
+Release:       1%{?github_release}%{?dist}
 Summary:       A fast and intuitive dependency injection container version %{major}
 
 License:       MIT
@@ -124,7 +124,7 @@ sed -e '/log/d' -i phpunit.xml
 RETURN_CODE=0
 # TODO PHP 8.1, Call to undefined method ReflectionUnionType::getName()
 PHPUNIT=$(which phpunit8)
-for PHP_EXEC in php php81 php82 php83; do
+for PHP_EXEC in php php81 php82 php83 php84; do
     if which $PHP_EXEC; then
         FILTER="--filter '^((?!(testResolverResolvesArgumentsViaReflection|testResolverThrowsExceptionWhenReflectionDoesNotResolve)).)*\$'"
         $PHP_EXEC $PHPUNIT $FILTER \
@@ -149,6 +149,9 @@ exit $RETURN_CODE
 
 
 %changelog
+* Wed Oct 23 2024 Remi Collet <remi@remirepo.net> - 4.2.3-1
+- update to 4.2.3
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.2.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

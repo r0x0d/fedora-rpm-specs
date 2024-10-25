@@ -15,13 +15,13 @@
 # **** release metadata ****
 # populated by envsubst in newrelease
 %global k8s_name                kubernetes1.31
-%global k8s_ver                 1.31.1
+%global k8s_ver                 1.31.2
 # major:minor version substring
 %global k8s_minver              1.31
 %global k8s_nextver             1.32
-%global k8s_tag                 v1.31.1
+%global k8s_tag                 v1.31.2
 # golang 'built with' version
-%global golangver               1.22.6
+%global golangver               1.22.7
 
 # last release version of kubernetes rpms prior to adoption of
 # revised package organization (kubernetes-systemd rpm created and
@@ -94,13 +94,11 @@ BuildRequires:  rsync
 
 # additonal kubelet requirements
 Requires:       conntrack-tools
-Requires:       socat
 Requires:       iptables >= 1.4.21
 Requires:       iproute
 Requires:       iproute-tc
 Requires:       util-linux
 Requires:       ethtool
-Requires:       ebtables
 Requires:       conntrack
 
 # used to be Requires containerd or cri-0; other choices now available

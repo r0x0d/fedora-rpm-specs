@@ -5,15 +5,13 @@
 %global crate sealed_test_derive
 
 Name:           rust-sealed_test_derive
-Version:        1.0.0
+Version:        1.1.0
 Release:        %autorelease
 Summary:        Procmacro attribute to run your test in an isolated environment
 
 License:        MIT
 URL:            https://crates.io/crates/sealed_test_derive
 Source:         %{crates_source}
-# * https://github.com/oknozor/sealed-test/pull/3
-Source2:        https://github.com/oknozor/sealed-test/raw/main/LICENSE
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -50,7 +48,6 @@ use the "default" feature of the "%{crate}" crate.
 
 %prep
 %autosetup -n %{crate}-%{version} -p1
-cp -p %SOURCE2 .
 %cargo_prep
 
 %generate_buildrequires

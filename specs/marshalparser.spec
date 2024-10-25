@@ -1,5 +1,5 @@
 Name:           marshalparser
-Version:        0.3.4
+Version:        0.4.0
 Release:        %autorelease
 Summary:        Parser for Python internal Marshal format
 
@@ -16,12 +16,15 @@ BuildRequires:  pyproject-rpm-macros
 # We intentionally skip those on RHEL to avoid pulling other Pythons into next RHEL.
 # When a new Python is added into RHEL, the new version should be explicitly added.
 %if %{undefined rhel}
+BuildRequires:  python3-pytest-xdist
 BuildRequires:  python3.6
 BuildRequires:  python3.8
 BuildRequires:  python3.9
 BuildRequires:  python3.10
 BuildRequires:  python3.11
 BuildRequires:  python3.12
+BuildRequires:  python3.13
+BuildRequires:  python3.14
 %endif
 
 %generate_buildrequires
@@ -42,7 +45,7 @@ reproducibility.
 %pyproject_save_files %{name}
 
 %check
-%pytest
+%pytest %{?!rhel:-n auto}
 
 %files -f %{pyproject_files}
 %license LICENSE

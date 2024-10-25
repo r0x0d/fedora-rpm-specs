@@ -1,5 +1,5 @@
 Name:           python-compreffor
-Version:        0.5.5
+Version:        0.5.6
 Release:        %autorelease
 Summary:        CFF table subroutinizer for FontTools
 
@@ -17,8 +17,8 @@ BuildRequires:  python3-devel
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
-# From setup.py: cython_min_version = '0.29.24'
-BuildRequires:  python3dist(cython) >= 0.29.24
+# From setup.py: cython_min_version = '3.0.11'
+BuildRequires:  %{py3_dist cython} >= 3.0.11
 
 %global common_description %{expand:
 A CFF (Compact Font Format) table subroutinizer for FontTools.}

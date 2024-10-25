@@ -49,7 +49,7 @@ Summary:        Web Console for Linux servers
 License:        LGPL-2.1-or-later
 URL:            https://cockpit-project.org/
 
-Version:        326
+Version:        327
 Release:        1%{?dist}
 Source0:        https://github.com/cockpit-project/cockpit/releases/download/%{version}/cockpit-%{version}.tar.xz
 
@@ -233,11 +233,11 @@ rm -rf %{buildroot}/usr/src/debug
 # On RHEL kdump, networkmanager, selinux, and sosreport are part of the system package
 %if 0%{?rhel}
 cat kdump.list sosreport.list networkmanager.list selinux.list >> system.list
-rm -f %{buildroot}%{_datadir}/metainfo/org.cockpit-project.cockpit-sosreport.metainfo.xml
-rm -f %{buildroot}%{_datadir}/metainfo/org.cockpit-project.cockpit-kdump.metainfo.xml
-rm -f %{buildroot}%{_datadir}/metainfo/org.cockpit-project.cockpit-selinux.metainfo.xml
-rm -f %{buildroot}%{_datadir}/metainfo/org.cockpit-project.cockpit-networkmanager.metainfo.xml
-rm -f %{buildroot}%{_datadir}/pixmaps/cockpit-sosreport.png
+rm -f %{buildroot}%{_datadir}/metainfo/org.cockpit_project.cockpit_sosreport.metainfo.xml
+rm -f %{buildroot}%{_datadir}/metainfo/org.cockpit_project.cockpit_kdump.metainfo.xml
+rm -f %{buildroot}%{_datadir}/metainfo/org.cockpit_project.cockpit_selinux.metainfo.xml
+rm -f %{buildroot}%{_datadir}/metainfo/org.cockpit_project.cockpit_networkmanager.metainfo.xml
+rm -f %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/cockpit-sosreport.png
 %endif
 
 # -------------------------------------------------------------------------------
@@ -254,8 +254,8 @@ troubleshooting, interactive command-line sessions, and more.
 %{_docdir}/cockpit/AUTHORS
 %{_docdir}/cockpit/COPYING
 %{_docdir}/cockpit/README.md
-%{_datadir}/metainfo/cockpit.appdata.xml
-%{_datadir}/pixmaps/cockpit.png
+%{_datadir}/metainfo/org.cockpit_project.cockpit.appdata.xml
+%{_datadir}/icons/hicolor/128x128/apps/cockpit.png
 %doc %{_mandir}/man1/cockpit.1.gz
 
 
@@ -329,16 +329,16 @@ Provides: cockpit-sosreport = %{version}-%{release}
 Recommends: (reportd if abrt)
 %endif
 
-Provides: bundled(npm(@patternfly/patternfly)) = 5.4.1
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.1
+Provides: bundled(npm(@patternfly/patternfly)) = 5.4.2
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.2
 Provides: bundled(npm(@patternfly/react-icons)) = 5.4.0
 Provides: bundled(npm(@patternfly/react-styles)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.1
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.2
 Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.0
 Provides: bundled(npm(@xterm/addon-canvas)) = 0.7.0
 Provides: bundled(npm(@xterm/xterm)) = 5.5.0
 Provides: bundled(npm(argparse)) = 1.0.10
-Provides: bundled(npm(attr-accept)) = 2.2.2
+Provides: bundled(npm(attr-accept)) = 2.2.4
 Provides: bundled(npm(autolinker)) = 3.16.2
 Provides: bundled(npm(dequal)) = 2.0.3
 Provides: bundled(npm(file-selector)) = 0.6.0
@@ -352,7 +352,7 @@ Provides: bundled(npm(loose-envify)) = 1.4.0
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
 Provides: bundled(npm(react-dom)) = 18.3.1
-Provides: bundled(npm(react-dropzone)) = 14.2.9
+Provides: bundled(npm(react-dropzone)) = 14.2.10
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.3.1
 Provides: bundled(npm(remarkable)) = 2.0.1
@@ -360,7 +360,7 @@ Provides: bundled(npm(scheduler)) = 0.23.2
 Provides: bundled(npm(sprintf-js)) = 1.0.3
 Provides: bundled(npm(tabbable)) = 6.2.0
 Provides: bundled(npm(throttle-debounce)) = 5.0.2
-Provides: bundled(npm(tslib)) = 2.7.0
+Provides: bundled(npm(tslib)) = 2.8.0
 Provides: bundled(npm(uuid)) = 10.0.0
 
 %description system
@@ -504,7 +504,7 @@ BuildArch: noarch
 The Cockpit component for configuring kernel crash dumping.
 
 %files kdump -f kdump.list
-%{_datadir}/metainfo/org.cockpit-project.cockpit-kdump.metainfo.xml
+%{_datadir}/metainfo/org.cockpit_project.cockpit_kdump.metainfo.xml
 
 %package sosreport
 Summary: Cockpit user interface for diagnostic reports
@@ -518,8 +518,8 @@ The Cockpit component for creating diagnostic reports with the
 sosreport tool.
 
 %files sosreport -f sosreport.list
-%{_datadir}/metainfo/org.cockpit-project.cockpit-sosreport.metainfo.xml
-%{_datadir}/pixmaps/cockpit-sosreport.png
+%{_datadir}/metainfo/org.cockpit_project.cockpit_sosreport.metainfo.xml
+%{_datadir}/icons/hicolor/64x64/apps/cockpit-sosreport.png
 
 %package networkmanager
 Summary: Cockpit user interface for networking, using NetworkManager
@@ -534,7 +534,7 @@ BuildArch: noarch
 The Cockpit component for managing networking.  This package uses NetworkManager.
 
 %files networkmanager -f networkmanager.list
-%{_datadir}/metainfo/org.cockpit-project.cockpit-networkmanager.metainfo.xml
+%{_datadir}/metainfo/org.cockpit_project.cockpit_networkmanager.metainfo.xml
 
 %endif
 
@@ -552,7 +552,7 @@ This package contains the Cockpit user interface integration with the
 utility setroubleshoot to diagnose and resolve SELinux issues.
 
 %files selinux -f selinux.list
-%{_datadir}/metainfo/org.cockpit-project.cockpit-selinux.metainfo.xml
+%{_datadir}/metainfo/org.cockpit_project.cockpit_selinux.metainfo.xml
 
 %endif
 
@@ -579,7 +579,7 @@ BuildArch: noarch
 The Cockpit component for managing storage.  This package uses udisks.
 
 %files -n cockpit-storaged -f storaged.list
-%{_datadir}/metainfo/org.cockpit-project.cockpit-storaged.metainfo.xml
+%{_datadir}/metainfo/org.cockpit_project.cockpit_storaged.metainfo.xml
 
 %package -n cockpit-tests
 Summary: Tests for Cockpit
@@ -614,6 +614,9 @@ via PackageKit.
 
 # The changelog is automatically generated and merged
 %changelog
+* Wed Oct 23 2024 Packit <hello@packit.dev> - 327-1
+- Connect to similar servers without Cockpit installed
+
 * Wed Oct 09 2024 Packit <hello@packit.dev> - 326-1
 - cockpit-pcp package is now obsolete
 - cockpit/ws container: Connect to servers without installed Cockpit

@@ -1,5 +1,5 @@
 %global forgeurl https://github.com/qxmpp-project/qxmpp
-Version:        1.8.1
+Version:        1.8.2
 %global sover   5
 %forgemeta
 
@@ -120,7 +120,6 @@ OPTIONS=(
 %if %{with all_tests}
 %ctest
 %else
-# https://koji.fedoraproject.org/koji/taskinfo?taskID=102206908
 SKIP_TESTS=
 SKIP_TESTS='tst_qxmppiceconnection'
 SKIP_TESTS+='|tst_qxmppfileencryption'
@@ -131,7 +130,6 @@ SKIP_TESTS+='|tst_qxmpptransfermanager'
 %if %{with all_tests}
 %ctest
 %else
-# https://koji.fedoraproject.org/koji/taskinfo?taskID=102207489
 SKIP_TESTS=
 SKIP_TESTS='tst_qxmppdiscoverymanager'
 SKIP_TESTS+='|tst_qxmppiceconnection'
@@ -142,6 +140,7 @@ SKIP_TESTS+='|tst_qxmppusertunemanager'
 SKIP_TESTS+='|tst_qxmppfileencryption'
 SKIP_TESTS+='|tst_qxmpptransfermanager'
 SKIP_TESTS+='|tst_qxmpphttpuploadmanager'
+SKIP_TESTS+='|tst_qxmppjinglemessageinitiationmanager'
 %ctest -E "$SKIP_TESTS"
 %endif
 

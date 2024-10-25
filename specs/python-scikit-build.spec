@@ -1,5 +1,7 @@
+%global debug_package %{nil}
+
 Name:           python-scikit-build
-Version:        0.17.6
+Version:        0.18.1
 Release:        %autorelease
 Summary:        Improved build system generator for Python C/C++/Fortran/Cython extensions
 
@@ -10,9 +12,7 @@ License:        MIT AND BSD-2-Clause-Views AND Apache-2.0
 URL:            https://github.com/scikit-build/scikit-build
 Source:         %{pypi_source scikit_build}
 
-BuildArch:      noarch
 BuildRequires:  python3-devel
-
 # For tests:
 BuildRequires:  cmake
 BuildRequires:  gcc
@@ -25,7 +25,7 @@ BuildRequires:  ninja-build
 Improved build system generator for CPython C/C++/Fortran/Cython extensions.
 Better support is available for additional compilers, build systems, cross
 compilation, and locating dependencies and determining their build requirements.
-The scikit-build package is fundamentally just glue between the setuptools
+The scikit-build package is fundamentally just glue between the setup-tools
 Python module and CMake.}
 
 %description %_description
@@ -34,6 +34,7 @@ Python module and CMake.}
 Summary:        %{summary}
 Requires:       cmake
 Requires:       ninja-build
+BuildArch:      noarch
 
 # Files listed below are located in skbuild/resources/cmake.
 # Since they contain "Copyright 2011 Kitware, Inc." in them we list them as bundled,
