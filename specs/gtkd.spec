@@ -8,7 +8,7 @@ Version:        3.10.0
 Release:        12%{?dist}
 Summary:        D binding and OO wrapper of GTK+
 
-License:        LGPLv3+ with exceptions
+License:        LGPL-3.0-or-later
 URL:            https://github.com/gtkd-developers/GtkD/
 Source0:        https://github.com/gtkd-developers/GtkD/archive/v%{version}/%{name}-%{version}.tar.gz
 

@@ -1,16 +1,13 @@
-%global sover 0.7
+%global sover 0.8
 
 Name:           yaml-cpp
-Version:        0.7.0
-Release:        6%{?dist}
+Version:        0.8.0
+Release:        1%{?dist}
 
 License:        MIT
 Summary:        A YAML parser and emitter for C++
 URL:            https://github.com/jbeder/yaml-cpp
-Source0:        %{url}/archive/%{name}-%{version}/%{name}-%{version}.tar.gz
-
-# CMake fixes from 0e6e28d1a38224fc8172fae0109ea7f673c096db commit
-Patch100:       yaml-cpp-cmake.patch
+Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  cmake
 BuildRequires:  gcc
@@ -37,7 +34,7 @@ Requires:       %{name}-devel%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
 The %{name}-static package contains the static library for %{name}.
 
 %prep
-%autosetup -n %{name}-%{name}-%{version} -p1
+%autosetup -n %{name}-%{version} -p1
 
 %build
 %cmake -B build_static \
@@ -72,7 +69,7 @@ mv %{buildroot}%{_libdir}/pkgconfig/%{name}.pc \
 %files
 %doc CONTRIBUTING.md README.md
 %license LICENSE
-%{_libdir}/lib%{name}*.so.%{sover}*
+%{_libdir}/lib%{name}.so.%{sover}*
 
 %files devel
 %{_includedir}/yaml-cpp/
@@ -87,6 +84,9 @@ mv %{buildroot}%{_libdir}/pkgconfig/%{name}.pc \
 %{_libdir}/pkgconfig/%{name}-static.pc
 
 %changelog
+* Mon Oct 21 2024 Orion Poplawski <orion@nwra.com> - 0.8.0-1
+- Update to 0.8.0
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.7.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

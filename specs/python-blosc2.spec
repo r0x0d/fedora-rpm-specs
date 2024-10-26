@@ -1,5 +1,5 @@
 Name:           python-blosc2
-Version:        2.5.1
+Version:        2.7.1
 Release:        %autorelease
 Summary:        Python wrapper for the Blosc2 compression library
 License:        BSD-3-Clause
@@ -44,7 +44,10 @@ sed -r -i '/include_package_data=.*/a cmake_args=["-DUSE_SYSTEM_BLOSC2:BOOL=ON"]
     setup.py
 
 # Those dependencies are generated incorrectly
-sed -r -i 's/"(cmake|ninja)",//g; s/oldest-supported-//g' pyproject.toml
+sed -r -i 's/"(cmake|ninja)",//g;
+           s/oldest-supported-//g;
+           /numpy>=2.*/d;
+          ' pyproject.toml
 
 %generate_buildrequires
 %pyproject_buildrequires requirements-test-wheels.txt

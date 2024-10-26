@@ -7,7 +7,7 @@
 %global git_tree_state  clean
 %global criocli_path    ""
 
-Version:        1.29.4
+Version:        1.31.1
 
 %if 0%{?rhel} && 0%{?rhel} <= 9
 %define gobuild(o:) %{expand:
@@ -30,7 +30,7 @@ Version:        1.29.4
 
 Name:           cri-o
 Epoch:          0
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        Open Container Initiative-based implementation of Kubernetes Container Runtime Interface
 
 # Upstream license specification: Apache-2.0
@@ -222,6 +222,9 @@ sed -i -e 's/,metacopy=on//g' /etc/containers/storage.conf
 %endif
 
 %changelog
+* Thu Oct 24 2024 Dennis Gilmore <dennis@ausil.us> - 0:1.31.1-1
+- update to 1.31.1
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0:1.29.4-3
 - convert license to SPDX
 

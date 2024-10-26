@@ -7,54 +7,31 @@ The diff-cover command line tool compares an XML coverage report with the \
 output of git diff. It then reports coverage information for lines in the \
 diff.
 
-
 Name:           python-diff-cover
-Version:        7.3.2
-Release:        9%{?dist}
+Version:        9.2.0
+Release:        1%{?dist}
 BuildArch:      noarch
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 Summary:        Automatically find diff lines that need test coverage
-URL:            https://github.com/Bachmann1234/diff-cover/
+URL:            https://github.com/Bachmann1234/diff-cover
 Source0:        %{url}/archive/v%{version}/diff-cover-%{version}.tar.gz
 
-BuildRequires: git
 BuildRequires: help2man
 BuildRequires: python3-devel
-BuildRequires: python3-jinja2 >= 2.7.1
-BuildRequires: python3-jinja2_pluralize
 BuildRequires: python3-pytest
-BuildRequires: python3-pygments >= 2.0.1
-BuildRequires: python3-setuptools
-BuildRequires: python3-chardet >= 4
 BuildRequires: python3-pytest-mock
 BuildRequires: python3-pytest-datadir
-BuildRequires: (python3-tomli if python3 < 3.11)
 
 %description
 %{desc}
 
-
 %package -n python3-diff-cover
 Summary:        %{summary}
-
-# needed for the _git_root test
 Requires:       git
-# Required for the entry_point scripts
-Requires:       python3-setuptools
-# from requirements.txt
-Requires:       python3-jinja2 >= 2.7.1
-Requires:       python3-jinja2_pluralize
-Requires:       python3-pygments >= 2.0.1
-
-
-%{?python_provide:%python_provide python3-diff-cover}
-
 
 %description -n python3-diff-cover
 %{desc}
-
 
 %prep
 %autosetup -n diff_cover-%{version} -p1
@@ -62,15 +39,10 @@ Requires:       python3-pygments >= 2.0.1
 %generate_buildrequires
 %pyproject_buildrequires
 
-rm -rf diff_cover.egg-info
-
-
 %build
 %pyproject_wheel
 
-
 %install
-
 %pyproject_install
 mkdir -p %{buildroot}%{_mandir}/man1
 PYTHONPATH=%{buildroot}%{python3_sitelib} \
@@ -86,8 +58,7 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 
 %check
 # disable code quality checker tests, but run the rest.
-%pytest -k 'not diff_quality_tool and not TestDiffQualityIntegration and not TestFlake8QualityReporterTest'
-
+%pytest -k 'not TestDiffQualityIntegration and not TestFlake8QualityReporterTest'
 
 %files -n python3-diff-cover -f %{pyproject_files}
 %license LICENSE
@@ -98,6 +69,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %{_bindir}/diff-quality
 
 %changelog
+* Thu Oct 24 2024 Ali Erdinc Koroglu <aekoroglu@fedoraproject.org> - 9.2.0-1
+- Update to 9.2.0 (rhbz#2162160)
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 7.3.2-9
 - convert license to SPDX
 

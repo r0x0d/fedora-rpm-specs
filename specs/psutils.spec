@@ -101,7 +101,7 @@ signatures for booklet printing, and page merging for n-up printing.
 
 %package tests
 Summary:        Tests for %{name}
-License:        GPLv3+ and FSFULLR and MIT and FSFAP
+License:        GPL-3.0-or-later and FSFULLR and MIT and FSFAP
 Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 Requires:       coreutils
 Requires:       diffutils

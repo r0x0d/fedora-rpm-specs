@@ -1,12 +1,11 @@
 Name:           python-pygraphviz
-Version:        1.12
+Version:        1.14
 Release:        %autorelease
 Summary:        Create and Manipulate Graphs and Networks
 License:        BSD-3-Clause
 URL:            https://pygraphviz.github.io/
 VCS:            https://github.com/pygraphviz/pygraphviz
 Source0:        %{vcs}/archive/pygraphviz-%{version}.tar.gz
-Patch0:         pygraphviz-pygraphviz-1.11-Remove-outdated-pystrings.swg-508.patch
 
 BuildRequires:  make
 BuildRequires:  gcc
@@ -74,7 +73,10 @@ swig -python pygraphviz/graphviz.i
 %py3_shebang_fix examples
 
 # Skip the code coverage tests
-sed -i '/codecov/d' requirements/test.txt
+sed -i -e '/codecov/d' -e '/pytest-cov/d' requirements/test.txt
+
+# Downgrade the sphinx dependency. Docs seems to be build fine with 7.x.
+sed -i 's/sphinx>=8\.0/sphinx/' requirements/doc.txt
 
 %generate_buildrequires
 %pyproject_buildrequires requirements/{doc,test}.txt

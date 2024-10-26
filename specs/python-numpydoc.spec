@@ -1,6 +1,6 @@
 Name:           python-numpydoc
-Version:        1.7.0
-Release:        3%{?dist}
+Version:        1.8.0
+Release:        1%{?dist}
 Summary:        Sphinx extension to support docstrings in NumPy format
 
 License:        BSD-2-Clause
@@ -50,9 +50,12 @@ sed -i '\,#!/usr/bin/env python,d' numpydoc/validate.py
 
 %files -n python3-numpydoc -f %pyproject_files
 %doc README.rst
-%{_bindir}/validate-docstrings
+%{_bindir}/numpydoc
 
 %changelog
+* Thu Oct 24 2024 Orion Poplawski <orion@nwra.com> - 1.8.0-1
+- Update to 1.8.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.7.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

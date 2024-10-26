@@ -2,10 +2,9 @@
 
 Name:           mopidy-mpd
 Version:        3.3.0
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Mopidy extension for controlling Mopidy from MPD clients
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://mopidy.com/ext/mpd/
 Source0:        %{pypi_source}
@@ -35,7 +34,7 @@ rm MANIFEST.in
 %py3_install
 
 %check
-%{__python3} setup.py test
+%pytest tests
 
 %files
 %license LICENSE
@@ -45,6 +44,9 @@ rm MANIFEST.in
 
 
 %changelog
+* Thu Oct 24 2024 Tobias Girstmair <t-fedora@girst.at> - 3.3.0-10
+- move away from calling 'setup.py test' directly (RHBZ#2319635)
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 3.3.0-9
 - convert license to SPDX
 

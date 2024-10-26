@@ -1,13 +1,15 @@
 Name:    knotes
 Summary: Popup notes
 Version: 24.05.2
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 # Automatically converted from old format: GPLv2 and GFDL - review is highly recommended.
 License: GPL-2.0-only AND LicenseRef-Callaway-GFDL
 URL:     https://www.kde.org/applications/utilities/knotes/
 
 Source0: http://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
+
+Patch0:  kmime-headers.patch
 
 BuildRequires: desktop-file-utils
 BuildRequires: gettext
@@ -125,6 +127,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.%{
 
 
 %changelog
+* Thu Oct 24 2024 Alessandro Astone <ales.astone@gmail.com> - 24.05.2-4
+- Rebuild (kmime)
+- Add patch to find renamed headers
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 24.05.2-3
 - convert license to SPDX
 

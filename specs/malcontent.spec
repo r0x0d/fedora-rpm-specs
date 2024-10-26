@@ -1,10 +1,9 @@
 Name:           malcontent
-Version:        0.11.1
-Release:        7%{?dist}
+Version:        0.12.0
+Release:        1%{?dist}
 Summary:        Parental controls implementation
 
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.1-only AND CC-BY-3.0
 URL:            https://gitlab.freedesktop.org/pwithnall/malcontent/
 Source0:        %{url}/-/archive/%{version}/%{name}-%{version}.tar.bz2
 
@@ -158,6 +157,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/org.freed
 %{_libdir}/libmalcontent-0.so.*
 
 %changelog
+* Thu Oct 24 2024 Steve Cossette <farchord@gmail.com> - 0.12.0-1
+- 0.12.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 0.11.1-7
 - convert license to SPDX
 

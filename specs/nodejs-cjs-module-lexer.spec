@@ -19,12 +19,28 @@ Source3:     %{npm_name}-%{version}-bundled-licenses.txt
 # Binary files in this package are aimed at the wasm32-wasi "architecture".
 %global     _binaries_in_noarch_packages_terminate_build 0
 BuildArch:  noarch
-# LLVM/lld 19 added support for s390x
-%if 0%{?fedora} >= 41 || 0%{?rhel} >= 11
-ExclusiveArch: %{nodejs_arches} noarch
-%else
-ExclusiveArch: %{ix86} x86_64 aarch64 ppc64le riscv64 noarch
-%endif
+
+ExclusiveArch: %{lua:
+    -- Start from the full set of %nodejs_arches + noarch,
+    -- then remove the unsupported ones.
+    local valid_arches = {noarch = true}
+    for arch in macros.nodejs_arches:gmatch("[^%s]+") do
+        valid_arches[arch] = true
+    end
+
+    -- Need llvm >= 19 to support s390x
+    if (macros.fedora and tonumber(macros.fedora) < 41) or (macros.rhel and tonumber(macros.rhel) < 11) then
+        valid_arches["s390x"] = nil
+    end
+
+    -- Need binaryen for optimization, not built everywhere
+    if macros.with("wasm_opt") ~= "0" then
+        valid_arches["ppc64"] = nil
+        valid_arches["s390x"] = nil
+    end
+
+    for arch in pairs(valid_arches) do print(arch .. " ") end
+}
 
 BuildRequires: clang lld make wasi-libc-devel
 BuildRequires: nodejs-devel npm

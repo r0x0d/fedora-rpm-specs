@@ -1,9 +1,9 @@
 %global eppic_ver e8844d3793471163ae4a56d8f95897be9e5bd554
 %global eppic_shortver %(c=%{eppic_ver}; echo ${c:0:7})
 Name: makedumpfile
-Version: 1.7.5
+Version: 1.7.6
 Summary: make a small dumpfile of kdump
-Release: 13%{?dist}
+Release: 1%{?dist}
 
 License: GPL-2.0-only
 URL: https://github.com/makedumpfile/makedumpfile
@@ -26,10 +26,6 @@ BuildRequires: libzstd-devel
 BuildRequires: pkgconfig
 BuildRequires: intltool
 BuildRequires: gettext
-
-Patch0: 0001-PATCH-Fix-failure-of-hugetlb-pages-exclusion-on-Linu.patch
-Patch1: 0002-PATCH-Fix-wrong-exclusion-of-Slab-pages-on-Linux-6.1.patch
-Patch2: 0003-PATCH-Workaround-for-segfault-by-makedumpfile-mem-us.patch
 
 %description
 makedumpfile is a tool to compress and filter out unneeded data from kernel
@@ -62,6 +58,9 @@ install -m 755 -D eppic_makedumpfile.so %{buildroot}/%{_libdir}/eppic_makedumpfi
 %license COPYING
 
 %changelog
+* Wed Oct 23 2024 Lichen Liu <lichliu@redhat.com> - 1.7.6-1
+- Update to upstream 1.7.6
+
 * Thu Aug 08 2024 Coiby Xu <coxu@redhat.com> - 1.7.5-13
 - Workaround for segfault by "makedumpfile --mem-usage" on PPC64
 

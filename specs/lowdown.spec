@@ -1,5 +1,5 @@
 Name:           lowdown
-Version:        1.0.2
+Version:        1.1.2
 Release:        %autorelease
 Summary:        Simple markdown translator
 
@@ -13,10 +13,11 @@ Patch:          0001-Makefile-do-not-ignore-the-return-value-from-tests.patch
 
 BuildRequires:  make
 BuildRequires:  gcc
+BuildRequires:  libbsd-devel
 
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
-%global soversion 3
+%global soversion 1
 %global _docdir_fmt %{name}
 
 %description
@@ -58,7 +59,8 @@ This package provides the %{summary}.
 ./configure \
   PREFIX=%{_prefix} \
   LIBDIR=%{_libdir} \
-  MANDIR=%{_mandir}
+  MANDIR=%{_mandir} \
+  LDADD='-lbsd'
 # ensure LDFLAGS is passed correctly
 sed -i "s!^LDFLAGS.*!LDFLAGS = $LDFLAGS!" Makefile.configure 
 

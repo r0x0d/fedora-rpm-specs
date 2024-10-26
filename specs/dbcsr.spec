@@ -21,9 +21,9 @@
 
 Name: dbcsr
 # SONAME is based on major.minor version
-%global sover 2.6
+%global sover 2.7
 Version: %{sover}.0
-Release: 6%{?dist}
+Release: 1%{?dist}
 Summary: Distributed Block Compressed Sparse Row matrix library
 License: GPL-2.0-or-later
 URL: https://cp2k.github.io/dbcsr/develop/
@@ -32,21 +32,6 @@ Source0: https://github.com/cp2k/dbcsr/archive/%{commit}/dbcsr-%{shortcommit}.ta
 %else
 Source0: https://github.com/cp2k/dbcsr/releases/download/v%{version}/dbcsr-%{version}.tar.gz
 %endif
-# Fedora patches
-# patch to:
-# use rpm optflags
-# link with flexiblas instead of vanilla blas/lapack
-# build with libint and libxc
-# build shared libraries
-# Honor FFLAGS
-# https://github.com/cp2k/dbcsr/pull/700
-Patch: dbcsr-flags.patch
-# Allow install into _fmoddir
-# https://github.com/cp2k/dbcsr/pull/701
-Patch: dbcsr-fmoddir.patch
-# Add CMake PROCESSORS properties
-# https://github.com/cp2k/dbcsr/pull/757
-Patch: dbcsr-2.6.0-ctest-processors.patch
 BuildRequires: cmake
 BuildRequires: gcc-c++
 BuildRequires: gcc-gfortran
@@ -225,6 +210,9 @@ done
 %{_libdir}/mpich/lib/libdbcsr_c.so
 
 %changelog
+* Mon Oct 21 2024 Orion Poplawski <orion@nwra.com> - 2.7.0-1
+- Update to 2.7.0
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.6.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

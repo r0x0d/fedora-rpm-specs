@@ -1,11 +1,10 @@
 
 Name:		nfdump
-Version:	1.7.3
-Release:	5%{?dist}
+Version:	1.7.5
+Release:	1%{?dist}
 Summary:	NetFlow collecting and processing tools
 
-# Automatically converted from old format: BSD and GPLv2+ - review is highly recommended.
-License:	LicenseRef-Callaway-BSD AND GPL-2.0-or-later
+License:	BSD-3-Clause AND GPL-2.0-or-later
 URL:		https://github.com/phaag/nfdump
 Source0:	https://github.com/phaag/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
@@ -16,13 +15,11 @@ BuildRequires:	bzip2-devel
 BuildRequires:	doxygen
 BuildRequires:	flex
 BuildRequires:	gcc
-%if 0%{?fedora}
 BuildRequires:	libfl-static
-%endif
 BuildRequires:	libpcap-devel
 BuildRequires:	libtool
 BuildRequires:	make
-BuildRequires:	rrdtool-devel
+BuildRequires:	rrdtool-devel >= 1.9.0
 BuildRequires:	sed
 BuildRequires:	libzstd-devel
 
@@ -44,7 +41,7 @@ Contains libraries used by NFDUMP utilities
 
 
 %prep
-%setup -q
+%autosetup
 
 %build
 # prepare build script
@@ -83,11 +80,14 @@ rm -f %{buildroot}%{_libdir}/*.la
 %{_mandir}/man1/*.1*
 
 %files libs
-%{_libdir}/libnfdump-%{version}.so
-%{_libdir}/libnfdump.so
+%{_libdir}/libnfdump*.so
+%{_libdir}/libnffile*.so
 
 
 %changelog
+* Thu Oct 24 2024 Denis Fateyev <denis@fateyev.com> - 1.7.5-1
+- Update to version 1.7.5
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.7.3-5
 - convert license to SPDX
 

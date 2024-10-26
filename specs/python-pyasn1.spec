@@ -3,7 +3,7 @@
 
 Name:           python-pyasn1
 Version:        0.6.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        ASN.1 tools for Python
 License:        BSD-2-Clause
 Source0:        https://github.com/pyasn1/pyasn1/archive/v%{version}.tar.gz
@@ -17,9 +17,8 @@ language.
 
 %package -n python3-pyasn1
 Summary:    ASN.1 tools for Python 3
-%{?python_provide:%python_provide python3-pyasn1}
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
+BuildRequires:  python3-pytest
 
 %description -n python3-pyasn1
 This is an implementation of ASN.1 types and codecs in the Python 3 programming
@@ -28,7 +27,6 @@ language.
 %package -n python3-pyasn1-modules
 Summary:    Modules for pyasn1
 Requires:   python3-pyasn1 >= 0.4.7, python3-pyasn1 < 0.7.0
-%{?python_provide:%python_provide python3-modules}
 
 %description -n python3-pyasn1-modules
 ASN.1 types modules for python3-pyasn1.
@@ -46,11 +44,15 @@ BuildRequires:  python3-sphinx
 %setup -n %{module}-%{version} -q -b1
 
 
+%generate_buildrequires
+%pyproject_buildrequires
+
+
 %build
-%py3_build
+%pyproject_wheel
 
 pushd ../pyasn1-modules-%{modules_version}
-%py3_build
+%pyproject_wheel
 popd
 
 pushd docs
@@ -59,32 +61,31 @@ popd
 
 
 %install
-%py3_install
-
-pushd ../pyasn1-modules-%{modules_version}
-%py3_install
-popd
+%pyproject_install
 
 
 %check
-PYTHONPATH=%{buildroot}%{python3_sitelib} %{__python3} setup.py test
+%pytest
 
 
 %files -n python3-pyasn1
 %doc README.md
 %license LICENSE.rst
 %{python3_sitelib}/%{module}
-%{python3_sitelib}/%{module}-%{version}-*.egg-info/
+%{python3_sitelib}/%{module}-%{version}.dist-info/
 
 %files -n python3-pyasn1-modules
 %{python3_sitelib}/%{module}_modules/
-%{python3_sitelib}/%{module}_modules-%{modules_version}-*.egg-info/
+%{python3_sitelib}/%{module}_modules-%{modules_version}.dist-info/
 
 %files doc
 %license LICENSE.rst
 %doc docs/build/html/*
 
 %changelog
+* Fri Oct 18 2024 Rob Crittenden <rcritten@redhat.com> - 0.6.1-2
+- Convert to the pyproject macros (#2319694)
+
 * Fri Sep 20 2024 Simon Pichugin <spichugi@redhat.com> - 0.6.1-1
 - Update to 0.6.1
 - Update modules to 0.4.1

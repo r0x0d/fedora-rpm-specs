@@ -1,4 +1,4 @@
-%global glibcsrcdir glibc-2.40.9000-247-g9d4b4515a8
+%global glibcsrcdir glibc-2.40.9000-257-gc5dd659f22
 %global glibcversion 2.40.9000
 # Pre-release tarballs are pulled in from git using a command that is
 # effectively:
@@ -169,7 +169,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 7
+%global baserelease 8
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -2586,6 +2586,20 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Thu Oct 24 2024 Patsy Griffin <patsy@redhat.com> - 2.40.9000-8
+- Auto-sync with upstream branch master,
+  commit c5dd659f22058bf9b371ab1cba07631f1206c674.
+- Add more tests of pthread_mutexattr_gettype and pthread_mutexattr_settype
+- libio: Fix a deadlock after fork in popen
+- configure: default to --prefix=/usr on GNU/Linux
+- manual: Document stdio.h functions that may be macros
+- Check time arguments to pthread_timedjoin_np and pthread_clockjoin_np
+- Add .b4-config file
+- linux: Fix tst-syscall-restart.c on old gcc (BZ 32283)
+- sparc: Fix restartable syscalls (BZ 32173)
+- support: Make support_process_state_wait return the found state
+- Enable transliteration rules with two input characters in scn_IT [BZ #32280]
+
 * Mon Oct 14 2024 DJ Delorie <dj@redhat.com> - 2.40.9000-7
 - Auto-sync with upstream branch master,
   commit 9d4b4515a88c5d0bbfc7809374f322c507c2d779.

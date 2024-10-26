@@ -1,5 +1,5 @@
 Name:           thonny
-Version:        4.1.4
+Version:        4.1.6
 Release:        %autorelease
 Summary:        Python IDE for beginners
 

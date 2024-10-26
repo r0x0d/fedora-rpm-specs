@@ -4,7 +4,7 @@
 
 Name: elfutils
 Version: 0.192
-%global baserelease 3
+%global baserelease 4
 Release: %{baserelease}%{?dist}
 URL: http://elfutils.org/
 %global source_url ftp://sourceware.org/pub/elfutils/%{version}/
@@ -15,6 +15,13 @@ Summary: A collection of utilities and DSOs to handle ELF files and DWARF data
 
 # Needed for isa specific Provides and Requires.
 %global depsuffix %{?_isa}%{!?_isa:-%{_arch}}
+
+# eu-stacktrace currently only supports x86_64
+%ifarch x86_64
+%global enable_stacktrace 1
+%else
+%global enable_stacktrace 0
+%endif
 
 Requires: elfutils-libelf%{depsuffix} = %{version}-%{release}
 Requires: elfutils-libs%{depsuffix} = %{version}-%{release}
@@ -52,6 +59,13 @@ BuildRequires: bsdtar
 BuildRequires: curl
 # For run-debuginfod-response-headers.sh test case
 BuildRequires: socat
+# For run-debuginfod-find-metadata.sh
+BuildRequires: jq
+
+# For eu-stacktrace
+%if %{enable_stacktrace}
+BuildRequires: sysprof-capture-devel
+%endif
 
 BuildRequires: automake
 BuildRequires: autoconf
@@ -79,6 +93,9 @@ Patch1: elfutils-0.186-fdo-swap.patch
 
 # Include libeu.a objects in libelf.a for static linking.
 Patch2: elfutils-0.192-libelf-static.patch
+
+# Fix eu-stacktrace build with lto enabled.
+Patch3: elfutils-0.192-stacktrace-lto.patch
 
 %description
 Elfutils is a collection of utilities, including stack (to show
@@ -305,11 +322,14 @@ trap 'cat config.log' EXIT
 # dist_debuginfod_url is defined in macros.dist. Fedora and CentOS have
 # URLs pointing to their respective servers.  RHEL and Amazon Linux do
 # not configure a default server.
+%configure CFLAGS="$RPM_OPT_FLAGS" \
 %if "%{?dist_debuginfod_url}"
-%configure CFLAGS="$RPM_OPT_FLAGS" --enable-debuginfod-urls=%{dist_debuginfod_url}
-%else
-%configure CFLAGS="$RPM_OPT_FLAGS"
+	--enable-debuginfod-urls=%{dist_debuginfod_url} \
 %endif
+%if %{enable_stacktrace}
+	--enable-stacktrace \
+%endif
+	--enable-debuginfod
 trap '' EXIT
 %make_build
 
@@ -385,6 +405,9 @@ fi
 %{_bindir}/eu-size
 %{_bindir}/eu-srcfiles
 %{_bindir}/eu-stack
+%if %{enable_stacktrace}
+%{_bindir}/eu-stacktrace
+%endif
 %{_bindir}/eu-strings
 %{_bindir}/eu-strip
 %{_bindir}/eu-unstrip
@@ -492,6 +515,10 @@ exit 0
 %systemd_postun_with_restart debuginfod.service
 
 %changelog
+* Thu Oct 24 2024 Mark Wielaard <mjw@fedoraproject.org> - 0.192-4
+- Add elfutils-0.192-stacktrace-lto.patch
+- Enable eu-stacktrace on x86_64
+
 * Tue Oct 22 2024 Aaron Merey <amerey@fedoraproject.org> - 0.192-3
 - Add elfutils-0.192-libelf-static.patch
 

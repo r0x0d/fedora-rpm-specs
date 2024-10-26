@@ -20,6 +20,9 @@ Summary:        Simple Python interface for Graphviz
 License:        MIT
 URL:            https://github.com/xflr6/graphviz
 Source0:        %url/archive/%{version}/%{srcname}-%{version}.tar.gz
+# Do not depend on separate mock module
+# Do not pull in coverage deps
+Patch0:         python-graphviz-deps.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -54,7 +57,7 @@ echo "graphviz"
 %pyproject_wheel
 
 # generate html docs
-PYTHONPATH=%{pyproject_build_lib} sphinx-build docs html
+PYTHONPATH=$PWD/build/lib sphinx-build docs html
 # remove the sphinx-build leftovers
 rm -rf html/.{doctrees,buildinfo}
 

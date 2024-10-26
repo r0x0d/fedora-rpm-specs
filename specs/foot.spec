@@ -1,14 +1,9 @@
 %global foot_terminfo foot-extra
-
-%if 0%{?fedora} >= 39
 %global default_terminfo foot
-%else
-%global default_terminfo %{foot_terminfo}
-%endif
 
 Name:           foot
-Version:        1.18.1
-Release:        2%{?dist}
+Version:        1.19.0
+Release:        1%{?dist}
 Summary:        Fast, lightweight and minimalistic Wayland terminal emulator
 
 # Main package license: MIT
@@ -22,7 +17,7 @@ Source2:        gpgkey-5BBD4992C116573F.asc
 
 BuildRequires:  gcc
 BuildRequires:  gnupg2
-BuildRequires:  meson >= 0.58.0
+BuildRequires:  meson >= 0.59.0
 BuildRequires:  desktop-file-utils
 BuildRequires:  libappstream-glib
 BuildRequires:  python3
@@ -44,14 +39,8 @@ BuildRequires:  pkgconfig(xkbcommon)
 # require *-static for header-only library
 BuildRequires:  tllist-static
 
-# select provider of 'foot' terminfo entry
-%if "%{default_terminfo}" == "%{foot_terminfo}"
-Recommends:     %{name}-terminfo
-%else
 Recommends:     ncurses-base
 Requires:       (ncurses-base >= 6.4-5.20230520 if ncurses-base)
-%endif
-
 # require matching version of foot-terminfo if installed
 Requires:       (%{name}-terminfo = %{version}-%{release} if %{name}-terminfo)
 
@@ -113,7 +102,7 @@ rm %{buildroot}%{_docdir}/%{name}/LICENSE
 %meson_test
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 desktop-file-validate \
-    %{buildroot}/%{_datadir}/applications/org.codeberg.dnkl.%{name}*.desktop
+    %{buildroot}/%{_datadir}/applications/%{name}*.desktop
 
 
 %post
@@ -129,7 +118,7 @@ desktop-file-validate \
 %{_bindir}/%{name}
 %{_bindir}/%{name}client
 %{_datadir}/%{name}/
-%{_datadir}/applications/org.codeberg.dnkl.%{name}*.desktop
+%{_datadir}/applications/%{name}*.desktop
 %{_datadir}/icons/hicolor/48x48/apps/%{name}.png
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 %{_metainfodir}/org.codeberg.dnkl.foot.metainfo.xml
@@ -154,6 +143,9 @@ desktop-file-validate \
 
 
 %changelog
+* Thu Oct 24 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 1.19.0-1
+- Update to 1.19.0 (#2321289)
+
 * Tue Oct 08 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 1.18.1-2
 - Rebuilt for utf8proc 2.9.0
 

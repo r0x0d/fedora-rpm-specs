@@ -3,7 +3,7 @@
 
 Name:      optee_os
 Version:   4.4.0
-Release:   1%{?dist}
+Release:   2%{?dist}
 Summary:   Trusted side of the TEE
 
 # The TEE core of optee_os is provided under the BSD 2-Clause license. But
@@ -21,6 +21,8 @@ BuildRequires: make
 BuildRequires: python3-cryptography
 BuildRequires: python3-pyelftools
 
+ExclusiveArch: aarch64
+
 %description
 OP-TEE is a Trusted Execution Environment (TEE) designed as companion to a
 non-secure Linux kernel running on Arm; Cortex-A cores using the TrustZone
@@ -30,7 +32,6 @@ exposed to Trusted Applications.
 Note: the contents of this package are generally just consumed by bootloaders
 such as u-boot. As such the binaries aren't of general interest to users.
 
-%ifarch aarch64
 %package     -n optee-os-firmware-armv8
 Summary:     OP-TEE Firmware for ARMv8-A
 BuildArch:   noarch
@@ -40,27 +41,21 @@ OP-TEE firmware for various ARMv8-A SoCs.
 
 Note: the contents of this package are generally just consumed by bootloaders
 such as u-boot. As such the binaries aren't of general interest to users.
-%endif
 
 %prep
 %autosetup -n %{name}-%{version} -p1
 
 %build
-
 %undefine _auto_set_build_flags
 
-%ifarch aarch64
 # For now only secure firmwares for TI platforms are built
 make HOSTCC="gcc $RPM_OPT_FLAGS" CROSS_COMPILE64="" CROSS_COMPILE=arm-linux-gnu- PLATFORM=k3-j721e CFG_ARM64_core=y O=out/k3-j721e
 make HOSTCC="gcc $RPM_OPT_FLAGS" CROSS_COMPILE64="" CROSS_COMPILE=arm-linux-gnu- PLATFORM=k3-j784s4 CFG_ARM64_core=y CFG_CONSOLE_UART=0x8 O=out/k3-j784s4
 make HOSTCC="gcc $RPM_OPT_FLAGS" CROSS_COMPILE64="" CROSS_COMPILE=arm-linux-gnu- PLATFORM=k3-am62x CFG_ARM64_core=y CFG_WITH_SOFTWARE_PRNG=y O=out/k3-am62x
 make HOSTCC="gcc $RPM_OPT_FLAGS" CROSS_COMPILE64="" CROSS_COMPILE=arm-linux-gnu- PLATFORM=rockchip-rk3399 CFG_ARM64_core=y O=out/rockchip-rk3399
 make HOSTCC="gcc $RPM_OPT_FLAGS" CROSS_COMPILE64="" CROSS_COMPILE=arm-linux-gnu- PLATFORM=sunxi-sun50i_a64 CFG_ARM64_core=y O=out/sunxi-sun50i_a64
-%endif
-
 
 %install
-
 mkdir -p %{buildroot}%{_datadir}/%{name}
 
 %ifarch aarch64
@@ -87,14 +82,15 @@ install -p -m 0644 out/sunxi-sun50i_a64/core/tee-raw.bin /%{buildroot}%{_datadir
 install -p -m 0644 out/sunxi-sun50i_a64/core/tee-pager_v2.bin /%{buildroot}%{_datadir}/%{name}/sunxi-sun50i_a64/
 %endif
 
-%ifarch aarch64
 %files -n optee-os-firmware-armv8
 %license LICENSE
 %doc README.md
 %{_datadir}/%{name}
-%endif
 
 %changelog
+* Wed Oct 23 2024 Zbigniew Jedrzejewski-Szmek <zbyszek@in.waw.pl> - 4.4.0-2
+- Only build on aarch64
+
 * Mon Oct 21 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 4.4.0-1
 - Update to 4.4.0
 

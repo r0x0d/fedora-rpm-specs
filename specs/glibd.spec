@@ -3,7 +3,7 @@ Version:        2.4.3
 Release:        3%{?dist}
 Summary:        D bindings for the GLib C Utility Library
 
-License:        LGPLv3+ with exceptions
+License:        LGPL-3.0-or-later
 URL:            https://github.com/gtkd-developers/GlibD
 Source0:        %{url}/archive/v%{version}/GlibD-%{version}.tar.gz
 

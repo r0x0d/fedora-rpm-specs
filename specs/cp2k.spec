@@ -46,6 +46,11 @@ Patch:         fix_regtest.patch
 # Patch for libxc 7 support
 Patch:         cp2k-2024.1-libxc7.patch
 
+# https://github.com/cp2k/cp2k/pull/3741
+Patch:         0001-Sort-items-in-code-generated-using-fypp.patch
+Patch:         0002-Sort-items-returned-from-various-collect_-_deps-func.patch
+Patch:         0003-Avoid-unnecessary-temporary-list-in-one-more-place.patch
+
 # Build dependencies
 BuildRequires: cmake
 BuildRequires: gcc-gfortran
@@ -160,13 +165,10 @@ rm tools/build_utils/fypp
 rm -r exts/dbcsr
 
 # Fix test files
-%{__python3} %{_rpmconfigdir}/redhat/pathfix.py -i "%{__python3} -Es" -p $(find . -type f -name *.py)
+%{python3} %{_rpmconfigdir}/redhat/pathfix.py -i "%{python3} -Es" -p $(find . -type f -name *.py)
 
 # $MPI_SUFFIX will be evaluated in the loops below, set by mpi modules
 %global _vpath_builddir %{_vendor}-%{_target_os}-build${MPI_SUFFIX:-_serial}
-# We are running the module load/unload manually until there is a macro-like way to expand this
-. /etc/profile.d/modules.sh
-
 
 %build
 cmake_common_args=(

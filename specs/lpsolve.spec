@@ -1,6 +1,6 @@
 Name:       lpsolve
 Version:    5.5.2.11
-Release:    6%{?dist}
+Release:    7%{?dist}
 Summary:    Mixed Integer Linear Programming (MILP) solver
 # bfp/bfp_LUSOL/lp_LUSOL.c:             LGPL-2.1-or-later
 # lp_crash.c:       LGPL-2.1-or-later
@@ -91,7 +91,7 @@ install -p -m 755 \
 install -p -m 755 \
         lpsolve55/bin/ux*/liblpsolve55.so %{buildroot}%{_libdir}
 install -p -m 644 \
-        lp*.h %{buildroot}%{_includedir}/lpsolve
+        lp*.h yacc_read.h %{buildroot}%{_includedir}/lpsolve
 
 %check
 LP_PATH="$(echo lpsolve55/bin/ux*)"
@@ -115,6 +115,9 @@ LD_LIBRARY_PATH="$LP_PATH" ./a.out </dev/null
 %{_includedir}/lpsolve
 
 %changelog
+* Thu Oct 24 2024 Petr Pisar <ppisar@redhat.com> - 5.5.2.11-7
+- Package yacc_read.h
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.5.2.11-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

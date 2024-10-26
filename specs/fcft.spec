@@ -1,8 +1,8 @@
 %global abi_ver 4
 
 Name:           fcft
-Version:        3.1.8
-Release:        3%{?dist}
+Version:        3.1.9
+Release:        1%{?dist}
 Summary:        Simple library for font loading and glyph rasterization
 
 # main source:  MIT
@@ -10,9 +10,13 @@ Summary:        Simple library for font loading and glyph rasterization
 # nanosvg:      Zlib
 License:        MIT AND Unicode-DFS-2016 AND Zlib
 URL:            https://codeberg.org/dnkl/%{name}
-Source0:        %{url}/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        %{url}/releases/download/%{version}/%{name}-%{version}.tar.gz
+Source1:        %{url}/releases/download/%{version}/%{name}-%{version}.tar.gz.sig
+# Daniel Eklöf (Git signing) <daniel@ekloef.se>
+Source2:        gpgkey-5BBD4992C116573F.asc
 
 BuildRequires:  gcc
+BuildRequires:  gnupg2
 BuildRequires:  meson >= 0.58.0
 
 BuildRequires:  pkgconfig(check)
@@ -29,7 +33,7 @@ BuildRequires:  tllist-static
 BuildRequires:  font(dejavuserif)
 BuildRequires:  font(notocoloremoji)
 
-Provides:       bundled(nanosvg) = 0^20221204g9da543e
+Provides:       bundled(nanosvg) = 0^20231229g93ce879
 
 %description
 fcft is a small font loading and glyph rasterization library built
@@ -48,7 +52,8 @@ developing applications that use %{name}.
 
 
 %prep
-%autosetup -n %{name}
+%{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
+%autosetup -p1
 cp 3rd-party/nanosvg/LICENSE.txt LICENSE.nanosvg
 cp unicode/LICENSE LICENSE.Unicode
 
@@ -86,6 +91,10 @@ rm -f %{buildroot}%{_docdir}/%{name}/LICENSE
 
 
 %changelog
+* Thu Oct 24 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 3.1.9-1
+- Update to 3.1.9 (#2321265)
+- Verify source signature
+
 * Tue Oct 08 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 3.1.8-3
 - Rebuilt for utf8proc 2.9.0
 

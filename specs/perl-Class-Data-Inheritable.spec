@@ -6,26 +6,24 @@
 %endif
 
 Name:           perl-Class-Data-Inheritable
-Version:        0.09
-Release:        9%{?dist}
+Version:        0.10
+Release:        1%{?dist}
 Summary:        Inheritable, overridable class data
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Class-Data-Inheritable
-# has non-free and outdated jp docs
+# has non-free and possibly outdated jp docs
 # rm -rf doc
 # Source0:      https://cpan.metacpan.org/modules/by-module/Class/Class-Data-Inheritable-%%{version}.tar.gz
 Source0:        Class-Data-Inheritable-%{version}-clean.tar.gz
 BuildArch:      noarch
 BuildRequires:  coreutils
-BuildRequires:  findutils
 BuildRequires:  make
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 # Run-time:
 BuildRequires:  perl(Carp)
 BuildRequires:  perl(strict)
-BuildRequires:  perl(vars)
 # Tests:
 BuildRequires:  perl(base)
 BuildRequires:  perl(Test::More)
@@ -34,6 +32,7 @@ BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Test::Pod) >= 1.00
 BuildRequires:  perl(Test::Pod::Coverage) >= 1.00
 %endif
+# Dependencies
 Requires:       perl(Carp)
 
 %description
@@ -46,12 +45,11 @@ is then inherited by your sub-classes and can be overridden.
 %setup -q -n Class-Data-Inheritable-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
-make
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 %{_fixperms} -c %{buildroot}
 
 %check
@@ -62,6 +60,11 @@ make test
 %{_mandir}/man3/Class::Data::Inheritable.3*
 
 %changelog
+* Thu Oct 24 2024 Paul Howarth <paul@city-fan.org> - 0.10-1
+- Update to 0.10
+  - Don't use vars, use our
+- Use %%{make_build} and %%{make_install}
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.09-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

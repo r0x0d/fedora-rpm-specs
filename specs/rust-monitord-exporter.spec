@@ -4,17 +4,13 @@
 %global crate monitord-exporter
 
 Name:           rust-monitord-exporter
-Version:        0.3.0
+Version:        0.4.1
 Release:        %autorelease
 Summary:        Let Prometheus know how happy your systemd is
 
 License:        GPL-2.0-or-later
 URL:            https://crates.io/crates/monitord-exporter
 Source:         %{crates_source}
-# * Switch license file from LGPL 2.1 to GPL 2
-Patch2:        https://github.com/cooperlees/monitord-exporter/commit/10a3ea3f61a579b218c52c8b9ee86eb41a660958.patch
-# * Make unit file match RPM default install location
-Patch3:        https://github.com/cooperlees/monitord-exporter/commit/79bf2dc9b36a0100aa3bcd142aac1508c7f664ad.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 BuildRequires:  systemd-rpm-macros
@@ -31,13 +27,14 @@ Summary:        %{summary}
 # Apache-2.0 OR BSL-1.0
 # Apache-2.0 OR MIT
 # Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
+# BSD-2-Clause OR Apache-2.0 OR MIT
 # GPL-2.0-or-later
 # MIT
 # MIT OR Apache-2.0
 # MIT OR LGPL-3.0-or-later
 # MIT OR Zlib OR Apache-2.0
 # Unlicense OR MIT
-License:        (0BSD OR MIT OR Apache-2.0) AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND GPL-2.0-or-later AND MIT AND (MIT OR Apache-2.0) AND (MIT OR LGPL-3.0-or-later) AND (MIT OR Zlib OR Apache-2.0) AND (Unlicense OR MIT)
+License:        GPL-2.0-or-later AND (0BSD OR MIT OR Apache-2.0) AND Apache-2.0 AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND (BSD-2-Clause OR Apache-2.0 OR MIT) AND MIT AND (MIT OR LGPL-3.0-or-later) AND (MIT OR Zlib OR Apache-2.0) AND (Unlicense OR MIT)
 # LICENSE.dependencies contains a full license breakdown
 
 %description -n %{crate} %{_description}

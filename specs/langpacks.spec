@@ -1,16 +1,11 @@
 Name:      langpacks
-Version:   4.1
-Release:   3%{?dist}
+Version:   4.2
+Release:   1%{?dist}
 Summary:   Langpacks meta-package
 
 License:   GPL-2.0-or-later
 BuildArch: noarch
 BuildRequires: python3 fontconfig
-# Below Source was available on https://people.freedesktop.org/~hughsient/temp/
-Source0:   org.fedoraproject.LangPacks.xml
-Source1:   org.fedoraproject.LangPacks-Core.xml
-Source2:   org.fedoraproject.default-fonts.xml
-Source3:   org.fedoraproject.langpacks-fonts.xml
 Source4:   normlang.py
 
 # to split up the AppStream file
@@ -458,6 +453,17 @@ local langpacks_package_list = {
           recommends={}
    },
  },
+ { lang="got", fclang="", langname="Gothic", default={
+                sans="google-noto-sans-gothic-fonts",
+                serif="",
+                mono="" },
+   recommends={
+              },
+   inputmethod="",
+   meta={ requires={},
+          recommends={}
+   },
+ },
  { lang="gu", fclang="", langname="Gujarati", default={
                 sans="google-noto-sans-gujarati-vf-fonts",
                 serif="google-noto-serif-gujarati-vf-fonts",
@@ -607,6 +613,16 @@ local langpacks_package_list = {
    meta={ requires={},
           recommends={},
            fedora_recommends={ "(uim-anthy if uim)" }
+   },
+ },
+ { lang="kab", fclang="", langname="Kabyle", default={
+                 sans="",
+                 serif="",
+                 mono="" },
+   recommends={ "google-noto-sans-tifinagh-fonts" },
+   inputmethod="",
+   meta={ requires={},
+          recommends={}
    },
  },
  { lang="ka", fclang="", langname="Georgian", default={
@@ -860,6 +876,17 @@ local langpacks_package_list = {
           recommends={}
    },
  },
+ { lang="nqo", fclang="", langname="N'Ko", default={
+                 sans="google-noto-sans-nko-fonts",
+                 serif="",
+                 mono="" },
+   recommends={
+              },
+   inputmethod="",
+   meta={ requires={},
+          recommends={}
+   },
+ },
  { lang="nr", fclang="", langname="Southern Ndebele", default={
                 sans="",
                 serif="",
@@ -1042,6 +1069,17 @@ local langpacks_package_list = {
                 sans="",
                 serif="",
                 mono="" },
+   recommends={
+              },
+   inputmethod="",
+   meta={ requires={},
+          recommends={}
+   },
+ },
+ { lang="syr", fclang="", langname="Syriac", default={
+                 sans="google-noto-sans-syriac-vf-fonts",
+                 serif="",
+                 mono="" },
    recommends={
               },
    inputmethod="",
@@ -1439,6 +1477,93 @@ This package provides %{_langname} langpacks meta-package.
   rpm.undefine("_req")
 end
 
+--
+--AppStream template
+--
+local function defappstream_open(fname)
+  return "cat <<_EOL_>" .. fname .. "\\\n" .. [[
+<?xml version=\"1.0\" encoding=\"UTF-8\"?>\
+<components origin=\"langpacks\">\
+]]
+end
+
+local function defappstream_close(f)
+  local s = f .. [[</components>\
+_EOL_
+]]
+  return s
+end
+
+local function defappstream_body(f, component, id, lang, fclang, name, summary, desc)
+  if lang ~= fclang and fclang ~= "" then
+    return f
+  end
+  local _id = (lang == "" and id or id .. "-" .. lang)
+  local _summary = (lang == "" and summary or summary .. " for " .. name)
+  local s = f .. [[
+  <component type=\"]] .. component .. [[\">\
+    <metadata_license>CC0-1.0</metadata_license>\
+    <id>org.fedoraproject.]] .. _id .. [[</id>\
+    <name>]] .. name .. [[</name>\
+    <summary>]] .. _summary .. [[</summary>\
+    <description>\
+      <p>\
+        ]] .. desc .. [[\
+      </p>\
+    </description>\
+  </component>\
+]]
+  return s
+end
+
+local function defappstream_metabody(f, id, name)
+  f = defappstream_body(f, "font", "default-fonts-" .. id, "sans", "", name, "sans-serif default font", "sans-serif font package to install default font for " .. name .. " languages.")
+  f = defappstream_body(f, "font", "default-fonts-" .. id, "serif", "", name, "serif default font", "serif font package to install default font for " .. name .. " languages.")
+  f = defappstream_body(f, "font", "default-fonts-" .. id, "mono", "", name, "monospace default font", "monospace font package to install default font for " .. name .. " languages.")
+  return f
+end
+
+local function defappstream(table)
+  local slpc = defappstream_open("org.fedoraproject.LangPacks-Core.xml")
+  local slp = defappstream_open("org.fedoraproject.LangPacks.xml")
+  local sdf = defappstream_open("org.fedoraproject.default-fonts.xml")
+  local slf = defappstream_open("org.fedoraproject.langpacks-fonts.xml")
+
+  --
+  -- default-fonts
+  --
+  sdf = defappstream_body(sdf, "font", "default-fonts", "", "", "default-fonts", "All default fonts for all the languages", "Meta-package to install all the default fonts for all the languages.")
+  --
+  -- default-fonts-core
+  --
+  sdf = defappstream_body(sdf, "font", "default-fonts", "core", "", "Latin", "All variants default fonts", "sans-serif/serif/monospace/emoji/math font packages to install default fonts for Latin.")
+  sdf = defappstream_metabody(sdf, "core", "Latin")
+  sdf = defappstream_body(sdf, "font", "default-fonts-core", "emoji", "", "Emoji", "default font", "emoji font package to install default font.")
+  sdf = defappstream_body(sdf, "font", "default-fonts-core", "math", "", "Math", "default font", "math font package to install default font.")
+  --
+  -- default-fonts-other
+  --
+  sdf = defappstream_body(sdf, "font", "default-fonts", "other", "", "non-CJK", "All variants default fonts", "sans-serif/serif/monospace font packages to install default fonts for non-CJK languages.")
+  sdf = defappstream_metabody(sdf, "other", "non-CJK")
+  --
+  -- default-fonts-cjk
+  --
+  sdf = defappstream_body(sdf, "font", "default-fonts", "cjk", "", "Chinese/Japanese/Korean", "All variants default fonts", "sans-serif/serif/monospace font packages to install default fonts for CJK languages.")
+  sdf = defappstream_metabody(sdf, "cjk", "Chinese/Japanese/Korean")
+
+  for i = 1, #table do
+    slpc = defappstream_body(slpc, "localization", "LangPack-Core", table[i]["lang"], table[i]["lang"], table[i]["langname"], "Core Localization support", "Core Meta-package to install default font, glibc locale and input-method if available.")
+    slp = defappstream_body(slp, "localization", "LangPack", table[i]["lang"], table[i]["lang"], table[i]["langname"], "Localization support", "Meta-package to install available langpacks for the language available for the installed packages.")
+    sdf = defappstream_body(sdf, "font", "default-fonts", table[i]["lang"], table[i]["fclang"], table[i]["langname"], "Localization Font support", "Core font package to install default font.")
+    slf = defappstream_body(slf, "font", "langpacks-fonts", table[i]["lang"], table[i]["fclang"], table[i]["langname"], "Localization Font support", "Meta-package to install extra font.")
+  end
+
+  rpm.define("langpacks_metainfo_lpc " .. defappstream_close(slpc))
+  rpm.define("langpacks_metainfo_lp " .. defappstream_close(slp))
+  rpm.define("langpacks_metainfo_df " .. defappstream_close(sdf))
+  rpm.define("langpacks_metainfo_lf " .. defappstream_close(slf))
+end
+
 local other_deps = { sans={}, serif={}, mono={} }
 local cjk_deps = { sans={}, serif={}, mono={} }
 local face = { "sans", "serif", "mono" }
@@ -1555,6 +1680,9 @@ for i = 1, #langpacks_package_list do
   defmetapkg(lang, fclang, langname, deps)
 end
 
+--Generate AppStream files
+defappstream(langpacks_package_list)
+
 --Special care of cjk-sans to reduce extra sub-packages and dependencies like core-sans
 for i = 1, #core_font_package_list["cjk"]["sans"] do
   table.insert(cjk_sans_deps, core_font_package_list["cjk"]["sans"][i])
@@ -1645,19 +1773,29 @@ meta packages for non-CJK languages.
 # nothing to prep
 
 %build
-# nothing to build
+%{langpacks_metainfo_lpc}
+%{langpacks_metainfo_lp}
+%{langpacks_metainfo_df}
+%{langpacks_metainfo_lf}
 
 
 %install
 # Explode the metainfo files into the subpackages so they get added to the
 # distro-specific AppStream metadata
 mkdir -p %{buildroot}/usr/share/metainfo
-DESTDIR=%{buildroot} appstream-util split-appstream %{SOURCE0}
-DESTDIR=%{buildroot} appstream-util split-appstream %{SOURCE1}
-DESTDIR=%{buildroot} appstream-util split-appstream %{SOURCE2}
-DESTDIR=%{buildroot} appstream-util split-appstream %{SOURCE3}
+DESTDIR=%{buildroot} appstream-util split-appstream org.fedoraproject.LangPacks-Core.xml
+DESTDIR=%{buildroot} appstream-util split-appstream org.fedoraproject.LangPacks.xml
+DESTDIR=%{buildroot} appstream-util split-appstream org.fedoraproject.default-fonts.xml
+DESTDIR=%{buildroot} appstream-util split-appstream org.fedoraproject.langpacks-fonts.xml
 
 %changelog
+* Tue Oct 22 2024 Akira TAGOH <tagoh@redhat.com> - 4.2-1
+- Add sub-packages:
+  - got for Gothic
+  - kab for Kabyle
+  - nqo for N'Ko
+  - syr for Syriac
+
 * Tue Aug 13 2024 Akira TAGOH <tagoh@redhat.com> - 4.1-3
 - Update package names for renaming
   google-noto-sans-symbols2-fonts -> google-noto-sans-symbols-2-fonts

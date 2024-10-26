@@ -1,14 +1,15 @@
 Name: libmodbus
-Version: 3.1.7
-Release: 6%{?dist}
+Version: 3.1.11
+Release: 1%{?dist}
 Summary: A Modbus library
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License: LicenseRef-Callaway-LGPLv2+
 URL: http://www.libmodbus.org/
 
-Source0: http://libmodbus.org/site_media/build/libmodbus-%{version}.tar.gz
+Source0: https://github.com/stephane/libmodbus/releases/download/v%{version}/libmodbus-%{version}.tar.gz
+Patch 0: libmodbus-revert-CFLAGS-changes.patch
 
-BuildRequires:  gcc
+BuildRequires: gcc
 BuildRequires: xmlto
 BuildRequires: asciidoc
 BuildRequires: make
@@ -35,10 +36,10 @@ for developing software which uses the libmodbus library.
 
 %build
 %configure
-make %{?_smp_mflags}
+%make_build
 
 %install
-make install DESTDIR=%{buildroot}
+%make_install
 find %{buildroot} -type f -name "*.la" -delete
 
 %ldconfig_scriptlets
@@ -46,7 +47,7 @@ find %{buildroot} -type f -name "*.la" -delete
 %files
 %{!?_licensedir:%global license %%doc}
 %license COPYING*
-%doc AUTHORS MIGRATION NEWS README.md
+%doc AUTHORS NEWS README.md
 %{_libdir}/libmodbus.so.*
 
 %files devel
@@ -55,10 +56,11 @@ find %{buildroot} -type f -name "*.la" -delete
 %{_libdir}/pkgconfig/libmodbus.pc
 %{_libdir}/libmodbus.so
 
-%{_mandir}/man7/*.7.*
-%{_mandir}/man3/*.3.*
-
 %changelog
+* Thu Oct 24 2024 Eric Sandeen <sandeen@redhat.com> - 3.1.11-1
+- New upstream version
+- manpages are sadly removed from upstream
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 3.1.7-6
 - convert license to SPDX
 

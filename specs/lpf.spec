@@ -5,7 +5,7 @@
 
 Name:           lpf
 Version:        0.3
-Release:        9%{?rel}%{?dist}
+Release:        10%{?rel}%{?dist}
 Summary:        Local package factory - build non-redistributable rpms
 
 # Icon from iconarchive.com
@@ -14,6 +14,8 @@ URL:            https://github.com/sergiomb2/lpf
 #Source0:        %%{url}/archive/%%{commit}/lpf-%%{version}%%{?rel}.tar.gz
 Source0:        %{url}/archive/v%{version}/lpf-%{version}%{?rel}.tar.gz
 Patch1:         https://github.com/sergiomb2/lpf/commit/4f414697e6977da5fdeff7632ec3ea86ffdfbdfb.patch
+Patch3:         0003-Remove-option-allowerasing-of-dnf-install.patch
+Patch4:         0004-Use-relative-symbol-links.patch
 
 BuildArch:      noarch
 
@@ -90,6 +92,9 @@ exit 0
 
 
 %changelog
+* Thu Oct 24 2024 Sérgio Basto <sergio@serjux.com> - 0.3-10
+- (#2319776) fixes dnf install for dnf5
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.3-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

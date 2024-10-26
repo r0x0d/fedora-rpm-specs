@@ -1,11 +1,11 @@
-%global git_commit 79ebc9d6e6734b161bd99f61769216b999762816
+%global git_commit ca13ea94a04011ab12ef4c6cd4b4489db9f66c6b
 %global _hardened_build 1
 
 %global EXCLUDE_MODULES cachedb_cassandra %{!?_with_oracle:db_oracle} launch_darkly osp python sngtc tls_wolfssl
 
 Summary:  Open Source SIP Server
 Name:     opensips
-Version:  3.5.1
+Version:  3.5.2
 Release:  %autorelease
 License:  GPL-2.0-or-later
 Source0:  https://github.com/%{name}/%{name}/archive/%{version}/%{name}-%{version}.tar.gz

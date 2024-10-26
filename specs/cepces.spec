@@ -15,6 +15,8 @@ License:        GPL-3.0-or-later
 URL:            https://github.com/openSUSE/%{name}
 Source0:        https://github.com/openSUSE/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
+Patch0:         cepces-pyproject.patch
+
 BuildArch:      noarch
 
 Requires:       python%{python3_pkgversion}-%{name} = %{version}-%{release}
@@ -26,6 +28,9 @@ Recommends:     logrotate
 
 Supplements:    %{name}-certmonger = %{version}-%{release}
 
+%generate_buildrequires
+%pyproject_buildrequires -t
+
 %description
 cepces is an application for enrolling certificates through CEP and CES.
 It requires certmonger to operate.
@@ -36,14 +41,6 @@ have been tested.
 %package -n python%{python3_pkgversion}-%{name}
 Summary:        Python part of %{name}
 
-BuildRequires:  python3dist(setuptools)
-BuildRequires:  python3dist(cryptography) >= 1.2
-BuildRequires:  python3dist(requests)
-BuildRequires:  python3dist(gssapi)
-BuildRequires:  python3dist(requests-gssapi)
-BuildRequires:  python3-devel
-
-Requires:       python3dist(setuptools)
 Requires:       python3dist(cryptography) >= 1.2
 Requires:       python3dist(requests)
 Requires:       python3dist(gssapi)
@@ -81,7 +78,7 @@ SELinux support for %{name}
 %autosetup -p1
 
 %build
-%py3_build
+%pyproject_wheel
 
 %if %{with selinux}
 # Build the SELinux module(s).
@@ -92,9 +89,9 @@ done
 %endif
 
 %install
-%py3_install
+%pyproject_install
 
-install -d  %{buildroot}%{logdir}
+install -d -m0755 %{buildroot}%{logdir}
 
 %if %{with selinux}
 # Install the SELinux module(s).
@@ -129,9 +126,7 @@ cat <<EOF>%{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 EOF
 
 %check
-# Create a symlink so test can locate cepces_test
-ln -s tests/cepces_test .
-%{__python3} setup.py test
+%tox
 
 %if %{with selinux}
 %pre selinux
@@ -184,7 +179,7 @@ fi
 %files -n python%{python3_pkgversion}-%{name}
 %license LICENSE
 %{python3_sitelib}/%{name}
-%{python3_sitelib}/%{name}-%{version}-py?.*.egg-info
+%{python3_sitelib}/%{name}-%{version}.dist-info
 
 %files certmonger
 %{_libexecdir}/certmonger/%{name}-submit

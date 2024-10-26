@@ -6,12 +6,12 @@
 %global _docdir_fmt %{name}
 
 Name:		python-zope-interface
-Version:	7.1.0
+Version:	7.1.1
 Release:	%autorelease
 Summary:	Zope 3 Interface Infrastructure
 License:	ZPL-2.1
 URL:		https://pypi.io/project/zope.interface
-Source0:	%{pypi_source zope_interface}
+Source0:	%{pypi_source zope.interface}
 
 %description
 Interfaces are a mechanism for labeling objects as conforming to a given API
@@ -44,7 +44,7 @@ Documentation for %{name}.
 %endif
 
 %prep
-%autosetup -n zope_interface-%{version} -p1
+%autosetup -n zope.interface-%{version} -p1
 
 # Update the sphinx theme name
 sed -i "s/'default'/'classic'/" docs/conf.py

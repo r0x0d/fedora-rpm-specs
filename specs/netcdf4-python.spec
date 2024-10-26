@@ -1,6 +1,6 @@
 Name:           netcdf4-python
-Version:        1.7.1
-Release:        2%{?dist}
+Version:        1.7.2
+Release:        1%{?dist}
 Summary:        Python/numpy interface to netCDF
 
 License:        MIT
@@ -102,6 +102,9 @@ PYTHONPATH=$(echo ../build/lib.linux-*) %{__python3} run_all.py
 
 
 %changelog
+* Thu Oct 24 2024 Orion Poplawski <orion@nwra.com> - 1.7.2-1
+- Update to 1.7.2
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.7.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

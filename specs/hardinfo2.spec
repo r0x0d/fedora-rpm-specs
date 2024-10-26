@@ -4,7 +4,7 @@
 %endif
 
 Name:           hardinfo2
-Version:        2.1.17
+Version:        2.2.1
 Release:        %autorelease
 Summary:        System Information and Benchmark for Linux Systems
 
@@ -125,12 +125,13 @@ Features include:
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
-# appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
+appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 
 %files -f %{name}.lang
 %license LICENSE
 %doc README.md
 %{_bindir}/hardinfo2
+%{_bindir}/hwinfo2_fetch_sysdata
 %{_unitdir}/hardinfo2.service
 %dir %{_libdir}/hardinfo2
 %dir %{_libdir}/hardinfo2/modules

@@ -4,13 +4,14 @@
 %global crate difftastic
 
 Name:           rust-difftastic
-Version:        0.60.0
+Version:        0.61.0
 Release:        %autorelease
 Summary:        Structural diff that understands syntax
 
 License:        MIT
 URL:            https://crates.io/crates/difftastic
 Source:         %{crates_source}
+# * manpage
 Source:         https://github.com/Wilfred/difftastic/raw/%{version}/difft.1
 # Manually created patch for downstream crate metadata changes
 # * drop crossterm/windows
