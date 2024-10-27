@@ -23,7 +23,7 @@ Name: dbcsr
 # SONAME is based on major.minor version
 %global sover 2.7
 Version: %{sover}.0
-Release: 1%{?dist}
+Release: %autorelease
 Summary: Distributed Block Compressed Sparse Row matrix library
 License: GPL-2.0-or-later
 URL: https://cp2k.github.io/dbcsr/develop/
@@ -210,24 +210,4 @@ done
 %{_libdir}/mpich/lib/libdbcsr_c.so
 
 %changelog
-* Mon Oct 21 2024 Orion Poplawski <orion@nwra.com> - 2.7.0-1
-- Update to 2.7.0
-
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.6.0-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Tue Jan 30 2024 Cristian Le <fedora@lecris.me> - 2.6.0-5
-- Fix test parallelization
-
-* Wed Jan 24 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.6.0-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Fri Jan 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.6.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Wed Dec 13 2023 Orion Poplawski <orion@nwra.com> - 2.6.0-2
-- No openmpi on i686 for Fedora 40+
-- Set -DUSE_MPI_F08 with openmpi
-
-* Sun Sep 10 2023 Orion Poplawski <orion@nwra.com> - 2.6.0-1
-- Initial package
+%autochangelog

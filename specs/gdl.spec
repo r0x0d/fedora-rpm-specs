@@ -31,7 +31,7 @@ ExcludeArch: %{ix86}
 
 Name:           gdl
 Version:        1.0.6
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        GNU Data Language
 
 License:        GPL-2.0-or-later
@@ -267,6 +267,9 @@ cat xorg.log
 
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1.0.6-4
+- Rebuild for hdf5 1.14.5
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.6-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

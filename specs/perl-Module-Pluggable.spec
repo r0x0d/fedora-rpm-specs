@@ -7,12 +7,16 @@
 
 Name:           perl-Module-Pluggable
 Epoch:          2
-Version:        5.2
-Release:        29%{?dist}
+Version:        6.2
+Release:        2%{?dist}
 Summary:        Automatically give your module the ability to have plugins
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Module-Pluggable
 Source0:        https://cpan.metacpan.org/authors/id/S/SI/SIMONW/Module-Pluggable-%{version}.tar.gz
+# https://rt.cpan.org/Ticket/Display.html?id=156362
+Patch0:         Module-Pluggable-6.2-fix_cleanup.patch
+# https://rt.cpan.org/Ticket/Display.html?id=156367
+Patch1:         Module-Pluggable-6.2-fix_running_as_root.patch
 BuildArch:      noarch
 BuildRequires:  coreutils
 BuildRequires:  findutils
@@ -31,11 +35,14 @@ BuildRequires:  perl(File::Basename)
 BuildRequires:  perl(File::Find)
 BuildRequires:  perl(if)
 BuildRequires:  perl(vars)
+BuildRequires:  perl(Scalar::Util)
 # Recommended run-time:
 BuildRequires:  perl(Module::Runtime) >= 0.012
 # Tests:
 BuildRequires:  perl(base)
 BuildRequires:  perl(Data::Dumper)
+BuildRequires:  perl(File::Path)
+BuildRequires:  perl(File::Temp)
 BuildRequires:  perl(FindBin)
 BuildRequires:  perl(lib)
 BuildRequires:  perl(Test::More) >= 0.62
@@ -45,8 +52,6 @@ BuildRequires:  perl(Test::More) >= 0.62
 BuildRequires:  perl(App::FatPacker) >= 0.10.0
 BuildRequires:  perl(Cwd)
 BuildRequires:  perl(File::Copy)
-BuildRequires:  perl(File::Path)
-BuildRequires:  perl(File::Temp)
 %endif
 Requires:       perl(File::Spec::Functions) >= 3.00
 Requires:       perl(deprecate)
@@ -69,6 +74,7 @@ into class names. Optionally it instantiates those classes for you.
 Summary:        Tests for %{name}
 Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 Requires:       perl-Test-Harness
+Requires:       perl(File::Spec::Functions) >= 3.00
 
 %description tests
 Tests from %{name}. Execute them
@@ -76,6 +82,8 @@ with "%{_libexecdir}/%{name}/test".
 
 %prep
 %setup -q -n Module-Pluggable-%{version}
+%patch -P 0 -p 1
+%patch -P 1 -p 1
 find -type f -exec chmod -x {} +
 # Help generators to recognize Perl scripts
 for F in t/*.t; do
@@ -111,6 +119,13 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Fri Oct 25 2024 Michal Josef Špaček <mspacek@redhat.com> - 2:6.2-2
+- Add comment for previous patch
+- Fix issue with root in tests
+
+* Fri Oct 25 2024 Michal Josef Špaček <mspacek@redhat.com> - 2:6.2-1
+- 6.2 bump (#2321226)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2:5.2-29
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

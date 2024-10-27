@@ -1,7 +1,7 @@
 Summary: Tracks and displays system calls associated with a running process
 Name: strace
 Version: 6.11
-Release: 1%{?dist}
+Release: 2%{?dist}
 # The test suite is GPLv2+, the bundled headers are GPLv2 with Linux syscall
 # exception, all the rest is LGPLv2.1+.
 %if 0%{?fedora} >= 35 || 0%{?centos} >= 9 || 0%{?rhel} >= 9
@@ -108,6 +108,8 @@ BuildRequires: xz
 %else
 Source: strace-%{version}.tar.gz
 %endif
+Patch1: strace-sched_attr-1.patch
+Patch2: strace-sched_attr-2.patch
 BuildRequires: gcc gzip make
 
 # Install Bluetooth headers for AF_BLUETOOTH sockets decoding.
@@ -149,7 +151,7 @@ Install strace if you need a tool to track the system calls made and
 received by a process.
 
 %prep
-%setup -q
+%autosetup -p1
 echo -n %version-%release > .tarball-version
 echo -n 2024 > .year
 echo -n 2024-06-30 > doc/.strace.1.in.date
@@ -205,6 +207,9 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Fri Oct 25 2024 Florian Weimer <fweimer@redhat.com> - 6.11-2
+- Fix FTBFS with glibc 2.41 (#2317070)
+
 * Sun Sep 15 2024 Dmitry V. Levin <ldv@strace.io> - 6.11-1
 - v6.10 -> v6.11.
 

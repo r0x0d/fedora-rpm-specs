@@ -1,17 +1,9 @@
 %global uuid argos@pew.worldwidemann.com
 
 %global forgeurl https://github.com/p-e-w/argos
-%global commit e2d68ea23eed081fccaec06c384e2c5d2acb5b6b
+%global commit bb591185e4aca3cb65772b2bb68cc537b0318f56
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global date 20230404
-
-# Supporting GNOME 45 requires applying a patch that does not support
-# older releases
-%if 0%{?fedora} >= 39
-%bcond_without gnome45
-%else
-%bcond_with gnome45
-%endif
+%global date 20240328
 
 Name:           gnome-shell-extension-argos
 Version:        3^%{date}git%{shortcommit}
@@ -20,17 +12,13 @@ Summary:        Create GNOME Shell extensions in seconds
 
 License:        GPL-3.0-only
 URL:            %{forgeurl}
-Source:         %{url}/archive/%{commit}/argos-%{commit}.tar.gz
-Patch:          %{forgeurl}/pull/150.patch#/argos-gnome-45.diff
-Patch:          %{forgeurl}/pull/158.patch#/argos-gnome-46.diff
+Source:         %{url}/archive/%{commit}/argos-%{commit}.tar.gz#/argos-%{version}.tar.gz
+# mark as compatible with GNOME 47
+Patch:          https://github.com/p-e-w/argos/pull/167.patch#/argos-gnome47.diff
 
 BuildArch:      noarch
 
-%if %{with gnome45}
-Requires:       gnome-shell >= 45.0
-%else
-Requires:       gnome-shell < 45.0
-%endif
+Requires:       (gnome-shell >= 45.0 with gnome-shell < 48.0)
 
 %description
 Most GNOME Shell extensions do one thing: Add a button with a dropdown menu to
@@ -49,12 +37,7 @@ scripts in addition to being able to write your own.
 
 
 %prep
-%autosetup -N -n argos-%{commit}
-%autopatch -M 99 -p1
-
-%if %{with gnome45}
-%autopatch -m 100 -p1
-%endif
+%autosetup -n argos-%{commit} -p1
 
 
 %build

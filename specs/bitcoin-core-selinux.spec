@@ -6,10 +6,9 @@
 %global modulename bitcoin
 
 Name:           bitcoin-core-selinux
-Version:        0
-Release:        15.%{date}git%{shortcommit0}%{?dist}
+Version:        0^%{date}git%{shortcommit0}
+Release:        16%{?dist}
 Summary:        Bitcoin Core SELinux policy
-# Automatically converted from old format: GPLv3 - review is highly recommended.
 License:        GPL-3.0-only
 URL:            https://github.com/scaronni/%{name}
 BuildArch:      noarch
@@ -68,6 +67,9 @@ fi
 %ghost %{_sharedstatedir}/selinux/%{selinuxtype}/active/modules/200/%{modulename}
 
 %changelog
+* Fri Oct 25 2024 Simone Caronni <negativo17@gmail.com> - 0^20231127git4505616-16
+- Convert to new snapshot format.
+
 * Wed Aug 07 2024 Miroslav Suchý <msuchy@redhat.com> - 0-15.20231127git4505616
 - convert license to SPDX
 

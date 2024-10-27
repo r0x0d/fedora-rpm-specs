@@ -37,7 +37,7 @@
 Name:           octave
 Epoch:          6
 Version:        8.4.0
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        A high-level language for numerical computations
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
@@ -459,6 +459,9 @@ make check
 %{_pkgdocdir}/refcard*.pdf
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 6:8.4.0-11
+- Rebuild for hdf5 1.14.5
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 6:8.4.0-10
 - convert license to SPDX
 

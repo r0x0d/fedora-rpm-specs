@@ -3,7 +3,7 @@
 
 Name:           mopidy
 Version:        3.4.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        An extensible music server written in Python
 
 License:        Apache-2.0
@@ -13,6 +13,8 @@ Source1:        mopidy.conf
 
 # upstream discussion at https://mopidy.zulipchat.com/#narrow/channel/207265-mopidy-dev/topic/various.20test.20failures.20with.203.2E4.2E2.20and.20pytest
 Patch0:         mopidy-3.4.2-fix-test.patch
+# port https://github.com/mopidy/mopidy/commit/a964595c2d86658c0c357583d4a4b0c57b5298f6 from 4.0.0a1
+Patch1:         mopidy-3.4.2-fix-test_help.patch
 
 BuildArch:      noarch
 BuildRequires:  make
@@ -119,6 +121,9 @@ exit 0
 
 
 %changelog
+* Fri Oct 25 2024 Tobias Girstmair <t-fedora@girst.at> - 3.4.2-7
+- Further fixes for setuptools 74 (RHBZ#2319634)
+
 * Sun Oct 20 2024 Tobias Girstmair <t-fedora@girst.at> - 3.4.2-6
 - Move away from calling 'setup.py test' for setuptools 74 compat (RHBZ#2319634)
 

@@ -678,9 +678,7 @@ name server related details of Samba AD.
 Summary: Developer tools for Samba libraries
 Requires: %{name}-libs = %{samba_depver}
 Requires: %{name}-client-libs = %{samba_depver}
-%if %{with dc}
 Requires: %{name}-dc-libs = %{samba_depver}
-%endif
 Requires: libnetapi = %{samba_depver}
 
 Provides: samba4-devel = %{samba_depver}

@@ -10,6 +10,11 @@
 %else
 %bcond_without mingw
 %endif
+%if 0%{?rhel}
+%bcond_with qt
+%else
+%bcond_without qt
+%endif
 
 Name:           python-%{srcname}
 Version:        11.0.0
@@ -42,7 +47,9 @@ BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-numpy
 BuildRequires:  python%{python3_pkgversion}-olefile
 BuildRequires:  python%{python3_pkgversion}-pytest
+%if %{with qt}
 BuildRequires:  python%{python3_pkgversion}-qt5
+%endif
 BuildRequires:  python%{python3_pkgversion}-setuptools
 %if %{with doc}
 BuildRequires:  make
@@ -150,6 +157,7 @@ Provides:       python%{python3_pkgversion}-imaging-tk = %{version}-%{release}
 Tk interface for %{srcname}.
 
 
+%if %{with qt}
 %package -n python%{python3_pkgversion}-%{srcname}-qt
 Summary:        Qt %{srcname} image wrapper
 Requires:       python%{python3_pkgversion}-qt5
@@ -159,6 +167,7 @@ Provides:       python%{python3_pkgversion}-imaging-qt = %{version}-%{release}
 
 %description -n python%{python3_pkgversion}-%{srcname}-qt
 Qt %{srcname} image wrapper.
+%endif
 
 
 %if %{with mingw}
@@ -275,9 +284,11 @@ popd
 %{python3_sitearch}/PIL/__pycache__/ImageTk*
 %{python3_sitearch}/PIL/__pycache__/SpiderImagePlugin*
 
+%if %{with qt}
 %files -n python%{python3_pkgversion}-%{srcname}-qt
 %{python3_sitearch}/PIL/ImageQt*
 %{python3_sitearch}/PIL/__pycache__/ImageQt*
+%endif
 
 %if %{with mingw}
 %files -n mingw32-python3-%{srcname}

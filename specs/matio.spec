@@ -1,6 +1,6 @@
 Name:           matio
 Version:        1.5.27
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Library for reading/writing Matlab MAT files
 
 License:        BSD-2-Clause
@@ -92,6 +92,9 @@ make check || ( cat test/testsuite.log && exit $fail )
 
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1.5.27-3
+- Rebuild for hdf5 1.14.5
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.27-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

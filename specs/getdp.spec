@@ -1,6 +1,6 @@
 Name:           getdp
 Version:        3.6.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        General Environment for the Treatment of Discrete Problems
 
 License:        GPL-2.0-or-later
@@ -91,6 +91,9 @@ rm -rf %{buildroot}%{_datadir}/doc/%{name}
 %{_libdir}/libgetdp.so
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 3.6.0-5
+- Rebuild for hdf5 1.14.5
+
 * Mon Aug 19 2024 Sandro Mani <manisandro@gmail.com> - 3.6.0-4
 - Drop BR: gmsh (#2304315)
 

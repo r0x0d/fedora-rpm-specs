@@ -54,7 +54,7 @@
 Summary: The Visualization Toolkit - A high level 3D visualization library
 Name: vtk
 Version: 9.2.6
-Release: 18%{?dist}
+Release: 19%{?dist}
 License: BSD-3-Clause
 Source0: https://www.vtk.org/files/release/9.2/VTK-%{version}.tar.gz
 Source1: https://www.vtk.org/files/release/9.2/VTKData-%{version}.tar.gz
@@ -853,6 +853,9 @@ cat xorg.log
 
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 9.2.6-19
+- Rebuild for hdf5 1.14.5
+
 * Tue Oct 08 2024 Orion Poplawski <orion@nwra.com> - 9.2.6-18
 - Add upstream patch to fix segmentation fault on import with Python 3.13
   (rhbz#2310520)

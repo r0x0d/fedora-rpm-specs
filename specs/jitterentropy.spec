@@ -1,11 +1,12 @@
-Name:	jitterentropy
-Version:	3.5.0
-Release:	4%{?dist}
-Summary:	Library implementing the jitter entropy source
+%global libjit_soversion 3
+Name:           jitterentropy
+Version:        3.6.0
+Release:        1%{?dist}
+Summary:        Library implementing the jitter entropy source
 
-License:	BSD-3-Clause OR GPL-2.0-only
-URL:		https://github.com/smuellerDD/jitterentropy-library
-Source0:	%{url}/archive/v%{version}/%{name}-library-%{version}.tar.gz
+License:        BSD-3-Clause OR GPL-2.0-only
+URL:            https://github.com/smuellerDD/jitterentropy-library
+Source0:        %{url}/archive/v%{version}/%{name}-library-%{version}.tar.gz
 
 BuildRequires: gcc
 BuildRequires: make
@@ -37,7 +38,7 @@ mkdir -p %{buildroot}/usr/include/
 %files
 %doc README.md CHANGES.md
 %license LICENSE LICENSE.bsd LICENSE.gplv2
-%{_libdir}/libjitterentropy.so.3*
+%{_libdir}/libjitterentropy.so.%{libjit_soversion}*
 
 %files devel
 %{_includedir}/*
@@ -45,6 +46,9 @@ mkdir -p %{buildroot}/usr/include/
 %{_mandir}/man3/*
 
 %changelog
+* Fri Oct 25 2024 Vladis Dronov <vdronov@redhat.com> - 3.6.0-1
+- Update to the upstream v3.6.0 @ 11829386
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.5.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

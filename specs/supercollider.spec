@@ -9,7 +9,7 @@
 Summary: Object oriented programming environment for real-time audio and video processing
 Name: supercollider
 Version: 3.12.2
-Release: 14%{?dist}
+Release: 15%{?dist}
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License: GPL-2.0-or-later
 URL: https://supercollider.github.io/
@@ -183,6 +183,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/SuperColliderIDE.des
 %{_datadir}/gtksourceview*/language-specs/supercollider.lang
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 3.12.2-15
+- Rebuild for yaml-cpp 0.8
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 3.12.2-14
 - convert license to SPDX
 

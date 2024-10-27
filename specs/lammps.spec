@@ -25,7 +25,7 @@ Version:        20240829
                   m=${v:4:2};
                   y=${v:0:4};
                   echo $([[ -z $patch ]] && echo patch || echo stable)_${d#0}${months[${m#0}]}${y}$([[ -n $patch ]] && echo _update${patch}))
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Molecular Dynamics Simulator
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License:        GPL-2.0-only
@@ -370,6 +370,9 @@ done
 %config %{_sysconfdir}/profile.d/lammps.*
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 20240829-2
+- Rebuild for hdf5 1.14.5
+
 * Fri Sep 20 2024 Richard Berger <richard.berger@outlook.com> - 20240829-1
 - Version bump to 20240829
 - Re-enable Kokkos

@@ -1,4 +1,4 @@
-%global glibcsrcdir glibc-2.40.9000-257-gc5dd659f22
+%global glibcsrcdir glibc-2.40.9000-263-gac73067cb7
 %global glibcversion 2.40.9000
 # Pre-release tarballs are pulled in from git using a command that is
 # effectively:
@@ -169,7 +169,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 8
+%global baserelease 12
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -238,40 +238,70 @@ Source12: ChangeLog.old
 # glibc_ldso: ABI-specific program interpreter name.  Used for debuginfo
 # extraction (wrap-find-debuginfo.sh) and smoke testing ($run_ldso below).
 #
+# glibc_has_libnldbl: -lnldbl is supported for long double as double.
+#
+# glibc_has_libmvec: libmvec is available.
+#
 # glibc_rtld_early_cflags: The ABI baseline for architectures with
 # potentially a later baseline.  The --with-rtld-early-cflags=
 # configure option is passed to the main glibc build if this macro is
 # defined.
 %ifarch %{ix86}
 %global glibc_ldso /lib/ld-linux.so.2
+%global glibc_has_libnldbl 0
+%global glibc_has_libmvec 0
 %endif
 %ifarch aarch64
 %global glibc_ldso /lib/ld-linux-aarch64.so.1
+%global glibc_has_libnldbl 0
+%global glibc_has_libmvec 1
 %endif
 %ifarch ppc
 %global glibc_ldso /lib/ld.so.1
+%global glibc_has_libnldbl 1
+%global glibc_has_libmvec 0
 %endif
 %ifarch ppc64
 %global glibc_ldso /lib64/ld64.so.1
+%global glibc_has_libnldbl 1
+%global glibc_has_libmvec 0
 %endif
 %ifarch ppc64le
 %global glibc_ldso /lib64/ld64.so.2
+%global glibc_has_libnldbl 1
+%global glibc_has_libmvec 0
 %define glibc_rtld_early_cflags -mcpu=power8
 %endif
 %ifarch riscv64
 %global glibc_ldso /lib/ld-linux-riscv64-lp64d.so.1
+%global glibc_has_libnldbl 0
+%global glibc_has_libmvec 0
 %endif
 %ifarch s390
 %global glibc_ldso /lib/ld.so.1
+%global glibc_has_libnldbl 1
+%global glibc_has_libmvec 0
 %define glibc_rtld_early_cflags -march=z13
 %endif
 %ifarch s390x
 %global glibc_ldso /lib/ld64.so.1
+%global glibc_has_libnldbl 1
+%global glibc_has_libmvec 0
 %define glibc_rtld_early_cflags -march=z13
 %endif
 %ifarch x86_64 x86_64_v2 x86_64_v3 x86_64_v4
 %global glibc_ldso /lib64/ld-linux-x86-64.so.2
+%global glibc_has_libnldbl 0
+%global glibc_has_libmvec 1
 %define glibc_rtld_early_cflags -march=x86-64
+%endif
+
+# This is necessary to enable source RPM building under noarch, as
+# used by some build environments.
+%ifarch noarch
+%global glibc_ldso /lib/ld.so
+%global glibc_has_libnldbl 0
+%global glibc_has_libmvec 0
 %endif
 
 ######################################################################
@@ -285,7 +315,7 @@ local original = rpm.expand("%{macrobody:__debug_install_post}")
 -- Avoid embedded newlines that confuse the macro definition.
 original = original:match("^%s*(.-)%s*$"):gsub("\\\n", "")
 rpm.define("__debug_install_post bash " .. wrapper
-  .. " " .. sysroot .. " %{glibc_ldso} " .. original)
+  .. " " .. sysroot .. " %{_prefix}%{glibc_ldso} " .. original)
 }
 
 # sysroot package support.  These contain arch-specific packages, so
@@ -341,6 +371,8 @@ Requires: filesystem(unmerged-sbin-symlinks)
 %endif
 Provides: /sbin/ldconfig
 Provides: /usr/sbin/ldconfig
+# Historic file paths provided for backwards compatibility.
+Provides: %{glibc_ldso}
 
 # The dynamic linker supports DT_GNU_HASH
 Provides: rtld(GNU_HASH)
@@ -1423,14 +1455,20 @@ build build-%{target}-power10 \
 # distribution that supports multiple installed glibc versions.
 %global glibc_sysroot $RPM_BUILD_ROOT
 
-# Remove existing file lists.
-find . -type f -name '*.filelist' -exec rm -rf {} \;
+# Create symbolic links for Features/UsrMove (aka UsrMerge, MoveToUsr).
+# See below: Remove UsrMove symbolic links.
+usrmove_file_names="bin lib lib64 sbin"
+for d in $usrmove_file_names ; do
+    mkdir -p "%{glibc_sysroot}/usr/$d"
+    ln -s "usr/$d" "%{glibc_sysroot}/$d"
+done
 
 %ifarch riscv64
-# RISC-V ABI wants to install everything in /lib64/lp64d or /usr/lib64/lp64d.
+# RISC-V ABI wants to install everything in /usr/lib64/lp64d.
+# Make these be symlinks to /usr/lib64.  See:
 # Make these be symlinks to /lib64 or /usr/lib64 respectively.  See:
 # https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/DRHT5YTPK4WWVGL3GIN5BF2IKX2ODHZ3/
-for d in %{glibc_sysroot}%{_libdir} %{glibc_sysroot}/%{_lib}; do
+for d in %{glibc_sysroot}%{_libdir}; do
 	mkdir -p $d
 	(cd $d && ln -sf . lp64d)
 done
@@ -1442,11 +1480,10 @@ pushd build-%{target}-32
 %make_build install_root=%{glibc_sysroot} install
 popd
 pushd %{glibc_sysroot}
-rm -rf etc sbin var usr/bin usr/lib/gconv usr/libexec usr/sbin usr/share
+rm -rf etc var usr/bin usr/lib/gconv usr/libexec usr/sbin usr/share
 rm -f lib/libnss_db* lib/libnss_hesiod* lib/libnsl* usr/lib/libnsl* usr/lib/libnss*
 rm usr/lib/libc_malloc_debug.so
 strip -g usr/lib/*.o
-mv lib/{libmemusage,libpcprofile}.so usr/lib/
 popd
 %endif
 
@@ -1460,8 +1497,17 @@ popd
 # via hardlinks, so we must group them ourselves.
 hardlink -c %{glibc_sysroot}/usr/lib/locale
 
-# Implement Changes/UsrMerge and Changes/Unify_bin_and_sbin.
-mv %{glibc_sysroot}/sbin/ldconfig %{glibc_sysroot}/%{_sbindir}/
+%if %{glibc_autorequires}
+mkdir -p %{glibc_sysroot}/%{_rpmconfigdir} %{glibc_sysroot}/%{_fileattrsdir}
+sed < %{SOURCE3} \
+    -e s/@VERSION@/%{version}/ \
+    -e s/@RELEASE@/%{baserelease}/ \
+    -e s/@SYMVER@/%{glibc_autorequires_symver}/ \
+    > %{glibc_sysroot}/%{_rpmconfigdir}/glibc.req
+cp %{SOURCE4} %{glibc_sysroot}/%{_fileattrsdir}/glibc.attr
+%endif
+
+# Implement Changes/Unify_bin_and_sbin.
 %if "%{_sbindir}" == "%{_bindir}"
 mv %{glibc_sysroot}/usr/sbin/{iconvconfig,zic} %{glibc_sysroot}/%{_bindir}/
 %endif
@@ -1501,7 +1547,7 @@ install_different()
 		libbase=${lib#*/}
 		# Take care that `libbaseso' has a * that needs expanding so
 		# take care with quoting.
-		libbaseso=$(basename %{glibc_sysroot}/%{_lib}/${libbase}.so.*)
+		libbaseso=$(basename %{glibc_sysroot}/%{_libdir}/${libbase}.so.*)
 		# Only install if different from default build library.
 		if cmp -s ${lib}.so ../build-%{target}/${lib}.so; then
 			ln -sf "$subdir_up"/$libbaseso $libdestdir/$libbaseso
@@ -1526,11 +1572,10 @@ popd
 # XXX: This looks like a bug in glibc that accidentally installed these
 #      wrong files. We probably don't need this today.
 rm -f %{glibc_sysroot}/%{_libdir}/libNoVersion*
-rm -f %{glibc_sysroot}/%{_lib}/libNoVersion*
 
 # Remove the old nss modules.
-rm -f %{glibc_sysroot}/%{_lib}/libnss1-*
-rm -f %{glibc_sysroot}/%{_lib}/libnss-*.so.1
+rm -f %{glibc_sysroot}%{_libdir}/libnss1-*
+rm -f %{glibc_sysroot}%{_libdir}/libnss-*.so.1
 
 # This statically linked binary is no longer necessary in a world where
 # the default Fedora install uses an initramfs, and further we have rpm-ostree
@@ -1689,13 +1734,6 @@ popd
 rm -f %{glibc_sysroot}%{_infodir}/dir
 %endif
 
-# Move libpcprofile.so and libmemusage.so into the proper library directory.
-# They can be moved without any real consequences because users would not use
-# them directly.
-mkdir -p %{glibc_sysroot}%{_libdir}
-mv -f %{glibc_sysroot}/%{_lib}/lib{pcprofile,memusage}.so \
-	%{glibc_sysroot}%{_libdir}
-
 # Disallow linking against libc_malloc_debug.
 rm %{glibc_sysroot}%{_libdir}/libc_malloc_debug.so
 
@@ -1721,7 +1759,14 @@ done
 # that have old linker scripts that reference this file. We ship this only
 # in compat-libpthread-nonshared sub-package.
 ##############################################################################
-ar cr %{glibc_sysroot}%{_prefix}/%{_lib}/libpthread_nonshared.a
+ar cr %{glibc_sysroot}%{_libdir}/libpthread_nonshared.a
+
+# Remove UsrMove symbolic links.
+# These should not end in the packaged contents.
+# They are part of the filesystem package.
+for d in $usrmove_file_names ; do
+    rm "%{glibc_sysroot}/$d"
+done
 
 ###############################################################################
 # Sysroot package creation.
@@ -1797,418 +1842,82 @@ popd
 # installed files.
 ##############################################################################
 
-##############################################################################
-# Build the file lists used for describing the package and subpackages.
-##############################################################################
-# There are several main file lists (and many more for
-# the langpack sub-packages (langpack-${lang}.filelist)):
-# * master.filelist
-#	- Master file list from which all other lists are built.
-# * glibc.filelist
-#	- Files for the glibc packages.
-# * common.filelist
-#	- Flies for the common subpackage.
-# * utils.filelist
-#	- Files for the utils subpackage.
-# * devel.filelist
-#	- Files for the devel subpackage.
-# * doc.filelist
-#	- Files for the documentation subpackage.
-# * headers.filelist
-#	- Files for the headers subpackage.
-# * static.filelist
-#	- Files for the static subpackage.
-# * libnsl.filelist
-#       - Files for the libnsl subpackage
-# * nss_db.filelist
-# * nss_hesiod.filelist
-#       - File lists for nss_* NSS module subpackages.
-# * nss-devel.filelist
-#       - File list with the .so symbolic links for NSS packages.
-# * compat-libpthread-nonshared.filelist.
-#	- File list for compat-libpthread-nonshared subpackage.
-# * glibc32.filelist
-#	- Files for the glibc32 packages.
+# Placement of files in subpackages is mostly controlled by the
+# %%files section below.  There are some exceptions where a subset of
+# files are put in one package and need to be elided from another
+# package, and it's not possible to do this easily using explicit file
+# lists or directory matching.  For these exceptions. .filelist file
+# are created.
 
-# Create the main file lists. This way we can append to any one of them later
-# wihtout having to create it. Note these are removed at the start of the
-# install phase.
-touch master.filelist
-touch glibc.filelist
-touch common.filelist
-touch utils.filelist
-touch gconv.filelist
-touch devel.filelist
-touch doc.filelist
-touch headers.filelist
-touch static.filelist
-touch libnsl.filelist
-touch nss_db.filelist
-touch nss_hesiod.filelist
-touch nss-devel.filelist
-touch compat-libpthread-nonshared.filelist
-%ifarch x86_64
-touch glibc32.filelist
-%endif
+# Make the sorting below more consistent.
+export LC_ALL=C
 
-###############################################################################
-# Master file list, excluding a few things.
-###############################################################################
-{
-  # List all files or links that we have created during install.
-  # Files with 'etc' are configuration files, likewise 'gconv-modules'
-  # and 'gconv-modules.cache' are caches, and we exclude them.
-  find %{glibc_sysroot} \( -type f -o -type l \) \
-       \( \
-	 -name etc -printf "%%%%config " -o \
-	 -name gconv-modules.cache \
-	 -printf "%%%%verify(not md5 size mtime) " -o \
-	 -name gconv-modules* \
-	 -printf "%%%%verify(not md5 size mtime) %%%%config(noreplace) " \
-	 , \
-	 ! -path "*/lib/debug/*" -printf "/%%P\n" \)
-  # List all directories with a %%dir prefix.  We omit the info directory and
-  # all directories in (and including) /usr/share/locale.
-  find %{glibc_sysroot} -type d \
-       \( -path '*%{_prefix}/share/locale' -prune -o \
-       \( -path '*%{_prefix}/share/*' \
-%if %{with docs}
-	! -path '*%{_infodir}' -o \
-%endif
-	  -path "*%{_prefix}/include/*" \
-       \) -printf "%%%%dir /%%P\n" \)
-} | {
-  # Also remove the *.mo entries.  We will add them to the
-  # language specific sub-packages.
-  # libnss_ files go into subpackages related to NSS modules.
-  # and .*/share/i18n/charmaps/.*), they go into the sub-package
-  # "locale-source".  /sys-root/ files are put into the sysroot package.
-  sed -e '\,.*/share/locale/\([^/_]\+\).*/LC_MESSAGES/.*\.mo,d' \
-      -e '\,.*/share/i18n/locales/.*,d' \
-      -e '\,.*/share/i18n/charmaps/.*,d' \
-      -e '\,.*/etc/\(localtime\|nsswitch.conf\|ld\.so\.conf\|ld\.so\.cache\|default\|rpc\|gai\.conf\),d' \
-      -e '\,.*/%{_libdir}/lib\(pcprofile\|memusage\)\.so,d' \
-      -e '\,.*/bin/\(memusage\|mtrace\|xtrace\|pcprofiledump\),d' \
-      -e '\,.*/sys-root,d'
-} | sort > master.filelist
+# `make_sysroot_filelist PATH FIND-ARGS LIST` writes %%files section
+# lines for files and directories in the sysroot under PATH to the
+# file LIST, with FIND-ARGS passed to the find command.  The output is
+# passed through sort.
+make_sysroot_filelist () {
+  (
+    find "%{glibc_sysroot}$1" \( -type f -o -type l \) $2 \
+      -printf "$1/%%P\n" || true
+    find "%{glibc_sysroot}$1" -type d $2 -printf "%%%%dir $1/%%P\n" || true
+  ) | sort > "$3"
+}
 
-# The master file list is now used by each subpackage to list their own
-# files. We go through each package and subpackage now and create their lists.
-# Each subpackage picks the files from the master list that they need.
-# The order of the subpackage list generation does not matter.
+# `remove_from_filelist FILE1 FILE2` removes the lines from FILE1
+# which are also in FILE2.  The lines must not contain tabs, and the
+# file is sorted as a side effect.  The input files must be sorted
+# according to the sort command.
+remove_from_filelist () {
+    comm -23 "$1" "$2" > "$1.tmp"
+    mv "$1.tmp" "$1"
+}
 
-# Make the master file list read-only after this point to avoid accidental
-# modification.
-chmod 0444 master.filelist
+# `split_sysroot_file_list DIR FIND-ARGS REGEXP MAIN-LIST EXCEPTIONS-LIST`
+# creates a list of files in the sysroot subdirectory # DIR.
+# Files and directories are enumerated with the find command,
+# passing FIND-ARGS as an extra argument.  Those output paths that
+# match REGEXP (an POSIX extended regular expression; all whitespace
+# in it is removed before matching) are put into EXCEPTIONS-LIST.  The
+# remaining files are put into MAIN-LIST.
+split_sysroot_file_list () {
+  make_sysroot_filelist "$1" "$2" "$4"
+  grep -E -e "$(printf %%s "$3" | tr -d '[:space:]')" < "$4" > "$5"
+  remove_from_filelist "$4" "$5"
+}
 
-###############################################################################
-# glibc
-###############################################################################
-
-# Add all files with the following exceptions:
-# - The info files '%{_infodir}/dir'
-# - The partial (lib*_p.a) static libraries, include files.
-# - The static files, objects, and unversioned DSOs.
-# - Share and ldconfig and iconvconfig
-# - All the libnss files (we add back the ones we want later).
-# - libc_malloc_debug.so, since it is a debugging library.
-# - All bench test binaries.
-# - The aux-cache, since it's handled specially in the files section.
-# - Extra gconv modules.  We add the required modules later.
-cat master.filelist \
-	| grep -v \
-	-e '%{_infodir}' \
-	-e '%{_libdir}/lib.*_p.a' \
-	-e '%{_prefix}/include' \
-	-e '%{_libdir}/lib.*\.a' \
-        -e '%{_libdir}/.*\.o' \
-	-e '%{_libdir}/lib.*\.so' \
-	-e '%{_libdir}/gconv/.*\.so$' \
-	-e '%{_libdir}/gconv/gconv-modules.d/gconv-modules-extra\.conf$' \
-	-e '%{_prefix}/bin' \
-	-e '%{_prefix}/lib/locale' \
-	-e '%{_prefix}/sbin' \
-	-e '%{_prefix}/share' \
-	-e '/var/db/Makefile' \
-	-e '/libnss_.*\.so[0-9.]*$' \
-	-e '/libnsl' \
-%if %{glibc_ship_tracelibs_in_utils}
-	-e 'libc_malloc_debug\.so' \
-%endif
-	-e 'glibc-benchtests' \
-	-e 'aux-cache' \
-%ifarch x86_64
-%dnl Exclude 32-bit libraries built for glibc32.
-	-e '/lib/.*\.o' \
-	-e '/lib/.*\.a' \
-	-e '/lib/.*\.so.*' \
-%endif
-	> glibc.filelist
-cat master.filelist \
-	| grep -E \
-	-e 'bin/(ldconfig|iconvconfig)' \
-	>> glibc.filelist
-
-# Add specific files:
-# - The nss_files, nss_compat, and nss_db files.
-# - The libmemusage.so and libpcprofile.so used by utils.
-for module in compat files dns; do
-    cat master.filelist \
-	| grep -E \
-	-e "/libnss_$module(\.so\.[0-9.]+|-[0-9.]+\.so)$" \
-%ifarch x86_64
-%dnl Exclude 32-bit libraries built for glibc32.
-	| grep -v -e /lib/lib \
-%endif
-	>> glibc.filelist
-done
-grep \
-%if ! %{glibc_ship_tracelibs_in_utils}
-	-e "libmemusage.so" \
-%endif
-	-e "libpcprofile.so" \
-	master.filelist \
-%ifarch x86_64
-%dnl Exclude 32-bit libraries built for glibc32.
-	| grep -v -e /lib/lib \
-%endif
-	>> glibc.filelist
-
-###############################################################################
-# glibc-gconv-extra
-###############################################################################
-
-grep -e "gconv-modules-extra.conf" master.filelist > gconv.filelist
-
-# Put the essential gconv modules into the main package.
-GconvBaseModules="ISO8859-15 ISO8859-1 CP1252"
-GconvBaseModules="$GconvBaseModules UNICODE UTF-16 UTF-32 UTF-7"
-%ifarch s390 s390x
-GconvBaseModules="$GconvBaseModules ISO-8859-1_CP037_Z900 UTF8_UTF16_Z9"
-GconvBaseModules="$GconvBaseModules UTF16_UTF32_Z9 UTF8_UTF32_Z9"
-%endif
-GconvAllModules=$(cat master.filelist |
-                 sed -n 's|%{_libdir}/gconv/\(.*\)\.so|\1|p')
-
-# Put the base modules into glibc and the rest into glibc-gconv-extra
-for conv in $GconvAllModules; do
-    if echo $GconvBaseModules | grep -q $conv; then
-	grep -E -e "%{_libdir}/gconv/$conv.so$" \
-	    master.filelist >> glibc.filelist
-    else
-	grep -E -e "%{_libdir}/gconv/$conv.so$" \
-	    master.filelist >> gconv.filelist
-    fi
-done
-
-###############################################################################
-# glibc-devel
-###############################################################################
-
-# Static libraries that land in glibc-devel, not glibc-static.
-devel_static_library_pattern='/lib\(\(c\|nldbl\|mvec\)_nonshared\|g\|ieee\|mcheck\|pthread\|dl\|rt\|util\|anl\)\.a$'
-# Static libraries neither in glibc-devel nor in glibc-static.
-other_static_library_pattern='/libpthread_nonshared\.a'
-
-grep '%{_libdir}/lib.*\.a' master.filelist \
-  | grep "$devel_static_library_pattern" \
-  | grep -v "$other_static_library_pattern" \
-%ifarch x86_64
-%dnl Exclude 32-bit libraries built for glibc32.
-  | grep -v '/lib/.*\.a' \
-%endif
-  > devel.filelist
-
-# Put all of the object files and *.so (not the versioned ones) into the
-# devel package.
-grep '%{_libdir}/.*\.o' < master.filelist >> devel.filelist
-grep '%{_libdir}/lib.*\.so' < master.filelist >> devel.filelist
-
-# The exceptions are:
-# - libmemusage.so and libpcprofile.so in glibc used by utils.
-# - libnss_*.so which are in nss-devel.
-sed -i -e '\,libmemusage.so,d' \
-	-e '\,libpcprofile.so,d' \
-	-e '\,/libnss_[a-z]*\.so$,d' \
-%ifarch x86_64
-%dnl Exclude 32-bit libraries built for glibc32.
-	-e '\,/lib/.*\.so$,d' \
-%endif
-	devel.filelist
-
-%if %{glibc_autorequires}
-mkdir -p %{glibc_sysroot}/%{_rpmconfigdir} %{glibc_sysroot}/%{_fileattrsdir}
-sed < %{SOURCE3} \
-    -e s/@VERSION@/%{version}/ \
-    -e s/@RELEASE@/%{baserelease}/ \
-    -e s/@SYMVER@/%{glibc_autorequires_symver}/ \
-    > %{glibc_sysroot}/%{_rpmconfigdir}/glibc.req
-cp %{SOURCE4} %{glibc_sysroot}/%{_fileattrsdir}/glibc.attr
-%endif
-
-###############################################################################
-# glibc-doc
-###############################################################################
-
-%if %{with docs}
-# Put the info files into the doc file list, but exclude the generated dir.
-grep '%{_infodir}' master.filelist | grep -v '%{_infodir}/dir' > doc.filelist
-grep '%{_docdir}' master.filelist >> doc.filelist
-%endif
-
-###############################################################################
-# glibc-headers
-###############################################################################
-
+# glibc-devel historically contains a subset of the files in
+# /usr/include/gnu.  The remaining headers are in glibc-headers-*.
+# The -regex clause skips /usr/include, which is owned by the
+# filesystem package.  The x86_64 exception is required because there
+# are headers that should be part of the glibc32 package only.
 %if %{need_headers_package}
-# The glibc-headers package includes only common files which are identical
-# across all multilib packages. We must keep gnu/stubs.h and gnu/lib-names.h
-# in the glibc-headers package, but the -32, -64, -64-v1, and -64-v2 versions
-# go into glibc-devel.
+split_sysroot_file_list \
+  %{_includedir} '(
+    ! -regex .*%{_includedir}$
 %ifarch x86_64
-# Hardcode 32-bit and 64-bit header names here, so that 32-bit headers end up
-# in glibc32.
-grep '%{_prefix}/include/gnu/stubs-64\.h$' < master.filelist >> devel.filelist || :
-grep '%{_prefix}/include/gnu/lib-names-64\.h$' < master.filelist >> devel.filelist || :
-grep '%{_prefix}/include/gnu/stubs-32\.h$' < master.filelist >> glibc32.filelist || :
-grep '%{_prefix}/include/gnu/lib-names-32\.h$' < master.filelist >> glibc32.filelist || :
-%else
-grep '%{_prefix}/include/gnu/stubs-.*\.h$' < master.filelist >> devel.filelist || :
-grep '%{_prefix}/include/gnu/lib-names-.*\.h$' < master.filelist >> devel.filelist || :
+    ! -regex .*%{_includedir}/gnu/.*-32\.h$
 %endif
-# Put the include files into headers file list.
-grep '%{_prefix}/include' < master.filelist \
-  | grep -E -v '%{_prefix}/include/gnu/stubs-.*\.h$' \
-  | grep -E -v '%{_prefix}/include/gnu/lib-names-.*\.h$' \
-  > headers.filelist
-%else
-# If there is no glibc-headers package, all header files go into the
-# glibc-devel package.
-grep '%{_prefix}/include' < master.filelist >> devel.filelist
+  )' \
+  '%{_includedir}/gnu/(stubs|lib-names)-.*\.h$' \
+  headers.filelist devel.filelist
 %endif
 
-###############################################################################
-# glibc-static
-###############################################################################
-
-# Put the rest of the static files into the static package.
-grep '%{_libdir}/lib.*\.a' < master.filelist \
-  | grep -v "$devel_static_library_pattern" \
-  | grep -v "$other_static_library_pattern" \
-%ifarch x86_64
-%dnl Exclude 32-bit libraries built for glibc32.
-  | grep -v '/lib/.*\.a' \
-%endif
-  > static.filelist
-
-###############################################################################
-# glibc-common
-###############################################################################
-
-# All of the bin and certain sbin files go into the common package except
-# iconvconfig which needs to go in glibc.  The iconvconfig binary is kept in
-# the main glibc package because we use it in the post-install scriptlet to
-# rebuild the gconv-modules.cache.  The makedb binary is in nss_db.
-grep -E '%{_prefix}/s?bin' master.filelist \
-	| grep -vE 'bin/(makedb|iconvconfig|ldconfig|memusage|mtrace|pcprofiledump|xtrace)' \
-	>> common.filelist
-# All of the files under share go into the common package since they should be
-# multilib-independent.
-# Exceptions:
-# - The actual share directory, not owned by us.
-# - The info files which go into doc, and the info directory.
-# - All documentation files, which go into doc.
-grep '%{_prefix}/share' master.filelist \
-	| grep -v \
-	-e '%{_prefix}/share/info/libc.info.*' \
-	-e '%%dir %{prefix}/share/info' \
-	-e '%%dir %{prefix}/share' \
-	-e '%{_docdir}' \
-	>> common.filelist
-
-###############################################################################
-# glibc-utils
-###############################################################################
-
-# Add the utils scripts and programs to the utils subpackage.
-cat > utils.filelist <<EOF
-%if %{without bootstrap}
-%{_prefix}/bin/memusage
-%{_prefix}/bin/memusagestat
-%endif
-%{_prefix}/bin/mtrace
-%{_prefix}/bin/pcprofiledump
-%{_prefix}/bin/xtrace
-EOF
-
-%if %{glibc_ship_tracelibs_in_utils}
-grep \
-	-e '%{_lib}/libc_malloc_debug\.so' \
-	-e '%{_lib}/libmemusage.so' \
-	< master.filelist >> utils.filelist
-%endif
-
-###############################################################################
-# nss_db, nss_hesiod
-###############################################################################
-
-# Move the NSS-related files to the NSS subpackages.  Be careful not
-# to pick up .debug files, and the -devel symbolic links.
-for module in db hesiod; do
-  grep -E "/libnss_$module\\.so\\.[0-9.]+\$" \
-    master.filelist > nss_$module.filelist
-done
-grep -E "%{_prefix}/bin/makedb$" master.filelist >> nss_db.filelist
-
-###############################################################################
-# nss-devel
-###############################################################################
-
-# Symlinks go into the nss-devel package (instead of the main devel
-# package).
-grep '/libnss_[a-z]*\.so$' master.filelist > nss-devel.filelist
-
-###############################################################################
-# libnsl
-###############################################################################
-
-# Prepare the libnsl-related file lists.
-grep -E '/libnsl\.so\.[0-9]+$' master.filelist > libnsl.filelist
-test $(wc -l < libnsl.filelist) -eq 1
-
-%if %{with benchtests}
-###############################################################################
-# glibc-benchtests
-###############################################################################
-
-# List of benchmarks.
-find build-%{target}/benchtests -type f -executable | while read b; do
-	echo "%{_prefix}/libexec/glibc-benchtests/$(basename $b)"
-done >> benchtests.filelist
-# ... and the makefile.
-for b in %{SOURCE1} %{SOURCE2}; do
-	echo "%{_prefix}/libexec/glibc-benchtests/$(basename $b)" >> benchtests.filelist
-done
-# ... and finally, the comparison scripts.
-echo "%{_prefix}/libexec/glibc-benchtests/benchout.schema.json" >> benchtests.filelist
-echo "%{_prefix}/libexec/glibc-benchtests/compare_bench.py*" >> benchtests.filelist
-echo "%{_prefix}/libexec/glibc-benchtests/import_bench.py*" >> benchtests.filelist
-echo "%{_prefix}/libexec/glibc-benchtests/validate_benchout.py*" >> benchtests.filelist
-%endif
-
-###############################################################################
-# compat-libpthread-nonshared
-###############################################################################
-echo "%{_libdir}/libpthread_nonshared.a" >> compat-libpthread-nonshared.filelist
-
-###############################################################################
-# glibc32
-###############################################################################
-%ifarch x86_64
-grep '/lib/.*\.o$' master.filelist >> glibc32.filelist
-grep '/lib/.*\.a$' master.filelist >> glibc32.filelist
-grep '/lib/.*\.so' master.filelist >> glibc32.filelist
-%endif
+# The primary gconv converters are in the glibc package, the rest goes
+# into glibc-gconv-extra.  The Z9 and Z900 subpatterns are for
+# s390x-specific converters.  The -name clause skips over files
+# that are not loadable gconv modules.
+split_sysroot_file_list \
+  %{_libdir}/gconv '-name *.so' \
+  'gconv/
+   (CP1252
+   |ISO8859-15?
+   |UNICODE
+   |UTF-[0-9]+
+   |ISO-8859-1_CP037_Z900
+   |UTF(8|16)_UTF(16|32)_Z9
+   )\.so$' \
+  gconv-extra.filelist glibc.filelist
 
 ##############################################################################
 # Run the glibc testsuite
@@ -2249,18 +1958,6 @@ run_tests () {
     done <rpmbuild.tests.sum.not-passing
   fi
 
-  # Compile and run the xtests, so that they can be run separately later.
-  # Reduce timeout factor to complete the tests in a reasonable time
-  # (in case something was made an xtest due to excessive run time).
-  # Do not look at the test results; they are expected to fail in most
-  # cases.
-  TIMEOUT_FACTOR=1 %make_build xcheck > rpmbuild.xcheck.log 2>&1 || true
-  if ! grep -Eq '^\s+=== Summary of results for extra tests ===$' rpmbuild.xcheck.log ; then
-    echo "FAIL: xcheck test suite build of target: $(basename "$(pwd)")" >& 2
-    cat rpmbuild.xcheck.log
-    exit 1
-  fi
-
   # Unconditonally dump differences in the system call list.
   echo "* System call consistency checks:" >&2
   cat misc/tst-syscall-list.out >&2
@@ -2290,12 +1987,12 @@ fi
 echo ====================TESTING END=====================
 PLTCMD='/^Relocation section .*\(\.rela\?\.plt\|\.rela\.IA_64\.pltoff\)/,/^$/p'
 echo ====================PLT RELOCS LD.SO================
-readelf -Wr %{glibc_sysroot}/%{_lib}/ld-*.so | sed -n -e "$PLTCMD"
+readelf -Wr %{glibc_sysroot}%{_libdir}/ld-*.so | sed -n -e "$PLTCMD"
 echo ====================PLT RELOCS LIBC.SO==============
-readelf -Wr %{glibc_sysroot}/%{_lib}/libc-*.so | sed -n -e "$PLTCMD"
+readelf -Wr %{glibc_sysroot}%{_libdir}/libc-*.so | sed -n -e "$PLTCMD"
 echo ====================PLT RELOCS END==================
 
-run_ldso="%{glibc_sysroot}/%{glibc_ldso} --library-path %{glibc_sysroot}/%{_lib}"
+run_ldso="%{glibc_sysroot}/%{_prefix}%{glibc_ldso} --library-path %{glibc_sysroot}/%{_libdir}"
 
 # Show the auxiliary vector as seen by the new library
 # (even if we do not perform the valgrind test).
@@ -2507,16 +2204,46 @@ update_gconv_modules_cache ()
 update_gconv_modules_cache ()
 
 %files -f glibc.filelist
-%dir %{_prefix}/%{_lib}/audit
+%{_sbindir}/ldconfig
+%{_sbindir}/iconvconfig
+%{_libexecdir}/getconf
+%{_prefix}%{glibc_ldso}
+%{_libdir}/libBrokenLocale.so.1
+%{_libdir}/libanl.so.1
+%{_libdir}/libc.so.6
+%{_libdir}/libdl.so.2
+%{_libdir}/libm.so.6
+%{_libdir}/libnss_compat.so.2
+%{_libdir}/libnss_dns.so.2
+%{_libdir}/libnss_files.so.2
+%{_libdir}/libpthread.so.0
+%{_libdir}/libresolv.so.2
+%{_libdir}/librt.so.1
+%{_libdir}/libthread_db.so.1
+%{_libdir}/libutil.so.1
+%{_libdir}/libpcprofile.so
+%{_libdir}/audit
+%if %{glibc_has_libmvec}
+%{_libdir}/libmvec.so.1
+%endif
+%ifarch %{ix86}
+# Needs to be in glibc.i686 so that glibc-utils.x86_64 can use it.
+%{_libdir}/libmemusage.so
+%{_libdir}/libc_malloc_debug.so.0
+%endif
 %if %{buildpower10}
-%dir /%{_libdir}/glibc-hwcaps/power10
+%{_libdir}/glibc-hwcaps
 %endif
 %verify(not md5 size mtime) %config(noreplace) /etc/ld.so.conf
 %verify(not md5 size mtime) %config(noreplace) /etc/rpc
 %dir /etc/ld.so.conf.d
-%dir %{_prefix}/libexec/getconf
 %dir %{_libdir}/gconv
 %dir %{_libdir}/gconv/gconv-modules.d
+%verify(not md5 size mtime) %config(noreplace) %{_libdir}/gconv/gconv-modules
+%verify(not md5 size mtime) %{_libdir}/gconv/gconv-modules.cache
+%ifarch s390x
+%verify(not md5 size mtime) %config(noreplace) %{_libdir}/gconv/gconv-modules.d/gconv-modules-s390.conf
+%endif
 %dir %attr(0700,root,root) /var/cache/ldconfig
 %attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/cache/ldconfig/aux-cache
 %attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /etc/ld.so.cache
@@ -2525,10 +2252,27 @@ update_gconv_modules_cache ()
 %{!?_licensedir:%global license %%doc}
 %license COPYING COPYING.LIB LICENSES
 
-%files -f common.filelist common
+%files common
+%{_bindir}/gencat
+%{_bindir}/getconf
+%{_bindir}/getent
+%{_bindir}/iconv
+%{_bindir}/ld.so
+%{_bindir}/ldd
+%{_bindir}/locale
+%{_bindir}/localedef
+%{_bindir}/pldd
+%{_bindir}/sotruss
+%{_bindir}/sprof
+%{_bindir}/tzselect
+%{_bindir}/zdump
+%{_sbindir}/zic
+%dir %{_datarootdir}/i18n
+%dir %{_datarootdir}/i18n/locales
+%dir %{_datarootdir}/i18n/charmaps
 %dir %{_prefix}/lib/locale
-%dir %{_prefix}/lib/locale/C.utf8
-%{_prefix}/lib/locale/C.utf8/*
+%{_datarootdir}/locale/locale.alias
+%{_prefix}/lib/locale/C.utf8
 
 %files all-langpacks
 %{_prefix}/lib/locale/locale-archive
@@ -2536,45 +2280,98 @@ update_gconv_modules_cache ()
 %{_prefix}/share/locale/*/LC_MESSAGES/libc.mo
 
 %files locale-source
-%dir %{_prefix}/share/i18n/locales
-%{_prefix}/share/i18n/locales/*
-%dir %{_prefix}/share/i18n/charmaps
-%{_prefix}/share/i18n/charmaps/*
+%{_datarootdir}/i18n/locales
+%{_datarootdir}/i18n/charmaps
 
+%if %{need_headers_package}
 %files -f devel.filelist devel
+%else
+%files devel
+%{_includedir}/*
+%endif
 %if %{glibc_autorequires}
 %attr(0755,root,root) %{_rpmconfigdir}/glibc.req
 %{_fileattrsdir}/glibc.attr
 %endif
-
-%if %{with docs}
-%files -f doc.filelist doc
+%{_libdir}/*.o
+%{_libdir}/libBrokenLocale.so
+%{_libdir}/libanl.a
+%{_libdir}/libanl.so
+%{_libdir}/libc.so
+%{_libdir}/libc_nonshared.a
+%{_libdir}/libdl.a
+%{_libdir}/libg.a
+%{_libdir}/libm.so
+%{_libdir}/libmcheck.a
+%{_libdir}/libpthread.a
+%{_libdir}/libresolv.so
+%{_libdir}/librt.a
+%{_libdir}/libthread_db.so
+%{_libdir}/libutil.a
+%if %{glibc_has_libnldbl}
+%{_libdir}/libnldbl_nonshared.a
+%endif
+%if %{glibc_has_libmvec}
+%{_libdir}/libmvec.so
 %endif
 
-%files -f static.filelist static
+%if %{with docs}
+%files doc
+%{_datarootdir}/doc
+%{_infodir}/*.info*
+%endif
+
+%files static
+%{_libdir}/libBrokenLocale.a
+%{_libdir}/libc.a
+%{_libdir}/libm.a
+%{_libdir}/libresolv.a
+%if %{glibc_has_libmvec}
+%{_libdir}/libm-%{version}.a
+%{_libdir}/libmvec.a
+%endif
 
 %if  %{need_headers_package}
 %files -f headers.filelist -n %{headers_package_name}
 %endif
 
-%files -f utils.filelist utils
-
-%files -f gconv.filelist gconv-extra
-
-%files -f nss_db.filelist -n nss_db
-/var/db/Makefile
-%files -f nss_hesiod.filelist -n nss_hesiod
-%doc hesiod/README.hesiod
-%files -f nss-devel.filelist nss-devel
-
-%files -f libnsl.filelist -n libnsl
-/%{_lib}/libnsl.so.1
-
-%if %{with benchtests}
-%files benchtests -f benchtests.filelist
+%files utils
+%{_bindir}/memusage
+%{_bindir}/memusagestat
+%{_bindir}/mtrace
+%{_bindir}/pcprofiledump
+%{_bindir}/xtrace
+%ifnarch %{ix86}
+# Needs to be in glibc.i686 so that glibc-utils.x86_64 can use it.
+%{_libdir}/libmemusage.so
+%{_libdir}/libc_malloc_debug.so.0
 %endif
 
-%files -f compat-libpthread-nonshared.filelist -n compat-libpthread-nonshared
+%files -f gconv-extra.filelist gconv-extra
+%verify(not md5 size mtime) %config(noreplace) %{_libdir}/gconv/gconv-modules.d/gconv-modules-extra.conf
+
+%files -n nss_db
+%{_bindir}/makedb
+%{_libdir}/libnss_db.so.2
+/var/db/Makefile
+%files -n nss_hesiod
+%{_libdir}/libnss_hesiod.so.2
+%doc hesiod/README.hesiod
+%files nss-devel
+%{_libdir}/libnss_compat.so
+%{_libdir}/libnss_db.so
+%{_libdir}/libnss_hesiod.so
+
+%files -n libnsl
+%{_libdir}/libnsl.so.1
+
+%if %{with benchtests}
+%files benchtests
+%{_libexecdir}/glibc-benchtests
+%endif
+
+%files -n compat-libpthread-nonshared
+%{_libdir}/libpthread_nonshared.a
 
 %if %{without bootstrap}
 %files -n sysroot-%{_arch}-%{sysroot_dist}-glibc
@@ -2582,10 +2379,35 @@ update_gconv_modules_cache ()
 %endif
 
 %ifarch x86_64
-%files -f glibc32.filelist -n glibc32
+%files -n glibc32
+%{_includedir}/gnu/lib-names-32.h
+%{_includedir}/gnu/stubs-32.h
+%{_prefix}/lib/*.a
+%{_prefix}/lib/*.o
+%{_prefix}/lib/*.so*
+%{_prefix}/lib/audit/*
 %endif
 
 %changelog
+* Fri Oct 25 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-12
+- Complete Features/UsrMove (aka UsrMerge, MoveToUsr) transition (#1063607)
+
+* Fri Oct 25 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-11
+- Rework filelist construction
+
+* Fri Oct 25 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-10
+- Auto-sync with upstream branch master,
+  commit ac73067cb7a328bf106ecd041c020fc61be7e087.
+
+* Fri Oct 25 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-9
+- Auto-sync with upstream branch master,
+  commit 43db5e2c0672cae7edea7c9685b22317eae25471:
+- elf: Signal RT_CONSISTENT after relocation processing in dlopen (bug 31986)
+- elf: Signal LA_ACT_CONSISTENT to auditors after RT_CONSISTENT switch
+- elf: Run constructors on cyclic recursive dlopen (bug 31986)
+- Linux: Match kernel text for SCHED_ macros
+- libio: Correctly link tst-popen-fork against libpthread
+
 * Thu Oct 24 2024 Patsy Griffin <patsy@redhat.com> - 2.40.9000-8
 - Auto-sync with upstream branch master,
   commit c5dd659f22058bf9b371ab1cba07631f1206c674.

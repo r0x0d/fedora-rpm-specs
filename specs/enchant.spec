@@ -4,7 +4,7 @@
 Summary: An Enchanting Spell Checking Library
 Name: enchant
 Version: 1.6.0
-Release: 37%{?dist}
+Release: 38%{?dist}
 Epoch: 1
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License: LicenseRef-Callaway-LGPLv2+
@@ -12,21 +12,17 @@ Source: http://www.abisource.com/downloads/enchant/%{version}/enchant-%{version}
 URL: http://www.abisource.com/
 BuildRequires:  gcc-c++
 BuildRequires: glib2-devel >= 2.6.0
-BuildRequires: aspell-devel
 BuildRequires: hunspell-devel
 BuildRequires: libvoikko-devel
 BuildRequires: automake, libtool
 BuildRequires: make
 
+# Drop at or after f44
+Provides: enchant-aspell = 1.6.0-37
+Obsoletes: enchant-aspell < 1.6.0-37
+
 %description
 A library that wraps other spell checking backends.
-
-%package aspell
-Summary: Integration with aspell for libenchant
-Requires: enchant = %{epoch}:%{version}-%{release}
-
-%description aspell
-Libraries necessary to integrate applications using libenchant with aspell.
 
 %package voikko
 Summary: Integration with voikko for libenchant
@@ -48,7 +44,7 @@ Libraries, headers, and support files necessary to compile applications using li
 %setup -q
 
 %build
-%configure --enable-myspell --with-myspell-dir=/usr/share/hunspell --disable-static --disable-ispell --disable-hspell --disable-zemberek
+%configure --enable-myspell --with-myspell-dir=/usr/share/hunspell --disable-static --disable-ispell --disable-hspell --disable-zemberek --disable-aspell
 make %{?_smp_mflags}
 
 %install
@@ -66,9 +62,6 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/enchant/*.la
 %{_mandir}/man1/enchant.1*
 %{_datadir}/enchant
 
-%files aspell
-%{_libdir}/enchant/lib*aspell.so*
-
 %files voikko
 %{_libdir}/enchant/lib*_voikko.so*
 
@@ -80,6 +73,9 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/enchant/*.la
 %ldconfig_scriptlets
 
 %changelog
+* Fri Oct 25 2024 Gwyn Ciesla <gwync@protonmail.com> - 1:1.6.0-38
+- Drop aspell subpackage.
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 1:1.6.0-37
 - convert license to SPDX
 

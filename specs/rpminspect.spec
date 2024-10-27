@@ -1,6 +1,6 @@
 Name:           rpminspect
 Version:        2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Build deviation analysis and compliance tool
 Group:          Development/Tools
 # librpminspect is licensed under the LGPL-3.0-or-later, and:
@@ -91,11 +91,6 @@ Recommends:     html401-dtds
 # Required to support things like %%autorelease in spec files
 %if 0%{?fedora} >= 33
 Recommends:     rpm_macro(autorelease)
-%endif
-
-# Required because we build against the system libtoml in Fedora
-%if 0%{?fedora}
-Requires:       libtoml
 %endif
 
 # These programs are only required for the 'shellsyntax' functionality.
@@ -203,6 +198,9 @@ control files.
 
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 2.0-2
+- Rebuild for clamav 1.4.1
+
 * Thu Sep 05 2024 David Cantrell <dcantrell@redhat.com> - 2.0-1
 - Upgrade to rpminspect-2.0
 

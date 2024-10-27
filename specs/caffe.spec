@@ -11,7 +11,7 @@ Summary:        A deep learning framework
 Name:           caffe
 License:        BSD-2-Clause
 Version:        1.0^git%{date0}.%{shortcommit0}
-Release:        13%{?dist}
+Release:        14%{?dist}
 
 ExclusiveArch:  x86_64 aarch64 ppc64le
 URL:            http://caffe.berkeleyvision.org/
@@ -144,6 +144,9 @@ rm -r %{buildroot}/usr/python
 %{_libdir}/cmake/Caffe/
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1.0^git20200212.9b89154-14
+- Rebuild for hdf5 1.14.5
+
 * Thu Jul 25 2024 Sérgio Basto <sergio@serjux.com> - 1.0^git20200212.9b89154-13
 - Rebuild for opencv 4.10.0
 

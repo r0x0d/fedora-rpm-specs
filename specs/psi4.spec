@@ -15,7 +15,7 @@ ExcludeArch: %{ix86}
 Name:           psi4
 Epoch:          1
 Version:        1.9.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        An ab initio quantum chemistry package
 # Automatically converted from old format: LGPLv3 and MIT - review is highly recommended.
 License:        LGPL-3.0-only AND LicenseRef-Callaway-MIT
@@ -185,6 +185,9 @@ ctest -L smoketests --output-on-failure
 %{_datadir}/psi4/
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1:1.9.1-4
+- Rebuild for hdf5 1.14.5
+
 * Sat Oct 12 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 1:1.9.1-3
 - Patch for libxc 7.0.0 compatibility in rawhide.
 

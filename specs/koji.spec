@@ -9,7 +9,7 @@
 
 Name: koji
 Version: 1.35.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 # the included arch lib from yum's rpmUtils is GPLv2+
 # Automatically converted from old format: LGPLv2 and GPLv2+ - review is highly recommended.
 License: LicenseRef-Callaway-LGPLv2 AND GPL-2.0-or-later
@@ -19,6 +19,7 @@ Source0: https://releases.pagure.org/koji/koji-%{version}.tar.bz2
 
 # Not upstreamable
 Patch100: fedora-config.patch
+Patch101: pr4228-wait-repo-current.patch
 
 BuildArch: noarch
 Requires: python%{python3_pkgversion}-%{name} = %{version}-%{release}
@@ -362,6 +363,9 @@ done
 %systemd_postun kojira.service
 
 %changelog
+* Thu Oct 24 2024 Mike McLean <mikem@redhat.com> - 1.35.1-2
+- Backport PR #4228: wait for a current repo by default
+
 * Tue Oct 08 2024 Kevin Fenzi <kevin@scrye.com> - 1.35.1-1
 - Update to 1.35.1. Fixes rhbz#2316304
 - Fixes CVE-2024-9427

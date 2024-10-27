@@ -1,7 +1,7 @@
 Summary:        Generic Programming for Computer Vision
 Name:           vigra
 Version:        1.11.1
-Release:        54%{?dist}
+Release:        55%{?dist}
 License:        MIT
 # The "Lenna" files are non-free, we need to remove them from the source tarball.
 # wget https://github.com/ukoethe/vigra/releases/download/Version-1-11-1/vigra-1.11.1-src.tar.gz
@@ -165,6 +165,9 @@ install -p -m755 -D %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/vigra-config
 %endif
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1.11.1-55
+- Rebuild for hdf5 1.14.5
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.11.1-54
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

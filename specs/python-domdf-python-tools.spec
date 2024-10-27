@@ -5,9 +5,9 @@
 %global forgeurl https://github.com/domdfcoding/domdf_python_tools
 
 Name:           python-domdf-python-tools
-Version:        3.7.0
+Version:        3.9.0
 %forgemeta
-Release:        6%{?dist}
+Release:        1%{?dist}
 Summary:        Helpful functions for Python
 
 # Primary license: MIT
@@ -62,6 +62,9 @@ sed -i '/^timeout =/d' tox.ini
 # Remove unnecessary shebangs
 find domdf_python_tools/ -type f ! -executable -name '*.py' -print \
     -exec sed -i -e '1{\@^#!.*@d}' '{}' +
+# Remove unnecessary upper-bound on the version of setuptools
+# https://github.com/domdfcoding/domdf_python_tools/issues/122
+sed -r -i 's/("setuptools[^"]+)(<[^,"]+,|,<[^,"]+)/\1/' pyproject.toml
 
 
 %generate_buildrequires
@@ -74,7 +77,7 @@ find domdf_python_tools/ -type f ! -executable -name '*.py' -print \
 
 %install
 %pyproject_install
-%pyproject_save_files domdf_python_tools
+%pyproject_save_files -l domdf_python_tools
 
 
 %check
@@ -93,11 +96,13 @@ and not test_repr_deep
 
 
 %files -n python3-domdf-python-tools -f %{pyproject_files}
-%license LICENSE
 %doc README.rst
 
 
 %changelog
+* Sun Oct 20 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 3.9.0-1
+- Update to 3.9.0; Fixes rhbz#2253991, fixes rhbz#2259552
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.7.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

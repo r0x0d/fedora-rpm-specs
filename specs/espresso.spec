@@ -3,7 +3,7 @@
 
 Name:           espresso
 Version:        4.2.2
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Extensible Simulation Package for Research on Soft matter
 # segfault on s390x: https://github.com/espressomd/espresso/issues/3753
 # segfault on armv7hl: https://src.fedoraproject.org/rpms/espresso/pull-request/4
@@ -162,6 +162,9 @@ done
 %{python3_sitearch}/mpich/%{name}md/
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 4.2.2-6
+- Rebuild for hdf5 1.14.5
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 4.2.2-5
 - convert license to SPDX
 

@@ -3,7 +3,7 @@
 
 Name:           nexus
 Version:        4.4.3
-Release:        17%{?dist}
+Release:        18%{?dist}
 Summary:        Libraries and tools for the NeXus scientific data file format
 
 # The entire source code is GPLv2+ except nxdir which is MIT
@@ -119,6 +119,9 @@ rm %{buildroot}%{_libdir}/libNeXusCPP.a
 
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 4.4.3-18
+- Rebuild for hdf5 1.14.5
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 4.4.3-17
 - convert license to SPDX
 

@@ -16,14 +16,14 @@ Summary:	A completely open audiocodec
 Version:	5.7.0
 Release:	%autorelease
 License:	BSD-3-Clause AND BSD-2-Clause AND LicenseRef-Fedora-Public-Domain
-Url:		http://www.wavpack.com/
-Source:		http://www.wavpack.com/%{name}-%{version}.tar.bz2
-Patch1:		wavpack_mingw.patch
+Url:		https://www.wavpack.com/
+Source:		https://www.wavpack.com/%{name}-%{version}.tar.bz2
+# Fedora-specific
+Patch1:		wavpack-0001-fix-for-MinGW.patch
+# Fedora-specific (we do not build any C++ code)
+Patch2:		wavpack-0002-We-compile-only-ANSI-C-sources.patch
 BuildRequires:  cmake
 BuildRequires:  gcc
-# FIXME current CMakeLists.txt erroneously requires g++ during the
-# configuration stage
-BuildRequires:  gcc-c++
 BuildRequires:  gettext-devel
 BuildRequires:  libtool
 BuildRequires:  make
@@ -31,14 +31,8 @@ BuildRequires:  make
 %if %{with mingw}
 BuildRequires: mingw32-filesystem >= 95
 BuildRequires: mingw32-gcc
-# FIXME current CMakeLists.txt erroneously requires g++ during the
-# configuration stage
-BuildRequires: mingw32-gcc-c++
 BuildRequires: mingw64-filesystem >= 95
 BuildRequires: mingw64-gcc
-# FIXME current CMakeLists.txt erroneously requires g++ during the
-# configuration stage
-BuildRequires: mingw64-gcc-c++
 %endif
 
 %description

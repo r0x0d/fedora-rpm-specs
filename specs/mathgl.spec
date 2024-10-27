@@ -25,7 +25,7 @@
 
 Name:          mathgl
 Version:       8.0.1
-Release:       14%{?dist}
+Release:       15%{?dist}
 Summary:       Cross-platform library for making high-quality scientific graphics
 Summary(de):   Plattformübergreifende Bibliothek für hochwertige wissenschaftliche Graphiken
 Summary(ru):   Библиотека для осуществления высококачественной визуализации данных
@@ -630,6 +630,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/mgllab.desktop
 %endif
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 8.0.1-15
+- Rebuild for hdf5 1.14.5
+
 * Fri Aug  9 2024 Jerry James <loganjerry@gmail.com> - 8.0.1-14
 - Link with flexiblas instead of gslcblas
 

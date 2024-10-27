@@ -77,7 +77,7 @@ Version:        4.10.0
 %global minorver %(foo=%{version}; a=(${foo//./ }); echo ${a[1]} )
 %global padding  %(digits=00; num=%{minorver}; echo ${digits:${#num}:${#digits}} )
 %global abiver   %(echo %{majorver}%{padding}%{minorver} )
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Collection of algorithms for computer vision
 # This is normal three clause BSD.
 License:        BSD-3-Clause AND Apache-2.0 AND ISC
@@ -579,6 +579,9 @@ ln -s -r %{buildroot}%{_jnidir}/opencv-%{javaver}.jar %{buildroot}%{_jnidir}/ope
 
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 4.10.0-5
+- Rebuild for hdf5 1.14.5
+
 * Wed Sep 25 2024 Michel Lind <salimma@fedoraproject.org> - 4.10.0-4
 - Rebuild for tesseract-5.4.1-3 (soversion change from 5.4.1 to just 5.4)
 

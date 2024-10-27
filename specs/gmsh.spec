@@ -18,7 +18,7 @@
 Name:       gmsh
 Summary:    A three-dimensional finite element mesh generator
 Version:    4.13.2
-Release:    3%{?dist}
+Release:    4%{?dist}
 # MPI not available on i686
 ExcludeArch: %{ix86}
 
@@ -409,6 +409,9 @@ rm -f %{buildroot}%{_defaultdocdir}/%{name}/LICENSE.txt
 
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 4.13.2-4
+- Rebuild for hdf5 1.14.5
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.13.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -25,7 +25,7 @@
 Summary: PDE solving tool
 Name: freefem++
 Version: %{expand:%(echo %tarvers | tr - .)}
-Release: 11%{?dist}
+Release: 12%{?dist}
 URL: https://freefem.org
 Source0: https://github.com/FreeFem/FreeFem-sources/archive/v%{tarvers}.tar.gz#/%{tarname}-%{tarvers}.tar.gz
 
@@ -453,6 +453,9 @@ done
 %endif
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 4.14-12
+- Rebuild for hdf5 1.14.5
+
 * Sat Sep 07 2024 Antonio Trande <sagitter@fedoraproject.org> - 4.14-11
 - Rebuild for SuperLU-7.0.0
 

@@ -1,66 +1,74 @@
 Name:           perl-rdapper
-Version:        0.08
-Release:        25%{?dist}
-Summary:        Command-line RDAP client
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
+Version:        1.04
+Release:        1%{?dist}
+Summary:        Simple console-based RDAP client
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
-URL:            https://metacpan.org/release/rdapper
-# Upstream source repository is <https://github.com/jodrell/rdapper> as
-# announced by the author
-# <https://www.ietf.org/mail-archive/web/weirds/current/msg01981.html>.
-Source0:        https://cpan.metacpan.org/authors/id/G/GB/GBROWN/rdapper-%{version}.tar.gz
+URL:            https://metacpan.org/dist/App-rdapper
+# Upstream source repository is <https://github.com/gbxyz/rdapper>, renamed
+# from <https://github.com/jodrell/rdapper> that was announced by the author
+# at <https://www.ietf.org/mail-archive/web/weirds/current/msg01981.html>.
+Source0:        https://cpan.metacpan.org/authors/id/G/GB/GBROWN/App-rdapper-%{version}.tar.gz
 BuildArch:      noarch
-BuildRequires:  findutils
+BuildRequires:  coreutils
 BuildRequires:  make
-BuildRequires:  perl-interpreter
 BuildRequires:  perl-generators
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl-interpreter
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 BuildRequires:  perl(strict)
 # Run-time:
-# No tests, not not run-time time dependencies used
-# Getopt::Long not used at tests
-# HTTP::Request::Common not used at tests
-# IO::Socket::SSL not used at tests
-# JSON not used at tests
-# JSON::Path not used at tests
-# LWP >=6  not used at tests
-# LWP::Protocol::https not used at tests
-# MIME::Base64 not used at tests
-# MIME::Type not used at tests
-# Mozilla::CA not used at tests
-# Pod::Usage not used at tests
-# POSIX not used at tests
-# URI not used at tests
+# No tests, no run-time time dependencies used
+# constant
+# Getopt::Long
+# JSON
+# List::MoreUtils
+# List::Util
+# Net::ASN
+# Net::DNS::Domain
+# Net::IP
+# Net::RDAP 0.26
+# Net::RDAP::EPPStatusMap
+# Pod::Usage
+# Term::ANSIColor
+# Term::Size
+# Text::Wrap
+# URI
+# vars
 # To support HTTPS
 Requires:       perl(LWP::Protocol::https)
 
 %description
-rdapper is a command-line client for the Registration Data Access Protocol
-(RDAP), the successor protocol to WHOIS (RFC 3912). RDAP is currently being
-developed by the WEIRDS IETF working group <https://tools.ietf.org/wg/weirds/>.
+"rdapper" is a simple RDAP client. It uses Net::RDAP to retrieve data about
+internet resources (domain names, IP addresses, and autonomous systems) and
+outputs the information in a human-readable format.
 
 %prep
-%setup -q -n rdapper-%{version}
+%autosetup -p1 -n App-rdapper-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=$RPM_BUILD_ROOT
-find $RPM_BUILD_ROOT -type f -name .packlist -delete
+%{make_install}
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 %check
 make test
 
 %files
-%license COPYING
-%doc README.md
+%doc Changes README.md
 %{_bindir}/rdapper
-%{_mandir}/man1/rdapper.*
+%dir %{perl_vendorlib}/App
+%{perl_vendorlib}/App/rdapper.pm
+%{_mandir}/man3/App::rdapper.*
 
 %changelog
+* Fri Oct 25 2024 Petr Pisar <ppisar@redhat.com> - 1.04-1
+- 1.04 bump
+
+* Fri Sep 27 2024 Petr Pisar <ppisar@redhat.com> - 1.03-1
+- 1.03 bump
+
 * Tue Aug 06 2024 Miroslav Suchý <msuchy@redhat.com> - 0.08-25
 - convert license to SPDX
 

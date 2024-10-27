@@ -1,6 +1,6 @@
 Summary: Graphical system installer
 Name:    anaconda
-Version: 42.11
+Version: 42.12
 Release: 1%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
@@ -490,6 +490,15 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Fri Oct 25 2024 Packit <hello@packit.dev> - 42.12-1
+- Revert "Update lorax build for pkexec command" (k.koukiou)
+- Update lorax build for pkexec command (adamkankovsky)
+- webui: Handle XAUTHORITY and XDG_RUNTIME_DIR (rstrode)
+- unit_test: extend existing device tree checks with isleaf attribute
+  (adamkankovsky)
+- Introduce isleaf to deviceData (adamkankovsky)
+- network: handle autoconnections policy for rhel upstream (rvykydal)
+
 * Wed Oct 23 2024 Packit <hello@packit.dev> - 42.11-1
 - Fix permission errors from liveinst exit (jkonecny)
 - Remove redundant line in DNF payload (mkolman)

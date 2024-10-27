@@ -4,7 +4,7 @@
 
 Name:           flann
 Version:        1.9.2
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Fast Library for Approximate Nearest Neighbors
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -128,6 +128,9 @@ rm -rf %{buildroot}%{_datadir}/doc/flann
 %{python3_sitearch}/flann-%{version}*.egg-info
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1.9.2-10
+- Rebuild for hdf5 1.14.5
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 1.9.2-9
 - convert license to SPDX
 

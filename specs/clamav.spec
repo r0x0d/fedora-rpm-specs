@@ -1,4 +1,4 @@
-#global prerelease  -rc2
+#global prerelease  -rc
 
 %global _hardened_build 1
 
@@ -25,8 +25,8 @@
 
 Summary:    End-user tools for the Clam Antivirus scanner
 Name:       clamav
-Version:    1.0.7
-Release:    2%{?dist}
+Version:    1.4.1
+Release:    1%{?dist}
 License:    %{?with_unrar:proprietary}%{!?with_unrar:GPL-2.0-only}
 URL:        https://www.clamav.net/
 %if %{with unrar}
@@ -50,7 +50,7 @@ Source5:    clamd-README
 #http://database.clamav.net/main.cvd
 Source10:   main-62.cvd
 #http://database.clamav.net/daily.cvd
-Source11:   daily-27388.cvd
+Source11:   daily-27399.cvd
 #http://database.clamav.net/bytecode.cvd
 Source12:   bytecode-335.cvd
 #for update
@@ -65,15 +65,10 @@ Source330:  clamav-milter.systemd
 #for scanner-systemd/server-systemd
 Source530:  clamd@.service
 
-# Accept RUSTFLAGS
-# https://github.com/Cisco-Talos/clamav/pull/835
-Patch0:     clamav-rustflags.patch
 # Change default config locations for Fedora
 Patch1:     clamav-default_confs.patch
 # Fix pkg-config flags for static linking, multilib
 Patch2:     clamav-private.patch
-# Remove rpath
-Patch3:     clamav-rpath.patch
 # Modify clamav-clamonacc.service for Fedora compatibility
 Patch5:     clamav-clamonacc-service.patch
 # Allow freshclam service to run if cron.d file is present
@@ -124,6 +119,9 @@ BuildRequires:  pcre2-devel
 # Explicitly needed on EL8
 BuildRequires:  python3
 BuildRequires:  python3-pytest
+%if 0%{?fedora} >= 41
+BuildRequires:  python3-cgi
+%endif
 BuildRequires:  zlib-devel
 #BuildRequires:  %%{_includedir}/tcpd.h
 BuildRequires:  bc
@@ -332,18 +330,18 @@ This package contains files which are needed to run the clamav-milter.
 # EL8 and earlier do not have the Rust cargo dependencies that are
 # defined by the generate_buildrequires stage in EL9 and later, so the
 # vendored packages included in the ClamAV sources suffice.
-sed -i -e '/cbindgen/s/version = *"0.20"/version = "0.24"/' -e '/^bindgen *=/s/= .*/= "0.63"/' libclamav_rust/Cargo.toml
 %cargo_prep
 cd libclamav_rust
-rm -r .cargo
+sed -i -e '/^base64 *=/s/= .*/= "0.21"/' Cargo.toml
+sed -i -e '/^bindgen *=/s/= .*/= "0.69"/' Cargo.toml
+sed -i -e '/^cbindgen *=/s/= *".*"/= "0.26"/' Cargo.toml
+sed -i -e '/^onenote_parser *=/s/= *.*/= "0.3.1"/' Cargo.toml
 %cargo_prep
 cd ..
 %endif
 
-%patch -P0 -p1 -b .rustflags
 %patch -P1 -p1 -b .default_confs
 %patch -P2 -p1 -b .private
-%patch -P3 -p1 -b .rpath
 %patch -P5 -p1 -b .clamonacc-service
 %patch -P6 -p1 -b .freshclam-service
 %patch -P7 -p1 -b .big-endian
@@ -384,6 +382,7 @@ export have_cv_ipv6=yes
     -DCMAKE_INSTALL_DOCDIR=%{_pkgdocdir} \
     -DCLAMAV_USER=%{updateuser} -DCLAMAV_GROUP=%{updateuser} \
     -DDATABASE_DIRECTORY=%{homedir} \
+    -DDO_NOT_SET_RPATH=ON \
     %{!?with_clamonacc:-DENABLE_CLAMONACC=OFF} \
     %{?with_llvm:-DBYTECODE_RUNTIME=llvm -D LLVM_FIND_VERSION="3.6.0"} \
     %{!?with_unrar:-DENABLE_UNRAR=OFF}
@@ -486,7 +485,13 @@ rm %{buildroot}%{_unitdir}/clamav-daemon.*
 
 
 %check
+%ifarch s390x
+# Tests fail on s390x
+# https://github.com/Cisco-Talos/clamav/issues/759
+%ctest3 -- -E valgrind || :
+%else
 %ctest3 -- -E valgrind
+%endif
 # valgrind tests fail https://github.com/Cisco-Talos/clamav/issues/584
 %ctest3 -- -R valgrind || :
 
@@ -602,16 +607,17 @@ exit 0
 %files lib
 # Licenses for statically linked Rust dependencies in libclamav
 %license LICENSES.dependencies
-%{_libdir}/libclamav.so.11*
+%{_libdir}/libclamav.so.12*
 %{_libdir}/libclammspack.so.0*
 %if %{with unrar}
-%{_libdir}/libclamunrar*.so.11*
+%{_libdir}/libclamunrar*.so.12*
 %endif
 
 
 %files devel
 %{_includedir}/*
 %{_libdir}/*.so
+%{_libdir}/libclamav_rust.a
 %{_libdir}/pkgconfig/*
 %{_bindir}/clamav-config
 
@@ -638,9 +644,11 @@ exit 0
 
 %files freshclam
 %{_bindir}/freshclam
-%{_libdir}/libfreshclam.so.2*
+%{_libdir}/libfreshclam.so.3*
 %{_mandir}/*/freshclam*
 %{_unitdir}/clamav-freshclam.service
+%{_unitdir}/clamav-freshclam-once.service
+%{_unitdir}/clamav-freshclam-once.timer
 %config(noreplace) %verify(not mtime)    %{_sysconfdir}/freshclam.conf
 %ghost %attr(0644,%{updateuser},%{updateuser}) %{homedir}/bytecode.cld
 %ghost %attr(0644,%{updateuser},%{updateuser}) %{homedir}/bytecode.cvd
@@ -671,6 +679,9 @@ exit 0
 
 
 %changelog
+* Wed Sep 25 2024 Orion Poplawski <orion@nwra.com> - 1.4.1-1
+- Update to 1.4.1
+
 * Sun Sep 15 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 1.0.7-2
 - Update the image crate dependency to 0.25, the current release
 

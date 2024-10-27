@@ -2,7 +2,7 @@
 
 Name:           ioc-writer
 Version:        0.3.3
-Release:        23%{?dist}
+Release:        24%{?dist}
 Summary:        Tool to create and edit OpenIOC objects
 
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
@@ -29,7 +29,7 @@ supports a basic CRUD (create, read, update, delete) for various items.
 %py3_install
 
 %check
-%{__python3} setup.py test
+%python3 -m unittest discover -v -s tests/
 
 %files
 %doc README.md
@@ -40,6 +40,10 @@ supports a basic CRUD (create, read, update, delete) for various items.
 %{python3_sitelib}/%{pypi_name}/
 
 %changelog
+* Fri Oct 25 2024 Charalampos Stratakis <cstratak@redhat.com> - 0.3.3-24
+- Utilize unittest instead of the removed setup.py test command
+Resolves: rhbz#2319632
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0.3.3-23
 - convert license to SPDX
 

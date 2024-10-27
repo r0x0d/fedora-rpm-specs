@@ -1,11 +1,27 @@
-%if 0%{?rhel} >= 9
-# Needs pytest-xdist and typing-extensions which pull in a bunch of BRs, see
-# missing-epel9-test-brs.json
-# Later RHEL versions are also expected to be missing some or all of these
-%bcond_with tests
+%bcond_without tests
+
+%if %{defined rhel}
+# The cli and ghostwriter extras require black, which is not currently in
+# RHEL/EPEL 10.  It was requested in rhbz#2319803, but the maintainer doesn't
+# think it's a good fit due to the fact that black doesn't have a stable Python
+# API.
+%bcond_with cli
+%bcond_with ghostwriter
+# The django extra requires django, which is not currently in RHEL/EPEL 10.
+# It has been requested in rhbz#2319809.
+%bcond_with django
+# The codemods extra requires libcst, which is not currently in RHEL/EPEL 10.
+# It has been requested in rhbz#2319805.
+%bcond_with codemods
+# Building the docs need several sphinx extensions (sphinx-hoverxref,
+# sphinx-jsonschema, sphinx-rtd-theme, sphinx_selective_exclude) that are not
+# currently in RHEL/EPEL 10.
 %bcond_with doc
 %else
-%bcond_without tests
+%bcond_without cli
+%bcond_without ghostwriter
+%bcond_without django
+%bcond_without codemods
 %bcond_without doc
 %endif
 
@@ -53,10 +69,15 @@ Summary:        %{summary}
 %description -n python%{python3_pkgversion}-hypothesis %{_description}
 
 
-%global extras cli,ghostwriter,pytz,dateutil,lark,numpy,pandas,pytest,redis,zoneinfo,django,codemods
+%global extras pytz,dateutil,lark,numpy,pandas,pytest,redis,zoneinfo%{?with_cli:,cli}%{?with_ghostwriter:,ghostwriter}%{?with_django:,django}%{?with_codemods:,codemods}
 # extras with missing deps:
 #  dpcontracts: dpcontracts
 #  crosshair: hypothesis-crosshair, crosshair-tool
+# extras with missing deps on RHEL/EPEL:
+#  cli: black, rich
+#  ghostwriter: black
+#  django: django
+#  codemods: libcst
 %{pyproject_extras_subpkg -n python%{python3_pkgversion}-hypothesis %{extras}}
 
 
@@ -95,6 +116,12 @@ install -Dpm0644 -t %{buildroot}%{_mandir}/man1 docs/_build/man/hypothesis.1
 %check
 k=""
 %pytest -v -n auto -k "$k" \
+%if %{without ghostwriter}
+  --ignore tests/ghostwriter \
+%endif
+%if %{without codemods}
+  --ignore tests/codemods --ignore tests/patching \
+%endif
   --ignore tests/dpcontracts \
   --ignore tests/redis \
 

@@ -3,7 +3,7 @@
 
 Name:           gazebo
 Version:        10.2.0
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        3D multi-robot simulator with dynamics
 
 # gazebo/gui/qgv is LGPLv3+
@@ -334,6 +334,9 @@ export GAZEBO_IP=127.0.0.1
 %{_libdir}/cmake/*
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 10.2.0-9
+- Rebuild for hdf5 1.14.5
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 10.2.0-8
 - convert license to SPDX
 

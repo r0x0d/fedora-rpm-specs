@@ -15,7 +15,7 @@ information and access to the image data is made available via NumPy arrays.
 }
 
 Name:           python-nibabel
-Version:        5.3.0
+Version:        5.3.2
 Release:        %autorelease
 Summary:        Python package to access a cacophony of neuro-imaging file formats
 %global tag %{version}
@@ -23,6 +23,15 @@ Summary:        Python package to access a cacophony of neuro-imaging file forma
 License:        MIT and PDDL-1.0
 URL:            http://nipy.org/nibabel/
 Source0:        %forgesource
+
+# TEST: Replace dict literal with set()
+# https://github.com/nipy/nibabel/pull/1383
+#
+# Fixes:
+#
+# Two test failures and one test error in 5.3.2
+# https://github.com/nipy/nibabel/issues/1382
+Patch:          %{forgeurl}/pull/1383.patch
 
 BuildArch:      noarch
 

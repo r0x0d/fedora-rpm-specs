@@ -4,7 +4,7 @@
 %global is_official 0
 
 Name:       cldr-emoji-annotation
-Version:    46~beta1
+Version:    46
 Release:    %autorelease
 %if 0%{?fedora:1}%{?rhel:0}
 Epoch:      1

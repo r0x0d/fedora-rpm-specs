@@ -16,7 +16,7 @@
 %global _lto_cflags %nil
 
 Name:          cp2k
-Version:       2024.1
+Version:       2024.3
 Release:       %autorelease
 Summary:       Ab Initio Molecular Dynamics
 License:       GPL-2.0-or-later
@@ -37,14 +37,11 @@ Obsoletes:     cp2k-openmpi-testing < 2024.1-5
 # https://github.com/cp2k/cp2k/issues/3362
 ExcludeArch:   s390x
 
-# Allow specifying the data install directory
-# https://github.com/cp2k/cp2k/pull/3088
-Patch:         cp2k-data.patch
-# Allow testing-farm to run do_regtest.py
-# https://github.com/cp2k/cp2k/pull/3268
-Patch:         fix_regtest.patch
 # Patch for libxc 7 support
-Patch:         cp2k-2024.1-libxc7.patch
+Patch:         https://github.com/cp2k/cp2k/pull/3722.patch#/cp2k-2024.1-libxc7.patch
+# Fix tmt tests to work with downstream dist-git source
+# https://github.com/cp2k/cp2k/pull/3743
+Patch:         cp2k-2024.3-Fix_tmt_tests.patch
 
 # https://github.com/cp2k/cp2k/pull/3741
 Patch:         0001-Sort-items-in-code-generated-using-fypp.patch

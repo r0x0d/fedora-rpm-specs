@@ -9,7 +9,7 @@ Summary:	Point Data Abstraction Library
 Name:		PDAL
 # NOTE: Re-verifiy test exclusions in %%check when updating
 Version:	2.8.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 # The code is licensed BSD except for:
 # - filters/private/csf/* and plugins/i3s/lepcc/* are ASL 2.0
 # - vendor/arbiter/*, plugins/nitf/io/nitflib.h and plugins/oci/io/OciWrapper.* are Expat/MIT
@@ -226,6 +226,9 @@ sphinx-build -b html . build/html
 %license LICENSE.txt
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 2.8.0-2
+- Rebuild for hdf5 1.14.5
+
 * Fri Sep 06 2024 Sandro Mani <manisandro@gmail.com> - 2.8.0-1
 - Update to 2.8.0
 

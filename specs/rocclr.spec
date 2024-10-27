@@ -67,6 +67,9 @@ Patch9:         0001-Check-p2p_agents_list_-before-deleting.patch
 #https://github.com/ROCm/clr/pull/97
 patch10:        https://github.com/ROCm/clr/pull/97/commits/909fa3dcb644f7ca422ed1a980a54ac426d831b1.patch
 
+# https://github.com/ROCm/clr/issues/99
+patch11:        0001-handle-v1-of-compressed-fatbins.patch
+
 BuildRequires:  cmake
 BuildRequires:  doxygen
 %if 0%{?fedora}

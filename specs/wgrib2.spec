@@ -1,6 +1,6 @@
 Name:           wgrib2
 Version:        3.1.3
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Manipulate, inventory and decode GRIB2 files
 
 # most files are public domain, geo.c and Netcdf.c are GPL+, gribtab.c is GPLv2+
@@ -61,6 +61,9 @@ install wgrib2/wgrib2 $RPM_BUILD_ROOT%{_bindir}/wgrib2
 
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 3.1.3-6
+- Rebuild for hdf5 1.14.5
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 3.1.3-5
 - convert license to SPDX
 

@@ -3,7 +3,7 @@
 
 Name: pdns
 Version: 4.9.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: A modern, advanced and high performance authoritative-only name server
 License: GPL-2.0-only
 URL: http://powerdns.com
@@ -322,6 +322,9 @@ getent passwd pdns >/dev/null || \
 %{_unitdir}/ixfrdist@.service
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 4.9.2-2
+- Rebuild for yaml-cpp 0.8
+
 * Tue Oct 01 2024 Morten Stevens <mstevens@fedoraproject.org> - 4.9.2-1
 - Update to 4.9.2
 

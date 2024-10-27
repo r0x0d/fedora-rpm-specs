@@ -1,61 +1,109 @@
 Name:           perl-MooX-Role-Parameterized
-Version:        0.082
-Release:        17%{?dist}
+Version:        0.500
+Release:        1%{?dist}
 Summary:        Roles with composition parameters
 License:        MIT
-
 URL:            https://metacpan.org/release/MooX-Role-Parameterized
 Source0:        https://cpan.metacpan.org/authors/id/P/PA/PACMAN/MooX-Role-Parameterized-%{version}.tar.gz
-
 BuildArch:      noarch
 # build deps
+BuildRequires:  coreutils
 BuildRequires:  make
-BuildRequires:  perl-interpreter
 BuildRequires:  perl-generators
+BuildRequires:  perl-interpreter
+BuildRequires:  perl(Config)
 BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
+BuildRequires:  perl(strict)
+BuildRequires:  perl(warnings)
 # runtime deps
 BuildRequires:  perl(Carp)
 BuildRequires:  perl(Exporter)
-BuildRequires:  perl(List::MoreUtils)
 BuildRequires:  perl(Module::Runtime)
-BuildRequires:  perl(Moo::Role)
-BuildRequires:  perl(lib)
-BuildRequires:  perl(strict)
-BuildRequires:  perl(warnings)
-# test deps
 BuildRequires:  perl(Moo)
-BuildRequires:  perl(Test::Exception)
-BuildRequires:  perl(Test::More)
-BuildRequires:  perl(autodie)
+BuildRequires:  perl(Moo::Role)
+BuildRequires:  perl(Scalar::Util)
+# test deps
+BuildRequires:  perl(lib)
+BuildRequires:  perl(Role::Tiny)
+BuildRequires:  perl(Test::Exception) >= 0.43
+BuildRequires:  perl(Test::More) >= 0.94
 BuildRequires:  perl(utf8)
-Requires:       perl(Moo::Role)
+# Optional tests:
+BuildRequires:  perl(Test::Pod) >= 1
 
 %{?perl_default_filter}
+# Remove under-specified dependencies
+%global __requires_exclude %{?__requires_exclude:%{__requires_exclude}|}^perl\\(Test::Exception|Test::More)\\)$
+# Hide private modules
+%global __requires_exclude %{?__requires_exclude:%{__requires_exclude}|}^perl\\((Bar|BarWithRequires|CompleteExample|TheClass|TheOtherClass|TheParameterizedRole)\\)
+%global __provides_exclude %{?__provides_exclude:%{__provides_exclude}|}^perl\\((Bar|BarWithRequires|CompleteExample|TheClass|TheOtherClass|TheParameterizedRole)\\)
 
 %description
 This is an experimental port of MooseX::Role::Parameterized to Moo.
 
+%package tests
+Summary:        Tests for %{name}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       perl-Test-Harness
+Requires:       perl(Test::Exception) >= 0.43
+Requires:       perl(Test::More) >= 0.94
+
+%description tests
+Tests from %{name}. Execute them
+with "%{_libexecdir}/%{name}/test".
+
 %prep
-%setup -q -n MooX-Role-Parameterized-%{version}
+%autosetup -p1 -n MooX-Role-Parameterized-%{version}
+# Help generators to recognize Perl scripts
+for F in t/*.t; do
+    perl -i -MConfig -ple 'print $Config{startperl} if $. == 1 && !s{\A#!\s*perl}{$Config{startperl}}' "$F"
+    chmod +x "$F"
+done
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=$RPM_BUILD_ROOT
-%{_fixperms} $RPM_BUILD_ROOT/*
+%{make_install}
+%{_fixperms} %{buildroot}/*
+# Do not install CONTRIBUTING
+# <https://github.com/peczenyj/MooX-Role-Parameterized/issues/22>.
+rm %{buildroot}/%{perl_vendorlib}/MooX/Role/CONTRIBUTING.pod
+rm %{buildroot}/%{_mandir}/man3/MooX::Role::CONTRIBUTING.*
+# Install tests
+mkdir -p %{buildroot}%{_libexecdir}/%{name}
+cp -a t %{buildroot}%{_libexecdir}/%{name}
+# Remove tests that expect modules in CWD
+rm %{buildroot}%{_libexecdir}/%{name}/t/99-pod.t
+cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
+#!/bin/sh
+cd %{_libexecdir}/%{name} && exec prove -I . -j "$(getconf _NPROCESSORS_ONLN)"
+EOF
+chmod +x %{buildroot}%{_libexecdir}/%{name}/test
 
 %check
+export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print $1} else {print 1}' -- '%{?_smp_mflags}')
 make test
 
 %files
-%doc Changelog README README.md
+%doc Changelog CODE_OF_CONDUCT.md examples README.md
 %license LICENSE
-%{perl_vendorlib}/MooX*
-%{_mandir}/man3/MooX*
+%dir %{perl_vendorlib}/MooX
+%dir %{perl_vendorlib}/MooX/Role
+%{perl_vendorlib}/MooX/Role/Parameterized
+%{perl_vendorlib}/MooX/Role/Parameterized.pm
+%{_mandir}/man3/MooX::Role::Parameterized.*
+%{_mandir}/man3/MooX::Role::Parameterized::*
+
+%files tests
+%{_libexecdir}/%{name}
 
 %changelog
+* Fri Oct 25 2024 Petr Pisar <ppisar@redhat.com> - 0.500-1
+- 0.500 bump
+- Package the tests
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.082-17
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

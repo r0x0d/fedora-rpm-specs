@@ -185,7 +185,7 @@
 #################################################################################
 Name:		ceph
 Version:	19.2.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 %if 0%{?fedora} || 0%{?rhel}
 Epoch:		2
 %endif
@@ -2715,6 +2715,9 @@ exit 0
 %{python3_sitelib}/ceph_node_proxy-*
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 2:19.2.0-2
+- Rebuild for yaml-cpp 0.8
+
 * Fri Sep 20 2024 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 2:19.2.0-1
 - ceph-19.2.0 GA
 

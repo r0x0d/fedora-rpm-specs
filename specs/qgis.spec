@@ -1,8 +1,8 @@
 #TODO: Run test suite (see debian/rules)
 
 Name:           qgis
-Version:        3.38.3
-Release:        1%{?dist}
+Version:        3.40.0
+Release:        2%{?dist}
 Summary:        A user friendly Open Source Geographic Information System
 
 # http://issues.qgis.org/issues/3789
@@ -304,6 +304,12 @@ rm -f %{buildroot}%{_prefix}/lib/liboauth2authmethod_static.a
 
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 3.40.0-2
+- Rebuild for hdf5 1.14.5
+
+* Fri Oct 25 2024 Sandro Mani <manisandro@gmail.com> - 3.40.0-1
+- Update to 3.40.0
+
 * Sat Sep 14 2024 Sandro Mani <manisandro@gmail.com> - 3.38.3-1
 - Update to 3.38.3
 

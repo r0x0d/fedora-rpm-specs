@@ -10,39 +10,29 @@
 # Patch version?
 #global snaprel -beta
 
-## WARNING: Wait for netcdf 4.8.0 !
-
 # NOTE: Try not to release new versions to released versions of Fedora
 # You need to recompile all users of HDF5 for each version change
 Name: hdf5
-Version: 1.12.1
-Release: 21%{?dist}
+Version: 1.14.5
+Release: 1%{?dist}
 Summary: A general purpose library and file format for storing scientific data
-# Automatically converted from old format: BSD - review is highly recommended.
-License: LicenseRef-Callaway-BSD
-URL: https://portal.hdfgroup.org/display/HDF5/HDF5
+License: BSD-3-Clause
+URL: https://www.hdfgroup.org/solutions/hdf5/
+Source0: https://github.com/HDFGroup/hdf5/archive/hdf5_%{version}/hdf5-%{version}.tar.gz
 
-%global version_main %(echo %version | cut -d. -f-2)
-Source0: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-%{version_main}/hdf5-%{version}/src/hdf5-%{version}.tar.bz2
-
-%global so_version 200
+%global so_version 310
 
 Source1: h5comp
 # For man pages
-Source2: http://ftp.us.debian.org/debian/pool/main/h/hdf5/hdf5_1.12.0+repack-1~exp2.debian.tar.xz
-Patch0: hdf5-LD_LIBRARY_PATH.patch
-# Fix fortran build with gcc 12
-# https://github.com/HDFGroup/hdf5/pull/1412
-Patch1: hdf5-gfortran12.patch
-# [CVE-2021-37501] buffer overflow in h5dump 
-# https://github.com/HDFGroup/hdf5/pull/2459.patch
-Patch2: 0001-Backport-https-github.com-HDFGroup-hdf5-pull-2459.patch
+Source2: http://ftp.us.debian.org/debian/pool/main/h/hdf5/hdf5_1.14.4.3+repack-1~exp3.debian.tar.xz
 # Fix java build
-Patch3: hdf5-build.patch
+Patch0: hdf5-build.patch
+# Get size of __float128
+# https://github.com/HDFGroup/hdf5/pull/4924
+Patch1: hdf5-float128.patch
 # Remove Fedora build flags from h5cc/h5c++/h5fc
 # https://bugzilla.redhat.com/show_bug.cgi?id=1794625
-Patch5: hdf5-wrappers.patch
-Patch6: hdf5-configure-c99.patch
+Patch2: hdf5-wrappers.patch
 
 BuildRequires: gcc-gfortran
 %if %{with java}
@@ -190,7 +180,7 @@ HDF5 parallel openmpi static libraries
 
 
 %prep
-%autosetup -a 2 -n %{name}-%{version}%{?snaprel} -p1 -S git
+%autosetup -a 2 -n %{name}-%{name}_%{version} -p1
 
 %if %{with java}
 # Replace jars with system versions
@@ -207,17 +197,18 @@ ln -s $(build-classpath junit) java/lib/junit.jar
 junit_ver=$(sed -n '/<version>/{s/^.*>\([0-9]\.[0-9.]*\)<.*/\1/;p;q}' /usr/share/maven-poms/junit.pom)
 sed -i -e "s/JUnit version .*/JUnit version $junit_ver/" java/test/testfiles/JUnit-*.txt
 %endif
-ln -s $(build-classpath slf4j/api) java/lib/slf4j-api-1.7.25.jar
-ln -s $(build-classpath slf4j/nop) java/lib/ext/slf4j-nop-1.7.25.jar
-ln -s $(build-classpath slf4j/simple) java/lib/ext/slf4j-simple-1.7.25.jar
+ln -s $(build-classpath slf4j/api) java/lib/slf4j-api-2.0.6.jar
+ln -s $(build-classpath slf4j/nop) java/lib/ext/slf4j-nop-2.0.6.jar
+ln -s $(build-classpath slf4j/simple) java/lib/ext/slf4j-simple-2.0.6.jar
 %endif
 
 # Force shared by default for compiler wrappers (bug #1266645)
 sed -i -e '/^STATIC_AVAILABLE=/s/=.*/=no/' */*/h5[cf]*.in
-autoreconf -f -i
+sh ./autogen.sh
 
 # Modify low optimization level for gnu compilers
 sed -e 's|-O -finline-functions|-O3 -finline-functions|g' -i config/gnu-flags
+
 
 %build
 #Do out of tree builds
@@ -306,8 +297,6 @@ do
   mkdir -p %{buildroot}%{_libdir}/$mpi/hdf5/plugin
   module purge
 done
-#Fixup example permissions
-find %{buildroot}%{_datadir} \( -name '*.[ch]*' -o -name '*.f90' \) -exec chmod -x {} +
 
 #Fixup headers and scripts for multiarch
 %ifarch x86_64 ppc64 ia64 s390x sparc64 alpha
@@ -341,6 +330,7 @@ EOF
 # Install man pages from debian
 mkdir -p %{buildroot}%{_mandir}/man1
 cp -p debian/man/*.1 %{buildroot}%{_mandir}/man1/
+rm %{buildroot}%{_mandir}/man1/*gif*
 for mpi in %{?mpi_list}
 do
   mkdir -p %{buildroot}%{_libdir}/$mpi/share/man/man1
@@ -354,32 +344,36 @@ mkdir -p %{buildroot}%{_libdir}/%{name}
 mv %{buildroot}%{_libdir}/libhdf5_java.so %{buildroot}%{_libdir}/%{name}/
 %endif
 
+
 %check
-%ifarch %{ix86} s390x riscv64
-# i386: java TestH5Arw segfaults
-# s390x: Testing inserting objects to create first direct block in recursive indirect blocks five levels deep*FAILED*
+%ifarch %{ix86} ppc64le riscv64 s390x
+# i686: t_bigio test segfaults - https://github.com/HDFGroup/hdf5/issues/2510
+# ppc64le - t_multi_dset is flaky on ppc64le
 # riscv64: test failed https://github.com/HDFGroup/hdf5/issues/4056
+# s390x t_mpi fails with mpich
 make -C build check || :
+fail=0
 %else
-# some h5repack tests report mismatches with zlib-ng
-# https://bugzilla.redhat.com/show_bug.cgi?id=2266644
-make -C build check || :
+make -C build check
+fail=1
 %endif
+# This will preserve generated .c files on errors if needed
 #export HDF5_Make_Ignore=yes
 export OMPI_MCA_rmaps_base_oversubscribe=1
 # openmpi 5+
 export PRTE_MCA_rmaps_default_mapping_policy=:oversubscribe
+# mpich test is taking longer
+export HDF5_ALARM_SECONDS=8000
 for mpi in %{?mpi_list}
 do
-  module load mpi/$mpi-%{_arch}
-# i686 & s390x mpich - testphdf5: malloc.c:4189: _int_malloc: Assertion `(unsigned long) (size) >= (unsigned long) (nb)' failed.
-%ifarch armv7hl %{ix86} s390x riscv64
-  make -C $mpi check || :
-%else
-# ph5diff is failing
-  make -C $mpi check || :
-%endif
-  module purge
+  # t_pmulti_dset hangs sometimes with mpich-aarch64 so do not test on that architecture
+  # https://github.com/HDFGroup/hdf5/issues/3768
+  if [ "$mpi-%{_arch}" != mpich-aarch64 ]
+  then
+    module load mpi/$mpi-%{_arch}
+    make -C $mpi check || exit $fail
+    module purge
+  fi
 done
 
 # I have no idea why those get installed. But it's easier to just
@@ -393,20 +387,19 @@ if [ %_libdir != /usr/lib ]; then
       %{buildroot}/usr/lib/libhdf5*
 fi
 
-%ldconfig_scriptlets
 
 %files
 %license COPYING
-%doc MANIFEST README.txt release_docs/RELEASE.txt
+%doc ACKNOWLEDGMENTS README.md release_docs/RELEASE.txt
 %doc release_docs/HISTORY*.txt
-%{_bindir}/gif2h5
-%{_bindir}/h52gif
 %{_bindir}/h5clear
 %{_bindir}/h5copy
 %{_bindir}/h5debug
 %{_bindir}/h5diff
+%{_bindir}/h5delete
 %{_bindir}/h5dump
 %{_bindir}/h5format_convert
+%{_bindir}/h5fuse
 %{_bindir}/h5import
 %{_bindir}/h5jam
 %{_bindir}/h5ls
@@ -417,17 +410,12 @@ fi
 %{_bindir}/h5stat
 %{_bindir}/h5unjam
 %{_bindir}/h5watch
-%{_bindir}/mirror_server
-%{_bindir}/mirror_server_stop
-%{_libdir}/hdf5/
 %{_libdir}/libhdf5.so.%{so_version}*
 %{_libdir}/libhdf5_cpp.so.%{so_version}*
 %{_libdir}/libhdf5_fortran.so.%{so_version}*
 %{_libdir}/libhdf5hl_fortran.so.%{so_version}*
 %{_libdir}/libhdf5_hl.so.%{so_version}*
 %{_libdir}/libhdf5_hl_cpp.so.%{so_version}*
-%{_mandir}/man1/gif2h5.1*
-%{_mandir}/man1/h52gif.1*
 %{_mandir}/man1/h5copy.1*
 %{_mandir}/man1/h5diff.1*
 %{_mandir}/man1/h5dump.1*
@@ -448,10 +436,10 @@ fi
 %{_bindir}/h5fc*
 %{_bindir}/h5redeploy
 %{_includedir}/*.h
+%{_includedir}/*.inc
 %{_libdir}/*.so
 %{_libdir}/*.settings
 %{_fmoddir}/*.mod
-%{_datadir}/hdf5_examples/
 %{_mandir}/man1/h5c++.1*
 %{_mandir}/man1/h5cc.1*
 %{_mandir}/man1/h5debug.1*
@@ -470,16 +458,16 @@ fi
 %if %{with_mpich}
 %files mpich
 %license COPYING
-%doc MANIFEST README.txt release_docs/RELEASE.txt
+%doc README.md release_docs/RELEASE.txt
 %doc release_docs/HISTORY*.txt
-%{_libdir}/mpich/bin/gif2h5
-%{_libdir}/mpich/bin/h52gif
 %{_libdir}/mpich/bin/h5clear
 %{_libdir}/mpich/bin/h5copy
 %{_libdir}/mpich/bin/h5debug
+%{_libdir}/mpich/bin/h5delete
 %{_libdir}/mpich/bin/h5diff
 %{_libdir}/mpich/bin/h5dump
 %{_libdir}/mpich/bin/h5format_convert
+%{_libdir}/mpich/bin/h5fuse
 %{_libdir}/mpich/bin/h5import
 %{_libdir}/mpich/bin/h5jam
 %{_libdir}/mpich/bin/h5ls
@@ -492,8 +480,6 @@ fi
 %{_libdir}/mpich/bin/h5stat
 %{_libdir}/mpich/bin/h5unjam
 %{_libdir}/mpich/bin/h5watch
-%{_libdir}/mpich/bin/mirror_server
-%{_libdir}/mpich/bin/mirror_server_stop
 %{_libdir}/mpich/bin/ph5diff
 %{_libdir}/mpich/hdf5/
 %{_libdir}/mpich/lib/*.so.%{so_version}*
@@ -505,7 +491,6 @@ fi
 %{_libdir}/mpich/bin/h5pfc
 %{_libdir}/mpich/lib/lib*.so
 %{_libdir}/mpich/lib/lib*.settings
-%{_libdir}/mpich/share/hdf5_examples/
 %{_libdir}/mpich/share/man/man1/h5pcc.1*
 %{_libdir}/mpich/share/man/man1/h5pfc.1*
 
@@ -516,16 +501,16 @@ fi
 %if %{with_openmpi}
 %files openmpi
 %license COPYING
-%doc MANIFEST README.txt release_docs/RELEASE.txt
+%doc README.md release_docs/RELEASE.txt
 %doc release_docs/HISTORY*.txt
-%{_libdir}/openmpi/bin/gif2h5
-%{_libdir}/openmpi/bin/h52gif
 %{_libdir}/openmpi/bin/h5clear
 %{_libdir}/openmpi/bin/h5copy
 %{_libdir}/openmpi/bin/h5debug
+%{_libdir}/openmpi/bin/h5delete
 %{_libdir}/openmpi/bin/h5diff
 %{_libdir}/openmpi/bin/h5dump
 %{_libdir}/openmpi/bin/h5format_convert
+%{_libdir}/openmpi/bin/h5fuse
 %{_libdir}/openmpi/bin/h5import
 %{_libdir}/openmpi/bin/h5jam
 %{_libdir}/openmpi/bin/h5ls
@@ -538,8 +523,6 @@ fi
 %{_libdir}/openmpi/bin/h5stat
 %{_libdir}/openmpi/bin/h5unjam
 %{_libdir}/openmpi/bin/h5watch
-%{_libdir}/openmpi/bin/mirror_server
-%{_libdir}/openmpi/bin/mirror_server_stop
 %{_libdir}/openmpi/bin/ph5diff
 %{_libdir}/openmpi/hdf5/
 %{_libdir}/openmpi/lib/*.so.%{so_version}*
@@ -551,7 +534,6 @@ fi
 %{_libdir}/openmpi/bin/h5pfc
 %{_libdir}/openmpi/lib/lib*.so
 %{_libdir}/openmpi/lib/lib*.settings
-%{_libdir}/openmpi/share/hdf5_examples/
 %{_libdir}/openmpi/share/man/man1/h5pcc.1*
 %{_libdir}/openmpi/share/man/man1/h5pfc.1*
 
@@ -561,6 +543,10 @@ fi
 
 
 %changelog
+* Wed Oct 02 2024 Orion Poplawski <orion@nwra.com> - 1.14.3-1
+- Update to 1.14.5
+- Use SPDX License tag
+
 * Mon Sep  2 2024 Miroslav Suchý <msuchy@redhat.com> - 1.12.1-21
 - convert license to SPDX
 

@@ -1,6 +1,6 @@
 
 Name:		console-setup
-Version:	1.230
+Version:	1.231
 Release:	1%{?dist}
 Summary:	Tools for configuring the console using X Window System key maps
 
@@ -94,6 +94,10 @@ cp -a Fonts/fontsets Fonts/*.equivalents Fonts/*.set \
 
 
 %changelog
+* Fri Oct 25 2024 Vitezslav Crhonek <vcrhonek@redhat.com> - 1.231-1
+- Update to latest upstream version
+  Resolves: #2320102
+
 * Mon Jul 15 2024 Packit <hello@packit.dev> - 1.230-1
 - Update to latest upstream version
 

@@ -11,7 +11,7 @@ Version:        3.6
 
 %forgemeta
 
-Release:        26%{?dist}
+Release:        27%{?dist}
 Summary:        Tool for Red Hat Enterprise Linux Driver Update Disk creation
 
 License:        GPL-3.0-only
@@ -46,9 +46,6 @@ sed -i "8i packages=[]," setup.py
 %py3_install
 find %{buildroot} -size 0 -delete
 
-%check
-%{__python3} setup.py test
-
 %files -n %{name}
 %doc README
 %license COPYING
@@ -71,6 +68,10 @@ find %{buildroot} -size 0 -delete
 %config(noreplace) /etc/ddiskit.config
 
 %changelog
+* Thu Oct 24 2024 Charalampos Stratakis <cstratak@redhat.com> - 3.6-27
+- Remove unused %check section
+Resolves: rhbz#2319624
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.6-26
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

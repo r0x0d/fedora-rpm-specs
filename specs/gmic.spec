@@ -12,7 +12,7 @@ Summary: GREYC's Magic for Image Computing
 Name:    gmic
 Version: 3.4.3
 %global shortver %(foo=%{version}; echo ${foo//./})
-Release: 1%{?dist}
+Release: 2%{?dist}
 Source0: https://gmic.eu/files/source/%{name}_%{version}.tar.gz
 # GIT archive snapshot of https://github.com/c-koi/zart
 Source1: zart-%{zart_version}.tar.gz
@@ -230,6 +230,9 @@ fi
 %{_libdir}/libcgmic.so.3*
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 3.4.3-2
+- Rebuild for hdf5 1.14.5
+
 * Mon Oct 14 2024 josef radinger <cheese@nosuchhost.net> - 3.4.3-1
 - bump version
 

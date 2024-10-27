@@ -1,10 +1,10 @@
-%global DATE 20240912
-%global gitrev c7a1c1a4bf73b3cb4943c428085fe5cbb433cde4
+%global DATE 20241025
+%global gitrev 3f6cf880bdadb4404d5540bad605ceec58261359
 %global gcc_version 14.2.1
 %global gcc_major 14
 # Note, gcc_release must be integer, if you want to add suffixes to
 # %%{release}, append them after %%{gcc_release} on Release: line.
-%global gcc_release 4
+%global gcc_release 5
 %global nvptx_tools_gitrev 87ce9dc5999e5fca2e1d3478a30888d9864c9804
 %global newlib_cygwin_gitrev d45261f62a15f8abd94a1031020b9a9f455e4eed
 %global _unpackaged_files_terminate_build 0
@@ -305,7 +305,6 @@ Patch9: gcc14-Wno-format-security.patch
 Patch10: gcc14-rh1574936.patch
 Patch11: gcc14-d-shared-libphobos.patch
 Patch12: gcc14-pr101523.patch
-Patch13: gcc14-pr116621.patch
 
 Patch50: isl-rh2155127.patch
 
@@ -907,7 +906,6 @@ so that there cannot be any synchronization problems.
 %endif
 %patch -P11 -p0 -b .d-shared-libphobos~
 %patch -P12 -p1 -b .pr101523~
-%patch -P13 -p0 -b .pr116621~
 
 %patch -P50 -p0 -b .rh2155127~
 touch -r isl-0.24/m4/ax_prog_cxx_for_build.m4 isl-0.24/m4/ax_prog_cc_for_build.m4
@@ -3622,8 +3620,36 @@ end
 %endif
 
 %changelog
+* Fri Oct 25 2024 Jakub Jelinek <jakub@redhat.com> 14.2.1-5
+- update from releases/gcc-14 branch
+  - PRs ada/114593, ada/114636, ada/114640, ada/115535, ada/116190,
+	ada/116430, ada/116551, c/116726, c/117230, c++/96097, c++/115361,
+	c++/115987, c++/116369, c++/116418, c++/116424, c++/116476,
+	c++/116492, c++/116534, c++/116676, c++/116678, c++/116929,
+	c++/117054, c++/117107, c++/117259, c++/117274, fortran/84868,
+	fortran/100273, ipa/109985, ipa/115815, libstdc++/37475,
+	libstdc++/108619, libstdc++/116529, libstdc++/116754,
+	libstdc++/116755, libstdc++/116777, libstdc++/116857,
+	libstdc++/117085, libstdc++/117094, libstdc++/117135,
+	middle-end/115110, middle-end/115426, middle-end/115641,
+	middle-end/116258, middle-end/116259, middle-end/116454,
+	middle-end/116891, middle-end/116898, middle-end/116899,
+	middle-end/117086, middle-end/117249, sanitizer/117209, target/115860,
+	target/116237, target/116627, target/116738, target/116839,
+	target/116883, target/116921, target/116953, target/116962,
+	target/117116, target/117159, target/117240, testsuite/116238,
+	tree-optimization/116166, tree-optimization/116258,
+	tree-optimization/116274, tree-optimization/116290,
+	tree-optimization/116380, tree-optimization/116460,
+	tree-optimization/116481, tree-optimization/116585,
+	tree-optimization/116610, tree-optimization/116768,
+	tree-optimization/116850, tree-optimization/116879,
+	tree-optimization/116907, tree-optimization/116982,
+	tree-optimization/116990, tree-optimization/117041,
+	tree-optimization/117104
+
 * Wed Sep 25 2024 Siddhesh Poyarekar <siddhesh@redhat.com> 14.2.1-4
-- Default tuning to power 10 for RHEL10 and later.
+- default tuning to power 10 for RHEL10 and later
 
 * Thu Sep 12 2024 Jakub Jelinek <jakub@redhat.com> 14.2.1-3
 - update from releases/gcc-14 branch

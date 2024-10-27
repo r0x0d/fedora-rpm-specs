@@ -1,5 +1,5 @@
 Name:           anaconda-webui
-Version:        16
+Version:        17
 Release:        1%{?dist}
 Summary:        Anaconda installer Web interface
 License:        LGPL-2.1-or-later AND MIT
@@ -10,19 +10,19 @@ BuildArch:      noarch
 BuildRequires:  libappstream-glib
 BuildRequires:  make
 BuildRequires:  gettext
+# Needed for the unitdir macro
+BuildRequires: systemd-rpm-macros
 
 %global anacondacorever 0
 
-%if 0%{?fedora} >= 40
-%global anacondacorever 40.22.2
-%endif
-
-%if 0%{?fedora} >= 41
-%global anacondacorever 41.2
+%if 0%{?fedora} > 41
+%global anacondacorever 42.5
 %endif
 
 %global cockpitver 275
 %global cockpitstorver 311
+
+%define _unitdir /usr/lib/systemd/system
 
 Requires: cockpit-storaged >= %{cockpitstorver}
 Requires: cockpit-bridge >= %{cockpitver}
@@ -38,14 +38,14 @@ Requires: firefox
 Requires: fedora-logos
 %endif
 
-Provides: bundled(npm(@patternfly/patternfly)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-icons)) = 5.4.0
+Provides: bundled(npm(@patternfly/patternfly)) = 5.4.1
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.1
+Provides: bundled(npm(@patternfly/react-icons)) = 5.4.2
 Provides: bundled(npm(@patternfly/react-log-viewer)) = 5.3.0
-Provides: bundled(npm(@patternfly/react-styles)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.0
-Provides: bundled(npm(attr-accept)) = 2.2.2
+Provides: bundled(npm(@patternfly/react-styles)) = 5.4.1
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.1
+Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.1
+Provides: bundled(npm(attr-accept)) = 2.2.4
 Provides: bundled(npm(dequal)) = 2.0.3
 Provides: bundled(npm(file-selector)) = 0.6.0
 Provides: bundled(npm(focus-trap)) = 7.5.4
@@ -56,13 +56,13 @@ Provides: bundled(npm(memoize-one)) = 5.2.1
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
 Provides: bundled(npm(react-dom)) = 18.2.0
-Provides: bundled(npm(react-dropzone)) = 14.2.3
+Provides: bundled(npm(react-dropzone)) = 14.2.10
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.2.0
 Provides: bundled(npm(scheduler)) = 0.23.2
 Provides: bundled(npm(tabbable)) = 6.2.0
 Provides: bundled(npm(throttle-debounce)) = 5.0.2
-Provides: bundled(npm(tslib)) = 2.7.0
+Provides: bundled(npm(tslib)) = 2.8.0
 
 %description
 Anaconda installer Web interface
@@ -107,10 +107,24 @@ exit 0
 %{_datadir}/anaconda/firefox-theme/live/user.js
 %{_datadir}/anaconda/firefox-theme/live/chrome/userChrome.css
 %{_libexecdir}/anaconda/webui-desktop
+%{_unitdir}/webui-cockpit-ws.service
 
 
 # The changelog is automatically generated and merged
 %changelog
+* Fri Oct 25 2024 Packit <hello@packit.dev> - 17-1
+- Run browser as liveuser instead of root
+- Introduce new guided partitioning scenario 'Home reuse'
+- Update strings based on latest mockups
+- storage: mount-point-mapping page: group devices in selector by disk
+- storage: disk selection: do not show sync-alt Icon when the spinner is on
+- storage: emphasize the hint text in the reclaim modal
+- review: storage section: show first column device and last column mount point
+- Change the wording from 'Modify storage' to 'Launch storage editor'
+- Move the cockpit-ws spawning to a service file
+- Do not run firefox when remote installation is requested
+- And few more enhancements with lower impact
+
 * Mon Sep 23 2024 Packit <hello@packit.dev> - 16-1
 - storage: mount point assignment: show partition labels in device selection
 - components: common: remove AddressContext provider as it's not used

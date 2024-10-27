@@ -1,6 +1,6 @@
 Name:           calamares
 Version:        3.3.5
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPL-3.0-or-later
@@ -328,6 +328,9 @@ EOF
 
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 3.3.5-4
+- Rebuild for yaml-cpp 0.8
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.3.5-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -5,7 +5,7 @@
 %endif
 
 Name:		oidc-agent
-Version:	5.2.2
+Version:	5.2.3
 Release:	1%{?dist}
 Summary:	Managing OpenID Connect tokens on the command line
 
@@ -131,9 +131,6 @@ rm -rf lib/cJSON lib/list
 	CONFIG_AFTER_INST_PATH=%{_sysconfdir}
 ln -s liboidc-agent.so.%{version} %{buildroot}%{_libdir}/liboidc-agent.so
 
-help2man src/oidc-tokensh/oidc-tokensh -s 1 -N --version-string %{version} \
-	--no-discard-stderr -o %{buildroot}%{_mandir}/man1/oidc-tokensh.1
-
 %post cli
 %tmpfiles_create %{name}.conf
 
@@ -184,6 +181,9 @@ help2man src/oidc-tokensh/oidc-tokensh -s 1 -N --version-string %{version} \
 %{_libdir}/liboidc-agent.so
 
 %changelog
+* Fri Oct 25 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 5.2.3-1
+- Update to version 5.2.3
+
 * Thu Sep 12 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 5.2.2-1
 - Update to version 5.2.2
 

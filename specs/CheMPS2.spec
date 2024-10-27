@@ -1,6 +1,6 @@
 Name:           CheMPS2
 Version:        1.8.9
-Release:        24%{?dist}
+Release:        25%{?dist}
 Summary:        A spin-adapted implementation of DMRG for ab initio quantum chemistry
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -65,6 +65,9 @@ find %{buildroot} -name '*.a' -exec rm -f {} ';'
 %{_libdir}/libchemps2.so
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1.8.9-25
+- Rebuild for hdf5 1.14.5
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.8.9-24
 - convert license to SPDX
 

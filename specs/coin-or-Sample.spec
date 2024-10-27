@@ -4,7 +4,7 @@ Name:		coin-or-%{module}
 Summary:	Coin-or Sample data files
 Version:	1.2.12
 Release:	11%{?dist}
-License:	Public Domain
+License:	LicenseRef-Not-Copyrightable
 URL:		https://projects.coin-or.org/svn/Data/%{module}
 Source0:	http://www.coin-or.org/download/pkgsource/Data/Data-%{module}-%{version}.tgz
 Source1:	%{name}-COPYING

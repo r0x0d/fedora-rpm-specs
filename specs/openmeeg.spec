@@ -21,7 +21,7 @@ ExcludeArch: s390x
 
 Name:    openmeeg
 Version: 2.5.8
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: Low-frequency bio-electromagnetism solving forward problems in the field of EEG and MEG
 License: CeCILL-B
 URL:     http://openmeeg.github.io/
@@ -193,6 +193,9 @@ export OPENMEEG_DATA_PATH=%{_builddir}/%{name}-%{version}/data
 %endif
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 2.5.8-5
+- Rebuild for hdf5 1.14.5
+
 * Tue Aug 20 2024 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 2.5.8-4
 - Rebuild for nifticlib 3.x
 

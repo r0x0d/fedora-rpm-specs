@@ -13,16 +13,9 @@ BuildRequires:	javapackages-local-openjdk%2 \
 %endif \
 %{nil}
 
-# Kill mvn dependency generator which is difficult to understand
-%if 0%{?fedora} >= 42
-%global	__xmvngen_provides_generators	%nil
-%global	__xmvngen_requires_generators	%nil
-%global	__xmvngen_post_install_hooks	%nil
-%endif
-
 Name:		hyperestraier
 Version:	1.4.13
-Release:	64%{?dist}
+Release:	65%{?dist}
 Summary:	A full-text search system
 
 # Overall	LGPL-2.1-or-later
@@ -294,6 +287,9 @@ popd
 
 
 %changelog
+* Fri Oct 25 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.4.13-65
+- Reable mvn dependency generation again
+
 * Sun Sep 29 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.4.13-64
 - Use explicit java version for BR
 - Add more BR stuff for F42

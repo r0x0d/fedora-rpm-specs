@@ -436,8 +436,8 @@ install -Dm755 release/bin/%{name}-softwaregl %{buildroot}%{_bindir}/%{name}-sof
 
 # rpm macros
 mkdir -p %{buildroot}%{macrosdir}
-install -pm 644 %{SOURCE1} %{buildroot}%{macrosdir}/%{name}-macros
-sed -e 's/@VERSION@/%{blender_api}/g' %{buildroot}%{macrosdir}/%{name}-macros
+install -pm 644 %{SOURCE1} %{buildroot}%{macrosdir}/macros.%{name}
+sed -e 's/@VERSION@/%{blender_api}/g' %{buildroot}%{macrosdir}/macros.%{name}
 
 # Metainfo
 install -p -m 644 -D release/freedesktop/org.%{name}.Blender.metainfo.xml \
@@ -471,7 +471,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.%{name}.Bl
 %{_metainfodir}/org.%{name}.Blender.metainfo.xml
 
 %files rpm-macros
-%{macrosdir}/%{name}-macros
+%{macrosdir}/macros.%{name}
 
 %changelog
 %autochangelog

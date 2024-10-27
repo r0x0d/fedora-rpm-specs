@@ -10,8 +10,8 @@
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:       gnome-abrt
-Version:    1.4.3
-Release:    3%{?snapshot:.git%{shortcommit}}%{?dist}
+Version:    1.5.0
+Release:    1%{?dist}
 Summary:    A utility for viewing problems that have occurred with the system
 
 License:    GPL-2.0-or-later
@@ -34,7 +34,8 @@ BuildRequires: pkgconfig(pygobject-3.0)
 BuildRequires: libreport-gtk-devel > 2.14.0
 BuildRequires: python3-libreport
 BuildRequires: abrt-gui-devel > 2.14.0
-BuildRequires: gtk3-devel
+BuildRequires: gtk4-devel
+BuildRequires: libadwaita-devel
 %if 0%{?fedora}
 BuildRequires: python3-six
 BuildRequires: python3-gobject
@@ -49,6 +50,8 @@ Requires:   python3-gobject
 Requires:   python3-dbus
 Requires:   python3-humanize
 Requires:   python3-beautifulsoup4
+Requires:   gtk4
+Requires:   libadwaita
 
 %description
 A GNOME application allows users to browse through detected problems and
@@ -84,6 +87,9 @@ provides them with convenient way for managing these problems.
 %{_datadir}/icons/hicolor/*/apps/*
 
 %changelog
+* Thu Oct 24 2024 Packit <hello@packit.dev> - 1.5.0-1
+- Update to version 1.5.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.3-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

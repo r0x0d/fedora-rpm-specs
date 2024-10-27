@@ -3,7 +3,7 @@
 
 Name:           OpenMolcas
 Version:        24.10
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A multiconfigurational quantum chemistry software package
 # Automatically converted from old format: LGPLv2 - review is highly recommended.
 License:        LicenseRef-Callaway-LGPLv2
@@ -144,6 +144,9 @@ cp -p Tools/pymolcas/pymolcas.py %{buildroot}%{_bindir}/pymolcas
 %{_bindir}/pymolcas
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 24.10-2
+- Rebuild for hdf5 1.14.5
+
 * Tue Oct 15 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 24.10-1
 - Update to 24.10.
 

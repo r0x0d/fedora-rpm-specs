@@ -1,6 +1,6 @@
 Name:           Field3D
 Version:        1.7.3
-Release:        30%{?dist}
+Release:        31%{?dist}
 Summary:        Library for storing voxel data
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -77,6 +77,9 @@ pushd %{_vpath_builddir}
 
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1.7.3-31
+- Rebuild for hdf5 1.14.5
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 1.7.3-30
 - convert license to SPDX
 

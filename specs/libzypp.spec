@@ -18,7 +18,7 @@ Requires:       %{_bindir}/%{1}
 
 Name:           libzypp
 Version:        17.34.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A package management library
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -250,6 +250,9 @@ end
 
 
 %changelog
+* Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 17.34.1-4
+- Rebuild for yaml-cpp 0.8
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 17.34.1-3
 - convert license to SPDX
 
