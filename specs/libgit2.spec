@@ -6,7 +6,7 @@
 %endif
 
 Name:           libgit2
-Version:        1.8.2
+Version:        1.8.3
 Release:        %autorelease
 Summary:        C implementation of the Git core methods as a library with a solid API
 # Automatically converted from old format: GPLv2 with exceptions - review is highly recommended.

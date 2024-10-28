@@ -2,7 +2,7 @@
 %global giturl  https://github.com/unicode-org/icu
 
 Name:           icu4j
-Version:        75.1
+Version:        76.1
 Release:        %autorelease
 Epoch:          1
 Summary:        International Components for Unicode for Java
@@ -82,8 +82,10 @@ API documentation for %{name}.
 cd icu4j
 
 # Unnecessary plugins for an RPM build
+%pom_remove_plugin -r :flatten-maven-plugin
 %pom_remove_plugin -r :maven-clean-plugin
 %pom_remove_plugin -r :maven-deploy-plugin
+%pom_remove_plugin :maven-gpg-plugin
 %pom_remove_plugin :maven-install-plugin
 %pom_remove_plugin :maven-javadoc-plugin
 %pom_remove_plugin :maven-project-info-reports-plugin
@@ -102,9 +104,9 @@ cd icu4j
 cd -
 
 # We do not want the dev and test component jars
-rm %{buildroot}%{_javadir}/icu4j/{common_tests,demos,framework,perf-tests,samples,tools_misc,utilities-for-cldr}.jar
-rm %{buildroot}%{_datadir}/maven-metadata/icu4j-{common_tests,demos,framework,perf-tests,samples,tools_misc,utilities-for-cldr}.xml
-rm %{buildroot}%{_mavenpomdir}/icu4j/{common_tests,demos,framework,perf-tests,samples,tools_misc,utilities-for-cldr}.pom
+rm %{buildroot}%{_javadir}/icu4j/{common_tests,demos,framework,perf-tests,samples,tools_misc}.jar
+rm %{buildroot}%{_datadir}/maven-metadata/icu4j-{common_tests,demos,framework,perf-tests,samples,tools_misc}.xml
+rm %{buildroot}%{_mavenpomdir}/icu4j/{common_tests,demos,framework,perf-tests,samples,tools_misc}.pom
 
 %files -f icu4j/.mfiles-icu4j -f icu4j/.mfiles-collate -f icu4j/.mfiles-core -f icu4j/.mfiles-currdata -f icu4j/.mfiles-langdata -f icu4j/.mfiles-regiondata -f icu4j/.mfiles-translit
 %license LICENSE

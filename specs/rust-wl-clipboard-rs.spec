@@ -13,6 +13,10 @@ Summary:        Access to the Wayland clipboard for terminal and other window-le
 License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/wl-clipboard-rs
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+# * Bump wayland-protocols to 0.32
+# * Bump wayland-protocols-wlr to 0.3
+Patch:          wl-clipboard-rs-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

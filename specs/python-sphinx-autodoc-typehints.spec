@@ -18,15 +18,11 @@ BuildArch:      noarch
 
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(pytest)
-BuildRequires:  python3dist(nptyping)
-BuildRequires:  python3dist(sphobjinv)
-BuildRequires:  python3dist(typish)
 
 %description %{common_description}
 
 %package -n     python3-%{srcname}
 Summary:        %{summary}
-Requires:       python3dist(sphinx)
 
 %description -n python3-%{srcname} %{common_description}
 

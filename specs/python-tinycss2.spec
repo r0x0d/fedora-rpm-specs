@@ -6,14 +6,13 @@
 
 
 Name:           python-%{srcname}
-Version:        1.3.0
-Release:        4%{?dist}
+Version:        1.4.0
+Release:        1%{?dist}
 Summary:        Low-level CSS parser for Python
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
-URL:            https://pypi.python.org/pypi/%{srcname}/
-Source0:        %pypi_source
+License:        BSD-3-Clause
+URL:            https://www.courtbouillon.org/tinycss2/
+Source0:        %{pypi_source tinycss2}
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -72,6 +71,12 @@ rm -rf %{buildroot}%{python3_sitelib}/%{srcname}/__pycache__/test.*.py?
 
 
 %changelog
+* Sat Oct 26 2024 Felix Schwarz <fschwarz@fedoraproject.org> - 1.4.0-1
+- update to 1.4.0
+
+* Sat Oct 26 2024 Felix Schwarz <fschwarz@fedoraproject.org> - 1.3.0-5
+- SPDX conversion
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.3.0-4
 - convert license to SPDX
 

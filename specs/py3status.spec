@@ -1,7 +1,7 @@
 %bcond_without test
 
 Name:           py3status
-Version:        3.59
+Version:        3.60
 Release:        %autorelease
 Summary:        An extensible i3status wrapper written in python
 
@@ -11,7 +11,6 @@ Source0:        https://github.com/ultrabug/%{name}/archive/%{version}/%{name}-%
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
 %if %{with test}
 BuildRequires:  python3-pytest
 %endif

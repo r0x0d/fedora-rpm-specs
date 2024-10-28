@@ -3,7 +3,7 @@
 
 Name:           elementary-icon-theme
 Summary:        Icons from the Elementary Project
-Version:        7.3.1
+Version:        8.1.0
 Release:        %autorelease
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later

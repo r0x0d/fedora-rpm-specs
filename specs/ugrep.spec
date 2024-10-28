@@ -1,5 +1,5 @@
 Name:           ugrep
-Version:        6.5.0
+Version:        7.0.1
 Release:        %autorelease
 Summary:        A more powerful, ultra fast, user-friendly, compatible grep
 License:        BSD-3-Clause

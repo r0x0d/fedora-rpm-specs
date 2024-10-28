@@ -2,24 +2,21 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate sctk-adwaita
+%global crate dpi
 
-Name:           rust-sctk-adwaita
-Version:        0.10.1
+Name:           rust-dpi
+Version:        0.1.1
 Release:        %autorelease
-Summary:        Adwaita-like SCTK Frame
+Summary:        Types for handling UI scaling
 
-License:        MIT
-URL:            https://crates.io/crates/sctk-adwaita
+License:        Apache-2.0
+URL:            https://crates.io/crates/dpi
 Source:         %{crates_source}
-# * Fedora patch: use system font instead of a bundled copy
-Patch2:        sctk-adwaita-0.5.4-unbundle-cantarell-font.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
-BuildRequires:  abattis-cantarell-fonts
 
 %global _description %{expand:
-Adwaita-like SCTK Frame.}
+Types for handling UI scaling.}
 
 %description %{_description}
 
@@ -35,7 +32,6 @@ use the "%{crate}" crate.
 %files          devel
 %license %{crate_instdir}/LICENSE
 %doc %{crate_instdir}/CHANGELOG.md
-%doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
 %package     -n %{name}+default-devel
@@ -50,48 +46,33 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+ab_glyph-devel
+%package     -n %{name}+mint-devel
 Summary:        %{summary}
 BuildArch:      noarch
-Requires:       abattis-cantarell-fonts
 
-%description -n %{name}+ab_glyph-devel %{_description}
+%description -n %{name}+mint-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "ab_glyph" feature of the "%{crate}" crate.
+use the "mint" feature of the "%{crate}" crate.
 
-%files       -n %{name}+ab_glyph-devel
+%files       -n %{name}+mint-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+crossfont-devel
+%package     -n %{name}+serde-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+crossfont-devel %{_description}
+%description -n %{name}+serde-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "crossfont" feature of the "%{crate}" crate.
+use the "serde" feature of the "%{crate}" crate.
 
-%files       -n %{name}+crossfont-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+memmap2-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+memmap2-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "memmap2" feature of the "%{crate}" crate.
-
-%files       -n %{name}+memmap2-devel
+%files       -n %{name}+serde-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
-# remove bundled fonts
-rm -f src/title/*.ttf
 
 %generate_buildrequires
 %cargo_generate_buildrequires

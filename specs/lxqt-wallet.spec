@@ -1,24 +1,26 @@
 %global srcname lxqt_wallet
 
 Name:           %(echo %{srcname} |tr _ - )
-Version:        3.2.2
-Release:        10%{?dist}
+Version:        4.0.0
+Release:        1%{?dist}
 Summary:        Create a kwallet like functionality for LXQt
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
-URL:            https://github.com/mhogomchungu/%{srcname}
+License:        BSD-2-Clause
+URL:            https://github.com/lxqt/%{srcname}
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
-BuildRequires: make
+BuildRequires:  cmake
 BuildRequires:  gcc-c++
 
 BuildRequires:  pkgconfig(lxqt)
-BuildRequires:  cmake(KF5Wallet)
-BuildRequires:  cmake(KF5Notifications)
+BuildRequires:  cmake(KF6Wallet)
 BuildRequires:  pkgconfig(libsecret-1)
 BuildRequires:  libgcrypt-devel
-BuildRequires:  qt5-linguist
+BuildRequires:  cmake(Qt6Widgets)
+BuildRequires:  cmake(Qt6Core)
+BuildRequires:  cmake(Qt6DBus)
+BuildRequires:  cmake(Qt6LinguistTools)
+BuildRequires:  qt6-linguist
 
 %description
 This project seeks to give a functionality for secure storage
@@ -50,36 +52,31 @@ cp -p backend/README README-backend
 cp -p frontend/README README-frontend
 
 %build
-%cmake_lxqt \
- -DQT5=true \
- -DLIB_SUFFIX=default \
- -DNOKDESUPPORT=false \
- -DNOSECRETSUPPORT=false \
- -DBUILD_SHARED=true
+%cmake_lxqt
 %cmake_build
 
 %install
 %cmake_install
 %find_lang %{name} --with-qt
 
-
-%ldconfig_scriptlets
-
-
 %files -f %{name}.lang
 %license LICENSE
 %doc README.md changelog
-%{_bindir}/%{srcname}-cli
-%{_libdir}/*.so.*
+%{_bindir}/lxqt_wallet-cli
+%{_libdir}/liblxqt-wallet.so.6.0.0
 
 %files devel
 %doc README-*
-%{_includedir}/lxqt/*.h
-%{_libdir}/*.so
-%{_libdir}/pkgconfig/*.pc
+%{_includedir}/lxqt/lxqt-wallet.h
+%{_includedir}/lxqt/lxqt_wallet.h
+%{_libdir}/liblxqt-wallet.so
+%{_libdir}/pkgconfig/lxqt-wallet.pc
 
 
 %changelog
+* Sat Oct 26 2024 Steve Cossette <farchord@gmail.com> - 4.0.0-1
+- 4.0.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 3.2.2-10
 - convert license to SPDX
 

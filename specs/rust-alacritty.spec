@@ -4,7 +4,7 @@
 %global crate alacritty
 
 Name:           rust-alacritty
-Version:        0.13.2
+Version:        0.14.0
 Release:        %autorelease
 Summary:        Fast, cross-platform, OpenGL terminal emulator
 
@@ -13,13 +13,11 @@ URL:            https://crates.io/crates/alacritty
 Source:         %{crates_source}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          alacritty-fix-metadata-auto.diff
-# GNOME 45.2 or later tells alacritty window to stop rendering under certain
-# conditions.
-# https://github.com/alacritty/alacritty/issues/7465#issuecomment-1871014052
-# https://gitlab.gnome.org/GNOME/mutter/-/issues/3229
-Patch:          alacritty-0.13-ignore-xdg-shell-suspended-state.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
+BuildRequires:  desktop-file-utils
+BuildRequires:  libappstream-glib
+BuildRequires:  scdoc
 
 %global _description %{expand:
 A fast, cross-platform, OpenGL terminal emulator.}
@@ -45,7 +43,22 @@ Summary:        %{summary}
 # MIT OR Zlib OR Apache-2.0
 # Unlicense OR MIT
 # Zlib OR Apache-2.0 OR MIT
-License:        (MIT OR Apache-2.0) AND Unicode-DFS-2016 AND (0BSD OR MIT OR Apache-2.0) AND Apache-2.0 AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND BSD-2-Clause AND (BSD-2-Clause OR Apache-2.0 OR MIT) AND BSD-3-Clause AND CC0-1.0 AND ISC AND MIT AND (MIT OR Apache-2.0 OR Zlib) AND (Unlicense OR MIT)
+License:        %{shrink:
+                (0BSD OR MIT OR Apache-2.0)
+                AND Apache-2.0
+                AND (Apache-2.0 OR BSL-1.0)
+                AND (Apache-2.0 OR MIT)
+                AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT)
+                AND BSD-2-Clause
+                AND (BSD-2-Clause OR Apache-2.0 OR MIT)
+                AND BSD-3-Clause
+                AND CC0-1.0
+                AND ISC
+                AND MIT
+                AND (MIT OR Apache-2.0 OR Zlib)
+                AND Unicode-DFS-2016
+                AND (Unlicense OR MIT)
+                }
 # LICENSE.dependencies contains a full license breakdown
 
 # libwayland-egl is dlopened when running on a wayland compositor
@@ -76,9 +89,6 @@ Requires:       libwayland-egl
 
 %generate_buildrequires
 %cargo_generate_buildrequires
-echo 'desktop-file-utils'
-echo 'libappstream-glib'
-echo 'scdoc'
 
 %build
 %cargo_build

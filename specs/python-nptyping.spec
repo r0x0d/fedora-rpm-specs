@@ -1,8 +1,8 @@
 %global pypi_name nptyping
 
 Name:           python-%{pypi_name}
-Version:        2.2.0
-Release:        8%{?dist}
+Version:        2.5.0
+Release:        1%{?dist}
 Summary:        Type hints for Numpy
 
 License:        MIT
@@ -23,7 +23,6 @@ BuildRequires:  python3dist(numpy)
 BuildRequires:  python3dist(typeguard)
 #BuildRequires:  python3dist(pyright)
 #BuildRequires:  python3dist(beartype)
-%{?python_provide:%python_provide python3-%{pypi_name}}
 
 %description -n python3-%{pypi_name}
 Type hints for Numpy.
@@ -48,6 +47,9 @@ Type hints for Numpy.
 %{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Sat Oct 26 2024 Fabian Affolter <mail@fabian-affolter.ch> - 2.5.0-1
+- Update to latest upstream release
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.2.0-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

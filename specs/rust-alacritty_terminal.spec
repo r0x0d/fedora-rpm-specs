@@ -5,7 +5,7 @@
 %global crate alacritty_terminal
 
 Name:           rust-alacritty_terminal
-Version:        0.23.0
+Version:        0.24.1
 Release:        %autorelease
 Summary:        Library for writing terminal emulators
 
@@ -14,9 +14,6 @@ URL:            https://crates.io/crates/alacritty_terminal
 Source:         %{crates_source}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          alacritty_terminal-fix-metadata-auto.diff
-# Manually created patch for downstream crate metadata changes
-# * Relax 'base64' dependency to accept 0.21.x
-Patch:          alacritty_terminal-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -36,6 +33,7 @@ use the "%{crate}" crate.
 
 %files          devel
 %license %{crate_instdir}/LICENSE-APACHE
+%doc %{crate_instdir}/CHANGELOG.md
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
 

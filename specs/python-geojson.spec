@@ -1,53 +1,56 @@
 %global pypi_name geojson
 
 Name:       python-%{pypi_name}
-Version:    2.5.0
-Release:    18%{?dist}
+Version:    3.1.0
+Release:    1%{?dist}
 Summary:    Encoder/decoder for simple GIS features
 
-# Automatically converted from old format: BSD - review is highly recommended.
 License:    LicenseRef-Callaway-BSD
 URL:        https://github.com/jazzband/geojson
 Source0:    https://github.com/jazzband/geojson/archive/%{version}/%{pypi_name}-%{version}.tar.gz
+Patch0:     remove-check.patch
+
 BuildArch:  noarch
 
-%description
-Geojson provides geometry, feature, and collection classes, and supports\
-pickle-style dump and load of objects that provide the lab's Python geo\
-interface.
-
-%package -n python3-%{pypi_name}
-Summary:       %{summary}
-
 BuildRequires: python3-devel
-BuildRequires: python3-setuptools
-BuildRequires: python3-simplejson
-%{?python_provide:%python_provide python3-%{pypi_name}}
+BuildRequires: python3-pytest
 
-%description -n python3-%{pypi_name}
+%global _description %{expand:
 Geojson provides geometry, feature, and collection classes, and supports\
 pickle-style dump and load of objects that provide the lab's Python geo\
-interface.
+interface.}
+
+%description %_description
+
+%package -n     python3-%{pypi_name}
+Summary:        %{summary}
+
+%description -n python3-%{pypi_name} %_description
 
 %prep
-%autosetup -n %{pypi_name}-%{version}
+%autosetup -n %{pypi_name}-%{version} -p0
+
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files %{pypi_name}
 
 %check
-%{__python3} setup.py test
+%{pytest} -v
 
-%files -n python3-%{pypi_name}
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %doc CHANGELOG.rst README.rst 
 %license LICENSE.rst
-%{python3_sitelib}/%{pypi_name}/
-%{python3_sitelib}/%{pypi_name}-%{version}*
 
 %changelog
+* Sat Oct 26 2024 Fabian Affolter <mail@fabian-affolter.ch> -3.1.0-1
+- Update to latest upstream release (closes rhbz#2319662)
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.5.0-18
 - convert license to SPDX
 

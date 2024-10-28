@@ -2,7 +2,7 @@
 %global tag %{version}
 
 Name:       labwc
-Version:    0.8.0
+Version:    0.8.1
 %forgemeta
 Release:    %autorelease
 Summary:    A Wayland window-stacking compositor
@@ -28,6 +28,7 @@ BuildRequires: pkgconfig(wayland-server) >= 0.19.0
 BuildRequires: pkgconfig(wlroots-0.18)
 BuildRequires: pkgconfig(xcb)
 BuildRequires: pkgconfig(xkbcommon)
+BuildRequires: pkgconfig(libsfdo-basedir)
 
 Requires:   hicolor-icon-theme
 Requires:   xorg-x11-server-Xwayland
@@ -99,6 +100,7 @@ session. Nor does it depend on any UI toolkits such as Qt or GTK.
 %{_docdir}/%{name}/*
 %{_mandir}/man1/*.1*
 %{_mandir}/man5/*.5*
+%{_datadir}/xdg-desktop-portal/labwc-portals.conf
 
 
 %changelog

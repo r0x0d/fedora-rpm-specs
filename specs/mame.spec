@@ -29,7 +29,7 @@ Patch1:         0001-Hack-allowing-bgfx-to-initialise-in-absence-of-dx9-s.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1884122
 ExcludeArch:    %{arm} %{ix86}
 
-BuildRequires:  asio-devel
+BuildRequires:  asio-static
 BuildRequires:  expat-devel
 BuildRequires:  flac-devel
 BuildRequires:  fontconfig-devel

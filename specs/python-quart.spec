@@ -1,5 +1,5 @@
 Name:           python-quart
-Version:        0.19.6
+Version:        0.19.8
 Release:        %autorelease
 Summary:        A Python ASGI web microframework with the same API as Flask
 

@@ -1,5 +1,5 @@
 Name:           electrum
-Version:        4.5.7
+Version:        4.5.8
 Release:        1%{?dist}
 Summary:        A lightweight Bitcoin Client
 
@@ -97,25 +97,28 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 %{_metainfodir}/%{name}.metainfo.xml
 
 %changelog
-* Tue Oct 22 2024 Jonathan Schleifer <js@nil.im> - 4.5.7-1
+* Sat Oct 26 2024 Jonathan Schleifer <js@fedoraproject.org> - 4.5.8-1
+- Updated to version 4.5.8.
+
+* Tue Oct 22 2024 Jonathan Schleifer <js@fedoraproject.org> - 4.5.7-1
 - Updated to version 4.5.7.
 
-* Thu Oct 17 2024 Jonathan Schleifer <js@nil.im> - 4.5.6-1
+* Thu Oct 17 2024 Jonathan Schleifer <js@fedoraproject.org> - 4.5.6-1
 - Updated to version 4.5.6.
 
-* Tue Sep 03 2024 Jonathan Schleifer <js@nil.im> - 4.5.5-3
+* Tue Sep 03 2024 Jonathan Schleifer <js@fedoraproject.org> - 4.5.5-3
 - Added patch to fix Electrum with python-trezor 0.13.9
 
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.5.5-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
-* Mon Jun 24 2024 Jonathan Schleifer <js@nil.im> - 4.5.5-1
+* Mon Jun 24 2024 Jonathan Schleifer <js@fedoraproject.org> - 4.5.5-1
 - Updated to version 4.5.5.
 
 * Sun Jun 09 2024 Python Maint <python-maint@redhat.com> - 4.5.2-2
 - Rebuilt for Python 3.13
 
-* Sun Jan 28 2024 Jonathan Schleifer <js@nil.im> - 4.5.2-1
+* Sun Jan 28 2024 Jonathan Schleifer <js@fedoraproject.org> - 4.5.2-1
 - Updated to version 4.5.2.
 - Switched to sourceonly tarball.
 - Regenerate pb2 files to lower protobuf requirement.
@@ -161,7 +164,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 * Tue Apr 12 2022 Henrik Nordstrom <henrik@henriknordstrom.net> - 4.2.1-2
 - Bump package requirements to match the code
 
-* Sun Mar 27 2022 Jonathan Schleifer <js@nil.im> - 4.2.1-1
+* Sun Mar 27 2022 Jonathan Schleifer <js@fedoraproject.org> - 4.2.1-1
 - Updated to 4.2.1
 
 * Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 4.1.5-2

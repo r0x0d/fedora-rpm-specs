@@ -1,13 +1,11 @@
 Summary: Matroska container manipulation utilities
 Name: mkvtoolnix
-Version: 86.0
-Release: 3%{?dist}
+Version: 88.0
+Release: 1%{?dist}
 License: GPL-2.0-or-later AND LGPL-2.1-or-later
 Source0: https://mkvtoolnix.download/sources/mkvtoolnix-%{version}.tar.xz
 Source1: https://mkvtoolnix.download/sources/mkvtoolnix-%{version}.tar.xz.sig
 Source2: https://mkvtoolnix.download/gpg-pub-moritzbunkus.txt
-# https://gitlab.com/mbunkus/mkvtoolnix/-/merge_requests/2259
-Patch0:  0001-include-fmt-ranges.h-for-using-fmt-join.patch
 URL: https://mkvtoolnix.download/
 BuildRequires: boost-devel
 BuildRequires: cmake(Qt6Concurrent)
@@ -68,7 +66,6 @@ This package contains the QT graphical interface for these utilities.
 %prep
 %{gpgverify} --keyring='%{S:2}' --signature='%{S:1}' --data='%{S:0}'
 %setup -q
-%autopatch -p1
 rm -rf lib/{fmt,libebml,libmatroska,nlohmann-json,pugixml,utf8-cpp}
 rm -rf rake.d/vendor drake
 
@@ -125,6 +122,10 @@ drake tests:run_unit
 %{_datadir}/mkvtoolnix
 
 %changelog
+* Sat Oct 26 2024 Dominik Mierzejewski <dominik@greysector.net> - 88.0-1
+- update to 88.0 (rhbz#2310610)
+- drop upstreamed patch
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 86.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

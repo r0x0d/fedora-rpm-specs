@@ -169,7 +169,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 12
+%global baserelease 13
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -358,6 +358,8 @@ Patch8: glibc-fedora-manual-dircategory.patch
 Patch13: glibc-fedora-localedata-rh61908.patch
 Patch17: glibc-cs-path.patch
 Patch23: glibc-python3.patch
+Patch24: glibc-dlopen-constructor-null-1.patch
+Patch25: glibc-dlopen-constructor-null-2.patch
 
 ##############################################################################
 # Continued list of core "glibc" package information:
@@ -2389,6 +2391,10 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Sat Oct 26 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-13
+- Restore compatibility with libglvnd by reverting
+  "elf: Run constructors on cyclic recursive dlopen (bug 31986)"
+
 * Fri Oct 25 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-12
 - Complete Features/UsrMove (aka UsrMerge, MoveToUsr) transition (#1063607)
 
@@ -2397,7 +2403,8 @@ update_gconv_modules_cache ()
 
 * Fri Oct 25 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-10
 - Auto-sync with upstream branch master,
-  commit ac73067cb7a328bf106ecd041c020fc61be7e087.
+  commit ac73067cb7a328bf106ecd041c020fc61be7e087:
+- elf: Fix map_complete Systemtap probe in dl_open_worker
 
 * Fri Oct 25 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-9
 - Auto-sync with upstream branch master,

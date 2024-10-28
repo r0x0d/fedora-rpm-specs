@@ -5,7 +5,7 @@
 %global crate wayland-client
 
 Name:           rust-wayland-client
-Version:        0.31.6
+Version:        0.31.7
 Release:        %autorelease
 Summary:        Bindings to the standard C implementation of the wayland protocol, client side
 

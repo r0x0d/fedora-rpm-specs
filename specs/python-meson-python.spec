@@ -11,7 +11,7 @@
 
 Name:           python-meson-python
 Summary:        Meson Python build backend (PEP 517)
-Version:        0.17.0
+Version:        0.17.1
 Release:        %autorelease
 
 # SPDX

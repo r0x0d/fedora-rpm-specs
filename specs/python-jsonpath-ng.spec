@@ -1,61 +1,57 @@
 %global pypi_name jsonpath-ng
 
 Name:           python-%{pypi_name}
-Version:        1.5.1
-Release:        16%{?dist}
+Version:        1.7.0
+Release:        1%{?dist}
 Summary:        Implementation of JSONPath for Python
 
 # Main library: ASL 2.0
 # jsonpath_ng/bin/jsonpath.py: WTFPL
-# Automatically converted from old format: ASL 2.0 and WTFPL - review is highly recommended.
 License:        Apache-2.0 AND WTFPL
 URL:            https://github.com/h2non/jsonpath-ng
-Source0:        %{pypi_source}
+Source0:        %{pypi_source jsonpath-ng}
 BuildArch:      noarch
 
-%description
+BuildRequires:  python3-devel
+BuildRequires:  python3-pytest
+
+%global _description %{expand:
 Implementation of JSONPath for Python that aims to be standard compliant,
 including arithmetic and binary comparison operators, as defined in the
-original JSONPath proposal.
+original JSONPath proposal.}
+
+%description %_description
 
 %package -n     python3-%{pypi_name}
 Summary:        %{summary}
 
-BuildRequires:  python3-devel
-BuildRequires:  python3dist(decorator)
-BuildRequires:  python3dist(ply)
-BuildRequires:  python3dist(setuptools)
-BuildRequires:  python3dist(six)
-BuildRequires:  python3dist(oslotest)
-BuildRequires:  python3dist(testscenarios)
-%{?python_provide:%python_provide python3-%{pypi_name}}
-
-%description -n python3-%{pypi_name}
-Implementation of JSONPath for Python that aims to be standard compliant,
-including arithmetic and binary comparison operators, as defined in the
-original JSONPath proposal.
+%description -n python3-%{pypi_name} %_description
 
 %prep
 %autosetup -n %{pypi_name}-%{version}
 sed -i -e '/^#!\//, 1d' jsonpath_ng/bin/jsonpath.py
-rm -rf %{pypi_name}.egg-info
+
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files jsonpath_ng
 
 %check
-%{__python3} setup.py test
+%{pytest} -v
 
-%files -n python3-%{pypi_name}
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %doc README.rst
 %{_bindir}/jsonpath_ng
-%{python3_sitelib}/jsonpath_ng/
-%{python3_sitelib}/jsonpath_ng-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Sat Oct 26 2024 Fabian Affolter <mail@fabian-affolter.ch> - 1.7.0-1
+- Update to latest upstream release (closes rhbz#2319671)
+
 * Wed Aug 07 2024 Miroslav Suchý <msuchy@redhat.com> - 1.5.1-16
 - convert license to SPDX
 

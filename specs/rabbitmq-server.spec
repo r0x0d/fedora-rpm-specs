@@ -6,8 +6,8 @@
 
 
 Name: rabbitmq-server
-Version: 3.13.7
-Release: 2%{?dist}
+Version: 4.0.2
+Release: 1%{?dist}
 # Automatically converted from old format: MPLv1.1 - review is highly recommended.
 License: LicenseRef-Callaway-MPLv1.1
 Source0: https://github.com/rabbitmq/rabbitmq-server/releases/download/v%{version}/%{name}_%{version}.orig.tar.xz
@@ -188,6 +188,9 @@ done
 
 
 %changelog
+* Wed Oct 16 2024 Robert Scheck <robert@fedoraproject.org> - 4.0.2-1
+- Ver. 4.0.2
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 3.13.7-2
 - convert license to SPDX
 

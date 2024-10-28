@@ -1,12 +1,11 @@
 %bcond_without check
-%global public_key RWRzJFnXiLZleAyCIv1talBjyRewelcy9gzYQq9pd3SKSFBPoy57sf5s
 %global libchewing_python_dir %{python3_sitelib}
 
 %global im_name_zh_TW 新酷音輸入法
 %global name_zh_TW %{im_name_zh_TW}函式庫
 
 Name:           libchewing
-Version:        0.9.0
+Version:        0.9.1
 Release:        %autorelease
 Summary:        Intelligent phonetic input method library for Traditional Chinese
 Summary(zh_TW): %{name_zh_TW}
@@ -22,15 +21,15 @@ License:        LGPL-2.1-or-later AND (BSD-2-Clause OR Apache-2.0 OR MIT) AND MI
 
 URL:            https://chewing.im
 Source0:        https://github.com/chewing/%{name}/releases/download/v%{version_no_tilde}/libchewing-%{version_no_tilde}.tar.zst
-Source1:        https://github.com/chewing/%{name}/releases/download/v%{version_no_tilde}/libchewing-%{version_no_tilde}.tar.zst.minisig
+Source1:        https://github.com/chewing/%{name}/releases/download/v%{version_no_tilde}/libchewing-%{version_no_tilde}.tar.zst.asc
+Source2:        https://chewing.im/.well-known/openpgpkey/hu/y84sdmnksfqswe7fxf5mzjg53tbdz8f5?l=release#/libchewing.pgp
 
-Patch0:         0001-Delete-unused-optional-dependencies.patch
+Patch:          0001-Delete-unused-optional-dependencies.patch
 
 BuildRequires:  gcc cmake make pkgconf texinfo
 BuildRequires:  cargo-rpm-macros >= 24
-BuildRequires:  rust2rpm-helper
 BuildRequires:  cmake(Corrosion)
-BuildRequires:  minisign
+BuildRequires:  gnupg2
 BuildRequires:  python3-devel
 # since f31
 Obsoletes:      python2-libchewing < 0.5.1-13
@@ -75,7 +74,7 @@ Python binding of libchewing.
 %{name_zh_TW} python 綁定
 
 %prep
-/usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -P %{public_key}
+%{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
 %autosetup -p1 -n libchewing-%{version_no_tilde}
 %cargo_prep
 

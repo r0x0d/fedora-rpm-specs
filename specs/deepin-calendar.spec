@@ -2,7 +2,7 @@
 %global __provides_exclude_from ^%{_libdir}/deepin-aiassistant/.*\\.so$
 
 Name:           deepin-calendar
-Version:        5.14.3
+Version:        5.14.8
 Release:        %autorelease
 Summary:        Calendar for Deepin Desktop Environment
 License:        GPL-3.0-or-later
@@ -11,6 +11,7 @@ Source0:        %{url}/archive/%{version}/%{repo}-%{version}.tar.gz
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
+BuildRequires:  ninja-build
 
 BuildRequires:  cmake(Qt5Core)
 BuildRequires:  cmake(Qt5DBus)
@@ -31,7 +32,6 @@ BuildRequires:  systemd-rpm-macros
 BuildRequires:  desktop-file-utils
 
 Requires:       hicolor-icon-theme
-Requires:       deepin-daemon%{?_isa}
 Recommends:     deepin-manual
 
 %description
@@ -44,7 +44,7 @@ sed -i 's|lib/deepin-aiassistant/serivce-plugins|${CMAKE_INSTALL_LIBDIR}/deepin-
     schedule-plugin/CMakeLists.txt
 
 %build
-%cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_SYSCONFDIR=%{_sysconfdir}
+%cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_SYSCONFDIR=%{_sysconfdir}
 %cmake_build
 
 %install

@@ -1,7 +1,7 @@
 %global pypi_name snallygaster
 
 Name:           snallygaster
-Version:        0.0.12
+Version:        0.0.13
 Release:        %autorelease
 Summary:        Tool to scan for secret files on HTTP servers
 

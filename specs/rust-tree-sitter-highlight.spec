@@ -6,15 +6,15 @@
 %global crate tree-sitter-highlight
 
 Name:           rust-tree-sitter-highlight
-Version:        0.22.5
+Version:        0.23.2
 Release:        %autorelease
 Summary:        Library for performing syntax highlighting with Tree-sitter
 
 License:        MIT
 URL:            https://crates.io/crates/tree-sitter-highlight
 Source:         %{crates_source}
-# Upstream license file - tree-sitter/tree-sitter#1520
-Source:         https://github.com/tree-sitter/tree-sitter/raw/v%{version}/LICENSE#/LICENSE.upstream
+# * Upstream license file - tree-sitter/tree-sitter#1520
+Source2:        https://github.com/tree-sitter/tree-sitter/raw/v%{version}/LICENSE#/LICENSE.upstream
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -52,7 +52,7 @@ use the "default" feature of the "%{crate}" crate.
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
-cp -pav %{SOURCE1} LICENSE
+cp -pav %{SOURCE2} LICENSE
 
 %generate_buildrequires
 %cargo_generate_buildrequires

@@ -5,7 +5,7 @@
 %global crate winit
 
 Name:           rust-winit
-Version:        0.29.15
+Version:        0.30.5
 Release:        %autorelease
 Summary:        Cross-platform window creation library
 
@@ -15,9 +15,8 @@ Source:         %{crates_source}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          winit-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
-#  * Remove broken features
-#  * Remove unused feature "rwh_04"
-#  * Remove example dependency "softbuffer" - it requires "drm" with ExcludeArch
+# * Remove examples and example-only dependencies
+# * Remove unwanted dependency raw-window-handle 0.4
 Patch:          winit-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
@@ -39,6 +38,7 @@ use the "%{crate}" crate.
 %files          devel
 %license %{crate_instdir}/LICENSE
 %doc %{crate_instdir}/CHANGELOG.md
+%doc %{crate_instdir}/CODE_OF_CONDUCT.md
 %doc %{crate_instdir}/CONTRIBUTING.md
 %doc %{crate_instdir}/FEATURES.md
 %doc %{crate_instdir}/HALL_OF_CHAMPIONS.md
@@ -324,7 +324,7 @@ use the "x11rb" feature of the "%{crate}" crate.
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
-# Remove examples (missing dependencies)
+# Remove examples (unpackaged dependencies)
 rm -rf examples/
 
 %generate_buildrequires

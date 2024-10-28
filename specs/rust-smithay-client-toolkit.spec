@@ -5,7 +5,7 @@
 %global crate smithay-client-toolkit
 
 Name:           rust-smithay-client-toolkit
-Version:        0.18.1
+Version:        0.19.2
 Release:        %autorelease
 Summary:        Toolkit for making client wayland applications
 
@@ -14,9 +14,7 @@ URL:            https://crates.io/crates/smithay-client-toolkit
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * Drop examples with unpackaged dependencies
-#   * including font-kit which cannot be packaged in EPEL 9
-#     because pkgconfig(freetype2) is too old, and needed only
-#     by the relative_pointer example that already has missing deps
+# * Drop leftover dependencies of the removed examples
 Patch:          smithay-client-toolkit-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

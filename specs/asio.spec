@@ -29,6 +29,8 @@ modern C++ approach.
 
 %package devel
 Summary:        Header files for asio
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/#_packaging_header_only_libraries
+Provides:       %{name}-static = %{version}-%{release}
 Requires:       openssl-devel
 %if 0%{?fedora} >= 41 || 0%{?rhel} >= 11
 Requires:       openssl-devel-engine

@@ -29,6 +29,13 @@ It is accompanied by a simple yet functional user application ‘sieveshell’.
 
 %package -n     python3-%{pypi_name}
 Summary:        %{summary}
+# Package `cyrus-imapd-utils` also provides /usr/bin/sieveshell
+# However `python-managesieve` provided a Python script installed at
+# /usr/bin/sieveshell from its inception when version 0.6 was packaged
+# in 2020. Upstream's HISTORY file documents it being present since 0.2
+# released in 2004. Clearly this has been missed during package review.
+# https://bugzilla.redhat.com/show_bug.cgi?id=2228002
+Conflicts:      cyrus-imapd-utils
 
 %description -n python3-%{pypi_name}
 This module allows accessing a Sieve-Server for managing Sieve scripts there.
@@ -46,17 +53,8 @@ It is accompanied by a simple yet functional user application ‘sieveshell’.
 %build
 %pyproject_wheel
 
-# Generate man pages using Sphinx
-pushd docs
-make man
-popd
-
 
 %install
-mkdir -p %{buildroot}/%{_mandir}/man1
-cp -a docs/_build/man/*.1 %{buildroot}/%{_mandir}/man1
-cp %{buildroot}/%{_mandir}/man1/%{pypi_name}.1 %{buildroot}/%{_mandir}/man1/sieveshell.1
-
 %pyproject_install
 %pyproject_save_files managesieve
 
@@ -68,8 +66,6 @@ cp %{buildroot}/%{_mandir}/man1/%{pypi_name}.1 %{buildroot}/%{_mandir}/man1/siev
 %files -n python3-%{pypi_name} -f %{pyproject_files}
 %license LICENSE
 %doc README.txt HISTORY
-%{_mandir}/man1/%{pypi_name}.1*
-%{_mandir}/man1/sieveshell.1*
 %{_bindir}/sieveshell
 
 

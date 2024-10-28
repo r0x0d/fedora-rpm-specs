@@ -1,49 +1,52 @@
+%global debug_package %{nil}
+
 Name:           httping
-Version:        2.9
-Release:        5%{?dist}
+Version:        3.6
+Release:        1%{?dist}
 Summary:        Ping alike tool for http requests
 
-# Automatically converted from old format: GPL+ and OpenSSL - review is highly recommended.
 License:        GPL-1.0-or-later AND OpenSSL
 URL:            https://github.com/folkertvanheusden/HTTPing/
 Source0:        https://github.com/folkertvanheusden/HTTPing/archive/v%{version}/%{name}-%{version}.tar.gz
+Patch0:         9524733e67454518ee1075a47f3c21166543e620.patch
+Patch1:         7f76370729c594180348f94feb4216fd14e12abd.patch
 
+BuildRequires:  cmake
 BuildRequires:  gcc
-BuildRequires:  openssl-devel
-Buildrequires:  ncurses-devel
-Buildrequires:  fftw-devel
-BuildRequires:  gettext
 BuildRequires:  make
+BuildRequires:  gettext
+BuildRequires:  ncurses-devel
+BuildRequires:  openssl-devel
+BuildRequires:  openssl-devel-engine
 
 %description
-Httping is like 'ping' but for http-requests. Give it an url, and it'll 
+Httping is like 'ping' but for HTTP requests. Give it an URL, and it will 
 show you how long it takes to connect, send a request and retrieve the
 reply (only the headers). Be aware that the transmission across the network
 also takes time.
 
 %prep
-%autosetup -n HTTPing-%{version}
+%autosetup -n HTTPing-%{version} -p1
 
 %build
-%configure \
-    --with-tfo \
-    --with-ncurses \
-    --with-openssl \
-    --with-fftw3
-make %{?_smp_mflags} DEBUG="" OFLAGS="%{optflags} -D_GNU_SOURCE=1"
+%cmake -DUSE_TUI=1 -DCMAKE_INSTALL_PREFIX=/usr
+%cmake_build
 
 %install
-mkdir -p %{buildroot}/usr/share/locale/nl/LC_MESSAGES/
-make install INSTALL="install -Dp" STRIP=/bin/true DESTDIR=%{buildroot}
-rm -rf %{buildroot}%{_defaultdocdir}
-%find_lang %{name}
+%cmake_install
+rm -rf %{buildroot}/%{_docdir}
 
-%files -f %{name}.lang
-%{_mandir}/man*/%{name}*.*
-%{_mandir}/*/*/%{name}*.*
-%{_bindir}/%{name}
+%files
+%doc README.md plot-json.py
+%license LICENSE
+%{_bindir}/httping
+%{_mandir}/httping.1
 
 %changelog
+* Sat Sep 28 2024 Fabian Affolter <mail@fabian-affolter.ch> - 3.6-1
+- Update ot latest upstream release
+- Fix rhbz#2300841
+
 * Wed Aug 07 2024 Miroslav Suchý <msuchy@redhat.com> - 2.9-5
 - convert license to SPDX
 

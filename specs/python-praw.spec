@@ -2,36 +2,31 @@
 %global pypi_name praw
 
 Name:           python-%{pypi_name}
-Version:        7.7.1
-Release:        4%{?dist}
+Version:        7.8.1
+Release:        1%{?dist}
 Summary:        Python module that allows for simple access to reddit's API
 
-# Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
 URL:            https://praw.readthedocs.org
 Source0:        https://github.com/praw-dev/praw/archive/v%{version}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
 
 %description
-PRAW, an acronym for "Python Reddit API Wrapper", is a python package that
+PRAW, an acronym for "Python Reddit API Wrapper", is a Python package that
 allows for simple access to reddit's API.
 
 %package -n     python3-%{pypi_name}
 Summary:        %{summary}
 
-BuildRequires:  python3-setuptools
 BuildRequires:  python3-devel
-BuildRequires:  python3-prawcore
-BuildRequires:  mock
-BuildRequires:  python3-betamax
-BuildRequires:  python3-betamax-matchers
-BuildRequires:  python3-betamax-serializers
-BuildRequires:  python3-pytest
-BuildRequires:  python3-websocket-client
-%{?python_provide:%python_provide python3-%{pypi_name}}
+BuildRequires:  python3dist(flit-core)
+BuildRequires:  python3dist(pytest)
+BuildRequires:  python3dist(betamax)
+BuildRequires:  python3dist(betamax-matchers)
+BuildRequires:  python3dist(requests)
 
 %description -n python3-%{pypi_name}
-PRAW, an acronym for "Python Reddit API Wrapper", is a python package that
+PRAW, an acronym for "Python Reddit API Wrapper", is a Python package that
 allows for simple access to reddit's API.
 
 %if %{with docs}
@@ -48,26 +43,29 @@ allows for simple access to reddit's API.
 %prep
 %autosetup -n %{pypi_name}-%{version}
 # The RPM package should not provide this feature
-sed -i -e '/"update_checker >=0.18"/d' setup.py
+sed -i -e '/"update_checker >=0.18",/d' pyproject.toml
+
+%generate_buildrequires
+%pyproject_buildrequires -p
 
 %build
-%py3_build
+%pyproject_wheel
 %if %{with docs}
 sphinx-build docs html
 rm -rf html/.{doctrees,buildinfo}
 %endif
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files %{pypi_name}
 
 %check
-%pytest
+# Integration tests require network access
+%pytest --ignore "tests/integration"
 
-%files -n python3-%{pypi_name}
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %doc AUTHORS.rst CHANGES.rst README.rst
 %license LICENSE.txt
-%{python3_sitelib}/%{pypi_name}/
-%{python3_sitelib}/%{pypi_name}-%{version}-py*.egg-info
 
 %if %{with docs}
 %files -n python-%{pypi_name}-doc
@@ -75,6 +73,12 @@ rm -rf html/.{doctrees,buildinfo}
 %endif
 
 %changelog
+* Sat Oct 26 2024 Fabian Affolter <mail@fabian-affolter.ch> - 7.8.2-1
+- Update to latest upstream release (closes rhbz#2320089)
+
+* Mon Oct 21 2024 Fabian Affolter <mail@fabian-affolter.ch> - 7.8.0-1
+- Update to latest upstream release (closes rhbz#2320089)
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 7.7.1-4
 - convert license to SPDX
 

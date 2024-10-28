@@ -1,8 +1,8 @@
 %global pypi_name past_time
 
 Name:           past-time
-Version:        0.2.0
-Release:        21%{?dist}
+Version:        0.3.1
+Release:        1%{?dist}
 Summary:        Visualizer for the days of the year
 
 License:        MIT
@@ -11,34 +11,37 @@ Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
+BuildRequires:  python3-pytest
 BuildRequires:  python3-freezegun
-BuildRequires:  python3-click
-BuildRequires:  python3-tqdm
 
 %description
 A simple tool to visualize the progress of the year based on the past days.
 
 %prep
-%autosetup
+%autosetup -p1 -n %{name}-%{version}
+
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files %{pypi_name}
 
 %check
-%{__python3} setup.py test
+%{pytest} -v
 
-%files
+%files -f %{pyproject_files}
 %doc README.rst
 %license LICENSE
 %{_bindir}/%{name}
-%{python3_sitelib}/*.egg-info
-%{python3_sitelib}/%{pypi_name}
 
 %changelog
+* Sat Oct 26 2024 Fabian Affolter <mail@fabian-affolter.ch> -0.3.1-1
+- Update to latest upstream release (closes rhbz#2319637)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.0-21
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

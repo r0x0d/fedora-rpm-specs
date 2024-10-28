@@ -289,6 +289,8 @@ A Kakoune / Neovim inspired editor, written in Rust.
 %autosetup -c -p1
 # Bump gix to version 0.66
 tomcli set helix-vcs/Cargo.toml str dependencies.gix.version 0.66
+# Bump tree-sitter to version 0.23
+tomcli set Cargo.toml str workspace.dependencies.tree-sitter.version 0.23
 # Rename license files for themes so they can be installed
 find runtime/themes/licenses -type f -exec /bin/sh -c 'cp -pav {} LICENSE-themes-$(basename {} .LICENSE)' \;
 # License for for tree-sitter-eex

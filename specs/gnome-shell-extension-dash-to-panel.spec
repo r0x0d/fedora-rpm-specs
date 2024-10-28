@@ -2,7 +2,7 @@
 %global extdir %{_datadir}/gnome-shell/extensions/dash-to-panel@jderose9.github.com
 
 Name:           gnome-shell-extension-%{ename}
-Version:        63
+Version:        64
 Release:        1%{?dist}
 Summary:        Integrated icon taskbar and status panel for Gnome Shell
 License:        GPL-2.0-or-later
@@ -42,6 +42,9 @@ rm -v %{buildroot}%{extdir}/{COPYING,README.md}
 %{_datadir}/glib-2.0/schemas/org.gnome.shell.extensions.%{ename}.gschema.xml
 
 %changelog
+* Sat Oct 26 2024 Dominik Mierzejewski <dominik@greysector.net> - 64-1
+- update to 64 (resolves rhbz#2319313)
+
 * Wed Oct 02 2024 Dominik Mierzejewski <dominik@greysector.net> - 63-1
 - update to 63 (resolves rhbz#2313910)
 

@@ -6,7 +6,7 @@
 
 Name:           python-%{srcname}
 %if "%{?stable}"
-Version:        0.34.0
+Version:        0.35.0
 %else
 Version:        0.28.0^%{date}%{shortcommit}
 %endif
@@ -16,7 +16,7 @@ Summary:        Programming tools for numerical computation
 License:        GPL-2.0-or-later AND (GPL-2.0-or-later OR BSD-3-Clause)
 URL:            https://pypi.python.org/pypi/%{srcname}
 %if "%{?stable}"
-Source0:        %{pypi_source}
+Source0:        %{pypi_source ducc0}
 %else
 Source0:        https://github.com/mreineck/ducc/archive/%{commit}/ducc-%{commit}.tar.gz
 %endif

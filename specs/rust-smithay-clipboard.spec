@@ -5,7 +5,7 @@
 %global crate smithay-clipboard
 
 Name:           rust-smithay-clipboard
-Version:        0.7.1
+Version:        0.7.2
 Release:        %autorelease
 Summary:        Access to the wayland clipboard for client applications
 

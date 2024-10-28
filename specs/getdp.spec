@@ -1,4 +1,5 @@
 Name:           getdp
+# TODO: Enablee building with gmsh support as soon as getdp does not require private gmsh api anymore
 Version:        3.6.0
 Release:        5%{?dist}
 Summary:        General Environment for the Treatment of Discrete Problems

@@ -1,8 +1,8 @@
 %global pypi_name textparser
 
 Name:           python-%{pypi_name}
-Version:        0.23.0
-Release:        17%{?dist}
+Version:        0.24.0
+Release:        1%{?dist}
 Summary:        Python text parser
 
 License:        MIT
@@ -10,40 +10,43 @@ URL:            https://github.com/eerimoq/textparser
 Source0:        %{url}/archive/%{version}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
 
-%description
-A text parser written in Python.
+BuildRequires:  python3-devel
+BuildRequires:  python3-pytest
+
+%global _description %{expand:
+A text parser written in Python.}
+
+%description %_description
 
 %package -n     python3-%{pypi_name}
 Summary:        %{summary}
 
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-%{?python_provide:%python_provide python3-%{pypi_name}}
-
-%description -n python3-%{pypi_name}
-A text parser written in Python.
+%description -n python3-%{pypi_name} %_description
 
 %prep
 %autosetup -n %{pypi_name}-%{version}
-rm -rf %{pypi_name}.egg-info
+
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files %{pypi_name}
 
 %check
-%{__python3} setup.py test
+%{pytest} -v
 
-%files -n python3-%{pypi_name}
+%files -n python3-%{pypi_name}  -f %{pyproject_files}
 %license LICENSE
 %doc README.rst
-%{python3_sitelib}/__pycache__/*
-%{python3_sitelib}/%{pypi_name}.py
-%{python3_sitelib}/%{pypi_name}-%{version}-py*.egg-info/
 
 %changelog
+* Sat Oct 26 2024 Fabian Affolter <mail@fabian-affolter.ch> - 0.24.0-1
+- Update to latest upstream release (closes rhbz#2319727)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.23.0-17
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
