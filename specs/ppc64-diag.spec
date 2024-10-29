@@ -1,6 +1,6 @@
 Name:           ppc64-diag
-Version:        2.7.9
-Release:        7%{?dist}
+Version:        2.7.10
+Release:        1%{?dist}
 Summary:        PowerLinux Platform Diagnostics
 URL:            https://github.com/power-ras/%{name}
 License:        GPL-2.0-only
@@ -169,6 +169,15 @@ if [ "$1" = "0" ]; then # last uninstall
 fi
 
 %changelog
+* Sun Oct 27 2024 Than Ngo <than@redhat.com> - 2.7.10-1
+- Update to 2.7.10
+  * Aadd support for multiple platform dumps
+  * Add support for light path diagnostics for rtas events
+  * Enable correct display of model and system-id for IPS Power systems
+  * Fix call home feature for nvmf devices
+  * Fix crash in rtas_errd due to invalid -f option values
+  * Fix build warnings with GCC-15
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.7.9-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -59,6 +59,9 @@ BuildRequires:  fftw-devel
 BuildRequires:  boost-devel
 BuildRequires:  hipcc-libomp-devel
 BuildRequires:  hiprand-devel
+
+# rocfft-test compiles some things and requires rocm-hip-devel
+Requires:  rocm-hip-devel
 %endif
 
 Requires:       rocm-rpm-macros-modules

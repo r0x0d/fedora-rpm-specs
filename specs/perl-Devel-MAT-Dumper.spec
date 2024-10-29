@@ -1,8 +1,7 @@
 Name:           perl-Devel-MAT-Dumper
-Version:        0.49
+Version:        0.50
 Release:        1%{?dist}
 Summary:        Write a heap dump file for later analysis
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 URL:            https://metacpan.org/dist/Devel-MAT-Dumper
@@ -58,6 +57,9 @@ function which is not exported, which writes a file to the given path.
 %{_mandir}/man3/*
 
 %changelog
+* Sun Oct 27 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 0.50-1
+- Update to 0.50
+
 * Sun Sep 08 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 0.49-1
 - Update to 0.49
 

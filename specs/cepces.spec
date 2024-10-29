@@ -29,7 +29,7 @@ Recommends:     logrotate
 Supplements:    %{name}-certmonger = %{version}-%{release}
 
 %generate_buildrequires
-%pyproject_buildrequires -t
+%pyproject_buildrequires
 
 %description
 cepces is an application for enrolling certificates through CEP and CES.
@@ -90,6 +90,7 @@ done
 
 %install
 %pyproject_install
+%pyproject_save_files %{name}
 
 install -d -m0755 %{buildroot}%{logdir}
 
@@ -126,7 +127,10 @@ cat <<EOF>%{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 EOF
 
 %check
-%tox
+%pyproject_check_import
+pushd tests
+%{py3_test_envvars} %{python3} runner.py
+popd
 
 %if %{with selinux}
 %pre selinux
@@ -176,10 +180,8 @@ fi
 %dir %{_sysconfdir}/logrotate.d
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 
-%files -n python%{python3_pkgversion}-%{name}
+%files -n python%{python3_pkgversion}-%{name} -f %{pyproject_files}
 %license LICENSE
-%{python3_sitelib}/%{name}
-%{python3_sitelib}/%{name}-%{version}.dist-info
 
 %files certmonger
 %{_libexecdir}/certmonger/%{name}-submit

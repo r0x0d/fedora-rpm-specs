@@ -494,9 +494,6 @@ cp %SOURCE2 VTK/CMake/FindPEGTL.cmake
 %ifarch %{arm}
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 %endif
-%ifarch ppc64le
-%global _smp_mflags -j2
-%endif
 %cmake -Wno-dev \
         -DCMAKE_INSTALL_CMAKEDIR:PATH=%{_lib}/cmake \
         -DCMAKE_INSTALL_LIBDIR:PATH=%{_lib}/%{name} \

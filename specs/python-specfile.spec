@@ -7,7 +7,7 @@ Main focus is on modifying existing spec files, any change should result
 in a minimal diff.}
 
 
-%global base_version 0.32.4
+%global base_version 0.32.5
 #global prerelease   rc1
 
 %global package_version %{base_version}%{?prerelease:~%{prerelease}}
@@ -77,6 +77,9 @@ sed -i 's/setuptools_scm\[toml\]>=7/setuptools_scm[toml]/' pyproject.toml
 
 
 %changelog
+* Sat Oct 26 2024 Packit <hello@packit.dev> - 0.32.5-1
+- We have fixed our parser to take in account the deprecations introduced in Python 3.8 (#420)
+
 * Fri Oct 11 2024 Packit <hello@packit.dev> - 0.32.4-1
 - NEVR and NEVRA classes are now hashable (#416)
 

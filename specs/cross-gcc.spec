@@ -73,9 +73,9 @@
 # The gcc versioning information.  In a sed command below, the specfile winds
 # pre-release version numbers in BASE-VER back to the last actually-released
 # number.
-%global DATE 20240508
-%global gitrev 9ae733ecd3cd76d7e2f99385520783b01ab7e5dd
-%global gcc_version 14.1.1
+%global DATE 20240912
+%global gitrev c7a1c1a4bf73b3cb4943c428085fe5cbb433cde4
+%global gcc_version 14.2.1
 %global gcc_major 14
 
 # Note, cross_gcc_release must be integer, if you want to add suffixes
@@ -83,7 +83,7 @@
 # line.  gcc_release is the Fedora gcc release that the patches were
 # taken from.
 %global gcc_release 1
-%global cross_gcc_release 2
+%global cross_gcc_release 1
 %global cross_binutils_version 2.43.1-1
 %global isl_version 0.16.1
 %global isl_libmajor 15
@@ -863,6 +863,9 @@ chmod +x %{__ar_no_strip}
 %do_files xtensa-linux-gnu	%{build_xtensa}
 
 %changelog
+* Sun Oct 27 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 14.2.1-1
+- Update to 14.2.1
+
 * Wed Aug 28 2024 Jose E. Marchesi <jose.marchesi@oracle.com> - 14.1.1-2
 - Enable support for the BPF arch (rhbz#2281043).
 

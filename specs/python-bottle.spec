@@ -1,7 +1,7 @@
 %global srcname bottle
 
 Name:           python-%{srcname}
-Version:        0.13.0
+Version:        0.13.2
 Release:        1%{?dist}
 Summary:        Fast and simple WSGI-framework for small web-applications
 
@@ -42,7 +42,7 @@ sed -i '/^#!/d' bottle.py
 
 %install
 %py3_install
-rm %{buildroot}%{_bindir}/bottle.py
+rm %{buildroot}%{_bindir}/bottle %{buildroot}%{_bindir}/bottle.py
 
 %check
 %{pytest} test
@@ -55,6 +55,9 @@ rm %{buildroot}%{_bindir}/bottle.py
 %{python3_sitelib}/*.py
 
 %changelog
+* Sun Oct 27 2024 Federico Pellegrin <fede@evolware.org> - 0.13.2-1
+- Bump to 0.13.2
+
 * Fri Sep 06 2024 Federico Pellegrin <fede@evolware.org> - 0.13.0-1
 - Bump to 0.13.0
 - Drop upstreamed patch and drop python-legacy-cgi dependency

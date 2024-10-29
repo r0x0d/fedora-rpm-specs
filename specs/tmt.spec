@@ -1,5 +1,5 @@
 Name:           tmt
-Version:        1.37.0
+Version:        1.38.0
 Release:        %autorelease
 Summary:        Test Management Tool
 
@@ -75,7 +75,7 @@ Provides:       tmt-provision-virtual == %{version}-%{release}
 Obsoletes:      tmt-provision-virtual < %{version}-%{release}
 %endif
 Requires:       tmt == %{version}-%{release}
-Requires:       python3-testcloud >= 0.9.13
+Requires:       python3-testcloud >= 0.11.3
 Requires:       libvirt-daemon-config-network
 Requires:       openssh-clients
 Requires:       (ansible or ansible-core)
@@ -158,6 +158,9 @@ install -pm 644 %{name}/steps/provision/mrack/mrack* %{buildroot}/etc/%{name}/
 %files -n tmt+all -f %{_pyproject_ghost_distinfo}
 
 %changelog
+* Fri Oct 25 2024 Packit <hello@packit.dev> - 1.38.0-1
+- Update to version 1.38.0
+
 * Wed Oct 02 2024 Packit <hello@packit.dev> - 1.37.0-1
 - Update to version 1.37.0
 

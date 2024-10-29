@@ -11,7 +11,7 @@ Name:           mozilla-privacy-badger
 Version:        2024.7.17
 Release:        %autorelease
 Summary:        Protects your privacy by blocking spying ads and invisible trackers
-License:        Apache-2.0 AND GPL-3.0-or-later AND (GPL-3.0-or-later OR MPL-2.0) AND MIT AND OFL-1.1 AND LicenseRef-Public-Domain AND CC-BY-SA-3.0
+License:        Apache-2.0 AND GPL-3.0-or-later AND (GPL-3.0-or-later OR MPL-2.0) AND MIT AND OFL-1.1 AND LicenseRef-Fedora-Public-Domain AND CC-BY-SA-3.0
 URL:            https://www.eff.org/privacybadger
 Source0:        https://github.com/EFForg/privacybadger/archive/release-%{version}/privacybadger-%{version}.tar.gz
 Source1:        %{name}.metainfo.xml

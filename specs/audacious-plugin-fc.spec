@@ -8,12 +8,12 @@
 
 Summary: Future Composer input plugin for Audacious
 Name: audacious-plugin-fc
-Version: 0.8.3.8
-Release: 4%{?dist}
+Version: 0.8.4
+Release: 1%{?dist}
 Provides: audacious-plugins-fc = %{version}-%{release}
-URL: https://github.com/mschwendt/future-composer-audio-decoding
+URL: https://github.com/mschwendt/audacious-plugins-fc
 License: GPL-2.0-or-later
-Source0: https://github.com/mschwendt/future-composer-audio-decoding/releases/download/audacious-plugin-fc-%{version}/audacious-plugin-fc-%{version}.tar.gz
+Source0: https://github.com/mschwendt/audacious-plugins-fc/releases/download/%{version}/audacious-plugins-fc-%{version}.tar.bz2
 
 BuildRequires: pkgconfig(audacious) >= 3.8
 BuildRequires: libfc14audiodecoder-devel
@@ -37,7 +37,7 @@ music files from AMIGA. Song-length detection and seek are implemented, too.
 # just a guard
 pkg-config --print-variables audacious | grep ^plugin_dir
 
-%setup -q
+%setup -q -n audacious-plugins-fc-%{version}
 
 
 %build
@@ -59,6 +59,9 @@ appstream-util validate-relax --nonet ${RPM_BUILD_ROOT}%{_datadir}/appdata/*.xml
 
 
 %changelog
+* Sun Oct 27 2024 Michael Schwendt <mschwendt@fedoraproject.org> - 0.8.4-1
+- update to 0.8.4
+
 * Tue Jul 30 2024 Michael Schwendt <mschwendt@fedoraproject.org> - 0.8.3.8-4
 - update URL, merge flatpak build_pre from XMP plugin package
 

@@ -1,20 +1,21 @@
-%global _hardened_build 1
-
 Name:              dropbear
-Version:           2024.85
-Release:           2%{?dist}
+Version:           2024.86
+Release:           1%{?dist}
 Summary:           Lightweight SSH server and client
 License:           MIT
 URL:               https://matt.ucc.asn.au/dropbear/dropbear.html
 Source0:           https://matt.ucc.asn.au/%{name}/releases/%{name}-%{version}.tar.bz2
-Source1:           dropbear.service
-Source2:           dropbear-keygen.service
+Source1:           https://matt.ucc.asn.au/%{name}/releases/%{name}-%{version}.tar.bz2.asc
+Source2:           https://matt.ucc.asn.au/dropbear/releases/dropbear-key-2015.asc
+Source4:           dropbear.service
+Source5:           dropbear-keygen.service
 BuildRequires:     gcc
+# for gpg verification
+BuildRequires:     gnupg2
 BuildRequires:     libtomcrypt-devel
 BuildRequires:     libtommath-devel
 BuildRequires:     pam-devel
 BuildRequires:     systemd
-%{?systemd_requires}
 # For triggerun
 Requires(post):    systemd-sysv
 BuildRequires:     zlib-devel
@@ -25,9 +26,8 @@ Dropbear is a relatively small SSH server and client. It's particularly useful
 for "embedded"-type Linux (or other Unix) systems, such as wireless routers.
 
 %prep
+%{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
 %setup -q
-iconv -f iso-8859-1 -t utf-8 -o CHANGES{.utf8,}
-mv CHANGES{.utf8,}
 
 %build
 %configure --enable-pam --disable-bundled-libtom
@@ -42,8 +42,8 @@ EOT
 %make_install
 install -d %{buildroot}%{_sysconfdir}/%{name}
 install -d %{buildroot}%{_unitdir}
-install -pm644 %{S:1} %{buildroot}%{_unitdir}/%{name}.service
-install -pm644 %{S:2} %{buildroot}%{_unitdir}/dropbear-keygen.service
+install -pm644 %{S:4} %{buildroot}%{_unitdir}/%{name}.service
+install -pm644 %{S:5} %{buildroot}%{_unitdir}/dropbear-keygen.service
 
 %check
 # Tests require local network and the running user to be able to login,
@@ -81,6 +81,12 @@ systemctl try-restart dropbear.service >/dev/null 2>&1 || :
 %{_mandir}/man8/*.8*
 
 %changelog
+* Sun Oct 27 2024 Federico Pellegrin <fede@evolware.org> - 2024.86-1
+- Update to 2024.86 (rhbz#2321034)
+
+* Mon Sep 02 2024 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 2024.85-3
+- Add GPG signature verification and misc changes
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2024.85-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

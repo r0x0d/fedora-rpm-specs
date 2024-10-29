@@ -2,9 +2,9 @@
 %{!?make_build: %global make_build %{__make} %{?_smp_mflags}}
 
 Name:           s3fs-fuse
-Version:        1.94
+Version:        1.95
 
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        FUSE-based file system backed by Amazon S3
 
 License:        GPL-2.0-or-later
@@ -57,6 +57,15 @@ cp -p %{SOURCE1} passwd-s3fs
 %license COPYING
 
 %changelog
+* Sat Oct 26 2024 Julio González Gil <packages@juliogonzalez.es> - 1.95-1
+- Update to 1.95 from https://github.com/s3fs-fuse/s3fs-fuse/releases/tag/v1.95 (#2321940)
+  * IMPORTANT: This is the last release supporting CentOS7 or clones
+  * Add ipresolve option to select IPv4 or IPv6-only
+  * Retry request on HTTP 429 error
+  * Fix deadlock in FdManager::ChangeEntityToTempPath
+  * Enable static lock checking and fix locking errors
+  * Fix use-after-free in FdManager::ChangeEntityToTempPath
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.94-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

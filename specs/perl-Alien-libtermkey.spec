@@ -1,13 +1,17 @@
 Name:           perl-Alien-libtermkey
 Version:        0.22
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Alien wrapping for libtermkey
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 URL:            https://metacpan.org/dist/Alien-libtermkey
 Source0:        https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Alien-libtermkey-%{version}.tar.gz
 
-BuildArch:      noarch
+# This is a full-arch package because it requires an arch-specific
+# libtermkey.so library but it does not install any ELF, therefore
+# disable debuginfo generation.
+%global debug_package %{nil}
+
 # build requirements
 BuildRequires:  coreutils
 BuildRequires:  perl-generators
@@ -26,6 +30,8 @@ BuildRequires:  pkgconfig(termkey)
 # runtime requirements
 BuildRequires:  perl(ExtUtils::CChecker)
 Requires:       perl(ExtUtils::CChecker)
+# This RPM package ensures libtermkey.so is installed on the system
+Requires:       libtermkey-devel(%{__isa}) = %(type -p pkgconf >/dev/null && pkgconf --exists termkey && pkgconf --modversion termkey|| echo 0)
 
 %description
 This CPAN distribution wraps the C library libtermkey in a wrapper suitable
@@ -52,6 +58,9 @@ to drive CPAN and other Perl-related build infrastructure.
 %{_mandir}/man3/Alien*
 
 %changelog
+* Sun Oct 27 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 0.22-3
+- run-require libtermkey-devel, as suggested by Petr Pisar (#2318412)
+
 * Wed Oct 16 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 0.22-2
 - Take into account package review (#2318410)
 

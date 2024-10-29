@@ -1,8 +1,7 @@
 Name:           perl-Data-ObjectDriver
-Version:        0.22
-Release:        6%{?dist}
+Version:        0.23
+Release:        1%{?dist}
 Summary:        Simple, transparent data interface, with caching
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Data-ObjectDriver
 Source0:        https://cpan.metacpan.org/authors/id/S/SI/SIXAPART/Data-ObjectDriver-%{version}.tar.gz
@@ -31,9 +30,6 @@ oriented design concepts onto a relational database.
 
 %prep
 %setup -q -n Data-ObjectDriver-%{version}
-# Bundled Test::Builder has to match system Test-Simple, CPAN RT#87294
-rm -rf inc/Test/Builder*
-sed -i -e '/^inc\/Test\/Builder[\.\/]/d' MANIFEST
 
 %build
 /usr/bin/perl Build.PL --installdirs=vendor
@@ -54,6 +50,9 @@ sed -i -e '/^inc\/Test\/Builder[\.\/]/d' MANIFEST
 %{_mandir}/man3/*
 
 %changelog
+* Sun Oct 27 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 0.23-1
+- Update to 0.23
+
 * Mon Aug 05 2024 Miroslav Suchý <msuchy@redhat.com> - 0.22-6
 - convert license to SPDX
 

@@ -42,7 +42,7 @@
 
 Name:           blender
 Epoch:          1
-Version:        4.2.2
+Version:        4.2.3
 Release:        %autorelease
 
 

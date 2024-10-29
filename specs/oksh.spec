@@ -1,5 +1,5 @@
 Name:           oksh
-Version:        7.4
+Version:        7.5
 Release:        %autorelease
 Summary:        Portable OpenBSD ksh, based on the Public Domain Korn Shell
 

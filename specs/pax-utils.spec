@@ -12,7 +12,7 @@ Source0: https://github.com/gentoo/pax-utils/archive/v%{version}/%{name}-%{versi
 Patch0: %{name}-py3shebang.patch
 # elf.h is from glibc: LGPLv2.1+
 # pspax.c is Beerware
-License: GPL-2.0-only AMD LGPL-2.1-or-later AND Beerware
+License: GPL-2.0-only AND LGPL-2.1-or-later AND Beerware
 BuildRequires:  gcc
 BuildRequires: meson
 BuildRequires: libcap-devel

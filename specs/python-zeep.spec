@@ -4,18 +4,14 @@ code to use the services and types in the document. This\
 provides an easy to use programmatic interface to a SOAP server.
 
 Name:           python-%{srcname}
-Version:        4.2.1
-Release:        10%{?dist}
+Version:        4.3.1
+Release:        1%{?dist}
 Summary:        A fast and modern Python SOAP client
 
 # Automatically converted from old format: MIT and BSD - review is highly recommended.
 License:        LicenseRef-Callaway-MIT AND LicenseRef-Callaway-BSD
 URL:            https://github.com/mvantellingen/python-zeep
 Source0:        %pypi_source
-
-# XXX remove when integrating upstream release > 4.2.1
-# https://github.com/mvantellingen/python-zeep/issues/1388
-Patch0:         python-3.13.patch
 
 BuildArch:      noarch
 # Since python-aiohttp excludes s390x we have to exclude it, as well
@@ -48,7 +44,7 @@ Summary:        %{summary}
 %autosetup -p1 -n %{srcname}-%{version}
 
 # disable linting dependencies and exact test dependencies
-sed -i -e '/isort\|flake\|coverage\[toml\]/d' -e 's/\([a-z]\)[>=]\{2\}[0-9.]\+/\1/' setup.py
+sed -i -e '/isort\|flake\|coverage\[toml\]/d' -e 's/\([a-z]\)[>=]\{2\}[0-9.]\+/\1/' pyproject.toml
 
 
 %generate_buildrequires
@@ -56,24 +52,28 @@ sed -i -e '/isort\|flake\|coverage\[toml\]/d' -e 's/\([a-z]\)[>=]\{2\}[0-9.]\+/\
 
 
 %build
-%py3_build
+%pyproject_wheel
 
 
 %install
-%py3_install
+%pyproject_install
+
+%pyproject_save_files -l %{srcname}
+
 
 %check
 # skip tests that involve SHA1 since Fedora nowadays disables it, systemwide
 PYTHONPATH=src %{__python3} -m pytest tests -v -k 'not (SHA1 or test_sign_pw or test_verify_error or (test_signature and not test_signature_binary))'
 
-%files -n python3-%{srcname}
-%license LICENSE
-%doc README.rst examples
-%{python3_sitelib}/%{srcname}/
-%{python3_sitelib}/%{srcname}-*-py*.egg-info/
+
+%files -n python3-%{srcname} -f %{pyproject_files}
+%doc README.md examples
 
 
 %changelog
+* Sun Oct 27 2024 Georg Sauthoff <mail@gms.tf> - 4.3.1-1
+- bump to latest upstream release (fixes fedora#2318398)
+
 * Sun Sep 08 2024 Georg Sauthoff <mail@gms.tf> - 4.2.1-10
 - Ship sha1 tests for Fedora 41 (fixes fedora#2301221)
 

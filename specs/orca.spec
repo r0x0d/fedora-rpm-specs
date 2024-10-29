@@ -1,8 +1,8 @@
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 Name:           orca
-Version:        47.0
-Release:        2%{?dist}
+Version:        47.1
+Release:        1%{?dist}
 Summary:        Assistive technology for people with visual impairments
 
 License:        LGPL-2.1-or-later AND CC-BY-SA-3.0
@@ -75,6 +75,9 @@ desktop-file-validate %{buildroot}%{_sysconfdir}/xdg/autostart/orca-autostart.de
 
 
 %changelog
+* Sun Oct 27 2024 David King <amigadave@amigadave.com> - 47.1-1
+- Update to 47.1
+
 * Tue Oct 15 2024 Gwyn Ciesla <gwync@protonmail.com> - 47.0-2
 - brltty rebuild
 

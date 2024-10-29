@@ -1,8 +1,7 @@
 Name:       oclock
-Version:    1.0.4
-Release:    8%{?dist}
+Version:    1.0.5
+Release:    %autorelease
 Summary:    A simple analog clock
-
 License:    MIT
 URL:        https://www.x.org
 Source0:    https://www.x.org/pub/individual/app/%{name}-%{version}.tar.gz
@@ -44,31 +43,4 @@ autoreconf -v --install
 %{_datadir}/X11/app-defaults/Clock-color
 
 %changelog
-* Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.4-8
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Thu Jan 25 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.4-7
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Sun Jan 21 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.4-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Thu Jul 20 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.4-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Sat May 06 2023 Ranjan Maitra <aarem@fedoraproject.org> - 1.0.4-4
-- Rebuild for F38
-- Submitted to repos, after unretiring.
-
-* Sun Feb 26 2023 Ranjan Maitra <aarem@fedoraproject.org> - 1.0.4-3
-- Rebuild for F37
-- Copied and renamed oclock.gpg from xfontsel.gpg and provided verification
-
-* Fri Nov 19 2021 Ranjan Maitra <aarem@fedoraproject.org> - 1.0.4-2
-- Rebuild for F35. 
-
-* Thu Apr 08 2021 Peter Hutterer <peter.hutterer@redhat.com> - 1.0.4-2
-- Fix Obsoletes line to actually obsolete the -30 xorg-x11-apps (#1947245)
-
-* Tue Mar 02 2021 Peter Hutterer <peter.hutterer@redhat.com> 1.0.4-1
-- Split oclock out from xorg-x11-apps into a separate package (#1933935)
+%autochangelog

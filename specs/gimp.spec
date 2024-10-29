@@ -56,7 +56,7 @@ gimp:app / ui
 Summary:        GNU Image Manipulation Program
 Name:           gimp
 Epoch:          2
-Version:        2.99.19^20241011giteddaa13ad5
+Version:        2.99.19^20241027git2db868ab50
 Release:        %autorelease
 # https://bugzilla.redhat.com/show_bug.cgi?id=2318369
 ExcludeArch:    s390x

@@ -104,7 +104,7 @@ rm -rf doc/build/html/.{doctrees,buildinfo}
 %{py3_install}
 
 %check
-%{__python3} setup.py test
+%python3 -m unittest discover -v -s oslo_metrics/tests
 
 %files -n python3-%{pkg_name}
 %license LICENSE

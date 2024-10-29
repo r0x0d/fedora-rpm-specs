@@ -4,7 +4,7 @@
 
 # https://github.com/tdewolff/parse
 %global goipath         github.com/tdewolff/parse
-Version:                2.7.15
+Version:                2.7.19
 
 %gometa
 

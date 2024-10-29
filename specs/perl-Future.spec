@@ -1,8 +1,7 @@
 Name:           perl-Future
-Version:        0.50
-Release:        6%{?dist}
+Version:        0.51
+Release:        1%{?dist}
 Summary:        Perl object system to represent an operation awaiting completion
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 URL:            https://metacpan.org/release/Future
@@ -63,6 +62,9 @@ flow of control, and data, through an asynchronous program.
 %{_mandir}/man3/*
 
 %changelog
+* Sun Oct 27 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 0.51-1
+- Update to 0.51
+
 * Tue Aug 06 2024 Miroslav Suchý <msuchy@redhat.com> - 0.50-6
 - convert license to SPDX
 

@@ -1,6 +1,6 @@
 Summary: test VT100-type terminal
 
-%define AppPatched 20240708
+%define AppPatched 20241024
 
 Name: vttest
 Version: 2.7.%{AppPatched}
@@ -37,10 +37,13 @@ can run all menu-items (for a given level) by entering an asterisk, i.e,
 %files
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.*
-%doc BUGS CHANGES MANIFEST README
+%doc CHANGES MANIFEST README
 %license COPYING
 
 %changelog
+* Sun Oct 27 2024 Thomas E. Dickey <dickey@his.com> - 2.7.20241024-1
+- update to 2.7.20241024 (RHBZ #2321688)
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.7.20240708-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -2,7 +2,7 @@
 
 Name:               python-%{modname}
 Version:            1.1.2
-Release:            32%{?dist}
+Release:            33%{?dist}
 Summary:            Easy to use mocking/stub/spy framework
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -23,6 +23,8 @@ Summary:            Easy to use mocking/stub framework
 
 BuildRequires:      python%{python3_pkgversion}-devel
 BuildRequires:      python%{python3_pkgversion}-setuptools
+# For testing
+BuildRequires:      python%{python3_pkgversion}-pytest
 
 %description -n python%{python3_pkgversion}-%{modname}
 Chai provides a very easy to use api for mocking/stubbing your python
@@ -56,7 +58,7 @@ $(find tests -type f)
 %{py3_install}
 
 %check
-%{__python3} setup.py test
+%pytest
 
 %files -n python%{python3_pkgversion}-%{modname}
 %doc README.rst
@@ -65,6 +67,10 @@ $(find tests -type f)
 %{python3_sitelib}/%{modname}-%{version}-*
 
 %changelog
+* Thu Oct 24 2024 Charalampos Stratakis <cstratak@redhat.com> - 1.1.2-33
+- Utilize pytest instead of the removed setup.py test command
+Resolves: rhbz#2319664
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.1.2-32
 - convert license to SPDX
 

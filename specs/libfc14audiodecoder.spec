@@ -1,12 +1,11 @@
 Name: libfc14audiodecoder
-Version: 1.0.3
-Release: 27%{?dist}
+Version: 1.0.4
+Release: 1%{?dist}
 
 Summary: C wrapper library for Future Composer audio decoding
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License: GPL-2.0-or-later
-URL: https://github.com/mschwendt/future-composer-audio-decoding
-Source0: https://github.com/mschwendt/future-composer-audio-decoding/releases/download/libfc14audiodecoder-%{version}/libfc14audiodecoder-%{version}.tar.bz2
+URL: https://github.com/mschwendt/libfc14audiodecoder
+Source0: https://github.com/mschwendt/%{name}/releases/download/%{name}-%{version}/%{name}-%{version}.tar.bz2
 
 BuildRequires: gcc-c++
 BuildRequires: make
@@ -54,6 +53,9 @@ make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 
 
 %changelog
+* Sun Oct 27 2024 Michael Schwendt <mschwendt@fedoraproject.org> - 1.0.4-1
+- update to 1.0.4
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.3-27
 - convert license to SPDX
 

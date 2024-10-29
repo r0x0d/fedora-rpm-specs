@@ -1,5 +1,5 @@
 Name:           python-ogr
-Version:        0.50.1
+Version:        0.50.2
 Release:        1%{?dist}
 Summary:        One API for multiple git forges
 
@@ -48,6 +48,10 @@ One Git library to Rule!
 
 
 %changelog
+* Sat Oct 26 2024 Packit <hello@packit.dev> - 0.50.2-1
+- There is a new method for getting a single commit comment, supporting also retrieval and adding reactions in GitHub. (#865)
+- Resolves: rhbz#2321974
+
 * Fri Oct 11 2024 Packit <hello@packit.dev> - 0.50.1-1
 - We have fixed an issue that caused inconsistencies with the expected behavior stated by the documentation when adding duplicate reactions to GitLab comments. (#861)
 - Resolves: rhbz#2318010
