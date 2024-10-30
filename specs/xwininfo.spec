@@ -1,11 +1,10 @@
 Summary:    X window info utility
 Name:       xwininfo
-Version:    1.1.5
-Release:    9%{?dist}
+Version:    1.1.6
+Release:    %autorelease
 License:    MIT
-URL:        http://www.x.org
-
-Source0:    https://www.x.org/pub/individual/app/%{name}-%{version}.tar.bz2
+URL:        https://www.x.org
+Source0:    https://www.x.org/pub/individual/app/%{name}-%{version}.tar.xz
 
 BuildRequires:  gcc
 BuildRequires:  make
@@ -36,31 +35,4 @@ xwininfo prints information about an X11 window.
 %{_mandir}/man1/xwininfo.1*
 
 %changelog
-* Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.5-9
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Sat Jan 27 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.5-8
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Sat Jul 22 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.5-7
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Sat Jan 21 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.5-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
-
-* Sat Jul 23 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.5-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
-
-* Sat Jan 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.5-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
-
-* Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.5-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
-
-* Fri Apr 16 2021 Peter Hutterer <peter.hutterer@redhat.com> - 1.1.5-2
-- Bump Obsoletes for xorg-x11-utils
-- Use the make_build rpm macro
-
-* Tue Jan 19 2021 Adam Jackson <ajax@redhat.com> - 1.1.5-1
-- Initial split packaging.
-
+%autochangelog

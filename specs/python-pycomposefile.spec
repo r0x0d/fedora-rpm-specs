@@ -3,21 +3,13 @@
 %global         srcname pycomposefile
 
 Name:           python-%{srcname}
-Version:        0.0.30
+Version:        0.0.32
 Release:        %autorelease
 Summary:        Structured deserialization of Docker Compose files
 
 License:        MIT
 URL:            https://github.com/smurawski/pycomposefile
 Source:         %{url}/archive/v%{version}/%{srcname}-%{version}.tar.gz
-
-# Added a PR to make a license file in the repository.
-# https://github.com/smurawski/pycomposefile/pull/27
-Patch:          %{url}/pull/27.patch
-
-# Remove src from test import
-# https://github.com/smurawski/pycomposefile/pull/30
-Patch:          %{url}/pull/30.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel

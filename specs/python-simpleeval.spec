@@ -1,7 +1,7 @@
 %global srcname simpleeval
 
 Name:           python-%{srcname}
-Version:        1.0.0
+Version:        1.0.1
 Release:        1%{?dist}
 Summary:        An expression evaluator library for Python
 
@@ -56,6 +56,9 @@ eval() or other unsafe or needlessly complex linguistics.
 
 
 %changelog
+* Mon Oct 28 2024 Dan Horák <dan[at]danny.cz> - 1.0.1-1
+- updated to 1.0.1 (rhbz#2322123)
+
 * Fri Oct 11 2024 Dan Horák <dan[at]danny.cz> - 1.0.0-1
 - updated to 1.0.0 (rhbz#2316880)
 

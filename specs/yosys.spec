@@ -3,11 +3,9 @@
 
 %global snapdate 20241011
 
-%global __python %{__python3}
-
 Name:           yosys
 Version:        0.46
-Release:        3.%{snapdate}git%{shortcommit0}%{?dist}
+Release:        4.%{snapdate}git%{shortcommit0}%{?dist}
 Summary:        Yosys Open SYnthesis Suite, including Verilog synthesizer
 License:        ISC and MIT
 URL:            http://www.clifford.at/yosys/
@@ -37,6 +35,9 @@ Patch2:         yosys-mancfginc.patch
 # sources)
 Patch3:         yosys-doc-offline.patch
 
+# https://github.com/YosysHQ/yosys/pull/4683
+Patch4:         0001-Respect-SOURCE_DATE_EPOCH-in-generate_bram_types_sim.patch
+
 BuildRequires:  make
 BuildRequires:  gcc-c++
 BuildRequires:  bison flex readline-devel pkgconfig
@@ -44,6 +45,7 @@ BuildRequires:  tcl-devel libffi-devel
 BuildRequires:  yosyshq-abc >= 0.46
 BuildRequires:  iverilog >= 12.0
 BuildRequires:  python%{python3_pkgversion}
+BuildRequires:  python3-devel
 BuildRequires:  txt2man
 
 # required for documentation:
@@ -105,6 +107,7 @@ Development files to build Yosys synthesizer plugins.
 %patch 1 -p1 -b .cfginc
 %patch 2 -p1 -b .mancfginc
 %patch 3 -p1 -b .docoffline
+%patch 4 -p1 -b .timestamp
 
 # Ensure that Makefile doesn't wget viz.js
 cp %{SOURCE1} .
@@ -120,19 +123,14 @@ do
     mv $f.new $f
 done
 
-make config-gcc
-
-
 %build
-# disable LTO to allow building for f33 rawhide (BZ 1865657):
-%define _lto_cflags %{nil}
-%set_build_flags
-make %{?_smp_mflags} PREFIX="%{_prefix}" ABCEXTERNAL=%{_bindir}/abc PRETTY=0 all
+make config-gcc
+%make_build PREFIX="%{_prefix}" ABCEXTERNAL=%{_bindir}/abc PRETTY=0 all
 #manual
 make ABCEXTERNAL=%{_bindir}/abc DOC_TARGET=latexpdf docs
 
-%global man_date "`stat -c %y debian/man/yosys-smtbmc.txt | awk '{ print $1 }'`"
-txt2man -d %{man_date} -t YOSYS-SMTBMC debian/man/yosys-smtbmc.txt >yosys-smtbmc.1
+date=$(stat -c %y debian/man/yosys-smtbmc.txt | cut -d' ' -f1)
+txt2man -d $date -t YOSYS-SMTBMC debian/man/yosys-smtbmc.txt >yosys-smtbmc.1
 
 
 %install
@@ -150,6 +148,7 @@ install -m 0644 yosys-smtbmc.1 debian/yosys{,-config,-filterlib}.1 %{buildroot}%
 install -d -m0755 %{buildroot}%{_docdir}/%{name}
 install -m 0644 docs/build/latex/yosyshqyosys.pdf %{buildroot}%{_docdir}/%{name}
 
+%py_byte_compile %{python3} %{buildroot}%{_datadir}/yosys/python3
 
 %check
 make test ABCEXTERNAL=%{_bindir}/abc SEED=314159265359
@@ -181,6 +180,9 @@ make test ABCEXTERNAL=%{_bindir}/abc SEED=314159265359
 
 
 %changelog
+* Thu Oct 24 2024 Zbigniew Jedrzejewski-Szmek <zbyszek@in.waw.pl> - 0.46-4.20241011gita00137c
+- Call %%py_byte_compile and apply patch to fix build reproducibility
+
 * Wed Oct 23 2024 Zbigniew Jedrzejewski-Szmek <zbyszek@in.waw.pl> - 0.46-3.20241011gita00137c
 - Rebuild for rust-add-determinism-0.4.3-1.fc42
 

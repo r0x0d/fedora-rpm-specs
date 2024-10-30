@@ -1,11 +1,10 @@
 Name:       xvidtune
-Version:    1.0.3
-Release:    10%{?dist}
+Version:    1.0.4
+Release:    %autorelease
 Summary:    Video mode tuner for Xorg
-
 License:    X11-distribute-modifications-variant
 URL:        https://www.x.org
-Source0:    https://www.x.org/pub/individual/app/%{name}-%{version}.tar.bz2
+Source0:    https://www.x.org/pub/individual/app/%{name}-%{version}.tar.xz
 
 BuildRequires:  automake libtool
 BuildRequires:  gcc make
@@ -40,32 +39,4 @@ autoreconf -v --install
 %{_datadir}/X11/app-defaults/Xvidtune
 
 %changelog
-* Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.3-10
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Sat Jan 27 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.3-9
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Fri Sep 08 2023 Peter Hutterer <peter.hutterer@redhat.com> 1.0.3-8
-- SDPX migration
-
-* Sat Jul 22 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.3-7
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Sat Jan 21 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.3-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
-
-* Sat Jul 23 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.3-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
-
-* Sat Jan 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.3-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
-
-* Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.3-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
-
-* Thu Apr 08 2021 Peter Hutterer <peter.hutterer@redhat.com> - 1.0.3-2
-- Fix Obsoletes line to actually obsolete the -30 xorg-x11-apps (#1947245)
-
-* Tue Mar 02 2021 Peter Hutterer <peter.hutterer@redhat.com> 1.0.3-1
-- Split xvidtune out from xorg-x11-apps into a separate package (#1933954)
+%autochangelog

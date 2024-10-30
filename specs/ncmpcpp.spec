@@ -1,13 +1,12 @@
 Name:           ncmpcpp
-Version:        0.9.2
-Release:        20%{?dist}
+Version:        0.10.1
+Release:        1%{?dist}
 Summary:        Featureful ncurses based MPD client inspired by ncmpc
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://ncmpcpp.rybczak.net/
-Source0:        http://ncmpcpp.rybczak.net/stable/%{name}-%{version}.tar.bz2
+Source0:        https://github.com/%{name}/%{name}/archive/refs/tags/%{version}.tar.gz
 
-BuildRequires: make
+BuildRequires:  make
 BuildRequires:  gcc-c++
 BuildRequires:  curl-devel
 BuildRequires:  taglib-devel
@@ -36,6 +35,7 @@ A featureful ncurses based MPD client inspired by ncmpc. The main features are:
 
 %prep
 %autosetup
+autoreconf -fiv
 
 %build
 BOOST_LIB_SUFFIX=""; export BOOST_LIB_SUFFIX ;
@@ -58,6 +58,9 @@ rm -f %{buildroot}/%{_docdir}/%{name}/COPYING
 
 
 %changelog
+* Mon Oct 28 2024 Dominic Hopf <dmaphy@fedoraproject.org> - 0.10.1-1
+- New upstream release: 0.10.1 (RHBZ#2309481)
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 0.9.2-20
 - convert license to SPDX
 

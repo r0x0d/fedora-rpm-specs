@@ -26,14 +26,12 @@ Version:        4.0.3
 %global ups_ver 4.0.3
 Release:        %autorelease
 Summary:        The database access library for C++ programmers
-# Automatically converted from old format: Boost - review is highly recommended.
 License:        BSL-1.0
 URL:            https://github.com/SOCI/%{name}
 Source0:        %{url}/archive/%{ups_ver}.tar.gz#/%{name}-%{version}.tar.gz
 
 # Works around a false positive -Wuninitialized error exposed by LTO
 Patch0:         soci-uninit.patch
-
 
 BuildRequires:  dos2unix
 BuildRequires:  gcc gcc-c++
@@ -60,7 +58,7 @@ install %{name}-sqlite3.}
 %{?with_mysql:%package        mysql
 Summary:        MySQL back-end for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-BuildRequires:  mariadb-connector-c-devel
+BuildRequires:  mysql-devel
 
 %description    mysql
 This package contains the MySQL back-end for %{name}, i.e.,
@@ -306,7 +304,9 @@ rm -f %{buildroot}%{_libdir}/*.a
 
 
 %files doc
-%doc AUTHORS ChangeLog COPYING NEWS README docs
+%doc AUTHORS ChangeLog NEWS README docs
+%license COPYING
 
 %changelog
 %autochangelog
+

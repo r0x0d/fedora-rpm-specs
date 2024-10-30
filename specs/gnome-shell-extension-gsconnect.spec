@@ -5,8 +5,8 @@
 %global app_id org.gnome.Shell.Extensions.GSConnect
 
 Name:           gnome-shell-extension-gsconnect
-Version:        57
-Release:        2%{?dist}
+Version:        58
+Release:        1%{?dist}
 Summary:        KDE Connect implementation for GNOME Shell
 
 License:        GPL-2.0-or-later
@@ -158,6 +158,9 @@ appstream-util validate-relax --nonet \
 
 
 %changelog
+* Mon Oct 28 2024 Mohamed El Morabity <melmorabity@fedoraproject.org> - 58-1
+- Update to 58
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 57-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

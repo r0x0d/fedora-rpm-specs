@@ -1,6 +1,6 @@
 Name:		python-logbook
-Version:	1.7.0
-Release:	6%{?dist}
+Version:	1.8.0
+Release:	1%{?dist}
 Summary:	A logging replacement for Python
 
 License:	BSD-3-Clause
@@ -20,13 +20,11 @@ Summary:	%{summary}
 BuildRequires:  gcc
 BuildRequires:	python3-devel
 BuildRequires:	python3-pytest
-BuildRequires:	python3-setuptools
 BuildRequires:	python3-sqlalchemy
 BuildRequires:	python3-redis
 BuildRequires:	python3-zmq
 BuildRequires:	python3-brotli
 BuildRequires:  python3-Cython
-%{?python_provide:%python_provide python3-logbook}
 
 %description -n python3-logbook
 Logbook is a logging system for Python that replaces the standard library's
@@ -38,22 +36,26 @@ Logbook can do that.
 %prep
 %autosetup -n logbook-%{version}
 
+%generate_buildrequires
+%pyproject_buildrequires
+
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l logbook
 
 %check
 %pytest -k "not test_redis_handler"
 
-%files -n python3-logbook
+%files -n python3-logbook -f %{pyproject_files}
 %doc CHANGES README.md
-%license LICENSE
-%{python3_sitearch}/Logbook-*.egg-info/
-%{python3_sitearch}/logbook/
 
 %changelog
+* Mon Oct 28 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.8.0-1
+- 1.8.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.7.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -10,7 +10,7 @@ Summary:         The superior lisp interaction mode for emacs
 #LLGPL: Mentioned in swank-ccl.lisp
 #GPLv2+: slime.el,slime-autoloads.el
 #GPLv3+: Many files in contrib are GPLv3+
-License:         Public Domain and GPLv3+ and GPLv2+ and LLGPL
+License:         LicenseRef-Fedora-Public-Domain AND GPL-3.0-or-later AND GPL-2.0-or-later AND LLGPL
 URL:             http://common-lisp.net/project/slime/
 Source0:         https://github.com/slime/slime/archive/v%{version}.tar.gz#/%{pkg}-%{version}.tar.gz
 

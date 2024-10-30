@@ -50,7 +50,7 @@
 Summary: A dynamic adaptive system tuning daemon
 Name: tuned
 Version: 2.24.0
-Release: 4%{?prerel1}%{?git_suffix:.%{git_suffix}}%{?dist}
+Release: 5%{?prerel1}%{?git_suffix:.%{git_suffix}}%{?dist}
 License: GPL-2.0-or-later AND CC-BY-SA-3.0
 %if 0%{?git_commit:1}
 Source0: https://github.com/redhat-performance/%{name}/archive/%{git_commit}/%{name}-%{version}-%{git_suffix}.tar.gz
@@ -279,7 +279,9 @@ Additional TuneD profile(s) optimized for OpenShift.
 %package ppd
 Summary: PPD compatibility daemon
 Requires: %{name} = %{version}
-Obsoletes: power-profiles-daemon < 0.23
+%if 0%{?fedora} >= 41 || 0%{?rhel} >= 10
+Obsoletes: power-profiles-daemon < 0.23-2
+%endif
 # The compatibility daemon is swappable for power-profiles-daemon
 Provides: ppd-service
 Conflicts: ppd-service
@@ -629,6 +631,9 @@ fi
 %config(noreplace) %{_sysconfdir}/tuned/ppd.conf
 
 %changelog
+* Mon Oct 28 2024 Neal Gompa <ngompa@fedoraproject.org> - 2.24.0-5
+- Bump obsoletes of ppd for tuned-ppd to fix upgrades
+
 * Mon Oct 14 2024 Pavol Žáčik <pzacik@redhat.com> - 2.24.0-4
 - Support the new UPower PPD namespace in tuned-ppd
 

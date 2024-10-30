@@ -81,31 +81,6 @@
 %undefine _auto_set_build_flags
 
 ##############################################################################
-# Any architecture/kernel combination that supports running 32-bit and 64-bit
-# code in userspace is considered a biarch arch.
-%global biarcharches %{ix86} x86_64 s390 s390x
-
-# Avoid generating a glibc-headers package on architectures which are
-# not biarch.
-%ifarch %{biarcharches}
-%global need_headers_package 1
-%if 0%{?rhel} > 0
-%global headers_package_name glibc-headers
-%else
-%ifarch %{ix86} x86_64
-%global headers_package_name glibc-headers-x86
-%endif
-%ifarch s390 s390x
-%global headers_package_name glibc-headers-s390
-%endif
-%dnl !rhel
-%endif
-%else
-%global need_headers_package 0
-%dnl !biarcharches
-%endif
-
-##############################################################################
 # Utility functions for pre/post scripts.  Stick them at the beginning of
 # any lua %pre, %post, %postun, etc. sections to have them expand into
 # those scripts.  It only works in lua sections and not anywhere else.
@@ -169,7 +144,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 13
+%global baserelease 14
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -533,14 +508,21 @@ Requires: %{name} = %{version}-%{release}
 Requires: libxcrypt-devel%{_isa} >= 4.0.0
 Requires: kernel-headers >= 3.2
 BuildRequires: kernel-headers >= 3.2
-%if %{need_headers_package}
-Requires: %{headers_package_name} = %{version}-%{release}
-%endif
-%if !(0%{?rhel} > 0 && %{need_headers_package})
 # For backwards compatibility, when the glibc-headers package existed.
 Provides: glibc-headers = %{version}-%{release}
 Provides: glibc-headers(%{_target_cpu})
 Obsoletes: glibc-headers < %{version}-%{release}
+# For backwards compatibility with alternative Fedora approach to
+# work around multilib issue in composes.
+%if 0%{?fedora}
+%ifarch x86_64
+Provides: glibc-headers-x86 = %{version}-%{release}
+Obsoletes: glibc-headers-x86 < %{version}-%{release}
+%endif
+%ifarch s390x
+Provides: glibc-headers-s390 = %{version}-%{release}
+Obsoletes: glibc-headers-s390 < %{version}-%{release}
+%endif
 %endif
 
 %description devel
@@ -586,32 +568,6 @@ Requires: libxcrypt-static%{?_isa} >= 4.0.0
 The glibc-static package contains the C library static libraries
 for -static linking.  You don't need these, unless you link statically,
 which is highly discouraged.
-
-##############################################################################
-# glibc "headers" sub-package
-# - The headers package includes all common headers that are shared amongst
-#   the multilib builds. It avoids file conflicts between the architecture-
-#   specific glibc-devel variants.
-#   Files like gnu/stubs.h which have gnu/stubs-32.h (i686) and gnu/stubs-64.h
-#   are included in glibc-headers, but the -32 and -64 files are in their
-#   respective i686 and x86_64 devel packages.
-##############################################################################
-%if %{need_headers_package}
-%package -n %{headers_package_name}
-Summary: Additional internal header files for glibc-devel.
-Requires: %{name} = %{version}-%{release}
-%if 0%{?rhel} > 0
-Provides: %{name}-headers(%{_target_cpu})
-Obsoletes: glibc-headers-x86 < %{version}-%{release}
-Obsoletes: glibc-headers-s390 < %{version}-%{release}
-%else
-BuildArch: noarch
-%endif
-
-%description -n %{headers_package_name}
-The %{headers_package_name} package contains the architecture-specific
-header files which cannot be included in glibc-devel package.
-%endif
 
 ##############################################################################
 # glibc "common" sub-package
@@ -1487,6 +1443,8 @@ rm -f lib/libnss_db* lib/libnss_hesiod* lib/libnsl* usr/lib/libnsl* usr/lib/libn
 rm usr/lib/libc_malloc_debug.so
 strip -g usr/lib/*.o
 popd
+mkdir glibc32-headers
+cp -a %{glibc_sysroot}%{_includedir} glibc32-headers
 %endif
 
 # Build and install:
@@ -1498,6 +1456,23 @@ popd
 # Locale creation via install-locale-files does not group identical files
 # via hardlinks, so we must group them ourselves.
 hardlink -c %{glibc_sysroot}/usr/lib/locale
+
+%ifarch x86_64
+# Verify that there are no unexpected differences in the header files common
+# between i386 and x86_64.
+diff -ur %{glibc_sysroot}%{_includedir} glibc32-headers/include \
+     > glibc-32-64.diff || true
+if test -s  glibc-32-64.diff ; then
+    if test $(grep -v '^Only in ' glibc-32-64.diff | wc -l) -ne 0; then
+	: Unexpected header file differences
+	exit 1
+    fi
+else
+    : Missing additional stubs header files.
+fi
+rm glibc-32-64.diff
+rm -rf glibc32-headers
+%endif
 
 %if %{glibc_autorequires}
 mkdir -p %{glibc_sysroot}/%{_rpmconfigdir} %{glibc_sysroot}/%{_fileattrsdir}
@@ -1888,23 +1863,6 @@ split_sysroot_file_list () {
   remove_from_filelist "$4" "$5"
 }
 
-# glibc-devel historically contains a subset of the files in
-# /usr/include/gnu.  The remaining headers are in glibc-headers-*.
-# The -regex clause skips /usr/include, which is owned by the
-# filesystem package.  The x86_64 exception is required because there
-# are headers that should be part of the glibc32 package only.
-%if %{need_headers_package}
-split_sysroot_file_list \
-  %{_includedir} '(
-    ! -regex .*%{_includedir}$
-%ifarch x86_64
-    ! -regex .*%{_includedir}/gnu/.*-32\.h$
-%endif
-  )' \
-  '%{_includedir}/gnu/(stubs|lib-names)-.*\.h$' \
-  headers.filelist devel.filelist
-%endif
-
 # The primary gconv converters are in the glibc package, the rest goes
 # into glibc-gconv-extra.  The Z9 and Z900 subpatterns are for
 # s390x-specific converters.  The -name clause skips over files
@@ -2285,12 +2243,8 @@ update_gconv_modules_cache ()
 %{_datarootdir}/i18n/locales
 %{_datarootdir}/i18n/charmaps
 
-%if %{need_headers_package}
-%files -f devel.filelist devel
-%else
 %files devel
 %{_includedir}/*
-%endif
 %if %{glibc_autorequires}
 %attr(0755,root,root) %{_rpmconfigdir}/glibc.req
 %{_fileattrsdir}/glibc.attr
@@ -2331,10 +2285,6 @@ update_gconv_modules_cache ()
 %if %{glibc_has_libmvec}
 %{_libdir}/libm-%{version}.a
 %{_libdir}/libmvec.a
-%endif
-
-%if  %{need_headers_package}
-%files -f headers.filelist -n %{headers_package_name}
 %endif
 
 %files utils
@@ -2382,8 +2332,7 @@ update_gconv_modules_cache ()
 
 %ifarch x86_64
 %files -n glibc32
-%{_includedir}/gnu/lib-names-32.h
-%{_includedir}/gnu/stubs-32.h
+# All headers are contained in glibc-devel.x86_64.
 %{_prefix}/lib/*.a
 %{_prefix}/lib/*.o
 %{_prefix}/lib/*.so*
@@ -2391,6 +2340,9 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Mon Oct 28 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-14
+- Eliminate the glibc-headers package
+
 * Sat Oct 26 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-13
 - Restore compatibility with libglvnd by reverting
   "elf: Run constructors on cyclic recursive dlopen (bug 31986)"

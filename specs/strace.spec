@@ -1,7 +1,7 @@
 Summary: Tracks and displays system calls associated with a running process
 Name: strace
 Version: 6.11
-Release: 2%{?dist}
+Release: 3%{?dist}
 # The test suite is GPLv2+, the bundled headers are GPLv2 with Linux syscall
 # exception, all the rest is LGPLv2.1+.
 %if 0%{?fedora} >= 35 || 0%{?centos} >= 9 || 0%{?rhel} >= 9
@@ -110,6 +110,7 @@ Source: strace-%{version}.tar.gz
 %endif
 Patch1: strace-sched_attr-1.patch
 Patch2: strace-sched_attr-2.patch
+Patch3: strace-denywrite.patch
 BuildRequires: gcc gzip make
 
 # Install Bluetooth headers for AF_BLUETOOTH sockets decoding.
@@ -207,6 +208,9 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Mon Oct 28 2024 Florian Weimer <fweimer@redhat.com> - 6.11-3
+- Backport upstream patch for compatibility with kernel MAP_DENYWRITE changes
+
 * Fri Oct 25 2024 Florian Weimer <fweimer@redhat.com> - 6.11-2
 - Fix FTBFS with glibc 2.41 (#2317070)
 

@@ -1,15 +1,16 @@
 # Upstream removed tests.
 %bcond_with     tests
 
-%global         srcname     azure-mgmt-cosmosdb
+%global         srcname         azure-mgmt-cosmosdb
+%global         tarball_name    azure_mgmt_cosmosdb
 
 Name:           python-%{srcname}
-Version:        9.5.1
+Version:        9.6.0
 Release:        %autorelease
 Summary:        Microsoft Azure Cosmos DB Management Client Library for Python
 License:        MIT
 URL:            https://pypi.org/project/%{srcname}/
-Source0:        %{pypi_source %{srcname} %{version}}
+Source0:        %{pypi_source %{tarball_name} %{version}}
 
 BuildArch:      noarch
 
@@ -38,7 +39,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -n %{srcname}-%{version}
+%autosetup -n %{tarball_name}-%{version}
 
 
 %generate_buildrequires

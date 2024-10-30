@@ -6,12 +6,12 @@
 %global with_extras 0
 
 Name:           %{bgname}-backgrounds
-Version:        %{relnum}.0.0
+Version:        %{relnum}.0.1
 Release:        %autorelease
 Summary:        Fedora %{relnum} default desktop background
 
 License:        CC-BY-SA-4.0
-URL:            https://fedoraproject.org/wiki/_Artwork
+URL:            https://fedoraproject.org/wiki/Design
 Source0:        https://github.com/fedoradesign/backgrounds/releases/download/v%{version}/%{name}-%{version}.tar.xz
 
 

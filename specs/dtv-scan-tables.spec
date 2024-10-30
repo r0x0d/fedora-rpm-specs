@@ -11,7 +11,8 @@ Summary:	Digital TV scan tables
 Release:	%{rel}.%(echo %{date} | tr -d -)git%{git}%{?dist}
 
 #2013-07-19: License discussed in: https://bugzilla.redhat.com/show_bug.cgi?id=986051#c4
-License:	Public Domain
+#and https://gitlab.com/fedora/legal/fedora-license-data/-/issues/580#note_2155500881
+License:	LicenseRef-Not-Copyrightable
 URL:		https://git.linuxtv.org/dtv-scan-tables.git
 Source0:	https://linuxtv.org/downloads/dtv-scan-tables/dtv-scan-tables-%{date}-%{git}.tar.bz2
 BuildArch:	noarch

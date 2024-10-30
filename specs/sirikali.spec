@@ -2,8 +2,8 @@
 %global srcurl  https://github.com/mhogomchungu/%{name}
 
 Name:           sirikali
-Version:        1.5.1
-Release:        4%{?dist}
+Version:        1.6.0
+Release:        1%{?dist}
 Summary:        GUI front end to encfs,cryfs,gocryptfs and securefs
 # generally GPLv2+, BSD for tasks and NetworkAccessManager folders
 License:        GPL-2.0-or-later AND BSD-2-Clause
@@ -20,9 +20,9 @@ BuildRequires: libgcrypt-devel
 BuildRequires: pkgconfig(libsecret-1)
 BuildRequires: pkgconfig(lxqt-wallet)
 
-BuildRequires: pkgconfig(Qt5Core)
-BuildRequires: pkgconfig(Qt5Gui)
-BuildRequires: pkgconfig(Qt5Network)
+BuildRequires: pkgconfig(Qt6Core)
+BuildRequires: pkgconfig(Qt6Gui)
+BuildRequires: pkgconfig(Qt6Network)
 
 BuildRequires: libappstream-glib
 BuildRequires: desktop-file-utils
@@ -47,7 +47,7 @@ sed -i 's:3rdParty/json:json:' src/%{name}.cpp
 
 %build
 %cmake -DQT5=true -DNOKDESUPPORT=true -DNOSECRETSUPPORT=false \
- -DINTERNAL_LXQT_WALLET=false \
+ -DINTERNAL_LXQT_WALLET=false -DBUILD_WITH_QT6=true \
  -DJSON_HEADER_PATH=/usr/include/nlohmann/json.hpp ..
 pushd %{_vpath_builddir}
 %make_build
@@ -78,6 +78,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/io.github.mhogomchung
 
 
 %changelog
+* Mon Oct 28 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.6.0-1
+- 1.6.0, qt6
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

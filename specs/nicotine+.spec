@@ -2,7 +2,7 @@
 %global appdata_id org.nicotine_plus.Nicotine
 
 Name:           nicotine+
-Version:        3.3.5
+Version:        3.3.6
 Release:        1%{?dist}
 Summary:        A graphical client for Soulseek
 
@@ -69,7 +69,7 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_metainfodir}/%{appdata_i
 
 
 %files -f %{pyproject_files}
-%doc AUTHORS.md NEWS.md README.md TRANSLATORS.md
+%doc AUTHORS.md NEWS.md README.md
 %license COPYING
 %{_bindir}/%{altname}
 %{_datadir}/applications/%{appdata_id}.desktop
@@ -79,6 +79,9 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_metainfodir}/%{appdata_i
 
 
 %changelog
+* Mon Oct 28 2024 Mohamed El Morabity <melmorabity@fedoraproject.org> - 3.3.6-1
+- Update to 3.3.6
+
 * Sun Oct 13 2024 Mohamed El Morabity <melmorabity@fedoraproject.org> - 3.3.5-1
 - Update to 3.3.5
 

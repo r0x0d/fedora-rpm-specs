@@ -56,6 +56,17 @@ URL:            https://sentry.io/for/python/
 Source0:        %{forgesource}
 # Upstream PR: https://github.com/getsentry/sentry-python/pull/3598
 Patch0:         0001-tests-reorder-to-unpin-pytest.patch
+# Downstream-only: unpin virtualenv
+#
+# Upstream wants a old virtualenv to allow an old pip for compatibility
+# with old celery and httpx, but we must work with what we have.
+Patch1:         0001-Downstream-only-unpin-virtualenv.patch
+# Prefer python_multipart import over multipart
+# https://github.com/getsentry/sentry-python/pull/3710
+#
+# This avoids a PendingDeprecationError in the tests when using the multipart
+# import name with python-multipart 0.0.13 or later.
+Patch2:         %{forgeurl}/pull/3710.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel

@@ -16,13 +16,13 @@
 %global debug_package %{nil}
 
 # Official release version
-%global official_version 2.10.2
+%global official_version 2.10.4
 
 Name:      ocsinventory-agent
 Summary:   Open Computer and Software Inventory Next Generation client
 
-Version:   2.10.2
-Release:   3%{?dist}
+Version:   2.10.4
+Release:   1%{?dist}
 
 Source0:   https://github.com/OCSInventory-NG/UnixAgent/releases/download/v%{official_version}/Ocsinventory-Unix-Agent-%{official_version}.tar.gz
 

@@ -6,7 +6,7 @@
 
 Name:           rust-sev
 Version:        4.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library for AMD SEV
 
 License:        Apache-2.0
@@ -105,6 +105,9 @@ use the "snp" feature of the "%{crate}" crate.
 %endif
 
 %changelog
+* Mon Oct 28 2024 Tyler Fanelli <tfanelli@redhat.com> - 4.0.0-2
+- Build with fixed rdrand dependency.
+
 * Thu Sep 05 2024 Tyler Fanelli <tfanelli@redhat.com> - 4.0.0-1
 - Update to version 4.0.0
 

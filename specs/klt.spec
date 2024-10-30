@@ -3,7 +3,7 @@ Version:        1.3.4
 Release:        31%{?dist}
 Summary:        An implementation of the Kanade-Lucas-Tomasi feature tracker
 
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            http://www.ces.clemson.edu/~stb/%{name}/index.html
 Source0:        http://www.ces.clemson.edu/~stb/%{name}/%{name}%{version}.zip
 

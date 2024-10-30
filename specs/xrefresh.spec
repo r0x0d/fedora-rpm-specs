@@ -1,5 +1,5 @@
 Name:           xrefresh
-Version:        1.0.7
+Version:        1.1.0
 Release:        %autorelease
 Summary:        Refresh all or part of an X screen
 

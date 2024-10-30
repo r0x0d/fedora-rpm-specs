@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc4.20241025gitae90f6a6170d.42
+%define pkgrelease 0.rc5.44
 %define kversion 6
-%define tarfile_release 6.12-rc4-161-gae90f6a6170d
+%define tarfile_release 6.12-rc5
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc4.20241025gitae90f6a6170d.42%{?buildid}%{?dist}
+%define specrelease 0.rc5.44%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4136,9 +4136,20 @@ fi\
 #
 #
 %changelog
-* Fri Oct 25 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc4.ae90f6a6170d.42]
+* Mon Oct 28 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.44]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Mon Oct 28 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.43]
+- generic: enable RPMB for all configs that enable MMC (Peter Robinson)
+- fedora: riscv: Don't override MMC platform defaults (Peter Robinson)
+- common: only enable on MMC_DW_BLUEFIELD (Peter Robinson)
+- fedora: aarch64: Stop overriding CONFIG_MMC defaults (Peter Robinson)
+- commong: The KS7010 driver has been removed (Peter Robinson)
+- Linux v6.12.0-0.rc5
+
+* Sat Oct 26 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc4.850925a8133c.42]
+- Linux v6.12.0-0.rc4.850925a8133c
 
 * Fri Oct 25 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc4.ae90f6a6170d.41]
 - Trim Changelog for 6.12 (Justin M. Forbes)

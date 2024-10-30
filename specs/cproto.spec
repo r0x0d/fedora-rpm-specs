@@ -2,7 +2,7 @@ Summary: Generates function prototypes and variable declarations from C code
 Name: cproto
 Version: 4.7w
 Release: 1%{?dist}
-License: Public Domain
+License: LicenseRef-Fedora-Public-Domain
 Source: https://invisible-island.net/archives/cproto/cproto-%{version}.tgz
 URL: http://invisible-island.net/
 BuildRequires: gcc-c++

@@ -3,7 +3,7 @@ Version:        1.2
 Release:        16%{?dist}
 Summary:        Tools for fast encoding/decoding data into and from a base64-encoded format
 
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            http://libb64.sourceforge.net/
 Source0:        https://downloads.sourceforge.net/%{name}/%{name}-%{version}.src.zip
 

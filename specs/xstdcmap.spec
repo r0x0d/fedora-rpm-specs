@@ -1,14 +1,12 @@
 Name:           xstdcmap
-Version:        1.0.4
-Release:        11%{?dist}
+Version:        1.0.5
+Release:        %autorelease
 Summary:        Utility to define standard colormap properties
 
 License:        MIT
 URL:            https://www.x.org
-Source0:        %{url}/pub/individual/app/%{name}-%{version}.tar.bz2
-Source1:        %{url}/pub/individual/app/%{name}-%{version}.tar.bz2.sig
-# Created on 20210707 with ./update-keyring.sh
-Source2:        %{name}.gpg
+Source0:        %{url}/pub/individual/app/%{name}-%{version}.tar.xz
+Source1:        %{url}/pub/individual/app/%{name}-%{version}.tar.xz.sig
 
 BuildRequires:  gcc
 BuildRequires:  gnupg2
@@ -43,40 +41,4 @@ scarce colormap resources among clients using PseudoColor visuals.
 %{_mandir}/man1/%{name}.1*
 
 %changelog
-* Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.4-11
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Mon Jan 29 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.4-10
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Sat Jul 22 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.4-9
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Sat Jan 21 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.4-8
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
-
-* Sat Jul 23 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.4-7
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
-
-* Sat Jan 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.4-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
-
-* Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.4-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
-
-* Sun Jul 04 2021 Davide Cavalca <dcavalca@fedoraproject.org> - 1.0.4-4
-- Verify source signature
-- Drop --disable-silent-rules from configure
-
-* Sun Jul 04 2021 Davide Cavalca <dcavalca@fedoraproject.org> - 1.0.4-3
-- Unretire package
-- No need to autoreconf
-- Install docs
-- Misc specfile cleanups
-
-* Thu Apr 08 2021 Peter Hutterer <peter.hutterer@redhat.com> - 1.0.4-2
-- Fix Obsoletes line to actually obsolete the -39 server-utils (#1932754)
-
-* Wed Mar 03 2021 Peter Hutterer <peter.hutterer@redhat.com> 1.0.4-1
-- Split xstdcmap out from xorg-x11-server-utils into a separate package
-  (#1934396)
+%autochangelog

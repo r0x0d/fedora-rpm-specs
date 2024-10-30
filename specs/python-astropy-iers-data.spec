@@ -1,3 +1,7 @@
+# This package requires astropy which requires astropy-iers-data
+# The loop has to be broken for the bootstrap of a new Python in Fedora
+%bcond tests 1
+
 %global upname astropy-iers-data
 %global srcname astropy_iers_data
 
@@ -44,7 +48,7 @@ Summary: %{summary}
 %autosetup -n %{srcname}-%{version} -p1
 
 %generate_buildrequires
-%pyproject_buildrequires -t -x test
+%pyproject_buildrequires %{?with_tests:-t -x test}
 
 %build
 %pyproject_wheel
@@ -55,7 +59,10 @@ Summary: %{summary}
 %pyproject_save_files -l astropy_iers_data
 
 %check
+%pyproject_check_import
+%if %{with tests}
 %{tox}
+%endif
 
 %files -n python3-%{upname} -f %{pyproject_files}
 %doc README.rst 

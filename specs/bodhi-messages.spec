@@ -1,10 +1,10 @@
 %global pypi_name bodhi-messages
 %global src_name bodhi_messages
-%global pypi_version 8.1.0
+%global pypi_version 8.2.0
 
 Name:           %{pypi_name}
 Version:        %{pypi_version}
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        JSON schema for messages sent by Bodhi
 
 License:        GPL-2.0-or-later
@@ -51,6 +51,9 @@ rm -rf %{pypi_name}.egg-info
 %doc README.rst
 
 %changelog
+* Mon Oct 28 2024 Mattia Verga <mattia.verga@proton.me> - 8.2.0-1
+- Update to 8.2.0
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 8.1.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

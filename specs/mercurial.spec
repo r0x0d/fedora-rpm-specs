@@ -9,8 +9,8 @@
 
 Summary: A fast, lightweight Source Control Management system
 Name: mercurial
-Version: 6.8.1
-Release: 3%{?dist}
+Version: 6.8.2
+Release: 1%{?dist}
 
 # Release: 1.rc1%%{?dist}
 
@@ -23,7 +23,6 @@ Source0: https://www.mercurial-scm.org/release/%{name}-%{upstreamversion}.tar.gz
 Source1: mercurial-site-start.el
 # Patch cargo metadata for dependency versions available in Fedora
 Patch0:  mercurial-rust-metadata.patch
-Patch1:  demand-collections-abc.patch
 BuildRequires: make
 BuildRequires: emacs-el
 BuildRequires: emacs-nox
@@ -258,6 +257,9 @@ rm -rf %{buildroot}%{python3_sitearch}/mercurial/locale
 
 
 %changelog
+* Mon Oct 28 2024 Mads Kiilerich <mads@kiilerich.com> - 6.8.2-1
+- mercurial 6.8.2
+
 * Mon Oct 07 2024 Mads Kiilerich <mads@kiilerich.com> - 6.8.1-3
 - Disable demandimport of collections.abc because Python 3.13 rc3 (#2316252)
 

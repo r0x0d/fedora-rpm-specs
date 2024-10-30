@@ -1,6 +1,6 @@
 # The package follows LLVM's major version, but API version is still important:
 %global comgr_maj_api_ver 2
-%global comgr_full_api_ver %{comgr_maj_api_ver}.8.0
+%global comgr_full_api_ver %{comgr_maj_api_ver}.8
 # Upstream tags are based on rocm releases:
 %global rocm_release 6.2
 %global rocm_patch 1
@@ -15,9 +15,15 @@
 
 %global toolchain clang
 
+%bcond_without bundled_llvm
+%if %{with bundled_llvm}
+%global _smp_mflags %{nil}
+%global _lto_cflags %{nil}
+%endif
+
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        10.rocm%{rocm_version}%{?dist}
+Release:        11.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -41,13 +47,20 @@ BuildRequires:  libffi-devel
 BuildRequires:  perl
 BuildRequires:  perl-generators
 BuildRequires:  zlib-devel
-
-BuildRequires:  clang-devel(major) = %{llvm_maj_ver}
-BuildRequires:  lld-devel(major) = %{llvm_maj_ver}
 BuildRequires:  llvm-devel(major) = %{llvm_maj_ver}
+BuildRequires:  clang-devel(major) = %{llvm_maj_ver}
+
+%if %{without bundled_llvm}
+BuildRequires:  lld-devel(major) = %{llvm_maj_ver}
+%else
+BuildRequires:  clang
+BuildRequires:  ninja-build
+Provides:       bundled(llvm-project) = %{llvm_maj_ver}
+%endif
 
 #Only the following architectures are useful for ROCm packages:
 ExclusiveArch:  x86_64 aarch64 ppc64le
+
 
 %description
 %{summary}
@@ -130,8 +143,10 @@ if ! grep -q "set(LLVM_VERSION_MAJOR %{llvm_maj_ver})" llvm/CMakeLists.txt; then
         echo "ERROR llvm_maj_ver macro is not correctly set"
         exit 1
 fi
+%if %{without bundled_llvm}
 # Make sure we only build the AMD bits by discarding the bundled llvm code:
 ls | grep -xv "amd" | xargs rm -r
+%endif
 
 ##Fix issue with HIP, where compilation flags are incorrect, see issue:
 #https://github.com/RadeonOpenCompute/ROCm-CompilerSupport/issues/49
@@ -191,6 +206,8 @@ sed -i 's|@AMD_DEVICE_LIBS_PREFIX_CODE@|set(AMD_DEVICE_LIBS_PREFIX "%{_prefix}/%
 
 %build
 echo "%%rocmllvm_version %llvm_maj_ver" > macros.rocmcompiler
+%if %{without bundled_llvm}
+# SYSTEM LLVM
 export PATH=%{_libdir}/llvm%{llvm_maj_ver}/bin:$PATH
 export INCLUDE_PATH=%{_libdir}/llvm%{llvm_maj_ver}/include
 
@@ -216,6 +233,55 @@ pushd amd/hipcc
 %cmake_build
 popd
 
+%else
+# BUNDLED LLVM
+
+# Real cores, No hyperthreading
+COMPILE_JOBS=`cat /proc/cpuinfo | grep -m 1 'cpu cores' | awk '{ print $4 }'`
+if [ ${COMPILE_JOBS}x = x ]; then
+    COMPILE_JOBS=1
+fi
+# Take into account memmory usage per core, do not thrash real memory
+BUILD_MEM=2
+MEM_KB=0
+MEM_KB=`cat /proc/meminfo | grep MemTotal | awk '{ print $2 }'`
+MEM_MB=`eval "expr ${MEM_KB} / 1024"`
+MEM_GB=`eval "expr ${MEM_MB} / 1024"`
+COMPILE_JOBS_MEM=`eval "expr 1 + ${MEM_GB} / ${BUILD_MEM}"`
+if [ "$COMPILE_JOBS_MEM" -lt "$COMPILE_JOBS" ]; then
+    COMPILE_JOBS=$COMPILE_JOBS_MEM
+fi
+LINK_MEM=4
+LINK_JOBS=`eval "expr 1 + ${MEM_GB} / ${LINK_MEM}"`
+
+%cmake \
+    -G Ninja \
+    -S llvm \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DBUILD_TESTING=OFF \
+    -DCMAKE_BUILD_TYPE=RELEASE \
+    -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+    -DLLVM_ENABLE_PROJECTS="llvm;clang;lld" \
+    -DLLVM_ENABLE_ZLIB=ON \
+    -DLLVM_ENABLE_ZSTD=ON \
+    -DLLVM_EXTERNAL_PROJECTS="devicelibs;comgr;hipcc" \
+    -DLLVM_EXTERNAL_COMGR_SOURCE_DIR=./amd/comgr \
+    -DLLVM_EXTERNAL_DEVICELIBS_SOURCE_DIR=./amd/device-libs \
+    -DLLVM_EXTERNAL_HIPCC_SOURCE_DIR=./amd/hipcc \
+    -DLLVM_LIBDIR_SUFFIX=64 \
+    -DLLVM_PARALLEL_COMPILE_JOBS=$COMPILE_JOBS \
+    -DLLVM_PARALLEL_LINK_JOBS=$LINK_JOBS \
+    -DLLVM_TARGETS_TO_BUILD="X86;AMDGPU;PowerPC;AArch64" \
+    -DHIPCC_BACKWARD_COMPATIBILITY=OFF \
+    -DROCM_DEVICE_LIBS_BITCODE_INSTALL_LOC_NEW="%{amd_device_libs_prefix}/amdgcn" \
+    -DROCM_DEVICE_LIBS_BITCODE_INSTALL_LOC_OLD="" \
+    -DROCM_DIR=%{_prefix}
+
+%cmake_build
+
+%endif
+
+%if %{without bundled_llvm}
 %check
 pushd amd/device-libs
 # Workaround for bug in cmake tests not finding amdgcn:
@@ -238,9 +304,14 @@ touch $ROCM_PATH/bin/rocm_agent_enumerator
 chmod a+x $ROCM_PATH/bin/rocm_agent_enumerator
 amd/hipcc/%__cmake_builddir/hipcc -c t.hip
 
+%endif
+
 %install
 install -Dpm 644 macros.rocmcompiler \
     %{buildroot}%{_rpmmacrodir}/macros.rocmcompiler
+
+%if %{without bundled_llvm}
+# SYSTEM LLVM
 
 pushd amd/device-libs
 %cmake_install
@@ -252,11 +323,26 @@ popd
 
 pushd amd/hipcc
 %cmake_install
+popd
+
+%else
+%cmake_install
+
+# Remove non amd/ things
+find %{buildroot}%{_bindir} -type f -not -name '*hip*' -delete
+rm %{buildroot}%{_bindir}/{amdgpu-*,clang*,flang*,ld*,lld*,llvm*,nvidia*,wasm*}
+rm -rf %{buildroot}%{_includedir}/{clang*,lld*,llvm*}
+rm -rf %{buildroot}%{_libdir}/{llvm,clang,libLLVM*,libLTO*,libRemarks*,liblld*,libear*,libclang*,libscan*}
+rm -rf %{buildroot}%{_libdir}/cmake/{clang*,llvm*,lld*}
+rm -rf %{buildroot}%{_datadir}/opt* 
+rm -rf %{buildroot}%{_libexecdir}
+rm -rf %{buildroot}%{_datadir}
+%endif
+
 # Fix perl module files installation:
 mkdir -p %{buildroot}%{perl_vendorlib}
 mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 # Eventually upstream plans to deprecate Perl usage, see README.md
-popd
 
 #Clean up dupes:
 %if 0%{?fedora}
@@ -267,18 +353,22 @@ popd
 %{_rpmmacrodir}/macros.rocmcompiler
 
 %files -n rocm-device-libs
-%license %{_docdir}/ROCm-Device-Libs/LICENSE.TXT
+%license amd/device-libs/LICENSE.TXT
 %doc amd/device-libs/README.md amd/device-libs/doc/*.md
 %{_libdir}/cmake/AMDDeviceLibs
 %{_prefix}/%{amd_device_libs_prefix}/amdgcn
+%if %{without bundled_llvm}
+%{_docdir}/ROCm-Device-Libs
+%endif
 
 %files -n rocm-comgr
-%license %{_docdir}/amd_comgr/LICENSE.txt
-%license %{_docdir}/amd_comgr/NOTICES.txt
-%dir %{_docdir}/amd_comgr
-%doc %{_docdir}/amd_comgr/README.md
-%{_libdir}/libamd_comgr.so.%{comgr_full_api_ver}
-%{_libdir}/libamd_comgr.so.%{comgr_maj_api_ver}
+%license amd/comgr/LICENSE.txt
+%license amd/comgr/NOTICES.txt
+%doc amd/comgr/README.md
+%if %{without bundled_llvm}
+%{_docdir}/amd_comgr
+%endif
+%{_libdir}/libamd_comgr.so.*
 
 %files -n rocm-comgr-devel
 %{_includedir}/amd_comgr/amd_comgr.h
@@ -286,9 +376,11 @@ popd
 %{_libdir}/cmake/amd_comgr
 
 %files -n hipcc
-%license %{_docdir}/hipcc/LICENSE.txt
-%doc %{_docdir}/hipcc/README.md
-%dir %{_docdir}/hipcc
+%license amd/hipcc/LICENSE.txt
+%doc amd/hipcc/README.md
+%if %{without bundled_llvm}
+%{_docdir}/hipcc
+%endif
 %{_bindir}/hipcc{,.pl,.bin}
 %{_bindir}/hipconfig{,.pl,.bin}
 %{perl_vendorlib}/hip*.pm
@@ -298,6 +390,9 @@ popd
 %files -n hipcc-libomp-devel
 
 %changelog
+* Sun Oct 27 2024 Tom Rix <Tom.Rix@amd.com> - 18-11.rocm6.2.0
+- bundle llvm
+
 * Thu Oct 10 2024 Tom Rix <Tom.Rix@amd.com> - 18-10.rocm6.2.0
 - Fix hipcc-libomp-devel
 

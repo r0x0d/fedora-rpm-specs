@@ -1,17 +1,15 @@
 %global pypi_name bodhi-server
 %global src_name bodhi_server
-%global pypi_version 8.1.1
+%global pypi_version 8.2.0
 
 Name:           %{pypi_name}
 Version:        %{pypi_version}
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        Bodhi server
 
 License:        GPL-2.0-or-later
 URL:            https://github.com/fedora-infra/bodhi
 Source:         %{pypi_source bodhi_server}
-# https://github.com/fedora-infra/bodhi/commit/ef5e5784d7d329742e1c1d30e0052c709ef013ba
-Patch:          %{name}-bump-zstandard-dep.patch
 
 BuildArch:      noarch
 
@@ -31,8 +29,8 @@ BuildRequires:  createrepo_c
 BuildRequires:  skopeo
 BuildRequires:  dnf
 
-Requires: bodhi-client >= 8.0.0
-Requires: python3-bodhi-messages >= 8.0.0
+Requires: bodhi-client >= 8.1.0
+Requires: python3-bodhi-messages >= 8.1.0
 Requires: fedora-messaging
 Requires: git
 Requires: httpd
@@ -43,7 +41,7 @@ Requires: python3-mod_wsgi
 %{?sysusers_requires_compat}
 
 Provides:  bundled(chrissimpkins-hack-fonts)
-Provides:  bundled(fedora-bootstrap) = 2.0.2
+Provides:  bundled(fedora-bootstrap) = 5.3.3-0
 Provides:  bundled(fontawesome-fonts-web) = 4.6.3
 Provides:  bundled(js-chart) = 3.8.0
 Provides:  bundled(js-jquery) = 3.6.0
@@ -162,6 +160,9 @@ export BODHI_CONFIG=$(pwd)/tests/testing.ini
 %pycached %{python3_sitelib}/bodhi/server/metadata.py
 
 %changelog
+* Mon Oct 28 2024 Mattia Verga <mattia.verga@proton.me> - 8.2.0-1
+- Update to 8.2.0
+
 * Fri Oct 04 2024 Dominik Mierzejewski <dominik@greysector.net> - 8.1.1-3
 - Backport upstream patch to build with latest zstandard (0.23.0)
 

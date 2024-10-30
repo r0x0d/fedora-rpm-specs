@@ -3,7 +3,7 @@
 
 # https://github.com/sj14/astral
 %global goipath         github.com/sj14/astral
-Version:                0.2.1
+Version:                0.2.2
 
 %gometa
 
@@ -17,8 +17,6 @@ Name:           astral
 Release:        %autorelease
 Summary:        Go calculations for the position of the sun and moon
 
-# Upstream license specification: Apache-2.0
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            %{gourl}
 Source0:        %{gosource}

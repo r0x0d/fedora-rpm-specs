@@ -7,7 +7,7 @@
 
 Name:           apache-%{jarname}
 Version:        2.5.2
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Java-based dependency manager
 License:        Apache-2.0
 URL:            https://ant.apache.org/ivy
@@ -28,8 +28,8 @@ BuildRequires:  ant
 BuildRequires:  ivy-local
 BuildRequires:  java-11-devel
 BuildRequires:  mvn(org.apache.ant:ant)
-BuildRequires:  mvn(org.bouncycastle:bcpg-jdk15on)
-BuildRequires:  mvn(org.bouncycastle:bcprov-jdk15on)
+BuildRequires:  mvn(org.bouncycastle:bcpg-jdk18on)
+BuildRequires:  mvn(org.bouncycastle:bcprov-jdk18on)
 
 %if %{with httpclient}
 BuildRequires:  mvn(org.apache.httpcomponents:httpclient)
@@ -77,6 +77,9 @@ sed -i 's:/etc/ivy/:%{_sysconfdir}/ivy/:' src/java/org/apache/ivy/ant/IvyAntSett
 %pom_remove_dep org.apache.ant:ant-junit4
 %pom_remove_dep ant-contrib:ant-contrib
 %pom_remove_dep xmlunit:xmlunit
+# change jdk15on to jdk18on
+%pom_change_dep :bcpg-jdk15on :bcpg-jdk18on
+%pom_change_dep :bcprov-jdk15on :bcprov-jdk18on
 # optional dep: httpclient
 %if %{without httpclient}
 # remove all httpclient related dep(s)
@@ -129,8 +132,12 @@ rm -rf asciidoc
 %pom_xpath_set ivy:publish/@resolver xmvn build.xml
 
 %build
-%{?jpb_env} JAVA_HOME=%{_jvmdir}/java-11 ant \
-    -Divy.mode=local \
+# create custom ant configuration
+mkdir -p ~/.ant
+cp /etc/ant.conf ~/.ant
+sed -i 's|JAVA_HOME=.*|JAVA_HOME=/usr/lib/jvm/java-11-openjdk|' ~/.ant/ant.conf
+
+ant -Divy.mode=local \
     -f build-release.xml \
     release-version jar javadoc publish-local
 
@@ -146,6 +153,9 @@ echo "apache-ivy/ivy" > %{buildroot}%{_sysconfdir}/ant.d/%{name}
 %{_sysconfdir}/ant.d/%{name}
 
 %changelog
+* Mon Oct 28 2024 Didik Supriadi <didiksupriadi41@fedoraproject.org> - 2.5.2-6
+- Changed jdk15on to jdk18on
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.5.2-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -255,7 +255,7 @@ BuildRequires:    libedit-devel
 BuildRequires:    ncurses-devel
 # debugging stuff
 BuildRequires:    systemtap-sdt-devel
-%if 0%{?fedora} >= 41
+%if 0%{?fedora} >= 41 || 0%{?rhel} >= 11
 BuildRequires:    systemtap-sdt-dtrace
 %endif
 # Bison SQL parser; needed also for wsrep API

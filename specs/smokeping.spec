@@ -1,13 +1,7 @@
-%{?filter_setup:
-%filter_provides_in %{_datadir}/%{name}/
-%filter_from_requires /perl(Authen::.*)/d; /perl(Net::OpenSSH)/d; /Smokeping/d
-%filter_setup
-}
-
 Summary:          Latency Logging and Graphing System
 Name:             smokeping
 Version:          2.8.2
-Release:          9%{?dist}
+Release:          10%{?dist}
 License:          GPL-2.0-or-later AND GPL-3.0-or-later AND MIT
 URL:              https://oss.oetiker.ch/smokeping/
 Source0:          https://oss.oetiker.ch/smokeping/pub/smokeping-%{version}.tar.gz
@@ -81,6 +75,9 @@ Requires:         traceroute
 Requires(pre):    httpd
 Requires(pre):    shadow-utils
 BuildArch:        noarch
+%global __provides_exclude_from %{_datadir}/%{name}/
+%global __requires_exclude ^perl\\((Authen::.*|Net::OpenSSH|Smokeping)
+%{?perl_default_filter}
 
 %description
 SmokePing is a latency logging and graphing system. It consists of a
@@ -106,7 +103,7 @@ autoreconf --force --install --verbose --make
     --disable-silent-rules
 
 %install
-make install DESTDIR=%{buildroot}
+%make_install
 
 # Some additional dirs and files
 install -d %{buildroot}%{_localstatedir}/lib/smokeping/{rrd,images} \
@@ -172,6 +169,10 @@ exit 0
 %{_mandir}/man7/smokeping_*.7*
 
 %changelog
+* Mon Oct 28 2024 Terje Rosten <terjeros@gmail.com> - 2.8.2-10
+- Fix docs (rhbz#2274326)
+- Use modern filter setup
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.8.2-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

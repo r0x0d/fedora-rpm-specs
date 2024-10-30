@@ -21,7 +21,12 @@ Url:            https://github.com/ROCmSoftwarePlatform/Tensile
 License:        MIT
 Source0:        %{url}/archive/refs/tags/rocm-%{version}.tar.gz#/%{upstreamname}-%{version}.tar.gz
 
-Patch0:         0001-enable-gfx1103-for-Tensile.patch
+Patch0:          0001-Add-gfx1151-support.patch
+Patch1:          0001-More-gfx1151.patch
+Patch2:          0001-Add-gfx1103.patch
+Patch3:          0001-Add-gfx1035.patch
+
+#Patch0:         0001-enable-gfx1103-for-Tensile.patch
 # In 6.1, work around  this error
 # Tensile::FATAL: Cached asm caps differ from derived asm caps for (9, 0, 10)
 # Patch1:         0001-tensile-workaround-cache-problem.patch

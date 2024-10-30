@@ -21,7 +21,7 @@ Version:        0
 Release:        %autorelease
 Summary:        Reader for the XDG Base Directory specification
 
-License:        Public Domain
+License:        WTFPL
 
 URL:            %{gourl}
 Source0:        %{gosource}

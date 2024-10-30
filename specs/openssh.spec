@@ -47,7 +47,7 @@
 
 # Do not forget to bump pam_ssh_agent_auth release if you rewind the main package release to 1
 %global openssh_ver 9.9p1
-%global openssh_rel 4
+%global openssh_rel 5
 %global pam_ssh_agent_ver 0.10.4
 %global pam_ssh_agent_rel 11
 
@@ -226,6 +226,9 @@ Patch1014: openssh-8.7p1-nohostsha1proof.patch
 
 Patch1015: openssh-9.6p1-pam-rhost.patch
 Patch1016: openssh-9.9p1-separate-keysign.patch
+# upstream cf3e48ee8ba1beeccddd2f203b558fa102be67a2
+# upstream 0c3927c45f8a57b511c874c4d51a8c89414f74ef
+Patch1017: openssh-9.9p1-mlkembe.patch
 
 License: BSD-3-Clause AND BSD-2-Clause AND ISC AND SSH-OpenSSH AND ssh-keyscan AND sprintf AND LicenseRef-Fedora-Public-Domain AND X11-distribute-modifications-variant
 Requires: /sbin/nologin
@@ -437,6 +440,7 @@ popd
 %patch -P 1014 -p1 -b .nosha1hostproof
 %patch -P 1015 -p1 -b .pam-rhost
 %patch -P 1016 -p1 -b .sep-keysign
+%patch -P 1017 -p1 -b .mlkembe
 
 %patch -P 100 -p1 -b .coverity
 
@@ -746,6 +750,9 @@ test -f %{sysconfig_anaconda} && \
 %endif
 
 %changelog
+* Mon Oct 28 2024 Dmitry Belyavskiy <dbelyavs@redhat.com> - 9.9p1-5
+- Fix MLKEM for BE platforms
+
 * Wed Oct 16 2024 Dmitry Belyavskiy <dbelyavs@redhat.com> - 9.9p1-4
 - Resolve memory management issues after rebase
 - Define OPTIONS env in systemd modules (https://src.fedoraproject.org/rpms/openssh/pull-request/92)

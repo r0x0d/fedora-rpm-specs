@@ -9,7 +9,7 @@ Group: Development/Languages
 # src/ext/encoding.h and the functions of encoding map are GPLv2+ or Artistic
 # All other files are Ruby or GPLv2+ or MIT
 # For a breakdown of the licensing, see also README
-License: GPLv2+ and ( Ruby or GPLv2+ or MIT ) and ( GPLv2+ or Artistic ) 
+License: GPL-2.0-or-later and (  Ruby or GPL-2.0-or-later or MIT ) and (  GPL-1.0-or-later OR Artistic-1.0-Perl )
 URL: http://rubygems.org/gems/xmlparser
 Source0: http://gems.rubyforge.org/gems/%{gem_name}-%{version}.gem
 # Handle 'format not a string literal and no format arguments' error.

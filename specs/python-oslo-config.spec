@@ -1,7 +1,7 @@
 %global repo_bootstrap 0
 
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
+%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
 %global sname oslo.config
 %global pypi_name oslo-config
 # doc and tests are enabled by default unless %%repo_bootstrap
@@ -22,8 +22,8 @@
 
 Name:       python-oslo-config
 Epoch:      2
-Version:    9.4.0
-Release:    5%{?dist}
+Version:    9.6.0
+Release:    1%{?dist}
 Summary:    OpenStack common configuration library
 
 Group:      Development/Languages
@@ -35,6 +35,7 @@ Source0:    https://tarballs.openstack.org/%{sname}/%{sname}-%{upstream_version}
 Source101:        https://tarballs.openstack.org/%{sname}/%{sname}-%{upstream_version}.tar.gz.asc
 Source102:        https://releases.openstack.org/_static/%{sources_gpg_sign}.txt
 %endif
+Patch0001:  0001-Fix-test_sub_command_multiple-on-Python-3.12.5.patch
 
 BuildArch:  noarch
 
@@ -150,6 +151,9 @@ popd
 %endif
 
 %changelog
+* Mon Oct 28 2024 Joel Capitao <jcapitao@redhat.com> 2:9.6.0-1
+- Update to upstream version 9.6.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2:9.4.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -2,18 +2,20 @@
 %if 0%{?el9} || 0%{?centos} >= 9
 %bcond_with    tests
 %else
-%bcond_without tests
+# change back to bcond_without when the azure-sdk-tools/azure-devtools mess gets sorted out.
+# It seems azure-devtools now lives inside azure-sdk-tools, as a separate package, and renamed.
+%bcond_with     tests
 %endif
 
 %global         srcname     azure-appconfiguration
 
 Name:           python-%{srcname}
-Version:        1.1.1
+Version:        1.7.1
 Release:        %autorelease
 Summary:        Microsoft App Configuration Data Library for Python
 License:        MIT
 URL:            https://pypi.org/project/%{srcname}/
-Source0:        %{pypi_source %{srcname} %{version} zip}
+Source0:        %{pypi_source %{srcname} %{version}}
 
 BuildArch:      noarch
 

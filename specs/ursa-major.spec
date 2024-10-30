@@ -5,8 +5,8 @@
 %endif
 
 Name:       ursa-major
-Version:    0.4.2
-Release:    12%{?dist}
+Version:    0.5.1
+Release:    2%{?dist}
 Summary:    A utility for working with module's koji tags in koji's tag inheritance.
 
 Group:      Development/Tools
@@ -75,7 +75,6 @@ Requires:       koji
 Requires:       python3-gobject-base
 Requires:       python3-cairo
 Requires:       python3-koji
-Requires:       python3-m2crypto
 Requires:       python3-six
 Requires:       python3-requests
 Requires:       python3-jinja2
@@ -199,6 +198,21 @@ py.test
 
 
 %changelog
+* Mon Oct 28 2024 Yu Ming Zhu <yzhu@redhat.com> - 0.5.1-2
+- remove pyhon3-m2crypto dependency (Yuming Zhu)
+
+* Tue Jul 09 2024 Yu Ming Zhu <yzhu@redhat.com> - 0.5.1-1
+- fetch all pages and add buildrequires filter (Yuming Zhu)
+
+* Mon Mar 25 2024 Yu Ming Zhu <yzhu@redhat.com> - 0.5.0-2
+- fix unit tests for python2 (Yuming Zhu)
+
+* Mon Mar 25 2024 Yu Ming Zhu <yzhu@redhat.com> - 0.5.0-1
+- tags_from restriction (Yuming Zhu)
+
+* Tue Jun 27 2023 Yu Ming Zhu <yzhu@redhat.com> - 0.4.3-1
+- Use gssapi_login instead of krb_login for koji kerberos auth (Yuming Zhu)
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.2-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

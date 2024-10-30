@@ -1,7 +1,7 @@
 Summary:       X11 utility to view and edit application resources
 Name:          editres
-Version:       1.0.8
-Release:       5%{?dist}
+Version:       1.0.9
+Release:       %autorelease
 License:       MIT
 URL:           https://www.x.org
 Source0:       https://www.x.org/pub/individual/app/%{name}-%{version}.tar.xz
@@ -13,6 +13,7 @@ BuildRequires: pkgconfig(xaw7)
 BuildRequires: pkgconfig(xmu)
 BuildRequires: pkgconfig(xorg-macros) >= 1.8
 BuildRequires: pkgconfig(xt)
+BuildRequires: libxkbfile-devel
 Obsoletes:     xorg-x11-resutils < 7.7-9
 %description
 editres is a tool that allows users and application developers to view
@@ -39,36 +40,4 @@ the application and view the results dynamically.
 %{_datadir}/X11/app-defaults/Editres-color
 
 %changelog
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.8-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Wed Jan 24 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.8-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Fri Jan 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.8-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Wed Jul 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.8-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Sat Feb 04 2023 Terje Rosten <terje.rosten@ntnu.no> - 1.0.8-1
-- 1.0.8
-- No need for autoreconf any longer
-
-* Thu Jan 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.7-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
-
-* Thu Jul 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.7-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
-
-* Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.7-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
-
-* Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.7-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
-
-* Thu Apr 08 2021 Peter Hutterer <peter.hutterer@redhat.com> - 1.0.7-2
-- Fix Obsoletes line to actually obsolete the -8 resutils
-
-* Wed Mar 03 2021 Peter Hutterer <peter.hutterer@redhat.com> 1.0.7-1
-- Split editres out from xorg-x11-resutils into a separate package (#1934345)
+%autochangelog

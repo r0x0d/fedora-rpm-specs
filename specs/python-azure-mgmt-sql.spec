@@ -2,16 +2,16 @@
 %bcond_with     tests
 
 %global         srcname     azure-mgmt-sql
+%global         tarball_name azure_mgmt_sql
 
 Name:           python-%{srcname}
-Version:        4.0.0~b17
-%global         pypi_version    4.0.0b17
+Version:        4.0.0~b19
+%global         pypi_version    4.0.0b19
 Release:        %autorelease
 Summary:        Microsoft Azure SQL Management Client Library for Python
 License:        MIT
 URL:            https://pypi.org/project/%{srcname}/
-Source0:        %{pypi_source %{srcname} %{pypi_version}}
-Patch:          azure-mgmt-sql-pr-36432.patch
+Source0:        %{pypi_source %{tarball_name} %{pypi_version}}
 
 BuildArch:      noarch
 
@@ -41,7 +41,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -p1 -n %{srcname}-%{pypi_version}
+%autosetup -p1 -n %{tarball_name}-%{pypi_version}
 
 
 %generate_buildrequires
