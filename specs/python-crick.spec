@@ -60,7 +60,11 @@ sed -r \
 
 
 %check
-%pytest -v --import-mode importlib
+# Fix layout to allow loading modules from installed location using
+# `--import-mode=importlib`. With upstream's layout the imports fail,
+# no matter what mode is paased to `import-mode`.
+mv -v crick/tests/ .
+%pytest --import-mode=importlib
 
 
 %files -n python3-%{pypi_name} -f %{pyproject_files}

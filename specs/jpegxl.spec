@@ -112,6 +112,9 @@ Requires:       shared-mime-info
 Recommends:     jxl-pixbuf-loader = %{epoch}:%{version}-%{release}
 Provides:       jpegxl-libs = %{epoch}:%{version}-%{release}
 Obsoletes:      jpegxl-libs < 0.3.7-5
+%if %{without gimp_plugin}
+Obsoletes:      gimp-jxl-plugin < 1:0.10.3-4
+%endif
 
 %description -n libjxl
 %{common_description}

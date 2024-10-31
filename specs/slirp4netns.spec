@@ -1,15 +1,11 @@
-%global built_tag v1.2.2
-%global built_tag_strip %(b=%{built_tag}; echo ${b:1})
-%global gen_version %(b=%{built_tag_strip}; echo ${b/-/"~"})
-
 Name: slirp4netns
-Version: %{gen_version}
+Version: 1.3.1
 Release: %autorelease
 License: GPL-2.0-only
 Summary: slirp for network namespaces
 URL: https://github.com/rootless-containers/%{name}
 # Tarball fetched from upstream
-Source0: %{url}/archive/%{built_tag}.tar.gz
+Source0: %{url}/archive/v%{version}.tar.gz
 ExclusiveArch: %{golang_arches_future}
 BuildRequires: autoconf
 BuildRequires: automake

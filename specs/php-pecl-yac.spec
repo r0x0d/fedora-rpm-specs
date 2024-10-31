@@ -7,38 +7,34 @@
 # Please, preserve the changelog entries
 #
 
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
+%bcond_without      tests
 
-%global with_zts    0%{?__ztsphp:1}
 %global pecl_name   yac
-%global with_tests  %{!?_without_tests:1}%{?_without_tests:0}
-# after 20-json, 40-igbinary and 40-msgpack
+# after 40-igbinary and 40-msgpack
 %global ini_name    50-%{pecl_name}.ini
+%global sources     %{pecl_name}-%{version}
 
 Summary:        Lockless user data cache
 Name:           php-pecl-%{pecl_name}
 Version:        2.3.1
-Release:        13%{?dist}
+Release:        14%{?dist}
 
 License:        PHP-3.01
 URL:            https://pecl.php.net/package/%{pecl_name}
-Source0:        https://pecl.php.net/get/%{pecl_name}-%{version}.tgz
+Source0:        https://pecl.php.net/get/%{sources}.tgz
 
 ExcludeArch:    %{ix86}
 
 BuildRequires:  make
 BuildRequires:  gcc
-BuildRequires:  php-devel >= 7.0
+BuildRequires:  php-devel
 BuildRequires:  php-pear
-BuildRequires:  php-json
 BuildRequires:  php-pecl-msgpack-devel
 BuildRequires:  php-pecl-igbinary-devel
 BuildRequires:  fastlz-devel
 
 Requires:       php(zend-abi) = %{php_zend_api}
 Requires:       php(api) = %{php_core_api}
-Requires:       php-json%{?_isa}
 Requires:       php-igbinary%{?_isa}
 Requires:       php-msgpack%{?_isa}
 
@@ -63,14 +59,13 @@ that your product is not very sensitive to that.
 
 %prep
 %setup -qc
-mv %{pecl_name}-%{version} NTS
 
 # Don't install (register) the tests
 sed -e 's/role="test"/role="src"/' \
     -e '/LICENSE/s/role="doc"/role="src"/' \
     -i package.xml
 
-cd NTS
+cd %{sources}
 # drop bundled fastlz to ensure it is not used
 sed -e '\:name="compressor/fastlz:d' -i ../package.xml
 rm -r compressor/fastlz
@@ -98,109 +93,73 @@ extension = %{pecl_name}.so
 EOF
 
 
-%if %{with_zts}
-# duplicate for ZTS build
-cp -pr NTS ZTS
-%endif
-
-
 %build
-peclconf() {
+cd %{sources}
+%{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
+
 %configure \
     --enable-json \
     --enable-msgpack \
     --enable-igbinary \
     --with-system-fastlz \
-    --with-php-config=$1
-}
+    --with-php-config=%{__phpconfig}
 
-cd NTS
-%{_bindir}/phpize
-peclconf %{_bindir}/php-config
-make %{?_smp_mflags}
-
-%if %{with_zts}
-cd ../ZTS
-%{_bindir}/zts-phpize
-peclconf %{_bindir}/zts-php-config
-make %{?_smp_mflags}
-%endif
+%make_build
 
 
 %install
-# Install the NTS stuff
-make -C NTS install INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+cd %{sources}
 
-# Install XML package description
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+: Install the extension
+%make_install
 
-# Install the ZTS stuff
-%if %{with_zts}
-make -C ZTS install INSTALL_ROOT=%{buildroot}
-install -D -m 644 %{ini_name} %{buildroot}%{php_ztsinidir}/%{ini_name}
-%endif
+: Install the configuration
+install -D -m 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-# Test & Documentation
-for i in $(grep 'role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 NTS/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+: Install XML package description
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+
+: Install Test and Documentation
+for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
 %check
+cd %{sources}
+
 OPTS="-n"
-[ -f %{php_extdir}/json.so     ] && OPTS="$OPTS -d extension=json.so"
 [ -f %{php_extdir}/igbinary.so ] && OPTS="$OPTS -d extension=igbinary.so"
 [ -f %{php_extdir}/msgpack.so  ] && OPTS="$OPTS -d extension=msgpack.so"
 
-cd NTS
-
-: Minimal load test for NTS extension
-%{_bindir}/php $OPTS  \
+: Minimal load test for the extension
+%{__php} $OPTS  \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
     --modules | grep '^%{pecl_name}$'
 
-%if %{with_tests}
-: Upstream test suite for NTS extension
+%if %{with tests}
+: Upstream test suite for the extension
 TEST_PHP_ARGS="$OPTS -d extension=$PWD/modules/%{pecl_name}.so" \
 %{__php} -n run-tests.php -q --show-diff
 %else
 : Upstream test suite disabled
 %endif
 
-%if %{with_zts}
-cd ../ZTS
-
-: Minimal load test for ZTS extension
-%{__ztsphp} $OPTS \
-    --define extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
-    --modules | grep '^%{pecl_name}$'
-
-%if %{with_tests}
-: Upstream test suite for ZTS extension
-TEST_PHP_ARGS="$OPTS -d extension=$PWD/modules/%{pecl_name}.so" \
-%{__ztsphp} -n run-tests.php -q --show-diff
-%else
-: Upstream test suite disabled
-%endif
-%endif
-
 
 %files
-%license NTS/LICENSE
+%license %{sources}/LICENSE
 %doc %{pecl_docdir}/%{pecl_name}
 %{pecl_xmldir}/%{name}.xml
 
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
-%if %{with_zts}
-%{php_ztsextdir}/%{pecl_name}.so
-%config(noreplace) %{php_ztsinidir}/%{ini_name}
-%endif
-
 
 %changelog
+* Tue Oct 29 2024 Remi Collet <remi@fedoraproject.org> - 2.3.1-14
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 2.3.1-13
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

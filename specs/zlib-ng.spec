@@ -18,17 +18,14 @@
 %global supported_abi_test aarch64 ppc64le x86_64
 
 Name:		zlib-ng
-Version:	2.1.7
-Release:	3%{?dist}
+Version:	2.2.2
+Release:	1%{?dist}
 Summary:	Zlib replacement with optimizations
 License:	Zlib
 Url:		https://github.com/zlib-ng/zlib-ng
 Source0:	https://github.com/zlib-ng/zlib-ng/archive/%{version}/%{name}-%{version}.tar.gz
 
 Patch:		far.diff
-# Backport from https://github.com/zlib-ng/zlib-ng/pull/1773
-# Fixes https://bugzilla.redhat.com/show_bug.cgi?id=2307237
-Patch:		1773.patch
 
 BuildRequires:	cmake >= 3.1
 BuildRequires:	gcc-c++
@@ -218,6 +215,9 @@ CHOST=%{target_cpu}-%{cpu_vendor}-linux-gnu sh test/abicheck.sh --zlib-compat
 
 
 %changelog
+* Wed Sep 25 2024 Lukas Javorsky <ljavorsk@redhat.com> - 2.2.2-1
+- Rebase to new major version 2.2.2
+
 * Tue Sep 10 2024 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 2.1.7-3
 - Fixes rhbz#2307237
 

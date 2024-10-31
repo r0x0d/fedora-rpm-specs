@@ -2,10 +2,9 @@
 
 Name:           python-%{pypi_name}
 Version:        1.4.0
-Release:        17%{?dist}
+Release:        18%{?dist}
 Summary:        Extended implementation of JSONPath for Python
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://github.com/kennknowles/python-jsonpath-rw
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
@@ -26,7 +25,7 @@ BuildRequires:  python3-setuptools
 BuildRequires:  python3-ply
 BuildRequires:  python3-decorator
 BuildRequires:  python3-six
-%{?python_provide:%python_provide python3-%{pypi_name}}
+BuildRequires:  python-pytest
 
 %description -n python3-%{pypi_name}
 This library provides a robust and significantly extended implementation of
@@ -46,7 +45,7 @@ objects, easy to analyze, transform, parse, print, and extend.
 %py3_install
 
 %check
-PYTHONPATH=%{buildroot}%{python3_sitelib} %{__python3} setup.py test
+%{pytest} -v
 
 %files -n python3-%{pypi_name}
 %doc README.rst
@@ -56,6 +55,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} %{__python3} setup.py test
 %{python3_sitelib}/jsonpath_rw-%{version}*-info/
 
 %changelog
+* Tue Oct 29 2024 Fabian Affolter <mail@fabian-affolter.ch> - 1.4.0-18
+- Switch to pytest (closes rhbz#2319672)
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 1.4.0-17
 - convert license to SPDX
 

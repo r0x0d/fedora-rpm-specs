@@ -2,7 +2,7 @@
 
 # https://github.com/junegunn/fzf
 %global goipath         github.com/junegunn/fzf
-Version:                0.54.3
+Version:                0.56.0
 
 %gometa
 
@@ -15,13 +15,13 @@ URL:            %{gourl}
 Source0:        %{gosource}
 Source1:        README.Fedora
 
-BuildRequires:  golang(github.com/charlievieth/fastwalk) >= 1.0.8
+BuildRequires:  golang(github.com/charlievieth/fastwalk) >= 1.0.9
 BuildRequires:  golang(github.com/gdamore/tcell/v2) >= 2.7.4
 BuildRequires:  golang(github.com/gdamore/tcell/v2/encoding)
+BuildRequires:  golang(github.com/junegunn/go-shellwords)
 BuildRequires:  golang(github.com/mattn/go-isatty) >= 0.0.20
-BuildRequires:  golang(github.com/mattn/go-shellwords) >= 1.0.12
 BuildRequires:  golang(github.com/rivo/uniseg) >= 0.4.7
-BuildRequires:  golang(golang.org/x/term) >= 0.20
+BuildRequires:  golang(golang.org/x/term) >= 0.25
 
 %description
 fzf is a general-purpose command-line fuzzy finder.

@@ -7,14 +7,11 @@
 
 Summary: Tools for managing the osinfo database
 Name: osinfo-db-tools
-Version: 1.11.0
+Version: 1.12.0
 Release: %autorelease
 License: GPL-2.0-or-later
 Source: https://releases.pagure.org/libosinfo/%{name}-%{version}.tar.xz
 URL: https://libosinfo.org
-
-# Fix build for libxml2-2.12
-Patch:  https://gitlab.com/libosinfo/osinfo-db-tools/-/merge_requests/80.patch
 
 BuildRequires: meson
 BuildRequires: gcc

@@ -1,8 +1,6 @@
-%bcond_with network
-
 Name:           python-requests-futures
-Version:        1.0.0
-Release:        20%{?dist}
+Version:        1.0.1
+Release:        1%{?dist}
 Summary:        Asynchronous Python HTTP Requests
 
 License:        Apache-2.0
@@ -47,13 +45,7 @@ BuildRequires:  python3-pytest
 
 
 %check
-%if %{with network}
-%pytest -v
-%else
-%pytest -v \
-    test_requests_futures.py::RequestsTestCase::test_adapter_kwargs \
-    test_requests_futures.py::RequestsTestCase::test_max_workers
-%endif
+%pytest -v -m 'not network'
 
 
 %files -n python3-requests-futures -f %{pyproject_files}
@@ -61,6 +53,9 @@ BuildRequires:  python3-pytest
 
 
 %changelog
+* Thu Oct 24 2024 Carl George <carlwgeorge@fedoraproject.org> - 1.0.1-1
+- Update to version 1.0.1 rhbz#2321376
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.0-20
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

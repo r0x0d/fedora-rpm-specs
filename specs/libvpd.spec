@@ -1,6 +1,6 @@
 Name:		libvpd
-Version:	2.2.9
-Release:	9%{?dist}
+Version:	2.2.10
+Release:	1%{?dist}
 Summary:	VPD Database access library for lsvpd
 
 License:	LGPL-2.0-or-later
@@ -27,7 +27,6 @@ Contains header files for building with libvpd.
 %setup -q
 
 %build
-export CXXFLAGS="-std=c++14 $RPM_OPT_FLAGS"
 ./bootstrap.sh
 %configure --disable-static
 make %{?_smp_mflags}
@@ -56,6 +55,10 @@ find %{buildroot} -type f -name "*.la" -delete
 %{_libdir}/pkgconfig/libvpd_cxx-2.pc
 
 %changelog
+* Tue Oct 29 2024 Than Ngo <than@redhat.com> - 2.2.10-1
+- Update to 2.2.10
+  * Fix displaying duplicate VPD details
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.2.9-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

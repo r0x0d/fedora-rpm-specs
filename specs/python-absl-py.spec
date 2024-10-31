@@ -7,9 +7,10 @@ License:        Apache-2.0
 URL:            https://github.com/abseil/abseil-py/
 Source:         %{url}/archive/v%{version}/abseil-py-%{version}.tar.gz
 
-BuildArch:      noarch
+BuildSystem:            pyproject
+BuildOption(install):   -l absl
 
-BuildRequires:  python3-devel
+BuildArch:      noarch
 
 %global common_description %{expand:
 This repository is a collection of Python library code for building Python
@@ -34,28 +35,9 @@ Summary:        %{summary}
 %description -n python3-absl-py %{common_description}
 
 
-%prep
-%autosetup -n abseil-py-%{version}
-
-
-%generate_buildrequires
-%pyproject_buildrequires
-
-
-%build
-%pyproject_wheel
-
-
-%install
-%pyproject_install
-%pyproject_save_files -l absl
-
-
-%check
 # Since we cannot run the full upstream test suite (see comments below), we
-# start with an import “smoke test”:
-%pyproject_check_import
-
+# start with the implicit default import “smoke test.” Then:
+%check -a
 # Upstream provides some “smoke tests” that we can run, too. We cannot use the
 # wrapper smoke_tests/smoke_test.sh because it downloads things from the
 # Internet, but we can run the Python scripts manually.

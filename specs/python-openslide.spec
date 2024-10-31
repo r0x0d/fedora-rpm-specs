@@ -1,13 +1,14 @@
 %global upstream_name openslide-python
+%global sdist_name openslide_python
 
 Name:           python-openslide
-Version:        1.3.1
+Version:        1.4.0
 Release:        %autorelease
 Summary:        Python bindings for the OpenSlide library
 
 License:        LGPL-2.1-only
 URL:            https://openslide.org/
-Source0:        https://github.com/openslide/%{upstream_name}/releases/download/v%{version}/%{upstream_name}-%{version}.tar.xz
+Source0:        https://github.com/openslide/%{upstream_name}/releases/download/v%{version}/%{sdist_name}-%{version}.tar.xz
 
 # Disable Intersphinx so it won't download inventories at build time
 Patch0:         openslide-python-1.0.1-disable-intersphinx.patch
@@ -40,7 +41,7 @@ programs to use OpenSlide.
 
 
 %prep
-%autosetup -n %{upstream_name}-%{version} -p1
+%autosetup -n %{sdist_name}-%{version} -p1
 
 # Examples include bundled jQuery and OpenSeadragon
 rm -rf examples

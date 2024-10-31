@@ -1,7 +1,7 @@
 Name: debugedit
-Version: 5.0
-Release: 18%{?dist}
-Summary: Tools for debuginfo creation
+Version: 5.1
+Release: 1%{?dist}
+Summary: Tools and scripts for creating debuginfo and source file distributions, collect build-ids and rewrite source paths in DWARF data for debugging, tracing and profiling.
 License: GPL-3.0-or-later AND GPL-2.0-or-later AND LGPL-2.0-or-later
 URL: https://sourceware.org/debugedit/
 Source0: https://sourceware.org/pub/debugedit/%{version}/%{name}-%{version}.tar.xz
@@ -16,6 +16,9 @@ BuildRequires: gnupg2
 
 # For configure checking -j support
 BuildRequires: dwz
+
+# For debugedit build-id recomputation
+BuildRequires: xxhash-devel
 
 # For the testsuite.
 BuildRequires: autoconf
@@ -40,23 +43,6 @@ Requires: dwz
 Requires: grep
 
 %global _hardened_build 1
-
-Patch1: 0001-use-READELF-not-readelf.patch
-Patch2: 0001-tests-Handle-zero-directory-entry-in-.debug_line-DWA.patch
-Patch3: 0001-find-debuginfo-Pass-j-down-to-dwz.patch
-Patch4: 0002-configure.ac-Use-AC_LINK_IFELSE-for-gz-none-check.patch
-Patch5: 0003-configure.ac-Use-AC_LANG_PROGRAM-for-AC_LINK_IFELSE-.patch
-Patch6: 0004-scripts-find-debuginfo.in-Add-q-quiet.patch
-Patch7: 0001-find-debuginfo-Prefix-install_dir-to-PATH.patch
-Patch8: 0001-find-debuginfo-Add-v-verbose-for-per-file-messages.patch
-Patch9: 0001-debugedit-Add-support-for-.debug_str_offsets-DW_FORM.patch
-Patch10: debugedit-5.0-do_read_32_binary-search.patch
-Patch11: 0001-Make-relocation-reading-explicit.patch
-Patch12: 0002-Simplify-update_rela_data-by-checking-rel_updated.patch
-Patch13: 0003-debug_str_offsets-header-version-and-padding-are-2-b.patch
-Patch14: 0004-debugedit-Track-active-CU.patch
-Patch15: 0005-debugedit-Handle-DW_MACRO_-define-undef-_strx.patch
-Patch16: debugedit-5.0-DW_UT_type.patch
 
 %description
 The debugedit project provides programs and scripts for creating
@@ -98,6 +84,10 @@ make check %{?_smp_mflags}
 %{_mandir}/man1/find-debuginfo.1*
 
 %changelog
+* Tue Oct 29 2024 Mark Wielaard <mjw@fedoraproject.org> - 5.1-1
+- New upstream 5.1 release
+- Drop all local patches
+
 * Mon Oct 7 2024 Mark Wielaard <mjw@fedoraproject.org> - 5.0-18
 - Add debugedit-5.0-DW_UT_type.patch
 

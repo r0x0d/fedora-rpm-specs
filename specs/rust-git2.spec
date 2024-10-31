@@ -5,7 +5,7 @@
 %global crate git2
 
 Name:           rust-git2
-Version:        0.18.3
+Version:        0.19.0
 Release:        %autorelease
 Summary:        Bindings to libgit2 for interoperating with git repositories
 
@@ -13,7 +13,7 @@ License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/git2
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * drop dependency on time ^0.1 which is only required for building examples
+# * drop example-only dependencies (clap ^4, time ^0.1)
 Patch:          git2-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

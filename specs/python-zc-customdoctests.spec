@@ -3,14 +3,13 @@
 
 Name:               python-zc-customdoctests
 Version:            1.0.1
-Release:            39%{?dist}
+Release:            40%{?dist}
 Summary:            Use doctest with other languages
 License:            ZPL-2.1
 URL:                http://pypi.python.org/pypi/zc.customdoctests
 Source0:            http://pypi.python.org/packages/source/z/%{modname}/%{modname}-%{version}.zip
 
 BuildArch:          noarch
-
 
 %if 0%{?rhel}
 # No tests on rhel
@@ -21,6 +20,7 @@ BuildRequires:      python3-setuptools
 BuildRequires:      python3-zope-testing
 BuildRequires:      python3-manuel
 BuildRequires:      python3-six
+BuildRequires:      python3-pytest
 
 %global _description\
 doctest (and recently manuel) provide hooks for using custom doctest\
@@ -63,7 +63,7 @@ rm -rf %{modname}.egg-info
 %if 0%{?rhel}
 # No tests on rhel
 %else
-%{__python3} setup.py test
+%{pytest} -v src/zc/customdoctests/tests.py
 %endif
 
 %files -n python3-zc-customdoctests
@@ -72,6 +72,9 @@ rm -rf %{modname}.egg-info
 %{python3_sitelib}/%{modname}-%{version}-*
 
 %changelog
+* Tue Oct 29 2024 Fabian Affolter <mail@fabian-affolter.ch> - 1.0.1-40
+- Switch to pytest (closes rhbz#2319740)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.1-39
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

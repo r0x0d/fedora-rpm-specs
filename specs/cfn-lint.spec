@@ -1,6 +1,6 @@
 Name:           cfn-lint
 Summary:        CloudFormation Linter
-Version:        1.18.1
+Version:        1.18.2
 Release:        %autorelease
 
 # The entire source is MIT-0, except that some sources are derived from
@@ -30,12 +30,15 @@ Source0:        %{url}/archive/v%{version}/cfn-lint-%{version}.tar.gz
 # Man page written for Fedora in groff_man(7) format based on --help output
 Source1:        cfn-lint.1
 
+BuildSystem:            pyproject
+BuildOption(install):   -l cfnlint
+BuildOption(generate_buildrequires): -x full,graph,junit,sarif
+
 BuildArch:      noarch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
 
-BuildRequires:  python3-devel
 BuildRequires:  hardlink
 
 # From tox.ini:
@@ -72,32 +75,18 @@ for resource properties and best practices.
 %pyproject_extras_subpkg -n cfn-lint full graph junit sarif
 
 
-%prep
-%autosetup -n %{name}-%{version}
-
-
-%generate_buildrequires
-%pyproject_buildrequires -x full,graph,junit,sarif
-
-
-%build
-%pyproject_wheel
-
-
-%install
-%pyproject_install
-# This saves, as of this writing, roughly 280kB in duplicate data files and
+%install -a
+# This saves, as of this writing, over 4 MiB in duplicate data files and
 # __init__.py files. Because timestamp differences across source files are not
 # meaningful (are not really properties of the individual files), and all
 # timestamps are *nearly* the same, we elect to pass “-t” in order to hardlink
 # more duplicate files, in exchange for ignoring/discarding these insignificant
 # timestamp differences.  single filesystem.
 hardlink -t '%{buildroot}%{python3_sitelib}/cfnlint'
-%pyproject_save_files -l cfnlint
 install -t '%{buildroot}%{_mandir}/man1' -D -p -m 0644 '%{SOURCE1}'
 
 
-%check
+%check -a
 # These tests want to make HTTP(S) requests to the Internet:
 k="${k-}${k+ and }not (TestFormatters and test_sarif_formatter)"
 k="${k-}${k+ and }not (TestUpdateResourceSpecs and test_update_resource_specs_python_2)"

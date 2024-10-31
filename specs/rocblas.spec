@@ -10,7 +10,7 @@
 # $gpu will be evaluated in the loops below             
 %global _vpath_builddir %{_vendor}-%{_target_os}-build-${gpu}
 
-%bcond_with debug
+%bcond_without debug
 %if %{with debug}
 %global build_type DEBUG
 %else
@@ -33,7 +33,7 @@
 %endif
 
 # Tensile blocks general enablement of rocBLAS.
-%bcond_with tensile
+%bcond_without tensile
 %if %{with tensile}
 %global build_tensile ON
 %else

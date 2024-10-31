@@ -7,7 +7,6 @@ License:        MIT
 URL:            https://www.x.org
 Source0:        %{url}/pub/individual/app/%{name}-%{version}.tar.xz
 Source1:        %{url}/pub/individual/app/%{name}-%{version}.tar.xz.sig
-
 BuildRequires:  gcc
 BuildRequires:  gnupg2
 BuildRequires:  make
@@ -24,7 +23,6 @@ create standard colormap definitions in order to facilitate sharing of
 scarce colormap resources among clients using PseudoColor visuals.
 
 %prep
-%{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
 %autosetup
 
 %build

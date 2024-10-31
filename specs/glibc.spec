@@ -99,13 +99,21 @@
 
 -- Open-code rpm.execute with error message handling.
 function post_exec (msg, program, ...)
-  local pid = posix.fork ()
-  if pid == 0 then
-    posix.exec (program, ...)
-    io.stdout:write (msg)
-    assert (nil)
-  elseif pid > 0 then
-    posix.wait (pid)
+  if rpm.spawn ~= nil then
+    local status = rpm.spawn ({program, ...})
+    if status == nil then
+      io.stdout:write (msg)
+      assert (nil)
+    end
+  else
+    local pid = posix.fork ()
+    if pid == 0 then
+      posix.exec (program, ...)
+      io.stdout:write (msg)
+      assert (nil)
+    elseif pid > 0 then
+      posix.wait (pid)
+    end
   end
 end
 
@@ -144,7 +152,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 14
+%global baserelease 15
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -2122,12 +2130,17 @@ update_gconv_modules_cache()
 if tonumber(arg[2]) >= 2
    and posix.access("%{_prefix}/bin/systemctl", "x")
 then
-  local pid = posix.fork()
-  if pid == 0 then
-    posix.redirect2null(2)
-    posix.exec("%{_prefix}/bin/systemctl", "daemon-reexec")
-  elseif pid > 0 then
-    posix.wait(pid)
+  if rpm.spawn ~= nil then
+    rpm.spawn ({"%{_prefix}/bin/systemctl", "daemon-reexec"},
+               {stderr="/dev/null"})
+  else
+    local pid = posix.fork()
+    if pid == 0 then
+      posix.redirect2null(2)
+      posix.exec("%{_prefix}/bin/systemctl", "daemon-reexec")
+    elseif pid > 0 then
+      posix.wait(pid)
+    end
   end
 end
 
@@ -2340,6 +2353,9 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Mon Oct 28 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-15
+- Use rpm.spawn instead of posix.fork if availabe (#2291869)
+
 * Mon Oct 28 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-14
 - Eliminate the glibc-headers package
 

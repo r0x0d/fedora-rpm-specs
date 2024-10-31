@@ -112,6 +112,10 @@ sed -i 's/azure-mgmt-hdinsight==9.0.0b3/azure-mgmt-hdinsight>=9,<10/' src/azure-
 sed -i 's/azure-monitor-query==1.2.0/azure-monitor-query>=1.2,<2/' src/azure-cli/setup.py
 sed -i 's/azure-monitor-query==1.2.0/azure-monitor-query>=1.2,<2/' src/azure-cli/requirements.py3.Linux.txt
 
+# Rawhide has 1.7.1 at the moment
+sed -i 's/azure-appconfiguration==1.7/azure-appconfiguration>=1.7,<2/' src/azure-cli/setup.py
+sed -i 's/azure-appconfiguration==1.7/azure-appconfiguration>=1.7,<2/' src/azure-cli/requirements.py3.Linux.txt
+
 # Namespace packages are no longer needed after Python 3.7, but upstream
 # insists on carrying them.
 sed -i '/nspkg/d' src/azure-cli/requirements.py3.Linux.txt

@@ -98,7 +98,7 @@ Recommends:     python3-devel
 
 # Upstream updates dependencies too aggressively
 # see https://github.com/tox-dev/tox/pull/2843#discussion_r1065028356
-sed -ri -e 's/"(packaging|filelock|platformdirs|psutil|diff-cover|pyproject-api|pytest|pytest-mock|pytest-xdist|wheel|pluggy|distlib|cachetools|build\[virtualenv\]|setuptools|flaky)>=.*/"\1",/g' \
+sed -ri -e 's/"(packaging|filelock|platformdirs|psutil|pyproject-api|pytest|pytest-mock|pytest-xdist|wheel|pluggy|distlib|cachetools|build\[virtualenv\]|setuptools|flaky)>=.*/"\1",/g' \
         -e 's/"(time-machine)>=[^;"]+/"\1/' \
         -e 's/"(virtualenv)>=.*/"\1>=20",/g' \
         -e 's/"(hatchling)>=.*/"\1>=1.13",/g' \

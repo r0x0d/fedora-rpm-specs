@@ -4,7 +4,7 @@
 
 Name:           python-%{srcname}
 Version:        9.0.0
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        %{sum}
 
 License:        MIT
@@ -66,7 +66,7 @@ sed -i -e '/^#!\//, 1d' cpuinfo/cpuinfo.py
 
 
 %check
-%{__python3} setup.py test
+%{python3} -m unittest test_suite.py
 
 %files -n python3-%{srcname}
 %doc README.rst ChangeLog
@@ -77,6 +77,9 @@ sed -i -e '/^#!\//, 1d' cpuinfo/cpuinfo.py
 
 
 %changelog
+* Tue Oct 29 2024 Parag Nemade <pnemade AT redhat DOT com> - 9.0.0-10
+- Use unittest to run test_suite
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 9.0.0-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

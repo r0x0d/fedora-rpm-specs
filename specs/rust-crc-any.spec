@@ -12,6 +12,8 @@ Summary:        Compute CRC values
 License:        MIT
 URL:            https://crates.io/crates/crc-any
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+Patch:          crc-any-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

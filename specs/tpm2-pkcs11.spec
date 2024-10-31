@@ -98,9 +98,6 @@ popd
 
 %check
 make check
-pushd tools
-%{__python3} setup.py test
-popd
 
 
 %files

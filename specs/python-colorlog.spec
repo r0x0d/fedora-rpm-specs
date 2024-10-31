@@ -2,8 +2,8 @@
 %global desc "colorlog.ColoredFormatter is a formatter for use with Python's logging module that outputs records using terminal colors."
 
 Name:           python-%{srcname}
-Version:        6.8.2
-Release:        3%{?dist}
+Version:        6.9.0
+Release:        1%{?dist}
 Summary:        Colored formatter for the Python logging module
 
 License:        MIT
@@ -11,65 +11,41 @@ URL:            https://github.com/borntyping/python-colorlog
 Source0:        %{url}/archive/v%{version}/%{srcname}-%{version}.tar.gz
 BuildArch:      noarch
 
-%if 0%{?rhel} && 0%{?rhel} < 8
-BuildRequires:  python2-devel
-BuildRequires:  python2-setuptools
-%else
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-%endif
+BuildRequires:  python3-pytest
 
 %description
 %{desc}
 
-%if 0%{?rhel} && 0%{?rhel} < 8
-%package -n python2-%{srcname}
-Summary:        %{summary}
-%{?python_provide:%python_provide python2-%{srcname}}
-
-%description -n python2-%{srcname}
-%{desc}
-%else
 %package -n python3-%{srcname}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{srcname}}
 
 %description -n python3-%{srcname}
 %{desc}
-%endif
 
 %prep
 %autosetup -n %{name}-%{version}
 
 %build
-%if 0%{?rhel} && 0%{?rhel} < 8
-%py2_build
-%else
 %py3_build
-%endif
 
 %install
-%if 0%{?rhel} && 0%{?rhel} < 8
-%py2_install
-%else
 %py3_install
-%endif
 
-%if 0%{?rhel} && 0%{?rhel} < 8
-%files -n python2-%{srcname}
-%doc README.md
-%license LICENSE
-%{python2_sitelib}/%{srcname}/
-%{python2_sitelib}/%{srcname}*.egg-info/
-%else
+%check
+%{pytest} -v
+
 %files -n python3-%{srcname}
 %doc README.md
 %license LICENSE
 %{python3_sitelib}/%{srcname}/
 %{python3_sitelib}/%{srcname}*.egg-info/
-%endif
 
 %changelog
+* Tue Oct 29 2024 Fabian Affolter <mail@fabian-affolter.ch> - 6.9.0-1
+- Update to latest upstream release (closes rhbz#2322532)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.8.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

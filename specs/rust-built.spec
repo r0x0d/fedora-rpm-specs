@@ -5,7 +5,7 @@
 %global crate built
 
 Name:           rust-built
-Version:        0.7.3
+Version:        0.7.4
 Release:        %autorelease
 Summary:        Crate with information from the time it was built
 
@@ -123,7 +123,7 @@ use the "semver" feature of the "%{crate}" crate.
 %if %{with check}
 %check
 # * skip tests that require internet access
-%cargo_test -- -- --exact --skip full_testbox
+%cargo_test -- -- --exact --skip full_testbox --skip source_date_epoch
 %endif
 
 %changelog

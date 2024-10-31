@@ -1,13 +1,17 @@
 Name:		globus-gridftp-server-control
 %global _name %(tr - _ <<< %{name})
 Version:	9.3
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	Grid Community Toolkit - Globus GridFTP Server Library
 
 License:	Apache-2.0
 URL:		https://github.com/gridcf/gct/
 Source:		https://repo.gridcf.org/gct6/sources/%{_name}-%{version}.tar.gz
 Source8:	README
+#		https://github.com/gridcf/gct/pull/223
+Patch0:		0001-Handle-64-bit-time_t-on-32-bit-systems.patch
+#		https://github.com/gridcf/gct/pull/226
+Patch1:		0001-Passing-argument-from-incompatible-pointer-type.patch
 
 BuildRequires:	make
 BuildRequires:	gcc
@@ -49,6 +53,8 @@ Globus GridFTP Server Library Development Files
 
 %prep
 %setup -q -n %{_name}-%{version}
+%patch -P0 -p4
+%patch -P1 -p4
 
 %build
 # Reduce overlinking
@@ -90,6 +96,10 @@ rm %{buildroot}%{_pkgdocdir}/GLOBUS_LICENSE
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Tue Oct 29 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 9.3-8
+- Handle 64 bit time_t on 32 bit systems
+- Fix passing argument from incompatible pointer
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 9.3-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

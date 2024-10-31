@@ -8,7 +8,7 @@
 
 Name:           myproxy
 Version:        6.2.16
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Manage X.509 Public Key Infrastructure (PKI) security credentials
 
 License:        NCSA AND BSD-4-Clause AND BSD-2-Clause AND Apache-2.0
@@ -19,6 +19,8 @@ Source8:        README
 #               Change private key cipher to aes-256-cbc
 #               https://github.com/gridcf/gct/pull/230
 Patch0:         0001-MyProxy-change-private-key-cipher-to-EVP_aes_256_cbc.patch
+#               https://github.com/gridcf/gct/pull/223
+Patch1:         0001-Handle-64-bit-time_t-on-32-bit-systems.patch
 
 BuildRequires:  make
 BuildRequires:  gcc
@@ -95,7 +97,7 @@ Package %{name}-devel contains development files for MyProxy.
 %package server
 Summary:        Server for X.509 Public Key Infrastructure (PKI) security credentials
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
-Requires(pre):  shadow-utils
+%{?sysusers_requires_compat}
 %{?systemd_requires}
 
 %description server
@@ -160,6 +162,7 @@ Package %{name}-doc contains the MyProxy documentation.
 %prep
 %setup -q
 %patch -P0 -p3
+%patch -P1 -p3
 
 %build
 # Reduce overlinking
@@ -321,6 +324,9 @@ rm %{buildroot}%{_sbindir}/myproxy-server-setup
 %license LICENSE*
 
 %changelog
+* Wed Oct 30 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 6.2.16-5
+- Handle 64 bit time_t on 32 bit systems
+
 * Wed Jul 24 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 6.2.16-4
 - Change private key cipher to aes-256-cbc
 - Remove obsolete system V conditionals in the specfile

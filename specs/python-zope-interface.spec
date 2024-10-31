@@ -46,6 +46,9 @@ Documentation for %{name}.
 %prep
 %autosetup -n zope.interface-%{version} -p1
 
+# Remove version limit from setuptools
+sed -i '/setuptools/s/<.*"/"/' pyproject.toml
+
 # Update the sphinx theme name
 sed -i "s/'default'/'classic'/" docs/conf.py
 

@@ -1,12 +1,10 @@
 Name:       sessreg
-Version:    1.1.2
-Release:    10%{?dist}
+Version:    1.1.3
+Release:    %autorelease
 Summary:    Utility to manage utmp/wtmp entries for X sessions
-
 License:    MIT AND MIT-open-group 
 URL:        https://www.x.org
-Source0:    https://www.x.org/pub/individual/app/%{name}-%{version}.tar.bz2
-
+Source0:    https://www.x.org/pub/individual/app/%{name}-%{version}.tar.xz
 BuildRequires:  automake libtool
 BuildRequires:  gcc make
 BuildRequires:  pkgconfig(xproto)
@@ -36,34 +34,4 @@ autoreconf -v --install
 %{_mandir}/man1/%{name}.1*
 
 %changelog
-* Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-10
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Sat Jan 27 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-9
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Fri Sep 08 2023 Peter Hutterer <peter.hutterer@redhat.com> - 1.1.2-8
-- SPDX migration
-
-* Sat Jul 22 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-7
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Sat Jan 21 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
-
-* Sat Jul 23 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
-
-* Sat Jan 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
-
-* Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
-
-* Thu Apr 08 2021 Peter Hutterer <peter.hutterer@redhat.com> - 1.1.2-2
-- Fix Obsoletes line to actually obsolete the -39 server-utils (#1932754)
-
-* Wed Mar 03 2021 Peter Hutterer <peter.hutterer@redhat.com> 1.1.2-1
-- Split sessreg out from xorg-x11-server-utils into a separate package
-  (#1934384)
-
+%autochangelog

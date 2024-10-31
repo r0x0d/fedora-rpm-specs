@@ -1,6 +1,6 @@
 # remirepo/fedora spec file for php-sabre-dav4
 #
-# Copyright (c) 2013-2022 Remi Collet
+# Copyright (c) 2013-2024 Remi Collet
 # License: CC-BY-SA
 # http://creativecommons.org/licenses/by-sa/4.0/
 #
@@ -10,7 +10,7 @@
 %bcond_without       tests
 
 # Github
-%global gh_commit    554145304b4a026477d130928d16e626939b0b2a
+%global gh_commit    074373bcd689a30bcf5aaa6bbb20a3395964ce7a
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     sabre-io
 %global gh_project   dav
@@ -24,8 +24,8 @@
 
 Name:           php-%{pk_vendor}-%{pk_project}%{major}
 Summary:        WebDAV Framework for PHP
-Version:        4.6.0
-Release:        5%{?dist}
+Version:        4.7.0
+Release:        1%{?dist}
 
 URL:            https://github.com/%{gh_owner}/%{gh_project}
 # sabre is BSD
@@ -112,11 +112,9 @@ Requires:       php-json
 #        "ext-curl" : "*",
 #        "ext-pdo" : "*",
 #        "ext-imap": "*"
-%if 0%{?fedora} >= 21 || 0%{?rhel} >= 8
 Recommends:     php-curl
 Recommends:     php-pdo
 Recommends:     php-imap
-%endif
 # Autoloader
 Requires:       php-composer(fedora/autoloader)
 
@@ -197,7 +195,7 @@ sed -e 's:@BUILDROOT@:%{buildroot}:' -i bootstrap.php
 
 : Run upstream test suite against installed library
 ret=0
-for cmdarg in "php %{phpunit}" php80 php81 php82 php83; do
+for cmdarg in "php %{phpunit}" php81 php82 php83 php84; do
   if which $cmdarg; then
     set $cmdarg
     for ts in sabre-dav sabre-davacl sabre-caldav sabre-carddav; do
@@ -224,6 +222,9 @@ exit $ret
 
 
 %changelog
+* Tue Oct 29 2024 Remi Collet <remi@remirepo.net> - 4.7.0-1
+- update to 4.7.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.6.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

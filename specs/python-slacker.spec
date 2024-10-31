@@ -10,7 +10,7 @@
 
 Name:           python-%{srcname}
 Version:        0.14.0
-Release:        17%{?dist}
+Release:        18%{?dist}
 Summary:        Python Slack API client
 
 License:        Apache-2.0
@@ -28,7 +28,7 @@ BuildRequires:  python3-setuptools
 BuildRequires:  python3-requests
 BuildRequires:  python3-responses
 %if %{?with_tests}
-BuildRequires:  python3-tox
+BuildRequires:  python3-pytest
 %endif
 Requires:       python3-requests
 %{?python_provide:%python_provide python3-%{srcname}}
@@ -53,7 +53,7 @@ Documentation files for %{name}.
 %py3_install
 
 %check
-%{?with_tests: %{__python3} setup.py test}
+%{?with_tests: %{pytest} -v}
 
 %files -n python3-%{srcname}
 %license LICENSE
@@ -64,9 +64,11 @@ Documentation files for %{name}.
 %files -n python3-%{srcname}-doc
 %license LICENSE
 %doc examples/
-%exclude /tests/
 
 %changelog
+* Tue Oct 29 2024 Fabian Affolter <mail@fabian-affolter.ch> - 0.14.0-18
+- Switch to pytest (closes rhbz#2319719)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.14.0-17
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

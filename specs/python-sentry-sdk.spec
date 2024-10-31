@@ -13,6 +13,7 @@
 # no_dramatiq: dramatiq is not packaged.
 # no_fakeredis: fakeredis is not packaged.
 # no_gql: gql is not packaged.
+# no_httpcore_http2: httpcore[http2] is not packaged.
 # no_huey: huey is not packaged.
 # no_huggingface_hub: huggingface_hub is not packaged.
 # no_langchain: langchain is not packaged.
@@ -30,12 +31,6 @@
 # no_strawberry: strawberry is not packaged.
 # no_trytond: trytond is not packaged.
 
-# no_py313_support_gevent: Do not install gevent and test with gevent on Fedora >= 41 for now,
-# since it is not fully compatible with Python 3.13.
-#   https://bugzilla.redhat.com/show_bug.cgi?id=2275488
-#   https://bugzilla.redhat.com/show_bug.cgi?id=2290569
-#   https://github.com/gevent/gevent/issues/2037
-
 # old_graphene: graphene in Fedora 41 is too old (Sentry SDK wants 3.3, Fedora 41 has 3.0b6).
 # new_werkzeug: werkzeug in Fedora 41 is too new (Sentry SDK wants < 2.1.0, Fedora 41 has 3.0.3).
 #   https://github.com/getsentry/sentry-python/issues/1398
@@ -44,7 +39,7 @@
 %bcond network_tests 0
 
 %global forgeurl https://github.com/getsentry/sentry-python
-Version:        2.15.0
+Version:        2.17.0
 %global tag %{version}
 %forgemeta
 
@@ -64,9 +59,14 @@ Patch1:         0001-Downstream-only-unpin-virtualenv.patch
 # Prefer python_multipart import over multipart
 # https://github.com/getsentry/sentry-python/pull/3710
 #
+# Merged as:
+#
+# fix(starlette): Prefer python_multipart import over multipart (#3710)
+# https://github.com/getsentry/sentry-python/commit/000c8e6c4eedf046c601b81d5d8d82f92115eddd
+#
 # This avoids a PendingDeprecationError in the tests when using the multipart
 # import name with python-multipart 0.0.13 or later.
-Patch2:         %{forgeurl}/pull/3710.patch
+Patch2:         %{forgeurl}/commit/000c8e6c4eedf046c601b81d5d8d82f92115eddd.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -79,7 +79,7 @@ BuildRequires:  postgresql15-test-rpm-macros
 BuildRequires:  python3dist(botocore)
 BuildRequires:  python3dist(certifi)
 BuildRequires:  python3dist(djangorestframework)
-# BuildRequires:  python3dist(gevent)  # no_py313_support_gevent
+BuildRequires:  python3dist(gevent)
 BuildRequires:  python3dist(graphene)
 BuildRequires:  python3dist(jsonschema)
 BuildRequires:  python3dist(protobuf)
@@ -182,11 +182,13 @@ Summary:        %{summary}
 # List of names of extras excluded (if not present in components_excluded)
 # celery-redbeat: no_celery_redbeat
 # clickhouse-driver: no_clickhouse_driver
+# http2: no_httpcore_http2
 # pyspark: no_pyspark
 %global extras_excluded %{shrink:
   %{components_excluded}
   celery-redbeat
   clickhouse-driver
+  http2
   pyspark
   %{nil}}
 
@@ -197,6 +199,7 @@ Summary:        %{summary}
   %{toxenvs_by_components}
   %{toxenv}-common
   %{toxenv}-cloud_resource_context
+  %{toxenv}-gevent
   %{toxenv}-grpc
   %{nil}
 }
@@ -214,7 +217,6 @@ Summary:        %{summary}
 # dramatiq: no_dramatiq
 # flask: new_werkzeug
 # gcp: python 3.7 only
-# gevent: no_py313_support_gevent
 # gql: no_gql
 # graphene: old_graphene
 # httpx: require network
@@ -242,7 +244,6 @@ Summary:        %{summary}
   %{toxenv}-dramatiq
   %{toxenv}-flask
   %{toxenv}-gcp
-  %{toxenv}-gevent
   %{toxenv}-gql
   %{toxenv}-graphene
   %{toxenv}-httpx
@@ -289,6 +290,9 @@ sed -r -i '/(newrelic)/d' tox.ini
 # These Python packages needed for linting are not packaged.
 sed -r -i '/(mypy-protobuf)/d' tox.ini
 sed -r -i '/(types-protobuf)/d' tox.ini
+
+# no_httpcore_http2
+sed -r -i '/(httpcore\[http2\])/d' requirements-testing.txt
 
 %generate_buildrequires
 %pyproject_buildrequires -x %{extras_csv} -e %{toxenvs_csv}
@@ -380,6 +384,7 @@ deselect="${deselect-} --deselect=tests/integrations/django/test_basic.py::test_
 deselect="${deselect-} --deselect=tests/integrations/django/test_basic.py::test_cache_spans_disabled_templatetag"
 deselect="${deselect-} --deselect=tests/integrations/django/test_basic.py::test_cache_spans_middleware"
 deselect="${deselect-} --deselect=tests/integrations/django/test_basic.py::test_cache_spans_templatetag"
+deselect="${deselect-} --deselect=tests/integrations/django/test_basic.py::test_ensures_spotlight_middleware_when_spotlight_is_enabled"
 deselect="${deselect-} --deselect=tests/integrations/aiohttp/test_aiohttp.py::test_span_origin"
 deselect="${deselect-} --deselect=tests/integrations/requests/test_requests.py::test_omit_url_data_if_parsing_fails"
 deselect="${deselect-} --deselect=tests/integrations/requests/test_requests.py::test_crumb_capture"

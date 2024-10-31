@@ -15,7 +15,7 @@ print(string.sub(hash, 0, 16))
 
 Name: libgcrypt
 Version: 1.11.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 URL: https://www.gnupg.org/
 Source0: https://www.gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-%{version}.tar.bz2
 Source1: https://www.gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-%{version}.tar.bz2.sig
@@ -24,6 +24,11 @@ Source2: https://gnupg.org/signature_key.asc
 Patch1: libgcrypt-1.10.1-annobin.patch
 # https://dev.gnupg.org/T7167
 Patch2: libgcrypt-1.11.0-Disable-SHA3-s390x-acceleration-for-CSHAKE.patch
+# https://dev.gnupg.org/T7220
+Patch3: libgcrypt-1.11.0-cf-protection.patch
+Patch4: libgcrypt-1.11.0-pac-bti-protection.patch
+# https://gitlab.com/redhat-crypto/libgcrypt/libgcrypt-mirror/-/merge_requests/19/
+Patch5: libgcrypt-1.11.0-marvin.patch
 
 %global gcrylibdir %{_libdir}
 %global gcrysoname libgcrypt.so.20
@@ -38,6 +43,7 @@ BuildRequires: texinfo
 BuildRequires: autoconf, automake, libtool
 BuildRequires: make
 BuildRequires: gnupg2
+BuildRequires: annobin-annocheck binutils
 
 %package devel
 Summary: Development files for the %{name} package
@@ -59,6 +65,9 @@ applications using libgcrypt.
 %setup -q
 %patch 1 -p1
 %patch 2 -p1
+%patch 3 -p1
+%patch 4 -p1
+%patch 5 -p1
 
 %build
 # should be all algorithms except SM3 and SM4, aria
@@ -79,6 +88,7 @@ autoreconf -f
      --disable-O-flag-munging \
      --enable-digests="$DIGESTS" \
      --enable-ciphers="$CIPHERS" \
+     --enable-marvin-workaround \
      --with-fips-module-version="$FIPS_MODULE_NAME %{version}-%{srpmhash}"
 sed -i -e '/^sys_lib_dlsearch_path_spec/s,/lib /usr/lib,/usr/lib /lib64 /usr/lib64 /lib,g' libtool
 %make_build
@@ -87,6 +97,8 @@ sed -i -e '/^sys_lib_dlsearch_path_spec/s,/lib /usr/lib,/usr/lib /lib64 /usr/lib
 make check
 # try in faked FIPS mode too
 LIBGCRYPT_FORCE_FIPS_MODE=1 make check
+
+PROFILE=%{?dist} annocheck --ignore-unknown --verbose --profile=${PROFILE:1} $RPM_BUILD_ROOT%{gcrylibdir}/libgcrypt.so.20.5.0
 
 # Add generation of HMAC checksums of the final stripped binaries 
 %define libpath $RPM_BUILD_ROOT%{gcrylibdir}/%{gcrysoname}.?.?
@@ -169,6 +181,12 @@ mkdir -p -m 755 $RPM_BUILD_ROOT/etc/gcrypt
 %license COPYING
 
 %changelog
+* Tue Oct 29 2024 Jakub Jelen <jjelen@redhat.com> - 1.11.0-4
+- Run annocheck as part of the build
+- Use upstream CF protection patches
+- Fix PAC/BTI protection for Aarch64
+- Fix CVE-2024-2236 (#2274128)
+
 * Thu Jul 25 2024 Jakub Jelen <jjelen@redhat.com> - 1.11.0-3
 - Disable -O flag munging and remove needles modification of LTO flags.
 

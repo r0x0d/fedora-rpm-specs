@@ -309,6 +309,9 @@ find %{buildroot} -type f -name ._.DS_Store -exec rm {} \;
 
 
 %changelog
+* Tue Oct 29 2024 Pat Riehecky <riehecky@fnal.gov> - 2.10.4-1
+- Update to 2.10.4
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 2.10.2-3
 - convert license to SPDX
 

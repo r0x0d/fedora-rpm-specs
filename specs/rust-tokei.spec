@@ -13,7 +13,7 @@ License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/tokei
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * bump git2 dependency from 0.13 to 0.18
+# * bump git2 dependency from 0.13 to 0.19
 # * remove reference to readme file that is not included in published crates
 Patch:          tokei-fix-metadata.diff
 

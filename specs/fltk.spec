@@ -14,7 +14,7 @@ Release:	    10%{?dist}
 Summary:	    C++ user interface toolkit
 
 # see COPYING (or http://www.fltk.org/COPYING.php ) for exceptions details
-License:	    LGPL-2.0-or-later with exceptions	
+License:	    LGPL-2.0-or-later WITH FLTK-exception
 URL:            http://www.fltk.org/
 
 Source0:        http://fltk.org/pub/%{name}/%{version}/%{name}-%{version}-source.tar.gz

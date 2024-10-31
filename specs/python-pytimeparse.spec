@@ -1,20 +1,8 @@
 %global pypi_name pytimeparse
 
-%if 0%{?fedora}
-%bcond_without python3
-%else
-%bcond_with python3
-%endif
-
-%if 0%{?fedora} && 0%{?fedora} >= 30
-%bcond_with python2
-%else
-%bcond_without python2
-%endif
-
 Name:           python-%{pypi_name}
 Version:        1.1.8
-Release:        20%{?dist}
+Release:        21%{?dist}
 Summary:        Time expression parser
 
 License:        MIT
@@ -22,42 +10,18 @@ URL:            https://github.com/wroberts/%{pypi_name}
 Source0:        %{pypi_source}
 BuildArch:      noarch
 
-%if %{with python2}
-BuildRequires:  python2-devel
-BuildRequires:  python2-nose
-BuildRequires:  python2-setuptools
-%endif
-
-%if %{with python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(nose)
 BuildRequires:  python3dist(setuptools)
-%endif
 
 %description
 A small Python module to parse various kinds of time expressions.
 
-%if %{with python2}
-%package -n     python2-%{pypi_name}
-Summary:        %{summary}
-%{?python_provide:%python_provide python2-%{pypi_name}}
-
-%description -n python2-%{pypi_name}
-A small Python module to parse various kinds of time expressions.
-
-This is the Python 2 version of the package.
-%endif
-
-%if %{with python3}
 %package -n     python3-%{pypi_name}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{pypi_name}}
 
 %description -n python3-%{pypi_name}
 A small Python module to parse various kinds of time expressions.
-
-This is the Python 3 version of the package.
-%endif
 
 %prep
 %autosetup -n %{pypi_name}-%{version}
@@ -68,49 +32,24 @@ rm -rf %{pypi_name}.egg-info
 find . -name '*.py' -exec sed -i '1 { /^#!/ d }' {} \+
 
 %build
-%if %{with python2}
-%py2_build
-%endif
-
-%if %{with python3}
 %py3_build
-%endif
 
 %install
-%if %{with python2}
-%py2_install
-%endif
-
-%if %{with python3}
 %py3_install
-%endif
 
 %check
-%if %{with python2}
-%{__python2} setup.py test
-%endif
+%{py3_test_envvars} %{python3} -m unittest
 
-%if %{with python3}
-%{__python3} setup.py test
-%endif
-
-%if %{with python2}
-%files -n python2-%{pypi_name}
-%license LICENSE.rst
-%doc README.rst
-%{python2_sitelib}/%{pypi_name}
-%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
-%endif
-
-%if %{with python3}
 %files -n python3-%{pypi_name}
 %license LICENSE.rst
 %doc README.rst
 %{python3_sitelib}/%{pypi_name}
 %{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
-%endif
 
 %changelog
+* Tue Oct 29 2024 Vojtech Trefny <vtrefny@redhat.com> - 1.1.8-21
+- Run tests manually using unittest and general spec cleanup (#2319710)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.8-20
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,16 +1,22 @@
 # Ciruclar dependency with soupsieve which must be disabled at times
+%if 0%{?rhel} > 9
+%bcond soupsieve 0
+%bcond tests 0
+%else
 %bcond soupsieve 1
 %bcond tests 1
+%endif
 
 Name:           python-beautifulsoup4
 Version:        4.12.3
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        HTML/XML parser for quick-turnaround applications like screen-scraping
 License:        MIT
 URL:            http://www.crummy.com/software/BeautifulSoup/
 Source0:        https://files.pythonhosted.org/packages/source/b/beautifulsoup4/beautifulsoup4-%{version}.tar.gz
 # https://git.launchpad.net/beautifulsoup/commit/?id=9786a62726de5a8caba10021c4d4a58c8a3e9e3f
-Patch0:         soupsieve26.patch
+Patch1:         soupsieve26.patch
+Patch11:        beautifulsoup4-4.12-disable-soupsieve.patch
 
 BuildArch:      noarch
 # html5lib BR just for test coverage
@@ -58,7 +64,11 @@ Obsoletes:      python3-BeautifulSoup < 1:3.2.1-2
 %description -n python3-beautifulsoup4 %_description
 
 %prep
-%autosetup -p1 -n beautifulsoup4-%{version}
+%autosetup -p1 -N -n beautifulsoup4-%{version}
+%autopatch -p1 -M 10
+%if %{without soupsieve}
+%autopatch -p1 -m 10
+%endif
 # Fix compatibility with lxml 5.3.0
 # Reported upstream: https://bugs.launchpad.net/beautifulsoup/+bug/2076897
 sed -i "s/strip_cdata=False,//" bs4/builder/_lxml.py
@@ -85,6 +95,9 @@ sed -i "s/strip_cdata=False,//" bs4/builder/_lxml.py
 %{python3_sitelib}/bs4
 
 %changelog
+* Tue Oct 29 2024 Terje Rosten <terjeros@gmail.com> - 4.12.3-8
+- Add soupsieve option
+
 * Tue Aug 13 2024 Lumír Balhar <lbalhar@redhat.com> - 4.12.3-7
 - Fix compatibility with lxml 5.3.0
 

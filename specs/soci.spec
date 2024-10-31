@@ -125,7 +125,7 @@ to install %{name}-sqlite3.}
 Summary:        MySQL back-end for %{name}
 Requires:       %{name}-devel = %{version}-%{release}
 Requires:       %{name}-mysql = %{version}-%{release}
-Requires:       mariadb-connector-c-devel
+Requires:       mysql-devel
 
 %description    mysql-devel
 This package contains the MySQL back-end for %{name}, i.e., header

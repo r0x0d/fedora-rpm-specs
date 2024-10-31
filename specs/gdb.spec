@@ -786,6 +786,9 @@ for i in `find $RPM_BUILD_ROOT%{_datadir}/gdb -name "*.py"`; do
 done
 %endif
 
+# Create the folder where GDB expects to find custom JIT readers.
+mkdir -p %{buildroot}%{_libdir}/gdb
+
 # Remove the files that are part of a gdb build but that are owned and
 # provided by other packages.
 # These are part of binutils
@@ -847,6 +850,8 @@ rmdir $RPM_BUILD_ROOT%{_datadir}/gdb/system-gdbinit
 # Provide gdb/jit-reader.h so that users are able to write their own GDB JIT
 # plugins.
 %{_includedir}/gdb
+# Export the folder where JIT readers should be placed.
+%dir %{_libdir}/gdb
 %if 0%{!?scl:1}
 %files headless
 %{_prefix}/libexec/gdb
@@ -926,6 +931,10 @@ fi
 # endif scl
 
 %changelog
+* Thu Oct 24 2024 Guinevere Larsen <guinevere@redhat.com>
+- Make the GDB package provide the libdir/gdb folder, so that packages
+  that provide a JIT reader don't need to create it on their own.
+
 * Fri Oct 4 2024 Alexandra Hájková <ahajkova@redhat.com> - 15.2-2
 - Rebase to FSF GDB 15.2.
 

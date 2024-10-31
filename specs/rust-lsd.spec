@@ -15,6 +15,7 @@ Source:         %{crates_source}
 Patch:          lsd-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * relax clap dependency from 4.3.* to ^4.3
+# * bump git2 dependency from 0.18 to 0.19
 # * bump lscolors dependency from 0.16 to 0.17
 # * bump unicode-width dependency from 0.1.13 to 0.2.0
 Patch:          lsd-fix-metadata.diff

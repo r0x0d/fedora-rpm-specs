@@ -4,7 +4,7 @@
 %global rocm_version %{rocm_release}.%{rocm_patch}
 Name:           hsakmt
 Version:        1.0.6
-Release:        45.rocm%{rocm_version}%{?dist}
+Release:        46.rocm%{rocm_version}%{?dist}
 Summary:        AMD HSA thunk library
 
 License:        MIT
@@ -15,8 +15,9 @@ Patch1:         0001-Improve-finding-rocm-smi.patch
 
 # Fedora builds AMD HSA kernel support for these 64bit targets:
 ExclusiveArch: x86_64 aarch64 ppc64le
-BuildRequires:  gcc
-BuildRequires:  gcc-c++
+BuildRequires: gcc
+BuildRequires: gcc-c++
+BuildRequires: hipcc
 BuildRequires: rocm-llvm-devel
 BuildRequires: rocm-compilersupport-macros
 BuildRequires: cmake
@@ -61,7 +62,8 @@ sed -i "s/{HSAKMT_LIBRARY_DIRS}/{LIBHSAKMT_PATH}/" tests/kfdtest/CMakeLists.txt
 sed -i "s/GROUP_WRITE//" tests/kfdtest/CMakeLists.txt
 
 %build
-LLVM_CMAKEDIR=`llvm-config-%{rocmllvm_version} --cmakedir`
+LLVM_BINDIR=`hipconfig -l`
+LLVM_CMAKEDIR=`${LLVM_BINDIR}/llvm-config --cmakedir`
 if [ ! -d ${LLVM_CMAKEDIR} ]; then
     echo "Something wrong with llvm-config"
     false
@@ -112,6 +114,9 @@ rm %{buildroot}%{_docdir}/hsakmt/LICENSE.md
 %exclude %{_libdir}/libhsakmt-staticdrm.a
 
 %changelog
+* Tue Oct 29 2024 Tom Rix <Tom.Rix@amd.com> - 1.0.6-46.rocm6.2.0
+- Use hipconfig to find llvm-config
+
 * Mon Oct 7 2024 Tom Rix <Tom.Rix@amd.com> - 1.0.6-45.rocm6.2.0
 - Need some help to find llvm
 

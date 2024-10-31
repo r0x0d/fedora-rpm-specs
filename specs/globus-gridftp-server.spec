@@ -9,7 +9,7 @@
 Name:		globus-gridftp-server
 %global _name %(tr - _ <<< %{name})
 Version:	13.25
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	Grid Community Toolkit - Globus GridFTP Server
 
 License:	Apache-2.0
@@ -20,6 +20,10 @@ Source2:	globus-gridftp-sshftp.service
 Source3:	%{name}
 Source4:	globus-gridftp-sshftp
 Source8:	README
+#		https://github.com/gridcf/gct/pull/224
+Patch0:		0001-Correct-spelling-error-found-by-lintian.patch
+#		https://github.com/gridcf/gct/pull/223
+Patch1:		0001-Handle-64-bit-time_t-on-32-bit-systems.patch
 
 BuildRequires:	make
 BuildRequires:	gcc
@@ -114,6 +118,8 @@ Globus GridFTP Server Development Files
 
 %prep
 %setup -q -n %{_name}-%{version}
+%patch -P0 -p4
+%patch -P1 -p4
 
 %build
 # Reduce overlinking
@@ -245,6 +251,9 @@ fi
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Tue Oct 29 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 13.25-3
+- Handle 64 bit time_t on 32 bit systems
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 13.25-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

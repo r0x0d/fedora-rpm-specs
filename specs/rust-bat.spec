@@ -18,6 +18,7 @@ Patch:          bat-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * port from path_abs to path-absolutize:
 #   https://github.com/sharkdp/bat/pull/1025
+# * bump git2 from 0.18 to 0.19
 # * bump nix from 0.26 to 0.29
 # * bump nu-ansi-term from 0.49.0 to 0.50.0
 # * adapt license tag to reflect bundled content

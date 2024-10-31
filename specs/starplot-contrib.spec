@@ -2,7 +2,7 @@ Summary:	Stellar data set for use by the StarPlot tool
 Name:		starplot-contrib
 Version:	3
 Release:	27%{?dist}
-License:	Public Domain
+License:	LicenseRef-Fedora-Public-Domain
 URL:		http://starplot.org/
 Source0:	http://starplot.org/data/stars_with_planets%{version}.stars
 

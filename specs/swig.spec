@@ -68,7 +68,7 @@
 Summary: Connects C/C++/Objective C to some high-level programming languages
 Name:    swig
 Version: 4.3.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPL-3.0-or-later AND BSD-3-Clause
 URL:     https://www.swig.org/
 Source0: http://downloads.sourceforge.net/project/swig/swig/swig-%{version}/swig-%{version}.tar.gz
@@ -79,6 +79,9 @@ Source2: description-ccache.h2m
 Source3: ccache-swig.sh
 Source4: ccache-swig.csh
 %endif
+# Fix precedence of casts - in upstream after 4.3.0
+# https://github.com/swig/swig/issues/3058
+Patch1:  swig-4.3.0-Fix-precedence-of-casts.patch
 
 BuildRequires: coreutils
 BuildRequires: findutils
@@ -362,6 +365,9 @@ install -pm 644 Tools/swig.gdb %{buildroot}%{_datadir}/%{name}/gdb
 %{_datadir}/%{name}/gdb
 
 %changelog
+* Tue Oct 29 2024 Jitka Plesnikova <jplesnik@redhat.com> - 4.3.0-2
+- Fix precedence of casts
+
 * Mon Oct 21 2024 Jitka Plesnikova <jplesnik@redhat.com> - 4.3.0-1
 - 4.3.0 bump (rhbz#2320047)
 

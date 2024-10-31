@@ -24,6 +24,7 @@ Patch:          cargo-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * drop features for statically linking cURL, libgit2, OpenSSL, and SQLite
 # * update base64 dependency to version 0.22
+# * update git2 / git2-curl / libgit2 dependencies
 # * update gix dependency to version 0.66
 # * update itertools dependency to version 0.13
 # * update supports-unicode dependency to version 3

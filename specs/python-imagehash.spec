@@ -2,10 +2,9 @@
 
 Name:           python-%{pypi_name}
 Version:        4.3.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A Python perceptual image hashing module
 
-# Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
 URL:            https://github.com/JohannesBuchner/imagehash
 Source0:        https://github.com/JohannesBuchner/imagehash/archive/%{version}/%{pypi_name}-%{version}.tar.gz
@@ -23,9 +22,8 @@ BuildRequires:  python3-setuptools
 BuildRequires:  python3-pywt
 BuildRequires:  python3-pillow
 BuildRequires:  python3-scipy
+BuildRequires:  python3-pytest
 BuildRequires:  python3-six
-BuildRequires:  python3-wheel, python3-pip, python3-pytest
-%{?python_provide:%python_provide python3-%{pypi_name}}
 
 %description -n python3-%{pypi_name}
 A image hashing library written in Python. ImageHash supports average hashing,
@@ -49,14 +47,13 @@ Demo tool for %{pypi_name}.
 rm -rf %{buildroot}/usr/images
 
 %check
-%{__python3} setup.py test
+%{pytest} -v
 
 %files -n python3-%{pypi_name}
 %doc README.rst
 %license LICENSE
 %{python3_sitelib}/%{pypi_name}/
 %{python3_sitelib}/*.egg-info
-%exclude %{python3_sitelib}/%{pypi_name}/tests/
 
 %files -n %{pypi_name}-demo
 %doc README.rst
@@ -64,6 +61,9 @@ rm -rf %{buildroot}/usr/images
 %{_bindir}/find_similar_images.py
 
 %changelog
+* Tue Oct 29 2024 Fabian Affolter <mail@fabian-affolter.ch> - 4.3.2-3
+- Switch to pytest (closes rhbz#2319665)
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 4.3.2-2
 - convert license to SPDX
 

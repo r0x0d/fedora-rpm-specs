@@ -3,13 +3,13 @@
 
 %global commit dc754757abd466cbf2cc74bcf5ab7094f53a2426
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global gitrelease 20240620git%{shortcommit}
-%global pre ~pre
+%dnl %global gitrelease 20240620git%{shortcommit}
+%dnl %global pre ~pre
 %global __python3 PBR_VERSION=%{version} %{__python3}
 
 Name:           python-%{pypi_name}
 Version:        0.11.0
-Release:        1%{?pre:}%{gitrelease}%{?dist}
+Release:        2%{?pre:}%{?gitrelease:}%{?dist}
 Summary:        Client library for accessing Gerrit
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
@@ -29,6 +29,12 @@ BuildRequires:  python3-setuptools
 BuildRequires:  python3-pbr
 BuildRequires:  python3-hacking
 BuildRequires:  python3-paramiko
+
+# Test dependencies:
+BuildRequires: python3dist(nox)
+BuildRequires: python3dist(sphinx)
+BuildRequires: python3dist(python-subunit)
+BuildRequires: python3dist(stestr)
 
 %description
 %{desc}
@@ -64,7 +70,7 @@ cp %{SOURCE2} ChangeLog
 %py3_install
 
 %check
-%{__python3} setup.py test
+%{py3_test_envvars} %{python3} -m nox --non-interactive --no-venv -k "tests and not lint" --no-install
 
 %files -n python3-%{pypi_name}
 %doc README.rst AUTHORS ChangeLog
@@ -73,6 +79,10 @@ cp %{SOURCE2} ChangeLog
 %{python3_sitelib}/%{pypi_name}
 
 %changelog
+* Tue Oct 29 2024 Neil Hanlon <neil@shrug.pw> - 0.11.0-2
+- drop pre tag
+- stop using setup.py test -- switch to nox (#2319663)
+
 * Mon Aug 26 2024 Neil Hanlon <neil@shrug.pw> - 0.11.0-1~pre20240620gitc754757a
 - bump to latest git commit on opendev
 - resolve #2291720 #2261563 fti/ftbfs

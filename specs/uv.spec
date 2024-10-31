@@ -20,7 +20,7 @@
 %constrain_build -m 4096
 
 Name:           uv
-Version:        0.4.25
+Version:        0.4.28
 Release:        %autorelease
 Summary:        An extremely fast Python package installer and resolver, written in Rust
 
@@ -553,7 +553,7 @@ tomcli set crates/uv-auth/Cargo.toml del dev-dependencies.wiremock
 mods="${mods-}${mods+|}branching_urls"
 mods="${mods-}${mods+|}build_backend"
 mods="${mods-}${mods+|}pip_(check|list|show|tree|uninstall)"
-mods="${mods-}${mods+|}python_dir"
+mods="${mods-}${mods+|}python_(dir|find|install|pin)"
 mods="${mods-}${mods+|}venv"
 mods="${mods-}${mods+|}workspace"
 comment='Downstream-only: skip, needs specific Python interpreter versions'
@@ -567,27 +567,6 @@ sed -r -i "s@mod (${mods});@// ${comment}\n#[cfg(any())]\n&@" \
 tomcli set crates/uv/Cargo.toml del dependencies.axoupdater
 tomcli set crates/uv/Cargo.toml del features.self-update
 tomcli set crates/uv/Cargo.toml del dependencies.tracing-durations-export
-
-# Since uv 0.4.21, upstream uses the rust-netrc crate as a git snapshot
-# dependency in order to get bugfixes from
-# https://github.com/gribouille/netrc/pull/3, fixing issues for Windows users,
-# https://github.com/astral-sh/uv/issues/8003.
-#
-# Close examination of the changes since 0.1.1 shows that there should be no
-# behavioral changes on non-Windows platforms, so we can safely patch the
-# dependency to use the released crate.
-#
-# At the same time, we have filed https://github.com/gribouille/netrc/issues/7
-# to encourage rust-netrc to make a new release so that uv upstream can use it,
-# as we would prefer not to carry this patch indefinitely.
-#
-# https://docs.fedoraproject.org/en-US/packaging-guidelines/Rust/#_replacing_git_dependencies
-#
-# See the git2path shell function we defined earlier, except we are replacing
-# the git dependency with a version dependency rather than a path one.
-tomcli set Cargo.toml del workspace.dependencies.rust-netrc.git
-tomcli set Cargo.toml del workspace.dependencies.rust-netrc.rev
-tomcli set Cargo.toml str workspace.dependencies.rust-netrc.version '0.1.1'
 
 # Loosen some version bounds that were aggressively updated upstream by the
 # renovate bot. We retain this comment and the following example even when
@@ -618,6 +597,13 @@ tomcli set Cargo.toml str \
 #   https://bugzilla.redhat.com/show_bug.cgi?id=2258714
 tomcli set Cargo.toml str \
     workspace.dependencies.mailparse.version '>=0.14,<0.16'
+
+# goblin
+#   wanted: 0.9.0
+#   currently packaged: 0.8.2
+#   https://bugzilla.redhat.com/show_bug.cgi?id=2320112
+tomcli set Cargo.toml str \
+    workspace.dependencies.goblin.version '>=0.8.2,<0.10'
 
 %cargo_prep
 

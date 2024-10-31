@@ -3,8 +3,8 @@
 %global __requires_exclude ^libCuteLogger\\.so
 
 Name:           shotcut
-Version:        24.10.13
-Release:        3%{dist}
+Version:        24.10.28
+Release:        1%{dist}
 Summary:        A free, open source, cross-platform video editor
 # Main code is GPLv3+
 License:        GPL-3.0-or-later AND LGPL-2.1-only AND Apache-2.0 AND MIT
@@ -234,6 +234,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/%{org_name_sh
 %doc doc
 
 %changelog
+* Tue Oct 29 2024 Martin Gansser <martinkg@fedoraproject.org> - 24.10.28-1
+- Update to 24.10.28
+
 * Thu Oct 17 2024 Martin Gansser <martinkg@fedoraproject.org> - 24.10.13-3
 - Add Euskara language
 

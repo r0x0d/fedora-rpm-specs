@@ -1,10 +1,10 @@
 Name:		udt
 Version:	4.11
-Release:	26%{?dist}
+Release:	27%{?dist}
 Summary:	UDP based Data Transfer Protocol
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:	LicenseRef-Callaway-BSD
+#		BSD except for src/md5.cpp and src/md5.h that are Zlib
+License:	BSD-3-Clause AND Zlib
 URL:		http://udt.sourceforge.net/
 Source0:	http://downloads.sourceforge.net/project/udt/udt/%{version}/udt.sdk.%{version}.tar.gz
 
@@ -74,6 +74,9 @@ install -p -m 644 src/*.h %{buildroot}%{_includedir}/udt
 %doc doc
 
 %changelog
+* Tue Oct 29 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 4.11-27
+- Update License tag
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 4.11-26
 - convert license to SPDX
 

@@ -6,7 +6,7 @@
 %global crate rustls
 
 Name:           rust-rustls
-Version:        0.23.13
+Version:        0.23.16
 Release:        %autorelease
 Summary:        Modern TLS library written in Rust
 
@@ -16,7 +16,6 @@ Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * default to the ring crypto backend
 # * drop support for the aws-lc-rs crypto backend
-# * drop support for brotli and zlib de/compression
 # * drop unused, benchmark-only bencher dev-dependency
 Patch:          rustls-fix-metadata.diff
 
@@ -53,6 +52,18 @@ This package contains library source intended for building other packages which
 use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+brotli-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+brotli-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "brotli" feature of the "%{crate}" crate.
+
+%files       -n %{name}+brotli-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+custom-provider-devel
@@ -161,6 +172,18 @@ This package contains library source intended for building other packages which
 use the "tls12" feature of the "%{crate}" crate.
 
 %files       -n %{name}+tls12-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+zlib-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+zlib-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "zlib" feature of the "%{crate}" crate.
+
+%files       -n %{name}+zlib-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep

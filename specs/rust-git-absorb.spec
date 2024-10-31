@@ -4,7 +4,7 @@
 %global crate git-absorb
 
 Name:           rust-git-absorb
-Version:        0.6.13
+Version:        0.6.15
 Release:        %autorelease
 Summary:        Git commit --fixup, but automatic
 

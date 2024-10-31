@@ -7,13 +7,15 @@
 Name:		globus-gram-job-manager-fork
 %global _name %(tr - _ <<< %{name})
 Version:	3.3
-Release:	8%{?dist}
+Release:	9%{?dist}
 Summary:	Grid Community Toolkit - Fork Job Manager Support
 
 License:	Apache-2.0
 URL:		https://github.com/gridcf/gct/
 Source:		https://repo.gridcf.org/gct6/sources/%{_name}-%{version}.tar.gz
 Source8:	README
+#		https://github.com/gridcf/gct/pull/223
+Patch0:		0001-Handle-64-bit-time_t-on-32-bit-systems.patch
 
 BuildRequires:	make
 BuildRequires:	gcc
@@ -95,6 +97,7 @@ state
 
 %prep
 %setup -q -n %{_name}-%{version}
+%patch -P0 -p6
 
 %build
 # Reduce overlinking
@@ -181,6 +184,9 @@ fi
 %config(noreplace) %{_sysconfdir}/globus/scheduler-event-generator/available/fork
 
 %changelog
+* Tue Oct 29 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 3.3-9
+- Handle 64 bit time_t on 32 bit systems
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.3-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

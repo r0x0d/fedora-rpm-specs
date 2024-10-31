@@ -4,7 +4,7 @@
 
 # https://github.com/projectdiscovery/retryabledns
 %global goipath         github.com/projectdiscovery/retryabledns
-Version:                1.0.81
+Version:                1.0.82
 
 %gometa -L -f
 

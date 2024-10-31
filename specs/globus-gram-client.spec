@@ -1,13 +1,15 @@
 Name:		globus-gram-client
 %global _name %(tr - _ <<< %{name})
 Version:	14.6
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	Grid Community Toolkit - GRAM Client Library
 
 License:	Apache-2.0
 URL:		https://github.com/gridcf/gct/
 Source:		https://repo.gridcf.org/gct6/sources/%{_name}-%{version}.tar.gz
 Source8:	README
+#		https://github.com/gridcf/gct/pull/224
+Patch0:		0001-Correct-spelling-error-found-by-lintian.patch
 
 BuildRequires:	make
 BuildRequires:	gcc
@@ -60,6 +62,7 @@ GRAM Client Library Documentation Files
 
 %prep
 %setup -q -n %{_name}-%{version}
+%patch -P0 -p4
 
 %build
 # Reduce overlinking
@@ -111,6 +114,9 @@ GLOBUS_HOSTNAME=localhost %make_build check
 %license GLOBUS_LICENSE
 
 %changelog
+* Tue Oct 29 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 14.6-8
+- Correct spelling error found by lintian
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 14.6-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,15 +1,13 @@
 %global pypi_name dfdatetime
-%global date 20200824
 
 Name:           python-%{pypi_name}
-Version:        0.0.%{date}
-Release:        15%{?dist}
+Version:        20240504
+Release:        1%{?dist}
 Summary:        Python module for digital forensics date and time
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://github.com/log2timeline/dfdatetime
-Source0:        %{url}/archive/%{date}/%{pypi_name}-%{date}.tar.gz
+Source0:        %{url}/archive/%{version}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
 
 %description
@@ -21,14 +19,14 @@ Summary:        %{summary}
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-%{?python_provide:%python_provide python3-%{pypi_name}}
+BuildRequires:  python3-pytest
 
 %description -n python3-%{pypi_name}
 A Python module that provides date and time objects to preserve accuracy and
 precision for digital forensics.
 
 %prep
-%autosetup -n %{pypi_name}-%{date}
+%autosetup -n %{pypi_name}-%{version}
 
 %build
 %py3_build
@@ -38,7 +36,7 @@ precision for digital forensics.
 rm -rf %{buildroot}%{_defaultdocdir}/%{pypi_name}/*
 
 %check
-%{__python3} setup.py test
+%{pytest} -v tests/*.py
 
 %files -n python3-%{pypi_name}
 %doc ACKNOWLEDGEMENTS AUTHORS README
@@ -47,6 +45,10 @@ rm -rf %{buildroot}%{_defaultdocdir}/%{pypi_name}/*
 %{python3_sitelib}/%{pypi_name}/
 
 %changelog
+* Tue Oct 29 2024 Fabian Affolter <mail@fabian-affolter.ch> - 20240504-1
+- Update to latest upstream release
+- Switch to pytest (closes rhbz#2319650)
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0.0.20200824-15
 - convert license to SPDX
 

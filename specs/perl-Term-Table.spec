@@ -4,14 +4,14 @@
 %bcond_without perl_Term_Table_enables_unicode
 
 Name:           perl-Term-Table
-Version:        0.022
+Version:        0.023
 Release:        1%{?dist}
 Summary:        Format a header and rows into a table
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Term-Table
 Source0:        https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Term-Table-%{version}.tar.gz
 # Unbundle Object::HashBase
-Patch0:         Term-Table-0.022-Use-system-Object-HashBase.patch
+Patch0:         Term-Table-0.023-Use-system-Object-HashBase.patch
 BuildArch:      noarch
 BuildRequires:  make
 BuildRequires:  perl-generators
@@ -39,7 +39,6 @@ BuildRequires:  perl(Unicode::GCString) >= 2013.10
 BuildRequires:  perl(base)
 BuildRequires:  perl(Test2::API)
 BuildRequires:  perl(Test2::Tools::Tiny) >= 1.302097
-BuildRequires:  perl(Test::More)
 BuildRequires:  perl(utf8)
 %if %{with perl_Term_Table_enables_terminal}
 Suggests:       perl(Term::ReadKey) >= 2.32
@@ -106,6 +105,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Tue Oct 29 2024 Michal Josef Špaček <mspacek@redhat.com> - 0.023-1
+- 0.023 bump
+
 * Fri Aug 16 2024 Michal Josef Špaček <mspacek@redhat.com> - 0.022-1
 - 0.022 bump
 

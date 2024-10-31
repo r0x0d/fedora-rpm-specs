@@ -1,13 +1,15 @@
 Name:		globus-gram-job-manager
 %global _name %(tr - _ <<< %{name})
 Version:	15.8
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	Grid Community Toolkit - GRAM Jobmanager
 
 License:	Apache-2.0
 URL:		https://github.com/gridcf/gct/
 Source:		https://repo.gridcf.org/gct6/sources/%{_name}-%{version}.tar.gz
 Source8:	README
+#		https://github.com/gridcf/gct/pull/223
+Patch0:		0001-Handle-64-bit-time_t-on-32-bit-systems.patch
 
 BuildRequires:	make
 BuildRequires:	gcc
@@ -93,6 +95,7 @@ Scheduler Event Generator Job Manager
 
 %prep
 %setup -q -n %{_name}-%{version}
+%patch -P0 -p4
 
 %build
 # Reduce overlinking
@@ -161,6 +164,9 @@ GLOBUS_HOSTNAME=localhost %make_build check
 %{_libdir}/libglobus_seg_job_manager.so
 
 %changelog
+* Tue Oct 29 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 15.8-8
+- Handle 64 bit time_t on 32 bit systems
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 15.8-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

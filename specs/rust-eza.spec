@@ -4,7 +4,7 @@
 %global crate eza
 
 Name:           rust-eza
-Version:        0.18.11
+Version:        0.19.3
 Release:        %autorelease
 Summary:        Modern replacement for ls
 
@@ -14,6 +14,7 @@ Source:         %{crates_source}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          eza-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
+# * temporarily downgrade palette dependency from 0.7.6 to 0.7.5
 # * drop feature for statically linking with OpenSSL
 # * drop unused, benchmark-only criterion dev-dependency
 # * drop features that are specific to NixOS packaging

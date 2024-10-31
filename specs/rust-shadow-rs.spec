@@ -13,7 +13,7 @@ License:        MIT AND Apache-2.0
 URL:            https://crates.io/crates/shadow-rs
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * bump git2 dependency from 0.13 to 0.18
+# * bump git2 dependency from 0.13 to 0.19
 Patch:          shadow-rs-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

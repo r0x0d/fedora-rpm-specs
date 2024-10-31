@@ -6,7 +6,7 @@
 %global crate git2-hooks
 
 Name:           rust-git2-hooks
-Version:        0.3.1
+Version:        0.4.0
 Release:        %autorelease
 Summary:        Adds git hooks support based on git2-rs
 

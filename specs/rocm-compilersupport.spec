@@ -9,21 +9,22 @@
 %global llvm_maj_ver 18
 %global upstreamname llvm-project
 
-# Used to tell cmake where to install device libs (must be relative to prefix)
-# We want to install to clang_resource_dir/amdgcn for FHS compliance
-%global amd_device_libs_prefix lib/clang/%{llvm_maj_ver}
-
 %global toolchain clang
 
-%bcond_without bundled_llvm
+%bcond_with bundled_llvm
 %if %{with bundled_llvm}
 %global _smp_mflags %{nil}
 %global _lto_cflags %{nil}
+%global amd_device_libs_prefix lib/clang/19
+%else
+# Used to tell cmake where to install device libs (must be relative to prefix)
+# We want to install to clang_resource_dir/amdgcn for FHS compliance
+%global amd_device_libs_prefix lib/clang/%{llvm_maj_ver}
 %endif
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        11.rocm%{rocm_version}%{?dist}
+Release:        14.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -47,12 +48,15 @@ BuildRequires:  libffi-devel
 BuildRequires:  perl
 BuildRequires:  perl-generators
 BuildRequires:  zlib-devel
-BuildRequires:  llvm-devel(major) = %{llvm_maj_ver}
-BuildRequires:  clang-devel(major) = %{llvm_maj_ver}
 
 %if %{without bundled_llvm}
+BuildRequires:  llvm-devel(major) = %{llvm_maj_ver}
+BuildRequires:  clang-devel(major) = %{llvm_maj_ver}
 BuildRequires:  lld-devel(major) = %{llvm_maj_ver}
 %else
+BuildRequires:  llvm-devel
+BuildRequires:  clang-devel
+BuildRequires:  lld-devel
 BuildRequires:  clang
 BuildRequires:  ninja-build
 Provides:       bundled(llvm-project) = %{llvm_maj_ver}
@@ -73,10 +77,17 @@ This package contains ROCm compiler related RPM macros.
 
 %package -n rocm-device-libs
 Summary:        AMD ROCm LLVM bit code libraries
+%if %{without bundled_llvm}
 Requires:       clang-devel(major) = %{llvm_maj_ver}
 Requires:       clang-resource-filesystem(major) = %{llvm_maj_ver}
 Requires:       lld-devel(major) = %{llvm_maj_ver}
 Requires:       llvm-devel(major) = %{llvm_maj_ver}
+%else
+Requires:       clang-devel
+Requires:       clang-resource-filesystem
+Requires:       lld-devel
+Requires:       llvm-devel
+%endif
 
 %description -n rocm-device-libs
 This package contains a set of AMD specific device-side language runtime
@@ -100,8 +111,13 @@ operations for creating and inspecting code objects.
 %package -n rocm-comgr-devel
 Summary:        AMD ROCm LLVM Code Object Manager
 Requires:       rocm-comgr%{?_isa} = %{version}-%{release}
+%if %{without bundled_llvm}
 Requires:       clang-devel(major) = %{llvm_maj_ver}
 Requires:       llvm-devel(major) = %{llvm_maj_ver}
+%else
+Requires:       clang-devel
+Requires:       llvm-devel
+%endif
 
 %description -n rocm-comgr-devel
 The AMD Code Object Manager (Comgr) development package.
@@ -110,7 +126,11 @@ The AMD Code Object Manager (Comgr) development package.
 Summary:        HIP compiler driver
 Requires:       rocminfo
 Requires:       rocm-device-libs = %{version}-%{release}
+%if %{without bundled_llvm}
 Requires:       compiler-rt(major) = %{llvm_maj_ver}
+%else
+Requires:       compiler-rt
+%endif
 
 %description -n hipcc
 hipcc is a compiler driver utility that will call clang or nvcc, depending on
@@ -130,7 +150,11 @@ LLVM devel files used when building ROCm.
 %package -n hipcc-libomp-devel
 Summary:        OpenMP header files for hipcc
 Requires:       hipcc = %{version}-%{release}
+%if %{without bundled_llvm}
 Requires:       libomp-devel(major) = %{llvm_maj_ver}
+%else
+Requires:       libomp-devel
+%endif
 
 %description -n hipcc-libomp-devel
 OpenMP header files compatible with HIPCC.
@@ -138,12 +162,12 @@ OpenMP header files compatible with HIPCC.
 %prep
 %autosetup -p1 -n %{upstreamname}-rocm-%{rocm_version}
 
+%if %{without bundled_llvm}
 # llvm_maj_ver sanity check (we should be matching the bundled llvm major ver):
 if ! grep -q "set(LLVM_VERSION_MAJOR %{llvm_maj_ver})" llvm/CMakeLists.txt; then
         echo "ERROR llvm_maj_ver macro is not correctly set"
         exit 1
 fi
-%if %{without bundled_llvm}
 # Make sure we only build the AMD bits by discarding the bundled llvm code:
 ls | grep -xv "amd" | xargs rm -r
 %endif
@@ -155,10 +179,12 @@ sed -i '/Args.push_back("-isystem");/,+3d' amd/comgr/src/comgr-compiler.cpp
 #Source hard codes the libdir too:
 sed -i 's/lib\(\/clang\)/%{_lib}\1/' amd/comgr/src/comgr-compiler.cpp
 
+%if %{without bundled_llvm}
 # CMake's find_package Config mode doesn't work if we use older llvm packages:
 sed -i 's/find_package(Clang REQUIRED CONFIG)/find_package(Clang REQUIRED)/' amd/comgr/CMakeLists.txt
 sed -i 's/find_package(LLD REQUIRED CONFIG)/find_package(LLD REQUIRED)/' amd/comgr/CMakeLists.txt
 sed -i 's@${CLANG_CMAKE_DIR}/../../../@/usr/lib/clang/%{llvm_maj_ver}/@' amd/comgr/cmake/opencl_pch.cmake
+%endif
 
 # Fixup finding /opt/llvm
 sed -i -e 's@sys::path::append(LLVMPath, "llvm");@//sys::path::append(LLVMPath, "llvm");@' amd/comgr/src/comgr-env.cpp
@@ -185,14 +211,20 @@ sed -i '/^# Add paths to common HIP includes:/,/^$HIPCFLAGS/d' \
 
 # HIPCC fixes to find clang++
 # Fedora places clang++ in the regular bindir:
+%if %{without bundled_llvm}
 LLVM_BINDIR=`llvm-config-%{llvm_maj_ver} --bindir`
+%else
+LLVM_BINDIR=`llvm-config --bindir`
+%endif
 if [ ! -x ${LLVM_BINDIR}/clang++ ]; then
     echo "Something wrong with llvm-config"
     false
 fi
 echo "s@\$ROCM_PATH/lib/llvm/bin@${LLVM_BINDIR}@" > pm.sed
-echo "s@hipClangPath /= \"lib/llvm/bin\"@hipClangPath = \"${LLVM_BINDIR}\"@" > h.sed
 sed -i -f pm.sed amd/hipcc/bin/hipvars.pm
+sed -i -e 's@/opt/rocm@%{_prefix}@' amd/hipcc/bin/hipvars.pm
+
+echo "s@hipClangPath /= \"lib/llvm/bin\"@hipClangPath = \"${LLVM_BINDIR}\"@" > h.sed
 sed -i -f h.sed amd/hipcc/src/hipBin_amd.h
 
 #Make sure clang-MAJOR and clang++MAJOR is used over clang and clang++
@@ -205,8 +237,8 @@ sed -i -f h.sed amd/hipcc/src/hipBin_amd.h
 sed -i 's|@AMD_DEVICE_LIBS_PREFIX_CODE@|set(AMD_DEVICE_LIBS_PREFIX "%{_prefix}/%{amd_device_libs_prefix}")|' amd/device-libs/AMDDeviceLibsConfig.cmake.in
 
 %build
-echo "%%rocmllvm_version %llvm_maj_ver" > macros.rocmcompiler
 %if %{without bundled_llvm}
+echo "%%rocmllvm_version %llvm_maj_ver" > macros.rocmcompiler
 # SYSTEM LLVM
 export PATH=%{_libdir}/llvm%{llvm_maj_ver}/bin:$PATH
 export INCLUDE_PATH=%{_libdir}/llvm%{llvm_maj_ver}/include
@@ -235,6 +267,8 @@ popd
 
 %else
 # BUNDLED LLVM
+CLANG_VERSION=`clang --version | head -n 1 | grep -o -E "| [[:digit:]][[:digit:]]" | uniq | sort`
+echo "%%rocmllvm_version $CLANG_VERSION" > macros.rocmcompiler
 
 # Real cores, No hyperthreading
 COMPILE_JOBS=`cat /proc/cpuinfo | grep -m 1 'cpu cores' | awk '{ print $4 }'`
@@ -390,6 +424,15 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %files -n hipcc-libomp-devel
 
 %changelog
+* Tue Oct 29 2024 Tom Rix <Tom.Rix@amd.com> - 18-14.rocm6.2.0
+- Force device-libs location on bundling
+
+* Tue Oct 29 2024 Tom Rix <Tom.Rix@amd.com> - 18-13.rocm6.2.0
+- Fix opt/rocm path
+
+* Tue Oct 29 2024 Tom Rix <Tom.Rix@amd.com> - 18-12.rocm6.2.0
+- Use system clang with bundled llvm
+
 * Sun Oct 27 2024 Tom Rix <Tom.Rix@amd.com> - 18-11.rocm6.2.0
 - bundle llvm
 

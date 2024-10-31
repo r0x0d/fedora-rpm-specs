@@ -7,7 +7,7 @@ Release:        4%{?dist}
 Summary:        Fast Light Message Amateur Radio Forms Manager
 
 # Embedded mongoose is GPLv2
-License:        GPL-3.0-or-later and GPL-2.0
+License:        GPL-3.0-or-later AND GPL-2.0-only
 URL:            http://www.w1hkj.com/
 %if %{alpha}
 Source0:        http://www.w1hkj.com/alpha/%{name}/%{name}-%{version}.tar.gz

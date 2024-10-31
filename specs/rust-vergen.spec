@@ -6,7 +6,7 @@
 %global crate vergen
 
 Name:           rust-vergen
-Version:        8.3.1
+Version:        8.3.2
 Release:        %autorelease
 Summary:        Generate cargo:rustc-env instructions for use with env!
 
@@ -14,7 +14,7 @@ License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/vergen
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * bump gix to 0.66
+# * bump gix dependency from 0.63 to 0.66
 Patch:          vergen-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

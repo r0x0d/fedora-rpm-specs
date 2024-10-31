@@ -9,7 +9,7 @@
 Name:		globus-scheduler-event-generator
 %global _name %(tr - _ <<< %{name})
 Version:	6.5
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	Grid Community Toolkit - Scheduler Event Generator
 
 License:	Apache-2.0
@@ -18,6 +18,8 @@ Source:		https://repo.gridcf.org/gct6/sources/%{_name}-%{version}.tar.gz
 Source1:	%{name}@.service
 Source2:	%{name}
 Source8:	README
+#		https://github.com/gridcf/gct/pull/223
+Patch0:		0001-Handle-64-bit-time_t-on-32-bit-systems.patch
 
 BuildRequires:	make
 BuildRequires:	gcc
@@ -102,6 +104,7 @@ Scheduler Event Generator Documentation Files
 
 %prep
 %setup -q -n %{_name}-%{version}
+%patch -P0 -p5
 
 %build
 # Reduce overlinking
@@ -229,6 +232,9 @@ fi
 %license GLOBUS_LICENSE
 
 %changelog
+* Tue Oct 29 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 6.5-8
+- Handle 64 bit time_t on 32 bit systems
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.5-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

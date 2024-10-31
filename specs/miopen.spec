@@ -40,7 +40,7 @@
 %endif
 
 # Needs to match rocblas
-%bcond_with tensile
+%bcond_without tensile
 
 Name:           miopen
 Version:        %{rocm_version}
