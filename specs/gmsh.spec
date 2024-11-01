@@ -22,9 +22,9 @@ Release:    4%{?dist}
 # MPI not available on i686
 ExcludeArch: %{ix86}
 
-# gmsh is GPLv2+ with exceptions, see LICENSE.txt
+# gmsh is GPL-2.0-or-later WITH Gmsh-exception, see LICENSE.txt
 # contrib/{DiscreteIntegration, HighOrderMeshOptimizer, MeshOptimizer, onelab} are MIT, see respective README.txt
-License:    GPL-2.0-with-Gmsh-exception AND MIT
+License:    GPL-2.0-or-later WITH Gmsh-exception AND MIT
 URL:        http://geuz.org/gmsh/
 # Download source from http://geuz.org/gmsh/src/%%{name}-%%{version}-source.tgz
 # Delete contrib/blossom and contrib/mpeg_encode from source archive

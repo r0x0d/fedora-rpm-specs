@@ -1,5 +1,5 @@
 Name:           python-python-multipart
-Version:        0.0.12
+Version:        0.0.16
 Release:        %autorelease
 Summary:        A streaming multipart parser for Python
 
@@ -34,12 +34,28 @@ Summary:        %{summary}
 # repurposed for https://pypi.org/project/multipart/. See
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_library_naming.
 #
-# This package uses the same import namespace (“import multipart”); this means
-# there are file conflicts. This is not generally allowable, but there is no
-# way to avoid it in this case. See:
+# Prior to release 0.0.13, this package used the same import namespace (“import
+# multipart”); this means there were file conflicts. This is not generally
+# allowable, but there was no way to avoid it in this case. See:
 #
 #   Namespace conflict with multipart package
 #   https://github.com/Kludex/python-multipart/issues/149
+#
+# Since release 0.0.13, the importable package name is python_multipart,
+# resolving the file conflict. However, there is a compatibility hack that
+# allows “import multipart” to keep working, giving the “real” multipart
+# package if it is installed, and this package otherwise. See
+# https://github.com/Kludex/python-multipart/pull/166 for details, but note
+# that the implementation changed significantly in 0.0.14 via
+# https://github.com/Kludex/python-multipart/pull/168.
+#
+# If *both* packages are installed, there are no file conflicts because the
+# compatibility hack in this package is a directory (multipart/) and the other
+# package is a single-file module (multipart.py). However, anything that uses
+# this package via “import multipart” will be broken if the other package is
+# installed, so we maintain the RPM conflict at least until all dependent
+# packages have been adapted to use “import python_multipart”, and perhaps
+# until upstream removes the compatibility hack in a future version.
 Conflicts:      python3-multipart
 # Ensure proper upgrade path from the old package
 Obsoletes:      python3-multipart < 0.1
@@ -61,7 +77,7 @@ Obsoletes:      python3-multipart < 0.1
 
 %install
 %pyproject_install
-%pyproject_save_files -l multipart
+%pyproject_save_files -l python_multipart multipart
 
 
 %check

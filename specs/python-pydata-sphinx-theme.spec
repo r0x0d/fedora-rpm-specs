@@ -1,12 +1,12 @@
 # Documentation can no longer be built in Fedora due to missing python modules:
-# ablog, myst-nb, sphinx-togglebutton
+# ablog and sphinx-togglebutton
 # This also means that doctests cannot be run.
 %bcond docs 0
 
 %global giturl  https://github.com/pydata/pydata-sphinx-theme
 
 Name:           python-pydata-sphinx-theme
-Version:        0.15.4
+Version:        0.16.0
 Release:        %autorelease
 Summary:        Bootstrap-based Sphinx theme from the PyData community
 
@@ -30,12 +30,12 @@ Source3:        pydata-gallery.tar.xz
 Patch:          %{name}-fontawesome.patch
 
 BuildRequires:  fontawesome-fonts-all
+BuildRequires:  fontawesome-fonts-web
 BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  nodejs-devel
 BuildRequires:  nodejs-npm
 BuildRequires:  python3-devel
-BuildRequires:  %{py3_dist pytest-regressions}
 BuildRequires:  yarnpkg
 
 Provides:       bundled(js-bootstrap) = 5.3.3
@@ -67,6 +67,7 @@ See https://pydata-sphinx-theme.readthedocs.io/ for documentation.}
 %package     -n python3-pydata-sphinx-theme
 Summary:        Bootstrap-based Sphinx theme from the PyData community
 Requires:       fontawesome-fonts-all
+Requires:       fontawesome-fonts-web
 
 %description -n python3-pydata-sphinx-theme %_description
 
@@ -106,10 +107,23 @@ nodeenv --node=system --prebuilt --clean-src $PWD/.nodeenv
 %pyproject_wheel
 
 %install
+%define instdir %{buildroot}%{python3_sitelib}/pydata_sphinx_theme
+%define themedir %{instdir}/theme/pydata_sphinx_theme/static
 %pyproject_install
-%pyproject_save_files pydata_sphinx_theme
+%pyproject_save_files -L pydata_sphinx_theme
 sed -i '/\.gitignore/d' %{pyproject_files}
-rm %{buildroot}%{python3_sitelib}/pydata_sphinx_theme/theme/pydata_sphinx_theme/static/.gitignore
+rm %{themedir}/.gitignore
+
+# More work is required to fully unbundle the fontawesome fonts
+sed -i 's,pydata_sphinx_theme/\.\./\.\./\.\./\.\./\.\.,,g' \
+    %{themedir}/scripts/fontawesome.js.map \
+    %{themedir}/styles/pydata-sphinx-theme.css.map
+sed -e 's,url.*fa-solid-900\.woff2.*format("truetype"),local("fontawesome-free-fonts/Font Awesome 6 Free-Solid-900") format("opentype"),g' \
+    -e 's,url.*fa-regular-400\.woff2.*format("truetype"),local("fontawesome-free-fonts/Font Awesome 6 Free-Regular-400") format("opentype"),g' \
+    -e 's,url.*fa-brands-400\.woff2.*format("truetype"),local("fontawesome-brands-fonts/Font Awesome 6 Brands-Regular-400") format("opentype"),g' \
+    -i %{themedir}/styles/pydata-sphinx-theme.css
+sed -i '/vendor/d' %{pyproject_files}
+rm -fr %{themedir}/vendor
 
 %if %{with docs}
 # We need an installed tree before documentation building works properly
@@ -121,7 +135,7 @@ cd -
 
 %check
 # Translation does not work correctly in an uninstalled tree
-%pytest -k 'not test_translations'
+%pytest -v -k 'not test_translations'
 
 %files -n python3-pydata-sphinx-theme -f %{pyproject_files}
 %doc README.md

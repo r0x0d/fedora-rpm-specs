@@ -135,7 +135,7 @@ rm -rf asciidoc
 # create custom ant configuration
 mkdir -p ~/.ant
 cp /etc/ant.conf ~/.ant
-sed -i 's|JAVA_HOME=.*|JAVA_HOME=/usr/lib/jvm/java-11-openjdk|' ~/.ant/ant.conf
+sed -i '$a JAVA_HOME=/usr/lib/jvm/java-11-openjdk' ~/.ant/ant.conf
 
 ant -Divy.mode=local \
     -f build-release.xml \

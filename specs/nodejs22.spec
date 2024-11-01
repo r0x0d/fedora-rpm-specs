@@ -28,6 +28,8 @@
 %bcond_with bundled_zlib
 %endif
 
+%bcond bundled_sqlite %{with bootstrap}
+
 # LTO is currently broken on Node.js builds
 %define _lto_cflags %{nil}
 
@@ -50,7 +52,7 @@
 # than a Fedora release lifecycle.
 %global nodejs_epoch 1
 %global nodejs_major 22
-%global nodejs_minor 8
+%global nodejs_minor 11
 %global nodejs_patch 0
 # nodejs_soversion - from NODE_MODULE_VERSION in src/node_version.h
 %global nodejs_soversion 127
@@ -105,7 +107,7 @@
 # " this line just fixes syntax highlighting for vim that is confused by the above and continues literal
 
 # simdutf from deps/simdutf/simdutf.h
-%global simdutf_version 5.3.4
+%global simdutf_version 5.5.0
 
 # OpenSSL minimum version
 %global openssl11_minimum 1:1.1.1
@@ -118,7 +120,7 @@
 
 # npm - from deps/npm/package.json
 %global npm_epoch 1
-%global npm_version 10.8.2
+%global npm_version 10.9.0
 
 # In order to avoid needing to keep incrementing the release version for the
 # main package forever, we will just construct one for npm that is guaranteed
@@ -133,6 +135,9 @@
 
 # histogram_c - assumed from timestamps
 %global histogram_version 0.9.7
+
+# sqlite – from deps/sqlite/sqlite3.h
+%global sqlite_version 3.46.1
 
 
 Name: nodejs%{nodejs_pkg_major}
@@ -162,7 +167,8 @@ Source202: nodejs.pc.in
 Source203: v8.pc.in
 
 Patch: 0001-Remove-unused-OpenSSL-config.patch
-Patch: 0002-deps-ncrypto-include-missing-headers.patch
+Patch: 0002-build-conditionally-compile-bundled-sqlite.patch
+Patch: 0003-deps-ncrypto-include-openssl-rand.h.patch
 
 %if 0%{?nodejs_default}
 %global pkgname nodejs
@@ -205,6 +211,12 @@ BuildRequires: chrpath
 BuildRequires: libatomic
 BuildRequires: ninja-build
 BuildRequires: unzip
+
+%if %{with bundled_sqlite}
+Provides: bundled(sqlite) = %{sqlite_version}
+%else
+BuildRequires: pkgconfig(sqlite3)
+%endif
 
 
 
@@ -333,14 +345,14 @@ Provides: bundled(ada) = 2.9.0
 
 # undici and cjs-module-lexer ship with pre-built WASM binaries.
 %if %{with bundled_cjs_module_lexer}
-Provides: bundled(nodejs-cjs-module-lexer) = 1.2.2
+Provides: bundled(nodejs-cjs-module-lexer) = 1.4.1
 %else
 BuildRequires: nodejs-cjs-module-lexer
 Requires: nodejs-cjs-module-lexer
 %endif
 
 %if %{with bundled_undici}
-Provides: bundled(nodejs-undici) = 6.19.8
+Provides: bundled(nodejs-undici) = 6.20.0
 %else
 BuildRequires: nodejs-undici
 Requires: nodejs-undici
@@ -523,6 +535,10 @@ rm -rf deps/cjs-module-lexer
 rm -rf deps/undici
 %endif
 
+%if %{without bundled_sqlite}
+rm -rf deps/sqlite
+%endif
+
 # Replace any instances of unversioned python with python3
 pfiles=( $(grep -rl python) )
 %py3_shebang_fix ${pfiles[@]}
@@ -584,6 +600,7 @@ export PATH="${cwd}/.bin:$PATH"
            %{!?with_bundled_cjs_module_lexer:--shared-builtin-cjs_module_lexer/lexer-path %{nodejs_private_sitelib}/cjs-module-lexer/lexer.js} \
            %{!?with_bundled_cjs_module_lexer:--shared-builtin-cjs_module_lexer/dist/lexer-path %{nodejs_private_sitelib}/cjs-module-lexer/dist/lexer.js} \
            %{!?with_bundled_undici:--shared-builtin-undici/undici-path %{nodejs_private_sitelib}/undici/loader.js} \
+           %{!?with_bundled_sqlite:--shared-sqlite} \
            --shared-brotli \
            --shared-libuv \
            --with-intl=small-icu \

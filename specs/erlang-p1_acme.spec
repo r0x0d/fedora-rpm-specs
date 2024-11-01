@@ -7,7 +7,7 @@
 %global yconf_ver 1.0.16
 
 Name:       erlang-%{srcname}
-Version:    1.0.23
+Version:    1.0.24
 Release:    %autorelease
 BuildArch:  noarch
 License:    Apache-2.0

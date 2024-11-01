@@ -6,7 +6,7 @@
 %global rustflags_debuginfo 1
 
 Name:           fractal
-Version:        8
+Version:        9
 Release:        1%{?dist}
 Summary:        Matrix group messaging app
 
@@ -28,20 +28,21 @@ BuildRequires:  cargo-rpm-macros
 BuildRequires:  clang-devel
 BuildRequires:  llvm-devel
 BuildRequires:  meson
-BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gio-2.0)
-BuildRequires:  pkgconfig(gtk4)
-BuildRequires:  pkgconfig(libadwaita-1)
-BuildRequires:  pkgconfig(gtksourceview-5)
+BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gstreamer-1.0)
 BuildRequires:  pkgconfig(gstreamer-base-1.0)
 BuildRequires:  pkgconfig(gstreamer-pbutils-1.0)
 BuildRequires:  pkgconfig(gstreamer-play-1.0)
 BuildRequires:  pkgconfig(gstreamer-video-1.0)
-BuildRequires:  pkgconfig(openssl)
-BuildRequires:  pkgconfig(sqlite3)
+BuildRequires:  pkgconfig(gtk4)
+BuildRequires:  pkgconfig(gtksourceview-5)
+BuildRequires:  pkgconfig(libadwaita-1)
 BuildRequires:  pkgconfig(libpipewire-0.3)
+BuildRequires:  pkgconfig(libseccomp)
+BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(shumate-1.0)
+BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  pkgconfig(xdg-desktop-portal)
 # for check
 BuildRequires:  /usr/bin/appstream-util

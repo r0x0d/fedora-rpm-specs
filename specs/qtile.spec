@@ -1,5 +1,5 @@
 Name: qtile
-Version: 0.28.1
+Version: 0.29.0
 Release: 1%{?dist}
 Summary: A pure-Python tiling window manager
 Source: https://github.com/qtile/qtile/archive/v%{version}/qtile-%{version}.tar.gz
@@ -146,6 +146,9 @@ desktop-file-install \
 
 
 %changelog
+* Wed Oct 30 2024 Jakub Kadlcik <frostyx@email.cz> - 0.29.0-1
+- New upstream version
+
 * Wed Aug 21 2024 Jakub Kadlcik <frostyx@email.cz> - 0.28.1-1
 - New upstream version
 

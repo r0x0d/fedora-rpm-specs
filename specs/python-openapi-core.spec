@@ -12,16 +12,18 @@ License:        BSD-3-Clause
 URL:            https://github.com/python-openapi/%{srcname}
 Source:         %{pypi_source %{modname}}
 
-# Allow Starlette 0.40.x
-#
-# This is blocked upstream by the need to upgrade FastAPI first,
-# https://github.com/python-openapi/openapi-core/pull/929.
-# We mentioned this, and the fact that Starlette 0.40 is a security update, in
-# https://github.com/python-openapi/openapi-core/pull/929#issuecomment-2414588133.
-Patch:          0001-Allow-Starlette-0.40.x.patch
 # Bump aioitertools from 0.11.0 to 0.12.0
 # https://github.com/python-openapi/openapi-core/pull/907
-Patch:          0002-Bump-aioitertools-from-0.11.0-to-0.12.0.patch
+Patch:          0001-Bump-aioitertools-from-0.11.0-to-0.12.0.patch
+# Allow Starlette 0.41.x and FastAPI 0.115.x
+# https://github.com/python-openapi/openapi-core/pull/933/commits/6db7a187939753a292b2b4704bd620632491d196
+#
+# From:
+#
+# Allow Starlette 0.41.x and FastAPI 0.115.x; bump to 0.41.2 and 0.115.4,
+# respectively
+# https://github.com/python-openapi/openapi-core/pull/933
+Patch:          0002-Allow-Starlette-0.41.x-and-FastAPI-0.115.x.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel

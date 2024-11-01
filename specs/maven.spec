@@ -227,7 +227,7 @@ ln -s %{homedir}/bin/mvnDebug.1.gz %{buildroot}%{_mandir}/man1/mvnDebug%{maven_v
 
 # JDK bindings
 install -d -m 755 %{buildroot}%{_javaconfdir}/
-echo JAVA_HOME=%{_jvmlibdir}/jre-21-openjdk >%{buildroot}%{_javaconfdir}/maven%{?maven_version_suffix}.conf-openjdk21
+echo JAVA_HOME=%{_jvmdir}/jre-21-openjdk >%{buildroot}%{_javaconfdir}/maven%{?maven_version_suffix}.conf-openjdk21
 
 
 %post

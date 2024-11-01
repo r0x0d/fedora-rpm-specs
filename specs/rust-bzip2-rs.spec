@@ -18,6 +18,9 @@ Source:         %{crates_source}
 #   for benchmarks, which we don't run
 # - remove the nightly feature, because the resulting rpm can not be installed
 Patch:          bzip2-rs-fix-metadata.diff
+# Upstream patch that drops pretty_assertions dependency
+# https://github.com/paolobarbolini/bzip2-rs/commit/d407c34f3e028ad6188a84b675c4cc3a632b2e06.
+Patch:          0002-Drop-pretty_assertions-removed-upstream.patch
 
 BuildRequires:  rust-packaging >= 21
 

@@ -8,7 +8,7 @@ Summary:        Cross-compiled LZMA compression utilities
 # Scripts xz{grep,diff,less,more} and symlinks (copied from gzip) are
 # GPLv2+, binaries are Public Domain (linked against LGPL getopt_long but its
 # OK), documentation is Public Domain.
-License:        GPLv2+ and Public Domain
+License:        0BSD AND GPL-2.0-or-later AND LicenseRef-Fedora-Public-Domain
 URL:            http://tukaani.org/xz/
 Source0:        http://tukaani.org/xz/xz-%{version}.tar.xz
 
@@ -52,7 +52,7 @@ decompression speed fast.
 
 %package -n mingw32-xz-libs
 Summary:        Libraries for decoding LZMA compression
-License:        Public Domain
+License:        0BSD
 
 
 %description -n mingw32-xz-libs
@@ -61,7 +61,7 @@ Libraries for decoding files compressed with LZMA or XZ utils.
 
 %package -n mingw32-xz-libs-static
 Summary:        Static version of the xz library
-License:        Public Domain
+License:        0BSD
 Requires:       mingw32-xz-libs = %{version}-%{release}
 
 
@@ -87,7 +87,7 @@ decompression speed fast.
 
 %package -n mingw64-xz-libs
 Summary:        Libraries for decoding LZMA compression
-License:        Public Domain
+License:        0BSD
 
 
 %description -n mingw64-xz-libs
@@ -96,7 +96,7 @@ Libraries for decoding files compressed with LZMA or XZ utils.
 
 %package -n mingw64-xz-libs-static
 Summary:        Static version of the xz library
-License:        Public Domain
+License:        0BSD
 Requires:       mingw64-xz-libs = %{version}-%{release}
 
 

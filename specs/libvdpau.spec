@@ -1,25 +1,21 @@
 Name:           libvdpau
 Version:        1.5
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Wrapper library for the Video Decode and Presentation API
-# SPDX
 License:        MIT
 URL:            https://freedesktop.org/wiki/Software/VDPAU/
 Source0:        https://gitlab.freedesktop.org/vdpau/libvdpau/-/archive/%{version}/libvdpau-%{version}.tar.bz2
+Patch0:         https://gitlab.freedesktop.org/vdpau/libvdpau/-/commit/2afa3f989af24a922692ac719fae23c321776cdb.diff#/%{name}-av1-trace.patch
 
 BuildRequires:  doxygen
 BuildRequires:  gcc-c++
 BuildRequires:  graphviz
-BuildRequires:  libtool
 BuildRequires:  libX11-devel
-BuildRequires:  libXext-devel
-BuildRequires:  meson
-%if 0%{?fedora} >= 18 || 0%{?rhel} >= 7
+BuildRequires:  meson >= 0.41
 BuildRequires:  tex(latex)
-%else
-BuildRequires:  tetex-latex
-%endif
-BuildRequires:  xorg-x11-proto-devel
+BuildRequires:  pkgconfig(dri2proto) >= 2.2
+BuildRequires:  pkgconfig(x11)
+BuildRequires:  pkgconfig(xext)
 
 %description
 VDPAU is the Video Decode and Presentation API for UNIX. It provides an
@@ -29,9 +25,7 @@ modern GPUs.
 %package        trace
 Summary:        Trace library for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-%if 0%{?fedora} > 26 || 0%{?rhel} > 7
 Supplements:    %{name}-debuginfo%{?_isa}
-%endif
 
 %description    trace
 The %{name}-trace package contains trace library for %{name}.
@@ -48,9 +42,9 @@ The %{name}-docs package contains documentation for %{name}.
 %package        devel
 Summary:        Development files for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-#Multilibs trace
+# Multilibs trace
 Requires:       %{name}-trace%{?_isa} = %{version}-%{release}
-Requires:       libX11-devel%{?_isa}
+Requires:       pkgconfig(x11)
 Requires:       pkgconfig
 
 %description    devel
@@ -68,13 +62,9 @@ applications that use %{name}.
 %install
 %meson_install
 find %{buildroot} -name '*.la' -delete
-# Let %%doc macro create the correct location in the rpm file, creates a
-# versioned docdir in <= f19 and an unversioned docdir in >= f20.
+# Let %%doc macro create the correct location in the rpm file.
 rm -fr %{buildroot}%{_docdir}
 mv %{_vpath_builddir}/doc/html html
-
-
-%ldconfig_scriptlets
 
 
 %files
@@ -97,6 +87,10 @@ mv %{_vpath_builddir}/doc/html html
 
 
 %changelog
+* Wed Oct 30 2024 Simone Caronni <negativo17@gmail.com> - 1.5-8
+- Add upstream AV1 tracing patch.
+- Modernize SPEC file.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.5-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

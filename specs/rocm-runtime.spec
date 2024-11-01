@@ -52,15 +52,9 @@ ROCm Runtime development files
 %autosetup -n ROCR-Runtime-rocm-%{version} -p1
 
 %build
-LLVM_BINDIR=`hipconfig -l`
-LLVM_CMAKEDIR=`${LLVM_BINDIR}/llvm-config --cmakedir`
-if [ ! -d ${LLVM_CMAKEDIR} ]; then
-    echo "Something wrong with llvm-config"
-    false
-fi
 
 %cmake -S src -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-    -DCMAKE_PREFIX_PATH=${LLVM_CMAKEDIR}/.. \
+    -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
     -DCMAKE_INSTALL_LIBDIR=%{_lib} \
     -DINCLUDE_PATH_COMPATIBILITY=OFF \
     %{?!enableimage:-DIMAGE_SUPPORT=OFF}

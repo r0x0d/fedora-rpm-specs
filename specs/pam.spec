@@ -1,12 +1,18 @@
 %bcond nis %[!(0%{?rhel} >= 9)]
 
 %global so_ver 0
-%global pam_redhat_version 1.2.0
+%global pam_redhat_version 1.3.0
+
+%ifarch %{java_arches}
+%global build_doc 1
+%else
+%global build_doc 0
+%endif
 
 Summary: An extensible library which provides authentication for applications
 Name: pam
-Version: 1.6.1
-Release: 8%{?dist}
+Version: 1.7.0
+Release: 1%{?dist}
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
 # pam_timestamp and pam_loginuid modules are GPLv2+.
@@ -24,15 +30,8 @@ Source13: config-util.5
 Source15: pamtmp.conf
 Source17: postlogin.5
 Source18: https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
-Patch1:  pam-1.6.0-redhat-modules.patch
-Patch2:  pam-1.6.1-noflex.patch
-Patch3:  pam-1.5.3-unix-nomsg.patch
-# https://github.com/linux-pam/linux-pam/commit/bd2f695b3d89efe0c52bba975f9540634125178a
-Patch4:  pam-1.6.1-sast-fixes.patch
-# https://github.com/linux-pam/linux-pam/commit/aabd5314a6d76968c377969b49118a2df3f97003
-Patch5:  pam-1.6.1-pam-env-econf-read-file-fixes.patch
-# https://github.com/linux-pam/linux-pam/commit/641dfd1084508c63f3590e93a35b80ffc50774e5
-Patch6:  pam-1.6.1-pam-access-local.patch
+Patch1:  pam-1.7.0-redhat-modules.patch
+Patch2:  pam-1.5.3-unix-nomsg.patch
 
 %{load:%{SOURCE3}}
 
@@ -63,6 +62,7 @@ BuildRequires: libtirpc-devel
 BuildRequires: libtool
 BuildRequires: libxcrypt-devel
 BuildRequires: make
+BuildRequires: meson
 BuildRequires: openssl-devel
 BuildRequires: perl-interpreter
 BuildRequires: pkgconfig
@@ -85,6 +85,7 @@ having to recompile programs that handle authentication. This package
 contains header files used for building both PAM-aware applications
 and modules for use with the PAM system.
 
+%if %{build_doc}
 %package doc
 Summary: Extra documentation for PAM.
 Requires: pam = %{version}-%{release}
@@ -94,15 +95,19 @@ BuildArch: noarch
 BuildRequires: docbook5-schemas
 BuildRequires: docbook5-style-xsl
 BuildRequires: elinks
+BuildRequires: fop
 BuildRequires: libxslt
 BuildRequires: linuxdoc-tools
+%endif
 
+%if %{build_doc}
 %description doc
 PAM (Pluggable Authentication Modules) is a system security tool that
 allows system administrators to set authentication policy without
 having to recompile programs that handle authentication. The pam-doc
 contains extra documentation for PAM. Currently, this includes additional
 documentation in txt and html format.
+%endif
 
 %package libs
 Summary: Shared libraries of the PAM package
@@ -118,8 +123,6 @@ contains the shared libraries for PAM.
 
 %prep
 %setup -q -n Linux-PAM-%{version} -a 2
-perl -pi -e "s/ppc64-\*/ppc64-\* \| ppc64p7-\*/" build-aux/config.sub
-perl -pi -e "s/\/lib \/usr\/lib/\/lib \/usr\/lib \/lib64 \/usr\/lib64/" m4/libtool.m4
 
 # Add custom modules.
 mv pam-redhat-%{pam_redhat_version}/* modules
@@ -127,43 +130,31 @@ mv pam-redhat-%{pam_redhat_version}/* modules
 cp %{SOURCE18} .
 
 %patch -P 1 -p1 -b .redhat-modules
-%patch -P 2 -p1 -b .noflex
-%patch -P 3 -p1 -b .nomsg
-%patch -P 4 -p1 -b .static-analyzer
-%patch -P 5 -p1 -b .pam-env-econf-read-file-fixes
-%patch -P 6 -p1 -b .pam-access-local
-
-autoreconf -i
+%patch -P 2 -p1 -b .nomsg
 
 %build
-%configure \
-  --libdir=%{_pam_libdir} \
-  --includedir=%{_includedir}/security \
-  --disable-rpath \
-  --disable-static \
-  --disable-prelude \
-%if %{without nis}
-  --disable-nis \
+%meson \
+  -Daudit=enabled \
+%if !%{build_doc}
+  -Ddocs=disabled \
 %endif
-  --enable-audit \
-  --enable-openssl \
-  --enable-selinux \
-  --enable-lastlog \
-  --enable-db=gdbm
-%make_build -C po update-gmo
-%make_build
+%if %{without nis}
+  -Dnis=disabled \
+%endif
+  -Dlogind=disabled \
+  -Dopenssl=enabled \
+  -Dpam_lastlog=enabled \
+  -Dpam_userdb=enabled \
+  -Ddb=gdbm \
+  -Dselinux=enabled
+%meson_build
 
 %install
-mkdir -p doc/txts
-for readme in modules/pam_*/README ; do
-  cp -f ${readme} doc/txts/README.`dirname ${readme} | sed -e 's|^modules/||'`
-done
-
 # Install the macros file
 install -D -m 644 %{SOURCE3} %{buildroot}%{_rpmconfigdir}/macros.d/macros.%{name}
 
 # Install the binaries, libraries, and modules.
-%make_install LDCONFIG=:
+%meson_install
 
 # Temporary compat link
 ln -sf pam_sepermit.so %{buildroot}%{_pam_moduledir}/pam_selinux_permit.so
@@ -183,10 +174,12 @@ install -d -m 755 %{buildroot}/var/log
 install -d -m 755 %{buildroot}/var/run/faillock
 
 # Install man pages.
+%if %{build_doc}
 install -m 644 %{SOURCE12} %{SOURCE13} %{SOURCE17} %{buildroot}%{_mandir}/man5/
 ln -sf system-auth.5 %{buildroot}%{_mandir}/man5/password-auth.5
 ln -sf system-auth.5 %{buildroot}%{_mandir}/man5/fingerprint-auth.5
 ln -sf system-auth.5 %{buildroot}%{_mandir}/man5/smartcard-auth.5
+%endif
 
 
 for phase in auth acct passwd session ; do
@@ -211,25 +204,28 @@ done
 %endif
 
 # Duplicate doc file sets.
+%if %{build_doc}
 rm -fr %{buildroot}/usr/share/doc/pam
+%endif
 
 # Install the file for autocreation of /var/run subdirectories on boot
 install -m644 -D %{SOURCE15} %{buildroot}%{_prefix}/lib/tmpfiles.d/pam.conf
 
 # Install systemd unit file.
-install -m644 -D modules/pam_namespace/pam_namespace.service \
+install -m644 -D redhat-linux-build/modules/pam_namespace/pam_namespace.service \
   %{buildroot}%{_unitdir}/pam_namespace.service
 
 # Install doc files to unified location.
+%if %{build_doc}
 install -d -m 755 %{buildroot}%{_pkgdocdir}/{adg/html,mwg/html,sag/html,txts}
 install -p -m 644 doc/specs/rfc86.0.txt %{buildroot}%{_pkgdocdir}
-install -p -m 644 doc/txts/* %{buildroot}%{_pkgdocdir}/txts
 for i in adg mwg sag; do
-  install -p -m 644 doc/$i/*.txt %{buildroot}%{_pkgdocdir}/$i
+  install -p -m 644 redhat-linux-build/doc/$i/*.txt %{buildroot}%{_pkgdocdir}/$i
   cp -pr doc/$i/html/* %{buildroot}%{_pkgdocdir}/$i/html
 done
 find %{buildroot}%{_pkgdocdir} -type d | xargs chmod 755
 find %{buildroot}%{_pkgdocdir} -type f | xargs chmod 644
+%endif
 
 %find_lang Linux-PAM
 
@@ -346,14 +342,20 @@ done
 %dir /var/run/sepermit
 %dir /var/run/faillock
 %{_prefix}/lib/tmpfiles.d/pam.conf
+%if %{build_doc}
 %{_mandir}/man5/*
 %{_mandir}/man8/*
+%endif
 
 %files devel
+%if %{build_doc}
 %dir %{_pkgdocdir}
 %doc %{_pkgdocdir}/rfc86.0.txt
+%endif
 %{_includedir}/security
+%if %{build_doc}
 %{_mandir}/man3/*
+%endif
 %{_libdir}/libpam.so
 %{_libdir}/libpamc.so
 %{_libdir}/libpam_misc.so
@@ -361,8 +363,10 @@ done
 %{_libdir}/pkgconfig/pam_misc.pc
 %{_libdir}/pkgconfig/pamc.pc
 
+%if %{build_doc}
 %files doc
 %doc %{_pkgdocdir}
+%endif
 
 %files libs
 %license Copyright
@@ -372,6 +376,12 @@ done
 %{_pam_libdir}/libpam_misc.so.%{so_ver}*
 
 %changelog
+* Tue Oct 29 2024 Iker Pedrosa <ipedrosa@redhat.com> - 1.7.0-1
+- Rebase to release 1.7.0 (#2321512)
+- Rebase to pam-redhat-1.2.0
+- build: update to meson build system
+- doc: disable build for i686
+
 * Wed Oct 23 2024 Iker Pedrosa <ipedrosa@redhat.com> - 1.6.1-8
 - pam_access: always match local address and clarify LOCAL keyword behaviour
 

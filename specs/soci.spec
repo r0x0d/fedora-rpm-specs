@@ -1,7 +1,7 @@
 #
 ##
 # Default values are --with empty --with sqlite3 --with mysql --with postgresql
-#                    --with odbc --without oracle 
+#                    --with odbc --without oracle
 # Note that, for Oracle, when enabled, the following options should
 # also be given:
 # --with-oracle-include=/opt/oracle/app/oracle/product/11.1.0/db_1/rdbms/public
@@ -213,13 +213,13 @@ dos2unix AUTHORS README ChangeLog COPYING NEWS
  -DSOCI_MYSQL=%{?with_mysql:ON}%{?without_mysql:OFF} \
  -DSOCI_ODBC=%{?with_odbc:ON}%{?without_odbc:OFF} \
  -DWITH_ORACLE=%{?with_oracle:ON %{?_with_oracle_incdir} %{?_with_oracle_libdir}}%{?without_oracle:OFF} \
- %{soci_testflags} 
+ %{soci_testflags}
 %cmake_build
 
 %install
 %cmake_install
 
-# CMake helpers 
+# CMake helpers
 mkdir -p %{buildroot}%{_datadir}/%{name}
 mv -f %{buildroot}%{_libdir}/cmake %{buildroot}%{_datadir}/%{name}/CMake
 
@@ -238,27 +238,22 @@ rm -f %{buildroot}%{_libdir}/*.a
 %{?with_empty:%{_libdir}/lib%{name}_empty.so.*}
 
 %{?with_sqlite3:%files sqlite3
-%defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_libdir}/lib%{name}_sqlite3.so.*}
 
 %{?with_mysql:%files mysql
-%defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_libdir}/lib%{name}_mysql.so.*}
 
 %{?with_postgresql:%files postgresql
-%defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_libdir}/lib%{name}_postgresql.so.*}
 
 %{?with_odbc:%files odbc
-%defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_libdir}/lib%{name}_odbc.so.*}
 
 %{?with_oracle:%files oracle
-%defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_libdir}/lib%{name}_oracle.so.*}
 

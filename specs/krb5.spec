@@ -10,7 +10,7 @@
 #
 # baserelease is what we have standardized across Fedora and what
 # rpmdev-bumpspec knows how to handle.
-%global baserelease 2
+%global baserelease 3
 
 # This should be e.g. beta1 or %%nil
 %global pre_release %nil
@@ -78,6 +78,12 @@ Patch0016: 0016-Eliminate-old-style-function-declarations.patch
 Patch0017: 0017-Fix-two-unlikely-memory-leaks.patch
 Patch0018: 0018-Fix-unimportant-memory-leaks.patch
 Patch0019: 0019-Remove-klist-s-defname-global-variable.patch
+Patch0020: 0020-End-connection-on-KDC_ERR_SVC_UNAVAILABLE.patch
+Patch0021: 0021-Add-request_timeout-configuration-parameter.patch
+Patch0022: 0022-Wait-indefinitely-on-KDC-TCP-connections.patch
+Patch0023: 0023-Remove-PKINIT-RSA-support.patch
+Patch0024: 0024-Fix-various-issues-detected-by-static-analysis.patch
+Patch0025: 0025-Generate-and-verify-message-MACs-in-libkrad.patch
 
 License: Brian-Gladman-2-Clause AND BSD-2-Clause AND (BSD-2-Clause OR GPL-2.0-or-later) AND BSD-2-Clause-first-lines AND BSD-3-Clause AND BSD-4-Clause AND CMU-Mach-nodoc AND FSFULLRWD AND HPND AND HPND-export2-US AND HPND-export-US AND HPND-export-US-acknowledgement AND HPND-export-US-modify AND ISC AND MIT AND MIT-CMU AND OLDAP-2.8 AND OpenVision
 URL: https://web.mit.edu/kerberos/www/
@@ -714,6 +720,16 @@ exit 0
 %{_datarootdir}/%{name}-tests/%{_arch}
 
 %changelog
+* Wed Oct 30 2024 Julien Rische <jrische@redhat.com> - 1.21.3-3
+- libkrad: implement support for Message-Authenticator (CVE-2024-3596)
+  Resolves: rhbz#2304071
+- Fix various issues detected by static analysis
+  Resolves: rhbz#2322704
+- Remove RSA protocol for PKINIT
+  Resolves: rhbz#2322706
+- Make TCP waiting time configurable
+  Resolves: rhbz#2322711
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.21.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

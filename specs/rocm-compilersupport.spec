@@ -24,7 +24,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        14.rocm%{rocm_version}%{?dist}
+Release:        16.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -62,9 +62,12 @@ BuildRequires:  ninja-build
 Provides:       bundled(llvm-project) = %{llvm_maj_ver}
 %endif
 
+%if 0%{?rhel}
+ExclusiveArch:  x86_64
+%else
 #Only the following architectures are useful for ROCm packages:
 ExclusiveArch:  x86_64 aarch64 ppc64le
-
+%endif
 
 %description
 %{summary}
@@ -238,7 +241,18 @@ sed -i 's|@AMD_DEVICE_LIBS_PREFIX_CODE@|set(AMD_DEVICE_LIBS_PREFIX "%{_prefix}/%
 
 %build
 %if %{without bundled_llvm}
-echo "%%rocmllvm_version %llvm_maj_ver" > macros.rocmcompiler
+LLVM_CMAKEDIR=`llvm-config-%{llvm_maj_ver} --cmakedir`
+CLANG_VERSION=%llvm_maj_ver
+%else
+LLVM_CMAKEDIR=`llvm-config --cmakedir`
+CLANG_VERSION=`clang --version | head -n 1 | grep -o -E "| [[:digit:]][[:digit:]]" | uniq | sort`
+%endif
+
+echo "%%rocmllvm_version $CLANG_VERSION"   > macros.rocmcompiler
+echo "%%rocmllvm_cmakedir $LLVM_CMAKEDIR" >> macros.rocmcompiler
+
+%if %{without bundled_llvm}
+
 # SYSTEM LLVM
 export PATH=%{_libdir}/llvm%{llvm_maj_ver}/bin:$PATH
 export INCLUDE_PATH=%{_libdir}/llvm%{llvm_maj_ver}/include
@@ -267,8 +281,8 @@ popd
 
 %else
 # BUNDLED LLVM
-CLANG_VERSION=`clang --version | head -n 1 | grep -o -E "| [[:digit:]][[:digit:]]" | uniq | sort`
-echo "%%rocmllvm_version $CLANG_VERSION" > macros.rocmcompiler
+
+
 
 # Real cores, No hyperthreading
 COMPILE_JOBS=`cat /proc/cpuinfo | grep -m 1 'cpu cores' | awk '{ print $4 }'`
@@ -424,6 +438,12 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %files -n hipcc-libomp-devel
 
 %changelog
+* Wed Oct 30 2024 Tom Rix <Tom.Rix@amd.com> - 18-16.rocm6.2.0
+- Improve macros
+
+* Wed Oct 30 2024 Tom Rix <Tom.Rix@amd.com> - 18-15.rocm6.2.0
+- RHEL is only x86_64
+
 * Tue Oct 29 2024 Tom Rix <Tom.Rix@amd.com> - 18-14.rocm6.2.0
 - Force device-libs location on bundling
 

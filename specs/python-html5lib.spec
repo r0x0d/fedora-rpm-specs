@@ -11,6 +11,8 @@ Source:         %{pypi_source html5lib}
 Patch:          %{url}/pull/506.patch
 # Fix compatibility with pytest 7.4.0
 Patch:          %{url}/pull/573.patch
+# Fix compatibility with Python 3.14+
+Patch:          %{url}/pull/583.patch
 
 BuildArch:      noarch
 

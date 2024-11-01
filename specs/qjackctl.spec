@@ -1,6 +1,6 @@
 Summary:       Qt based JACK control application
 Name:          qjackctl
-Version:       1.0.2
+Version:       1.0.3
 Release:       1%{?dist}
 URL:           http://qjackctl.sourceforge.net
 Source0:       http://downloads.sourceforge.net/qjackctl/files/%{name}-%{version}.tar.gz
@@ -71,6 +71,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/org.rncbc
 
 
 %changelog
+* Wed Oct 30 2024 Christoph Karl <pampelmuse [AT] gmx [DOT] at> - 1.0.3-1
+- Update to version 1.0.3
+
 * Wed Sep 18 2024 Christoph Karl <pampelmuse [AT] gmx [DOT] at> - 1.0.2-1
 - Update to version 1.0.2
 

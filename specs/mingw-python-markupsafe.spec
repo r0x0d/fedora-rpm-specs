@@ -1,17 +1,16 @@
 %{?mingw_package_header}
 
 %global mod_name markupsafe
-%global pypi_name MarkupSafe
 
 Name:          mingw-python-%{mod_name}
-Summary:       MinGW Windows Python %{pypi_name} library
-Version:       2.1.5
-Release:       2%{?dist}
+Summary:       MinGW Windows Python %{mod_name} library
+Version:       3.0.2
+Release:       1%{?dist}
 BuildArch:     noarch
 
 License:       BSD-3-Clause
 URL:           https://pypi.org/project/MarkupSafe/
-Source0:       %{pypi_source}
+Source0:       %{pypi_source markupsafe}
 
 BuildRequires: mingw32-filesystem
 BuildRequires: mingw32-dlfcn
@@ -27,28 +26,30 @@ BuildRequires: mingw64-python3-build
 
 
 %description
-MinGW Windows Python %{pypi_name} library.
+MinGW Windows Python %{mod_name} library.
 
 
 %package -n mingw32-python3-%{mod_name}
-Summary:       MinGW Windows Python3 %{pypi_name} library
+Summary:       MinGW Windows Python3 %{mod_name} library
 
 %description -n mingw32-python3-%{mod_name}
-MinGW Windows Python3 %{pypi_name} library.
+MinGW Windows Python3 %{mod_name} library.
 
 
 %package -n mingw64-python3-%{mod_name}
-Summary:       MinGW Windows Python3 %{pypi_name} library
+Summary:       MinGW Windows Python3 %{mod_name} library
 
 %description -n mingw64-python3-%{mod_name}
-MinGW Windows Python3 %{pypi_name} library.
+MinGW Windows Python3 %{mod_name} library.
 
 
 %{?mingw_debug_package}
 
 
 %prep
-%autosetup -p1 -n %{pypi_name}-%{version}
+%autosetup -p1 -n %{mod_name}-%{version}
+# Allow older setuptools
+sed -i '/setuptools/s/>=.*"/"/' pyproject.toml
 
 
 %build
@@ -62,17 +63,20 @@ MinGW Windows Python3 %{pypi_name} library.
 
 
 %files -n mingw32-python3-%{mod_name}
-%license LICENSE.rst
+%license LICENSE.txt
 %{mingw32_python3_sitearch}/%{mod_name}/
-%{mingw32_python3_sitearch}/%{pypi_name}-%{version}.dist-info/
+%{mingw32_python3_sitearch}/MarkupSafe-%{version}.dist-info/
 
 %files -n mingw64-python3-%{mod_name}
-%license LICENSE.rst
+%license LICENSE.txt
 %{mingw64_python3_sitearch}/%{mod_name}/
-%{mingw64_python3_sitearch}/%{pypi_name}-%{version}.dist-info/
+%{mingw64_python3_sitearch}/MarkupSafe-%{version}.dist-info/
 
 
 %changelog
+* Wed Oct 30 2024 Sandro Mani <manisandro@gmail.com> - 3.0.2-1
+- Update to 3.0.2
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.5-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

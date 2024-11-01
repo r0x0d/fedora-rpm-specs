@@ -5,7 +5,7 @@
 
 Name:           python-%{srcname}
 Version:        0.1.2
-Release:        0.16.20200715.%{shortcommit}%{?dist}
+Release:        0.17.20200715.%{shortcommit}%{?dist}
 Summary:        Use decorators to validate forms
 BuildArch:      noarch
 
@@ -51,7 +51,7 @@ To do this you should provide a callback for error_handler.
 
 
 %check
-%{python3} setup.py test
+%python3 -m unittest discover -v -s tests
 
 
 %build
@@ -70,6 +70,10 @@ To do this you should provide a callback for error_handler.
 
 
 %changelog
+* Fri Oct 25 2024 Charalampos Stratakis <cstratak@redhat.com> - 0.1.2-0.17.20200715.7fa5a26
+- Utilize unittest instead of the removed setup.py test command
+  Resolves: rhbz#2319657
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.1.2-0.16.20200715.7fa5a26
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -13,8 +13,8 @@ Version:        0.7.17
 Release:        %autorelease
 Summary:        A basic HTTP client engine
 
-# Network/HTTP/Proxy.hs is BSD
-License:        MIT AND BSD
+# Network/HTTP/Proxy.hs is BSD-3-Clause
+License:        MIT AND BSD-3-Clause
 Url:            https://hackage.haskell.org/package/%{pkg_name}
 # Begin cabal-rpm sources:
 Source0:        https://hackage.haskell.org/package/%{pkgver}/%{pkgver}.tar.gz

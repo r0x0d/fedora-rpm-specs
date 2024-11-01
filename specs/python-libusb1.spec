@@ -1,10 +1,9 @@
 Name:           python-libusb1
 Version:        3.1.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Pure-python wrapper for libusb-1.0
 
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.1-or-later
 URL:            https://github.com/vpelletier/python-libusb1
 Source0:        %{pypi_source libusb1}
 Source1:        https://github.com/vpelletier/%{name}/releases/download/%{version}/libusb1-%{version}.tar.gz.asc
@@ -19,14 +18,9 @@ Source2:        gpgkey-python-libusb1.gpg
 Patch0:         https://patch-diff.githubusercontent.com/raw/vpelletier/python-libusb1/pull/104.patch
 
 BuildArch:      noarch
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-Cython
-BuildRequires:  python3-wheel
-BuildRequires:  libusb1-devel
-
 BuildRequires:  gnupg2
-
+BuildRequires:  libusb1-devel
+BuildRequires:  python3-devel
 Requires:       libusb1
 
 %global _description %{expand:
@@ -48,23 +42,29 @@ Summary: %{summary}
 %autosetup -p1 -n libusb1-%{version}
 rm -rf libusb1.egg-info
 
+%generate_buildrequires
+%pyproject_buildrequires -t
+
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l usb1 libusb1
 
 %check
+%pyproject_check_import
 %{python3} setup.py test
 
-%files -n python3-libusb1
+%files -n python3-libusb1 -f %{pyproject_files}
 %license COPYING COPYING.LESSER
 %doc README.rst PKG-INFO
-%pycached %{python3_sitelib}/libusb1.py
-%{python3_sitelib}/usb1/
-%{python3_sitelib}/libusb1-*.egg-info
 
 %changelog
+* Wed Oct 30 2024 Peter Lemenkov <lemenkov@gmail.com> - 3.1.0-6
+- Clarify licensing
+- Modernize spec-file
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 3.1.0-5
 - convert license to SPDX
 

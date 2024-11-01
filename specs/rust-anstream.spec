@@ -5,7 +5,7 @@
 %global crate anstream
 
 Name:           rust-anstream
-Version:        0.6.15
+Version:        0.6.17
 Release:        %autorelease
 Summary:        Simple cross platform library for writing colored text to a terminal
 

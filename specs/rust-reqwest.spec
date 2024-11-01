@@ -5,7 +5,7 @@
 %global crate reqwest
 
 Name:           rust-reqwest
-Version:        0.12.8
+Version:        0.12.9
 Release:        %autorelease
 Summary:        Higher level HTTP client library
 
@@ -307,6 +307,18 @@ use the "rustls-tls-native-roots" feature of the "%{crate}" crate.
 %files       -n %{name}+rustls-tls-native-roots-devel
 %ghost %{crate_instdir}/Cargo.toml
 
+%package     -n %{name}+rustls-tls-native-roots-no-provider-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+rustls-tls-native-roots-no-provider-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "rustls-tls-native-roots-no-provider" feature of the "%{crate}" crate.
+
+%files       -n %{name}+rustls-tls-native-roots-no-provider-devel
+%ghost %{crate_instdir}/Cargo.toml
+
 %package     -n %{name}+rustls-tls-no-provider-devel
 Summary:        %{summary}
 BuildArch:      noarch
@@ -329,6 +341,18 @@ This package contains library source intended for building other packages which
 use the "rustls-tls-webpki-roots" feature of the "%{crate}" crate.
 
 %files       -n %{name}+rustls-tls-webpki-roots-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+rustls-tls-webpki-roots-no-provider-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+rustls-tls-webpki-roots-no-provider-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "rustls-tls-webpki-roots-no-provider" feature of the "%{crate}" crate.
+
+%files       -n %{name}+rustls-tls-webpki-roots-no-provider-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+slab-devel

@@ -1,6 +1,6 @@
 Name:           mediawriter
-Version:        5.1.2
-Release:        2%{?dist}
+Version:        5.1.90
+Release:        1%{?dist}
 Summary:        Fedora Media Writer
 
 License:        LGPL-2.0-or-later AND GPL-2.0-or-later
@@ -56,6 +56,7 @@ like flash drives or memory cards.
 appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/org.fedoraproject.MediaWriter.appdata.xml
 
 %files
+%license LICENSE.GPL-2 LICENSE.LGPL-2
 %{_bindir}/%{name}
 %{_libexecdir}/%{name}/
 %{_datadir}/metainfo/org.fedoraproject.MediaWriter.appdata.xml
@@ -71,6 +72,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/org.fedo
 %{_datadir}/icons/hicolor/512x512/apps/org.fedoraproject.MediaWriter.png
 
 %changelog
+* Wed Oct 30 2024 Jan Grulich <jgrulich@redhat.com> - 5.1.90-1
+- 5.1.90
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.1.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

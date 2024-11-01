@@ -2,12 +2,11 @@
 
 
 Name:       erlang-%{srcname}
-Version:    1.0.24
+Version:    1.0.25
 Release:    %autorelease
 BuildArch:  noarch
 Summary:    Pure Erlang MySQL driver
-# Automatically converted from old format: BSD - review is highly recommended.
-License:    LicenseRef-Callaway-BSD
+License:    BSD-3-Clause
 URL:        https://github.com/processone/%{srcname}
 VCS:        git:%{url}.git
 Source0:    %{url}/archive/%{version}/%{srcname}-%{version}.tar.gz

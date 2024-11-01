@@ -41,7 +41,7 @@ support for some.
 %autosetup -n %{pypi_name}-%{version}
 
 %generate_buildrequires
-%pyproject_buildrequires -w
+%pyproject_buildrequires
 
 
 %build

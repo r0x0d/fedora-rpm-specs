@@ -68,7 +68,7 @@ Summary:          389 Directory Server (%{variant})
 Name:             389-ds-base
 Version:          3.1.1
 Release:          %{autorelease -n %{?with_asan:-e asan}}%{?dist}
-License:          GPL-3.0-or-later AND (0BSD OR Apache-2.0 OR MIT) AND (Apache-2.0 OR Apache-2.0 WITH LLVM-exception OR MIT) AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT OR Zlib) AND (Apache-2.0 OR MIT) AND (CC-BY-4.0 AND MIT) AND (MIT OR Apache-2.0) AND Unicode-DFS-2016 AND (MIT OR CC0-1.0) AND (MIT OR Unlicense) AND 0BSD AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND ISC AND MIT AND MIT AND ISC AND MPL-2.0 AND PSF-2.0
+License:          GPL-3.0-or-later WITH GPL-3.0-389-ds-base-exception AND (0BSD OR Apache-2.0 OR MIT) AND (Apache-2.0 OR Apache-2.0 WITH LLVM-exception OR MIT) AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT OR Zlib) AND (Apache-2.0 OR MIT) AND (CC-BY-4.0 AND MIT) AND (MIT OR Apache-2.0) AND Unicode-DFS-2016 AND (MIT OR CC0-1.0) AND (MIT OR Unlicense) AND 0BSD AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND ISC AND MIT AND MIT AND ISC AND MPL-2.0 AND PSF-2.0
 URL:              https://www.port389.org
 Obsoletes:        %{name}-legacy-tools < 1.4.4.6
 Obsoletes:        %{name}-legacy-tools-debuginfo < 1.4.4.6
@@ -478,7 +478,7 @@ Requires:         zlib-devel
 # Picks up our systemd deps.
 %{?systemd_requires}
 
-Source0:          %{name}-%{version}.tar.bz2
+Source0:          https://github.com/389ds/389-ds-base/releases/download/%{name}-%{version}/%{name}-%{version}.tar.bz2
 Source2:          %{name}-devel.README
 %if %{with bundle_jemalloc}
 Source3:          https://github.com/jemalloc/%{jemalloc_name}/releases/download/%{jemalloc_ver}/%{jemalloc_name}-%{jemalloc_ver}.tar.bz2

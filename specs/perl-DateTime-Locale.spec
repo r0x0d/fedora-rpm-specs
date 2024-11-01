@@ -1,5 +1,5 @@
 Name:           perl-DateTime-Locale
-Version:        1.43
+Version:        1.44
 Release:        1%{?dist}
 Summary:        Localization support for DateTime.pm
 # Although the CLDR license is listed as "MIT" on the Fedora Wiki, it's more
@@ -118,6 +118,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Wed Oct 30 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1.44-1
+- 1.44 bump (rhbz#2322013)
+
 * Mon Aug 12 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1.43-1
 - 1.43 bump (rhbz#2300227)
 

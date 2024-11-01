@@ -7,10 +7,10 @@
 # Please, preserve the changelog entries
 #
 
-# For compatibility with SCL
-%undefine __brp_mangle_shebangs
 
-%global gh_commit    e52b8672276cf436670cdd6bd5de4353740e83b2
+%bcond_with          generators
+
+%global gh_commit    6e543d03187c882ea1c6ba43add2467754427803
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_branch    2.0-dev
 %global gh_owner     composer
@@ -18,7 +18,7 @@
 %global api_version  2.6.0
 %global run_version  2.2.2
 
-%global upstream_version 2.8.1
+%global upstream_version 2.8.2
 #global upstream_prever  RC1
 #global upstream_lower   rc1
 
@@ -29,7 +29,7 @@
 
 Name:           composer
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_lower}}
-Release:        1%{?dist}
+Release:        3%{?dist}
 Summary:        Dependency Manager for PHP
 
 # SPDX: composer and all dependencies are MIT
@@ -40,7 +40,7 @@ Source0:        %{gh_project}-%{upstream_version}%{?upstream_prever}-%{gh_short}
 Source1:        %{name}-bash-completion
 Source3:        %{name}.sh
 Source4:        %{name}.csh
-# Get a git snapshot to retrieve the test suite
+# Create a git snapshot with dependencies
 Source5:        makesrc.sh
 
 # Use our autoloader, resources path, fix for tests
@@ -54,6 +54,9 @@ BuildRequires:  php(language) >= 7.2.5
 BuildRequires:  php-cli
 BuildRequires:  php-json
 BuildRequires:  pkgconfig(bash-completion)
+%if %{with generators}
+BuildRequires:  composer-generators
+%endif
 
 # From composer.json, "require": {
 #        "php": "^7.2.5 || ^8.0",
@@ -78,36 +81,6 @@ Requires:       php(language)                           >= 7.2.5
 Requires:       php-cli
 # System certificates
 Requires:       ca-certificates
-# Bundled libraries
-# License MIT
-Provides:       bundled(php-composer-ca-bundle) = 1.5.2
-Provides:       bundled(php-composer-class-map-generator) = 1.4.0
-Provides:       bundled(php-composer-metadata-minifier) = 1.0.0
-Provides:       bundled(php-composer-pcre) = 2.3.1
-Provides:       bundled(php-composer-semver) = 3.4.3
-Provides:       bundled(php-composer-spdx-licenses) = 1.5.8
-Provides:       bundled(php-composer-xdebug-handler) = 3.0.5
-Provides:       bundled(php-justinrainbow-json-schema) = 5.3.0
-Provides:       bundled(php-psr-container) = 1.1.1
-Provides:       bundled(php-psr-log) = 1.1.4
-Provides:       bundled(php-react-promise) = v3.2.0
-Provides:       bundled(php-seld-jsonlint) = 1.11.0
-Provides:       bundled(php-seld-phar-utils) = 1.2.1
-Provides:       bundled(php-seld-signal-handler) = 2.0.2
-Provides:       bundled(php-symfony-console) = v5.4.44
-Provides:       bundled(php-symfony-deprecation-contracts) = v2.5.3
-Provides:       bundled(php-symfony-filesystem) = v5.4.44
-Provides:       bundled(php-symfony-finder) = v5.4.43
-Provides:       bundled(php-symfony-polyfill-ctype) = v1.31.0
-Provides:       bundled(php-symfony-polyfill-intl-grapheme) = v1.31.0
-Provides:       bundled(php-symfony-polyfill-intl-normalizer) = v1.31.0
-Provides:       bundled(php-symfony-polyfill-mbstring) = v1.31.0
-Provides:       bundled(php-symfony-polyfill-php73) = v1.31.0
-Provides:       bundled(php-symfony-polyfill-php80) = v1.31.0
-Provides:       bundled(php-symfony-polyfill-php81) = v1.31.0
-Provides:       bundled(php-symfony-process) = v5.4.44
-Provides:       bundled(php-symfony-service-contracts) = v2.5.3
-Provides:       bundled(php-symfony-string) = v5.4.44
 
 # From composer.json, suggest
 #        "ext-openssl": "Enabling the openssl extension allows you to access https URLs for repositories and packages",
@@ -138,8 +111,40 @@ Requires:       php-tokenizer
 Requires:       php-xsl
 Requires:       php-zlib
 
+# Bundled libraries
+%if %{without generators}
+# License MIT
+Provides:       bundled(php-composer-ca-bundle) = 1.5.2
+Provides:       bundled(php-composer-class-map-generator) = 1.4.0
+Provides:       bundled(php-composer-metadata-minifier) = 1.0.0
+Provides:       bundled(php-composer-pcre) = 2.3.1
+Provides:       bundled(php-composer-semver) = 3.4.3
+Provides:       bundled(php-composer-spdx-licenses) = 1.5.8
+Provides:       bundled(php-composer-xdebug-handler) = 3.0.5
+Provides:       bundled(php-justinrainbow-json-schema) = 5.3.0
+Provides:       bundled(php-psr-container) = 1.1.1
+Provides:       bundled(php-psr-log) = 1.1.4
+Provides:       bundled(php-react-promise) = v3.2.0
+Provides:       bundled(php-seld-jsonlint) = 1.11.0
+Provides:       bundled(php-seld-phar-utils) = 1.2.1
+Provides:       bundled(php-seld-signal-handler) = 2.0.2
+Provides:       bundled(php-symfony-console) = v5.4.45
+Provides:       bundled(php-symfony-deprecation-contracts) = v2.5.3
+Provides:       bundled(php-symfony-filesystem) = v5.4.45
+Provides:       bundled(php-symfony-finder) = v5.4.45
+Provides:       bundled(php-symfony-polyfill-ctype) = v1.31.0
+Provides:       bundled(php-symfony-polyfill-intl-grapheme) = v1.31.0
+Provides:       bundled(php-symfony-polyfill-intl-normalizer) = v1.31.0
+Provides:       bundled(php-symfony-polyfill-mbstring) = v1.31.0
+Provides:       bundled(php-symfony-polyfill-php73) = v1.31.0
+Provides:       bundled(php-symfony-polyfill-php80) = v1.31.0
+Provides:       bundled(php-symfony-polyfill-php81) = v1.31.0
+Provides:       bundled(php-symfony-process) = v5.4.45
+Provides:       bundled(php-symfony-service-contracts) = v2.5.3
+Provides:       bundled(php-symfony-string) = v5.4.45
 # Composer library
 Provides:       php-composer(composer/composer) = %{version}
+%endif
 # Special internal for Plugin API
 Provides:       php-composer(composer-plugin-api) = %{api_version}
 Provides:       php-composer(composer-runtime-api) = %{run_version}
@@ -159,23 +164,12 @@ Documentation: https://getcomposer.org/doc/
 %patch -P1 -p1 -b .noxdg
 find . \( -name \*.rpm -o -name \*noxdg \) -delete -print
 
-if grep -r '\.\./res'; then
-	: Patch need to fixed
-	exit 1
-fi
+rm vendor/composer/ca-bundle/res/cacert.pem
 
-rm src/bootstrap.php
-rm src/Composer/vendor/composer/ca-bundle/res/cacert.pem
-
-: symlink autoloader for library
-ln -s vendor/autoload.php src/Composer/autoload.php
-
-: fix layout
-sed -e "s:/../..' . '/src/Composer::" -i src/Composer/vendor/composer/autoload_static.php
-
+%if %{without generators}
 : List bundled libraries and Licenses
 php -r '
-	$pkgs = file_get_contents("src/Composer/vendor/composer/installed.json");
+	$pkgs = file_get_contents("vendor/composer/installed.json");
 	$pkgs = json_decode($pkgs, true);
 	if (!is_array($pkgs) || !isset($pkgs["packages"])) {
         echo "cant decode json file\n";
@@ -192,6 +186,7 @@ php -r '
 		printf("# License %s\n%s\n", $lic, implode("\n", $lib));
 	}
 '
+%endif
 
 : fix reported version
 sed -e '/BRANCH_ALIAS_VERSION/s/@package_branch_alias_version@//' \
@@ -200,7 +195,7 @@ sed -e '/BRANCH_ALIAS_VERSION/s/@package_branch_alias_version@//' \
 : check Plugin API version
 php -r '
 namespace Composer;
-include "src/Composer/autoload.php";
+include "src/bootstrap.php";
 if (version_compare(Plugin\PluginInterface::PLUGIN_API_VERSION, "%{api_version}")) {
   printf("Plugin API version is %s, expected %s\n", Plugin\PluginInterface::PLUGIN_API_VERSION, "%{api_version}");
   exit(1);
@@ -212,7 +207,7 @@ if (version_compare(Composer::RUNTIME_API_VERSION, "%{run_version}")) {
 
 
 %build
-# Nothing
+: Nothing to build
 
 
 %install
@@ -221,32 +216,46 @@ install -Dpm 644 %{SOURCE1} %{buildroot}%{bashcompdir}/%{name}
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
 install -m 644 %{SOURCE3} %{SOURCE4} %{buildroot}%{_sysconfdir}/profile.d/
 
-: Library
-mkdir -p     %{buildroot}%{_datadir}/php
-cp -pr src/* %{buildroot}%{_datadir}/php
+: Library autoloader for compatibility
+mkdir -p     %{buildroot}%{_datadir}/php/Composer
+ln -s ../../composer/vendor/autoload.php %{buildroot}%{_datadir}/php/Composer/autoload.php
 
-: Resources
-mkdir -p       %{buildroot}%{_datadir}/%{name}
-cp -pr res     %{buildroot}%{_datadir}/%{name}/res
-cp -p  LICENSE %{buildroot}%{_datadir}/%{name}/LICENSE
+: Sources
+mkdir -p %{buildroot}%{_datadir}/%{name}
+cp -pr src res vendor LICENSE\
+         %{buildroot}%{_datadir}/%{name}/
 
 : Command
 install -Dpm 755 bin/%{name} %{buildroot}%{_bindir}/%{name}
 
 : Licenses
 ln -sf ../../%{name}/LICENSE LICENSE
-cd src/Composer/vendor
+cd vendor
 for lic in */*/LICENSE
 do dir=$(dirname $lic)
    own=$(dirname $dir)
    prj=$(basename $dir)
-   ln -sf ../../php/Composer/vendor/$own/$prj/LICENSE ../../../$own-$prj-LICENSE
+   ln -sf ../../composer/vendor/$own/$prj/LICENSE ../$own-$prj-LICENSE
 done
+
+
+%check
+: Check autoloader
+php -r '
+  include "%{buildroot}%{_datadir}/%{name}/src/bootstrap.php";
+  exit (class_exists("Composer\\Composer") ? 0 : 1);
+'
+: Check compatibility autoloader
+php -r '
+  include "%{buildroot}%{_datadir}/php/Composer/autoload.php";
+  exit (class_exists("Composer\\Composer") ? 0 : 2);
+'
 
 
 %files
 %license *LICENSE
-%doc *.md doc
+%doc *.md
+%doc doc
 %doc composer.json
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*
 %{_bindir}/%{name}
@@ -256,6 +265,13 @@ done
 
 
 %changelog
+* Wed Oct 30 2024 Remi Collet <remi@remirepo.net> - 2.8.2-3
+- keep upstream layout for simplicity
+
+* Wed Oct 30 2024 Remi Collet <remi@remirepo.net> - 2.8.2-2
+- update to 2.8.2
+- fix diagnose command
+
 * Fri Oct  4 2024 Remi Collet <remi@remirepo.net> - 2.8.1-1
 - update to 2.8.1
 

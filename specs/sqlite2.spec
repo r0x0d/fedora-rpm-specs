@@ -6,7 +6,7 @@ Version:        2.8.17
 Release:        44%{?dist}
 
 Summary:        Embeddable SQL engine in a C library
-License:        Public Domain
+License:        blessing AND LicenseRef-Fedora-Public-Domain
 URL:            http://www.sqlite.org/
 Source0:        http://www.sqlite.org/sqlite-%{version}.tar.gz
 Patch1:         sqlite-2.8.15.rpath.patch

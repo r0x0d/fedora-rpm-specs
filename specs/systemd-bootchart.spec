@@ -1,14 +1,18 @@
 Name:           systemd-bootchart
-Version:        234
-Release:        5%{?dist}
+Version:        235
+Release:        1%{?dist}
 Summary:        Boot performance graphing tool
 
 # Automatically converted from old format: GPLv2+ and LGPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+
 URL:            https://github.com/systemd/systemd-bootchart
-Source0:        https://github.com/systemd/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.xz
+Source0:        https://github.com/systemd/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
-BuildRequires: make
+BuildRequires:  make
+BuildRequires:  automake
+BuildRequires:  autoconf
+BuildRequires:  libtool
+BuildRequires:  intltool
 BuildRequires:  gcc
 BuildRequires:  systemd
 BuildRequires:  pkgconfig(libsystemd) >= 221
@@ -27,6 +31,7 @@ are displayed separately.
 %autosetup -p1
 
 %build
+./autogen.sh
 %configure --disable-silent-rules
 %make_build
 
@@ -54,6 +59,9 @@ are displayed separately.
 %{_mandir}/man5/bootchart.conf.d.5*
 
 %changelog
+* Wed Oct 30 2024 Andrea Bolognani <abologna@redhat.com> - 235-1
+- Update to v235 (RHBZ #2247564)
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 234-5
 - convert license to SPDX
 

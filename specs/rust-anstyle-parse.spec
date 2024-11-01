@@ -6,7 +6,7 @@
 %global crate anstyle-parse
 
 Name:           rust-anstyle-parse
-Version:        0.2.5
+Version:        0.2.6
 Release:        %autorelease
 Summary:        Parse ANSI Style Escapes
 

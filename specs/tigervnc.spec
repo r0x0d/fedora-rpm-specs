@@ -6,7 +6,7 @@
 
 Name:           tigervnc
 Version:        1.14.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A TigerVNC remote display system
 
 %global _hardened_build 1
@@ -393,6 +393,10 @@ fi
 %{_datadir}/icons/hicolor/*/apps/*
 
 %changelog
+* Wed Oct 30 2024 Jan Grulich <jgrulich@redhat.com> - 1.14.1-2
+- Rebuild (xorg-x11-server)
+  Fixes CVE-2024-9632
+
 * Wed Oct 23 2024 Jan Grulich <jgrulich@redhat.com> - 1.14.1-1
 - 1.14.1
 

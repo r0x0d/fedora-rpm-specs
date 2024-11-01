@@ -88,12 +88,9 @@ BuildRequires:  mvn(org.hamcrest:hamcrest-library)
 BuildRequires:  junit5
 %endif
 
-# Theoretically Ant might be usable with just JRE, but typical Ant
-# workflow requires full JDK, so we recommend it here.
-Recommends:     java-21-openjdk-devel
-Requires:       java-21-openjdk-headless
-
 Requires:       %{name}-lib = %{version}-%{release}
+Requires:       %{name}-jdk-binding = %{version}-%{release}
+Suggests:       %{name}-openjdk21 = %{version}-%{release}
 
 # Require full javapackages-tools since the ant script uses
 # /usr/share/java-utils/java-functions
@@ -334,6 +331,18 @@ Javadoc pour %{name}.
 
 %endif
 
+%package openjdk21
+Summary:        OpenJDK 21 binding for Ant
+RemovePathPostfixes: -openjdk21
+Provides: ant-jdk-binding = %{version}-%{release}
+Requires: ant = %{version}-%{release}
+Requires: java-21-openjdk-headless
+Recommends: java-21-openjdk-devel
+Conflicts: ant-jdk-binding
+
+%description openjdk21
+Configures Ant to run with OpenJDK 21.
+
 # -----------------------------------------------------------------------------
 
 %prep
@@ -383,9 +392,9 @@ sed -e 's:/etc/ant.conf:%{_sysconfdir}/ant.conf:g' \
 sed -i 's/jaxp_parser_impl//;s/xml-commons-apis//' src/script/ant
 
 # Fix file-not-utf8 rpmlint warning
-iconv KEYS -f iso-8859-1 -t utf-8 -o KEYS.utf8
+iconv KEYS -f iso-8859-1 -t utf-8 >KEYS.utf8
 mv KEYS.utf8 KEYS
-iconv LICENSE -f iso-8859-1 -t utf-8 -o LICENSE.utf8
+iconv LICENSE -f iso-8859-1 -t utf-8 >LICENSE.utf8
 mv LICENSE.utf8 LICENSE
 
 # We want a hard dep on antlr
@@ -415,7 +424,7 @@ rm build/lib/ant-javamail.jar
 
 %install
 # ANT_HOME and subdirs
-mkdir -p $RPM_BUILD_ROOT%{ant_home}/{lib,etc,bin}
+mkdir -p %{buildroot}%{ant_home}/{lib,etc,bin}
 
 %mvn_alias :ant org.apache.ant:ant-nodeps apache:ant ant:ant
 %mvn_alias :ant-launcher ant:ant-launcher
@@ -439,7 +448,7 @@ for jar in build/lib/*.jar; do
   jarname=$(basename $jar .jar)
 
   # jar aliases
-  ln -sf ../../java/%{name}/${jarname}.jar $RPM_BUILD_ROOT%{ant_home}/lib/${jarname}.jar
+  ln -sf ../../java/%{name}/${jarname}.jar %{buildroot}%{ant_home}/lib/${jarname}.jar
 
   pom=src/etc/poms/${jarname}/pom.xml
 
@@ -472,47 +481,51 @@ rm src/etc/jdepend-frames.xsl
 rm src/etc/jdepend.xsl
 rm src/etc/maudit-frames.xsl
 %endif
-cp -p src/etc/*.xsl $RPM_BUILD_ROOT%{ant_home}/etc
+cp -p src/etc/*.xsl %{buildroot}%{ant_home}/etc
 
 # install everything else
-mkdir -p $RPM_BUILD_ROOT%{_bindir}
-cp -p src/script/ant $RPM_BUILD_ROOT%{_bindir}/
-ln -sf %{_bindir}/ant $RPM_BUILD_ROOT%{ant_home}/bin/
-cp -p src/script/antRun $RPM_BUILD_ROOT%{ant_home}/bin/
+mkdir -p %{buildroot}%{_bindir}
+cp -p src/script/ant %{buildroot}%{_bindir}/
+ln -sf %{_bindir}/ant %{buildroot}%{ant_home}/bin/
+cp -p src/script/antRun %{buildroot}%{ant_home}/bin/
 
 # default ant.conf
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}
-cp -p %{name}.conf $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.conf
+mkdir -p %{buildroot}%{_sysconfdir}
+cp -p %{name}.conf %{buildroot}%{_sysconfdir}/%{name}.conf
 
 # OPT_JAR_LIST fragments
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d
-echo "junit hamcrest/core ant/ant-junit" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/junit
-echo "junit hamcrest/core ant/ant-junit4" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/junit4
+mkdir -p %{buildroot}%{_sysconfdir}/%{name}.d
+echo "junit hamcrest/core ant/ant-junit" > %{buildroot}%{_sysconfdir}/%{name}.d/junit
+echo "junit hamcrest/core ant/ant-junit4" > %{buildroot}%{_sysconfdir}/%{name}.d/junit4
+
+# JDK bindings
+install -d -m 755 %{buildroot}%{_javaconfdir}/
+echo 'JAVA_HOME=%{_jvmdir}/jre-21-openjdk' > %{buildroot}%{_javaconfdir}/ant.conf-openjdk21
 
 %if %{without ant_minimal}
 
-echo "ant/ant-jmf" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/jmf
-echo "ant/ant-swing" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/swing
-echo "antlr ant/ant-antlr" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/antlr
-echo "bsf commons-logging ant/ant-apache-bsf" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/apache-bsf
-echo "xml-commons-resolver ant/ant-apache-resolver" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/apache-resolver
-echo "apache-commons-logging ant/ant-commons-logging" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/commons-logging
-echo "apache-commons-net ant/ant-commons-net" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/commons-net
-echo "bcel commons-lang3 ant/ant-apache-bcel" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/apache-bcel
-echo "oro ant/ant-apache-oro" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/apache-oro
-echo "regexp ant/ant-apache-regexp" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/apache-regexp
-echo "xalan-j2 xalan-j2-serializer ant/ant-apache-xalan2" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/apache-xalan2
-echo "ant/ant-imageio" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/imageio
-echo "jakartamail jaf ant/ant-jakartamail" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/jakartamail
-echo "jdepend ant/ant-jdepend" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/jdepend
-echo "jsch ant/ant-jsch" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/jsch
-echo "junit5 hamcrest/core junit opentest4j ant/ant-junitlauncher" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/junitlauncher
-echo "testutil ant/ant-testutil" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/testutil
-echo "xz-java ant/ant-xz" > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.d/xz
+echo "ant/ant-jmf" > %{buildroot}%{_sysconfdir}/%{name}.d/jmf
+echo "ant/ant-swing" > %{buildroot}%{_sysconfdir}/%{name}.d/swing
+echo "antlr ant/ant-antlr" > %{buildroot}%{_sysconfdir}/%{name}.d/antlr
+echo "bsf commons-logging ant/ant-apache-bsf" > %{buildroot}%{_sysconfdir}/%{name}.d/apache-bsf
+echo "xml-commons-resolver ant/ant-apache-resolver" > %{buildroot}%{_sysconfdir}/%{name}.d/apache-resolver
+echo "apache-commons-logging ant/ant-commons-logging" > %{buildroot}%{_sysconfdir}/%{name}.d/commons-logging
+echo "apache-commons-net ant/ant-commons-net" > %{buildroot}%{_sysconfdir}/%{name}.d/commons-net
+echo "bcel commons-lang3 ant/ant-apache-bcel" > %{buildroot}%{_sysconfdir}/%{name}.d/apache-bcel
+echo "oro ant/ant-apache-oro" > %{buildroot}%{_sysconfdir}/%{name}.d/apache-oro
+echo "regexp ant/ant-apache-regexp" > %{buildroot}%{_sysconfdir}/%{name}.d/apache-regexp
+echo "xalan-j2 xalan-j2-serializer ant/ant-apache-xalan2" > %{buildroot}%{_sysconfdir}/%{name}.d/apache-xalan2
+echo "ant/ant-imageio" > %{buildroot}%{_sysconfdir}/%{name}.d/imageio
+echo "jakartamail jaf ant/ant-jakartamail" > %{buildroot}%{_sysconfdir}/%{name}.d/jakartamail
+echo "jdepend ant/ant-jdepend" > %{buildroot}%{_sysconfdir}/%{name}.d/jdepend
+echo "jsch ant/ant-jsch" > %{buildroot}%{_sysconfdir}/%{name}.d/jsch
+echo "junit5 hamcrest/core junit opentest4j ant/ant-junitlauncher" > %{buildroot}%{_sysconfdir}/%{name}.d/junitlauncher
+echo "testutil ant/ant-testutil" > %{buildroot}%{_sysconfdir}/%{name}.d/testutil
+echo "xz-java ant/ant-xz" > %{buildroot}%{_sysconfdir}/%{name}.d/xz
 
 # javadoc
-mkdir -p $RPM_BUILD_ROOT%{_javadocdir}/%{name}
-cp -pr build/javadocs/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
+mkdir -p %{buildroot}%{_javadocdir}/%{name}
+cp -pr build/javadocs/* %{buildroot}%{_javadocdir}/%{name}
 
 # fix link between manual and javadoc
 (cd manual; ln -sf %{_javadocdir}/%{name} api)
@@ -652,6 +665,9 @@ install -p -m 644 man/%{name}.1 %{buildroot}%{_mandir}/man1/%{name}.1
 %{_javadocdir}/%{name}
 
 %endif
+
+%files openjdk21
+%config %{_javaconfdir}/%{name}.conf-openjdk21
 
 # -----------------------------------------------------------------------------
 

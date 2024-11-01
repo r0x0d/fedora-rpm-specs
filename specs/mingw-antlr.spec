@@ -6,7 +6,7 @@ Summary:		MinGW Windows ANTLR C++ run-time library
 Name:			mingw-%{mingw_pkg_name}
 Version:		2.7.7
 Release:		35%{?dist}
-License:		Public Domain
+License:		ANTLR-PD
 URL:			http://www.antlr.org/
 Source0:		http://www.antlr2.org/download/%{mingw_pkg_name}-%{version}.tar.gz
 Patch1:			%{mingw_pkg_name}-%{version}-newgcc.patch

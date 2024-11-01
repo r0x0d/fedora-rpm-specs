@@ -2,8 +2,8 @@
 %undefine __cmake3_in_source_build
 
 Name: scitokens-cpp
-Version: 1.1.1
-Release: 3%{?dist}
+Version: 1.1.2
+Release: 2%{?dist}
 Summary: C++ Implementation of the SciTokens Library
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License: Apache-2.0
@@ -75,6 +75,13 @@ Requires: %{name}%{?_isa} = %{version}
 %dir %{_includedir}/scitokens
 
 %changelog
+* Wed Oct 30 2024 Derek Weitzel <dweitzel@unl.edu> - 1.1.2-2
+- Fix source upload, no source changes
+ 
+* Wed Oct 30 2024 Derek Weitzel <dweitzel@unl.edu> - 1.1.2-1
+- Turn off CMAKE unity builds
+- Add a mutex around requesting public keys to stop overloading issuers
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 1.1.1-3
 - convert license to SPDX
 

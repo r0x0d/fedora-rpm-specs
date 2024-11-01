@@ -5,7 +5,7 @@
 %global crate anstyle-lossy
 
 Name:           rust-anstyle-lossy
-Version:        1.1.2
+Version:        1.1.3
 Release:        %autorelease
 Summary:        Lossy conversion between ANSI Color Codes
 

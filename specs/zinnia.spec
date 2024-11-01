@@ -1,6 +1,6 @@
 Name:		zinnia
 Version:	0.06
-Release:	70%{?dist}
+Release:	71%{?dist}
 Summary:	Online handwriting recognition system with machine learning
 
 License:	BSD-3-Clause
@@ -12,6 +12,7 @@ Patch0:		zinnia-0.05-bindings.patch
 Patch1:		zinnia-0.06-fixes-ppc-float.patch
 Patch2:		always-store-data-in-little-endian-format.patch
 Patch3:		zinnia-fixes-gcc6-compile.patch
+Patch4:		zinnia-fixes-python-setuptools.patch
 BuildRequires:	make
 BuildRequires:	gcc-c++
 BuildRequires:	libdb-devel, python3-devel
@@ -101,6 +102,7 @@ This package contains Simplified Chinese tomoe model files for %{name}.
 %patch -P1 -p1 -b .ppc
 %patch -P2 -p1 -R -b .little-endian
 %patch -P3 -p1 -b .gcc6
+%patch -P4 -p1 -b .python
 
 find . -type f -name "*.pyc" -exec rm -f {} ';'
 cp %{SOURCE1} .
@@ -127,7 +129,7 @@ make %{?_smp_mflags}
 popd
 
 pushd python
-CFLAGS="$RPM_OPT_FLAGS -I../" LDFLAGS="$RPM_LD_FLAGS -L../.libs" python3 setup.py build
+python3 setup.py build
 popd
 
 %install
@@ -195,6 +197,10 @@ chmod 0755 $RPM_BUILD_ROOT%{perl_vendorarch}/auto/%{name}/%{name}.so
 %{_datadir}/zinnia/model/tomoe/handwriting-zh_CN.model
 
 %changelog
+* Wed Oct 30 2024 Peng Wu <pwu@redhat.com> - 0.06-71
+- Fix build
+- Resolves: RHBZ#2319752
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.06-70
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

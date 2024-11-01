@@ -1,7 +1,7 @@
 %global srcname p1_pgsql
 
 Name:       erlang-%{srcname}
-Version:    1.1.27
+Version:    1.1.28
 Release:    %autorelease
 BuildArch:  noarch
 License:    ErlPL-1.1

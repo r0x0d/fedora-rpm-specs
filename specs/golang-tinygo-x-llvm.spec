@@ -13,7 +13,7 @@
 # https://github.com/tinygo-org/go-llvm
 %global goipath         tinygo.org/x/go-llvm
 %global forgeurl        https://github.com/tinygo-org/go-llvm
-%global commit          697964f2a9dc06d2267b5141fbd7345d3be21596
+%global commit          aaff3eb751f0d40d1bc099e1aa3b5f5ce247e6d1
 
 %gometa -L -f
 
@@ -37,8 +37,10 @@ BuildRequires:  make
 %{lua:
 local llvm_supported_versions = 'llvm_supported_versions'
 for version=tonumber(rpm.expand('%min_llvm')),tonumber(rpm.expand('%max_llvm')) do
-  print('BuildRequires: llvm-devel(major) = ' .. version .. '\n')
-  llvm_supported_versions = llvm_supported_versions .. ' ' .. version
+  if version ~= 16 then -- LLVM16 is no longer supported
+    print('BuildRequires: llvm-devel(major) = ' .. version .. '\n')
+    llvm_supported_versions = llvm_supported_versions .. ' ' .. version
+  end
 end
 rpm.define(llvm_supported_versions)
 }

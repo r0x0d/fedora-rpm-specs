@@ -204,7 +204,7 @@ Source0:    README
 %obsolete ccnet 6.1.8-19
 %obsolete ccnet-devel 6.1.8-19
 %obsolete container-workflow-tool 1.2.0-10
-%obsolete copr-distgit-client 0.72-2
+%obsolete copr-distgit-client 0.73-2
 %obsolete csound-devel 6.16.2-13
 %obsolete csound-java 6.16.2-13
 %obsolete deepin-dock-onboard-plugin 5.5.81-2

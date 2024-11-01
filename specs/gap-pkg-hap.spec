@@ -12,7 +12,7 @@
 %bcond bootstrap 0
 
 Name:           gap-pkg-%{pkgname}
-Version:        1.65
+Version:        1.66
 Release:        %autorelease
 Summary:        Homological Algebra Programming for GAP
 
@@ -139,7 +139,6 @@ chmod a-x lib/Kelvin/{*.xml,kelvin.gd,*.gi,init.g,tutex/*.txt} \
 
 %build
 # Build the documentation
-export LC_ALL=C.UTF-8
 mkdir ../pkg
 ln -s ../%{pkgname}-%{version} ../pkg
 gap -l "$PWD/..;" makedoc.g
@@ -155,14 +154,12 @@ rm -fr %{buildroot}%{gap_libdir}/pkg/%{pkgname}/lib/CompiledGAP
 
 %if %{without bootstrap}
 %check
-export LC_ALL=C.UTF-8
-
 # Produce less chatter while running the test
 polymake --reconfigure - <<< exit;
 
 # Now we can run the actual test; the 2G default is not enough on s390x
 # Do not run the very slow tests
-gap -l "%{buildroot}%{gap_libdir};" -o 3G tst/testquick.g
+gap -l '%{buildroot}%{gap_libdir};' -o 3G tst/testquick.g
 %endif
 
 %files

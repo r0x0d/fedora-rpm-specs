@@ -2,7 +2,7 @@
 %global sdist_name openslide_python
 
 Name:           python-openslide
-Version:        1.4.0
+Version:        1.4.1
 Release:        %autorelease
 Summary:        Python bindings for the OpenSlide library
 
@@ -60,9 +60,9 @@ rm -r build/html/.buildinfo build/html/.doctrees
 %check
 %if 0%{?rhel} == 9
 # pytest 6; no support for pythonpath setting
-sed -i -e '/^minversion/ d' pytest.ini
+sed -i -e '/^minversion/ d' pyproject.toml
 %pytest --import-mode append
-%elif 0%{?rhel} != 8
+%else
 %pytest
 %endif
 

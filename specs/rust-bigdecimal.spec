@@ -5,7 +5,7 @@
 %global crate bigdecimal
 
 Name:           rust-bigdecimal
-Version:        0.4.5
+Version:        0.4.6
 Release:        %autorelease
 Summary:        Arbitrary precision decimal numbers
 

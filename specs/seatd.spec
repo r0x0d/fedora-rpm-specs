@@ -4,7 +4,7 @@
 %bcond_without  server
 
 Name:           seatd
-Version:        0.9.0
+Version:        0.9.1
 Release:        1%{?dist}
 Summary:        Minimal seat management daemon
 
@@ -119,6 +119,9 @@ install -D -m 0644 -pv %{SOURCE1} \
 
 
 %changelog
+* Wed Oct 30 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 0.9.1-1
+- Update to 0.9.1 (rhbz#2322864)
+
 * Tue Oct 22 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 0.9.0-1
 - Update to 0.9.0
 

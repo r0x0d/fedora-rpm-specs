@@ -22,7 +22,7 @@ Name:      ocsinventory-agent
 Summary:   Open Computer and Software Inventory Next Generation client
 
 Version:   2.10.4
-Release:   1%{?dist}
+Release:   3%{?dist}
 
 Source0:   https://github.com/OCSInventory-NG/UnixAgent/releases/download/v%{official_version}/Ocsinventory-Unix-Agent-%{official_version}.tar.gz
 
@@ -62,10 +62,6 @@ Requires(post): systemd
 Requires: perl-Ocsinventory-Agent = %{version}-%{release}
 %ifarch %{ix86} x86_64 ia64
 Requires:  dmidecode
-%endif
-
-%ifarch %{ix86} x86_64
-Requires:  libx86
 %endif
 
 Requires:  logrotate
@@ -115,7 +111,6 @@ Requires:  perl(Net::Netmask)
 Requires:  perl(Net::SNMP)
 Requires:  perl(Net::SSLeay)
 Requires:  perl(XML::Simple)
-Requires: monitor-edid
 Requires: net-tools
 Requires: pciutils
 Requires: smartmontools
@@ -127,6 +122,7 @@ Recommends: perl(Parse::EDID)
 Recommends: perl(Proc::Daemon)
 Recommends: perl(Proc::PID::File)
 Recommends: ipmitool
+Recommends: monitor-edid
 Suggests: nmap
 Suggests: perl(Nmap::Parser)
 %endif
@@ -309,6 +305,9 @@ find %{buildroot} -type f -name ._.DS_Store -exec rm {} \;
 
 
 %changelog
+* Wed Oct 30 2024 Pat Riehecky <riehecky@fnal.gov> - 2.10.4-2
+- Make monitor-edid recommended rather than required
+
 * Tue Oct 29 2024 Pat Riehecky <riehecky@fnal.gov> - 2.10.4-1
 - Update to 2.10.4
 

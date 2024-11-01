@@ -1,5 +1,5 @@
 Name: liburing
-Version: 2.7
+Version: 2.8
 Release: 1%{?dist}
 Summary: Linux-native io_uring I/O access library
 License: (GPL-2.0-only WITH Linux-syscall-note OR MIT) AND (LGPL-2.0-or-later OR MIT)
@@ -36,8 +36,8 @@ for the Linux-native io_uring.
 %make_install
 
 %files
-%attr(0755,root,root) %{_libdir}/liburing.so.*
-%attr(0755,root,root) %{_libdir}/liburing-ffi.so.*
+%{_libdir}/liburing.so.*
+%{_libdir}/liburing-ffi.so.*
 %license COPYING
 
 %files devel
@@ -53,6 +53,10 @@ for the Linux-native io_uring.
 %{_mandir}/man7/*
 
 %changelog
+* Wed Oct 30 2024 Richard W.M. Jones <rjones@redhat.com> - 2.8-1
+- Update to liburing 2.8 (RHBZ#2317177)
+- Remove explicit %%attr on library
+
 * Thu Aug 22 2024 Richard W.M. Jones <rjones@redhat.com> - 2.7-1
 - Update to liburing 2.7 (RHBZ#2307229)
 

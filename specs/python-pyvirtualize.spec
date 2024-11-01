@@ -70,8 +70,8 @@ BuildRequires:  python-sphinxcontrib-jquery
 BuildRequires:  js-jquery
 %endif
 Requires:       js-jquery
-# some js files of documentation are licensed with BSD
-License:        ASL 2.0 and BSD
+# some js files of documentation are licensed with BSD-2-Clause
+License:        Apache-2.0 AND BSD-2-Clause
 
 %description doc
 This package installs %{summary}.

@@ -5,7 +5,7 @@ Version:        3.8
 Release:        13%{?dist}
 Summary:        Curses library for MinGW
 
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            http://pdcurses.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/pdcurses/PDCurses-%{version}.tar.gz
 

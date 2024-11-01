@@ -2,8 +2,8 @@
 %global pypi_name bracex
 
 Name:           python-%{pypi_name}
-Version:        2.1.1
-Release:        15%{?dist}
+Version:        2.5
+Release:        1%{?dist}
 Summary:        Bash style brace expander
 
 License:        MIT
@@ -29,25 +29,28 @@ Brace expanding is used to generate arbitrary strings.
 
 %prep
 %autosetup -n %{pypi_name}-%{version}
-# Remove bundled egg-info
-rm -rf %{pypi_name}.egg-info
+
+%generate_buildrequires
+%pyproject_buildrequires
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files %{pypi_name}
 
 %check
-%{python3} setup.py test
+%pytest -vv
 
-%files -n python3-%{pypi_name}
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %license LICENSE.md docs/src/markdown/about/license.md
 %doc README.md
-%{python3_sitelib}/%{pypi_name}
-%{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Tue Oct 29 2024 Parag Nemade <pnemade AT redhat DOT com> - 2.5-1
+- Update to new upstream release 2.5
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.1-15
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -5,7 +5,7 @@
 %global crate colorchoice
 
 Name:           rust-colorchoice
-Version:        1.0.2
+Version:        1.0.3
 Release:        %autorelease
 Summary:        Global override of color control
 
