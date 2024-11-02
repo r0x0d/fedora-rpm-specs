@@ -103,8 +103,11 @@ dos2unix --keepdate samples/Qt/fast-dictionary/words.txt
 find samples/VC++ -type f -execdir dos2unix --keepdate '{}' '+'
 
 
-%build
+%conf
 %cmake -GNinja -Dtest:BOOL=TRUE
+
+
+%build
 %cmake_build
 
 

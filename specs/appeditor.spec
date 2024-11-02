@@ -186,8 +186,11 @@ Uygulama menüsünde gösterilen uygulama girişlerini ve özelliklerini düzenl
 rm -rv external
 
 
-%build
+%conf
 %meson
+
+
+%build
 %meson_build
 
 

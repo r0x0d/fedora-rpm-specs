@@ -1,13 +1,10 @@
 Name:           dtk6core
-Version:        6.0.19
+Version:        6.0.21
 Release:        %autorelease
 Summary:        Deepin tool kit core modules
 License:        LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dtk6core
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
-
-# https://github.com/linuxdeepin/dtkcore/pull/438
-Patch0:         dtk6core-add-qt6.8-support.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake

@@ -6,8 +6,7 @@ Version:   20120503
 Release:   34%{?dist}
 Summary:   Free UCS Outline Fonts
 
-# Standard font exception
-License:   GPL-3.0-or-later with exceptions
+License:   GPL-3.0-or-later WITH Font-exception-2.0
 URL:       http://www.gnu.org/software/freefont/ 
 Source0:   http://ftp.gnu.org/gnu/freefont/freefont-src-%{version}.tar.gz
 Source2:   %{fontconf}-mono.conf

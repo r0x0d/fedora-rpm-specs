@@ -2,16 +2,15 @@
 %global gem_name fog-core
 
 Name: rubygem-%{gem_name}
-Version: 2.3.0
-Release: 4%{?dist}
+Version: 2.6.0
+Release: 1%{?dist}
 Summary: Shared classes and tests for fog providers and services
 License: MIT
 URL: https://github.com/fog/fog-core
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
-# Fix compatibilty with Minitest 5.19+, which puts `MiniTest` constant behind
-# environment variable.
-# https://github.com/fog/fog-core/pull/289
-Patch0: rubygem-fog-core-2.3.0-Fix-compatibility-with-Minitest-5.19.patch
+# git clone https://github.com/fog/fog-core.git && cd fog-core
+# git archive -v -o fog-core-2.6.0-spec.tar.gz v2.6.0 spec/
+Source1: %{gem_name}-%{version}-spec.tar.gz
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
@@ -35,9 +34,12 @@ BuildArch: noarch
 Documentation for %{name}.
 
 %prep
-%setup -q -n %{gem_name}-%{version}
+%setup -q -n %{gem_name}-%{version} -b 1
 
-%patch 0 -p1
+# Test suite passes with Excon 0.100.0 just fine. Relax the dependency for now
+# so we don't need to bump excon ATM.
+%gemspec_remove_dep -g excon "~> 1.0"
+%gemspec_add_dep -g excon [">= 0.100.0", "< 2"]
 
 %build
 # Create the gem as gem install only works on a gem file
@@ -56,6 +58,8 @@ cp -a .%{gem_dir}/* \
 
 %check
 pushd .%{gem_instdir}
+ln -s %{builddir}/spec spec
+
 ruby -Ispec -e 'Dir.glob "./spec/**/*_spec.rb", &method(:require)'
 popd
 
@@ -73,11 +77,15 @@ popd
 %{gem_instdir}/Gemfile
 %doc %{gem_instdir}/README.md
 %{gem_instdir}/Rakefile
+%doc %{gem_instdir}/SECURITY.md
 %doc %{gem_instdir}/changelog.md
 %{gem_instdir}/fog-core.gemspec
-%{gem_instdir}/spec
 
 %changelog
+* Thu Oct 31 2024 Vít Ondruch <vondruch@redhat.com> - 2.6.0-1
+- Update to fog-core 2.6.0.
+  Resolves: rhbz#2256641
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.3.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

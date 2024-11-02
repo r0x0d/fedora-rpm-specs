@@ -5,9 +5,8 @@ Version:        0.4
 %global gh_ver %{version}.0
 Release:        %autorelease
 Summary:        Library for detecting bot HTTP UA headers
-# Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
-URL:            https://github.com/rory/robot-detection
+URL:            https://github.com/amandasaurus/robot-detection
 # PyPI source does not have tests and license text
 # Source0:        %%{pypi_source %%{srcname}}
 Source0:        %{url}/archive/v%{gh_ver}/%{srcname}-%{version}.tar.gz
@@ -16,6 +15,7 @@ BuildArch:      noarch
 
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
+BuildRequires:  python3dist(pytest)
 
 %global _description %{expand:
 robot_detection is a python module to detect if a given HTTP User Agent is a web
@@ -49,7 +49,7 @@ Summary:        %{summary}
 
 
 %check
-%tox
+%pytest -v tests.py
 
 
 %files -n  python%{python3_pkgversion}-%{srcname} -f %{pyproject_files}

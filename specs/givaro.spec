@@ -82,7 +82,7 @@ A static library for givaro.
 %autosetup -p1
 
 
-%build
+%conf
 %if %{with autoreconf}
 autoreconf --force --install --verbose
 %endif
@@ -104,6 +104,8 @@ sed -e 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' \
     -e 's|CC="\(g..\)"|CC="\1 -Wl,--as-needed"|' \
     -i libtool
 
+
+%build
 %make_build
 
 

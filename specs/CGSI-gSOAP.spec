@@ -1,6 +1,6 @@
 Name:		CGSI-gSOAP
 Version:	1.3.12
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	GSI plugin for gSOAP
 
 License:	Apache-2.0
@@ -69,6 +69,9 @@ rm %{buildroot}%{_libdir}/*.a
 %doc %{_mandir}/man*/*
 
 %changelog
+* Thu Oct 31 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 1.3.12-2
+- Rebuilt for gsoap 2.8.135 (Fedora 42)
+
 * Sun Aug 04 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 1.3.12-1
 - New upstream release 1.3.12
 - Drop patches (accepted upstream)

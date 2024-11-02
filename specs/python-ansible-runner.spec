@@ -1,17 +1,9 @@
 # Created by pyp2rpm-3.2.2
 %global pypi_name ansible-runner
 
-%if 0%{?fedora} || 0%{?rhel} > 7
-%bcond_with    python2
-%bcond_without python3
-%else
-%bcond_without python2
-%bcond_with    python3
-%endif
-
 Name:           python-%{pypi_name}
 Version:        2.4.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        A tool and python library to interface with Ansible
 
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
@@ -35,7 +27,6 @@ BuildRequires: python3dist(pip)
 BuildRequires: python3dist(psutil)
 BuildRequires: python3dist(pexpect) >= 4.6
 BuildRequires: python3dist(pytest)
-BuildRequires: python3dist(pytest-cov)
 BuildRequires: python3dist(pytest-mock)
 BuildRequires: python3dist(pytest-timeout)
 BuildRequires: python3dist(pytest-xdist)
@@ -64,7 +55,10 @@ standalone tool, or imported into a python project.
 %prep
 %autosetup -n %{pypi_name}-%{version} -p1
 # Allow the version of setuptools that's in fedora
-sed -i 's/, <=69.0.2//' pyproject.toml
+sed -i 's/, <=[0-9.]*//g' pyproject.toml
+
+# Allow the version of setuptools-scm that's in fedora
+sed -i 's/, <=8.0.4//' pyproject.toml
 
 sed -i '166 i \@pytest.mark.skip(reason="can not resolve example.com in build system")' test/integration/test_display_callback.py
 sed -i '/test_resolved_actions/i \@pytest.mark.skip(reason="ansible version lookup is blank in build")' test/integration/test_display_callback.py
@@ -108,6 +102,9 @@ ln -s ansible-runner-%{python3_version} %{buildroot}/%{_bindir}/ansible-runner-3
 %{_bindir}/ansible-runner
 
 %changelog
+* Tue Sep 17 2024 Tomáš Hrnčiar <thrnciar@redhat.com> - 2.4.0-6
+- Bump setuptools and setuptools_scm
+
 * Fri Aug 02 2024 Tomáš Hrnčiar <thrnciar@redhat.com> - 2.4.0-5
 - Backport upstream patch needed for compatibility with pytest 8
 

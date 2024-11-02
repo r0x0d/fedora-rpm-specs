@@ -1,7 +1,7 @@
 %global with_mingw 0
 
 %if 0%{?fedora}
-%global with_mingw 1
+%global with_mingw 0
 %endif
 
 %undefine _auto_set_build_flags
@@ -14,10 +14,7 @@ License:       GPL-2.0-or-later
 URL:           https://devicetree.org/
 
 Source0:       https://www.kernel.org/pub/software/utils/%{name}/%{name}-%{version}.tar.xz
-# avoid rebuilding python extension during %%install without distro-wide compiler/linker flags
-# https://github.com/dgibson/dtc/commit/ff4f17eb58650784ffb2e8a8fbefebce1038f80b
-# https://github.com/dgibson/dtc/commit/1df7b047fe437708c70cbd2262557d19e40022a6
-Patch0:        dtc-1.7.0-python.patch
+Patch1:        dtc-fix-build-swig43.patch
 
 BuildRequires: gcc make
 BuildRequires: flex bison swig
@@ -146,15 +143,14 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 
 %files -n libfdt
 %license GPL
-%{_libdir}/libfdt-%{version}.so
-%{_libdir}/libfdt.so.*
+%{_libdir}/libfdt.so.1*
 
 %files -n libfdt-static
 %{_libdir}/libfdt.a
 
 %files -n libfdt-devel
 %{_libdir}/libfdt.so
-%{_includedir}/*
+%{_includedir}/*fdt*
 
 %files -n python3-libfdt
 %{python3_sitearch}/libfdt-%{version}-py%{python3_version}.egg-info/

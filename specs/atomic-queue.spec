@@ -97,8 +97,11 @@ developing applications that use %{name}.
 %autosetup -n atomic_queue-%{version}
 
 
-%build
+%conf
 %meson -Dbenchmarks=false
+
+
+%build
 %meson_build
 
 

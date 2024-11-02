@@ -1,3 +1,8 @@
+# Missing dependencies in EPEL10:
+#   - python3dist(markdown-it-py)
+#   - python3dist(tabulate)
+%bcond render %{undefined el10}
+
 Name:           bids-schema
 Version:        0.11.3
 Release:        %autorelease
@@ -100,7 +105,7 @@ Features:
   • simple CLI bindings (e.g. bst export)
 
 
-%pyproject_extras_subpkg -n python3-bidsschematools render expressions
+%pyproject_extras_subpkg -n python3-bidsschematools %{?with_render:render} expressions
 
 
 %prep
@@ -120,7 +125,7 @@ rm -rf src/js/ src/css/
 
 %generate_buildrequires
 pushd tools/schemacode >/dev/null
-%pyproject_buildrequires -x render,expressions
+%pyproject_buildrequires -x %{?with_render:render,}expressions
 popd >/dev/null
 
 
@@ -128,8 +133,6 @@ popd >/dev/null
 pushd tools/schemacode >/dev/null
 %pyproject_wheel
 popd
-
-# bst -v export --output src/schema.json
 
 
 %install
@@ -199,7 +202,11 @@ install -t '%{buildroot}%{_docdir}/python3-bidsschematools' -D -p -m 0644 \
 verfile='%{_datadir}/bids-schema/versions/%{version}/schema/SCHEMA_VERSION'
 [ '%{version}' = "$(cat "%{buildroot}${verfile}")" ]
 
-%pyproject_check_import
+%pyproject_check_import %{?!with_render:-e bidsschematools.render*}
+
+%if %{without render}
+ignore="${ignore-} --ignore-glob=tools/schemacode/bidsschematools/tests/test_render_*"
+%endif
 
 # These tests require example files that were filtered out for license reasons.
 k="${k-}${k+ and }not test_bids_datasets[hcp_example_bids]"
@@ -220,7 +227,7 @@ ln -s '%{buildroot}%{python3_sitelib}/bidsschematools/data' \
 # All of this manipulation is OK here in %%check because we already built the
 # wheel and installed the library to the buildroot.
 
-%pytest -k "${k-}" -v
+%pytest ${ignore-} -k "${k-}" -v
 
 
 %files

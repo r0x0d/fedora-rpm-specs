@@ -151,7 +151,7 @@ PDF_HYPERLINKS)[[:blank:]]*=[[:blank:]]*)NO[[:blank:]]*/\1YES/" \
 %endif
 
 
-%build
+%conf
 # Regenerate configure after monkeying with configure.ac
 autoreconf --force --install --verbose
 
@@ -166,6 +166,9 @@ autoreconf --force --install --verbose
   --with-blas-cflags="$(pkgconf --cflags flexiblas) -D__FFLASFFPACK_HAVE_CBLAS=1" \
   --with-blas-libs="$(pkgconf --libs flexiblas)"
 chmod -v a+x fflas-ffpack-config
+
+
+%build
 %make_build
 
 %if %{with doc}

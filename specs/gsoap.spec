@@ -1,7 +1,7 @@
 Summary: Generator Tools for Coding SOAP/XML Web Services in C and C++
 Name: gsoap
-Version: 2.8.132
-Release: 2%{?dist}
+Version: 2.8.135
+Release: 1%{?dist}
 
 # gsoap is licensed both under the gSOAP public license and under GPL version
 # 2 or later with an OpenSSL linking exception.
@@ -28,6 +28,9 @@ Source3: index.html
 Patch0: %{name}-libtool.patch
 # The custom tabs css does not work with newer doxygen - use default version
 Patch1: %{name}-doxygen-tabs.patch
+# Don't overwrite CPPFLAGS in Makefile.am files in sample directory
+# https://sourceforge.net/p/gsoap2/bugs/1321/
+Patch2: %{name}-cppflags.patch
 
 BuildRequires: gcc-c++
 BuildRequires: flex
@@ -66,6 +69,7 @@ gSOAP documentation in html.
 %setup -q -n gsoap-2.8
 %patch -P 0 -p1
 %patch -P 1 -p1
+%patch -P 2 -p1
 
 # XML files non-executable
 find gsoap/samples/autotest/databinding/examples -name '*.xml' \
@@ -127,9 +131,8 @@ install -m 644 -p %{SOURCE3} gsoap/doc-build
 %install
 %make_install -j1
 rm -f %{buildroot}/%{_libdir}/*.la
-rm %{buildroot}/%{_datadir}/gsoap/plugin/testmsgr-httpda.o
-rm %{buildroot}/%{_datadir}/gsoap/plugin/testmsgr-smdevp.o
-rm %{buildroot}/%{_datadir}/gsoap/plugin/testmsgr-threads.o
+rm %{buildroot}/%{_datadir}/gsoap/custom/*.o
+rm %{buildroot}/%{_datadir}/gsoap/plugin/*.o
 
 mkdir -p %{buildroot}/%{_mandir}/man1
 install -m 644 -p %{SOURCE1} %{SOURCE2} %{buildroot}/%{_mandir}/man1
@@ -374,6 +377,10 @@ install -m 644 -p %{SOURCE1} %{SOURCE2} %{buildroot}/%{_mandir}/man1
 %license LICENSE.txt GPLv2_license.txt
 
 %changelog
+* Wed Oct 30 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 2.8.135-1
+- Update to 2.8.135
+- Don't overwrite CPPFLAGS in Makefile.am files in sample directory
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.8.132-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

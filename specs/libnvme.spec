@@ -3,7 +3,7 @@
 
 Name:    libnvme
 Summary: Linux-native nvme device management library
-Version: 1.10
+Version: 1.11
 Release: 1%{?dist}
 License: LGPL-2.1-or-later
 URL:     https://github.com/linux-nvme/libnvme
@@ -13,7 +13,7 @@ BuildRequires: gcc gcc-c++
 BuildRequires: swig
 BuildRequires: python3-devel
 
-BuildRequires: meson >= 0.50
+BuildRequires: meson >= 0.53
 BuildRequires: json-c-devel >= 0.13
 BuildRequires: openssl-devel
 BuildRequires: dbus-devel
@@ -76,9 +76,9 @@ rm -r %{buildroot}%{_pkgdocdir}/html/{.buildinfo,.doctrees/}
 %files
 %license COPYING ccan/licenses/*
 %{_libdir}/libnvme.so.1
-%{_libdir}/libnvme.so.1.10.0
+%{_libdir}/libnvme.so.1.11.0
 %{_libdir}/libnvme-mi.so.1
-%{_libdir}/libnvme-mi.so.1.10.0
+%{_libdir}/libnvme-mi.so.1.11.0
 
 %files devel
 %{_libdir}/libnvme.so
@@ -98,6 +98,9 @@ rm -r %{buildroot}%{_pkgdocdir}/html/{.buildinfo,.doctrees/}
 %{python3_sitearch}/libnvme/*
 
 %changelog
+* Thu Oct 31 2024 Tomas Bzatek <tbzatek@redhat.com> - 1.11-1
+- Upstream v1.11 release
+
 * Mon Aug 05 2024 Tomas Bzatek <tbzatek@redhat.com> - 1.10-1
 - Upstream v1.10 release
 

@@ -1,7 +1,7 @@
 Summary:        Google C++ testing framework
 Name:           gtest
-Version:        1.14.0
-Release:        5%{?dist}
+Version:        1.15.2
+Release:        1%{?dist}
 # scripts/generator/* are Apache-2.0
 License:        BSD-3-Clause and Apache-2.0
 URL:            https://github.com/google/googletest
@@ -99,6 +99,9 @@ sed -e "s/set(GOOGLETEST_VERSION .*)/set(GOOGLETEST_VERSION %{version})/" -i CMa
 %{_libdir}/pkgconfig/gmock_main.pc
 
 %changelog
+* Wed Oct 23 2024 Terje Rosten <terjeros@gmail.com> - 1.15.2-1
+- 1.15.2
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.14.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

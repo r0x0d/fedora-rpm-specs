@@ -1,3 +1,5 @@
+%bcond autoreconf 1
+
 %global upver 0.0.14
 
 Name:           gp2c
@@ -24,6 +26,11 @@ Source2:        gpgkey-42028EA404A2E9D80AC453148F0E7C2B4522E387.gpg
 BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  perl
+
+%if %{with autoreconf}
+BuildRequires:  autoconf
+BuildRequires:  automake
+%endif
 
 BuildRequires:  pari-gp
 BuildRequires:  pari-devel
@@ -62,8 +69,14 @@ mv ChangeLog.utf8 ChangeLog
 rm -v doc/*.{dvi,html,pdf}
 
 
-%build
+%conf
+%if %{with autoreconf}
+autoreconf --force --install --verbose
+%endif
 %configure --with-paricfg='%{_libdir}/pari/pari.cfg'
+
+
+%build
 %make_build
 
 # Build the documentation

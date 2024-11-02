@@ -1,8 +1,8 @@
 %global pypi_name markups
 
 Name:           python-%{pypi_name}
-Version:        3.1.3
-Release:        13%{?dist}
+Version:        4.0.0
+Release:        1%{?dist}
 Summary:        A wrapper around various text markups
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -11,19 +11,17 @@ URL:            https://github.com/retext-project/pymarkups
 Source0:        %{pypi_source Markups}
 BuildArch:      noarch
 
-# Fix tests with Pygments 2.11.2
-# Commit backported from: https://github.com/retext-project/pymarkups/commit/c13ae6633
-Patch:          fix-tests-with-pygments-2.11.patch
-
 BuildRequires:  python3-devel
-BuildRequires:  python3dist(docutils)
-BuildRequires:  python3dist(markdown)
-BuildRequires:  python3dist(pygments)
-BuildRequires:  python3dist(python-markdown-math)
-BuildRequires:  python3dist(setuptools)
-BuildRequires:  python3dist(textile)
+BuildRequires: python3dist(pytest)
 BuildRequires:  python3dist(sphinx)
-BuildRequires:  python3dist(pyyaml)
+
+#BuildRequires:  python3dist(docutils)
+#BuildRequires:  python3dist(markdown)
+#BuildRequires:  python3dist(pygments)
+#BuildRequires:  python3dist(python-markdown-math)
+#BuildRequires:  python3dist(setuptools)
+#BuildRequires:  python3dist(textile)
+#BuildRequires:  python3dist(pyyaml)
 
 %description
 This module provides a wrapper around various text markup languages. Available
@@ -52,30 +50,41 @@ Documentation for markups
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
+%generate_buildrequires
+%pyproject_buildrequires
+
+
 %build
-%py3_build
+%pyproject_wheel
+
 # generate html docs
 PYTHONPATH=${PWD} sphinx-build-3 docs html
 # remove the sphinx-build leftovers
 rm -rf html/.{doctrees,buildinfo}
 
+
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files %{pypi_name}
+
 
 %check
-%{__python3} setup.py test -v
+%pytest tests/
 
-%files -n python3-%{pypi_name}
+
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %license LICENSE
 %doc README.rst
-%{python3_sitelib}/%{pypi_name}
-%{python3_sitelib}/Markups-%{version}-py%{python3_version}.egg-info
 
 %files -n python-%{pypi_name}-doc
 %doc html
 %license LICENSE
 
+
 %changelog
+* Thu Oct 31 2024 José Matos <jamatos@fedoraproject.org> - 4.0.0-1
+- Update to 4.0.0
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 3.1.3-13
 - convert license to SPDX
 

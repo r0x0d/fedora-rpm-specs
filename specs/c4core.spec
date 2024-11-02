@@ -140,13 +140,16 @@ cat > src/c4/ext/fast_float_all.h <<EOF
 EOF
 
 
-%build
+%conf
 # We can stop the CMake scripts from downloading doctest by setting
 # C4CORE_CACHE_DOWNLOAD_DOCTEST to any directory that exists.
 %cmake -GNinja \
   -DCMAKE_CXX_STANDARD=%{cxx_std} \
   -DC4CORE_CACHE_DOWNLOAD_DOCTEST:PATH=/ \
   -DC4CORE_BUILD_TESTS=ON
+
+
+%build
 %cmake_build
 
 

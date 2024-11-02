@@ -2,7 +2,7 @@
 
 Name:		voms
 Version:	2.1.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	Virtual Organization Membership Service
 
 License:	Apache-2.0
@@ -87,7 +87,7 @@ services.
 %package server
 Summary:	Virtual Organization Membership Service Server
 Requires:	%{name}%{?_isa} = %{version}-%{release}
-Requires(pre):	shadow-utils
+%{?sysusers_requires_compat}
 %{?systemd_requires}
 
 %description server
@@ -130,14 +130,16 @@ mkdir -p %{buildroot}%{_pkgdocdir}/VOMS_CC_API
 cp -pr doc/apidoc/api/VOMS_CC_API/html %{buildroot}%{_pkgdocdir}/VOMS_CC_API
 rm -f %{buildroot}%{_pkgdocdir}/VOMS_CC_API/html/installdox
 
+mkdir -p %{buildroot}%{_sysconfdir}/alternatives
 for b in voms-proxy-init voms-proxy-info voms-proxy-destroy; do
   ## Rename client binaries
   mv %{buildroot}%{_bindir}/${b} %{buildroot}%{_bindir}/${b}2
-  touch %{buildroot}/%{_bindir}/${b}
-  chmod 755 %{buildroot}/%{_bindir}/${b}
+  ln -s %{_bindir}/${b}2 %{buildroot}%{_sysconfdir}/alternatives/${b}
+  ln -s %{_sysconfdir}/alternatives/${b} %{buildroot}%{_bindir}/${b}
   ## and man pages
   mv %{buildroot}%{_mandir}/man1/${b}.1 %{buildroot}%{_mandir}/man1/${b}2.1
-  touch %{buildroot}%{_mandir}/man1/${b}.1
+  ln -s %{_mandir}/man1/${b}2.1.gz %{buildroot}%{_sysconfdir}/alternatives/${b}.1.gz
+  ln -s %{_sysconfdir}/alternatives/${b}.1.gz %{buildroot}%{_mandir}/man1/${b}.1.gz
 done
 
 %posttrans
@@ -258,6 +260,9 @@ fi
 %ghost %{_bindir}/voms-proxy-destroy
 %ghost %{_bindir}/voms-proxy-info
 %ghost %{_bindir}/voms-proxy-init
+%ghost %{_sysconfdir}/alternatives/voms-proxy-destroy
+%ghost %{_sysconfdir}/alternatives/voms-proxy-info
+%ghost %{_sysconfdir}/alternatives/voms-proxy-init
 %{_mandir}/man1/voms-proxy-destroy2.1*
 %{_mandir}/man1/voms-proxy-info2.1*
 %{_mandir}/man1/voms-proxy-init2.1*
@@ -266,6 +271,9 @@ fi
 %ghost %{_mandir}/man1/voms-proxy-destroy.1*
 %ghost %{_mandir}/man1/voms-proxy-info.1*
 %ghost %{_mandir}/man1/voms-proxy-init.1*
+%ghost %{_sysconfdir}/alternatives/voms-proxy-destroy.1*
+%ghost %{_sysconfdir}/alternatives/voms-proxy-info.1*
+%ghost %{_sysconfdir}/alternatives/voms-proxy-init.1*
 
 %files server
 %{_sbindir}/%{name}
@@ -284,6 +292,10 @@ fi
 %doc README.Fedora
 
 %changelog
+* Thu Oct 31 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 2.1.0-3
+- Rebuild for gsoap 2.8.135 (Fedora 42)
+- Add additional ghost files to package (rpmlint)
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -6,17 +6,20 @@
 
 Name:           the_silver_searcher
 Version:        2.2.0^%{date}.%{shortcommit}
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Super-fast text searching tool (ag)
-# Automatically converted from old format: ASL 2.0 and BSD - review is highly recommended.
-License:        Apache-2.0 AND LicenseRef-Callaway-BSD
+# The bundled copy of src/uthash.h is BSD-1-Clause, but we remove that in
+# %%prep so this package is only Apache-2.0.
+License:        Apache-2.0
 URL:            https://github.com/ggreer/the_silver_searcher
-Source0:        %{url}/archive/%{commit}/%{name}-%{commit}.tar.gz
+Source:         %{url}/archive/%{commit}/%{name}-%{commit}.tar.gz
 
 # https://github.com/ggreer/the_silver_searcher/pull/1145
-Patch0:         0001-update-zsh-completion-for-new-options.patch
+Patch:          0001-update-zsh-completion-for-new-options.patch
 # https://github.com/ggreer/the_silver_searcher/pull/1410
-Patch1:         0002-Install-shell-completion-files-to-correct-locations.patch
+Patch:          0002-Install-shell-completion-files-to-correct-locations.patch
+# https://github.com/ggreer/the_silver_searcher/pull/1540
+Patch:          0003-bash-completion-port-to-v2-API.patch
 
 BuildRequires:  make
 BuildRequires:  gcc
@@ -76,6 +79,10 @@ make test
 
 
 %changelog
+* Thu Oct 31 2024 Carl George <carlwgeorge@fedoraproject.org> - 2.2.0^2020704.5a1c8d8-11
+- Add patch to fix bash completion rhbz#2322963
+- Correct license to Apache-2.0
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.2.0^2020704.5a1c8d8-10
 - convert license to SPDX
 

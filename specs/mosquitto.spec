@@ -2,19 +2,23 @@
 
 Name:           mosquitto
 Version:        2.0.20
-Release:        1%{?dist}
+Release:        3%{?dist}
 Summary:        Open Source MQTT v5/v3.1.x Broker
 
 License:        EPL-2.0
 URL:            https://mosquitto.org/
 Source0:        https://mosquitto.org/files/source/%{name}-%{version}.tar.gz
+Source1:        mosquitto-sysusers.conf
+# https://github.com/eclipse-mosquitto/mosquitto/pull/3150
+Patch1:         0001-Fix-the-libdir-location-in-the-pkgconf-files.patch
 
 BuildRequires:  c-ares-devel
 BuildRequires:  cjson-devel
 BuildRequires:  gcc-c++
 BuildRequires:  libuuid-devel
 BuildRequires:  libwebsockets-devel
-BuildRequires:  make
+BuildRequires:  libxslt
+BuildRequires:  cmake
 BuildRequires:  openssl-devel
 BuildRequires:  openssl-devel-engine
 BuildRequires:  systemd-devel
@@ -31,7 +35,7 @@ Requires(postun): systemd
 
 %description
 Mosquitto is an open source message broker that implements the MQ Telemetry
-Transport protocol version 3.1 and 3.1.1 MQTT provides a lightweight method
+Transport protocol version v5 and 3.1.x. MQTT provides a lightweight method
 of carrying out messaging using a publish/subscribe model. This makes it
 suitable for "machine to machine" messaging such as with low power sensors 
 or mobile devices such as phones, embedded computers or micro-controllers 
@@ -46,47 +50,39 @@ Development headers and libraries for %{name}.
 
 %prep
 %autosetup -p1
-# Set the install prefix to /usr
-sed -i "s|prefix?=/usr/local|prefix?=/usr|" config.mk
 # Don't strip binaries on install: rpmbuild will take care of it
 sed -i "s|(INSTALL) -s|(INSTALL)|g" lib/Makefile src/Makefile client/Makefile
+# Search for the correct websockets library name
+sed -i "s/websockets_shared/websockets/" src/CMakeLists.txt
 
 %build
-export CFLAGS="%{optflags}" LDFLAGS="%{optflags} %{__global_ldflags} -Wl,--as-needed"
-make all %{?_smp_mflags} WITH_WEBSOCKETS=yes WITH_SYSTEMD=yes WITH_SRV=yes
+mkdir build
+pushd build
+%cmake -DCMAKE_INSTALL_LIBDIR=%{_libdir} \
+       -DCMAKE_INSTALL_SYSCONFDIR=%{_sysconfdir} \
+       -DWITH_WEBSOCKETS=ON \
+       -DWITH_SYSTEMD=ON \
+       -DWITH_SRV=ON \
+       -DWITH_TLS=ON \
+       ..
+
+%cmake_build
+popd
+
 
 %install
-%if "%{_lib}" == "lib64"
-export LIB_SUFFIX=64
-%endif
-%make_install
+pushd build
+%cmake_install
+popd
 
 mkdir -p %{buildroot}%{_unitdir}
 install -p -m 0644 service/systemd/%{name}.service.notify %{buildroot}%{_unitdir}/%{name}.service
-mv %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf.example %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf
+install -p -D -m 0644 %{SOURCE1} %{buildroot}%{_sysusersdir}/%{name}.conf
 
 %if 0%{?with_tests}
 %check
 make test
 %endif
-
-%pre
-getent group %{name} >/dev/null || groupadd -r %{name}
-getent passwd %{name} >/dev/null || \
-    useradd -r -g %{name} -d %{_sysconfdir}/%{name} -s /sbin/nologin \
-    -c "Mosquitto Broker" %{name}
-exit 0
-
-%post
-%systemd_post %{name}.service
-/sbin/ldconfig
-
-%preun
-%systemd_preun %{name}.service
-
-%postun
-%systemd_postun_with_restart %{name}.service
-/sbin/ldconfig
 
 %files
 %license LICENSE.txt 
@@ -94,10 +90,12 @@ exit 0
 %{_bindir}/%{name}*
 %{_sbindir}/%{name}
 %{_libdir}/libmosquitto*.so.1
+%{_libdir}/libmosquitto*.so.%{version}
 %{_libdir}/mosquitto_dynamic_security.so
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config %{_sysconfdir}/%{name}/*.example
+%{_sysusersdir}/%{name}.conf
 %{_unitdir}/%{name}.service
 %{_mandir}/man*/%{name}*
 %{_mandir}/man7/mqtt.7.*
@@ -110,6 +108,13 @@ exit 0
 %{_mandir}/man3/libmosquitto.3.*
 
 %changelog
+* Thu Oct 31 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 2.0.20-3
+- Move to building with CMake
+- Fix libdir in pkgconf files
+
+* Thu Oct 31 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 2.0.20-2
+- Migrate to sysusers user creation, cleanup scriptlets
+
 * Thu Oct 17 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 2.0.20-1
 - Update to 2.0.20
 

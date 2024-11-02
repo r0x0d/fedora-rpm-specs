@@ -19,14 +19,15 @@ Patch3:         https://github.com/Unidata/netcdf-c/pull/2850.patch
 
 BuildRequires:  libtool
 BuildRequires:  make
-BuildRequires:  chrpath
 BuildRequires:  doxygen
 BuildRequires:  blosc-devel
+BuildRequires:  bzip2-devel
 BuildRequires:  hdf-static
 BuildRequires:  hdf5-devel
 BuildRequires:  gawk
 BuildRequires:  libcurl-devel
 BuildRequires:  libxml2-devel
+BuildRequires:  libzip-devel
 BuildRequires:  libzstd-devel
 BuildRequires:  m4
 BuildRequires:  zlib-devel
@@ -214,12 +215,8 @@ pushd build
 ln -s ../configure .
 %configure %{configure_opts} \
   --with-plugin-dir=%{_libdir}/hdf5/plugin
-# Get rid of undesirable hardcoded rpaths; workaround libtool reordering
-# -Wl,--as-needed after all the libraries.
-sed -e 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' \
-    -e 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' \
-    -e 's|CC="\(.*g..\)"|CC="\1 -Wl,--as-needed"|' \
-    -i libtool
+# Workaround libtool reordering -Wl,--as-needed after all the libraries.
+sed -e 's|CC="\(.*g..\)"|CC="\1 -Wl,--as-needed"|' -i libtool
 %make_build
 popd
 
@@ -241,12 +238,8 @@ do
     --mandir=%{_libdir}/$mpi/share/man \
     --with-plugin-dir=%{_libdir}/$mpi/hdf5/plugin \
     %{?with_parallel_tests:--enable-parallel-tests}
-  # Get rid of undesirable hardcoded rpaths; workaround libtool reordering
-  # -Wl,--as-needed after all the libraries.
-  sed -e 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' \
-      -e 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' \
-      -e 's|CC="\(.*g..\)"|CC="\1 -Wl,--as-needed"|' \
-      -i libtool
+  # Workaround libtool reordering -Wl,--as-needed after all the libraries.
+  sed -e 's|CC="\(.*g..\)"|CC="\1 -Wl,--as-needed"|' -i libtool
   %make_build
   module purge
   popd
@@ -255,13 +248,11 @@ done
 
 %install
 make -C build install DESTDIR=${RPM_BUILD_ROOT}
-chrpath --delete ${RPM_BUILD_ROOT}/%{_bindir}/nc{copy,dump,gen,gen3}
 /bin/rm -f ${RPM_BUILD_ROOT}%{_infodir}/dir
 for mpi in %{?mpi_list}
 do
   module load mpi/$mpi-%{_arch}
   make -C $mpi install DESTDIR=${RPM_BUILD_ROOT}
-  chrpath --delete ${RPM_BUILD_ROOT}/%{_libdir}/$mpi/bin/nc{copy,dump,gen,gen3}
   module purge
 done
 find $RPM_BUILD_ROOT/%{_libdir} -name \*.la -delete

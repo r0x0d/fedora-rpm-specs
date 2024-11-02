@@ -6,7 +6,7 @@ Summary:   Number to number name and money text conversion library
 #The entire source code is dual license LGPLv3+ or BSD, except for
 #the data files hr.sor, sr.sor and sh.sor which are dual license
 #CC-BY-SA or LGPLv3+
-License:   ( LGPL-3.0-or-later OR BSD 3-Clause ) AND ( LGPL-3.0-or-later OR CC-BY-SA-3.0 )
+License:   ( LGPL-3.0-or-later OR BSD-3-Clause ) AND ( LGPL-3.0-or-later OR CC-BY-SA-3.0 )
 URL:       https://github.com/Numbertext/libnumbertext
 Source:    https://github.com/Numbertext/libnumbertext/releases/download/%{version}/libnumbertext-%{version}.tar.xz
 

@@ -2,7 +2,7 @@ Summary:	Run an entire GNOME session under valgrind
 Name:		gnome-valgrind-session
 Version:	1.1
 Release:	33%{?dist}
-License:	Public Domain
+License:	LicenseRef-Fedora-Public-Domain
 URL:		http://hp.cl.no/proj/gnome-valgrind-session/
 Source0:	http://hp.cl.no/proj/gnome-valgrind-session/src/%{name}-%{version}.tar.bz2
 Patch0:		%{name}-%{version}-desktop.patch

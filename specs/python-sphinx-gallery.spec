@@ -2,7 +2,7 @@
 
 Name:           python-%{srcname}
 Version:        0.18.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Sphinx extension to automatically generate an examples gallery
 
 License:        BSD-3-Clause
@@ -22,6 +22,7 @@ BuildRequires:  python%{python3_pkgversion}-devel
 # For tests
 BuildRequires:  python%{python3_pkgversion}-pytest
 BuildRequires:  python%{python3_pkgversion}-absl-py
+BuildRequires:  python%{python3_pkgversion}-lxml
 BuildRequires:  python%{python3_pkgversion}-matplotlib
 
 %description -n python%{python3_pkgversion}-%{srcname}
@@ -68,6 +69,9 @@ sed -i -e 's/"--cov[^ ]*//g' pyproject.toml
 
 
 %changelog
+* Thu Oct 31 2024 Sandro <devel@penguinpee.nl> - 0.18.0-2
+- Add missing test dependency
+
 * Mon Oct 21 2024 Orion Poplawski <orion@nwra.com> - 0.18.0-1
 - Update to 0.18.0
 

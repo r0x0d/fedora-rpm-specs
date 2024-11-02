@@ -1,3 +1,5 @@
+%bcond autoreconf 1
+
 Name:           iml
 Version:        1.0.5
 %global so_version 0
@@ -38,6 +40,12 @@ ExcludeArch:    %{ix86}
 BuildRequires:  gcc
 BuildRequires:  make
 
+%if %{with autoreconf}
+BuildRequires:  autoconf
+BuildRequires:  automake
+BuildRequires:  libtool
+%endif
+
 BuildRequires:  gmp-devel
 BuildRequires:  pkgconfig(flexiblas)
 
@@ -69,7 +77,11 @@ awk  '/Copyright notice/ {n=1}; n && /\*\// {n=0}; n' src/iml.h |
 rm -v cblas.h
 
 
-%build
+%conf
+%if %{with autoreconf}
+autoreconf --force --install --verbose
+%endif
+
 %configure \
   --enable-shared \
   --disable-static \
@@ -83,6 +95,8 @@ sed -e 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' \
     -e 's|CC=.g..|& -Wl,--as-needed|' \
     -i libtool
 
+
+%build
 %make_build
 
 

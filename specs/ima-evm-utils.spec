@@ -8,7 +8,7 @@
 
 Name:    ima-evm-utils
 Version: 1.6.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: IMA/EVM support utilities
 License: GPL-2.0-or-later
 Url:     https://github.com/linux-integrity/
@@ -18,7 +18,7 @@ Source0: %{url}/ima-evm-utils/releases/download/v%{version}/%{name}-%{version}.t
 Source2: dracut-98-integrity.conf
 Source3: ima-add-sigs.sh
 Source4: ima-setup.sh
-Source100: policy-01-appraise-exectuables-and-lib-signatures
+Source100: policy-01-appraise-executable-and-lib-signatures
 Source101: policy-02-keylime-remote-attestation
 Source200: policy_list
 
@@ -145,6 +145,9 @@ install -D %{SOURCE4} $RPM_BUILD_ROOT%{_bindir}/ima-setup
 %{_libdir}/libimaevm.so
 
 %changelog
+* Thu Oct 31 2024 Coiby Xu <coxu@redhat.com> - 1.6.2-3
+- Skip unsupported file systems for sample appraisal rule
+
 * Fri Oct 18 2024 Adam Williamson <awilliam@redhat.com> - 1.6.2-2
 - ima-evm-utils-libs obsoletes ima-evm-utils < 1.6 for rhbz#2319827
 

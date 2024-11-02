@@ -76,10 +76,10 @@ This package contains the data files for MRChem.
 %prep
 %setup -q
 # EPEL9 doesn't support the new patch syntax
-%patch0 -p1 -b .eigen3
-%patch1 -p1 -b .pythonpath
-%patch2 -p1 -b .rpath
-%patch3 -p1 -b .object
+%patch -P0 -p1 -b .eigen3
+%patch -P1 -p1 -b .pythonpath
+%patch -P2 -p1 -b .rpath
+%patch -P3 -p1 -b .object
 # Remove bundled catch
 rm -rf external/catch/
 

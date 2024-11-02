@@ -1,13 +1,10 @@
 Name:           python-gast
-%global commit  bf62db902e3d6eb54af2467ad9f594256fbb826b
-%global scommit %(c=%{commit}; echo ${c:0:8})
-%global date    20240601
-Version:        0.5.4^%{date}.%{scommit}
+Version:        0.6.0
 Release:        %autorelease
 Summary:        Python AST that abstracts the underlying Python version
 License:        BSD-3-Clause
 URL:            https://github.com/serge-sans-paille/gast/
-Source:         %{url}/archive/%{commit}/gast-%{scommit}.tar.gz
+Source:         %{pypi_source gast}
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
@@ -28,7 +25,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -p1 -n gast-%{commit}
+%autosetup -p1 -n gast-%{version}
 
 
 %generate_buildrequires

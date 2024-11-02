@@ -13,8 +13,8 @@
 %global giturl  https://github.com/ocaml/dune
 
 Name:           ocaml-dune
-Version:        3.16.0
-Release:        5%{?dist}
+Version:        3.16.1
+Release:        1%{?dist}
 Summary:        Composable build system for OCaml and Reason
 
 # Dune itself is MIT.  Some bundled libraries have a different license:
@@ -67,10 +67,10 @@ BuildRequires:  ocaml-pp-devel >= 1.2.0
 BuildRequires:  ocaml-rpm-macros
 
 %if %{with docs}
+BuildRequires:  %{py3_dist furo}
 BuildRequires:  %{py3_dist sphinx}
 BuildRequires:  %{py3_dist sphinx-copybutton}
 BuildRequires:  %{py3_dist sphinx-design}
-BuildRequires:  %{py3_dist furo}
 %endif
 
 %if %{with lwt}
@@ -598,6 +598,9 @@ cd -
 %files -n ocaml-xdg-devel -f .ofiles-xdg-devel
 
 %changelog
+* Thu Oct 31 2024 Jerry James <loganjerry@gmail.com> - 3.16.1-1
+- Version 3.16.1
+
 * Thu Oct 10 2024 Charalampos Stratakis <cstratak@redhat.com> - 3.16.0-5
 - Use the furo theme for docs build
 

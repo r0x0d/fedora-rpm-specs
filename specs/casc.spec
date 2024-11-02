@@ -128,8 +128,11 @@ PDF_HYPERLINKS)[[:blank:]]*=[[:blank:]]*)NO[[:blank:]]*/\1YES/" \
 %endif
 
 
-%build
+%conf
 %cmake -DBUILD_CASCTESTS:BOOL=ON -DEXTERNAL_GTEST:BOOL=ON -GNinja
+
+
+%build
 %cmake_build
 %if %{with doc_pdf}
 %cmake_build --target docs

@@ -71,13 +71,16 @@ ln -s '%{_datadir}/cmake/c4project' ext/c4core/cmake
 sed -r -i 's/\bdoctest\b//' test/CMakeLists.txt
 
 
-%build
+%conf
 # We can stop the CMake scripts from downloading doctest by setting
 # C4LOG_CACHE_DOWNLOAD_DOCTEST to any directory that exists.
 %cmake -GNinja \
   -DCMAKE_CXX_STANDARD=%{cxx_std} \
   -DC4LOG_CACHE_DOWNLOAD_DOCTEST:PATH=/ \
   -DC4LOG_BUILD_TESTS=ON
+
+
+%build
 %cmake_build
 
 

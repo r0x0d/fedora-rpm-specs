@@ -6,16 +6,20 @@
 %endif
 
 Name:           nickle
-Version:        2.97
+Version:        2.101
 Release:        %autorelease
 Summary:        A programming language-based prototyping environment
 
 License:        MIT
 URL:            https://nickle.org
-Source0:        https://nickle.org/release/nickle-%{version}.tar.gz
+Source0:        https://nickle.org/release/nickle-%{version}.tar.xz
 
-BuildRequires:  gcc
+BuildRequires:  autoconf
+BuildRequires:  automake
+BuildRequires:  bc
 BuildRequires:  bison
+BuildRequires:  flex
+BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  ncurses-devel
 BuildRequires:  readline-devel
@@ -55,6 +59,8 @@ function interface) libraries (e.g. the Cairo interface for Nickle).
 
 
 %build
+autoreconf -fiv
+
 # we will install documentation ourselves,
 # but this saves having to delete the ones installed by 'make install'
 %configure --docdir=%{_pkgdocdir}
@@ -74,7 +80,7 @@ rm examples/COPYING
 
 %files
 %license COPYING
-%doc README README.name AUTHORS ChangeLog TODO
+%doc README README.name AUTHORS TODO
 %doc examples
 %if %{with docs}
 %doc doc/tutorial/nickle-tutorial.pdf

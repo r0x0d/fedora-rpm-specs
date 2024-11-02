@@ -70,7 +70,7 @@ Provides:       fast_float-static = %{version}-%{release}
 sed -r -i 's/-Werror//' tests/CMakeLists.txt
 
 
-%build
+%conf
 # Partially emulate the activity of FetchContent_Declare() in
 # tests/CMakeLists.txt so that we can run the tests offline.
 mkdir -p '%{_vpath_builddir}/_deps'
@@ -83,6 +83,9 @@ ln -s "${PWD}/../supplemental_test_files-%{stf_commit}/" \
     -DSYSTEM_DOCTEST:BOOL=ON \
     -DFASTFLOAT_TEST:BOOL=ON \
     -DFASTFLOAT_EXHAUSTIVE:BOOL=%{?with_exhaustive:ON}%{?!with_exhaustive:OFF}
+
+
+%build
 %cmake_build
 
 

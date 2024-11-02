@@ -20,7 +20,7 @@
 %constrain_build -m 4096
 
 Name:           uv
-Version:        0.4.28
+Version:        0.4.29
 Release:        %autorelease
 Summary:        An extremely fast Python package installer and resolver, written in Rust
 
@@ -79,7 +79,7 @@ Summary:        An extremely fast Python package installer and resolver, written
 # output of %%{cargo_license_summary}. This should automatically include the
 # licenses of the following bundled forks:
 #   - async_zip, Source100, is MIT.
-#   - pubgrub, Source200, is MPL-2.0.
+#   - pubgrub/version-ranges, Source200, is MPL-2.0.
 #   - reqwest-middleware/reqwest-retry, Source300, is (MIT OR Apache-2.0)
 #   - tl, Source400, is MIT.
 #
@@ -149,15 +149,17 @@ Source0:        %{url}/archive/%{version}/uv-%{version}.tar.gz
 %global async_zip_snapdate 20240729
 Source100:      %{async_zip_git}/archive/%{async_zip_rev}/rs-async-zip-%{async_zip_rev}.tar.gz
 
-# For the foreseeable future, uv must use a fork of pubgrub, as explained in:
+# For the foreseeable future, uv must use a fork of pubgrub (and the
+# version-ranges crate, which belongs to the same project), as explained in:
 #   Plans for eventually using published pubgrub?
 #   https://github.com/astral-sh/uv/issues/3794
 # We therefore bundle the fork as prescribed in
 #   https://docs.fedoraproject.org/en-US/packaging-guidelines/Rust/#_replacing_git_dependencies
 %global pubgrub_git https://github.com/astral-sh/pubgrub
-%global pubgrub_rev 7243f4faf8e54837aa8a401a18406e7173de4ad5
+%global pubgrub_rev 95e1390399cdddee986b658be19587eb1fdb2d79
 %global pubgrub_baseversion 0.2.1
-%global pubgrub_snapdate 20241017
+%global pubgrub_snapdate 20241029
+%global version_ranges_baseversion 0.1.0
 Source200:      %{pubgrub_git}/archive/%{pubgrub_rev}/pubgrub-%{pubgrub_rev}.tar.gz
 
 # We must use a git snapshot of reqwest-middleware/reqwest-retry because a
@@ -218,7 +220,7 @@ Patch:          0001-Downstream-patch-always-find-the-system-wide-uv-exec.patch
 # zlib-ng, which works fine on these architectures.
 Patch:          0001-Downstream-only-use-the-zlib-ng-backend-for-flate2-o.patch
 
-# This patch is for the forked, bundled pubsub crate.
+# This patch is for the forked, bundled pubgrub crate.
 #
 # Downstream-only: Revert "feat: ensure successful round-trip of RON (#193)"
 #   This reverts commit 21c6a215432fea9a75b7d15d9a9936af9ccc17cb.
@@ -249,10 +251,12 @@ BuildRequires:  python3-devel
 %global async_zip_snapinfo %{async_zip_snapdate}git%{sub %{async_zip_rev} 1 7}
 %global async_zip_version %{async_zip_baseversion}^%{async_zip_snapinfo}
 Provides:       bundled(crate(async_zip)) = %{async_zip_version}
-# This is a fork of pubgrub; see the notes about Source200.
+# This is a fork of pubgrub/version-ranges; see the notes about Source200.
 %global pubgrub_snapinfo %{pubgrub_snapdate}git%{sub %{pubgrub_rev} 1 7}
 %global pubgrub_version %{pubgrub_baseversion}^%{pubgrub_snapinfo}
+%global version_ranges_version %{version_ranges_baseversion}^%{pubgrub_snapinfo}
 Provides:       bundled(crate(pubgrub)) = %{pubgrub_version}
+Provides:       bundled(crate(version-ranges)) = %{version_ranges_version}
 # This is a fork of reqwest-middleware/reqwest-retry; see the notes about
 # Source300.
 %global reqwest_middleware_snapinfo %{reqwest_middleware_snapdate}git%{sub %{reqwest_middleware_rev} 1 7}
@@ -433,6 +437,13 @@ tomcli set crates/pubgrub/Cargo.toml del dev-dependencies.criterion
 tomcli set crates/pubgrub/Cargo.toml del dev-dependencies.varisat
 mv crates/pubgrub/tests/proptest.rs{,.disabled}
 mv crates/pubgrub/tests/sat_dependency_provider.rs{,.disabled}
+# We can’t have two workspaces!
+tomcli set crates/pubgrub/Cargo.toml del workspace
+# Add missing LICENSE file in published version-ranges crates
+# https://github.com/pubgrub-rs/pubgrub/pull/267
+install -t LICENSE.bundled/version-ranges -D -p -m 0644 \
+    crates/pubgrub/LICENSE
+git2path workspace.dependencies.version-ranges crates/pubgrub/version-ranges
 
 # See comments above Source300:
 %setup -q -T -D -b 300 -n uv-%{version}

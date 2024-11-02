@@ -1,3 +1,5 @@
+%bcond autoreconf 1
+
 Name:           arpwatch
 Epoch:          14
 Version:        3.7
@@ -23,6 +25,10 @@ Requires:       python3
 
 BuildRequires:  gcc
 BuildRequires:  make
+%if %{with autoreconf}
+BuildRequires:  autoconf
+%endif
+
 BuildRequires:  /usr/sbin/sendmail
 BuildRequires:  systemd-rpm-macros
 %{?sysuser_requires_compat}
@@ -38,7 +44,7 @@ Source0:        https://ee.lbl.gov/downloads/arpwatch/arpwatch-%{version}.tar.gz
 # updated), we store the file directly in the repository with the spec file;
 # see the update-oui-csv script.
 #
-# File oui.csv last fetched 2024-10-04T11:15:41+00:00.
+# File oui.csv last fetched 2024-10-31T18:34:08+00:00.
 Source1:        oui.csv
 Source2:        arpwatch.service
 Source3:        arpwatch.sysconfig
@@ -120,15 +126,21 @@ awk '/^ \* / { print substr($0, 4); } /^ \*\// { exit }' arpwatch.c |
   tee LICENSE
 
 
-%build
-%set_build_flags
+%conf
+%if %{with autoreconf}
+autoreconf --force --install --verbose
+%endif
+
 # Prior to version 3.4, this was handled by the configure script. If it is not
-# defined, the build failes because time.h is not included in report.c. This
+# defined, the build fails because time.h is not included in report.c. This
 # regregression was reported upstream by email to arpwatch@ee.lbl.gov on
 # 2023-09-06.
 export CPPFLAGS="${CPPFLAGS-} -DTIME_WITH_SYS_TIME=1"
 
 %configure --with-sendmail=/usr/sbin/sendmail PYTHON=%{python3}
+
+
+%build
 %make_build ARPDIR=%{pkgstatedir}
 
 
@@ -147,6 +159,10 @@ install -d %{buildroot}%{_mandir}/man8 \
     %{buildroot}%{_prefix}/etc/rc.d
 
 %make_install
+
+# Make install uses mode 0555, which is unconventional, and which can interfere
+# with debuginfo generation since the file is not writable by its owner.
+chmod -v 0755 %{buildroot}%{_sbindir}/arpwatch %{buildroot}%{_sbindir}/arpsnmp
 
 install -p -t %{buildroot}%{_datadir}/arpwatch -m 0644 *.awk
 install -p -t %{buildroot}%{_sbindir} arp2ethers
@@ -212,9 +228,8 @@ fi
 %doc CHANGES
 %doc arpfetch
 
-# make install uses mode 0555, which is unconventional
-%attr(0755,-,-) %{_sbindir}/arpwatch
-%attr(0755,-,-) %{_sbindir}/arpsnmp
+%{_sbindir}/arpwatch
+%{_sbindir}/arpsnmp
 # manually-installed scripts
 %{_sbindir}/arp2ethers
 %{_sbindir}/massagevendor

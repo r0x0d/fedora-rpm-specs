@@ -47,9 +47,12 @@ regular banding noise.
 %autosetup -n plugin-gimp-fourier-%{commit} -p1
 
 
-%build
+%conf
 autoreconf --force --install --verbose
 %configure --enable-gimp3-fourier
+
+
+%build
 %make_build
 
 

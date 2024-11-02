@@ -12,7 +12,7 @@
 
 Name: flang
 Version: %{flang_version}%{?rc_ver:~rc%{rc_ver}}
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: a Fortran language front-end designed for integration with LLVM
 
 License: Apache-2.0 WITH LLVM-exception
@@ -25,6 +25,9 @@ Source2: release-keys.asc
 Source3: https://raw.githubusercontent.com/llvm/llvm-project/llvmorg-%{flang_version}%{?rc_ver:-rc%{rc_ver}}/clang/include/clang/Driver/Options.td
 
 Source4: https://raw.githubusercontent.com/llvm/llvm-project/llvmorg-%{flang_version}%{?rc_ver:-rc%{rc_ver}}/mlir/test/lib/Analysis/TestAliasAnalysis.h
+
+Source8: omp_lib.h
+Source9: omp_lib.F90
 
 # The Bye plugin is not distributed on Fedora.
 Patch3: 0001-flang-Remove-the-dependency-on-Bye.patch
@@ -148,8 +151,14 @@ cp %{SOURCE3} ../clang/include/clang/Driver
 mkdir -p include/mlir/test/lib/Analysis/
 cp %{SOURCE4} include/mlir/test/lib/Analysis/
 
+
+mkdir -p redhat-linux-build/projects/openmp/runtime/src/
+cp %{SOURCE8} redhat-linux-build/projects/openmp/runtime/src/
+cp %{SOURCE9} redhat-linux-build/projects/openmp/runtime/src/
+
 %build
 %cmake -GNinja \
+       -DLLVM_TOOL_OPENMP_BUILD:BOOL=ON \
        -DMLIR_TABLEGEN_EXE=%{_bindir}/mlir-tblgen \
        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
        -DCMAKE_INSTALL_RPATH=";" \
@@ -272,6 +281,10 @@ export LD_LIBRARY_PATH=%{_builddir}/%{flang_srcdir}/%{_vpath_builddir}/lib
 %{_includedir}/flang/mma.mod
 %{_includedir}/flang/cudadevice.mod
 %{_includedir}/flang/iso_fortran_env_impl.mod
+%{_includedir}/flang/omp_lib.mod
+%{_includedir}/flang/omp_lib.f18.mod
+%{_includedir}/flang/omp_lib_kinds.mod
+%{_includedir}/flang/omp_lib_kinds.f18.mod
 
 %{_libdir}/libFIRAnalysis.so.%{maj_ver}.%{min_ver}
 %{_libdir}/libFIRBuilder.so.%{maj_ver}.%{min_ver}
@@ -308,6 +321,10 @@ export LD_LIBRARY_PATH=%{_builddir}/%{flang_srcdir}/%{_vpath_builddir}/lib
 %{_libdir}/libFortranRuntime.so.%{maj_ver}.%{min_ver}*
 
 %changelog
+* Wed Oct 30 2024 Timm Bäder <tbaeder@redhat.com> - 19.1.0-2
+- Fix generation of omp_lib.mod
+- https://bugzilla.redhat.com/show_bug.cgi?id=2321571
+
 * Fri Sep 20 2024 Timm Bäder <tbaeder@redhat.com> - 19.1.0-1
 - Update to 19.1.0
 

@@ -3,7 +3,7 @@
 %bcond_without tests
 
 Name:           python-deepdiff
-Version:        8.0.0
+Version:        8.0.1
 Release:        1%{?dist}
 Summary:        Deep Difference and search of any Python object/data
 
@@ -110,6 +110,9 @@ rm -rf docs/_build/html/.{doctrees,buildinfo}
 
 
 %changelog
+* Wed Oct 30 2024 Karolina Surma <ksurma@redhat.com> - 8.0.1-1
+- Update to 8.0.1.
+
 * Wed Sep 04 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 8.0.0-1
 - Update to 8.0.0.
 

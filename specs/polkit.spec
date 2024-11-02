@@ -4,11 +4,13 @@
 Summary: An authorization framework
 Name: polkit
 Version: 125
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: LGPL-2.0-or-later
 URL: https://github.com/polkit-org/polkit
 Source0: https://github.com/polkit-org/polkit/archive/refs/tags/%{version}.tar.gz
 Source1: polkit.sysusers
+
+Patch1: logcontrol-root-only.patch
 
 BuildRequires: gcc-c++
 BuildRequires: glib2-devel >= 2.30.0
@@ -161,6 +163,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 %{_libdir}/girepository-1.0/*.typelib
 
 %changelog
+* Thu Oct 31 2024 Jan Rybar <jrybar@redhat.com> - 125-3
+- Setting loglevels and target via LogControl now allowed to root only
+
 * Mon Aug 19 2024 Jan Rybar <jrybar@redhat.com> - 125-2
 - release bump containing %attr drop from datadir (Daan De Meyer)
 

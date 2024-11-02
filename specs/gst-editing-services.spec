@@ -3,7 +3,7 @@
 #global shortcommit %(c=%{gitcommit}; echo ${c:0:5})
 
 Name:		gst-editing-services
-Version:        1.24.8
+Version:        1.24.9
 Release:        1%{?dist}
 Summary:	Gstreamer editing services
 
@@ -17,8 +17,6 @@ Source0:        gst-editing-services-%{version}.tar.xz
 # autogen.sh was run before tarballing, because it calls git
 Source0:	http://gstreamer.freedesktop.org/src/gst-editing-services/gst-editing-services-%{version}.tar.xz
 %endif
-
-Patch0:         7554.patch
 
 BuildRequires:  meson >= 0.48.0
 BuildRequires:  gcc
@@ -91,6 +89,9 @@ cp data/completions/ges-launch-1.0 \
 %{_datadir}/gir-1.0/GES-1.0.gir
 
 %changelog
+* Thu Oct 31 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.24.9-1
+- 1.24.9
+
 * Thu Sep 19 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.24.8-1
 - 1.24.8
 

@@ -39,8 +39,11 @@ coded into them.
 %autosetup
 
 
-%build
+%conf
 %meson
+
+
+%build
 %meson_build
 
 

@@ -340,8 +340,11 @@ rename_lang() {
 rename_lang mo ro_MD
 
 
-%build
+%conf
 %meson
+
+
+%build
 %meson_build
 
 

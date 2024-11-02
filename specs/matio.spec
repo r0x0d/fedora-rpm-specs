@@ -1,6 +1,6 @@
 Name:           matio
-Version:        1.5.27
-Release:        3%{?dist}
+Version:        1.5.28
+Release:        1%{?dist}
 Summary:        Library for reading/writing Matlab MAT files
 
 License:        BSD-2-Clause
@@ -92,6 +92,9 @@ make check || ( cat test/testsuite.log && exit $fail )
 
 
 %changelog
+* Wed Oct 30 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.5.28-1
+- 1.5.28
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1.5.27-3
 - Rebuild for hdf5 1.14.5
 

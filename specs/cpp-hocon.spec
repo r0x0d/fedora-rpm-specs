@@ -94,11 +94,14 @@ PDF_HYPERLINKS)[[:blank:]]*=[[:blank:]]*)NO[[:blank:]]*/\1YES/" \
 %endif
 
 
-%build
+%conf
 %cmake \
     -DLeatherman_DIR=%{_libdir}/cmake/leatherman \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -GNinja
+
+
+%build
 %cmake_build
 
 %if %{with doc}

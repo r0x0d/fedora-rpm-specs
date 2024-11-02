@@ -328,7 +328,7 @@ sed -r -i '/\bcatch\.hpp/d' tests/tests.pro
 echo 'INCLUDEPATH += "%{_includedir}/catch2"' >> tests/tests.pro
 
 
-%build
+%conf
 # We want the compiled-in version information to describe this as a release
 # build to the user. We could set DEFINES+=PENCIL2D_RELEASE, but that would set
 # QT_NO_DEBUG_OUTPUT; we would rather preserve that to help with debugging, as
@@ -338,6 +338,9 @@ echo 'INCLUDEPATH += "%{_includedir}/catch2"' >> tests/tests.pro
     PREFIX='%{_prefix}' \
     DEFINES+=PENCIL2D_RELEASE_BUILD \
     VERSION='%{version}'
+
+
+%build
 %make_build
 
 # Sometimes the formatting in help2man-generated man pages is of poor to

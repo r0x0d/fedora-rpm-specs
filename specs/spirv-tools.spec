@@ -75,6 +75,7 @@ Development files for %{name}
 %{_bindir}/spirv-val
 
 %files libs
+%license LICENSE
 %{_libdir}/libSPIRV-Tools-diff.so
 %{_libdir}/libSPIRV-Tools-link.so
 %{_libdir}/libSPIRV-Tools-lint.so

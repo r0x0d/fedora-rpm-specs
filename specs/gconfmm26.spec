@@ -146,11 +146,14 @@ then
 fi
 
 
-%build
+%conf
 %if %{with autoreconf}
 NOCONFIGURE=1 ./autogen.sh
 %endif
 %configure --enable-warnings=max
+
+
+%build
 %make_build
 
 %if %{with doc_pdf}

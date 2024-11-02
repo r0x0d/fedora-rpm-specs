@@ -2,7 +2,7 @@ Name:           samcoupe-rom
 Version:        3.0
 Release:        27%{?dist}
 Summary:        SAM Coupé (Spectrum compatible homecomputer) ROM file
-License:        Freely redistributable without restriction
+License:        LicenseRef-Fedora-UltraPermissive
 URL:            http://www.worldofsam.org/
 Source0:        SAM30.rom
 Source1:        redistribution-permission.txt

@@ -62,7 +62,7 @@
 Name:           ibus
 Version:        1.5.31~rc1
 # https://github.com/fedora-infra/rpmautospec/issues/101
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Intelligent Input Bus for Linux OS
 License:        LGPL-2.1-or-later
 URL:            https://github.com/ibus/%name/wiki
@@ -449,19 +449,22 @@ make check \
     VERBOSE=1 \
     %{nil}
 
-%post
+%post xinit
 %{_sbindir}/alternatives --install %{_sysconfdir}/X11/xinit/xinputrc xinputrc %{_xinputconf} 83 || :
 
 %postun
 if [ "$1" -eq 0 ]; then
-  %{_sbindir}/alternatives --remove xinputrc %{_xinputconf} || :
-  # if alternative was set to manual, reset to auto
-  [ -L %{_sysconfdir}/alternatives/xinputrc -a "`readlink %{_sysconfdir}/alternatives/xinputrc`" = "%{_xinputconf}" ] && %{_sbindir}/alternatives --auto xinputrc || :
-
   # 'dconf update' sometimes does not update the db...
   dconf update || :
   [ -f %{_sysconfdir}/dconf/db/ibus ] && \
       rm %{_sysconfdir}/dconf/db/ibus || :
+fi
+
+%postun xinit
+if [ "$1" -eq 0 ]; then
+  %{_sbindir}/alternatives --remove xinputrc %{_xinputconf} || :
+  # if alternative was set to manual, reset to auto
+  [ -L %{_sysconfdir}/alternatives/xinputrc -a "`readlink %{_sysconfdir}/alternatives/xinputrc`" = "%{_xinputconf}" ] && %{_sbindir}/alternatives --auto xinputrc || :
 fi
 
 %posttrans
@@ -614,6 +617,9 @@ dconf update || :
 %{_datadir}/installed-tests/ibus
 
 %changelog
+* Thu Oct 31 2024 Takao Fujiwara <tfujiwar@redhat.com> - 1.5.31~rc1-2
+- Resolves #2321990 Move xinit post scripts
+
 * Wed Oct 23 2024 Takao Fujiwara <tfujiwar@redhat.com> - 1.5.31~rc1-1
 - Update compose tables
 - Fix Unicode logic

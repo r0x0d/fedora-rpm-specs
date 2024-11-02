@@ -2,7 +2,7 @@ Name: jhead
 Version: 3.08
 Release: 4%{?dist}
 Summary: Tool for displaying EXIF data embedded in JPEG images
-License: Public Domain
+License: LicenseRef-Fedora-Public-Domain
 URL: http://www.sentex.net/~mwandel/jhead/
 Source0: https://codeload.github.com/Matthias-Wandel/jhead/tar.gz/refs/tags/%{version}#/jhead-%{version}.tar.gz
 Requires: libjpeg-turbo-utils

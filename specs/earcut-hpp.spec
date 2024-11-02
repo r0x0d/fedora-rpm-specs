@@ -63,7 +63,7 @@ Provides:       %{name}-static = %{version}-%{release}
 sed -r -i 's/(setprecision\()6(\))/\116\2/' test/test.cpp
 
 
-%build
+%conf
 # Disabling floating-point contraction fixes certain failures on aarch64,
 # ppc64le, and s390x. See:
 #
@@ -92,6 +92,9 @@ export CXXFLAGS="${CXXFLAGS-} -ffp-contract=off"
     -DEARCUT_BUILD_VIZ:BOOL=OFF \
     -DEARCUT_WARNING_IS_ERROR:BOOL=OFF \
     -GNinja
+
+
+%build
 %cmake_build
 
 

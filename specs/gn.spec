@@ -124,7 +124,7 @@ cp -vp misc/vim/README.md README-vim.md
 %py3_shebang_fix .
 
 
-%build
+%conf
 AR='gcc-ar'; export AR
 # Treating warnings as errors is too strict for downstream builds.
 #
@@ -136,6 +136,9 @@ AR='gcc-ar'; export AR
     --no-last-commit-position \
     --no-strip \
     --no-static-libstdc++
+
+
+%build
 ninja -j %{_smp_build_ncpus} -C out -v
 
 %if %{with html_docs}

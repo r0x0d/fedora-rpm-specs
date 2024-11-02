@@ -40,11 +40,14 @@ displays EOT metadata in a human-readable way.
 %autosetup -n eot-utilities-%{version}
 
 
-%build
+%conf
 %if %{with autoreconf}
 autoreconf --force --install --verbose
 %endif
 %configure
+
+
+%build
 %make_build
 
 

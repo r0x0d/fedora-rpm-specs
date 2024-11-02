@@ -1,5 +1,5 @@
 Name:           python-pymapvbvd
-Version:        0.6.0
+Version:        0.6.1
 Release:        %autorelease
 Summary:        Python twix file reader
 
@@ -13,9 +13,6 @@ Source0:        %{pypi_source pymapvbvd}
 # Generated with Source2: ./get_test_data.sh %%{version}
 Source1:        pymapvbvd-test-data.tar.zst
 Source2:        get_test_data.sh
-
-# Downstream-only: do not pin the scipy version (and allow 0.11.x)
-Patch:          0001-Downstream-only-do-not-pin-the-scipy-version-and-all.patch
 
 BuildArch:      noarch
 # PyMapVBVD assumes the platform is little-endian

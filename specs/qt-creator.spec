@@ -1,4 +1,4 @@
-%define prerelease beta1
+%define prerelease beta2
 
 # We need avoid oython byte compiler to not crash over template .py file which
 # is not a valid python file, only for the IDE
@@ -6,7 +6,7 @@
 
 Name:           qt-creator
 Version:        15.0.0
-Release:        0.2%{?prerelease:.%prerelease}%{?dist}
+Release:        0.3%{?prerelease:.%prerelease}%{?dist}
 Summary:        Cross-platform IDE for Qt
 
 License:        GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -211,6 +211,9 @@ diff -u %{SOURCE1} $outfile
 
 
 %changelog
+* Thu Oct 31 2024 Sandro Mani <manisandro@gmail.com> - 15.0.0-0.3.beta2
+- Update to 15.0.0-beta2
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com>
 - Rebuild for yaml-cpp 0.8
 

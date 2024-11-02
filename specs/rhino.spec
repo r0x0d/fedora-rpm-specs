@@ -4,7 +4,7 @@
 
 Name:           rhino
 Version:        1.7.14
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        Rhino
 
 # rhino itself is MPLv2.0 but use other codes, breakdown:
@@ -27,7 +27,6 @@ Source4:        https://github.com/tc39/test262/archive/%{test262_shortcommit}/t
 BuildRequires:  maven-local
 BuildRequires:  mvn(org.codehaus.mojo:build-helper-maven-plugin)
 BuildRequires:  mvn(junit:junit)
-BuildRequires:  mvn(org.yaml:snakeyaml)
 BuildRequires:  mvn(jakarta.xml.soap:jakarta.xml.soap-api)
 Requires:       javapackages-tools
 
@@ -286,6 +285,9 @@ install -m 644 man/%{name}.1 %{buildroot}%{_mandir}/man1/%{name}.1
 %doc README.md CODE_OF_CONDUCT.md RELEASE-NOTES.md
 
 %changelog
+* Fri Nov 01 2024 Didik Supriadi <didiksupriadi41@fedoraproject.org> - 1.7.14-13
+- Remove snakeyaml (test deps) since it's orphaned
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.7.14-12
 - convert license to SPDX
 

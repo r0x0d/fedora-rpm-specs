@@ -1,7 +1,7 @@
 %global apiver 1.0
 
 Name:           gst-devtools
-Version:        1.24.8
+Version:        1.24.9
 Release:        1%{?dist}
 Summary:        Development and debugging tools for GStreamer
 
@@ -81,6 +81,9 @@ A simple graphical utility to view and analyze GStreamer debug files.
 %{_metainfodir}/org.freedesktop.GstDebugViewer.appdata.xml
 
 %changelog
+* Thu Oct 31 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.24.9-1
+- 1.24.9
+
 * Thu Sep 19 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.24.8-1
 - 1.24.8
 

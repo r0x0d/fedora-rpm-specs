@@ -1,6 +1,6 @@
 Name:           fprettify
 Version:        0.3.7
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        Auto-formatter for modern Fortran source code
 # Automatically converted from old format: GPLv3 - review is highly recommended.
 License:        GPL-3.0-only
@@ -46,7 +46,7 @@ rm -rf %{name}.egg-info
 %py3_install
 
 %check
-%{__python3} setup.py test
+%{python3} run_tests.py
 
 %files
 %{_bindir}/fprettify
@@ -58,6 +58,10 @@ rm -rf %{name}.egg-info
 %{python3_sitelib}/fprettify-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Thu Oct 24 2024 Charalampos Stratakis <cstratak@redhat.com> - 0.3.7-13
+- Run the test suite directly instead of relying on setup.py test
+Resolves: rhbz#2319625
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 0.3.7-12
 - convert license to SPDX
 

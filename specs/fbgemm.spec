@@ -13,7 +13,7 @@ fusion opportunities in order to overcome the unique challenges of matrix
 multiplication at lower precision with bandwidth-bound operations.}
 
 Name:		fbgemm
-Version:	0.6.0
+Version:	1.0.0
 Release:	%autorelease
 Summary:	Facebook General Matrix-Matrix Multiplication
 
@@ -46,13 +46,15 @@ Requires:	%{name}%{?_isa} = %{version}-%{release}
 %prep
 %autosetup -p1 -n FBGEMM-%{version}
 
-rm -rf third_party
+rm -rf external
 # library version
 sed -i '$a set_target_properties(fbgemm PROPERTIES SOVERSION 1 VERSION %{soversion})' CMakeLists.txt
 
 %build
 %cmake \
 	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_CXX_FLAGS="%{optflags} -mno-avx512f" \
+	-DCMAKE_C_FLAGS="%{optflags} -mno-avx512f" \
 	-DFBGEMM_LIBRARY_TYPE=shared \
 	-DFBGEMM_BUILD_BENCHMARKS=OFF \
 	-DFBGEMM_BUILD_TESTS=ON \

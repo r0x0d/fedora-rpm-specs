@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc5.20241030gitc1e939a21eb1.46
+%define pkgrelease 0.rc5.20241031git0fc810ae3ae1.47
 %define kversion 6
-%define tarfile_release 6.12-rc5-44-gc1e939a21eb1
+%define tarfile_release 6.12-rc5-63-g0fc810ae3ae1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc5.20241030gitc1e939a21eb1.46%{?buildid}%{?dist}
+%define specrelease 0.rc5.20241031git0fc810ae3ae1.47%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -301,9 +301,8 @@ Summary: The Linux kernel
 %define with_ipaclones 0
 # no stablelist
 %define with_kernel_abi_stablelists 0
-# No realtime fedora variants
-%define with_realtime 0
 %define with_arm64_64k 0
+%define with_realtime 0
 %endif
 
 %if %{with_verbose}
@@ -987,12 +986,21 @@ Source214: Module.kabi_dup_riscv64
 Source300: kernel-abi-stablelists-%{kabiversion}.tar.xz
 Source301: kernel-kabi-dw-%{kabiversion}.tar.xz
 
-%if %{include_rt}
-# realtime config files
+%if 0%{include_rt}
+%if 0%{include_rhel}
 Source474: %{name}-aarch64-rt-rhel.config
 Source475: %{name}-aarch64-rt-debug-rhel.config
 Source476: %{name}-x86_64-rt-rhel.config
 Source477: %{name}-x86_64-rt-debug-rhel.config
+%endif
+%if 0%{include_fedora}
+Source478: %{name}-aarch64-rt-fedora.config
+Source479: %{name}-aarch64-rt-debug-fedora.config
+Source480: %{name}-x86_64-rt-fedora.config
+Source481: %{name}-x86_64-rt-debug-fedora.config
+Source482: %{name}-riscv64-rt-fedora.config
+Source483: %{name}-riscv64-rt-debug-fedora.config
+%endif
 %endif
 
 # Sources for kernel-tools
@@ -4136,9 +4144,14 @@ fi\
 #
 #
 %changelog
-* Wed Oct 30 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.c1e939a21eb1.46]
+* Thu Oct 31 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.0fc810ae3ae1.47]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Thu Oct 31 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.0fc810ae3ae1.46]
+- Update the RHEL_DIFFERENCES help string (Don Zickus)
+- Put build framework for RT kernel in place for Fedora (Clark Williams)
+- Linux v6.12.0-0.rc5.0fc810ae3ae1
 
 * Wed Oct 30 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.c1e939a21eb1.45]
 - Linux v6.12.0-0.rc5.c1e939a21eb1

@@ -1,7 +1,7 @@
 %global githubname   libbpf
-%global githubver    1.4.6
+%global githubver    1.5.0
 %global githubfull   %{githubname}-%{githubver}
-%global libver       1.4.6
+%global libver       1.5.0
 
 Name:           %{githubname}
 Version:        %{githubver}
@@ -70,6 +70,9 @@ developing applications that use %{name}
 %{_libdir}/libbpf.a
 
 %changelog
+* Thu Oct 31 2024 Viktor Malik <vmalik@redhat.com> - 2:1.5.0-1
+- release 1.5.0-1
+
 * Fri Sep 06 2024 Viktor Malik <vmalik@redhat.com> - 2:1.4.6-1
 - release 1.4.6-1
 

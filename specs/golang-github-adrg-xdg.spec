@@ -4,7 +4,7 @@
 
 # https://github.com/adrg/xdg
 %global goipath         github.com/adrg/xdg
-Version:                0.4.0
+Version:                0.5.3
 
 %gometa
 
@@ -16,7 +16,7 @@ directories.}
 %global godocs          CODE_OF_CONDUCT.md CONTRIBUTING.md README.md
 
 Name:           %{goname}
-Release:        7%{?dist}
+Release:        %autorelease
 Summary:        Go implementation of the XDG Base Directory Specification and XDG user directories
 
 License:        MIT
@@ -47,23 +47,4 @@ BuildRequires: golang(github.com/stretchr/testify)
 %gopkgfiles
 
 %changelog
-* Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.0-7
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Wed Jan 24 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.0-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Fri Jan 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.0-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Thu Jul 20 2023 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.0-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Thu Jan 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
-
-* Thu Jul 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.0-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
-
-* Mon May 30 2022 Link Dupont <linkdupont@fedoraproject.org> - 0.4.0-1
-- Initial package (RHBZ#2091777)
+%autochangelog

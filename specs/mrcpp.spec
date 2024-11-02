@@ -74,9 +74,9 @@ This package contains the runtime data.
 %prep
 %setup -q
 # EPEL still can't handle the new patch style
-%patch0 -p1 -b .eigen3
-%patch1 -p1 -b .rpath
-%patch2 -p1 -b .catchv3
+%patch -P0 -p1 -b .eigen3
+%patch -P1 -p1 -b .rpath
+%patch -P2 -p1 -b .catchv3
 # Remove bundled catch
 rm -rf external/catch/
 

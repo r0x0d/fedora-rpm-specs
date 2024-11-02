@@ -8,7 +8,7 @@
 
 Name:           libwebsockets
 Version:        4.3.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Lightweight C library for Websockets
 
 # base64-decode.c and ssl-http2.c is under MIT license with FPC exception.
@@ -71,6 +71,7 @@ cd build
     -D LWS_UNIX_SOCK=ON \
     -D LWS_USE_BUNDLED_ZLIB=OFF \
     -D LWS_WITH_DISKCACHE=ON \
+    -D LWS_WITH_EXTERNAL_POLL=ON \
     -D LWS_WITH_FTS=ON \
     -D LWS_WITH_HTTP_PROXY=ON \
     -D LWS_WITH_LIBEV=ON \
@@ -119,6 +120,9 @@ find %{buildroot} -name '*_static.pc' -delete
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Thu Oct 31 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 4.3.3-2
+- Build with external polling support
+
 * Wed Sep 18 2024 Fabian Affolter <mail@fabian-affolter.ch> - 4.3.3-1
 - Update to latest upstream release (closes rhbz#2250868)
 

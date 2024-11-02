@@ -80,12 +80,15 @@ sed -r -i \
     CMakeLists.txt
 
 
-%build
+%conf
 %cmake \
     -DFMIDI_ENABLE_DEBUG=OFF \
     -DFMIDI_PIC=ON \
     -DFMIDI_STATIC=OFF \
     -GNinja
+
+
+%build
 %cmake_build
 
 

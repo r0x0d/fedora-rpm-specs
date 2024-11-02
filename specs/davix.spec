@@ -1,17 +1,15 @@
 %undefine __cmake_in_source_build
-%undefine __cmake3_in_source_build
 
 Name:				davix
 Version:			0.8.7
-Release:			3%{?dist}
+Release:			4%{?dist}
 Summary:			Toolkit for http based file management
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:			LicenseRef-Callaway-LGPLv2+
+License:			LGPL-2.1-or-later AND LGPL-2.0-or-later AND BSD-2-Clause AND MIT AND Apache-2.0 AND curl
 URL:				https://dmc-docs.web.cern.ch/dmc-docs/davix.html
 Source0:			https://github.com/cern-fts/davix/releases/download/R_0_8_7/davix-0.8.7.tar.gz
 
 BuildRequires:			gcc-c++
-BuildRequires:			cmake3
+BuildRequires:			cmake
 # main lib dependencies
 %if %{?fedora}%{!?fedora:0} || %{?rhel}%{!?rhel:0} >= 9
 # use bundled curl version on EPEL <= 8
@@ -28,19 +26,11 @@ BuildRequires:			zlib-devel
 BuildRequires:			gsoap-devel
 BuildRequires:			libuuid-devel
 # unit tests
-%if %{?rhel}%{!?rhel:0} != 7
-# use bundled googletest version on EPEL 7
 BuildRequires:			gtest-devel
-%endif
 # documentation
 BuildRequires:			doxygen
-%if %{?rhel}%{!?rhel:0} == 7
-BuildRequires:			python2-sphinx
-BuildRequires:			python2-sphinx_rtd_theme
-%else
 BuildRequires:			python3-sphinx
 BuildRequires:			python3-sphinx_rtd_theme
-%endif
 
 Requires:			%{name}-libs%{?_isa} = %{version}-%{release}
 
@@ -51,9 +41,6 @@ Davix is a toolkit designed for file operations with http based protocols
 %package tests
 Summary:			Test suite for %{name}
 Requires:			%{name}-libs%{?_isa} = %{version}-%{release}
-%if %{?rhel}%{!?rhel:0} == 7
-Provides:			bundled(gtest) = 1.7.0
-%endif
 
 %description tests
 Test suite for %{name}. Davix is a toolkit designed for file operations
@@ -93,32 +80,23 @@ for file operations with http based protocols (WebDav, Amazon S3, ...).
 # use bundled curl version on EPEL
 rm -rf deps/curl
 %endif
-%if %{?rhel}%{!?rhel:0} != 7
-# use bundled googletest version on EPEL 7
 rm -rf deps/googletest/googlemock
 rm -rf deps/googletest/googletest/*
 touch deps/googletest/googletest/CMakeLists.txt
-%endif
 rm -rf src/libs/rapidjson
 rm -rf test/pywebdav
 rm -rf doc/sphinx/_themes/sphinx_rtd_theme
-# Symlink to system rapidjson
-ln -s /usr/include/rapidjson src/libs/rapidjson
-%if %{?rhel}%{!?rhel:0} == 7
-# Symlink sphinx_rtd_theme on EPEL 7
-ln -s %{python2_sitelib}/sphinx_rtd_theme doc/sphinx/_themes
-%endif
 
 %build
-%cmake3 \
+%cmake \
 %if %{?fedora}%{!?fedora:0} || %{?rhel}%{!?rhel:0} >= 9
   -DEMBEDDED_LIBCURL:BOOL=FALSE \
 %endif
   -DDOC_INSTALL_DIR:PATH=%{_pkgdocdir} \
   -DENABLE_THIRD_PARTY_COPY:BOOL=TRUE \
   -DENABLE_HTML_DOCS:BOOL=TRUE
-%cmake3_build
-%cmake3_build --target doc
+%cmake_build
+%cmake_build --target doc
 ( cd %{_vpath_builddir}/doc ; \
   sphinx-build -q -b html ../../doc/sphinx build/html ; \
   rm -f build/html/.buildinfo ; \
@@ -128,10 +106,8 @@ ln -s %{python2_sitelib}/sphinx_rtd_theme doc/sphinx/_themes
 %{_vpath_builddir}/test/unit/davix-unit-tests
 
 %install
-%cmake3_install
+%cmake_install
 rm %{buildroot}%{_pkgdocdir}/LICENSE
-
-%ldconfig_scriptlets libs
 
 %files
 %{_bindir}/davix-cp
@@ -173,6 +149,11 @@ rm %{buildroot}%{_pkgdocdir}/LICENSE
 %license LICENSE
 
 %changelog
+* Thu Oct 31 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 0.8.7-4
+- Rebuild for gsoap 2.8.135 (Fedora 42)
+- Drop EPEL 7 specific instructions (EOL)
+- Update License tag
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 0.8.7-3
 - convert license to SPDX
 

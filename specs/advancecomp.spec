@@ -107,7 +107,7 @@ find . -type f -exec gawk \
   xargs -r -t sed -r -i -e 's@^([[:blank:]]*#include.*)zopfli/@\1@'
 
 
-%build
+%conf
 autoreconf --force --install --verbose
 
 # Link against system libdeflate
@@ -119,6 +119,9 @@ export LDFLAGS="$(pkgconf --libs libdeflate) ${LDFLAGS-}"
 export LDFLAGS="-lzopfli ${LDFLAGS-}"
 
 %configure
+
+
+%build
 %make_build
 
 

@@ -12,7 +12,7 @@
 # seems to consider the command-line tool to be the primary interface, so we
 # use application naming guidelines.
 Name:           spec2nii
-Version:        0.8.4
+Version:        0.8.5
 Release:        %autorelease
 Summary:        Multi-format in vivo MR spectroscopy conversion to NIFTI
 
@@ -104,11 +104,6 @@ converted using dcm2niix.
 rmdir tests/spec2nii_test_data
 mv %{test_data_dir} tests/spec2nii_test_data
 %endif
-
-# Upstream pins scipy to a particular minor release. We cannot respect this.
-# (Currently, our scipy is older than the pinned one, so we cannot convert it
-# to a lower-bound, either.)
-sed -r -i 's/(scipy)==.*/\1/' requirements.yml
 
 %ifarch s390x
 # PyMapVBVD assumes the platform is little-endian

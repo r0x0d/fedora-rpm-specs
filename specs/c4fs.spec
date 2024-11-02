@@ -75,13 +75,16 @@ sed -r -i \
     test/CMakeLists.txt
 
 
-%build
+%conf
 # We can stop the CMake scripts from downloading doctest by setting
 # C4FS_CACHE_DOWNLOAD_DOCTEST to any directory that exists.
 %cmake -GNinja \
   -DCMAKE_CXX_STANDARD=%{cxx_std} \
   -DC4FS_CACHE_DOWNLOAD_DOCTEST:PATH=/ \
   -DC4FS_BUILD_TESTS=ON
+
+
+%build
 %cmake_build
 
 

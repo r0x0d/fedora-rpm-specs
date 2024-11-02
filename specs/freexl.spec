@@ -146,7 +146,7 @@ mkdir build_native
 cp -a tests build_native
 
 
-%build
+%conf
 %if %{with autoreconf}
 autoreconf --force --install --verbose
 %endif
@@ -154,20 +154,25 @@ autoreconf --force --install --verbose
 pushd build_native
 %global _configure ../configure
 %configure --disable-static
-%make_build
 popd
 
 %if %{with mingw}
 %mingw_configure --disable-static
-%mingw_make_build
 %endif
 
-%if %{with doc_pdf}
+
+%build
 pushd build_native
+%make_build
+%if %{with doc_pdf}
 doxygen Doxyfile
 %make_build -C latex
 mv latex/refman.pdf latex/FreeXL.pdf
+%endif
 popd
+
+%if %{with mingw}
+%mingw_make_build
 %endif
 
 

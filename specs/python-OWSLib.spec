@@ -2,7 +2,8 @@
 # https://bugzilla.redhat.com/show_bug.cgi?id=2006555 for discussion.
 #
 # We can generate PDF documentation as a substitute.
-%bcond doc_pdf 1
+# EPEL10 does not (yet) have pandoc.
+%bcond doc_pdf %{undefined el10}
 
 Name:           python-OWSLib
 Version:        0.30.0

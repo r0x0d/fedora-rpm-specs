@@ -18,9 +18,11 @@ Patch:          0001-Downstream-only-do-not-upper-bound-the-Python-interp.patch
 # https://github.com/jrnl-org/jrnl/pull/1878
 Patch:          %{forgeurl}/pull/1878.patch
 
-BuildArch:      noarch
+BuildSystem:            pyproject
+BuildOption(install):   jrnl
+BuildOption(generate_buildrequires): -t
 
-BuildRequires:  python3-devel
+BuildArch:      noarch
 
 BuildRequires:  dos2unix
 BuildRequires:  help2man
@@ -41,9 +43,7 @@ stored as human-readable plain text, and can also be encrypted using AES
 encryption.
 
 
-%prep
-%autosetup -n jrnl-%{version} -p1
-
+%prep -a
 dos2unix --keepdate \
     SECURITY.md \
     docs/external-editors.md \
@@ -52,26 +52,17 @@ dos2unix --keepdate \
     docs/reference-config-file.md
 
 
-%generate_buildrequires
-%pyproject_buildrequires -t
-
-
-%build
-%pyproject_wheel
-
+%build -a
 # https://github.com/jrnl-org/jrnl/issues/74
 # https://github.com/jrnl-org/jrnl/issues/1274
 help2man --no-info '%{python3} -m jrnl' --output='jrnl.1'
 
 
-%install
-%pyproject_install
-%pyproject_save_files jrnl
-
+%install -a
 install -D -t '%{buildroot}%{_mandir}/man1' -p -m 0644 'jrnl.1'
 
 
-%check
+%check -a
 %if v"0%{?python3_version}" >= v"3.13"
 # Add Python 3.13 support
 # https://github.com/jrnl-org/jrnl/issues/1893

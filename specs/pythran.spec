@@ -1,5 +1,5 @@
 Name:           pythran
-Version:        0.16.1
+Version:        0.17.0
 Release:        %autorelease
 Summary:        Ahead of Time Python compiler for numeric kernels
 
@@ -67,10 +67,14 @@ sed -i '1{/#!/d}' pythran/run.py
 # Remove bundled header libs and use the ones from system
 rm -r pythran/boost pythran/xsimd
 
-# Both OpenBLAS and FlexiBLAS are registered as "openblas" in numpy
-sed -i 's|blas=blas|blas=openblas|' pythran/pythran-linux*.cfg
-sed -i 's|libs=|libs=flexiblas|' pythran/pythran-linux*.cfg
+# Use FlexiBLAS
+sed -i 's|blas=blas|blas=flexiblas|' pythran/pythran-linux*.cfg
 sed -i 's|include_dirs=|include_dirs=/usr/include/flexiblas|' pythran/pythran-linux*.cfg
+
+# This test explicitly tests with OpenBLAS
+# But we want to avoid OpenBLAS dependency to verify everything works with FlexiBLAS
+# https://github.com/serge-sans-paille/pythran/pull/2244#issuecomment-2441215988
+sed -i 's/openblas/flexiblas/' pythran/tests/test_distutils/pythran.rc
 
 # not yet available in Fedora
 sed -i '/guzzle_sphinx_theme/d' docs/conf.py
@@ -103,7 +107,7 @@ rm -rf docs/_build/html/.{doctrees,buildinfo}
 # https://bugzilla.redhat.com/show_bug.cgi?id=1747029#c12
 k="not test_numpy_negative_binomial"
 # https://github.com/serge-sans-paille/pythran/issues/2214
-k="$k and not (TestDoctest and (test_tutorial or test_utils))"
+k="$k and not (TestDoctest and test_tutorial)"
 %if 0%{?__isa_bits} == 32
 # These tests cause memory (address space) exhaustion; see discussion in
 # https://src.fedoraproject.org/rpms/pythran/pull-request/28.

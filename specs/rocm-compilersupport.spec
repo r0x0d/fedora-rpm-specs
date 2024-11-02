@@ -15,7 +15,7 @@
 %if %{with bundled_llvm}
 %global _smp_mflags %{nil}
 %global _lto_cflags %{nil}
-%global amd_device_libs_prefix lib/clang/19
+%global bundle_prefix %{_libdir}/rocm/llvm
 %else
 # Used to tell cmake where to install device libs (must be relative to prefix)
 # We want to install to clang_resource_dir/amdgcn for FHS compliance
@@ -24,7 +24,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        16.rocm%{rocm_version}%{?dist}
+Release:        17.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -54,11 +54,7 @@ BuildRequires:  llvm-devel(major) = %{llvm_maj_ver}
 BuildRequires:  clang-devel(major) = %{llvm_maj_ver}
 BuildRequires:  lld-devel(major) = %{llvm_maj_ver}
 %else
-BuildRequires:  llvm-devel
-BuildRequires:  clang-devel
-BuildRequires:  lld-devel
 BuildRequires:  clang
-BuildRequires:  ninja-build
 Provides:       bundled(llvm-project) = %{llvm_maj_ver}
 %endif
 
@@ -212,20 +208,20 @@ sed -i '/" -isystem " + hsaPath + "\/include"/d' amd/hipcc/src/hipBin_amd.h
 sed -i '/^# Add paths to common HIP includes:/,/^$HIPCFLAGS/d' \
         amd/hipcc/bin/hipcc.pl
 
+sed -i -e 's@/opt/rocm@%{_prefix}@' amd/hipcc/bin/hipvars.pm
+
 # HIPCC fixes to find clang++
 # Fedora places clang++ in the regular bindir:
 %if %{without bundled_llvm}
+# SYSTEM LLVM
 LLVM_BINDIR=`llvm-config-%{llvm_maj_ver} --bindir`
-%else
-LLVM_BINDIR=`llvm-config --bindir`
-%endif
+
 if [ ! -x ${LLVM_BINDIR}/clang++ ]; then
     echo "Something wrong with llvm-config"
     false
 fi
 echo "s@\$ROCM_PATH/lib/llvm/bin@${LLVM_BINDIR}@" > pm.sed
 sed -i -f pm.sed amd/hipcc/bin/hipvars.pm
-sed -i -e 's@/opt/rocm@%{_prefix}@' amd/hipcc/bin/hipvars.pm
 
 echo "s@hipClangPath /= \"lib/llvm/bin\"@hipClangPath = \"${LLVM_BINDIR}\"@" > h.sed
 sed -i -f h.sed amd/hipcc/src/hipBin_amd.h
@@ -238,14 +234,30 @@ sed -i -f h.sed amd/hipcc/src/hipBin_amd.h
 
 # Fix up the location AMD_DEVICE_LIBS_PREFIX
 sed -i 's|@AMD_DEVICE_LIBS_PREFIX_CODE@|set(AMD_DEVICE_LIBS_PREFIX "%{_prefix}/%{amd_device_libs_prefix}")|' amd/device-libs/AMDDeviceLibsConfig.cmake.in
+%else
+# BUNDLED
 
+# Clang tools we do not need
+sed -i 's@add_subdirectory(utils/hmaptool)@#add_subdirectory(utils/hmaptool)@'                         clang/CMakeLists.txt
+
+sed -i 's@add_clang_subdirectory(c-index-test)@#add_clang_subdirectory(c-index-test)@'                 clang/tools/CMakeLists.txt
+sed -i 's@add_clang_subdirectory(clang-format)@#add_clang_subdirectory(clang-format)@'                 clang/tools/CMakeLists.txt
+sed -i 's@add_clang_subdirectory(clang-nvlink-wrapper)@#add_clang_subdirectory(clang-nvlink-wrapper)@' clang/tools/CMakeLists.txt
+sed -i 's@add_clang_subdirectory(clang-rename)@#add_clang_subdirectory(clang-rename)@'                 clang/tools/CMakeLists.txt
+sed -i 's@add_clang_subdirectory(clang-refactor)@#add_clang_subdirectory(clang-refactor)@'             clang/tools/CMakeLists.txt
+sed -i 's@add_clang_subdirectory(clang-repl)@#add_clang_subdirectory(clang-repl)@'                     clang/tools/CMakeLists.txt
+sed -i 's@add_clang_subdirectory(clang-scan-deps)@#add_clang_subdirectory(clang-scan-deps)@'           clang/tools/CMakeLists.txt
+sed -i 's@add_clang_subdirectory(diagtool)@#add_clang_subdirectory(diagtool)@'                         clang/tools/CMakeLists.txt
+sed -i 's@add_clang_subdirectory(nvptx-arch)@#add_clang_subdirectory(nvptx-arch)@'                     clang/tools/CMakeLists.txt
+
+
+%endif
 %build
+CLANG_VERSION=%llvm_maj_ver
 %if %{without bundled_llvm}
 LLVM_CMAKEDIR=`llvm-config-%{llvm_maj_ver} --cmakedir`
-CLANG_VERSION=%llvm_maj_ver
 %else
-LLVM_CMAKEDIR=`llvm-config --cmakedir`
-CLANG_VERSION=`clang --version | head -n 1 | grep -o -E "| [[:digit:]][[:digit:]]" | uniq | sort`
+LLVM_CMAKEDIR=%{bundle_prefix}/lib64/cmake/llvm
 %endif
 
 echo "%%rocmllvm_version $CLANG_VERSION"   > macros.rocmcompiler
@@ -301,14 +313,19 @@ if [ "$COMPILE_JOBS_MEM" -lt "$COMPILE_JOBS" ]; then
 fi
 LINK_MEM=4
 LINK_JOBS=`eval "expr 1 + ${MEM_GB} / ${LINK_MEM}"`
+JOBS=${COMPILE_JOBS}
+if [ "$LINK_JOBS" -lt "$JOBS" ]; then
+    JOBS=$LINK_JOBS
+fi
 
 %cmake \
-    -G Ninja \
-    -S llvm \
     -DBUILD_SHARED_LIBS=OFF \
     -DBUILD_TESTING=OFF \
     -DCMAKE_BUILD_TYPE=RELEASE \
-    -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+    -DCMAKE_INSTALL_PREFIX=%{bundle_prefix} \
+    -DLLVM_BUILD_LLVM_DYLIB=ON \
+    -DLLVM_BUILD_TOOLS=OFF \
+    -DLLVM_BUILD_UTILS=OFF \
     -DLLVM_ENABLE_PROJECTS="llvm;clang;lld" \
     -DLLVM_ENABLE_ZLIB=ON \
     -DLLVM_ENABLE_ZSTD=ON \
@@ -316,16 +333,18 @@ LINK_JOBS=`eval "expr 1 + ${MEM_GB} / ${LINK_MEM}"`
     -DLLVM_EXTERNAL_COMGR_SOURCE_DIR=./amd/comgr \
     -DLLVM_EXTERNAL_DEVICELIBS_SOURCE_DIR=./amd/device-libs \
     -DLLVM_EXTERNAL_HIPCC_SOURCE_DIR=./amd/hipcc \
+    -DLLVM_INCLUDE_TESTS=OFF \
     -DLLVM_LIBDIR_SUFFIX=64 \
     -DLLVM_PARALLEL_COMPILE_JOBS=$COMPILE_JOBS \
     -DLLVM_PARALLEL_LINK_JOBS=$LINK_JOBS \
     -DLLVM_TARGETS_TO_BUILD="X86;AMDGPU;PowerPC;AArch64" \
+    -DCLANG_ENABLE_ARCMT=OFF \
+    -DCLANG_ENABLE_STATIC_ANALYZER=OFF \
     -DHIPCC_BACKWARD_COMPATIBILITY=OFF \
-    -DROCM_DEVICE_LIBS_BITCODE_INSTALL_LOC_NEW="%{amd_device_libs_prefix}/amdgcn" \
-    -DROCM_DEVICE_LIBS_BITCODE_INSTALL_LOC_OLD="" \
-    -DROCM_DIR=%{_prefix}
+    -DROCM_DIR=%{_prefix} \
+    llvm
 
-%cmake_build
+%cmake_build -j ${JOBS}
 
 %endif
 
@@ -373,24 +392,54 @@ pushd amd/hipcc
 %cmake_install
 popd
 
-%else
-%cmake_install
-
-# Remove non amd/ things
-find %{buildroot}%{_bindir} -type f -not -name '*hip*' -delete
-rm %{buildroot}%{_bindir}/{amdgpu-*,clang*,flang*,ld*,lld*,llvm*,nvidia*,wasm*}
-rm -rf %{buildroot}%{_includedir}/{clang*,lld*,llvm*}
-rm -rf %{buildroot}%{_libdir}/{llvm,clang,libLLVM*,libLTO*,libRemarks*,liblld*,libear*,libclang*,libscan*}
-rm -rf %{buildroot}%{_libdir}/cmake/{clang*,llvm*,lld*}
-rm -rf %{buildroot}%{_datadir}/opt* 
-rm -rf %{buildroot}%{_libexecdir}
-rm -rf %{buildroot}%{_datadir}
-%endif
-
 # Fix perl module files installation:
 mkdir -p %{buildroot}%{perl_vendorlib}
 mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 # Eventually upstream plans to deprecate Perl usage, see README.md
+
+%else
+%cmake_install
+
+# Remove devel things
+# No static libs please
+# rm -rf %{buildroot}%{bundle_prefix}/lib64/*.a
+# No headers we do not use
+rm -rf %{buildroot}%{bundle_prefix}/include/{clang-c,llvm-c}
+rm -rf %{buildroot}%{bundle_prefix}/share/opt*
+rm -rf %{buildroot}%{bundle_prefix}/share/clang/*.sh 
+
+#
+# Links to system locations
+# comgr header
+mkdir -p %{buildroot}%{_includedir}/amd_comgr
+cd %{buildroot}%{_includedir}/amd_comgr
+ln -s ../../lib64/rocm/llvm/include/amd_comgr/amd_comgr.h amd_comgr.h
+cd -
+# comgr libs
+mkdir -p %{buildroot}%{_libdir}
+cd %{buildroot}%{_libdir}/
+ln -s ./rocm/llvm/lib64/libamd_comgr.so.%{comgr_full_api_ver} libamd_comgr.so.%{comgr_full_api_ver}
+ln -s ./rocm/llvm/lib64/libamd_comgr.so.%{comgr_full_api_ver} libamd_comgr.so.%{comgr_maj_api_ver}
+ln -s ./rocm/llvm/lib64/libamd_comgr.so.%{comgr_full_api_ver} libamd_comgr.so
+cd -
+# comgr cmake
+mkdir -p %{buildroot}%{_libdir}/cmake/amd_comgr
+cd %{buildroot}%{_libdir}/cmake/amd_comgr
+C="amd_comgr-config-version.cmake amd_comgr-config.cmake amd_comgr-targets-release.cmake amd_comgr-targets.cmake"
+for c in $C; do
+    ln -s ../../rocm/llvm/lib64/cmake/amd_comgr/$c $c
+done
+cd -
+# hipcc
+mkdir -p %{buildroot}%{_bindir}
+cd %{buildroot}%{_bindir}
+C="hipcc hipconfig"
+for c in $C; do
+    ln -s ../lib64/rocm/llvm/bin/$c $c
+done
+cd -
+
+%endif
 
 #Clean up dupes:
 %if 0%{?fedora}
@@ -400,44 +449,80 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %files macros
 %{_rpmmacrodir}/macros.rocmcompiler
 
+%if %{without bundled_llvm}
+# SYSTEM LLVM
 %files -n rocm-device-libs
 %license amd/device-libs/LICENSE.TXT
 %doc amd/device-libs/README.md amd/device-libs/doc/*.md
 %{_libdir}/cmake/AMDDeviceLibs
 %{_prefix}/%{amd_device_libs_prefix}/amdgcn
-%if %{without bundled_llvm}
 %{_docdir}/ROCm-Device-Libs
-%endif
 
 %files -n rocm-comgr
 %license amd/comgr/LICENSE.txt
 %license amd/comgr/NOTICES.txt
 %doc amd/comgr/README.md
-%if %{without bundled_llvm}
 %{_docdir}/amd_comgr
-%endif
 %{_libdir}/libamd_comgr.so.*
 
 %files -n rocm-comgr-devel
 %{_includedir}/amd_comgr/amd_comgr.h
 %{_libdir}/libamd_comgr.so
-%{_libdir}/cmake/amd_comgr
+%{_libdir}/cmake/amd_comgr/
+
 
 %files -n hipcc
 %license amd/hipcc/LICENSE.txt
 %doc amd/hipcc/README.md
-%if %{without bundled_llvm}
 %{_docdir}/hipcc
-%endif
 %{_bindir}/hipcc{,.pl,.bin}
 %{_bindir}/hipconfig{,.pl,.bin}
 %{perl_vendorlib}/hip*.pm
 
 %files -n rocm-llvm-devel
 
+%else
+# BUNDLED LLVM
+%files -n rocm-device-libs
+%license amd/device-libs/LICENSE.TXT
+%doc amd/device-libs/README.md amd/device-libs/doc/*.md
+
+%files -n rocm-comgr
+%license amd/comgr/LICENSE.txt
+%license amd/comgr/NOTICES.txt
+%{_libdir}/libamd_comgr.so.*
+%{_libdir}/rocm/llvm/lib64/libamd_comgr.so.*
+
+%files -n rocm-comgr-devel
+%{_includedir}/amd_comgr/amd_comgr.h
+%{_libdir}/libamd_comgr.so
+%{_libdir}/cmake/amd_comgr
+%{_libdir}/rocm/llvm/include/amd_comgr/amd_comgr.h
+%{_libdir}/rocm/llvm/lib64/libamd_comgr.so
+%{_libdir}/rocm/llvm/lib64/cmake/amd_comgr/
+
+%files -n hipcc
+%license amd/hipcc/LICENSE.txt
+%doc amd/hipcc/README.md
+
+%files -n rocm-llvm-devel
+%{_bindir}/{hipcc,hipconfig}
+%{bundle_prefix}/amdgcn/
+%{bundle_prefix}/bin/
+%{bundle_prefix}/include/{clang,lld,llvm}
+%{bundle_prefix}/lib64/{libclang*,libLLVM*,libLTO*,libRemarks*,liblld*}
+%{bundle_prefix}/lib64/clang/
+%{bundle_prefix}/lib64/cmake/{amd_comgr,AMDDeviceLibs,clang,lld,llvm}
+%{bundle_prefix}/share/doc/LLVM/
+
+%endif
+
 %files -n hipcc-libomp-devel
 
 %changelog
+* Thu Oct 31 2024 Tom Rix <Tom.Rix@amd.com> - 18-17.rocm6.2.0
+- Change bundle llvm to build rocm llvm.
+
 * Wed Oct 30 2024 Tom Rix <Tom.Rix@amd.com> - 18-16.rocm6.2.0
 - Improve macros
 

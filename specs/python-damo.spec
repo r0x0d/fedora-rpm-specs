@@ -11,12 +11,12 @@ patterns of your system or workloads and make data access-aware memory
 management optimizations.}
 
 Name:           python-%{srcname}
-Version:        2.4.9
+Version:        2.5.3
 Release:        %autorelease
 Summary:        Data Access Monitoring Operator
 
 License:        GPL-2.0-only
-URL:            https://github.com/awslabs/damo
+URL:            https://github.com/damonitor/damo
 # PyPI source does not contain tests
 # Source:         %%pypi_source
 Source:        %{url}/archive/v%{version}/%{srcname}-%{version}.tar.gz

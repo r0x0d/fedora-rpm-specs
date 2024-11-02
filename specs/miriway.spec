@@ -1,18 +1,12 @@
 Name:           miriway
-Version:        24.09
-Release:        3%{?dist}
+Version:        24.10
+Release:        1%{?dist}
 Summary:        Simple Wayland compositor built on Mir
 
 License:        GPL-3.0-only
 URL:            https://miriway.github.io/
 Source0:        https://github.com/Miriway/Miriway/archive/v%{version}/Miriway-%{version}.tar.gz
-
 Source1:        anaconda-initial-setup-run-gui-backend
-
-# Add miriway-run for initial-setup
-Patch0:         https://github.com/Miriway/Miriway/pull/117.patch
-# Add SDDM configuration
-Patch1:         https://github.com/Miriway/Miriway/pull/126.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -20,7 +14,9 @@ BuildRequires:  git-core
 BuildRequires:  ninja-build
 BuildRequires:  pkgconfig(miral) >= 5.1
 BuildRequires:  pkgconfig(xkbcommon)
+BuildRequires:  systemd-rpm-macros
 Requires:       inotify-tools
+Requires:       swaybg
 Requires:       xkeyboard-config
 Requires:       xorg-x11-server-Xwayland
 
@@ -98,14 +94,23 @@ install -pm 0755 %{S:1} %{buildroot}%{_libexecdir}/initial-setup/run-gui-backend
 
 
 %files
-%doc README.md CONFIGURING_MIRIWAY.md example-configs
+%doc README.md CONFIGURING_MIRIWAY.md
 %license LICENSE
-%{_bindir}/%{name}*
+%{_bindir}/%{name}
+%{_bindir}/%{name}-background
+%{_bindir}/%{name}-run
+%{_bindir}/%{name}-run-shell
+%{_bindir}/%{name}-shell
+%{_bindir}/%{name}-terminal
 %dir %{_sysconfdir}/xdg/xdg-%{name}
 %config(noreplace) %{_sysconfdir}/xdg/xdg-%{name}/%{name}-shell.config
 
 %files session
+%doc example-configs
+%{_bindir}/%{name}-session
+%{_libexecdir}/%{name}-session*
 %{_datadir}/wayland-sessions/%{name}.desktop
+%{_userunitdir}/%{name}-session.target
 
 %files -n sddm-wayland-%{name}
 %{_prefix}/lib/sddm/sddm.conf.d/%{name}.conf
@@ -115,6 +120,9 @@ install -pm 0755 %{S:1} %{buildroot}%{_libexecdir}/initial-setup/run-gui-backend
 
 
 %changelog
+* Thu Oct 31 2024 Neal Gompa <ngompa@fedoraproject.org> - 24.10-1
+- Update to 24.10
+
 * Wed Oct 23 2024 Neal Gompa <ngompa@fedoraproject.org> - 24.09-3
 - Add SDDM and initial-setup-gui configuration packages
 - Split desktop session file into its own subpackage

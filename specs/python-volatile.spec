@@ -13,6 +13,7 @@ BuildArch:      noarch
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
+BuildRequires:  python3dist(pytest)
 
 
 %global _description %{expand:
@@ -49,7 +50,7 @@ Summary:        %{summary}
 
 
 %check
-%{python3} setup.py test
+%pytest -v
 
 
 %files -n python3-%{srcname}
@@ -60,6 +61,10 @@ Summary:        %{summary}
 
 
 %changelog
+* Thu Oct 31 2024 Michel Lind <salimma@fedoraproject.org> - 2.1.0-16
+- Switch from deprecated `setup.py test` to `pytest`
+- Resolves: rhbz#2319734
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.0-15
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

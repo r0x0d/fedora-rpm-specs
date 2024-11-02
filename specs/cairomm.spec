@@ -145,7 +145,7 @@ PDF_HYPERLINKS)[[:blank:]]*=[[:blank:]]*)NO[[:blank:]]*/\1YES/" \
 %endif
 
 
-%build
+%conf
 %meson \
   -Dmaintainer-mode=%{?with_maintainer_mode:true}%{?!with_maintainer_mode:false} \
   -Dbuild-documentation=true \
@@ -153,6 +153,9 @@ PDF_HYPERLINKS)[[:blank:]]*=[[:blank:]]*)NO[[:blank:]]*/\1YES/" \
   -Dbuild-tests=true \
   -Dboost-shared=true \
   -Dwarnings=max
+
+
+%build
 %meson_build
 
 %if %{with doc_pdf}

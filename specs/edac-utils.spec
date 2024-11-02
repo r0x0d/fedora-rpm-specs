@@ -116,9 +116,12 @@ This package provides the edac-ctl script and the edac service.
 %autosetup -p1
 
 
-%build
+%conf
 autoreconf --force --install --verbose
 %configure --disable-static
+
+
+%build
 %make_build
 
 

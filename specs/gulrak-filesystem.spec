@@ -58,8 +58,11 @@ sed -r -i 's|(include[[:blank:]]+")(catch.hpp")|\1catch2/\2|' test/*.cpp
 sed -r -i 's|[[:blank:]]+catch\.hpp||' test/CMakeLists.txt
 
 
-%build
+%conf
 %cmake
+
+
+%build
 %cmake_build
 
 

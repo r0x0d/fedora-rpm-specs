@@ -94,7 +94,7 @@ https://harmonyseq.wordpress.com
 %autosetup -n harmonySEQ-%{version} -p1
 
 
-%build
+%conf
 # We need the preprocessor macro RELEASE set so that src/main.cpp looks for
 # resoures in the installation path (DATA_PATH). Normally this is set with
 # -DCMAKE_BUILD_TYPE=Release, but this also asks to strip debugging symbols,
@@ -104,6 +104,9 @@ CFLAGS="${CFLAGS} -DRELEASE"
 CXXFLAGS="${CXXFLAGS} -DRELEASE"
 
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja
+
+
+%build
 %cmake_build
 
 

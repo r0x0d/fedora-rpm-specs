@@ -1,5 +1,5 @@
 Name:           libbraiding
-Version:        1.2
+Version:        1.3
 %global so_version 0
 Release:        %autorelease
 Summary:        Library for computations on braid groups
@@ -14,6 +14,9 @@ BuildRequires:  libtool
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
+
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+ExcludeArch:    %{ix86}
 
 %description
 This library allows various computations on braid groups, such as normal forms.

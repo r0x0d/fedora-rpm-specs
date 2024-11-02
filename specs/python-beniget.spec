@@ -1,5 +1,5 @@
 Name:           python-beniget
-Version:        0.4.1
+Version:        0.4.2.post1
 Release:        %autorelease
 Summary:        Extract semantic information about static Python code
 License:        BSD-3-Clause

@@ -95,9 +95,10 @@ Source:         %{url}/-/archive/%{version}/gi-docgen-%{version}.tar.bz2
 # or stand-in local system fonts.
 Patch:          gi-docgen-2022.2-no-web-fonts.patch
 
-BuildArch:      noarch
+BuildSystem:            pyproject
+BuildOption(install):   gidocgen
 
-BuildRequires:  python3-devel
+BuildArch:      noarch
 
 BuildRequires:  python3dist(pytest)
 
@@ -188,30 +189,19 @@ License:        (Apache-2.0 OR GPL-3.0-or-later) AND CC0-1.0
 Documentation for gi-docgen.
 
 
-%generate_buildrequires
-%pyproject_buildrequires
-
-
-%prep
-%autosetup -p1
-
+%prep -a
 # Remove all bundled fonts. See gi-docgen-*-no-web-fonts.patch.
 find . -type f \( -name '*.woff' -o -name '*.woff2' \) -print -delete
 
 
-%build
-%pyproject_wheel
-
+%build -a
 %if %{with doc_pdf}
 sphinx-build -b latex -j%{?_smp_build_ncpus} docs %{_vpath_builddir}/_latex
 %make_build -C %{_vpath_builddir}/_latex LATEXMKOPTS='-quiet'
 %endif
 
 
-%install
-%pyproject_install
-%pyproject_save_files gidocgen
-
+%install -a
 install -t '%{buildroot}%{_pkgdocdir}' -D -m 0644 -p \
     CHANGES.md \
     CONTRIBUTING.md \
@@ -224,7 +214,7 @@ install -t '%{buildroot}%{_pkgdocdir}' -p -m 0644 \
 cp -rp examples '%{buildroot}%{_pkgdocdir}/'
 
 
-%check
+%check -a
 %pytest
 
 
