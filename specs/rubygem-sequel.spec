@@ -1,15 +1,15 @@
 %global gem_name sequel
 
 Name: rubygem-%{gem_name}
-Version: 5.83.1
-Release: 2%{?dist}
+Version: 5.86.0
+Release: 1%{?dist}
 Summary: The Database Toolkit for Ruby
 License: MIT
 URL: http://sequel.jeremyevans.net
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 Requires: rubygem(bigdecimal)
 BuildRequires: ruby(release)
-BuildRequires: rubygems-devel 
+BuildRequires: rubygems-devel
 BuildRequires: ruby >= 1.9.2
 BuildArch: noarch
 
@@ -69,10 +69,7 @@ popd
 
 %files doc
 %doc %{gem_docdir}
-%doc %{gem_instdir}/README.rdoc
-%doc %{gem_instdir}/CHANGELOG
-%{gem_instdir}/doc/
 
 %changelog
-* Thu Aug 22 2024 Alejandro Perez <alejandro.perez.torres@gmail.com> - 5.83.1-1
+* Fri Nov 01 2024 Alejandro Perez <alejandro.perez.torres@gmail.com> - 5.86.0-1
 - Initial package

@@ -15,33 +15,19 @@ Patch:          %{url}/pull/68.patch
 
 BuildArch:      noarch
 
-BuildRequires:  python3-devel
+BuildSystem:            pyproject
+BuildOption(install):   -l jello
 
 %description
 Query, filter, and transform JSON and JSON Lines at the command line with
 Python syntax.
 
 
-%prep
-%autosetup -p1
-
-
-%generate_buildrequires
-%pyproject_buildrequires
-
-
-%build
-%pyproject_wheel
-
-
-%install
-%pyproject_install
-%pyproject_save_files -l jello
-
+%install -a
 install -t '%{buildroot}%{_mandir}/man1' -D -p -m 0644 man/*
 
 
-%check
+%check -a
 %{py3_test_envvars} ./runtests.sh
 
 

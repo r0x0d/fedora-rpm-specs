@@ -26,8 +26,6 @@ BuildRequires:  sed
 BuildRequires:  gnupg2
 
 Requires(pre):  shadow-utils
-BuildRequires:  tox
-BuildRequires:  python3dist(tox-current-env)
 
 %description
 postfix-mta-sts-resolver provides a lookup daemon and command line

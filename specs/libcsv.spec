@@ -72,11 +72,14 @@ developing applications that use libcsv.
 %autosetup -n libcsv-%{commit}
 
 
-%build
+%conf
 %if %{with autoreconf}
 autoreconf --force --install --verbose
 %endif
 %configure --disable-static
+
+
+%build
 %make_build
 
 

@@ -3,7 +3,7 @@
 
 Name:		srm-ifce
 Version:	1.24.7
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	SRM client side library
 License:	Apache-2.0
 URL:		https://dmc-docs.web.cern.ch/dmc-docs/srm-ifce.html
@@ -69,6 +69,9 @@ the srm-ifce.
 %{_pkgdocdir}/RELEASE-NOTES
 
 %changelog
+* Fri Nov 01 2024 Mihai Patrascoiu <mihai.patrascoiu@cern.ch> - 1.24.7-2
+- Rebuilt for gsoap 2.8.135 (Fedora 42)
+
 * Fri Aug 02 2024 Mihai Patrascoiu <mihai.patrascoiu@cern.ch> - 1.24.7-1
 - Upstream release 1.24.7
 

@@ -1,5 +1,5 @@
 Name:           python-lark
-Version:        1.1.9
+Version:        1.2.2
 Release:        %autorelease
 Summary:        Lark is a modern general-purpose parsing library for Python
 # License breakdown:

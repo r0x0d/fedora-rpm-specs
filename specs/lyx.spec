@@ -134,7 +134,7 @@ Summary: Lyx/MathML fonts
 # The actual license says "The author of these fonts, Basil K. Malyshev, has
 # kindly granted permission to use and modify these fonts."
 # One of the font files (wasy10) is separately licensed GPL+.
-License: Copyright only and GPL+
+License: LicenseRef-Fedora-UltraPermissive AND GPL-1.0-or-later
 Requires: fontpackages-filesystem
 Provides:  mathml-fonts = 1.0-50
 Provides:  lyx-cmex10-fonts = %{version}-%{release}

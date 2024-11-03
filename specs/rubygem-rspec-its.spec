@@ -1,26 +1,28 @@
 %global gem_name rspec-its
 
 Name: rubygem-%{gem_name}
-Version: 1.3.0
-Release: 13%{?dist}
+Version: 1.3.1
+Release: 1%{?dist}
 Summary: Provides "its" method formerly part of rspec-core
 License: MIT
 URL: https://github.com/rspec/rspec-its
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
-# Fix RSpec 3.9 compatibility.
-# https://github.com/rspec/rspec-its/pull/75
-Patch0: rubygem-rspec-its-1.3.0-Bump-to-RSpec-3.9.patch
-
+# Ruby 3.4 changes backticks to single quotes, which breaks test suite.
+# https://github.com/rspec/rspec-its/pull/96
+Patch0: rubygem-cucumber-1.3.1-Ruby-3-4-replaces-initial-backtick-by-single-quote.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
+BuildRequires: ruby
+BuildRequires: rubygem(cucumber)
+BuildRequires: rubygem(aruba)
 BuildRequires: rubygem(rspec-core)
 BuildRequires: rubygem(rspec-expectations)
-BuildRequires: rubygem(aruba)
 BuildRequires: rubygem(matrix)
 BuildArch: noarch
 
 %description
 RSpec extension gem for attribute matching.
+
 
 %package doc
 Summary: Documentation for %{name}
@@ -46,32 +48,39 @@ cp -a .%{gem_dir}/* \
 
 %check
 pushd .%{gem_instdir}
-rspec -Ilib spec
+rspec spec
+
 export RUBYOPT="-I${PWD}/lib"
-cucumber
+# Exclude the pre RSpec 3.9 test cases.
+cucumber --tags 'not @pre-3-9'
 popd
 
 
 %files
 %dir %{gem_instdir}
+%exclude %{gem_instdir}/.*
 %license %{gem_instdir}/LICENSE.txt
 %{gem_libdir}
 %exclude %{gem_cache}
-%exclude %{gem_instdir}/.*
 %{gem_spec}
 
 %files doc
 %doc %{gem_docdir}
 %doc %{gem_instdir}/Changelog.md
-%{gem_instdir}/features
-%{gem_instdir}/spec
 %{gem_instdir}/Gemfile
-%{gem_instdir}/Rakefile
-%{gem_instdir}/script
 %doc %{gem_instdir}/README.md
-%{gem_instdir}/%{gem_name}.gemspec
+%{gem_instdir}/Rakefile
+%{gem_instdir}/features
+%{gem_instdir}/rspec-its.gemspec
+%{gem_instdir}/script
+%{gem_instdir}/spec
 
 %changelog
+* Fri Nov 01 2024 Vít Ondruch <vondruch@redhat.com> - 1.3.1-1
+- Update to rspec-its 1.3.1.
+  Resolves: rhbz#2321250
+- Use single quotes in tests to fix Ruby 3.4 compatibility.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.0-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

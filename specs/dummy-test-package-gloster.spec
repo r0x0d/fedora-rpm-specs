@@ -3,7 +3,7 @@
 Name:           dummy-test-package-gloster
 
 Version:        0
-Release:        16508%{?dist}
+Release:        16528%{?dist}
 Summary:        Dummy Test Package called Gloster
 # Automatically converted from old format: CC0 - review is highly recommended.
 License:        CC0-1.0
@@ -33,6 +33,66 @@ cp -p uuid %{buildroot}%{_datadir}/%{name}
 %{_datadir}/%{name}
 
 %changelog
+* Sat Nov 02 2024 packagerbot <admin@fedoraproject.org> - 0-16528
+- rebuilt
+
+* Sat Nov 02 2024 packagerbot <admin@fedoraproject.org> - 0-16527
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16526
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16525
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16524
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16523
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16522
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16521
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16520
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16519
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16518
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16517
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16516
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16515
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16514
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16513
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16512
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16511
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16510
+- rebuilt
+
+* Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16509
+- rebuilt
+
 * Fri Nov 01 2024 packagerbot <admin@fedoraproject.org> - 0-16508
 - rebuilt
 

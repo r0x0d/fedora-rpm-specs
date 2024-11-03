@@ -3,7 +3,7 @@
 
 Summary: Terminal emulator for the X Window System
 Name: xterm
-Version: 394
+Version: 395
 Release: 1%{?dist}
 URL: https://invisible-island.net/xterm
 License: MIT AND X11 AND HPND AND CC-BY-4.0
@@ -105,6 +105,10 @@ install -m644 -p xterm.appdata.xml $RPM_BUILD_ROOT%{_datadir}/appdata
 %{_mandir}/man1/resize.1*
 
 %changelog
+* Fri Nov 01 2024 Tomas Korbar <tkorbar@redhat.com> - 395-1
+- Rebase to version 395
+- Resolves: rhbz#2321689
+
 * Thu Sep 05 2024 Tomas Korbar <tkorbar@redhat.com> - 394-1
 - Rebase to version 394
 - Resolves: rhbz#2309329

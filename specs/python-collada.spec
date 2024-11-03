@@ -1,26 +1,27 @@
 %global srcname pycollada
 
 Name:           python-collada
-Version:        0.7.2
-Release:        12%{?dist}
+Version:        0.8
+Release:        1%{?dist}
 Summary:        A python module for creating, editing and loading COLLADA
 
 # Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
 URL:            https://github.com/pycollada/pycollada
 Source0:        https://github.com/pycollada/pycollada/archive/v%{version}/%{srcname}-%{version}.tar.gz
-# Disable pypi downloads in setup.py to guarantee use of only system libs
-Patch0:         python-collada-0.4-disable_unittest_downloads.patch
 
 BuildArch:      noarch
 
 # Python 3
-BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-setuptools
+BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
+BuildRequires:  python3-pip
+BuildRequires:  python3-wheel
 # unit test requirements
-BuildRequires:  python%{python3_pkgversion}-dateutil
-BuildRequires:  python%{python3_pkgversion}-six
-BuildRequires:  python%{python3_pkgversion}-numpy
+BuildRequires:  python3-dateutil
+BuildRequires:  python3-six
+BuildRequires:  python3-numpy
+BuildRequires:  python3-pytest
 
 
 %description
@@ -54,15 +55,15 @@ as well as in-place editing.
 
 
 %build
-%py3_build
+%pyproject_wheel
 
 
 %install
-%py3_install
+%pyproject_install
 
  
 %check
-%{__python3} setup.py test
+%pytest
 
 
 %files -n python%{python3_pkgversion}-collada
@@ -72,6 +73,9 @@ as well as in-place editing.
 
 
 %changelog
+* Tue Oct 29 2024 Richard Shaw <hobbes1069@gmail.com> - 0.8-1
+- Update to 0.8.
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.7.2-12
 - convert license to SPDX
 

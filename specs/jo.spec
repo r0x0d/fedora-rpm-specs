@@ -65,8 +65,11 @@ or arrays
 %autosetup
 
 
-%build
+%conf
 %meson
+
+
+%build
 %meson_build
 
 

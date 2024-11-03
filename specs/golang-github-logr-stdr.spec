@@ -21,6 +21,9 @@ Summary:        Logr implementation against the stdlib log package
 License:        Apache-2.0
 URL:            %{gourl}
 Source:         %{gosource}
+# log used to write out k1:v1,k2:v2 and now writes k1=v1 k2=v2
+# https://github.com/go-logr/stdr/pull/29
+Patch:          stdr-fix-expected-output.diff
 
 %description %{common_description}
 
@@ -28,6 +31,7 @@ Source:         %{gosource}
 
 %prep
 %goprep
+%autopatch -p1
 
 %generate_buildrequires
 %go_generate_buildrequires

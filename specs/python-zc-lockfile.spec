@@ -1,6 +1,6 @@
 Name:           python-zc-lockfile
 Version:        3.0.post1
-Release:        8%{?dist}
+Release:        10%{?dist}
 Summary:        Basic Inter-Process Locks
 License:        ZPL-2.1
 URL:            https://pypi.io/project/zc.lockfile/
@@ -11,6 +11,7 @@ BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-zope-testing
+BuildRequires:  python3-zope-testrunner
 
 %global _description\
 The zc.lockfile package provides a basic portable implementation of\
@@ -38,26 +39,35 @@ database files. The database files and lock file files are separate files.
 %prep
 %setup -q -n zc.lockfile-%{version}
 
+%generate_buildrequires
+%pyproject_buildrequires -t
+
 
 %build
-%py3_build
-
+%pyproject_wheel
 
 %install
-%py3_install
-rm -f %{buildroot}%{python3_sitelib}/zc/lockfile/*.txt
+%pyproject_install
 
 %check
-%{__python3} setup.py test
+%tox
 
 %files -n python3-zc-lockfile
 %doc src/zc/lockfile/*.txt
-%{python3_sitelib}/zc.lockfile-*.egg-info
+%{python3_sitelib}/zc.lockfile-*.dist-info
 %{python3_sitelib}/zc.lockfile-*-nspkg.pth
 %{python3_sitelib}/zc/lockfile/
 %dir %{python3_sitelib}/zc/
 
 %changelog
+* Fri Nov 01 2024 Miro Hrončok <mhroncok@redhat.com> - 3.0.post1-10
+- Generate tox build dependencies in a supported way
+
+* Fri Nov 01 2024 Dan Radez <dradez@redhat.com> - 3.0.post1-9
+- fixing build to be compatible with setuptools 74.x
+- updating to pyproject macros
+- rhbz#2319741
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.post1-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

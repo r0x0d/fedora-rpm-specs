@@ -49,8 +49,11 @@ Provides:       libdivide-static = %{version}-%{release}
 sed -i 's/;-Werror//;/-Werror/d' CMakeLists.txt
 
 
-%build
+%conf
 %cmake
+
+
+%build
 %cmake_build
 
 

@@ -9,7 +9,7 @@
 
 # https://github.com/creack/pty
 %global goipath         github.com/creack/pty
-Version:                1.1.23
+Version:                1.1.24
 
 %gometa -L
 

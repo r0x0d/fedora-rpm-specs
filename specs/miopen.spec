@@ -71,7 +71,6 @@ BuildRequires:  fplus-devel
 BuildRequires:  frugally-deep-devel
 BuildRequires:  half-devel
 BuildRequires:  pkgconfig(libzstd)
-BuildRequires:  ninja-build
 BuildRequires:  pkgconfig(nlohmann_json)
 BuildRequires:  rocblas-devel
 BuildRequires:  rocm-cmake
@@ -180,7 +179,12 @@ LINK_JOBS=`eval "expr 1 + ${MEM_GB} / ${LINK_MEM}"`
 for gpu in %{rocm_gpu_list}
 do
     module load rocm/$gpu
-    %cmake %rocm_cmake_options \
+    %cmake -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
+	   -DROCM_SYMLINK_LIBS=OFF \
+	   -DHIP_PLATFORM=amd \
+	   -DAMDGPU_TARGETS=$ROCM_GPUS \
+	   -DCMAKE_INSTALL_LIBDIR=$ROCM_LIB \
+	   -DCMAKE_INSTALL_BINDIR=$ROCM_BIN \
           -DBUILD_TESTING=%{build_test} \
           -DCMAKE_BUILD_TYPE=%{build_type} \
 	  -DCMAKE_SKIP_RPATH=ON \

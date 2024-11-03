@@ -121,7 +121,7 @@ libinstpatch.
 find examples -type f -name '*.py' -print -delete
 
 
-%build
+%conf
 # We cannot reliably build gtkdoc documentation at the same time as the
 # library. It appears that gtkdoc-scangobj attempts to link the library before
 # it is built.
@@ -138,12 +138,14 @@ find examples -type f -name '*.py' -print -delete
 #
 # See: 1.1.6: build with GTKDOC_ENABLED=ON fails
 #      https://github.com/swami/libinstpatch/issues/65
-
 %cmake \
     -DGTKDOC_ENABLED:BOOL=OFF \
     -DINTROSPECTION_ENABLED:BOOL=\
 %{?with_introspection:ON}%{!?with_introspection:OFF} \
     -GNinja
+
+
+%build
 %cmake_build
 
 # Enable the GTK docs and build again.

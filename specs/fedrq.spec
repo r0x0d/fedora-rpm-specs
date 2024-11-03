@@ -7,7 +7,7 @@
 %bcond libdnf5 %[0%{?fedora} >= 38]
 
 Name:           fedrq
-Version:        1.3.0
+Version:        1.4.0
 Release:        1%{?dist}
 Summary:        A tool to query the Fedora and EPEL repositories
 
@@ -81,7 +81,11 @@ install -Dpm 0644 fedrq.fish %{buildroot}%{fish_completions_dir}/fedrq.fish
 %check
 bash -x ./tests/test_data/build.sh
 
-FEDRQ_BACKEND=dnf %pytest -v -m "not no_rpm_mock"
+# Use python3 -m to ensure the current directory is part of sys.path so the
+# tests can import from its own package.
+
+FEDRQ_BACKEND=dnf %{py3_test_envvars} \
+    %{python3} -m pytest -v -m "not no_rpm_mock"
 
 %if %{with libdnf5}
 # Some tests are failing only in mock and only with Python 3.12
@@ -93,7 +97,8 @@ FEDRQ_BACKEND=dnf %pytest -v -m "not no_rpm_mock"
     and not test_baseurl_repog
 }
 %endif
-FEDRQ_BACKEND=libdnf5 %pytest -v -m "not no_rpm_mock" %{?skips:-k '%{skips}'}
+FEDRQ_BACKEND=libdnf5 %{py3_test_envvars} \
+    %{python3} -m pytest -v -m "not no_rpm_mock" %{?skips:-k '%{skips}'}
 %endif
 
 
@@ -109,6 +114,9 @@ FEDRQ_BACKEND=libdnf5 %pytest -v -m "not no_rpm_mock" %{?skips:-k '%{skips}'}
 
 
 %changelog
+* Fri Nov 01 2024 Maxwell G <maxwell@gtmx.me> - 1.4.0-1
+- Update to 1.4.0.
+
 * Tue Aug 27 2024 Maxwell G <maxwell@gtmx.me> - 1.3.0-1
 - Update to 1.3.0.
 

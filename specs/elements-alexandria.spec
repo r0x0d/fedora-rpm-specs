@@ -1,7 +1,7 @@
 Summary:        A lightweight C++ utility library
 Name:           elements-alexandria
 Version:        2.31.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 # Automatically converted from old format: LGPLv3+ - review is highly recommended.
 License:        LGPL-3.0-or-later
 URL:            https://github.com/astrorama/Alexandria
@@ -10,10 +10,10 @@ Source0:        https://github.com/astrorama/Alexandria/archive/%{version}/%{nam
 # It is downloaded from:
 # https://upload.cppreference.com/w/File:cppreference-doxygen-web.tag.xml
 Source1:        cppreference-doxygen-web.tag.xml
-Patch0:         0000-Use-Elements-6.3.1.patch
+Patch0:         0000-Use-Elements-6.3.2.patch
 Patch1:         0001-Clear-Python-error.patch
 
-%global elements_version 6.3.1
+%global elements_version 6.3.2
 
 BuildRequires: CCfits-devel
 BuildRequires: boost-devel >= 1.53
@@ -194,6 +194,9 @@ make test -C "%{_vpath_builddir}"
 %{docdir}
 
 %changelog
+* Fri Nov 01 2024 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> - 2.31.2-5
+- Rebuild for elements 6.3.2
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 2.31.2-4
 - convert license to SPDX
 

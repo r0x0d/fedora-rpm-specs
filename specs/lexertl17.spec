@@ -54,8 +54,11 @@ find . -type f -exec file '{}' '+' |
   xargs -r dos2unix --keepdate
 
 
-%build
+%conf
 %cmake -DBUILD_TESTING:BOOL=ON -DBUILD_EXAMPLES:BOOL=ON
+
+
+%build
 %cmake_build
 
 # Make a copy of the examples directory without CMakeLists.txt files, which are

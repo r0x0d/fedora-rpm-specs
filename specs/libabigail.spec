@@ -5,8 +5,8 @@
 %global tarball_name %{name}-%{version}
 
 Name: libabigail
-Version: 2.5
-Release: 4%{?dist}
+Version: 2.6
+Release: 1%{?dist}
 Summary: Set of ABI analysis tools
 
 License: Apache-2.0 WITH LLVM-exception
@@ -20,6 +20,7 @@ BuildRequires: gcc-c++
 BuildRequires: libtool
 BuildRequires: elfutils-devel
 BuildRequires: libxml2-devel
+BuildRequires: xxhash-devel
 BuildRequires: doxygen
 BuildRequires: python3-sphinx
 BuildRequires: texinfo
@@ -143,8 +144,8 @@ time make %{?_smp_mflags} check-self-compare ENABLE_SLOW_TEST=yes || (cat tests/
 %if %{with abidb}
 %{_bindir}/abidb
 %endif
-%{_libdir}/libabigail.so.4
-%{_libdir}/libabigail.so.4.0.0
+%{_libdir}/libabigail.so.5
+%{_libdir}/libabigail.so.5.0.0
 %{_libdir}/libabigail/default.abignore
 %doc README AUTHORS ChangeLog
 %license LICENSE.txt license-change-2020.txt
@@ -168,6 +169,11 @@ time make %{?_smp_mflags} check-self-compare ENABLE_SLOW_TEST=yes || (cat tests/
 %endif
 
 %changelog
+* Fri Nov 1 2024 Dodji Seketeli <dodji@redhat.com> - 2.6-1
+- Update to upstream 2.6 tarball
+- Add xxhash-devel as BuildRequires
+- Update library to libabigail.so.5.0.0
+
 * Fri Jul 26 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 2.5-4
 - Add runtime dependencies of abidb
 - Disable abidb on RHEL

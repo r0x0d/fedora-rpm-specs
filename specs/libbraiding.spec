@@ -36,7 +36,7 @@ developing applications that use libbraiding.
 %autosetup
 
 
-%build
+%conf
 # Upstream does not generate the configure script
 autoreconf --force --install --verbose
 
@@ -45,6 +45,8 @@ autoreconf --force --install --verbose
 # Work around libtool reordering -Wl,--as-needed after all the libraries.
 sed -i 's|CC=.g..|& -Wl,--as-needed|' libtool
 
+
+%build
 %make_build
 
 

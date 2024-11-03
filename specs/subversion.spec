@@ -59,8 +59,8 @@
 
 Summary: A Modern Concurrent Version Control System
 Name: subversion
-Version: 1.14.3
-Release: 11%{?dist}
+Version: 1.14.4
+Release: 1%{?dist}
 License: Apache-2.0
 URL: https://subversion.apache.org/
 Source0: https://downloads.apache.org/subversion/subversion-%{version}.tar.bz2
@@ -77,10 +77,9 @@ Patch3: subversion-1.14.2-soversion.patch
 Patch4: subversion-1.8.0-rubybind.patch
 Patch5: subversion-1.8.5-swigplWall.patch
 Patch6: subversion-1.14.1-testnomagic.patch
-Patch7: subversion-ruby-c99.patch
-Patch8: subversion-1.14.2-modsyms.patch
+Patch7: subversion-1.14.2-modsyms.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=2255746
-Patch9: subversion-1.14.3-zlib-ng.patch
+Patch8: subversion-1.14.3-zlib-ng.patch
 BuildRequires: make
 BuildRequires: autoconf, libtool, texinfo, which, gcc, gcc-c++
 BuildRequires: swig >= 1.3.24, gettext
@@ -243,9 +242,8 @@ This package includes supplementary tools for use with Subversion.
 %patch -P4 -p1 -b .rubybind
 %patch -P5 -p1 -b .swigplWall
 %patch -P6 -p1 -b .testnomagic
-%patch -P7 -p1
-%patch -P8 -p1 -b .modsyms
-%patch -P9 -p1 -b .zlib
+%patch -P7 -p1 -b .modsyms
+%patch -P8 -p1 -b .zlib
 
 :
 : === Building:
@@ -591,6 +589,10 @@ make check-javahl
 %endif
 
 %changelog
+* Fri Nov 01 2024 Tomas Korbar <tkorbar@redhat.com> - 1.14.4-1
+- Rebase to version 1.14.4
+- Resolves: rhbz#2317222
+
 * Mon Oct 07 2024 Tomas Korbar <tkorbar@redhat.com> - 1.14.3-11
 - Rebuild for utf8proc SONAME bump
 

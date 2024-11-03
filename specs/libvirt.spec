@@ -19,7 +19,7 @@
 %define arches_x86              %{ix86} x86_64
 
 %define arches_systemtap_64bit  %{arches_64bit}
-%define arches_dmidecode        %{arches_x86}
+%define arches_dmidecode        %{arches_x86} aarch64 riscv64
 %define arches_xen              %{arches_x86} aarch64
 %if 0%{?fedora}
     %define arches_xen          x86_64 aarch64
@@ -288,7 +288,7 @@
 
 Summary: Library providing a simple virtualization API
 Name: libvirt
-Version: 10.8.0
+Version: 10.9.0
 Release: 1%{?dist}
 License: GPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND OFL-1.1
 URL: https://libvirt.org/
@@ -297,8 +297,6 @@ URL: https://libvirt.org/
     %define mainturl stable_updates/
 %endif
 Source: https://download.libvirt.org/%{?mainturl}libvirt-%{version}.tar.xz
-
-Patch0001: 0001-tests-avoid-security_disable-deprecation-warning.patch
 
 Requires: libvirt-daemon = %{version}-%{release}
 Requires: libvirt-daemon-config-network = %{version}-%{release}
@@ -995,7 +993,6 @@ Requires: libvirt-daemon-driver-libxl = %{version}-%{release}
 Requires: libvirt-daemon-driver-interface = %{version}-%{release}
 Requires: libvirt-daemon-driver-network = %{version}-%{release}
 Requires: libvirt-daemon-driver-nodedev = %{version}-%{release}
-Requires: libvirt-daemon-driver-nwfilter = %{version}-%{release}
 Requires: libvirt-daemon-driver-secret = %{version}-%{release}
 Requires: libvirt-daemon-driver-storage = %{version}-%{release}
 Requires: xen
@@ -2620,8 +2617,10 @@ exit 0
 %{mingw64_mandir}/man7/virkey*.7*
 %endif
 
-
 %changelog
+* Fri Nov  1 2024 Daniel P. Berrangé <berrange@redhat.com> - 10.9.0-1
+- Update to version 10.9.0
+
 * Tue Oct 01 2024 Cole Robinson <crobinso@redhat.com> - 10.8.0-1
 - Update to version 10.8.0
 

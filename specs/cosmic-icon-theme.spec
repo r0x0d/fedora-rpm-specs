@@ -1,11 +1,14 @@
+# Generated using the scripts at https://pagure.io/fedora-cosmic/cosmic-packaging/blob/main/f/scripts
 
-%global commit 341c84467fd863f0319cadf49b3d4bac1bf3029a
-%global shortcommit %{sub %{commit} 1 7}
-%global commitdatestring 2024-09-09 19:01:31 +0200
-%global commitdate 20240909
+# While our version corresponds to an upstream tag, we still need to define
+# these macros in order to set the VERGEN_GIT_SHA and VERGEN_GIT_COMMIT_DATE
+# environment variables in multiple sections of the spec file.
+%global commit 3fdc2175c145e00d798f98e81d5c4d493f0a2a8c
+%global commitdatestring 2024-10-02 15:51:55 -0600
+%global cosmic_minver 1.0.0~alpha.3
 
 Name:           cosmic-icon-theme
-Version:        1.0.0~alpha.2
+Version:        1.0.0~alpha.3
 Release:        %autorelease
 Summary:        Icon theme for the COSMIC Desktop Environment
 
@@ -13,7 +16,7 @@ License:        CC-BY-SA-4.0
 
 URL:            https://github.com/pop-os/cosmic-icons
 
-Source0:        https://github.com/pop-os/cosmic-icons/archive/%{commit}/cosmic-icons-%{shortcommit}.tar.gz
+Source0:        https://github.com/pop-os/cosmic-icons/archive/epoch-%{version_no_tilde}/cosmic-icons-%{version_no_tilde}.tar.gz
 
 BuildArch:      noarch
 
@@ -31,7 +34,7 @@ Provides:  cosmic-icons = %{version}-%{release}
 %description %{_description}
 
 %prep
-%autosetup -n cosmic-icons-%{commit}
+%autosetup -n cosmic-icons-epoch-%{version_no_tilde}
 
 %build
 

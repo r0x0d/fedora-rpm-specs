@@ -54,7 +54,7 @@
 Summary: The Visualization Toolkit - A high level 3D visualization library
 Name: vtk
 Version: 9.2.6
-Release: 19%{?dist}
+Release: 20%{?dist}
 License: BSD-3-Clause
 Source0: https://www.vtk.org/files/release/9.2/VTK-%{version}.tar.gz
 Source1: https://www.vtk.org/files/release/9.2/VTKData-%{version}.tar.gz
@@ -363,6 +363,9 @@ NOTE: The version in this package has been compiled with mpich support.
 %package mpich-devel
 Summary: VTK header files for building C++ code with mpich
 Requires: %{name}-mpich%{?_isa} = %{version}-%{release}
+%if %{with java}
+Requires: %{name}-mpich-java%{?_isa} = %{version}-%{release}
+%endif
 Requires: python%{python3_pkgversion}-%{name}-mpich%{?_isa} = %{version}-%{release}
 Requires: mpich-devel
 Requires: hdf5-mpich-devel%{?_isa}
@@ -433,6 +436,9 @@ NOTE: The version in this package has been compiled with openmpi support.
 %package openmpi-devel
 Summary: VTK header files for building C++ code with openmpi
 Requires: %{name}-openmpi%{?_isa} = %{version}-%{release}
+%if %{with java}
+Requires: %{name}-openmpi-java%{?_isa} = %{version}-%{release}
+%endif
 Requires: python%{python3_pkgversion}-%{name}-openmpi%{?_isa} = %{version}-%{release}
 Requires: openmpi-devel
 Requires: hdf5-openmpi-devel%{?_isa}
@@ -853,6 +859,9 @@ cat xorg.log
 
 
 %changelog
+* Thu Oct 31 2024 Christoph Junghans <junghans@votca.org> - 9.2.6-20
+- Add missing dep to mpi-devel packages
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 9.2.6-19
 - Rebuild for hdf5 1.14.5
 

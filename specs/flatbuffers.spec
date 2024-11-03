@@ -226,7 +226,7 @@ pushd python >/dev/null
 popd >/dev/null
 
 
-%build
+%conf
 # Needed for correct Python wheel version
 export VERSION='%{version}'
 %cmake -GNinja \
@@ -244,6 +244,18 @@ export VERSION='%{version}'
     -DFLATBUFFERS_BUILD_SHAREDLIB=ON \
     -DFLATBUFFERS_BUILD_FLATLIB=OFF \
     -DFLATBUFFERS_BUILD_FLATC=ON
+
+%if %{with mingw}
+%mingw_cmake \
+    -DFLATBUFFERS_BUILD_TESTS:BOOL=OFF \
+    -DFLATBUFFERS_BUILD_GRPCTEST:BOOL=OFF \
+    -DFLATBUFFERS_BUILD_SHAREDLIB=ON \
+    -DFLATBUFFERS_BUILD_FLATLIB=OFF \
+    -DFLATBUFFERS_BUILD_FLATC=ON
+%endif
+
+
+%build
 %cmake_build
 
 pushd python
@@ -258,12 +270,6 @@ popd
 %endif
 
 %if %{with mingw}
-%mingw_cmake \
-    -DFLATBUFFERS_BUILD_TESTS:BOOL=OFF \
-    -DFLATBUFFERS_BUILD_GRPCTEST:BOOL=OFF \
-    -DFLATBUFFERS_BUILD_SHAREDLIB=ON \
-    -DFLATBUFFERS_BUILD_FLATLIB=OFF \
-    -DFLATBUFFERS_BUILD_FLATC=ON
 %mingw_make_build
 
 pushd python

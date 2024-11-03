@@ -49,6 +49,8 @@ Patch14:    0014-system-python.patch
 Patch15:    0015-fix-cxx20-template-constructor.patch
 # Fix std::variant error when DISABLE_ABSEIL=ON
 Patch16:    0016-std-variant-fix.patch
+# Fix missing includes
+Patch17:    0017-Fix-missing-cstring-include.patch
 
 # s390x:   https://bugzilla.redhat.com/show_bug.cgi?id=2235326
 # armv7hl: https://bugzilla.redhat.com/show_bug.cgi?id=2235328

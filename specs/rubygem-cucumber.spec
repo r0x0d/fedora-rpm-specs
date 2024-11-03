@@ -4,7 +4,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 7.1.0
-Release: 9%{?dist}
+Release: 10%{?dist}
 Summary: Tool to execute plain-text documents as functional tests
 License: MIT
 URL: https://cucumber.io/
@@ -15,6 +15,10 @@ Source1: %{name}-%{version}-spec.txz
 # git clone --no-checkout https://github.com/cucumber/cucumber-ruby.git
 # git -C cucumber-ruby archive -v -o rubygem-cucumber-7.1.0-features.txz v7.1.0 features/
 Source2: %{name}-%{version}-features.txz
+# Fix Ruby 3.4 compatibility due to `Hash.new` now accepting `:capacity`
+# keyword option.
+# https://github.com/cucumber/cucumber-ruby/pull/1757/commits/87a375822f0f1d76fa464423f9743e36c5036713
+Patch0: rubygem-cucumber-9.2.0-Pass-hash-through-as-explicit-hash-to-avoid-unknown-keyword.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
@@ -50,6 +54,8 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version} -b 1 -b 2
+
+%patch 0 -p1
 
 # The rubygem-cucumber-html-formatter is currently not packaged in Fedora.
 %gemspec_remove_dep -g cucumber-html-formatter
@@ -129,6 +135,10 @@ popd
 %doc %{gem_instdir}/CHANGELOG.md
 
 %changelog
+* Fri Nov 01 2024 Vít Ondruch <vondruch@redhat.com> - 7.1.0-10
+- Fix Ruby 3.4 compatibility due to `Hash.new` now accepting `:capacity`
+  keyword option.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.1.0-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

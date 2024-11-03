@@ -2,7 +2,7 @@
 
 Name:           bpftrace
 Version:        0.21.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        High-level tracing language for Linux eBPF
 License:        Apache-2.0
 
@@ -29,8 +29,9 @@ BuildRequires:  libbpf-devel
 BuildRequires:  libbpf-static
 BuildRequires:  binutils-devel
 BuildRequires:  cereal-devel
+BuildRequires:  lldb-devel
 %if ! 0%{?rhel}
-BuildRequires:  libdwarf-devel
+BuildRequires:  libpcap-devel
 %endif
 BuildRequires:  rubygem-asciidoctor
 
@@ -93,6 +94,10 @@ find %{buildroot}%{_datadir}/%{name}/tools -type f -exec \
 
 
 %changelog
+* Fri Nov 01 2024 Augusto Caringi <acaringi@redhat.com> - 0.21.2-2
+- Replaced libdwarf-devel by lldb-devel (BuildRequires)
+- Added libpcap-devel (BuildRequires)
+
 * Tue Oct 01 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 0.21.2-1
 - Rebased to version 0.21.2
 - Allow building with LLVM 19

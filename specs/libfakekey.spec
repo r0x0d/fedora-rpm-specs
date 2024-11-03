@@ -74,12 +74,15 @@ PDF_HYPERLINKS)[[:blank:]]*=[[:blank:]]*)NO[[:blank:]]*/\1YES/" \
 %endif
 
 
-%build
+%conf
 # The tarball generated from the git tag has no configure script, so this is
 # mandatory. See autogen.sh (which, however, we do not use because we need to
 # use the %%configure macro).
 autoreconf -f -i -v
 %configure --disable-static %{?with_doc:--enable-doxygen-docs}
+
+
+%build
 %make_build
 %if %{with doc}
 %make_build -C doc/latex

@@ -1,0 +1,50 @@
+Name:		xrootd-s3-http
+Version:	0.1.7
+Release:	2%{?dist}
+Summary:	S3/HTTP filesystem plugins for XRootD
+
+License:	Apache-2.0
+URL:		https://github.com/PelicanPlatform/%{name}
+Source0:	%{url}/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
+#		https://github.com/PelicanPlatform/xrootd-s3-http/pull/49
+Patch0:		0001-Fix-some-cmake-glitches.patch
+#		https://github.com/PelicanPlatform/xrootd-s3-http/pull/53
+Patch1:		0001-Fix-linking-error-on-32-bit-architectures.patch
+
+BuildRequires:	cmake
+BuildRequires:	gcc-c++
+BuildRequires:	make
+BuildRequires:	xrootd-server-devel
+BuildRequires:	curl-devel
+BuildRequires:	openssl-devel
+BuildRequires:	tinyxml2-devel
+Requires:	xrootd-server
+
+%description
+These filesystem plugins for XRootD allow you to serve objects from S3
+and HTTP backends through an XRootD server.
+
+%prep
+%setup -q
+%patch -P0 -p1
+%patch -P1 -p1
+
+%build
+%cmake -DXROOTD_EXTERNAL_TINYXML2=BOOL:ON
+%cmake_build
+
+%install
+%cmake_install
+
+%files
+%{_libdir}/libXrdHTTPServer-5.so
+%{_libdir}/libXrdS3-5.so
+%doc README.md
+%license LICENSE
+
+%changelog
+* Fri Nov 01 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 0.1.7-2
+- Fix linking error on 32 bit architectures
+
+* Thu Oct 24 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 0.1.7-1
+- Initial package

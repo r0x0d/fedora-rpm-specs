@@ -2,59 +2,60 @@
 
 Name:           python-%{pypi_name}
 Version:        2.0.7
-Release:        21%{?dist}
+Release:        22%{?dist}
 Summary:        Filters to enhance web typography, with support for Django & Jinja templates
 
 # typogrify/packages/titlecase/__init__.py is MIT
 License:        BSD-3-Clause AND MIT
 URL:            https://github.com/mintchaos/typogrify
-Source0:        %{pypi_source}
+Source:         %{pypi_source %{pypi_name}}
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
-BuildRequires:  python3dist(setuptools)
 
-%description
+%global _description %{expand:
 Typogrify provides a set of custom filters that automatically apply various
 transformations to plain text in order to yield typographically-improved HTML.
 While often used in conjunction with Jinja_ and Django_ template systems, the
-filters can be used in any environment.
+filters can be used in any environment.}
 
+%description %_description
 
 %package -n     python3-%{pypi_name}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{pypi_name}}
 
-Requires:       python3dist(smartypants) >= 1.8.3
-%description -n python3-%{pypi_name}
-Typogrify provides a set of custom filters that automatically apply various
-transformations to plain text in order to yield typographically-improved HTML.
-While often used in conjunction with Jinja_ and Django_ template systems, the
-filters can be used in any environment.
+%description -n python3-%{pypi_name} %_description
 
 
 %prep
 %autosetup -n %{pypi_name}-%{version}
-# Remove bundled egg-info
-rm -rf %{pypi_name}.egg-info
 # remove shebang line from the python scripts
 for lib in $(find -type f -name '*.py'); do
  sed -i.python -e '1{\@^#!@d}' $lib
 done
 
+%generate_buildrequires
+%pyproject_buildrequires
+
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l %{pypi_name}
 
-%files -n python3-%{pypi_name}
-%license LICENSE.txt
+%check
+# importing typogrify.templatetags.jinja_filters needs jinja2 installed
+# importing typogrify.templatetags.typogrify_tags needs django installed
+%pyproject_check_import -e typogrify.templatetags.jinja_filters -e typogrify.templatetags.typogrify_tags
+
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %doc README.rst
-%{python3_sitelib}/%{pypi_name}
-%{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Wed Oct 23 2024 Carl George <carlwgeorge@fedoraproject.org> - 2.0.7-22
+- Port to pyproject macros
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.7-21
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

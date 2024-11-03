@@ -47,7 +47,6 @@ Source0:        %{url}/archive/rocm-%{rocm_version}.tar.gz#/%{upstreamname}-%{ro
 Patch0:         0001-rocsparse-offload-compress.patch
 
 BuildRequires:  cmake
-BuildRequires:  ninja-build
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
 BuildRequires:  rocm-hip-devel
@@ -101,7 +100,7 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 for gpu in %{rocm_gpu_list}
 do
     module load rocm/$gpu
-    %cmake -G Ninja \
+    %cmake \
            -DCMAKE_BUILD_TYPE=%build_type \
 	   -DCMAKE_SKIP_RPATH=ON \
 	   -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \

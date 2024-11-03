@@ -5,7 +5,7 @@
 Name:           python-%{modname}
 Summary:        Unicode-aware Pure Python Expect-like module
 Version:        4.9.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 
 # All the files have ISC license except the
 # following two that have BSD license:
@@ -44,8 +44,6 @@ pty module.
 %package -n python3-%{modname}
 Summary:        %{summary}
 %{?python_provide:%python_provide python3-%{modname}}
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
 BuildRequires:  python3-pytest
 BuildRequires:  python3-ptyprocess
 BuildRequires:  zsh
@@ -70,11 +68,14 @@ pty module.
 %prep
 %autosetup -n %{modname}-%{version} -p 1
 
+%generate_buildrequires
+%pyproject_buildrequires -t
+
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
 rm -rf %{buildroot}%{python3_sitelib}/pexpect/tests
 
 %if %{with check}
@@ -88,18 +89,22 @@ export PYTHONIOENCODING=UTF-8
 echo "set enable-bracketed-paste off" > .inputrc
 export INPUTRC=$PWD/.inputrc
 
-%{__python3} ./tools/display-sighandlers.py
-%{__python3} ./tools/display-terminalinfo.py
-CI=true py.test-3 --verbose
+%{python3} ./tools/display-sighandlers.py
+%{python3} ./tools/display-terminalinfo.py
+export CI=true
+%pytest
 %endif
 
 %files -n python3-%{modname}
 %license LICENSE
 %doc doc examples
 %{python3_sitelib}/%{modname}/
-%{python3_sitelib}/%{modname}-*.egg-info
+%{python3_sitelib}/%{modname}-*.dist-info
 
 %changelog
+* Fri Nov 01 2024 Dan Radez <dradez@redhat.com> - 4.9.0-7
+- updates for compat with setuptools 74.x rhbz#2319691
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.9.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

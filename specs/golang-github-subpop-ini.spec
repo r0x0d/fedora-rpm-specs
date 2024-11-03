@@ -46,7 +46,7 @@ Source:         %{gosource}
 %if %{without bootstrap}
 %if %{with check}
 %check
-%gocheck -r encode_test.go
+GO_TEST_FLAGS='-skip=^TestEncodeProperty$' %gocheck
 %endif
 %endif
 

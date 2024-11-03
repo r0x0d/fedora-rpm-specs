@@ -8,7 +8,7 @@
 %bcond tests 1
 
 Name:           python-%{modname}
-Version:        3.0.4
+Version:        3.0.6
 Release:        %autorelease
 Summary:        Comprehensive WSGI web application library
 

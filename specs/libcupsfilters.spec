@@ -1,22 +1,22 @@
 %global _hardened_build 1
 
-%global upstream_version 2.1b1
+%global upstream_version 2.1.0
 
 Name: libcupsfilters
 Epoch: 1
-Version: 2.1~b1
-Release: 3%{?dist}
+Version: 2.1.0
+Release: 1%{?dist}
 Summary: Library for developing printing filters
 # the CUPS exception text is the same as LLVM exception, so using that name with
 # agreement from legal team
 # https://lists.fedoraproject.org/archives/list/legal@lists.fedoraproject.org/message/A7GFSD6M3GYGSI32L2FC5KB22DUAEQI3/
 License: Apache-2.0 WITH LLVM-exception
 URL: https://github.com/OpenPrinting/libcupsfilters
-Source0: %{URL}/releases/download/%{upstream_version}/%{name}-%{upstream_version}.tar.gz
+Source0: %{URL}/releases/download/%{version}/%{name}-%{version}.tar.gz
 
 
 # Patches
-Patch1: 0001-cfgetprinterattributes5-validate-response-attributes.patch
+
 
 # for generating configure and Makefile scripts in autogen.h
 BuildRequires: autoconf
@@ -193,6 +193,9 @@ rm -f %{buildroot}%{_pkgdocdir}/{LICENSE,COPYING,NOTICE}
 
 
 %changelog
+* Fri Nov 01 2024 Zdenek Dohnal <zdohnal@redhat.com> - 1:2.1.0-1
+- libcupsfilters-2.1.0 is available (fedora#2319558)
+
 * Thu Sep 26 2024 Justin M. Forbes <jforbes@fedoraproject.org> - 1:2.1~b1-3
 - Fix for CVE-2024-47076
 

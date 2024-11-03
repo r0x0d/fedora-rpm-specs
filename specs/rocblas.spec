@@ -67,7 +67,6 @@ Patch4:         0001-offload-compress-option.patch
 
 BuildRequires:  cmake
 BuildRequires:  git
-BuildRequires:  ninja-build
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
 BuildRequires:  rocm-hip-devel
@@ -135,7 +134,7 @@ export HIPCC_LINK_FLAGS_APPEND=-fuse-ld=lld
 for gpu in %{rocm_gpu_list}
 do
     module load rocm/$gpu
-    %cmake -G Ninja \
+    %cmake \
            -DCMAKE_BUILD_TYPE=%{build_type} \
 	   -DCMAKE_SKIP_RPATH=ON \
 	   -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \

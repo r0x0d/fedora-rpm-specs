@@ -12,11 +12,6 @@ Source0:        https://github.com/ionelmc/python-%{srcname}/archive/v%{version}
 
 BuildRequires:  gcc
 BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-setuptools
-BuildRequires:  python%{python3_pkgversion}-setuptools_scm
-BuildRequires:  python%{python3_pkgversion}-tox-current-env
-BuildRequires:  python%{python3_pkgversion}-wheel
-BuildRequires:  python%{python3_pkgversion}-pip
 
 %description
 A fast and thorough lazy object proxy.
@@ -31,9 +26,11 @@ A fast and thorough lazy object proxy.
 
 %prep
 %autosetup -n python-%{srcname}-%{version} -p0
+# unavailable test deps, tox passes without them
+sed -Ei '/\b(objproxies|hunter)\b/d' tox.ini
 
-#%%generate_buildrequires
-#%%pyproject_buildrequires -t
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %build
 %pyproject_wheel

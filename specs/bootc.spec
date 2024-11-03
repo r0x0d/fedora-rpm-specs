@@ -35,6 +35,7 @@ BuildRequires: systemd
 # Backing storage tooling https://github.com/containers/composefs/issues/125
 Requires: composefs
 # For OS updates
+Requires: ostree
 Requires: skopeo
 Requires: podman
 # For bootloader updates

@@ -8,7 +8,7 @@ projects, ensuring you have the right stack everywhere.}
 
 Name:           poetry
 Summary:        Python dependency management and packaging made easy
-Version:        1.8.3
+Version:        1.8.4
 Release:        %autorelease
 
 # SPDX

@@ -288,8 +288,11 @@ sed -r -i \
 rm -rf hdrhtml/*
 
 
-%build
+%conf
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DENABLE_UNIT_TEST:BOOL=ON -GNinja
+
+
+%build
 %cmake_build
 
 

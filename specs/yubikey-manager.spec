@@ -15,20 +15,14 @@ Source1:        %{name}.rpmlintrc
 
 BuildArch:      noarch
 BuildRequires:  swig pcsc-lite-devel ykpers pyproject-rpm-macros
-BuildRequires:  python3-devel tox
-BuildRequires:  %{py3_dist six pyscard pyusb click cryptography pyopenssl}
-BuildRequires:  %{py3_dist tox-current-env poetry-core setuptools}
+BuildRequires:  python3-devel
 BuildRequires:  %{py3_dist makefun pytest}
-BuildRequires:  %{py3_dist fido2} >= 0.9.0
 
 Requires:       python3-%{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 Requires:       u2f-hidraw-policy
 
 %description
 Command line tool for configuring a YubiKey.
-
-%generate_buildrequires
-%pyproject_buildrequires
 
 %package -n python3-%{name}
 Summary:        Python library for configuring a YubiKey
@@ -43,6 +37,9 @@ Python library for configuring a YubiKey.
 # Do not upper-bound the version of keyring, since its major version increases
 # frequently, usually without significant incompatibilities.
 sed -r -i 's/(keyring = ">=[^"]+), <[^"]+"/\1"/' pyproject.toml
+
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %build
 %pyproject_wheel

@@ -76,8 +76,11 @@ PDF_HYPERLINKS)[[:blank:]]*=[[:blank:]]*)NO[[:blank:]]*/\1YES/" \
 %endif
 
 
-%build
+%conf
 %{qmake_qt6} VERSION='%{version}'
+
+
+%build
 %make_build
 
 %if %{with doc_pdf}

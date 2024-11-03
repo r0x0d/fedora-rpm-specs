@@ -1,3 +1,5 @@
+%bcond autoreconf 1
+
 Name:           libIDL
 Summary:        Library for parsing IDL (Interface Definition Language)
 Version:        0.8.14
@@ -74,6 +76,13 @@ Patch:          libIDL-0.8.14-old-libIDL-config-script.patch
 
 BuildRequires:  gcc
 BuildRequires:  make
+
+%if %{with autoreconf}
+BuildRequires:  autoconf
+BuildRequires:  automake
+BuildRequires:  libtool
+%endif
+
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  flex
 BuildRequires:  bison
@@ -116,8 +125,15 @@ This page contains info pages and HTML and PDF documentation for libIDL.
 %autosetup -p1
 
 
-%build
+%conf
+%if %{with autoreconf}
+autoreconf --force --install --verbose
+%endif
+
 %configure --disable-static
+
+
+%build
 # We re-generate the info page, and also build PDF and HTML docs from the
 # texinfo source.
 rm libIDL2.info

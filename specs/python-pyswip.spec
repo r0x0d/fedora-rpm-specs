@@ -1,8 +1,8 @@
 %global srcname pyswip
 
 Name:           python-%{srcname}
-Version:        0.2.10
-Release:        18%{?dist}
+Version:        0.3.2
+Release:        1%{?dist}
 Summary:        Python-SWI-Prolog bridge
 
 License:        MIT
@@ -28,10 +28,6 @@ Pythonic interface.
 %package     -n python3-%{srcname}
 Summary:        %summary
 Requires:       swi-prolog-core
-
-# Patch for SWI-Prolog Version > 8.5.2
-# See https://github.com/yuce/pyswip/pull/133
-Patch0:        pyswip-version.patch
 
 %description -n python3-%{srcname}
 PySWIP is a Python - SWI-Prolog bridge enabling to query SWI-Prolog in your
@@ -65,6 +61,9 @@ Pythonic interface.
 
 
 %changelog
+* Fri Nov  1 2024 Christoph Karl <pampelmuse [AT] gmx [DOT] at> - 0.3.2-1
+- Update to version 0.3.2
+
 * Tue Sep 17 2024 Jerry James <loganjerry@gmail.com> - 0.2.10-18
 - Adapt to changes in the pl package in F41+
 

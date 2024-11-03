@@ -195,8 +195,11 @@ eller idéer.
 %autosetup -p1
 
 
-%build
+%conf
 %meson
+
+
+%build
 %meson_build
 
 

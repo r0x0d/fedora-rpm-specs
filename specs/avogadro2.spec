@@ -113,6 +113,7 @@ Supplements:    (%{name} = %{version}-%{release} and langpacks-%{1})\
 %lang_subpkg id Indonesian
 %lang_subpkg it Italian
 %lang_subpkg ja Japanese
+%lang_subpkg ka Georgian
 %lang_subpkg kn Kannada
 %lang_subpkg ko Korean
 %lang_subpkg ms "Malay (Malaysia)"

@@ -4,7 +4,7 @@
 Summary: Utilities for devices that use SCSI command sets
 Name:    sg3_utils
 Version: 1.48
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPL-2.0-or-later AND BSD-2-Clause
 URL:     https://sg.danny.cz/sg/sg3_utils.html
 Source0: https://sg.danny.cz/sg/p/sg3_utils-%{version}.tar.xz
@@ -18,6 +18,8 @@ Patch1: 0002-rescan-scsi-bus.sh-remove-tmp-rescan-scsi-mpath-info.patch
 # https://github.com/doug-gilbert/sg3_utils/issues/46
 # scripts/rescan-scsi-bus.sh: -r flag unmounts active root disk
 Patch2: 0003-rescan-scsi-bus.sh-fix-for-github.com-doug-gilbert-s.patch
+# https://github.com/doug-gilbert/sg3_utils/pull/47
+Patch3: udev_rules-avoid_spurious_warning_for_non-SCSI_devices.patch
 
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 BuildRequires: make
@@ -65,6 +67,12 @@ developing applications.
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
+# Fix filename references to other udev rules
+sed -i 's|55-scsi-sg3_id.rules|61-scsi-sg3_id.rules|' scripts/*.rules
+sed -i 's|58-scsi-sg3_symlink.rules|63-scsi-sg3_symlink.rules|' scripts/*.rules
+sed -i 's|59-scsi-cciss_id.rules|65-scsi-cciss_id.rules|' scripts/*.rules
+sed -i 's|59-fc-wwpn-id.rules|63-fc-wwpn-id.rules|' scripts/*.rules
+
 %make_build
 
 
@@ -80,6 +88,7 @@ install -p -m 644 %{SOURCE1} %{buildroot}%{_mandir}/man8
 # install all extra udev rules
 mkdir -p %{buildroot}%{_udevrulesdir}
 mkdir -p %{buildroot}%{_udevlibdir}
+install -p -m 644 scripts/00-scsi-sg3_config.rules %{buildroot}%{_udevrulesdir}
 install -p -m 644 scripts/40-usb-blacklist.rules %{buildroot}%{_udevrulesdir}
 # need to run after 60-persistent-storage.rules
 install -p -m 644 scripts/55-scsi-sg3_id.rules %{buildroot}%{_udevrulesdir}/61-scsi-sg3_id.rules
@@ -109,6 +118,7 @@ install -p -m 755 scripts/fc_wwpn_id %{buildroot}%{_udevlibdir}
 %{_mandir}/man8/sgp_dd.8*
 %{_mandir}/man8/%{name}.8*
 %{_mandir}/man8/%{name}_json.8*
+%{_udevrulesdir}/00-scsi-sg3_config.rules
 %{_udevrulesdir}/61-scsi-sg3_id.rules
 %{_udevrulesdir}/63-scsi-sg3_symlink.rules
 %{_udevrulesdir}/63-fc-wwpn-id.rules
@@ -126,6 +136,11 @@ install -p -m 755 scripts/fc_wwpn_id %{buildroot}%{_udevlibdir}
 
 
 %changelog
+* Fri Nov 01 2024 Tomas Bzatek <tbzatek@redhat.com> - 1.48-4
+- udev rules: avoid spurious warning for non-SCSI devices
+- Install missing 00-scsi-sg3_config.rules
+- Fix file references to other udev rules
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.48-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

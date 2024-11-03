@@ -27,8 +27,6 @@ BuildRequires:  python3dist(pytz)
 BuildRequires:  python3dist(setuptools)
 BuildRequires:  python3dist(setuptools-scm) >= 1.15
 BuildRequires:  python3dist(six)
-BuildRequires:  python3dist(tox)
-BuildRequires:  python3dist(tox-current-env)
 BuildRequires:  python3dist(wheel)
 # testing Reqs
 BuildConflicts: python3dist(pytest) = 3.7.3

@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc5.20241031git0fc810ae3ae1.47
+%define pkgrelease 0.rc5.20241101git6c52d4da1c74.48
 %define kversion 6
-%define tarfile_release 6.12-rc5-63-g0fc810ae3ae1
+%define tarfile_release 6.12-rc5-181-g6c52d4da1c74
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc5.20241031git0fc810ae3ae1.47%{?buildid}%{?dist}
+%define specrelease 0.rc5.20241101git6c52d4da1c74.48%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4144,9 +4144,13 @@ fi\
 #
 #
 %changelog
-* Thu Oct 31 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.0fc810ae3ae1.47]
+* Fri Nov 01 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.6c52d4da1c74.48]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Fri Nov 01 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.6c52d4da1c74.47]
+- redhat: configs: Drop CONFIG_MEMSTICK_REALTEK_PCI config option (Desnes Nunes)
+- Linux v6.12.0-0.rc5.6c52d4da1c74
 
 * Thu Oct 31 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.0fc810ae3ae1.46]
 - Update the RHEL_DIFFERENCES help string (Don Zickus)

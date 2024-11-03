@@ -16,18 +16,12 @@ BuildArch:      noarch
 BuildRequires:  hdparm
 BuildRequires:  hddtemp
 BuildRequires:  python3-devel
-BuildRequires:  python3-daemon
 BuildRequires:  python3-docutils
-BuildRequires:  python3-pip
 BuildRequires:  python3-pypandoc
 BuildRequires:  python3-pytest
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-tox-current-env
-BuildRequires:  python3-wheel
 BuildRequires:  systemd
 Requires:       hdparm
 Requires:       hddtemp
-Requires:       python3-daemon
 Requires:       python3-docutils
 
 %{?python_provide:%python_provide python3-%{pypi_name}}

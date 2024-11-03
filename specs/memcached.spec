@@ -11,7 +11,7 @@
 %global selinuxmoduledir	%{selinuxmodulename}-selinux-%{selinuxmodulever}
 
 Name:           memcached
-Version:        1.6.29
+Version:        1.6.32
 Release:        1%{?dist}
 Epoch:          0
 Summary:        High Performance, Distributed Memory Object Cache
@@ -174,6 +174,10 @@ fi
 %license ../%{selinuxmoduledir}/COPYING
 
 %changelog
+* Fri Nov 01 2024 Tomas Korbar <tkorbar@redhat.com> - 0:1.6.32-1
+- Update to 1.6.32
+- Resolves: rhbz#2310685
+
 * Thu Aug 01 2024 Tomas Korbar <tkorbar@redhat.com> - 0:1.6.29-1
 - Update to 1.6.29
 - Resolves: rhbz#2295606

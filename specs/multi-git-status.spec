@@ -1,10 +1,10 @@
 %global forgeurl https://github.com/fboender/multi-git-status
-Version:         2.2
+Version:         2.3
 
 %forgemeta
 
 Name:            multi-git-status
-Release:         7%{?dist}
+Release:         1%{?dist}
 Summary:         Show uncommitted, untracked and unpushed changes for multiple Git repos
 URL:             %{forgeurl}
 Source:          https://github.com/fboender/multi-git-status/archive/%{name}-%{version}.tar.gz
@@ -52,6 +52,9 @@ install -p -D -m755 mgitstatus.1 %{buildroot}%{_mandir}/man1/mgitstatus.1
 %doc %{_mandir}/man1/mgitstatus.1*
 
 %changelog
+* Fri Nov 01 2024 Vojtech Trefny <vtrefny@redhat.com> - 2.3-1
+- New version 2.3
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.2-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

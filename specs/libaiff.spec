@@ -41,9 +41,12 @@ applications that use LibAiff.
 %autosetup
 
 
-%build
+%conf
 autoreconf --force --install --verbose
 %configure
+
+
+%build
 %make_build
 
 

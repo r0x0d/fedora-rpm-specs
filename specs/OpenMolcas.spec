@@ -63,9 +63,9 @@ therefore not included in OpenMolcas.
 
 %prep
 %setup -q -n %{name}-v%{version}-%{commit}
-%patch 0 -p1 -b .fedora
-%patch 1 -p1 -b .pymodule
-%patch 2 -p1 -b .libxc7
+%patch -P0 -p1 -b .fedora
+%patch -P1 -p1 -b .pymodule
+%patch -P2 -p1 -b .libxc7
 
 # Name of OpenBLAS library to use is
 %if 0%{?fedora} >= 33

@@ -1,7 +1,7 @@
 %global	gem_name	json
 
 Name:           rubygem-%{gem_name}
-Version:        2.7.2
+Version:        2.7.5
 Release:        201%{?dist}
 
 Summary:        A JSON implementation in Ruby
@@ -13,6 +13,10 @@ Source0:        https://rubygems.org/gems/%{gem_name}-%{version}.gem
 Source1:        rubygem-%{gem_name}-%{version}-missing-files.tar.gz
 # Source1 is created by $ %%SOURCE2 v%%version
 Source2:        json-create-tarball-missing-files.sh
+# https://github.com/ruby/json/pull/668
+# For 2.7.x branch: https://github.com/ruby/json/commit/045e58d8310890c43bf48a3b9ed6062b781b52c2
+# Fix activereport test failure with json handling
+Patch0:         json-pr668-json-generate-to_json.patch
 
 
 BuildRequires:  gcc
@@ -45,8 +49,9 @@ This package contains documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version} -a 1
-mv ./%{gem_name}-%{version}/tests .
+mv ./%{gem_name}-%{version}/test .
 mv ../%{gem_name}-%{version}.gemspec .
+%patch -P0 -p1
 
 # Change cflags to honor Fedora compiler flags correctly
 find . -name extconf.rb | xargs sed -i -e 's|-O3|-O2|' -e 's|-O0|-O2|'
@@ -82,19 +87,18 @@ rm -rf \
 	%{gem_name}.gemspec \
 	Gemfile \
 	ext \
-	lib/json/ext \
 	java \
-	tests \
+	test \
 	%{nil}
 popd
 
 %check
-rm -rf .%{gem_instdir}/tests
-cp -a ./tests .%{gem_instdir}/
+rm -rf .%{gem_instdir}/test
+cp -a ./test .%{gem_instdir}/
 
 pushd .%{gem_instdir}
-ruby -Ilib:tests:tests/lib:$RPM_BUILD_ROOT%{gem_extdir_mri}:. \
-	-e "gem 'test-unit'; require 'helper' ; Dir.glob('tests/test_*.rb').sort.each {|f| require f}"
+ruby -Ilib:test:test/json:$RPM_BUILD_ROOT%{gem_extdir_mri}:. \
+	-e "gem 'test-unit'; require 'test_helper' ; Dir.glob('test/json/*_test.rb').sort.each {|f| require f}"
 popd
 
 
@@ -103,14 +107,19 @@ popd
 %dir %{gem_libdir}
 %dir %{gem_libdir}/%{gem_name}
 
+%license %{gem_instdir}/BSDL
+%license %{gem_instdir}/COPYING
+%license %{gem_instdir}/LEGAL
 %doc %{gem_instdir}/CHANGES.md
-%license %{gem_instdir}/LICENSE
 %doc %{gem_instdir}/README.md
 
 %{gem_libdir}/%{gem_name}.rb
 %{gem_libdir}/%{gem_name}/add
 %{gem_libdir}/%{gem_name}/common.rb
 %{gem_libdir}/%{gem_name}/ext.rb
+%dir	%{gem_libdir}/%{gem_name}/ext
+%dir	%{gem_libdir}/%{gem_name}/ext/generator/
+%{gem_libdir}/%{gem_name}/ext/generator/*.rb
 %{gem_libdir}/%{gem_name}/version.rb
 %{gem_libdir}/%{gem_name}/generic_object.rb
 
@@ -126,6 +135,13 @@ popd
 
 
 %changelog
+* Fri Nov 01 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.7.5-201
+- Apply upstream patch for JSON.generate behavior, restoring activesupport json
+  usage
+
+* Wed Oct 30 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.7.5-200
+- 2.7.5
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.7.2-201
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

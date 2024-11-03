@@ -12,7 +12,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 6.4.2
-Release: 3%{?dist}
+Release: 4%{?dist}
 Summary: A simple, fast, threaded, and highly concurrent HTTP 1.1 server
 # MIT: lib/puma/sd_notify.rb
 # https://github.com/puma/puma/issues/3311
@@ -44,6 +44,10 @@ Patch5: rubygem-puma-6.4.2-Renewed-test-certificates.patch
 # https://github.com/puma/puma/pull/3442/commits/40df6c5ccf76e427bc3df6209db47ccc38628a66
 # This leaves out the binary patches, which would need git.
 Patch6: rubygem-puma-6.4.2-Update-all-certs.patch
+# Fix Ruby 3.4 compatibility, where the error message does not print backtick
+# anymore.
+# https://github.com/puma/puma/pull/3333
+Patch7: rubygem-puma-3.4.2-CI-Ruby-head-changed-odd-backtick-in-error-messages-to.patch
 
 BuildRequires: openssl-devel
 BuildRequires: ruby(release)
@@ -95,6 +99,7 @@ pushd %{builddir}
 %patch 4 -p1
 %patch 5 -p1
 %patch 6 -p1
+%patch 7 -p1
 popd
 
 %if %{with ragel}
@@ -235,6 +240,9 @@ popd
 %{gem_instdir}/tools
 
 %changelog
+* Fri Nov 01 2024 Vít Ondruch <vondruch@redhat.com> - 6.4.2-4
+- Fix Ruby 3.4 test compatibility.
+
 * Fri Sep 13 2024 Vít Ondruch <vondruch@redhat.com> - 6.4.2-3
 - Fix FTBFS due to incompatibility with Minitest 5.25.0 and expired certs.
   Resolves: rhbz#2301256

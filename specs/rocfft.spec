@@ -41,7 +41,6 @@ License:        MIT
 Source0:        %{url}/archive/rocm-%{version}.tar.gz#/%{upstreamname}-rocm-%{version}.tar.gz
 
 BuildRequires:  cmake
-BuildRequires:  ninja-build
 BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  python3-sphinx
 BuildRequires:  rocm-cmake
@@ -106,7 +105,7 @@ for gpu in %{rocm_gpu_list}
 do
     module load rocm/$gpu
 
-    %cmake -G Ninja \
+    %cmake \
     -DAMDGPU_TARGETS=${ROCM_GPUS} \
     -DCMAKE_INSTALL_LIBDIR=$ROCM_LIB \
     -DCMAKE_INSTALL_BINDIR=$ROCM_BIN \

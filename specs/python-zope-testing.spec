@@ -3,7 +3,7 @@
 
 Name:           python-zope-testing
 Version:        5.0.1
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Zope Testing Framework
 License:        ZPL-2.1
 URL:            https://pypi.io/project/%{modname}
@@ -22,9 +22,6 @@ flexible test runner, and supports both doctest and unittest.
 Summary:        Zope Testing Framework
 %{?python_provide:%python_provide python%{python3_pkgversion}-zope-testing}
 
-BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-setuptools
-
 %description -n python%{python3_pkgversion}-zope-testing
 This package provides a number of testing frameworks. It includes a
 flexible test runner, and supports both doctest and unittest.
@@ -33,6 +30,9 @@ flexible test runner, and supports both doctest and unittest.
 %autosetup -p1 -n %{modname}-%{version}
 
 rm -rf %{modname}.egg-info
+
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %build
 %{py3_build}
@@ -43,7 +43,7 @@ rm -rf %{modname}.egg-info
 rm -f %{buildroot}%{python3_sitelib}/zope/__init__.py*
 
 %check
-%{__python3} setup.py test
+%tox
 
 %files -n python%{python3_pkgversion}-zope-testing
 %doc CHANGES.rst README.rst src/zope/testing/*.txt
@@ -54,6 +54,9 @@ rm -f %{buildroot}%{python3_sitelib}/zope/__init__.py*
 %{python3_sitelib}/%{modname}-*-nspkg.pth
 
 %changelog
+* Fri Nov 01 2024 Dan Radez <dradez@redhat.com> - 5.0.1-10
+- fixing build to be compatible with setuptools 74.x rhbz#2319744
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.1-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

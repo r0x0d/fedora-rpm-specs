@@ -2,7 +2,7 @@
 
 Name:     squid
 Version:  6.12
-Release:  1%{?dist}
+Release:  3%{?dist}
 Summary:  The Squid proxy caching server
 Epoch:    7
 # See CREDITS for breakdown of non GPLv2+ code
@@ -59,8 +59,6 @@ BuildRequires: openssl-devel
 BuildRequires: krb5-devel
 # time_quota requires TrivialDB
 BuildRequires: libtdb-devel
-# ESI support requires Expat & libxml2
-BuildRequires: expat-devel libxml2-devel
 # TPROXY requires libcap, and also increases security somewhat
 BuildRequires: libcap-devel
 # eCAP support
@@ -73,7 +71,7 @@ BuildRequires: perl-generators
 BuildRequires: pkgconfig(cppunit)
 # For verifying downloded src tarball
 BuildRequires: gnupg2
-# for _tmpfilesdir and _unitdir macro
+# for _unitdir macro
 # see https://docs.fedoraproject.org/en-US/packaging-guidelines/Systemd/#_packaging
 BuildRequires: systemd-rpm-macros
 # systemd notify
@@ -143,7 +141,7 @@ sed -i 's|@SYSCONFDIR@/squid.conf.documented|%{_pkgdocdir}/squid.conf.documented
    --enable-storeio="aufs,diskd,ufs,rock" \
    --enable-diskio \
    --enable-wccpv2 \
-   --enable-esi \
+   --disable-esi \
    --enable-ecap \
    --with-aio \
    --with-default-user="squid" \
@@ -200,16 +198,7 @@ install -m 644 $RPM_BUILD_ROOT/squid.httpd.tmp $RPM_BUILD_ROOT%{_sysconfdir}/htt
 install -m 755 %{SOURCE6} $RPM_BUILD_ROOT%{_prefix}/lib/NetworkManager/dispatcher.d/20-squid
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/squid
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/spool/squid
-mkdir -p $RPM_BUILD_ROOT/run/squid
 chmod 644 contrib/url-normalizer.pl contrib/user-agents.pl
-
-# install /usr/lib/tmpfiles.d/squid.conf
-mkdir -p ${RPM_BUILD_ROOT}%{_tmpfilesdir}
-cat > ${RPM_BUILD_ROOT}%{_tmpfilesdir}/squid.conf <<EOF
-# See tmpfiles.d(5) for details
-
-d /run/squid 0755 squid squid - -
-EOF
 
 # Move the MIB definition to the proper place (and name)
 mkdir -p $RPM_BUILD_ROOT/usr/share/snmp/mibs
@@ -236,7 +225,6 @@ install -p -D -m 0644 %{SOURCE9} %{buildroot}%{_sysusersdir}/squid.conf
 %attr(755,root,root) %dir %{_libdir}/squid
 %attr(770,squid,root) %dir %{_localstatedir}/log/squid
 %attr(750,squid,squid) %dir %{_localstatedir}/spool/squid
-%attr(755,squid,squid) %dir /run/squid
 
 %config(noreplace) %attr(644,root,root) %{_sysconfdir}/httpd/conf.d/squid.conf
 %config(noreplace) %attr(640,root,squid) %{_sysconfdir}/squid/squid.conf
@@ -263,7 +251,6 @@ install -p -D -m 0644 %{SOURCE9} %{buildroot}%{_sysusersdir}/squid.conf
 %{_mandir}/man1/*
 %{_libdir}/squid/*
 %{_datadir}/snmp/mibs/SQUID-MIB.txt
-%{_tmpfilesdir}/squid.conf
 %{_sysusersdir}/squid.conf
 
 %pre
@@ -328,6 +315,15 @@ fi
 
 
 %changelog
+* Fri Nov 01 2024 Luboš Uhliarik <luhliari@redhat.com> - 7:6.12-3
+- better error handling in cache_swap.sh
+- added RuntimeDirectory to systemd service file
+
+* Fri Nov 01 2024 Luboš Uhliarik <luhliari@redhat.com> - 7:6.12-2
+- Disable ESI support since ESI support has been also removed from squid 7
+- Resolves: CVE-2024-45802 squid: Denial of Service processing ESI
+  response content
+
 * Wed Oct 23 2024 Luboš Uhliarik <luhliari@redhat.com> - 7:6.12-1
 - new version 6.12
 - Fix TCP_MISS_ABORTED/100 erros when uploading
