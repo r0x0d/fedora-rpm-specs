@@ -2,7 +2,7 @@
 %{?mingw_package_header}
 
 Name:          mingw-objfw
-Version:       1.1.7
+Version:       1.2
 Release:       1%{?dist}
 Summary:       MinGW port of ObjFW
 
@@ -10,7 +10,7 @@ License:       LGPL-3.0-only
 URL:           https://objfw.nil.im
 Source0:       https://objfw.nil.im/downloads/objfw-%{version}.tar.gz
 Source1:       https://objfw.nil.im/downloads/objfw-%{version}.tar.gz.sig
-# gpg2 --export --export-options export-minimal 6D1EC2269BC0B5459C8BA920CFDAB41F8292CEEE >gpgkey-objfw.gpg
+# gpg2 --export --export-options export-minimal DC43171B6BE93978D09AD8B2C601EE21773E7C8F >gpgkey-objfw.gpg
 Source2:       gpgkey-objfw.gpg
 
 BuildArch:     noarch
@@ -116,34 +116,37 @@ mkdir -p %{buildroot}/%{_bindir}
 pushd mingw32
 %make_install
 for i in objfw-config objfw-compile objfw-embed; do
-	mv %{buildroot}/%{mingw32_bindir}/%{mingw32_target}-$i %{buildroot}/%{_bindir}/
+        mv %{buildroot}/%{mingw32_bindir}/%{mingw32_target}-$i %{buildroot}/%{_bindir}/
 done
 for i in objfw-new ofarc ofdns ofhash ofhttp; do
         rm %{buildroot}/%{mingw32_bindir}/$i.exe
         rm -fr %{buildroot}/%{mingw32_datadir}/$i
 done
+rm %{buildroot}/%{mingw32_mandir}/man1/*.1
 popd
 
 pushd mingw64
 %make_install
 for i in objfw-config objfw-compile objfw-embed; do
-	mv %{buildroot}/%{mingw64_bindir}/%{mingw64_target}-$i %{buildroot}/%{_bindir}/
+        mv %{buildroot}/%{mingw64_bindir}/%{mingw64_target}-$i %{buildroot}/%{_bindir}/
 done
 for i in objfw-new ofarc ofdns ofhash ofhttp; do
         rm %{buildroot}/%{mingw64_bindir}/$i.exe
         rm -fr %{buildroot}/%{mingw64_datadir}/$i
 done
+rm %{buildroot}/%{mingw64_mandir}/man1/*.1
 popd
 
 pushd ucrt64
 %make_install
 for i in objfw-config objfw-compile objfw-embed; do
-	mv %{buildroot}/%{ucrt64_bindir}/%{ucrt64_target}-$i %{buildroot}/%{_bindir}/
+        mv %{buildroot}/%{ucrt64_bindir}/%{ucrt64_target}-$i %{buildroot}/%{_bindir}/
 done
 for i in objfw-new ofarc ofdns ofhash ofhttp; do
         rm %{buildroot}/%{ucrt64_bindir}/$i.exe
         rm -fr %{buildroot}/%{ucrt64_datadir}/$i
 done
+rm %{buildroot}/%{ucrt64_mandir}/man1/*.1
 popd
 
 %files -n mingw32-objfw
@@ -153,13 +156,16 @@ popd
 %{_bindir}/%{mingw32_target}-objfw-config
 %{_bindir}/%{mingw32_target}-objfw-embed
 %{mingw32_bindir}/objfw1.dll
+%{mingw32_bindir}/objfwhid1.dll
 %{mingw32_bindir}/objfwrt1.dll
 %{mingw32_bindir}/objfwtls1.dll
 %{mingw32_includedir}/ObjFW
+%{mingw32_includedir}/ObjFWHID
 %{mingw32_includedir}/ObjFWRT
 %{mingw32_includedir}/ObjFWTLS
 %{mingw32_includedir}/ObjFWTest
 %{mingw32_libdir}/libobjfw.dll.a
+%{mingw32_libdir}/libobjfwhid.dll.a
 %{mingw32_libdir}/libobjfwrt.dll.a
 %{mingw32_libdir}/libobjfwtest.a
 %{mingw32_libdir}/libobjfwtls.dll.a
@@ -172,13 +178,16 @@ popd
 %{_bindir}/%{mingw64_target}-objfw-config
 %{_bindir}/%{mingw64_target}-objfw-embed
 %{mingw64_bindir}/objfw1.dll
+%{mingw64_bindir}/objfwhid1.dll
 %{mingw64_bindir}/objfwrt1.dll
 %{mingw64_bindir}/objfwtls1.dll
 %{mingw64_includedir}/ObjFW
+%{mingw64_includedir}/ObjFWHID
 %{mingw64_includedir}/ObjFWRT
 %{mingw64_includedir}/ObjFWTLS
 %{mingw64_includedir}/ObjFWTest
 %{mingw64_libdir}/libobjfw.dll.a
+%{mingw64_libdir}/libobjfwhid.dll.a
 %{mingw64_libdir}/libobjfwrt.dll.a
 %{mingw64_libdir}/libobjfwtest.a
 %{mingw64_libdir}/libobjfwtls.dll.a
@@ -191,13 +200,16 @@ popd
 %{_bindir}/%{ucrt64_target}-objfw-config
 %{_bindir}/%{ucrt64_target}-objfw-embed
 %{ucrt64_bindir}/objfw1.dll
+%{ucrt64_bindir}/objfwhid1.dll
 %{ucrt64_bindir}/objfwrt1.dll
 %{ucrt64_bindir}/objfwtls1.dll
 %{ucrt64_includedir}/ObjFW
+%{ucrt64_includedir}/ObjFWHID
 %{ucrt64_includedir}/ObjFWRT
 %{ucrt64_includedir}/ObjFWTLS
 %{ucrt64_includedir}/ObjFWTest
 %{ucrt64_libdir}/libobjfw.dll.a
+%{ucrt64_libdir}/libobjfwhid.dll.a
 %{ucrt64_libdir}/libobjfwrt.dll.a
 %{ucrt64_libdir}/libobjfwtest.a
 %{ucrt64_libdir}/libobjfwtls.dll.a

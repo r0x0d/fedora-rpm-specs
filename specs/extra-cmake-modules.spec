@@ -10,7 +10,7 @@
 
 Name:    extra-cmake-modules
 Summary: Additional modules for CMake build system
-Version: 6.7.0
+Version: 6.8.0
 Release: 1%{?dist}
 # Automatically converted from old format: BSD - review is highly recommended.
 License: LicenseRef-Callaway-BSD
@@ -90,6 +90,9 @@ make test ARGS="--output-on-failure --timeout 300" -C %{_vpath_builddir} ||:
 
 
 %changelog
+* Sat Nov 02 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.8.0-1
+- 6.8.0
+
 * Fri Oct 04 2024 Steve Cossette <farchord@gmail.com> - 6.7.0-1
 - 6.7.0
 

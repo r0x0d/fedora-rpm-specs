@@ -144,11 +144,14 @@ sed -r -i 's/\.dot\b/\.svg/g' docs/reference/Makefile.am
 
 
 
-%build
+%conf
 %if %{with autoreconf}
 AUTOHEADER=/bin/true autoreconf -fiv
 %endif
 %configure
+
+
+%build
 %make_build
 
 %if %{with doc_pdf}

@@ -1,7 +1,7 @@
 %global forgeurl https://github.com/jonathf/numpoly
 
 Name:       python-numpoly
-Version:    1.2.13
+Version:    1.2.14
 Release:    %autorelease
 Summary:    Polynomials as a numpy datatype
 %forgemeta
@@ -52,6 +52,10 @@ Summary:        %{summary}
 
 %prep
 %forgeautosetup -p1
+
+# Don't turn deprecation warnings into errors. It fails the build with
+# NumPy 2.x.
+sed -r -i '/error::DeprecationWarning/d' pyproject.toml
 
 %generate_buildrequires
 %pyproject_buildrequires

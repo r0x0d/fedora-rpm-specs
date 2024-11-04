@@ -7,7 +7,7 @@
 %bcond doc_pdf 1
 
 Name:           python-pyscaffold
-Version:        4.5
+Version:        4.6
 Release:        %autorelease
 Summary:        Template tool for putting up the scaffold of a Python project
 
@@ -15,7 +15,7 @@ Summary:        Template tool for putting up the scaffold of a Python project
 # pyscaffold.templates, which are 0BSD.
 License:        MIT and 0BSD
 URL:            https://pyscaffold.org/
-Source0:        %{pypi_source PyScaffold}
+Source0:        %{pypi_source pyscaffold}
 # Man page written by hand in groff_man(7) format for Fedora based on --help
 # output. Note that help2man(1) could autogenerate a decent man page if needed:
 #   help2man --no-info --output=putup.1 putup
@@ -29,9 +29,6 @@ Patch:          PyScaffold-4.5-no-coverage.patch
 # Downstream-only: remove animated demo from docs since this cannot be included
 # in a PDF
 Patch:          PyScaffold-4.1-no-animated-doc-demo.patch
-# Fix use of deprecated `read_text` method (Python >= 3.13)
-# https://github.com/pyscaffold/pyscaffold/pull/747
-Patch:          https://github.com/pyscaffold/pyscaffold/pull/747.patch
 
 BuildArch:      noarch
 
@@ -101,7 +98,7 @@ Documentation for %{name}.
 
 
 %prep
-%autosetup -n PyScaffold-%{version} -p1
+%autosetup -n pyscaffold-%{version} -p1
 
 # Correct all shebangs in tests and templates
 %py3_shebang_fix tests

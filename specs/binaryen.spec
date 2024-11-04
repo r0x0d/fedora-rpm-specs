@@ -1,15 +1,22 @@
 %bcond_without check
+%global wats_commit e05365077e13a1d86ffe77acfb1a835b7aa78422
+%global wats_shortcommit %(c=%{wats_commit}; echo ${c:0:7})
 
 Summary:       Compiler and toolchain infrastructure library for WebAssembly
 Name:          binaryen
-Version:       118
+Version:       120
 Release:       1%{?dist}
 
 URL:           https://github.com/WebAssembly/binaryen
 Source0:       %{url}/archive/version_%{version}/%{name}-version_%{version}.tar.gz
+Source1:       https://github.com/WebAssembly/testsuite/archive/%{wats_commit}/testsuite-%{wats_shortcommit}.tar.gz
 Patch0:        %{name}-use-system-gtest.patch
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
-License:       Apache-2.0
+# https://github.com/WebAssembly/binaryen/issues/7046
+Patch1:        https://github.com/WebAssembly/binaryen/pull/7048.patch#/%{name}-pr-7048.patch
+# third_party/FP16: MIT
+# third_party/llvm-project/MD5.cpp: bcrypt-Solar-Designer
+# third_party/llvm-project/include/llvm/Support/MD5.h: bcrypt-Solar-Designer
+License:       Apache-2.0 AND MIT AND bcrypt-Solar-Designer
 
 # tests fail on big-endian
 # https://github.com/WebAssembly/binaryen/issues/2983
@@ -53,6 +60,11 @@ effective:
 
 %prep
 %autosetup -p1 -n %{name}-version_%{version}
+%if %{with check}
+rmdir test/spec/testsuite
+tar xzf %{S:1} -C test/spec
+mv test/spec/testsuite{-%{wats_commit},}
+%endif
 
 %build
 %cmake \
@@ -69,10 +81,6 @@ rm -v %{buildroot}%{_bindir}/binaryen-unittests
 
 %if %{with check}
 %check
-# https://github.com/WebAssembly/binaryen/issues/5353
-%ifarch i686
-rm -v test/lit/passes/type-ssa.wast
-%endif
 install -pm755 %{__cmake_builddir}/bin/binaryen-{lit,unittests} %{buildroot}%{_bindir}
 ./check.py \
     --binaryen-bin %{buildroot}%{_bindir} \
@@ -102,6 +110,12 @@ rm -v %{buildroot}%{_bindir}/binaryen-{lit,unittests}
 %{_libdir}/%{name}/libbinaryen.so
 
 %changelog
+* Sun Oct 27 2024 Dominik Mierzejewski <dominik@greysector.net> - 120-1
+- update to 120 (#2310544)
+- review and correct License tag
+- add WebAssembly spec testsuite as separate source
+- backport fix for failing TypeSSA tests on i686
+
 * Wed Jul 24 2024 Dominik Mierzejewski <dominik@greysector.net> - 118-1
 - update to 118 (#2266705)
 - drop obsolete patches

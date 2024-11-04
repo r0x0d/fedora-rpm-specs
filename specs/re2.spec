@@ -97,18 +97,21 @@ cd python
 %pyproject_buildrequires
 
 
-%build
+%conf
 %cmake \
     -DRE2_BUILD_TESTING:BOOL=ON \
     -DRE2_USE_ICU:BOOL=ON \
     -GNinja
-%cmake_build
 
 cat >> python/setup.cfg <<EOF
 [build_ext]
 include_dirs=${PWD}
 library_dirs=${PWD}/%{_vpath_builddir}
 EOF
+
+
+%build
+%cmake_build
 cd python
 %pyproject_wheel
 

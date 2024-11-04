@@ -1,7 +1,7 @@
 %global pypi_name cmd2
 
 Name:             python-%{pypi_name}
-Version:          2.4.3
+Version:          2.5.1
 Release:          1%{?dist}
 Summary:          Extra features for standard library's cmd module
 
@@ -39,12 +39,10 @@ See docs at http://packages.python.org/cmd2/
 %package -n python3-cmd2
 Summary:          %{summary}
 BuildRequires:    python3-devel
-BuildRequires:    python3-setuptools
-BuildRequires:    python3-setuptools_scm
-BuildRequires:    dos2unix
-
 Requires:         /usr/bin/which
-%{?python_provide:%python_provide python3-cmd2}
+
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %description -n python3-%{pypi_name} %_description
 
@@ -52,18 +50,25 @@ Requires:         /usr/bin/which
 %autosetup -n %{pypi_name}-%{version}
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
 
-%files -n python3-%{pypi_name}
+%pyproject_save_files -l cmd2
+
+%check
+%tox
+
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %license LICENSE
 %doc CHANGELOG.md README.md docs
-%{python3_sitelib}/cmd2
-%{python3_sitelib}/%{pypi_name}-%{version}*
 
 %changelog
+* Sat Nov 02 2024 Kevin Fenzi <kevin@scrye.com> - 2.5.1-1
+- Update to 2.5.1. Fixes rhbz#2321375
+- Modernize spec
+
 * Thu Sep 26 2024 Fabian Affolter <mail@fabian-affolter.ch> - 2.4.3-1
 - Update to latest upstream release (closes rhbz#2165168)
 

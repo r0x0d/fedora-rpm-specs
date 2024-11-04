@@ -5,8 +5,8 @@
 #%%global	gem_githash	af3e3fc059
 
 %bcond_with bootstrap
-%if 0%{?fedora} >= 40
-%bcond_with bootstrap
+%if 0%{?fedora} >= 42
+%bcond_without bootstrap
 %endif
 
 # Upstream GIT http://github.com/rcairo/
@@ -16,7 +16,7 @@
 Summary:	Ruby bindings for cairo
 Name:		rubygem-%{gem_name}
 Version:	1.17.13
-Release:	6%{?dist}
+Release:	7%{?dist}
 # From gemspec
 # SPDX confirmed
 License:	GPL-2.0-or-later OR Ruby
@@ -189,6 +189,9 @@ ruby ./test/run-test.rb
 %{header_dir}/rb_cairo.h
 
 %changelog
+* Sat Nov 02 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.17.13-7
+- Kill loop dependency for now
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.17.13-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

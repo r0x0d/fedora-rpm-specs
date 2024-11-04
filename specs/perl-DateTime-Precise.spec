@@ -4,7 +4,7 @@ Release:        51%{?dist}
 
 Summary:        Perform common time and date operations with additional GPS operations
 
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            https://metacpan.org/release/DateTime-Precise
 Source0:        https://cpan.metacpan.org/authors/id/B/BZ/BZAJAC/DateTime-Precise-%{version}.tar.gz
 

@@ -9,7 +9,7 @@
 
 # https://github.com/shirou/gopsutil
 %global goipath         github.com/shirou/gopsutil/v4
-Version:                4.24.9
+Version:                4.24.10
 
 %gometa -L -f
 

@@ -1,10 +1,9 @@
 Name:		libmacaroons
 Version:	0.3.0
-Release:	19%{?dist}
+Release:	20%{?dist}
 Summary:	C library supporting generation and use of macaroons
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:	LicenseRef-Callaway-BSD
+License:	BSD-3-Clause AND ISC
 URL:		https://github.com/rescrv/libmacaroons
 Source0:	%url/archive/releases/%{version}/%{name}-%{version}.tar.gz
 # Fix for the inspect() method triggering an assert on newer versions of libsodium.
@@ -20,7 +19,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	python3
-BuildRequires: make
+BuildRequires:	make
 
 %description
 %{summary}
@@ -39,18 +38,12 @@ Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %build
 autoreconf -i
-export PYTHON=%{__python3}
-%configure --disable-python-bindings
+%configure --disable-static
 %make_build
-
-%ldconfig_scriptlets
 
 %install
 %make_install
 rm -f %{buildroot}%{_libdir}/%{name}.la
-rm -f %{buildroot}%{_libdir}/%{name}.a
-rm -f %{buildroot}%{python2_sitearch}/macaroons.a
-rm -f %{buildroot}%{python2_sitearch}/macaroons.la
 
 %files
 %license LICENSE
@@ -63,6 +56,9 @@ rm -f %{buildroot}%{python2_sitearch}/macaroons.la
 %{_includedir}/macaroons.h
 
 %changelog
+* Sat Nov 02 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 0.3.0-20
+- Update License tag
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 0.3.0-19
 - convert license to SPDX
 

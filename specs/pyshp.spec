@@ -29,9 +29,11 @@ Source24:       %{ne_url}/raw/%{ne_commit}/110m_cultural/ne_110m_admin_0_tiny_co
 # Upstream also uses https://biogeo.ucdavis.edu/data/diva/rrd/NIC_rrd.zip, but
 # the license is unclear, so we skip this one.
 
-BuildArch:      noarch
+BuildSystem:            pyproject
+BuildOption(install):   -l shapefile
+BuildOption(generate_buildrequires): requirements.test.txt
 
-BuildRequires:  python3-devel
+BuildArch:      noarch
 
 BuildRequires:  dos2unix
 
@@ -63,9 +65,7 @@ Summary:        %{summary}
 %description -n python3-pyshp %{common_description}
 
 
-%prep
-%autosetup -p1
-
+%prep -a
 # Fix non-UTF-8 license file
 iconv --from-code=Windows-1252 --to-code=UTF-8 --output=LICENSE.TXT.conv \
     LICENSE.TXT
@@ -89,20 +89,7 @@ cp -p '%{SOURCE10}' '%{SOURCE11}' '%{SOURCE12}' '%{SOURCE13}' '%{SOURCE14}' \
     '%{SOURCE20}' '%{SOURCE21}' '%{SOURCE22}' '%{SOURCE23}' '%{SOURCE24}' .
 
 
-%generate_buildrequires
-%pyproject_buildrequires requirements.test.txt
-
-
-%build
-%pyproject_wheel
-
-
-%install
-%pyproject_install
-%pyproject_save_files -l shapefile
-
-
-%check
+%check -a
 # Although shapefile.py has an integrated runner for the doctests, we run them
 # with pytest because we need to skip those that require network access.
 %pytest --doctest-glob='README-no-network.md' -m '(not network)'

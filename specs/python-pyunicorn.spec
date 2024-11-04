@@ -1,17 +1,6 @@
-%bcond_without tests
-
-# Sphinx-generated HTML documentation is not suitable for packaging; see
-# https://bugzilla.redhat.com/show_bug.cgi?id=2006555 for discussion.
-#
-# We can generate PDF documentation as a substitute.
-
-# We do not generate docs, due to the missing dependencies
-%bcond_without doc_pdf
+%bcond tests 1
 
 %global pypi_name pyunicorn
-%global forgeurl https://github.com/pik-copan/pyunicorn
-%global commit master
-%global upstream_version 0.7.0a1
 
 %global _description %{expand:
 pyunicorn (Unified Complex Network and RecurreNce analysis toolbox)
@@ -24,116 +13,86 @@ Newman's random walk betweenness. pyunicorn features novel node-weighted
 designed for analyzing networks of interacting/interdependent networks.}
 
 Name:           python-%{pypi_name}
-
-%forgemeta
-
-# Set version to preliminary version defined in setup.cfg
-Version:        0.7.0~a1
+Version:        0.8.0
 Release:        %{autorelease}
 Summary:        Unified complex network and recurrence analysis toolbox
 
-# The entire source code is BSD except the following files:
-#pyunicorn-0.6.1/pyunicorn/utils/progressbar/__init__.py
-#pyunicorn-0.6.1/pyunicorn/utils/progressbar/compat.py
-#pyunicorn-0.6.1/pyunicorn/utils/progressbar/progressbar.py
-#pyunicorn-0.6.1/pyunicorn/utils/progressbar/widgets.py
-# Automatically converted from old format: BSD and LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-BSD AND LicenseRef-Callaway-LGPLv2+
+%global forgeurl https://github.com/pik-copan/pyunicorn
+%global tag v%{version}
+%forgemeta
+
+License:        BSD-3-Clause
 URL:            http://www.pik-potsdam.de/~donges/pyunicorn/
-Source0:        %{forgesource}
-
-# patch intended for skipping two tests due to the failed attempts on i686
-#Patch0:         0001-Skip-test.patch
-
-# patch removes two badges that are in svg format
-# it resolves problems with building docs
-#Patch1:         0002-Remove-badges-in-README.patch
+Source:         %{forgesource}
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
 
-BuildRequires:  python3-devel
-BuildRequires:  python3dist(setuptools)
-
-%if %{with doc_pdf}
+BuildRequires:  gcc-c++
 BuildRequires:  make
-BuildRequires:  python3-sphinx
-BuildRequires:  python3-sphinx-latex
-BuildRequires:  latexmk
+BuildRequires:  python3-devel
+
+# The tests extra also specifies linters. Therefore we specify manually.
+%if %{with tests}
+BuildRequires:  python3-cartopy
+BuildRequires:  python3-matplotlib
+Buildrequires:  python3-networkx
+BuildRequires:  python3-pytest
+BuildRequires:  python3-pytest-xdist
 %endif
 
-BuildRequires:  make
-BuildRequires:  gcc-c++
-BuildRequires:  Cython
-
-BuildRequires:  python3-igraph
-BuildRequires:  numpy
-BuildRequires:  python3-networkx
+# Required for the import test. It crashes with a ModuleNotFound.
+# For that reason we make those Requires instead of Recommends as well.
+%if %{without tests}
 BuildRequires:  python3-basemap
-BuildRequires:  python3-scipy
-
-Requires:  matplotlib
-
-%if %{with tests}
-BuildRequires:  python3-pytest
 BuildRequires:  python3-cartopy
 %endif
 
 %description %_description
 
+
 %package -n     python3-%{pypi_name}
 Summary:        %{summary}
+Obsoletes:      python-%{pypi_name}-doc < 0.8.0
 
 %description -n python3-%{pypi_name} %_description
 
-%package doc
-Summary:        Documentation and examples for %{name}
-
-%description doc
-%{summary}.
 
 %prep
-%autosetup -p1 -n %{pypi_name}-%{commit}
+%forgeautosetup -p1
+
 for lib in $(find . -name "*.py"); do
  sed '1{\@^#!/usr/bin/python@d}' $lib > $lib.new &&
  touch -r $lib $lib.new &&
  mv $lib.new $lib
 done
-# Disable coverage and fix pytest command (has no option '-n')
-sed -i -e 's/-n auto //' setup.cfg
+
+%generate_buildrequires
+%pyproject_buildrequires
+
 
 %build
-%py3_build
+%pyproject_wheel
 
 
 %install
-%py3_install
-
-# We run this in %%install, since Sphinx imports __version__ from pyunicorn.
-# So, that needs to be installed first.
-%if %{with doc_pdf}
-%{py3_test_envvars} %make_build -C docs latex SPHINXOPTS='%{?_smp_mflags}'
-%{py3_test_envvars} %make_build -C docs/build/latex LATEXMKOPTS='-quiet'
-%endif
+%pyproject_install
+%pyproject_save_files -l %{pypi_name}
 
 
 %check
 %if %{with tests}
-%pytest
+# Test requires network
+k="${k-}${k+ and }not TestMapPlot"
+%pytest ${k+-k }"${k-}"
+%else
+%pyproject_check_import
 %endif
 
-%files -n python3-%{pypi_name}
-%doc README.rst examples/
-%license LICENSE.txt
-%{python3_sitearch}/%{pypi_name}
-%{python3_sitearch}/%{pypi_name}-%{upstream_version}-py%{python3_version}.egg-info
 
-%files doc
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %doc README.rst
-%license LICENSE.txt
-%if %{with doc_pdf}
-%doc docs/build/latex/%{pypi_name}.pdf
-%endif
+
 
 %changelog
 %autochangelog

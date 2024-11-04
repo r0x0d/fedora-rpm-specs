@@ -40,6 +40,8 @@ Summary: Extended documentation for %{name}
 
 %prep
 %goprep
+sed -i "s/unknown/v%{version}/" internal/version/version.go
+sed -i "s/task-version\"\, expected\: \"unknown\"/task-version\"\, expected\: \"v%{version}\"/" task_test.go
 
 %generate_buildrequires
 %go_generate_buildrequires

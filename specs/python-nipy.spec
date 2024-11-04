@@ -12,7 +12,7 @@
 %global build_type_safety_c 1
 
 Name:           python-nipy
-Version:        %forgeversion
+Version:        0.6.1
 Release:        %autorelease
 Epoch:          1
 Summary:        Neuroimaging in Python FMRI analysis package
@@ -130,11 +130,11 @@ rm -vf examples/.gitignore
 
 
 %generate_buildrequires
-%pyproject_buildrequires -w -x optional%{?with_tests:,test}
+%pyproject_buildrequires -p -x optional%{?with_tests:,test}
 
 
-# The package is already built in %%pyproject_buildrequires.
-# Skip the %%build section entirely.
+%build
+%pyproject_wheel
 
 
 %install

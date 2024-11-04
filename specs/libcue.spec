@@ -9,9 +9,6 @@ VCS:		git:%{url}.git
 Source0:	%{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 BuildRequires:	bison
 BuildRequires:	cmake
-%if 0%{?rhel} && 0%{?rhel} < 8
-BuildRequires:	cmake3
-%endif
 BuildRequires:	flex
 BuildRequires:	gcc
 BuildRequires:	gcc-c++
@@ -32,12 +29,6 @@ Development files for %{name}.
 %autosetup -p1
 
 %build
-%if 0%{?rhel} && 0%{?rhel} < 8
-%global cmake %cmake3
-%global cmake_build %cmake3_build
-%global cmake_install %cmake3_install
-%endif
-
 %cmake
 %cmake_build
 

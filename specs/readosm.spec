@@ -53,11 +53,14 @@ developing applications that use ReadOSM.
 %autosetup
 
 
-%build
+%conf
 %if %{with autoreconf}
 autoreconf --force --install --verbose
 %endif
 %configure --disable-static
+
+
+%build
 %make_build
 
 

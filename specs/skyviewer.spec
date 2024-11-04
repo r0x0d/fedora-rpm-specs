@@ -3,7 +3,7 @@ Version:        1.1.0
 Release:        4%{?dist}
 Summary:        Program to display HEALPix-based skymaps in FITS files
 
-License:        Public Domain
+License:        CFITSIO
 URL:            http://lambda.gsfc.nasa.gov/toolbox/tb_skyviewer_ov.cfm
 Source0:        http://lambda.gsfc.nasa.gov/toolbox/skyviewer/%{name}-%{version}.tar.gz
 Source1:        skyviewer.desktop

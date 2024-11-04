@@ -3,7 +3,7 @@ Version:        0.8.9.0
 Release:        %autorelease
 Epoch:          1
 Summary:        Modplug mod music file format library
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            http://modplug-xmms.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/modplug-xmms/%{name}-%{version}.tar.gz
 # Fedora specific, no need to send upstream

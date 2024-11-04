@@ -28,7 +28,7 @@ Version:        1.0.0
 Release:        10%{?dist}
 Summary:        Simple RFC-compliant TELNET implementation for SDL-Hercules-390
 
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            %{forgeurl}
 Source0:        %{forgesource}
 

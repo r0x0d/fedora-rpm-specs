@@ -2,20 +2,15 @@
 %global sum Let your Python tests travel through time
 
 Name:               python-freezegun
-Version:            1.2.2
-Release:            9%{?dist}
+Version:            1.5.1
+Release:            2%{?dist}
 Summary:            %{sum}
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:            Apache-2.0
 URL:                https://pypi.io/project/freezegun
 Source0:            https://pypi.io/packages/source/f/%{modname}/%{modname}-%{version}.tar.gz
 
-# Fix decorate_class for Python 3.10 where staticmethod is callable
-Patch1:             https://github.com/spulec/freezegun/pull/397.patch
-
-# Fix for Python 3.13 - don't call the removed uuil._load_system_functions()
-Patch2:             https://github.com/spulec/freezegun/pull/534.patch
+Patch:              freezegun-1.5.1-no-coverage.patch
 
 BuildArch:          noarch
 
@@ -28,15 +23,11 @@ mocking the datetime module.
 Summary:            %{sum}
 
 BuildRequires:      python3-devel
-BuildRequires:      python3-setuptools
-BuildRequires:      python3-six
-BuildRequires:      python3-dateutil >= 2.7
-BuildRequires:      python3-pytest
 
 %{?python_provide:%python_provide python3-freezegun}
 
-Requires:           python3-six
-Requires:           python3-dateutil >= 2.7
+#Requires:           python3-six
+#Requires:           python3-dateutil >= 2.7
 
 %description -n python3-freezegun
 freezegun is a library that allows your python tests to travel through time by
@@ -45,14 +36,16 @@ mocking the datetime module. This is the Python 3 library.
 %prep
 %autosetup -p1 -n %{modname}-%{version}
 
-# Remove bundled egg-info in case it exists
-rm -rf %{modname}.egg-info
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+
+%pyproject_save_files -l freezegun
 
 %check
 # Ignore two tests that are broken when run on systems in certain timezones.
@@ -60,14 +53,17 @@ rm -rf %{modname}.egg-info
 pytest-3 --deselect tests/test_datetimes.py::TestUnitTestMethodDecorator::test_method_decorator_works_on_unittest_kwarg_frozen_time \
          --deselect tests/test_datetimes.py::TestUnitTestMethodDecorator::test_method_decorator_works_on_unittest_kwarg_hello
 
-
-
-%files -n python3-freezegun
+%files -n python3-freezegun -f %{pyproject_files}
 %doc README.rst LICENSE
-%{python3_sitelib}/%{modname}/
-%{python3_sitelib}/%{modname}-%{version}-*
 
 %changelog
+* Sat Nov 02 2024 Kevin Fenzi <kevin@scrye.com> - 1.5.1-2
+- Add patch to not run coverage tests to allow epel10. rhbz#2321257
+
+* Sat Nov 02 2024 Kevin Fenzi <kevin@scrye.com> - 1.5.1-1
+- Upgrade to 1.5.1.
+- Modernize spec.
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 1.2.2-9
 - convert license to SPDX
 

@@ -90,7 +90,7 @@ sed -r -i 's/-fsanitize=address\b//' test/CMakeLists.txt
 %endif
 
 
-%build
+%conf
 # Building examples and tests from the top-level project is not yet supported.
 #
 # In docs/index.html, LOGURU_STACKTRACES=1 is documented as the default where
@@ -106,10 +106,16 @@ sed -r -i 's/-fsanitize=address\b//' test/CMakeLists.txt
   -DLOGURU_STACKTRACES:BOOL=ON \
   -DLOGURU_WITH_STREAMS:BOOL=ON \
   -GNinja
-%cmake_build
 
 pushd test
 %cmake -GNinja
+popd
+
+
+%build
+%cmake_build
+
+pushd test
 %cmake_build
 popd
 

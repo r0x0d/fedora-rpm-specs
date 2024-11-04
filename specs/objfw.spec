@@ -3,19 +3,18 @@
 %global _lto_cflags %nil
 
 Name:          objfw
-Version:       1.1.7
-Release:       3%{?dist}
+Version:       1.2
+Release:       1%{?dist}
 Summary:       Portable, lightweight framework for the Objective-C language
 
 License:       LGPL-3.0-only
 URL:           https://objfw.nil.im
 Source0:       https://objfw.nil.im/downloads/objfw-%{version}.tar.gz
 Source1:       https://objfw.nil.im/downloads/objfw-%{version}.tar.gz.sig
-# gpg2 --export --export-options export-minimal 6D1EC2269BC0B5459C8BA920CFDAB41F8292CEEE >gpgkey-objfw.gpg
+# gpg2 --export --export-options export-minimal DC43171B6BE93978D09AD8B2C601EE21773E7C8F >gpgkey-objfw.gpg
 Source2:       gpgkey-%{name}.gpg
 
 Patch0:        utils-pie.patch
-Patch1:        fix-objfw-config.patch
 
 BuildRequires: autoconf
 BuildRequires: automake
@@ -26,6 +25,7 @@ BuildRequires: gnupg2
 BuildRequires: doxygen
 BuildRequires: autoconf
 BuildRequires: automake
+BuildRequires: lksctp-tools-devel
 Requires:      libobjfw%{_isa} = %{version}-%{release}
 Requires:      libobjfw-devel%{_isa} = %{version}-%{release}
 Requires:      libobjfwrt%{_isa} = %{version}-%{release}
@@ -62,6 +62,7 @@ The libobjfw package contains the library needed by programs using ObjFW.
 Summary:       Header files, libraries and tools for libobjfw
 Requires:      libobjfw%{_isa} = %{version}-%{release}
 Requires:      libobjfwrt-devel%{_isa} = %{version}-%{release}
+Requires:      libobjfwhid-devel%{_isa} = %{version}-%{release}
 
 %description -n libobjfw-devel
 The libobjfw-devel package contains the header files, libraries and tools to
@@ -95,6 +96,22 @@ Requires:      libobjfwrt-devel%{_isa} = %{version}-%{release}
 
 %description -n libobjfwtls-devel
 The libobjfwtls-devel package contains header files and libraries for TLS
+support for ObjFW.
+
+%package -n libobjfwhid
+Summary:       HID support for ObjFW
+
+%description -n libobjfwhid
+The libobjfwhid package contains HID support for ObjFW.
+
+%package -n libobjfwhid-devel
+Summary:       Header files and libraries for libobjfwhid
+Requires:      libobjfwhid%{_isa} = %{version}-%{release}
+Requires:      libobjfw-devel%{_isa} = %{version}-%{release}
+Requires:      libobjfwrt-devel%{_isa} = %{version}-%{release}
+
+%description -n libobjfwhid-devel
+The libobjfwhid-devel package contains header files and libraries for HID
 support for ObjFW.
 
 %package -n ofarc
@@ -179,6 +196,10 @@ make check
 %{_libdir}/libobjfw.so
 %{_libdir}/libobjfwtest.a
 %{_libdir}/objfw-config/ObjFWTest.oc
+%{_mandir}/man1/objfw-compile.1.gz
+%{_mandir}/man1/objfw-config.1.gz
+%{_mandir}/man1/objfw-embed.1.gz
+%{_mandir}/man1/objfw-new.1.gz
 
 %files -n libobjfwrt
 %license COPYING
@@ -203,29 +224,45 @@ make check
 %{_libdir}/libobjfwtls.so
 %{_libdir}/objfw-config/ObjFWTLS.oc
 
+%files -n libobjfwhid
+%license COPYING
+%license COPYING.LESSER
+%{_libdir}/libobjfwhid.so.1{,.*}
+
+%files -n libobjfwhid-devel
+%license COPYING
+%license COPYING.LESSER
+%{_includedir}/ObjFWHID
+%{_libdir}/libobjfwhid.so
+%{_libdir}/objfw-config/ObjFWHID.oc
+
 %files -n ofarc
 %license COPYING
 %license COPYING.LESSER
 %{_bindir}/ofarc
 %{_datadir}/ofarc
+%{_mandir}/man1/ofarc.1.gz
 
 %files -n ofdns
 %license COPYING
 %license COPYING.LESSER
 %{_bindir}/ofdns
 %{_datadir}/ofdns
+%{_mandir}/man1/ofdns.1.gz
 
 %files -n ofhash
 %license COPYING
 %license COPYING.LESSER
 %{_bindir}/ofhash
 %{_datadir}/ofhash
+%{_mandir}/man1/ofhash.1.gz
 
 %files -n ofhttp
 %license COPYING
 %license COPYING.LESSER
 %{_bindir}/ofhttp
 %{_datadir}/ofhttp
+%{_mandir}/man1/ofhttp.1.gz
 
 %files doc
 %license COPYING

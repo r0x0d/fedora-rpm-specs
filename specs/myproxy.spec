@@ -8,7 +8,7 @@
 
 Name:           myproxy
 Version:        6.2.16
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Manage X.509 Public Key Infrastructure (PKI) security credentials
 
 License:        NCSA AND BSD-4-Clause AND BSD-2-Clause AND Apache-2.0
@@ -21,6 +21,8 @@ Source8:        README
 Patch0:         0001-MyProxy-change-private-key-cipher-to-EVP_aes_256_cbc.patch
 #               https://github.com/gridcf/gct/pull/223
 Patch1:         0001-Handle-64-bit-time_t-on-32-bit-systems.patch
+#               https://github.com/gridcf/gct/pull/234
+Patch2:         0001-Make-OpenSSL-engine-optional.patch
 
 BuildRequires:  make
 BuildRequires:  gcc
@@ -163,6 +165,7 @@ Package %{name}-doc contains the MyProxy documentation.
 %setup -q
 %patch -P0 -p3
 %patch -P1 -p3
+%patch -P2 -p3
 
 %build
 # Reduce overlinking
@@ -324,6 +327,9 @@ rm %{buildroot}%{_sbindir}/myproxy-server-setup
 %license LICENSE*
 
 %changelog
+* Sat Nov 02 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 6.2.16-6
+- Make OpenSSL engine optional
+
 * Wed Oct 30 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 6.2.16-5
 - Handle 64 bit time_t on 32 bit systems
 

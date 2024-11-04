@@ -2,7 +2,7 @@ Name:		mb2md
 Version:	3.20
 Release:	31%{?dist}
 Summary:	Mailbox to maildir converter
-License:	Public Domain
+License:	LicenseRef-Fedora-Public-Domain
 URL:		http://batleth.sapienti-sat.org/projects/mb2md
 Source0:	http://batleth.sapienti-sat.org/projects/mb2md/mb2md-%{version}.pl.gz
 Source1:	http://batleth.sapienti-sat.org/projects/mb2md/changelog.txt

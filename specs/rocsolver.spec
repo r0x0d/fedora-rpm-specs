@@ -35,7 +35,7 @@
 %endif
 
 # may run out of memory for both compile and link
-# Use fine tuned cmake ROCSOLVER_PARALLEL_COMPILE|LINK_JOBS switches
+# Calculate a good -j number below
 %global _smp_mflags %{nil}
 
 # Fortran is only used in testing
@@ -62,7 +62,6 @@ Patch1:         0001-rocsolver-offload-compress.patch
 
 BuildRequires:  cmake
 BuildRequires:  fmt-devel
-BuildRequires:  ninja-build
 BuildRequires:  rocblas-devel
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
@@ -124,13 +123,17 @@ COMPILE_JOBS_MEM=`eval "expr 1 + ${MEM_GB} / ${BUILD_MEM}"`
 if [ "$COMPILE_JOBS_MEM" -lt "$COMPILE_JOBS" ]; then
     COMPILE_JOBS=$COMPILE_JOBS_MEM
 fi
-LINK_MEM=32
+LINK_MEM=16
 LINK_JOBS=`eval "expr 1 + ${MEM_GB} / ${LINK_MEM}"`
+JOBS=${COMPILE_JOBS}
+if [ "$LINK_JOBS" -lt "$JOBS" ]; then
+    JOBS=$LINK_JOBS
+fi
 
 for gpu in %{rocm_gpu_list}
 do
     module load rocm/$gpu
-    %cmake -G Ninja \
+    %cmake \
            -DCMAKE_BUILD_TYPE=%{build_type} \
 	   -DCMAKE_SKIP_RPATH=ON \
 	   -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
@@ -139,12 +142,10 @@ do
 	   -DAMDGPU_TARGETS=$ROCM_GPUS \
 	   -DCMAKE_INSTALL_LIBDIR=$ROCM_LIB \
 	   -DCMAKE_INSTALL_BINDIR=$ROCM_BIN \
-           -DROCSOLVER_PARALLEL_COMPILE_JOBS=$COMPILE_JOBS \
-           -DROCSOLVER_PARALLEL_LINK_JOBS=$LINK_JOBS \
 	   -DBUILD_OFFLOAD_COMPRESS=%{build_compress} \
            -DBUILD_CLIENTS_TESTS=%{build_test}
 
-    %cmake_build
+    %cmake_build -j ${JOBS}
     module purge
 done
 

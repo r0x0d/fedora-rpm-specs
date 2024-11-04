@@ -12,6 +12,9 @@
 # Disable rpatch checks for a local build
 %if %{with test}
 %global __brp_check_rpaths %{nil}
+%global build_test ON
+%else
+%global build_test OFF
 %endif
 
 %global tensile_version 4.33.0
@@ -37,7 +40,6 @@ BuildRequires:  git
 BuildRequires:  hipblas-devel
 BuildRequires:  hipcc
 BuildRequires:  msgpack-devel
-BuildRequires:  ninja-build
 BuildRequires:  rocblas-devel
 BuildRequires:  rocminfo
 BuildRequires:  rocm-cmake
@@ -165,13 +167,9 @@ export Tensile_DIR=${TL}%{python3_sitelib}/Tensile
 # Only gfx90a seems to be useful and works
 # gfx942 has some unknown to llvm17 asm directives
 # Use ld.lld to work around a problem with ld
-%cmake -G Ninja \
+%cmake \
        -DAMDGPU_TARGETS="gfx90a:xnack+;gfx90a:xnack-" \
-%if %{with test}
-       -DBUILD_CLIENTS_TESTS=ON \
-%else
-       -DBUILD_CLIENTS_TESTS=OFF \
-%endif
+       -DBUILD_CLIENTS_TESTS=%{build_test} \
        -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
        -DCMAKE_INSTALL_LIBDIR=%{_lib} \

@@ -31,7 +31,6 @@ BuildRequires:  compiler-rt
 BuildRequires:  libatomic
 BuildRequires:  lld
 BuildRequires:  llvm-devel
-BuildRequires:  ninja-build
 BuildRequires:  python-cppheaderparser
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
@@ -113,7 +112,7 @@ sed -i -e 's@add_subdirectory(test)@#add_subdirectory(test)@' CMakeLists.txt
 %endif
 
 %build
-%cmake -G Ninja \
+%cmake \
        -DCMAKE_MODULE_PATH=%{_libdir}/cmake/hip \
        -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
        -DROCM_SYMLINK_LIBS=OFF \

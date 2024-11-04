@@ -9,7 +9,12 @@ Summary:        Deep Difference and search of any Python object/data
 
 License:        MIT
 URL:            https://github.com/seperman/deepdiff/
-Source:         %{url}/archive/%{version}/%{name}-v%{version}.tar.gz
+Source:         https://github.com/seperman/deepdiff/archive/%{version}/%{name}-v%{version}.tar.gz
+
+# polar package is not available on Fedora at the moment, so remove its tests
+Patch0:         deepdiff-8.0.1-nopolar.patch
+# disable test that fails to load data
+Patch1:         deepdiff-8.0.1-diffcommand.patch
 
 BuildArch:      noarch
 BuildRequires:  make
@@ -60,7 +65,9 @@ Recommends:     python3-deepdiff+cli
 
 
 %prep
-%autosetup -n deepdiff-%{version} -p1
+%setup -n deepdiff-%{version}
+%patch -P0 -p 1 -b .nopolar
+%patch -P1 -p 1 -b .diffcommand
 
 find deepdiff/ -name \*.py -exec sed -i '/#!\/usr\/bin\/env /d' {} \;
 

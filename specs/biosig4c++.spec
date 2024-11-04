@@ -6,14 +6,14 @@ supporting more than 30 different data formats is also provided.}
 %global pretty_name biosig
 
 Name:       biosig4c++
-Version:    2.6.0
+Version:    2.6.1
 Release:    %autorelease
 Summary:    A software library for processing of biomedical signals
 
 # SPDX
 License:    GPL-3.0-or-later
 URL:        https://sourceforge.net/projects/%{pretty_name}/
-Source0:    https://downloads.sourceforge.net/project/%{pretty_name}/BioSig%20for%20C_C%2B%2B/src/%{pretty_name}-%{version}.src.tar.xz
+Source:     https://downloads.sourceforge.net/project/%{pretty_name}/BioSig%20for%20C_C%2B%2B/src/%{pretty_name}-%{version}.src.tar.xz
 
 # Drop i686
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval

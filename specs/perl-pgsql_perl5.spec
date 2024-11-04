@@ -36,7 +36,7 @@ sed -r -i 's|^#!/usr/local/bin/perl\b|#!%{_bindir}/perl|' eg/*.pl test.pl
 chmod -v a+x eg/*.pl test.pl
 
 
-%build
+%conf
 export POSTGRES_INCLUDE='%{_includedir}'
 export POSTGRES_LIB='%{_libdir}'
 perl Makefile.PL \
@@ -44,6 +44,9 @@ perl Makefile.PL \
     NO_PACKLIST=1 \
     NO_PERLLOCAL=1 \
     OPTIMIZE="${RPM_OPT_FLAGS}"
+
+
+%build
 %make_build
 
 

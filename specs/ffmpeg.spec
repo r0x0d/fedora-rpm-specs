@@ -34,19 +34,19 @@
 %if 0%{?rhel}
 # Disable dependencies not available or wanted on RHEL/EPEL
 %bcond chromaprint 0
+%bcond flite 0
 %else
 # Break chromaprint dependency cycle (Fedora-only):
 #   ffmpeg (libavcodec-free) → chromaprint → ffmpeg
 %bcond chromaprint %{?_with_bootstrap:0}%{!?_with_bootstrap:1}
+%bcond flite 1
 %endif
 
 %if 0%{?rhel} && 0%{?rhel} <= 9
 # Disable some features because RHEL 9 packages are too old
-%bcond flite 0
 %bcond lcms2 0
 %bcond placebo 0
 %else
-%bcond flite 1
 %bcond lcms2 1
 %bcond placebo 1
 %endif
@@ -197,7 +197,6 @@ BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(libzmq)
 BuildRequires:  pkgconfig(lilv-0)
 BuildRequires:  pkgconfig(lv2)
-BuildRequires:  pkgconfig(netcdf)
 BuildRequires:  pkgconfig(ogg)
 BuildRequires:  pkgconfig(openal)
 BuildRequires:  pkgconfig(opencore-amrnb)

@@ -1,7 +1,7 @@
 %global		framework ki18n
 
 Name:		kf6-%{framework}
-Version:	6.7.0
+Version:	6.8.0
 Release:	1%{?dist}
 Summary:	KDE Frameworks 6 Tier 1 addon for localization
 License:	BSD-3-Clause AND CC0-1.0 AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-3.0-only AND (LGPL-2.1-only OR LGPL-3.0-only) AND ODbl-1.0
@@ -58,6 +58,8 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 %license LICENSES/*.txt
 %{_kf6_libdir}/libKF6I18n.so.6
 %{_kf6_libdir}/libKF6I18n.so.%{version}
+%{_kf6_libdir}/libKF6I18nQml.so.6
+%{_kf6_libdir}/libKF6I18nQml.so.%{version}
 %{_kf6_libdir}/libKF6I18nLocaleData.so.6
 %{_kf6_libdir}/libKF6I18nLocaleData.so.%{version}
 %{_kf6_datadir}/qlogging-categories6/*%{framework}*
@@ -82,6 +84,7 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 %{_kf6_includedir}/KI18n/
 %{_kf6_includedir}/KI18nLocaleData/
 %{_kf6_libdir}/libKF6I18n.so
+%{_kf6_libdir}/libKF6I18nQml.so
 %{_kf6_libdir}/libKF6I18nLocaleData.so
 %{_kf6_libdir}/cmake/KF6I18n/
 %{_qt6_docdir}/*.tags
@@ -90,6 +93,9 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Sat Nov 02 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.8.0-1
+- 6.8.0
+
 * Fri Oct 04 2024 Steve Cossette <farchord@gmail.com> - 6.7.0-1
 - 6.7.0
 

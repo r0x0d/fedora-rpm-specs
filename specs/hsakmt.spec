@@ -62,12 +62,6 @@ sed -i "s/{HSAKMT_LIBRARY_DIRS}/{LIBHSAKMT_PATH}/" tests/kfdtest/CMakeLists.txt
 sed -i "s/GROUP_WRITE//" tests/kfdtest/CMakeLists.txt
 
 %build
-LLVM_BINDIR=`hipconfig -l`
-LLVM_CMAKEDIR=`${LLVM_BINDIR}/llvm-config --cmakedir`
-if [ ! -d ${LLVM_CMAKEDIR} ]; then
-    echo "Something wrong with llvm-config"
-    false
-fi
 
 mkdir build build-kfdtest
 cd build
@@ -77,7 +71,7 @@ cd build
 export LIBHSAKMT_PATH=$(pwd)
 
 cd ../build-kfdtest
-%cmake ../tests/kfdtest -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_SKIP_RPATH=ON -DLLVM_DIR=${LLVM_CMAKEDIR}
+%cmake ../tests/kfdtest -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_SKIP_RPATH=ON -DLLVM_DIR=%{rocmllvm_cmakedir}
 %cmake_build
 
 %install

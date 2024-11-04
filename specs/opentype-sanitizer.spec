@@ -87,9 +87,12 @@ sed -r -i "/$(tr '\n' '|' < '%{SOURCE2}' | sed -r 's@\|+$@@')/d" \
     tests/meson.build
 
 
-%build
+%conf
 # gtest 1.13.0 requires at least C++14
 %meson -Dcpp_std=c++14
+
+
+%build
 %meson_build
 
 

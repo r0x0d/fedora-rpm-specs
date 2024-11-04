@@ -1,5 +1,5 @@
 # Documentation sources:
-%global commit c0f17cd25b0f2fd60312e9d7194cf7cdfd39303a
+%global commit 9606cb0ee032e77113a043b21fcc386738de301b
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global docrepo uwsgi-docs
 
@@ -249,8 +249,8 @@
 %endif
 
 Name:           uwsgi
-Version:        2.0.27
-Release:        5%{?dist}
+Version:        2.0.28
+Release:        1%{?dist}
 Summary:        Fast, self-healing, application container server
 # uwsgi is licensed under GPLv2 with a linking exception
 # docs are licensed under MIT
@@ -280,8 +280,6 @@ Patch6:         uwsgi_v8-314_compatibility.patch
 Patch7:         uwsgi_fix_mono.patch
 Patch13:        uwsgi_fix_chroot_chdir.patch
 Patch14:        uwsgi_python312-2.patch
-# https://github.com/unbit/uwsgi/issues/2681
-Patch15:        uwsgi-2.0.27-graceful-reload.patch
 
 BuildRequires:  curl, libxml2-devel, libuuid-devel, jansson-devel
 BuildRequires:  libyaml-devel, ruby-devel
@@ -1341,7 +1339,6 @@ cp -p %{SOURCE5} README.Fedora
 %endif
 %patch -P13 -p1
 %patch -P14 -p1
-%patch -P15 -p1
 
 %build
 CFLAGS="%{optflags} -Wno-error -Wno-unused-but-set-variable -fPIC" %{__python} uwsgiconfig.py --verbose --build fedora.ini
@@ -1967,6 +1964,9 @@ exit 0
 
 
 %changelog
+* Sun Oct 27 2024 Ralf Ertzinger <ralf@skytale.net> - 2.0.28-1
+- Update to 2.0.28, drop merged patches
+
 * Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 2.0.27-5
 - Rebuild for Jansson 2.14
   (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)

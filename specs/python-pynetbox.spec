@@ -1,7 +1,7 @@
 %global pypi_name pynetbox
 
 Name:           python-%{pypi_name}
-Version:        7.3.3
+Version:        7.4.1
 Release:        %autorelease
 Summary:        Python API client library for Netbox
 
@@ -25,7 +25,6 @@ BuildRequires:  python3dist(pytest)
 
 %prep
 %autosetup -n %{pypi_name}-%{version} -p1
-sed -i -e '/packaging/s/<[^"]\+//' setup.py
 
 %generate_buildrequires
 %pyproject_buildrequires

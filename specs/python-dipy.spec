@@ -86,7 +86,7 @@ done
 chmod a-x doc/examples/*.py
 
 %generate_buildrequires
-%pyproject_buildrequires -w
+%pyproject_buildrequires -p
 
 %build
 %pyproject_wheel

@@ -5,20 +5,25 @@
 %bcond doc_pdf 1
 
 Name:           python-lazyarray
-Version:        0.5.2
-%forgemeta
+Version:        0.6.0
 Release:        %autorelease
 Summary:        A lazily-evaluated numerical array class
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
-URL:            https://github.com/NeuralEnsemble/lazyarray
-# The GitHub archive contains documentation build files that are not in the
-# PyPI archive.
-Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+# Upstream did not tag release 0.6.0 in the GitHub repo. We use the
+# commit corresponding to the release for getting the sources incl.
+# the required bits for the docs  missing from the sdist.
+# Adjust / remove as needed for upcoming releases.
+%global forgeurl https://github.com/NeuralEnsemble/lazyarray
+%global commit 61d5f9853163a9ce2e5aeca82b37dd5794e22c7b
+%forgemeta
+
+License:        BSD-3-Clause
+URL:            %{forgeurl}
+Source:         %{forgesource}
 
 BuildArch:      noarch
 
+BuildRequires:  python3-devel
 BuildRequires:  %{py3_dist pytest}
 # Optional dependency, used in tests
 BuildRequires:  %{py3_dist scipy}
@@ -56,7 +61,6 @@ Documentation: http://lazyarray.readthedocs.org}
 
 %package -n python3-lazyarray
 Summary:        A lazily-evaluated numerical array class
-BuildRequires:  python3-devel
 
 # We don’t need a Recommends for the optional scipy dependency, because its
 # only value is to enable support for scipy sparse arrays. Programs that use
@@ -74,7 +78,7 @@ This package contains generated HTML documentation for %{name}.
 
 
 %prep
-%autosetup -n lazyarray-%{version}
+%forgeautosetup -p1
 
 # Since pdflatex cannot handle Unicode inputs in general:
 echo "latex_engine = 'xelatex'" >> doc/conf.py

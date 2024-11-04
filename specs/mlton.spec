@@ -2,7 +2,7 @@
 
 Name: mlton
 Version: 20210117
-Release: 4%{?dist}
+Release: %autorelease
 Summary: Optimizing compiler for Standard ML
 
 License: MIT
@@ -12,6 +12,11 @@ Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.src.tgz
 # Generated sources (non-binary) for bootstrapping.
 # See http://mlton.org/PortingMLton#_bootstrap
 #Source100: mlton-bootstrap-ppc64le-redhat-linux.tar.gz
+
+# i686 builds recently started failing with segmentation faults,
+# so exclude this arch.
+# See https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+ExcludeArch: %{ix86}
 
 BuildRequires: make
 BuildRequires: gcc gmp-devel tex(latex)
@@ -88,13 +93,4 @@ rm -rf $RPM_BUILD_ROOT%{_libdir}/mlton/sml/ckit-lib/regression
 
 
 %changelog
-* Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 20210117-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Thu Jan 25 2024 Fedora Release Engineering <releng@fedoraproject.org> - 20210117-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Sun Jan 21 2024 Fedora Release Engineering <releng@fedoraproject.org> - 20210117-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
 %autochangelog

@@ -143,7 +143,7 @@ sed -r -i 's@fplll/io(/thread_pool\.hpp)@cr-marcstevens\1@' fplll/threadpool.h
 %endif
 
 
-%build
+%conf
 autoreconf --install --force --verbose
 
 # This is a formality; no extra flags are required in practice:
@@ -159,6 +159,8 @@ sed -e 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' \
     -e 's|-nostdlib|-Wl,--as-needed &|' \
     -i libtool
 
+
+%build
 %make_build
 
 

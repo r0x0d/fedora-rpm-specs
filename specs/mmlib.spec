@@ -94,8 +94,11 @@ applications that use mmlib.
 %py3_shebang_fix read_version.py
 
 
-%build
+%conf
 %meson -Dtests=enabled -Ddocs=disabled -Dnls=enabled
+
+
+%build
 %meson_build
 
 

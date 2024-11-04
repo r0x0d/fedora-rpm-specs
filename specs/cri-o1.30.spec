@@ -8,9 +8,9 @@
 # **** release metadata ****
 # populated by envsubst in newrelease
 %global crio_spec_name  cri-o1.30
-%global crio_spec_ver   1.30.6
-%global crio_commit     747ac86f851b1d0b3ce2cc09a4b7c053c6ead8ff
-%global crio_tag        v1.30.6
+%global crio_spec_ver   1.30.7
+%global crio_commit     2391edcb98c15a5557fa899a143501d2608dc044
+%global crio_tag        v1.30.7
 %global golangver       1.22.2
 
 # Related: github.com/cri-o/cri-o/issues/3684

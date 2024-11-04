@@ -7,7 +7,7 @@
 
 Name:           python-%{pkg_name}
 Version:        2.4.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Can add links and perform other custom replacements to rst
 
 License:        MIT
@@ -27,18 +27,10 @@ link_files configuration section...
 Summary:        %{summary}
 
 Requires:       python3dist(six)
-Requires:       python3-dateutil
 
 BuildRequires:  python3-devel
-BuildRequires:  python3-dateutil
-BuildRequires:  python3dist(pathspec)
 BuildRequires:  python3dist(path) >= 13
-BuildRequires:  python3dist(pip)
 BuildRequires:  python3dist(pytest)
-BuildRequires:  python3-setuptools_scm >= 1.15.0
-BuildRequires:  python3dist(setuptools)
-BuildRequires:  python3dist(toml)
-BuildRequires:  python3dist(wheel)
 
 %{?python_provide:%python_provide python3-%{pkg_name}}
 
@@ -57,6 +49,9 @@ Documentation for rst.linker
 
 %prep
 %autosetup -n %{pypi_name}-%{version}
+
+%generate_buildrequires
+%pyproject_buildrequires
 
 %build
 %pyproject_wheel
@@ -87,6 +82,11 @@ rm -rf html/.{doctrees,buildinfo}
 %endif
 
 %changelog
+* Sat Nov 02 2024 Miro Hrončok <mhroncok@redhat.com> - 2.4.0-8
+- Generate BuildRequires dynamically
+- Drop unneeded build dependency on python3dist(toml)
+- Drop duplicate runtime dependency on python3-dateutil
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
