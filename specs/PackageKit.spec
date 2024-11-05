@@ -22,6 +22,9 @@ Patch1:    package-remove-password-prompt.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=2283063
 Patch2:    appstream-mark-pk-as-compulsory.patch
 
+# https://bugs.kde.org/show_bug.cgi?id=495538
+Patch3:    change-offline-update-action-without-auth.patch
+
 BuildRequires: docbook-utils
 BuildRequires: gettext
 BuildRequires: gtk-doc

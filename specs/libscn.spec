@@ -2,16 +2,13 @@
 %global upname %{intname}lib
 
 Name: libscn
-Version: 3.0.1
+Version: 3.0.2
 Release: %autorelease
 
 License: Apache-2.0
 Summary: Library for replacing scanf and std::istream
 URL: https://github.com/eliaskosunen/%{upname}
 Source0: %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
-
-# https://github.com/eliaskosunen/scnlib/commit/f3b00eca89ee923e4b03a950dee0d00da48e7001
-Patch100: %{name}-3.0.1-benchmark-fix.patch
 
 BuildRequires: doctest-devel
 BuildRequires: fast_float-devel

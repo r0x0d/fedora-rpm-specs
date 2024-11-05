@@ -5,7 +5,7 @@
 
 Name:           lpf
 Version:        0.3
-Release:        10%{?rel}%{?dist}
+Release:        11%{?rel}%{?dist}
 Summary:        Local package factory - build non-redistributable rpms
 
 # Icon from iconarchive.com
@@ -32,7 +32,6 @@ Requires:       rpm-build
 Requires:       shadow-utils
 Requires:       sudo
 Requires:       dnf
-Requires:       dnf-plugins-core
 Requires:       zenity
 Requires(pre):  shadow-utils
 #for lpf-gui
@@ -92,6 +91,9 @@ exit 0
 
 
 %changelog
+* Sun Nov 03 2024 Sérgio Basto <sergio@serjux.com> - 0.3-11
+- Only requires dnf to work with dnf5 Resolves: rhbz#2209396
+
 * Thu Oct 24 2024 Sérgio Basto <sergio@serjux.com> - 0.3-10
 - (#2319776) fixes dnf install for dnf5
 

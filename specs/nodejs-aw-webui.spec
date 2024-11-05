@@ -1,10 +1,10 @@
 %global npm_name aw-webui
 
-%global commit 05c25c98b172fcb72e2ae7cbf40be6bc77526c65
+%global commit 291da6f2c5e7a6b896f23a4eec5ffed9874321ba
 %global short_commit %(c=%{commit}; echo ${c:0:7})
 
 Name:           nodejs-%{npm_name}
-Version:        0^20240518.%{short_commit}
+Version:        0^20241103.%{short_commit}
 Release:        %autorelease
 Summary:        A web-based UI for ActivityWatch, built with Vue.js
 
@@ -19,8 +19,8 @@ Source0:        %{url}/archive/%{commit}/%{npm_name}-%{short_commit}.tar.gz
 Source1:        %{npm_name}-%{short_commit}-nm-prod.tgz
 Source2:        %{npm_name}-%{short_commit}-nm-dev.tgz
 Source3:        %{npm_name}-%{short_commit}-bundled-licenses.txt
-Source4:        https://github.com/ActivityWatch/media/blob/cb597f7c2e2b135505fe5d6b3042960a638892cf/logo/logo.png
-Source5:        https://github.com/ActivityWatch/media/blob/cb597f7c2e2b135505fe5d6b3042960a638892cf/logo/logo.svg
+Source4:        https://raw.githubusercontent.com/ActivityWatch/media/cb597f7c2e2b135505fe5d6b3042960a638892cf/logo/logo.png
+Source5:        https://raw.githubusercontent.com/ActivityWatch/media/cb597f7c2e2b135505fe5d6b3042960a638892cf/logo/logo.svg
 
 BuildArch:      noarch
 ExclusiveArch:  %{nodejs_arches} noarch

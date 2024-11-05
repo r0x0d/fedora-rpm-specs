@@ -3,7 +3,7 @@
 
 Name:		rubygem-%{gem_name}
 Version:	1.0.3.0
-Release:	24%{?dist}
+Release:	25%{?dist}
 
 Summary:	Converter from RT into various formats
 # See rttool.en.rd
@@ -17,6 +17,7 @@ Source0:	https://rubygems.org/gems/%{gem_name}-%{version}.gem
 BuildRequires:	ruby(release)
 BuildRequires:	rubygems-devel
 BuildRequires:	rubygem(minitest)
+BuildRequires:	rubygem(nkf)
 BuildRequires:	rubygem(test-unit)
 BuildRequires:	rubygem(rdtool)
 BuildRequires:	rubygem(racc)
@@ -104,6 +105,9 @@ popd
 %exclude	%{gem_instdir}/test/
 
 %changelog
+* Sun Nov 03 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.0.3.0-25
+- BR: rubygem(nkf) explicitly for ruby34
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.3.0-24
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

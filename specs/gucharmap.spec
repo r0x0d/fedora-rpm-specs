@@ -57,7 +57,7 @@ needed to use the libgucharmap library.
 %autosetup
 
 %build
-%meson -Ducd_path=%{_datadir}/unicode/ucd -Ddocs=true
+%meson -Ducd_path=/usr/share/unicode/ucd -Ddocs=true
 
 %meson_build
 

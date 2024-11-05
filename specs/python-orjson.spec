@@ -8,7 +8,7 @@
 %bcond tests 1
 
 Name:           python-orjson
-Version:        3.10.7
+Version:        3.10.11
 Release:        %autorelease
 Summary:        Fast, correct Python JSON library
 
@@ -48,6 +48,8 @@ Summary:        %{summary}
 # MIT
 # MIT OR Apache-2.0 (duplicate)
 # Unlicense OR MIT
+#
+# Bundled PyO3 crates in include/pyo3/ are also (Apache-2.0 OR MIT).
 License:        %{shrink:
                 (Apache-2.0 OR MIT) AND
                 BSD-3-Clause AND
@@ -57,6 +59,18 @@ License:        %{shrink:
                 (Unlicense OR MIT)
                 }
 
+# Path to using published versions of pyo3-ffi/pyo3-build-config again?
+# https://github.com/ijl/orjson/issues/524
+#
+# “You are welcome to work to upstream the diff if you find the vendoring
+# unsuitable for your organization's own preferences.”
+#
+# Note that the vendored crates are actually *forked* from a snapshot,
+# https://github.com/PyO3/pyo3/commit/dc415fae9f5eaa8ac0f6d0ea769b9ab28860898f;
+# see https://github.com/ijl/orjson/issues/524#issuecomment-2424170405 for
+# details.
+Provides:       bundled(crate(pyo3-build-config)) = 0.23.0~dev^20241018gitdc415fa
+Provides:       bundled(crate(pyo3-ffi)) = 0.23.0~dev^20241018gitdc415fa
 
 %description -n python3-orjson %{_description}
 
@@ -82,14 +96,23 @@ rm -r include/cargo
 # Remove bundled yyjson.
 rm -rv include/yyjson/
 
+# Collect licenses for remaining vendored crates
+mkdir -p LICENSES.vendored/pyo3
+cp -vp include/pyo3/LICENSE* LICENSES.vendored/pyo3/
+
 # Remove unpackaged PyPI plugin
 sed -i '/pytest-random-order/d' test/requirements.txt
-
 
 
 %generate_buildrequires
 %pyproject_buildrequires %{?with_tests:test/requirements.txt}
 %cargo_generate_buildrequires
+for dir in include/pyo3/*/
+do
+  pushd "${dir}" >/dev/null
+  %cargo_generate_buildrequires
+  popd >/dev/null
+done
 
 
 %build
@@ -114,7 +137,7 @@ export RUSTFLAGS='%{build_rustflags}'
 
 
 %files -n python3-orjson -f %{pyproject_files}
-%license LICENSE-MIT LICENSE-APACHE LICENSES.dependencies
+%license LICENSE-MIT LICENSE-APACHE LICENSES.dependencies LICENSES.vendored/
 %doc README.md
 
 

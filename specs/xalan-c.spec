@@ -108,8 +108,11 @@ find docs samples src -type f -exec file '{}' '+' |
   xargs dos2unix --keepdate
 
 
-%build
+%conf
 %cmake %{?with_icu:-Dtranscoder=icu} -GNinja
+
+
+%build
 %cmake_build
 
 

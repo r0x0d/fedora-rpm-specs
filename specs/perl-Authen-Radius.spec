@@ -1,6 +1,6 @@
 Name:           perl-Authen-Radius
-Version:        0.32
-Release:        12%{?dist}
+Version:        0.33
+Release:        1%{?dist}
 Summary:        Provide simple Radius client facilities
 License:        Artistic-2.0
 URL:            https://metacpan.org/release/Authen-Radius
@@ -8,11 +8,10 @@ Source0:        https://cpan.metacpan.org/modules/by-module/Authen/Authen-Radius
 BuildArch:      noarch
 # Module Build
 BuildRequires:  coreutils
-BuildRequires:  findutils
 BuildRequires:  make
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 # Module Runtime
 BuildRequires:  perl(constant)
 BuildRequires:  perl(Data::Dumper) >= 1
@@ -34,6 +33,7 @@ BuildRequires:  perl(File::Spec)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Test::NoWarnings)
 # Optional Tests
+# (none)
 # Dependencies
 Requires:       perl(Data::Dumper) >= 1
 Requires:       perl(Data::HexDump) >= 0.02
@@ -58,12 +58,11 @@ imitate AAA requests and process server responses.
 %setup -q -n Authen-Radius-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 %{_fixperms} -c %{buildroot}
 
 %check
@@ -76,6 +75,11 @@ make test
 %{_mandir}/man3/Authen::Radius.3*
 
 %changelog
+* Sun Nov  3 2024 Paul Howarth <paul@city-fan.org> - 0.33-1
+- Update to 0.33
+  - Support for Message-Authenticator of type 'octets' (CPAN RT#154336)
+- Use %%{make_build} and %%{make_install}
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.32-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

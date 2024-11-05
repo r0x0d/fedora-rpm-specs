@@ -2,8 +2,8 @@
 %global upstream_name sphinxcontrib-httpdomain
 
 Name:           python-%{upstream_name}
-Version:        1.7.0
-Release:        24%{?dist}
+Version:        1.8.1
+Release:        1%{?dist}
 Summary:        Sphinx domain for documenting HTTP APIs
 License:        BSD-2-Clause
 URL:            http://packages.python.org/sphinxcontrib-httpdomain/
@@ -46,6 +46,10 @@ rm -r *.egg-info
 %{python3_sitelib}/sphinxcontrib*
 
 %changelog
+* Sun Nov 03 2024 Dan Callaghan <djc@djc.id.au> - 1.8.1-1
+- new upstream release 1.8.1:
+  https://sphinxcontrib-httpdomain.readthedocs.io/en/stable/#version-1-8-0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.7.0-24
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

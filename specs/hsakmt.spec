@@ -2,9 +2,18 @@
 %global rocm_release 6.2
 %global rocm_patch 1
 %global rocm_version %{rocm_release}.%{rocm_patch}
+
+%if 0%{?is_opensuse}
+%bcond_with kfdtest
+%else
+%bcond_without kfdtest
+%endif
+
+%global __cmake_in_source_build 1
+
 Name:           hsakmt
 Version:        1.0.6
-Release:        46.rocm%{rocm_version}%{?dist}
+Release:        47.rocm%{rocm_version}%{?dist}
 Summary:        AMD HSA thunk library
 
 License:        MIT
@@ -13,17 +22,29 @@ Source0:        https://github.com/RadeonOpenCompute/ROCT-Thunk-Interface/archiv
 # https://github.com/ROCm/ROCT-Thunk-Interface/pull/108
 Patch1:         0001-Improve-finding-rocm-smi.patch
 
+%if 0%{?rhel} || 0%{?is_opensuse}
+ExclusiveArch:  x86_64
+%else
 # Fedora builds AMD HSA kernel support for these 64bit targets:
 ExclusiveArch: x86_64 aarch64 ppc64le
+%endif
 BuildRequires: gcc
 BuildRequires: gcc-c++
-BuildRequires: hipcc
-BuildRequires: rocm-llvm-devel
-BuildRequires: rocm-compilersupport-macros
 BuildRequires: cmake
 BuildRequires: pciutils-devel
 BuildRequires: libdrm-devel
+
+%if %{with kfdtest}
+BuildRequires: hipcc
+BuildRequires: rocm-llvm-devel
+BuildRequires: rocm-compilersupport-macros
+%endif
+
+%if 0%{?is_opensuse}
+BuildRequires: libnuma-devel
+%else
 BuildRequires: numactl-devel
+%endif
 
 %if 0%{?epel} == 7
 # We still the original cmake package on epel, because it provides the
@@ -35,6 +56,7 @@ BuildRequires: cmake3
 %description
 This package includes the libhsakmt (HSA thunk) libraries for AMD KFD
 
+%if %{with kfdtest}
 %package -n kfdtest
 Summary: Test suite for ROCm's KFD kernel module
 Requires: %{name}%{?_isa} = %{version}-%{release}
@@ -43,6 +65,7 @@ Requires: rocm-smi
 %description -n kfdtest
 This package includes ROCm's KFD kernel module test suite (kfdtest), the list of
 excluded tests for each ASIC, and a convenience script to run the test suite.
+%endif
 
 %package devel
 Summary: AMD HSA thunk library development package
@@ -63,23 +86,39 @@ sed -i "s/GROUP_WRITE//" tests/kfdtest/CMakeLists.txt
 
 %build
 
+%if %{with kfdtest}
 mkdir build build-kfdtest
 cd build
 
 %cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo
 %cmake_build
-export LIBHSAKMT_PATH=$(pwd)
 
+export LIBHSAKMT_PATH=$(pwd)
 cd ../build-kfdtest
 %cmake ../tests/kfdtest -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_SKIP_RPATH=ON -DLLVM_DIR=%{rocmllvm_cmakedir}
 %cmake_build
 
+%else
+%cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo
+%cmake_build
+
+%endif
+
 %install
+
+%if %{with kfdtest}
+
 cd build
 %cmake_install
 
 cd ../build-kfdtest
 %cmake_install
+
+%else
+
+%cmake_install
+
+%endif
 
 # We install this via license macro instead:
 rm %{buildroot}%{_docdir}/hsakmt/LICENSE.md
@@ -92,12 +131,14 @@ rm %{buildroot}%{_docdir}/hsakmt/LICENSE.md
 %{_libdir}/libhsakmt.so.%{version}
 %{_libdir}/libhsakmt.so.1
 
+%if %{with kfdtest}
 %files -n kfdtest
 %doc tests/kfdtest/README.txt
 %license tests/kfdtest/LICENSE.kfdtest
 %{_bindir}/kfdtest
 %{_bindir}/run_kfdtest.sh
 %{_datadir}/kfdtest
+%endif
 
 %files devel
 %{_libdir}/libhsakmt.so
@@ -108,6 +149,9 @@ rm %{buildroot}%{_docdir}/hsakmt/LICENSE.md
 %exclude %{_libdir}/libhsakmt-staticdrm.a
 
 %changelog
+* Sun Nov 3 2024 Tom Rix <Tom.Rix@amd.com> - 1.0.6-47.rocm6.2.0
+- Build on Tumbleweed
+
 * Tue Oct 29 2024 Tom Rix <Tom.Rix@amd.com> - 1.0.6-46.rocm6.2.0
 - Use hipconfig to find llvm-config
 

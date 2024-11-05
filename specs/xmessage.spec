@@ -55,9 +55,12 @@ question. xmessage can also exit after a specified time.
 %autosetup
 
 
-%build
+%conf
 autoreconf --force --install --verbose
 %configure
+
+
+%build
 %make_build
 
 

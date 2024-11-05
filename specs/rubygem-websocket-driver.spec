@@ -3,7 +3,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 0.7.5
-Release: 12%{?dist}
+Release: 13%{?dist}
 Summary: WebSocket protocol handler with pluggable I/O
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License: Apache-2.0
@@ -22,6 +22,7 @@ BuildRequires: ruby-devel
 # Compiler is required for build of gem binary extension.
 # https://fedoraproject.org/wiki/Packaging:C_and_C++#BuildRequires_and_Requires
 BuildRequires: gcc
+BuildRequires: rubygem(base64)
 BuildRequires: rubygem(websocket-extensions)
 BuildRequires: rubygem(rspec)
 
@@ -87,6 +88,9 @@ popd
 %doc %{gem_instdir}/README.md
 
 %changelog
+* Sun Nov 03 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.7.5-13
+- Add BR: rubygem(base64) explicitly for ruby34
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0.7.5-12
 - convert license to SPDX
 

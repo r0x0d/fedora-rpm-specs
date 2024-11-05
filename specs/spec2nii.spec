@@ -81,7 +81,13 @@ ExcludeArch:    %{ix86}
 # software from the nmrglue project.” We assess that neither case of selective
 # copying and adaptation rises to the level of a bundled dependency.
 
-BuildRequires:  python3-devel
+BuildSystem:            pyproject
+BuildOption(install):   -l spec2nii
+%ifarch s390x
+# Skip import-checking modules that need pymapvbvd.
+BuildOption(check):     -e spec2nii.Siemens.dicomfunctions
+%endif
+
 BuildRequires:  %{py3_dist pytest}
 # Required for orientation tests – but those tests fail.
 # BuildRequires:  %%{py3_dist fsleyes}
@@ -97,8 +103,7 @@ developed by Chris Rorden. All MRS(I) orientations are tested with images
 converted using dcm2niix.
 
 
-%prep
-%autosetup
+%prep -a
 %if %{with test_data}
 %setup -q -T -D -a 1 -c -n %{name}-%{version}
 rmdir tests/spec2nii_test_data
@@ -115,18 +120,7 @@ sed -r -i 's/^([[:blank:]]*)?(-[[:blank:]]+)?(pyMapVBVD)\b/\1# \2\3/' \
 %endif
 
 
-%generate_buildrequires
-%pyproject_buildrequires
-
-
-%build
-%pyproject_wheel
-
-
-%install
-%pyproject_install
-%pyproject_save_files -l spec2nii
-
+%install -a
 install -t '%{buildroot}%{_mandir}/man1' -D -p -m 0644 \
     '%{SOURCE100}' '%{SOURCE101}' '%{SOURCE102}' '%{SOURCE103}' \
     '%{SOURCE104}' '%{SOURCE105}' '%{SOURCE106}' '%{SOURCE107}' \
@@ -135,14 +129,7 @@ install -t '%{buildroot}%{_mandir}/man1' -D -p -m 0644 \
     '%{SOURCE116}' '%{SOURCE117}' '%{SOURCE118}'
 
 
-%check
-%ifarch s390x
-# Skip import-checking modules that need pymapvbvd.
-%pyproject_check_import -e spec2nii.Siemens.dicomfunctions
-%else
-%pyproject_check_import
-%endif
-
+%check -a
 %if %{with test_data}
 # Only a few tests can be executed without the test data archive, and those
 # that pass without it generally do so tautologically – e.g. they run a test

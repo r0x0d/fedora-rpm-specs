@@ -2,7 +2,7 @@
 %global srcname aw-client
 
 Name:           python-%{srcname}
-Version:        0.5.13
+Version:        0.5.14
 Release:        %autorelease
 Summary:        Client library for ActivityWatch in Python
 

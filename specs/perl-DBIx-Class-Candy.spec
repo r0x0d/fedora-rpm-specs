@@ -1,11 +1,11 @@
 Name:           perl-DBIx-Class-Candy
-Version:        0.005003
-Release:        16%{?dist}
+Version:        0.005004
+Release:        1%{?dist}
 Summary:        Sugar for your favorite ORM, DBIx::Class
-License:        GPL+ or Artistic
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 URL:            https://metacpan.org/release/DBIx-Class-Candy
-Source0:        https://cpan.metacpan.org/authors/id/F/FR/FREW/DBIx-Class-Candy-%{version}.tar.gz
+Source0:        https://cpan.metacpan.org/authors/id/W/WE/WESM/DBIx-Class-Candy-%{version}.tar.gz
 
 BuildArch:      noarch
 # build requirements
@@ -49,7 +49,7 @@ DBIx::Class related things.
 
 %build
 /usr/bin/perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
-%{make_build} %{?_smp_mflags}
+%{make_build}
 
 %install
 %{make_install}
@@ -65,6 +65,10 @@ DBIx::Class related things.
 %{_mandir}/man3/DBIx*
 
 %changelog
+* Sun Nov 03 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 0.005004-1
+- Update to 0.005004
+- Migrate to SPDX license
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.005003-16
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

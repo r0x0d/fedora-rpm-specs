@@ -72,8 +72,11 @@ sample rate, 16-bit sample size, etc.).
 find contrib/ -type f -name '*.py' -print -exec sed -r -i '1{/^#!/d}' '{}' '+'
 
 
-%build
+%conf
 %meson -Dmp3=true -Dogg_vorbis=true
+
+
+%build
 %meson_build
 
 

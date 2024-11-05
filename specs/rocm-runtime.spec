@@ -8,7 +8,7 @@
 
 Name:       rocm-runtime
 Version:    %{rocm_version}
-%if 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
 Release:    1%{?dist}
 %else
 Release:    %autorelease
@@ -22,7 +22,7 @@ Source0:    %{url}/archive/rocm-%{version}.tar.gz#/%{name}-%{version}.tar.gz
 ExclusiveArch:  x86_64
 
 BuildRequires:  cmake
-BuildRequires:  elfutils-libelf-devel
+BuildRequires:  gcc-c++
 BuildRequires:  hipcc
 BuildRequires:  hsakmt-devel
 BuildRequires:  hsakmt(rocm) = %{rocm_release}
@@ -30,7 +30,13 @@ BuildRequires:  libdrm-devel
 BuildRequires:  libffi-devel
 BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  rocm-device-libs
+
+%if 0%{?is_opensuse}
+BuildRequires:  libelf-devel
+%else
+BuildRequires:  elfutils-libelf-devel
 BuildRequires:  vim-common
+%endif
 
 %description
 The ROCm Runtime Library is a thin, user-mode API that exposes the necessary
@@ -53,7 +59,8 @@ ROCm Runtime development files
 
 %build
 
-%cmake -S src -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+cd src
+%cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
     -DCMAKE_INSTALL_LIBDIR=%{_lib} \
     -DINCLUDE_PATH_COMPATIBILITY=OFF \
@@ -62,6 +69,7 @@ ROCm Runtime development files
 
 
 %install
+cd src
 %cmake_install
 
 %ldconfig_scriptlets
@@ -78,4 +86,10 @@ ROCm Runtime development files
 %{_libdir}/cmake/hsa-runtime64/
 
 %changelog
+%if 0%{?is_opensuse}
+* Sun Nov 3 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif

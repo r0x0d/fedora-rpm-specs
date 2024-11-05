@@ -5,7 +5,7 @@
 %global	rpmminorver		.%(echo %preminorver | sed -e 's|^\\.\\.*||')
 %global	fullver		%{majorver}%{?preminorver}
 
-%global	baserelease		1
+%global	baserelease		2
 
 %global	gem_name		mechanize
 
@@ -35,6 +35,7 @@ BuildRequires:	rubygem(http-cookie)
 BuildRequires:	rubygem(mime-types)
 BuildRequires:	rubygem(net-http-digest_auth)
 BuildRequires:	rubygem(net-http-persistent)
+BuildRequires:	rubygem(nkf)
 BuildRequires:	rubygem(nokogiri)
 #BuildRequires:	rubygem(ntlm-http)
 BuildRequires:	rubygem(webrobots)
@@ -156,6 +157,9 @@ popd
 %{gem_instdir}/examples/
 
 %changelog
+* Sun Nov 03 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.12.2-2
+- Add BR: rubygem(nkf) explicitly for ruby34
+
 * Thu Oct 03 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.12.2-1
 - 2.12.2
 

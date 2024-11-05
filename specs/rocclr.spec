@@ -204,12 +204,6 @@ sed -i 's/^\(HTML_TIMESTAMP.*\)YES/\1NO/' \
 %build
 export PATH=%rocmllvm_prefix/bin:$PATH
 
-LLVM_CMAKEDIR=`llvm-config-%{rocmllvm_version} --cmakedir`
-if [ ! -d ${LLVM_CMAKEDIR} ]; then
-    echo "Something wrong with llvm-config"
-    false
-fi
-
 %cmake \
     -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-z,noexecstack \
     -DHIP_COMMON_DIR=$(realpath HIP-rocm-%{version}) \
@@ -223,7 +217,7 @@ fi
     -DFILE_REORG_BACKWARD_COMPATIBILITY=OFF \
     -DHIP_ENABLE_ROCPROFILER_REGISTER=OFF \
     -DUSE_PROF_API=%{build_prof_api} \
-    -DCMAKE_PREFIX_PATH=${LLVM_CMAKEDIR}/.. \
+    -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
     -DCMAKE_BUILD_TYPE=%{build_type}
 %cmake_build
 

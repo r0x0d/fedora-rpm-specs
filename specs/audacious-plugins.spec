@@ -10,8 +10,8 @@
 %{?aud_plugin_dep}
 
 Name: audacious-plugins
-Version: 4.4.1
-Release: 2%{?dist}
+Version: 4.4.2
+Release: 1%{?dist}
 
 %global tar_ver %{version}
 
@@ -386,6 +386,9 @@ install -p -m0644 %{SOURCE103} ${RPM_BUILD_ROOT}%{_datadir}/appdata
 
 
 %changelog
+* Sun Nov  3 2024 Michael Schwendt <mschwendt@fedoraproject.org> - 4.4.2-1
+- Update to 4.4.2.
+
 * Tue Oct 01 2024 Neal Gompa <ngompa@fedoraproject.org> - 4.4.1-2
 - Rebuild for ffmpeg 7
 

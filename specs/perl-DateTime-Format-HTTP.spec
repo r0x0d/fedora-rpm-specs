@@ -1,6 +1,6 @@
 Name:           perl-DateTime-Format-HTTP
-Version:        0.42
-Release:        29%{?dist}
+Version:        0.43
+Release:        1%{?dist}
 Summary:        HTTP protocol date conversion routines
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/DateTime-Format-HTTP
@@ -12,12 +12,10 @@ BuildRequires:  make
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
-BuildRequires:  sed
 # Runtime
 BuildRequires:  perl(DateTime) >= 0.17
 BuildRequires:  perl(HTTP::Date) => 1.44
 BuildRequires:  perl(strict)
-BuildRequires:  perl(vars)
 BuildRequires:  perl(warnings)
 # Tests only
 BuildRequires:  perl(lib)
@@ -37,9 +35,6 @@ HTTP protocol (and then some).
 %prep
 %setup -q -n DateTime-Format-HTTP-%{version}
 
-# Fix line endings
-sed -i -e 's/\r//' LICENSE README Changes CREDITS
-
 %build
 perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
 %{make_build}
@@ -58,6 +53,11 @@ make test
 %{_mandir}/man3/DateTime::Format::HTTP.3*
 
 %changelog
+* Sun Nov  3 2024 Paul Howarth <paul@city-fan.org> - 0.43-1
+- Update to 0.43
+  - Don't use vars, use our or my
+- Line endings fixed upstream
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.42-29
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

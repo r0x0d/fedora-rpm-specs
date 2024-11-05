@@ -11,7 +11,7 @@
 %bcond docs 0
 
 Name:           gegl04
-Version:        0.4.48
+Version:        0.4.50
 Release:        %autorelease
 Summary:        Graph based image processing framework
 
@@ -19,9 +19,6 @@ Summary:        Graph based image processing framework
 License:        GPL-3.0-or-later AND LGPL-3.0-or-later
 URL:            https://www.gegl.org/
 Source0:        http://download.gimp.org/pub/gegl/%{apiver}/gegl-%{version}.tar.xz
-
-Patch0:         gegl04-openexr.patch
-Patch1:         gegl04-gtk.patch
 
 BuildRequires:  chrpath
 BuildRequires:  enscript

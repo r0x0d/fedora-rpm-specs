@@ -1,8 +1,8 @@
 %global gem_name unicode
 
 Name:           rubygem-%{gem_name}
-Version:        0.4.4.4
-Release:        12%{?dist}
+Version:        0.4.4.5
+Release:        1%{?dist}
 Summary:        Unicode normalization library for Ruby
 License:        Ruby
 URL:            https://github.com/blackwinter/unicode
@@ -14,10 +14,6 @@ Source1:        https://www.ruby-lang.org/en/about/license.txt
 BuildRequires:  gcc
 BuildRequires:  ruby-devel
 BuildRequires:  rubygems-devel
-
-# Fix build failures with GCC 14 due to incompatible function pointer types.
-# https://github.com/blackwinter/unicode/pull/11
-Patch1:         0001-use-VALUE-for-argument-types-and-then-cast.patch
 
 %description
 Unicode normalization library for Ruby.
@@ -32,7 +28,6 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version}
-%patch 1 -p1
 
 cp -p %{SOURCE1} .
 %gemspec_add_file "license.txt"
@@ -80,6 +75,9 @@ popd
 %{gem_instdir}/unicode.gemspec
 
 %changelog
+* Sun Nov 03 2024 Dan Callaghan <djc@djc.id.au> - 0.4.4.5-1
+- New upstream release 0.4.4.5
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.4.4-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -135,12 +135,15 @@ Wayland compositor tests that use wlcs.
 sed -r -i 's/-Werror //' CMakeLists.txt
 
 
-%build
+%conf
 %cmake \
     -DWLCS_BUILD_ASAN=%{?with_asan:ON}%{?!with_asan:OFF} \
     -DWLCS_BUILD_TSAN=%{?with_tsan:ON}%{?!with_tsan:OFF} \
     -DWLCS_BUILD_UBSAN=%{?with_ubsan:ON}%{?!with_ubsan:OFF} \
     -GNinja
+
+
+%build
 %cmake_build
 
 

@@ -249,12 +249,15 @@ rm -rvf arch/win32
 rm -rvf python
 
 
-%build
+%conf
 %cmake \
     -DCMAKE_SKIP_INSTALL_RPATH=ON \
     -DTeem_USE_LIB_INSTALL_SUBDIR=ON \
     -DTeem_FFTW3=ON \
     -DTeem_LEVMAR=ON
+
+
+%build
 %cmake_build
 
 

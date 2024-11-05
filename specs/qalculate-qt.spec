@@ -59,13 +59,16 @@ This package provides a Qt graphical interface for Qalculate!
 %autosetup -p1
 
 
-%build
+%conf
 %qmake_qt6 \
     PREFIX='%{_prefix}' \
     DESKTOP_DIR='%{_datadir}/applications' \
     DESKTOP_ICONS_DIR='%{_datadir}/icons' \
     APPDATA_DIR='%{_metainfodir}' \
     MAN_DIR='%{_mandir}'
+
+
+%build
 %make_build
 
 

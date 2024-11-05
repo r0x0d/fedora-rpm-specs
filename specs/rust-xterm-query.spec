@@ -5,7 +5,7 @@
 %global crate xterm-query
 
 Name:           rust-xterm-query
-Version:        0.4.1
+Version:        0.5.0
 Release:        %autorelease
 Summary:        Query your terminal
 
@@ -13,7 +13,7 @@ License:        MIT
 URL:            https://crates.io/crates/xterm-query
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * bump crossterm dev-dependency from 0.21 to 0.26
+# * bump crossterm dev-dependency from 0.21 to 0.28
 Patch:          xterm-query-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

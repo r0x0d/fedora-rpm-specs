@@ -8,7 +8,7 @@
 %global crate terminal-light
 
 Name:           rust-terminal-light
-Version:        1.4.0
+Version:        1.7.0
 Release:        %autorelease
 Summary:        Tells you whether your terminal is dark or light
 

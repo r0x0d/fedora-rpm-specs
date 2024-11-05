@@ -4,8 +4,8 @@
 %bcond_without meson
 
 Name: audacious
-Version: 4.4.1
-Release: 2%{?dist}
+Version: 4.4.2
+Release: 1%{?dist}
 
 %global tar_ver %{version}
 
@@ -21,9 +21,6 @@ URL: https://audacious-media-player.org/
 Group: Applications/Multimedia
 
 Source0: https://distfiles.audacious-media-player.org/%{name}-%{tar_ver}.tar.bz2
-
-# upstream #1435
-Patch1: audacious-4.4.1-infopopup.patch
 
 # for /usr/bin/appstream-util
 BuildRequires: libappstream-glib
@@ -220,6 +217,9 @@ fi
 
 
 %changelog
+* Sun Nov  3 2024 Michael Schwendt <mschwendt@fedoraproject.org> - 4.4.2-1
+- Update to 4.4.2.
+
 * Fri Oct 11 2024 Michael Schwendt <mschwendt@fedoraproject.org> - 4.4.1-2
 - Merge fix for overly large infopopup if using two screens.
 

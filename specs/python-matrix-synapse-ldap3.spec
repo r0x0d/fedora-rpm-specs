@@ -3,11 +3,9 @@
 %global desc Allows synapse to use LDAP as a password provider.
 
 Name:           python-%{srcname}
-Version:        0.2.2
-Release:        9%{?dist}
+Version:        0.3.0
+Release:        1%{?dist}
 Summary:        Allows synapse to use LDAP as a password provider
-
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://github.com/matrix-org/%{srcname}
 Source0:        %{url}/archive/v%{version}/%{srcname}-v%{version}.tar.gz
@@ -53,6 +51,10 @@ BuildRequires:  python3-devel
 
 
 %changelog
+* Sun Nov 03 2024 Dan Callaghan <djc@djc.id.au> - 0.3.0-1
+- new upstream release 0.3.0:
+  https://github.com/matrix-org/matrix-synapse-ldap3/releases/tag/v0.3.0
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0.2.2-9
 - convert license to SPDX
 

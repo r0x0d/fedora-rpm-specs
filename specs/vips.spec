@@ -11,6 +11,9 @@ License:	LGPL-2.1-or-later
 URL:		https://www.libvips.org/
 Source0:	https://github.com/libvips/libvips/releases/download/v%{version}/%{name}-%{version}.tar.xz
 
+# https://github.com/libvips/libvips/pull/4242
+Patch0:         libvips-fix-big-endian-pfm.patch
+
 BuildRequires:	meson
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
@@ -141,7 +144,7 @@ ImageMagick7.
 
 
 %prep
-%setup -q
+%autosetup -p1
 
 
 %build

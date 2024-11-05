@@ -133,7 +133,7 @@ BuildRequires:  perl >= 5.10.0
 BuildRequires:  pkgconfig(alsa) >= 1.0.0
 BuildRequires:  pkgconfig(appstream-glib) >= 0.7.7
 BuildRequires:  pkgconfig(atk) >= 2.4.0
-BuildRequires:  pkgconfig(babl-0.1) >= 0.1.108
+BuildRequires:  pkgconfig(babl-0.1) >= 0.1.110
 BuildRequires:  pkgconfig(bzip2)
 BuildRequires:  pkgconfig(cairo) >= 1.14.0
 BuildRequires:  pkgconfig(cairo-pdf) >= 1.12.2
@@ -141,7 +141,7 @@ BuildRequires:  pkgconfig(cfitsio)
 BuildRequires:  pkgconfig(fontconfig) >= 2.12.4
 BuildRequires:  pkgconfig(freetype2) >= 2.1.7
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0) >= 2.30.8
-BuildRequires:  pkgconfig(gegl-0.4) >= 0.4.48
+BuildRequires:  pkgconfig(gegl-0.4) >= 0.4.50
 BuildRequires:  pkgconfig(gexiv2) >= 0.14.0
 BuildRequires:  pkgconfig(gio-2.0)
 BuildRequires:  pkgconfig(gio-unix-2.0)
@@ -227,9 +227,6 @@ Patch2:         gimp-2.99.19-no-phone-home-default.patch
 # use external help browser directly if help browser plug-in is not built
 Patch3:         gimp-2.99.19-external-help-browser.patch
 
-# Don’t require an unreleased gegl version
-Patch4:         gimp-2.99.19-don-t-require-unreleased-gegl-version.patch
-
 %description
 GIMP (GNU Image Manipulation Program) is a powerful image composition and
 editing program, which can be extremely useful for creating logos and other
@@ -291,7 +288,6 @@ EOF
 %patch 1 -p1 -b .cm-system-monitor-profile-by-default
 %patch 2 -p1 -b .no-phone-home-default
 %patch 3 -p1 -b .external-help-browser
-%patch 4 -p1 -b .don-t-require-unreleased-gegl-version
 
 %build
 # Use hardening compiler/linker flags because gimp is likely to deal with files

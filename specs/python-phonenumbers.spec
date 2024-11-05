@@ -6,11 +6,9 @@ numbers.\
 
 
 Name:           python-%{pypi_name}
-Version:        8.12.53
-Release:        9%{?dist}
+Version:        8.13.48
+Release:        1%{?dist}
 Summary:        A Python port of Google's libphonenumber
-
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://github.com/daviddrysdale/%{name}
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
@@ -49,7 +47,7 @@ cd python
 
 %check
 cd python
-%{__python3} setup.py test
+%{__python3} ./testwrapper.py -v
 
 
 %files -n python3-%{pypi_name}
@@ -60,6 +58,10 @@ cd python
 
 
 %changelog
+* Sun Nov 03 2024 Dan Callaghan <djc@djc.id.au> - 8.13.48-1
+- new upstream release 8.13.48:
+  https://github.com/daviddrysdale/python-phonenumbers/blob/v8.13.48/python/HISTORY.md
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 8.12.53-9
 - convert license to SPDX
 

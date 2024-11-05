@@ -174,7 +174,7 @@ developing applications that use sleef-quad.
 %autosetup -n sleef-%{tag} -p1
 
 
-%build
+%conf
 # -GNinja: This used to be required for parallel builds; it is still faster.
 #
 # -DENFORCE_TESTER3: The build should fail if we cannot build all tests.
@@ -194,6 +194,9 @@ developing applications that use sleef-quad.
     -DSLEEF_BUILD_QUAD:BOOL=%{?with_quad:TRUE}%{?!with_quad:FALSE} \
     -DSLEEF_BUILD_SHARED_LIBS:BOOL=ON \
     -DSLEEF_ENFORCE_TESTER3:BOOL=TRUE
+
+
+%build
 %cmake_build
 
 

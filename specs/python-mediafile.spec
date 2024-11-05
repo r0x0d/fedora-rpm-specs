@@ -1,14 +1,21 @@
 %global shortname mediafile
 Name:           python-mediafile
 Version:        0.12.0
-Release:        5%{dist}
+Release:        6%{dist}
 Summary:        Elegant audio file tagging in Python
 
 License:        MIT
 URL:            https://github.com/beetbox/mediafile
 Source0:        %{pypi_source mediafile}
+Patch0:         0001-Set-new-ORIGINALDATE-tag-for-m4a-files-in-addition-t.patch
+Patch1:         0002-Version-bump-changelog-for-71.patch
+Patch2:         0003-remove-usage-of-six-__future__.patch
+Patch3:         0004-Changelog-for-72.patch
+Patch4:         0005-Bump-minimum-Python-versions.patch
+# From PR 73 but without the binary change
+Patch5:         49da9728a69ae8a63af8a4630fccc55c10e66392-nobinary.patch
 
-BuildArch:      noarch
+BuildArch:     noarch
 BuildRequires:  python3-devel
 
 %global _description %{expand:
@@ -24,6 +31,7 @@ Summary:        %{summary}
 %{?python_provide:%python_provide python3-%{shortname}}
 
 Requires:       python3 >= 3.6
+Requires:       python3-filetype >= 1.2.0
 Requires:       python-mutagen
 
 %description -n python3-%{shortname} %{_description}
@@ -32,6 +40,7 @@ Python 3 version.
 
 %prep
 %autosetup -n %{shortname}-%{version} -p1
+rm test/rsrc/only-magic-bytes.jpg
 
 %generate_buildrequires
 %pyproject_buildrequires -r -t -e %{toxenv}-test
@@ -51,6 +60,10 @@ Python 3 version.
 %doc README.rst
 
 %changelog
+* Sat Nov 02 2024 Michele Baldessari <michele@acksyn.org> - 0.12.0-6
+- Apply patches from v0.12.0 to 6accdc4c4a7fe4d808b674a97fb5474e12621504
+- Also apply PR 73 to avoid python 3.13 breakage (although it will regress on more obscure image formats)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.12.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

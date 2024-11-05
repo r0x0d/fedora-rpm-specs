@@ -55,9 +55,12 @@ do
 done
 
 
-%build
+%conf
 autoreconf -fiv
 %configure --enable-experimental="mdiff wdiff2 unify" 
+
+
+%build
 %make_build all
 
 %if %{with rebuild_mans}

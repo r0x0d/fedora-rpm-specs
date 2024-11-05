@@ -149,9 +149,7 @@ export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 %endif
 
 
-%build
-export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
-
+%conf
 # Disable RYML_TEST_FUZZ so that we do not have to include the contents of
 # https://github.com/biojppm/rapidyaml-data (and document the licenses of the
 # contents). We *could* do so, and add an additional source similar to the one
@@ -161,9 +159,13 @@ export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
     -DRYML_CXX_STANDARD=%{cxx_std} \
     -DRYML_BUILD_TESTS:BOOL=%{?with_tests:ON}%{?!with_tests:OFF} \
     -DRYML_TEST_FUZZ:BOOL=OFF
+
+
+%build
 %cmake_build
 
 %if %{with python}
+export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 # We could set -DRYML_BUILD_API_PYTHON:BOOL=ON in the library build above, but
 # the resulting ryml.py and _ryml.so would be installed in the wrong place and
 # without necessary metadata. Instead we rebuild the library indirectly via the
@@ -205,7 +207,6 @@ export CMAKE_BUILD_PARALLEL_LEVEL='%{_smp_build_ncpus}'
 
 
 %install
-export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 %cmake_install
 
 # Fix wrong installation paths for multilib; it would be nontrivial to patch

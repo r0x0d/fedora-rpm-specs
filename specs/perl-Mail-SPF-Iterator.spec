@@ -1,8 +1,7 @@
 Name:             perl-Mail-SPF-Iterator
 Summary:          Iterative SPF lookup
-Version:          1.120
-Release:          12%{?dist}
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
+Version:          1.121
+Release:          1%{?dist}
 License:          GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:              https://metacpan.org/release/Mail-SPF-Iterator
 Source0:          https://cpan.metacpan.org/authors/id/S/SU/SULLR/Mail-SPF-Iterator-%{version}.tar.gz
@@ -63,6 +62,9 @@ DNS queries and later expects the responses.
 
 
 %changelog
+* Sun Nov 03 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 1.121-1
+- Update to 1.121
+
 * Tue Aug 06 2024 Miroslav Suchý <msuchy@redhat.com> - 1.120-12
 - convert license to SPDX
 

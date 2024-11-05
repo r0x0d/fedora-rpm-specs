@@ -4,10 +4,9 @@
 
 Name:           python-%{upstream_name}
 Version:        0.9.2
-Release:        28%{?dist}
+Release:        29%{?dist}
 Summary:        Python library for parsing WWW-Authenticate HTTP header values
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-4.3TAHOE
 URL:            https://github.com/alexsdutton/www-authenticate
 Source0:        https://github.com/alexsdutton/%{upstream_name}/archive/%{version}.tar.gz#/%{upstream_name}-%{version}.tar.gz
 # https://github.com/alexsdutton/www-authenticate/issues/1
@@ -25,7 +24,6 @@ Summary:        %{summary}
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{upstream_name}}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
-BuildRequires:  python%{python3_pkgversion}-nose
 
 %description -n python%{python3_pkgversion}-%{upstream_name} %{_description}
 
@@ -37,7 +35,6 @@ Summary:        %{summary}
 %{?python_provide:%python_provide python%{python3_other_pkgversion}-%{upstream_name}}
 BuildRequires:  python%{python3_other_pkgversion}-devel
 BuildRequires:  python%{python3_other_pkgversion}-setuptools
-BuildRequires:  python%{python3_other_pkgversion}-nose
 
 %description -n python%{python3_other_pkgversion}-%{upstream_name} %{_description}
 
@@ -61,9 +58,9 @@ cp -p %{SOURCE1} .
 %endif
 
 %check
-%{__python3} setup.py test
+%{__python3} -m unittest -v
 %if 0%{?with_python3_other}
-%{__python3_other} setup.py test
+%{__python3_other} -m unittest -v
 %endif
 
 %files -n python%{python3_pkgversion}-%{upstream_name}
@@ -83,6 +80,10 @@ cp -p %{SOURCE1} .
 %endif
 
 %changelog
+* Sun Nov 03 2024 Dan Callaghan <djc@djc.id.au> - 0.9.2-29
+- Updated license tag to valid SPDX identifier
+- Dropped nose dependency and usage of setuptools test command
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.9.2-28
 - convert license to SPDX
 

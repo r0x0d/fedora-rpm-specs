@@ -3,7 +3,7 @@
 Summary:	Ruby library to help write robots.txt compliant web robots
 Name:		rubygem-%{gem_name}
 Version:	0.1.2
-Release:	19%{?dist}
+Release:	20%{?dist}
 
 # SPDX confirmed
 License:	BSD-2-Clause
@@ -19,6 +19,7 @@ BuildRequires:	rubygems-devel
 # %%check
 # F-19: kill check until should is rebuilt
 BuildRequires:	rubygem(test-unit)
+BuildRequires:	rubygem(base64)
 BuildRequires:	rubygem(shoulda-context)
 BuildRequires:	rubygem(webmock)
 BuildRequires:	rubygem(vcr)
@@ -96,6 +97,9 @@ popd
 %doc	%{gem_docdir}/
 
 %changelog
+* Mon Nov 04 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.1.2-20
+- BR: rubygem(base64) explicitly for ruby34
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.1.2-19
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

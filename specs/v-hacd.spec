@@ -104,9 +104,14 @@ general utility beyond testing.
 %autosetup -n %{name}-%{version}
 
 
-%build
+%conf
 pushd app >/dev/null
 %cmake -GNinja
+popd >/dev/null
+
+
+%build
+pushd app >/dev/null
 %cmake_build
 popd >/dev/null
 

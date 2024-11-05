@@ -2,7 +2,7 @@
 
 Name:		rubygem-%{gem_name}
 Version:	1.3.1
-Release:	19%{?dist}
+Release:	20%{?dist}
 Summary:	Collection of text algorithms
 
 # SPDX confirmed
@@ -15,6 +15,7 @@ BuildRequires:	rubygems-devel
 # Check
 BuildRequires:	rubygem(minitest)
 BuildRequires:	rubygem(test-unit)
+BuildRequires:	rubygem(csv)
 Requires:	ruby(release)
 Requires:	ruby(rubygems)
 
@@ -72,6 +73,9 @@ popd
 %doc	%{gem_docdir}
 
 %changelog
+* Sun Nov 03 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.3.1-20
+- Add BR: rubygem(csv) explicitly for ruby34
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.1-19
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,17 +1,15 @@
 Name:           beets
-Version:        1.6.0
-Release:        9%{?dist}
+Version:        2.0.0
+Release:        1%{?dist}
 Summary:        Music library manager and MusicBrainz tagger
 License:        MIT and ISC
 URL:            http://beets.io
 Source0:        https://github.com/beetbox/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
-# Fix extlinks for sphinx 6.0.0
-Patch0:         2106f471affd1dab35b4b26187b9c74d034528c5.diff
-
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-sphinx
+BuildRequires:  python3-pydata-sphinx-theme
 BuildRequires:  python3-PyYAML
 BuildRequires:  python3-mediafile
 BuildRequires:  python3-musicbrainzngs >= 0.4
@@ -26,10 +24,11 @@ BuildRequires:  gstreamer1-plugins-good
 BuildRequires:  make
 BuildArch:      noarch
 
-Requires:       python3 >= 3.5
+Requires:       python3 >= 3.8
+Requires:       python3-confuse
 Requires:       python3-jellyfish
-Requires:       python3-mediafile
-Requires:       python3-munkres
+Requires:       python3-mediafile >= 0.12.0
+Requires:       python3-munkres >= 1.0.0
 Requires:       python3-musicbrainzngs >= 0.4
 Requires:       python3-mutagen >= 1.23
 Requires:       python3-unidecode
@@ -44,8 +43,8 @@ and accessing your music.
 Because beets is designed as a library, it can do almost anything you can
 imagine for your music collection. Via plugins, beets becomes a panacea:
 - Fetch or calculate all the meta-data you could possibly need: album art,
-  lyrics, genres, tempos, ReplayGain levels, or acoustic fingerprints. 
-- Get meta-data from MusicBrainz, Discogs, or Beatport. Or guess meta-data using 
+  lyrics, genres, tempos, ReplayGain levels, or acoustic fingerprints.
+- Get meta-data from MusicBrainz, Discogs, or Beatport. Or guess meta-data using
   songs' file names or their acoustic fingerprints.
 - Transcode audio to any format you like.
 - Check your library for duplicate tracks and albums or for albums that are
@@ -72,10 +71,10 @@ Requires:       python3-mpd
 Requires:       python3-gobject >= 3.0
 Requires:       gstreamer1
 
-Requires:	js-jquery
-Requires:	js-backbone
-Requires:	js-underscore
-Requires:	python3-flask
+Requires:	    js-jquery
+Requires:	    js-backbone
+Requires:	    js-underscore
+Requires:	    python3-flask
 
 %description plugins
 Contains a number of plugins to improve meta-data, format paths,
@@ -85,12 +84,13 @@ inter-operability aids and so on.
 Summary:        Documentation for beets
 
 %description doc
-The beets-doc package provides useful information on the 
+The beets-doc package provides useful information on the
 beets Music Library Manager. Documentation is shipped in
 both text and html formats.
 
 %prep
-%autosetup -p1
+# Tarball has wrong basedir https://github.com/beetbox/beets/issues/5284
+%autosetup -p1 -n beets-1.6.1
 
 %build
 %{__python3} setup.py build
@@ -134,7 +134,11 @@ rm -f docs/_build/html/{.buildinfo,objects.inv}
 
 %files doc
 %doc docs/_build/html docs/_build/text
+
 %changelog
+* Sun Nov 03 2024 Michele Baldessari <michele@acksyn.org> - 2.0.0-1
+- New upstream
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.6.0-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

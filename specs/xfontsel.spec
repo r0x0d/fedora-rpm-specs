@@ -59,9 +59,12 @@ Logical Font Description (“XLFD”) full name for a font.
 %autosetup
 
 
-%build
+%conf
 autoreconf --force --install --verbose
 %configure
+
+
+%build
 %make_build
 
 
