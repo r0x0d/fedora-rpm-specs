@@ -1,5 +1,5 @@
 Name:           libsidplayfp
-Version:        2.10.1
+Version:        2.11.0
 Release:        1%{?dist}
 Summary:        SID chip music module playing library
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -73,6 +73,10 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
 
 %changelog
+* Mon Nov 04 2024 Karel Volný <kvolny@redhat.com> - 2.11.0-1
+- Update to 2.11.0 (rhbz#2323581)
+- See the upstream changes at https://github.com/libsidplayfp/libsidplayfp/releases
+
 * Thu Oct 31 2024 Karel Volný <kvolny@redhat.com> - 2.10.1-1
 - Update to 2.10.1 (rhbz#2316762)
 - See the upstream changes at https://github.com/libsidplayfp/libsidplayfp/releases

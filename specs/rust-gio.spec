@@ -5,7 +5,7 @@
 %global crate gio
 
 Name:           rust-gio
-Version:        0.20.4
+Version:        0.20.5
 Release:        %autorelease
 Summary:        Rust bindings for the Gio library
 

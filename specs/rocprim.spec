@@ -3,7 +3,7 @@
 %global rocm_patch 1
 %global rocm_version %{rocm_release}.%{rocm_patch}
 # Compiler is hipcc, which is clang based:
-%global toolchain clang
+%global toolchain rocm
 # hipcc does not support some clang flags
 %global build_cxxflags %(echo %{optflags} | sed -e 's/-fstack-protector-strong/-Xarch_host -fstack-protector-strong/' -e 's/-fcf-protection/-Xarch_host -fcf-protection/')
 # there is no debug package
@@ -11,6 +11,8 @@
 
 # Option to test suite for testing on real HW:
 %bcond_with check
+# For documentation
+%bcond_with doc
 
 Name:           rocprim
 Version:        %{rocm_version}
@@ -28,16 +30,20 @@ BuildArch: noarch
 ExclusiveArch:  x86_64
 
 BuildRequires:  cmake
-BuildRequires:  doxygen
-%if %{with check}
-BuildRequires:  gtest-devel
-%endif
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
 BuildRequires:  rocm-hip-devel
 BuildRequires:  rocm-runtime-devel
+BuildRequires:  rocm-rpm-macros
 
+%if %{with doc}
+BuildRequires:  doxygen
 BuildRequires:  python3dist(marshalparser)
+%endif
+
+%if %{with check}
+BuildRequires:  gtest-devel
+%endif
 
 %description
 The rocPRIM is a header-only library providing HIP parallel primitives

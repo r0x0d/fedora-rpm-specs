@@ -1,6 +1,31 @@
 %global     reponame   %{name}.repo
 %global     repodir    %{_sysconfdir}/yum.repos.d
 %global     thirdparty %{_prefix}/lib/fedora-third-party/conf.d
+
+%define obsoleteLine() %{expand:
+Obsoletes: java-%{?1}-openjdk%{?2}%{?3}  < 10000
+Obsoletes: java-%{?1}-openjdk-portable%{?2}%{?3} < 10000
+}
+
+%define obsoleteLines() %{expand:
+%{obsoleteLine -- %{?1} %{?2} %{nil}}
+%{obsoleteLine -- %{?1} %{?2} -fastdebug}
+%{obsoleteLine -- %{?1} %{?2} -slowdebug}
+%{obsoleteLine -- %{?1} %{?2} -unstripped}
+}
+
+%define obsoleteJdk() %{expand:
+%{obsoleteLines -- %{?1} %{nil}}
+%{obsoleteLines -- %{?1} -headless}
+%{obsoleteLines -- %{?1} -devel}
+%{obsoleteLines -- %{?1} -demo}
+%{obsoleteLines -- %{?1} -src}
+%{obsoleteLines -- %{?1} -javadoc}
+%{obsoleteLines -- %{?1} -javadoc-zip}
+%{obsoleteLines -- %{?1} -docs}
+%{obsoleteLines -- %{?1} -sources}
+}
+
 # 0/1 may vary in time, and is always enabled to 1 per FESCO exception
 %global     enabled_by_default 0
 
@@ -20,6 +45,9 @@ BuildArch:  noarch
 # fedora-third-party contains tools to work with 3rd party repos and owns fedora-third-party/conf.d/ directory
 Requires:   fedora-third-party
 
+%{obsoleteJdk -- 1.8.0}
+%{obsoleteJdk -- 11}
+%{obsoleteJdk -- 17}
 
 %description
 This package adds configuration to add a remote repository
@@ -27,6 +55,12 @@ of https://adoptium.net/installation/linux/#_centosrhelfedora_instructions ,
 if third-party repositories are enabled on a Fedora Linux system.
 This repository contains all JDKS which are live and not available in fedora 
 as per https://fedoraproject.org/wiki/Changes/ThirdPartyLegacyJdks .
+It (4.11.2024) installs: temurin-11-jdk temurin-11-jre temurin-17-jdk temurin-17-jre temurin-21-jdk
+ temurin-21-jre temurin-22-jdk temurin-22-jre temurin-23-jdk temurin-23-jre temurin-8-jdk
+ temurin-8-jre
+Warning, jdk contains both jre and jdk, so if you install jdk and jre (of same version)
+you will have two java alternatives masters, and one javac master.
+Since f42 it will be obsoleting retired java-(1.8.0,11,17)-openjdk-*
 
 %prep
 cat %{SOURCE2} |  sed "s/^enabled=0/enabled=%{enabled_by_default}/" > %{reponame}
@@ -42,7 +76,7 @@ install -D -m0644 %{SOURCE3} -t %{buildroot}%{_docdir}/%{name}/
 %files
 %license LICENSE
 %{thirdparty}/*
-%config %{repodir}/%{reponame}
+%config(noreplace) %{repodir}/%{reponame}
 %doc README.md
 
 %changelog

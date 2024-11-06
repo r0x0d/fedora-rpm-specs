@@ -81,8 +81,10 @@ libOpenGL is the common dispatch interface for the workstation OpenGL API.
 Summary:        GLES support for libglvnd
 Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
 %{!?_without_mesa_glvnd_default:
+%{!?flatpak_runtime:
 # mesa is the default EGL implementation provider
 Requires:       mesa-libEGL%{?_isa} >= 13.0.4-1
+}
 Obsoletes:      mesa-libGLES < 19.3.0~rc1
 Provides:       mesa-libGLES
 Provides:       mesa-libGLES%{?_isa}
@@ -98,8 +100,10 @@ libGLESv[12] are the common dispatch interface for the GLES API.
 Summary:        EGL support for libglvnd
 Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
 %{!?_without_mesa_glvnd_default:
+%{!?flatpak_runtime:
 # mesa is the default EGL implementation provider
 Requires:       mesa-libEGL%{?_isa} >= 13.0.4-1
+}
 Provides:       libEGL
 Provides:       libEGL%{?_isa}
 }
@@ -112,8 +116,10 @@ libEGL are the common dispatch interface for the EGL API.
 Summary:        GLX support for libglvnd
 Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
 %{!?_without_mesa_glvnd_default:
+%{!?flatpak_runtime:
 # mesa is the default GL implementation provider
 Requires:       mesa-libGL%{?_isa} >= 13.0.4-1
+}
 Provides:       libGL
 Provides:       libGL%{?_isa}
 }

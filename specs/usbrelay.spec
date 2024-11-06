@@ -5,16 +5,13 @@ Summary:        A library and command line tool to control USB-connected relays 
 License:        GPL-2.0-or-later
 URL:            https://github.com/darrylb123/%{name}
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+# https://github.com/darrylb123/usbrelay/pull/112
+Patch1:         usbrelay-paho-mqttv2.patch
 
 BuildRequires:  gcc
 BuildRequires:  hidapi-devel
 BuildRequires:  make
-BuildRequires:  python3
 BuildRequires:  python3-devel
-BuildRequires:  python3-pip
-BuildRequires:  python3-toml
-BuildRequires:  python3-wheel
-BuildRequires:  python3-tox-current-env
 BuildRequires:  systemd-rpm-macros
 Requires:       systemd-udev
 
@@ -140,7 +137,6 @@ groupadd --force --system usbrelay
 %{python3_sitearch}/%{name}_py*.so
 %{python3_sitearch}/%{name}_py*.dist-info
 %{python3_sitearch}/%{name}
-
 
 %files mqtt
 %{_sbindir}/usbrelayd

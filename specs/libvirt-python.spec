@@ -14,7 +14,7 @@
 
 Summary: The libvirt virtualization API python3 binding
 Name: libvirt-python
-Version: 10.8.0
+Version: 10.9.0
 Release: 1%{?dist}
 Source0: https://libvirt.org/sources/python/%{name}-%{version}.tar.gz
 Url: https://libvirt.org
@@ -87,6 +87,9 @@ exit 1
 
 
 %changelog
+* Mon Nov 04 2024 Cole Robinson <crobinso@redhat.com> - 10.9.0-1
+- Update to version 10.9.0
+
 * Wed Oct 02 2024 Cole Robinson <crobinso@redhat.com> - 10.8.0-1
 - Update to version 10.8.0
 

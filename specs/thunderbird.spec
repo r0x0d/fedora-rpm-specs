@@ -1,3 +1,10 @@
+# ppc64le started to fail permanently on f40,
+# https://koji.fedoraproject.org/koji/taskinfo?taskID=125295645
+# At least get other archs out.
+%if 0%{?fedora} == 40
+ExcludeArch: ppc64le
+%endif
+
 %if 0%{?fedora} > 35 || 0%{?rhel} > 9
 %global dictionarydir hunspell
 %else

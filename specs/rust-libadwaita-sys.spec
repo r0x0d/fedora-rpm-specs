@@ -6,7 +6,7 @@
 %global crate libadwaita-sys
 
 Name:           rust-libadwaita-sys
-Version:        0.7.0
+Version:        0.7.1
 Release:        %autorelease
 Summary:        FFI bindings for libadwaita
 
@@ -116,6 +116,7 @@ use the "v1_5" feature of the "%{crate}" crate.
 %package     -n %{name}+v1_6-devel
 Summary:        %{summary}
 BuildArch:      noarch
+Requires:       pkgconfig(libadwaita-1) >= 1.6
 
 %description -n %{name}+v1_6-devel %{_description}
 

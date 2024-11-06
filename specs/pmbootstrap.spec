@@ -1,7 +1,7 @@
 # Created by pyp2rpm-3.3.5
 
 Name:           pmbootstrap
-Version:        2.3.1
+Version:        2.3.3
 Release:        %autorelease
 Summary:        A sophisticated chroot/build/flash tool to develop and install postmarketOS
 
@@ -9,7 +9,7 @@ License:        GPL-3.0-only
 URL:            https://www.postmarketos.org
 # cannot use %%{pypi_source} due to
 # https://gitlab.com/postmarketOS/pmbootstrap/-/issues/2009
-Source0:        https://gitlab.com/postmarketOS/%{name}/-/archive/%{version}/%{name}-%{version}.tar.gz
+Source0:        https://gitlab.postmarketos.org/postmarketOS/%{name}/-/archive/%{version}/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  python3-devel

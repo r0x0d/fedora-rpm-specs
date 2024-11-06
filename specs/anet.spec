@@ -1,6 +1,6 @@
 Name:           anet
-Version:        0.5.0
-Release:        2%{?dist}
+Version:        0.5.1
+Release:        1%{?dist}
 Summary:        Ada Networking Library
 
 License:        GPL-2.0-or-later WITH GNAT-exception
@@ -121,6 +121,9 @@ make tests %{all_the_flags}
 
 
 %changelog
+* Mon Nov 04 2024 Björn Persson <Bjorn@Rombobjörn.se> - 0.5.1-1
+- Upgraded to version 0.5.1.
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.5.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

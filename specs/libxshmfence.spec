@@ -1,11 +1,12 @@
 Name:           libxshmfence
 Version:        1.3.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        X11 shared memory fences
 
 License:        HPND-sell-variant
 URL:            https://www.x.org/
 Source0:        https://xorg.freedesktop.org/archive/individual/lib/%{name}-%{version}.tar.xz
+Patch0:         0001-alloc-Allow-disabling-memfd-usage-at-runtime-with-XS.patch
 
 # upstream tarball has broken libtool because libtool is never not broken
 BuildRequires:  autoconf automake libtool xorg-x11-util-macros
@@ -25,7 +26,7 @@ The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 %prep
-%setup -q
+%autosetup -p1
 
 %build
 autoreconf -v -i -f
@@ -41,6 +42,7 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
 %files
 %doc
+%license COPYING
 %{_libdir}/libxshmfence.so.1*
 
 %files devel
@@ -50,6 +52,9 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 %{_libdir}/*.so
 
 %changelog
+* Wed Oct 30 2024 Asahi Lina <lina@asahilina.net> - 1.3.2-5
+- Backport of upstream commit to optionally disable memfd usage
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.2-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

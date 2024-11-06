@@ -17,6 +17,9 @@
 %bcond ufo_extra %{expr:%{undefined rhel} || (%{defined epel} && !%{defined el10})}
 # Requires python-brotli, python-zopfli:
 %bcond woff_extra %{expr:%{undefined rhel} || %{defined epel}}
+# Requires scipy, munkres, pycairo
+%bcond interpolatable_extra 1
+
 
 %global desc %{expand:
 fontTools is a library for manipulating fonts, written in Python. The project
@@ -83,7 +86,9 @@ Obsoletes: python3-ufolib <= 2.1.1-11
 %if %{with graphite_extra}
 %pyproject_extras_subpkg -n python3-fonttools graphite
 %endif
+%if %{with interpolatable_extra}
 %pyproject_extras_subpkg -n python3-fonttools interpolatable
+%endif
 %pyproject_extras_subpkg -n python3-fonttools lxml
 %if %{with pathops_extra}
 %pyproject_extras_subpkg -n python3-fonttools pathops
@@ -113,7 +118,7 @@ Obsoletes: python3-ufolib <= 2.1.1-11
 sed -r -i '1{/^#!/d}' Lib/fontTools/mtiLib/__init__.py
 
 # Not yet in EPEL10:
-%if %{defined rhel} && (!%{defined epel} || %{defined el10})
+%if (%{defined rhel} && (!%{defined epel} || %{defined el10})) || %{without tests}
 sed -r -i 's/^([[:blank:]]*)(pytest-randomly)\b/\1# \2/' tox.ini
 %endif
 
@@ -124,7 +129,7 @@ export FONTTOOLS_WITH_CYTHON=1
 # extras might be packaged; plus, requirements.txt pins exact versions.
 %{pyproject_buildrequires \
     %{?with_graphite_extra:-x graphite} \
-    -x interpolatable \
+    %{?with_interpolatable_extra:-x interpolatable} \
     -x lxml \
     %{?with_pathops_extra:-x pathops} \
     %{?with_plot_extra:-x plot} \
@@ -163,6 +168,7 @@ export FONTTOOLS_WITH_CYTHON=1
     %{?!with_pathops_extra:-e fontTools.ttLib.removeOverlaps} \
     %{?!with_ufo_extra:-e fontTools.ufoLib*} \
     %{?!with_plot_extra:-e fontTools.varLib.plot} \
+    %{?!with_interpolatable_extra:-e fontTools.varLib.interpolatable*} \
     %{nil}}
 
 %if %{with tests}

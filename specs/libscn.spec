@@ -2,7 +2,7 @@
 %global upname %{intname}lib
 
 Name: libscn
-Version: 3.0.2
+Version: 4.0.1
 Release: %autorelease
 
 License: Apache-2.0
@@ -28,7 +28,7 @@ BuildRequires: ninja-build
 
 This library attempts to move us ever so closer to replacing iostreams
 and C stdio altogether. It's faster than iostream (see Benchmarks) and
-type-safe, unlike scanf. Think {fmt} but in the other direction.
+type-safe, unlike scanf.
 
 This library is the reference implementation of the ISO C++ standards
 proposal P1729 "Text Parsing".
@@ -65,12 +65,11 @@ Requires: fast_float-devel
 
 %install
 %cmake_install
-rm -rf %{buildroot}%{_datadir}/%{intname}
 
 %files
 %doc README.md
 %license LICENSE
-%{_libdir}/%{name}.so.3*
+%{_libdir}/%{name}.so.4*
 
 %files devel
 %{_includedir}/%{intname}/

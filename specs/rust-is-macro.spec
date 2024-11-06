@@ -5,7 +5,7 @@
 %global crate is-macro
 
 Name:           rust-is-macro
-Version:        0.3.6
+Version:        0.3.7
 Release:        %autorelease
 Summary:        Derive methods for using custom enums like Option / Result
 

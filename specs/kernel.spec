@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc5.20241101git6c52d4da1c74.48
+%define pkgrelease 0.rc6.51
 %define kversion 6
-%define tarfile_release 6.12-rc5-181-g6c52d4da1c74
+%define tarfile_release 6.12-rc6
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc5.20241101git6c52d4da1c74.48%{?buildid}%{?dist}
+%define specrelease 0.rc6.51%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -1242,7 +1242,7 @@ This package provides debug information for package %{package_name}-tools.
 # symlinks because of the trailing nonmatching alternation and
 # the leading .*, because of find-debuginfo.sh's buggy handling
 # of matching the pattern against the symlinks file.
-%{expand:%%global _find_debuginfo_opts %{?_find_debuginfo_opts} -p '.*%%{_bindir}/centrino-decode(\.debug)?|.*%%{_bindir}/powernow-k8-decode(\.debug)?|.*%%{_bindir}/cpupower(\.debug)?|.*%%{_libdir}/libcpupower.*|.*%%{_bindir}/turbostat(\.debug)?|.*%%{_bindir}/x86_energy_perf_policy(\.debug)?|.*%%{_bindir}/tmon(\.debug)?|.*%%{_bindir}/lsgpio(\.debug)?|.*%%{_bindir}/gpio-hammer(\.debug)?|.*%%{_bindir}/gpio-event-mon(\.debug)?|.*%%{_bindir}/gpio-watch(\.debug)?|.*%%{_bindir}/iio_event_monitor(\.debug)?|.*%%{_bindir}/iio_generic_buffer(\.debug)?|.*%%{_bindir}/lsiio(\.debug)?|.*%%{_bindir}/intel-speed-select(\.debug)?|.*%%{_bindir}/page_owner_sort(\.debug)?|.*%%{_bindir}/slabinfo(\.debug)?|.*%%{_sbindir}/intel_sdsi(\.debug)?|XXX' -o %{package_name}-tools-debuginfo.list}
+%{expand:%%global _find_debuginfo_opts %{?_find_debuginfo_opts} -p '.*%%{_bindir}/bootconfig(\.debug)?|.*%%{_bindir}/centrino-decode(\.debug)?|.*%%{_bindir}/powernow-k8-decode(\.debug)?|.*%%{_bindir}/cpupower(\.debug)?|.*%%{_libdir}/libcpupower.*|.*%%{_bindir}/turbostat(\.debug)?|.*%%{_bindir}/x86_energy_perf_policy(\.debug)?|.*%%{_bindir}/tmon(\.debug)?|.*%%{_bindir}/lsgpio(\.debug)?|.*%%{_bindir}/gpio-hammer(\.debug)?|.*%%{_bindir}/gpio-event-mon(\.debug)?|.*%%{_bindir}/gpio-watch(\.debug)?|.*%%{_bindir}/iio_event_monitor(\.debug)?|.*%%{_bindir}/iio_generic_buffer(\.debug)?|.*%%{_bindir}/lsiio(\.debug)?|.*%%{_bindir}/intel-speed-select(\.debug)?|.*%%{_bindir}/page_owner_sort(\.debug)?|.*%%{_bindir}/slabinfo(\.debug)?|.*%%{_sbindir}/intel_sdsi(\.debug)?|XXX' -o %{package_name}-tools-debuginfo.list}
 
 %package -n rtla
 %if 0%{gemini}
@@ -3045,6 +3045,10 @@ pushd tools/thermal/tmon/
 %{log_msg "build tmon"}
 %{tools_make}
 popd
+pushd tools/bootconfig/
+%{log_msg "build bootconfig"}
+%{tools_make}
+popd
 pushd tools/iio/
 %{log_msg "build iio"}
 %{tools_make}
@@ -3358,6 +3362,9 @@ chmod 0755 %{buildroot}%{_libdir}/libcpupower.so*
 %endif
 pushd tools/thermal/tmon
 %{tools_make} INSTALL_ROOT=%{buildroot} install
+popd
+pushd tools/bootconfig
+%{tools_make} DESTDIR=%{buildroot} install
 popd
 pushd tools/iio
 %{tools_make} DESTDIR=%{buildroot} install
@@ -3886,6 +3893,7 @@ fi\
 # cpupowerarchs
 %endif
 %{_bindir}/tmon
+%{_bindir}/bootconfig
 %{_bindir}/iio_event_monitor
 %{_bindir}/iio_generic_buffer
 %{_bindir}/lsiio
@@ -4144,9 +4152,20 @@ fi\
 #
 #
 %changelog
-* Fri Nov 01 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.6c52d4da1c74.48]
+* Mon Nov 04 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.51]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Mon Nov 04 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.50]
+- redhat/configs: add bootconfig to kernel-tools package (Brian Masney)
+- Enable CONFIG_SECURITY_LANDLOCK for RHEL (Zbigniew Jędrzejewski-Szmek) [RHEL-8810]
+- Linux v6.12.0-0.rc6
+
+* Sun Nov 03 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.3e5e6c9900c3.49]
+- Linux v6.12.0-0.rc5.3e5e6c9900c3
+
+* Sat Nov 02 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.11066801dd4b.48]
+- Linux v6.12.0-0.rc5.11066801dd4b
 
 * Fri Nov 01 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc5.6c52d4da1c74.47]
 - redhat: configs: Drop CONFIG_MEMSTICK_REALTEK_PCI config option (Desnes Nunes)

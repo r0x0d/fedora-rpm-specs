@@ -45,6 +45,7 @@ BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  python3-sphinx
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
+BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  rocm-hip-devel
 BuildRequires:  rocm-rpm-macros
 BuildRequires:  rocm-runtime-devel
@@ -106,7 +107,8 @@ do
     module load rocm/$gpu
 
     %cmake \
-    -DAMDGPU_TARGETS=${ROCM_GPUS} \
+	-DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
+	-DAMDGPU_TARGETS=${ROCM_GPUS} \
     -DCMAKE_INSTALL_LIBDIR=$ROCM_LIB \
     -DCMAKE_INSTALL_BINDIR=$ROCM_BIN \
     -DBUILD_CLIENTS_TESTS_OPENMP=OFF \

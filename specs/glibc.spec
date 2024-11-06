@@ -152,7 +152,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 15
+%global baserelease 16
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -2283,6 +2283,11 @@ update_gconv_modules_cache ()
 %if %{glibc_has_libmvec}
 %{_libdir}/libmvec.so
 %endif
+%ifarch x86_64
+# This files are included in the buildroot for glibc32 below.
+%exclude %{_includedir}/gnu/lib-names-32.h
+%exclude %{_includedir}/gnu/stubs-32.h
+%endif
 
 %if %{with docs}
 %files doc
@@ -2345,7 +2350,8 @@ update_gconv_modules_cache ()
 
 %ifarch x86_64
 %files -n glibc32
-# All headers are contained in glibc-devel.x86_64.
+%{_includedir}/gnu/lib-names-32.h
+%{_includedir}/gnu/stubs-32.h
 %{_prefix}/lib/*.a
 %{_prefix}/lib/*.o
 %{_prefix}/lib/*.so*
@@ -2353,6 +2359,9 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Mon Nov  4 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-16
+- Exclude 32-bit headers from the x86_64 package
+
 * Mon Oct 28 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-15
 - Use rpm.spawn instead of posix.fork if availabe (#2291869)
 

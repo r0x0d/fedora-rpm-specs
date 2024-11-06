@@ -2,21 +2,24 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate anyhow
+%global crate byteorder_slice
 
-Name:           rust-anyhow
-Version:        1.0.92
+Name:           rust-byteorder_slice
+Version:        3.0.0
 Release:        %autorelease
-Summary:        Flexible concrete Error type built on std::error::Error
+Summary:        Byteorder like crate for &[u8]
 
-License:        MIT OR Apache-2.0
-URL:            https://crates.io/crates/anyhow
+License:        MIT
+URL:            https://crates.io/crates/byteorder_slice
 Source:         %{crates_source}
+# Add license text as this is missing upstream:
+# https://github.com/courvoif/byteorder_slice/pull/4
+Patch:          byteorder_slice-add-mit-license-file.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-Flexible concrete Error type built on std::error::Error.}
+Byteorder like crate for &[u8].}
 
 %description %{_description}
 
@@ -30,8 +33,7 @@ This package contains library source intended for building other packages which
 use the "%{crate}" crate.
 
 %files          devel
-%license %{crate_instdir}/LICENSE-APACHE
-%license %{crate_instdir}/LICENSE-MIT
+%license %{crate_instdir}/LICENSE
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
@@ -45,30 +47,6 @@ This package contains library source intended for building other packages which
 use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+backtrace-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+backtrace-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "backtrace" feature of the "%{crate}" crate.
-
-%files       -n %{name}+backtrace-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+std-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+std-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "std" feature of the "%{crate}" crate.
-
-%files       -n %{name}+std-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep

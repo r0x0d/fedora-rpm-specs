@@ -2,14 +2,16 @@
 
 Name:           %{pypi_name}
 Version:        0.1.18
-Release:        14%{?dist}
+Release:        15%{?dist}
 Summary:        Publish system performance metrics to a MQTT broker
 
 License:        MIT
 URL:            https://github.com/jamiebegin/metrics2mqtt
 Source0:        %{url}/archive/v%{version}/%{pypi_name}-%{version}.tar.gz
-BuildArch:      noarch
+# https://github.com/jamiebegin/metrics2mqtt/pull/18
+Patch1:         0001-initial-paho.mqtt-v2-support.patch
 
+BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(setuptools)
 BuildRequires:  python3dist(wheel)
@@ -31,7 +33,7 @@ CPU utilization, free memory, and other system-level stats to a MQTT
 broker.
 
 %prep
-%autosetup -n %{pypi_name}-%{version}
+%autosetup -n %{pypi_name}-%{version} -p1
 rm -rf %{pypi_name}.egg-info
 sed -i -e '/^#!\//, 1d' metrics2mqtt/base.py
 
@@ -51,6 +53,9 @@ sed -i -e '/^#!\//, 1d' metrics2mqtt/base.py
 %{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Mon Nov 04 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 0.1.18-15
+- Add patch to support paho-mqtt v2+
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.1.18-14
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

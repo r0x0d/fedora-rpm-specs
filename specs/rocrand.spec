@@ -29,6 +29,9 @@
 
 # Option to test suite for testing on real HW:
 %bcond_with check
+# For docs
+%bcond_with doc
+
 
 Name:           rocrand
 Version:        %{rocm_version}
@@ -41,9 +44,9 @@ Source0:        %{url}/archive/rocm-%{version}.tar.gz#/%{upstreamname}-%{version
 
 BuildRequires:  git
 BuildRequires:  cmake
-BuildRequires:  doxygen
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
+BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  rocm-hip-devel
 BuildRequires:  rocm-runtime-devel
 BuildRequires:  rocm-rpm-macros
@@ -51,6 +54,10 @@ BuildRequires:  rocm-rpm-macros-modules
 
 %if %{with test}
 BuildRequires:  gtest-devel
+%endif
+
+%if %{with doc}
+BuildRequires:  doxygen
 %endif
 
 Requires:       rocm-rpm-macros-modules
@@ -90,7 +97,8 @@ for gpu in %{rocm_gpu_list}
 do
     module load rocm/$gpu
     %cmake \
-           -DCMAKE_BUILD_TYPE=%build_type \
+        -DCMAKE_BUILD_TYPE=%build_type \
+	-DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
 	   -DCMAKE_SKIP_RPATH=ON \
            -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
 	   -DROCM_SYMLINK_LIBS=OFF \

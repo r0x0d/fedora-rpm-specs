@@ -14,7 +14,7 @@
 Summary:            Distributed Monitoring System
 Name:               ganglia
 Version:            %{gangver}
-Release:            54%{?dist}
+Release:            55%{?dist}
 # Automatically converted from old format: BSD - review is highly recommended.
 License:            LicenseRef-Callaway-BSD
 URL:                http://ganglia.sourceforge.net/
@@ -35,7 +35,8 @@ Patch30:            ganglia-gmond-python2to3.patch
 Patch31:            0002-2to3-pass.patch
 Patch32:            0003-Ruff-pass.patch
 Patch33:            0004-Use-raw-strings.patch
-Patch34:            0001-Fix-return-value-from-mod_python-init.patch
+Patch34:            0005-First-loop-might-contain-non-integer-input.patch
+Patch35:            0001-Fix-return-value-from-mod_python-init.patch
 Patch40:            ganglia-3.7.2-autoconf-python3.patch
 Patch50:            ganglia-3.7.2-pcre2.patch
 %if 0%{?systemd}
@@ -180,6 +181,7 @@ programmers can use to build scalable cluster or grid applications
 %{?py3:%patch -P 32 -p1}
 %{?py3:%patch -P 33 -p1}
 %{?py3:%patch -P 34 -p1}
+%{?py3:%patch -P 35 -p1}
 %patch -P 40 -p1
 %if 0%{?fedora} || 0%{?rhel} > 7
 %patch -P 10 -p1
@@ -464,6 +466,9 @@ end
 %dir %attr(0755,apache,apache) %{_localstatedir}/lib/%{name}-web/dwoo/compiled
 
 %changelog
+* Mon Nov 04 2024 Terje Rosten <terjeros@gmail.com> - 3.7.6-55
+- Add forgotten int() conversion patch
+
 * Tue Oct 15 2024 Terje Rosten <terjeros@gmail.com> - 3.7.6-54
 - Various fixes to improve Python 3 support
 - Add back regex support on Fedora (patch from Debian, thanks!)

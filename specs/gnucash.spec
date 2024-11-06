@@ -6,7 +6,7 @@ Name: gnucash
 Summary: Finance management application
 Version: 5.9
 URL: https://gnucash.org/
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPL-2.0-or-later
 Source: https://downloads.sourceforge.net/sourceforge/gnucash/gnucash-%{version}.tar.bz2
 
@@ -15,6 +15,7 @@ ExcludeArch: %{ix86}
 Patch0: rpath.patch
 Patch1: no-implicit.patch
 Patch2: gnucash-5.9-swig-4.3.patch
+Patch3: 6cabb5d88433049bbc9caff8d0ff72f03009d30c.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1563466
 ExcludeArch: ppc64 s390x
@@ -125,6 +126,9 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/metainfo/gnucas
 %config(noreplace) %{_sysconfdir}/gnucash/*
 
 %changelog
+* Mon Nov 04 2024 Gwyn Ciesla <gwync@protonmail.com> - 5.9-3
+- Patch for Python accounting file bug
+
 * Wed Oct 16 2024 Jitka Plesnikova <jplesnik@redhat.com> - 5.9-2
 - Fix for SWIG 4.3.0
 

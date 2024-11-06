@@ -50,7 +50,7 @@
 Summary: A dynamic adaptive system tuning daemon
 Name: tuned
 Version: 2.24.0
-Release: 5%{?prerel1}%{?git_suffix:.%{git_suffix}}%{?dist}
+Release: 6%{?prerel1}%{?git_suffix:.%{git_suffix}}%{?dist}
 License: GPL-2.0-or-later AND CC-BY-SA-3.0
 %if 0%{?git_commit:1}
 Source0: https://github.com/redhat-performance/%{name}/archive/%{git_commit}/%{name}-%{version}-%{git_suffix}.tar.gz
@@ -60,6 +60,8 @@ Source0: https://github.com/redhat-performance/%{name}/archive/v%{version}%{?pre
 Patch: 0001-controller-init-set-_on_battery-before-switching-pro.patch
 # https://github.com/redhat-performance/tuned/pull/684
 Patch: 0001-tuned-ppd-Support-the-new-UPower-PPD-namespace.patch
+# https://github.com/redhat-performance/tuned/pull/705
+Patch: 0001-Add-variables-to-BLS-entries-only-if-grub-is-used.patch
 URL: http://www.tuned-project.org/
 BuildArch: noarch
 BuildRequires: systemd, desktop-file-utils
@@ -631,6 +633,10 @@ fi
 %config(noreplace) %{_sysconfdir}/tuned/ppd.conf
 
 %changelog
+* Tue Nov  5 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 2.24.0-6
+- Added workaround for systemd-boot
+  Resolves: rhbz#2323514
+
 * Mon Oct 28 2024 Neal Gompa <ngompa@fedoraproject.org> - 2.24.0-5
 - Bump obsoletes of ppd for tuned-ppd to fix upgrades
 

@@ -5,7 +5,7 @@
 %global crate tar
 
 Name:           rust-tar
-Version:        0.4.42
+Version:        0.4.43
 Release:        %autorelease
 Summary:        Rust implementation of a TAR file reader and writer
 

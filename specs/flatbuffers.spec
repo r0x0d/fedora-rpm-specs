@@ -246,12 +246,14 @@ export VERSION='%{version}'
     -DFLATBUFFERS_BUILD_FLATC=ON
 
 %if %{with mingw}
+(
 %mingw_cmake \
     -DFLATBUFFERS_BUILD_TESTS:BOOL=OFF \
     -DFLATBUFFERS_BUILD_GRPCTEST:BOOL=OFF \
     -DFLATBUFFERS_BUILD_SHAREDLIB=ON \
     -DFLATBUFFERS_BUILD_FLATLIB=OFF \
     -DFLATBUFFERS_BUILD_FLATC=ON
+)
 %endif
 
 
@@ -270,12 +272,14 @@ popd
 %endif
 
 %if %{with mingw}
+(
 %mingw_make_build
 
 pushd python
 %mingw32_py3_build_wheel
 %mingw64_py3_build_wheel
 popd
+)
 %endif
 
 
@@ -289,6 +293,7 @@ mkdir -p %{buildroot}%{_mandir}/man1
 cp -p %SOURCE1 %{buildroot}%{_mandir}/man1/flatc.1
 
 %if %{with mingw}
+(
 %mingw_make_install
 
 pushd python
@@ -296,6 +301,7 @@ pushd python
 %mingw64_py3_install_wheel
 popd
 %mingw_debug_install_post
+)
 %endif
 
 

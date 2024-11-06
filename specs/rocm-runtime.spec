@@ -59,6 +59,8 @@ ROCm Runtime development files
 
 %build
 
+export PATH=%{rocmllvm_bindir}:$PATH
+
 cd src
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \

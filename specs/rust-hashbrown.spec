@@ -5,7 +5,7 @@
 %global crate hashbrown
 
 Name:           rust-hashbrown
-Version:        0.15.0
+Version:        0.15.1
 Release:        %autorelease
 Summary:        Rust port of Google's SwissTable hash map
 

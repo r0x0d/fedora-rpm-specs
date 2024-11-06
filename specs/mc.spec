@@ -5,12 +5,11 @@
 Summary:	User-friendly text console file manager and visual shell
 Name:		mc
 Epoch:		1
-Version: 	4.8.31
-Release:	2%{?dist}
+Version: 	4.8.32
+Release:	1%{?dist}
 License:	GPL-3.0-or-later
 URL:		https://midnight-commander.org/
-VCS:		https://github.com/MidnightCommander/mc/
-Source:		%{VCS}/archive/%{version}/%{name}-%{version}.tar.gz
+Source:		http://ftp.midnight-commander.org/mc-%{version}.tar.xz
 Patch:		%{name}-spec.syntax.patch
 Patch:		%{name}-default_setup.patch
 Patch:		%{name}-tmpdir.patch
@@ -53,7 +52,6 @@ Midnight Commander s3+ and UC1541 EXTFS backend scripts.
 
 %build
 %__sed -i "s,PREV_MC_VERSION=\"unknown\",PREV_MC_VERSION=\"%{version}\"," version.sh
-./autogen.sh
 %configure \
 	PYTHON=%__python3 \
 	--disable-rpath \
@@ -85,8 +83,7 @@ Midnight Commander s3+ and UC1541 EXTFS backend scripts.
 /etc/profile.d/*
 %dir %{_sysconfdir}/mc
 %{_sysconfdir}/mc/edit*
-%config(noreplace) %{_sysconfdir}/mc/mc*
-%config(noreplace) %{_sysconfdir}/mc/*.ini
+%config(noreplace) %{_sysconfdir}/mc/*
 %{_bindir}/*
 %dir %{_libexecdir}/mc
 %attr(755,root,root) %{_libexecdir}/mc/cons.saver
@@ -102,6 +99,12 @@ Midnight Commander s3+ and UC1541 EXTFS backend scripts.
 %{_libexecdir}/mc/extfs.d/{s3+,uc1541}
 
 %changelog
+* Mon Nov 04 2024 Jindrich Novy <jnovy@redhat.com> - 1:4.8.32-1
+- update to 4.8.32
+- switch to xz compressed tarballs
+- don't list files twice
+- fix tmpdir patch
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:4.8.31-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

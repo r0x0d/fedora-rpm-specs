@@ -54,6 +54,13 @@ autoreconf -fvi
 install -Dm0644 org.freedesktop.RealtimeKit1.xml %{buildroot}%{_datadir}/dbus-1/interfaces/org.freedesktop.RealtimeKit1.xml
 install -Dpm 0644 %{SOURCE1} %{buildroot}%{_sysusersdir}/rtkit.conf
 
+# Relocate dbus policy to /usr
+mkdir -p %{buildroot}%{_datadir}/dbus-1/system.d
+mv %{buildroot}%{_sysconfdir}/dbus-1/system.d/org.freedesktop.RealtimeKit1.conf %{buildroot}%{_datadir}/dbus-1/system.d
+rmdir %{buildroot}%{_sysconfdir}/dbus-1/system.d
+rmdir %{buildroot}%{_sysconfdir}/dbus-1
+rmdir %{buildroot}%{_sysconfdir}
+
 %pre
 %sysusers_create_compat %{SOURCE1}
 
@@ -72,9 +79,9 @@ dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesk
 %attr(0755,root,root) %{_sbindir}/rtkitctl
 %attr(0755,root,root) %{_libexecdir}/rtkit-daemon
 %{_datadir}/dbus-1/system-services/org.freedesktop.RealtimeKit1.service
+%{_datadir}/dbus-1/system.d/org.freedesktop.RealtimeKit1.conf
 %{_datadir}/dbus-1/interfaces/org.freedesktop.RealtimeKit1.xml
 %{_datadir}/polkit-1/actions/org.freedesktop.RealtimeKit1.policy
-%config(noreplace) %{_sysconfdir}/dbus-1/system.d/org.freedesktop.RealtimeKit1.conf
 %{_prefix}/lib/systemd/system/rtkit-daemon.service
 %{_mandir}/man8/*
 %{_sysusersdir}/rtkit.conf

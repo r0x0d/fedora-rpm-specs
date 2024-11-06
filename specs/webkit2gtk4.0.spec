@@ -19,7 +19,7 @@
 %endif
 
 Name:           webkit2gtk4.0
-Version:        2.46.1
+Version:        2.46.3
 Release:        %autorelease
 Summary:        WebKitGTK for GTK 3 and libsoup 2
 
@@ -56,10 +56,6 @@ Source1:        https://webkitgtk.org/releases/webkitgtk-%{version}.tar.xz.asc
 # $ gpg --import aperez.key carlosgc.key
 # $ gpg --export --export-options export-minimal 013A0127AC9C65B34FFA62526C1009B693975393 5AA3BC334FD7E3369E7C77B291C559DBE4C9123B > webkitgtk-keys.gpg
 Source2:        webkitgtk-keys.gpg
-
-# Work around a missing implementation of musttail in clang for ppc64le
-# https://github.com/llvm/llvm-project/issues/108014
-Patch:          webkitgtk-skia-musttail.patch
 
 # https://bugs.webkit.org/show_bug.cgi?id=280642
 Patch:          llvm19.patch

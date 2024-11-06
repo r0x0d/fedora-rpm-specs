@@ -1,13 +1,13 @@
 # remirepo/fedora spec file for php-league-plates
 #
-# Copyright (c) 2016-2023 Remi Collet
+# Copyright (c) 2016-2024 Remi Collet
 # License: CC-BY-SA-4.0
 # http://creativecommons.org/licenses/by-sa/4.0/
 #
 # Please, preserve the changelog entries
 #
 # Github
-%global gh_commit    a6a3238e46c6e19af7318fdc36bfbe49b0620231
+%global gh_commit    12ee65166adbc6fb5916fb80b0c0758e49a2d996
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     thephpleague
 %global gh_project   plates
@@ -19,8 +19,8 @@
 %global ns_project   Plates
 
 Name:           php-%{pk_vendor}-%{pk_name}
-Version:        3.5.0
-Release:        6%{?dist}
+Version:        3.6.0
+Release:        1%{?dist}
 Summary:        Native PHP template system
 
 Group:          Development/Libraries
@@ -31,23 +31,23 @@ Source0:        %{name}-%{version}-%{gh_short}.tgz
 Source1:        makesrc.sh
 
 BuildArch:      noarch
-# as we use phpunit9
-BuildRequires:  php(language) >= 7.3
+BuildRequires:  php(language) >= 8.0
 BuildRequires:  php-pcre
 BuildRequires:  php-spl
 # From composer.json, "require-dev": {
 #        "mikey179/vfsstream": "^1.6",
-#        "phpunit/phpunit": "^9.5",
+#        "phpunit/phpunit": "^11.4",
 #        "squizlabs/php_codesniffer": "^3.5"
 BuildRequires:  php-composer(mikey179/vfsStream) >= 1.6
-BuildRequires:  phpunit9 >= 9.5
+# phpunit11 not yet available
+BuildRequires:  phpunit10
 # Autoloader
 BuildRequires:  php-fedora-autoloader-devel
 
 # From composer.json, "require": {
-#        "php": "^7.0|^8.0"
-Requires:       php(language) >= 7.0
-# From phpcompatifo report for 3.1.1
+#        "php": "^8.0"
+Requires:       php(language) >= 8.0
+# From phpcompatinfo report for 3.1.1
 Requires:       php-pcre
 Requires:       php-spl
 # Autoloader
@@ -95,9 +95,9 @@ EOF
 
 : Run upstream test suite
 ret=0
-for cmd in php php80 php81 php82; do
+for cmd in php php81 php82 php83 php84; do
   if which $cmd; then
-    $cmd %{_bindir}/phpunit9 || ret=1
+    $cmd %{_bindir}/phpunit10 || ret=1
   fi
 done
 exit $ret
@@ -111,6 +111,11 @@ exit $ret
 
 
 %changelog
+* Mon Nov  4 2024 Remi Collet <remi@remirepo.net> - 3.6.0-1
+- update to 3.6.0
+- switch to phpunit10
+- raise dependency on PHP 8.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.5.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

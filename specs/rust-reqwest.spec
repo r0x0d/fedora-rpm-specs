@@ -432,8 +432,10 @@ rm tests/brotli.rs
 
 %if %{with check}
 %check
+# * run tests single-threaded to avoid clobbered environment variables:
+#   https://github.com/seanmonstar/reqwest/issues/2468
 # * skip tests which require internet access
-%cargo_test -- -- --exact --skip test_allowed_methods --skip test_badssl_modern --skip test_badssl_self_signed --skip test_tls_info
+%cargo_test -- -- --test-threads 1 --exact --skip test_allowed_methods --skip test_badssl_modern --skip test_badssl_self_signed --skip test_tls_info
 %endif
 
 %changelog

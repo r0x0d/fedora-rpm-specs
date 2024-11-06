@@ -2,7 +2,7 @@
 %global giturl  https://github.com/gap-packages/design
 
 Name:           gap-pkg-%{pkgname}
-Version:        1.8.1
+Version:        1.8.2
 Release:        %autorelease
 Summary:        Construct, classify, partition, and study block designs
 
@@ -13,8 +13,6 @@ ExcludeArch:    %{ix86}
 URL:            https://gap-packages.github.io/design/
 VCS:            git:%{giturl}.git
 Source:         %{giturl}/archive/v%{version}/%{pkgname}-%{version}.tar.gz
-# Fix a BibTeX error
-Patch:          %{name}-bibtex.patch
 
 BuildRequires:  gap-devel
 BuildRequires:  gap-pkg-grape

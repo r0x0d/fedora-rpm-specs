@@ -1,7 +1,7 @@
 %global __brp_check_rpaths %{nil}
 
 Name:          toolbox
-Version:       0.1.0
+Version:       0.1.1
 
 %global goipath github.com/containers/%{name}
 
@@ -63,7 +63,7 @@ BuildRequires: systemd-rpm-macros
 BuildRequires: golang(github.com/HarryMichal/go-version) >= 1.0.1
 BuildRequires: golang-ipath(github.com/NVIDIA/go-nvlib) >= 0.6.1
 BuildRequires: golang-ipath(github.com/NVIDIA/go-nvml) >= 0.12.4.0
-BuildRequires: golang-ipath(github.com/NVIDIA/nvidia-container-toolkit) >= 1.16.1
+BuildRequires: golang-ipath(github.com/NVIDIA/nvidia-container-toolkit) >= 1.16.2
 BuildRequires: golang(github.com/acobaugh/osrelease) >= 0.1.0
 BuildRequires: golang(github.com/briandowns/spinner) >= 1.18.0
 BuildRequires: golang(github.com/docker/go-units) >= 0.5.0
@@ -74,7 +74,7 @@ BuildRequires: golang(github.com/google/renameio/v2) >= 2.0.0
 BuildRequires: golang(github.com/sirupsen/logrus) >= 1.9.3
 BuildRequires: golang(github.com/spf13/cobra) >= 1.3.0
 BuildRequires: golang(github.com/spf13/viper) >= 1.10.1
-BuildRequires: golang-ipath(golang.org/x/sys) >= 0.22.0
+BuildRequires: golang-ipath(golang.org/x/sys) >= 0.24.0
 BuildRequires: golang(golang.org/x/text) >= 0.3.8
 BuildRequires: golang-ipath(gopkg.in/yaml.v3) >= 3.0.1
 BuildRequires: golang-ipath(tags.cncf.io/container-device-interface) >= 0.8.0
@@ -210,6 +210,9 @@ install -m0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/containers/%{name}.conf
 
 
 %changelog
+* Mon Nov 04 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.1.1-1
+- Update to 0.1.1
+
 * Tue Oct 22 2024 Debarshi Ray <rishi@fedoraproject.org> - 0.1.0-1
 - Update to 0.1.0
 

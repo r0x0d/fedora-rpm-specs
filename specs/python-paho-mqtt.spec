@@ -1,8 +1,8 @@
 %global srcname paho-mqtt
 
 Name:           python-%{srcname}
-Version:        1.6.1
-Release:        11%{?dist}
+Version:        2.1.0
+Release:        1%{?dist}
 Summary:        Python MQTT version 3.1/3.1.1/5.0 client class
 
 License:        EPL-1.0
@@ -42,20 +42,24 @@ and/or network bandwidth is at a premium.
 
 %prep
 %autosetup -n paho.mqtt.python-%{version}
+%generate_buildrequires
+%pyproject_buildrequires
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files paho
 
-%files -n python3-%{srcname}
-%doc CONTRIBUTING.md README.rst *.html
+%files -n python3-%{srcname} -f %{pyproject_files}
 %license LICENSE.txt
-%{python3_sitelib}/paho/
-%{python3_sitelib}/paho*.egg-info
+%doc CONTRIBUTING.md README.rst *.html
 
 %changelog
+* Sun Nov 03 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 2.1.0-1
+- Update to 2.1.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.6.1-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -3,7 +3,7 @@
 %global pkgname libzip
 
 Name:           mingw-%{pkgname}
-Version:        1.11.1
+Version:        1.11.2
 Release:        1%{?dist}
 Summary:        C library for reading, creating, and modifying zip archives
 
@@ -14,14 +14,11 @@ URL:            http://www.nih.at/libzip/index.html
 Source0:        http://www.nih.at/libzip/%{pkgname}-%{version}.tar.xz
 # Add soversion suffix, as was the case previously with autotools build
 Patch0:         libzip_cmake.patch
-# Fix multiple initializations from incompatible pointer types
-# https://github.com/nih-at/libzip/pull/446
-Patch1:         libzip-incompat-pointer-types.patch
 
-BuildRequires:  make
+BuildRequires:  ninja-build
 BuildRequires:  cmake
-BuildRequires:  perl
-BuildRequires:  libzip-tools
+#BuildRequires: perl
+#BuildRequires: libzip-tools
 
 BuildRequires:  mingw32-filesystem >= 95
 BuildRequires:  mingw32-gcc
@@ -73,12 +70,12 @@ The API is documented by man pages.
 
 
 %build
-%mingw_cmake
-%mingw_make_build
+%mingw_cmake -G Ninja
+%mingw_ninja
 
 
 %install
-%mingw_make_install
+%mingw_ninja_install
 
 # Remove unused files
 rm -r %{buildroot}%{mingw32_datadir}
@@ -111,6 +108,9 @@ rm -r %{buildroot}%{mingw64_datadir}
 
 
 %changelog
+* Mon Nov 04 2024 Sandro Mani <manisandro@gmail.com> - 1.11.2-1
+- Update to 1.11.2
+
 * Mon Sep 23 2024 Sandro Mani <manisandro@gmail.com> - 1.11.1-1
 - Update to 1.11.1
 

@@ -168,7 +168,7 @@ fi                                          \
 
 Name:           libxcrypt
 Version:        4.4.36
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Extended crypt library for descrypt, md5crypt, bcrypt, and others
 
 # For explicit license breakdown, see the
@@ -179,11 +179,15 @@ Source0:        %{url}/releases/download/v%{version}/%{name}-%{version}.tar.xz
 Source1:        %{url}/releases/download/v%{version}/%{name}-%{version}.tar.xz.asc
 Source2:        %{url}/releases/download/v%{version}/%{name}-gpgkey.gpg
 Source3:        %{url}/releases/download/v%{version}/%{name}-%{version}.tar.xz.sha256sum
-Patch0: libxcrypt-configure-c99.patch
 
 # Patch 0000 - 2999: Backported patches from upstream.
+Patch0000:      %{url}/commit/2572bd2553df.patch#/%{name}-configure-c99.patch
+Patch0001:      %{url}/pull/185.patch#/%{name}-manpage-fixes.patch
+Patch0002:      %{url}/commit/7a8b3f39ada0.patch#/%{name}-crypt_gensalt_3_Small-fix-from-Debian.patch
+Patch0003:      %{url}/commit/9a8ba6ed1c60.patch#/%{name}-test_short-outbuf_c-Do-not-include-crypt_h-directly.patch
 
 # Patch 3000 - 5999: Backported patches from pull requests.
+Patch3000:      %{name}-Make-crypt-and-crypt_gensalt-use-thread-local-output.patch
 
 # Patch 6000 - 9999: Downstream patches.
 
@@ -585,6 +589,10 @@ done
 
 
 %changelog
+* Mon Nov 04 2024 Björn Esser <besser82@fedoraproject.org> - 4.4.36-8
+- Add some upstream patches mostly fixing manpages
+- Add patch to use TLS to make crypt and crypt_gensalt functions MT-Safe
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.4.36-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

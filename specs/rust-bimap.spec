@@ -2,32 +2,33 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate tui
+%global crate bimap
 
-Name:           rust-tui0.11
-Version:        0.11.0
+Name:           rust-bimap
+Version:        0.6.3
 Release:        %autorelease
-Summary:        Library to build rich terminal user interfaces or dashboards
+Summary:        Bijective maps
 
-License:        MIT
-URL:            https://crates.io/crates/tui
+# Upstream license specification: Apache-2.0/MIT
+License:        Apache-2.0 OR MIT
+URL:            https://crates.io/crates/bimap
 Source:         %{crates_source}
-# Manually created patch for downstream crate metadata changes
-# * drop optional features with broken dependencies
-Patch:          tui-fix-metadata.diff
+# * Bump hashbrown to 0.15 version:
+#   https://github.com/billyrieger/bimap-rs/pull/48
+Patch:          bimap-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-A library to build rich terminal user interfaces or dashboards.}
+bimap-rs is a pure Rust library for dealing with bijective maps, aiming
+to feel like an extension of the standard librarys data structures
+whenever possible.}
 
 %description %{_description}
 
 %package        devel
 Summary:        %{summary}
 BuildArch:      noarch
-# unmaintained - replaced by ratatui
-Provides:       deprecated()
 
 %description    devel %{_description}
 
@@ -35,8 +36,11 @@ This package contains library source intended for building other packages which
 use the "%{crate}" crate.
 
 %files          devel
-%license %{crate_instdir}/LICENSE
+%license %{crate_instdir}/LICENSE_APACHE
+%license %{crate_instdir}/LICENSE_MIT
 %doc %{crate_instdir}/CHANGELOG.md
+%doc %{crate_instdir}/CODE_OF_CONDUCT.md
+%doc %{crate_instdir}/CONTRIBUTING.md
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
@@ -52,18 +56,6 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+crossterm-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+crossterm-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "crossterm" feature of the "%{crate}" crate.
-
-%files       -n %{name}+crossterm-devel
-%ghost %{crate_instdir}/Cargo.toml
-
 %package     -n %{name}+serde-devel
 Summary:        %{summary}
 BuildArch:      noarch
@@ -76,16 +68,16 @@ use the "serde" feature of the "%{crate}" crate.
 %files       -n %{name}+serde-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+termion-devel
+%package     -n %{name}+std-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+termion-devel %{_description}
+%description -n %{name}+std-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "termion" feature of the "%{crate}" crate.
+use the "std" feature of the "%{crate}" crate.
 
-%files       -n %{name}+termion-devel
+%files       -n %{name}+std-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep
@@ -103,9 +95,7 @@ use the "termion" feature of the "%{crate}" crate.
 
 %if %{with check}
 %check
-# * skip tests that don't panic as expected in release mode
-# * skip tests that fail due to formatting differences
-%cargo_test -- -- --skip panics_on_out_of_bounds --skip src/buffer.rs --skip buffer::tests::buffer_set_string_zero_width
+%cargo_test
 %endif
 
 %changelog

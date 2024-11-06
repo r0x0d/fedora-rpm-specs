@@ -14,6 +14,7 @@ URL:            https://crates.io/crates/tui-textarea
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * drop features and dependencies for unused termwiz support
+# * drop features and dependencies for unused tui support
 Patch:          tui-textarea-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
@@ -123,72 +124,26 @@ use the "termion" feature of the "%{crate}" crate.
 %files       -n %{name}+termion-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+tuirs-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+tuirs-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "tuirs" feature of the "%{crate}" crate.
-
-%files       -n %{name}+tuirs-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+tuirs-crossterm-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+tuirs-crossterm-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "tuirs-crossterm" feature of the "%{crate}" crate.
-
-%files       -n %{name}+tuirs-crossterm-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+tuirs-no-backend-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+tuirs-no-backend-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "tuirs-no-backend" feature of the "%{crate}" crate.
-
-%files       -n %{name}+tuirs-no-backend-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+tuirs-termion-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+tuirs-termion-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "tuirs-termion" feature of the "%{crate}" crate.
-
-%files       -n %{name}+tuirs-termion-devel
-%ghost %{crate_instdir}/Cargo.toml
-
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
 # drop termwiz example
 rm examples/termwiz.rs
+# drop tui examples
+rm examples/tuirs_*.rs
 
 %generate_buildrequires
-%cargo_generate_buildrequires
+%cargo_generate_buildrequires -a
 
 %build
-%cargo_build
+%cargo_build -a
 
 %install
-%cargo_install
+%cargo_install -a
 
 %if %{with check}
 %check
-%cargo_test
+%cargo_test -a
 %endif
 
 %changelog

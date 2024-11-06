@@ -1,15 +1,19 @@
-%global __cmake_in_source_build 1
+#global __cmake_in_source_build 1
+
 
 # BZ 1996330
-%ifarch ppc64le
-%global _lto_cflags %nil
-%endif
+#ifarch ppc64le
+#global _lto_cflags %nil
+#endif
+
+%bcond_with docs
+
 
 Summary:	Point Data Abstraction Library
 Name:		PDAL
 # NOTE: Re-verifiy test exclusions in %%check when updating
-Version:	2.8.0
-Release:	2%{?dist}
+Version:	2.8.1
+Release:	1%{?dist}
 # The code is licensed BSD except for:
 # - filters/private/csf/* and plugins/i3s/lepcc/* are ASL 2.0
 # - vendor/arbiter/*, plugins/nitf/io/nitflib.h and plugins/oci/io/OciWrapper.* are Expat/MIT
@@ -56,23 +60,21 @@ BuildRequires:	netcdf-cxx-devel
 BuildRequires:	postgresql-devel
 BuildRequires:	postgresql-server
 BuildRequires:	proj-devel
-%if 0%{?fedora}
-# yet missing for EPEL8 BZ#1808766
-BuildRequires:	python3-breathe
-%endif
 BuildRequires:	python3-devel
 BuildRequires:	python3-numpy
-BuildRequires:	python3-sphinx
-BuildRequires:  python3-sphinx-notfound-page
-%if 0%{?fedora}
-# yet missing for EPEL8
-BuildRequires:	python3-sphinxcontrib-bibtex
-BuildRequires:  python3-sphinxcontrib-spelling
-%endif
-BuildRequires:	python3-sphinx_rtd_theme
 BuildRequires:	qhull-devel
 BuildRequires:	sqlite-devel
 BuildRequires:	zlib-devel
+
+%if %{with docs}
+BuildRequires:	python3-breathe
+BuildRequires:	python3-sphinx
+BuildRequires:  python3-sphinx-notfound-page
+BuildRequires:	python3-sphinxcontrib-bibtex
+BuildRequires:  python3-sphinxcontrib-spelling
+BuildRequires:	python3-sphinx_rtd_theme
+%endif
+
 
 Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
 Requires:	bash-completion
@@ -124,12 +126,14 @@ to use PDAL
 #%%description vdatums
 #This package contains vertical datum and geoid files for PDAL.
 
+%if %{with docs}
 %package doc
 Summary:	Documentation for PDAL
 BuildArch:	noarch
 
 %description doc
 This package contains documentation for PDAL.
+%endif
 
 # We don't want to provide private PDAL extension libs (to be verified)
 %global __provides_exclude_from ^%{_libdir}/libpdal_plugin.*\.so.*$
@@ -162,16 +166,15 @@ rm -rf vendor/{eigen,gtest,pdalboost}
 %cmake_build
 
 # Build documentation
-%if 0%{?fedora}
+%if %{with docs}
 # dependencies yet missing for EPEL8 BZ#1808766
 (
 cd doc
-# FIXME: Crash when SOURCE_DATE_EPOCH is set
-# https://github.com/sphinx-doc/sphinx/pull/11516
-unset SOURCE_DATE_EPOCH
+export PYTHONPATH=$PWD/doc/_ext
 sphinx-build -b html . build/html
 )
 %endif
+
 
 %install
 %cmake_install
@@ -219,13 +222,16 @@ sphinx-build -b html . build/html
 #%%files vdatums
 #%%attr(0644,root,root) %%{_datadir}/proj/*.gtx
 
+%if %{with docs}
 %files doc
-%if 0%{?fedora}
 %doc doc/build/html
-%endif
 %license LICENSE.txt
+%endif
 
 %changelog
+* Sat Oct 26 2024 Sandro Mani <manisandro@gmail.com> - 2.8.1-1
+- Update to 2.8.1
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 2.8.0-2
 - Rebuild for hdf5 1.14.5
 

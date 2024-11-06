@@ -2,14 +2,16 @@
 
 Name:           %{pypi_name}
 Version:        0.2.2
-Release:        13%{?dist}
+Release:        14%{?dist}
 Summary:        Tool for generating MQTT messages on various topics
 
 License:        MIT
 URL:            https://github.com/fabaff/mqtt-randompub/
 Source0:        %{url}/archive/%{version}/%{pypi_name}-%{version}.tar.gz
-BuildArch:      noarch
+# https://github.com/fabaff/mqtt-randompub/pull/7
+Patch1:         0001-Add-basic-support-for-paho.mqtt-v2.patch
 
+BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(setuptools)
 
@@ -22,7 +24,7 @@ the tool is terminated. Configuration files can be used to store
 lists of topics to create repeatable test scenarios.
 
 %prep
-%autosetup -n %{pypi_name}-%{version}
+%autosetup -n %{pypi_name}-%{version} -p1
 rm -rf %{pypi_name}.egg-info
 
 %build
@@ -39,6 +41,9 @@ rm -rf %{pypi_name}.egg-info
 %{python3_sitelib}/mqtt_randompub-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Mon Nov 04 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 0.2.2-14
+- Add patch to support paho-mqtt v2+
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.2-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

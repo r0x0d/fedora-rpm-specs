@@ -1,7 +1,7 @@
 Summary:        A program that extracts a catalog of sources from astronomical images, and the successor of SExtractor
 Name:           sourcextractor++
-Version:        0.21
-Release:        10%{?dist}
+Version:        0.22
+Release:        %autorelease
 # Automatically converted from old format: LGPLv3+ - review is highly recommended.
 License:        LGPL-3.0-or-later
 URL:            https://github.com/astrorama/sourcextractorplusplus
@@ -10,14 +10,14 @@ Source0:        https://github.com/astrorama/sourcextractorplusplus/archive/%{ve
 # It is downloaded from:
 # https://upload.cppreference.com/w/File:cppreference-doxygen-web.tag.xml
 Source1:        cppreference-doxygen-web.tag.xml
-Patch0:         0000-Use-Alexandria-2.32.1.patch
+Patch0:         0000-Use-Alexandria-2.31.2.patch
 Patch1:         0001-Use-Fedora-compilation-flags.patch
 Patch2:         0002-Remove-benchmarks.patch
 Patch3:         0003-Remove-TestImage.patch
 Patch4:         0004-Reduce-precision-requirement-for-test.patch
 Patch5:         0005-Use-boost-filesystem-stem-instead-of-basename.patch
 
-%global elements_version 6.3.1
+%global elements_version 6.3.2
 %global alexandria_version 2.31.2
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval 
@@ -209,157 +209,4 @@ make test -C "%{_vpath_builddir}"
 %{_docdir}/sourcextractor++
 
 %changelog
-* Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.21-10
-- convert license to SPDX
-
-* Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.21-9
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Sun Jun 09 2024 Python Maint <python-maint@redhat.com> - 0.21-8
-- Rebuilt for Python 3.13
-
-* Wed May 29 2024 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> - 0.21-7
-- Rebuild for Alexandria 2.31.2
-
-* Wed May 22 2024 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> - 0.21-6
-- Rebuild for onnxruntime-1.17.3
-
-* Wed Mar 20 2024 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> - 0.21-5
-- Rebuild for onnxruntime 1.16.3
-
-* Tue Jan 30 2024 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> - 0.21-4
-- Rebuild for wcslib 8.2
-
-* Sat Jan 27 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.21-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Thu Jan 18 2024 Jonathan Wakely <jwakely@redhat.com> - 0.21-2
-- Rebuilt for Boost 1.83
-
-* Wed Dec 27 2023 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> - 0.21-1
-- Release 0.21
-
-* Fri Nov 10 2023 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> - 0.19.2-6
-- Rebuilt for Alexandria 2.31.0
-
-* Thu Aug 17 2023 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> - 0.19.2-5
-- Enable onnxruntime support
-
-* Sat Jul 22 2023 Fedora Release Engineering <releng@fedoraproject.org> - 0.19.2-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Mon Jul 10 2023 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> - 0.19.2-3
-- Rebuild SourceXtractor++
-
-* Mon Jul 10 2023 Python Maint <python-maint@redhat.com> - 0.19.2-2
-- Rebuilt for Python 3.12
-
-* Tue Mar 14 2023 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> - 0.19.2-1
-- SourceXtractor++ 0.19.2 
-
-* Sat Feb 25 2023 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> - 0.19-6
-- Fix build in Fedora 39
-
-* Wed Feb 01 2023 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> - 0.19-5
-- Rebuild for gcc 13
-
-* Sat Jan 21 2023 Fedora Release Engineering <releng@fedoraproject.org> - 0.19-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
-
-* Thu Dec 29 2022 Maxwell G <gotmax@e.email> - 0.19-3
-- Rebuild for cfitsio 4.2
-
-* Mon Dec 12 2022 aalvarez - 0.19-2
-- Requires python3-astropy
-
-* Thu Oct 20 2022 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.19-1
-- SourceXtractor++ 0.19
-
-* Tue Aug 23 2022 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.18-3
-- Rebuild for gsl-2.7.1
-
-* Sat Jul 23 2022 Fedora Release Engineering <releng@fedoraproject.org> - 0.18-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
-
-* Fri Jul 15 2022 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.18-1
-- SourceXtractor++ 0.18
-
-* Mon Jun 13 2022 Python Maint <python-maint@redhat.com> - 0.17-4
-- Rebuilt for Python 3.11
-
-* Wed May 04 2022 Thomas Rodgers <trodgers@redhat.com> - 0.17-3
-- Rebuilt for Boost 1.78
-
-* Tue Apr 26 2022 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.17-2
-- Rebuild
-
-* Mon Apr 25 2022 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.17-1
-- SourceXtractor++ 0.17
-
-* Sat Jan 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 0.16-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
-
-* Mon Dec 20 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.16-1
-- SourceXtractor++ 0.16
-
-* Wed Aug 11 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.15-6
-- Rebuild after f35 branching
-
-* Mon Aug 09 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.15-5
-- Patch double closing of file
-
-* Sat Aug 07 2021 Jonathan Wakely <jwakely@redhat.com> - 0.15-4
-- Rebuilt for Boost 1.76
-
-* Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.15-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
-
-* Fri Jun 04 2021 Python Maint <python-maint@redhat.com> - 0.15-2
-- Rebuilt for Python 3.10
-
-* Mon May 31 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.15-1
-- Release 0.15
-
-* Mon May 10 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.14-2
-- Rebuild for gcc11.1
-
-* Wed Apr 21 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.14-1
-- Release 0.14
-
-* Tue Feb 09 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.13-1
-- Release 0.13
-
-* Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.12-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
-
-* Fri Jan 22 2021 Jonathan Wakely <jwakely@redhat.com> - 0.12-2
-- Rebuilt for Boost 1.75
-
-* Mon Dec 07 2020 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.12-1
-- Update for upstream release 0.12
-
-* Sat Aug 01 2020 Fedora Release Engineering <releng@fedoraproject.org> - 0.11-3
-- Second attempt - Rebuilt for
-  https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
-
-* Wed Jul 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 0.11-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
-
-* Tue Jul 21 2020 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.11-1
-- Update for upstream release 0.11
-
-* Sat May 30 2020 Jonathan Wakely <jwakely@redhat.com> - 0.10-4
-- Rebuilt for Boost 1.73
-
-* Tue May 26 2020 Miro Hrončok <mhroncok@redhat.com> - 0.10-3
-- Rebuilt for Python 3.9
-
-* Tue Mar 17 2020 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.10-2
-- Rebuild for wcslib 7.2
-
-* Fri Mar 13 2020 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.10-1
-- Update for upstream release 0.10
-
-* Fri Jan 31 2020 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 0.8-1
-- New RPM
-
+%autochangelog

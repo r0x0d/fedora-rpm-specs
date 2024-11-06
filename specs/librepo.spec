@@ -30,7 +30,7 @@
 %global dnf_conflict 2.8.8
 
 Name:           librepo
-Version:        1.18.1
+Version:        1.19.0
 Release:        1%{?dist}
 Summary:        Repodata downloading library
 
@@ -140,6 +140,11 @@ Python 3 bindings for the librepo library.
 %{python3_sitearch}/%{name}/
 
 %changelog
+* Mon Nov 04 2024 Evan Goode <egoode@redhat.com> - 1.19.0-1
+- Fix input termination for pgpParsePkts
+- Convert all xattr strings to lower case to be compatible to Amazon S3 buckets
+- Introduce entropy for fastestmirror option
+
 * Wed Aug 14 2024 Evan Goode <egoode@redhat.com> - 1.18.1-1
 - gpg: Check is_selinux_enabled() before trying to label
 - spec: Correct setting -DENABLE_SELINUX cmake argument

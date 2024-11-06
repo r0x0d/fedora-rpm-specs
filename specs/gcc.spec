@@ -1,10 +1,10 @@
-%global DATE 20241025
-%global gitrev 3f6cf880bdadb4404d5540bad605ceec58261359
+%global DATE 20241104
+%global gitrev b84ce6a258e01f6559a1855b5f1d1ba4e69a927b
 %global gcc_version 14.2.1
 %global gcc_major 14
 # Note, gcc_release must be integer, if you want to add suffixes to
 # %%{release}, append them after %%{gcc_release} on Release: line.
-%global gcc_release 5
+%global gcc_release 6
 %global nvptx_tools_gitrev 87ce9dc5999e5fca2e1d3478a30888d9864c9804
 %global newlib_cygwin_gitrev d45261f62a15f8abd94a1031020b9a9f455e4eed
 %global _unpackaged_files_terminate_build 0
@@ -3620,6 +3620,13 @@ end
 %endif
 
 %changelog
+* Mon Nov  4 2024 Jakub Jelinek <jakub@redhat.com> 14.2.1-6
+- update from releases/gcc-14 branch
+  - PRs fortran/79685, jit/117275, libstdc++/117321, libstdc++/117406,
+	middle-end/117354, rtl-optimization/116783, rtl-optimization/117327,
+	target/116415, target/117296, target/117318, tree-optimization/107467,
+	tree-optimization/117287
+
 * Fri Oct 25 2024 Jakub Jelinek <jakub@redhat.com> 14.2.1-5
 - update from releases/gcc-14 branch
   - PRs ada/114593, ada/114636, ada/114640, ada/115535, ada/116190,

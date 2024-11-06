@@ -1,7 +1,7 @@
 %bcond_without tests
 
 Name:    libzip
-Version: 1.11.1
+Version: 1.11.2
 Release: 1%{?dist}
 Summary: C library for reading, creating, and modifying zip archives
 
@@ -116,6 +116,9 @@ sed -e '/clone-fs-/d' \
 
 
 %changelog
+* Mon Nov  4 2024 Remi Collet <remi@remirepo.net> - 1.11.2-1
+- update to 1.11.2
+
 * Thu Sep 19 2024 Remi Collet <remi@remirepo.net> - 1.11.1-1
 - update to 1.11.1
 

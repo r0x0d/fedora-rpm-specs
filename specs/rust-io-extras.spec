@@ -5,7 +5,7 @@
 %global crate io-extras
 
 Name:           rust-io-extras
-Version:        0.18.2
+Version:        0.18.3
 Release:        %autorelease
 Summary:        File/socket handle/descriptor utilities
 

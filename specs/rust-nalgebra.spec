@@ -5,7 +5,7 @@
 %global crate nalgebra
 
 Name:           rust-nalgebra
-Version:        0.33.1
+Version:        0.33.2
 Release:        %autorelease
 Summary:        General-purpose linear algebra library
 

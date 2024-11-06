@@ -11,7 +11,7 @@
 
 Name:           crypto-policies
 Version:        %{git_date}
-Release:        1.git%{git_commit_hash}%{?dist}
+Release:        2.git%{git_commit_hash}%{?dist}
 Summary:        System-wide crypto policies
 
 License:        LGPL-2.1-or-later
@@ -227,7 +227,7 @@ end
 
 %pre
 # Drop removed javasystem backend; can be dropped in F43
-rm -f "%{_sysconfdir}/crypto-policies/back-ends/javasystem.config" || :
+rm -f "%{_sysconfdir}/crypto-policies/back-ends/javasystem.config" 2>/dev/null || :
 exit 0
 
 %posttrans scripts
@@ -295,6 +295,9 @@ exit 0
 %{_mandir}/man8/fips-finish-install.8*
 
 %changelog
+* Mon Nov 04 2024 Miro Hrončok <mhroncok@redhat.com> - 20241018-2.gitce922cb
+- Silence harmless error messages from %%pre scriptlet
+
 * Fri Oct 18 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20241018-1.gitce922cb
 - openssh, TEST-PQ: rename MLKEM key-exchange to MLKEM768
 

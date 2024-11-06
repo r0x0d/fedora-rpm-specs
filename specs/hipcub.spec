@@ -5,7 +5,7 @@
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 # Compiler is hipcc, which is clang based:
-%global toolchain clang
+%global toolchain rocm
 # hipcc does not support some clang flags
 %global build_cxxflags %(echo %{optflags} | sed -e 's/-fstack-protector-strong/-Xarch_host -fstack-protector-strong/' -e 's/-fcf-protection/-Xarch_host -fcf-protection/')
 # there is no debug package
@@ -13,6 +13,11 @@
 
 # Option to test suite for testing on real HW:
 %bcond_with check
+%if %{with check}
+%global build_test ON
+%else
+%global build_test OFF
+%endif
 
 Name:           hipcub
 Version:        %{rocm_version}
@@ -24,14 +29,16 @@ License:        MIT and BSD-3-Clause
 Source0:        %{url}/%{upstreamname}/archive/rocm-%{version}.tar.gz#/%{upstreamname}-%{version}.tar.gz
 
 BuildRequires:  cmake
-%if %{with check}
-BuildRequires:  gtest-devel
-%endif
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
 BuildRequires:  rocm-hip-devel
 BuildRequires:  rocprim-static
 BuildRequires:  rocm-runtime-devel
+BuildRequires:  rocm-rpm-macros
+
+%if %{with check}
+BuildRequires:  gtest-devel
+%endif
 
 # Only headers, cmake infra but noarch confuses the libdir
 # BuildArch: noarch
@@ -63,9 +70,7 @@ sed -i -e 's/ROCM_INSTALL_LIBDIR lib/ROCM_INSTALL_LIBDIR lib64/' cmake/ROCMExpor
 %build
 %cmake \
     -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
-%if %{with check}
-    -DBUILD_TEST=ON \
-%endif
+    -DBUILD_TEST=%{build_test} \
     -DCMAKE_CXX_COMPILER=hipcc \
     -DROCM_SYMLINK_LIBS=OFF
 %cmake_build

@@ -1,5 +1,5 @@
 %global basever 7.3
-%global micro 15
+%global micro 17
 #global pre ...
 %global pyversion 3.10
 Name:           pypy%{pyversion}
@@ -112,11 +112,12 @@ Patch7: 007-remove-startup-message.patch
 # https://fedoraproject.org/wiki/Changes/Replace_glibc_libcrypt_with_libxcrypt
 Patch9: 009-add-libxcrypt-support.patch
 
-# Fix function signatures uncovered by GCC 14 enforcement of
-# -Wincompatible-pointer-types
-# Resolved upstream:
-# https://github.com/pypy/pypy/commit/8831ebf1cd4af225c2212dbade45624f9305a8f0
-Patch10: 010-fix-pointers.patch
+# Fix test_concurrent_futures hangs
+# https://github.com/pypy/pypy/issues/4994
+Patch10: https://github.com/pypy/pypy/commit/c979537760.patch
+Patch11: https://github.com/pypy/pypy/commit/93e561bee4.patch
+Patch12: https://github.com/pypy/pypy/commit/a624ac9d22.patch
+Patch13: https://github.com/pypy/pypy/commit/f5aa2f6713.patch
 
 # Build-time requirements:
 
@@ -261,10 +262,10 @@ Provides: bundled(libmpdec) = %{libmpdec_version}
 }
 
 # Find the version in lib_pypy/cffi-XXX.dist-info/METADATA
-Provides: bundled(python3dist(cffi)) = 1.16.0
+Provides: bundled(python3dist(cffi)) = 1.17.0
 
 # Find the version in lib_pypy/cffi/_pycparser/__init__.py
-Provides: bundled(python3dist(pycparser)) = 2.21
+Provides: bundled(python3dist(pycparser)) = 2.22
 
 # Find the version in lib_pypy/cffi/_pycparser/ply/__init__.py
 Provides: bundled(python3dist(ply)) = 3.9

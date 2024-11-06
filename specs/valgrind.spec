@@ -2,8 +2,8 @@
 
 Summary: Dynamic analysis tools to detect memory or thread bugs and profile
 Name: %{?scl_prefix}valgrind
-Version: 3.23.0
-Release: 5%{?dist}
+Version: 3.24.0
+Release: 1%{?dist}
 Epoch: 1
 
 # This ignores licenses that are only found in the test or perf sources
@@ -84,29 +84,6 @@ Patch3: valgrind-3.16.0-some-stack-protector.patch
 
 # Add some -Wl,z,now.
 Patch4: valgrind-3.16.0-some-Wl-z-now.patch
-
-# Patches from upstream VALGRIND_3_23_BRANCH
-Patch5: 0001-Prepare-NEWS-for-branch-3.23-fixes.patch
-Patch6: 0002-486180-MIPS-VexGuestArchState-has-no-member-named-gu.patch
-Patch7: 0003-Bug-486293-memccpy-false-positives.patch
-Patch8: 0004-Bug-486569-linux-inotify_init-syscall-wrapper-missin.patch
-Patch9: 0005-aarch64-frinta-and-frinta-vector-instructions.patch
-Patch10: 0006-mips-skip-using-shared-syscall-numbers-for-mips32.patch
-Patch11: 0007-Fix-uninitialized-err-in-handle_extension.patch
-Patch12: 0008-Avoid-use-of-guest_IP_AT_SYSCALL-in-handle_extension.patch
-Patch13: 0009-s390x-Minor-fixes-in-extension-s390x.c.patch
-Patch14: 0010-Bug-453044-gbserver_tests-failures-in-aarch64.patch
-Patch15: 0011-Linux-regtest-reallocarray-needs-malloc.h.patch
-Patch16: 0012-Bug-487439-SIGILL-in-JDK11-JDK17.patch
-Patch17: 0013-Don-t-leave-fds-created-with-log-file-xml-file-or-lo.patch
-Patch18: 0014-Close-both-internal-pipe-fds-after-VG_-fork-in-paren.patch
-Patch19: 0015-Don-t-allow-programs-calling-fnctl-on-valgrind-s-own.patch
-patch20: 0016-mips-skip-using-shared-syscall-numbers-for-mips64.patch
-patch21: 0017-gdbserver_tests-filters-remove-python-rpm-module-loa.patch
-patch22: 0018-Implement-VMOVQ-xmm1-xmm2-m64.patch
-patch23: 0019-arm64-Fix-fcvtas-instruction.patch
-patch24: 0020-gdbserver_tests-filters-remove-more-verbose-python-r.patch
-patch25: 0021-Avoid-dev-inode-check-on-btrfs-with-sanity-level-3.patch
 
 BuildRequires: make
 BuildRequires: glibc-devel
@@ -245,28 +222,6 @@ Valgrind User Manual for details.
 %patch -P2 -p1
 %patch -P3 -p1
 %patch -P4 -p1
-
-%patch -P5 -p1
-%patch -P6 -p1
-%patch -P7 -p1
-%patch -P8 -p1
-%patch -P9 -p1
-%patch -P10 -p1
-%patch -P11 -p1
-%patch -P12 -p1
-%patch -P13 -p1
-%patch -P14 -p1
-%patch -P15 -p1
-%patch -P16 -p1
-%patch -P17 -p1
-%patch -P18 -p1
-%patch -P19 -p1
-%patch -P20 -p1
-%patch -P21 -p1
-%patch -P22 -p1
-%patch -P23 -p1
-%patch -P24 -p1
-%patch -P25 -p1
 
 %build
 # LTO triggers undefined symbols in valgrind.  But valgrind has a
@@ -483,6 +438,9 @@ echo ===============END TESTING===============
 %endif
 
 %changelog
+* Mon Nov  4 2024 Mark Wielaard <mjw@fedoraproject.org> - 3.24.0-1
+- Upstream 3.24.0 final
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:3.23.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

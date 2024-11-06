@@ -4,7 +4,7 @@
 %global crate gimoji
 
 Name:           rust-gimoji
-Version:        1.1.0
+Version:        1.1.1
 Release:        %autorelease
 Summary:        Easily add emojis to your git commit messages 🎉
 

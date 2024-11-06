@@ -3,13 +3,13 @@
 %bcond tests %{without bootstrap}
 
 Name:           python-tox-current-env
-Version:        0.0.12
+Version:        0.0.14
 Release:        %autorelease
 Summary:        Tox plugin to run tests in current Python environment
 
 License:        MIT
 URL:            https://github.com/fedora-python/tox-current-env
-Source0:        %{pypi_source tox-current-env}
+Source0:        %{pypi_source tox_current_env}
 BuildArch:      noarch
 
 BuildRequires:  python%{python3_pkgversion}-devel
@@ -28,7 +28,7 @@ The tox-current-env plugin allows to run tests in current Python environment.
 
 
 %prep
-%autosetup -n tox-current-env-%{version}
+%autosetup -n tox_current_env-%{version}
 
 
 %generate_buildrequires
