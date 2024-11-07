@@ -1,5 +1,5 @@
 Name:    akonadi-notes
-Version: 24.08.2
+Version: 24.08.3
 Release: 1%{?dist}
 Summary: The Akonadi Notes Library
 
@@ -68,6 +68,9 @@ find ./po -type f -name akonadinotes5.po -execdir mv {} akonadinotes6.po \;
 
 
 %changelog
+* Wed Nov 06 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
 - 24.08.2
 

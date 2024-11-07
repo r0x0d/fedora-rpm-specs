@@ -5,8 +5,8 @@
 
 Summary: Helps troubleshoot SELinux problems
 Name: setroubleshoot
-Version: 3.3.33
-Release: 6%{?dist}
+Version: 3.3.34
+Release: 1%{?dist}
 License: GPL-2.0-or-later
 URL: https://gitlab.com/setroubleshoot/setroubleshoot
 Source0: https://gitlab.com/setroubleshoot/setroubleshoot/-/archive/%{version}/setroubleshoot-%{version}.tar.gz
@@ -14,9 +14,6 @@ Source1: %{name}.tmpfiles
 Source2: %{name}.sysusers
 # git format-patch -N 3.3.33
 # i=1; for j in 00*patch; do printf "Patch%04d: %s\n" $i $j; i=$((i+1));done
-Patch0001: 0001-gitlab-ci-fix-Fedora-and-Debian-build-requirements.patch
-Patch0002: 0002-data-update-app-icon.patch
-Patch0003: 0003-disable-bug-reporting-if-libreport-is-not-available.patch
 BuildRequires: gcc
 BuildRequires: make
 BuildRequires: libcap-ng-devel
@@ -199,6 +196,12 @@ to user preference. The same tools can be run on existing log files.
 %doc AUTHORS COPYING ChangeLog DBUS.md NEWS README TODO
 
 %changelog
+* Mon Nov 04 2024 Petr Lautrbach <lautrbach@redhat.com> - 3.3.34-1
+- data: update app icon
+- Disable bug reporting, if libreport is not available
+- Enable Georgian and Arabic (ar) languages in configure.ac
+- Update translations
+
 * Wed Aug 21 2024 Michal Srb <michal@redhat.com> - 3.3.33-6
 - Disable bug reporting, if libreport is not available
 - Resolves: RHEL-52902

@@ -1,5 +1,5 @@
-%global git_date 20241018
-%global git_commit ce922cb23b79263b597f77ec56afc70c900854c6
+%global git_date 20241104
+%global git_commit 4983c10f92238a2d4c74dbf365abda6497913c0a
 %{?git_commit:%global git_commit_hash %(c=%{git_commit}; echo ${c:0:7})}
 
 %global _python_bytecompile_extra 0
@@ -11,7 +11,7 @@
 
 Name:           crypto-policies
 Version:        %{git_date}
-Release:        2.git%{git_commit_hash}%{?dist}
+Release:        1.git%{git_commit_hash}%{?dist}
 Summary:        System-wide crypto policies
 
 License:        LGPL-2.1-or-later
@@ -295,6 +295,9 @@ exit 0
 %{_mandir}/man8/fips-finish-install.8*
 
 %changelog
+* Mon Nov 04 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20241104-1.git4983c10
+- openssl: use both names for SecP256r1MLKEM768 / X25519MLKEM768
+
 * Mon Nov 04 2024 Miro Hrončok <mhroncok@redhat.com> - 20241018-2.gitce922cb
 - Silence harmless error messages from %%pre scriptlet
 

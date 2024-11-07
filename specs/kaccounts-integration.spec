@@ -6,8 +6,8 @@
 %endif
 
 Name:    kaccounts-integration
-Version: 24.08.2
-Release: 2%{?dist}
+Version: 24.08.3
+Release: 1%{?dist}
 Summary: Small system to administer web accounts across the KDE desktop
 License: CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-or-later
 URL:     https://invent.kde.org/network/%{name}
@@ -161,6 +161,7 @@ popd
 %{_qt6_plugindir}/kaccounts/daemonplugins/kaccounts_kio_webdav_plugin.so
 %{_kf6_libdir}/libkaccounts6.so.*
 %{_kf6_qmldir}/org/kde/kaccounts/
+%{_kf6_datadir}/qlogging-categories6/kaccounts.categories
 
 %files qt6-devel
 %{_kf6_libdir}/libkaccounts6.so
@@ -173,6 +174,7 @@ popd
 %license LICENSES/*
 %{_kf5_libdir}/libkaccounts.so.*
 %{_kf5_qmldir}/org/kde/kaccounts/
+%{_kf5_datadir}/qlogging-categories5/kaccounts.categories
 
 %files qt5-devel
 %{_kf5_libdir}/libkaccounts.so
@@ -182,6 +184,9 @@ popd
 
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 24.08.2-2
 - Rebuild (qt6)
 

@@ -5,7 +5,7 @@
 %global crate exr
 
 Name:           rust-exr
-Version:        1.72.0
+Version:        1.73.0
 Release:        %autorelease
 Summary:        Read and write OpenEXR files without any unsafe code
 

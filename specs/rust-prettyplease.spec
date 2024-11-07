@@ -5,7 +5,7 @@
 %global crate prettyplease
 
 Name:           rust-prettyplease
-Version:        0.2.22
+Version:        0.2.25
 Release:        %autorelease
 Summary:        Minimal syn syntax tree pretty-printer
 

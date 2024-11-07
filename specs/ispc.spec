@@ -1,5 +1,5 @@
 Name:		ispc
-Version:	1.25.0
+Version:	1.25.2
 Release:	%autorelease
 Summary:	C-based SPMD programming language compiler
 

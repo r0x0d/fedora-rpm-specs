@@ -32,6 +32,7 @@ ExclusiveArch:  x86_64
 BuildRequires:  cmake
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
+BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  rocm-hip-devel
 BuildRequires:  rocm-runtime-devel
 BuildRequires:  rocm-rpm-macros
@@ -66,6 +67,7 @@ for developing performant GPU-accelerated code on AMD ROCm platform.
 %if %{with check}
     -DBUILD_TEST=ON \
 %endif
+    -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
     -DCMAKE_CXX_COMPILER=hipcc \
     -DCMAKE_INSTALL_LIBDIR=share \
     -DROCM_SYMLINK_LIBS=OFF

@@ -2,19 +2,15 @@
 %global modulename  cached_property
 
 Name:           python-%{modulename}
-Version:        1.5.2
-Release:        17%{?dist}
+Version:        2.0.1
+Release:        1%{?dist}
 Summary:        A cached-property for decorating methods in Python classes
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            https://github.com/pydanny/%{projectname}
 Source0:        https://github.com/pydanny/%{projectname}/archive/%{version}/%{projectname}-%{version}.tar.gz
-# Disable a couple of test checks that fail with freezegun 0.3.11
-# See https://github.com/pydanny/cached-property/issues/131
-Patch0:         0001-Disable-checks-broken-with-freezegun-0.3.11-131.patch
-# Fix for removal of asyncio.coroutine in Python 3.11
-# https://github.com/pydanny/cached-property/pull/267
-Patch1:         267.patch
+# Prepare for deprecation of asyncio.iscoroutinefunction in Python 3.14
+# https://github.com/pydanny/cached-property/pull/359
+Patch1:         0001-Use-iscoroutinefunction-from-inspect-not-asyncio.patch
 
 BuildArch:      noarch
 
@@ -22,42 +18,41 @@ BuildArch:      noarch
 cached_property allows properties in Python classes to be cached until the cache
 is invalidated or expired.
 
-%package -n python%{python3_pkgversion}-%{modulename}
+%package -n python3-%{modulename}
 Summary:        A cached-property for decorating methods in Python classes.
-BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-setuptools
-BuildRequires:  python%{python3_pkgversion}-dateutil
-BuildRequires:  python%{python3_pkgversion}-freezegun
-BuildRequires:  python%{python3_pkgversion}-pytest
-%{?python_provide:%python_provide python%{python3_pkgversion}-%{modulename}}
+BuildRequires:  python3-devel
 # This package was python3-{projectname} for a long time, but never should've
 # been
-Provides:       python%{python3_pkgversion}-%{projectname} = %{version}-%{release}
-Obsoletes:      python%{python3_pkgversion}-%{projectname} < 1.3.0-2
+Provides:       python3-%{projectname} = %{version}-%{release}
+Obsoletes:      python3-%{projectname} < 1.3.0-2
 
-%description -n python%{python3_pkgversion}-%{modulename}
+%description -n python3-%{modulename}
 cached_property allows properties in Python classes to be cached until the cache
 is invalidated or expired.
 
 %prep
 %autosetup -p1 -n %{projectname}-%{version}
 
+%generate_buildrequires
+%pyproject_buildrequires -t
+
 %build
-%{__python3} setup.py build
+%pyproject_wheel
 
 %install
-%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
+%pyproject_install
+%pyproject_save_files -l %{modulename}
 
 %check
-PYTHONPATH=./ py.test-3
+%tox
 
-%files -n python%{python3_pkgversion}-%{modulename}
-%doc AUTHORS.rst HISTORY.rst CONTRIBUTING.rst README.rst
-%license LICENSE
-%{python3_sitelib}/%{modulename}*
-%{python3_sitelib}/__pycache__/%{modulename}*
+%files -n python3-%{modulename} -f %{pyproject_files}
+%doc AUTHORS.md HISTORY.md CONTRIBUTING.md README.md
 
 %changelog
+* Tue Nov 05 2024 Adam Williamson <awilliam@redhat.com> - 2.0.1-1
+- Update to 2.0.1
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.5.2-17
 - convert license to SPDX
 

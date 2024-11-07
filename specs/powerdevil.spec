@@ -1,5 +1,5 @@
 Name:    powerdevil
-Version: 6.2.2
+Version: 6.2.3
 Release: 1%{?dist}
 Summary: Manages the power consumption settings of a Plasma Shell
 
@@ -151,6 +151,9 @@ rm -fv %{buildroot}/%{_libdir}/libpowerdevil{configcommonprivate,core,ui}.so
 %{_kf6_datadir}/qlogging-categories6/batterymonitor.categories
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 6.2.3-1
+- 6.2.3
+
 * Tue Oct 22 2024 Steve Cossette <farchord@gmail.com> - 6.2.2-1
 - 6.2.2
 

@@ -1,17 +1,14 @@
 %bcond_without check
 
 Name: python-dill
-%global commit 8b86f5094d089c32c0bba4cefd970fa8339b3f47
-%global scommit %{sub %{commit} 0 8}
-%global date 20240914
-Version: 0.3.9~~%{date}.%{scommit}
-Release: 1%{?dist}
+Version: 0.3.9
+Release: 2%{?dist}
 Summary: Serialize all of Python
 
 License: BSD-3-Clause
 
 URL: https://github.com/uqfoundation/dill
-Source: https://github.com/uqfoundation/dill/archive/%{commit}/dill-%{scommit}.tar.gz
+Source: %{pypi_source dill}
 
 BuildArch: noarch
 
@@ -57,7 +54,7 @@ Summary:  %{summary}
 
 
 %prep
-%autosetup -n dill-%{commit} -p1
+%autosetup -n dill-%{version}
 
 
 %generate_buildrequires
@@ -99,6 +96,9 @@ find '%{buildroot}%{python3_sitelib}/dill' -type f -name '*.py' ! -perm /0111 \
 
 
 %changelog
+* Thu Oct 10 2024 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.3.9-2
+- Update to 0.3.9
+
 * Tue Sep 17 2024 Miro Hrončok <mhroncok@redhat.com> - 0.3.9~~20240914.8b86f509-1
 - Update to a git snapshot for Python 3.13 compatibility
 - Fixes: rhbz#2264225

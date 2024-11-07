@@ -7,7 +7,7 @@
 %bcond_with check
 %endif
 
-%global ignedgecommit a3a8f0abb2a1c7fc1c9e5d0e7a3e8830b2e2d766
+%global ignedgecommit b8d1b7a52c28fd5c33d15a0628d4b69f242f5c57
 %global ignedgeshortcommit %(c=%{ignedgecommit}; echo ${c:0:7})
 
 # https://github.com/coreos/ignition
@@ -22,7 +22,7 @@ Version:                2.20.0
 %global dracutlibdir %{_prefix}/lib/dracut
 
 Name:           ignition
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        First boot installer and configuration tool
 
 # Upstream license specification: Apache-2.0
@@ -364,6 +364,10 @@ install -p -m 0755 ./ignition %{buildroot}/%{dracutlibdir}/modules.d/30ignition
 %{_libdir}/bootupd/grub2-static/configs.d/ignition.cfg
 
 %changelog
+* Mon Oct 31 2024 Miguel Martín <mmartinv@redhat.com> - 2.20.0-2
+- Update ignition-edge commit to include
+    - https://github.com/fedora-iot/ignition-edge/pull/2
+
 * Wed Oct 23 2024 Steven Presti <spresti@redhat.com> - 2.20.0-1
 - New Release
 

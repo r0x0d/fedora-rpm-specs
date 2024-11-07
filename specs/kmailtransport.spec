@@ -1,5 +1,5 @@
 Name:    kmailtransport
-Version: 24.08.2
+Version: 24.08.3
 Release: 1%{?dist}
 Summary: The KMailTransport Library
 
@@ -83,6 +83,9 @@ find ./po -type f -name libmailtransport5.po -execdir mv {} libmailtransport6.po
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
 - 24.08.2
 

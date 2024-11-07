@@ -9,7 +9,7 @@ Patch0: makefilefix.patch
 BuildRequires: gcc
 BuildRequires: make
 BuildRequires: tk
-Requires: tk
+Recommends: %{name}-wordview
 
 %description
 catdoc is program which reads one or more Microsoft word files
@@ -20,6 +20,20 @@ It is now accompanied by xls2csv - program which converts
 Excel spreadsheet into comma-separated value file,
 and catppt - utility to extract textual information
 from Powerpoint files
+
+%package wordview
+Summary: Display Microsoft Word files in a graphical window
+Requires: tk
+%if 0%{?fedora} > 41
+Conflicts: %{name} <= 0.95-25
+%endif
+%if 0%{?fedora} == 41
+Conflicts: %{name} <= 0.95-19
+%endif
+
+%description wordview
+wordview is a program that displays Microsoft Word files in a graphical window
+via Tk.
 
 %prep
 %autosetup -p1
@@ -35,14 +49,16 @@ from Powerpoint files
 %license COPYING
 %{_bindir}/catdoc
 %{_bindir}/catppt
-%{_bindir}/wordview
 %{_bindir}/xls2csv
 %{_mandir}/man1/catdoc.1.*
 %{_mandir}/man1/catppt.1.*
-%{_mandir}/man1/wordview.1.*
 %{_mandir}/man1/xls2csv.1.*
 %{_datadir}/catdoc
 %doc README NEWS
+
+%files wordview
+%{_bindir}/wordview
+%{_mandir}/man1/wordview.1.*
 
 %changelog
 %autochangelog

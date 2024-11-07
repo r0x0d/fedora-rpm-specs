@@ -1,7 +1,7 @@
 
 Name:    annobin
 Summary: Annotate and examine compiled binary files
-Version: 12.72
+Version: 12.73
 Release: 1%{?dist}
 License: GPL-3.0-or-later AND LGPL-2.0-or-later AND (GPL-2.0-or-later WITH GCC-exception-2.0) AND (LGPL-2.0-or-later WITH GCC-exception-2.0) AND GFDL-1.3-or-later
 URL: https://sourceware.org/annobin/
@@ -532,6 +532,9 @@ make check
 #---------------------------------------------------------------------------------
 
 %changelog
+* Tue Nov 05 2024 Nick Clifton  <nickc@redhat.com> - 12.73-1
+- Annocheck: Skip property note test for i386 binaries created by LLVM.  (#2323797)
+
 * Fri Nov 01 2024 Nick Clifton  <nickc@redhat.com> - 12.72-1
 - Annocheck: Skip FORTIFY and GLIBC_ASSERTIONS tests for LLVM produced binaries with unparseable DW_AT_producer attributes in their DWARF debug info.  (RHEL-65411)
 

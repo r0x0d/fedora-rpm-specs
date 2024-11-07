@@ -44,6 +44,7 @@ BuildRequires:  ninja-build
 BuildRequires:  rocblas-devel
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
+BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  rocm-hip-devel
 BuildRequires:  rocm-runtime-devel
 BuildRequires:  rocm-rpm-macros
@@ -96,6 +97,7 @@ do
     module load rocm/$gpu
     %cmake -G Ninja \
 	   -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
+	   -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
 	   -DROCM_SYMLINK_LIBS=OFF \
 	   -DHIP_PLATFORM=amd \
 	   -DAMDGPU_TARGETS=$ROCM_GPUS \

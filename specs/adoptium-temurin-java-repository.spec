@@ -3,8 +3,8 @@
 %global     thirdparty %{_prefix}/lib/fedora-third-party/conf.d
 
 %define obsoleteLine() %{expand:
-Obsoletes: java-%{?1}-openjdk%{?2}%{?3}  < 10000
-Obsoletes: java-%{?1}-openjdk-portable%{?2}%{?3} < 10000
+Obsoletes: java-%{?1}-openjdk%{?2}%{?3} < 1:100000
+Obsoletes: java-%{?1}-openjdk-portable%{?2}%{?3} < 1:1000
 }
 
 %define obsoleteLines() %{expand:
@@ -45,6 +45,7 @@ BuildArch:  noarch
 # fedora-third-party contains tools to work with 3rd party repos and owns fedora-third-party/conf.d/ directory
 Requires:   fedora-third-party
 
+#dont forget to update the lua list in post
 %{obsoleteJdk -- 1.8.0}
 %{obsoleteJdk -- 11}
 %{obsoleteJdk -- 17}
@@ -72,6 +73,46 @@ install -D -m0644 %{SOURCE0} %{buildroot}%{_datadir}/licenses/%{name}/LICENSE
 install -D -m0644 %{SOURCE1} -t %{buildroot}%{thirdparty}/
 install -D -m0644 %{reponame} -t %{buildroot}%{repodir}/
 install -D -m0644 %{SOURCE3} -t %{buildroot}%{_docdir}/%{name}/
+
+
+%pre -p <lua>
+local posix = require ("posix")
+
+local jdksKnown={"1.8.0", "11", "17"}
+local jdksFound={}
+for key, value in pairs(jdksKnown) do
+    jdksFound[value]=0;
+end
+for key, value in pairs(jdksKnown) do
+  local java="java-"..value.."-openjdk"
+  local jre="jre-"..value.."-openjdk"
+  local statJavaJre1 = posix.stat("/usr/lib/jvm/"..java.."/bin/java", "type");
+  local statJavaJre2 = posix.stat("/usr/lib/jvm/"..java.."/jre/bin/java", "type");
+  local statJavaSdk = posix.stat("/usr/lib/jvm/"..java.."/bin/javac", "type");
+  local statJreJre1 = posix.stat("/usr/lib/jvm/"..jre.."/bin/java", "type");
+  local statJreJre2 = posix.stat("/usr/lib/jvm/"..jre.."/jre/bin/java", "type");
+  local statJreSdk = posix.stat("/usr/lib/jvm/"..jre.."/bin/javac", "type");
+  if ((statJavaJre1 ~= nil) or (statJavaJre2 ~= nil) or (statJreJre1 ~= nil) or (statJreJre2 ~= nil)) then
+    jdksFound[value]=jdksFound[value]+1;
+    if (statJavaSdk ~= nil)or((statJreSdk ~= nil)) then
+      jdksFound[value]=jdksFound[value]+1000;
+    end
+  end
+end
+for key, value in pairs(jdksFound) do
+  temurinKey=key
+  if key == "1.8.0" then
+    temurinKey=8
+  end
+  if value > 0 then
+    print("You have java-"..key.."-openjdk installed. That is deprecated, and is replaced by temurin-"..temurinKey.."-jre")
+  end
+  if value > 1000 then
+    print("You have java-"..key.."-openjdk-devel installed. That is deprecated, and is replaced by temurin-"..temurinKey.."-jdk")
+  end
+end
+
+
 
 %files
 %license LICENSE

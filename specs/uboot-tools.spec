@@ -188,7 +188,10 @@ for tool in dumpimage env/fw_printenv fit_check_sign fit_info gdb/gdbcont gdb/gd
 do
 install -p -m 0755 builds/tools/$tool %{buildroot}%{_bindir}
 done
-install -p -m 0644 doc/mkimage.1 %{buildroot}%{_mandir}/man1
+for tool in dumpimage kwboot mkeficapsule mkimage
+do
+install -p -m 0644 doc/$tool.1 %{buildroot}%{_mandir}/man1
+done
 
 install -p -m 0755 builds/tools/env/fw_printenv %{buildroot}%{_bindir}
 ( cd %{buildroot}%{_bindir}; ln -sf fw_printenv fw_setenv )
@@ -198,6 +201,9 @@ install -p -m 0755 builds/tools/env/fw_printenv %{buildroot}%{_bindir}
 %doc README doc/develop/distro.rst doc/README.gpt
 %doc doc/develop/uefi doc/usage doc/arch/arm64.rst
 %{_bindir}/*
+%{_mandir}/man1/dumpimage.1*
+%{_mandir}/man1/kwboot.1*
+%{_mandir}/man1/mkeficapsule.1*
 %{_mandir}/man1/mkimage.1*
 
 %if %{with toolsonly}

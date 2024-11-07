@@ -16,12 +16,14 @@ BuildRequires: cmake, extra-cmake-modules, gcc-c++
 BuildRequires: libappstream-glib
 BuildRequires: desktop-file-utils, git
 BuildRequires: libXtst-devel, libXfixes-devel
-BuildRequires: kf5-knotifications-devel, kf5-rpm-macros,
-BuildRequires: qt5-qtbase-devel, qt5-qtbase-private-devel
-BuildRequires: qt5-qtsvg-devel, qt5-qtdeclarative-devel
-BuildRequires: qt5-qttools-devel, qt5-qtscript-devel
-BuildRequires: qwt-qt5-devel, qt5-qtx11extras-devel
-BuildRequires: wayland-devel, qt5-qtwayland-devel
+BuildRequires: kf6-knotifications-devel
+BuildRequires: kf6-kstatusnotifieritem-devel
+BuildRequires: kf6-rpm-macros
+BuildRequires: qt6-qtbase-devel, qt6-qtbase-private-devel
+BuildRequires: qt6-qtsvg-devel, qt6-qtdeclarative-devel
+BuildRequires: qt6-qttools-devel, kf6-kstatusnotifieritem-devel
+BuildRequires: qwt-qt6-devel
+BuildRequires: wayland-devel, qt6-qtwayland-devel
 
 %description
 CopyQ is advanced clipboard manager with searchable and editable history with
@@ -33,9 +35,9 @@ support for image formats, command line control and more.
 sed -i '/DQT_RESTRICTED_CAST_FROM_ASCII/d' CMakeLists.txt
 
 %build
-%cmake_kf5 \
+%cmake_kf6 \
   -Wno-dev \
-  -DWITH_QT5:BOOL=ON \
+  -DWITH_QT6:BOOL=ON \
   -DWITH_TESTS:BOOL=ON \
   -DPLUGIN_INSTALL_PREFIX=%{_libdir}/%{name}/plugins \
   -DTRANSLATION_INSTALL_PREFIX:PATH=%{_datadir}/%{name}/locale

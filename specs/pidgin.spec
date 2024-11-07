@@ -125,7 +125,7 @@
 
 Name:           pidgin
 Version:        2.14.13
-Release:        3%{?dist}
+Release:        4%{?dist}
 # Automatically converted from old format: BSD and GPLv2+ and GPLv2 and LGPLv2+ and MIT - review is highly recommended.
 License:        LicenseRef-Callaway-BSD AND GPL-2.0-or-later AND GPL-2.0-only AND LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-MIT
 # GPLv2+ - libpurple, finch, pidgin, most prpls
@@ -165,6 +165,7 @@ Patch0:         pidgin-NOT-UPSTREAM-2.5.2-rhel4-sound-migration.patch
 Patch1:         pidgin-2.14.4-valgrind.patch
 
 ## Patches 100+: To be Included in Future Upstream
+Patch101:       pidgin-2.4.13-nss-cert-get-fix.patch
 
 
 Summary:        A Gtk+ based multiprotocol instant messaging client
@@ -698,6 +699,10 @@ find %{buildroot}/%{_libdir}/purple-2 -name \*.so\* -printf '%f|' | sed -e 's/|$
 %endif
 
 %changelog
+* Tue Nov  5 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 2.14.13-4
+- Fixed nss get peer certificate
+  Resolves: rhbz#2311054
+
 * Wed Sep  4 2024 Miroslav Suchý <msuchy@redhat.com> - 2.14.13-3
 - convert license to SPDX
 

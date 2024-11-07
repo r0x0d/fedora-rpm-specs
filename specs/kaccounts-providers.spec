@@ -1,5 +1,5 @@
 Name:    kaccounts-providers
-Version: 24.08.2
+Version: 24.08.3
 Release: 1%{?dist}
 Summary: Additional service providers for KAccounts framework
 # Automatically converted from old format: GPLv2 - review is highly recommended.
@@ -67,6 +67,9 @@ Obsoletes: kaccounts-providers < 15.12.0
 
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
 - 24.08.2
 

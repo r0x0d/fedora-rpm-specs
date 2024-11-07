@@ -367,7 +367,7 @@ Obsoletes: sgabios-bin <= 1:0.20180715git-10.fc38
 %endif
 
 # To prevent rpmdev-bumpspec breakage
-%global baserelease 1
+%global baserelease 2
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
@@ -428,6 +428,11 @@ Patch: 0001-linux-user-add-openat2-support-in-linux-user.patch
 # linux-user-cris support for openat2, can be removed once "cris" is
 # removed (after v9.1.0)
 Patch: 0001-linux-user-guard-openat2-with-if-defined-TARGET_NR_o.patch
+
+# Fix spice audio with qemu 9.1.1
+# https://lists.gnu.org/archive/html/qemu-devel/2024-11/msg00906.html
+# https://gitlab.com/qemu-project/qemu/-/issues/2639
+Patch: 0001-hw-audio-hda-avoid-unnecessary-re-open-stream-on-rec.patch
 
 BuildRequires: gnupg2
 BuildRequires: meson >= %{meson_version}
@@ -3174,6 +3179,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Nov 05 2024 Cole Robinson <crobinso@redhat.com> - 9.1.1-2
+- Fix spice audio regression with qemu 9.1.1
+
 * Thu Oct 24 2024 Cole Robinson <crobinso@redhat.com> - 9.1.1-1
 - Rebase to qemu 9.1.1 stable
 

@@ -55,6 +55,11 @@ install -m 0755 -vd                     %{buildroot}%{_bindir}
 install -m 0755 -vp %{gobuilddir}/bin/* %{buildroot}%{_bindir}/
 %endif
 
+install -d -m 0755 %{buildroot}%{_datadir}
+install -d -m 0755 %{buildroot}%{_datadir}/nwg-dock-hyprland
+
+cp -rv %{_builddir}/%{name}-%{version}/config/* %{buildroot}%{_datadir}/nwg-dock-hyprland/
+
 %if %{without bootstrap}
 %if %{with check}
 %check
@@ -67,6 +72,7 @@ install -m 0755 -vp %{gobuilddir}/bin/* %{buildroot}%{_bindir}/
 %license LICENSE
 %doc README.md
 %{_bindir}/nwg-dock-hyprland
+%{_datadir}/%{name}
 %endif
 
 %changelog

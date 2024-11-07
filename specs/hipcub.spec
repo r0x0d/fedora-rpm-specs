@@ -31,6 +31,7 @@ Source0:        %{url}/%{upstreamname}/archive/rocm-%{version}.tar.gz#/%{upstrea
 BuildRequires:  cmake
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
+BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  rocm-hip-devel
 BuildRequires:  rocprim-static
 BuildRequires:  rocm-runtime-devel
@@ -71,6 +72,7 @@ sed -i -e 's/ROCM_INSTALL_LIBDIR lib/ROCM_INSTALL_LIBDIR lib64/' cmake/ROCMExpor
 %cmake \
     -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
     -DBUILD_TEST=%{build_test} \
+    -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
     -DCMAKE_CXX_COMPILER=hipcc \
     -DROCM_SYMLINK_LIBS=OFF
 %cmake_build

@@ -393,7 +393,7 @@ rm test/CodeGen/profile-filter.c
 	-DCLANG_INCLUDE_TESTS:BOOL=ON \
 	-DLLVM_BUILD_UTILS:BOOL=ON \
 	-DLLVM_EXTERNAL_CLANG_TOOLS_EXTRA_SOURCE_DIR=../%{clang_tools_srcdir} \
-	-DLLVM_EXTERNAL_LIT=%{_bindir}/lit \
+	-DLLVM_EXTERNAL_LIT=$(which lit) \
 	-DLLVM_LIT_ARGS="-vv" \
 	-DLLVM_MAIN_SRC_DIR=%{_datadir}/llvm/src \
 	\

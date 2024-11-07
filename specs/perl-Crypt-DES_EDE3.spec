@@ -1,13 +1,13 @@
 Name:           perl-Crypt-DES_EDE3
-Version:        0.01
-Release:        52%{?dist}
+Version:        0.03
+Release:        1%{?dist}
 Summary:        Triple-DES EDE encryption/decryption module
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Crypt-DES_EDE3
-Source0:        https://cpan.metacpan.org/authors/id/B/BT/BTROTT/Crypt-DES_EDE3-%{version}.tar.gz
+Source0:        https://cpan.metacpan.org/authors/id/T/TI/TIMLEGGE/Crypt-DES_EDE3-%{version}.tar.gz
 BuildArch:      noarch
 # Build
+BuildRequires:  coreutils
 BuildRequires:  make
 BuildRequires:  perl-interpreter
 BuildRequires:  perl-generators
@@ -27,22 +27,27 @@ This is Crypt::DES_EDE3, a module implementing Triple-DES EDE
 %setup -q -n Crypt-DES_EDE3-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%make_build
 
 %install
-make pure_install DESTDIR=%{buildroot}
+%make_install
 %{_fixperms} %{buildroot}/*
 
 %check
 make test
 
 %files
+%license LICENSE
 %doc Changes README
-%{perl_vendorlib}/*
-%{_mandir}/man3/*
+%{perl_vendorlib}/Crypt/
+%{_mandir}/man3/Crypt::DES_EDE3.3pm*
 
 %changelog
+* Tue Nov 05 2024 Xavier Bachelot <xavier@bachelot.org> - 0.03-1
+- Update to 0.03 (RHBZ#2320854)
+- Modernize specfile
+
 * Mon Aug 05 2024 Miroslav Suchý <msuchy@redhat.com> - 0.01-52
 - convert license to SPDX
 

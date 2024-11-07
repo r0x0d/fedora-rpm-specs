@@ -1,7 +1,14 @@
+# OpenSSL ENGINE support deprecated in Fedora 41 onwards
+# https://fedoraproject.org/wiki/Changes/OpensslDeprecateEngine
+%if 0%{?fedora} > 40
+%global _preprocessor_defines %{?_preprocessor_defines} -DOPENSSL_NO_ENGINE
+%endif
+
+
 Summary: A suite of tools for managing dnssec aware DNS usage
 Name: dnssec-tools
 Version: 2.2.3
-Release: 26%{?dist}
+Release: 27%{?dist}
 # Automatically converted from old format: BSD - review is highly recommended.
 License: LicenseRef-Callaway-BSD
 URL: http://www.dnssec-tools.org/
@@ -30,6 +37,7 @@ Patch18: dnssec-tools-new-openssl-APIs.patch
 Patch19: 7287c6b96422e499560fb10b95c1a481ea82656d.patch
 # link libval-threads with libs
 Patch20: dnssec-tools-2.2.3-link-libval-threads-with-libs.patch
+Patch21: dnssec-tools-2.2.3-add_ifdedf_to_engine.patch
 
 %description
 
@@ -75,6 +83,7 @@ C-based libraries useful for developing dnssec aware tools.
 #%%patch18 -p2
 %patch -P19 -p2
 %patch -P20 -p1 -b .link-with-libs
+%patch -P21 -p1
 
 %build
 %configure --with-validator-testcases-file=%{_datadir}/dnssec-tools/validator-testcases --with-perl-build-args="INSTALLDIRS=vendor OPTIMIZE='$RPM_OPT_FLAGS'" --sysconfdir=/etc --with-root-hints=/etc/dnssec-tools/root.hints --with-resolv-conf=/etc/dnssec-tools/resolv.conf --disable-static --with-nsec3 --with-ipv6 --with-dlv --disable-bind-checks
@@ -363,6 +372,9 @@ install -m 755 %SOURCE2 ${RPM_BUILD_ROOT}/%{_bindir}/libval-config
 
 
 %changelog
+* Tue Nov 05 2024 Michal Josef Špaček <mspacek@redhat.com> - 2.2.3-27
+- Build without OpenSSL ENGINE support on Fedora 41 onwards
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 2.2.3-26
 - convert license to SPDX
 

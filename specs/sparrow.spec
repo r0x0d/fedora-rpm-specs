@@ -1,5 +1,5 @@
 Name:           sparrow
-Version:        0.0.4
+Version:        0.2.0
 Release:        %autorelease
 Summary:        C++20 idiomatic APIs for the Apache Arrow Columnar Format
 License:        Apache-2.0
@@ -10,11 +10,6 @@ Source:         %{github}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  doctest-devel
-
-Patch0:         https://github.com/man-group/sparrow/pull/199.patch
-
-# there is no actual arched content - this is a header only library
-%global debug_package %{nil}
 
 %global _description \
 sparrow is an implementation of the Apache Arrow Columnar format in C++. It \
@@ -42,13 +37,17 @@ Provides:       %{name}-static = %{version}-%{release}
 
 %check
 %cmake_build --target test_sparrow_lib
-%{__cmake_builddir}/test/test_sparrow_lib
+%cmake_build --target run_tests
 
-%files devel
+%files
 %doc README.md
 %license LICENSE
+%{_libdir}/lib%{name}.so.*
+
+%files devel
 %{_includedir}/%{name}
 %{_datadir}/cmake/%{name}
+%{_libdir}/lib%{name}.so
 
 %changelog
 %autochangelog

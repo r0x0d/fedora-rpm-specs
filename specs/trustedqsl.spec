@@ -4,8 +4,8 @@
 %global libtqslver 2.5
 
 Name:           trustedqsl
-Version:        2.7.2
-Release:        3%{?dist}
+Version:        2.7.4
+Release:        1%{?dist}
 Summary:        Tool for digitally signing Amateur Radio QSO records
 # Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
@@ -112,6 +112,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 
 
 %changelog
+* Tue Nov 05 2024 Richard Shaw <hobbes1069@gmail.com> - 2.7.4-1
+- Update to 2.7.4.
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1:2.7.2-3
 - convert license to SPDX
 

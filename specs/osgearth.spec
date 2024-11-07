@@ -3,7 +3,7 @@
 %global with_docs 1
 
 Name:          osgearth
-Version:       3.6.1
+Version:       3.7
 Release:       1%{?dist}
 Summary:       Dynamic map generation toolkit for OpenSceneGraph
 
@@ -11,6 +11,7 @@ License:       LGPL-3.0-only
 URL:           http://osgearth.org/
 Source0:       https://github.com/gwaldron/osgearth/archive/%{name}-%{version}.tar.gz
 # Fix mingw build failure due to header case mismatch
+# Don't use _dupenv_s
 Patch0:        osgearth_mingw.patch
 # Support option to disable fastdxt build
 Patch1:        osgearth_fastdxt.patch
@@ -47,6 +48,8 @@ BuildRequires: mingw32-filesystem >= 95
 BuildRequires: mingw32-curl
 BuildRequires: mingw32-gcc-c++
 BuildRequires: mingw32-gdal
+BuildRequires: mingw32-glew
+BuildRequires: mingw32-glew-static
 BuildRequires: mingw32-liblerc
 BuildRequires: mingw32-OpenSceneGraph
 BuildRequires: mingw32-protobuf
@@ -55,6 +58,8 @@ BuildRequires: mingw64-filesystem >= 95
 BuildRequires: mingw64-curl
 BuildRequires: mingw64-gcc-c++
 BuildRequires: mingw64-gdal
+BuildRequires: mingw64-glew
+BuildRequires: mingw64-glew-static
 BuildRequires: mingw64-liblerc
 BuildRequires: mingw64-OpenSceneGraph
 BuildRequires: mingw64-protobuf
@@ -163,6 +168,7 @@ rm -rf data/loopix
 
 %build
 # Native build
+export CXXFLAGS="%{optflags} -Wno-error=format-security"
 # Disable fastdxt driver on non x86 arches, requires x86 intrinsics
 %ifnarch i686 x86_64
 %cmake -DDISABLE_FASTDXT=ON
@@ -176,8 +182,8 @@ rm -f docs/build/html/.buildinfo
 %endif
 
 # MinGW build
-export MINGW32_CXXFLAGS="%{mingw32_cflags} -msse2"
-export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
+export MINGW32_CXXFLAGS="%{mingw32_cflags} -msse2 -Wno-error=format-security -fpermissive"
+export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2 -Wno-error=format-security -fpermissive"
 %mingw_cmake
 %mingw_make_build
 
@@ -196,14 +202,16 @@ cp -a tests %{buildroot}%{_datadir}/%{name}/tests
 
 %files
 %license LICENSE.txt
-%{_libdir}/libosgEarth*.so.3.6.1
-%{_libdir}/libosgEarth*.so.158
+%{_libdir}/libosgEarth*.so.3.7.0
+%{_libdir}/libosgEarth*.so.163
 %{_libdir}/osgPlugins-%{osg_ver}/osgdb_*.so
 
 %files devel
 %{_includedir}/osgEarth/
 %{_includedir}/osgEarthDrivers/
+%{_includedir}/osgEarthImGui/
 %{_libdir}/libosgEarth.so
+%{_libdir}/libosgEarthImGui.so
 %{_libdir}/cmake/osgearth/
 
 %files tools
@@ -211,6 +219,7 @@ cp -a tests %{buildroot}%{_datadir}/%{name}/tests
 %{_bindir}/osgearth_bakefeaturetiles
 %{_bindir}/osgearth_boundarygen
 %{_bindir}/osgearth_conv
+%{_bindir}/osgearth_imgui
 %{_bindir}/osgearth_tfs
 %{_bindir}/osgearth_version
 %{_bindir}/osgearth_viewer
@@ -267,6 +276,9 @@ cp -a tests %{buildroot}%{_datadir}/%{name}/tests
 
 
 %changelog
+* Mon Oct 07 2024 Sandro Mani <manisandro@gmail.com> - 3.7-1
+- Update to 3.7
+
 * Thu Jul 25 2024 Sandro Mani <manisandro@gmail.com> - 3.6.1-1
 - Update to 3.6.1
 

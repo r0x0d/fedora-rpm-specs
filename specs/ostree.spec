@@ -7,13 +7,11 @@
 
 Summary: Tool for managing bootable, immutable filesystem trees
 Name: ostree
-Version: 2024.8
+Version: 2024.9
 Release: %autorelease
 Source0: https://github.com/ostreedev/%{name}/releases/download/v%{version}/libostree-%{version}.tar.xz
 License: LGPL-2.0-or-later
 URL: https://ostreedev.github.io/ostree/
-
-Patch1: 0001-deploy-Don-t-copy-xattrs-for-devicetree.patch
 
 # Conditional to ELN right now to reduce blast radius; xref
 # https://github.com/containers/composefs/pull/229#issuecomment-1838735764

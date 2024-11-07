@@ -1,6 +1,6 @@
 Name:		nanovna-saver
-Version:	0.6.4
-Release:	3%{?dist}
+Version:	0.6.5
+Release:	1%{?dist}
 Summary:	Tool for reading, displaying and saving data from the NanoVNA
 # Automatically converted from old format: GPLv3 - review is highly recommended.
 License:	GPL-3.0-only
@@ -69,6 +69,10 @@ install -Dpm 0644 icon_48x48.png %{buildroot}%{_datadir}/icons/hicolor/48x48/app
 %{_datadir}/applications/NanoVNASaver.desktop
 
 %changelog
+* Tue Nov  5 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 0.6.5-1
+- New version
+  Resolves: rhbz#2322066
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 0.6.4-3
 - convert license to SPDX
 

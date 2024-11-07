@@ -2,8 +2,8 @@ Name:    khelpcenter
 Summary: Show documentation for KDE applications
 # Override khelpcenter subpackage from kde-runtime-15.04 (no longer built)
 Epoch:   1
-Version: 24.08.2
-Release: 2%{?dist}
+Version: 24.08.3
+Release: 1%{?dist}
 
 # Automatically converted from old format: GPLv2 or GPLv3 - review is highly recommended.
 License: GPL-2.0-only OR GPL-3.0-only
@@ -102,6 +102,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.%{name}.deskt
 
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 1:24.08.3-1
+- 24.08.3
+
 * Fri Oct 11 2024 Timothée Ravier <tim@siosm.fr> - 1:24.08.2-2
 - Backport Perl->Python manpage search conversion
 

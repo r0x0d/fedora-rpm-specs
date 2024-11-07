@@ -25,7 +25,7 @@ https://github.com/uqfoundation/multiprocess/issues, with a legacy list
 maintained at https://uqfoundation.github.io/project/pathos/query.}
 
 Name:           python-multiprocess
-Version:        0.70.16
+Version:        0.70.17
 Release:        %autorelease
 Summary:        Better multiprocessing and multithreading in python
 
@@ -40,10 +40,6 @@ Summary:        Better multiprocessing and multithreading in python
 License:        BSD-3-Clause AND LicenseRef-Fedora-Public-Domain
 URL:            https://github.com/uqfoundation/multiprocess
 Source:         %{pypi_source multiprocess}
-
-# Fix typo in py3.13/_multiprocess name
-# https://github.com/uqfoundation/multiprocess/pull/183
-Patch:          %{url}/pull/183.patch
 
 BuildArch:      noarch
 

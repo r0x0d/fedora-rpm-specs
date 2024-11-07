@@ -1,7 +1,7 @@
 # For git snapshots, set to 0 to use release instead:
-%global usesnapshot 0
+%global usesnapshot 1
 %if 0%{?usesnapshot}
-%global commit0 b089b93221f4d36b6b3001cd6d9c88ca33a39515
+%global commit0 66c21b2b4750b2bb354887454a9977296d2d844e
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global snapshottag .git%{shortcommit0}
 %endif
@@ -9,10 +9,10 @@
 Name:       shutter
 %if 0%{?usesnapshot}
 Version:    0.99.6
-Release:    0.2%{?snapshottag}%{?dist}
+Release:    0.1%{?snapshottag}%{?dist}
 %else
 Version:    0.99.5
-Release:    3%{?dist}
+Release:    2%{?dist}
 %endif
 Summary:    GTK+3-based screenshot application written in Perl
 
@@ -136,6 +136,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/%{name}.metai
 %{_datadir}/icons/HighContrast/
 
 %changelog
+* Thu Oct 31 2024 Martin Gansser <martinkg@fedoraproject.org> - 0.99.6-0.1.git66c21b2
+- Update to 0.99.6-0.1.git66c21b2
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.99.5-3
 - convert license to SPDX
 

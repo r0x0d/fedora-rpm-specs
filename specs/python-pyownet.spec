@@ -1,6 +1,6 @@
 Name:		python-pyownet
 Version:	0.10.0.post1
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	Pure python client library for accessing OWFS via owserver protocol
 
 License:	LGPL-3.0-or-later
@@ -9,6 +9,10 @@ Source0:	%{pypi_source pyownet}
 # from https://github.com/miccoli/pyownet/commit/1b2e8d10c6b4b3553b7c80eafbc35871658ddec1
 Patch0:		python-pyownet-001-declarative-build.patch
 Patch1:		python-pyownet-002-remove-www.google.com-from-tests.patch
+# from https://github.com/onkelbeh/HomeAssistantRepository/tree/master/dev-python/pyownet/files
+# temporary before 0.11.0 is released
+# setup.py chunk manualy removed
+Patch2:         python-pyownet-003-2to3.patch
 
 BuildArch:	noarch
 BuildRequires:	python3-devel
@@ -47,6 +51,9 @@ Summary:	Pure python client library for accessing OWFS via owserver protocol
 %{python3_sitelib}/pyownet-%{version}.dist-info/
 
 %changelog
+* Tue Nov 05 2024 Tomasz Torcz <ttorcz@fedoraproject.org> - 0.10.0.post1-3
+- re-include 2to3 patch lost during review
+
 * Thu Dec 28 2023 Tomasz Torcz <ttorcz@fedoraproject.org> - 0.10.0.post1-2
 - adjust for building with wheel
 

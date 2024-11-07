@@ -1,5 +1,5 @@
 Name:    pcp
-Version: 6.3.1
+Version: 6.3.2
 Release: 1%{?dist}
 Summary: System-level performance monitoring and performance management
 License: GPL-2.0-or-later AND LGPL-2.1-or-later AND CC-BY-3.0
@@ -481,11 +481,12 @@ fi
 }
 
 %global run_pmieconf() %{expand:
-if [ -w "%1" ]
+if [ -d "%1" -a -w "%1" -a -w "%1/%2" ]
 then
-    pmieconf -c enable "%2"
+    pmieconf -f "%1/%2" -c enable "%3"
+    chown pcp:pcp "%1/%2" 2>/dev/null
 else
-    echo "WARNING: Cannot write to %1, skipping pmieconf enable of %2." >&2
+    echo "WARNING: Cannot write to %1/%2, skipping pmieconf enable of %3." >&2
 fi
 }
 
@@ -3228,11 +3229,12 @@ for PMDA in dm nfsclient openmetrics ; do
     fi
 done
 # auto-enable these usually optional pmie rules
-%{run_pmieconf "$PCP_PMIECONFIG_DIR" dmthin}
-%if 0%{?rhel} <= 9
+%{run_pmieconf "$PCP_PMIECONFIG_DIR" config.default dmthin}
+# managed via /usr/lib/systemd/system-preset/90-default.preset nowadays:
+%if 0%{?rhel} > 0 && 0%{?rhel} < 10
 %if !%{disable_systemd}
-    systemctl restart pcp-reboot-init pmcd pmlogger pmie >/dev/null 2>&1
-    systemctl enable pcp-reboot-init pmcd pmlogger pmie >/dev/null 2>&1
+    systemctl restart pmcd pmlogger pmie >/dev/null 2>&1
+    systemctl enable pmcd pmlogger pmie >/dev/null 2>&1
 %else
     /sbin/chkconfig --add pmcd >/dev/null 2>&1
     /sbin/chkconfig --add pmlogger >/dev/null 2>&1
@@ -3251,6 +3253,8 @@ PCP_LOG_DIR=%{_logsdir}
 %if !%{disable_systemd}
     # clean up any stale symlinks for deprecated pm*-poll services
     rm -f %{_sysconfdir}/systemd/system/pm*.requires/pm*-poll.* >/dev/null 2>&1 || true
+    systemctl restart pcp-reboot-init >/dev/null 2>&1
+    systemctl enable pcp-reboot-init >/dev/null 2>&1
 
     %systemd_postun_with_restart pmcd.service
     %systemd_post pmcd.service
@@ -3598,6 +3602,9 @@ fi
 %files zeroconf -f pcp-zeroconf-files.rpm
 
 %changelog
+* Wed Nov 06 2024 Nathan Scott <nathans@redhat.com> - 6.3.2-1
+- Update to latest upstream PCP version.
+
 * Tue Sep 17 2024 Nathan Scott <nathans@redhat.com> - 6.3.1-1
 - Update to latest upstream PCP version.
 

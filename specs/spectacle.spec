@@ -1,7 +1,7 @@
 Name:    spectacle
 Summary: Screenshot capture utility
-Version: 24.08.2
-Release: 2%{?dist}
+Version: 24.08.3
+Release: 1%{?dist}
 
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License: GPL-2.0-only
@@ -16,7 +16,7 @@ URL:     https://www.kde.org/applications/graphics/spectacle/
 Source0: https://download.kde.org/%{stable}/release-service/%{version}/src/%{name}-%{version}.tar.xz
 
 ## upstream patches
-Patch0: https://invent.kde.org/graphics/spectacle/-/commit/7f0a1cc0e8afb1589fb6f37e17a80c824f17a52f.patch
+
 
 ## downstream patches
 
@@ -117,6 +117,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.spectacle
 
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 24.08.2-2
 - Rebuild (qt6)
 - Add patch to work around broken qmlcachegen in qt6.8

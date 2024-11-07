@@ -1,6 +1,6 @@
 Name:    bomber
 Summary: Arcade bombing game
-Version: 24.08.2
+Version: 24.08.3
 Release: 1%{?dist}
 
 # code LGPLv2+, docs GFDL
@@ -79,6 +79,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
 - 24.08.2
 

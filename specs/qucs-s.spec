@@ -2,7 +2,7 @@
 
 Summary: Qucs circuit simulator which works with SPICE
 Name:    qucs-s
-Version: 24.3.2
+Version: 24.4.0
 Release: 1%{?dist}
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License: GPL-2.0-or-later
@@ -22,6 +22,7 @@ BuildRequires: desktop-file-utils
 BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-linguist
 BuildRequires: qt5-qtsvg-devel
+BuildRequires: qt5-qtcharts-devel
 Requires: ngspice
 Recommends: %{name}-library
 
@@ -100,6 +101,10 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Tue Nov  5 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 24.4.0-1
+- New version
+  Resolves: rhbz#2323122
+
 * Wed Sep 25 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 24.3.2-1
 - New version
   Resolves: rhbz#2310704

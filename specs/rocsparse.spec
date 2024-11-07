@@ -49,6 +49,7 @@ Patch0:         0001-rocsparse-offload-compress.patch
 BuildRequires:  cmake
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
+BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  rocm-hip-devel
 BuildRequires:  rocm-runtime-devel
 BuildRequires:  rocm-rpm-macros
@@ -102,6 +103,7 @@ do
     module load rocm/$gpu
     %cmake \
            -DCMAKE_BUILD_TYPE=%build_type \
+	   -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
 	   -DCMAKE_SKIP_RPATH=ON \
 	   -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
 	   -DROCM_SYMLINK_LIBS=OFF \

@@ -1,6 +1,6 @@
 Name:          arianna
-Version:       24.08.2
-Release:       2%{?dist}
+Version:       24.08.3
+Release:       1%{?dist}
 Summary:       EPub Reader for mobile devices
 # Complete license breakdown can be found in the "LICENSE-BREAKDOWN" file.
 # Automatically converted from old format: GPLv3 - review is highly recommended.
@@ -88,6 +88,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.ar
 %{_kf6_metainfodir}/org.kde.arianna.appdata.xml
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Thu Oct 31 2024 Jan Grulich <jgrulich@redhat.com> - 24.08.2-2
 - Rebuild (qt6)
 

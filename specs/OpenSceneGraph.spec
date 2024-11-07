@@ -42,7 +42,7 @@
 
 Name:           OpenSceneGraph
 Version:        3.6.5
-Release:        28%{?dist}
+Release:        29%{?dist}
 Summary:        High performance real-time graphics toolkit
 
 # The OSGPL is just the wxWidgets license.
@@ -470,7 +470,7 @@ mkdir -p %{buildroot}%{_datadir}/OpenSceneGraph
 %{_libdir}/osgPlugins-%{version}/osgdb_vnc.so
 %{_libdir}/osgPlugins-%{version}/osgdb_vtf.so
 %{_libdir}/osgPlugins-%{version}/osgdb_x.so
-%{_libdir}/osgPlugins-%{version}/osgdb_zip.so
+%exclude %{_libdir}/osgPlugins-%{version}/osgdb_zip.so
 %{_libdir}/libosgAnimation.so.*
 %{_libdir}/libosgDB.so.*
 %{_libdir}/libosgFX.so.*
@@ -789,6 +789,9 @@ mkdir -p %{buildroot}%{_datadir}/OpenSceneGraph
 %endif
 
 %changelog
+* Tue Nov 05 2024 Sandro Mani <manisandro@gmail.com> - 3.6.5-29
+- Exclude osgdb_zip, it conflicts with plugin from osgearth
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.6.5-28
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

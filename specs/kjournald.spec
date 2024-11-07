@@ -1,5 +1,5 @@
 Name:          kjournald
-Version:       24.08.2
+Version:       24.08.3
 Release:       1%{?dist}
 Summary:       Framework for interacting with systemd-journald
 
@@ -64,6 +64,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.kj
 %{_kf6_libdir}/libkjournald.so.%{version}
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
 - 24.08.2
 

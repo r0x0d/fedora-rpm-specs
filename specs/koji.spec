@@ -9,13 +9,15 @@
 
 Name: koji
 Version: 1.35.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 # the included arch lib from yum's rpmUtils is GPLv2+
 # Automatically converted from old format: LGPLv2 and GPLv2+ - review is highly recommended.
 License: LicenseRef-Callaway-LGPLv2 AND GPL-2.0-or-later
 Summary: Build system tools
 URL: https://pagure.io/koji/
 Source0: https://releases.pagure.org/koji/koji-%{version}.tar.bz2
+
+Patch1: https://pagure.io/koji/pull-request/4258.patch#/0001-repos-check-for-newer-create-event.patch
 
 # Not upstreamable
 Patch100: fedora-config.patch

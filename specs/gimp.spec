@@ -56,23 +56,25 @@ gimp:app / ui
 Summary:        GNU Image Manipulation Program
 Name:           gimp
 Epoch:          2
-Version:        2.99.19^20241027git2db868ab50
+Version:        3.0.0~RC1
 Release:        %autorelease
 # https://bugzilla.redhat.com/show_bug.cgi?id=2318369
 ExcludeArch:    s390x
 
 # Compute some version related macros.
 
-# In the case of a snapshot version (e.g. "Version: 2.99.19^20240814git256e0ca5a0"), this computes
-# the "plain" version (as defined in upstream sources), %%snapshot and %%git_rev macros. In the case
-# of a normal release, %%plain_version will be the same as %%version.
+# In the case of a snapshot version (e.g. "Version: 2.99.19^20240814git256e0ca5a0") or a pre-release
+# (e.g. "Version: 3.0.0~RC1"), this computes the "plain" version (as defined in upstream sources),
+# %%snapshot and %%git_rev macros. In the case of a normal release, %%plain_version will be the same
+# as %%version.
 %global plain_version %{lua:
-    local plain_version = (string.gsub(macros.version, '^(.*)[%^~].*$', '%1'))
-    print(plain_version)
-    if plain_version ~= macros.version then
-        macros.snapshot = (string.gsub(macros.version, '^.*[%^~](.*)$', '%1'))
+    local non_snapshot_version = (string.gsub(macros.version, '^(.*)%^.*$', '%1'))
+    if non_snapshot_version ~= macros.version then
+        macros.snapshot = (string.gsub(macros.version, '^.*%^(.*)$', '%1'))
         macros.git_rev = (string.gsub(macros.snapshot, '^.*git(.*)$', '%1'))
     end
+    local plain_version = (string.gsub(non_snapshot_version, "~", "-"))
+    print(plain_version)
 }
 %global major %{lua:
     print((string.gsub(macros.plain_version, '^(%d+)%..*$', '%1')))
@@ -210,7 +212,7 @@ Obsoletes:      gimp3 < 3.0
 Conflicts:      gimp3 < 3.0
 
 %if ! %defined snapshot
-Source0:        https://download.gimp.org/pub/gimp/v%{bin_version}/gimp-%{version}.tar.xz
+Source0:        https://download.gimp.org/pub/gimp/v%{bin_version}/gimp-%{plain_version}.tar.xz
 %else
 # Tarball built from git snapshot with `meson dist` and renamed accordingly
 Source0:        gimp-%{plain_version}-git%{git_rev}.tar.xz
@@ -418,7 +420,7 @@ grep -E -rl '^#!\s*/usr/bin/env\s+gimp-script-fu' --include=\*.scm "%{buildroot}
 
 rm -rf devel-docs/gimp-%{bin_version}
 mv %{buildroot}%{_docdir}/gimp-%{bin_version} devel-docs
-rm -r %{buildroot}%{_datadir}/gimp/%{api_version}/tests
+rm -rf %{buildroot}%{_datadir}/gimp/%{api_version}/tests
 
 %if %{without is_default_version}
 rm -rf %{buildroot}%{_datadir}/metainfo
@@ -514,6 +516,8 @@ done
 %if %{with is_default_version}
 %{_bindir}/gimp
 %{_bindir}/gimp-console
+%{_bindir}/gimp-%{major}
+%{_bindir}/gimp-console-%{major}
 %endif
 
 %{_bindir}/gimp-test-clipboard-%{bin_version}
@@ -522,6 +526,8 @@ done
 %if %{with is_default_version}
 %{_bindir}/gimp-test-clipboard
 %{_libexecdir}/gimp-debug-tool
+%{_bindir}/gimp-test-clipboard-%{major}
+%{_libexecdir}/gimp-debug-tool-%{major}
 %endif
 
 %{_mandir}/man1/gimp-%{bin_version}.1*
@@ -530,8 +536,11 @@ done
 
 %if %{with is_default_version}
 %{_mandir}/man1/gimp.1*
+%{_mandir}/man1/gimp-%{major}.1*
 %{_mandir}/man1/gimp-console.1*
+%{_mandir}/man1/gimp-console-%{major}.1*
 %{_mandir}/man5/gimprc.5*
+%{_mandir}/man5/gimprc-%{major}.5*
 %endif
 
 %{_datadir}/icons/hicolor/*/apps/gimp*
@@ -583,7 +592,9 @@ done
 
 %if %{with is_default_version}
 %{_bindir}/gimptool
+%{_bindir}/gimptool-%{major}
 %{_mandir}/man1/gimptool.1*
+%{_mandir}/man1/gimptool-%{major}.1*
 %endif
 
 %changelog

@@ -1,5 +1,5 @@
 Name:       kwayland
-Version:    6.2.2
+Version:    6.2.3
 Release:    1%{?dist}
 Summary:    Qt-style API to interact with the wayland-client API
 
@@ -82,6 +82,9 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 6.2.3-1
+- 6.2.3
+
 * Tue Oct 22 2024 Steve Cossette <farchord@gmail.com> - 6.2.2-1
 - 6.2.2
 

@@ -1,6 +1,6 @@
 Name: man-pages-ja
 Version: 20231115
-Release: 1%{?dist}
+Release: 2%{?dist}
 # BSD-3-Clause - shadow, bsd-games, byacc, bzip2, dhcpcd, dump, file, hdparm, rssh, tcp_wrappers, tcsh
 # GFDL-1.3-or-later - GNU_*, cron, glibc-linuxthreads
 # BSD-4-Clause-UC/Linux-man-pages-copyleft/GPL-2.0-or-later/BSD-4.3TAHOE/Linux-man-pages-1-para/GPL-1.0-or-later/BSD-3-Clause/MIT/Spencer-94/LicenseRef-LDPL/BSD-2-Clause/LicenseRef-Fedora-UltraPermissive/LicenseRef-Fedora-Public-Domain - LDP_manpages, gnumaniak, ld.so
@@ -21,13 +21,13 @@ Release: 1%{?dist}
 # GPL-2.0-or-later or Artistic-1.0-Perl - procmail
 # BSD and GPLv2 and GPLv2+ - quota
 # GPL-3.0-or-later - rsync
-# Sendmail - sendmail
+# Sendmail-8.23 - sendmail
 # BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSD-4-Clause-UC AND ISC AND NTP - tcpdump
 # GPLv2 and GPLv2+ and LGPLv2+ and BSD with advertising and Public Domain - util-linux
 # GPL-2.0-only WITH vsftpd-openssl-exception - vsftpd
 # xinetd - xinetd
 # GPLv2 - yp-tools, ypbind-mt, ypserv
-License: BSD-3-Clause AND GFDL-1.3-or-later AND BSD-4-Clause-UC AND Linux-man-pages-copyleft AND GPL-2.0-or-later AND BSD-4.3TAHOE AND Linux-man-pages-1-para AND GPL-1.0-or-later AND MIT AND Spencer-94 AND LicenseRef-LDPL AND BSD-2-Clause AND ISC AND LGPL-2.1-or-later AND Apache-2.0 WITH LLVM-exception AND Zlib AND LicenseRef-Fedora-Public-Domain AND LicenseRef-Fedora-UltraPermissive AND GPL-2.0-only AND LGPL-2.0-or-later AND (GPL-2.0-or-later OR Artistic-1.0-Perl) AND GPL-3.0-or-later AND Sendmail AND BSD-4-Clause AND NTP AND GPL-2.0-only WITH vsftpd-openssl-exception AND xinetd
+License: BSD-3-Clause AND GFDL-1.3-or-later AND BSD-4-Clause-UC AND Linux-man-pages-copyleft AND GPL-2.0-or-later AND BSD-4.3TAHOE AND Linux-man-pages-1-para AND GPL-1.0-or-later AND MIT AND Spencer-94 AND LicenseRef-LDPL AND BSD-2-Clause AND ISC AND LGPL-2.1-or-later AND Apache-2.0 WITH LLVM-exception AND Zlib AND LicenseRef-Fedora-Public-Domain AND LicenseRef-Fedora-UltraPermissive AND GPL-2.0-only AND LGPL-2.0-or-later AND (GPL-2.0-or-later OR Artistic-1.0-Perl) AND GPL-3.0-or-later AND Sendmail-8.23 AND BSD-4-Clause AND NTP AND GPL-2.0-only WITH vsftpd-openssl-exception AND xinetd
 BuildArch: noarch
 BuildRequires: make
 BuildRequires: perl(Env), perl(Encode)
@@ -157,6 +157,9 @@ done
 
 
 %changelog
+* Fri Nov 01 2024 msuchy <msuchy@redhat.com> - 20231115-2
+- Use correct SPDX id for sendmail
+
 * Mon Oct 21 2024 Akira TAGOH <tagoh@redhat.com> - 20231115-1
 - Updates to 20231115.
 

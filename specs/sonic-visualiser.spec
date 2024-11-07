@@ -1,7 +1,7 @@
 %global forgeurl https://github.com/sonic-visualiser/sonic-visualiser
 
 Name:           sonic-visualiser
-Version:        5.0
+Version:        5.0.1
 Release:        %autorelease
 Summary:        A program for viewing and exploring audio data
 

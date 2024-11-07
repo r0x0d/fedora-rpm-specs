@@ -1,7 +1,7 @@
 Name:    filelight
 Summary: Graphical disk usage statistics
 Epoch:   1
-Version: 24.08.2
+Version: 24.08.3
 Release: 1%{?dist}
 
 # KDE e.V. may determine that future GPL versions are accepted
@@ -73,6 +73,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 %{_sysconfdir}/xdg/filelightrc
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 1:24.08.3-1
+- 24.08.3
+
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 1:24.08.2-1
 - 24.08.2
 

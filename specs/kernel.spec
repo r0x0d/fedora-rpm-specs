@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc6.51
+%define pkgrelease 0.rc6.20241105git2e1b3cc9d7f7.52
 %define kversion 6
-%define tarfile_release 6.12-rc6
+%define tarfile_release 6.12-rc6-77-g2e1b3cc9d7f7
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc6.51%{?buildid}%{?dist}
+%define specrelease 0.rc6.20241105git2e1b3cc9d7f7.52%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4152,9 +4152,12 @@ fi\
 #
 #
 %changelog
-* Mon Nov 04 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.51]
+* Tue Nov 05 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.2e1b3cc9d7f7.52]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Tue Nov 05 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.2e1b3cc9d7f7.51]
+- Linux v6.12.0-0.rc6.2e1b3cc9d7f7
 
 * Mon Nov 04 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.50]
 - redhat/configs: add bootconfig to kernel-tools package (Brian Masney)

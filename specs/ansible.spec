@@ -139,8 +139,8 @@ mkdir -p %{buildroot}%{_licensedir}/ansible %{buildroot}%{_docdir}/ansible
 mv licenses %{buildroot}%{_licensedir}/ansible/ansible_collections
 mv docs %{buildroot}%{_pkgdocdir}/ansible_collections
 
-hardlink -v %{buildroot}%{python3_sitelib}/ansible_collections
-hardlink -v %{buildroot}%{_licensedir}/ansible
+hardlink --reflink=never -v %{buildroot}%{python3_sitelib}/ansible_collections
+hardlink --reflink=never -v %{buildroot}%{_licensedir}/ansible
 
 # XXX: One of the build steps is messing with the permission.
 # XXX: The file is 0755 in the source tarball.

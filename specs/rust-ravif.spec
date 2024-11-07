@@ -5,7 +5,7 @@
 %global crate ravif
 
 Name:           rust-ravif
-Version:        0.11.10
+Version:        0.11.11
 Release:        %autorelease
 Summary:        Rav1e-based pure Rust library for encoding images in AVIF format
 
@@ -14,9 +14,6 @@ URL:            https://crates.io/crates/ravif
 Source:         %{crates_source}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          ravif-fix-metadata-auto.diff
-# Manually created patch for downstream crate metadata changes
-# * temporarily drop package.rust-version setting that is inaccurate
-Patch:          ravif-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

@@ -1,6 +1,6 @@
 Name:           maui-mauikit
 Version:        4.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        LGPL-2.0-or-later AND GPL-3.0-or-later AND BSD-3-Clause AND LGPL-3.0-only AND LGPL-2.1-only AND CC0-1.0 AND MIT
 Summary:        Kit for developing Maui Apps
 Url:            https://invent.kde.org/maui/mauikit
@@ -39,7 +39,8 @@ BuildRequires:  cmake(KF6WindowSystem)
 BuildRequires:  cmake(MauiMan4)
 
 Requires: kf6-kirigami
-Requires: applet-window-buttons
+Requires: kf6-purpose
+Requires: qt6-qtmultimedia
 
 %description
 Kit for developing MAUI Apps. MauiKit is a set of utilities
@@ -81,6 +82,9 @@ on the MauKit framework.
 
 
 %changelog
+* Mon Nov 04 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 4.0.0-2
+- Update QML dependencies
+
 * Wed Sep 18 2024 Steve Cossette <farchord@gmail.com> - 4.0.0-1
 - 4.0.0
 

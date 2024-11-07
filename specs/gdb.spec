@@ -931,6 +931,10 @@ fi
 # endif scl
 
 %changelog
+* Tue Nov  5 2024 Guinevere Larsen <guinevere@redhat.com>
+- Remove gdb-simultaneous-step-resume-breakpoint.patch
+  This test is covered by a combination of upstream tests already.
+
 * Thu Oct 24 2024 Guinevere Larsen <guinevere@redhat.com>
 - Make the GDB package provide the libdir/gdb folder, so that packages
   that provide a JIT reader don't need to create it on their own.

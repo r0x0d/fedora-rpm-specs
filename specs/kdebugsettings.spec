@@ -1,6 +1,6 @@
 Name:    kdebugsettings
 Summary: Configure debug output from Qt6 applications
-Version: 24.08.2
+Version: 24.08.3
 Release: 1%{?dist}
 
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
@@ -67,6 +67,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.kd
 
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
 - 24.08.2
 

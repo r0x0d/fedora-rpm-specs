@@ -5,14 +5,17 @@ Summary:        App that corrects your previous console command
 License:        MIT
 URL:            https://github.com/nvbn/thefuck
 Source0:        https://github.com/nvbn/%{name}/archive/%{version}.tar.gz
+
+# https://github.com/nvbn/thefuck/pull/1248
+Patch0:         thefuck-support-python-3.11.patch
+# https://github.com/nvbn/thefuck/pull/1474
+Patch1:         thefuck-fix-pytest8.patch
+# https://github.com/nvbn/thefuck/pull/1437
+Patch2:         thefuck-replace-mock.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
-# https://github.com/nvbn/thefuck/issues/1381
-%if v"0%{?python3_version}" >= v"3.12"
-BuildRequires:  python3-zombie-imp
-Requires:       python3-zombie-imp
-%endif
 
 %description
 This application corrects your previous console command.
@@ -22,12 +25,8 @@ alias FUCK='fuck'
 For other shells please check /usr/share/doc/thefuck/README.md
 
 %prep
-%autosetup
+%autosetup -p1
 %py3_shebang_fix *.py
-
-# Fix deprecated python3-mock https://github.com/nvbn/thefuck/issues/1262
-find tests -type f -name '*.py' -exec sed -i -E 's/^(\s*)import mock/\1from unittest import mock/' {} \;
-find tests -type f -name '*.py' -exec sed -i -E 's/^(\s*)from mock import /\1from unittest.mock import /' {} \;
 
 # Cleanup requirements for release and functional tests
 grep -Ev '^(flake8|mock|pexpect|pypandoc|pytest-benchmark|pytest-docker-pexpect|twine)\s*$' requirements.txt | tee requirements-filtered.txt

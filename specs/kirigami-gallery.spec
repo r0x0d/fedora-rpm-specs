@@ -1,6 +1,6 @@
 Name:    kirigami-gallery
-Version: 24.08.2
-Release: 2%{?dist}
+Version: 24.08.3
+Release: 1%{?dist}
 Summary: Gallery application built using Kirigami
 License: LGPL-2.1-or-later
 URL:     https://apps.kde.org/en/kirigami2.gallery
@@ -74,6 +74,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.kirigami2.gal
 
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Fri Oct 11 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-2
 - Readded the patches back in
 

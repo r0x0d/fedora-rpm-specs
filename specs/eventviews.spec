@@ -1,5 +1,5 @@
 Name:    eventviews
-Version: 24.08.2
+Version: 24.08.3
 Release: 1%{?dist}
 Summary: KDE PIM library for displaying events and calendars
 
@@ -88,6 +88,9 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
 - 24.08.2
 

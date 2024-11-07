@@ -1,5 +1,5 @@
 Name:    fotocx
-Version: 24.60
+Version: 24.70
 Release: 1%{?dist}
 Summary: Photo editor
 
@@ -94,6 +94,9 @@ rm -f %{buildroot}%{_datadir}/icons/fotocx.png
 %{_metainfodir}/*%{name}.metainfo.xml
 
 %changelog
+* Tue Nov 05 2024 Gwyn Ciesla <gwync@protonmail.com> - 24.70-1
+- 24.70
+
 * Tue Oct 01 2024 Gwyn Ciesla <gwync@protonmail.com> - 24.60-1
 - 24.60
 

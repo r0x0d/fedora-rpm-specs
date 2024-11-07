@@ -25,7 +25,7 @@
 
 Name:    cantor
 Summary: KDE Frontend to Mathematical Software
-Version: 24.08.2
+Version: 24.08.3
 Release: 1%{?dist}
 
 License: GPL-2.0-or-later
@@ -40,7 +40,6 @@ Source:  https://download.kde.org/%{stable_kf5}/release-service/%{version}/src/%
 ## upstreamable patches
 # Kill using cantor internal API
 Patch2:  cantor-21.04.3-no-julia-internal.patch
-Patch3:  cantor-24.02.2-jl_array_data.patch
 
 BuildRequires: openblas-devel
 
@@ -261,6 +260,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.%{name}.d
 
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
 - 24.08.2
 

@@ -5,7 +5,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 7.0.8
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: A toolkit for building modeling frameworks (part of Rails)
 License: MIT
 URL: http://rubyonrails.org
@@ -20,6 +20,9 @@ Source1: %{gem_name}-%{version}%{?prerelease}-tests.txz
 # git clone http://github.com/rails/rails.git --no-checkout
 # cd rails && git archive -v -o rails-7.0.8-tools.txz v7.0.8 tools/
 Source2: rails-%{version}%{?prerelease}-tools.txz
+# Adjust test for new Ruby 3.4 `Hash#inspect` format.
+# https://github.com/rails/rails/pull/53162
+Patch0: rubygem-activemodel-8.0.0-Fix-tests-to-pass-on-ruby-head.patch
 
 # Let's keep Requires and BuildRequires sorted alphabeticaly
 BuildRequires: ruby(release)
@@ -50,6 +53,10 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version} -b1 -b2
+
+pushd %{builddir}
+%patch 0 -p2
+popd
 
 %build
 gem build ../%{gem_name}-%{version}.gemspec
@@ -88,6 +95,9 @@ popd
 %doc %{gem_instdir}/README.rdoc
 
 %changelog
+* Tue Nov 05 2024 Vít Ondruch <vondruch@redhat.com> - 7.0.8-5
+- Fix Ruby 3.4 compatibility.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.8-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

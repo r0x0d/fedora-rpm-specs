@@ -1,6 +1,6 @@
 Name:    kde-gtk-config
 Summary: Configure the appearance of GTK apps in KDE
-Version: 6.2.2
+Version: 6.2.3
 Release: 1%{?dist}
 
 License: BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND (GPL-2.0-only OR GPL-3.0-only)
@@ -70,9 +70,13 @@ appearance of GTK apps in KDE.
 %{_libdir}/gtk-3.0/modules/libwindow-decorations-gtk-module.so
 %{_datadir}/themes/Breeze/window_decorations.css
 %{_datadir}/kcm-gtk-module/
+%{_datadir}/qlogging-categories6/kde-gtk-config.categories
 
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 6.2.3-1
+- 6.2.3
+
 * Tue Oct 22 2024 Steve Cossette <farchord@gmail.com> - 6.2.2-1
 - 6.2.2
 

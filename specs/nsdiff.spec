@@ -1,9 +1,9 @@
 Name:		nsdiff
-Version:	1.82
-Release:	10%{?dist}
+Version:	1.85
+Release:	1%{?dist}
 Summary:	create an "nsupdate" script from DNS zone file differences
 
-License:	Public Domain
+License:	0BSD OR MIT-0
 URL:		https://dotat.at/prog/nsdiff/
 # Alternative:
 #Source0:	https://github.com/fanf2/%%{name}/archive/%%{name}-%%{version}.tar.gz
@@ -51,6 +51,9 @@ perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
 
 
 %changelog
+* Tue Nov 05 2024 Petr Menšík <pemensik@redhat.com> - 1.85-1
+- Update to 1.85
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.82-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

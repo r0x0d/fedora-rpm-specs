@@ -39,7 +39,7 @@ BuildRequires:  (python3dist(legacy-cgi) if python3 >= 3.13)
 %py3_install
 
 %check
-%{__python3} setup.py test
+%{py3_test_envvars} %{python3} -m unittest src/%{pypi_name}/tests/*.py
 
 %files -n python3-%{pypi_name}
 %license COPYING.txt

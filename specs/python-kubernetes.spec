@@ -17,8 +17,8 @@
 
 Name:       python-%{library}
 Epoch:      1
-Version:    30.1.0
-Release:    5%{?dist}
+Version:    31.0.0
+Release:    1%{?dist}
 Summary:    Python client for the kubernetes API.
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:    Apache-2.0
@@ -46,6 +46,7 @@ Requires:  %{py3}-PyYAML
 Requires:  %{py3}-google-auth
 Requires:  %{py3}-websocket-client
 Requires:  %{py3}-oauthlib
+Requires:  %{py3}-durationpy
 %endif
 
 %description -n %{py3}-%{library}
@@ -146,6 +147,9 @@ cp -pr kubernetes/e2e_test %{buildroot}%{python3_sitelib}/%{library}/
 %{python3_sitelib}/%{library}/e2e_test
 
 %changelog
+* Tue Nov 05 2024 Jason Montleon <jmontleo@redhat.com 1:31.0.0-1
+- - Update to 31.0.0 (#2313897)
+
 * Sun Sep 22 2024 Jason Montleon <jmontleo@redhat.com 1:30.1.0-5
 - Fix fail to install for tests sub-package for EPEL 9.
 - BZ #2314125 will fully resolve FTI on EPEL 10.

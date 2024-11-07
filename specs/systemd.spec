@@ -117,6 +117,9 @@ Patch0010:      https://github.com/systemd/systemd/pull/26494.patch
 # Requested in https://bugzilla.redhat.com/show_bug.cgi?id=2298422
 Patch0011:      https://github.com/systemd/systemd/pull/33738.patch
 
+# Simplify user manager upgrades
+Patch0012:      https://github.com/systemd/systemd/pull/34707.patch
+
 # Those are downstream-only patches, but we don't want them in packit builds:
 # https://bugzilla.redhat.com/show_bug.cgi?id=2251843
 Patch0491:      https://github.com/systemd/systemd/pull/30846.patch
@@ -1185,10 +1188,8 @@ fi
 %systemd_post systemd-resolved.service
 
 %preun resolved
+%systemd_preun systemd-resolved.service
 if [ $1 -eq 0 ] ; then
-        systemctl disable --quiet \
-                systemd-resolved.service \
-                >/dev/null || :
         if [ -L /etc/resolv.conf ] && \
             realpath /etc/resolv.conf | grep ^/run/systemd/resolve/; then
                 rm -f /etc/resolv.conf # no longer useful

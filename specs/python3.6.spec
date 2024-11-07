@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 37%{?dist}
+Release: 38%{?dist}
 # Python is Python
 # pip MIT is and bundles:
 #   appdirs: MIT
@@ -771,6 +771,12 @@ Patch435: 00435-gh-121650-encode-newlines-in-headers-and-verify.patch
 # * Rewrite PAX header parsing to be stricter
 # * Optimize parsing of GNU extended sparse headers v0.0
 Patch437: 00437-cve-2024-6232-remove-backtracking-when-parsing-tarfile-headers.patch
+
+# 00443 # 49e939f29e3551ec4e7bdb2cc8b8745e3d1fca35
+# gh-124651: Quote template strings in `venv` activation scripts
+#
+# (cherry picked from 3.9)
+Patch443: 00443-gh-124651-quote-template-strings-in-venv-activation-scripts.patch
 
 # (New patches go here ^^^)
 #
@@ -2041,6 +2047,9 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Mon Nov 04 2024 Lumír Balhar <lbalhar@redhat.com> - 3.6.15-38
+- Security fix for CVE-2024-9287 (rhbz#2321659)
+
 * Thu Sep 05 2024 Lumír Balhar <lbalhar@redhat.com> - 3.6.15-37
 - Security fix for CVE-2024-6232 (rhbz#2310092)
 

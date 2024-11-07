@@ -1,5 +1,5 @@
 Name:    sddm-kcm
-Version: 6.2.2
+Version: 6.2.3
 Release: 1%{?dist}
 Summary: SDDM KDE configuration module
 
@@ -64,6 +64,9 @@ SDDM Display Manager
 %{_qt6_plugindir}/plasma/kcms/systemsettings/kcm_sddm.so
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 6.2.3-1
+- 6.2.3
+
 * Tue Oct 22 2024 Steve Cossette <farchord@gmail.com> - 6.2.2-1
 - 6.2.2
 

@@ -1,3 +1,9 @@
+%if 0%{?rhel} >= 10
+%bcond_with gtk2
+%else
+%bcond_without gtk2
+%endif
+
 %if 0%{?rhel} >= 9
 %bcond_with mono
 %else
@@ -6,7 +12,7 @@
 
 Name:		libappindicator
 Version:	12.10.1
-Release:	6%{?dist}
+Release:	7%{?dist}
 Summary:	Application indicators library
 
 # Automatically converted from old format: LGPLv2 and LGPLv3 - review is highly recommended.
@@ -23,10 +29,12 @@ BuildRequires:	gtk-doc
 BuildRequires:	vala
 BuildRequires:	dbus-glib-devel
 BuildRequires:	libdbusmenu-devel
+%if %{with gtk2}
 BuildRequires:	libdbusmenu-gtk2-devel
+BuildRequires:	gtk2-devel
+%endif
 BuildRequires:	libdbusmenu-gtk3-devel
 BuildRequires:	gobject-introspection-devel
-BuildRequires:	gtk2-devel
 BuildRequires:	gtk3-devel
 BuildRequires:	libindicator-devel
 BuildRequires:	libindicator-gtk3-devel
@@ -45,6 +53,7 @@ on KSNI it also works in KDE and will fallback to generic Systray support if
 none of those are available.
 
 
+%if %{with gtk2}
 %package devel
 Summary:	Development files for %{name}
 
@@ -54,6 +63,7 @@ Requires:	libdbusmenu-devel
 
 %description devel
 This package contains the development files for the appindicator library.
+%endif
 
 
 %package gtk3
@@ -131,12 +141,14 @@ autoreconf -vif
 %global _configure ../configure
 mkdir build-gtk2 build-gtk3
 
+%if %{with gtk2}
 pushd build-gtk2
 export CFLAGS="%{optflags} $CFLAGS -Wno-deprecated-declarations -Wno-error"
 %configure --with-gtk=2 --enable-gtk-doc --disable-static
 # Parallel make, crash the build
 make -j1 V=1
 popd
+%endif
 
 pushd build-gtk3
 export CFLAGS="%{optflags} $CFLAGS -Wno-deprecated-declarations"
@@ -147,9 +159,11 @@ popd
 
 
 %install
+%if %{with gtk2}
 pushd build-gtk2
 make install DESTDIR=%{buildroot}
 popd
+%endif
 
 pushd build-gtk3
 make install DESTDIR=%{buildroot}
@@ -158,10 +172,13 @@ popd
 find %{buildroot} -type f -name '*.la' -delete
 
 
+%if %{with gtk2}
 %ldconfig_scriptlets
+%endif
 %ldconfig_scriptlets gtk3
 
 
+%if %{with gtk2}
 %files
 %doc AUTHORS README COPYING COPYING.LGPL.2.1
 %{_libdir}/libappindicator.so.*
@@ -173,6 +190,7 @@ find %{buildroot} -type f -name '*.la' -delete
 %{_includedir}/libappindicator-0.1/libappindicator/*.h
 %{_libdir}/libappindicator.so
 %{_libdir}/pkgconfig/appindicator-0.1.pc
+%endif
 
 
 %files gtk3
@@ -227,6 +245,9 @@ find %{buildroot} -type f -name '*.la' -delete
 %endif
 
 %changelog
+* Tue Nov 05 2024 Michel Lind <salimma@fedoraproject.org> - 12.10.1-7
+- Drop gtk2 support on EL >= 10
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 12.10.1-6
 - convert license to SPDX
 

@@ -5,7 +5,7 @@
 Name: rubygem-%{gem_name}
 Epoch: 1
 Version: 7.0.8
-Release: 7%{?dist}
+Release: 8%{?dist}
 Summary: A support libraries and Ruby core extensions extracted from the Rails framework
 License: MIT
 URL: http://rubyonrails.org
@@ -28,6 +28,15 @@ Patch2: rubygem-activesupport-7.0.2.3-Remove-the-multi-call-form-of-assert_calle
 Patch3: rubygem-activesupport-7.0.2.3-Fix-tests-for-minitest-5.16.patch
 # https://github.com/rails/rails/pull/51079
 Patch4: rubygem-activesupport-7.0.2.3-update-method_duplicable.patch
+# Drop mutex_m dependency to ease Ruby 3.4 compatibility.
+# https://github.com/rails/rails/pull/49674
+Patch5: rubygem-activesupport-7.2.0-Drop-dependency-on-mutex-m.patch
+# Ruby 3.4 backtrace compatibility.
+# https://github.com/rails/rails/pull/51101
+Patch6: rubygem-activesupport-7.2.0-Update-test-suite-for-compatibility-with-Ruby-3-4-dev.patch
+# Ruby 3.4 `Hash#inspect` compatibility.
+# https://github.com/rails/rails/commit/95c2ee8e0503215ad94629383311301742ebf012
+Patch7: rubygem-activesupport-8.0.0-Update-Active-Support-test-suite-for-Ruby-3-4-Hash-inspect.patch
 
 # Ruby package has just soft dependency on rubygem(json), while
 # ActiveSupport always requires it.
@@ -46,6 +55,7 @@ BuildRequires: rubygem(builder)
 BuildRequires: rubygem(concurrent-ruby)
 BuildRequires: rubygem(connection_pool)
 BuildRequires: rubygem(dalli)
+BuildRequires: rubygem(drb)
 BuildRequires: (rubygem(i18n) >= 0.7 with rubygem(i18n) < 2)
 BuildRequires: rubygem(minitest) >= 5.0.0
 BuildRequires: rubygem(rack)
@@ -79,16 +89,18 @@ Documentation for %{name}.
 mv %{_builddir}/test .
 %patch 4 -p2
 mv test %{_builddir}
+%patch 5 -p2
 
 pushd %{_builddir}
 %patch 2 -p2
+%patch 6 -p2
+%patch 7 -p2
 popd
 
 # Add several dependencies to avoid Ruby 3.3 warnings.
 # https://github.com/rails/rails/commit/81699b52d2acff1840e3ace5e59412f4fa3934ab
 %gemspec_add_dep -g base64
 %gemspec_add_dep -g drb
-%gemspec_add_dep -g mutex_m
 # https://github.com/rails/rails/commit/a77535c74c7047a517cc45ff8ecb416ea439c28d
 %gemspec_add_dep -g bigdecimal
 
@@ -105,7 +117,7 @@ cp -a .%{gem_dir}/* \
 pushd .%{gem_instdir}
 # Move the tests into place
 ln -s %{_builddir}/tools ..
-mv %{_builddir}/test .
+cp -a %{_builddir}/test .
 
 # These tests are really unstable, but they seems to be passing upstream :/
 # mem_cache_store_test: These tests do not pass in Koji; but work locally
@@ -149,6 +161,9 @@ popd
 %doc %{gem_instdir}/README.rdoc
 
 %changelog
+* Mon Nov 04 2024 Vít Ondruch <vondruch@redhat.com> - 1:7.0.8-8
+- Ruby 3.4 compatibility fixes.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:7.0.8-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

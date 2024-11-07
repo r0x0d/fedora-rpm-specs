@@ -185,6 +185,10 @@ Source0:    README
 # Remove in F42
 %obsolete_ticket https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/LAE5JLO3KYVQVSF776H4QLY6DTAUQHWR/
 %obsolete celestia 1.7.0~320231229.git6899839-6
+%obsolete celestia-common 1.7.0~320231229.git6899839-6
+%obsolete celestia-doc 1.7.0~320231229.git6899839-6
+%obsolete celestia-gtk 1.7.0~320231229.git6899839-6
+%obsolete celestia-qt 1.7.0~320231229.git6899839-6
 %obsolete celestia-data 1.7.0~320231125.gitdb53ae3-4
 
 # Remove in F43

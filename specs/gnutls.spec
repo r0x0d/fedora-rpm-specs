@@ -12,15 +12,12 @@ sha256sum:close()
 print(string.sub(hash, 0, 16))
 }
 
-Version: 3.8.7
+Version: 3.8.8
 Release: %{?autorelease}%{!?autorelease:1%{?dist}}
 Patch: gnutls-3.2.7-rpath.patch
 
 # follow https://gitlab.com/gnutls/gnutls/-/issues/1443
-Patch: gnutls-3.7.8-ktls_skip_tls12_chachapoly_test.patch
-
-# https://gitlab.com/gnutls/gnutls/-/merge_requests/1867
-Patch: gnutls-3.8.7-pkgconf-dlopen.patch
+Patch: gnutls-3.8.8-tests-ktls-skip-tls12-chachapoly.patch
 
 %bcond_without bootstrap
 %bcond_without dane
@@ -103,6 +100,7 @@ BuildRequires: unbound-devel unbound-libs
 BuildRequires: make gtk-doc
 
 %if %{with mingw}
+BuildRequires:  mingw32-cpp
 BuildRequires:  mingw32-filesystem >= 95
 BuildRequires:  mingw32-gcc
 BuildRequires:  mingw32-gcc-c++
@@ -110,6 +108,7 @@ BuildRequires:  mingw32-libtasn1 >= 4.3
 BuildRequires:  mingw32-readline
 BuildRequires:  mingw32-zlib
 BuildRequires:  mingw32-nettle >= 3.6
+BuildRequires:  mingw64-cpp
 BuildRequires:  mingw64-filesystem >= 95
 BuildRequires:  mingw64-gcc
 BuildRequires:  mingw64-gcc-c++
@@ -121,8 +120,8 @@ BuildRequires:  mingw64-nettle >= 3.6
 
 URL: http://www.gnutls.org/
 %define short_version %(echo %{version} | grep -m1 -o "[0-9]*\.[0-9]*" | head -1)
-Source0: https://www.gnupg.org/ftp/gcrypt/gnutls/v%{short_version}/%{name}-%{version}.1.tar.xz
-Source1: https://www.gnupg.org/ftp/gcrypt/gnutls/v%{short_version}/%{name}-%{version}.1.tar.xz.sig
+Source0: https://www.gnupg.org/ftp/gcrypt/gnutls/v%{short_version}/%{name}-%{version}.tar.xz
+Source1: https://www.gnupg.org/ftp/gcrypt/gnutls/v%{short_version}/%{name}-%{version}.tar.xz.sig
 Source2: https://gnutls.org/gnutls-release-keyring.gpg
 
 %if %{with bundled_gmp}
@@ -368,7 +367,6 @@ export CCASFLAGS=""
     --disable-rpath \
     --disable-nls \
     --disable-cxx \
-    --enable-local-libopts \
     --enable-shared \
     --without-tpm \
     --with-included-unistring \

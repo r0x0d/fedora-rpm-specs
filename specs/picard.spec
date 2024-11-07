@@ -1,8 +1,8 @@
 %global forgeurl    https://github.com/musicbrainz/picard/
-%global commit      311b42c964ddb7ca57617fe7204fdfb4cdc920ac
+%global commit      2c1c30e6ccba886270cb49aed6d0329e114763da
 
 Name:           picard
-Version:        2.12.1
+Version:        2.12.3
 Release:        %autorelease
 Summary:        MusicBrainz-based audio tagger
 License:        GPL-2.0-or-later
@@ -12,11 +12,17 @@ License:        GPL-2.0-or-later
 URL:            %{forgeurl}
 Source0:        %{forgesource}
 Source1:        picard.rpmlintrc
+Patch0:         bz2323081.patch
 BuildRequires:  gcc
+BuildRequires:  pyproject-rpm-macros
 BuildRequires:  desktop-file-utils
 BuildRequires:  gettext
-BuildRequires:  python3-devel
+BuildRequires:  python3-pip
+BuildRequires:  python3-wheel
 BuildRequires:  python3-setuptools
+BuildRequires:  python3-devel
+BuildRequires:  python3-charset-normalizer
+BuildRequires:  %{py3_dist makefun pytest}
 Requires:       hicolor-icon-theme
 Requires:       python3-qt5
 Requires:       python3-dateutil
@@ -39,12 +45,15 @@ track-oriented.
 %forgesetup
 %autosetup -n %{archivename}
 
+%generate_buildrequires
+%pyproject_buildrequires
+
 %build
 %{__python3} setup.py config
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
 
 desktop-file-install \
   --delete-original --remove-category="Application"   \
@@ -65,7 +74,7 @@ desktop-file-install \
 %{_datadir}/applications/org.musicbrainz.Picard.desktop
 %{_datadir}/icons/hicolor/*/apps/org.musicbrainz.Picard.*
 %{_datadir}/metainfo/org.musicbrainz.Picard.appdata.xml
-%{python3_sitearch}/*egg-info
+%{python3_sitearch}/*dist-info
 %{python3_sitearch}/picard/
 
 %changelog
