@@ -16,7 +16,7 @@
 #
 
 Name:           cockpit-machines
-Version:        322
+Version:        323
 Release:        1%{?dist}
 Summary:        Cockpit user interface for virtual machines
 License:        LGPL-2.1-or-later AND MIT
@@ -70,28 +70,28 @@ Suggests: (qemu-virtiofsd or virtiofsd)
 
 Provides: bundled(npm(@novnc/novnc)) = 1.4.0
 Provides: bundled(npm(@novnc/novnc)) = 1.5.0
-Provides: bundled(npm(@patternfly/patternfly)) = 5.4.1
+Provides: bundled(npm(@patternfly/patternfly)) = 5.4.2
 Provides: bundled(npm(@patternfly/react-console)) = 5.1.0
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.1
-Provides: bundled(npm(@patternfly/react-icons)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-styles)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.1
-Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.0
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.8
+Provides: bundled(npm(@patternfly/react-icons)) = 5.4.2
+Provides: bundled(npm(@patternfly/react-styles)) = 5.4.1
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.9
+Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.1
 Provides: bundled(npm(@spice-project/spice-html5)) = 0.2.1
 Provides: bundled(npm(@xterm/addon-canvas)) = 0.7.0
 Provides: bundled(npm(@xterm/xterm)) = 5.5.0
 Provides: bundled(npm(attr-accept)) = 2.2.4
 Provides: bundled(npm(dequal)) = 2.0.3
 Provides: bundled(npm(file-saver)) = 1.3.8
-Provides: bundled(npm(file-selector)) = 0.6.0
-Provides: bundled(npm(focus-trap)) = 7.5.4
+Provides: bundled(npm(file-selector)) = 2.1.0
+Provides: bundled(npm(focus-trap)) = 7.6.0
 Provides: bundled(npm(js-tokens)) = 4.0.0
 Provides: bundled(npm(lodash)) = 4.17.21
 Provides: bundled(npm(loose-envify)) = 1.4.0
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
 Provides: bundled(npm(react-dom)) = 18.3.1
-Provides: bundled(npm(react-dropzone)) = 14.2.10
+Provides: bundled(npm(react-dropzone)) = 14.3.2
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.3.1
 Provides: bundled(npm(redux-thunk)) = 3.1.0
@@ -99,7 +99,7 @@ Provides: bundled(npm(redux)) = 5.0.1
 Provides: bundled(npm(scheduler)) = 0.23.2
 Provides: bundled(npm(tabbable)) = 6.2.0
 Provides: bundled(npm(throttle-debounce)) = 5.0.2
-Provides: bundled(npm(tslib)) = 2.8.0
+Provides: bundled(npm(tslib)) = 2.8.1
 Provides: bundled(npm(xterm-addon-fit)) = 0.2.1
 Provides: bundled(npm(xterm)) = 4.19.0
 
@@ -126,6 +126,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 
 # The changelog is automatically generated and merged
 %changelog
+* Wed Nov 06 2024 Packit <hello@packit.dev> - 323-1
+- Action to add a TPM
+
 * Wed Oct 23 2024 Packit <hello@packit.dev> - 322-1
 - Bug fixes and translation updates
 

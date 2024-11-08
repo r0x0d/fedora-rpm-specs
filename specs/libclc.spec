@@ -2,7 +2,7 @@
 %global debug_package %{nil}
 
 %global shortname clc
-%global libclc_version 19.1.0
+%global libclc_version 19.1.3
 #global rc_ver 4
 %global libclc_srcdir libclc-%{libclc_version}%{?rc_ver:-rc%{rc_ver}}.src
 
@@ -94,6 +94,9 @@ export CFLAGS="%{build_cflags} -D__extern_always_inline=inline"
 %{_includedir}/%{shortname}
 
 %changelog
+* Wed Nov 06 2024 Timm Bäder <tbaeder@redhat.com> - 19.1.3-1
+- Update to 19.1.3
+
 * Thu Sep 19 2024 Timm Bäder <tbaeder@redhat.com> - 19.1.0-1
 - Update to 19.1.0
 

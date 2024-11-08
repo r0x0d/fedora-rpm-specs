@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc6.20241105git2e1b3cc9d7f7.52
+%define pkgrelease 0.rc6.20241106git2e1b3cc9d7f7.53
 %define kversion 6
 %define tarfile_release 6.12-rc6-77-g2e1b3cc9d7f7
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc6.20241105git2e1b3cc9d7f7.52%{?buildid}%{?dist}
+%define specrelease 0.rc6.20241106git2e1b3cc9d7f7.53%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -3334,7 +3334,6 @@ rm -rf %{buildroot}%{_libdir}/libperf.a
 %if %{with_tools}
 %ifarch %{cpupowerarchs}
 %{make} -C tools/power/cpupower DESTDIR=$RPM_BUILD_ROOT libdir=%{_libdir} mandir=%{_mandir} CPUFREQ_BENCH=false install
-rm -f %{buildroot}%{_libdir}/*.{a,la}
 %find_lang cpupower
 mv cpupower.lang ../
 %ifarch x86_64
@@ -4152,9 +4151,16 @@ fi\
 #
 #
 %changelog
-* Tue Nov 05 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.2e1b3cc9d7f7.52]
+* Wed Nov 06 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.2e1b3cc9d7f7.53]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Wed Nov 06 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.2e1b3cc9d7f7.52]
+- redhat/kernel.spec: don't clear entire libdir when building tools (Jan Stancek)
+- redhat/configs: enable usbip for rhel (Jose Ignacio Tornos Martinez)
+- redhat: create 'crashkernel=' addons for UKI (Vitaly Kuznetsov)
+- redhat: avoid superfluous quotes in UKI cmdline addones (Vitaly Kuznetsov)
+- fedora: arm: updates for 6.12 (Peter Robinson)
 
 * Tue Nov 05 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.2e1b3cc9d7f7.51]
 - Linux v6.12.0-0.rc6.2e1b3cc9d7f7

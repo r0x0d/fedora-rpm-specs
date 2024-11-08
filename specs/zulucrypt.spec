@@ -1,10 +1,11 @@
+%bcond_without  use_qt6
 %bcond_with     bundle_lxqtwallet
 %bcond_without  bundle_tcplay
 %global srcname zuluCrypt
 
 Name:           zulucrypt
 Version:        7.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Qt GUI front end to cryptsetup
 
 # More details available in the copyright file in the source tarball.
@@ -20,16 +21,33 @@ Source0:        https://github.com/mhogomchungu/zuluCrypt/archive/%{version}/%{n
 Source10:      zulucrypt-gui.policy
 Source11:      zulumount-gui.policy
 
+# Fix targets for QT6 builds (https://github.com/mhogomchungu/zuluCrypt/pull/218)
+Patch0: qt6_cmake.patch
+
+# Fix include file naming for lxqt 4.0 (https://github.com/mhogomchungu/zuluCrypt/pull/219)
+Patch1: lxqt_header.patch
+
 BuildRequires:  gcc gcc-c++
 
 BuildRequires:  kf5-rpm-macros
+
+# These are only needed for building the lxqt-wallet bundled library
+%if %{with bundle_lxqtwallet}
 BuildRequires:  cmake(KF5Wallet)
 BuildRequires:  cmake(KF5Notifications)
+%endif
 
+%if %{with use_qt6}
+BuildRequires:  pkgconfig(Qt6Core)
+BuildRequires:  pkgconfig(Qt6Gui)
+BuildRequires:  pkgconfig(Qt6Network)
+BuildRequires:  pkgconfig(Qt6Widgets)
+%else
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Gui)
 BuildRequires:  pkgconfig(Qt5Network)
 BuildRequires:  pkgconfig(Qt5Widgets)
+%endif
 
 BuildRequires:  pkgconfig(libsecret-1)
 BuildRequires:  pkgconfig(devmapper)
@@ -50,11 +68,12 @@ Provides:       bundled(tcplay) = 2.0
 #BuildRequires:  tcplay-devel >= 2.0
 %endif
 
+# NB: LXQT version 4.0.0 is only built with QT6
 %if %{with bundle_lxqtwallet}
 # Version 6.2.0 bundles lxqt-wallet 3.2.2
 Provides:       bundled(lxqt-wallet) = 3.2.0
 %else
-BuildRequires:  pkgconfig(lxqt-wallet) >= 3.2.0
+BuildRequires:  pkgconfig(lxqt-wallet) >= 4.0.0
 %endif
 
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
@@ -110,7 +129,7 @@ BuildArch:      noarch
 %{summary}.
 
 %prep
-%autosetup -n %{srcname}-%{version}
+%autosetup -n %{srcname}-%{version} -p1
 
 # Documentation later with %%doc
 mv 'ABOUT ME' AUTHORS
@@ -138,7 +157,11 @@ rm -rf external_libraries/tc-play
  -DREUSEMOUNTPOINT=false \
  -DUDEVSUPPORT=true \
  -DNOGUI=false \
+%if %{with use_qt6}
+ -DBUILD_WITH_QT6=true \
+%else
  -DQT5=true \
+%endif
  -DHOMEMOUNTPREFIX=false \
  -DNOGNOME=false \
  -DNOKDE=false \
@@ -201,6 +224,11 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/zulu*.desktop
 %doc docs/README docs/*.jpg
 
 %changelog
+
+* Wed Nov 06 2024 Ian McInerney <ian.s.mcinerney@ieee.org> - 7.0.0-2
+- Switch to QT6 for new lxqt-wallet version 4.0.0 update
+- Spec file cleanup
+
 * Sun Sep 01 2024 Ian McInerney <ian.s.mcinerney@ieee.org> - 7.0.0-1
 - Update to upstream 7.0.0 (fixes rhbz#2307507)
 - License audit and update to SPDX license expressions (fixes rhbz#2118200)

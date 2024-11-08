@@ -1,5 +1,5 @@
 Name: neochat
-Version: 24.08.2
+Version: 24.08.3
 Release: 1%{?dist}
 
 License: GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND GPL-3.0-or-later AND BSD-3-Clause
@@ -8,10 +8,6 @@ Summary: Client for matrix, the decentralized communication protocol
 Source: https://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
 
 # Proposed upstream
-
-# Translation error when installing
-# https://invent.kde.org/network/neochat/-/commit/588266d7c3a9fd6746ffea7a39f947e2eb5927f6
-Patch0: 588266d7c3a9fd6746ffea7a39f947e2eb5927f6.patch
 
 BuildRequires: cmake(Qt6Core)
 BuildRequires: cmake(Qt6Quick)
@@ -126,6 +122,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 %{_mandir}/man1/neochat.1*
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
 - 24.08.2
 

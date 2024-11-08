@@ -1,8 +1,8 @@
 Name:           perl-Exporter-Tidy
-Version:        0.08
-Release:        32%{?dist}
+Version:        0.09
+Release:        1%{?dist}
 Summary:        Another way of exporting symbols
-License:        any-OSI
+License:        any-OSI-perl-modules
 URL:            https://metacpan.org/release/Exporter-Tidy
 Source0:        https://cpan.metacpan.org/authors/id/J/JU/JUERD/Exporter-Tidy-%{version}.tar.gz
 BuildArch:      noarch
@@ -15,13 +15,7 @@ BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 # Runtime
 BuildRequires:  perl(Carp)
 # Tests only
-BuildRequires:  perl(Config)
-BuildRequires:  perl(Exporter)
-BuildRequires:  perl(lib)
-BuildRequires:  perl(strict)
-BuildRequires:  perl(threads)
-BuildRequires:  perl(threads::shared)
-BuildRequires:  perl(vars)
+BuildRequires:  perl(Test::More)
 Requires:       perl(Carp)
 
 %description
@@ -45,10 +39,13 @@ make test
 
 %files
 %doc Changes README
-%{perl_vendorlib}/*
-%{_mandir}/man3/*
+%{perl_vendorlib}/Exporter*
+%{_mandir}/man3/Exporter::Tidy*
 
 %changelog
+* Wed Nov 06 2024 Jitka Plesnikova <jplesnik@redhat.com> - 0.09-1
+- 0.09 bump (rhbz#2312693)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.08-32
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

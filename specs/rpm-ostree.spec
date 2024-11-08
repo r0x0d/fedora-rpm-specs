@@ -143,6 +143,8 @@ Requires: ostree
 Requires: bubblewrap
 Requires: fuse3
 
+# ref https://github.com/coreos/rpm-ostree/issues/4994
+Requires: bootc
 # For container functionality
 # https://github.com/coreos/rpm-ostree/issues/3286
 Requires: skopeo

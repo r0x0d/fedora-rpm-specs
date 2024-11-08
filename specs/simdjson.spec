@@ -1,17 +1,16 @@
 %global lib_version 23.0.0
 %global lib_soversion 23
-Name:           simdjson
-Version:        3.10.0
-Release:        %autorelease
-Summary:        Parsing gigabytes of JSON per second
+Name:		simdjson
+Version:	3.10.1
+Release:	%autorelease
+Summary:	Parsing gigabytes of JSON per second
 
-License:        Apache-2.0 AND MIT
-URL:			https://simdjson.org/
-Source0:		https://github.com/simdjson/simdjson/archive/v%{version}/%{name}-%{version}.tar.gz
+License:	Apache-2.0 AND MIT
+URL:		https://simdjson.org
+Source0:	https://github.com/simdjson/simdjson/archive/v%{version}/%{name}-%{version}.tar.gz
 
-BuildRequires:  cmake
-BuildRequires:  cxxopts-devel
-BuildRequires:  gcc-c++
+BuildRequires:	cmake >= 3.1
+BuildRequires:	gcc-c++
 
 %description
 JSON is everywhere on the Internet. Servers spend a *lot* of time parsing it.
@@ -21,7 +20,7 @@ RapidJSON and 25x faster than JSON for Modern C++.
 
 %package devel
 Summary: Development files for %{name}
-Requires:		%{name} = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 The package contains libraries and header files for developing applications
@@ -34,10 +33,10 @@ Summary: Documents for %{name}
 %{summary}
 
 %prep
-%autosetup -n %{name}-%{version}
+%autosetup -p1 -n %{name}-%{version}
 
 %build
-%cmake
+%cmake -DSIMDJSON_TESTS=ON
 %cmake_build
 
 %install

@@ -4,7 +4,7 @@
 %global crate gst-plugin-gtk4
 
 Name:           rust-gst-plugin-gtk4
-Version:        0.13.1
+Version:        0.13.3
 Release:        %autorelease
 Summary:        GStreamer GTK 4 sink element
 
@@ -263,6 +263,18 @@ This package contains library source intended for building other packages which
 use the "wayland" feature of the "%{crate}" crate.
 
 %files       -n %{name}+wayland-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+waylandegl-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+waylandegl-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "waylandegl" feature of the "%{crate}" crate.
+
+%files       -n %{name}+waylandegl-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+x11egl-devel

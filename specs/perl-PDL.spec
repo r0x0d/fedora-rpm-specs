@@ -13,8 +13,8 @@
 %{bcond_without perl_PDL_enables_optional_test}
 
 Name:           perl-PDL
-%global cpan_version 2.093
-Version:        2.93.0
+%global cpan_version 2.095
+Version:        2.95.0
 Release:        1%{?dist}
 Summary:        The Perl Data Language
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -154,8 +154,10 @@ Requires:       perl(Prima::Label)
 Requires:       perl(Prima::PodView)
 Requires:       perl(Prima::Utils)
 Requires:       perl(Text::Balanced) >= 2.05
+Provides:       perl(PDL::AutoLoader) = %{version}
 Provides:       perl(PDL::Config) = %{version}
 Provides:       perl(PDL::DiskCache) = %{version}
+Provides:       perl(PDL::NiceSlice::FilterSimple) = %{version}
 Provides:       perl(PDL::PP::CType) = %{version}
 Provides:       perl(PDL::PP::Dims) = %{version}
 Provides:       perl(PDL::PP::PDLCode) = %{version}
@@ -171,7 +173,8 @@ Provides:       perl(PDL::Graphics::TriD::Objects) = %{version}
 # Remove under-specified dependencies
 %global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\((Data::Dumper|File::Spec|Filter::Simple|Inline|Module::Compile|OpenGL|Text::Balanced)\\)$
 # Remove modules not compiled
-%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\((PDL::GIS::Proj|PDL::IO::HDF.*)\\)$
+%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\((PDL::GIS::Proj|PDL::IO::HDF.*|PDL::GSL::INTEG)\\)$
+%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\((PDL::GSL::INTEG|PDL::Transform::Proj4)\\)$
 # Filter modules bundled for tests
 %global __requires_exclude %{__requires_exclude}|^perl\\(My::Test::Primitive\\)
 
@@ -209,7 +212,7 @@ with "%{_libexecdir}/%{name}/test".
 perl -MConfig -pi -e 's|^#!/usr/bin/env perl|$Config{startperl}|' Perldl2/pdl2
 
 # Help file to recognise the Perl scripts
-for F in t/*.t; do
+for F in Basic/t/*.t; do
     perl -i -MConfig -ple 'print $Config{startperl} if $. == 1 && !s{\A#!.*perl\b}{$Config{startperl}}' "$F"
     chmod +x "$F"
 done
@@ -229,14 +232,15 @@ make OPTIMIZE="$CFLAGS" %{?_smp_mflags}
 
 %install
 make pure_install DESTDIR=%{buildroot}
-perl -Mblib Doc/scantree.pl %{buildroot}%{perl_vendorarch}
+perl -Mblib Basic/Doc/scantree.pl %{buildroot}%{perl_vendorarch}
 perl -pi -e "s|%{buildroot}/|/|g" %{buildroot}%{perl_vendorarch}/PDL/pdldoc.db
 find %{buildroot}%{perl_vendorarch} -type f -name "*.pm" | xargs chmod -x
 find %{buildroot} -type f -name '*.bs' -empty -delete
 
 # Install tests
-mkdir -p %{buildroot}/%{_libexecdir}/%{name}
-cp -a t m51.fits %{buildroot}/%{_libexecdir}/%{name}
+mkdir -p %{buildroot}/%{_libexecdir}/%{name}/t
+cp -a Basic/m51.fits %{buildroot}/%{_libexecdir}/%{name}
+cp -a Basic/t/* %{buildroot}/%{_libexecdir}/%{name}/t/
 cat > %{buildroot}/%{_libexecdir}/%{name}/test << 'EOF'
 #!/bin/bash
 set -e
@@ -246,7 +250,7 @@ unset DISPLAY
 DIR=$(mktemp -d)
 pushd "$DIR"
 cp -a %{_libexecdir}/%{name}/* ./
-prove -I . -j "$(getconf _NPROCESSORS_ONLN)"
+prove -I . -r -j "$(getconf _NPROCESSORS_ONLN)"
 popd
 rm -rf "$DIR"
 EOF
@@ -268,12 +272,12 @@ make test
 %{_bindir}/pptemplate*
 %{perl_vendorarch}/Inline/*
 %{perl_vendorarch}/PDL*
+%{perl_vendorarch}/Test*
 %{perl_vendorarch}/auto/PDL/
 %{_mandir}/man1/PDL*.1*
 %{_mandir}/man1/pdl*.1*
 %{_mandir}/man1/perldl*.1*
 %{_mandir}/man1/pptemplate*.1*
-%{_mandir}/man3/Bugs*.3*
 %{_mandir}/man3/PDL*.3*
 %{_mandir}/man3/Pdlpp*.3*
 
@@ -281,6 +285,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Tue Nov 05 2024 Jitka Plesnikova <jplesnik@redhat.com> - 2.95.0-1
+- 2.095 bump (rhbz#2323379)
+
 * Tue Oct 01 2024 Jitka Plesnikova <jplesnik@redhat.com> - 2.93.0-1
 - 2.093 bump (rhbz#2315728)
 

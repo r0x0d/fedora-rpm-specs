@@ -1,5 +1,5 @@
 Name:           kweather
-Version:        24.08.2
+Version:        24.08.3
 Release:        1%{?dist}
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
@@ -93,6 +93,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 %{_kf6_qtplugindir}/plasma/applets/plasma_applet_%{name}_1x4.so
 
 %changelog
+* Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
+- 24.08.3
+
 * Tue Oct 08 2024 Steve Cossette <farchord@gmail.com> - 24.08.2-1
 - 24.08.2
 

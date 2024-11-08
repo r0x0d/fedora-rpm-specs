@@ -1,5 +1,5 @@
 Name:           python-stdlibs
-Version:        2024.5.15
+Version:        2024.10.25
 Release:        %autorelease
 Summary:        List of packages in the stdlib
 
@@ -11,7 +11,7 @@ Patch:          stdlibs-use-tomllib.diff
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
-BuildRequires:  python3dist(pytest)
+BuildRequires:  python3dist(moreorless)
 
 
 %global _description %{expand:
@@ -60,7 +60,7 @@ rm stdlibs/fetch.py
 
 %check
 %pyproject_check_import
-%pytest -v stdlibs/tests/__init__.py
+%py3_test_envvars %python3 -m unittest -v
 
 
 %files -n python3-stdlibs -f %{pyproject_files}

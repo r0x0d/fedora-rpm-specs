@@ -20,13 +20,13 @@
 %bcond_without tests
 %endif
 
-%global upstream_version 4.2.4
+%global upstream_version 4.2.6
 #global upstream_prever  RC1
 %global sources          %{proj_name}-%{upstream_version}%{?upstream_prever}
 
 Name:           php-pecl-http
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:        9%{?dist}
+Release:        1%{?dist}
 Summary:        Extended HTTP support
 
 License:        BSD-2-Clause
@@ -35,10 +35,6 @@ Source0:        https://pecl.php.net/get/%{sources}.tgz
 
 # From http://www.php.net/manual/en/http.configuration.php
 Source1:        %{proj_name}.ini
-
-Patch0:         %{proj_name}-build.patch
-Patch1:         %{proj_name}-php84.patch
-Patch2:         %{proj_name}-curl.patch
 
 ExcludeArch:    %{ix86}
 
@@ -109,10 +105,6 @@ These are the files needed to compile programs using HTTP extension.
 sed -e '/LICENSE/s/role="doc"/role="src"/' -i package.xml
 
 cd %{sources}
-%patch -P0 -p1
-%patch -P1 -p1
-%patch -P2 -p1
-
 extver=$(sed -n '/#define PHP_PECL_HTTP_VERSION/{s/.* "//;s/".*$//;p}' php_http.h)
 if test "x${extver}" != "x%{upstream_version}%{?upstream_prever}%{?gh_date:dev}"; then
    : Error: Upstream HTTP version is now ${extver}, expecting %{upstream_version}%{?upstream_prever}%{?gh_date:dev}.
@@ -215,6 +207,9 @@ TEST_PHP_ARGS="-n $modules -d extension=$PWD/modules/%{pecl_name}.so" \
 
 
 %changelog
+* Wed Nov  6 2024 Remi Collet <remi@fedoraproject.org> - 4.2.6-1
+- update to 4.2.6
+
 * Wed Oct 16 2024 Remi Collet <remi@fedoraproject.org> - 4.2.4-9
 - modernize the spec file
 

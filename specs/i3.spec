@@ -1,5 +1,5 @@
 Name:           i3
-Version:        4.23
+Version:        4.24
 Release:        %autorelease
 Summary:        Improved tiling window manager
 License:        BSD-3-Clause
@@ -124,7 +124,8 @@ BuildArch:      noarch
 Requires:       %{name} = %{version}-%{release}
 Recommends:     xfce4-terminal
 # the Fedora branded config file uses xdg-user-dirs-update indirectly via `dex-autostart --autostart`
-Recommends:     xdg-user-dirs
+Requires:       xdg-user-dirs
+Requires:       xss-lock
 Conflicts:      %{name}-config
 
 %description    config-fedora

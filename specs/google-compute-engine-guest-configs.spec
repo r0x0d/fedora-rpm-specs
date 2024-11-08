@@ -2,7 +2,7 @@
 %global         dracutlibdir %{_prefix}/lib/dracut
 
 Name:           google-compute-engine-guest-configs
-Version:        20241013.00
+Version:        20241031.00
 Release:        %autorelease
 Summary:        Google Compute Engine guest environment tools
 License:        Apache-2.0
@@ -79,6 +79,7 @@ cp -vp  src/lib/dracut/modules.d/30gcp-udev-rules/module-setup.sh %{buildroot}%{
 %files
 %license LICENSE
 %doc README.md
+%attr(0755,-,-) %{_bindir}/gce-nic-naming
 %attr(0755,-,-) %{_bindir}/google_optimize_local_ssd
 %attr(0755,-,-) %{_bindir}/google_set_hostname
 %attr(0755,-,-) %{_bindir}/google_set_multiqueue
@@ -87,6 +88,7 @@ cp -vp  src/lib/dracut/modules.d/30gcp-udev-rules/module-setup.sh %{buildroot}%{
 %{_prefix}/lib/modprobe.d/gce-blacklist.conf
 %{_prefix}/lib/networkd-dispatcher/routable.d/google_hostname.sh
 %{_sysconfdir}/sysconfig/network/scripts/google_up.sh
+%{_sysconfdir}/systemd/resolved.conf.d/gce-resolved.conf
 %{_sysconfdir}/NetworkManager/dispatcher.d/google_hostname.sh
 %config(noreplace) /etc/sysctl.d/60-gce-network-security.conf
 
@@ -102,6 +104,7 @@ cp -vp  src/lib/dracut/modules.d/30gcp-udev-rules/module-setup.sh %{buildroot}%{
 %doc README.md
 %attr(0755,-,-) %{_udevrulesdir}/../google_nvme_id
 %{_udevrulesdir}/65-gce-disk-naming.rules
+%{_udevrulesdir}/75-gce-network.rules
 %attr(0755,-,-) %{dracutlibdir}/modules.d/30gcp-udev-rules/module-setup.sh
 
 

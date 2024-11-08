@@ -6,9 +6,8 @@
 %bcond lensfun 1
 %endif
 
-# Disable docs until https://gitlab.gnome.org/GNOME/gegl/-/issues/363 is fixed
-# Due to babl update
-%bcond docs 0
+# Whether or not docs should be built
+%bcond docs 1
 
 Name:           gegl04
 Version:        0.4.50

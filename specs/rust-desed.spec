@@ -32,7 +32,7 @@ Summary:        %{summary}
 # ISC
 # MIT
 # MIT OR Apache-2.0
-License:        GPL-3.0-or-later AND ISC AND MIT AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND (BSD-2-Clause OR Apache-2.0 OR MIT
+License:        GPL-3.0-or-later AND ISC AND MIT AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND (BSD-2-Clause OR Apache-2.0 OR MIT)
 # LICENSE.dependencies contains a full license breakdown
 Requires:       sed >= 4.6
 

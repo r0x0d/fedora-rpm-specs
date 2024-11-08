@@ -61,7 +61,9 @@ BuildRequires:  libappstream-glib
 BuildRequires:  make
 
 Requires:       %{name}-parts = %{version}-%{parts_release}
+%if %{undefined flatpak}
 Requires:       electronics-menu
+%endif
 Requires:       google-droid-sans-fonts
 Requires:       google-droid-sans-mono-fonts
 
@@ -118,7 +120,7 @@ sed -e '/<url type="forum">/d' -i '%{rtld_name}.appdata.xml'
 
 
 %build
-%qmake_qt5
+%qmake_qt5 PREFIX=%{_prefix}
 %make_build V=1
 
 # Generate the parts database

@@ -1,10 +1,10 @@
 Name:			supernovas
-Version:		1.1.0
-Release:		2%{?dist}
+Version:		1.1.1
+Release:		1%{?dist}
 Summary:		The Naval Observatory's NOVAS C astronomy library, made better 
 License:		Unlicense
 URL:			https://smithsonian.github.io/SuperNOVAS
-Source0:		https://github.com/Smithsonian/SuperNOVAS/archive/refs/tags/v%{version}.tar.gz
+Source0:		https://github.com/Smithsonian/SuperNOVAS/archive/refs/tags/v%{version}-2.tar.gz
 BuildRequires:		gcc
 BuildRequires:		sed
 BuildRequires:		doxygen >= 1.9.0
@@ -36,7 +36,7 @@ Summary: Legacy solar-system plugin for JPL DE200 through DE421
 Requires:		%{name}%{_isa} = %{version}-%{release}
 
 %description solsys1
-Optional SuoperNOVAS plugin library that provides legacy solar-system routines 
+Optional SuperNOVAS plugin library that provides legacy solar-system routines 
 for accessing older JPL planetary data (DE200 through DE421).
  
 %package solsys2
@@ -49,7 +49,7 @@ for accessing older JPL planetary data through the JPL PLEPH routines. It
 requires a user-provided FORTRAN adapter module, and PLEPH library. This 
 package is provided only to support legacy applications that were written for 
 that particular interfacing.
-
+ls
 %package cio-data
 Summary:		CIO location data for the SuperNOVAS C/C++ astronomy library
 BuildArch:		noarch
@@ -84,7 +84,7 @@ This package provides man pages and HTML documentation for the SuperNOVAS
 C/C++ astronomy library.
 
 %prep
-%setup -q -n SuperNOVAS-%{version}
+%setup -q -n SuperNOVAS-%{version}-2
 
 %build
 
@@ -169,7 +169,7 @@ install -m 644 -D examples/* %{buildroot}/%{_docdir}/%{name}/
 %{_datadir}/%{name}/CIO_RA.TXT
 
 %files devel
-%doc README-orig.md CONTRIBUTING.md
+%doc CONTRIBUTING.md
 %doc %{_docdir}/%{name}/example.c
 %doc %{_docdir}/%{name}/example-usno.txt
 %doc %{_docdir}/%{name}/jplint.f

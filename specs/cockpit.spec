@@ -49,7 +49,7 @@ Summary:        Web Console for Linux servers
 License:        LGPL-2.1-or-later
 URL:            https://cockpit-project.org/
 
-Version:        327
+Version:        328
 Release:        1%{?dist}
 Source0:        https://github.com/cockpit-project/cockpit/releases/download/%{version}/cockpit-%{version}.tar.xz
 
@@ -132,11 +132,8 @@ BuildRequires:  python3-pip
 %if 0%{?rhel} == 0 && !0%{?suse_version}
 # All of these are only required for running pytest (which we only do on Fedora)
 BuildRequires:  procps-ng
-BuildRequires:  pyproject-rpm-macros
 BuildRequires:  python3-pytest-asyncio
-BuildRequires:  python3-pytest-cov
 BuildRequires:  python3-pytest-timeout
-BuildRequires:  python3-tox-current-env
 %endif
 
 %prep
@@ -159,7 +156,8 @@ BuildRequires:  python3-tox-current-env
 make -j$(nproc) check
 
 %if 0%{?rhel} == 0
-%tox
+export NO_QUNIT=1
+%pytest
 %endif
 
 %install
@@ -341,7 +339,7 @@ Provides: bundled(npm(argparse)) = 1.0.10
 Provides: bundled(npm(attr-accept)) = 2.2.4
 Provides: bundled(npm(autolinker)) = 3.16.2
 Provides: bundled(npm(dequal)) = 2.0.3
-Provides: bundled(npm(file-selector)) = 0.6.0
+Provides: bundled(npm(file-selector)) = 2.1.0
 Provides: bundled(npm(focus-trap)) = 7.5.4
 Provides: bundled(npm(js-sha1)) = 0.7.0
 Provides: bundled(npm(js-sha256)) = 0.11.0
@@ -352,7 +350,7 @@ Provides: bundled(npm(loose-envify)) = 1.4.0
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
 Provides: bundled(npm(react-dom)) = 18.3.1
-Provides: bundled(npm(react-dropzone)) = 14.2.10
+Provides: bundled(npm(react-dropzone)) = 14.3.2
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.3.1
 Provides: bundled(npm(remarkable)) = 2.0.1
@@ -360,8 +358,8 @@ Provides: bundled(npm(scheduler)) = 0.23.2
 Provides: bundled(npm(sprintf-js)) = 1.0.3
 Provides: bundled(npm(tabbable)) = 6.2.0
 Provides: bundled(npm(throttle-debounce)) = 5.0.2
-Provides: bundled(npm(tslib)) = 2.8.0
-Provides: bundled(npm(uuid)) = 10.0.0
+Provides: bundled(npm(tslib)) = 2.8.1
+Provides: bundled(npm(uuid)) = 11.0.2
 
 %description system
 This package contains the Cockpit shell and system configuration interfaces.
@@ -614,6 +612,9 @@ via PackageKit.
 
 # The changelog is automatically generated and merged
 %changelog
+* Wed Nov 06 2024 Packit <hello@packit.dev> - 328-1
+- Bug fixes and performance improvements
+
 * Wed Oct 23 2024 Packit <hello@packit.dev> - 327-1
 - Connect to similar servers without Cockpit installed
 

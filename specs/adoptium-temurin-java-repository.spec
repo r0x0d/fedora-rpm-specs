@@ -45,7 +45,7 @@ BuildArch:  noarch
 # fedora-third-party contains tools to work with 3rd party repos and owns fedora-third-party/conf.d/ directory
 Requires:   fedora-third-party
 
-#dont forget to update the lua list in post
+#dont forget to update the lua list in pre and bash list in post
 %{obsoleteJdk -- 1.8.0}
 %{obsoleteJdk -- 11}
 %{obsoleteJdk -- 17}
@@ -76,41 +76,88 @@ install -D -m0644 %{SOURCE3} -t %{buildroot}%{_docdir}/%{name}/
 
 
 %pre -p <lua>
+-- in dnf5 lua goes to stdout, but not to logs
 local posix = require ("posix")
 
 local jdksKnown={"1.8.0", "11", "17"}
 local jdksFound={}
+
+local javadir="/usr/lib/jvm"
+local binJava="bin/java"
+local binJavac="bin/javac"
+local jreBinJava="jre/bin/java"
+
 for key, value in pairs(jdksKnown) do
-    jdksFound[value]=0;
-end
-for key, value in pairs(jdksKnown) do
+  jdksFound[value]=0;
   local java="java-"..value.."-openjdk"
   local jre="jre-"..value.."-openjdk"
-  local statJavaJre1 = posix.stat("/usr/lib/jvm/"..java.."/bin/java", "type");
-  local statJavaJre2 = posix.stat("/usr/lib/jvm/"..java.."/jre/bin/java", "type");
-  local statJavaSdk = posix.stat("/usr/lib/jvm/"..java.."/bin/javac", "type");
-  local statJreJre1 = posix.stat("/usr/lib/jvm/"..jre.."/bin/java", "type");
-  local statJreJre2 = posix.stat("/usr/lib/jvm/"..jre.."/jre/bin/java", "type");
-  local statJreSdk = posix.stat("/usr/lib/jvm/"..jre.."/bin/javac", "type");
-  if ((statJavaJre1 ~= nil) or (statJavaJre2 ~= nil) or (statJreJre1 ~= nil) or (statJreJre2 ~= nil)) then
+  local statJavaJre1 = posix.stat(javadir.."/"..java.."/"..binJava, "type");
+  local statJavaJre2 = posix.stat(javadir.."/"..java.."/"..jreBinJava, "type");
+  local statJavaSdk = posix.stat(javadir.."/"..java.."/"..binJavac, "type");
+  local statJreJre1 = posix.stat(javadir.."/"..jre.."/"..binJava, "type");
+  local statJreJre2 = posix.stat(javadir.."/"..jre.."/"..jreBinJava, "type");
+  local statJreSdk = posix.stat(javadir.."/"..jre.."/"..binJavac, "type");
+  if ((statJavaJre1 ~= nil)) then
     jdksFound[value]=jdksFound[value]+1;
-    if (statJavaSdk ~= nil)or((statJreSdk ~= nil)) then
+  end
+  if ((statJavaJre2 ~= nil)) then
+    jdksFound[value]=jdksFound[value]+1;
+  end
+  if ((statJreJre1 ~= nil)) then
+    jdksFound[value]=jdksFound[value]+1;
+  end
+  if ((statJreJre2 ~= nil)) then
+    jdksFound[value]=jdksFound[value]+1;
+  end
+  if ((statJavaSdk ~= nil)) then
       jdksFound[value]=jdksFound[value]+1000;
-    end
+  end
+  if ((statJavaSdk ~= nil)) then
+      jdksFound[value]=jdksFound[value]+1000;
   end
 end
+local counter=0
 for key, value in pairs(jdksFound) do
   temurinKey=key
   if key == "1.8.0" then
     temurinKey=8
   end
   if value > 0 then
+    if (counter==0) then
+      print("") --dnf5 is consuming first and alst line of output. this is it
+    end
     print("You have java-"..key.."-openjdk installed. That is deprecated, and is replaced by temurin-"..temurinKey.."-jre")
   end
-  if value > 1000 then
+  if value > 999 then
     print("You have java-"..key.."-openjdk-devel installed. That is deprecated, and is replaced by temurin-"..temurinKey.."-jdk")
   end
+  counter=counter+value
 end
+if counter>0 then
+  print("https://fedoraproject.org/wiki/Changes/ThirdPartyLegacyJdks")
+  print("") --dnf5 is consuming first and alst line of output. this is it
+end
+
+%post
+# in dnf5 bash goes to logs, but not to stdout
+hits=0
+for x in 1.8.0 11 17 ; do
+  key="$x"
+  if [ "$key" == "1.8.0" ] ; then
+    key=8
+  fi
+  if [ -e /usr/lib/jvm/java-$x-openjdk/bin/java ] || [ -e /usr/lib/jvm/java-$x-openjdk/bin/jre/java ] || [ -e /usr/lib/jvm/jre-$x-openjdk/bin/java ] || [ -e /usr/lib/jvm/jre-$x-openjdk/jre/bin/java ] ; then
+    echo "java-$x-openjdk installed. That is deprecated, and is replaced by temurin-$key-jdk"
+    let hits=$hits+1
+  fi
+  if [ -e /usr/lib/jvm/java-$x-openjdk/bin/javac ] ; then
+    echo "java-$x-openjdk-devel installed. That is deprecated, and is replaced by temurin-$key-jdk"
+    let hits=$hits+1
+  fi
+done
+if [ $hits -gt 0 ] ; then
+  echo "https://fedoraproject.org/wiki/Changes/ThirdPartyLegacyJdks"
+fi
 
 
 

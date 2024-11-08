@@ -3,7 +3,7 @@
 %global	rpmminorver	.%(echo %preminorver | sed -e 's|^\\.\\.*||')
 %global	fullver	%{majorver}%{?preminorver}
 
-%global	baserelease	1
+%global	baserelease	2
 
 %global	gem_name	rspec-mocks
 
@@ -23,6 +23,9 @@ Source0:	https://rubygems.org/gems/%{gem_name}-%{fullver}.gem
 # %%{SOURCE2} %%{name} %%{version}
 Source1:	rubygem-%{gem_name}-%{version}-full.tar.gz
 Source2:	rspec-related-create-full-tarball.sh
+# https://github.com/rspec/rspec-mocks/pull/1597
+# support ruby3.4 formatting
+Patch0:	rspec-mocks-pr1597-ruby34-formatting.patch
 
 BuildRequires:	rubygems-devel
 %if %{without bootstrap}
@@ -59,6 +62,8 @@ gem unpack %{SOURCE0}
 # Cucumber 7 syntax change
 sed -i cucumber.yml -e "s|~@wip|not @wip|"
 sed -i features/support/disallow_certain_apis.rb -e "s|~@allow-old-syntax|not @allow-old-syntax|"
+
+%patch -P0 -p1
 
 gem specification %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 
@@ -118,6 +123,9 @@ cucumber
 %{gem_docdir}
 
 %changelog
+* Wed Nov 06 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.13.2-2
+- Backport upstream patch to support ruby34 formatting
+
 * Thu Oct 03 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.13.2-1
 - 3.13.2
 

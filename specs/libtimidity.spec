@@ -4,7 +4,8 @@ Name:           lib%{libname}
 Version:        0.2.7
 Release:        9%{?dist}
 Summary:        MIDI to WAVE converter library
-License:        LGPLv2+ or Artistic
+# it is dual licensed Artistic-1.0-Perl, but we are ignoring this second license
+License:        LGPL-2.1-or-later
 URL:            http://libtimidity.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 

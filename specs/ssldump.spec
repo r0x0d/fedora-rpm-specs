@@ -1,24 +1,15 @@
 Summary:        SSL/TLS network protocol analyzer
 Name:           ssldump
-Version:        1.8
-Release:        3%{?dist}
+Version:        1.9
+Release:        1%{?dist}
 # pcap/{attrib.h,{logpkt,sys}.[ch]} are BSD-2-Clause, rest is BSD-4-Clause
 License:        BSD-4-Clause AND BSD-2-Clause
 URL:            https://github.com/adulau/ssldump
 Source0:        https://github.com/adulau/ssldump/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:        HOWTO
-Patch0:         https://github.com/adulau/ssldump/commit/44e963d12e6b25ba6f430aae8cf1b8142bcbab33.patch#/ssldump-1.8-cmake.patch
 BuildRequires:  cmake
-%if 0%{?rhel} && 0%{?rhel} < 8
-BuildRequires:  cmake3
-%endif
 BuildRequires:  gcc
-BuildRequires:  make
-%if 0%{?fedora} || 0%{?rhel} > 7
 BuildRequires:  openssl-devel
-%else
-BuildRequires:  openssl11-devel
-%endif
 BuildRequires:  libpcap-devel
 BuildRequires:  libnet-devel
 BuildRequires:  json-c-devel
@@ -37,19 +28,7 @@ based on tcpdump, a network monitoring and data acquisition tool.
 install -p -m 0644 %{SOURCE1} .
 
 %build
-%if 0%{?rhel} && 0%{?rhel} < 8
-%global cmake %cmake3
-%global cmake_build %cmake3_build
-%global cmake_install %cmake3_install
-
-export CFLAGS="$RPM_OPT_FLAGS -D_BSD_SOURCE"
-%endif
-
-%cmake \
-%if 0%{?rhel} && 0%{?rhel} < 8
-  -DOPENSSL_ROOT_DIR:PATH="%{_includedir}/openssl11;%{_libdir}/openssl11"
-%endif
-
+%cmake
 %cmake_build
 
 %install
@@ -62,6 +41,9 @@ export CFLAGS="$RPM_OPT_FLAGS -D_BSD_SOURCE"
 %{_mandir}/man1/%{name}.1*
 
 %changelog
+* Wed Nov 06 2024 Robert Scheck <robert@fedoraproject.org> 1.9-1
+- Upgrade to 1.9 (#2323733)
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.8-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

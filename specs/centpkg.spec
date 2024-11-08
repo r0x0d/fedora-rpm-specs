@@ -4,7 +4,7 @@
 %endif
 
 Name:           centpkg
-Version:        0.8.13
+Version:        0.9.0
 Release:        1%{?dist}
 Summary:        CentOS utility for working with dist-git
 License:        GPL-2.0-or-later
@@ -78,6 +78,10 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} %{python3} -m unittest discover --verb
 
 
 %changelog
+* Wed Nov 06 2024 Troy Dawson <tdawson@redhat.com> - 0.9.0-1
+- Define compat shims for %patchN when building for EL <= 10
+- Get rid of SyntaxWarning: invalid escape sequence '\d'
+
 * Fri Oct 18 2024 Troy Dawson <tdawson@redhat.com> - 0.8.13-1
 - define centos in rpmdefines section
 - undefine fedora in rpmdefines section

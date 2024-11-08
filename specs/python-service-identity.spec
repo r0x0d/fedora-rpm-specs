@@ -1,28 +1,29 @@
 %bcond tests 1
-%bcond docs 1
-
-%global common_description %{expand:
-Use this package if you use pyOpenSSL and don’t want to be MITMed, or if you
-want to verify that a PyCA cryptography certificate is valid for a certain
-hostname or IP address.  service-identity aspires to give you all the tools you
-need for verifying whether a certificate is valid for the intended purposes.
-In the simplest case, this means host name verification.  However,
-service-identity implements RFC 6125 fully and plans to add other relevant RFCs
-too.}
+%bcond docs %{undefined rhel}
 
 Name:           python-service-identity
-Version:        23.1.0
+Version:        24.2.0
 Release:        %autorelease
-Summary:        Service identity verification for pyOpenSSL
-
+Summary:        Service identity verification for pyOpenSSL & cryptography
 License:        MIT
 URL:            https://github.com/pyca/service-identity
 Source:         %{pypi_source service_identity}
-# Downstream-only patch to disable coverage
-Patch:          0001-Remove-coverage-from-tests-extras.patch
+# Downstream-only patch to remove coverage[toml] test dependency
+Patch:          0001-Remove-coverage-toml-test-dependency.patch
+# Downstream-only patch to remove hatch-fancy-pypi-readme build-system dependency
+Patch:          0002-Remove-hatch-fancy-pypi-readme-build-system-dependency.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
+
+%global common_description %{expand:
+Use this package if you want to verify that a PyCA cryptography certificate is
+valid for a certain hostname or IP address, or if you use pyOpenSSL and don’t
+want to be MITMed, or if you want to inspect certificates from either for
+service IDs.  service-identity aspires to give you all the tools you need for
+verifying whether a certificate is valid for the intended purposes.  In the
+simplest case, this means host name verification.  However, service-identity
+implements RFC 6125 fully.}
 
 %description %{common_description}
 
@@ -52,7 +53,7 @@ This is the documentation package for %{name}.
 
 %install
 %pyproject_install
-%pyproject_save_files service_identity
+%pyproject_save_files -l service_identity
 
 %if %{with docs}
 # Previously the docs were built with PYTHONPATH=%%{pyproject_build_lib}, but

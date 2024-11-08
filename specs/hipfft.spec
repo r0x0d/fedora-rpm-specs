@@ -40,6 +40,7 @@ Source0:        %{url}/archive/rocm-%{version}.tar.gz#/%{upstreamname}-rocm-%{ve
 BuildRequires:  cmake
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
+BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  rocm-hip-devel
 BuildRequires:  rocm-runtime-devel
 BuildRequires:  rocm-rpm-macros
@@ -90,6 +91,7 @@ do
 
     %cmake \
            -DCMAKE_BUILD_TYPE=%{build_type} \
+	   -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
 	   -DCMAKE_SKIP_RPATH=ON \
 	   -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
 	   -DAMDGPU_TARGETS=${ROCM_GPUS} \

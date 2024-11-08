@@ -1,6 +1,6 @@
 Name:           python-libusb1
 Version:        3.1.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Pure-python wrapper for libusb-1.0
 
 License:        LGPL-2.1-or-later
@@ -54,13 +54,17 @@ rm -rf libusb1.egg-info
 
 %check
 %pyproject_check_import
-%{python3} setup.py test
+%{python3} -m unittest usb1/test*.py
 
 %files -n python3-libusb1 -f %{pyproject_files}
 %license COPYING COPYING.LESSER
 %doc README.rst PKG-INFO
 
 %changelog
+* Wed Nov 06 2024 Jonny Heggheim <hegjon@gmail.com> - 3.1.0-7
+- Fix to build error with setuptools 74+
+- Fixes: rhbz#2319677
+
 * Wed Oct 30 2024 Peter Lemenkov <lemenkov@gmail.com> - 3.1.0-6
 - Clarify licensing
 - Modernize spec-file

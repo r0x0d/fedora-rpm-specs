@@ -9,7 +9,7 @@ Epoch:                  1
 
 Name:           eclipse-swt
 Version:        %{major_version}.%{minor_version}
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Eclipse SWT: The Standard Widget Toolkit for GTK+
 %forgemeta
 
@@ -28,11 +28,12 @@ Patch2:         eclipse-swt-fedora-build-native.patch
 
 ExclusiveArch:  %{java_arches} 
 
-Requires:       java-11-openjdk
+Requires:       java-headless
 Requires:       webkit2gtk4.1
 
-BuildRequires:  java-11-openjdk-devel
-BuildRequires:  javapackages-local
+BuildRequires:  javapackages-tools
+BuildRequires:  java-devel
+BuildRequires:  maven-local
 BuildRequires:  ant
 BuildRequires:  gcc
 BuildRequires:  make
@@ -75,8 +76,6 @@ cp %{swtsrcdir}/Eclipse\ SWT\ AWT/gtk/library/* %{swtsrcdir}/Eclipse\ SWT\ PI/gt
 
 %build
 
-export JAVA_HOME=%{_jvmdir}/java-11-openjdk
-
 cd %{swtsrcdir}
 
 # Build native part
@@ -116,6 +115,9 @@ cp -a %{swtsrcdir}/*.so %{buildroot}/%{_libdir}/%{name}
 %license NOTICE
 
 %changelog
+* Wed Nov 06 2024 Nicolas De Amicis <deamicis@bluewin.ch> - 1:4.29-6
+- Rebuilt for java-21-openjdk as system jdk
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:4.29-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

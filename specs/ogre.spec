@@ -5,12 +5,29 @@ Version:        1.9.0
 Release:        50%{?dist}
 Epoch:          1
 Summary:        Object-Oriented Graphics Rendering Engine
-# MIT with exceptions - main library
-# CC-BY-SA - devel docs
-# Freely redistributable without restriction - most of samples content
+# MIT - main library
+# CC-BY-SA-3.0 - devel docs
 # MIT      - shaders for DeferredShadingMedia samples
-# Public Domain - Some of the build files, samples and plugins
-License:        MIT with exceptions and CC-BY-SA and Freely redistributable without restriction
+# Public Domain - CMAKE file (ignored as they are not of build result)
+#               - see https://gitlab.com/fedora/legal/fedora-license-data/-/merge_requests/691 for list of files
+# Zlib - Samples/Media/*/DualQuaternion*
+#      - Tools/XMLConverter/src/tiny*
+# BSL-1.0 - Many of the maths/spatial routines (OgreMain/include/OgreAny.h, OgreMain/include/OgrePlane.h ...)
+# LicenseRef-Callaway-dante-treglia - OgreMain/include/OgreSingleton.h
+#         - temporary id, see https://gitlab.com/fedora/legal/fedora-license-data/-/issues/595
+# NCSA - OgreMain/include/OgreSmallVector.h
+# BSD-3-Clause - OgreMain/include/OgreUTFString.h
+# MIT-Khronos-old - RenderSystems/GL/include/GL/glew.h, RenderSystems/GL/include/GL/glxew.h, RenderSystems/GL/include/GL/wglew.h
+# GPL-2.0-or-later WITH Bison-exception-1.24 - RenderSystems/GL/src/nvparse/*_parser.cpp
+# SGI-B-2.0 - RenderSystems/GLES2/include/GLES2/gl2.h
+# LGPL-2.1-only - Tools/Common/setup/License.rtf
+# LGPL-2.1-or-later - files in Tools/BlenderExport/
+# LicenseRef-Callaway-philippe-de-muyter - Tools/LightwaveConverter
+#             temporary id, see https://gitlab.com/fedora/legal/fedora-license-data/-/issues/596
+# LicenseRef-Callaway-scintilla - Tools/MaterialEditor/wxscintilla_1.69.2/src/scintilla/License.txt
+#             temporary id, see https://gitlab.com/fedora/legal/fedora-license-data/-/issues/597
+# LGPL-2.0-or-later WITH WxWindows-exception-3.1 - Tools/MaterialEditor/wxscintilla_1.69.2/src/ScintillaWX.h
+License:        MIT AND LicenseRef-Fedora-Public-Domain AND CC-BY-SA-3.0 AND Zlib AND BSL-1.0 AND LicenseRef-Callaway-dante-treglia AND NCSA AND BSD-3-Clause AND MIT-Khronos-old AND GPL-2.0-or-later WITH Bison-exception-1.24 AND SGI-B-2.0 AND LGPL-2.1-only AND LGPL-2.1-or-later AND LicenseRef-Callaway-philippe-de-muyter AND LicenseRef-Callaway-scintilla AND LGPL-2.0-or-later WITH WxWindows-exception-3.1
 URL:            http://www.ogre3d.org/
 # This is modified http://downloads.sourceforge.net/ogre/ogre-v%%(echo %%{version} | tr . -).tar.bz2
 # with non-free files striped (see ogre-make-clean.sh):

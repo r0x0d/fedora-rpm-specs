@@ -9,13 +9,13 @@
 Name:       shutter
 %if 0%{?usesnapshot}
 Version:    0.99.6
-Release:    0.1%{?snapshottag}%{?dist}
+Release:    0.2%{?snapshottag}%{?dist}
 %else
 Version:    0.99.5
 Release:    2%{?dist}
 %endif
-Summary:    GTK+3-based screenshot application written in Perl
 
+Summary:    GTK+3-based screenshot application written in Perl
 # share/shutter/resources/icons/draw.svg packaged is CC-BY-SA
 # share/shutter/resources/system/plugins/perl/spwatermark/spwatermark.svg is Public Domain
 # share/shutter/resources/po/shutter/zh_TW.po is MIT (same as gscrot <https://github.com/gscrot/gscrot/blob/master/LICENSE.md>)
@@ -51,6 +51,10 @@ Requires:       hicolor-icon-theme
 Requires:       libwnck3
 Requires:       perl(Image::ExifTool)
 Requires:       perl(Goo::Canvas)
+%if 0%{?fedora} >= 41
+Requires:       gdk-pixbuf2-modules-extra
+%endif
+
 
 # Filter all provides  
 %global __provides_exclude_from %{_datadir}/%{name}/resources/system/upload_plugins
@@ -136,6 +140,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/%{name}.metai
 %{_datadir}/icons/HighContrast/
 
 %changelog
+* Wed Nov 06 2024 Martin Gansser <martinkg@fedoraproject.org> - 0.99.6-0.2.git66c21b2
+- Add RR gdk-pixbuf2-modules-extra fix bug (#2323682)
+
 * Thu Oct 31 2024 Martin Gansser <martinkg@fedoraproject.org> - 0.99.6-0.1.git66c21b2
 - Update to 0.99.6-0.1.git66c21b2
 

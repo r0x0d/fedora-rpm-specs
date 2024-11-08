@@ -6,8 +6,8 @@
 
 Summary: A utility for getting files from remote servers (FTP, HTTP, and others)
 Name: curl
-Version: 8.10.1
-Release: 2%{?dist}
+Version: 8.11.0
+Release: 1%{?dist}
 License: curl
 Source0: https://curl.se/download/%{name}-%{version}.tar.xz
 Source1: https://curl.se/download/%{name}-%{version}.tar.xz.asc
@@ -97,6 +97,7 @@ BuildRequires: perl(Exporter)
 BuildRequires: perl(File::Basename)
 BuildRequires: perl(File::Copy)
 BuildRequires: perl(File::Spec)
+BuildRequires: perl(I18N::Langinfo)
 BuildRequires: perl(IPC::Open2)
 BuildRequires: perl(List::Util)
 BuildRequires: perl(Memoize)
@@ -406,6 +407,10 @@ rm -f ${RPM_BUILD_ROOT}%{_libdir}/libcurl.la
 %{_libdir}/libcurl.so.4.[0-9].[0-9].minimal
 
 %changelog
+* Wed Nov 06 2024 Jan Macku <jamacku@redhat.com> - 8.11.0-1
+- new upstream release, which fixes the following vulnerabilities
+    CVE-2024-9681 - HSTS subdomain overwrites parent cache entry
+
 * Tue Sep 24 2024 Jan Macku <jamacku@redhat.com> - 8.10.1-2
 - Use tls-ca-bundle.pem instead of ca-bundle.crt (OpenSSL specific) (#2313564)
 

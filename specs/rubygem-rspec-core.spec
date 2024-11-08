@@ -3,7 +3,7 @@
 %global	rpmminorver	.%(echo %preminorver | sed -e 's|^\\.\\.*||')
 %global	fullver	%{majorver}%{?preminorver}
 
-%global	baserelease	1
+%global	baserelease	2
 
 %global	gem_name	rspec-core
 
@@ -45,6 +45,7 @@ BuildRequires:	rubygem(rake)
 BuildRequires:	rubygem(rspec)
 BuildRequires:	rubygem(test-unit)
 BuildRequires:	rubygem(coderay)
+BuildRequires:	rubygem(drb)
 BuildRequires:	rubygem(thread_order)
 BuildRequires:	git
 
@@ -208,6 +209,9 @@ done
 %{gem_docdir}
 
 %changelog
+* Wed Nov 06 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.13.2-2
+- add BR: rubygem(drb) for ruby34
+
 * Mon Oct 21 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.13.2-1
 - 3.13.2
 

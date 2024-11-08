@@ -9,7 +9,7 @@ Release:        1%{?dist}
 Summary:        Rich client application platform for Java
 %forgemeta
 
-License:        GPL v2 with exceptions and BSD
+License:        GPL-2.0-only WITH Classpath-exception-2.0 AND BSD-2-Clause AND BSD-3-Clause
 URL:            %{forgeurl}
 
 Source0:        %{forgesource}

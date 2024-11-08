@@ -1,8 +1,8 @@
 %global py_setup_args --with-system-hidapi --with-libusb
 
 Name:     python-hidapi
-Version:  0.14.0.post2
-Release:  3%{?dist}
+Version:  0.14.0.post3
+Release:  1%{?dist}
 Summary:  Interface to the hidapi library
 
 # Automatically converted from old format: GPLv3+ or BSD or Public Domain - review is highly recommended.
@@ -62,6 +62,9 @@ sed -i -e 's|/usr/include/hidapi|%{_includedir}/hidapi|' setup.py
 %{python3_sitearch}/hidapi-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Wed Nov 06 2024 Jonny Heggheim <hegjon@gmail.com> - 0.14.0.post3-1
+- Updated to version 0.14.0.post3
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.14.0.post2-3
 - convert license to SPDX
 

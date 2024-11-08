@@ -25,7 +25,7 @@ Summary:        %{summary}
 %autosetup -p1 -n durationpy-%{version}
 
 %generate_buildrequires
-%pyproject_buildrequires -t
+%pyproject_buildrequires
 
 %build
 %pyproject_wheel
@@ -36,7 +36,6 @@ Summary:        %{summary}
 %pyproject_save_files -l durationpy
 
 %check
-%tox
 %pytest test.py
 
 %files -n python3-durationpy -f %{pyproject_files}

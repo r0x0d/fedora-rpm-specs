@@ -1,5 +1,5 @@
-%global git_date 20241104
-%global git_commit 4983c10f92238a2d4c74dbf365abda6497913c0a
+%global git_date 20241106
+%global git_commit 35892dee787d6b0b6b6d436d047702114e860b3d
 %{?git_commit:%global git_commit_hash %(c=%{git_commit}; echo ${c:0:7})}
 
 %global _python_bytecompile_extra 0
@@ -35,10 +35,10 @@ BuildRequires: sequoia-policy-config
 BuildRequires: systemd-rpm-macros
 
 Conflicts: openssl-libs < 3.0.2-2
-Conflicts: nss < 3.101
+Conflicts: nss < 3.105
 Conflicts: libreswan < 3.28
 Conflicts: openssh < 9.9
-Conflicts: gnutls < 3.8.6-6
+Conflicts: gnutls < 3.8.8-1
 
 # Most users want this, the split is mostly for Fedora CoreOS
 Recommends: crypto-policies-scripts
@@ -295,6 +295,10 @@ exit 0
 %{_mandir}/man8/fips-finish-install.8*
 
 %changelog
+* Wed Nov 06 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20241106-1.git35892de
+- gnutls: add GROUP-X25519-MLKEM768 and GROUP-SECP256R1-MLKEM768
+- nss: add mlkem768x25519
+
 * Mon Nov 04 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20241104-1.git4983c10
 - openssl: use both names for SecP256r1MLKEM768 / X25519MLKEM768
 

@@ -45,7 +45,7 @@ Version: 15.2
 
 # The release always contains a leading reserved number, start it at 1.
 # `upstream' is not a part of `name' to stay fully rpm dependencies compatible for the testing.
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPL-3.0-or-later AND BSD-3-Clause AND FSFAP AND LGPL-2.1-or-later AND GPL-2.0-or-later AND LGPL-2.0-or-later AND LicenseRef-Fedora-Public-Domain AND GFDL-1.3-or-later AND LGPL-2.0-or-later WITH GCC-exception-2.0 AND GPL-3.0-or-later WITH GCC-exception-3.1 AND GPL-2.0-or-later WITH GNU-compiler-exception
 # Do not provide URL for snapshots as the file lasts there only for 2 days.
@@ -83,9 +83,6 @@ the 'gdb' package which will install 'gdb-headless' and possibly other
 useful packages too.
 
 %package headless
-
-# gdb-add-index uses 'which', which is in its own package (BZ 2275274).
-Requires: which
 
 # gdb-add-index also uses 'readelf' and 'objcopy', both of which are
 # in the binutils package.  (BZ 2275274)
@@ -931,6 +928,11 @@ fi
 # endif scl
 
 %changelog
+* Wed Nov  6 2024 Mark Wielaard <mjw@fedoraproject.org> - 15.2-2
+- Resolves: rhbz#2323513
+  - gdb-add-index.patch: Replace which with command -v
+  - Remove which Requires which was only there for gdb-add-index
+
 * Tue Nov  5 2024 Guinevere Larsen <guinevere@redhat.com>
 - Remove gdb-simultaneous-step-resume-breakpoint.patch
   This test is covered by a combination of upstream tests already.

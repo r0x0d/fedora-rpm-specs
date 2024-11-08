@@ -1,6 +1,6 @@
 Name:           python-trove-classifiers
-Version:        2024.10.13
-Release:        1%{?dist}
+Version:        2024.10.21.16
+Release:        2%{?dist}
 Summary:        Canonical source for classifiers on PyPI (pypi.org)
 
 License:        Apache-2.0
@@ -58,6 +58,10 @@ Summary:        %{summary}
 
 
 %changelog
+* Fri Nov 01 2024 Tomáš Hrnčiar <thrnciar@redhat.com> - 2024.10.21.16-2
+- Update to 2024.10.21.16
+- Resolves rhbz#2319232
+
 * Sun Oct 13 2024 Packit <hello@packit.dev> - 2024.10.13-1
 - Update to 2024.10.13
 - Resolves rhbz#2318030

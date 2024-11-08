@@ -1,6 +1,6 @@
 Name:			Rex
-Version:		1.14.3
-Release:		6%{?dist}
+Version:		1.15.0
+Release:		1%{?dist}
 Summary:		The friendly automation framework on basis of Perl
 
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
@@ -155,6 +155,9 @@ sed -i "s|/usr/bin/env perl|/usr/bin/perl|" $RPM_BUILD_ROOT/%{_bindir}/rex
 
 
 %changelog
+* Wed Nov 06 2024 Dominic Hopf <dmaphy@fedoraproject.org> - 1.15.0-1
+- Update to 1.15.0 (#2323989)
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 1.14.3-6
 - convert license to SPDX
 

@@ -13,6 +13,10 @@ URL:            https://github.com/snakemake/snakemake-executor-plugin-kubernete
 # the tests.
 Source:         %{url}/archive/v%{version}/snakemake-executor-plugin-kubernetes-%{version}.tar.gz
 
+# Update kubernetes requirement from >=27.2.0,<31 to >=27.2.0,<32
+# https://github.com/snakemake/snakemake-executor-plugin-kubernetes/pull/26
+Patch:          %{url}/pull/26.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel

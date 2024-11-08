@@ -16,8 +16,8 @@
 
 Summary:       Zstandard extension
 Name:          php-%{pecl_name}
-Version:       0.13.3
-Release:       5%{?dist}
+Version:       0.14.0
+Release:       1%{?dist}
 License:       MIT
 URL:           https://pecl.php.net/package/%{pecl_name}
 Source0:       https://pecl.php.net/get/%{sources}.tgz
@@ -156,6 +156,9 @@ TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
 
 
 %changelog
+* Wed Nov  6 2024 Remi Collet <remi@remirepo.net> - 0.14.0-1
+- update to 0.14.0
+
 * Thu Oct 17 2024 Remi Collet <remi@fedoraproject.org> - 0.13.3-5
 - modernize the spec file
 

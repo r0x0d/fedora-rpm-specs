@@ -40,6 +40,7 @@ BuildRequires:  cmake
 BuildRequires:  doxygen
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
+BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  rocm-hip-devel
 BuildRequires:  rocm-rpm-macros
 BuildRequires:  rocm-runtime-devel
@@ -89,7 +90,8 @@ do
 
     %cmake \
            -DCMAKE_BUILD_TYPE=%{build_type} \
-	   -DCMAKE_SKIP_RPATH=ON \
+           -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
+           -DCMAKE_SKIP_RPATH=ON \
            -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
            -DAMDGPU_TARGETS=${ROCM_GPUS} \
            -DCMAKE_INSTALL_LIBDIR=$ROCM_LIB \

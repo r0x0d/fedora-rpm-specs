@@ -16,7 +16,7 @@
 #
 
 Name:           cockpit-podman
-Version:        97
+Version:        98
 Release:        1%{?dist}
 Summary:        Cockpit component for Podman containers
 License:        LGPL-2.1-or-later
@@ -45,18 +45,18 @@ Requires:       criu-libs
 Requires:       libcriu2
 %endif
 
-Provides: bundled(npm(@patternfly/patternfly)) = 5.4.1
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.1
-Provides: bundled(npm(@patternfly/react-icons)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-styles)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.1
-Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.0
+Provides: bundled(npm(@patternfly/patternfly)) = 5.4.2
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.8
+Provides: bundled(npm(@patternfly/react-icons)) = 5.4.2
+Provides: bundled(npm(@patternfly/react-styles)) = 5.4.1
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.9
+Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.1
 Provides: bundled(npm(@xterm/addon-canvas)) = 0.7.0
 Provides: bundled(npm(@xterm/xterm)) = 5.5.0
 Provides: bundled(npm(attr-accept)) = 2.2.4
 Provides: bundled(npm(docker-names)) = 1.2.1
-Provides: bundled(npm(file-selector)) = 0.6.0
-Provides: bundled(npm(focus-trap)) = 7.5.4
+Provides: bundled(npm(file-selector)) = 2.1.0
+Provides: bundled(npm(focus-trap)) = 7.6.0
 Provides: bundled(npm(ipaddr.js)) = 2.2.0
 Provides: bundled(npm(js-tokens)) = 4.0.0
 Provides: bundled(npm(lodash)) = 4.17.21
@@ -64,13 +64,13 @@ Provides: bundled(npm(loose-envify)) = 1.4.0
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
 Provides: bundled(npm(react-dom)) = 18.3.1
-Provides: bundled(npm(react-dropzone)) = 14.2.10
+Provides: bundled(npm(react-dropzone)) = 14.3.2
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.3.1
 Provides: bundled(npm(scheduler)) = 0.23.2
 Provides: bundled(npm(tabbable)) = 6.2.0
 Provides: bundled(npm(throttle-debounce)) = 5.0.2
-Provides: bundled(npm(tslib)) = 2.8.0
+Provides: bundled(npm(tslib)) = 2.8.1
 
 %description
 The Cockpit user interface for Podman containers.
@@ -92,6 +92,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 %{_datadir}/metainfo/*
 
 %changelog
+* Wed Nov 06 2024 Packit <hello@packit.dev> - 98-1
+- Bug fixes and translation updates
+
 * Wed Oct 23 2024 Packit <hello@packit.dev> - 97-1
 - Bug fixes and translation updates
 

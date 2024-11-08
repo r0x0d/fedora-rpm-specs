@@ -3,7 +3,7 @@
 %global	mainver	3.13.1
 %undefine	prever
 
-%global	baserelease	2
+%global	baserelease	3
 %global	prerpmver	%(echo "%{?prever}" | sed -e 's|\\.||g')
 
 %bcond_with bootstrap
@@ -22,7 +22,13 @@ Source0:	https://rubygems.org/gems/%{gem_name}-%{mainver}%{?prever}.gem
 # %%{SOURCE2} %%{name} %%{version}
 Source1:	rubygem-%{gem_name}-%{version}-full.tar.gz
 Source2:	rspec-related-create-full-tarball.sh
+# https://github.com/rspec/rspec-support/pull/616/
 # tweak regex for search path
+# support ruby3.4 syntax
+Patch1:	rubygem-rspec-support-pr616-ruby34-syntax.patch
+# https://github.com/rspec/rspec-support/pull/607/
+# Fix test error with ruby34 wrt frozen string
+Patch2:	rubygem-rspec-support-pr607-ruby34-test-fix-frozen-string.patch
 Patch100:	rubygem-rspec-support-3.2.1-callerfilter-searchpath-regex.patch
 
 #BuildRequires:	ruby(release)
@@ -59,6 +65,8 @@ Documentation for %{name}
 %setup -q -T -n %{gem_name}-%{version} -b 1
 gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 
+%patch -P1 -p1
+%patch -P2 -p1
 %patch -P100 -p1
 
 %build
@@ -107,6 +115,9 @@ rspec spec/ || rspec --tag ~broken
 %doc	%{gem_docdir}
 
 %changelog
+* Wed Nov 06 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.13.1-3
+- Backport upstream fix for ruby34
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.13.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

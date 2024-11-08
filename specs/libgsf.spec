@@ -6,7 +6,7 @@
 
 Name: libgsf
 Version: 1.14.53
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: GNOME Structured File library
 
 License: LGPL-2.1-only
@@ -98,13 +98,13 @@ pushd build
 %make_install
 popd
 
+%find_lang %{name}
+
 %if %{with_mingw}
 %mingw_make_install
 %mingw_debug_install_post
 %mingw_find_lang %{name} --all-name
 %endif
-
-%find_lang %{name}
 
 # Remove lib rpaths
 chrpath --delete %{buildroot}%{_bindir}/gsf*
@@ -173,6 +173,9 @@ find %{buildroot} -name '*.la' -delete -print
 %endif
 
 %changelog
+* Wed Nov 06 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.14.53-2
+- Fix find_lang order for 2280661
+
 * Fri Oct 11 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.14.53-1
 - 1.14.53
 

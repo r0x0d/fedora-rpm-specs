@@ -1,6 +1,6 @@
 # Versions numbers
-%global major 1
-%global minor 5
+%global major 2
+%global minor 0
 %global patch 0
 
 %global desc %{expand: \
@@ -9,15 +9,13 @@ implementations of the core cryptographic processing for IPsec, which provides
 industry-leading performance on a range of Intel Processors.}
 
 Name:               intel-ipsec-mb
-Version:            1.5
-Release:            4%{?dist}
+Version:            2.0
+Release:            1%{?dist}
 Summary:            IPsec cryptography library optimized for Intel Architecture
 
 License:            BSD-3-Clause
 URL:                https://github.com/intel/intel-ipsec-mb
 Source0:            %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
-
-#Patch:		cmake.patch
 
 ExclusiveArch:      x86_64
 
@@ -66,6 +64,9 @@ sed -i 's|man/man7|share/man/man7|g' lib/cmake/unix.cmake
 %{_mandir}/man7/libipsec-mb-dev.*
 
 %changelog
+* Wed Nov 06 2024 Ali Erdinc Koroglu <aekoroglu@fedoraproject.org> 2.0-1
+- Update to 2.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.5-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
