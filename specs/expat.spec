@@ -1,4 +1,4 @@
-%global unversion 2_6_3
+%global unversion 2_6_4
 
 Summary: An XML parser library
 Name: expat
@@ -74,7 +74,11 @@ make check
 %{_libdir}/libexpat.a
 
 %changelog
-* Thu Sep 05 2024 Tomas Korbar <tkorbar@redhat.com> -  2.6.3-1
+* Thu Nov 07 2024 Tomas Korbar <tkorbar@redhat.com> - 2.6.4-1
+- Rebase to version 2.6.4
+- Resolves: CVE-2024-50602
+
+* Thu Sep 05 2024 Tomas Korbar <tkorbar@redhat.com> - 2.6.3-1
 - Rebase to version 2.6.3
 - Resolves: rhbz#2309690
 - Resolves: CVE-2024-45492

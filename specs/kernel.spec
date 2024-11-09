@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc6.20241106git2e1b3cc9d7f7.53
+%define pkgrelease 0.rc6.20241107gitff7afaeca1a1.54
 %define kversion 6
-%define tarfile_release 6.12-rc6-77-g2e1b3cc9d7f7
+%define tarfile_release 6.12-rc6-110-gff7afaeca1a1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc6.20241106git2e1b3cc9d7f7.53%{?buildid}%{?dist}
+%define specrelease 0.rc6.20241107gitff7afaeca1a1.54%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4151,9 +4151,14 @@ fi\
 #
 #
 %changelog
-* Wed Nov 06 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.2e1b3cc9d7f7.53]
+* Thu Nov 07 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.ff7afaeca1a1.54]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Thu Nov 07 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.ff7afaeca1a1.53]
+- redhat: set new gcov configs (Jan Stancek)
+- Don't ignore gitkeep files for ark-infra (Don Zickus)
+- Linux v6.12.0-0.rc6.ff7afaeca1a1
 
 * Wed Nov 06 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.2e1b3cc9d7f7.52]
 - redhat/kernel.spec: don't clear entire libdir when building tools (Jan Stancek)

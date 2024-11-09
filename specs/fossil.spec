@@ -1,6 +1,6 @@
 %bcond_without tests
 Name:             fossil
-Version:          2.24
+Version:          2.25
 Release:          %autorelease
 Summary:          A distributed SCM with bug tracking and wiki
 
@@ -11,8 +11,6 @@ Source0:          %{URL}home/tarball/version-%{version}/fossil-src-%{version}.ta
 Source1:          template.config
 Source2:          fossil-doc
 Source3:          fossil-doc-README
-Patch0:           fix-or-disable-broken-tests.patch
-Patch1:           disable-broken-tests.patch
 
 BuildRequires:    gcc-c++
 BuildRequires:    zlib-devel

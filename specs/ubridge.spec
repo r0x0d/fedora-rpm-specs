@@ -1,8 +1,8 @@
 %global _hardened_build 1
 
 Name:           ubridge
-Version:        0.9.18
-Release:        14%{?dist}
+Version:        0.9.19
+Release:        1%{?dist}
 Summary:        Bridge for UDP tunnels, Ethernet, TAP and VMnet interfaces
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -47,11 +47,14 @@ install -p -m4755 %{name} %{buildroot}%{_bindir}
 
 %files
 %license LICENSE
-%doc README.rst
+%doc README.md
 %attr(0755,root,root) %caps(cap_net_admin,cap_net_raw=ep) %{_bindir}/%{name}
 
 
 %changelog
+* Thu Nov  7 2024 Alexey Kurov <nucleo@fedoraproject.org> - 0.9.19-1
+- Update to 0.9.19
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 0.9.18-14
 - convert license to SPDX
 

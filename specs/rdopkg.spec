@@ -50,7 +50,7 @@ Recommends:       rpmlint
 %autosetup -n %{name}-%{version} -S git
 
 %generate_buildrequires
-%pyproject_buildrequires -w
+%pyproject_buildrequires
 
 %build
 %pyproject_wheel

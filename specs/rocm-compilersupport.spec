@@ -6,13 +6,14 @@
 %global comgr_full_api_ver %{comgr_maj_api_ver}.8.0
 # Upstream tags are based on rocm releases:
 %global rocm_release 6.2
-%global rocm_patch 1
+%global rocm_patch 4
 %global rocm_version %{rocm_release}.%{rocm_patch}
 # What LLVM is upstream using (use LLVM_VERSION_MAJOR from llvm/CMakeLists.txt):
 %global llvm_maj_ver 18
 %global upstreamname llvm-project
 
 %global toolchain clang
+
 
 %bcond_with bundled_llvm
 %if %{with bundled_llvm}
@@ -47,7 +48,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        19.rocm%{rocm_version}%{?dist}
+Release:        1.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -63,6 +64,9 @@ Patch0:         0001-Revert-ockl-Don-t-use-wave32-ballot-builtin.patch
 Patch1:         0001-Revert-GFX11-Add-a-new-target-gfx1152.patch
 # -mlink-builtin-bitcode-postopt is not supported
 Patch2:         0001-remove-mlink.patch
+
+%else
+Patch0:         0001-Remove-err_drv_duplicate_config-check.patch
 %endif
 
 BuildRequires:  cmake
@@ -168,6 +172,7 @@ Summary:        Meta package for install the LLVM devel used for ROCm
 %if %{without bundled_llvm}
 Requires:       llvm-devel(major) = %{llvm_maj_ver}
 %else
+Requires:       %{name}-macros
 Requires:       gcc-c++
 Requires:       libstdc++-devel
 %endif
@@ -559,6 +564,12 @@ mv %{buildroot}%{bundle_prefix}/bin/hip*.pm %{buildroot}%{perl_vendorlib}
 %files -n hipcc-libomp-devel
 
 %changelog
+* Thu Nov 7 2024 Tom Rix <Tom.Rix@amd.com> - 18-1.rocm6.2.4
+- Update to 6.2.4
+
+* Wed Nov 6 2024 Tom Rix <Tom.Rix@amd.com> - 18-20.rocm6.2.0
+- Remove double config check
+
 * Mon Nov 4 2024 Tom Rix <Tom.Rix@amd.com> - 18-19.rocm6.2.0
 - Fix c++ isystem.
 - Build LLVMgold.so

@@ -1,5 +1,5 @@
 Name:           python-waitress
-Version:        3.0.0
+Version:        3.0.1
 Release:        %autorelease
 Summary:        Waitress WSGI server
 
@@ -7,6 +7,9 @@ License:        ZPL-2.1
 URL:            https://github.com/Pylons/waitress
 Source0:        waitress-%{version}-nodocs.tar.gz
 # Upstream ships non free docs files.
+#
+# https://github.com/Pylons/waitress/issues/78
+#
 # We do not even want them in our src.rpms
 # So we remove them before uploading.
 #
@@ -46,13 +49,12 @@ sed -e '/pytest-cov/d' \
 
 %install
 %pyproject_install
-%pyproject_save_files waitress
+%pyproject_save_files -l waitress
 
 %check
 %pytest
 
 %files -n python3-waitress -f %{pyproject_files}
-%license COPYRIGHT.txt LICENSE.txt
 %doc README.rst CHANGES.txt
 %{_bindir}/waitress-serve
 

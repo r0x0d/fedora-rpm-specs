@@ -34,29 +34,24 @@
 %{?perl_default_filter}
 %endif
 
+%global forgeurl https://github.com/NLnetLabs/%{name}
+%global downloadurl https://www.nlnetlabs.nl/downloads/%{name}
+
 Summary: Low-level DNS(SEC) library with API
 Name: ldns
-Version: 1.8.3
-Release: 18%{?dist}
+Version: 1.8.4
+Release: 1%{?dist}
 
 License: BSD-3-Clause
 Url: https://www.nlnetlabs.nl/%{name}/
-Source0: https://www.nlnetlabs.nl/downloads/%{name}/%{name}-%{version}.tar.gz
-Source1: https://www.nlnetlabs.nl/downloads/%{name}/%{name}-%{version}.tar.gz.asc
+Vcs: git:%{forgeurl}
+Source0: %{downloadurl}/%{name}-%{version}.tar.gz
+Source1: %{downloadurl}/%{name}-%{version}.tar.gz.asc
 # Willem Toorop, https://www.nlnetlabs.nl/people/
 Source2: https://keys.openpgp.org/vks/v1/by-fingerprint/DC34EE5DB2417BCC151E5100E5F8F8212F77A498#/wtoorop.asc
 Patch1: ldns-1.7.0-multilib.patch
-# https://github.com/NLnetLabs/ldns/pull/204
-Patch2: ldns-1.8-python-dirs.patch
-# https://github.com/NLnetLabs/ldns/pull/230
-Patch3: ldns-1.8-root-servers.net.patch
-# https://github.com/NLnetLabs/ldns/pull/232
-Patch4: ldns-swig-4.2.patch
-# https://github.com/NLnetLabs/ldns/pull/233
-Patch5: ldns-swig-32bit.patch
-# https://github.com/NLnetLabs/ldns/pull/242
-Patch6: ldns-1.8-openssl-engine.patch
 # Fix for SWIG 4.3.0
+# https://github.com/NLnetLabs/ldns/pull/257
 Patch7: ldns-1.8.3-swig-4.3.patch
 
 BuildRequires: libtool
@@ -370,6 +365,9 @@ rm -rf doc/man
 %doc doc/*.dox
 
 %changelog
+* Thu Nov 07 2024 Petr Menšík <pemensik@redhat.com> - 1.8.4-1
+- Update to 1.8.4
+
 * Wed Oct 16 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1.8.3-18
 - Fix for SWIG 4.3.0
 

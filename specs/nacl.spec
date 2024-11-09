@@ -3,7 +3,7 @@ Name:           nacl
 URL:            http://nacl.cace-project.eu/
 Version:        20110221
 Release:        35%{?dist}
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 Summary:        Networking and Cryptography library
 
 Source0:        http://hyperelliptic.org/nacl/nacl-%{version}.tar.bz2

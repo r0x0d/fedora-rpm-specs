@@ -39,20 +39,10 @@ HIP C++ automatically.
 
 %build
 
-LLVM_CMAKEDIR=`llvm-config-%{rocmllvm_version} --cmakedir`
-if [ ! -d ${LLVM_CMAKEDIR} ]; then
-    echo "Something wrong with llvm-config"
-    false
-fi
-LLVM_BINDIR=`llvm-config-%{rocmllvm_version} --bindir`
-if [ ! -x ${LLVM_BINDIR}/clang ]; then
-    echo "Something wrong with llvm-config"
-    false
-fi
-export CC=${LLVM_BINDIR}/clang
-export CXX=${LLVM_BINDIR}/clang
+export CC=%{rocmllvm_bindir}/clang
+export CXX=%{rocmllvm_bindir}/clang
 
-%cmake -DCMAKE_PREFIX_PATH=${LLVM_CMAKEDIR}/..
+%cmake -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/..
 %cmake_build
 
 %check
@@ -68,6 +58,10 @@ rm -rf %{buildroot}/usr/hip
 chmod a+x %{buildroot}%{_bindir}/*
 # Fix script shebang (Fedora doesn't allow using "env"):
 sed -i 's|\(/usr/bin/\)env perl|\1perl|' %{buildroot}%{_bindir}//hipify-perl
+
+if [ -d %{buildroot}%{_includedir} ]; then
+    rm -rf %{buildroot}%{_includedir}
+fi
 
 %files
 %doc README.md

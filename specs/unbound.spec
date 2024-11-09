@@ -4,7 +4,11 @@
 %bcond_without dnstap
 %bcond_with    systemd
 %bcond_without doh
+%if 0%{?rhel} && ! 0%{?epel}
+%bcond_with redis
+%else
 %bcond_without redis
+%endif
 
 %global forgeurl0 https://github.com/NLnetLabs/unbound
 %global downloads https://nlnetlabs.nl/downloads

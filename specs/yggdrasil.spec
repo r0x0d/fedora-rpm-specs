@@ -63,6 +63,7 @@ export %gomodulesmode
 %global gosupfiles ./ipc/com.redhat.Yggdrasil1.Dispatcher1.xml ./ipc/com.redhat.Yggdrasil1.Worker1.xml
 %install
 %meson_install
+%__install -d -m 0755 %{buildroot}%{_localstatedir}/lib/yggdrasil
 %gopkginstall
 
 %if %{with check}
@@ -100,6 +101,7 @@ export %gomodulesmode
 %{_datadir}/dbus-1/{interfaces,system-services,system.d}/*
 %{_datadir}/doc/%{name}/*
 %{_mandir}/man1/*
+%attr(0755, yggdrasil, yggdrasil) %{_localstatedir}/lib/yggdrasil
 
 %files devel
 %{_libdir}/pkgconfig/*.pc

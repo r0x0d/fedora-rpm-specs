@@ -9,7 +9,7 @@
 Name:    plasma-discover
 Summary: KDE and Plasma resources management GUI
 Version: 6.2.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-3.0-only AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only)
 URL:     https://invent.kde.org/plasma/discover
@@ -20,6 +20,10 @@ Source0: https://download.kde.org/%{stable_kf6}/plasma/%{version}/%{base_name}-%
 Source10: discoverrc
 
 ## upstream patches
+
+# Fix for auto-updating in discover in Kinoite
+# https://invent.kde.org/plasma/discover/-/commit/78cce3a269bbbe3f7b41755a20561426e68f8559
+Patch100: 78cce3a269bbbe3f7b41755a20561426e68f8559.patch
 
 ## downstream patches
 # Adjust periodic refresh from 1/24hr to 1/12hr
@@ -311,6 +315,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.discover.desk
 
 
 %changelog
+* Thu Nov 07 2024 Steve Cossette <farchord@gmail.com> - 6.2.3-2
+- Fix for auto-update on kinoite
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 6.2.3-1
 - 6.2.3
 

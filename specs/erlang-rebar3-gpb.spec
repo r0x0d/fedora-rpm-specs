@@ -3,7 +3,7 @@
 Name:		erlang-rebar3-gpb
 Version:	2.23.2
 Release:	%autorelease
-Summary:	A protobuf compiler for rebar3
+Summary:	A protobuf compiler for Rebar3
 License:	MIT
 URL:		https://github.com/lrascao/%{realname}
 VCS:		git:%{url}.git
@@ -13,7 +13,7 @@ BuildRequires:	erlang-gpb
 BuildRequires:	erlang-rebar3
 
 %description
-A rebar3 plugin for automatically compiling .proto files using the gpb protobuf
+A Rebar3 plugin for automatically compiling .proto files using the gpb protobuf
 compiler.
 
 %prep

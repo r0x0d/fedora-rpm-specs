@@ -1,11 +1,11 @@
 %global upstreamname rocFFT
 
 %global rocm_release 6.2
-%global rocm_patch 1
+%global rocm_patch 4
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 # rocFFT has a version seperate from the ROCm version that it is released with
-%global rocfft_version 1.0.29
+%global rocfft_version 1.0.30
 
 %global toolchain rocm
 

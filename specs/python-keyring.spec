@@ -4,7 +4,7 @@
 %bcond pyfakefs %{expr:!0%{?el10}}
 
 Name:           python-keyring
-Version:        25.4.1
+Version:        25.5.0
 Release:        %autorelease
 Summary:        Store and access your passwords safely
 

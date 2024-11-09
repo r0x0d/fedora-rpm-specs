@@ -8,6 +8,8 @@
 #
 
 
+%bcond_with          generators
+
 %{!?php_version:  %global php_version  %(php -r 'echo PHP_VERSION;' 2>/dev/null)}
 %global gh_commit    9875282a35266aa2b66416303c06edcd70fc50a1
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
@@ -20,7 +22,7 @@
 
 Name:           php-bartlett-PHP-CompatInfo
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:        2%{?dist}
+Release:        4%{?dist}
 Summary:        Find out version and the extensions required for a piece of code to run
 
 # SPDX: see bundled libraries list below
@@ -39,6 +41,9 @@ BuildArch:      noarch
 BuildRequires:  php(language) >= 8.1
 BuildRequires:  php-cli
 BuildRequires:  php-json
+%if %{with generators}
+BuildRequires:  composer-generators
+%endif
 
 Requires:       php(language) >= 8.1
 Requires:       php-cli
@@ -53,63 +58,66 @@ Requires:       php-simplexml
 Requires:       php-spl
 Requires:       php-xmlreader
 
+%if %{without generators}
 # Bundled libraries
 # License BSD-3-Clause
-Provides: bundled(php-bartlett-php-compatinfo-db) = 6.5.0
-Provides: bundled(php-nikic-php-parser) = v5.0.2
+Provides: bundled(php-composer(bartlett/php-compatinfo-db)) = 6.12.0
+Provides: bundled(php-composer(nikic/php-parser)) = v5.3.1
 # License MIT
-Provides: bundled(php-bartlett-sarif-php-sdk) = 1.1.0
-Provides: bundled(php-brick-math) = 0.11.0
-Provides: bundled(php-composer-semver) = 3.4.0
-Provides: bundled(php-doctrine-cache) = 2.2.0
-Provides: bundled(php-doctrine-collections) = 1.8.0
-Provides: bundled(php-doctrine-common) = 3.4.4
-Provides: bundled(php-doctrine-dbal) = 3.8.3
-Provides: bundled(php-doctrine-deprecations) = 1.1.3
-Provides: bundled(php-doctrine-event-manager) = 2.0.0
-Provides: bundled(php-doctrine-inflector) = 2.0.10
-Provides: bundled(php-doctrine-instantiator) = 2.0.0
-Provides: bundled(php-doctrine-lexer) = 3.0.1
-Provides: bundled(php-doctrine-orm) = 2.19.4
-Provides: bundled(php-doctrine-persistence) = 3.3.2
-Provides: bundled(php-psr-cache) = 3.0.0
-Provides: bundled(php-psr-clock) = 1.0.0
-Provides: bundled(php-psr-container) = 2.0.2
-Provides: bundled(php-psr-event-dispatcher) = 1.0.0
-Provides: bundled(php-psr-log) = 3.0.0
-Provides: bundled(php-ramsey-collection) = 2.0.0
-Provides: bundled(php-ramsey-uuid) = 4.7.5
-Provides: bundled(php-symfony-cache) = v6.4.6
-Provides: bundled(php-symfony-cache-contracts) = v3.4.2
-Provides: bundled(php-symfony-clock) = v6.4.5
-Provides: bundled(php-symfony-config) = v6.4.6
-Provides: bundled(php-symfony-console) = v6.4.6
-Provides: bundled(php-symfony-dependency-injection) = v6.4.6
-Provides: bundled(php-symfony-deprecation-contracts) = v3.4.0
-Provides: bundled(php-symfony-event-dispatcher) = v6.4.3
-Provides: bundled(php-symfony-event-dispatcher-contracts) = v3.4.2
-Provides: bundled(php-symfony-filesystem) = v6.4.6
-Provides: bundled(php-symfony-finder) = v6.4.0
-Provides: bundled(php-symfony-http-client) = v6.4.6
-Provides: bundled(php-symfony-http-client-contracts) = v3.4.2
-Provides: bundled(php-symfony-messenger) = v6.4.6
-Provides: bundled(php-symfony-polyfill-ctype) = v1.29.0
-Provides: bundled(php-symfony-polyfill-intl-grapheme) = v1.29.0
-Provides: bundled(php-symfony-polyfill-intl-normalizer) = v1.29.0
-Provides: bundled(php-symfony-polyfill-mbstring) = v1.29.0
-Provides: bundled(php-symfony-polyfill-php72) = v1.29.0
-Provides: bundled(php-symfony-polyfill-php80) = v1.29.0
-Provides: bundled(php-symfony-polyfill-php83) = v1.29.0
-Provides: bundled(php-symfony-process) = v6.4.4
-Provides: bundled(php-symfony-requirements-checker) = v2.0.1
-Provides: bundled(php-symfony-serializer) = v6.4.6
-Provides: bundled(php-symfony-service-contracts) = v3.4.2
-Provides: bundled(php-symfony-stopwatch) = v6.4.3
-Provides: bundled(php-symfony-string) = v6.4.4
-Provides: bundled(php-symfony-var-exporter) = v6.4.6
+Provides: bundled(php-composer(bartlett/sarif-php-sdk)) = 1.5.0
+Provides: bundled(php-composer(brick/math)) = 0.12.1
+Provides: bundled(php-composer(composer/semver)) = 3.4.3
+Provides: bundled(php-composer(doctrine/cache)) = 2.2.0
+Provides: bundled(php-composer(doctrine/collections)) = 1.8.0
+Provides: bundled(php-composer(doctrine/common)) = 3.4.5
+Provides: bundled(php-composer(doctrine/dbal)) = 3.9.3
+Provides: bundled(php-composer(doctrine/deprecations)) = 1.1.3
+Provides: bundled(php-composer(doctrine/event-manager)) = 2.0.1
+Provides: bundled(php-composer(doctrine/inflector)) = 2.0.10
+Provides: bundled(php-composer(doctrine/instantiator)) = 2.0.0
+Provides: bundled(php-composer(doctrine/lexer)) = 3.0.1
+Provides: bundled(php-composer(doctrine/orm)) = 2.20.0
+Provides: bundled(php-composer(doctrine/persistence)) = 3.4.0
+Provides: bundled(php-composer(psr/cache)) = 3.0.0
+Provides: bundled(php-composer(psr/clock)) = 1.0.0
+Provides: bundled(php-composer(psr/container)) = 2.0.2
+Provides: bundled(php-composer(psr/event-dispatcher)) = 1.0.0
+Provides: bundled(php-composer(psr/log)) = 3.0.2
+Provides: bundled(php-composer(ramsey/collection)) = 2.0.0
+Provides: bundled(php-composer(ramsey/uuid)) = 4.7.6
+Provides: bundled(php-composer(symfony/cache)) = v6.4.14
+Provides: bundled(php-composer(symfony/cache-contracts)) = v3.5.0
+Provides: bundled(php-composer(symfony/clock)) = v6.4.13
+Provides: bundled(php-composer(symfony/config)) = v6.4.14
+Provides: bundled(php-composer(symfony/console)) = v6.4.14
+Provides: bundled(php-composer(symfony/dependency-injection)) = v6.4.13
+Provides: bundled(php-composer(symfony/deprecation-contracts)) = v3.5.0
+Provides: bundled(php-composer(symfony/event-dispatcher)) = v6.4.13
+Provides: bundled(php-composer(symfony/event-dispatcher-contracts)) = v3.5.0
+Provides: bundled(php-composer(symfony/filesystem)) = v6.4.13
+Provides: bundled(php-composer(symfony/finder)) = v6.4.13
+Provides: bundled(php-composer(symfony/http-client)) = v6.4.14
+Provides: bundled(php-composer(symfony/http-client-contracts)) = v3.5.0
+Provides: bundled(php-composer(symfony/messenger)) = v6.4.13
+Provides: bundled(php-composer(symfony/polyfill-ctype)) = v1.31.0
+Provides: bundled(php-composer(symfony/polyfill-intl-grapheme)) = v1.31.0
+Provides: bundled(php-composer(symfony/polyfill-intl-normalizer)) = v1.31.0
+Provides: bundled(php-composer(symfony/polyfill-mbstring)) = v1.31.0
+Provides: bundled(php-composer(symfony/polyfill-php72)) = v1.31.0
+Provides: bundled(php-composer(symfony/polyfill-php80)) = v1.31.0
+Provides: bundled(php-composer(symfony/polyfill-php83)) = v1.31.0
+Provides: bundled(php-composer(symfony/polyfill-php84)) = v1.31.0
+Provides: bundled(php-composer(symfony/process)) = v6.4.14
+Provides: bundled(php-composer(symfony/requirements-checker)) = v2.0.1
+Provides: bundled(php-composer(symfony/serializer)) = v6.4.13
+Provides: bundled(php-composer(symfony/service-contracts)) = v3.5.0
+Provides: bundled(php-composer(symfony/stopwatch)) = v6.4.13
+Provides: bundled(php-composer(symfony/string)) = v6.4.13
+Provides: bundled(php-composer(symfony/var-exporter)) = v6.4.13
 
-Provides: phpcompatinfo = %{version}
 Provides: php-composer(bartlett/php-compatinfo) = %{version}
+%endif
+Provides: phpcompatinfo = %{version}
 
 
 %description
@@ -140,6 +148,10 @@ done
 rm -r vendor/bartlett/*/.github
 rm -r vendor/bartlett/*/.changes
 
+: Hack for PHP 8.4
+sed -e '/php83/d;s/php82/php83/' config/set/up-to-php83.php | tee config/set/up-to-php84.php
+
+%if %{without generators}
 : List bundled libraries and Licenses
 php -r '
     $pkgs = file_get_contents("vendor/composer/installed.json");
@@ -152,13 +164,15 @@ php -r '
     foreach($pkgs["packages"] as $pkg) {
         $lic = implode(" and ", $pkg["license"]);
         if (!isset($res[$lic])) $res[$lic] = [];
-        $res[$lic][] = sprintf("Provides: bundled(php-%s) = %s", str_replace(["/", "_"], ["-", "-"], $pkg["name"]), $pkg["version"]);
+        $res[$lic][] = sprintf("Provides: bundled(php-composer(%s)) = %s", $pkg["name"], $pkg["version"]);
     }
     foreach($res as $lic => $lib) {
         sort($lib);
         printf("# License %s\n%s\n", $lic, implode("\n", $lib));
     }
 '
+%endif
+
 
 %build
 # Nothing
@@ -198,6 +212,14 @@ install -D -p -m 755 %{SOURCE1} \
 
 
 %changelog
+* Thu Nov  7 2024 Remi Collet <remi@remirepo.net> - 7.1.4-4
+- hack for PHP 8.4
+
+* Thu Nov  7 2024 Remi Collet <remi@remirepo.net> - 7.1.4-3
+- update bundled bartlett/php-compatinfo-db to 6.12.0
+- update bundled dependencies
+- optional support build with composer-generators
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.1.4-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

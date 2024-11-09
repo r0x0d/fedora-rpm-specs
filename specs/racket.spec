@@ -1,7 +1,7 @@
 %global _find_debuginfo_opts --keep-section .rackboot
 
 Name:           racket
-Version:        8.14
+Version:        8.15
 Release:        1%{?dist}
 Summary:        General purpose programming language
 
@@ -224,6 +224,10 @@ chmod -x %{buildroot}%{_libdir}/racket/starter-sh
 %{_datadir}/doc/racket
 
 %changelog
+* Wed Nov  6 2024 Jens Petersen <petersen@redhat.com> - 8.15-1
+- Update to 8.15 release
+- https://blog.racket-lang.org/2024/11/racket-v8-15.html
+
 * Tue Aug 20 2024 Jens Petersen <petersen@redhat.com> - 8.14-1
 - Update to 8.14 release
 - https://blog.racket-lang.org/2024/08/racket-v8-14.html

@@ -1,6 +1,6 @@
 Name:		calf
-Version:	0.90.3
-Release:	20%{?dist}
+Version:	0.90.4
+Release:	1%{?dist}
 Summary:	Audio plugins pack
 # The jackhost code is GPLv2+ 
 # The GUI code is LGPLv2+
@@ -9,7 +9,7 @@ Summary:	Audio plugins pack
 # dssi plugin is LGPLv2+
 License:	GPL-2.0-or-later AND LGPL-2.0-or-later
 URL:		http://calf-studio-gear.org/
-Source0:	http://calf-studio-gear.org/files/calf-%{version}.tar.gz
+Source0:	http://github.com/calf-studio-gear/calf/archive/%{version}/calf-%{version}.tar.gz
 Source1:	%{name}-dssi.desktop
 
 BuildRequires:	desktop-file-utils
@@ -83,7 +83,7 @@ This package contains DSSI synthesizers and effects, also GUI extensions.
 %build
 # Add GenericName to the .desktop file
 echo "GenericName= Audio Effects" >> %{name}.desktop.in
-#./autogen.sh
+./autogen.sh
 # Make sure that optflags are not overriden.
 sed -i 's|-O3||' configure
 
@@ -150,6 +150,9 @@ ln -s %{_libdir}/calf/calf.so $RPM_BUILD_ROOT/%{_libdir}/dssi/calf.so
 %{_libdir}/dssi/%{name}.so
 
 %changelog
+* Mon Nov 04 2024 Gwyn Ciesla <gwync@protonmail.com> - 0.90.4-1
+- 0.90.4
+
 * Mon Sep 23 2024 Gwyn Ciesla <gwync@protonmail.com> - 0.90.3-20
 - Fix lv2 requires.
 

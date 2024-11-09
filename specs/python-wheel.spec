@@ -14,7 +14,7 @@
 %global python_wheel_name %{pypi_name}-%{version}-py3-none-any.whl
 
 Name:           python-%{pypi_name}
-Version:        0.43.0
+Version:        0.44.0
 Release:        %autorelease
 Epoch:          1
 Summary:        Built-package format for Python
@@ -48,14 +48,13 @@ BuildRequires:  gcc
 %endif
 
 %global _description %{expand:
-Wheel is the reference implementation of the Python wheel packaging standard,
-as defined in PEP 427.
+This is a command line tool for manipulating Python wheel files,
+as defined in PEP 427. It contains the following functionality:
 
-It has two different roles:
-
- 1. A setuptools extension for building wheels that provides the bdist_wheel
-    setuptools command.
- 2. A command line tool for working with wheel files.}
+- Convert .egg archives into .whl.
+- Unpack wheel archives.
+- Repack wheel archives.
+- Add or remove tags in existing wheel archives.}
 
 %description %{_description}
 

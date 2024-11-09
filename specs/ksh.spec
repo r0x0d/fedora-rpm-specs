@@ -4,7 +4,7 @@ URL:          http://www.kornshell.com/
 License:      EPL-2.0
 Epoch:        3
 Version:      1.0.10
-Release:      1%{?dist}
+Release:      2%{?dist}
 Source0:      https://github.com/ksh93/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:      kshcomp.conf
 Source2:      kshrc.rhs
@@ -20,7 +20,7 @@ BuildRequires: glibc-langpack-ja
 BuildRequires: ncurses
 BuildRequires: procps
 BuildRequires: tzdata
-BuildRequires: util-linux
+BuildRequires: util-linux-script
 
 Requires(post): grep, coreutils, systemd
 Requires(postun): sed
@@ -138,6 +138,9 @@ fi
 %config(noreplace) %{_sysconfdir}/binfmt.d/kshcomp.conf
 
 %changelog
+* Tue Nov 05 2024 Vincent Mihalkovic <vmihalko@redhat.com> - 3:1.0.10-2
+- Change BuildRequires from util-linux to util-linux-script
+
 * Fri Aug 02 2024 Vincent Mihalkovic <vmihalko@redhat.com> - 3:1.0.10-1
 - new upstream release
   Resolves: rhbz#2302586

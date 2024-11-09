@@ -1,6 +1,6 @@
 %define __cmake_in_source_build 1
 %global rocm_release 6.2
-%global rocm_patch 1
+%global rocm_patch 4
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 %if 0%{?is_opensuse}
@@ -13,7 +13,7 @@
 
 Name:           hsakmt
 Version:        1.0.6
-Release:        47.rocm%{rocm_version}%{?dist}
+Release:        48.rocm%{rocm_version}%{?dist}
 Summary:        AMD HSA thunk library
 
 License:        MIT
@@ -149,6 +149,9 @@ rm %{buildroot}%{_docdir}/hsakmt/LICENSE.md
 %exclude %{_libdir}/libhsakmt-staticdrm.a
 
 %changelog
+* Thu Nov 7 2024 Tom Rix <Tom.Rix@amd.com> - 1.0.6-48.rocm6.2.4
+- Update to to 6.2.4
+
 * Sun Nov 3 2024 Tom Rix <Tom.Rix@amd.com> - 1.0.6-47.rocm6.2.0
 - Build on Tumbleweed
 

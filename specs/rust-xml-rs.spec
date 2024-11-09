@@ -8,7 +8,7 @@
 %global crate xml-rs
 
 Name:           rust-xml-rs
-Version:        0.8.22
+Version:        0.8.23
 Release:        %autorelease
 Summary:        XML library in pure Rust
 

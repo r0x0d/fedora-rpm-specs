@@ -1,30 +1,15 @@
-%bcond_without  tests
-
-%if %{defined fedora}
-%bcond_without  docs
-%endif
+%bcond tests 1
+%bcond docs %{undefined rhel}
 
 Name:           python-trustme
-Version:        1.1.0
+Version:        1.2.0
 Release:        %autorelease
 Summary:        #1 quality TLS certs while you wait, for the discerning tester
 License:        MIT OR Apache-2.0
 URL:            https://github.com/python-trio/trustme
+BuildArch:      noarch
 # PyPI tarball is missing docs-requirements.in
 Source:         %{url}/archive/v%{version}/trustme-%{version}.tar.gz
-
-# Add AKI to child CA certificates
-# https://github.com/python-trio/trustme/pull/642
-#
-# Fixes:
-#
-# python-trustme fails to build with Python 3.13: ssl.SSLError: [SSL:
-# SSLV3_ALERT_CERTIFICATE_UNKNOWN] ssl/tls alert certificate unknown
-# (_ssl.c:1033)
-# https://bugzilla.redhat.com/show_bug.cgi?id=2272940
-Patch:          %{url}/pull/642.patch
-
-BuildArch:      noarch
 
 %global common_description %{expand:
 You wrote a cool network client or server.  It encrypts connections using TLS.
@@ -76,7 +61,7 @@ PYTHONPATH=$PWD/src sphinx-build-3 docs/source html
 
 %install
 %pyproject_install
-%pyproject_save_files trustme
+%pyproject_save_files -l trustme
 
 
 %check

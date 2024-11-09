@@ -1,12 +1,14 @@
 Name:		libskk
 Version:	1.0.4
-Release:	15%{?dist}
+Release:	16%{?dist}
 Summary:	Library to deal with Japanese kana-to-kanji conversion method
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:	GPL-3.0-or-later
 URL:		http://github.com/ueno/libskk
 Source0:	https://bitbucket.org/libskk/libskk/downloads/%{name}-%{version}.tar.xz
+Patch:		libskk-1.0.5-int-conversion.patch
+Patch:		libskk-1.0.5-json-escape.patch
 
 BuildRequires:	vala
 BuildRequires:	pkgconfig(gee-0.8)
@@ -42,7 +44,7 @@ that use %{name}.
 
 
 %prep
-%setup -q
+%autosetup -p1
 find -name '*.vala' -exec touch {} \;
 
 %build
@@ -82,6 +84,10 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
 
 %changelog
+* Thu Nov  7 2024 Daiki Ueno <dueno@redhat.com> - 1.0.4-16
+- Fix invalid escape on json file
+- Fix build with GCC 14
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.4-15
 - convert license to SPDX
 

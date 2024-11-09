@@ -168,7 +168,7 @@ fi                                          \
 
 Name:           libxcrypt
 Version:        4.4.36
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Extended crypt library for descrypt, md5crypt, bcrypt, and others
 
 # For explicit license breakdown, see the
@@ -589,6 +589,9 @@ done
 
 
 %changelog
+* Thu Nov 07 2024 Björn Esser <besser82@fedoraproject.org> - 4.4.36-9
+- Update patch for MT-Safeness in crypt and crypt_gensalt
+
 * Mon Nov 04 2024 Björn Esser <besser82@fedoraproject.org> - 4.4.36-8
 - Add some upstream patches mostly fixing manpages
 - Add patch to use TLS to make crypt and crypt_gensalt functions MT-Safe

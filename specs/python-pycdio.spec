@@ -1,6 +1,6 @@
 Name:		python-pycdio
-Version:	2.1.0
-Release:	16%{?dist}
+Version:	2.1.1
+Release:	1%{?dist}
 Summary:	A Python interface to the CD Input and Control library
 
 License:	GPL-3.0-or-later
@@ -9,14 +9,11 @@ Source0:	%pypi_source pycdio
 
 BuildRequires:	gcc
 BuildRequires:	python3-devel
-BuildRequires:	python3-setuptools
-BuildRequires:	libcdio-devel
-BuildRequires:	swig
+BuildRequires:  libcdio-devel
+BuildRequires:  swig
 
-%if 0%{?fedora}
-# For tests
-BuildRequires:	python3-nose
-%endif
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %description
 The pycdio (and libcdio) libraries encapsulate CD-ROM reading and
@@ -41,30 +38,30 @@ device-dependent properties of a CD-ROM can use this library.
 sed -i 's/assertEquals/assertEqual/' test/test-cdtext.py
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
 chmod 755 %{buildroot}/%{python3_sitearch}/*.so
+
+%pyproject_save_files -l cdio iso9660 pycdio pyiso9660
 
 %if 0%{?fedora}
 %check
-%python3 setup.py nosetests
+%tox
 %endif
 
-%files -n python3-pycdio
+%files -n python3-pycdio -f %{pyproject_files}
 %license COPYING
 %doc README.rst ChangeLog AUTHORS NEWS.md THANKS
-%{python3_sitearch}/__pycache__/*
-%{python3_sitearch}/_pycdio*
-%{python3_sitearch}/_pyiso9660*
-%{python3_sitearch}/cdio.py
-%{python3_sitearch}/iso9660.py
-%{python3_sitearch}/pycdio.py
-%{python3_sitearch}/pyiso9660.py
-%{python3_sitearch}/pycdio-%{version}-py3*.egg-info/
+%{python3_sitearch}/_pycdio.cpython-*linux-gnu.so
+%{python3_sitearch}/_pyiso9660.cpython-*linux-gnu.so
 
 %changelog
+* Thu Nov 07 2024 Kevin Fenzi <kevin@scrye.com> - 2.1.1-1
+- Update to 2.1.1
+- Fix ftbfs. Fixes rhbz#2319695
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.0-16
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -29,7 +29,7 @@ AFM and to an extent Type 1 and some Mac-specific formats.}
 
 Name:           fonttools
 Version:        4.54.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Tools to manipulate font files
 
 # https://spdx.org/licenses/MIT.html
@@ -45,7 +45,11 @@ BuildRequires:  gcc
 
 %if %{with tests}
 # A few additional requirements for specific tests, noted in requirements.txt:
-
+BuildRequires:  %{py3_dist pytest}
+# Not included in RHEL, but available in EPEL:
+%if %{undefined rhel} || %{defined epel}
+BuildRequires:  %{py3_dist pytest-randomly}
+%endif
 # For Tests/cu2qu/{ufo,cli}_test.py
 # Not yet in EPEL10:
 %if %{undefined rhel} || (%{defined epel} && !%{defined el10})
@@ -117,11 +121,6 @@ Obsoletes: python3-ufolib <= 2.1.1-11
 # Remove shebang
 sed -r -i '1{/^#!/d}' Lib/fontTools/mtiLib/__init__.py
 
-# Not yet in EPEL10:
-%if (%{defined rhel} && (!%{defined epel} || %{defined el10})) || %{without tests}
-sed -r -i 's/^([[:blank:]]*)(pytest-randomly)\b/\1# \2/' tox.ini
-%endif
-
 %generate_buildrequires
 export FONTTOOLS_WITH_CYTHON=1
 # We use tox to get things like pytest, but we add extras manually since not
@@ -139,7 +138,7 @@ export FONTTOOLS_WITH_CYTHON=1
     %{?with_ufo_extra:-x ufo} \
     -x unicode \
     %{?with_woff_extra:-x woff} \
-    -e %{toxenv}-noextra}
+    }
 
 %build
 export FONTTOOLS_WITH_CYTHON=1
@@ -195,6 +194,9 @@ k="${k-}${k+ and }not (InterpolatableTest and test_sparse_interpolatable_ufos)"
 %doc NEWS.rst README.rst
 
 %changelog
+* Tue Nov 05 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 4.54.1-3
+- Avoid tox dependency
+
 * Fri Oct 11 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 4.54.1-2
 - Port to pyproject-rpm-macros (modern Python guidelines)
 

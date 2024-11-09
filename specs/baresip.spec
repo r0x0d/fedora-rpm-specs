@@ -1,20 +1,20 @@
 Summary:        Modular SIP user-agent with audio and video support
 Name:           baresip
-Version:        3.16.0
+Version:        3.17.0
 Release:        1%{?dist}
 License:        BSD-3-Clause
 URL:            https://github.com/baresip/baresip
 Source0:        https://github.com/baresip/baresip/archive/v%{version}/%{name}-%{version}.tar.gz
-Source1:        com.github.baresip.desktop
 Source10:       https://gitlab.gnome.org/GNOME/adwaita-icon-theme/-/raw/1e1d692148e8ab958bfea4188f8575b673804e09/Adwaita/scalable/status/call-incoming-symbolic.svg
 Source11:       https://gitlab.gnome.org/GNOME/adwaita-icon-theme/-/raw/1e1d692148e8ab958bfea4188f8575b673804e09/Adwaita/scalable/status/call-outgoing-symbolic.svg
 Source12:       https://gitlab.gnome.org/GNOME/adwaita-icon-theme/-/raw/master/COPYING#/COPYING.adwaita-icon-theme
 Source13:       https://gitlab.gnome.org/GNOME/adwaita-icon-theme/-/raw/master/COPYING_CCBYSA3#/COPYING_CCBYSA3.adwaita-icon-theme
 Source14:       https://gitlab.gnome.org/GNOME/adwaita-icon-theme/-/raw/master/COPYING_LGPL#/COPYING_LGPL.adwaita-icon-theme
+Patch0:         https://github.com/baresip/baresip/pull/3194/commits/2fa53d920efeb014435886fc0d7bf4fcfda3b5e4.patch#/baresip-3.17.0-cmake-globbing.patch
 BuildRequires:  cmake
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
-BuildRequires:  libre-devel >= 3.16.0
+BuildRequires:  libre-devel >= 3.17.0
 %if 0%{?fedora} || 0%{?rhel} >= 9
 BuildRequires:  openssl-devel
 Recommends:     %{name}-pipewire%{?_isa} = %{version}-%{release}
@@ -361,9 +361,6 @@ This module provides the X11 video output driver.
 %install
 %cmake_install
 
-# Install com.github.baresip.desktop file
-desktop-file-install --dir=$RPM_BUILD_ROOT%{_datadir}/applications/ %{SOURCE1}
-
 # Missing status icons for RHEL 8 (included since adwaita-icon-theme >= 3.31.91)
 %if 0%{?rhel} == 8
 cp -pf %{SOURCE12} %{SOURCE13} %{SOURCE14} .
@@ -380,6 +377,8 @@ gtk-encode-symbolic-svg %{SOURCE11} 16x16 -o $RPM_BUILD_ROOT%{_datadir}/icons/Ad
 install -p -m 0755 tools/fritzbox2%{name} $RPM_BUILD_ROOT%{_bindir}/fritzbox2%{name}
 
 %check
+desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/com.github.baresip.desktop
+
 %if !0%{?__cmake_in_source_build}
 cd %{__cmake_builddir}
 %endif
@@ -399,13 +398,14 @@ gtk-update-icon-cache --force %{_datadir}/icons/Adwaita &>/dev/null || :
 %license LICENSE
 %doc CHANGELOG.md docs/THANKS docs/examples
 %{_bindir}/%{name}
-%{_libdir}/lib%{name}.so.18*
+%{_libdir}/lib%{name}.so.19*
 %dir %{_libdir}/%{name}/
 %dir %{_libdir}/%{name}/modules/
 %{_libdir}/%{name}/modules/account.so
 %{_libdir}/%{name}/modules/aubridge.so
 %{_libdir}/%{name}/modules/auconv.so
 %{_libdir}/%{name}/modules/aufile.so
+%{_libdir}/%{name}/modules/augain.so
 %{_libdir}/%{name}/modules/auresamp.so
 %{_libdir}/%{name}/modules/ausine.so
 %{_libdir}/%{name}/modules/cons.so
@@ -539,6 +539,9 @@ gtk-update-icon-cache --force %{_datadir}/icons/Adwaita &>/dev/null || :
 %{_libdir}/%{name}/modules/x11.so
 
 %changelog
+* Fri Nov 08 2024 Robert Scheck <robert@fedoraproject.org> 3.17.0-1
+- Upgrade to 3.17.0 (#2324341)
+
 * Thu Oct 03 2024 Robert Scheck <robert@fedoraproject.org> 3.16.0-1
 - Upgrade to 3.16.0 (#2316283)
 

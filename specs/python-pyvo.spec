@@ -13,23 +13,17 @@ The pyvo module currently provides these main capabilities:              \
 * Get information about an object via its name                   
 
 Name:           python-%{srcname}
-Version:        1.5.2
+Version:        1.6
 Release:        %autorelease
 Summary:        %{sum}
 
 License:        BSD-3-Clause
 URL:            https://github.com/astropy/%{srcname}
-Source0:        %{pypi_source} 
+Source:        %{pypi_source %{srcname}} 
 
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
-BuildRequires:  %{py3_dist setuptools}
-BuildRequires:  %{py3_dist setuptools_scm}
-# testing
-BuildRequires:  %{py3_dist pytest-doctestplus}
-BuildRequires:  %{py3_dist pytest-astropy}
-BuildRequires:  %{py3_dist requests-mock}
 
 Provides:       python3-pyvo-doc = %{version}-%{release}
 Obsoletes:      python3-pyvo-doc = %{version}-%{release}
@@ -46,11 +40,10 @@ Requires:       astropy-tools
 %{desc}
 
 %prep
-%autosetup -n %{srcname}-%{version} -p 1
-sed -i -e 's|mimeparse|python-mimeparse|' setup.cfg
+%autosetup -n %{srcname}-%{version} 
 
 %generate_buildrequires
-%pyproject_buildrequires 
+%pyproject_buildrequires -e %{toxenv}-test
 
 %build
 %pyproject_wheel
@@ -61,8 +54,7 @@ sed -i -e 's|mimeparse|python-mimeparse|' setup.cfg
 %pyproject_save_files pyvo
 
 %check
-# Override "warning is error" in setup.cfg
-%pytest -Wdefault pyvo
+%tox
 
 %files -n python3-%{srcname} -f %{pyproject_files}
 %license licenses/LICENSE.rst

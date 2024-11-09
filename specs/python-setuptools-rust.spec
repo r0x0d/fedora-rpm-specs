@@ -7,17 +7,13 @@
 %global integration_tests_exc '^(html-py-ever)'
 
 Name:           python-setuptools-rust
-Version:        1.7.0
+Version:        1.10.2
 Release:        %autorelease
 Summary:        Setuptools Rust extension plugin
 
 License:        MIT
 URL:            https://github.com/PyO3/setuptools-rust
-Source0:        %{pypi_source setuptools-rust}
-
-# Fix FTBFS with cargo 1.78+
-# Cherry-picked from https://github.com/PyO3/setuptools-rust/pull/428 (merged)
-Patch:          https://github.com/PyO3/setuptools-rust/commit/8203ca9d.patch
+Source0:        %{pypi_source setuptools_rust}
 
 BuildArch:      noarch
 
@@ -49,7 +45,7 @@ Requires:       cargo
 
 
 %prep
-%autosetup -p1 -n setuptools-rust-%{version}
+%autosetup -p1 -n setuptools_rust-%{version}
 
 %cargo_prep
 
@@ -79,7 +75,7 @@ done
 
 %install
 %pyproject_install
-%pyproject_save_files setuptools_rust
+%pyproject_save_files -l setuptools_rust
 
 
 %check
@@ -117,7 +113,6 @@ done
 
 %files -n python3-setuptools-rust -f %{pyproject_files}
 %doc README.md CHANGELOG.md
-%license LICENSE
 
 
 %changelog

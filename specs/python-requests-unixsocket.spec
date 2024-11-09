@@ -8,7 +8,7 @@
 
 Name:           python-%{package_name}
 Version:        0.4.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Use requests to talk HTTP via a UNIX domain socket
 
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
@@ -26,12 +26,7 @@ Summary:        Use requests to talk HTTP via a UNIX domain socket
 
 Requires:       python3dist(requests)
 
-BuildRequires:  python3-devel
-BuildRequires:  python3dist(pip)
-BuildRequires:  python3dist(poetry-core)
 BuildRequires:  python3dist(pytest)
-BuildRequires:  python3dist(requests)
-BuildRequires:  python3dist(urllib3)
 BuildRequires:  python3dist(waitress)
 
 %description -n python3-%{package_name}
@@ -41,6 +36,9 @@ BuildRequires:  python3dist(waitress)
 %autosetup -n %{pypi_name}-%{version}
 # Remove shebangs
 sed -i '1d' requests_unixsocket/tests/test_requests_unixsocket.py
+
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %build
 %pyproject_wheel
@@ -60,6 +58,9 @@ sed -i 's/unixsocket2/unixsocket/g' %{buildroot}%{python3_sitelib}/requests_unix
 %{python3_sitelib}/requests_unixsocket-%{version}.dist-info
 
 %changelog
+* Thu Nov 07 2024 Dan Radez <dradez@redhat.com> - 0.4.0-7
+- generate build requires
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0.4.0-6
 - convert license to SPDX
 

@@ -11,6 +11,13 @@ License:        LGPL-2.1-or-later
 URL:            https://gitlab.gnome.org/GNOME/%{name}
 Source0:        https://download.gnome.org/sources/%{name}/47/%{name}-%{tarball_version}.tar.xz
 
+# See https://gitlab.gnome.org/GNOME/gtk/-/merge_requests/7836#note_2254328
+# and https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome/-/merge_requests/189#note_2269472
+# Needed to avoid crash on GTK 4.17
+# Upstream has outsourced this work entirely to a subproject but
+# that is hard to backport, drop this patch with next release
+Patch:          0001-externalwindow-Call-gtk_init-before-opening-a-displa.patch
+
 BuildRequires:  desktop-file-utils
 BuildRequires:  gcc
 BuildRequires:  gettext

@@ -1,7 +1,7 @@
 Summary: High-performance and highly configurable free RADIUS server
 Name: freeradius
 Version: 3.2.5
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPL-2.0-or-later AND LGPL-2.0-or-later
 URL: http://www.freeradius.org/
 
@@ -29,6 +29,7 @@ Patch5: freeradius-bootstrap-make-permissions.patch
 Patch6: freeradius-ldap-infinite-timeout-on-starttls.patch
 Patch7: freeradius-ease-openssl-version-check.patch
 Patch8: freeradius-configure-c99.patch
+Patch9: freeradius-openssl-no-engine.patch
 
 %global docdir %{?_pkgdocdir}%{!?_pkgdocdir:%{_docdir}/%{name}-%{version}}
 
@@ -38,8 +39,6 @@ BuildRequires: gcc
 BuildRequires: gdbm-devel
 BuildRequires: openssl
 BuildRequires: openssl-devel
-# https://fedoraproject.org/wiki/Changes/OpensslDeprecateEngine
-BuildRequires: openssl-devel-engine
 BuildRequires: pam-devel
 BuildRequires: zlib-devel
 BuildRequires: net-snmp-devel
@@ -215,6 +214,7 @@ This plugin provides the REST support for the FreeRADIUS server project.
 %patch -P6 -p1
 %patch -P7 -p1
 %patch -P8 -p1
+%patch -P9 -p1
 
 %build
 # Force compile/link options, extra security for network facing daemon
@@ -902,6 +902,9 @@ EOF
 %attr(640,root,radiusd) %config(noreplace) /etc/raddb/mods-available/rest
 
 %changelog
+* Wed Nov 06 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 3.2.5-3
+- Drop openssl-devel-engine dependency
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.5-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

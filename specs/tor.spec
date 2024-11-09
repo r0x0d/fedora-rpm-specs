@@ -13,10 +13,9 @@
 %endif
 
 Name:       tor
-Version:    0.4.8.12
-Release:    3%{?dist}
-# Automatically converted from old format: BSD - review is highly recommended.
-License:    LicenseRef-Callaway-BSD
+Version:    0.4.8.13
+Release:    1%{?dist}
+License:    BSD-3-Clause
 Summary:    Anonymizing overlay network for TCP
 URL:        https://www.torproject.org
 
@@ -165,6 +164,10 @@ rm -rf %{buildroot}%{_datadir}/doc
 %{_sysusersdir}/tor.conf
 
 %changelog
+* Thu Nov 07 2024 Marcel Härry <mh+fedora@scrit.ch> - 0.4.8.13-1
+- update to latest upstream release https://forum.torproject.org/t/new-tor-stable-release-0-4-8-13/15397 (bz#2211726)
+- reviewed and adjusted SPDX license format
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.4.8.12-3
 - convert license to SPDX
 

@@ -12,7 +12,7 @@
 
 Summary:        Free firewire audio driver library
 Name:           libffado
-Version:        2.4.8
+Version:        2.4.9
 Release:        %autorelease
 # Automatically converted from old format: GPLv2 or GPLv3 - review is highly recommended.
 License:        GPL-2.0-only OR GPL-3.0-only
@@ -25,15 +25,12 @@ Source9:        libffado-snapshot.sh
 Patch0:         libffado-2.4.4-no-test-apps.patch
 Patch1:         libffado-2.4.4-icon-name.patch
 Patch2:         libffado-2.4.4-scons-quirk.patch
-# Patch for Python 3.12 imp module removal
-Patch3:         libffado-2.4.7-python312-imp-removal.patch
 
 BuildRequires:  alsa-lib-devel
 BuildRequires:  dbus-c++-devel
 BuildRequires:  dbus-devel
 BuildRequires:  python3-dbus
 BuildRequires:  python3-rpm-macros
-BuildRequires:  desktop-file-utils
 BuildRequires:  doxygen
 BuildRequires:  gcc-c++
 BuildRequires:  glibmm24-devel
@@ -93,7 +90,6 @@ Applications and utilities for use with libffado.
 %if %{with scons_quirk}
 %patch -P2 -p1 -b .scons-quirk
 %endif
-%patch -P3 -p1 -b .py312-imp-removal
 
 # Fix Python shebangs
 %py3_shebang_fix \
@@ -127,26 +123,10 @@ export LDFLAGS="%{build_ldflags}"
 %{scons} DESTDIR=%{buildroot} PREFIX=%{_prefix}\
       install
 
-# We need to install the xdg stuff manually
-mkdir -p %{buildroot}%{_datadir}/applications
-desktop-file-install --dir %{buildroot}%{_datadir}/applications \
-                     --add-category="Settings" \
-                     --set-icon=ffado \
-                     support/xdg/ffado.org-ffadomixer.desktop
-mkdir -p %{buildroot}%{_datadir}/icons/hicolor/64x64/apps
-ln -s ../../../../libffado/icons/hi64-apps-ffado.png \
-    %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/ffado.png
-
 # Install ffado-test RHBZ#805940
 install -m 755 tests/ffado-test %{buildroot}%{_bindir}
 
 %ldconfig_scriptlets
-
-%check
-desktop-file-validate \
-      %{buildroot}%{_datadir}/applications/ffado.org-ffadomixer.desktop
-appstream-util validate-relax --nonet \
-      %{buildroot}%{_datadir}/metainfo/ffado-mixer.appdata.xml
 
 %files
 %license LICENSE.*
@@ -169,9 +149,9 @@ appstream-util validate-relax --nonet \
 %{_datadir}/libffado/*.xml
 %{_datadir}/libffado/icons/
 %{_datadir}/dbus-1/services/org.ffado.Control.service
-%{_datadir}/applications/ffado.org-ffadomixer.desktop
-%{_datadir}/icons/hicolor/64x64/apps/ffado.png
-%{_datadir}/metainfo/ffado-mixer.appdata.xml
+%{_datadir}/applications/org.ffado.FfadoMixer.desktop
+%{_datadir}/icons/hicolor/64x64/apps/hi64-apps-ffado.png
+%{_datadir}/metainfo/org.ffado.FfadoMixer.metainfo.xml
 %{python3_sitelib}/ffado/
 
 

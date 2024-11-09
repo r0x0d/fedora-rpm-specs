@@ -2,8 +2,8 @@
 %global sum Simple configuration objects for Py.test fixtures
 
 Name:           python-%{srcname}
-Version:        1.7.0
-Release:        22%{?dist}
+Version:        1.8.0
+Release:        1%{?dist}
 Summary:        %{sum}
 
 License:        MIT
@@ -12,8 +12,6 @@ Source0:        https://files.pythonhosted.org/packages/source/p/%{srcname}/%{sr
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-pytest
 BuildRequires:  python3-six
 
 %description
@@ -31,27 +29,28 @@ Allows you to skip tests when their required config variables aren't set.
 %prep
 %autosetup -n %{srcname}-%{version}
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1694205
-# https://github.com/manahl/pytest-plugins/pull/134
-sed -i "s/'pytest<4.0.0'/'pytest'/" setup.py
-
-# This is not needed when building from the sdist
-sed -i -e '/setuptools-git/d' common_setup.py
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+
+%pyproject_save_files -l pytest_fixture_config
 
 %check
-%{__python3} setup.py test
+%pytest
 
-%files -n python3-%{srcname}
+%files -n python3-%{srcname} -f %{pyproject_files}
 %doc README.md CHANGES.md
-%{python3_sitelib}/*
 
 %changelog
+* Thu Nov 07 2024 Kevin Fenzi <kevin@scrye.com> - 1.8.0-1
+- Update to 1.8.0. Fixes rhbz#2319439
+- Merdernize spec and fix ftbfs. fixed rhbz#2319707
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.7.0-22
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

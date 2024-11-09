@@ -25,13 +25,13 @@
 %endif
 
 Name:           gtk4
-Version:        4.16.5
+Version:        4.17.0
 Release:        %autorelease
 Summary:        GTK graphical user interface library
 
 License:        LGPL-2.0-or-later
 URL:            https://www.gtk.org
-Source0:        https://download.gnome.org/sources/gtk/4.16/gtk-%{version}.tar.xz
+Source0:        https://download.gnome.org/sources/gtk/4.17/gtk-%{version}.tar.xz
 
 BuildRequires:  cups-devel
 BuildRequires:  desktop-file-utils
@@ -224,7 +224,6 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/*.desktop
 %files devel-tools
 %{_bindir}/gtk4-demo
 %{_bindir}/gtk4-demo-application
-%{_bindir}/gtk4-icon-browser
 %{_bindir}/gtk4-image-tool
 %{_bindir}/gtk4-node-editor
 %{_bindir}/gtk4-print-editor
@@ -232,23 +231,19 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/*.desktop
 %{_bindir}/gtk4-widget-factory
 %{_datadir}/applications/org.gtk.gtk4.NodeEditor.desktop
 %{_datadir}/applications/org.gtk.Demo4.desktop
-%{_datadir}/applications/org.gtk.IconBrowser4.desktop
 %{_datadir}/applications/org.gtk.PrintEditor4.desktop
 %{_datadir}/applications/org.gtk.WidgetFactory4.desktop
 %{_datadir}/icons/hicolor/*/apps/org.gtk.gtk4.NodeEditor*.svg
 %{_datadir}/icons/hicolor/*/apps/org.gtk.Demo4*.svg
-%{_datadir}/icons/hicolor/*/apps/org.gtk.IconBrowser4*.svg
 %{_datadir}/icons/hicolor/*/apps/org.gtk.PrintEditor4*.svg
 %{_datadir}/icons/hicolor/*/apps/org.gtk.WidgetFactory4*.svg
 %{_datadir}/glib-2.0/schemas/org.gtk.Demo4.gschema.xml
 %{_metainfodir}/org.gtk.gtk4.NodeEditor.appdata.xml
 %{_metainfodir}/org.gtk.Demo4.appdata.xml
-%{_metainfodir}/org.gtk.IconBrowser4.appdata.xml
 %{_metainfodir}/org.gtk.PrintEditor4.appdata.xml
 %{_metainfodir}/org.gtk.WidgetFactory4.appdata.xml
 %{_mandir}/man1/gtk4-demo.1*
 %{_mandir}/man1/gtk4-demo-application.1*
-%{_mandir}/man1/gtk4-icon-browser.1*
 %{_mandir}/man1/gtk4-image-tool.1*
 %{_mandir}/man1/gtk4-node-editor.1*
 %{_mandir}/man1/gtk4-rendernode-tool.1*

@@ -1,5 +1,5 @@
 Name:           python-pyproject-api
-Version:        1.6.1
+Version:        1.8.0
 Release:        %autorelease
 Summary:        API to interact with the python pyproject.toml based projects
 
@@ -25,6 +25,7 @@ Summary:        %{summary}
 %autosetup -n pyproject_api-%{version}
 # Remove unneeded testing deps
 sed -i "/covdefaults/d;/pytest-cov/d" pyproject.toml
+sed -i 's/"setuptools>=.*"/"setuptools"/' pyproject.toml
 
 %generate_buildrequires
 %pyproject_buildrequires -x testing
@@ -37,7 +38,9 @@ sed -i "/covdefaults/d;/pytest-cov/d" pyproject.toml
 %pyproject_save_files pyproject_api
 
 %check
-%pytest
+# Skip test_setuptools_prepare_metadata_for_build_wheel
+# see https://github.com/tox-dev/pyproject-api/issues/153
+%pytest -k "not test_setuptools_prepare_metadata_for_build_wheel"
 
 %files -n python3-pyproject-api -f %{pyproject_files}
 %doc README.md

@@ -1,11 +1,16 @@
 Summary:        Command line interface to the freedesktop.org trashcan
 Name:           trash-cli
-Version:        0.22.10.20
-Release:        8%{?dist}
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
+Version:        0.24.5.26
+Release:        1%{?dist}
 License:        GPL-2.0-or-later
 URL  :          https://github.com/andreafrancia/trash-cli
-Source0:        https://files.pythonhosted.org/packages/source/t/%{name}/%{name}-%{version}.tar.gz
+
+# The %%{pypi_source trash-cli} did not work for some reason, therefore the manual url from pypi
+Source0:        https://files.pythonhosted.org/packages/f7/6c/d51b36377c35e4f9e69af4d8b61a920f26251483cdc0165f5513da7aefeb/trash_cli-0.24.5.26.tar.gz
+# TODO: Switch source to Github becaues the one from pypi is lacking tests and SHOULD therefore be replaced by a tar from Github
+# Reference: https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_source_files_from_pypi
+# Once that is done a %check section should be added to run at least one basic test (or more if feasible)
+
 BuildArch:      noarch
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-devel
@@ -16,7 +21,8 @@ freedesktop.org compatible trash implementation. The command line interface is
 compatible with rm and you can use trash-put as an alias to rm.
 
 %prep
-%autosetup -n %{name}-%{version}
+# changed from %%{name} to trash_cli because pypi seems to convert dash to underscore here
+%autosetup -n trash_cli-%{version}
 
 %build
 %py3_build
@@ -33,6 +39,10 @@ compatible with rm and you can use trash-put as an alias to rm.
 %{_mandir}/man1/trash*
 
 %changelog
+* Thu Nov 07 2024 David Auer <dreua@posteo.de> - 0.24.5.26-1
+- New version
+- Fix Source0 and name in prep
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 0.22.10.20-8
 - convert license to SPDX
 

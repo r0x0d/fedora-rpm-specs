@@ -2,14 +2,13 @@ Name:           python-jsonpickle
 # version is inserted into setup.cfg manually (see %%prep). Please be careful
 # to use a Python-compatible version number if you need to set an "uncommon"
 # version for this RPM.
-Version:        3.3.0
+Version:        3.4.2
 Release:        1%{?dist}
 Summary:        A module that allows any object to be serialized into JSON
 
 License:        BSD-3-Clause
 URL:            https://github.com/jsonpickle/jsonpickle
 Source0:        %{pypi_source jsonpickle}
-Patch0:         522.patch
 
 %global _docdir_fmt %{name}
 
@@ -33,14 +32,17 @@ Summary:        A module that allows any object to be serialized into JSON
 %prep
 %autosetup -n jsonpickle-%{version} -p1
 
-# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
-sed -r -i \
-    -e 's/^([[:blank:]]*)(pytest-(black|checkdocs|cov|flake8|enabler|ruff))/\1# \2/' \
-    setup.cfg
 sed -r -i 's/[[:blank:]]--cov[^[:blank:]]*//g' pytest.ini
 
-sed -i /bson/d setup.cfg
-sed -i /histogram/d setup.cfg
+sed -i /bson/d pyproject.toml
+sed -i /histogram/d pyproject.toml
+sed -i /black\ /d pyproject.toml
+sed -i /pytest-checkdocs\ /d pyproject.toml
+sed -i /pytest-cov\ /d pyproject.toml
+sed -i /pytest-flake8\ /d pyproject.toml
+sed -i /pytest-enabler\ /d pyproject.toml
+sed -i /pytest-ruff\ /d pyproject.toml
+sed -i /atheris\ /d pyproject.toml
 
 %if 0%{?el9}
 # Not yet packaged:
@@ -65,13 +67,16 @@ sed -r -i -e 's/^([[:blank:]]*)(pandas|scikit-learn)/\1# \2/' setup.cfg
 
 
 %check
-%pytest %{?el9:--ignore=jsonpickle/ext/pandas.py}
+%pytest %{?el9:--ignore=jsonpickle/ext/pandas.py} --ignore=fuzzing/
 
 
 %files -n python3-jsonpickle -f %{pyproject_files}
 
 
 %changelog
+* Wed Nov 06 2024 Gwyn Ciesla <gwync@protonmail.com> - 3.4.2-1
+- 3.4.2
+
 * Tue Sep 03 2024 Gwyn Ciesla <gwync@protonmail.com> - 3.3.0-1
 - 3.3.0
 

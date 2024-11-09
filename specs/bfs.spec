@@ -1,5 +1,5 @@
 Name:           bfs
-Version:        4.0.2
+Version:        4.0.4
 Release:        %autorelease
 Summary:        A breadth-first version of the UNIX find command
 

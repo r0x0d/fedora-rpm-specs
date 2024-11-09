@@ -3,7 +3,7 @@
 
 Name:           python-%{pypi_name}
 Version:        1.5.5.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Zstd Bindings for Python
 
 # original zstd bits are GPL-2.0-or-later OR BSD-2-Clause
@@ -53,7 +53,7 @@ sed -i -e '/test_version/d' tests/__init__.py
 %py3_install
 
 %check
-%{__python3} setup.py test
+%{py3_test_envvars} %{python3} -m unittest -v
 
 %files -n python3-%{pypi_name}
 %license LICENSE
@@ -62,6 +62,10 @@ sed -i -e '/test_version/d' tests/__init__.py
 %{python3_sitearch}/%{pypi_name}*.so
 
 %changelog
+* Thu Nov 07 2024 Michel Lind <salimma@fedoraproject.org> - 1.5.5.1-6
+- Switch test runner to unittest for setuptools 74+ compatibility
+- Resolves: rhbz#2319745
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.5.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -12,7 +12,6 @@ License:        GPL-2.0-or-later
 URL:            %{forgeurl}
 Source0:        %{forgesource}
 Source1:        picard.rpmlintrc
-Patch0:         bz2323081.patch
 BuildRequires:  gcc
 BuildRequires:  pyproject-rpm-macros
 BuildRequires:  desktop-file-utils
@@ -45,10 +44,14 @@ track-oriented.
 %forgesetup
 %autosetup -n %{archivename}
 
+
 %generate_buildrequires
+sed -i "s/charset-normalizer~=3.3.2/charset-normalizer>=3.3/g" requirements.txt
 %pyproject_buildrequires
 
 %build
+sed -i "s/'disable-autoupdate', None/'disable-autoupdate', True/g" setup.py
+sed -i "s/self.disable_autoupdate = None/self.disable_autoupdate = True/g" setup.py
 %{__python3} setup.py config
 %pyproject_wheel
 

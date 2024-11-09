@@ -47,7 +47,7 @@ Name:           systemd
 Url:            https://systemd.io
 # Allow users to specify the version and release when building the rpm by 
 # setting the %%version_override and %%release_override macros.
-Version:        %{?version_override}%{!?version_override:256.7}
+Version:        %{?version_override}%{!?version_override:257~rc1}
 Release:        %autorelease
 
 %global stable %(c="%version"; [ "$c" = "${c#*.*}" ]; echo $?)
@@ -114,12 +114,6 @@ GIT_DIR=../../src/systemd/.git git diffab -M v233..master@{2017-06-15} -- hwdb/[
 Patch0010:      https://github.com/systemd/systemd/pull/26494.patch
 %endif
 
-# Requested in https://bugzilla.redhat.com/show_bug.cgi?id=2298422
-Patch0011:      https://github.com/systemd/systemd/pull/33738.patch
-
-# Simplify user manager upgrades
-Patch0012:      https://github.com/systemd/systemd/pull/34707.patch
-
 # Those are downstream-only patches, but we don't want them in packit builds:
 # https://bugzilla.redhat.com/show_bug.cgi?id=2251843
 Patch0491:      https://github.com/systemd/systemd/pull/30846.patch
@@ -172,7 +166,7 @@ BuildRequires:  libcurl-devel
 BuildRequires:  kmod-devel
 BuildRequires:  elfutils-devel
 BuildRequires:  openssl-devel
-%if 0%{?fedora} >= 41 || 0%{?rhel} >= 11
+%if 0%{?fedora} >= 41
 BuildRequires:  openssl-devel-engine
 %endif
 %if %{with gnutls}
@@ -1039,6 +1033,16 @@ meson test -C %{_vpath_builddir} -t 6 --print-errorlogs
 
 %include %{SOURCE1}
 
+# This macro is newly added upstream so we can't rely on it being always being available
+# in the systemd-rpm-macros yet so we define it ourselves.
+%global systemd_posttrans_with_restart() \
+%{expand:%%{?__systemd_someargs_%#:%%__systemd_someargs_%# systemd_posttrans_with_restart}} \
+if [ $1 -ge 2 ] && [ -x "/usr/lib/systemd/systemd-update-helper" ]; then \
+    # Package upgrade, not install \
+    /usr/lib/systemd/systemd-update-helper mark-restart-system-units %* || : \
+fi \
+%{nil}
+
 %post
 systemd-machine-id-setup &>/dev/null || :
 
@@ -1062,8 +1066,8 @@ systemd-tmpfiles --create &>/dev/null || :
 systemctl preset-all &>/dev/null || :
 systemctl --global preset-all &>/dev/null || :
 
-%postun
-if [ $1 -ge 1 ]; then
+%posttrans
+if [ $1 -ge 2 ]; then
   [ -w %{_localstatedir} ] && journalctl --update-catalog || :
 
   systemctl daemon-reexec || :
@@ -1071,13 +1075,13 @@ if [ $1 -ge 1 ]; then
   systemd-tmpfiles --create &>/dev/null || :
 fi
 
-%systemd_postun_with_restart systemd-timedated.service systemd-hostnamed.service systemd-journald.service systemd-localed.service systemd-userdbd.service
+%systemd_posttrans_with_restart systemd-timedated.service systemd-hostnamed.service systemd-journald.service systemd-localed.service systemd-userdbd.service
 
 # FIXME: systemd-logind.service is excluded (https://github.com/systemd/systemd/pull/17558)
 
 # This is the expanded form of %%systemd_user_daemon_reexec. We
 # can't use the macro because we define it ourselves.
-if [ $1 -ge 1 ] && [ -x "/usr/lib/systemd/systemd-update-helper" ]; then
+if [ $1 -ge 2 ] && [ -x "/usr/lib/systemd/systemd-update-helper" ]; then
     # Package upgrade, not uninstall
     /usr/lib/systemd/systemd-update-helper user-reexec || :
 fi
@@ -1124,11 +1128,10 @@ grep -q -E '^KEYMAP="?fi-latin[19]"?' /etc/vconsole.conf 2>/dev/null &&
 %preun udev
 %systemd_preun %udev_services
 
-%postun udev
+%posttrans udev
 # Restart some services.
 # Others are either oneshot services, or sockets, and restarting them causes issues (#1378974)
-%systemd_postun_with_restart systemd-udevd.service systemd-timesyncd.service
-
+%systemd_posttrans_with_restart systemd-udevd.service systemd-timesyncd.service
 
 %global journal_remote_units_restart systemd-journal-gatewayd.service systemd-journal-remote.service systemd-journal-upload.service
 %global journal_remote_units_norestart systemd-journal-gatewayd.socket systemd-journal-remote.socket
@@ -1146,8 +1149,8 @@ if [ $1 -eq 1 ] ; then
     fi
 fi
 
-%postun journal-remote
-%systemd_postun_with_restart %journal_remote_units_restart
+%posttrans journal-remote
+%systemd_posttrans_with_restart %journal_remote_units_restart
 %firewalld_reload
 
 %post networkd
@@ -1169,9 +1172,8 @@ fi
 %preun networkd
 %systemd_preun systemd-networkd.service systemd-networkd-wait-online.service
 
-%postun networkd
-%systemd_postun_with_restart systemd-networkd.service
-%systemd_postun systemd-networkd-wait-online.service
+%posttrans networkd
+%systemd_posttrans_with_restart systemd-networkd.service
 
 %post resolved
 [ $1 -eq 1 ] || exit 0
@@ -1200,10 +1202,8 @@ if [ $1 -eq 0 ] ; then
         fi
 fi
 
-%postun resolved
-%systemd_postun_with_restart systemd-resolved.service
-
 %posttrans resolved
+%systemd_posttrans_with_restart systemd-resolved.service
 [ -e %{_localstatedir}/lib/rpm-state/systemd-resolved.initial-installation ] || exit 0
 rm %{_localstatedir}/lib/rpm-state/systemd-resolved.initial-installation
 # Initial installation

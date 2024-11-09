@@ -23,11 +23,12 @@ Name:           %{goname}
 Release:        %autorelease
 Summary:        Btrfs bindings for Go
 
-# Upstream license specification: Apache-2.0
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            %{gourl}
 Source0:        %{gosource}
+# Fix compilation with GCC 14.2
+# not upstreaming since upstream is already at version 2
+Patch0:         btrfs-fix_for_gcc14.diff
 
 BuildRequires:  golang(github.com/pkg/errors)
 BuildRequires:  btrfs-progs-devel
@@ -39,6 +40,7 @@ BuildRequires:  btrfs-progs-devel
 
 %prep
 %goprep
+%autopatch -p1
 
 %install
 %gopkginstall

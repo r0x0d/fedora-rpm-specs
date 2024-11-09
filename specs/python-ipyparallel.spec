@@ -1,6 +1,6 @@
 Name:		python-ipyparallel
-Version:	8.8.0
-Release:	4%{?dist}
+Version:	9.0.0
+Release:	1%{?dist}
 Summary:	Interactive Parallel Computing with IPython
 
 License:	BSD-3-Clause
@@ -12,14 +12,14 @@ BuildRequires:	make
 BuildRequires:	python3-devel >= 3.8
 BuildRequires:	python3-pip
 BuildRequires:	python3dist(hatchling) >= 0.25
-BuildRequires:	python3dist(entrypoints)
+BuildRequires:	(python3dist(importlib-metadata) if python3 < 3.10)
 BuildRequires:	python3dist(decorator)
-BuildRequires:	python3dist(pyzmq) >= 18
-BuildRequires:	python3dist(traitlets) >= 4.3
-BuildRequires:	python3dist(ipython) >= 4
-BuildRequires:	python3dist(jupyter-client) >= 5
-BuildRequires:	python3dist(ipykernel) >= 4.4
-BuildRequires:	python3dist(tornado) >= 5.1
+BuildRequires:	python3dist(pyzmq) >= 25
+BuildRequires:	python3dist(traitlets) >= 5
+BuildRequires:	python3dist(ipython) >= 5
+BuildRequires:	python3dist(jupyter-client) >= 7
+BuildRequires:	python3dist(ipykernel) >= 6.9.1
+BuildRequires:	python3dist(tornado) >= 6.1
 BuildRequires:	python3dist(psutil)
 BuildRequires:	python3dist(python-dateutil) >= 2.1
 BuildRequires:	python3dist(tqdm)
@@ -77,12 +77,8 @@ mv %{buildroot}%{_prefix}%{_sysconfdir} %{buildroot}%{_sysconfdir}
 %check
 # The version of jupyter-client in Fedora 39/40 calls datetime.utcnow()
 # Ignore DeprecationWarning from Python 3.12 due to this
-# The version of jupyter-client in Fedora 41 calls datetime.strptime()
-# with a deprecated set of arguments
-# Ignore DeprecationWarning from Python 3.13 due to this
 %pytest -v --color=no \
-    -W "ignore:datetime.datetime.utcnow() is deprecated:DeprecationWarning" \
-    -W "ignore:Parsing dates involving a day of month without a year specified is ambiguious:DeprecationWarning"
+    -W "ignore:datetime.datetime.utcnow() is deprecated:DeprecationWarning"
 
 %files -n python3-ipyparallel
 %license COPYING.md
@@ -113,6 +109,9 @@ mv %{buildroot}%{_prefix}%{_sysconfdir} %{buildroot}%{_sysconfdir}
 %{python3_sitelib}/ipyparallel/tests
 
 %changelog
+* Thu Nov 07 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 9.0.0-1
+- Update to 9.0.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 8.8.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

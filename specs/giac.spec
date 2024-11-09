@@ -1,6 +1,6 @@
 # Tests excluded
 # See https://xcas.univ-grenoble-alpes.fr/forum/viewtopic.php?f=19&t=1733
-%bcond_with check
+%bcond_without check
 
 %bcond_without flexiblas
 
@@ -236,7 +236,10 @@ export CFLAGS_FEDORA="$OPT_FLAGS"
  --enable-tommath=no --enable-debug=no --enable-gc=no --enable-sscl=no \
  --enable-dl=yes --enable-gsl=yes --enable-lapack=yes --enable-pari=yes \
  --enable-ntl=yes --enable-gmpxx=yes --enable-cocoa=autodetect \
- --enable-gui=yes --disable-rpath
+ --enable-gui=yes --disable-rpath \
+%ifarch %{power64}
+ --disable-micropy
+%endif
 
 # The --disable-rpath option of configure was not enough to get rid of the hardcoded libdir
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
@@ -268,7 +271,9 @@ done
 %make_install
 
 # Install libmicropython.a library
+%ifnarch %{power64}
 install -pm 644 libmicropython.a %{buildroot}%{_libdir}/
+%endif
 
 # Install libxcas.a library
 install -pm 644 src/.libs/libxcas.a %{buildroot}%{_libdir}/
@@ -312,10 +317,10 @@ install -pm 644 -t %{buildroot}%{_datadir}/giac/doc/es doc/es/*.pdf
 
 # Symlinks used by QCAS and giacpy
 mkdir -p %{buildroot}%{_datadir}/giac/doc/fr
-ln -sf -T %{_datadir}/giac/doc/aide_cas %{buildroot}%{_datadir}/giac/doc/fr/aide_cas
-ln -sf -T %{_datadir}/giac/doc/aide_cas %{buildroot}%{_datadir}/giac/doc/en/aide_cas
-ln -sf -T %{_datadir}/giac/doc/en/casinter/index.html %{buildroot}%{_datadir}/giac/doc/en/casinter/casinter.html
-ln -sf -T %{_datadir}/giac/doc/en/cascmd_en/index.html %{buildroot}%{_datadir}/giac/doc/en/cascmd_en/cascmd_en.html
+ln -srf -T %{_datadir}/giac/doc/aide_cas %{buildroot}%{_datadir}/giac/doc/fr/aide_cas
+ln -srf -T %{_datadir}/giac/doc/aide_cas %{buildroot}%{_datadir}/giac/doc/en/aide_cas
+ln -srf -T %{_datadir}/giac/doc/en/casinter/index.html %{buildroot}%{_datadir}/giac/doc/en/casinter/casinter.html
+ln -srf -T %{_datadir}/giac/doc/en/cascmd_en/index.html %{buildroot}%{_datadir}/giac/doc/en/cascmd_en/cascmd_en.html
 
 #
 # DOC Files (1-4):
@@ -371,8 +376,10 @@ find  %{buildroot}%{_datadir}/giac/doc -maxdepth 2 -type l| \
 
 %if %{with check}
 %check
-export LD_LIBRARY_PATH=../src/.libs
+export LD_LIBRARY_PATH=%{buildroot}%{_libdir}
 make -C check check
+# This is for debugging purpose
+cat check/test-suite.log && exit 1
 %endif
 
 %files -f %{name}.lang
@@ -385,7 +392,9 @@ make -C check check
 %{_libdir}/libgiac.so.0.0.0
 %{_libdir}/libgiac.so.0
 %{_libdir}/libgiac.a
+%ifnarch %{power64}
 %{_libdir}/libmicropython.a
+%endif
 %{_libdir}/libxcas.a
 #    The following files are required at runtime by icas AND xcas. 
 #       (Ex: if LANG is fr, alea(5) should give an INT)

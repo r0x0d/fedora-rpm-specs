@@ -3,7 +3,7 @@ Version:        1.3.2
 Release:        2%{?dist}
 Summary:        Translation of NEC2 antenna modeling tool from FORTRAN to C
 
-License:        Public Domain
+License:        GPL-3.0-only
 URL:            https://github.com/KJ7LNW/nec2c
 Source0:        https://github.com/KJ7LNW/nec2c/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
 Source1:        nec2c.1

@@ -42,6 +42,15 @@ Summary:        %{summary}
 %prep
 %autosetup -n snakemake-executor-plugin-kubernetes-%{version}
 
+# Remove upstream’s upper-bound on the version of kubernetes. This package
+# routinely ends up briefly failing to build from source and sometimes failing
+# to install due to “incompatible” major-version updates in python-kubernetes,
+# but there have so far never been any real incompatibilities in practice.
+# Upstream will still (eventually) keep up with new versions without us filing
+# PR’s because they have configured dependabot, e.g.
+# https://github.com/snakemake/snakemake-executor-plugin-kubernetes/pull/26.
+sed -r -i 's/(kubernetes = ".*),<[^"]+"/\1"/' pyproject.toml
+
 
 %generate_buildrequires
 %pyproject_buildrequires

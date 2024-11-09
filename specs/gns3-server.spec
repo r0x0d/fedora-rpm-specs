@@ -5,8 +5,8 @@
 %global __requires_exclude_from ^%{python3_sitelib}/gns3server/compute/docker/resources/.*$
 
 Name:           gns3-server
-Version:        2.2.50
-Release:        2%{?dist}
+Version:        2.2.51
+Release:        1%{?dist}
 Summary:        Graphical Network Simulator 3
 
 # Automatically converted from old format: GPLv3 - review is highly recommended.
@@ -15,7 +15,6 @@ URL:            http://gns3.com
 Source0:        https://github.com/GNS3/gns3-server/archive/v%{git_tag}/%{name}-%{git_tag}.tar.gz
 Source1:        gns3.service
 Patch0:         0001-changing-busybox-udhcpc-script-path.patch
-Patch1:         https://github.com/GNS3/gns3-server/commit/6e66b26b88708d61dd3d90ea5836fe27d7709d2a.patch
 
 BuildArch:      noarch
 
@@ -55,15 +54,16 @@ Requires: %{name} = %{version}-%{release}
 # Relax requirements
 sed -i -r 's/==/>=/g' requirements.txt
 sed -i -r 's/distro>=1.9.*/distro>=1.5.0/' requirements.txt
-sed -i -r 's/psutil>=6.0.0/psutil>=5.8.0/' requirements.txt
+sed -i -r 's/psutil>=6.1.0/psutil>=5.8.0/' requirements.txt
 sed -i -r 's/aiofiles>=24.1.0,<25.0/aiofiles>=0.7/' requirements.txt
-sed -i -r 's/aiohttp>=3.10.3,<3.11/aiohttp>=3.9.3/' requirements.txt
+sed -i -r 's/aiohttp>=3.10.10,<3.11/aiohttp>=3.9.3/' requirements.txt
 sed -i -r 's/Jinja2>=3.1.4,<3.2/jinja2>=2.11.3/' requirements.txt
 sed -i -r 's/jsonschema>=4.23,<4.24/jsonschema>=3.2.0/' requirements.txt
 sed -i -r 's/py-cpuinfo>=9.0.0,<10.0/py-cpuinfo>=8.0.0/' requirements.txt
 sed -i -r 's/async-timeout>=4.0.3,<4.1/async-timeout>=4.0.2/' requirements.txt
 sed -i -r 's/sentry-sdk.*//g' requirements.txt
 sed -i -r 's/truststore.*//g' requirements.txt
+sed -i -r 's/setuptools>=61.0/setuptools>=53.0/' setup.py
 
 %build
 %py3_build
@@ -132,6 +132,9 @@ cp -fp %{_datadir}/edk2/ovmf/OVMF_VARS.fd %{python3_sitelib}/gns3server/disks/OV
 %systemd_postun_with_restart gns3.service
 
 %changelog
+* Thu Nov  7 2024 Alexey Kurov <nucleo@fedoraproject.org> - 2.2.51-1
+- Update to 2.2.51
+
 * Thu Oct 24 2024 Alexey Kurov <nucleo@fedoraproject.org> - 2.2.50-2
 - Backport init.sh fix
 
