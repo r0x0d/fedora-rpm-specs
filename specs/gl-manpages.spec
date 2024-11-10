@@ -8,7 +8,10 @@ Version:        1.1
 Release:        32.%{codate}%{?dist}
 Summary:        OpenGL manpages
 
-License:        Apache-2.0 AND HPND AND HPND-sell-variant AND MIT AND OpenPBS-2.3 AND SGI-B-1.1 AND SGI-B-2.0 AND W3C-19980720 AND X11
+# This package uses SGI-B-1.1, we choose to use later variant of this license
+# becase SGI-B-1.1 is not allowed, but it allows to use later variants and
+# that is allowed
+License:        Apache-2.0 AND HPND AND HPND-sell-variant AND MIT AND OpenPBS-2.3 AND SGI-B-2.0 AND W3C-19980720 AND X11
 URL:            https://github.com/KhronosGroup/OpenGL-Refpages
 Source0:        https://github.com/KhronosGroup/OpenGL-Refpages/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
 # FIXME: Bundle mathml and the Oasis dbmathl until they are packaged

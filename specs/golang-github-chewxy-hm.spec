@@ -3,25 +3,27 @@
 %bcond bootstrap 0
 
 %global debug_package %{nil}
+%if %{with bootstrap}
+%global __requires_exclude %{?__requires_exclude:%{__requires_exclude}|}^golang\\(.*\\)$
+%endif
 
-# https://github.com/golang/oauth2
-%global goipath         golang.org/x/oauth2
-%global forgeurl        https://github.com/golang/oauth2
-Version:                0.24.0
+# https://github.com/chewxy/hm
+%global goipath         github.com/chewxy/hm
+Version:                1.0.0
 
-%gometa -L
+%gometa -L -f
 
 %global common_description %{expand:
-A client implementation for OAuth 2.0 spec.}
+A simple Hindley-Milner type system in Go.}
 
-%global golicenses      LICENSE
-%global godocs          CONTRIBUTING.md README.md
+%global golicenses      LICENCE
+%global godocs          README.md
 
-Name:           golang-x-oauth2
+Name:           golang-github-chewxy-hm
 Release:        %autorelease
-Summary:        Client implementation for OAuth 2.0 spec
+Summary:        A simple Hindley-Milner type system in Go
 
-License:        BSD-3-Clause
+License:        MIT
 URL:            %{gourl}
 Source:         %{gosource}
 
@@ -31,7 +33,6 @@ Source:         %{gosource}
 
 %prep
 %goprep -A
-%autopatch -p1
 
 %if %{without bootstrap}
 %generate_buildrequires

@@ -60,9 +60,9 @@
 %global dbus_python_version 0.83.0
 
 Name:           ibus
-Version:        1.5.31~rc1
+Version:        1.5.31
 # https://github.com/fedora-infra/rpmautospec/issues/101
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        Intelligent Input Bus for Linux OS
 License:        LGPL-2.1-or-later
 URL:            https://github.com/ibus/%name/wiki
@@ -617,6 +617,9 @@ dconf update || :
 %{_datadir}/installed-tests/ibus
 
 %changelog
+* Fri Nov 08 2024 Takao Fujiwara <tfujiwar@redhat.com> - 1.5.31-1
+- Bump to 1.5.31
+
 * Thu Oct 31 2024 Takao Fujiwara <tfujiwar@redhat.com> - 1.5.31~rc1-2
 - Resolves #2321990 Move xinit post scripts
 

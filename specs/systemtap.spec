@@ -120,7 +120,7 @@ m     stapdev  stapdev
 
 Name: systemtap
 # PRERELEASE
-Version: 5.2~pre17283218gc5774e18
+Version: 5.2
 Release: 1%{?release_override}%{?dist}
 # for version, see also configure.ac
 
@@ -157,7 +157,7 @@ Release: 1%{?release_override}%{?dist}
 Summary: Programmable system-wide instrumentation system
 License: GPL-2.0-or-later
 URL: https://sourceware.org/systemtap/
-Source: %{name}-%{version}.tar.gz
+Source: ftp://sourceware.org/pub/systemtap/releases/systemtap-%{version}.tar.gz
 
 # Build*
 BuildRequires: make
@@ -1326,6 +1326,10 @@ exit 0
 
 # PRERELEASE
 %changelog
+* Fri Nov 08 2024 Frank Ch. Eigler <fche@redhat.com> - 5.2-1
+- Upstream release, see wiki page below for detailed notes.
+  https://sourceware.org/systemtap/wiki/SystemTapReleases
+
 * Mon Oct 07 2024 William Cohen <wcohen@redhat.com> - 5.2-17283218gc5774e18
 - Automated weekly rawhide release
 - Applied spec changes from upstream git

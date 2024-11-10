@@ -168,7 +168,7 @@ fi                                          \
 
 Name:           libxcrypt
 Version:        4.4.36
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Extended crypt library for descrypt, md5crypt, bcrypt, and others
 
 # For explicit license breakdown, see the
@@ -396,6 +396,12 @@ EOF
 %build
 mkdir -p %{_vpath_builddir}
 
+# Needed on ppc64le.  See:
+# https://bugzilla.redhat.com/show_bug.cgi?id=2324491
+%ifarch ppc64 ppc64le
+export LDFLAGS="%{__global_ldflags} -Wl,--no-tls-get-addr-optimize"
+%endif
+
 # Build the default system library.
 pushd %{_vpath_builddir}
 %configure                                       \
@@ -443,6 +449,13 @@ unset LT_SYS_LIBRARY_PATH
 
 # Build a library suitable for all possible tests.
 pushd %{_vpath_builddir}-all_possible_tests
+
+# Needed on ppc64le.  See:
+# https://bugzilla.redhat.com/show_bug.cgi?id=2324491
+%ifarch ppc64 ppc64le
+export LDFLAGS="%{__global_ldflags} -Wl,--no-tls-get-addr-optimize"
+%endif
+
 # Disable arc4random_buf on purpose, so we are able
 # to run test/getrandom-fallback from testsuite.
 %configure                                       \
@@ -589,6 +602,10 @@ done
 
 
 %changelog
+* Fri Nov 08 2024 Björn Esser <besser82@fedoraproject.org> - 4.4.36-10
+- Build with -Wl,--no-tls-get-addr-optimize on ppc64(le)
+- Remove cludge from patch for MT-Safeness in crypt and crypt_gensalt
+
 * Thu Nov 07 2024 Björn Esser <besser82@fedoraproject.org> - 4.4.36-9
 - Update patch for MT-Safeness in crypt and crypt_gensalt
 

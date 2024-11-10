@@ -1,6 +1,6 @@
 Summary: Graphical system installer
 Name:    anaconda
-Version: 42.12
+Version: 42.13
 Release: 1%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
@@ -490,6 +490,19 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Fri Nov 08 2024 Packit <hello@packit.dev> - 42.13-1
+- Test for kickstart scripts (akankovs)
+- Migrate the %%pre-install, %%post, %%onerror and %%traceback scripts
+  (akankovs)
+- Suppress warning from systemd user session (jkonecny)
+- Use log levels when getting logs from GLib (jkonecny)
+- Remove GLib logging condition for HW logging (jkonecny)
+- Move GLib imports to pyanaconda.core.glib (jkonecny)
+- Redirect only GLib loggers to Journal (mkolman)
+- docs: Collect release notes for F41 (k.koukiou)
+- pyanaconda: storage: workaround for Virtio Block Device being displayed as
+  0x1af4 (k.koukiou)
+
 * Fri Oct 25 2024 Packit <hello@packit.dev> - 42.12-1
 - Revert "Update lorax build for pkexec command" (k.koukiou)
 - Update lorax build for pkexec command (adamkankovsky)

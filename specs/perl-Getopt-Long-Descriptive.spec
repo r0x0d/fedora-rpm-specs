@@ -1,7 +1,7 @@
 Name:           perl-Getopt-Long-Descriptive
 Summary:        Getopt::Long with usage text
-Version:        0.114
-Release:        3%{?dist}
+Version:        0.115
+Release:        1%{?dist}
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Getopt-Long-Descriptive
 Source0:        https://cpan.metacpan.org/modules/by-module/Getopt/Getopt-Long-Descriptive-%{version}.tar.gz
@@ -64,6 +64,11 @@ make test
 %{_mandir}/man3/Getopt::Long::Descriptive::Usage.3*
 
 %changelog
+* Fri Nov  8 2024 Paul Howarth <paul@city-fan.org> - 0.115-1
+- Update to 0.115 (rhbz#2324463)
+  - Cope with the user forgetting the first argument, generally "%%c %%o", to
+    'describe_options', by assuming they meant that value exactly
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.114-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

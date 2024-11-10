@@ -25,7 +25,7 @@ end}
 
 Name:             grafana
 Version:          10.2.6
-Release:          5%{?dist}
+Release:          6%{?dist}
 Summary:          Metrics dashboard and graph editor
 License:          AGPL-3.0-only
 URL:              https://grafana.org
@@ -89,7 +89,7 @@ ExclusiveArch:    %{grafana_arches}
 
 BuildRequires:    systemd
 BuildRequires:    systemd-rpm-macros
-BuildRequires:    golang >= 1.17
+BuildRequires:    golang
 BuildRequires:    go-srpm-macros
 BuildRequires:    go-rpm-macros
 
@@ -1025,6 +1025,9 @@ fi
 %{_datadir}/selinux/*/grafana.pp
 
 %changelog
+* Fri Nov 8 2024 Sam Feifer <sfeifer@redhat.com> 10.2.6-6
+- Update selinux policy for the new valkey executable
+
 * Wed Jul 17 2024 Sam Feifer <sfeifer@redhat.com> 10.2.6-4
 - Resolve issue in selinux policy due to unification of bin and sbin
 

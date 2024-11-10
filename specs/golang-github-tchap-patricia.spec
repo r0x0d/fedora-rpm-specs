@@ -29,6 +29,7 @@ Summary:        A generic patricia trie (also called radix tree) implemented in 
 License:        MIT
 URL:            %{gourl}
 Source:         %{gosource}
+Patch:          patricia-disable-delete_leakage_sparse.diff
 
 %description %{common_description}
 
@@ -36,6 +37,7 @@ Source:         %{gosource}
 
 %prep
 %goprep
+%autopatch -p1
 
 %generate_buildrequires
 %go_generate_buildrequires

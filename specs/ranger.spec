@@ -1,9 +1,8 @@
 Name:           ranger
-Version:        1.9.3
-Release:        17%{?dist}
+Version:        1.9.4
+Release:        1%{?dist}
 Summary:        A vim-like file manager
-# Automatically converted from old format: GPLv3+ - review is highly recommended.
-License:        GPL-3.0-or-later
+License:        GPL-3.0
 URL:            https://ranger.github.io/
 Source0:        https://github.com/%{name}/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
@@ -49,6 +48,11 @@ find _doc -type f -exec chmod -R -x '{}' \;
 
 
 %changelog
+* Thu Nov 07 2024 Ben Boeckel <fedora@me.benboeckel.net> - 1.9.4-1
+- Update to 1.9.4 (rhbz#2324228)
+- Support Python 3.13 (rhbz#2315724)
+- Update license to GPL-3.0 (no "or later" present in comment headers)
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 1.9.3-17
 - convert license to SPDX
 

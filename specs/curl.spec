@@ -2,12 +2,12 @@
 # This is deprecated by OpenSSL since OpenSSL 3.0 and by Fedora since Fedora 41
 # https://fedoraproject.org/wiki/Changes/OpensslDeprecateEngine
 # Change the bcond to 0 to turn off ENGINE support by default
-%bcond openssl_engine_support 1
+%bcond openssl_engine_support %[%{defined fedora} || 0%{?rhel} < 10]
 
 Summary: A utility for getting files from remote servers (FTP, HTTP, and others)
 Name: curl
 Version: 8.11.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: curl
 Source0: https://curl.se/download/%{name}-%{version}.tar.xz
 Source1: https://curl.se/download/%{name}-%{version}.tar.xz.asc
@@ -52,7 +52,7 @@ BuildRequires: openldap-devel
 BuildRequires: openssh-clients
 BuildRequires: openssh-server
 BuildRequires: openssl-devel
-%if %{with openssl_engine_support}
+%if %{with openssl_engine_support} && 0%{?fedora} >= 41
 BuildRequires:  openssl-devel-engine
 %endif
 BuildRequires: perl-interpreter
@@ -407,6 +407,9 @@ rm -f ${RPM_BUILD_ROOT}%{_libdir}/libcurl.la
 %{_libdir}/libcurl.so.4.[0-9].[0-9].minimal
 
 %changelog
+* Wed Nov 06 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 8.11.0-2
+- Disable engine support on RHEL 10+
+
 * Wed Nov 06 2024 Jan Macku <jamacku@redhat.com> - 8.11.0-1
 - new upstream release, which fixes the following vulnerabilities
     CVE-2024-9681 - HSTS subdomain overwrites parent cache entry

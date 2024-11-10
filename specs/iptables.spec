@@ -10,41 +10,17 @@
 Name: iptables
 Summary: Tools for managing Linux kernel packet filtering capabilities
 URL: https://www.netfilter.org/projects/iptables
-Version: 1.8.10
-Release: 15%{?dist}
+Version: 1.8.11
+Release: 1%{?dist}
 Source0: %{url}/files/%{name}-%{version}.tar.xz
 source1: %{url}/files/%{name}-%{version}.tar.xz.sig
-Source2: coreteam-gpg-key-0xD55D978A8A1420E4.txt
+Source2: coreteam-gpg-key-0xD70D1A666ACF2B21.txt
 Source3: iptables.init
 Source4: iptables-config
 Source5: iptables.service
 Source6: sysconfig_iptables
 Source7: sysconfig_ip6tables
 Source8: arptables-nft-helper
-
-Patch001: 0001-libiptc-Fix-for-another-segfault-due-to-chain-index-.patch
-Patch002: 0002-arptables-nft-remove-ARPT_INV-flags-usage.patch
-Patch003: 0003-ebtables-Fix-corner-case-noflush-restore-bug.patch
-Patch004: 0004-xshared-struct-xt_cmd_parse-xlate-is-unused.patch
-Patch005: 0005-xshared-All-variants-support-v-update-OPTSTRING_COMM.patch
-Patch006: 0006-ebtables-Align-line-number-formatting-with-legacy.patch
-Patch007: 0007-man-Do-not-escape-exclamation-marks.patch
-Patch008: 0008-libxtables-xtoptions-Fix-for-non-CIDR-compatible-hos.patch
-Patch009: 0009-iptables-legacy-Fix-for-mandatory-lock-waiting.patch
-Patch010: 0010-libxtables-xtoptions-Prevent-XTOPT_PUT-with-XTTYPE_H.patch
-Patch011: 0011-nft-ruleparse-Add-missing-braces-around-ternary.patch
-Patch012: 0012-libxtables-Fix-memleak-of-matches-udata.patch
-Patch013: 0013-extensions-ah-Save-xlate-inverted-full-ranges.patch
-Patch014: 0014-extensions-frag-Save-xlate-inverted-full-ranges.patch
-Patch015: 0015-extensions-mh-Save-xlate-inverted-full-ranges.patch
-Patch016: 0016-extensions-rt-Save-xlate-inverted-full-ranges.patch
-Patch017: 0017-extensions-esp-Save-xlate-inverted-full-ranges.patch
-Patch018: 0018-extensions-ipcomp-Save-inverted-full-ranges.patch
-Patch019: 0019-nft-Do-not-omit-full-ranges-if-inverted.patch
-Patch020: 0020-extensions-tcp-udp-Save-xlate-inverted-full-ranges.patch
-Patch021: 0021-nft-Fix-for-broken-recover_rule_compat.patch
-Patch022: 0022-xlate-libip6t_mh-Fix-and-simplify-plain-m-mh-match.patch
-Patch023: 0023-xshared-Fix-parsing-of-empty-string-arg-in-c-option.patch
 
 # pf.os: ISC license
 # iptables-apply: Artistic Licence 2.0
@@ -440,6 +416,7 @@ fi
 %{_sbindir}/xtables-nft-multi
 %{_sbindir}/xtables-monitor
 %{_sbindir}/ebtables-translate
+%{_sbindir}/arptables-translate
 %dir %{_libdir}/xtables
 %{_libdir}/xtables/lib{arp,eb}t*
 %{_libexecdir}/arptables-nft-helper
@@ -448,6 +425,7 @@ fi
 %{_mandir}/man8/*-nft*
 %{_mandir}/man8/ip{,6}tables{,-restore}-translate*
 %{_mandir}/man8/ebtables-translate*
+%{_mandir}/man8/arptables-translate*
 %ghost %{_sbindir}/ip{,6}tables{,-save,-restore}
 %ghost %{_sbindir}/{eb,arp}tables{,-save,-restore}
 %ghost %{_libexecdir}/arptables-helper
@@ -456,6 +434,9 @@ fi
 
 
 %changelog
+* Fri Nov 08 2024 Phil Sutter <psutter@redhat.com> - 1.8.11-1
+- new version
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.8.10-15
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

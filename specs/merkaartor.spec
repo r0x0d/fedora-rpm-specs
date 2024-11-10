@@ -4,7 +4,7 @@
 
 Name:           merkaartor
 Version:        0.20.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Qt-Based OpenStreetMap editor
 
 # GPL-2.0-or-later: main program
@@ -102,6 +102,9 @@ appstreamcli validate --no-net %{buildroot}%{_metainfodir}/org.%{name}.%{name}.a
 %{_metainfodir}/org.%{name}.%{name}.appdata.xml
 
 %changelog
+* Fri Nov 08 2024 Sandro Mani <manisandro@gmail.com> - 0.20.0-2
+- Rebuild (gdal)
+
 * Sat Sep 07 2024 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.20.0-1
 - Update to 0.20.0, fixes OSM upload by adding OAuth2 support (#2299157)
 - Specfile cleanups (remove %%auto* and %%forge* macros, rename patches)

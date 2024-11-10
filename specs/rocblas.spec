@@ -1,6 +1,6 @@
 %global upstreamname rocBLAS
 %global rocm_release 6.2
-%global rocm_patch 1
+%global rocm_patch 4
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 %global toolchain rocm
@@ -62,7 +62,7 @@ License:        MIT AND BSD-3-Clause
 
 Source0:        %{url}/archive/refs/tags/rocm-%{rocm_version}.tar.gz#/%{upstreamname}-%{rocm_version}.tar.gz
 Patch2:         0001-fixup-install-of-tensile-output.patch
-Patch3:         0001-add-gfx1103-support-for-rocBLAS.patch
+# Patch3:         0001-add-gfx1103-support-for-rocBLAS.patch
 Patch4:         0001-offload-compress-option.patch
 
 BuildRequires:  cmake

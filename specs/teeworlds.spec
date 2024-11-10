@@ -45,7 +45,6 @@ The controls are heavily inspired by the FPS genre of computer games.
 
 %package        server
 Summary:        Server for %{name}
-License:        Teeworlds and Zlib and BSD-2-Clause and BSD-3-Clause and Zlib
 Requires:       %{name}-data = %{version}
 Provides:       bundled(md5)
 Requires(pre):  shadow-utils

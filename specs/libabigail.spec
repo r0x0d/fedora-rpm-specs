@@ -73,7 +73,6 @@ This package contains documentation for the libabigail tools in the
 form of man pages, texinfo documentation and API documentation in html
 format.
 
-%if 0%{?fedora}
 %package fedora
 Summary: Utility to compare the ABI of Fedora packages
 BuildRequires: python3-devel
@@ -98,7 +97,6 @@ This package contains the fedabipkgdiff command line utility, which
 interacts with the Fedora Build System over the internet to let the
 user compare the ABI of Fedora packages without having to download
 them manually.
-%endif
 
 %prep
 %autosetup -v -S git
@@ -123,10 +121,8 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 # default 'install' target of the makefile.
 make -C doc/manuals install-man-and-info-doc DESTDIR=%{buildroot}
 
-%if 0%{?fedora}
 # Explicitly use Python 3 as the interpreter
 %py3_shebang_fix %{buildroot}%{_bindir}/fedabipkgdiff
-%endif
 
 %check
 time make %{?_smp_mflags} check || (cat tests/test-suite.log && exit 2)
@@ -163,10 +159,8 @@ time make %{?_smp_mflags} check-self-compare ENABLE_SLOW_TEST=yes || (cat tests/
 %license LICENSE.txt license-change-2020.txt
 %doc doc/manuals/html/*
 
-%if 0%{?fedora}
 %files fedora
 %{_bindir}/fedabipkgdiff
-%endif
 
 %changelog
 * Fri Nov 1 2024 Dodji Seketeli <dodji@redhat.com> - 2.6-1

@@ -21,6 +21,10 @@ Summary:        Bootstrapping your OS
 License:        GPL-2.0-or-later
 URL:            https://wiki.gnome.org/Design/OS/InitialSetup
 Source0:        https://download.gnome.org/sources/%{name}/47/%{name}-%{tarball_version}.tar.xz
+# From https://gitlab.gnome.org/GNOME/gnome-initial-setup/-/merge_requests/268
+# https://gitlab.gnome.org/GNOME/gnome-initial-setup/-/issues/223
+# Fix crash with GTK 4.17 due to accessing a display before initing GTK
+Patch:          fbab8550691abd96cd0ddbff16af200f7cdb9c99.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  gcc

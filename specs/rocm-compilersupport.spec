@@ -48,7 +48,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        1.rocm%{rocm_version}%{?dist}
+Release:        2.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -70,8 +70,8 @@ Patch0:         0001-Remove-err_drv_duplicate_config-check.patch
 %endif
 
 BuildRequires:  cmake
-%if 0%{?fedora}
 BuildRequires:  perl
+%if 0%{?fedora}
 BuildRequires:  fdupes
 BuildRequires:  perl-generators
 %endif
@@ -564,6 +564,9 @@ mv %{buildroot}%{bundle_prefix}/bin/hip*.pm %{buildroot}%{perl_vendorlib}
 %files -n hipcc-libomp-devel
 
 %changelog
+* Fri Nov 8 2024 Tom Rix <Tom.Rix@amd.com> - 18-2.rocm6.2.4
+- Perl is needed for RHEL.
+
 * Thu Nov 7 2024 Tom Rix <Tom.Rix@amd.com> - 18-1.rocm6.2.4
 - Update to 6.2.4
 

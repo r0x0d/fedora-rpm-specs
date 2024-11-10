@@ -23,7 +23,6 @@ ExclusiveArch:  x86_64
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
-BuildRequires:  hipcc
 BuildRequires:  hsakmt-devel
 BuildRequires:  hsakmt(rocm) = %{rocm_release}
 BuildRequires:  libdrm-devel

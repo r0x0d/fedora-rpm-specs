@@ -1,6 +1,6 @@
 Name:		kealib
 Version:	1.5.0
-Release:	10%{?dist}
+Release:	11%{?dist}
 Summary:	HDF5 Based Raster File Format as a GDAL plugin
 
 License:	MIT
@@ -73,6 +73,9 @@ mv %{buildroot}%{_prefix}/lib/gdalplugins/* %{buildroot}%{_libdir}/gdalplugins/
 %{_includedir}/libkea
 
 %changelog
+* Fri Nov 08 2024 Sandro Mani <manisandro@gmail.com> - 1.5.0-11
+- Rebuild (gdal)
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1.5.0-10
 - Rebuild for hdf5 1.14.5
 

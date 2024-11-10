@@ -2,23 +2,23 @@
 %global gem_name pg
 
 Name: rubygem-%{gem_name}
-Version: 1.5.7
+Version: 1.5.9
 Release: 1%{?dist}
 Summary: A Ruby interface to the PostgreSQL RDBMS
 License: (BSD-2-Clause OR Ruby) AND PostgreSQL
 URL: https://github.com/ged/ruby-pg
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # git clone --no-checkout https://github.com/ged/ruby-pg.git
-# git -C ruby-pg archive -v -o pg-1.5.7-spec.tar.gz v1.5.7 spec/
+# git -C ruby-pg archive -v -o pg-1.5.9-spec.tar.gz v1.5.9 spec/
 Source1: %{gem_name}-%{version}-spec.tar.gz
 # Disable RPATH.
 # https://github.com/ged/ruby-pg/issues/183
 Patch0: rubygem-pg-1.3.0-remove-rpath.patch
-# Workaround errors due to custom test path.
-# https://github.com/ged/ruby-pg/issues/576
-Patch1: rubygem-pg-1.5.7-Fix-test-errors-with-modified-RUBY_PG_TEST_DIR.patch
 # lib/pg/text_{de,en}coder.rb
 Requires: rubygem(json)
+# This is optional dependency now.
+# https://github.com/ged/ruby-pg/pull/556
+Suggests: rubygem(bigdecimal)
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby-devel
@@ -50,10 +50,6 @@ Documentation for %{name}.
 
 %patch 0 -p1
 
-pushd %{_builddir}
-%patch 1 -p1
-popd
-
 %build
 # Create the gem as gem install only works on a gem file
 gem build ../%{gem_name}-%{version}.gemspec
@@ -78,6 +74,11 @@ rm -rf %{buildroot}%{gem_instdir}/ext/
 pushd .%{gem_instdir}
 ln -s %{_builddir}/spec .
 
+# Some test cases fail starting with Linux kernel 6.10
+# https://bugzilla.redhat.com/show_bug.cgi?id=2324182
+# https://github.com/ged/ruby-pg/issues/601
+EXAMPLE_MATCHES='^(?!with a Fiber scheduler (can send lots of data per put_copy_data|waits when sending query data|should convert strings and parameters to #prepare and #exec_prepared)).*$'
+
 # Assign a random port to consider a case of multi builds in parallel in a host.
 # https://github.com/ged/ruby-pg/pull/39
 export PGPORT="$((54321 + ${RANDOM} % 1000))"
@@ -87,7 +88,7 @@ export PGPORT="$((54321 + ${RANDOM} % 1000))"
 export RUBY_PG_TEST_DIR=%{_builddir}/tmp
 # Set --verbose to show detail log by $VERBOSE.
 # See https://github.com/ged/ruby-pg/blob/master/spec/helpers.rb $VERBOSE
-if ! ruby -S --verbose rspec -I$(dirs +1)%{gem_extdir_mri} -f d spec; then
+if ! ruby -S --verbose rspec -I$(dirs +1)%{gem_extdir_mri} -f d spec -E "${EXAMPLE_MATCHES}"; then
   echo "==== [setup.log start ] ===="
   cat ${RUBY_PG_TEST_DIR}/tmp_test_specs/setup.log
   echo "==== [setup.log end ] ===="
@@ -98,7 +99,6 @@ popd
 %files
 %dir %{gem_instdir}
 %{gem_extdir_mri}
-%exclude %{gem_instdir}/.*
 %license %{gem_instdir}/BSDL
 %license %{gem_instdir}/LICENSE
 %license %{gem_instdir}/POSTGRES
@@ -117,13 +117,20 @@ popd
 %lang(ja) %doc %{gem_instdir}/README.ja.md
 %doc %{gem_instdir}/README.md
 %{gem_instdir}/Rakefile*
-%{gem_instdir}/rakelib/*
 %{gem_instdir}/certs
 %{gem_instdir}/misc
 %{gem_instdir}/pg.gemspec
+%{gem_instdir}/rakelib
 %{gem_instdir}/sample
 
 %changelog
+* Fri Nov 08 2024 Vít Ondruch <vondruch@redhat.com> - 1.5.9-1
+- Update to pg 1.5.9.
+  Resolves: rhbz#2310465
+
+* Fri Nov 08 2024 Vít Ondruch <vondruch@redhat.com> - 1.5.7-2
+- Disable some test cases failing with kernel 6.10+.
+
 * Wed Aug 07 2024 Vít Ondruch <vondruch@redhat.com> - 1.5.7-1
 - Update to pg 1.5.7.
   Resolves: rhbz#2264429

@@ -104,7 +104,7 @@ export LDFLAGS="%{build_ldflags}"
 %{scons} %{?_smp_mflags} \
       DETECT_USERSPACE_ENV=False \
       ENABLE_SETBUFFERSIZE_API_VER=True \
-      ENABLE_OPTIMIZATIONS=True \
+      ENABLE_OPTIMIZATIONS=False \
       CUSTOM_ENV=True \
       BUILD_DOC=user \
       PREFIX=%{_prefix} \

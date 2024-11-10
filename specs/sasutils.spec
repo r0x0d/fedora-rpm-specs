@@ -1,5 +1,5 @@
 Name:           sasutils
-Version:        0.5.0
+Version:        0.6.0
 Release:        5%{?dist}
 Summary:        Serial Attached SCSI (SAS) utilities
 
@@ -53,6 +53,9 @@ install -p -m 0644 doc/man/man1/ses_report.1 %{buildroot}/%{_mandir}/man1/
 %license LICENSE.txt
 
 %changelog
+* Fri Nov  8 2024 Stephane Thiell <sthiell@stanford.edu> 0.6.0-5
+- update version
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0.5.0-5
 - convert license to SPDX
 

@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc6.20241107gitff7afaeca1a1.54
+%define pkgrelease 0.rc6.20241108git906bd684e4b1.55
 %define kversion 6
-%define tarfile_release 6.12-rc6-110-gff7afaeca1a1
+%define tarfile_release 6.12-rc6-169-g906bd684e4b1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc6.20241107gitff7afaeca1a1.54%{?buildid}%{?dist}
+%define specrelease 0.rc6.20241108git906bd684e4b1.55%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4151,9 +4151,12 @@ fi\
 #
 #
 %changelog
-* Thu Nov 07 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.ff7afaeca1a1.54]
+* Fri Nov 08 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.906bd684e4b1.55]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Fri Nov 08 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.906bd684e4b1.54]
+- Linux v6.12.0-0.rc6.906bd684e4b1
 
 * Thu Nov 07 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.ff7afaeca1a1.53]
 - redhat: set new gcov configs (Jan Stancek)

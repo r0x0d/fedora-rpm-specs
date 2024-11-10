@@ -20,12 +20,14 @@ Implements a subset of PKCS#7/Cryptographic Message Syntax (rfc2315, rfc5652).}
 
 Name:           %{goname}
 Version:        0
-Release:        0.11%{?dist}
+Release:        0.12%{?dist}
 Summary:        Implements a subset of PKCS#7/Cryptographic Message Syntax (rfc2315, rfc5652)
 
 License:        MIT
 URL:            %{gourl}
 Source:         %{gosource}
+# FAIL: TestDSASignAndVerifyWithOpenSSL
+Patch:          pkcs7-disable-dsa-test.diff
 
 BuildRequires:  openssl
 
@@ -35,6 +37,7 @@ BuildRequires:  openssl
 
 %prep
 %goprep
+%autopatch -p1
 
 %generate_buildrequires
 %go_generate_buildrequires
@@ -59,6 +62,10 @@ sed -e '/\t\tx509.ECDSAWithSHA1,/d' -i verify_test.go
 %gopkgfiles
 
 %changelog
+* Thu Nov 07 2024 Michel Lind <salimma@fedoraproject.org> - 0-0.12
+- Properly disable deprecated DSA test
+- Resolves: rhbz#2300810
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0-0.11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

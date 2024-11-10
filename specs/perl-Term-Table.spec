@@ -5,13 +5,11 @@
 
 Name:           perl-Term-Table
 Version:        0.023
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Format a header and rows into a table
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Term-Table
 Source0:        https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Term-Table-%{version}.tar.gz
-# Unbundle Object::HashBase
-Patch0:         Term-Table-0.023-Use-system-Object-HashBase.patch
 BuildArch:      noarch
 BuildRequires:  make
 BuildRequires:  perl-generators
@@ -24,7 +22,6 @@ BuildRequires:  perl(warnings)
 BuildRequires:  perl(Carp)
 BuildRequires:  perl(Config)
 BuildRequires:  perl(List::Util)
-BuildRequires:  perl(Object::HashBase) >= 0.008
 BuildRequires:  perl(Scalar::Util)
 # Optional run-time:
 %if %{with perl_Term_Table_enables_terminal}
@@ -49,6 +46,9 @@ Recommends:     perl(Term::Size::Any) >= 0.002
 Recommends:     perl(Unicode::GCString) >= 2013.10
 %endif
 
+# Remove private test modules
+%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\(main::HBase|main::HBase::Wrapped\\)$
+
 %description
 This Perl module is able to format rows of data into tables.
 
@@ -63,12 +63,7 @@ with "%{_libexecdir}/%{name}/test".
 
 %prep
 %setup -q -n Term-Table-%{version}
-%patch -P0 -p1
-# Delete bundled Object::HashBase
-for F in lib/Term/Table/HashBase.pm t/HashBase.t; do
-    perl -e 'unlink $ARGV[0] or die $!' "$F"
-    perl -i -s -ne 'print $_ unless m{\A\Q$file\E\b}' -- -file="$F" MANIFEST
-done
+# XXX Don't unbundle Term::Table::HashBase, the module is in Perl Core.
 # Help generators to recognize Perl scripts
 for F in t/*.t t/Table/*.t; do
     perl -i -MConfig -ple 'print $Config{startperl} if $. == 1 && !s{\A#!\s*perl}{$Config{startperl}}' "$F"
@@ -105,6 +100,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Fri Nov 08 2024 Michal Josef Špaček <mspacek@redhat.com> - 0.023-2
+- Revert bundling Term::Table::HashBase, module is in Perl Core
+
 * Tue Oct 29 2024 Michal Josef Špaček <mspacek@redhat.com> - 0.023-1
 - 0.023 bump
 

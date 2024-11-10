@@ -2,7 +2,7 @@
 %global shortcommit %(c=%{commit}; echo ${c:0:8})
 Name:           kookbook
 Version:        0.2.1^20240530.56b0c4d9
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Cookbook creator
 
 License:        MIT
@@ -21,7 +21,7 @@ BuildRequires: cmake(Qt6Gui)
 BuildRequires: cmake(Qt6Qml)
 BuildRequires: cmake(Qt6Test)
 
-Requires: %{name}-extras = %{version}%{release}
+Requires: %{name}-extras = %{version}-%{release}
 
 %description
 Simple application viewer based on markdown formatted recipes.
@@ -36,7 +36,7 @@ Files used by Kookbook packages.
 
 %package touch
 Summary:    Cookbook creator for touch screens
-Requires:   %{name}-extras = %{version}%{release}
+Requires:   %{name}-extras = %{version}-%{release}
 
 %description touch
 Touch screen optimized application viewer for markdown formatted
@@ -44,7 +44,7 @@ recipes.
 
 %package krecipes-convert
 Summary:    Convert krecipes files to kookbook format
-Requires:   %{name}-extras = %{version}%{release}
+Requires:   %{name}-extras = %{version}-%{release}
 BuildArch:  noarch
 
 %description krecipes-convert
@@ -99,5 +99,8 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}to
 
 
 %changelog
+* Fri Nov 08 2024 Benson Muite <benson_muite@emailplus.org> - 0.2.1^20240530.56b0c4d9-2
+- Fix requires so packages install bz # 2324674
+
 * Thu Oct 17 2024 Benson Muite <benson_muite@emailplus.org> - 0.2.1^20240530.56b0c4d9-1
 - Initial packaging

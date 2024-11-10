@@ -22,6 +22,9 @@ Obsoletes: java-%{?1}-openjdk-portable%{?2}%{?3} < 1:1000
 %{obsoleteLines -- %{?1} -src}
 %{obsoleteLines -- %{?1} -javadoc}
 %{obsoleteLines -- %{?1} -javadoc-zip}
+%{obsoleteLines -- %{?1} -jmods}
+%{obsoleteLines -- %{?1} -static-libs}
+%{obsoleteLines -- %{?1} -openjfx}
 %{obsoleteLines -- %{?1} -docs}
 %{obsoleteLines -- %{?1} -sources}
 }
@@ -49,6 +52,8 @@ Requires:   fedora-third-party
 %{obsoleteJdk -- 1.8.0}
 %{obsoleteJdk -- 11}
 %{obsoleteJdk -- 17}
+Obsoletes: openjfx8 < 1000
+Obsoletes: openjfx8-devel < 1000
 
 %description
 This package adds configuration to add a remote repository

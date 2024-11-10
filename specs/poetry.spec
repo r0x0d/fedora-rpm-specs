@@ -35,6 +35,7 @@ BuildRequires:  python3-devel
 BuildRequires:  pyproject-rpm-macros
 
 # The tests deps are only defined as part of poetry.dev-dependencies together with tox, pre-commit etc.
+%if %{without bootstrap}
 BuildRequires:  gcc
 BuildRequires:  git-core
 BuildRequires:  /usr/bin/python
@@ -44,6 +45,7 @@ BuildRequires:  %py3_dist pytest-xdist
 BuildRequires:  %py3_dist httpretty
 BuildRequires:  %py3_dist cachy
 BuildRequires:  %py3_dist deepdiff
+%endif
 
 Requires:       python3-poetry = %{version}-%{release}
 

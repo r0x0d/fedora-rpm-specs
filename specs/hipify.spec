@@ -1,7 +1,7 @@
 %global upstreamname HIPIFY
 
 %global rocm_release 6.2
-%global rocm_patch 1
+%global rocm_patch 4
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 # This is a clang tool so best to build with clang
@@ -14,7 +14,7 @@ Summary:        Convert CUDA to HIP
 
 Url:            https://github.com/ROCm
 License:        MIT
-Source0:        %{url}/%{upstreamname}/archive/refs/tags/rocm-%{version}.tar.gz#/%{upstreamname}-%{version}.tar.gz
+Source0:        %{url}/%{upstreamname}/archive/rocm-%{version}.tar.gz#/%{upstreamname}-%{version}.tar.gz
 Patch0:         0001-prepare-hipify-cmake-for-fedora.patch
 
 BuildRequires:  cmake

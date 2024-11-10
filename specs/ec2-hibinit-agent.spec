@@ -12,12 +12,16 @@
 
 Name:           ec2-hibinit-agent
 Version:        1.0.9
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Hibernation setup utility for Amazon EC2
 
 License:        Apache-2.0
 URL:            https://github.com/aws/amazon-%{name}
 Source0:        https://github.com/aws/%{project}/archive/v%{version}/%{name}-%{version}.tar.gz
+
+# Ensure swapon with maximum priority before hibernation
+# Upstream Patch: https://github.com/aws/amazon-ec2-hibinit-agent/pull/49)
+Patch1:         0001-swapon-with-maximum-priority-before-hibernation.patch
 
 BuildArch:  noarch
 
@@ -38,7 +42,7 @@ Requires: tuned
 An EC2 agent that creates a setup for instance hibernation
 
 %prep
-%autosetup -n %{project}-%{version}
+%autosetup -p1 -n %{project}-%{version}
 # Fix build with setuptools 62.1
 # https://github.com/aws/amazon-ec2-hibinit-agent/issues/24
 sed -i "20i packages=[]," setup.py
@@ -144,6 +148,10 @@ fi
 %selinux_relabel_post -s %{selinuxtype}
 
 %changelog
+* Fri Nov 08 2024 Dominik Wombacher <dominik@wombacher.cc> - 1.0.9-4
+- Include upstream Patch to ensure swapon with maximum priority before hibernation
+- Resolves rhbz#2322884
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.9-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

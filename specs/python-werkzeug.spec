@@ -8,7 +8,7 @@
 %bcond tests 1
 
 Name:           python-%{modname}
-Version:        3.0.6
+Version:        3.1.3
 Release:        %autorelease
 Summary:        Comprehensive WSGI web application library
 
@@ -19,9 +19,6 @@ Source0:        %{pypi_source}
 # Fixes PYTHONPATH handling in tests
 # Upstream: https://github.com/pallets/werkzeug/pull/2172
 Patch:          preserve-any-existing-PYTHONPATH-in-tests.patch
-# Fix tests with pytest-xprocess 1.0+
-# https://github.com/pallets/werkzeug/issues/2875#issuecomment-2044203708
-Patch:          0001-Fix-tests-with-pytest-xprocess-1.0.patch
 
 BuildArch:      noarch
 

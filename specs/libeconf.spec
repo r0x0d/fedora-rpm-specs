@@ -5,7 +5,7 @@
 
 Name:           libeconf
 Version:        0.7.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Enhanced config file parser library
 
 License:        MIT
@@ -82,6 +82,9 @@ configuration files from applications that use %{name}.
 %{_mandir}/man8/econftool.8*
 
 %changelog
+* Fri Nov  8 2024 Iker Pedrosa <ipedrosa@redhat.com> - 0.7.4-3
+- migrated to SPDX license (although no change was done)
+
 * Wed Oct 16 2024 Iker Pedrosa <ipedrosa@redhat.com> - 0.7.4-2
 - Rebase to 0.7.4
 

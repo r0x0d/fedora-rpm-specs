@@ -13,7 +13,7 @@
 
 Name:           hsakmt
 Version:        1.0.6
-Release:        48.rocm%{rocm_version}%{?dist}
+Release:        49.rocm%{rocm_version}%{?dist}
 Summary:        AMD HSA thunk library
 
 License:        MIT
@@ -35,7 +35,6 @@ BuildRequires: pciutils-devel
 BuildRequires: libdrm-devel
 
 %if %{with kfdtest}
-BuildRequires: hipcc
 BuildRequires: rocm-llvm-devel
 BuildRequires: rocm-compilersupport-macros
 %endif
@@ -149,6 +148,9 @@ rm %{buildroot}%{_docdir}/hsakmt/LICENSE.md
 %exclude %{_libdir}/libhsakmt-staticdrm.a
 
 %changelog
+* Fri Nov 8 2024 Tom Rix <Tom.Rix@amd.com> - 1.0.6-49.rocm6.2.4
+- Remove dependence on hipcc
+
 * Thu Nov 7 2024 Tom Rix <Tom.Rix@amd.com> - 1.0.6-48.rocm6.2.4
 - Update to to 6.2.4
 

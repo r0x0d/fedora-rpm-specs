@@ -9,7 +9,7 @@
 
 Name:           ncl
 Version:        6.6.2
-Release:        46%{?dist}
+Release:        47%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -366,6 +366,9 @@ done
 
 
 %changelog
+* Fri Nov 08 2024 Sandro Mani <manisandro@gmail.com> - 6.6.2-47
+- Rebuild (gdal)
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 6.6.2-46
 - Rebuild for hdf5 1.14.5
 

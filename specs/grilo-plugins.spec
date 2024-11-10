@@ -13,6 +13,7 @@ Summary:	Plugins for the Grilo framework
 License:	LicenseRef-Callaway-LGPLv2+
 URL:		https://wiki.gnome.org/Projects/Grilo
 Source0:	https://download.gnome.org/sources/grilo-plugins/%{release_version}/grilo-plugins-%{version}.tar.xz
+Patch0:		disable-broken-plugins.patch
 
 BuildRequires:  gcc
 BuildRequires:  meson
@@ -51,9 +52,7 @@ Requires:	grilo%{_isa} >= %{grilo_version}
 Grilo is a framework that provides access to different sources of
 multimedia content, using a pluggable system.
 This package contains plugins to get information from theses sources:
-- Apple Trailers
 - Bookmarks
-- Euronews
 - Filesystem
 - Flickr
 - Freebox
@@ -93,6 +92,7 @@ This package contains plugins to get information from theses sources:
 %if 0%{?fedora}
     -Denable-podcasts=yes \
 %endif
+    -Denable-raitv=no \
     -Denable-tmdb=yes \
     -Denable-youtube=no \
     -Denable-tracker=no \

@@ -1,5 +1,5 @@
 Name:           anaconda-webui
-Version:        17
+Version:        18
 Release:        1%{?dist}
 Summary:        Anaconda installer Web interface
 License:        LGPL-2.1-or-later AND MIT
@@ -37,6 +37,7 @@ Requires: firefox
 %if 0%{?fedora}
 Requires: fedora-logos
 %endif
+BuildRequires: desktop-file-utils
 
 Provides: bundled(npm(@patternfly/patternfly)) = 5.4.1
 Provides: bundled(npm(@patternfly/react-core)) = 5.4.1
@@ -45,9 +46,9 @@ Provides: bundled(npm(@patternfly/react-log-viewer)) = 5.3.0
 Provides: bundled(npm(@patternfly/react-styles)) = 5.4.1
 Provides: bundled(npm(@patternfly/react-table)) = 5.4.1
 Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.1
-Provides: bundled(npm(attr-accept)) = 2.2.4
+Provides: bundled(npm(attr-accept)) = 2.2.5
 Provides: bundled(npm(dequal)) = 2.0.3
-Provides: bundled(npm(file-selector)) = 0.6.0
+Provides: bundled(npm(file-selector)) = 2.1.0
 Provides: bundled(npm(focus-trap)) = 7.5.4
 Provides: bundled(npm(js-tokens)) = 4.0.0
 Provides: bundled(npm(lodash)) = 4.17.21
@@ -56,13 +57,13 @@ Provides: bundled(npm(memoize-one)) = 5.2.1
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
 Provides: bundled(npm(react-dom)) = 18.2.0
-Provides: bundled(npm(react-dropzone)) = 14.2.10
+Provides: bundled(npm(react-dropzone)) = 14.3.5
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.2.0
 Provides: bundled(npm(scheduler)) = 0.23.2
 Provides: bundled(npm(tabbable)) = 6.2.0
 Provides: bundled(npm(throttle-debounce)) = 5.0.2
-Provides: bundled(npm(tslib)) = 2.8.0
+Provides: bundled(npm(tslib)) = 2.8.1
 
 %description
 Anaconda installer Web interface
@@ -76,6 +77,8 @@ Anaconda installer Web interface
 %install
 %make_install PREFIX=/usr
 appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
+
+desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/extlinks.desktop
 
 %check
 exit 0
@@ -106,12 +109,29 @@ exit 0
 %dir %{_datadir}/anaconda/firefox-theme/live/chrome
 %{_datadir}/anaconda/firefox-theme/live/user.js
 %{_datadir}/anaconda/firefox-theme/live/chrome/userChrome.css
+%dir %{_datadir}/anaconda/firefox-theme/extlink
+%{_datadir}/anaconda/firefox-theme/extlink/user.js
 %{_libexecdir}/anaconda/webui-desktop
+%{_libexecdir}/anaconda/firefox-ext
+%{_datadir}/applications/extlinks.desktop
 %{_unitdir}/webui-cockpit-ws.service
 
 
 # The changelog is automatically generated and merged
 %changelog
+* Fri Nov 08 2024 Packit <hello@packit.dev> - 18-1
+- reclaim: Make the list scroll instead of the modal body
+- reclaim: Adjust layout and alignment
+- ux: remove 'Make sure to have backed your data' warning
+- storage: show device type not format type for non partitions
+- ux: switch font weight to 'bold' for the storage actions in review
+- storage: Hide mount point mapping scenario when no mountable partitions are available
+- Open external links in firefox without the custom profile
+- Move disk encryption under generic storage configuration step
+- review: show device type if it's formatted as btrfs
+- storage: cockpit: fix UI flickering when exiting cockpit storage
+- Do not permit clicking 'Modify storage' button when installation has been started
+
 * Fri Oct 25 2024 Packit <hello@packit.dev> - 17-1
 - Run browser as liveuser instead of root
 - Introduce new guided partitioning scenario 'Home reuse'

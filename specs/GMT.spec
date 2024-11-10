@@ -23,7 +23,7 @@
 
 Name:           GMT
 Version:        6.5.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Generic Mapping Tools
 
 License:        LGPL-3.0-or-later
@@ -228,6 +228,9 @@ find $RPM_BUILD_ROOT -name \*.bat -delete
 
 
 %changelog
+* Fri Nov 08 2024 Sandro Mani <manisandro@gmail.com> - 6.5.0-5
+- Rebuild (gdal)
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.5.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

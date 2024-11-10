@@ -7,8 +7,7 @@ Version:    3.14.14
 Release:    33%{?dist}
 Summary:    APC UPS Power Control Daemon
 
-# Automatically converted from old format: GPLv2 - review is highly recommended.
-License:    GPL-2.0-only
+License:    GPLv2
 URL:        http://www.apcupsd.com
 Source0:    https://downloads.sourceforge.net/apcupsd/apcupsd-%version.tar.gz
 Source1:    apcupsd.service
@@ -23,11 +22,18 @@ Patch0:       apcupsd-3.14.9-fixgui.patch
 Patch1:       apcupsd-3.14.4-shutdown.patch
 # Fix format-security error so we can enable the checks
 Patch2:       patch-format-security
+Patch3:       disable_nologin.patch
 
 
 BuildRequires: gcc-c++
 BuildRequires: glibc-devel, gd-devel
-BuildRequires: net-snmp-devel, libusb-compat-0.1-devel
+%if %{defined fedora}
+BuildRequires: libusb-compat-0.1-devel
+%endif
+%if (%{defined rhel} && 0%{?rhel} <= 9)
+BuildRequires: libusb-devel
+%endif
+BuildRequires: net-snmp-devel, 
 BuildRequires: gtk2-devel, GConf2-devel, desktop-file-utils
 # /sbin/shutdown is required to be present when building
 # Somehow in F36 systemd is installed in mock but not in koji
@@ -167,17 +173,17 @@ rm examples/*.in
 
 
 %changelog
-* Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 3.14.14-33
-- convert license to SPDX
+* Fri Nov 08 2024 Germano Massullo <germano.massullo@gmail.com> - 3.14.14-33
+- Adds distinction between Fedora and EL <= 9 for BuildRequires: libusb
 
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.14.14-32
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+* Fri Nov 08 2024 Germano Massullo <germano.massullo@gmail.com> - 3.14.14-32
+- release bump
 
-* Mon Jan 22 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.14.14-31
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
+* Fri Nov 08 2024 Germano Massullo <germano.massullo@gmail.com> - 3.14.14-31
+- Adds disable_nologin.patch
 
-* Fri Jan 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.14.14-30
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
+* Sun Jan 07 2024 Germano Massullo <germano.massullo@gmail.com> - 3.14.14-30
+- disables apcupsd-3.14.4-shutdown.patch
 
 * Wed Jul 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 3.14.14-29
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild

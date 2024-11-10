@@ -2,7 +2,7 @@
 
 Name:    libsecp256k1
 Epoch:   1
-Version: 0.5.1
+Version: 0.6.0
 Release: 1%{?dist}
 Summary: Optimized C library for EC operations on curve secp256k1
 
@@ -11,11 +11,11 @@ License: MIT
 URL:     %{forgeurl}
 Source0: %{forgesource}
 
-BuildRequires: gcc
 BuildRequires: automake autoconf libtool
+BuildRequires: gcc
 BuildRequires: gmp-devel
-BuildRequires: openssl-devel
 BuildRequires: make
+BuildRequires: openssl-devel
 
 %description
 %{summary}.
@@ -64,8 +64,8 @@ make check
 %doc README.md
 %doc CHANGELOG.md
 %doc SECURITY.md
-%{_libdir}/%{name}.so.2
-%{_libdir}/%{name}.so.2.2.1
+%{_libdir}/%{name}.so.5
+%{_libdir}/%{name}.so.5.0.0
 
 %files devel
 %license COPYING
@@ -77,6 +77,9 @@ make check
 
 
 %changelog
+* Mon Nov  4 2024 Peter Lemenkov <lemenkov@gmail.com> - 1:0.6.0-1
+- Updated to version 0.6.0
+
 * Fri Aug 16 2024 Peter Lemenkov <lemenkov@gmail.com> - 1:0.5.1-1
 - Updated to version 0.5.1
 

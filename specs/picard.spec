@@ -1,5 +1,11 @@
 %global forgeurl    https://github.com/musicbrainz/picard/
-%global commit      2c1c30e6ccba886270cb49aed6d0329e114763da
+%global commit      dd05cd1498fd1c19e7f116f954d2f6aff15f1dca
+
+%define setup              setup.py
+%define autoupdate_on      'disable-autoupdate', None
+%define autoupdate_off     'disable-autoupdate', True
+%define selfauto_on        self.disable_autoupdate = None
+%define selfauto_off       self.disable_autoupdate = True
 
 Name:           picard
 Version:        2.12.3
@@ -46,13 +52,12 @@ track-oriented.
 
 
 %generate_buildrequires
-sed -i "s/charset-normalizer~=3.3.2/charset-normalizer>=3.3/g" requirements.txt
 %pyproject_buildrequires
 
 %build
-sed -i "s/'disable-autoupdate', None/'disable-autoupdate', True/g" setup.py
-sed -i "s/self.disable_autoupdate = None/self.disable_autoupdate = True/g" setup.py
-%{__python3} setup.py config
+sed -r -i -e "s|%{autoupdate_on}|%{autoupdate_off}|g" \
+  -e "s|%{selfauto_on}|%{selfauto_off}|g" \
+  %{setup}
 %pyproject_wheel
 
 %install

@@ -1,6 +1,6 @@
 %global upstreamname rocSOLVER
 %global rocm_release 6.2
-%global rocm_patch 1
+%global rocm_patch 4
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 %global toolchain rocm

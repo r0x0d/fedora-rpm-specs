@@ -1,8 +1,8 @@
 # SUSE guys use OBS to automatically handle release numbers,
 # when rebasing check what they are using on
-# https://download.opensuse.org/repositories/openSUSE:/Tools/Fedora_40/src/
+# https://download.opensuse.org/repositories/openSUSE:/Tools/Fedora_41/src/
 # update the obsrel to match the upstream release number
-%global obsrel 422.1
+%global obsrel 424.1
 
 # osc plugin support
 %global osc_plugin_dir %{_prefix}/lib/osc-plugins
@@ -16,7 +16,7 @@
 
 Name:           osc
 Summary:        Open Build Service Commander
-Version:        1.9.2
+Version:        1.10.1
 # Bump the release as necessary to ensure we're one level up from upstream
 Release:        %{obsrel}.%{baserelease}%{?dist}
 License:        GPL-2.0-or-later
@@ -34,6 +34,7 @@ BuildRequires:  python3-setuptools
 BuildRequires:  python3-pip
 BuildRequires:  python3-cryptography
 BuildRequires:  python3-urllib3
+BuildRequires:  python3-ruamel-yaml
 BuildRequires:  argparse-manpage
 Requires:       python3-distro
 Requires:       python3-rpm
@@ -95,6 +96,10 @@ install -Dm0644 contrib/complete.sh %{buildroot}%{_datadir}/bash-completion/comp
 install -Dm0755 contrib/osc.complete %{buildroot}%{_datadir}/osc/complete
 install -Dm0644 contrib/osc.fish %{buildroot}%{_datadir}/fish/vendor_completions.d/osc.fish
 
+# symlink /usr/bin/git-obs to /usr/libexec/git/obs
+mkdir -p %{buildroot}%{_libexecdir}/git
+ln -s %{_bindir}/git-obs %{buildroot}%{_libexecdir}/git/obs
+
 mkdir -p %{buildroot}%{obs_srcsvc_dir}
 
 mkdir -p %{buildroot}%{osc_plugin_dir}
@@ -114,6 +119,8 @@ python3 -m unittest
 %doc AUTHORS README.md NEWS
 %license COPYING
 %{_bindir}/osc*
+%{_bindir}/git-obs
+%{_libexecdir}/git/obs
 %{python3_sitelib}/osc*
 %{_sysconfdir}/profile.d/osc.csh
 %{_datadir}/bash-completion/completions/osc
@@ -127,6 +134,9 @@ python3 -m unittest
 %dir %{osc_plugin_dir}
 
 %changelog
+* Fri Nov  8 2024 Dan Čermák <dan.cermak@cgc-instruments.com> - 1.10.1-424.1.1
+- New upstream release 1.10.1, fixes rhbz#2324701
+
 * Wed Oct 02 2024 Dan Čermák <dan.cermak@cgc-instruments.com> - 1.9.2-422.1.1
 - New upstream release 1.9.2, fixes rhbz#2309529
 
