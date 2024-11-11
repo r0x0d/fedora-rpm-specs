@@ -1,5 +1,5 @@
 Name:           libbraiding
-Version:        1.3
+Version:        1.3.1
 %global so_version 0
 Release:        %autorelease
 Summary:        Library for computations on braid groups
@@ -7,6 +7,10 @@ Summary:        Library for computations on braid groups
 License:        GPL-2.0-or-later
 URL:            https://github.com/miguelmarco/libbraiding
 Source:         %{url}/archive/%{version}/libbraiding-%{version}.tar.gz
+
+# Correct typo in configure.ac
+# https://github.com/miguelmarco/libbraiding/commit/b174832026c2412baec83277c461e4df71d8525c
+Patch:          %{url}/commit/b174832026c2412baec83277c461e4df71d8525c.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -33,7 +37,7 @@ developing applications that use libbraiding.
 
 
 %prep
-%autosetup
+%autosetup -p1
 
 
 %conf
@@ -68,6 +72,7 @@ find '%{buildroot}' -type f -name '*.la' -print -delete
 %{_includedir}/braiding.h
 %{_includedir}/cbraid*.h
 %{_libdir}/libbraiding.so
+%{_libdir}/pkgconfig/libbraiding.pc
 
 
 %changelog

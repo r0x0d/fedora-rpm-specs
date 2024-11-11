@@ -1,5 +1,5 @@
 Name:           dd_rescue
-Version:        1.99.16
+Version:        1.99.17
 Release:        %autorelease
 Summary:        Fault tolerant "dd" utility for rescuing data from bad media
 # No version specified
@@ -97,11 +97,13 @@ popd
 %{_mandir}/man1/%{name}.*
 %{_mandir}/man1/ddr_lzo.*
 %{_mandir}/man1/ddr_crypt.*
+%{_mandir}/man1/ddr_lzma.*
 %{_libdir}/libddr_MD5.so
 %{_libdir}/libddr_hash.so
 %{_libdir}/libddr_lzo.so
 %{_libdir}/libddr_null.so
 %{_libdir}/libddr_crypt.so
+%{_libdir}/libddr_lzma.so
 
 
 %changelog

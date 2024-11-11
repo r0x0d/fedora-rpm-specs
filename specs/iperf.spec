@@ -1,15 +1,12 @@
 #%%global alphatag rc
 
 Name: iperf
-Version: 2.2.0
-Release: 4%{?alphatag:.%{alphatag}}%{?dist}
+Version: 2.2.1
+Release: 1%{?alphatag:.%{alphatag}}%{?dist}
 Summary: Measurement tool for TCP/UDP bandwidth performance
-# Automatically converted from old format: BSD - review is highly recommended.
 License: BSD-3-Clause
 URL: http://sourceforge.net/projects/iperf2
 Source: http://sourceforge.net/projects/iperf2/files/%{name}-%{version}%{?alphatag:-%{alphatag}}.tar.gz
-Patch0: iperf-2.2.0-debuginfo.patch
-Patch1: iperf-2.2.0-overflow.patch
 BuildRequires: gcc-c++
 BuildRequires: make
 
@@ -35,6 +32,9 @@ jitter, datagram loss.
 %{_mandir}/man*/*
 
 %changelog
+* Thu Nov 07 2024 Gabriel Somlo <gsomlo@gmail.com> - 2.2.1-1
+- update to 2.2.1 (#2324266)
+
 * Sun Oct 20 2024 Gabriel Somlo <gsomlo@gmail.com> - 2.2.0-4
 - fix SPDX license
 

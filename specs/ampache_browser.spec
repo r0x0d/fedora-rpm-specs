@@ -11,17 +11,18 @@ Version: 1.0.7
 Release: 6%{?dist}
 Summary: C++ and Qt based client library for Ampache access
 
-# Automatically converted from old format: GPLv3 - review is highly recommended.
 License: GPL-3.0-only
 URL: http://ampache-browser.org
 Source0: https://github.com/ampache-browser/ampache_browser/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 BuildRequires: cmake
-%if 0%{?rhel} == 8
-BuildRequires: gcc-toolset-12
-%endif
 BuildRequires: gcc-c++
+%if 0%{?fedora} || 0%{?rhel} >= 9
 BuildRequires: qt6-qtbase-devel
+%else
+BuildRequires: gcc-toolset-12
+BuildRequires: qt5-qtbase-devel
+%endif
 
 %description
 Ampache Browser is a library that implements desktop client access to
@@ -47,7 +48,7 @@ developing applications that use %{name}.
 . /opt/rh/gcc-toolset-12/enable
 %endif
 
-%cmake .
+%cmake %{?el8:-D USE_QT6=OFF} .
 %cmake_build
 
 

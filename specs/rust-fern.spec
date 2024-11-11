@@ -5,7 +5,7 @@
 %global crate fern
 
 Name:           rust-fern
-Version:        0.6.2
+Version:        0.7.0
 Release:        %autorelease
 Summary:        Simple, efficient logging
 
@@ -61,6 +61,18 @@ This package contains library source intended for building other packages which
 use the "chrono" feature of the "%{crate}" crate.
 
 %files       -n %{name}+chrono-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+colored-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+colored-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "colored" feature of the "%{crate}" crate.
+
+%files       -n %{name}+colored-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+date-based-devel

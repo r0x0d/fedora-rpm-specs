@@ -2,27 +2,24 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate users
+%global crate fern
 
-Name:           rust-users0.10
-Version:        0.10.0
+Name:           rust-fern0.6
+Version:        0.6.2
 Release:        %autorelease
-Summary:        Library for accessing Unix users and groups
+Summary:        Simple, efficient logging
 
 License:        MIT
-URL:            https://crates.io/crates/users
+URL:            https://crates.io/crates/fern
 Source:         %{crates_source}
-Source1:        https://github.com/ogham/rust-users/raw/v%{version}/LICENCE
 # Manually created patch for downstream crate metadata changes
-# * remove reference to readme file that is not included in published crates
-# * don't exclude license from included files:
-#   https://github.com/ogham/rust-users/pull/37
-Patch:          users-fix-metadata.diff
+# * drop example-only dependency on clap ^2
+Patch:          fern-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-Library for accessing Unix users and groups.}
+Simple, efficient logging.}
 
 %description %{_description}
 
@@ -36,7 +33,10 @@ This package contains library source intended for building other packages which
 use the "%{crate}" crate.
 
 %files          devel
-%license %{crate_instdir}/LICENCE
+%license %{crate_instdir}/LICENSE
+%doc %{crate_instdir}/CHANGELOG.md
+%doc %{crate_instdir}/CONTRIBUTING.md
+%doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
 %package     -n %{name}+default-devel
@@ -51,58 +51,59 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+cache-devel
+%package     -n %{name}+chrono-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+cache-devel %{_description}
+%description -n %{name}+chrono-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "cache" feature of the "%{crate}" crate.
+use the "chrono" feature of the "%{crate}" crate.
 
-%files       -n %{name}+cache-devel
+%files       -n %{name}+chrono-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+log-devel
+%package     -n %{name}+date-based-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+log-devel %{_description}
+%description -n %{name}+date-based-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "log" feature of the "%{crate}" crate.
+use the "date-based" feature of the "%{crate}" crate.
 
-%files       -n %{name}+log-devel
+%files       -n %{name}+date-based-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+logging-devel
+%package     -n %{name}+libc-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+logging-devel %{_description}
+%description -n %{name}+libc-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "logging" feature of the "%{crate}" crate.
+use the "libc" feature of the "%{crate}" crate.
 
-%files       -n %{name}+logging-devel
+%files       -n %{name}+libc-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+mock-devel
+%package     -n %{name}+meta-logging-in-format-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+mock-devel %{_description}
+%description -n %{name}+meta-logging-in-format-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "mock" feature of the "%{crate}" crate.
+use the "meta-logging-in-format" feature of the "%{crate}" crate.
 
-%files       -n %{name}+mock-devel
+%files       -n %{name}+meta-logging-in-format-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
-cp -pav %{SOURCE1} .
+# drop one example program that pulls in clap ^2
+rm examples/cmd-program.rs
 
 %generate_buildrequires
 %cargo_generate_buildrequires

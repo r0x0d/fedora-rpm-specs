@@ -1,5 +1,5 @@
 Name:       ibus-typing-booster
-Version:    2.26.8
+Version:    2.26.11
 Release:    %autorelease
 Summary:    A completion input method
 License:    GPL-3.0-or-later AND Apache-2.0
@@ -132,8 +132,10 @@ export PYTHON=%{__python3}
     # These files are in the required package “cldr-emoji-annotation”
     rm $RPM_BUILD_ROOT/%{_datadir}/%{name}/data/annotations/*.xml
     rm $RPM_BUILD_ROOT/%{_datadir}/%{name}/data/annotationsDerived/*.xml
-    # This file is in the required package “unicode-ucd”:
+    # Thes files are in the required package “unicode-ucd”:
     rm $RPM_BUILD_ROOT/%{_datadir}/%{name}/data/UnicodeData.txt
+    rm $RPM_BUILD_ROOT/%{_datadir}/%{name}/data/Blocks.txt
+    rm $RPM_BUILD_ROOT/%{_datadir}/%{name}/data/DerivedAge.txt
     # At least emoji-data.txt emoji-sequences.txt emoji-zwj-sequences.txt
     # are still there even on Fedora >= 26 they are not available in any packages:
     gzip -n --force --best $RPM_BUILD_ROOT/%{_datadir}/%{name}/data/*.txt

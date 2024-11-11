@@ -2,7 +2,7 @@ Summary: NFS utilities and supporting clients and daemons for the kernel NFS ser
 Name: nfs-utils
 URL: http://linux-nfs.org/
 Version: 2.8.1
-Release: 0%{?dist}
+Release: 1%{?dist}
 Epoch: 1
 
 # group all 32bit related archs
@@ -269,15 +269,13 @@ if [ $1 -eq 0 ]; then
     : >%{_localstatedir}/lib/rpm-state/nfs-server.cleanup
 fi
 
-%posttrans
+%postun
+%systemd_postun_with_reload nfs-client.target nfs-server.service
 if [ -f %{_localstatedir}/lib/rpm-state/nfs-server.cleanup ]; then
     rm %{_localstatedir}/lib/rpm-state/nfs-server.cleanup || :
     rm -rf /var/lib/nfs/statd || :
     rm -rf /var/lib/nfs/v4recovery || :
 fi
-
-%postun
-%systemd_postun_with_reload nfs-client.target nfs-server.service
 
 %triggerin -- nfs-utils > 1:2.6.2-1
 /bin/systemctl try-restart gssproxy || :
@@ -441,6 +439,9 @@ rm -rf /etc/systemd/system/rpc-*.requires
 %{_mandir}/*/nfsiostat.8.gz
 
 %changelog
+* Tue Nov  5 2024 Scott Mayhew <smayhew@redhat.com> 2.8.1-1
+- Fix post-uninstall cleanup of /var/lib/nfs
+
 * Sat Oct 19 2024 Steve Dickson <steved@redhat.com> 2.8.1-0
 - Updated to the latest release: nfs-utils-2-8-1 (bz 2319911)
 

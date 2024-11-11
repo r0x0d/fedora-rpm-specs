@@ -13,7 +13,7 @@
 %global std_version 0.10
 
 Name:           python-nifti-mrs
-Version:        1.3.2
+Version:        1.3.3
 Release:        %autorelease
 Summary:        Software tools for the NIfTI-MRS data format
 
@@ -168,7 +168,11 @@ k="${k-}${k+ and }not test_reshape"
 k="${k-}${k+ and }not test_conjugate"
 %endif
 
-%pytest -k "${k-}" -v
+# Skip tests that require FSL-MRS tools, which are nonfree (restricted to
+# noncommercial use).
+m="${m-}${m+ and }not with_fsl_mrs"
+
+%pytest -k "${k-}" -m "${m-}" -v
 
 
 %files -n python3-nifti-mrs -f %{pyproject_files}

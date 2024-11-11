@@ -5,20 +5,19 @@
 %global crate pyo3-ffi
 
 Name:           rust-pyo3-ffi
-Version:        0.22.4
+Version:        0.22.6
 Release:        %autorelease
 Summary:        Python-API bindings for the PyO3 ecosystem
 
 License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/pyo3-ffi
 Source:         %{crates_source}
-
-# Downstream-only patch: always allow unsupported versions of Python.
-# We constantly attempt to integrate alpha and beta releases of Python
-# and need to rebuild all dependent packages in Copr, also those that
-# use pyo3-ffi without patching each and every one of them,
-# hence we explicitly allow to skip version check when building RPMs.
-Patch:          Allow-unsupported-Python-versions-in-RPM-builds.patch
+# * Downstream-only patch: always allow unsupported versions of Python.
+#   We constantly attempt to integrate alpha and beta releases of Python
+#   and need to rebuild all dependent packages in Copr, also those that
+#   use pyo3-ffi without patching each and every one of them, hence we
+#   explicitly allow to skip version check when building RPMs.
+Patch2:         Allow-unsupported-Python-versions-in-RPM-builds.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 BuildRequires:  python3-devel >= 3.7

@@ -10,7 +10,7 @@
 
 Name:           tilix
 Version:        1.9.6
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Tiling terminal emulator
 
 # The tilix source code is MPL-2.0,
@@ -90,7 +90,7 @@ sed -i -e "/^Exec=/ s|/usr/bin|%{_bindir}|" data/dbus/com.gexperts.Tilix.service
 
 
 %build
-export DFLAGS="%{_d_optflags}"
+export DFLAGS="%{_d_optflags} --allinst"
 %meson
 %meson_build
 
@@ -141,6 +141,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/com.gexperts.Tilix
 
 
 %changelog
+* Sat Oct 26 2024 Otto Liljalaakso <otto.liljalaakso@iki.fi> - 1.9.6-6
+- Add --allinst compiler flag to fix FTBFS
+
 * Tue Aug 06 2024 Kalev Lember <klember@redhat.com> - 1.9.6-5
 - Rebuilt for ldc 1.39
 

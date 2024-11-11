@@ -5,7 +5,7 @@
 %global crate futures-lite
 
 Name:           rust-futures-lite
-Version:        2.4.0
+Version:        2.5.0
 Release:        %autorelease
 Summary:        Futures, streams, and async I/O combinators
 

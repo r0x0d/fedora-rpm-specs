@@ -1,3 +1,8 @@
+# The bench subpackage requires matplotlib.  Disable it on new EPEL releases
+# until matplotlib is available.  Once it is available in EPEL 10, increment
+# the 10 below to 11 to move the condition forward.
+%bcond bench %[%{undefined rhel} || 0%{?rhel} < 10]
+
 Summary: High performance compressor optimized for binary data
 Name: blosc
 Version: 1.21.6
@@ -30,14 +35,20 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 The blosc-devel package contains the header files and libraries needed
 to develop programs that use the blosc meta-compressor.
 
+%if %{with bench}
 %package bench
 Summary: Benchmark for the Blosc compressor
 Requires: %{name} = %{version}-%{release}
+# This isn't actually a build-time dependency, but we'll mark it as such to
+# make sure the dependency is present in EPEL to avoid it later becoming a
+# missing run-time dependency and having an uninstallable subpackage.
+BuildRequires: python3-matplotlib
 Requires: python3-matplotlib
 
 %description bench
 The blosc-bench package contains a benchmark suite which evaluates
 the performance of Blosc, and compares it with memcpy.
+%endif
 
 %prep
 %autosetup -n c-%{name}-%{version} -p1
@@ -74,11 +85,13 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}
 %install
 %cmake_install
 
+%if %{with bench}
 install -p bench/plot-speeds.py* -Dt %{buildroot}/%{_pkgdocdir}/bench/
 install -pm 0644 bench/*.c %{buildroot}/%{_pkgdocdir}/bench
 
 install -p %{_vpath_builddir}/bench/bench -D %{buildroot}/%{_bindir}/%{name}-bench
 install -p bench/plot-speeds.py %{buildroot}/%{_bindir}/%{name}-plot-times
+%endif
 
 %files
 %exclude %{_pkgdocdir}/bench/
@@ -92,10 +105,12 @@ install -p bench/plot-speeds.py %{buildroot}/%{_bindir}/%{name}-plot-times
 %{_includedir}/blosc.h
 %{_includedir}/blosc-export.h
 
+%if %{with bench}
 %files bench
-%{_pkgdocdir}/bench/*.c
+%{_pkgdocdir}/bench
 %{_bindir}/%{name}-bench
 %{_bindir}/%{name}-plot-times
+%endif
 
 
 %changelog

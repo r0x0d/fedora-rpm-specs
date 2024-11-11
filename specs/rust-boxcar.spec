@@ -5,7 +5,7 @@
 %global crate boxcar
 
 Name:           rust-boxcar
-Version:        0.2.6
+Version:        0.2.7
 Release:        %autorelease
 Summary:        Concurrent, append-only vector
 
@@ -16,7 +16,7 @@ Source:         %{crates_source}
 # * Exclude benchmarks, since bench.rs carries an MIT license and this
 #   complicates packaging. We suggested this upstream in
 #   https://github.com/ibraheemdev/boxcar/pull/8, which was merged, but upstream
-#   subsequently decided to inclue benchmarks in published crates,
+#   subsequently decided to include benchmarks in published crates,
 #   https://github.com/ibraheemdev/boxcar/commit/7131dc44d35d4b4e88d9d80374a7528c59bd6cfe.
 #   This patch basically reverts that commit.
 Patch:          boxcar-fix-metadata.diff

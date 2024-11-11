@@ -13,7 +13,6 @@ Version:        5.1.0
 Release:        7%{?dist}
 Summary:        KIO FUSE
 
-# Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
 URL:            https://invent.kde.org/system/kio-fuse
 Source0:        https://download.kde.org/stable/%{name}/%{name}-%{version}.tar.xz

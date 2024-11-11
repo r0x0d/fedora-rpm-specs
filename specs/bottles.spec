@@ -2,7 +2,7 @@
 
 Name:       bottles
 Epoch:      1
-Version:    51.13
+Version:    51.15
 Release:    %autorelease
 Summary:    Run Windows in a Bottle
 
@@ -16,9 +16,18 @@ License:    GPL-3.0-or-later AND MIT
 URL:        %{forgeurl}
 Source0:    %{forgesource}
 # Make sure bottles dir exists when opening executable directly
-Patch:      ensure_bottles_dir_exists.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=2249922
+# https://bugzilla.redhat.com/show_bug.cgi?id=2257180
+Patch:      0001-Make-sure-Paths.bottles-exists.patch
 # Don't fail on AttributeError
-Patch:      catch_exception_in_set_manager.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=2260135
+Patch:      0002-Catch-AttributeError-in-set_manager.patch
+# Catch AttributeError when closing window
+# https://bugzilla.redhat.com/show_bug.cgi?id=2313567
+Patch:      0003-Catch-AttributeError-when-window-is-closed.patch
+# Attempt to prevent segfaults when picking files
+# https://bugzilla.redhat.com/show_bug.cgi?id=2296214
+Patch:      0004-Use-FileDialog-for-all-file-path-pickers.patch
 
 BuildArch:      noarch
 

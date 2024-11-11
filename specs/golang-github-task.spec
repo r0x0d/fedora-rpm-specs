@@ -3,9 +3,9 @@
 
 # https://github.com/go-task/task
 %global goipath         github.com/go-task/task
-Version:                3.39.2
+Version:                3.40.0
 
-%gometa
+%gometa -f -L
 
 %global common_description %{expand:
 A task runner / simpler Make alternative written in Go.}

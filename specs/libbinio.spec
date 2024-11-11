@@ -12,9 +12,6 @@ Patch0:          libbinio-1.4-includes.patch
 License:         LGPL-2.1-or-later AND GFDL-1.1-or-later
 BuildRequires:   gcc-c++
 BuildRequires:   make
-%if 0%{?rhel} && 0%{?rhel} <= 7
-BuildRequires:   /sbin/install-info
-%endif
 
 %description
 This binary I/O stream class library presents a platform-independent
@@ -28,10 +25,6 @@ arbitrary binary data sources.
 Summary:         Development files for libbinio
 Requires:        %{name}%{?_isa} = %{version}-%{release}
 BuildRequires:   texinfo
-%if 0%{?rhel} && 0%{?rhel} <= 7
-Requires(post):  /sbin/install-info
-Requires(preun): /sbin/install-info
-%endif
 
 %description devel
 This package contains development files for the libbinio binary
@@ -52,17 +45,6 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 rm -rf $RPM_BUILD_ROOT%{_infodir}/dir
 
 %ldconfig_scriptlets
-
-%if 0%{?rhel} && 0%{?rhel} <= 7
-%post devel
-/sbin/install-info %{_infodir}/libbinio.info.gz %{_infodir}/dir || :
-
-%preun devel
-if [ $1 = 0 ]; then
-# uninstall the info reference in the dir file
-/sbin/install-info --delete %{_infodir}/libbinio.info.gz %{_infodir}/dir || :
-fi
-%endif
 
 %files
 %license COPYING

@@ -5,10 +5,10 @@
 
 %global crate zerocopy
 
-Name:           rust-zerocopy
-Version:        0.8.9
+Name:           rust-zerocopy0.7
+Version:        0.7.35
 Release:        %autorelease
-Summary:        Makes zero-cost memory manipulation effortless
+Summary:        Utilities for zero-copy parsing and serialization
 
 License:        BSD-2-Clause OR Apache-2.0 OR MIT
 URL:            https://crates.io/crates/zerocopy
@@ -17,8 +17,7 @@ Source:         %{crates_source}
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-Zerocopy makes zero-cost memory manipulation effortless. We write
-"unsafe" so you don't have to.}
+Utilities for zero-copy parsing and serialization.}
 
 %description %{_description}
 
@@ -35,12 +34,14 @@ use the "%{crate}" crate.
 %license %{crate_instdir}/LICENSE-APACHE
 %license %{crate_instdir}/LICENSE-BSD
 %license %{crate_instdir}/LICENSE-MIT
-%doc %{crate_instdir}/CHANGELOG.md
+%license %{crate_instdir}/src/third_party/rust/LICENSE-APACHE
+%license %{crate_instdir}/src/third_party/rust/LICENSE-MIT
 %doc %{crate_instdir}/CONTRIBUTING.md
+%doc %{crate_instdir}/INTERNAL.md
 %doc %{crate_instdir}/POLICIES.md
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
-%exclude %{crate_instdir}/{ci/,githooks/,testdata/,cargo.sh,clippy.toml,win-cargo.bat}
+%exclude %{crate_instdir}/{cargo.sh,generate-readme.sh}
 
 %package     -n %{name}+default-devel
 Summary:        %{summary}
@@ -78,6 +79,18 @@ use the "alloc" feature of the "%{crate}" crate.
 %files       -n %{name}+alloc-devel
 %ghost %{crate_instdir}/Cargo.toml
 
+%package     -n %{name}+byteorder-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+byteorder-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "byteorder" feature of the "%{crate}" crate.
+
+%files       -n %{name}+byteorder-devel
+%ghost %{crate_instdir}/Cargo.toml
+
 %package     -n %{name}+derive-devel
 Summary:        %{summary}
 BuildArch:      noarch
@@ -112,18 +125,6 @@ This package contains library source intended for building other packages which
 use the "simd-nightly" feature of the "%{crate}" crate.
 
 %files       -n %{name}+simd-nightly-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+std-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+std-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "std" feature of the "%{crate}" crate.
-
-%files       -n %{name}+std-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+zerocopy-derive-devel

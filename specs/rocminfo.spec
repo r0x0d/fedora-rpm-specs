@@ -4,7 +4,7 @@
 
 Name:       rocminfo
 Version:    %{rocm_version}
-%if 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
 Release:    1%{?dist}
 %else
 Release:    %autorelease
@@ -34,7 +34,9 @@ ROCm system info utility
 %prep
 %autosetup -n %{name}-rocm-%{version} -p1
 
+%if 0%{?fedora} || 0%{?rhel}
 %{__python3} %{_rpmconfigdir}/redhat/pathfix.py -i %{__python3} rocm_agent_enumerator
+%endif
 
 %build
 %cmake -DROCM_DIR=/usr
@@ -55,4 +57,11 @@ chmod 755 %{buildroot}%{_bindir}/*
 %exclude %{_docdir}/*/License.txt
 
 %changelog
+%if 0%{?is_opensuse}
+* Sat Nov9 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif
+

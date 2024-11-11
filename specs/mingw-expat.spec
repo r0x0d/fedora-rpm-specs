@@ -1,16 +1,13 @@
 %{?mingw_package_header}
 
 Name:           mingw-expat
-Version:        2.6.3
-Release:        2%{?dist}
+Version:        2.6.4
+Release:        1%{?dist}
 Summary:        MinGW Windows port of expat XML parser library
 
 License:        MIT
 URL:            http://www.libexpat.org/
 Source0:        http://downloads.sourceforge.net/expat/expat-%{version}.tar.bz2
-# Backport patch for CVE-2024-50602
-# https://github.com/libexpat/libexpat/commit/ef485e96a609565317ec8695bb7b18fdcf084217
-Patch0:         CVE-2024-50602.patch
 
 BuildArch:      noarch
 
@@ -128,6 +125,9 @@ rm -r %{buildroot}%{mingw64_mandir}
 
 
 %changelog
+* Sat Nov 09 2024 Sandro Mani <manisandro@gmail.com> - 2.6.4-1
+- Update to 2.6.4
+
 * Tue Nov 05 2024 Sandro Mani <manisandro@gmail.com> - 2.6.3-2
 - Backport patch for CVE-2024-50602
 

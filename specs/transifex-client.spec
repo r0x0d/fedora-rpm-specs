@@ -1,6 +1,6 @@
 Name:           transifex-client
 Version:        0.13.7
-Release:        17%{?dist}
+Release:        18%{?dist}
 Summary:        Command line tool for Transifex translation management
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License:        GPL-2.0-only
@@ -43,7 +43,7 @@ need of an elaborate UI system.
 %py3_install
 
 %check            
-%{__python3} setup.py test
+%python3 -m unittest discover -v -s tests/
 
 %files
 %doc LICENSE README.md
@@ -51,6 +51,10 @@ need of an elaborate UI system.
 %{_bindir}/*
 
 %changelog
+* Fri Oct 25 2024 Charalampos Stratakis <cstratak@redhat.com> - 0.13.7-18
+- Utilize unittest instead of the removed setup.py test command
+Resolves: rhbz#2319751
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 0.13.7-17
 - convert license to SPDX
 

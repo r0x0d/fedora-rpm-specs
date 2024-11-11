@@ -31,6 +31,7 @@ BuildRequires: libbsd-devel
 BuildRequires: libspf2-devel
 BuildRequires: libtool
 BuildRequires: openssl-devel
+BuildRequires: perl-generators
 BuildRequires: pkgconfig
 BuildRequires: systemd-rpm-macros
 BuildRequires: mariadb-connector-c-devel

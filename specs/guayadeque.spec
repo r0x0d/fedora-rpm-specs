@@ -1,5 +1,4 @@
-%global __cmake_in_source_build 1
-%global usesnapshot 1
+%global usesnapshot 0
 %global commit0 d524675772f4600c259414b535ff7a980ca1c962
 %if 0%{?usesnapshot}
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
@@ -14,23 +13,21 @@ Name:           guayadeque
 Version:        0.4.8
 Release:        0.6.%{gitdate}git%{shortcommit0}%{?dist}
 %else
-Version:        0.4.7
-Release:        5%{?dist}
+Version:        0.6.0
+Release:        1%{?dist}
 %endif
 Summary:        Music player
-# The entire source code is GPLv3+ except hmac/ which is BSD
-# and ApeTag.* TagInfo.* which is LGPLv2+
-License:        GPLv3+ and BSD and LGPLv2+ and wxWidgets
-URL:            http://guayadeque.org/
+# The entire source code is GPL-3.0-or-later except hmac/ which is BSD-3-Clause
+# and TagInfo.* which is LGPL-2.0-or-later
+License:        GPL-3.0-or-later AND BSD-3-Clause AND LGPL-2.0-or-later AND LGPL-2.0-or-later WITH WxWindows-exception-3.1
+URL:            https://github.com/thothix/guayadeque
 %if 0%{?usesnapshot}
-Source0:        https://github.com/anonbeat/guayadeque/archive/%{commit0}/%{name}-%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+Source0:        %url/archive/%{commit0}/%{name}-%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 %else
-Source0:        https://github.com/anonbeat/guayadeque/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        %url/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 %endif
 # For a breakdown of the licensing, see PACKAGE-LICENSING
 Source1:        PACKAGE-LICENSING
-# https://github.com/anonbeat/guayadeque/issues/144
-Patch0:         guayadeque-wxwidgets-3.2.patch
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
@@ -53,9 +50,50 @@ Suggests:       gstreamer1-libav
 Provides:       bundled(md5-polstra)
 
 %description
-Guayadeque is a music management program designed for all music enthusiasts. It
-is Full Featured Linux media player that can easily manage large collections
-and uses the Gstreamer media framework.
+Guayadeque is a lightweight and easy-to-use music player and music collection
+organizer that can easily manage large music collections and supports smart
+playlists.
+In the technical side, it's written in C++, uses the wxWidget toolkit and the
+Gstreamer media framework.
+
+Main features include:
+
+  - Play mp3, ogg, flac, wav, wma, mpc, mp4, ape, ...
+  - Read and write tags in all supported formats.
+  - Smart play mode that add tracks that fit your music taste using the tracks
+    in the playlist.
+  - Allow to catalogue your music using labels. Any track, artist or album can
+    have as many labels you want.
+  - Allow fast access to any music file by genre, artist, album
+  - Audio equalizer
+  - Configurable cross fader engine
+  - Configurable Silence detector to avoid listening to silence between tracks
+  - Dynamic and static playlists management.
+  - Tracks tag editor with automatically fetching of tags information for easily
+    completion.
+  - Ability to download covers manually or automatically
+  - Lyrics downloads from different lyrics providers.
+  - You can rate the tracks from 0 to 5 stars.
+  - Desktop notifications.
+  - MPRIS D-Bus interface support so it can easily controlled from music applets
+    for example.
+  - Allow to resume play status and position when closed and reopened.
+  - Allow to subscribe to podcasts and download all new episodes automatically
+    or manually.
+  - Play and Record shoutcast radios
+  - Suggest music using last.fm service.
+  - Last.fm audioscrobbling support.
+  - Easily expandable contextual links support. With it you can find information
+    about a track, an artist or an album on your favourite site.
+  - Easily expandable contextual commands support. For example you can right
+    click on any album and click in option to record the album in a burning
+     application.
+  - Option to copy the selection you want to a directory or device like USB
+    players and IPod using a configurable pattern.
+  - Partial GNOME session support to detect when GNOME session is about to
+    close and save the play list so it can continue next time with the same
+    tracks.
+  - and many more.
 
 %define         lang_subpkg() \
 %package        langpack-%{1}\
@@ -105,15 +143,13 @@ Supplements:    (%{name} = %{version}-%{release} and langpacks-%{1})\
 %setup -q -n %{name}-%{version}
 %endif
 cp -p %{SOURCE1} PACKAGE-LICENSING
-%patch -p1 0
 
 %build
 %cmake .                                                       \
- -DCMAKE_BUILD_TYPE='Release'                                    \
- -DwxWidgets_CONFIG_EXECUTABLE='%{_bindir}/wx-config-%{wxversion}'      \
- -DCMAKE_EXE_LINKER_FLAGS:STRING=-lwx_gtk3u_aui-%{wxversion}            \
+ -DCMAKE_BUILD_TYPE='Release'                                  \
+ -DCMAKE_EXE_LINKER_FLAGS:STRING=-lwx_gtk3u_aui-%{wxversion}   \
  -DCMAKE_CXX_FLAGS="%{optflags}"                               \
- -D_GUREVISION_:STRING='%{shortcommit0}'
+ -D_GUREVISION_:STRING="%{release}"
 %cmake_build
 
 %install
@@ -130,7 +166,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/appdata/*.appdata.
 
 %files
 %doc README
-%license LICENSE PACKAGE-LICENSING
+%license INSTALL.md LICENSE PACKAGE-LICENSING
 %{_bindir}/%{name}
 %{_datadir}/%{name}/*.conf
 %{_datadir}/%{name}/*.xml
@@ -141,6 +177,11 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/appdata/*.appdata.
 %{_datadir}/appdata/%{name}.appdata.xml
 
 %changelog
+* Sat Nov 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 0.6.0-1
+- Add new github url
+- Update to 0.6.0
+- Convert license to SPDX
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.8-0.6.20230928gitd524675
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

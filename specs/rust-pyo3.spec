@@ -5,7 +5,7 @@
 %global crate pyo3
 
 Name:           rust-pyo3
-Version:        0.22.4
+Version:        0.22.6
 Release:        %autorelease
 Summary:        Bindings to Python interpreter
 
@@ -15,10 +15,9 @@ Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * drop MSVC- and MinGW-only features
 Patch:          pyo3-fix-metadata.diff
-
 # * make unsafe subinterpreter support available via cfg flag:
 #   https://bugzilla.redhat.com/show_bug.cgi?id=2298403
-Patch:          0001-Make-unsafe-subinterpreter-support-available-via-cfg.patch
+Patch2:         0001-Make-unsafe-subinterpreter-support-available-via-cfg.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 

@@ -4,7 +4,7 @@
 
 Name:           jFormatString
 Version:        0
-Release:        0.50.20131227git%{shortcommit}%{?dist}
+Release:        0.51.20131227git%{shortcommit}%{?dist}
 Summary:        Java format string compile-time checker
 
 License:        GPL-2.0-only WITH Classpath-exception-2.0
@@ -20,7 +20,7 @@ Patch1:         %{name}-java8.patch
 
 BuildRequires:  javapackages-local
 
-BuildRequires:  ant, java-devel, java-1.8.0-javadoc, jpackage-utils, junit
+BuildRequires:  ant, java-devel, java-javadoc, jpackage-utils, junit
 Requires:       java-headless, jpackage-utils
 
 BuildArch:      noarch
@@ -33,7 +33,7 @@ format string will be erroneous when executed at runtime.
 
 %package javadoc
 Summary:        Javadoc documentation for %{name}
-Requires:       java-1.8.0-javadoc
+Requires:       java-javadoc
 
 %description javadoc
 This package contains the API documentation for %{name}.
@@ -81,6 +81,9 @@ end
 %files javadoc -f .mfiles-javadoc
 
 %changelog
+* Sat Nov 09 2024 Richard Fearn <richardfearn@gmail.com> - 0-0.51.20131227gitf159b88
+- Fix FTBFS in -javadoc package (bug #2323984)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0-0.50.20131227gitf159b88
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

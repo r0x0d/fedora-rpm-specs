@@ -5,7 +5,7 @@
 %global crate allocator-api2
 
 Name:           rust-allocator-api2
-Version:        0.2.18
+Version:        0.2.19
 Release:        %autorelease
 Summary:        Mirror of Rust's allocator API
 
@@ -111,8 +111,8 @@ use the "std" feature of the "%{crate}" crate.
 
 %if %{with check}
 %check
-# * skip doctests which don't compile on stable Rust
-%cargo_test -- -- --skip "src/stable/vec/mod.rs"
+# * skip doctests which don't compile on stable Rust with RUSTC_BOOTSTRAP=1
+%cargo_test -- -- --skip "src/stable/boxed.rs" --skip "src/stable/vec/mod.rs"
 %endif
 
 %changelog

@@ -5,7 +5,7 @@
 %global crate thiserror
 
 Name:           rust-thiserror
-Version:        1.0.65
+Version:        1.0.68
 Release:        %autorelease
 Summary:        Derive(Error)
 

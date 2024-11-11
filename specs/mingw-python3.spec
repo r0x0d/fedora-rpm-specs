@@ -23,8 +23,8 @@
 #global pre rc2
 
 Name:          mingw-%{pkgname}
-Version:       3.11.9
-Release:       2%{?dist}
+Version:       3.11.10
+Release:       1%{?dist}
 Summary:       MinGW Windows %{pkgname}
 
 BuildArch:     noarch
@@ -66,14 +66,6 @@ Patch11:       mingw-python3_win-modules.patch
 Patch12:       mingw-python3_module-socket.patch
 # MinGW fix for select module
 Patch13:       mingw-python3_module-select.patch
-# Backport patch for CVE-2023-27043
-Patch14:       00415-cve-2023-27043-gh-102988-reject-malformed-addresses-in-email-parseaddr-111116.patch
-# Backport patch for CVE-2024-4032
-Patch15:       CVE-2024-4032.patch
-# Backport patch for CVE-2024-6923
-Patch16:       00435-gh-121650-encode-newlines-in-headers-and-verify-headers-are-sound-gh-122233.patch
-# Backport patch for CVE-2024-8088
-Patch17:       00436-cve-2024-8088-gh-122905-sanitize-names-in-zipfile-path.patch
 
 BuildRequires: make
 BuildRequires: automake autoconf libtool
@@ -507,6 +499,9 @@ rm -rf %{buildroot}%{_prefix}/lib/python%{py_ver}/site-packages/pip*
 
 
 %changelog
+* Sat Nov 09 2024 Sandro Mani <manisandro@gmail.com> - 3.11.10-1
+- Update to 3.11.10
+
 * Wed Aug 28 2024 Sandro Mani <manisandro@gmail.com> - 3.11.9-2
 - Backport patch for CVE-2024-8088
 

@@ -1,5 +1,5 @@
 Name:           hyprland
-Version:        0.44.1
+Version:        0.45.0
 Release:        %autorelease
 Summary:        Dynamic tiling Wayland compositor that doesn't sacrifice on its looks
 
@@ -43,6 +43,7 @@ BuildRequires:  pkgconfig(libudev)
 BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(pangocairo)
 BuildRequires:  pkgconfig(pixman-1)
+BuildRequires:  pkgconfig(systemd)
 BuildRequires:  pkgconfig(tomlplusplus)
 BuildRequires:  pkgconfig(uuid)
 BuildRequires:  pkgconfig(wayland-client)
@@ -165,6 +166,8 @@ cp -p subprojects/udis86/LICENSE LICENSE-udis86
 
 %install
 %meson_install
+rm %{buildroot}%{_userunitdir}/hyprland-session.service \
+   %{buildroot}%{_datadir}/wayland-sessions/hyprland-systemd.desktop
 rm -rf %{buildroot}%{_includedir}/%{name}
 rm -rf %{buildroot}%{_datadir}/pkgconfig/%{name}.pc
 

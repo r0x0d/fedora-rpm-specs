@@ -3,7 +3,7 @@
 
 Name:		grass
 Version:	8.4.0
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	GRASS GIS - Geographic Resources Analysis Support System
 
 %if 0%{?fedora} >= 33 || 0%{?rhel} >= 9
@@ -340,6 +340,9 @@ fi
 %{_libdir}/%{name}%{shortver}/include
 
 %changelog
+* Sat Nov 09 2024 Sandro Mani <manisandro@gmail.com> - 8.4.0-4
+- Rebuild (gdal)
+
 * Sat Oct 26 2024 Markus Neteler <neteler@mundialis.de> - 8.4.0-3
 - Sort requirements and flags (https://github.com/OSGeo/grass/pull/4563/ by Edouard Choinière)
 

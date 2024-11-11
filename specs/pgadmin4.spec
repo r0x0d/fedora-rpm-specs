@@ -7,7 +7,7 @@ Name:           pgadmin4
 # NOTE: Also regenerate requires as indicated below when updating!
 # Verify Patch4 on next update
 Version:        8.12
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Administration tool for PostgreSQL
 
 # i686, armv7hl: The webpack terser plugin aborts with JS heap memory exhaustion on these arches
@@ -113,7 +113,7 @@ Requires: python3dist(azure-identity) = 1.17.1
 Requires: (python3dist(google-api-python-client) >= 2 with python3dist(google-api-python-client) < 3)
 Requires: python3dist(google-auth-oauthlib) >= 0.8
 Requires: (python3dist(keyring) >= 25 with python3dist(keyring) < 26)
-Requires: (python3dist(werkzeug) >= 3 with python3dist(werkzeug) < 3.1)
+Requires: python3dist(werkzeug) >= 3
 Requires: python3dist(typer-slim)
 Requires: python3dist(setuptools) >= 69
 Requires: (python3dist(jsonformatter) >= 0.3.2 with python3dist(jsonformatter) < 0.4)
@@ -274,6 +274,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Sat Nov 09 2024 Sandro Mani <manisandro@gmail.com> - 8.12-5
+- Relax werkzeug requirement
+
 * Mon Oct 21 2024 Sandro Mani <manisandro@gmail.com> - 8.12-4
 - Grant clipboard paste access to WebEngineView in pgadmin4-qt
 

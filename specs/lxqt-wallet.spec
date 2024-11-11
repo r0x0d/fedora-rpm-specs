@@ -1,7 +1,7 @@
 %global srcname lxqt_wallet
 
 Name:           %(echo %{srcname} |tr _ - )
-Version:        4.0.0
+Version:        4.0.2
 Release:        1%{?dist}
 Summary:        Create a kwallet like functionality for LXQt
 
@@ -74,6 +74,9 @@ cp -p frontend/README README-frontend
 
 
 %changelog
+* Sat Nov 09 2024 Steve Cossette <farchord@gmail.com> - 4.0.2-1
+- 4.0.2
+
 * Sat Oct 26 2024 Steve Cossette <farchord@gmail.com> - 4.0.0-1
 - 4.0.0
 

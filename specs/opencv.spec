@@ -9,7 +9,11 @@
 %endif
 # linters are enabled by default if BUILD_DOCS OR BUILD_EXAMPLES
 %bcond_with     linters
+%if 0%{?rhel} >= 10
+%bcond_with  ffmpeg
+%else
 %bcond_without  ffmpeg
+%endif
 %bcond_without  gstreamer
 %bcond_with     eigen2
 %bcond_without  eigen3
@@ -22,7 +26,11 @@
 %endif
 %bcond_without  tbb
 %bcond_with     cuda
+%if 0%{?rhel} >= 10
+%bcond_with  xine
+%else
 %bcond_without  xine
+%endif
 # Atlas need (missing: Atlas_CLAPACK_INCLUDE_DIR Atlas_CBLAS_LIBRARY Atlas_BLAS_LIBRARY Atlas_LAPACK_LIBRARY)
 # LAPACK may use atlas or openblas since now it detect openblas, atlas is not used anyway, more info please
 # check OpenCVFindLAPACK.cmake
@@ -77,7 +85,7 @@ Version:        4.10.0
 %global minorver %(foo=%{version}; a=(${foo//./ }); echo ${a[1]} )
 %global padding  %(digits=00; num=%{minorver}; echo ${digits:${#num}:${#digits}} )
 %global abiver   %(echo %{majorver}%{padding}%{minorver} )
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Collection of algorithms for computer vision
 # This is normal three clause BSD.
 License:        BSD-3-Clause AND Apache-2.0 AND ISC
@@ -91,7 +99,7 @@ URL:            https://opencv.org
 Source0:        %{name}-clean-%{version}.tar.gz
 Source1:        %{name}_contrib-clean-%{version}.tar.gz
 %{?with_extras_tests:
-Source2:        %{name}_extra-clean-%{version}.tar.gz
+#Source2:        %{name}_extra-clean-%{version}.tar.gz
 }
 Source3:        face_landmark_model.dat.xz
 # SRC=v0.1.2d.zip ; wget https://github.com/opencv/ade/archive/$SRC; mv $SRC $(md5sum $SRC | cut -d' ' -f1)-$SRC
@@ -208,7 +216,7 @@ BuildRequires:  blas-devel
 BuildRequires:  lapack-devel
 }
 %{?with_gdcm:BuildRequires: gdcm-devel}
-%{?with_libmfx:BuildRequires:  oneVPL-devel}
+%{?with_libmfx:BuildRequires:  libvpl-devel}
 %{?with_clp:BuildRequires:  coin-or-Clp-devel}
 %{?with_va:BuildRequires:   libva-devel}
 %{?with_java:
@@ -579,6 +587,9 @@ ln -s -r %{buildroot}%{_jnidir}/opencv-%{javaver}.jar %{buildroot}%{_jnidir}/ope
 
 
 %changelog
+* Sat Nov 09 2024 Sandro Mani <manisandro@gmail.com> - 4.10.0-6
+- Rebuild (gdal)
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 4.10.0-5
 - Rebuild for hdf5 1.14.5
 

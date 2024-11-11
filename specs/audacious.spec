@@ -33,11 +33,19 @@ BuildRequires: desktop-file-utils
 BuildRequires: meson
 BuildRequires: make
 
+%if 0%{?fedora} || 0%{?rhel} >= 9
 BuildRequires: qt6-qtbase-devel
 BuildRequires: pkgconfig(Qt6Core)
 BuildRequires: pkgconfig(Qt6Gui)
 BuildRequires: pkgconfig(Qt6Widgets)
 BuildRequires: pkgconfig(Qt6Svg)
+%else
+BuildRequires: qt5-qtbase-devel
+BuildRequires: pkgconfig(Qt5Core)
+BuildRequires: pkgconfig(Qt5Gui)
+BuildRequires: pkgconfig(Qt5Widgets)
+BuildRequires: pkgconfig(Qt5Svg)
+%endif
 
 # The automatic SONAME dependency is not enough
 # during version upgrades.
@@ -54,7 +62,11 @@ Requires: hicolor-icon-theme
 # for icons such as 'go-next', 'go-previous'
 Requires: gnome-icon-theme
 %endif
+%if 0%{?fedora} || 0%{?rhel} >= 9
 Requires: qt6-qtsvg%{?_isa}
+%else
+Requires: qt5-qtsvg%{?_isa}
+%endif
 
 # Skin packages can require this from xmms and all GUI compatible players
 Provides: xmms-gui
@@ -128,7 +140,11 @@ sed -i 's!MAKE} -s!MAKE} !' buildsys.mk.in
 
 %if %{with meson}
 %meson \
+%if 0%{?fedora} || 0%{?rhel} >= 9
     -Dqt=true \
+%else
+    -Dqt5=true \
+%endif
     -Dgtk=%{?with_gtk:true}%{!?with_gtk:false} \
     -Dlibarchive=false \
     -Dbuildstamp="Fedora package"
@@ -156,36 +172,12 @@ find ${RPM_BUILD_ROOT} -type f -name "*.la" -exec rm -f {} ';'
 
 %find_lang %{name}
 
-# RHEL 9 doesn't support .desktop files with version 1.5
-# https://bugzilla.redhat.com/show_bug.cgi?id=2107278
-%if 0%{?rhel} && 0%{?rhel} <= 9
-sed -e 's/^SingleMainWindow=/X-GNOME-SingleWindow=/' \
-    -i ${RPM_BUILD_ROOT}%{_datadir}/applications/audacious.desktop
-%endif
-
 desktop-file-install  \
     --dir ${RPM_BUILD_ROOT}%{_datadir}/applications  \
     ${RPM_BUILD_ROOT}%{_datadir}/applications/audacious.desktop
 
 install -D -m0644 contrib/%{name}.appdata.xml ${RPM_BUILD_ROOT}%{_datadir}/appdata/%{name}.appdata.xml
 appstream-util validate-relax --nonet ${RPM_BUILD_ROOT}%{_datadir}/appdata/%{name}.appdata.xml
-
-
-%if 0%{?rhel} && 0%{?rhel} <= 7
-%post
-/usr/bin/update-desktop-database &> /dev/null || :
-/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-
-%postun
-if [ $1 -eq 0 ] ; then
-    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-/usr/bin/update-desktop-database &> /dev/null || :
-
-%posttrans
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-%endif
 
 
 %ldconfig_scriptlets libs

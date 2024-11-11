@@ -1,6 +1,6 @@
 Summary:        Modular SIP user-agent with audio and video support
 Name:           baresip
-Version:        3.17.0
+Version:        3.17.1
 Release:        1%{?dist}
 License:        BSD-3-Clause
 URL:            https://github.com/baresip/baresip
@@ -10,7 +10,6 @@ Source11:       https://gitlab.gnome.org/GNOME/adwaita-icon-theme/-/raw/1e1d6921
 Source12:       https://gitlab.gnome.org/GNOME/adwaita-icon-theme/-/raw/master/COPYING#/COPYING.adwaita-icon-theme
 Source13:       https://gitlab.gnome.org/GNOME/adwaita-icon-theme/-/raw/master/COPYING_CCBYSA3#/COPYING_CCBYSA3.adwaita-icon-theme
 Source14:       https://gitlab.gnome.org/GNOME/adwaita-icon-theme/-/raw/master/COPYING_LGPL#/COPYING_LGPL.adwaita-icon-theme
-Patch0:         https://github.com/baresip/baresip/pull/3194/commits/2fa53d920efeb014435886fc0d7bf4fcfda3b5e4.patch#/baresip-3.17.0-cmake-globbing.patch
 BuildRequires:  cmake
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
@@ -539,6 +538,9 @@ gtk-update-icon-cache --force %{_datadir}/icons/Adwaita &>/dev/null || :
 %{_libdir}/%{name}/modules/x11.so
 
 %changelog
+* Sat Nov 09 2024 Robert Scheck <robert@fedoraproject.org> 3.17.1-1
+- Upgrade to 3.17.1 (#2324903)
+
 * Fri Nov 08 2024 Robert Scheck <robert@fedoraproject.org> 3.17.0-1
 - Upgrade to 3.17.0 (#2324341)
 

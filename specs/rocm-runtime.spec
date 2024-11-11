@@ -64,14 +64,20 @@ cd src
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
     -DCMAKE_INSTALL_LIBDIR=%{_lib} \
+    -DCMAKE_SHARED_LINKER_FLAGS=-ldrm_amdgpu \
     -DINCLUDE_PATH_COMPATIBILITY=OFF \
     %{?!enableimage:-DIMAGE_SUPPORT=OFF}
 %cmake_build
 
-
 %install
 cd src
 %cmake_install
+
+if [ -f %{buildroot}%{_prefix}/share/doc/hsa-runtime64/LICENSE.md ]; then
+    rm %{buildroot}%{_prefix}/share/doc/hsa-runtime64/LICENSE.md
+elif [ -f %{buildroot}%{_prefix}/share/doc/packages/rocm-runtime/LICENSE.md ]; then
+    rm %{buildroot}%{_prefix}/share/doc/packages/rocm-runtime/LICENSE.md
+fi
 
 %ldconfig_scriptlets
 
@@ -79,7 +85,6 @@ cd src
 %doc README.md
 %license LICENSE.txt
 %{_libdir}/libhsa-runtime64.so.1{,.*}
-%exclude %{_docdir}/hsa-runtime64/LICENSE.md
 
 %files devel
 %{_includedir}/hsa/

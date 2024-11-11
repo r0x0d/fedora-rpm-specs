@@ -44,7 +44,7 @@ Summary:        %{summary}
 # MIT OR Apache-2.0 OR Zlib
 # Unlicense OR MIT
 # Zlib OR Apache-2.0 OR MIT
-License:        Apache-2.0 AND CC0-1.0 MIT AND Unicode-DFS-2016 AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT) AND (MIT OR Apache-2.0 OR Zlib) AND (Unlicense OR MIT)
+License:        Apache-2.0 AND CC0-1.0 AND MIT AND Unicode-DFS-2016 AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT) AND (MIT OR Apache-2.0 OR Zlib) AND (Unlicense OR MIT)
 # LICENSE.dependencies contains a full license breakdown
 
 Provides:       bundled(spdx-license-list-data) = 3.22

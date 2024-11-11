@@ -7,8 +7,8 @@
 %global __provides_exclude_from ^%{_libdir}/mozilla/plugins/
 
 Name:           openh264
-Version:        2.4.1
-Release:        2%{?dist}
+Version:        2.5.0
+Release:        1%{?dist}
 Summary:        H.264 codec library
 
 License:        BSD-2-Clause
@@ -132,6 +132,9 @@ rm $RPM_BUILD_ROOT%{_libdir}/*.a
 
 
 %changelog
+* Sat Nov 09 2024 Kalev Lember <klember@redhat.com> - 2.5.0-1
+- Update to 2.5.0
+
 * Fri Feb 09 2024 Kalev Lember <klember@redhat.com> - 2.4.1-2
 - Drop the gstreamer plugin as it's part of Fedora proper now
 

@@ -12,7 +12,7 @@ Summary: Python wrapper for the ssdeep library
 License: LGPL-3.0-or-later
 
 Version: 3.4
-Release: 20%{?dist}
+Release: 21%{?dist}
 
 URL: https://github.com/DinoTools/python-ssdeep/
 Source0: %pypi_source
@@ -20,12 +20,6 @@ Source0: %pypi_source
 BuildRequires: make
 BuildRequires: gcc
 BuildRequires: ssdeep-devel
-
-BuildRequires: python3-cffi >= 0.8.6
-BuildRequires: python3-devel
-BuildRequires: python3-pytest-runner
-BuildRequires: python3-setuptools
-BuildRequires: python3-six >= 1.4.1
 BuildRequires: python3-sphinx
 
 
@@ -53,8 +47,12 @@ for the ssdeep Python3 module.
 %autosetup -n %{pypi_name}-%{version}
 
 
+%generate_buildrequires
+%pyproject_buildrequires
+
+
 %build
-%py3_build
+%pyproject_wheel
 
 pushd docs/
 make man
@@ -62,28 +60,31 @@ make html
 
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files %{pypi_name}
 
 install -d -m 755 %{buildroot}%{_mandir}/man5/
 install -m 644 docs/build/man/pythonssdeep.1 %{buildroot}%{_mandir}/man5/python3-%{pypi_name}.5
 
 
 %check
-%{__python3} setup.py test
+%pytest
 
 
-%files -n python3-%{pypi_name}
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %license LICENSE
 %doc CHANGELOG.rst CONTRIBUTING.rst
-%{python3_sitearch}/%{pypi_name}/
-%{python3_sitearch}/%{pypi_name}-*.egg-info/
 
 %files -n python3-%{pypi_name}-doc
+%license LICENSE
 %doc docs/build/html/*
 %{_mandir}/man5/python3-%{pypi_name}.5*
 
 
 %changelog
+* Sat Nov 09 2024 Artur Frenszek-Iwicki <fedora@svgames.pl> - 3.4-21
+- Update to pyproject macros (fixes rhbz#2319723)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.4-20
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

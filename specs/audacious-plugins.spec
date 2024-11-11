@@ -85,6 +85,7 @@ BuildRequires: pkgconfig(libavutil) >= 54.31.100
 # for hotkey plugin / provided by gtk3-devel
 BuildRequires: pkgconfig(gdk-x11-3.0)
 
+%if 0%{?fedora} || 0%{?rhel} >= 9
 BuildRequires: pkgconfig(Qt6Core)
 BuildRequires: pkgconfig(Qt6Gui)
 BuildRequires: pkgconfig(Qt6Widgets)
@@ -93,12 +94,17 @@ BuildRequires: pkgconfig(Qt6Network)
 BuildRequires: pkgconfig(Qt6Svg)
 #BuildRequires: pkgconfig(Qt6X11Extras)
 BuildRequires: pkgconfig(x11) pkgconfig(xcb-proto)
+%else
+BuildRequires: pkgconfig(Qt5Core)
+BuildRequires: pkgconfig(Qt5Gui)
+BuildRequires: pkgconfig(Qt5Widgets)
+BuildRequires: pkgconfig(Qt5Multimedia)
+BuildRequires: pkgconfig(Qt5Network)
+BuildRequires: pkgconfig(Qt5Svg)
+BuildRequires: pkgconfig(Qt5X11Extras)
+%endif
 # plugin is Qt based
 BuildRequires: pkgconfig(ampache_browser_1)
-
-%if 0%{?rhel} && 0%{?rhel} < 8
-BuildRequires: devtoolset-8-toolchain
-%endif
 
 # added 2023-11-04
 Obsoletes: audacious-plugins-freeworld-mms < %{version}-%{release}
@@ -198,10 +204,6 @@ sed -i 's!MAKE} -s!MAKE} !' buildsys.mk.in
 # Enforce availability of the audacious(plugin-api) dependency.
 %{!?aud_plugin_dep:echo 'No audacious(plugin-api) dependency!' && exit -1}
 
-%if 0%{?rhel} && 0%{?rhel} < 8
-. /opt/rh/devtoolset-8/enable
-%endif
-
 # temporarily was required to make Qt's MOC accessible
 #rm -rf _bin
 #mkdir _bin
@@ -224,7 +226,11 @@ sed -i 's!MAKE} -s!MAKE} !' buildsys.mk.in
     -Dffaudio=false \
 %endif
     -Dgtk=%{?with_gtk:true}%{!?with_gtk:false} \
+%if 0%{?fedora} || 0%{?rhel} >= 9
     -Dqt=true
+%else
+    -Dqt5=true
+%endif
 %meson_build
 %else
 %configure  \

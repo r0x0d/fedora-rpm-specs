@@ -4,8 +4,8 @@
 
 Name:          mingw-python-%{pypi_name}
 Summary:       MinGW Windows Python %{pypi_name} library
-Version:       69.2.0
-Release:       2%{?dist}
+Version:       74.1.3
+Release:       1%{?dist}
 BuildArch:     noarch
 
 License:       MIT
@@ -17,14 +17,6 @@ BuildRequires: mingw32-python3
 
 BuildRequires: mingw64-filesystem >= 95
 BuildRequires: mingw64-python3
-
-# Don't call patch_for_msvc_specialized_compiler, MSVC was not used to compile python
-# Hit when running python3.exe get-pip.py
-Patch0:        mingw-python-setuptools_no-msvc.patch
-# Distutils fixes (adapted from mingw-python3_distutils.patch in mingw-python3)
-Patch1:        mingw-python-setuptools_distutils.patch
-# Revert commit dbcb0747110d074112f27e2699856acfc4ba8ea3, it causes files from builddir to get installed
-Patch2:        revert-dbcb0747110d074112f27e2699856acfc4ba8ea3.patch
 
 
 %description
@@ -100,6 +92,9 @@ find %{buildroot}%{mingw64_python3_sitearch}/ -name '*.exe' | xargs rm -f
 
 
 %changelog
+* Sat Nov 09 2024 Sandro Mani <manisandro@gmail.com> - 74.1.3-1
+- Update to 74.1.3
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 69.2.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

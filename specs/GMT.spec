@@ -23,7 +23,7 @@
 
 Name:           GMT
 Version:        6.5.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Generic Mapping Tools
 
 License:        LGPL-3.0-or-later
@@ -228,6 +228,9 @@ find $RPM_BUILD_ROOT -name \*.bat -delete
 
 
 %changelog
+* Sat Nov 09 2024 Sandro Mani <manisandro@gmail.com> - 6.5.0-6
+- Rebuild (GDAL)
+
 * Fri Nov 08 2024 Sandro Mani <manisandro@gmail.com> - 6.5.0-5
 - Rebuild (gdal)
 

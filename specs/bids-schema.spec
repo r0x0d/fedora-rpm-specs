@@ -4,9 +4,20 @@
 %bcond render %{undefined el10}
 
 Name:           bids-schema
-Version:        0.11.3
+Version:        0.11.3^post1
 Release:        %autorelease
 Summary:        BIDS schema description
+
+%global srcversion %(echo '%{version}' | tr '^' '.')
+# Installation paths imitate the structure of
+# https://github.com/bids-standard/bids-schema/ in case we start packaging from
+# that in the future. Schemas are installed under directories versioned by the
+# BIDS specification version, not the schema version. If the following is set
+# correctly, then
+#   https://github.com/bids-standard/bids-schema/raw/refs/heads/main/…
+#   versions/%%{bidsversion}/schema/SCHEMA_VERSION
+# should match or nearly match the schema version packaged here.
+%global bidsversion 1.10.0
 
 # The specification, and the schema data derived from it, are CC-BY-4.0.
 #
@@ -15,7 +26,7 @@ Summary:        BIDS schema description
 License:        CC-BY-4.0
 URL:            https://github.com/bids-standard/bids-specification
 # The PyPI sdist corresponds to the tools/schemacode directory in git.
-Source0:        %{url}/archive/schema-%{version}/bids-specification-schema-%{version}.tar.gz
+Source0:        %{url}/archive/schema-%{srcversion}/bids-specification-schema-%{srcversion}.tar.gz
 
 # Tests would like to use the following datasets from
 # https://github.com/bids-standard/bids-examples:
@@ -39,7 +50,7 @@ Source0:        %{url}/archive/schema-%{version}/bids-specification-schema-%{ver
 # tools/schemacode/bidsschematools/conftest.py, which contains code to download
 # these if they are not present.
 %global examples_url https://github.com/bids-standard/bids-examples
-%global examples_commit 7c18d6840982518a0251cfeb59fe5c4610099ea1
+%global examples_commit 38e3467a7d39586a51d449971d7863aef8fdecac
 %global error_examples_url https://github.com/bids-standard/bids-error-examples
 %global error_examples_commit ac0a2f58f34ce284847dde5bd3b90d7ea048c141
 #
@@ -109,9 +120,9 @@ Features:
 
 
 %prep
-%autosetup -n bids-specification-schema-%{version}
-%setup -q -T -D -a 2 -c -n bids-specification-schema-%{version}
-%setup -q -T -D -a 3 -c -n bids-specification-schema-%{version}
+%autosetup -n bids-specification-schema-%{srcversion}
+%setup -q -T -D -a 2 -c -n bids-specification-schema-%{srcversion}
+%setup -q -T -D -a 3 -c -n bids-specification-schema-%{srcversion}
 
 # Remove JavaScript sources used for building the specification documents
 # (which we don’t do anyway); these include a bundled pre-compiled/minified
@@ -138,14 +149,14 @@ popd
 %install
 # Imitate the structure of https://github.com/bids-standard/bids-schema/ in
 # case we start packaging from that in the future.
-install -d '%{buildroot}%{_datadir}/bids-schema/versions/%{version}'
-ln -s '%{version}' '%{buildroot}%{_datadir}/bids-schema/versions/latest'
+install -d '%{buildroot}%{_datadir}/bids-schema/versions/%{bidsversion}'
+ln -s '%{bidsversion}' '%{buildroot}%{_datadir}/bids-schema/versions/latest'
 cp -rvp src/schema \
-    '%{buildroot}%{_datadir}/bids-schema/versions/%{version}/schema'
+    '%{buildroot}%{_datadir}/bids-schema/versions/%{bidsversion}/schema'
 # While https://github.com/bids-standard/bids-schema does not install
 # metaschema.json alongside the schema/ directory, it *is* included in the PyPI
 # sdist for bidsschematools.
-install -t '%{buildroot}%{_datadir}/bids-schema/versions/%{version}' \
+install -t '%{buildroot}%{_datadir}/bids-schema/versions/%{bidsversion}' \
     -p -m 0644 src/metaschema.json
 
 pushd tools/schemacode >/dev/null
@@ -159,7 +170,7 @@ rm -rvf '%{buidlroot}%{python3_sitelib}/bidsschematools/data'
 # Create an absolute symlink into the buildroot and then convert it to a
 # relative one; the relative symlink works both in %%check and after
 # the package is actually installed
-ln -s '%{buildroot}%{_datadir}/bids-schema/versions/%{version}' \
+ln -s '%{buildroot}%{_datadir}/bids-schema/versions/%{bidsversion}' \
     '%{buildroot}%{python3_sitelib}/bidsschematools/data'
 symlinks -c -o '%{buildroot}%{python3_sitelib}/bidsschematools/data'
 
@@ -169,7 +180,7 @@ symlinks -c -o '%{buildroot}%{python3_sitelib}/bidsschematools/data'
 # to use the generated “bst” entry point.
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH='%{buildroot}%{python3_sitelib}' \
     %{buildroot}%{_bindir}/bst -v export --output \
-        '%{buildroot}%{_datadir}/bids-schema/versions/%{version}/schema.json'
+        '%{buildroot}%{_datadir}/bids-schema/versions/%{bidsversion}/schema.json'
 
 # Do not ship the tests.
 sed -r -i '/\/bidsschematools\/tests(\/|$)/d' %{pyproject_files}
@@ -190,7 +201,7 @@ install -t '%{buildroot}%{_pkgdocdir}' -D -p -m 0644 \
 # and this package is for the *schema*. We therefore form a relative symlink to
 # the README.md in the schema directory (in two steps).
 ln -s \
-    '%{buildroot}%{_datadir}/bids-schema/versions/%{version}/schema/README.md' \
+    '%{buildroot}%{_datadir}/bids-schema/versions/%{bidsversion}/schema/README.md' \
     '%{buildroot}%{_pkgdocdir}/README.md'
 symlinks -c -o '%{buildroot}%{_pkgdocdir}/README.md'
 install -t '%{buildroot}%{_docdir}/python3-bidsschematools' -D -p -m 0644 \
@@ -199,8 +210,8 @@ install -t '%{buildroot}%{_docdir}/python3-bidsschematools' -D -p -m 0644 \
 
 %check
 # Sanity check
-verfile='%{_datadir}/bids-schema/versions/%{version}/schema/SCHEMA_VERSION'
-[ '%{version}' = "$(cat "%{buildroot}${verfile}")" ]
+verfile='%{_datadir}/bids-schema/versions/%{bidsversion}/schema/SCHEMA_VERSION'
+[ '%{srcversion}' = "$(cat "%{buildroot}${verfile}")" ]
 
 %pyproject_check_import %{?!with_render:-e bidsschematools.render*}
 
@@ -241,18 +252,18 @@ ln -s '%{buildroot}%{python3_sitelib}/bidsschematools/data' \
 %dir %{_datadir}/bids-schema/versions/
 # Symbolic link to the current version
 %{_datadir}/bids-schema/versions/latest
-%dir %{_datadir}/bids-schema/versions/%{version}/
-%{_datadir}/bids-schema/versions/%{version}/metaschema.json
-%{_datadir}/bids-schema/versions/%{version}/schema.json
-%dir %{_datadir}/bids-schema/versions/%{version}/schema
-%doc %{_datadir}/bids-schema/versions/%{version}/schema/README.md
+%dir %{_datadir}/bids-schema/versions/%{bidsversion}/
+%{_datadir}/bids-schema/versions/%{bidsversion}/metaschema.json
+%{_datadir}/bids-schema/versions/%{bidsversion}/schema.json
+%dir %{_datadir}/bids-schema/versions/%{bidsversion}/schema
+%doc %{_datadir}/bids-schema/versions/%{bidsversion}/schema/README.md
 # Version files
-%{_datadir}/bids-schema/versions/%{version}/schema/BIDS_VERSION
-%{_datadir}/bids-schema/versions/%{version}/schema/SCHEMA_VERSION
+%{_datadir}/bids-schema/versions/%{bidsversion}/schema/BIDS_VERSION
+%{_datadir}/bids-schema/versions/%{bidsversion}/schema/SCHEMA_VERSION
 # Directories (or directory trees) filled with YAML files
-%{_datadir}/bids-schema/versions/%{version}/schema/meta/
-%{_datadir}/bids-schema/versions/%{version}/schema/objects/
-%{_datadir}/bids-schema/versions/%{version}/schema/rules/
+%{_datadir}/bids-schema/versions/%{bidsversion}/schema/meta/
+%{_datadir}/bids-schema/versions/%{bidsversion}/schema/objects/
+%{_datadir}/bids-schema/versions/%{bidsversion}/schema/rules/
 
 
 %files -n python3-bidsschematools -f %{pyproject_files}
