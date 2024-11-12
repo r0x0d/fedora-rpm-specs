@@ -10,6 +10,8 @@
 %global rocm_release %{rocm_major}.%{rocm_minor}
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
+%global toolchain clang
+
 %bcond_with debug
 %if %{with debug}
 %global build_type DEBUG
@@ -40,9 +42,16 @@
 %global build_ocl OFF
 %endif
 
+%if 0%{?fedora}
+%bcond_without docs
+%else
+%bcond_with docs
+%endif
+
+
 Name:           rocclr
 Version:        %{rocm_version}
-%if 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
 Release:        1%{?dist}
 %else
 Release:        %autorelease
@@ -71,16 +80,20 @@ patch10:        https://github.com/ROCm/clr/pull/97/commits/909fa3dcb644f7ca422e
 patch11:        0001-handle-v1-of-compressed-fatbins.patch
 
 BuildRequires:  cmake
+%if %{with docs}
 BuildRequires:  doxygen
+%endif
 %if 0%{?fedora}
 BuildRequires:  fdupes
+BuildRequires:  perl-generators
 %endif
 BuildRequires:  gcc-c++
 BuildRequires:  hipcc
 BuildRequires:  libffi-devel
 BuildRequires:  perl
-BuildRequires:  perl-generators
-%if 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?is_opensuse}
+BuildRequires:  pkgconfig(gl)
+%elif 0%{?rhel} && 0%{?rhel} < 10
 BuildRequires:  libglvnd-devel
 %else
 BuildRequires:  pkgconfig(opengl)
@@ -157,12 +170,14 @@ Provides:       hip-devel = %{version}-%{release}
 %description -n rocm-hip-devel
 ROCm HIP development package.
 
+%if %{with docs}
 %package -n hip-doc
 Summary:        HIP API documentation package
 BuildArch:      noarch
 
 %description -n hip-doc
 This package contains documentation for the hip package
+%endif
 
 %prep
 %autosetup -N -a 1 -n clr-rocm-%{version}
@@ -202,11 +217,17 @@ sed -i 's/^\(HTML_TIMESTAMP.*\)YES/\1NO/' \
     HIP-rocm-%{version}/docs/doxygen-input/doxy.cfg
 
 %build
-export PATH=%rocmllvm_prefix/bin:$PATH
+
+p=$PWD
 
 %cmake \
+    -DCMAKE_CXX_COMPILER=%rocmllvm_bindir/clang++ \
+    -DCMAKE_C_COMPILER=%rocmllvm_bindir/clang \
+    -DCMAKE_LINKER=%rocmllvm_bindir/ld.lld \
+    -DCMAKE_AR=%rocmllvm_bindir/llvm-ar \
+    -DCMAKE_RANLIB=%rocmllvm_bindir/llvm-ranlib \
     -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-z,noexecstack \
-    -DHIP_COMMON_DIR=$(realpath HIP-rocm-%{version}) \
+    -DHIP_COMMON_DIR=$p/HIP-rocm-%{version} \
     -DCMAKE_INSTALL_LIBDIR=%{_lib} \
     -DHIPCC_BIN_DIR=%{_bindir} \
     -DHIP_PLATFORM=amd \
@@ -245,14 +266,32 @@ mv %{buildroot}%{_bindir}/clinfo %{buildroot}%{_bindir}/rocm-clinfo
 # TODO send upstream a patch, libhip should be installed with cmake's 'TARGETS'
 chmod 755 %{buildroot}%{_libdir}/lib*.so*
 
+# Unnecessary file and is not FHS compliant:
+rm %{buildroot}%{_libdir}/.hipInfo
+
+# Windows files:
+rm %{buildroot}%{_bindir}/*.bat
+
+if [ -f %{buildroot}%{_prefix}/share/doc/packages/rocclr/LICENSE.txt ]; then
+    rm %{buildroot}%{_prefix}/share/doc/packages/rocclr*/LICENSE.txt
+fi
+if [ -f %{buildroot}%{_prefix}/share/doc/opencl/LICENSE.txt ]; then
+    rm %{buildroot}%{_prefix}/share/doc/opencl*/LICENSE.txt
+fi
+if [ -f %{buildroot}%{_prefix}/share/doc/hip-asan/LICENSE.txt ]; then
+    rm %{buildroot}%{_prefix}/share/doc/hip-asan/LICENSE.txt
+fi
+if [ -f %{buildroot}%{_prefix}/share/doc/hip/LICENSE.txt ]; then
+    rm %{buildroot}%{_prefix}/share/doc/hip/LICENSE.txt
+fi
+
+
 %if %{with ocl}
 %files -n rocm-opencl
 %license opencl/LICENSE.txt
 %config(noreplace) %{_sysconfdir}/OpenCL/vendors/amdocl64.icd
 %{_libdir}/libamdocl64.so.%{rocm_major}{,.*}
 %{_libdir}/libcltrace.so.%{rocm_major}{,.*}
-#Duplicated files:
-%exclude %{_docdir}/opencl*/LICENSE*
 
 %files -n rocm-opencl-devel
 %{_libdir}/libamdocl64.so
@@ -270,8 +309,6 @@ chmod 755 %{buildroot}%{_libdir}/lib*.so*
 %{_libdir}/libhiprtc.so.%{rocm_major}{,.*}
 %{_libdir}/libhiprtc-builtins.so.%{rocm_major}{,.*}
 %{_datadir}/hip
-#Duplicated files:
-%exclude %{_docdir}/hip*/LICENSE*
 
 %files -n rocm-hip-devel
 %{_bindir}/roc-*
@@ -285,17 +322,15 @@ chmod 755 %{buildroot}%{_libdir}/lib*.so*
 %if %{with cppheaderparser}
 %{_includedir}/hip_prof_str.h
 %endif
-# Unnecessary file and is not FHS compliant:
-%exclude %{_libdir}/.hipInfo
-# Windows files:
-%exclude %{_bindir}/*.bat
 
+%if %{with docs}
 %files -n hip-doc
 %license HIP-rocm-%{version}/LICENSE.txt
 %{_docdir}/hip
+%endif
 
 %changelog
-%if 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
 * Tue Sep 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.0-1
 - A placeholder for rhel 9
 %else

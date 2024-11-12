@@ -37,8 +37,8 @@
 %global _bashcompdir %(pkg-config --variable=completionsdir bash-completion 2>/dev/null || echo %{_sysconfdir}/bash_completion.d)
 
 Name:		nordugrid-arc
-Version:	6.20.1
-Release:	2%{?dist}
+Version:	6.21.0
+Release:	1%{?dist}
 Summary:	Advanced Resource Connector Middleware
 #		Apache-2.0: most files
 #		CPL-1.0: src/services/acix/core/hashes.py
@@ -337,6 +337,8 @@ Requires:	%{name}-hed = %{version}-%{release}
 Requires:	%{name}-plugins-needed = %{version}-%{release}
 Requires:	%{name}-arcctl-service = %{version}-%{release}
 Requires:	logrotate
+Requires:	findutils
+Requires:	procps
 Provides:	%{name}-cache-service = %{version}-%{release}
 Obsoletes:	%{name}-cache-service < 6.0.0
 Provides:	%{name}-candypond = %{version}-%{release}
@@ -1713,6 +1715,9 @@ fi
 %attr(4755,root,root) %{_bindir}/arc-job-cgroup
 
 %changelog
+* Sun Nov 10 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 6.21.0-1
+- Update to version 6.21.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.20.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

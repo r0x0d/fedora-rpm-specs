@@ -35,14 +35,18 @@
 
 Name:           rocrand
 Version:        %{rocm_version}
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+Release:        1%{?dist}
+%else
 Release:        %autorelease
+%endif
 Summary:        ROCm random number generator
 
 Url:            https://github.com/ROCm/rocRAND
 License:        MIT and BSD
 Source0:        %{url}/archive/rocm-%{version}.tar.gz#/%{upstreamname}-%{version}.tar.gz
 
-BuildRequires:  git
+#BuildRequires:  git
 BuildRequires:  cmake
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
@@ -97,6 +101,11 @@ for gpu in %{rocm_gpu_list}
 do
     module load rocm/$gpu
     %cmake \
+	-DCMAKE_CXX_COMPILER=hipcc \
+	-DCMAKE_C_COMPILER=hipcc \
+	-DCMAKE_LINKER=%rocmllvm_bindir/ld.lld \
+	-DCMAKE_AR=%rocmllvm_bindir/llvm-ar \
+	-DCMAKE_RANLIB=%rocmllvm_bindir/llvm-ranlib \
         -DCMAKE_BUILD_TYPE=%build_type \
 	-DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
 	   -DCMAKE_SKIP_RPATH=ON \
@@ -126,6 +135,10 @@ find %{buildroot}           -name 'test_*'       | sed -f br.sed >  %{name}.test
 find %{buildroot}           -name '*RAND'        | sed -f br.sed >> %{name}.test
 %endif
 
+if [ -f %{buildroot}%{_prefix}/share/doc/rocrand/LICENSE.txt ]; then
+    rm %{buildroot}%{_prefix}/share/doc/rocrand/LICENSE.txt
+fi
+    
 %check
 %if %{with test}
 %if %{with check}
@@ -136,7 +149,7 @@ find %{buildroot}           -name '*RAND'        | sed -f br.sed >> %{name}.test
 
 %files -f %{name}.files
 %doc README.md
-%license %{_docdir}/%{name}/LICENSE.txt
+%license LICENSE.txt
 
 %files devel -f %{name}.devel
 %{_includedir}/%{name}
@@ -146,4 +159,11 @@ find %{buildroot}           -name '*RAND'        | sed -f br.sed >> %{name}.test
 %endif
 
 %changelog
+%if 0%{?is_opensuse}
+* Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif
+

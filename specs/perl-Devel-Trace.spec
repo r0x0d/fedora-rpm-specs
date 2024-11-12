@@ -3,7 +3,7 @@ Version:        0.12
 Release:        33%{?dist}
 Summary:        Print out each line before it is executed (like sh -x)
 
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            https://metacpan.org/release/Devel-Trace
 
 Source0:        https://cpan.metacpan.org/authors/id/M/MJ/MJD/Devel-Trace-%{version}.tar.gz

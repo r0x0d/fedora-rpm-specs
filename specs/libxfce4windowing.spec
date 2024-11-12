@@ -1,35 +1,32 @@
-%global commitdate 20240317
-%global commit 0a487d79c0d91f3fd299d8fde3f08d120d40187d
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
+%global prerel pre1
+%global xfceversion 4.20%{?prerel}
 
-%global wlr_protocols_commit 4264185db3b7e961e7f157e1cc4fd0ab75137568
+# Disable X11 for RHEL 10+
+%bcond x11 %[%{undefined rhel} || 0%{?rhel} < 10]
 
-%global xlib_minver 1.6.7
 %global glib2_minver 2.68.0
-%global gtk3_minver 3.24.0
-%global gdk_pixbuf_minver 2.40.0
-%global wnck_minver 3.14
-%global wl_minver 1.15
+%global gtk3_minver 3.24.10
+%global gdk_pixbuf_minver 2.40.8
+%global wl_minver 1.20
 
 %global api_majorver 0
 
 Name:           libxfce4windowing
-Version:        4.19.3%{?commitdate:^git%{commitdate}.%{shortcommit}}
-Release:        2%{?dist}
+Version:        4.19.9
+Release:        1%{?dist}
 Summary:        Windowing concept abstraction library for X11 and Wayland
 
 License:        LGPL-2.1-or-later
-URL:            https://gitlab.xfce.org/xfce/libxfce4windowing
-Source0:        %{url}/-/archive/%{commit}/%{name}-%{commit}.tar.bz2
-# Used exclusively at build-time
-Source1:        https://gitlab.freedesktop.org/wlroots/wlr-protocols/-/archive/%{wlr_protocols_commit}/wlr-protocols-%{wlr_protocols_commit}.tar.bz2
+URL:            https://docs.xfce.org/xfce/libxfce4windowing/start
+#VCS:            git:https://gitlab.xfce.org/xfce/%{name}.git
+Source0:        http://archive.xfce.org/xfce/%{xfceversion}/src/%{name}-%{version}.tar.bz2
 
 BuildRequires:  bzip2
 BuildRequires:  gcc
 BuildRequires:  git-core
-BuildRequires:  make
+BuildRequires:  meson >= 0.56
 BuildRequires:  tar
-BuildRequires:  xfce4-dev-tools >= 4.18.1
+BuildRequires:  xfce4-dev-tools >= 4.19.4
 # Generic deps
 BuildRequires:  pkgconfig(glib-2.0) >= %{glib2_minver}
 BuildRequires:  pkgconfig(gobject-2.0) >= %{glib2_minver}
@@ -43,10 +40,17 @@ BuildRequires:  pkgconfig(gobject-introspection-1.0) >= 1.66.0
 BuildRequires:  pkgconfig(gdk-wayland-3.0) >= %{gtk3_minver}
 BuildRequires:  pkgconfig(wayland-scanner) >= %{wl_minver}
 BuildRequires:  pkgconfig(wayland-client) >= %{wl_minver}
+BuildRequires:  pkgconfig(wayland-protocols) >= 1.25
+BuildRequires:  pkgconfig(wlr-protocols)
+%if %{with x11}
 # X11 deps
-BuildRequires:  pkgconfig(x11) >= %{xlib_minver}
+BuildRequires:  pkgconfig(libdisplay-info) >= 0.1.1
+BuildRequires:  pkgconfig(x11) >= 1.6.7
 BuildRequires:  pkgconfig(gdk-x11-3.0) >= %{gtk3_minver}
-BuildRequires:  pkgconfig(libwnck-3.0) >= %{wnck_minver}
+BuildRequires:  pkgconfig(libwnck-3.0) >= 3.14
+BuildRequires:  pkgconfig(xrandr) >= 1.5.0
+%endif
+
 
 %description
 Libxfce4windowing is an abstraction library that attempts to present
@@ -69,21 +73,17 @@ developing applications that use %{name}.
 
 
 %prep
-%autosetup -S git_am -n %{name}-%{commit}
-# Extract wlr-protocols to replace missing submodule
-mkdir -p protocols/wlr-protocols
-tar -C protocols/wlr-protocols -xf %{SOURCE1} --strip-components=1
+%autosetup -S git_am
 
+
+%conf
+%meson %{!?with_x11:-Dx11=false}
 
 %build
-%{?commitdate:NOCONFIGURE=1 xdt-autogen}
-%configure --disable-static %{?commitdate:--enable-maintainer-mode}
-%make_build
-
+%meson_build
 
 %install
-%make_install
-find %{buildroot} -name '*.la' -exec rm -f {} ';'
+%meson_install
 
 %find_lang %{name}
 
@@ -104,6 +104,9 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 
 %changelog
+* Sun Nov 10 2024 Neal Gompa <ngompa@fedoraproject.org> - 4.19.9-1
+- Update to 4.19.9
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.19.3^git20240317.0a487d7-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

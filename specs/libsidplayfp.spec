@@ -2,8 +2,8 @@ Name:           libsidplayfp
 Version:        2.11.0
 Release:        1%{?dist}
 Summary:        SID chip music module playing library
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
-License:        GPL-2.0-or-later
+# Zlib (src/utils/MD5/), GPL-2.0-only (src/builders/exsid-builder/) and GPL-2.0-or-later (the rest)
+License:        GPL-2.0-or-later AND GPL-2.0-only AND Zlib
 URL:            https://github.com/libsidplayfp
 Source0:        https://github.com/libsidplayfp/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 BuildRequires:  gcc gcc-c++ libtool doxygen

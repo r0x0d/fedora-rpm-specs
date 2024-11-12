@@ -6,7 +6,7 @@
 %global crate goblin
 
 Name:           rust-goblin
-Version:        0.8.2
+Version:        0.9.2
 Release:        %autorelease
 Summary:        Impish, cross-platform, ELF, Mach-o, and PE binary parsing and loading crate
 
@@ -179,6 +179,18 @@ This package contains library source intended for building other packages which
 use the "std" feature of the "%{crate}" crate.
 
 %files       -n %{name}+std-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+te-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+te-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "te" feature of the "%{crate}" crate.
+
+%files       -n %{name}+te-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep

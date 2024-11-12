@@ -18,11 +18,11 @@
 %global         main_version	1.3.2
 
 %if 0%{?use_gitbare}
-%global		gittardate		20240825
-%global		gittartime		1555
+%global		gittardate		20241110
+%global		gittartime		1605
 
-%global		gitbaredate	20240823
-%global		git_rev		4d2f7b41407f769e2ef4df5e74e736921c90aa92
+%global		gitbaredate	20241107
+%global		git_rev		d9935ec1d06f335c1a97fc0128c89a6af92a6d63
 %global		git_short		%(echo %{git_rev} | cut -c-8)
 %global		git_version	%{gitbaredate}git%{git_short}
 
@@ -258,10 +258,16 @@ done
 
 cat %PATCH1 | git am
 %patch -P1000 -p1 -Z
-# Patch1000 needs below
-sh autogen.sh
 git commit -m "Use gtk version specific module directory" -a
 
+# Need reporting upstream
+# ref: https://github.com/lxde/libfm/commit/1af95bd8f26cab6848a74b7e02b53c6c79fb53a5
+sed -i Makefile.am \
+	-e '\@docs/reference/libfm/libfm-sections.txt@d'
+git commit -m "Remove files entry to be regenerated" -a || true
+
+sh autogen.sh
+git commit -m "save modified files" -a || true
 
 # treak rpath
 sed -i.libdir_syssearch \
@@ -274,9 +280,9 @@ sed -i.error po/Makefile.in.in \
 	-e '\@check@,\@fi@s|exit 1|exit 0|'
 git commit -m "ignore po/ directory make check error" -a || true
 
-
 # Tell vala to regenerate C source
 find . -name \*.vala | xargs touch
+
 
 %build
 %if 0%{?use_gitbare} >= 1
@@ -485,6 +491,9 @@ fi
 %endif
 
 %changelog
+* Sun Nov 10 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.3.2^20241107gitd9935ec1-1
+- Update to the latest git
+
 * Sun Aug 25 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.3.2^20240823git4d2f7b41-1
 - Update to the latest git
 

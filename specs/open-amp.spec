@@ -1,10 +1,8 @@
 Name:		open-amp
-Version:	2023.10.0
-Release:	5%{?dist}
+Version:	2024.10.0
+Release:	1%{?dist}
 Summary:	Open Asymmetric Multi Processing (OpenAMP) framework project
-
-# Automatically converted from old format: BSD - review is highly recommended.
-License:	LicenseRef-Callaway-BSD
+License:	BSD-3-Clause OR BSD-2-Clause
 URL:		https://github.com/OpenAMP/open-amp/
 Source0:	https://github.com/OpenAMP/open-amp/archive/v%{version}/%{name}-%{version}.tar.gz
 Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
@@ -49,7 +47,6 @@ baremetal, and RTOS environments.
 %install
 %cmake_install
 
-%ldconfig_scriptlets
 
 %files
 %license LICENSE.md
@@ -81,6 +78,9 @@ baremetal, and RTOS environments.
 
 
 %changelog
+* Sun Nov 10 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 2024.10.0-1
+- Update to 2024.10.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 2023.10.0-5
 - convert license to SPDX
 

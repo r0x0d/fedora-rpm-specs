@@ -1,13 +1,11 @@
 Name:		libmetal
-Version:	2023.10.0
-Release:	5%{?dist}
+Version:	2024.10.0
+Release:	1%{?dist}
 Summary:	An abstraction layer across user-space Linux, baremetal, and RTOS environments 
-
-# Automatically converted from old format: BSD - review is highly recommended.
-License:	LicenseRef-Callaway-BSD
+License:	BSD-3-Clause or Apache-2.0 or GPL-2.0
 URL:		https://github.com/OpenAMP/libmetal/
-Source0:	https://github.com/OpenAMP/libmetal/archive/v%{version}/%{name}-%{version}.tar.gz
 
+Source0:	https://github.com/OpenAMP/libmetal/archive/v%{version}/%{name}-%{version}.tar.gz
 Patch0:		libmetal-add-additional-arches.patch
 
 BuildRequires:	cmake
@@ -34,7 +32,6 @@ Documentation file for libmetal: An abstraction layer across user-space Linux,
 baremetal, and RTOS environments.
 
 
-
 %prep
 %autosetup -p1
 
@@ -50,7 +47,6 @@ cd build
 cd build
 %cmake_install
 
-%ldconfig_scriptlets
 
 %files
 %license LICENSE.md
@@ -69,8 +65,10 @@ cd build
 %doc %{_datarootdir}/doc/metal/
 
 
-
 %changelog
+* Sun Nov 10 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 2024.10.0-1
+- Update to 2024.10.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 2023.10.0-5
 - convert license to SPDX
 

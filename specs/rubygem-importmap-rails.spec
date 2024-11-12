@@ -3,7 +3,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 1.0.3
-Release: 7%{?dist}
+Release: 8%{?dist}
 Summary: Manage modern JavaScript in Rails without transpiling or bundling
 License: MIT
 URL: https://github.com/rails/importmap-rails
@@ -17,6 +17,7 @@ BuildRequires: ruby
 BuildRequires: ruby(release)
 # Used for sample app
 BuildRequires: rubygem(bundler)
+BuildRequires: rubygem(mutex_m)
 BuildRequires: rubygem(rails)
 BuildRequires: rubygem(sqlite3)
 BuildRequires: rubygems-devel
@@ -54,6 +55,7 @@ cp -a .%{gem_dir}/* \
 pushd .%{gem_instdir}
 ln -s %{_builddir}/test
 
+echo 'gem "mutex_m"' >> Gemfile
 echo 'gem "rails"' >> Gemfile
 echo 'gem "sqlite3"' >> Gemfile
 
@@ -83,6 +85,9 @@ popd
 %{gem_instdir}/Rakefile
 
 %changelog
+* Sun Nov 10 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.0.3-8
+- Add BR: rubygem(mutex_m) explicitly for ruby34
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.3-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

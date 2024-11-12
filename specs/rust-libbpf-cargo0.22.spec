@@ -18,6 +18,10 @@ Source:         %{crates_source}
 # by default, test.rs expects libbpf-rs to be in the same checkout
 # fix to point to /usr/share/cargo/registry
 Patch:          libbpf-cargo-fix-finding-libbpf-rs.diff
+# Manually created patch for downstream crate metadata changes
+# * Update goblin dependency to 0.9:
+#   https://github.com/libbpf/libbpf-rs/pull/988
+Patch:          libbpf-cargo-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 26
 BuildRequires:  clang

@@ -3,7 +3,7 @@
 
 Name:           python-%{pypi_name}
 Version:        2.0.0
-Release:        15%{?dist}
+Release:        16%{?dist}
 Summary:        The code formerly known as django.contrib.comments
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -52,7 +52,7 @@ rm -rf django_contrib_comments.egg-info
 %py3_install
 
 %check
-%{__python3} setup.py test
+PYTHONWARNINGS=default %{__python3} tests/runtests.py
 
 %files -n python3-%{pypi_name}
 %license LICENSE.txt
@@ -61,6 +61,9 @@ rm -rf django_contrib_comments.egg-info
 %{python3_sitelib}/django_contrib_comments-%{version}-py*.egg-info
 
 %changelog
+* Sun Nov 10 2024 Chenxiong Qi <qcxhome@gmail.com> - 2.0.0-16
+- Drop use of 'setup.py test' in order to build with setuptools 74+
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.0.0-15
 - convert license to SPDX
 

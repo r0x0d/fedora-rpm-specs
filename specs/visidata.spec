@@ -1,7 +1,7 @@
 %global srcname visidata
 
 Name:           %{srcname}
-Version:        3.0.2
+Version:        3.1.1
 Release:        %autorelease
 Summary:        Terminal interface for exploring and arranging tabular data
 
@@ -10,8 +10,6 @@ URL:            https://visidata.org
 Source0:        %pypi_source %{srcname}
 # Fedora specific:
 Patch:          0001-Remove-extra-copy-of-man-page.patch
-# Fix Desktop file validation
-Patch:          https://github.com/saulpw/visidata/commit/3c4f032b72fb32c8e671b9d66f1e1edaa7181c4b.patch
 
 BuildArch:      noarch
 
@@ -46,7 +44,7 @@ Recommends: python3dist(mapbox-vector-tile)
 Recommends: python3dist(namestand)
 Recommends: python3dist(numpy)
 Recommends: python3dist(openpyxl)
-Recommends: python3dist(pandas) >= 0.19.2
+Recommends: python3dist(pandas) >= 1.5.3
 Recommends: python3dist(pdfminer-six)
 Recommends: python3dist(psycopg2)
 Recommends: python3dist(pypng)

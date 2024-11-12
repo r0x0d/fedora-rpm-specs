@@ -1,9 +1,8 @@
 Name:           iwd
-Version:        3.0
+Version:        3.1
 Release:        %autorelease
 Summary:        Wireless daemon for Linux
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.1-or-later
 URL:            https://iwd.wiki.kernel.org/
 Source0:        https://www.kernel.org/pub/linux/network/wireless/%{name}-%{version}.tar.xz
 
@@ -43,7 +42,7 @@ hardware.
 	--with-systemd-networkdir=%{_systemd_util_dir}/network \
 	--with-systemd-modloaddir=%{_modulesloaddir}
 
-%make_build V=1
+%make_build
 
 
 %install

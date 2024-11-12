@@ -1,9 +1,8 @@
 Name:          libiio
-Version:       0.25
-Release:       7%{?dist}
+Version:       0.26
+Release:       1%{?dist}
 Summary:       Library for Industrial IO
-# Automatically converted from old format: LGPLv2 - review is highly recommended.
-License:       LicenseRef-Callaway-LGPLv2
+License:       LGPL-2.0-or-later
 URL:           https://analogdevicesinc.github.io/libiio/
 Source0:       https://github.com/analogdevicesinc/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
@@ -103,6 +102,9 @@ find %{buildroot} -name '*.la' -delete
 %{python3_sitelib}/pylibiio*
 
 %changelog
+* Sun Nov 10 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 0.26-1
+- Update to 0.26
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 0.25-7
 - convert license to SPDX
 

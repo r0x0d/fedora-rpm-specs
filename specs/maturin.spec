@@ -45,6 +45,9 @@ Patch:          0002-drop-incompatible-cargo-flags-from-setuptools_rust.patch
 # * drop #!/usr/bin/env python3 shebang from maturin/__init__.py
 Patch:          0003-remove-shebang-from-non-executable-__init__.py-file.patch
 
+# * Update goblin to 0.9: https://github.com/PyO3/maturin/pull/2284
+Patch:          0004-Update-goblin-to-0.9.patch
+
 BuildRequires:  cargo-rpm-macros >= 24
 BuildRequires:  python3-devel
 

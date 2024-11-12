@@ -3,7 +3,7 @@
 # identically and released at the same time, it makes sense to build them from
 # a single source package.
 Name:           python-typer
-Version:        0.12.5
+Version:        0.13.0
 Release:        %autorelease
 Summary:        Build great CLIs; easy to code; based on Python type hints
 
@@ -140,16 +140,8 @@ export _TYPER_COMPLETE_TEST_DISABLE_SHELL_DETECTION=1
 # mypy/black/isort).
 export TERMINAL_WIDTH=3000
 export _TYPER_FORCE_DISABLE_TERMINAL=1
+export _TYPER_RUN_INSTALL_COMPLETION_TESTS=1
 
-# Shell completion tests need us to be running under a supported shell, i.e.
-# bash rather than sh. Unfortunately, shell detection with shellingham is so
-# thorough we cannot fool it by any combination of:
-#  - export SHELL=/bin/bash
-#  - bash -c '%%pytest'
-#  - %%check -p /bin/bash
-# so we must simply skip the affected tests.
-k="${k-}${k+ and }not test_show_completion"
-k="${k-}${k+ and }not test_install_completion"
 # These cannot find the typer package because the tests override PYTHONPATH.
 ignore="${ignore-} --ignore=tests/test_tutorial/test_subcommands/test_tutorial001.py"
 ignore="${ignore-} --ignore=tests/test_tutorial/test_subcommands/test_tutorial003.py"

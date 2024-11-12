@@ -26,7 +26,7 @@
 %define _find_debuginfo_dwz_opts %{nil}
 %global bundle_prefix %{_libdir}/rocm/llvm
 %global llvm_triple %{_target_platform}
-%global amd_device_libs_prefix lib64/rocm/llvm/lib/clang/%{llvm_maj_ver}/lib
+%global amd_device_libs_prefix lib64/rocm/llvm/lib/clang/%{llvm_maj_ver}
 
 # /usr/lib64/rocm/llvm/lib/clang/18/lib64/amdgcn
 # /usr/lib64/rocm/llvm/lib64/clang/18/lib64/amdgcn
@@ -356,6 +356,9 @@ p=$PWD
  -DLLVM_BUILD_TOOLS=ON \\\
  -DLLVM_BUILD_UTILS=ON \\\
  -DLLVM_DEFAULT_TARGET_TRIPLE=%{llvm_triple} \\\
+ -DLLVM_ENABLE_EH=ON \\\
+ -DLLVM_ENABLE_FFI=ON \\\
+ -DLLVM_ENABLE_RTTI=ON \\\
  -DLLVM_ENABLE_ZLIB=ON \\\
  -DLLVM_ENABLE_ZSTD=ON \\\
  -DLLVM_INCLUDE_BENCHMARKS=OFF \\\

@@ -1,8 +1,7 @@
 Name:           perl-Catalyst-Runtime
 Summary:        Catalyst Framework Runtime
-Version:        5.90131
-Release:        5%{?dist}
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
+Version:        5.90132
+Release:        1%{?dist}
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 Source0:        https://cpan.metacpan.org/authors/id/J/JJ/JJNAPIORK/Catalyst-Runtime-%{version}.tar.gz
@@ -276,6 +275,9 @@ make clean
 %{_mandir}/man1/*
 
 %changelog
+* Sun Nov 10 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 5.90132-1
+- Update to 5.90132
+
 * Mon Aug 05 2024 Miroslav Suchý <msuchy@redhat.com> - 5.90131-5
 - convert license to SPDX
 

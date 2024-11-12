@@ -1,15 +1,15 @@
-%global xfceversion 4.18
+%global prerel pre1
+%global xfceversion 4.20%{?prerel}
 
 Name:           xfce4-dev-tools
-Version:        4.18.1
+Version:        4.19.4
 Release:        %autorelease
 Summary:        Xfce developer tools
 
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
-URL:            http://xfce.org/~benny/projects/xfce4-dev-tools/
-#VCS git:git://git.xfce.org/xfce/xfce4-dev-tools
-Source0:        http://archive.xfce.org/src/xfce/xfce4-dev-tools/%{xfceversion}/%{name}-%{version}.tar.bz2
+URL:            https://docs.xfce.org/xfce/xfce4-dev-tools/start
+#VCS git:https://gitlab.xfce.org/xfce/xfce4-dev-tools.git
+Source0:        http://archive.xfce.org/xfce/%{xfceversion}/src/%{name}-%{version}.tar.bz2
 
 BuildRequires:  gettext-devel
 BuildRequires:  libtool
@@ -17,6 +17,7 @@ BuildRequires:  intltool
 BuildRequires:  make
 BuildRequires:  glib2-devel
 BuildRequires:  libxslt-devel
+BuildRequires:  meson
 Requires:       autoconf
 Requires:       automake
 Requires:       gawk
@@ -27,10 +28,10 @@ Requires:       intltool
 
 %description
 This package contains common tools required by Xfce developers and people
-that want to build Xfce from SVN.
+that want to build Xfce from Git.
 
 %prep
-%setup -q
+%autosetup
 
 %build
 %configure
@@ -49,7 +50,9 @@ that want to build Xfce from SVN.
 %{_bindir}/xfce-get-translations
 %{_bindir}/xfce-update-news
 %{_bindir}/xdt-autogen
+%{_bindir}/xdt-check-abi
 %{_bindir}/xdt-csource
+%{_bindir}/xdt-gen-visibility
 %{_datadir}/aclocal/*
 %{_mandir}/man1/xdt-csource.1.gz
 

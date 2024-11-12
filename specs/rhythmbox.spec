@@ -5,12 +5,12 @@
 %global __provides_exclude_from ^%{_libdir}/%{name}/plugins/.*/.*\\.so.*$
 
 Name:    rhythmbox
-Version: 3.4.7
+Version: 3.4.8
 Release: %autorelease
 Summary: Music Management Application
 
-# Automatically converted from old format: GPLv2+ with exceptions and GFDL - review is highly recommended.
-License: LicenseRef-Callaway-GPLv2+-with-exceptions AND LicenseRef-Callaway-GFDL
+# Automatically converted from old format: GPLv2+ with exceptions - review is highly recommended.
+License: LicenseRef-Callaway-GPLv2+-with-exceptions AND GFDL-1.1-no-invariants-or-later
 URL:     https://wiki.gnome.org/Apps/Rhythmbox
 Source0: https://download.gnome.org/sources/rhythmbox/3.4/%{name}-%{version}.tar.xz
 
@@ -98,9 +98,6 @@ a Rhythmbox plugin.
 
 %find_lang %name --with-gnome
 
-# Don't package api docs
-rm -rf %{buildroot}/%{_datadir}/gtk-doc/
-
 # Don't include header files for plugins
 rm -rf %{buildroot}%{_libdir}/rhythmbox/plugins/*/*.h
 
@@ -114,7 +111,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/org.gnome.Rhythmbox3
 
 %files -f %{name}.lang
 %license COPYING
-%doc AUTHORS README NEWS
+%doc AUTHORS README.md NEWS
 %{_bindir}/*
 %{_datadir}/rhythmbox/
 %{_datadir}/applications/org.gnome.Rhythmbox3.desktop

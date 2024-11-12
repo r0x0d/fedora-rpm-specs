@@ -13,6 +13,10 @@ Source0:       %{url}archive/refs/tags/v%{version}.tar.gz
 # add fmt-11.0 support (upstream commit 05e05f9, to be included in v3.1)
 Patch0:         fmt-11_0.patch
 
+# https://github.com/Cantera/cantera/pull/1804
+Patch1:         0001-SCons-Fix-nondeterminism-in-source-generation.patch
+Patch2:         0002-Python-Avoid-nondeterminism-in-error-message.patch
+
 BuildRequires:  boost-devel
 BuildRequires:  eigen3-devel
 BuildRequires:  fmt-devel
@@ -60,55 +64,50 @@ BuildRequires:  gcc-gfortran
 
 ExcludeArch: %{ix86}
 
-%global common_description %{expand: \
- Cantera is a suite of object-oriented software tools for solving problems
- involving chemical kinetics, thermodynamics, and/or transport processes.
- Cantera can be used for simulating time-dependent or steady reactor
- networks and one-dimensional reacting flows. Thermodynamic models for
- ideal gases, aqueous electrolytes, plasmas, and multiphase substances
- are provided.}
+%global common_description %{expand:
+Cantera is a suite of object-oriented software tools for solving problems
+involving chemical kinetics, thermodynamics, and/or transport processes.
+Cantera can be used for simulating time-dependent or steady reactor
+networks and one-dimensional reacting flows. Thermodynamic models for
+ideal gases, aqueous electrolytes, plasmas, and multiphase substances
+are provided.}
 
-%description
-%{common_description}
+%description %{common_description}
 
 
 %package common
 Summary: Common files needed for all Cantera interfaces
-%description common
-%{common_description}
- .
- This package includes programs for parsing and converting chemical
- mechanisms, a set of common mechanism files, and several sample problems.
+%description common %{common_description}
+
+This package includes programs for parsing and converting chemical
+mechanisms, a set of common mechanism files, and several sample problems.
 
 
 %package -n python3-%{name}
 Requires: %{name}-common%{_isa} = %{version}-%{release}
 Recommends: python3-pint
 Summary: Python 3 user interface for Cantera
-%description -n python3-%{name}
-%{common_description}
- .
- This package includes the Cantera Python 3 module.
+%description -n python3-%{name} %{common_description}
+
+This package includes the Cantera Python 3 module.
 
 
 %package devel
 Requires: %{name}-common%{_isa} = %{version}-%{release}
 Summary: Header files and shared object libraries for Cantera
-%description devel
-%{common_description}
- .
- This package contains the header files and shared object libraries needed to
- develop applications with the C++ and Fortran interfaces of Cantera.
+%description devel %{common_description}
+
+This package contains the header files and shared object libraries needed to
+develop applications with the C++ and Fortran interfaces of Cantera.
 
 
 %package static
 Requires: %{name}-common%{_isa} = %{version}-%{release}
 Summary: Static libraries for Cantera
-%description static
-%{common_description}
- .
- This package contains the static libraries for the C++ and Fortran
- interfaces of Cantera.
+%description static %{common_description}
+
+This package contains the static libraries for the C++ and Fortran
+interfaces of Cantera.
 
 
 %prep

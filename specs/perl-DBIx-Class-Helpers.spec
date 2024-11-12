@@ -1,8 +1,7 @@
 Name:           perl-DBIx-Class-Helpers
-Version:        2.036000
-Release:        15%{?dist}
+Version:        2.037000
+Release:        1%{?dist}
 Summary:        A collection of various components for DBIx::Class
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 URL:            https://metacpan.org/release/DBIx-Class-Helpers
@@ -89,6 +88,9 @@ for DBIx::Class.
 %{_mandir}/man3/DBIx*
 
 %changelog
+* Sun Nov 10 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 2.037000-1
+- Update to 2.037000
+
 * Mon Aug 05 2024 Miroslav Suchý <msuchy@redhat.com> - 2.036000-15
 - convert license to SPDX
 

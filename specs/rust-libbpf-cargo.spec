@@ -11,12 +11,16 @@ Summary:        Cargo plugin to build bpf programs
 License:        LGPL-2.1-only OR BSD-2-Clause
 URL:            https://crates.io/crates/libbpf-cargo
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+# * Update goblin dependency to 0.9:
+#   https://github.com/libbpf/libbpf-rs/pull/988
+Patch:          libbpf-cargo-fix-metadata.diff
 # * by default, test.rs expects libbpf-rs to be in the same checkout
 # * fix to point to /usr/share/cargo/registry
-Patch:          libbpf-cargo-fix-finding-libbpf-rs.diff
+Patch2:        libbpf-cargo-fix-finding-libbpf-rs.diff
 # * https://github.com/libbpf/libbpf-rs/issues/790
 # * Revert the commit that refactors vmlinux.h to unshipped crate
-Patch:          libbpf-cargo-revert-vmlinux-refactor.diff
+Patch3:        libbpf-cargo-revert-vmlinux-refactor.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 BuildRequires:  clang

@@ -2,10 +2,13 @@
 %bcond_without check
 %global debug_package %{nil}
 
+# prevent executables from being installed
+%global cargo_install_bin 0
+
 %global crate lddtree
 
 Name:           rust-lddtree
-Version:        0.3.5
+Version:        0.3.6
 Release:        %autorelease
 Summary:        Read the ELF dependency tree
 
@@ -13,11 +16,10 @@ License:        MIT
 URL:            https://crates.io/crates/lddtree
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * skip building unused executable
 # * exclude tests and binary test fixtures from installed files
 Patch:          lddtree-fix-metadata.diff
 
-BuildRequires:  cargo-rpm-macros >= 24
+BuildRequires:  cargo-rpm-macros >= 26
 
 %global _description %{expand:
 Read the ELF dependency tree.}
@@ -67,7 +69,7 @@ use the "default" feature of the "%{crate}" crate.
 %check
 %ifarch aarch64
 # * skip test that doesn't work on aarch64
-%cargo_test -- -- --skip test_lddtree
+%cargo_test -- -- --exact --skip test_lddtree
 %else
 %cargo_test
 %endif

@@ -1,6 +1,10 @@
 Name:           rocm-rpm-macros
 Version:        6.2.2
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+Release:    1%{?dist}
+%else
 Release:        %autorelease
+%endif
 Summary:        ROCm RPM macros
 License:        GPL-2.0-or-later
 
@@ -30,15 +34,25 @@ Source17:       default.rhel
 # Just some files
 %global debug_package %{nil}
 
+%if 0%{?is_opensuse}
+Requires:       Modules
+%else
 Requires:       environment-modules
+%endif
 ExclusiveArch:  x86_64
 %description
 This package contains ROCm RPM macros for building ROCm packages.
 
+# To use, run
+# $> source /etc/profile.d/modules.sh
 %package modules
 Summary: ROCm enviroment modules
+%if 0%{?is_opensuse}
+Requires:       Modules
+%else
 Requires: environment(modules)
 Requires: cmake-filesystem
+%endif
 
 %description modules
 This package contains ROCm environment modules for switching
@@ -72,8 +86,13 @@ install -pm 644 %{SOURCE16} modules
 %install
 mkdir -p %{buildroot}%{_rpmmacrodir}/
 install -Dpm 644 %{SOURCE0} %{buildroot}%{_rpmmacrodir}/
+%if 0%{?is_opensuse}
+mkdir -p %{buildroot}%{_datadir}/modules/rocm/
+cp -p modules/* %{buildroot}%{_datadir}/modules/rocm/
+%else
 mkdir -p %{buildroot}%{_datadir}/modulefiles/rocm/
 cp -p modules/* %{buildroot}%{_datadir}/modulefiles/rocm/
+%endif
 # Make directories users of modules will install to
 for gpu in %{gpu_list}
 do
@@ -88,7 +107,18 @@ done
 %files modules
 %license GPL
 %{_libdir}/rocm
+%if 0%{?is_opensuse}
+%{_datadir}/modules
+%else
 %{_datadir}/modulefiles/rocm/
+%endif
 
 %changelog
+%if 0%{?is_opensuse}
+* Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif
+

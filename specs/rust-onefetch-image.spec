@@ -13,8 +13,8 @@ License:        MIT
 URL:            https://crates.io/crates/onefetch-image
 Source:         %{crates_source}
 # * Bump image from 0.24.9 to 0.25.2: https://github.com/o2sh/onefetch/pull/1396
-#   - rebased on the published 2.21.0 crate.
-Patch10:       onefetch-image-2.21.0-image-0.25.patch
+#   - rebased on the published 2.22.0 crate.
+Patch10:       onefetch-image-2.22.0-image-0.25.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 

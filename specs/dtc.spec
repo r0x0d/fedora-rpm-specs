@@ -7,14 +7,13 @@
 %undefine _auto_set_build_flags
 
 Name:          dtc
-Version:       1.7.1
+Version:       1.7.2
 Release:       1%{?dist}
 Summary:       Device Tree Compiler
 License:       GPL-2.0-or-later
 URL:           https://devicetree.org/
 
 Source0:       https://www.kernel.org/pub/software/utils/%{name}/%{name}-%{version}.tar.xz
-Patch1:        dtc-fix-build-swig43.patch
 
 BuildRequires: gcc make
 BuildRequires: flex bison swig
@@ -180,6 +179,9 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %endif
 
 %changelog
+* Sun Nov 10 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1.7.2-1
+- Update to 1.7.2
+
 * Thu Sep 19 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1.7.1-1
 - Update to 1.7.1
 

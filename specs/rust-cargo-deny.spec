@@ -20,6 +20,7 @@ Source:         %{crates_source}
 Source:         askalono-cache-3.22.bin.zstd
 # Manually created patch for downstream crate metadata changes
 # * Bump gix to version 0.66
+# * Update goblin to 0.9: https://github.com/EmbarkStudios/cargo-deny/pull/711
 Patch:          cargo-deny-fix-metadata.diff
 Patch:          gix-compatibility.patch
 
@@ -41,6 +42,7 @@ Summary:        %{summary}
 # Apache-2.0 OR MIT
 # Apache-2.0 WITH LLVM-exception
 # Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
+# BSD-2-Clause OR Apache-2.0 OR MIT
 # BSD-3-Clause
 # ISC
 # ISC AND MIT AND OpenSSL
@@ -51,7 +53,7 @@ Summary:        %{summary}
 # MPL-2.0
 # Unlicense OR MIT
 # Zlib OR Apache-2.0 OR MIT
-License:        Apache-2.0 AND Apache-2.0 WITH LLVM-exception AND BSD-3-Clause AND CC0-1.0 AND ISC AND MIT AND MPL-2.0 AND OpenSSL AND Unicode-DFS-2016 AND (0BSD OR MIT OR Apache-2.0) AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR ISC OR MIT) AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND (MIT OR Apache-2.0 OR Zlib) AND (Unlicense OR MIT)
+License:        Apache-2.0 AND Apache-2.0 WITH LLVM-exception AND BSD-3-Clause AND CC0-1.0 AND ISC AND MIT AND MPL-2.0 AND OpenSSL AND Unicode-DFS-2016 AND (0BSD OR MIT OR Apache-2.0) AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR ISC OR MIT) AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND (BSD-2-Clause OR Apache-2.0 OR MIT) AND (MIT OR Apache-2.0 OR Zlib) AND (Unlicense OR MIT)
 # LICENSE.dependencies contains a full license breakdown
 
 Provides:       bundled(spdx-license-list-data) = 3.22

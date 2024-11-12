@@ -1,6 +1,6 @@
 %global forgeurl https://github.com/pchev/libpasastro/
 
-Version:        1.4.2
+Version:        1.4.3
 %forgemeta
 
 Name:           libpasastro
@@ -15,8 +15,8 @@ Source0:        %{forgesource}
 # Since this is Fedora specific we don't ask upstream to include
 Patch1:         libpasastro-1.3-nostrip.patch
 
-# Add LDFLAGS to compiler
-Patch2:         libpasastro-1.4-ldflags.patch
+# Make sure Fedora's C(XX)FLAGS and LDFLAGS are applied
+Patch2:         apply_fedora_archflags.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  make
@@ -42,8 +42,7 @@ sed -i 's/\$destdir\/lib/\$destdir\/%{_lib}/g' ./install.sh
 
 
 %build
-%global build_type_safety_c 0
-%make_build arch_flags="%{optflags}" FED_LDFLAGS="%{build_ldflags}"
+%make_build arch_flags="%{optflags}"
 
 
 %install

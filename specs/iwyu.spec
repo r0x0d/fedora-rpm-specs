@@ -1,6 +1,6 @@
 %global appname include-what-you-use
 %global toolchain clang
-%global llvmver 18.0.0
+%global llvmver 19.0.0
 
 # Opt out of https://fedoraproject.org/wiki/Changes/fno-omit-frame-pointer
 # https://bugzilla.redhat.com/show_bug.cgi?id=2215937
@@ -8,13 +8,16 @@
 %undefine _include_frame_pointers
 
 Name: iwyu
-Version: 0.22
-Release: 2%{?dist}
+Version: 0.23
+Release: %autorelease
 
 License: NCSA
 Summary: C/C++ source files #include analyzer based on clang
 URL: https://github.com/%{appname}/%{appname}
 Source0: %{url}/archive/%{version}/%{appname}-%{version}.tar.gz
+
+# Revert the upstream commit e046d23 with new resource dir path detection.
+Patch100: %{appname}-0.23-revert-path-detection.patch
 
 BuildRequires: clang >= %{llvmver}
 BuildRequires: clang-devel >= %{llvmver}
@@ -73,11 +76,4 @@ sed -e "s@\${LLVM_LIBRARY_DIR}@%{_prefix}/lib@g" -i CMakeLists.txt
 %{_mandir}/man1/%{appname}.1*
 
 %changelog
-* Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.22-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Wed Mar 27 2024 Vitaly <vitaly@easycoding.org> - 0.22-1
-- Updated to version 0.22.
-
-* Wed Jan 24 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.20-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
+%autochangelog

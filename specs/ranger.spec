@@ -1,8 +1,8 @@
 Name:           ranger
 Version:        1.9.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A vim-like file manager
-License:        GPL-3.0
+License:        GPL-3.0-only
 URL:            https://ranger.github.io/
 Source0:        https://github.com/%{name}/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
@@ -48,6 +48,9 @@ find _doc -type f -exec chmod -R -x '{}' \;
 
 
 %changelog
+* Sun Nov 10 2024 Ben Boeckel <fedora@me.benboeckel.net> - 1.9.4-2
+- Add "-only" suffix to License
+
 * Thu Nov 07 2024 Ben Boeckel <fedora@me.benboeckel.net> - 1.9.4-1
 - Update to 1.9.4 (rhbz#2324228)
 - Support Python 3.13 (rhbz#2315724)

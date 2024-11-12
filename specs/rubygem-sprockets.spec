@@ -3,7 +3,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 4.2.0
-Release: 5%{?dist}
+Release: 6%{?dist}
 Summary: Rack-based asset packaging system
 License: MIT
 URL: https://github.com/rails/sprockets
@@ -17,6 +17,7 @@ Patch0: rubygem-sprockets-4.2.0-Fix-Minitest-constant-name-in-tests.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby >= 2.5.0
+BuildRequires: rubygem(base64)
 BuildRequires: rubygem(concurrent-ruby)
 BuildRequires: rubygem(execjs)
 BuildRequires: rubygem(minitest)
@@ -210,6 +211,9 @@ popd
 %doc %{gem_instdir}/README.md
 
 %changelog
+* Sun Nov 10 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 4.2.0-6
+- Add BR: rubygem(base64) explicitly for ruby34
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.2.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

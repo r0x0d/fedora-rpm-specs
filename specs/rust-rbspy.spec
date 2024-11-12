@@ -13,6 +13,10 @@ URL:            https://crates.io/crates/rbspy
 Source:         %{crates_source}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          rbspy-fix-metadata-auto.diff
+# Manually created patch for downstream crate metadata changes
+# * Remove unused direct dependency on goblin:
+#   https://github.com/rbspy/rbspy/pull/391
+Patch:          rbspy-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 %if %{with check}

@@ -9,8 +9,7 @@ Summary:        Software library for AdLib (OPL2/3) emulation
 URL:            https://adplug.github.io/
 Source0:        https://github.com/adplug/adplug/releases/download/%{name}-%{version}/%{name}-%{version}.tar.bz2
 Source1:        https://download.sourceforge.net/%{name}/adplugdb-%{adplugdbver}.tar.gz
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:	LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.1-or-later AND GFDL-1.1-or-later
 BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  libbinio-devel >= 1.4
@@ -32,10 +31,6 @@ hardware. No OPL2/3 chips are required for playback.
 Summary:        Development files for AdPlug
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       libbinio-devel
-%if 0%{?rhel} && 0%{?rhel} <= 7
-Requires(post):  /sbin/install-info
-Requires(preun): /sbin/install-info
-%endif
 
 %description devel
 This package contains development files for the AdPlug AdLib (OPL2/3)
@@ -61,16 +56,6 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 install -D -p -m 644 %{adplugdbver}/adplug.db $RPM_BUILD_ROOT%{shareddata}/%{name}/adplug.db
 
 %ldconfig_scriptlets
-
-%if 0%{?rhel} && 0%{?rhel} <= 7
-%post devel
-/sbin/install-info %{_infodir}/libadplug.info.gz %{_infodir}/dir || :
-
-%preun devel
-if [ $1 = 0 ]; then
-  /sbin/install-info --delete %{_infodir}/libadplug.info.gz %{_infodir}/dir || :
-fi
-%endif
 
 %files
 %{_libdir}/*.so.*

@@ -29,6 +29,9 @@ BuildRequires:  libdrm-devel
 BuildRequires:  libffi-devel
 BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  rocm-device-libs
+%if 0%{?is_opensuse}
+BuildRequires:  xxd
+%endif
 
 %if 0%{?is_opensuse}
 BuildRequires:  libelf-devel

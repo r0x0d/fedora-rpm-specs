@@ -7,7 +7,11 @@
 
 Name:     rocm-cmake
 Version:  %{rocm_version}
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+Release:    1%{?dist}
+%else
 Release:  %autorelease
+%endif
 Summary:  CMake modules for common build and dev tasks within the ROCm project
 License:  MIT
 URL:      https://github.com/ROCm/rocm-cmake
@@ -38,7 +42,9 @@ is required for building some of the libraries that are a part of ROCm.
 %install
 %cmake_install
 
-rm %{buildroot}/%{_docdir}/rocm-cmake/LICENSE
+if [ -f %{buildroot}%{_prefix}/share/doc/rocm-cmake/LICENSE ]; then
+    rm %{buildroot}%{_prefix}/share/doc/rocm-cmake/LICENSE
+fi
 
 %files
 %dir %{_datadir}/rocm
@@ -50,4 +56,11 @@ rm %{buildroot}/%{_docdir}/rocm-cmake/LICENSE
 %{_datadir}/rocmcmakebuildtools/*
 
 %changelog
+%if 0%{?is_opensuse}
+* Sat Nov 9 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif
+

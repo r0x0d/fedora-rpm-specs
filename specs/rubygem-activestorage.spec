@@ -9,7 +9,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 7.0.8
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: Local and cloud file storage framework
 License: MIT
 URL: http://rubyonrails.org
@@ -40,6 +40,7 @@ BuildRequires: rubygem(rails) = %{version}
 BuildRequires: rubygem(sprockets-rails)
 BuildRequires: rubygem(connection_pool)
 BuildRequires: rubygem(image_processing)
+BuildRequires: rubygem(mutex_m)
 BuildRequires: rubygem(sqlite3)
 # FFmpeg is not available in Fedora
 %{?with_ffmpeg:BuildRequires: %{_bindir}/ffmpeg}
@@ -104,6 +105,7 @@ echo 'gem "activerecord"' >> ../Gemfile
 echo 'gem "activejob"' >> ../Gemfile
 echo 'gem "sprockets-rails"' >> ../Gemfile
 echo 'gem "image_processing"' >> ../Gemfile
+echo 'gem "mutex_m"' >> ../Gemfile
 echo 'gem "rails"' >> ../Gemfile
 echo 'gem "sqlite3"' >> ../Gemfile
 
@@ -164,6 +166,9 @@ popd
 %doc %{gem_instdir}/README.md
 
 %changelog
+* Sun Nov 10 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 7.0.8-5
+- Add BR: rubygem(mutex_m) explicitly for ruby34
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.8-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

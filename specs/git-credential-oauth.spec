@@ -38,6 +38,7 @@ Recommends: xdg-utils
 %go_generate_buildrequires
 
 %build
+export GO_LDFLAGS="-X main.version=%{version}"
 %gobuild -o %{gobuilddir}/bin/git-credential-oauth %{goipath}
 
 %install
