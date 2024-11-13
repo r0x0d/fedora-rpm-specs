@@ -17,6 +17,8 @@ Source:	phosh
 # Needed when not using the OSK package
 Source:	sm.puri.OSK0.desktop
 
+ExcludeArch:	i686
+
 BuildRequires:	gcc
 BuildRequires:	meson
 BuildRequires:	pam-devel

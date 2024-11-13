@@ -4,7 +4,7 @@
 %bcond docs 0
 
 Name:           python-%{srcname}
-Version:        2024.7.0
+Version:        2024.10.0
 Release:        %autorelease
 Summary:        N-D labeled arrays and datasets in Python
 
@@ -16,23 +16,21 @@ Source1:        https://github.com/pydata/xarray-data/archive/%{data_commit}/xar
 # All Fedora specific.
 Patch:          0001-DOC-Skip-examples-using-unpackaged-dependencies.patch
 Patch:          0002-DOC-Don-t-print-out-conda-pip-environment.patch
-# https://github.com/pydata/xarray/pull/9380
-Patch:          0003-Fix-tests-on-big-endian-systems.patch
 
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(bottleneck)
 BuildRequires:  python3dist(cftime) >= 1.2
-BuildRequires:  python3dist(dask[array]) >= 2.30
-BuildRequires:  python3dist(dask[dataframe]) >= 2.30
+BuildRequires:  python3dist(dask[array]) >= 2023.9
+BuildRequires:  python3dist(dask[dataframe]) >= 2023.9
 BuildRequires:  python3dist(netcdf4) >= 1.5
 BuildRequires:  python3dist(pint) >= 0.16
 BuildRequires:  python3dist(pytest) >= 2.7.1
 BuildRequires:  python3dist(pytest-xdist)
 BuildRequires:  python3dist(rasterio) >= 1.1
 BuildRequires:  python3dist(seaborn) >= 0.11
-BuildRequires:  python3dist(zarr) >= 2.5
+BuildRequires:  python3dist(zarr) >= 2.16
 
 %global _description %{expand: \
 Xarray (formerly xray) is an open source project and Python package that

@@ -14,7 +14,7 @@
 
 Name:           vdr-%{pname}
 Version:        0.3.2
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        VDR skin interface for the browser
 License:        GPL-2.0-or-later
 URL:            https://github.com/horchi/vdr-plugin-osd2web
@@ -80,6 +80,9 @@ install -Dpm 755 scripts/startBrowser.sh %{buildroot}%{vdr_plugindir}/bin/startB
 %{vdr_plugindir}/bin/startBrowser.sh
 
 %changelog
+* Mon Nov 11 2024 Dominik Mierzejewski <dominik@greysector.net> - 0.3.2-11
+- rebuild for tinyxml2
+
 * Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 0.3.2-10
 - Rebuild for Jansson 2.14
   (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)

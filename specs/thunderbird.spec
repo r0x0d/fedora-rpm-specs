@@ -1,9 +1,11 @@
-# ppc64le started to fail permanently on f40,
-# https://koji.fedoraproject.org/koji/taskinfo?taskID=125295645
+# ppc64le started to fail permanently,
+# first f42 https://koji.fedoraproject.org/koji/taskinfo?taskID=124917502
+# then f40 https://koji.fedoraproject.org/koji/taskinfo?taskID=125295645
+# then also f41 https://koji.fedoraproject.org/koji/taskinfo?taskID=125632253
 # At least get other archs out.
-%if 0%{?fedora} == 40
-#ExcludeArch: ppc64le
-%endif
+#%%if 0%{?fedora} == 40
+ExcludeArch: ppc64le
+#%%endif
 
 %if 0%{?fedora} > 35 || 0%{?rhel} > 9
 %global dictionarydir hunspell

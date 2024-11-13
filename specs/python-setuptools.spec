@@ -50,6 +50,10 @@ Patch:          Remove-optional-or-unpackaged-test-deps.patch
 # adjust it, but only when $RPM_BUILD_ROOT is set
 Patch:          Adjust-the-setup.py-install-deprecation-message.patch
 
+# Compatibility of a single test with packaging 24.2
+# Patch from: https://github.com/pypa/setuptools/pull/4740
+Patch:          packaging_24_2_compatibility.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python%{python3_pkgversion}-devel

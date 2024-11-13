@@ -16,8 +16,8 @@
 %global python3_enabled 1
 
 Name:    pybind11
-Version: 2.13.1
-Release: 3%{?dist}
+Version: 2.13.6
+Release: 1%{?dist}
 Summary: Seamless operability between C++11 and Python
 License: BSD-3-Clause
 URL:	 https://github.com/pybind/pybind11
@@ -26,8 +26,6 @@ Source0: https://github.com/pybind/pybind11/archive/v%{version}/%{name}-%{versio
 # Patch out header path
 Patch1:  pybind11-2.10.1-hpath.patch
 
-# https://github.com/pybind/pybind11/commit/51c2aa16de5b50fe4be6a0016d6090d4a831899e
-Patch2:  0001-fixed-a-compilation-error-with-gcc-14.patch
 
 BuildRequires: make
 %if %{python2_enabled}
@@ -111,7 +109,6 @@ This package contains the Python 3 files.
 %prep
 %setup -q
 %patch 1 -p1 -b .hpath
-%patch 2 -p1 -b .gcc-14
 
 %build
 pys=""
@@ -185,6 +182,9 @@ PYBIND11_USE_CMAKE=true %py3_install "--install-purelib" "%{python3_sitearch}"
 %endif
 
 %changelog
+* Mon Nov 11 2024 Gwyn Ciesla <gwync@protonmail.com> - 2.13.6-1
+- 2.13.6
+
 * Sat Jul 20 2024 Kefu Chai <tchaikov@gmail.com> - 2.13.1-3
 - Apply upstream patch to fix build with GCC-14
 

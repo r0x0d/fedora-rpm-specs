@@ -5,7 +5,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 3.2.0
-Release: 7%{?dist}
+Release: 8%{?dist}
 Summary: High performance memcached client for Ruby
 License: MIT
 URL: https://github.com/petergoldstein/dalli
@@ -23,6 +23,7 @@ BuildRequires: rubygem(minitest)
 BuildRequires: rubygem(connection_pool)
 %endif
 BuildRequires: ruby
+Requires:  rubygem(base64)
 BuildArch: noarch
 
 %description
@@ -74,6 +75,9 @@ popd
 %{gem_instdir}/Gemfile
 
 %changelog
+* Mon Nov 11 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.2.0-8
+- Add Requires: rubygem(base64) explicitly for ruby34
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

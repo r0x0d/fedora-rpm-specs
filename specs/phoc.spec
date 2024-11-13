@@ -29,6 +29,8 @@ BuildRequires:	(pkgconfig(wlroots) >= 0.17.0 with pkgconfig(wlroots) < 0.18)
 BuildRequires:	pkgconfig(gsettings-desktop-schemas)
 BuildRequires:	pkgconfig(json-glib-1.0)
 
+ExcludeArch:	i686
+
 %description
 Phoc is a wlroots based Phone compositor as used on the Librem5. Phoc is
 pronounced like the English word fog.

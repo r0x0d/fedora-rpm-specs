@@ -1,11 +1,11 @@
 Name:           python-pytest-home
-Version:        0.5.1
+Version:        0.6.0
 Release:        %autorelease
 Summary:        A temporary home directory fixture
 
 License:        MIT
 URL:            https://github.com/jaraco/pytest-home
-Source:         %{pypi_source pytest-home}
+Source:         %{pypi_source pytest_home}
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -28,7 +28,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -p1 -n pytest-home-%{version}
+%autosetup -p1 -n pytest_home-%{version}
 
 
 %generate_buildrequires

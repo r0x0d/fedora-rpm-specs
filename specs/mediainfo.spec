@@ -1,7 +1,7 @@
 %global libzen_version  0.4.41
 
 Name:           mediainfo
-Version:        24.06
+Version:        24.11
 Release:        1%{?dist}
 Summary:        Supplies technical and tag information about a video or audio file (CLI)
 
@@ -22,10 +22,10 @@ BuildRequires:  autoconf
 BuildRequires:  desktop-file-utils
 BuildRequires:  ImageMagick
 BuildRequires:  perl(Pod::Man)
-BuildRequires:  pkgconfig(Qt5Core)
-BuildRequires:  pkgconfig(Qt5Gui)
-BuildRequires:  pkgconfig(Qt5Network)
-BuildRequires:  pkgconfig(Qt5Xml)
+BuildRequires:  pkgconfig(Qt6Core)
+BuildRequires:  pkgconfig(Qt6Gui)
+BuildRequires:  pkgconfig(Qt6Network)
+BuildRequires:  pkgconfig(Qt6Xml)
 BuildRequires:  libappstream-glib
 
 %description
@@ -144,7 +144,7 @@ popd
 
 # now build Qt GUI
 pushd Project/QMake/GUI
-    %{qmake_qt5}
+    %{qmake_qt6}
     %make_build
 popd
 
@@ -224,6 +224,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/appdata/*.appdata.
 
 
 %changelog
+* Mon Nov 11 2024 Vasiliy Glazov <vascom2@gmail.com> - 24.11-1
+- Update to 24.11
+
 * Wed Oct 09 2024 Vasiliy N. Glazov <vascom2@gmail.com> - 24.06-1
 - Update to 24.06
 

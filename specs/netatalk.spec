@@ -1,12 +1,9 @@
 %global xslver $(rpm -q --queryformat "%%{VERSION}" docbook-style-xsl)
 
-# Reminder to self - bcond defaults to the opposite of what is set here
-%bcond_with wolfssl
-
 Name:              netatalk
 Epoch:             5
-Version:           3.2.9
-Release:           2%{?dist}
+Version:           4.0.5
+Release:           1%{?dist}
 Summary:           Open Source Apple Filing Protocol(AFP) File Server
 # Automatically converted from old format: GPL+ and GPLv2 and GPLv2+ and LGPLv2+ and BSD and FSFUL and MIT - review is highly recommended.
 License:           GPL-1.0-or-later AND GPL-2.0-only AND GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-BSD AND FSFUL AND LicenseRef-Callaway-MIT
@@ -56,7 +53,6 @@ BuildRequires:     systemd
 BuildRequires:     systemtap-sdt-devel
 BuildRequires:     tracker3
 BuildRequires:     tracker3-devel
-%{?with_wolfssl:BuildRequires:     wolfssl-devel}
 
 Requires:     dconf
 Requires:     python3-dbus
@@ -78,38 +74,59 @@ Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
 This package contains libraries and header files for
 developing applications that use %{name}.
 
+%package        afptest
+Summary:        Afp test suite for %{name}
+Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
+
+%description    afptest
+This package contains the afp test suite for %{name}.
+
+%package        appletalk
+Summary:        Appletalk support for classic macintoshes
+Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
+# only the kernel-modules-extra package in Fedora has the appletalk module
+%{?fedora:Recommends:     kernel-modules-extra}
+
+%description    appletalk
+This package contains Appletalk support for older pre-OSX macintoshes.
+
+%package doc
+Summary:        HTML Documentation for %{name}
+BuildArch:      noarch
+
+%description doc
+This package contains the HTML documentation for %{name}.
+
 %prep
 %autosetup -p 1
-
-# remove bundled wolfssl
-rm -rf include/wolfssl
 
 # Don't build the japanese docs and put the english docs into a subfolder
 sed -i 's\install: true\install: false\' doc/ja/manual/meson.build
 sed -i 's\doc/netatalk\doc/netatalk/htmldoc\' doc/manual/meson.build
 
 # Set RuntimeDirectory in the service file rather than use a tmpfiles.d config
-sed -E -i 's|^(ExecStart=.*)|\1\nRuntimeDirectory=lock/netatalk|' distrib/initscripts/service.systemd.tmpl
+sed -E -i 's|^(ExecStart=.*)|\1\nRuntimeDirectory=lock/netatalk|' distrib/initscripts/systemd.netatalk.service.in
 
 %build
 %meson \
         --localstatedir=%{_localstatedir}/lib                                  \
         -Ddefault_library=shared                                               \
-        -Dwith-manual=true                                                     \
+        -Dwith-manual=local                                                    \
         -Dwith-rpath=false                                                     \
         -Dwith-docbook-path=%{_datadir}/sgml/docbook/xsl-stylesheets-%{xslver} \
         -Dwith-overwrite=true                                                  \
-        -Dwith-pgp-uam=true                                                    \
         -Dwith-lockfile-path=%{_rundir}/lock/netatalk/netatalk                 \
         -Dwith-tcp-wrappers=false                                              \
         -Dwith-tests=true                                                      \
         -Dwith-dbus-sysconf-path=%{_sysconfdir}/dbus-1/system.d                \
         -Dwith-pkgconfdir-path=%{_sysconfdir}/netatalk                         \
-        -Dwith-init-style=redhat-systemd                                       \
+        -Dwith-init-style=systemd                                              \
         -Dwith-init-hooks=false                                                \
         -Dwith-uams-path=%{_libdir}/netatalk                                   \
-        -Dwith-embedded-ssl=false                                              \
-        -Dwith-ssl-override=false
+        -Dwith-appletalk=true                                                  \
+        -Dwith-cups=true                                                       \
+        -Dwith-tests=true                                                      \
+        -Dwith-testsuite=true
 
 %meson_build
 
@@ -126,25 +143,30 @@ rm -rf %{buildroot}%{_prefix}%{_sysconfdir}
 # make sure all static libraries are deleted
 find %{buildroot} \( -name '*.la' -o -name '*.a' \) -type f -delete -print
 
-# make rpmlint happy
-ln -sf ../README %{buildroot}/var/lib/netatalk/CNID/README
-
 %check
 %meson_test
 
 %post
 %systemd_post %{name}.service
 
+%post appletalk
+%systemd_post a2boot.service atalkd.service macipgw.service papd.service timelord.service
+
 %preun
 %systemd_preun %{name}.service
+
+%preun appletalk
+%systemd_preun a2boot.service atalkd.service macipgw.service papd.service timelord.service
 
 %postun
 %systemd_postun_with_restart %{name}.service
 
+%postun appletalk
+%systemd_postun_with_restart a2boot.service atalkd.service macipgw.service papd.service timelord.service
+
 %files
 %license COPYING COPYRIGHT
 %doc CONTRIBUTORS NEWS INSTALL.md README.md SECURITY.md
-%doc %{_pkgdocdir}/htmldoc
 
 %dir %{_sysconfdir}/netatalk
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/netatalk-dbus.conf
@@ -157,6 +179,7 @@ ln -sf ../README %{buildroot}/var/lib/netatalk/CNID/README
 %{_sbindir}/cnid_dbd
 %{_sbindir}/cnid_metad
 %{_sbindir}/netatalk
+
 %{_bindir}/ad
 %{_bindir}/afpldaptest
 %{_bindir}/afppasswd
@@ -168,7 +191,7 @@ ln -sf ../README %{buildroot}/var/lib/netatalk/CNID/README
 
 %dir %{_libdir}/netatalk
 %{_libdir}/netatalk/uams_*.so
-%{_libdir}/libatalk.so.18{,.*}
+%{_libdir}/libatalk.so.19{,.*}
 
 %{_mandir}/man1/ad.1*
 %{_mandir}/man1/afpldaptest.1*
@@ -178,20 +201,104 @@ ln -sf ../README %{buildroot}/var/lib/netatalk/CNID/README
 %{_mandir}/man1/asip-status.1*
 %{_mandir}/man1/dbd.1*
 %{_mandir}/man1/macusers.1*
-%{_mandir}/man5/*
-%{_mandir}/man8/*
+
+%{_mandir}/man5/afp.conf.5*
+%{_mandir}/man5/afp_signature.conf.5*
+%{_mandir}/man5/afp_voluuid.conf.5*
+%{_mandir}/man5/extmap.conf.5*
+
+%{_mandir}/man8/afpd.8*
+%{_mandir}/man8/cnid_dbd.8*
+%{_mandir}/man8/cnid_metad.8*
+%{_mandir}/man8/netatalk.8*
 
 %{_unitdir}/netatalk.service
+
 %{_localstatedir}/lib/netatalk
 
 %files devel
-%{_bindir}/netatalk-config
-%{_mandir}/man1/netatalk-config.1*
+%doc %{_pkgdocdir}/DEVELOPER
 %dir %{_includedir}/atalk
 %{_includedir}/atalk/*.h
+%dir %{_includedir}/netatalk
+%{_includedir}/netatalk/*.h
 %{_libdir}/libatalk.so
 
+%{_mandir}/man3/atalk_aton.3*
+%{_mandir}/man3/nbp_name.3*
+
+%{_mandir}/man4/atalk.4*
+
+%files afptest
+%license test/testsuite/COPYING
+%doc test/testsuite/README
+%{_bindir}/afp_lantest
+%{_bindir}/afp_logintest
+%{_bindir}/afp_spectest
+%{_bindir}/afp_speedtest
+%dir %{_datarootdir}/netatalk
+%{_datarootdir}/netatalk/test-data/test431_data
+
+%{_mandir}/man1/afp_lantest.1*
+%{_mandir}/man1/afp_logintest.1*
+%{_mandir}/man1/afp_spectest.1*
+%{_mandir}/man1/afp_speedtest.1*
+%{_mandir}/man1/afptest.1*
+
+%files appletalk
+%doc %{_pkgdocdir}/README.AppleTalk
+%config(noreplace) %{_sysconfdir}/netatalk/atalkd.conf
+%config(noreplace) %{_sysconfdir}/netatalk/papd.conf
+
+%{_sbindir}/a2boot
+%{_sbindir}/atalkd
+%{_sbindir}/macipgw
+%{_sbindir}/papd
+%{_sbindir}/timelord
+
+%{_bindir}/aecho
+%{_bindir}/getzones
+%{_bindir}/nbplkup
+%{_bindir}/nbprgstr
+%{_bindir}/nbpunrgstr
+%{_bindir}/pap
+%{_bindir}/papstatus
+%{_bindir}/afparg
+
+%{_mandir}/man1/aecho.1*
+%{_mandir}/man1/getzones.1*
+%{_mandir}/man1/nbplkup.1*
+%{_mandir}/man1/nbp.1*
+%{_mandir}/man1/nbprgstr.1*
+%{_mandir}/man1/nbpunrgstr.1*
+%{_mandir}/man1/pap.1*
+%{_mandir}/man1/afparg.1*
+
+%{_mandir}/man5/atalkd.conf.5*
+%{_mandir}/man5/papd.conf.5*
+
+%{_mandir}/man8/a2boot.8*
+%{_mandir}/man8/atalkd.8*
+%{_mandir}/man8/macipgw.8*
+%{_mandir}/man8/papd.8*
+%{_mandir}/man8/papstatus.8*
+%{_mandir}/man8/timelord.8*
+
+%{_unitdir}/a2boot.service
+%{_unitdir}/atalkd.service
+%{_unitdir}/macipgw.service
+%{_unitdir}/papd.service
+%{_unitdir}/timelord.service
+
+%files doc
+%license COPYING COPYRIGHT
+%doc %{_pkgdocdir}/htmldoc
+
 %changelog
+* Mon Nov 11 2024 Andrew Bauer <zonexpertconsulting@outlook.com> - 5:4.0.5-1
+- 4.0.5 release
+- new afptest, appletalk, and doc subpackages
+
 * Sun Sep 22 2024 Andrew Bauer <zonexpertconsulting@outlook.com> - 5:3.2.9-2
 - Revert license tag caused by incorrect rpmlint output
 

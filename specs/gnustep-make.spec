@@ -35,7 +35,7 @@ the user to easily create cross-compiled binaries.
 
 %package -n     gnustep-filesystem
 Summary:        The basic directory layout for GNUstep packages
-License:        Public Domain
+License:        LicenseRef-Not-Copyrightable
 
 %description -n gnustep-filesystem
 The gnustep-filesystem package contains the basic directory layout for

@@ -15,7 +15,7 @@
 Name:          eom
 Version:       %{branch}.0
 %if 0%{?rel_build}
-Release:       3%{?dist}
+Release:       4%{?dist}
 %else
 Release:       0.21%{?git_rel}%{?dist}
 %endif
@@ -129,6 +129,9 @@ find ${RPM_BUILD_ROOT} -type f -name "*.la" -exec rm -f {} ';'
 
 
 %changelog
+* Mon Nov 11 2024 Wolfgang Ulbrich <fedora@raveit.de> - 1.28.0-4
+- rebuild for unannounced so-name bump of image-magick !
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 1.28.0-3
 - convert license to SPDX
 

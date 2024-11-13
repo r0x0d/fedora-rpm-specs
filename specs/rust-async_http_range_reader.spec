@@ -5,33 +5,36 @@
 %global crate async_http_range_reader
 
 Name:           rust-async_http_range_reader
-Version:        0.8.0
+Version:        0.9.0
 Release:        %autorelease
 Summary:        Library for streaming reading of files over HTTP using range requests
 
 License:        MIT
 URL:            https://crates.io/crates/async_http_range_reader
 Source:         %{crates_source}
-# # * A real conda package used as a data file for testing. Tests rely on the
-# #   exact size and contents of this particular file. Nothing from this package
-# #   is bundled in the binary RPMs.
-# # * We have audited this to determine that it appears to be a normal conda
-# #   package and that there are no apparent license or policy obstacles to
-# #   distributing its contents in a source RPM.
-# # * A conda package is a zip file. This one contains:
-# #   info-andes-1.8.3-pyhd8ed1ab_0.tar.zst metadata.json
-# #   pkg-andes-1.8.3-pyhd8ed1ab_0.tar.zst
-# # * The contents of info-andes-1.8.3-pyhd8ed1ab_0.tar.zst correspond to the
-# #   conda recipe (build scripts) and are licensed BSD-3-Clause. They indicate
-# #   that the andes package itself is licensed GPL-3.0-or-later.
-# # * The archive pkg-andes-1.8.3-pyhd8ed1ab_0.tar.zst contains Python source
-# #   files, dist-info metadata, and sample data files in a variety of formats:
-# #   .dyr and .raw (ASCII-based Siemens PSS/E data format), .pkl (a Python pickle
-# #   created with dill), .m (ASCII-based MATPOWER format), .xlsx, and .json.
-# #   Nothing appears inconsistent with the nominal license GPL-3.0-or-later;
-# #   however, site-packages/andes/utils/lazyimport.py carries a (SPDX) MIT
-# #   license.
+# * A real conda package used as a data file for testing. Tests rely on the
+#   exact size and contents of this particular file. Nothing from this package
+#   is bundled in the binary RPMs.
+# * We have audited this to determine that it appears to be a normal conda
+#   package and that there are no apparent license or policy obstacles to
+#   distributing its contents in a source RPM.
+# * A conda package is a zip file. This one contains:
+#   info-andes-1.8.3-pyhd8ed1ab_0.tar.zst metadata.json
+#   pkg-andes-1.8.3-pyhd8ed1ab_0.tar.zst
+# * The contents of info-andes-1.8.3-pyhd8ed1ab_0.tar.zst correspond to the
+#   conda recipe (build scripts) and are licensed BSD-3-Clause. They indicate
+#   that the andes package itself is licensed GPL-3.0-or-later.
+# * The archive pkg-andes-1.8.3-pyhd8ed1ab_0.tar.zst contains Python source
+#   files, dist-info metadata, and sample data files in a variety of formats:
+#   .dyr and .raw (ASCII-based Siemens PSS/E data format), .pkl (a Python pickle
+#   created with dill), .m (ASCII-based MATPOWER format), .xlsx, and .json.
+#   Nothing appears inconsistent with the nominal license GPL-3.0-or-later;
+#   however, site-packages/andes/utils/lazyimport.py carries a (SPDX) MIT
+#   license.
 Source10:       https://github.com/prefix-dev/async_http_range_reader/raw/v%{version}/test-data/andes-1.8.3-pyhd8ed1ab_0.conda
+# Manually created patch for downstream crate metadata changes
+# * Allow an old version of rstest until it can be updated
+Patch:          async_http_range_reader-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

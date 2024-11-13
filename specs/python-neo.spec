@@ -30,7 +30,7 @@ Read the documentation at http://neo.readthedocs.io/}
 %global forgeurl  https://github.com/NeuralEnsemble/python-neo
 
 Name:       python-neo
-Version:    0.13.3
+Version:    0.13.4
 Release:    %autorelease
 Summary:    Represent electrophysiology data in Python
 
@@ -79,6 +79,9 @@ Recommends:  %{py3_dist igor}
 %forgeautosetup
 # remove rpm's SPECPARTS file
 rm -rf SPECPARTS
+
+# Remove upstream's pin to py<3.13
+sed -i '/requires-python/ d' pyproject.toml
 
 %if %{with tests}
 # datalad needs to know who we are later when it tries to download the data sets

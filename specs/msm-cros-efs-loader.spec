@@ -4,7 +4,7 @@ Release:        %autorelease
 Summary:        EFS loader for Qualcomm-based Chrome OS devices
 
 License:        GPL-3.0-or-later
-URL:            https://gitlab.com/postmarketOS/msm-cros-efs-loader
+URL:            https://gitlab.postmarketos.org/postmarketOS/msm-cros-efs-loader
 
 Source:         %{url}/-/archive/v%{version}/%{name}-v%{version}.tar.gz
 

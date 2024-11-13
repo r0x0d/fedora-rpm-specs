@@ -20,9 +20,12 @@ Patch:          python3.10-workaround.patch
 # https://discussion.fedoraproject.org/t/f40-change-proposal-remove-python-mock-useage-system-wide/100082
 Patch:          %{url}/pull/188.patch
 
+Patch:          ast.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
+BuildRequires:  python3-six
 
 # TODO: remove mock dependency from install_requires
 # https://fedoraproject.org/wiki/Changes/DeprecatePythonMock

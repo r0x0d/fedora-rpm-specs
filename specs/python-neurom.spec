@@ -7,7 +7,7 @@ Documentation is available at https://neurom.readthedocs.io/
 %global forgeurl    https://github.com/BlueBrain/NeuroM
 
 Name:           python-neurom
-Version:        4.0.3
+Version:        4.0.4
 Release:        %autorelease
 Summary:        Neuronal Morphology Analysis Tool
 

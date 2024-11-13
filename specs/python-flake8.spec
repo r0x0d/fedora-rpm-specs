@@ -1,6 +1,6 @@
 Name:             python-flake8
 Version:          6.1.0
-Release:          3%{?dist}
+Release:          4%{?dist}
 Summary:          Python code checking using pyflakes, pycodestyle, and mccabe
 
 License:          MIT
@@ -41,6 +41,9 @@ flake8.extension entry points.
 
 %prep
 %autosetup -p1 -n flake8-%{version}
+# Allow pycodestyle 2.12, https://bugzilla.redhat.com/2325146
+sed -i 's/pycodestyle>=2.11.0,<2.12.0/pycodestyle>=2.11.0,<2.13.0/' setup.cfg
+
 
 %generate_buildrequires
 %pyproject_buildrequires
@@ -73,6 +76,10 @@ ln -s flake8 %{buildroot}%{_bindir}/python3-flake8
 
 
 %changelog
+* Mon Nov 11 2024 Miro Hrončok <mhroncok@redhat.com> - 6.1.0-4
+- Allow pycodestyle 2.12
+- Fixes: rhbz#2325146
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.1.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

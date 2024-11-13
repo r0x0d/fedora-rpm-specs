@@ -32,7 +32,7 @@
 %global build_test OFF
 %endif
 
-%if 0%{?rhel}
+%if 0%{?is_opensuse} || 0%{?rhel}
 # RHEL does not have a working tensile
 %bcond_with tensile
 %else
@@ -51,7 +51,7 @@
 
 Name:           rocblas
 Version:        %{rocm_version}
-%if 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
 Release:        1%{?dist}
 %else
 Release:        %autorelease
@@ -66,7 +66,6 @@ Patch2:         0001-fixup-install-of-tensile-output.patch
 Patch4:         0001-offload-compress-option.patch
 
 BuildRequires:  cmake
-BuildRequires:  git
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
 BuildRequires:  rocm-compilersupport-macros
@@ -123,6 +122,10 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %autosetup -p1 -n %{upstreamname}-rocm-%{version}
 sed -i -e 's@set( BLAS_LIBRARY "blas" )@set( BLAS_LIBRARY "cblas" )@' clients/CMakeLists.txt
 sed -i -e 's@target_link_libraries( rocblas-test PRIVATE ${BLAS_LIBRARY} ${GTEST_BOTH_LIBRARIES} roc::rocblas )@target_link_libraries( rocblas-test PRIVATE cblas ${GTEST_BOTH_LIBRARIES} roc::rocblas )@' clients/gtest/CMakeLists.txt
+
+# no git in this build
+sed -i -e 's@find_package(Git REQUIRED)@find_package(Git)@' library/CMakeLists.txt
+
 %build
 
 # With compat llvm the system clang is wrong
@@ -136,6 +139,11 @@ for gpu in %{rocm_gpu_list}
 do
     module load rocm/$gpu
     %cmake \
+	-DCMAKE_CXX_COMPILER=hipcc \
+	-DCMAKE_C_COMPILER=hipcc \
+	-DCMAKE_LINKER=%rocmllvm_bindir/ld.lld \
+	-DCMAKE_AR=%rocmllvm_bindir/llvm-ar \
+	-DCMAKE_RANLIB=%rocmllvm_bindir/llvm-ranlib \
            -DCMAKE_BUILD_TYPE=%{build_type} \
 	   -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
 	   -DCMAKE_SKIP_RPATH=ON \
@@ -172,9 +180,12 @@ find %{buildroot}%{_libdir} -name '*.cmake'      | sed -f br.sed >> %{name}.deve
 find %{buildroot}           -name 'rocblas-*'    | sed -f br.sed >  %{name}.test
 find %{buildroot}           -name 'rocblas_*'    | sed -f br.sed >> %{name}.test
 
+if [ -f %{buildroot}%{_prefix}/share/doc/rocblas/LICENSE.md ]; then
+    rm %{buildroot}%{_prefix}/share/doc/rocblas/LICENSE.md
+fi
+    
 %files -f %{name}.files
 %license LICENSE.md
-%exclude %{_docdir}/%{name}/LICENSE.md
 
 %files devel -f %{name}.devel
 %doc README.md
@@ -185,4 +196,11 @@ find %{buildroot}           -name 'rocblas_*'    | sed -f br.sed >> %{name}.test
 %endif
 
 %changelog
+%if 0%{?is_opensuse}
+* Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif
+

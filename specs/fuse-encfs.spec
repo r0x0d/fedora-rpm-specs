@@ -1,6 +1,6 @@
 Name:           fuse-encfs
 Version:        1.9.5
-Release:        22%{?dist}
+Release:        23%{?dist}
 Summary:        Encrypted pass-thru filesystem in userspace
 
 License:        GPL-3.0-or-later AND LGPL-3.0-or-later
@@ -67,6 +67,9 @@ rm -f %{buildroot}/%{_libdir}/*.so
 %{_mandir}/man1/encfs*
 
 %changelog
+* Mon Nov 11 2024 Dominik Mierzejewski <dominik@greysector.net> - 1.9.5-23
+- rebuild for tinyxml2
+
 * Tue Jul 23 2024 Vasiliy Glazov <vascom2@gmail.com> - 1.9.5.-22
 - Fix build with openssl
 

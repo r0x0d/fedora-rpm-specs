@@ -1,5 +1,12 @@
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
+%if 0%{?rhel}
+%global bundled_rust_deps 1
+%endif
+
+# djvulibre is not available in RHEL 10+
+%bcond djvu %{undefined rhel}
+
 # Filter out soname provides for plugins
 %global __provides_exclude_from ^(%{_libdir}/papers/.*\\.so|%{_libdir}/nautilus/extensions-4/.*\\.so)$
 
@@ -24,6 +31,12 @@ SourceLicense:  GPL-2.0-or-later AND GPL-3.0-or-later AND LGPL-2.0-or-later AND 
 License:        GPL-2.0-or-later AND GPL-3.0-or-later AND LGPL-2.0-or-later AND LGPL-2.1-or-later AND MIT AND libtiff AND (MIT OR Apache-2.0) AND Unicode-DFS-2016 AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND (BSD-2-Clause OR Apache-2.0 OR MIT) AND BSD-3-Clause AND (Unlicense OR MIT)
 URL:            https://gitlab.gnome.org/GNOME/Incubator/papers
 Source:         https://download.gnome.org/sources/papers/47/papers-%{tarball_version}.tar.xz
+%if 0%{?bundled_rust_deps}
+# To generate vendored cargo sources:
+#   tar xf papers-%%{tarball_version}.tar.xz ; pushd papers-%%{tarball_version}/shell-rs ; \
+#   cargo vendor && tar Jcvf ../../papers-%%{tarball_version}-vendor.tar.xz ../shell-rs/vendor/ ; popd
+Source1:        papers-%{tarball_version}-vendor.tar.xz
+%endif
 
 # Fix the build with glib-macros 0.20.3
 # https://gitlab.gnome.org/GNOME/Incubator/papers/-/merge_requests/366
@@ -32,7 +45,6 @@ Patch:          0001-shell-rs-Use-RefCell-replace-rather-than-glib-Proper.patch
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
 
-BuildRequires:  cargo-rpm-macros
 BuildRequires:  gcc
 BuildRequires:  itstool
 BuildRequires:  meson
@@ -40,7 +52,9 @@ BuildRequires:  pkgconfig(cairo)
 BuildRequires:  pkgconfig(cairo-pdf)
 BuildRequires:  pkgconfig(cairo-ps)
 BuildRequires:  pkgconfig(dbus-1)
+%if %{with djvu}
 BuildRequires:  pkgconfig(ddjvuapi)
+%endif
 BuildRequires:  pkgconfig(exempi-2.0)
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pkgconfig(gio-2.0)
@@ -62,6 +76,12 @@ BuildRequires:  pkgconfig(poppler-glib)
 BuildRequires:  pkgconfig(sysprof-capture-4)
 BuildRequires:  /usr/bin/appstream-util
 BuildRequires:  /usr/bin/desktop-file-validate
+
+%if 0%{?rhel}
+BuildRequires:  rust-toolset
+%else
+BuildRequires:  cargo-rpm-macros
+%endif
 
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 Requires:       %{name}-previewer%{?_isa} = %{version}-%{release}
@@ -119,20 +139,27 @@ This package brings the Papers thumbnailer independently from Papers.
 
 
 %prep
-%autosetup -p1 -n papers-%{tarball_version}
+%autosetup -p1 -n papers-%{tarball_version} %{?bundled_rust_deps:-a1}
 
+%if 0%{?bundled_rust_deps}
+%cargo_prep -v shell-rs/vendor
+%else
 rm shell-rs/Cargo.lock
 %cargo_prep
+%endif
 
 
+%if !0%{?bundled_rust_deps}
 %generate_buildrequires
 cd shell-rs
 %cargo_generate_buildrequires -a -t
 cd ~-
+%endif
 
 
 %build
 %meson \
+       -Ddjvu=%{?with_djvu:enabled}%{!?with_djvu:disabled} \
        -Dintrospection=disabled \
        -Dtests=false \
        %{nil}
@@ -142,6 +169,9 @@ cd ~-
 cd shell-rs
 %cargo_license_summary -a
 %{cargo_license -a} > LICENSE.dependencies
+%if 0%{?bundled_rust_deps}
+%cargo_vendor_manifest
+%endif
 cd ~-
 
 
@@ -165,6 +195,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/*.desktop
 %doc README.md
 %license COPYING
 %license shell-rs/LICENSE.dependencies
+%if 0%{?bundled_rust_deps}
+%license shell-rs/cargo-vendor.txt
+%endif
 %{_bindir}/papers
 # internal library not used by other apps, which is why it is not in -libs
 %{_libdir}/libppsshell-4.0.so.4{,.*}
@@ -181,7 +214,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/*.desktop
 %{_libdir}/libppsview-4.0.so.4{,.*}
 %{_libdir}/papers/
 %{_metainfodir}/papers-comicsdocument.metainfo.xml
+%if %{with djvu}
 %{_metainfodir}/papers-djvudocument.metainfo.xml
+%endif
 %{_metainfodir}/papers-pdfdocument.metainfo.xml
 %{_metainfodir}/papers-tiffdocument.metainfo.xml
 %{_metainfodir}/papers-xpsdocument.metainfo.xml

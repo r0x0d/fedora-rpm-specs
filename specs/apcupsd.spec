@@ -7,7 +7,7 @@ Version:    3.14.14
 Release:    33%{?dist}
 Summary:    APC UPS Power Control Daemon
 
-License:    GPLv2
+License:    GPL-2.0-only
 URL:        http://www.apcupsd.com
 Source0:    https://downloads.sourceforge.net/apcupsd/apcupsd-%version.tar.gz
 Source1:    apcupsd.service

@@ -1,6 +1,6 @@
 Name:		lgogdownloader
 Version:	3.15
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	GOG.com download client
 
 License:	WTFPL
@@ -48,6 +48,9 @@ same API as the official GOG Galaxy.
 %{_mandir}/man1/lgogdownloader.1.*
 
 %changelog
+* Mon Nov 11 2024 Dominik Mierzejewski <dominik@greysector.net> - 3.15-2
+- rebuild for tinyxml2
+
 * Tue Oct 22 2024 Benjamin Lowry <ben@ben.gmbh> - 3.15-1
 - lgogdownloader 3.15
 

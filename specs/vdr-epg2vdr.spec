@@ -9,7 +9,7 @@
 
 Name:           vdr-epg2vdr
 Version:        1.2.16
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        A plugin to retrieve EPG data from a mysql database into VDR
 
 License:        GPL-1.0-or-later
@@ -67,6 +67,9 @@ chmod 0755 %{buildroot}/%{vdr_plugindir}/libvdr-*.so.%{vdr_apiversion}
 %{vdr_plugindir}/libvdr-*.so.%{vdr_apiversion}
 
 %changelog
+* Mon Nov 11 2024 Dominik Mierzejewski <dominik@greysector.net> - 1.2.16-11
+- rebuild for tinyxml2
+
 * Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 1.2.16-10
 - Rebuild for Jansson 2.14
   (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)

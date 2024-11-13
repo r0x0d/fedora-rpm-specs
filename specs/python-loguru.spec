@@ -16,6 +16,12 @@ Source:         %{url}/archive/%{version}/loguru-%{version}.tar.gz
 # Fixes Python 3.13 compatibility.
 Patch:          %{url}/commit/9311c763bb3528f87c3c5a13a25ec7387f2cc545.patch
 
+# Fix tests for Python 3.14 dev
+# https://github.com/Delgan/loguru/commit/3a901de465b0dbb398f455dc3393d976fd0affbe
+#
+# Fixes Python 3.14 compatibility.
+Patch:          %{url}/commit/3a901de465b0dbb398f455dc3393d976fd0affbe.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
@@ -65,7 +71,11 @@ Summary:        %{summary}
 %check
 %pyproject_check_import
 %if %{with tests}
-%pytest -rs
+# Make sure we don’t run the detailed typing tests; see
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
+ignore="${ignore-} --ignore=tests/typesafety/test_logger.yml"
+
+%pytest ${ignore-} -rs
 %endif
 
 

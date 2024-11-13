@@ -5,7 +5,7 @@ Name:           python-reedsolo
 Version:        1.7.0
 Release:        %autorelease
 Summary:        Pure-Python Reed Solomon encoder/decoder
-License:        Public Domain
+License:        Unlicense OR MIT-0
 URL:            https://github.com/tomerfiliba-org/reedsolomon
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 

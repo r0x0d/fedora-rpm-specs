@@ -7,7 +7,7 @@
 
 Summary: X.Org X11 developmental X transport library
 Name: xorg-x11-xtrans-devel
-Version: 1.5.1
+Version: 1.5.2
 Release: 1%{?dist}
 License: HPND AND HPND-sell-variant AND MIT AND MIT-open-group AND X11
 URL: http://www.x.org
@@ -53,6 +53,9 @@ make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 %{_datadir}/pkgconfig/xtrans.pc
 
 %changelog
+* Mon Nov 11 2024 José Expósito <jexposit@redhat.com> - 1.5.2-1
+- xtrans 1.5.2
+
 * Fri Oct 18 2024 José Expósito <jexposit@redhat.com> - 1.5.1-1
 - xtrans 1.5.1
 

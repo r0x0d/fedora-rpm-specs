@@ -1,6 +1,6 @@
 Name:           vorta
-Version:        0.9.1
-Release:        2%{?dist}
+Version:        0.10.1
+Release:        1%{?dist}
 Summary:        A GUI for Borg Backup
 License:        GPL-3.0-only AND BSD-2-Clause AND OFL-1.1
 # src/vorta/qt_single_application.py if BSD-2-Clause
@@ -20,7 +20,7 @@ BuildArch:      noarch
 
 # https://github.com/borgbase/vorta/commit/0cc15e3d3d647bae1782f2c21eafacbf2c8073c6
 # should be upstream in > 0.9.1
-Patch:          fix-appdata.xml.patch
+#Patch:          fix-appdata.xml.patch
 
 %description
 Vorta is a backup client for macOS and Linux desktops.
@@ -67,6 +67,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 
 
 %changelog
+* Mon Nov 11 2024 jonathanspw <jonathan@almalinux.org> - 0.10.1-1
+- update to 0.10.1 rhbz#2319881
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

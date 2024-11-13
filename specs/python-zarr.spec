@@ -1,13 +1,14 @@
 %global srcname zarr
+%bcond doc 0
 
 Name:           python-%{srcname}
-Version:        2.16.1
+Version:        2.18.3
 Release:        %autorelease
 Summary:        Chunked, compressed, N-dimensional arrays for Python
 
 License:        MIT
 URL:            https://github.com/zarr-developers/zarr
-Source0:        %{pypi_source}
+Source:         %pypi_source %{srcname}
 # https://github.com/zarr-developers/zarr-python/pull/1970
 # https://github.com/zarr-developers/zarr-python/issues/1819
 # fix tests with recent fsspec
@@ -15,7 +16,7 @@ Patch:          0001-Adapt-storage-tests-for-changes-in-fsspec-1819-1679.patch
 # https://github.com/zarr-developers/zarr-python/pull/1972
 # https://github.com/zarr-developers/zarr-python/issues/1678
 # fix tests with zlib-ng
-Patch:          0001-array-tests-handle-different-hexdigests-from-zlib-ng.patch
+Patch:          0002-array-tests-handle-different-hexdigests-from-zlib-ng.patch
 
 BuildArch:      noarch
 
@@ -43,6 +44,7 @@ Zarr is a Python package providing an implementation of compressed, chunked,
 N-dimensional arrays, designed for use in parallel computing.
 
 
+%if %{with doc}
 %package -n python-%{srcname}-doc
 Summary:        zarr documentation
 
@@ -57,6 +59,7 @@ BuildRequires:  python3dist(pydata-sphinx-theme)
 
 %description -n python-%{srcname}-doc
 Documentation for zarr
+%endif
 
 
 %prep
@@ -64,22 +67,24 @@ Documentation for zarr
 
 
 %generate_buildrequires
-%pyproject_buildrequires -r
+%pyproject_buildrequires
 
 
 %build
 %pyproject_wheel
 
+%if %{with doc}
 # generate html docs
 PYTHONPATH=${PWD} sphinx-build-3 docs html
 
 # remove the sphinx-build leftovers
 rm -rf html/.{doctrees,buildinfo,_static/donotdelete}
+%endif
 
 
 %install
 %pyproject_install
-%pyproject_save_files %{srcname}
+%pyproject_save_files -l %{srcname}
 
 
 %check
@@ -87,12 +92,13 @@ rm -rf html/.{doctrees,buildinfo,_static/donotdelete}
 
 
 %files -n python3-%{srcname} -f %{pyproject_files}
-%license LICENSE.txt
 %doc README.md
 
+%if %{with doc}
 %files -n python-%{srcname}-doc
 %doc html
 %license LICENSE.txt
+%endif
 
 
 %changelog

@@ -5,7 +5,7 @@
 %global crate kvm-bindings
 
 Name:           rust-kvm-bindings
-Version:        0.9.1
+Version:        0.10.0
 Release:        %autorelease
 Summary:        Rust FFI bindings to KVM generated using bindgen
 

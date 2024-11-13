@@ -2,8 +2,8 @@
 %global vimdatadir %{_datadir}/vim/vimfiles
 
 Name:           environment-modules
-Version:        5.4.0
-Release:        2%{?dist}
+Version:        5.5.0
+Release:        1%{?dist}
 Summary:        Provides dynamic modification of a user's environment
 
 License:        GPL-2.0-or-later
@@ -15,6 +15,7 @@ BuildRequires:  dejagnu
 BuildRequires:  make
 BuildRequires:  sed
 BuildRequires:  less
+BuildRequires:  util-linux-core
 BuildRequires:  hostname
 BuildRequires:  procps-ng
 # specific requirements to build extension library
@@ -23,6 +24,7 @@ BuildRequires:  tcl-devel
 Requires:       tcl
 Requires:       sed
 Requires:       less
+Requires:       util-linux-core
 Requires:       vim-filesystem
 Requires:       procps-ng
 Requires:       man-db
@@ -187,6 +189,10 @@ fi
 
 
 %changelog
+* Mon Nov 11 2024 Xavier Delaruelle <xavier.delaruelle@cea.fr> - 5.5.0-1
+- Update to 5.5.0 (#2325175)
+- Require util-linux-core to get logger command for logging capabilities
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.4.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -5,7 +5,7 @@
 %global crate jiff
 
 Name:           rust-jiff
-Version:        0.1.13
+Version:        0.1.14
 Release:        %autorelease
 Summary:        Date-time library that encourages you to jump into the pit of success
 
@@ -20,6 +20,8 @@ Patch:          jiff-fix-metadata.diff
 # * Downstream-only: Omit doctests that require hifitime. It is not worth
 #   packaging it solely for a couple of tiny examples.
 Patch10:       0001-Downstream-only-Omit-doctests-that-require-hifitime.patch
+# * Downstream-only: Omit doctests that require icu.
+Patch11:       0001-Downstream-only-Omit-doctests-that-require-icu.patch
 # * EPEL9: Ignore doctests that require very recent Rust compilers
 # * In this crate, doctests and examples (but not the lib and integration tests)
 #   are allowed to use Rust features from versions newer than the MSRV. It’s
@@ -162,6 +164,8 @@ use the "tzdb-zoneinfo" feature of the "%{crate}" crate.
 %if 0%{?el9}
 %patch -P 1009 -p1
 %endif
+# We do not yet have a rust-icu package (although one would be desirable)
+tomcli set Cargo.toml del dev-dependencies.icu
 %cargo_prep
 # Exclude test and debug scripts that would BuildRequire sh or bash
 tomcli set Cargo.toml append package.exclude test test-wasm 'scripts/*'

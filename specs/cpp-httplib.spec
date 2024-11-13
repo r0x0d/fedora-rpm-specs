@@ -13,7 +13,7 @@
 %endif
 
 Name:           cpp-httplib
-Version:        0.18.0
+Version:        0.18.1
 %forgemeta
 Release:        %autorelease
 
@@ -89,10 +89,7 @@ rm -r $RPM_BUILD_ROOT%{_licensedir}/httplib
 %if %{with online}
   %ctest --parallel 1
 %else
-# SSLClientServerTest.* tests failing with OpenSSL 3.2+
-# https://github.com/yhirose/cpp-httplib/issues/1798
-  %ctest --parallel 1 --exclude-regex '(_Online$|SSLClientServerTest)'
-  %ctest --parallel 1 --tests-regex SSLClientServerTest || :
+  %ctest --parallel 1 --exclude-regex '_Online$'
 %endif
 %endif
 

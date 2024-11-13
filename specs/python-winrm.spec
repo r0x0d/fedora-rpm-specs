@@ -1,25 +1,21 @@
 %global srcname winrm
 
 Name:           python-%{srcname}
-Version:        0.4.3
-Release:        8%{?dist}
+Version:        0.5.0
+Release:        1%{?dist}
 Summary:        Python libraries for interacting with windows remote management
 
 License:        MIT
 URL:            https://pypi.python.org/pypi/pywinrm
 Source0:        https://github.com/diyan/pywinrm/archive/v%{version}/%{srcname}-%{version}.tar.gz
 # Drop mock requirement
-# https://github.com/diyan/pywinrm/issues/345
-Patch0:         python-winrm-mock.patch
+Patch0:         https://github.com/diyan/pywinrm/pull/385.patch
+# Cleanup tests
+Patch1:         https://github.com/diyan/pywinrm/pull/388.patch
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
-BuildRequires:  python3dist(setuptools)
 BuildRequires:  python3dist(pytest)
-BuildRequires:  python3dist(xmltodict)
-BuildRequires:  python3dist(requests) >= 2.9.1
-BuildRequires:  python3dist(requests-ntlm) >= 0.3
-BuildRequires:  python3dist(six)
 
 %global _description %{expand:
 This has the python libraries for interacting with Windows Remote Management.}
@@ -37,22 +33,30 @@ Python 3 version.
 %prep
 %autosetup -p1 -n pywinrm-%{version}
 
+%generate_buildrequires
+%pyproject_buildrequires
+
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l winrm
 
 %check
 %python3 -m pytest -vv winrm/tests
 
-%files -n python3-%{srcname}
-%license LICENSE
+%files -n python3-%{srcname} -f %pyproject_files
+#license LICENSE
 %doc README.md CHANGELOG.md
-%{python3_sitelib}/pywinrm-*.egg-info/
-%{python3_sitelib}/winrm/
+#{python3_sitelib}/pywinrm-*.egg-info/
+#{python3_sitelib}/winrm/
 
 %changelog
+* Sat Nov 09 2024 Orion Poplawski <orion@nwra.com> - 0.5.0-1
+- Update to 0.5.0
+- Use pyproject macros
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.3-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

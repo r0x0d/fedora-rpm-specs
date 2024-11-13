@@ -15,9 +15,15 @@
 %endif
 %endif
 
+%if 0%{?rhel} == 7
+%bcond_with check
+%else
+%bcond_without check
+%endif
+
 Name: tito
-Version: 0.6.26
-Release: 3%{?dist}
+Version: 0.6.27
+Release: 1%{?dist}
 Summary: A tool for managing rpm based git projects
 
 License: GPL-2.0-only
@@ -53,15 +59,15 @@ BuildRequires: rpm-build
 BuildRequires: tar
 BuildRequires: which
 
-%if 0%{?fedora}
-# todo: add %%check to spec file in accordance with
-# https://fedoraproject.org/wiki/QA/Testing_in_check
+%if %{with check}
+BuildRequires: createrepo_c
 BuildRequires: git
-BuildRequires: python-bugzilla
-BuildRequires: python3-devel
-BuildRequires: python3-setuptools
+BuildRequires: rsync
+BuildRequires: python3-blessed
 BuildRequires: python3-bugzilla
-BuildRequires: rpm-python3
+BuildRequires: python3-pycodestyle
+BuildRequires: python3-pytest
+BuildRequires: python3-rpm
 %endif
 
 Requires: rpm-build
@@ -103,6 +109,14 @@ cp -a tito.8 %{buildroot}/%{_mandir}/man8/
 install -Dp -m 0644 share/tito_completion.sh %{buildroot}%{_datadir}/bash-completion/completions/tito
 
 
+%if %{with check}
+%check
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+./runtests.sh --no-cov
+%endif
+
+
 %files
 %doc AUTHORS COPYING
 %doc doc/*
@@ -119,11 +133,10 @@ install -Dp -m 0644 share/tito_completion.sh %{buildroot}%{_datadir}/bash-comple
 
 
 %changelog
-* Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.6.26-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Fri Jun 07 2024 Python Maint <python-maint@redhat.com> - 0.6.26-2
-- Rebuilt for Python 3.13
+* Mon Nov 11 2024 Jakub Kadlčík <frostyx@email.cz>
+- Defer submodule detection to git
+- Many improvements to tests and they now run during package build
+- New config option `buildconfig.test_version_suffix`
 
 * Tue Mar 05 2024 Jakub Kadlcik <frostyx@email.cz> 0.6.26-1
 - Fix issue with missing version numbers in the changelog (frostyx@email.cz)

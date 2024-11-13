@@ -43,7 +43,11 @@
 
 Name:           rocsolver
 Version:        %{rocm_version}
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+Release:        1%{?dist}
+%else
 Release:        %autorelease
+%endif
 Summary:        Next generation LAPACK implementation for ROCm platform
 Url:            https://github.com/ROCm/rocSOLVER
 
@@ -135,6 +139,11 @@ for gpu in %{rocm_gpu_list}
 do
     module load rocm/$gpu
     %cmake \
+	-DCMAKE_CXX_COMPILER=hipcc \
+	-DCMAKE_C_COMPILER=hipcc \
+	-DCMAKE_LINKER=%rocmllvm_bindir/ld.lld \
+	-DCMAKE_AR=%rocmllvm_bindir/llvm-ar \
+	-DCMAKE_RANLIB=%rocmllvm_bindir/llvm-ranlib \
            -DCMAKE_BUILD_TYPE=%{build_type} \
 	   -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
 	   -DCMAKE_SKIP_RPATH=ON \
@@ -168,9 +177,12 @@ find %{buildroot}           -name 'mat_*'        | sed -f br.sed >> %{name}.test
 find %{buildroot}           -name 'posmat_*'     | sed -f br.sed >> %{name}.test
 %endif
 
+if [ -f %{buildroot}%{_prefix}/share/doc/rocsolver/LICENSE.md ]; then
+    rm %{buildroot}%{_prefix}/share/doc/rocsolver/LICENSE.md
+fi
+
 %files -f %{name}.files
 %license LICENSE.md
-%exclude %{_docdir}/%{name}/LICENSE.md
 
 %files devel -f %{name}.devel
 %doc README.md
@@ -181,4 +193,10 @@ find %{buildroot}           -name 'posmat_*'     | sed -f br.sed >> %{name}.test
 %endif
 
 %changelog
+%if 0%{?is_opensuse}
+* Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif

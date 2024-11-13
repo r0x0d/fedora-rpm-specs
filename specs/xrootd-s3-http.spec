@@ -1,6 +1,6 @@
 Name:		xrootd-s3-http
 Version:	0.1.7
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	S3/HTTP filesystem plugins for XRootD
 
 License:	Apache-2.0
@@ -43,6 +43,9 @@ and HTTP backends through an XRootD server.
 %license LICENSE
 
 %changelog
+* Mon Nov 11 2024 Dominik Mierzejewski <dominik@greysector.net> - 0.1.7-3
+- rebuild for tinyxml2
+
 * Fri Nov 01 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 0.1.7-2
 - Fix linking error on 32 bit architectures
 

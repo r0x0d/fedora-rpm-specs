@@ -1,6 +1,6 @@
 Name:		python-pycdio
 Version:	2.1.1
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A Python interface to the CD Input and Control library
 
 License:	GPL-3.0-or-later
@@ -13,7 +13,7 @@ BuildRequires:  libcdio-devel
 BuildRequires:  swig
 
 %generate_buildrequires
-%pyproject_buildrequires -t
+%pyproject_buildrequires
 
 %description
 The pycdio (and libcdio) libraries encapsulate CD-ROM reading and
@@ -46,10 +46,8 @@ chmod 755 %{buildroot}/%{python3_sitearch}/*.so
 
 %pyproject_save_files -l cdio iso9660 pycdio pyiso9660
 
-%if 0%{?fedora}
 %check
-%tox
-%endif
+%{py3_test_envvars} %{python3} -m unittest test/test-*.py
 
 %files -n python3-pycdio -f %{pyproject_files}
 %license COPYING
@@ -58,6 +56,9 @@ chmod 755 %{buildroot}/%{python3_sitearch}/*.so
 %{python3_sitearch}/_pyiso9660.cpython-*linux-gnu.so
 
 %changelog
+* Mon Nov 11 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 2.1.1-2
+- Avoid tox dependency
+
 * Thu Nov 07 2024 Kevin Fenzi <kevin@scrye.com> - 2.1.1-1
 - Update to 2.1.1
 - Fix ftbfs. Fixes rhbz#2319695

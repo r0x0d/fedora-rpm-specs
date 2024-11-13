@@ -1,6 +1,6 @@
 Name:           fros
 Version:        1.1
-Release:        38%{?dist}
+Release:        39%{?dist}
 Summary:        Universal screencasting frontend with pluggable support for various backends
 
 %global commit 30275a07dab7891b9f31ff115743f67d757c7c1a
@@ -68,8 +68,7 @@ CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
 %{__python3} setup.py install --skip-build --root $RPM_BUILD_ROOT
 
 %check
-%{__python3} setup.py test
-
+%py3_check_import pyfros
 
 %files
 %doc README COPYING
@@ -98,6 +97,10 @@ CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
 %{python3_sitelib}/pyfros/plugins/__pycache__/*gnome.cpython-%{python3_version_nodots}.*py*
 
 %changelog
+* Fri Oct 25 2024 Charalampos Stratakis <cstratak@redhat.com> - 1.1-39
+- Remove unused setup.py test command
+Resolves: rhbz#2319626
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 1.1-38
 - convert license to SPDX
 

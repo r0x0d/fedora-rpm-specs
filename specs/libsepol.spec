@@ -1,7 +1,7 @@
 Summary: SELinux binary policy manipulation library
 Name: libsepol
 Version: 3.7
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: LGPL-2.1-or-later
 Source0: https://github.com/SELinuxProject/selinux/releases/download/3.7/libsepol-3.7.tar.gz
 Source1: https://github.com/SELinuxProject/selinux/releases/download/3.7/libsepol-3.7.tar.gz.asc
@@ -14,6 +14,10 @@ URL: https://github.com/SELinuxProject/selinux/wiki
 # Patch list start
 Patch0001: 0001-libsepol-sepol_compute_sid-Do-not-destroy-uninitiali.patch
 Patch0002: 0002-libsepol-cil-Check-that-sym_index-is-within-bounds.patch
+Patch0003: 0003-libsepol-cil-Initialize-avtab_datum-on-declaration.patch
+Patch0004: 0004-libsepol-mls-Do-not-destroy-context-on-memory-error.patch
+Patch0005: 0005-libsepol-cil-cil_post-Initialize-tmp-on-declaration.patch
+Patch0006: 0006-libsepol-Initialize-strs-on-declaration.patch
 # Patch list end
 BuildRequires: make
 BuildRequires: gcc

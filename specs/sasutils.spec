@@ -1,6 +1,6 @@
 Name:           sasutils
-Version:        0.6.0
-Release:        5%{?dist}
+Version:        0.6.1
+Release:        1%{?dist}
 Summary:        Serial Attached SCSI (SAS) utilities
 
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
@@ -53,6 +53,9 @@ install -p -m 0644 doc/man/man1/ses_report.1 %{buildroot}/%{_mandir}/man1/
 %license LICENSE.txt
 
 %changelog
+* Mon Nov 11 2024 Stephane Thiell <sthiell@stanford.edu> 0.6.1-1
+- update version
+
 * Fri Nov  8 2024 Stephane Thiell <sthiell@stanford.edu> 0.6.0-5
 - update version
 

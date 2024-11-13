@@ -4,7 +4,7 @@
 %global _firmwarepath  /usr/lib/firmware
 %global _xz_opts -9 --check=crc32
 
-%global sof_ver 2024.09
+%global sof_ver 2024.09.1
 #global sof_ver_pre rc1
 %global sof_ver_rel %{?sof_ver_pre:.%{sof_ver_pre}}
 %global sof_ver_pkg0 %{sof_ver}%{?sof_ver_pre:-%{sof_ver_pre}}
@@ -146,6 +146,9 @@ if st and st.type == "directory" then
 end
 
 %changelog
+* Mon Nov 11 2024 Jaroslav Kysela <perex@perex.cz> - 2024.09.1-1
+- Update to v2024.09.1
+
 * Fri Sep 27 2024 Jaroslav Kysela <perex@perex.cz> - 2024.09-1
 - Update to v2024.09
 

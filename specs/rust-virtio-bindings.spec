@@ -5,7 +5,7 @@
 %global crate virtio-bindings
 
 Name:           rust-virtio-bindings
-Version:        0.2.3
+Version:        0.2.4
 Release:        %autorelease
 Summary:        Rust FFI bindings to virtio generated using bindgen
 

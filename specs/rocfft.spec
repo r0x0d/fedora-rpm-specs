@@ -31,9 +31,17 @@
 %global build_test OFF
 %endif
 
+# For docs
+%bcond_with doc
+
+
 Name:           rocfft
 Version:        %{rocm_version}
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+Release:        1%{?dist}
+%else
 Release:        %autorelease
+%endif
 Summary:        ROCm Fast Fourier Transforms (FFT) library
 
 Url:            https://github.com/ROCm/%{upstreamname}
@@ -42,7 +50,6 @@ Source0:        %{url}/archive/rocm-%{version}.tar.gz#/%{upstreamname}-rocm-%{ve
 
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(sqlite3)
-BuildRequires:  python3-sphinx
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
 BuildRequires:  rocm-compilersupport-macros
@@ -62,6 +69,10 @@ BuildRequires:  hiprand-devel
 
 # rocfft-test compiles some things and requires rocm-hip-devel
 Requires:  rocm-hip-devel
+%endif
+
+%if %{with doc}
+BuildRequires:  python3-sphinx
 %endif
 
 Requires:       rocm-rpm-macros-modules
@@ -107,6 +118,11 @@ do
     module load rocm/$gpu
 
     %cmake \
+	-DCMAKE_CXX_COMPILER=hipcc \
+	-DCMAKE_C_COMPILER=hipcc \
+	-DCMAKE_LINKER=%rocmllvm_bindir/ld.lld \
+	-DCMAKE_AR=%rocmllvm_bindir/llvm-ar \
+	-DCMAKE_RANLIB=%rocmllvm_bindir/llvm-ranlib \
 	-DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
 	-DAMDGPU_TARGETS=${ROCM_GPUS} \
     -DCMAKE_INSTALL_LIBDIR=$ROCM_LIB \
@@ -146,10 +162,13 @@ find %{buildroot}           -name 'rocfft-test'      | sed -f br.sed >  %{name}.
 find %{buildroot}           -name 'rtc_helper_crash' | sed -f br.sed >> %{name}.test
 %endif
 
+if [ -f %{buildroot}%{_prefix}/share/doc/rocfft/LICENSE.md ]; then
+    rm %{buildroot}%{_prefix}/share/doc/rocfft/LICENSE.md
+fi
+
 %files -f %{name}.files
 %doc README.md
 %license LICENSE.md
-%exclude %{_docdir}/%{name}/LICENSE.md
 
 %files devel -f %{name}.devel
 %{_includedir}/%{name}
@@ -159,5 +178,12 @@ find %{buildroot}           -name 'rtc_helper_crash' | sed -f br.sed >> %{name}.
 %endif
 
 %changelog
+%if 0%{?is_opensuse}
+* Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif
+
 

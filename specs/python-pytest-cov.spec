@@ -23,17 +23,13 @@ pytest-cov’s command line options or through coverage’s config file.
 %bcond_without tests
 
 Name:           python-%{srcname}
-Version:        4.0.0
+Version:        5.0.0
 %forgemeta
 Release:        %autorelease
 Summary:        Coverage plugin for pytest
 License:        MIT
 URL:            %{forgeurl}
 Source:         %{forgesource}
-Patch:          0001_disabling_boxed_xdist_test.patch 
-# Fix test with coverage >= 6.5
-# Based on https://github.com/pytest-dev/pytest-cov/commit/d9789afd5916176a38cc2acebbaadee805064e22
-Patch:          python-pytest-cov-coverage-6.5.patch
 BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  pyproject-rpm-macros

@@ -4,13 +4,13 @@
 Python module dependency visualization. This package installs the pydeps
 command, and normal usage will be to use it from the command line.}
 
-%bcond_without tests
-%bcond_without docs
+%bcond tests 1
+%bcond html_docs 0
 
 %global forgeurl https://github.com/thebjorn/pydeps
 
 Name:       %{pypi_name}
-Version:    1.12.20
+Version:    2.0.1
 Release:    %autorelease
 Summary:    Display module dependencies
 License:    BSD-2-Clause
@@ -27,10 +27,8 @@ BuildRequires:  python3-pytest
 BuildRequires:  python3dist(pyyaml)
 BuildRequires:  graphviz
 %endif
-%if %{with docs}
 BuildRequires:  make
 BuildRequires:  python3-sphinx
-%endif
 
 %description
 %{desc}
@@ -46,8 +44,13 @@ BuildRequires:  python3-sphinx
 %pyproject_wheel
 # Generate man pages and docs
 pushd docs
-make %{?_smp_mflags} man html
+make %{?_smp_mflags} man
+
+%if %{with html_docs}
+make %{?_smp_mflags} html
+%endif
 popd
+
 
 %install
 %pyproject_install
@@ -56,7 +59,9 @@ popd
 # Install man page and html docs
 mkdir -p %{buildroot}/%{_mandir}/man1
 cp -a docs/_build/man/*.1 %{buildroot}/%{_mandir}/man1
+%if %{with html_docs}
 rm docs/_build/html/.buildinfo
+%endif
 
 
 %check
@@ -68,8 +73,8 @@ rm docs/_build/html/.buildinfo
 %files -n %{pypi_name} -f %{pyproject_files}
 %doc README.rst
 %{_bindir}/pydeps
-%if %{with docs}
 %{_mandir}/man1/%{pypi_name}.1*
+%if %{with html_docs}
 %doc docs/_build/html
 %endif
 

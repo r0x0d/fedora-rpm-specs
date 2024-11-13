@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc6.20241108git906bd684e4b1.55
+%define pkgrelease 0.rc7.58
 %define kversion 6
-%define tarfile_release 6.12-rc6-169-g906bd684e4b1
+%define tarfile_release 6.12-rc7
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc6.20241108git906bd684e4b1.55%{?buildid}%{?dist}
+%define specrelease 0.rc7.58%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4151,9 +4151,23 @@ fi\
 #
 #
 %changelog
-* Fri Nov 08 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.906bd684e4b1.55]
+* Mon Nov 11 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc7.58]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Mon Nov 11 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc7.57]
+- redhat/configs: enable xr_serial on rhel (Desnes Nunes)
+- redhat/configs: enable ATH12K for rhel (Jose Ignacio Tornos Martinez)
+- redhat: configs: rhel: generic: x86: Enable IPU6 based MIPI cameras (Kate Hsuan)
+- os-build: enable CONFIG_SCHED_CLASS_EXT for RHEL (Phil Auld)
+- Linux v6.12.0-0.rc7
+
+* Sun Nov 10 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.de2f378f2b77.56]
+- Linux v6.12.0-0.rc6.de2f378f2b77
+
+* Sat Nov 09 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.da4373fbcf00.55]
+- Fedora 6.12 configs part 1 (Justin M. Forbes)
+- Linux v6.12.0-0.rc6.da4373fbcf00
 
 * Fri Nov 08 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc6.906bd684e4b1.54]
 - Linux v6.12.0-0.rc6.906bd684e4b1

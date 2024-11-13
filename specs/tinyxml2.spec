@@ -1,8 +1,8 @@
-%global soversion 9
+%global soversion 10
 
 Name:           tinyxml2
-Version:        9.0.0
-Release:        5%{?dist}
+Version:        10.0.0
+Release:        1%{?dist}
 Summary:        Simple, small and efficient C++ XML parser
 
 License:        zlib
@@ -54,7 +54,7 @@ chmod -c -x *.cpp *.h
 
 %files
 %doc readme.md
-%{_libdir}/lib%{name}.so.%{soversion}*
+%{_libdir}/lib%{name}.so.%{soversion}{,.*}
 
 %files devel
 %{_includedir}/%{name}.h
@@ -63,6 +63,9 @@ chmod -c -x *.cpp *.h
 %{_libdir}/cmake/%{name}/
 
 %changelog
+* Mon Nov 11 2024 Dominik Mierzejewski <dominik@greysector.net> - 10.0.0-1
+- updated to 10.0.0 (resolves rhbz#2256358)
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 9.0.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

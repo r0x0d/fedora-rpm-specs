@@ -6,7 +6,7 @@
 %endif
 
 Name:           packit
-Version:        0.102.2
+Version:        0.103.0
 Release:        1%{?dist}
 Summary:        A tool for integrating upstream projects with Fedora operating system
 
@@ -26,7 +26,7 @@ projects into Fedora operating system.
 Summary:        %{summary}
 # new-sources
 Requires:       fedpkg
-Requires:       git
+Requires:       git-core
 # kinit
 Requires:       krb5-workstation
 # rpmbuild
@@ -79,6 +79,9 @@ cp files/bash-completion/packit %{buildroot}%{bash_completions_dir}/packit
 %doc README.md
 
 %changelog
+* Sun Nov 10 2024 Packit <hello@packit.dev> - 0.103.0-1
+- Packit now supports and defaults to `fast_forward_merge_into` syntax via `--dist-git-branches-mapping` in `dist-git init`. (#2456)
+
 * Tue Oct 22 2024 Packit <hello@packit.dev> - 0.102.2-1
 - Fixed passing list of resolved bugs when running `packit propose-downstream` or `packit pull-from-upstream`. (#2447)
 - Resolves: rhbz#2321004

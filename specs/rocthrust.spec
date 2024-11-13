@@ -21,7 +21,11 @@
 
 Name:           rocthrust
 Version:        %{rocm_version}
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+Release:        1%{?dist}
+%else
 Release:        %autorelease
+%endif
 Summary:        ROCm Thrust libary
 
 Url:            https://github.com/ROCm
@@ -77,9 +81,13 @@ sed -i -e 's/ROCM_INSTALL_LIBDIR lib/ROCM_INSTALL_LIBDIR lib64/' cmake/ROCMExpor
 
 %build
 %cmake \
+	-DCMAKE_CXX_COMPILER=hipcc \
+	-DCMAKE_C_COMPILER=hipcc \
+	-DCMAKE_LINKER=%rocmllvm_bindir/ld.lld \
+	-DCMAKE_AR=%rocmllvm_bindir/llvm-ar \
+	-DCMAKE_RANLIB=%rocmllvm_bindir/llvm-ranlib \
     -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
     -DBUILD_TEST=%{build_test} \
-    -DCMAKE_CXX_COMPILER=hipcc \
     -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
     -DROCM_SYMLINK_LIBS=OFF
 %cmake_build
@@ -87,18 +95,32 @@ sed -i -e 's/ROCM_INSTALL_LIBDIR lib/ROCM_INSTALL_LIBDIR lib64/' cmake/ROCMExpor
 %install
 %cmake_install
 
+if [ -f %{buildroot}%{_prefix}/share/doc/rocthrust/LICENSE ]; then
+    rm %{buildroot}%{_prefix}/share/doc/rocthrust/LICENSE
+fi
+
+%if %{with check}
+rm %{buildroot}%{_bindir}/*
+%endif
+
 %check
 %if %{with check}
 %ctest
 %endif
 
 %files devel
-%dir %{_docdir}/%{name}/
 %doc README.md
-%license %{_docdir}/%{name}/LICENSE
+%license LICENSE
 %license NOTICES.txt
 %{_includedir}/thrust
 %{_libdir}/cmake/%{name}
 
 %changelog
+%if 0%{?is_opensuse}
+* Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif
+

@@ -1,5 +1,5 @@
 Name:           sidplayfp
-Version:        2.10.0
+Version:        2.11.0
 Release:        1%{?dist}
 Summary:        SID chip music module player
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -47,6 +47,10 @@ make %{?_smp_mflags}
 
 
 %changelog
+* Mon Nov 11 2024 Karel Volný <kvolny@redhat.com> - 2.11.0-1
+- Update to 2.11.0 (rhbz#2323726)
+- See the upstream changes at https://github.com/libsidplayfp/sidplayfp/releases
+
 * Thu Oct 31 2024 Karel Volný <kvolny@redhat.com> - 2.10.0-1
 - Update to 2.10.0 (rhbz#2316879)
 - See the upstream changes at https://github.com/libsidplayfp/sidplayfp/releases

@@ -3,13 +3,14 @@
 Summary:       A Ruby implementation of the Coveralls API
 Name:          rubygem-%{gem_name}
 Version:       0.8.13
-Release:       22%{?dist}
+Release:       23%{?dist}
 License:       MIT
 URL:           https://coveralls.io
 Source0:       https://rubygems.org/gems/%{gem_name}-%{version}.gem
 BuildRequires: git
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
+BuildRequires: rubygem(base64)
 BuildRequires: rubygem(bigdecimal)
 BuildRequires: rubygem(multi_json)
 BuildRequires: rubygem(pry)
@@ -110,6 +111,9 @@ popd
 %{gem_instdir}/spec
 
 %changelog
+* Mon Nov 11 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.8.13-23
+- Add BR: rubygem(base64) explicitly for ruby34
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.13-22
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

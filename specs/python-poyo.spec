@@ -2,7 +2,7 @@
 
 Name:           python-poyo
 Version:        0.5.0
-Release:        16%{?dist}
+Release:        17%{?dist}
 Summary:        A lightweight YAML Parser for Python
 
 License:        MIT
@@ -12,6 +12,8 @@ Source0:        https://github.com/hackebrot/%{pkgname}/archive/%{version}.tar.g
 BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
+# For testing
+BuildRequires:  python3-pytest
 
 %description
 A lightweight YAML Parser for Python
@@ -51,7 +53,7 @@ Please see the examples below to get an idea of what Poyo understands.
 
 %check
 
-%{__python3} setup.py test
+%pytest
 
 %files -n python3-%{pkgname}
 %license LICENSE
@@ -60,6 +62,10 @@ Please see the examples below to get an idea of what Poyo understands.
 
 
 %changelog
+* Thu Oct 24 2024 Charalampos Stratakis <cstratak@redhat.com> - 0.5.0-17
+- Utilize pytest instead of the removed setup.py test command
+Resolves: rhbz#2319693
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.5.0-16
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

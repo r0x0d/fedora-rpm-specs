@@ -5,7 +5,7 @@
 %global forgeurl  https://github.com/NeuralEnsemble/elephant/
 
 Name:       python-elephant
-Version:    1.1.0
+Version:    1.1.1
 Release:    %autorelease
 Summary:    Analysis of electrophysiology data, using Neo data structures
 
@@ -20,10 +20,6 @@ Source0:    %forgesource
 # All changes are here
 # https://github.com/sanjayankur31/elephant/tree/fedora-0.11.1
 Patch0:     0001-use-fedora-build-flags.patch
-
-# fix for new neo
-# https://github.com/NeuralEnsemble/elephant/commit/6ce6558478ac97ac594262785e716e457b5aba38
-Patch1:     https://github.com/NeuralEnsemble/elephant/commit/6ce6558478ac97ac594262785e716e457b5aba38.patch
 
 # python-pyedflib does not support s390x, so the complete dep tree needs to also exclude it
 # https://src.fedoraproject.org/rpms/python-pyedflib/blob/rawhide/f/python-pyedflib.spec

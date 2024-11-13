@@ -2,7 +2,6 @@
 
 # container-selinux stuff (prefix with ds_ for version/release etc.)
 # Some bits borrowed from the openstack-selinux package
-%global selinuxtype targeted
 %global moduletype services
 %global modulenames container
 
@@ -36,7 +35,7 @@ Epoch: 2
 # Keep Version in upstream specfile at 0. It will be automatically set
 # to the correct value by Packit for copr and koji builds.
 # IGNORE this comment if you're looking at it in dist-git.
-Version: 2.233.0
+Version: 2.234.2
 Release: %autorelease
 License: GPL-2.0-only
 URL: https://github.com/containers/%{name}
@@ -51,7 +50,8 @@ BuildRequires: selinux-policy-devel >= %_selinux_policy_version
 # RE: rhbz#1195804 - ensure min NVR for selinux-policy
 Requires: selinux-policy >= %_selinux_policy_version
 Requires(post): selinux-policy-base >= %_selinux_policy_version
-Requires(post): selinux-policy-targeted >= %_selinux_policy_version
+Requires(post): selinux-policy-any >= %_selinux_policy_version
+Recommends: selinux-policy-targeted >= %_selinux_policy_version
 Requires(post): policycoreutils
 Requires(post): libselinux-utils
 Requires(post): sed
@@ -86,11 +86,8 @@ make
 %_format MODULES $x.pp.bz2
 %{__make} DATADIR=%{buildroot}%{_datadir} SYSCONFDIR=%{buildroot}%{_sysconfdir} install install.udica-templates install.selinux-user
 
-# Ref: https://bugzilla.redhat.com/show_bug.cgi?id=2209120
-rm %{buildroot}%{_mandir}/man8/container_selinux.8
-
 %pre
-%selinux_relabel_pre -s %{selinuxtype}
+%selinux_relabel_pre
 
 %post
 # Install all modules in a single transaction
@@ -98,21 +95,21 @@ if [ $1 -eq 1 ]; then
    %{_sbindir}/setsebool -P -N virt_use_nfs=1 virt_sandbox_use_all_caps=1
 fi
 %_format MODULES %{_datadir}/selinux/packages/$x.pp.bz2
-%{_sbindir}/semodule -n -s %{selinuxtype} -r container 2> /dev/null
-%{_sbindir}/semodule -n -s %{selinuxtype} -d docker 2> /dev/null
-%{_sbindir}/semodule -n -s %{selinuxtype} -d gear 2> /dev/null
-%selinux_modules_install -s %{selinuxtype} $MODULES
 . %{_sysconfdir}/selinux/config
+%{_sbindir}/semodule -n -s ${SELINUXTYPE} -r container 2> /dev/null
+%{_sbindir}/semodule -n -s ${SELINUXTYPE} -d docker 2> /dev/null
+%{_sbindir}/semodule -n -s ${SELINUXTYPE} -d gear 2> /dev/null
+%selinux_modules_install -s ${SELINUXTYPE} $MODULES
 sed -e "\|container_file_t|h; \${x;s|container_file_t||;{g;t};a\\" -e "container_file_t" -e "}" -i /etc/selinux/${SELINUXTYPE}/contexts/customizable_types
 matchpathcon -qV %{_sharedstatedir}/containers || restorecon -R %{_sharedstatedir}/containers &> /dev/null || :
 
 %postun
 if [ $1 -eq 0 ]; then
-   %selinux_modules_uninstall -s %{selinuxtype} %{modulenames} docker
+   %selinux_modules_uninstall %{modulenames} docker
 fi
 
 %posttrans
-%selinux_relabel_post -s %{selinuxtype}
+%selinux_relabel_post
 
 #define license tag if not already defined
 %{!?_licensedir:%global license %doc}
@@ -126,9 +123,10 @@ fi
 %dir %{_datadir}/udica/templates/
 %{_datadir}/udica/templates/*
 # Ref: https://bugzilla.redhat.com/show_bug.cgi?id=2209120
-#%%{_mandir}/man8/container_selinux.8.gz
-%{_sysconfdir}/selinux/targeted/contexts/users/*
-%ghost %{_sharedstatedir}/selinux/%{selinuxtype}/active/modules/200/%{modulenames}
+%{_mandir}/man8/container_selinux.8.gz
+%{_sysconfdir}/selinux/targeted/contexts/users/container_u
+%ghost %verify(not mode) %{_selinux_store_path}/targeted/active/modules/200/%{modulenames}
+%ghost %verify(not mode) %{_selinux_store_path}/mls/active/modules/200/%{modulenames}
 
 %triggerpostun -- container-selinux < 2:2.162.1-3
 if %{_sbindir}/selinuxenabled ; then

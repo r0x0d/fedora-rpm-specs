@@ -25,6 +25,7 @@ Obsoletes: java-%{?1}-openjdk-portable%{?2}%{?3} < 1:1000
 %{obsoleteLines -- %{?1} -jmods}
 %{obsoleteLines -- %{?1} -static-libs}
 %{obsoleteLines -- %{?1} -openjfx}
+%{obsoleteLines -- %{?1} -openjfx-devel}
 %{obsoleteLines -- %{?1} -docs}
 %{obsoleteLines -- %{?1} -sources}
 }

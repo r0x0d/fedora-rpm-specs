@@ -1,4 +1,17 @@
 %bcond check 1
+# Should we run integration tests, many of which require specific Python
+# interpreter versions (major.minor, not major.minor.patch)? This adds a few
+# dozen tests, but adds BuildRequires on more Pythons, and could reduce our
+# confidence that everything works correctly in an environment that only has
+# the main system Python.
+#
+# For the time being, these are still disabled since many of them still want
+# network access, even when features like pypi and crates-io are removed from
+# the default features. We should discuss this with upstream and consider
+# offering a PR to conditionalize the affected tests. See
+# https://src.fedoraproject.org/rpms/uv/pull-request/18#comment-229365 and
+# https://github.com/astral-sh/uv/issues/8970#issuecomment-2466794088.
+%bcond it 0
 
 # On some releases and architectures, Koji builders sometimes or always run out
 # of memory in the final linking step. This cannot be fixed by adding
@@ -20,7 +33,7 @@
 %constrain_build -m 4096
 
 Name:           uv
-Version:        0.4.29
+Version:        0.4.30
 Release:        %autorelease
 Summary:        An extremely fast Python package installer and resolver, written in Rust
 
@@ -219,6 +232,11 @@ Patch:          0001-Downstream-patch-always-find-the-system-wide-uv-exec.patch
 # platforms, but we have no such issues because we always link the system
 # zlib-ng, which works fine on these architectures.
 Patch:          0001-Downstream-only-use-the-zlib-ng-backend-for-flate2-o.patch
+# Downstream-only: don’t upper-bound the libz-ng-sys version
+#
+# The upper bound was added for a Windows-specific issue,
+# https://github.com/rust-lang/libz-sys/issues/225
+Patch:          0002-Downstream-only-don-t-upper-bound-the-libz-ng-sys-ve.patch
 
 # This patch is for the forked, bundled pubgrub crate.
 #
@@ -246,6 +264,15 @@ BuildRequires:  cargo-rpm-macros >= 24
 BuildRequires:  rust2rpm-helper
 BuildRequires:  tomcli
 BuildRequires:  python3-devel
+%if %{with check} && %{with it}
+# See trove classifiers in pyproject.toml for supported Pythons.
+BuildRequires:  /usr/bin/python3.8
+BuildRequires:  /usr/bin/python3.9
+BuildRequires:  /usr/bin/python3.10
+BuildRequires:  /usr/bin/python3.11
+BuildRequires:  /usr/bin/python3.12
+BuildRequires:  /usr/bin/python3.13
+%endif
 
 # This is a fork of async_zip; see the notes about Source100.
 %global async_zip_snapinfo %{async_zip_snapdate}git%{sub %{async_zip_rev} 1 7}
@@ -541,13 +568,26 @@ tomcli set Cargo.toml append workspace.exclude crates/uv-dev
 tomcli set crates/uv-extract/Cargo.toml lists delitem \
     features.performance 'xz2/static'
 
-# The pypi feature, described as “Introduces a dependency on PyPI,” in practice
-# controls whether we build and run tests that want to talk to PyPI. In an
-# offline build, we definitely don’t want that, so we remove it from the
-# default features.
+# Disable several default features that control which tests are compiled and
+# executed, and which are not usable in offline builds:
+#
+# ”Introduces a dependency on managed Python installations.”
+# (These are pre-compiled Pythons downloaded from the Internet.)
+tomcli set crates/uv/Cargo.toml lists delitem features.default 'python-managed'
+#
+# ”Introduces a dependency on PyPI.”
 tomcli set crates/uv/Cargo.toml lists delitem features.default 'pypi'
-# Similarly, but for crates.io:
+#
+# ”Introduces a dependency on Git.”
+# This sounds innocuous – we have git! – but in fact, it controls tests of git
+# dependencies, which implies accessing remote repositories, e.g. on GitHub.
+tomcli set crates/uv/Cargo.toml lists delitem features.default 'git'
+#
+# ”Introduces a dependency on crates.io.”
 tomcli set crates/uv/Cargo.toml lists delitem features.default 'crates-io'
+# Note that the python-patch feature, which ”introduces a dependency on a local
+# Python installation with specific patch versions,” is already not among the
+# default features.
 
 # Omit tests requiring wiremock; its dependency tree is too large and complex
 # to consider packaging it right now. The conditional #[cfg(any())] is always
@@ -556,10 +596,12 @@ sed -r -i 's/^#\[cfg\(test\)\]/#[cfg(any())]\r&/' \
     crates/uv-auth/src/middleware.rs
 tomcli set crates/uv-auth/Cargo.toml del dev-dependencies.wiremock
 
-# Integration tests (it crate) all require specific Python interpreter versions
-# (down to patch release number), which upstream normally downloads,
-# precompiled, into the build area – except for the handful of help::* tests in
-# crates/uv/tests/it/help.rs. Some may also require network access.
+%if %{without it}
+# Integration tests (it crate) nearly all require specific Python interpreter
+# versions (major.minor, not major.minor.patch, unless the python-patch feature
+# is enabled). We might choose to disable this in order to double-check that
+# everything else works well with only the primary system Python in the
+# environment.
 # -p uv --test it:
 mods="${mods-}${mods+|}branching_urls"
 mods="${mods-}${mods+|}build_backend"
@@ -570,6 +612,7 @@ mods="${mods-}${mods+|}workspace"
 comment='Downstream-only: skip, needs specific Python interpreter versions'
 sed -r -i "s@mod (${mods});@// ${comment}\n#[cfg(any())]\n&@" \
     crates/uv/tests/it/main.rs
+%endif
 
 # For unclear reasons, maturin checks for the presence of optional crate
 # dependencies that correspond to features we have not enabled. We need to
@@ -609,12 +652,19 @@ tomcli set Cargo.toml str \
 tomcli set Cargo.toml str \
     workspace.dependencies.mailparse.version '>=0.14,<0.16'
 
-# goblin
-#   wanted: 0.9.0
-#   currently packaged: 0.8.2
-#   https://bugzilla.redhat.com/show_bug.cgi?id=2320112
+# procfs
+#   wanted: 0.17.0
+#   currently packaged: 0.16.0
+#   https://bugzilla.redhat.com/show_bug.cgi?id=2316899
 tomcli set Cargo.toml str \
-    workspace.dependencies.goblin.version '>=0.8.2,<0.10'
+    workspace.dependencies.procfs.version '>=0.16,<0.18'
+
+# which
+#   wanted: 7.0.0
+#   currently packaged: 6.0.3
+#   https://bugzilla.redhat.com/show_bug.cgi?id=2323107
+tomcli set Cargo.toml str \
+    workspace.dependencies.which.version '>=6.0.3,<8.0.0'
 
 %cargo_prep
 

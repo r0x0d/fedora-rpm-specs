@@ -1,5 +1,5 @@
 Name:           python-inline-snapshot
-Version:        0.13.4
+Version:        0.14.0
 Release:        %autorelease
 Summary:        Golden master/snapshot/approval testing library
 
@@ -60,7 +60,12 @@ tomcli get pyproject.toml -F newline-list \
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 ignore="${ignore-} --ignore=tests/test_typing.py"
 
-%pytest ${ignore-} -v
+# Ignore all DeprecationWarning messages; they may pop up from anywhere in our
+# dependency tree, and this can cause tests that expect precisely-matching
+# pytest output to fail unnecessarily.
+export PYTHONWARNINGS='ignore::DeprecationWarning'
+
+%pytest ${ignore-} -vv
 
 
 %files -n python3-inline-snapshot -f %{pyproject_files}

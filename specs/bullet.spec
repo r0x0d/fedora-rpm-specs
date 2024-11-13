@@ -2,7 +2,7 @@
 
 Name: bullet
 Version: 3.08
-Release: 11%{?dist}
+Release: 12%{?dist}
 Summary: 3D Collision Detection and Rigid Body Dynamics Library
 # Automatically converted from old format: zlib and MIT and BSD and Boost - review is highly recommended.
 License: Zlib AND LicenseRef-Callaway-MIT AND LicenseRef-Callaway-BSD AND BSL-1.0
@@ -195,6 +195,9 @@ doxygen Doxyfile
 %{_libdir}/libBulletXmlWorldImporter.so
 
 %changelog
+* Tue Nov 12 2024 Dominik Mierzejewski <dominik@greysector.net> - 3.08-12
+- rebuilt for tinyxml2
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 3.08-11
 - convert license to SPDX
 

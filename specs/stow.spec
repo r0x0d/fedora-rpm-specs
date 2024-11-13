@@ -1,5 +1,5 @@
 Name:         stow
-Version:      2.4.0
+Version:      2.4.1
 Release:      %autorelease
 
 License:      GPL-3.0-or-later
@@ -90,7 +90,6 @@ make check
 %files doc
 %docdir %{moredocs}
 %dir %{moredocs}
-%{moredocs}/manual.pdf
 %{moredocs}/manual-single.html
 %{moredocs}/manual-split/
 

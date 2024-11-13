@@ -1,19 +1,15 @@
 %global srcname mplcairo
 
 Name:           python-%{srcname}
-Version:        0.5
+Version:        0.6.1
 Release:        %autorelease
 Summary:        A (new) cairo backend for Matplotlib
 
 License:        MIT
 URL:            https://github.com/matplotlib/mplcairo
-Source0:        %pypi_source %{srcname}
-# Make pth-generation PEP517-compatible.
-# https://github.com/matplotlib/mplcairo/commit/bf3b69ceec82b09350e725d310e3a324afc0c3ff
-Patch:          0001-Make-pth-generation-PEP517-compatible.patch
-# Fix use with latest wheel.
-# https://github.com/matplotlib/mplcairo/commit/e85ebb2115f617e20c0269047f9b50ac050f5eb9
-Patch:          0002-Remove-fragile-build_ext-command-run-order-check.patch
+Source:         %pypi_source %{srcname}
+# Skip upstream's -Werror configuration.
+Patch:          0001-Don-t-error-on-all-warnings-in-tests.patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch: %{ix86}
@@ -127,7 +123,7 @@ Noteworthy points include:
 %autosetup -n %{srcname}-%{version} -p1
 
 %generate_buildrequires
-%pyproject_buildrequires -r
+%pyproject_buildrequires
 
 %build
 %pyproject_wheel
@@ -144,7 +140,7 @@ mktexfmt lualatex.fmt
 mktexfmt pdflatex.fmt
 mktexfmt xelatex.fmt
 
-export PYTHONPATH="%{buildroot}%{python3_sitearch}" PYTHONDONTWRITEBYTECODE=1
+export %{py3_test_envvars}
 
 %{python3} -c 'import mplcairo.base'
 

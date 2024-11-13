@@ -1,8 +1,15 @@
 %global srcname requests_ntlm
 
+# EPEL 10 is missing flask at the moment
+%if 0%{?rhel} >= 10
+%bcond_with flask
+%else
+%bcond_without flask
+%endif
+
 Name:           python-%{srcname}
 Version:        1.3.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NTLM module for python requests (requires md4, thus legacy OpenSSL settings)
 
 License:        ISC
@@ -21,15 +28,12 @@ order to support md4 in Python.}
 
 %package -n     python3-%{srcname}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{srcname}}
 BuildRequires:  python3-devel
-BuildRequires:  python3dist(setuptools)
-BuildRequires:  python3dist(requests) >= 2
-BuildRequires:  python3dist(ntlm-auth) >= 1.0.2
-BuildRequires:  python3dist(cryptography) >= 1.3
-BuildRequires:  python3dist(pyspnego) >= 0.1.6
+# For tests
 BuildRequires:  python3dist(pytest)
+%if %{with flask}
 BuildRequires:  python3dist(flask)
+%endif
 
 %description -n python3-%{srcname} %{_description}
 
@@ -38,16 +42,20 @@ Python 3 version.
 %prep
 %autosetup -n requests-ntlm-%{version}
 
+%generate_buildrequires
+%pyproject_buildrequires
+
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l %{srcname}
 
 %check
-%python3 -m tests.test_server &
 %python3 -m pytest --ignore=tests/functional/test_functional.py --ignore=tests/test_server.py -vv -k 'not (TestRequestsNtlm and not username)'
 
+%if %{with flask}
 # see https://github.com/jborean93/ntlm-auth/issues/22
 cat > openssl.cnf << EOF
 openssl_conf = openssl_init
@@ -66,15 +74,18 @@ activate = 1
 activate = 1
 EOF
 export OPENSSL_CONF=${PWD}/openssl.cnf
+%python3 -m tests.test_server &
 %python3 -m pytest --ignore=tests/functional/test_functional.py --ignore=tests/test_server.py -vv -k '(TestRequestsNtlm and not username)'
+%endif
 
-%files -n python3-%{srcname}
-%license LICENSE
+%files -n python3-%{srcname} -f %{pyproject_files}
 %doc CONTRIBUTORS.rst README.rst
-%{python3_sitelib}/%{srcname}/
-%{python3_sitelib}/%{srcname}-*.egg-info/
 
 %changelog
+* Mon Nov 11 2024 Orion Poplawski <orion@nwra.com> - 1.3.0-2
+- Use pyproject macros
+- Build without flask in epel10
+
 * Tue Aug 13 2024 Orion Poplawski <orion@nwra.com> - 1.3.0-1
 - Update to 1.3.0
 

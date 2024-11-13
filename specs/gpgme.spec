@@ -11,8 +11,8 @@
 
 Name:           gpgme
 Summary:        GnuPG Made Easy - high level crypto API
-Version:        1.23.2
-Release:        %autorelease
+Version:        1.24.0
+Release:        1%{?dist}
 
 # MIT: src/cJSON.{c,h} (used by gpgme-json)
 License:        LGPL-2.1-or-later AND MIT
@@ -27,15 +27,8 @@ Source2:        gpgme-multilib.h
 Patch1001:      0001-don-t-add-extra-libraries-for-linking.patch
 # add -D_FILE_OFFSET_BITS... to gpgme-config, upstreamable
 Patch1002:      gpgme-1.3.2-largefile.patch
-# Let's fix stupid AX_PYTHON_DEVEL
-Patch1003:      0001-fix-stupid-ax_python_devel.patch
 # Allow extra options to be passed to setup.py during installation
 Patch1004:      0002-setup_py_extra_opts.patch
-
-# 3x fix F41+ setuptools74 compatibility, from upstream, for <=1.23.2, rhbz#2319628
-Patch1005:      gpgme-1.23.2-distutils.patch
-Patch1006:      gpgme-1.23.2-setuptools72.patch
-Patch1007:      gpgme-1.23.2-noegg.patch
 
 ## temporary downstream fixes
 # Skip lang/qt/tests/t-remarks on gnupg 2.4+
@@ -172,7 +165,7 @@ Obsoletes:      platform-python-gpg < %{version}-%{release}
 %{summary}.
 
 %prep
-%autosetup -p1
+%autosetup -p1 -S gendiff
 gpg2 --import --import-options import-export,import-minimal %{SOURCE3} > ./gpg-keyring.gpg
 gpgv2 --keyring ./gpg-keyring.gpg %{SOURCE1} %{SOURCE0}
 
@@ -278,6 +271,7 @@ popd
 %doc AUTHORS NEWS README*
 %{_bindir}/%{name}-json
 %{_libdir}/lib%{name}.so.11*
+%{_mandir}/man1/%{name}-json.*
 
 %files devel
 %{_bindir}/%{name}-config
@@ -314,18 +308,18 @@ popd
 
 %if %{with qt5} || %{with qt6}
 %files -n q%{name}-common-devel
-%{_includedir}/q%{name}/
-%{_includedir}/QGpgME/
 %endif
 
 %if %{with qt5}
 %files -n q%{name}-qt5-devel
+%{_includedir}/q%{name}-qt5/
 %{_libdir}/libq%{name}.so
 %{_libdir}/cmake/QGpgme/
 %endif
 
 %if %{with qt6}
 %files -n q%{name}-qt6-devel
+%{_includedir}/q%{name}-qt6/
 %{_libdir}/libq%{name}qt6.so
 %{_libdir}/cmake/QGpgmeQt6/
 %endif

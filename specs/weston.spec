@@ -1,8 +1,8 @@
 %global apiver 14
 
 Name:           weston
-Version:        14.0.0
-Release:        2%{?dist}
+Version:        14.0.1
+Release:        1%{?dist}
 Summary:        Reference compositor for Wayland
 
 # Automatically converted from old format: MIT and CC-BY-SA-3.0 - review is highly recommended.
@@ -214,6 +214,9 @@ Common headers for weston
 %{_datadir}/libweston-%{apiver}/protocols/
 
 %changelog
+* Mon Nov 11 2024 Neal Gompa <ngompa@fedoraproject.org> - 14.0.1-1
+- Update to 14.0.1
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 14.0.0-2
 - convert license to SPDX
 

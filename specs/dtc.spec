@@ -1,19 +1,20 @@
 %global with_mingw 0
 
 %if 0%{?fedora}
-%global with_mingw 0
+%global with_mingw 1
 %endif
 
 %undefine _auto_set_build_flags
 
 Name:          dtc
 Version:       1.7.2
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       Device Tree Compiler
 License:       GPL-2.0-or-later
 URL:           https://devicetree.org/
 
 Source0:       https://www.kernel.org/pub/software/utils/%{name}/%{name}-%{version}.tar.xz
+Patch0001:     0001-build-fix-Dtools-false-build.patch
 
 BuildRequires: gcc make
 BuildRequires: flex bison swig
@@ -119,7 +120,7 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %{make_build} EXTRA_CFLAGS="%{build_cflags}" LDFLAGS="%{build_ldflags}"
 
 %if %{with_mingw}
-%mingw_meson -Dtools=false
+%mingw_meson -Dtools=false -Dtests=false
 %mingw_ninja
 %endif
 
@@ -179,6 +180,9 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %endif
 
 %changelog
+* Mon Nov 11 2024 Marc-André Lureau <marcandre.lureau@redhat.com> - 1.7.2-2
+- Enable back mingw build
+
 * Sun Nov 10 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1.7.2-1
 - Update to 1.7.2
 

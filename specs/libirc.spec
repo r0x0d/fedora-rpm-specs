@@ -14,6 +14,8 @@ BuildRequires: flex
 BuildRequires: libcmocka-devel
 BuildRequires: gnutls-devel
 
+ExcludeArch:   i686
+
 %description
 %{summary}.
 

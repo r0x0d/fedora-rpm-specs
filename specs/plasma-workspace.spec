@@ -1,5 +1,6 @@
 # X11 session is not shipped anymore
 %bcond x11 0
+%bcond kf6_pim 1
 
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
@@ -75,7 +76,6 @@ BuildRequires:  libraw1394-devel
 %endif
 BuildRequires:  gpsd-devel
 BuildRequires:  libqalculate-devel
-%global kf6_pim 1
 BuildRequires:  libicu-devel
 
 BuildRequires:  qt6-qtbase-devel
@@ -379,7 +379,6 @@ to use KWin for the Wayland compositor for the greeter.
 Summary:        Wayland support for Plasma
 Requires:       %{name} = %{version}-%{release}
 Requires:       kwin-wayland
-Requires:       kwayland-integration%{?_isa}
 Requires:       xorg-x11-server-Xwayland
 Requires:       qt6-qtwayland%{?_isa}
 # startplasmacompositor deps
@@ -622,7 +621,7 @@ fi
 %{_libdir}/libkmpris.so.*
 # multilib'able plugins
 %{_kf6_qtplugindir}/plasma/applets/
-%if 0%{?kf6_pim}
+%if %{with kf6_pim}
 %{_kf6_qtplugindir}/plasmacalendarplugins/
 %endif
 %dir %{_kf6_qtplugindir}/phonon_platform/

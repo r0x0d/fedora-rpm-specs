@@ -20,7 +20,7 @@
 %bcond_without python3
 
 Name:       csdiff
-Version:    3.5.1
+Version:    3.5.2
 Release:    1%{?dist}
 Summary:    Non-interactive tools for processing code scan results in plain-text
 
@@ -169,6 +169,9 @@ make version.cc
 %endif
 
 %changelog
+* Mon Nov 11 2024 Kamil Dudka <kdudka@redhat.com> - 3.5.2-1
+- update to latest upstream release
+
 * Wed Sep 25 2024 Kamil Dudka <kdudka@redhat.com> - 3.5.1-1
 - update to latest upstream release
 

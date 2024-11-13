@@ -38,6 +38,7 @@ Documentation for YAQL library
 %autosetup -n %{pypi_name}-%{version} -p1
 
 sed -i '/sphinx-build/ s/-W//' tox.ini
+sed -i '/hacking/d' test-requirements.txt
 
 %generate_buildrequires
 %if 0%{?with_doc}

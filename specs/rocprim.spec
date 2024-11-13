@@ -16,7 +16,11 @@
 
 Name:           rocprim
 Version:        %{rocm_version}
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+Release:        1%{?dist}
+%else
 Release:        %autorelease
+%endif
 Summary:        ROCm parallel primatives
 
 License:        MIT and BSD
@@ -63,12 +67,16 @@ for developing performant GPU-accelerated code on AMD ROCm platform.
 
 %build
 %cmake \
+	-DCMAKE_CXX_COMPILER=hipcc \
+	-DCMAKE_C_COMPILER=hipcc \
+	-DCMAKE_LINKER=%rocmllvm_bindir/ld.lld \
+	-DCMAKE_AR=%rocmllvm_bindir/llvm-ar \
+	-DCMAKE_RANLIB=%rocmllvm_bindir/llvm-ranlib \
     -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
 %if %{with check}
     -DBUILD_TEST=ON \
 %endif
     -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
-    -DCMAKE_CXX_COMPILER=hipcc \
     -DCMAKE_INSTALL_LIBDIR=share \
     -DROCM_SYMLINK_LIBS=OFF
 
@@ -78,19 +86,26 @@ for developing performant GPU-accelerated code on AMD ROCm platform.
 %install
 %cmake_install
 
-cp NOTICES.txt %{buildroot}%{_docdir}/rocprim/
+if [ -f %{buildroot}%{_prefix}/share/doc/rocprim/LICENSE.txt ]; then
+    rm %{buildroot}%{_prefix}/share/doc/rocprim/LICENSE.txt
+fi
 
 %if %{with check}
 %ctest
 %endif
 
 %files devel
-%dir %{_docdir}/rocprim
 %doc README.md
-%license %{_docdir}/rocprim/LICENSE.txt
-%license %{_docdir}/rocprim/NOTICES.txt
+%license LICENSE.txt
+%license NOTICES.txt
 %{_includedir}/%{name}
 %{_datadir}/cmake/rocprim
 
 %changelog
+%if 0%{?is_opensuse}
+* Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif
