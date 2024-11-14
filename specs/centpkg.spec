@@ -4,7 +4,7 @@
 %endif
 
 Name:           centpkg
-Version:        0.9.0
+Version:        0.9.1
 Release:        1%{?dist}
 Summary:        CentOS utility for working with dist-git
 License:        GPL-2.0-or-later
@@ -78,6 +78,10 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} %{python3} -m unittest discover --verb
 
 
 %changelog
+* Tue Nov 12 2024 Troy Dawson <tdawson@redhat.com> - 0.9.1-1
+- determine_rhel_state: recognize Launch phase
+- Fixes: CS-2620
+
 * Wed Nov 06 2024 Troy Dawson <tdawson@redhat.com> - 0.9.0-1
 - Define compat shims for %patchN when building for EL <= 10
 - Get rid of SyntaxWarning: invalid escape sequence '\d'

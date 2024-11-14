@@ -1,4 +1,4 @@
-%global glibcsrcdir glibc-2.40.9000-263-gac73067cb7
+%global glibcsrcdir glibc-2.40.9000-327-g7b544224f8
 %global glibcversion 2.40.9000
 # Pre-release tarballs are pulled in from git using a command that is
 # effectively:
@@ -152,7 +152,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 16
+%global baserelease 17
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -341,8 +341,7 @@ Patch8: glibc-fedora-manual-dircategory.patch
 Patch13: glibc-fedora-localedata-rh61908.patch
 Patch17: glibc-cs-path.patch
 Patch23: glibc-python3.patch
-Patch24: glibc-dlopen-constructor-null-1.patch
-Patch25: glibc-dlopen-constructor-null-2.patch
+Patch24: glibc-add-back-support-non-glibc.patch
 
 ##############################################################################
 # Continued list of core "glibc" package information:
@@ -2359,6 +2358,74 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Mon Nov 11 2024 DJ Delorie <dj@redhat.com> - 2.40.9000-17
+- Auto-sync with upstream branch master,
+  commit 7b544224f82d20019f9b28522ebf8114a372d1a2.
+- stat.h: Fix missing declaration of struct timespec
+- mach: Fix __xpg_strerror_r on in-range but undefined errors [BZ #32350]
+- x86/string: Use `movsl` instead of `movsd` [BZ #32344]
+- Rename new tst-sem17 test to tst-sem18
+- Avoid uninitialized result in sem_open when file does not exist
+- nptl: initialize rseq area prior to registration
+- s390x: Update ulps
+- elf: avoid jumping over a needed declaration
+- math: Fix log10f on some ABIs
+- stdio-common: Add tests for formatted vsnprintf output specifiers
+- stdio-common: Add tests for formatted vsprintf output specifiers
+- stdio-common: Add tests for formatted vfprintf output specifiers
+- stdio-common: Add tests for formatted vdprintf output specifiers
+- stdio-common: Add tests for formatted vasprintf output specifiers
+- stdio-common: Add tests for formatted vprintf output specifiers
+- stdio-common: Add tests for formatted snprintf output specifiers
+- stdio-common: Add tests for formatted sprintf output specifiers
+- stdio-common: Add tests for formatted fprintf output specifiers
+- stdio-common: Add tests for formatted dprintf output specifiers
+- stdio-common: Add tests for formatted asprintf output specifiers
+- stdio-common: Add tests for formatted printf output specifiers
+- nptl: fix __builtin_thread_pointer detection on LoongArch
+- math: Fix incorrect results of exp10m1f with some GCC versions
+- misc: Align argument name for pkey_*() functions with the manual
+- manual: Use more precise wording for memory protection keys
+- elf: Switch to main malloc after final ld.so self-relocation
+- elf: Introduce _dl_relocate_object_no_relro
+- elf: Do not define consider_profiling, consider_symbind as macros
+- elf: rtld_multiple_ref is always true
+- Add Arm HWCAP2_* constants from Linux 3.15 and 6.2 to <bits/hwcap.h>
+- Add feature test macro _ISOC2Y_SOURCE
+- added license for sysdeps/ieee754/flt-32/e_gammaf_r.c
+- AArch64: Remove SVE erf and erfc tables
+- x86_64: Add exp2m1f with FMA
+- x86_64: Add exp10m1f with FMA
+- math: Use log10p1f from CORE-MATH
+- math: Use log1pf from CORE-MATH
+- math: Use log2p1f from CORE-MATH
+- math: Use log10f from CORE-MATH
+- math: Use expm1f from CORE-MATH
+- math: Use exp2m1f from CORE-MATH
+- math: Use exp10m1f from CORE-MATH
+- benchtests: Add log10p1f benchmark
+- benchtests: Add log1p benchmark
+- benchtests: Add log2p1f benchmark
+- benchtests: Add log10f benchmark
+- benchtests: Add expm1f benchmark
+- benchtests: Add exp2m1f benchmark
+- benchtests: Add exp10m1f benchmark
+- math: Add e_gammaf_r to glibc code and style
+- LoongArch: Add RSEQ_SIG in rseq.h.
+- nptl: Add <thread_pointer.h> for LoongArch
+- Link tst-clock_gettime with $(librt)
+- powerpc64: Obviate the need for ROP protection in clone/clone3
+- Add tests of time, gettimeofday, clock_gettime
+- Add more tests of pthread attributes initial values
+- Document further requirement on mixing streams / file descriptors
+- powerpc64le: Adhere to ABI stack alignment requirement
+- AArch64: Small optimisation in AdvSIMD erf and erfc
+- Revert "elf: Run constructors on cyclic recursive dlopen (bug 31986)"
+- elf: Change ldconfig auxcache magic number (bug 32231)
+- SHARED-FILES: Mention bundled Linux 6.10 headers.
+- libio: Fix crash in fputws [BZ #20632]
+- stdio-common: Fix scanf parsing for NaN types [BZ #30647]
+
 * Mon Nov  4 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-16
 - Exclude 32-bit headers from the x86_64 package
 

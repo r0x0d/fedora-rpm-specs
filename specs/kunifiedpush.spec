@@ -55,14 +55,14 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/kcm_push_notificatio
 %{_bindir}/kunifiedpush-distributor
 %{_sysconfdir}/xdg/autostart/org.kde.kunifiedpush-distributor.desktop
 %{_kf6_qtplugindir}/plasma/kcms/systemsettings/kcm_push_notifications.so
-%{_datadir}/applications/kcm_push_notifications.desktop
+%{_kf6_datadir}/applications/kcm_push_notifications.desktop
 %{_sysconfdir}/xdg/KDE/kunifiedpush-distributor.conf
-%{_datadir}/qlogging-categories6/org_kde_kunifiedpush.categories
+%{_kf6_datadir}/qlogging-categories6/org_kde_kunifiedpush.categories
 
 %files devel
 %{_kf6_libdir}/libKUnifiedPush.so
 %{_includedir}/KUnifiedPush/
-%{_libdir}/cmake/KUnifiedPush/
+%{_kf6_libdir}/cmake/KUnifiedPush/
 
 %changelog
 * Sun Nov 3 2024 Steve Cossette <farchord@gmail.com> - 1.0.0-1

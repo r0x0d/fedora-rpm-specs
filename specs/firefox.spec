@@ -200,7 +200,7 @@ ExcludeArch: ppc64le
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        132.0.1
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 # Automatically converted from old format: MPLv1.1 or GPLv2+ or LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-MPLv1.1 OR GPL-2.0-or-later OR LicenseRef-Callaway-LGPLv2+
@@ -296,6 +296,10 @@ Patch437:        D224842.1729586219.diff
 Patch438:        D225439.1729586066.diff
 Patch439:        D225760.1729586239.diff
 Patch440:        D225868.1729586247.diff
+
+# WebRTC/PipeWire camera patches
+# https://phabricator.services.mozilla.com/D228635
+Patch450:        libwebrtc-pipewire-camera-use-better-unique-device-name-for-camera-devices.patch
 
 # PGO/LTO patches
 Patch600:        pgo.patch
@@ -605,6 +609,7 @@ export LIBCLANG_RT=`pwd`/wasi-sdk-20/build/compiler-rt/lib/wasi/libclang_rt.buil
 %patch -P438 -p1 -b .D225439
 %patch -P439 -p1 -b .D225760
 %patch -P440 -p1 -b .D225868
+%patch -P450 -p1 -b .libwebrtc-pipewire-camera-use-better-unique-device-name-for-camera-devices
 %endif
 
 # PGO patches
@@ -1237,6 +1242,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Nov 07 2024 Jan Grulich <jgrulich@redhat.com> - 132.0.1-2
+- PipeWire camera: use better unique device name for camera devices
+
 * Tue Nov 05 2024 Martin Stransky <stransky@redhat.com> - 132.0.1-1
 - Updated to 132.0.1
 

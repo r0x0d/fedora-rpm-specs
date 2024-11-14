@@ -7,17 +7,14 @@
 %endif
 
 Name:          tesseract
-Version:       5.4.1
-Release:       5%{?dist}
+Version:       5.5.0
+Release:       1%{?dist}
 Summary:       Raw OCR Engine
 
 License:       Apache-2.0
 URL:           https://github.com/tesseract-ocr/%{name}
 Source0:       https://github.com/tesseract-ocr/tesseract/archive/%{version}%{?pre:-%pre}/%{name}-%{version}%{?pre:-%pre}.tar.gz
 
-# Correctly set the soversion based on SemVer properties
-# backported from https://github.com/tesseract-ocr/tesseract/pull/4319.patch
-Patch0:        tesseract_fix_soversion.patch
 # Fix library name case
 # Build training libs statically
 Patch1:        tesseract_cmake.patch
@@ -197,7 +194,7 @@ cp -a doc/*.5 %{buildroot}%{_mandir}/man5/
 %{_libdir}/pkgconfig/%{name}.pc
 
 %files libs
-%{_libdir}/lib%{name}.so.5.4
+%{_libdir}/lib%{name}.so.5.5
 %{_libdir}/lib%{name}.so.%{version}
 
 %files tools
@@ -237,7 +234,7 @@ cp -a doc/*.5 %{buildroot}%{_mandir}/man5/
 %if %{with mingw}
 %files -n mingw32-%{name}
 %license LICENSE
-%{mingw32_bindir}/libtesseract-54.dll
+%{mingw32_bindir}/libtesseract-55.dll
 %{mingw32_includedir}/tesseract/
 %{mingw32_libdir}/libtesseract.dll.a
 %{mingw32_libdir}/libcommon_training.a
@@ -251,7 +248,7 @@ cp -a doc/*.5 %{buildroot}%{_mandir}/man5/
 
 %files -n mingw64-%{name}
 %license LICENSE
-%{mingw64_bindir}/libtesseract-54.dll
+%{mingw64_bindir}/libtesseract-55.dll
 %{mingw64_includedir}/tesseract/
 %{mingw64_libdir}/libtesseract.dll.a
 %{mingw64_libdir}/libcommon_training.a
@@ -266,6 +263,9 @@ cp -a doc/*.5 %{buildroot}%{_mandir}/man5/
 
 
 %changelog
+* Mon Nov 11 2024 Sandro Mani <manisandro@gmail.com> - 5.5.0-1
+- Update to 5.5.0
+
 * Sat Oct 05 2024 Neal Gompa <ngompa@fedoraproject.org> - 5.4.1-5
 - Fix upgrade path for package split
 

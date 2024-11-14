@@ -6,7 +6,7 @@
 Name:    pesign
 Summary: Signing utility for UEFI binaries
 Version: 116
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPL-2.0-only
 URL:     https://github.com/rhboot/pesign
 
@@ -162,6 +162,9 @@ certutil -d %{_sysconfdir}/pki/pesign/ -X -L > /dev/null
 %{python3_sitelib}/mockbuild/plugins/pesign.*
 
 %changelog
+* Tue Nov 12 2024 Kevin Fenzi <kevin@scrye.com> - 116-5
+- Rebuild to pick up riscv64 change
+
 * Tue Mar 05 2024 Liu Yang <Yang.Liu.sn@gmail.com> - 116-4
 - Add riscv64.
 

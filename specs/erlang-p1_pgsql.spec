@@ -9,7 +9,6 @@ Summary:    Pure Erlang PostgreSQL driver
 URL:        https://github.com/processone/%{srcname}
 VCS:        git:%{url}.git
 Source0:    %{url}/archive/%{version}/%{srcname}-%{version}.tar.gz
-Patch1:     erlang-p1_pgsql-0001-Disable-Rebar3-plugins.patch
 Patch2:     erlang-p1_pgsql-0002-Use-generic-crypto-functions.patch
 Provides:   erlang-pgsql = %{version}-%{release}
 Obsoletes:  erlang-pgsql < 0-16

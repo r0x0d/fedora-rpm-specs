@@ -1,6 +1,6 @@
 Name:          tinycompress
-Version:       1.2.11
-Release:       3%{?dist}
+Version:       1.2.13
+Release:       1%{?dist}
 Summary:       A library for compress audio offload in alsa
 # Automatically converted from old format: BSD and LGPLv2 - review is highly recommended.
 License:       LicenseRef-Callaway-BSD AND LicenseRef-Callaway-LGPLv2
@@ -62,6 +62,9 @@ make check
 %{_bindir}/crecord
 
 %changelog
+* Tue Nov 12 2024 Jaroslav Kysela <perex@perex.cz> 1.2.13-1
+- 1.2.13 release
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.2.11-3
 - convert license to SPDX
 

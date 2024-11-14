@@ -1,6 +1,6 @@
 Summary: Graphical system installer
 Name:    anaconda
-Version: 42.13
+Version: 42.14
 Release: 1%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
@@ -490,6 +490,9 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Tue Nov 12 2024 Packit <hello@packit.dev> - 42.14-1
+- Update to version 42.14
+
 * Fri Nov 08 2024 Packit <hello@packit.dev> - 42.13-1
 - Test for kickstart scripts (akankovs)
 - Migrate the %%pre-install, %%post, %%onerror and %%traceback scripts

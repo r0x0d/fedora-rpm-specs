@@ -52,8 +52,8 @@
 #
 Summary: Intel PSM Libraries
 Name: libpsm2
-Version: 11.2.230
-Release: 6%{?dist}
+Version: 12.0.1
+Release: 1%{?dist}
 # Automatically converted from old format: BSD or GPLv2 - review is highly recommended.
 License: LicenseRef-Callaway-BSD OR GPL-2.0-only
 URL: https://github.com/cornelisnetworks/opa-psm2/
@@ -137,6 +137,9 @@ rm -f %{buildroot}%{_libdir}/*.a
 %endif
 
 %changelog
+* Tue Nov 12 2024 Kamal Heib <kheib@redhat.com> - 12.0.1-1
+- Rebase to upstream release PSM2_12.0.1
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 11.2.230-6
 - convert license to SPDX
 

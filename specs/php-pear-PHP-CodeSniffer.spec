@@ -13,9 +13,9 @@
 
 %bcond_without       tests
 
-%global gh_commit    62d32998e820bddc40f99f8251958aed187a5c9c
+%global gh_commit    70c08f8d20c0eb4fe56f26644dd94dae76a7f450
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
-%global gh_date      2024-09-18
+%global gh_date      2024-11-12
 %global gh_owner     PHPCSStandards
 %global gh_project   PHP_CodeSniffer
 # keep in old PEAR tree
@@ -23,7 +23,7 @@
 
 
 Name:           php-pear-PHP-CodeSniffer
-Version:        3.10.3
+Version:        3.11.0
 Release:        1%{?dist}
 Summary:        PHP coding standards enforcement tool
 
@@ -113,7 +113,7 @@ sed -e "/@copyright/s/2021/${YEAR}/" \
 
 # Version 3.9.0: Tests: 2276, Assertions: 10969, Warnings: 4, Skipped: 12.
 ret=0
-for cmdarg in "php %{phpunit}" php81 php82 php83; do
+for cmdarg in "php %{phpunit}" php81 php82 php83 php84; do
   if which $cmdarg; then
     set $cmdarg
     $1 -d memory_limit=-1 ${2:-%{_bindir}/phpunit9} \
@@ -141,6 +141,9 @@ fi
 
 
 %changelog
+* Tue Nov 12 2024 Remi Collet <remi@remirepo.net> - 3.11.0-1
+- update to 3.11.0
+
 * Wed Sep 18 2024 Remi Collet <remi@remirepo.net> - 3.10.3-1
 - update to 3.10.3
 

@@ -8,7 +8,6 @@ License:  Apache-2.0
 URL:      https://github.com/hexpm/%{realname}
 VCS:      git:%{url}.git
 Source0:  %{url}/archive/v%{version}/%{realname}-%{version}.tar.gz
-Patch1:   erlang-hex_core-0001-FIXME-Rebar3-plugins-currently-broken.patch
 Patch2:   erlang-hex_core-0002-FIXME-disable-faulty-tests.patch
 BuildArch:     noarch
 BuildRequires: erlang-proper

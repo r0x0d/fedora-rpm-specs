@@ -4,7 +4,7 @@
 
 Name:       cscppc
 Version:    2.2.6
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    A compiler wrapper that runs Cppcheck in background
 
 License:    GPL-3.0-or-later
@@ -37,8 +37,11 @@ BuildRequires: glibc-static
 BuildRequires: valgrind
 %endif
 
+%if 0%{?rhel} != 7
+# cscppc is linked statically and can be used by csmock in chroot environment
 # the {cwe} field in --template option is supported since cppcheck-1.85
-Requires: cppcheck >= 1.85
+Recommends: cppcheck >= 1.85
+%endif
 
 # older versions of csdiff do not read CWE numbers from Cppcheck output
 Conflicts: csdiff < 1.8.0
@@ -137,6 +140,9 @@ done
 %{_mandir}/man1/csmatch.1*
 
 %changelog
+* Tue Nov 12 2024 Kamil Dudka <kdudka@redhat.com> 2.2.6-2
+- weaken the dependency of cscppc on cppcheck (#2325266)
+
 * Fri Aug 02 2024 Kamil Dudka <kdudka@redhat.com> 2.2.6-1
 - update to latest upstream release
 

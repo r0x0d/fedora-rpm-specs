@@ -1,7 +1,7 @@
 %global project_version_prime 5
 %global project_version_major 2
-%global project_version_minor 6
-%global project_version_micro 2
+%global project_version_minor 7
+%global project_version_micro 0
 
 %bcond dnf5_obsoletes_dnf %[0%{?fedora} > 40 || 0%{?rhel} > 11]
 
@@ -22,8 +22,7 @@ Recommends:     (dnf5-plugins if dnf-plugins-core)
 Recommends:     bash-completion
 Requires:       coreutils
 
-# Remove if condition when Fedora 37 is EOL
-%if 0%{?fedora} > 37 || 0%{?rhel} > 10
+%if 0%{?fedora} || 0%{?rhel} > 10
 Provides:       microdnf = %{version}-%{release}
 Obsoletes:      microdnf < 4
 %endif
@@ -264,15 +263,25 @@ DNF5 is a command-line package manager that automates the process of installing,
 upgrading, configuring, and removing computer programs in a consistent manner.
 It supports RPM packages, modulemd modules, and comps groups & environments.
 
+%post
+%systemd_post dnf5-makecache.timer
+
+%preun
+%systemd_preun dnf5-makecache.timer
+
+%postun
+%systemd_postun_with_restart dnf5-makecache.timer
+
 %files -f dnf5.lang
 %{_bindir}/dnf5
 %if %{with dnf5_obsoletes_dnf}
 %{_bindir}/dnf
 %{_bindir}/yum
 %endif
+%{_unitdir}/dnf5-makecache.service
+%{_unitdir}/dnf5-makecache.timer
 
-# Remove if condition when Fedora 37 is EOL
-%if 0%{?fedora} > 37 || 0%{?rhel} > 10
+%if 0%{?fedora} || 0%{?rhel} > 10
 %{_bindir}/microdnf
 %endif
 
@@ -337,6 +346,7 @@ It supports RPM packages, modulemd modules, and comps groups & environments.
 %{_mandir}/man7/dnf*-modularity.7.*
 %{_mandir}/man7/dnf*-specs.7.*
 %{_mandir}/man7/dnf*-system-state.7.*
+%{_mandir}/man7/dnf*-changes-from-dnf4.7.*
 %{_mandir}/man5/dnf*.conf.5.*
 %{_mandir}/man5/dnf*.conf-todo.5.*
 %{_mandir}/man5/dnf*.conf-deprecated.5.*
@@ -856,8 +866,7 @@ mkdir -p %{buildroot}%{_prefix}/lib/sysimage/libdnf5/comps_groups
 mkdir -p %{buildroot}%{_prefix}/lib/sysimage/libdnf5/offline
 touch %{buildroot}%{_sysconfdir}/dnf/versionlock.toml
 
-# Remove if condition when Fedora 37 is EOL
-%if 0%{?fedora} > 37 || 0%{?rhel} > 10
+%if 0%{?fedora} || 0%{?rhel} > 10
 ln -sr %{buildroot}%{_bindir}/dnf5 %{buildroot}%{_bindir}/microdnf
 %endif
 
@@ -886,6 +895,55 @@ popd
 %ldconfig_scriptlets
 
 %changelog
+* Tue Nov 12 2024 Packit <hello@packit.dev> - 5.2.7.0-1
+## What's Changed
+ * copr: use pubkey URL returned by Copr API by @FrostyX in https://github.com/rpm-software-management/dnf5/pull/1725
+ * Package file documenting dnf4/dnf5 changes as man page by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1729
+ * daemon: Reset the goal by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1678
+ * Consistently use "removing" instead of "erasing" packages by @ppisar in https://github.com/rpm-software-management/dnf5/pull/1732
+ * Add --allmirros option for `dnf download --url` by @alimirjamali in https://github.com/rpm-software-management/dnf5/pull/1735
+ * comps: Fix memory issues in group serialization by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1743
+ * Print RPM messages to the user by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1728
+ * i18n: Update translation templates from Weblate by @ppisar in https://github.com/rpm-software-management/dnf5/pull/1745
+ * i18n: Fix plural forms for "Warning: skipped PGP checks..." message by @ppisar in https://github.com/rpm-software-management/dnf5/pull/1746
+ * Set `POOL_FLAG_ADDFILEPROVIDESFILTERED` only when not loading filelists by @kontura in https://github.com/rpm-software-management/dnf5/pull/1741
+ * When writing main solv file (primary.xml) don't store filelists by @kontura in https://github.com/rpm-software-management/dnf5/pull/1752
+ * Fix libdnf5::utils::patterns: Include missing headers, no inline API funcs, mark `noexcept` by @jrohel in https://github.com/rpm-software-management/dnf5/pull/1742
+ * Allow unlimited number of arguments for history `list` and `info` by @kontura in https://github.com/rpm-software-management/dnf5/pull/1755
+ * [swig] Bindings and tests for libdnf5::utils::[is_glob_pattern | is_file_pattern] by @jrohel in https://github.com/rpm-software-management/dnf5/pull/1738
+ * doc: "dnf repoquery --unsatisfied" is not supported by @ppisar in https://github.com/rpm-software-management/dnf5/pull/1758
+ * comps: add get_base() to {Group,Environment}{,Query} by @gotmax23 in https://github.com/rpm-software-management/dnf5/pull/1722
+ * Make most descriptions for `dnf5 --help` translatable. by @bc-lee in https://github.com/rpm-software-management/dnf5/pull/1751
+ * test: Normalize Python code by @ppisar in https://github.com/rpm-software-management/dnf5/pull/1762
+ * Recommend --use-host-config if --installroot is used and not all repositories can be enabled by @ppisar in https://github.com/rpm-software-management/dnf5/pull/1760
+ * log: Preserve log messages during RPM transaction by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1772
+ * chore: Clean up Fedora 37-related conditionals in RPM spec by @bc-lee in https://github.com/rpm-software-management/dnf5/pull/1765
+ * Change `gpgcheck` option to `pkg_gpgcheck` but stay compatible by @kontura in https://github.com/rpm-software-management/dnf5/pull/1766
+ * Drop `errorlevel` config option by @kontura in https://github.com/rpm-software-management/dnf5/pull/1788
+ * build: Remove an explicit swig option -ruby by @ppisar in https://github.com/rpm-software-management/dnf5/pull/1795
+ * Revert "Drop `errorlevel` config option" by @kontura in https://github.com/rpm-software-management/dnf5/pull/1793
+ * Update dnf5.conf.5 to reflect change in fastestmirror behavior by @PhirePhly in https://github.com/rpm-software-management/dnf5/pull/1784
+ * historydb: Prevent insertion of duplicate group packages by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1798
+ * Optimize getting counts of transaction items by @kontura in https://github.com/rpm-software-management/dnf5/pull/1778
+ * Fix parsing of offline transaction JSON file by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1807
+ * When `multi_progress_bar` finishes print new line automatically by @kontura in https://github.com/rpm-software-management/dnf5/pull/1805
+ * Run "makecache" periodically to keep the cache ready. by @gordonmessmer in https://github.com/rpm-software-management/dnf5/pull/1791
+ * DownloadCallbacks: Ensure `end` for every successful `add_new_download` by @jrohel in https://github.com/rpm-software-management/dnf5/pull/1814
+ * Clear up changes doc about optional subcommands by @kontura in https://github.com/rpm-software-management/dnf5/pull/1834
+ * MultiProgressBar now buffers the output text to a single write by @Giedriusj1 in https://github.com/rpm-software-management/dnf5/pull/1825
+ * repo: Fix invalid free() by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1850
+ * daemon: API to reset the session.base instance by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1757
+ * Release 5.2.7.0 by @github-actions in https://github.com/rpm-software-management/dnf5/pull/1857
+
+## New Contributors
+ * @FrostyX made their first contribution in https://github.com/rpm-software-management/dnf5/pull/1725
+ * @alimirjamali made their first contribution in https://github.com/rpm-software-management/dnf5/pull/1735
+ * @bc-lee made their first contribution in https://github.com/rpm-software-management/dnf5/pull/1751
+ * @PhirePhly made their first contribution in https://github.com/rpm-software-management/dnf5/pull/1784
+ * @Giedriusj1 made their first contribution in https://github.com/rpm-software-management/dnf5/pull/1825
+
+ **Full Changelog**: https://github.com/rpm-software-management/dnf5/compare/5.2.6.2...5.2.7.0
+
 * Fri Sep 20 2024 Packit <hello@packit.dev> - 5.2.6.2-1
 ## What's Changed
  * chore: static_cast to fix sign conversion warning by @evan-goode in https://github.com/rpm-software-management/dnf5/pull/1715

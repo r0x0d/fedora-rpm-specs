@@ -46,7 +46,7 @@
 Summary: An unwinding library
 Name: libunwind
 Version: 1.8.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: MIT
 URL: http://savannah.nongnu.org/projects/libunwind
 Source: https://github.com/libunwind/libunwind/releases/download/v%{version}/%{name}-%{version}.tar.gz
@@ -56,6 +56,8 @@ Patch1: libunwind-arm-default-to-exidx.patch
 # Make libunwind.h multilib friendly
 Patch2: libunwind-1.3.1-multilib-fix.patch
 Patch5: libunwind-no-dl-iterate-phdr.patch
+# backport from https://github.com/libunwind/libunwind/commit/7e16c2d244b5b55550cc293f7a6f2a899285c93f
+Patch6: libunwind-remove-XFAIL-for-riscv64.patch
 
 ExclusiveArch: %{arm} aarch64 hppa ia64 mips ppc %{power64} s390x %{ix86} x86_64 riscv64
 
@@ -136,6 +138,9 @@ echo ====================TESTING END=====================
 %{_includedir}/libunwind*.h
 
 %changelog
+* Tue Nov 12 2024 Songsong Zhang <U2FsdGVkX1@gmail.com> - 1.8.0-5
+- Fix test failure in riscv64
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.8.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -6,8 +6,8 @@
 
 # Packit will automatically update the image and storage versions on Fedora and
 # CentOS Stream dist-git PRs.
-%global image_branch v5.32.2
-%global storage_branch v1.55.0
+%global image_branch v5.33.0
+%global storage_branch v1.56.0
 %global shortnames_branch main
 
 %global project containers
@@ -39,7 +39,7 @@ Epoch: 5
 # If that's what you're reading, Version must be 0, and will be updated by Packit for
 # copr and koji builds.
 # If you're reading this on dist-git, the version is automatically filled in by Packit.
-Version: 0.60.4
+Version: 0.61.0
 Release: %autorelease
 License: Apache-2.0
 BuildArch: noarch
@@ -76,7 +76,6 @@ Source14: %{raw_github_url}/storage/%{storage_branch}/storage.conf
 # a copy in repo or dist-git. Depending on distribution-gpg-keys rpm is also
 # not an option because that package doesn't exist on CentOS Stream.
 Source15: https://access.redhat.com/security/data/fd431d51.txt
-Patch0: 0001-disable-zstd-chunked-on-fedora.patch
 
 %description
 This package contains common configuration files and documentation for container
@@ -91,10 +90,8 @@ Summary: Extra dependencies for Podman and Buildah
 Requires: %{name} = %{epoch}:%{version}-%{release}
 Requires: container-network-stack
 Requires: oci-runtime
-Requires: nftables
 Requires: passt
 %if %{defined fedora}
-Requires: iptables
 Conflicts: podman < 5:5.0.0~rc4-1
 Recommends: composefs
 Recommends: crun

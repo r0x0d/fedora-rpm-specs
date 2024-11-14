@@ -1,5 +1,5 @@
 Name:           perl-Text-CSV_XS
-Version:        1.56
+Version:        1.57
 Release:        1%{?dist}
 Summary:        Comma-separated values manipulation routines
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -80,6 +80,11 @@ find %{buildroot} -type f -name '*.bs' -empty -delete
 %{_mandir}/man3/Text::CSV_XS.3*
 
 %changelog
+* Tue Nov 12 2024 Paul Howarth <paul@city-fan.org> - 1.57-1
+- Update to 1.57 (rhbz#2325504)
+  - Add on_error callback to csv()
+  - Retain runtime error from csv()
+
 * Sun Aug 11 2024 Paul Howarth <paul@city-fan.org> - 1.56-1
 - Update to 1.56 (rhbz#2303862)
   - Yet another strict/comment_str conflict (GH#57)

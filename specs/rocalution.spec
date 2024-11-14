@@ -14,7 +14,8 @@
 %if %{with debug}
 %global build_type DEBUG
 %else
-%global build_type RelWithDebInfo
+%global build_type RELEASE
+%global debug_package %{nil}
 %endif
 
 %bcond_with test
@@ -27,7 +28,11 @@
 
 Name:           rocalution
 Version:        %{rocm_version}
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+Release:        1%{?dist}
+%else
 Release:        %autorelease
+%endif
 Summary:        Next generation library for iterative sparse solvers for ROCm platform
 Url:            https://github.com/ROCm/%{upstreamname}
 License:        MIT
@@ -40,7 +45,6 @@ Source0:        %{url}/archive/rocm-%{version}.tar.gz#/%{upstreamname}-%{version
 # Patch0:         0001-prepare-rocalution-cmake-for-fedora.patch
 
 BuildRequires:  cmake
-BuildRequires:  ninja-build
 BuildRequires:  rocblas-devel
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
@@ -95,8 +99,16 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 for gpu in %{rocm_gpu_list}
 do
     module load rocm/$gpu
-    %cmake -G Ninja \
-	   -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
+    %cmake \
+	-DCMAKE_CXX_COMPILER=hipcc \
+	-DCMAKE_C_COMPILER=hipcc \
+	-DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=%rocmllvm_bindir/ld.lld \
+	-DCMAKE_SHARED_LINKER_FLAGS=-fuse-ld=%rocmllvm_bindir/ld.lld \
+	-DCMAKE_LINKER=%rocmllvm_bindir/ld.lld \
+	-DCMAKE_AR=%rocmllvm_bindir/llvm-ar \
+	-DCMAKE_RANLIB=%rocmllvm_bindir/llvm-ranlib \
+	-DCMAKE_SKIP_RPATH=ON \
+	-DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
 	   -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
 	   -DROCM_SYMLINK_LIBS=OFF \
 	   -DHIP_PLATFORM=amd \
@@ -127,9 +139,12 @@ find %{buildroot}%{_libdir} -name '*.cmake'      | sed -f br.sed >> %{name}.deve
 find %{buildroot}           -name '%{name}*'     | sed -f br.sed >  %{name}.test
 %endif
 
+if [ -f %{buildroot}%{_prefix}/share/doc/rocalution/LICENSE.md ]; then
+    rm %{buildroot}%{_prefix}/share/doc/rocalution/LICENSE.md
+fi
+
 %files -f %{name}.files
 %license LICENSE.md
-%exclude %{_docdir}/%{name}/LICENSE.md
 
 %files devel -f %{name}.devel
 %doc README.md
@@ -140,4 +155,11 @@ find %{buildroot}           -name '%{name}*'     | sed -f br.sed >  %{name}.test
 %endif
 
 %changelog
+%if 0%{?is_opensuse}
+* Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif
+

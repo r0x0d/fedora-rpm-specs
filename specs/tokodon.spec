@@ -1,6 +1,6 @@
 Name:           tokodon 
 Version:        24.08.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 # Automatically converted from old format: GPLv3 and CC0 and BSD and LGPLv2+ and GPLv3+ and GPLv2 - review is highly recommended.
 License:        GPL-3.0-only AND CC0-1.0 AND LicenseRef-Callaway-BSD AND LicenseRef-Callaway-LGPLv2+ AND GPL-3.0-or-later AND GPL-2.0-only
 # For a breakdown of the licensing, see PACKAGE-LICENSING
@@ -41,6 +41,8 @@ BuildRequires:  cmake(Qt6Test)
 BuildRequires:  cmake(Qt6WebSockets)
 BuildRequires:  cmake(Qt6WebView)
 BuildRequires:  cmake(Qt6Widgets)
+BuildRequires:  cmake(KUnifiedPush)
+BuildRequires:  cmake(KF6Crash)
 
 BuildRequires:  cmake(MpvQt)
 
@@ -89,8 +91,12 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 %{_kf6_datadir}/knotifications6/tokodon.notifyrc
 %{_kf6_datadir}/qlogging-categories6/tokodon.categories
 %{_kf6_metainfodir}/org.kde.%{name}.appdata.xml
+%{_kf6_datadir}/dbus-1/services/org.kde.tokodon.service
 
 %changelog
+* Tue Nov 12 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-2
+- Enabled some disabled build dependancies (KCrash, KUnifiedPush)
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

@@ -30,6 +30,7 @@ Patch0:           R-tesseract_include.patch
 
 BuildRequires:    R-devel
 BuildRequires:    tex(latex)
+BuildRequires:    tex(inconsolata.sty)
 BuildRequires:    R-Rcpp-devel >= 0.12.12
 BuildRequires:    R-pdftools >= 1.5
 BuildRequires:    R-curl
@@ -44,6 +45,7 @@ BuildRequires:    R-rmarkdown
 %endif
 BuildRequires:    pkgconfig(lept)
 BuildRequires:    pkgconfig(tesseract)
+BuildRequires:    tesseract-langpack-eng
 %if %{with network}
 # For rmarkdown, because docs get built.
 BuildRequires:    glyphicons-halflings-fonts

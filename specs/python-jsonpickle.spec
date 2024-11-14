@@ -2,7 +2,7 @@ Name:           python-jsonpickle
 # version is inserted into setup.cfg manually (see %%prep). Please be careful
 # to use a Python-compatible version number if you need to set an "uncommon"
 # version for this RPM.
-Version:        3.4.2
+Version:        4.0.0
 Release:        1%{?dist}
 Summary:        A module that allows any object to be serialized into JSON
 
@@ -74,6 +74,9 @@ sed -r -i -e 's/^([[:blank:]]*)(pandas|scikit-learn)/\1# \2/' setup.cfg
 
 
 %changelog
+* Tue Nov 12 2024 Gwyn Ciesla <gwync@protonmail.com> - 4.0.0-1
+- 4.0.0
+
 * Wed Nov 06 2024 Gwyn Ciesla <gwync@protonmail.com> - 3.4.2-1
 - 3.4.2
 

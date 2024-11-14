@@ -11,9 +11,6 @@ URL: https://sourceforge.net/projects/gnu-efi/
 
 Source0: https://sourceforge.net/projects/gnu-efi/files/gnu-efi-%{version}.tar.bz2
 
-# these are taken from upstream with `git diff 3.0.18 > gnu-efi-backports.patch`
-Patch0001: gnu-efi-backports.patch
-
 # upstream this breaks non-GNU LD, Heinrich Schuchardt asked us not to do this:
 # "The correct approach is to adjust the loader script to put non-static
 # data into a different section than the code and to make the .text section RX."

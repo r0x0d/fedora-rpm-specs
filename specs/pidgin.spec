@@ -125,7 +125,7 @@
 
 Name:           pidgin
 Version:        2.14.13
-Release:        4%{?dist}
+Release:        5%{?dist}
 # Automatically converted from old format: BSD and GPLv2+ and GPLv2 and LGPLv2+ and MIT - review is highly recommended.
 License:        LicenseRef-Callaway-BSD AND GPL-2.0-or-later AND GPL-2.0-only AND LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-MIT
 # GPLv2+ - libpurple, finch, pidgin, most prpls
@@ -464,6 +464,7 @@ echo "FEDORA=%{fedora} RHEL=%{rhel}"
 %patch -P1 -p1 -b .valgrind
 
 ## Patches 100+: To be Included in Future Upstream
+%patch -P101 -p1 -b .nss-cert-get-fix
 
 
 # Our preferences
@@ -699,6 +700,10 @@ find %{buildroot}/%{_libdir}/purple-2 -name \*.so\* -printf '%f|' | sed -e 's/|$
 %endif
 
 %changelog
+* Tue Nov 12 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 2.14.13-5
+- Correctly applied the nss get peer certificate
+  Related: rhbz#2311054
+
 * Tue Nov  5 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 2.14.13-4
 - Fixed nss get peer certificate
   Resolves: rhbz#2311054

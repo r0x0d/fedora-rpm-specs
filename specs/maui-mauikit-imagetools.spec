@@ -1,6 +1,6 @@
 Name:          maui-mauikit-imagetools
 Version:       4.0.0
-Release:       4%{?dist}
+Release:       5%{?dist}
 License:       GPL-3.0-or-later AND BSD-2-Clause AND GPL-2.0-only AND LGPL-2.1-or-later AND LGPL-2.1-only AND LGPL-2.0-or-later AND CC0-1.0 AND LGPL-3.0-or-later AND GPL-3.0-only AND LGPL-3.0-only
 Summary:       MauiKit Image Tools Components
 URL:           https://invent.kde.org/maui/mauikit-imagetools/
@@ -81,6 +81,9 @@ Cities database required for geolocation for %{name}.
 %{_kf6_datadir}/org/mauikit/imagetools/cities.db
 
 %changelog
+* Tue Nov 12 2024 Sandro Mani <manisandro@gmail.com> - 4.0.0-5
+- Rebuild (tesseract)
+
 * Fri Nov 08 2024 Steve Cossette <farchord@gmail.com> - 4.0.0-4
 - Apps depending on imagetools fail to start because of a path issue in qml
   files

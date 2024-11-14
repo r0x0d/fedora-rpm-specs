@@ -3,7 +3,7 @@
 Summary: Converts LaTeX documents to HTML
 Name: latex2html
 Version: 2023.2
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: GPL-2.0-or-later
 URL: https://github.com/latex2html/latex2html/releases
 # main latex2html source
@@ -196,7 +196,7 @@ make -C %{name}-%{version}JA check
 %endif
 
 %files
-%doc latex2html-%{version}/{LICENSE,LICENSE.orig,README.md,FAQ,BUGS,docs,example}
+%doc latex2html-%{version}/{LICENSE,README.md,FAQ,BUGS,docs,example}
 %{_bindir}/latex2html
 %{_bindir}/pstoimg
 %{_bindir}/texexpand
@@ -218,6 +218,9 @@ make -C %{name}-%{version}JA check
 %{_mandir}/man1/pstoimg.*
 
 %changelog
+* Tue Nov 12 2024 Than Ngo <than@redhat.com> - 2023.2-6
+- Remove .orig files
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2023.2-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

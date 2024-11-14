@@ -8,7 +8,7 @@
 
 Name:           build2
 Version:        0.17.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Cross-platform build toolchain for developing and packaging C++ code
 
 License:        MIT
@@ -19,6 +19,13 @@ Source2:        https://pkg.cppget.org/1/alpha/%{name}/libbpkg-%{version}.tar.gz
 Source3:        https://pkg.cppget.org/1/alpha/%{name}/bpkg-%{version}.tar.gz
 Source4:        https://pkg.cppget.org/1/alpha/%{name}/bdep-%{version}.tar.gz
 Source5:        macros.%{name}
+
+# Upstream: https://git.build2.org/cgit/bpkg/commit/?id=57d6cdd051ff1d92817e335a70e2d7d8c89b7306
+Patch3000:      bpkg-fedora-dnf.patch
+# Upstream: https://git.build2.org/cgit/bpkg/commit/?id=950cf3cea8075e3347d72aecbdfb26c8bb2832d4
+Patch3001:      bpkg-fedora-dnf5-0.patch
+# Upstream: https://git.build2.org/cgit/bpkg/commit/?id=6c96322189619c5c2eddd5645d2a6477a95dd435
+Patch3002:      bpkg-fedora-dnf5-1.patch
 
 # libpkgconf and libodb{,-sqlite} are bundled with libbutl since v0.17.0 [1]
 # [1] https://lists.build2.org/archives/users/2024-June/001117.html
@@ -258,6 +265,11 @@ This package contains the %{name} RPM macros.
 
 %prep
 %setup -q -c -n %{name}-toolchain-%{version} -a 1 -a 2 -a 3 -a 4
+pushd bpkg-%{version}
+%patch -p 1 -P 3000
+%patch -p 1 -P 3001
+%patch -p 1 -P 3002
+popd
 mv libbutl-%{version} %{name}-%{version}
 
 %build
@@ -631,6 +643,9 @@ b test:                                                                         
 %{_rpmmacrodir}/macros.%{name}
 
 %changelog
+* Mon Nov 11 2024 Matthew Krupcale <mkrupcale@gmail.com> - 0.17.0-3
+- Add bpkg patches for dnf5
+
 * Sat Sep  7 2024 Matthew Krupcale <mkrupcale@gmail.com> - 0.17.0-2
 - Disable bootstrap
 

@@ -5,7 +5,7 @@
 %global crate vhost-user-backend
 
 Name:           rust-vhost-user-backend
-Version:        0.15.0
+Version:        0.17.0
 Release:        %autorelease
 Summary:        Framework to build vhost-user backend service daemon
 
@@ -13,6 +13,9 @@ License:        Apache-2.0
 URL:            https://crates.io/crates/vhost-user-backend
 Source0:        %{crates_source}
 Source1:        https://raw.githubusercontent.com/rust-vmm/vhost/main/LICENSE
+
+# We depend on rust-vmm crates that don't support 32 bit targets
+ExcludeArch:    %{ix86}
 
 BuildRequires:  cargo-rpm-macros >= 24
 

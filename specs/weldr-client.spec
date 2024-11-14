@@ -6,8 +6,8 @@
 %global goipath         github.com/osbuild/weldr-client/v2
 
 Name:      weldr-client
-Version:   35.13
-Release:   2%{?dist}
+Version:   35.14
+Release:   1%{?dist}
 # Upstream license specification: Apache-2.0
 License:   Apache-2.0
 Summary:   Command line utility to control osbuild-composer
@@ -130,19 +130,19 @@ composer-cli package.
 
 
 %changelog
-* Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 35.13-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Thu Mar 07 2024 Brian C. Lane <bcl@redhat.com> - 35.13-1
-- New release: 35.13 (bcl)
-- HACKING.md: Reformat code blocks for docusaurus (simon.steinbeiss)
-- README: Update code block formatting and drop subtitle (simon.steinbeiss)
-- info: Add upload status to the output (bcl)
-- info: Fix display of blueprint packages with no version (bcl)
-- weldr: Add Stringer interface to Package (bcl)
-- compose: Add --wait options to start-ostree (bcl)
-- compose: Add --wait options to start command (bcl)
-- compose: Add compose wait command (bcl)
-- weldr: Add ComposeWait to wait for a compose to finish (bcl)
-- build(deps): bump github.com/stretchr/testify from 1.8.4 to 1.9.0 (49699333+dependabot[bot])
-- CI: Drop SonarQube in favor of Snyk (jrusz)
+* Tue Nov 12 2024 Brian C. Lane <bcl@redhat.com> - 35.14-1
+- New release: 35.14 (bcl)
+- tests: Remove openstack (bcl)
+- readme: project links (lukas)
+- Makefile: implement "fully source containers" HMS-3883 (florian.schueller)
+- README: fix anchor typo (florian.schueller)
+- README: fix compatibility with docusaurus (florian.schueller)
+- go.mod: Use go 1.21 (bcl)
+- workflows: Use go 1.21.x for govuln tests (bcl)
+- build(deps): bump github.com/spf13/cobra from 1.8.0 to 1.8.1 (49699333+dependabot[bot])
+- build(deps): bump github.com/BurntSushi/toml from 1.3.2 to 1.4.0 (49699333+dependabot[bot])
+- Makefile: dnf5 builddep accepts .spec files without --spec (bcl)
+- Containerfile: Install dnf5-plugins for builddep support (bcl)
+- bash: Add status show to bash completion (bcl)
+- go.mod: Use go 1.20 (bcl)
+- bash: Add wait command to bash completion (bcl)

@@ -5,7 +5,7 @@
 %global crate anstyle
 
 Name:           rust-anstyle
-Version:        1.0.9
+Version:        1.0.10
 Release:        %autorelease
 Summary:        ANSI text styling
 

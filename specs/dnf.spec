@@ -65,19 +65,13 @@
 It supports RPMs, modules and comps groups & environments.
 
 Name:           dnf
-Version:        4.21.1
-Release:        2%{?dist}
+Version:        4.22.0
+Release:        1%{?dist}
 Summary:        %{pkg_summary}
 # For a breakdown of the licensing, see PACKAGE-LICENSING
 License:        GPL-2.0-or-later AND GPL-1.0-only
 URL:            https://github.com/rpm-software-management/dnf
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
-Patch1:         0001-spec-Move-var-cache-dnf-from-dnf-to-python3-dnf.patch
-Patch2:         0002-spec-Remove-preview-yum_compat_level.patch
-Patch3:         0003-spec-Simplify-files-dnf-section-for-both-yum_compat_.patch
-Patch4:         0004-spec-Fix-ownership-of-etc-yum-tree.patch
-Patch5:         0005-spec-If-DNF5-obsoletes-DNF-do-not-build-dnf-and-yum-.patch
-Patch6:         0006-spec-If-DNF5-obsoletes-DNF-do-not-build-dnf-automati.patch
 BuildArch:      noarch
 BuildRequires:  cmake
 BuildRequires:  gettext
@@ -426,6 +420,26 @@ popd
 %endif
 
 %changelog
+* Tue Nov 12 2024 Evan Goode <egoode@redhat.com> - 4.22.0-1
+- doc: Naming of source and debug repos
+- spec: Move /var/cache/dnf from dnf to python3-dnf
+- spec: Remove preview yum_compat_level
+- spec: Simplify %files dnf section for both yum_compat_levels
+- spec: Fix ownership of /etc/yum tree
+- Allow --installroot on read-only bootc system
+- spec: If DNF5 obsoletes DNF, do not build dnf and yum packages
+- spec: If DNF5 obsoletes DNF, do not build dnf-automatic
+- Allow --downloadonly on read-only bootc system
+- base: Add kernel-core to reboot_needed list
+- AUTHORS: Add myself
+- Update need_reboot for dnf-automatic
+- doc: Example send_error_messages in /etc/dnf/automatic.conf
+- automatic: Check availability of config file
+- Updated conf_ref to reflect change in fastestmirror behavior
+- Fix display issue of a code snippet.
+- Print rpm package unpack errors to the user (RhBug:2312906)
+- Fix package location if baseurl is present in the metadata
+
 * Mon Aug 19 2024 Petr Pisar <ppisar@redhat.com> - 4.21.1-2
 - Move /var/cache/dnf from dnf to python3-dnf
 - If DNF5 obsoletes DNF, do not build dnf and yum packages

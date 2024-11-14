@@ -10,6 +10,8 @@ License:        LicenseRef-Callaway-BSD
 URL:            https://github.com/bastikr/boolean.py
 Source0:        %pypi_source
 
+Patch:          https://github.com/bastikr/boolean.py/pull/122.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python%{python3_pkgversion}-devel
@@ -35,7 +37,7 @@ Summary:        %{summary}
 Python 3 version.
 
 %prep
-%autosetup -n %{pypi_name}-%{version}
+%autosetup -p1 -n %{pypi_name}-%{version}
 
 %build
 %py3_build

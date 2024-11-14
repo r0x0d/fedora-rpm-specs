@@ -4,9 +4,9 @@
 %bcond_with static
 %bcond_without check
 
-%define realver 3460100
-%define docver 3460100
-%define rpmver 3.46.1
+%define realver 3470000
+%define docver 3470000
+%define rpmver 3.47.0
 %define year 2024
 
 Summary: Library that implements an embeddable SQL database engine
@@ -21,13 +21,16 @@ Source1: http://www.sqlite.org/%{year}/sqlite-doc-%{docver}.zip
 Source2: http://www.sqlite.org/%{year}/sqlite-autoconf-%{realver}.tar.gz
 # Support a system-wide lemon template
 Patch1: sqlite-3.6.23-lemon-system-template.patch
+Patch2: sqlite-3.47.0-Fix-install-tcl-on-tcl8.6-in-buildtclext.patch
+Patch3: sqlite-3.47.0-Backport-FTS3-corruption-test-fix-for-big-endian.patch
 
 BuildRequires: make
 BuildRequires: gcc
 BuildRequires: ncurses-devel readline-devel glibc-devel
 BuildRequires: autoconf
-%if %{with tcl}
 BuildRequires: /usr/bin/tclsh
+BuildRequires: zlib-ng-compat-devel
+%if %{with tcl}
 BuildRequires: tcl-devel
 %{!?tcl_version: %global tcl_version 8.6}
 %{!?tcl_sitearch: %global tcl_sitearch %{_libdir}/tcl%{tcl_version}}
@@ -164,6 +167,8 @@ This package contains the analysis program for %{name}.
 %prep
 %setup -q -a1 -n %{name}-src-%{realver}
 %patch -P 1 -p1
+%patch -P 2 -p1
+%patch -P 3 -p1
 
 # The atof test is failing on the i686 architecture, when binary configured with
 # --enable-rtree option. Failing part is text->real conversion and
@@ -251,6 +256,7 @@ sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 %endif
 
 %install
+mkdir -p ${RPM_BUILD_ROOT}%{tcl_sitearch}
 %make_install
 
 install -D -m0644 sqlite3.1 $RPM_BUILD_ROOT/%{_mandir}/man1/sqlite3.1
@@ -260,7 +266,7 @@ install -D -m0755 sqlite3-debug $RPM_BUILD_ROOT/%{_bindir}/sqlite3-debug
 
 %if %{with tcl}
 # fix up permissions to enable dep extraction
-chmod 0755 ${RPM_BUILD_ROOT}/%{tcl_sitearch}/sqlite3/*.so
+chmod 0755 ${RPM_BUILD_ROOT}/%{tcl_sitearch}/sqlite%{rpmver}/*.so
 # Install sqlite3_analyzer
 install -D -m0755 sqlite3_analyzer $RPM_BUILD_ROOT/%{_bindir}/sqlite3_analyzer
 %endif
@@ -322,7 +328,7 @@ make test
 
 %if %{with tcl}
 %files tcl
-%{tcl_sitearch}/sqlite3
+%{tcl_sitearch}/sqlite%{rpmver}
 
 %if %{with sqldiff}
 %files tools
@@ -334,6 +340,11 @@ make test
 %endif
 
 %changelog
+* Wed Oct 23 2024 Ales Nezbeda <anezbeda@redhat.com> - 3.47.0-1
+- Update to 3.47.0
+- https://www.sqlite.org/releaselog/3_47_0.html
+- Resolves: rhbz#2320418
+
 * Tue Aug 13 2024 Ales Nezbeda <anezbeda@redhat.com> - 3.46.1-1
 - Update to 3.46.1
 - https://www.sqlite.org/releaselog/3_46_1.html

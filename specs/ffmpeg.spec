@@ -82,7 +82,7 @@ Name:           ffmpeg
 %global pkg_name %{name}%{?pkg_suffix}
 
 Version:        7.0.2
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        A complete solution to record, convert and stream audio and video
 License:        GPL-3.0-or-later
 URL:            https://ffmpeg.org/
@@ -857,6 +857,9 @@ rm -rf %{buildroot}%{_datadir}/%{name}/examples
 %{_mandir}/man3/libswscale.3*
 
 %changelog
+* Tue Nov 12 2024 Sandro Mani <manisandro@gmail.com> - 7.0.2-8
+- Rebuild (tesseract)
+
 * Mon Oct 07 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 7.0.2-7
 - Properly enable aribb24/libaribcaption
 - Disable VANC dependency as it depends on decklink

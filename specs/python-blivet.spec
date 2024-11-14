@@ -5,7 +5,7 @@ Version: 3.11.0
 
 #%%global prerelease .b2
 # prerelease, if defined, should be something like .a1, .b1, .b2.dev1, or .c2
-Release: 4%{?prerelease}%{?dist}
+Release: 5%{?prerelease}%{?dist}
 Epoch: 1
 License: LGPL-2.1-or-later
 %global realname blivet
@@ -20,6 +20,7 @@ Patch0: 0001-remove-btrfs-plugin.patch
 Patch1: 0002-Do-not-raise-libblockdev-errors-in-FSMinSize-tasks.patch
 Patch2: 0003-free_space_estimate-adjust-for-compression-on-btrfs.patch
 Patch3: 0004-consolidated-s390-device-configuration.patch
+Patch4: 0005-Align_sizes_up_for_growable_LVs.patch
 
 # Versions of required components (done so we make sure the buildrequires
 # match the requires versions of things).
@@ -117,6 +118,9 @@ make DESTDIR=%{buildroot} install
 %{python3_sitelib}/*
 
 %changelog
+* Tue Nov 12 2024 Vojtech Trefny <vtrefny@redhat.com> - 3.11.0-5
+- Align sizes up for growable LVs
+
 * Mon Oct 14 2024 Vojtech Trefny <vtrefny@redhat.com> - 3.11.0-4
 - Consolidated s390 device configuration
 

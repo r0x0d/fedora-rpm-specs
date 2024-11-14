@@ -928,6 +928,10 @@ fi
 # endif scl
 
 %changelog
+* Tue Nov 12 2024 Andrew Burgess <aburgess@redhat.com>
+- Remove gdb-6.6-testsuite-timeouts.patch.  I updated the upstream
+  tests in commit 06b8b0ad976 so this patch is no longer useful.
+
 * Wed Nov  6 2024 Mark Wielaard <mjw@fedoraproject.org> - 15.2-2
 - Resolves: rhbz#2323513
   - gdb-add-index.patch: Replace which with command -v

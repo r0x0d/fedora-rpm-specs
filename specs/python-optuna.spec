@@ -1,10 +1,10 @@
 # Created by pyp2rpm-3.3.10
 %global pypi_name optuna
-%global pypi_version 3.6.1
+%global pypi_version 4.1.0
 
 Name:           python-%{pypi_name}
-Version:        %{pypi_version}
-Release:        2%{?dist}
+Version:        4.1.0
+Release:        1%{?dist}
 Summary:        A hyperparameter optimization framework
 
 License:        MIT AND BSD-3-Clause AND SunPro
@@ -58,6 +58,9 @@ rm -rf %{pypi_name}.egg-info
 %{python3_sitelib}/%{pypi_name}-%{version}.dist-info/
 
 %changelog
+* Tue Nov 12 2024 Gwyn Ciesla <gwync@protonmail.com> - 4.1.0-1
+- 4.1.0
+
 * Thu Apr 18 2024 Gwyn Ciesla <gwync@protonmail.com> - 3.6.1-2
 - Fix license tags
 

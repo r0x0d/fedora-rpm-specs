@@ -36,12 +36,15 @@ Patch3:        amanda-3.2.0-config-dir.patch
 Patch4:        amanda-3.4.5-no-xinetd.patch
 # Support tirpc
 Patch5:        patch-tirpc
-
 # Specify the location or the xfs housekeeping directory
 # https://bugzilla.redhat.com/show_bug.cgi?id=1671117
 Patch6:        patch-xfsrestore-housekeeping
 Patch7: amanda-configure-c99.patch
 Patch8: amanda-c99.patch
+# Drop nonexistent -s option from aflush man page (#1943909)
+Patch9:        https://github.com/zmanda/amanda/pull/273.patch
+# Perl 5.40 support (rhbz#2322518)
+Patch10:       https://github.com/zmanda/amanda/pull/270.patch
 
 License:       BSD-3-Clause AND GPL-3.0-or-later AND GPL-2.0-or-later AND GPL-2.0-only
 URL:           http://www.amanda.org

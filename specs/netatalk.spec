@@ -3,7 +3,7 @@
 Name:              netatalk
 Epoch:             5
 Version:           4.0.5
-Release:           1%{?dist}
+Release:           2%{?dist}
 Summary:           Open Source Apple Filing Protocol(AFP) File Server
 # Automatically converted from old format: GPL+ and GPLv2 and GPLv2+ and LGPLv2+ and BSD and FSFUL and MIT - review is highly recommended.
 License:           GPL-1.0-or-later AND GPL-2.0-only AND GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-BSD AND FSFUL AND LicenseRef-Callaway-MIT
@@ -66,6 +66,17 @@ Netatalk is a freely-available Open Source AFP file server. A *NIX/*BSD
 system running Netatalk is capable of serving many Macintosh clients
 simultaneously as an AppleShare file server (AFP).
 
+In addition to the AFP file server daemon, the following utility programs
+are also included:
+ * ad          - AppleDouble file utility suite
+ * afpldaptest - validate Netatalk LDAP parameters
+ * afppasswd   - RandNum UAM password management
+ * afpstats    - inquire AFP server usage stats
+ * apple_dump  - dump AppleSingle/AppleDouble metadata
+ * asip-status - inquire AFP server capabilities
+ * dbd         - CNID database maintenance
+ * macusers    - list connected AFP server users
+
 %package        devel
 Summary:        Development files for %{name}
 Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
@@ -79,22 +90,59 @@ Summary:        Afp test suite for %{name}
 Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
 
 %description    afptest
-This package contains the afp test suite for %{name}.
+Apple Filing Protocol service test tools.
 
+This package contains the following AFP functional test runners,
+benchmarks, and supporting tools:
+ * afp_lantest   - AFP benchmark akin to HELIOS LanTest
+ * afp_logintest - test authentication over DSI
+ * afp_spectest  - AFP specification functional test suite
+ * afp_speedtest - AFP read/write/copy benchmark
+ * afparg        - AFP CLI client
+
+%if 0%{?fedora}
+# The following subpackage needs the appletalk module, which is part of kernel-modules-extra
+# Unfortunately, the appletalk module is only available in Fedora
 %package        appletalk
 Summary:        Appletalk support for classic macintoshes
 Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
-# only the kernel-modules-extra package in Fedora has the appletalk module
-%{?fedora:Recommends:     kernel-modules-extra}
+Requires:       kernel-modules-extra
 
 %description    appletalk
-This package contains Appletalk support for older pre-OSX macintoshes.
+This package contains Netatalk's services and tools for networking
+with very old Macs and Apple IIs.
+
+This package contains the daemon and utility programs
+for the Netatalk AppleTalk network suite, which can be used
+with the Netatalk AFP file server, and other services.
+
+In addition to the atalkd network management daemon,
+the following utility programs are installed:
+ * aecho      - send AppleTalk Echo Protocol pings
+ * getzones   - list available AppleTalk zones
+ * nbplkup    - list registered AppleTalk entities
+ * nbprgstr   - register an AppleTalk entity
+ * nbpunrgstr - release a registered AppleTalk entity
+ * a2boot     - allows you to boot an Apple II over the network
+                from an AFP volume
+ * macipgw    - MacIP gateway which enables pre-TCP/IP Macs to browse the web
+                and use other TCP/IP resources
+ * papd       - allows Mac OS and Apple II clients to print to modern
+                AirPrint / CUPS enabled printers
+ * pap        - print from the host to a LocalTalk printer
+ * papstatus  - inquire the status of a LocalTalk printer
+ * timelord   - time server for Mac OS and Apple II
+%endif
 
 %package doc
 Summary:        HTML Documentation for %{name}
 BuildArch:      noarch
 
 %description doc
+Netatalk is a freely-available Open Source AFP file server. A *NIX/*BSD
+system running Netatalk is capable of serving many Macintosh clients
+simultaneously as an AppleShare file server (AFP).
+
 This package contains the HTML documentation for %{name}.
 
 %prep
@@ -149,20 +197,22 @@ find %{buildroot} \( -name '*.la' -o -name '*.a' \) -type f -delete -print
 %post
 %systemd_post %{name}.service
 
-%post appletalk
-%systemd_post a2boot.service atalkd.service macipgw.service papd.service timelord.service
-
 %preun
 %systemd_preun %{name}.service
-
-%preun appletalk
-%systemd_preun a2boot.service atalkd.service macipgw.service papd.service timelord.service
 
 %postun
 %systemd_postun_with_restart %{name}.service
 
+%if 0%{?fedora}
+%post appletalk
+%systemd_post a2boot.service atalkd.service macipgw.service papd.service timelord.service
+
+%preun appletalk
+%systemd_preun a2boot.service atalkd.service macipgw.service papd.service timelord.service
+
 %postun appletalk
 %systemd_postun_with_restart a2boot.service atalkd.service macipgw.service papd.service timelord.service
+%endif
 
 %files
 %license COPYING COPYRIGHT
@@ -236,6 +286,8 @@ find %{buildroot} \( -name '*.la' -o -name '*.a' \) -type f -delete -print
 %{_bindir}/afp_logintest
 %{_bindir}/afp_spectest
 %{_bindir}/afp_speedtest
+%{_bindir}/afparg
+
 %dir %{_datarootdir}/netatalk
 %{_datarootdir}/netatalk/test-data/test431_data
 
@@ -244,7 +296,9 @@ find %{buildroot} \( -name '*.la' -o -name '*.a' \) -type f -delete -print
 %{_mandir}/man1/afp_spectest.1*
 %{_mandir}/man1/afp_speedtest.1*
 %{_mandir}/man1/afptest.1*
+%{_mandir}/man1/afparg.1*
 
+%if 0%{?fedora}
 %files appletalk
 %doc %{_pkgdocdir}/README.AppleTalk
 %config(noreplace) %{_sysconfdir}/netatalk/atalkd.conf
@@ -263,7 +317,6 @@ find %{buildroot} \( -name '*.la' -o -name '*.a' \) -type f -delete -print
 %{_bindir}/nbpunrgstr
 %{_bindir}/pap
 %{_bindir}/papstatus
-%{_bindir}/afparg
 
 %{_mandir}/man1/aecho.1*
 %{_mandir}/man1/getzones.1*
@@ -272,7 +325,6 @@ find %{buildroot} \( -name '*.la' -o -name '*.a' \) -type f -delete -print
 %{_mandir}/man1/nbprgstr.1*
 %{_mandir}/man1/nbpunrgstr.1*
 %{_mandir}/man1/pap.1*
-%{_mandir}/man1/afparg.1*
 
 %{_mandir}/man5/atalkd.conf.5*
 %{_mandir}/man5/papd.conf.5*
@@ -289,12 +341,17 @@ find %{buildroot} \( -name '*.la' -o -name '*.a' \) -type f -delete -print
 %{_unitdir}/macipgw.service
 %{_unitdir}/papd.service
 %{_unitdir}/timelord.service
+%endif
 
 %files doc
 %license COPYING COPYRIGHT
 %doc %{_pkgdocdir}/htmldoc
 
 %changelog
+* Tue Nov 12 2024 Andrew Bauer <zonexpertconsulting@outlook.com> - 5:4.0.5-2
+- improve descriptions of each subpackage
+- only build applettalk subpackage for fedora
+
 * Mon Nov 11 2024 Andrew Bauer <zonexpertconsulting@outlook.com> - 5:4.0.5-1
 - 4.0.5 release
 - new afptest, appletalk, and doc subpackages

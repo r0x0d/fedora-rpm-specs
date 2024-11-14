@@ -26,7 +26,7 @@
 %define __cmake_switch(b:) %[%{expand:%%{?with_%{-b*}}} ? "ON" : "OFF"]
 
 Name:           lib%{libname}
-Version:        0.7.30
+Version:        0.7.31
 Release:        %autorelease
 Summary:        Package dependency solver
 

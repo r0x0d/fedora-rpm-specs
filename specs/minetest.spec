@@ -1,13 +1,13 @@
 %global irr_version 1.9.0mt13
 %global minetest_game_version 5.8.0
 Name:     minetest
-Version:  5.9.1
+Version:  5.10.0
 Release:  1%{?dist}
 Summary:  Multiplayer infinite-world block sandbox with survival mode
 
 # Automatically converted from old format: LGPLv2+ and CC-BY-SA - review is highly recommended.
 License:  LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-CC-BY-SA
-URL:      http://minetest.net/
+URL:      https://luanti.org
 
 Source0:  https://github.com/minetest/minetest/archive/%{version}/%{name}-%{version}.tar.gz
 Source1:  %{name}.desktop
@@ -19,8 +19,7 @@ Source6:  https://github.com/minetest/minetest_game/archive/%{minetest_game_vers
 Source7:  http://www.gnu.org/licenses/lgpl-2.1.txt
 Source8:  default.conf
 #Source9:  https://github.com/minetest/irrlicht/archive/%%{irr_version}/%%{name}-%%{irr_version}.tar.gz
-Patch0:   includes.patch
-Patch1:   metainfo.patch
+Patch0:   metainfo.patch
 
 %if 0%{?rhel}
 ExclusiveArch:  %{ix86} x86_64
@@ -167,10 +166,10 @@ cp -p %{SOURCE5} README.fedora
 
 # Move doc directory back to the sources
 mkdir __doc
-mv  %{buildroot}%{_datadir}/doc/%{name}/* __doc
-rm -rf %{buildroot}%{_datadir}/doc/%{name}
+mv  %{buildroot}%{_datadir}/doc/luanti/* __doc
+rm -rf %{buildroot}%{_datadir}/doc/luanti
 
-%find_lang %{name}
+%find_lang luanti
 
 appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/net.%{name}.%{name}.metainfo.xml
 
@@ -190,38 +189,43 @@ exit 0
 %postun server
 %systemd_postun_with_restart %{name}@default.service
 
-%files -f %{name}.lang
+%files -f luanti.lang
 %license doc/lgpl-2.1.txt
 %doc README.fedora
 %{_bindir}/%{name}
-%{_datadir}/%{name}/client
-%{_datadir}/%{name}/fonts
-%{_datadir}/%{name}/textures
+%{_bindir}/luanti
+%{_datadir}/luanti/client
+%{_datadir}/luanti/fonts
+%{_datadir}/luanti/textures
 %{_datadir}/applications/%{name}.desktop
 %exclude %{_datadir}/applications/net.%{name}.%{name}.desktop
-%{_datadir}/icons/hicolor/*/apps/%{name}.png
-%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
-%{_mandir}/man6/%{name}.*
+%{_datadir}/icons/hicolor/*/apps/luanti.png
+%{_datadir}/icons/hicolor/scalable/apps/luanti.svg
+%{_mandir}/man6/luanti.*
 %{_datadir}/metainfo/net.%{name}.%{name}.metainfo.xml
 
 %files server
 %license doc/lgpl-2.1.txt
 %doc README.md doc/protocol.txt README.fedora
-%{_bindir}/%{name}server
+%{_bindir}/minetestserver
+%{_bindir}/luantiserver
 %{_unitdir}/%{name}@.service
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}-server
 %config(noreplace) %{_sysconfdir}/rsyslog.d/%{name}.conf
 %attr(-,minetest,minetest)%{_sharedstatedir}/%{name}/
 %config(noreplace) %attr(-,minetest,minetest)%{_sysconfdir}/%{name}/
 %attr(-,minetest,minetest)%{_sysconfdir}/sysconfig/%{name}/
-%{_mandir}/man6/%{name}server.*
+%{_mandir}/man6/luantiserver.*
 
 %files data-common
 %license doc/lgpl-2.1.txt
-%{_datadir}/%{name}/builtin
+%{_datadir}/luanti/builtin
 
 
 %changelog
+* Tue Nov 12 2024 Gwyn Ciesla <gwync@protonmail.com> - 5.10.0-1
+- 5.10.0
+
 * Mon Sep 16 2024 Gwyn Ciesla <gwync@protonmail.com> - 5.9.1-1
 - 5.9.1
 

@@ -2,7 +2,7 @@
 Summary: Open implementation of Service Location Protocol V2
 Name:    openslp
 Version: 2.0.0
-Release: 37%{?dist}
+Release: 38%{?dist}
 
 License: BSD-3-Clause
 URL:     http://sourceforge.net/projects/openslp/
@@ -115,7 +115,7 @@ mkdir -p ${RPM_BUILD_ROOT}/%{_sysconfdir}/slp.reg.d
 
 # install script that sets multicast
 mkdir -p ${RPM_BUILD_ROOT}/usr/lib/%{name}-server
-install -m 0755 etc/slpd.all_init ${RPM_BUILD_ROOT}/usr/lib/%{name}-server/slp-multicast-set.sh
+install -m 0755 etc/slpd.all_init ${RPM_BUILD_ROOT}/%{_prefix}/lib/%{name}-server/slp-multicast-set.sh
 
 # install service file
 mkdir -p ${RPM_BUILD_ROOT}/%{_unitdir}
@@ -171,6 +171,9 @@ rm -f  $RPM_BUILD_ROOT%{_libdir}/lib*.la
 
 
 %changelog
+* Tue Nov 12 2024 Vitezslav Crhonek <vcrhonek@redhat.com> - 2.0.0-38
+- Don't use forbidden path reference
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.0-37
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -93,7 +93,6 @@ Summary:        An extremely fast Python package installer and resolver, written
 # licenses of the following bundled forks:
 #   - async_zip, Source100, is MIT.
 #   - pubgrub/version-ranges, Source200, is MPL-2.0.
-#   - reqwest-middleware/reqwest-retry, Source300, is (MIT OR Apache-2.0)
 #   - tl, Source400, is MIT.
 #
 # (Apache-2.0 OR MIT) AND BSD-3-Clause
@@ -175,25 +174,6 @@ Source100:      %{async_zip_git}/archive/%{async_zip_rev}/rs-async-zip-%{async_z
 %global version_ranges_baseversion 0.1.0
 Source200:      %{pubgrub_git}/archive/%{pubgrub_rev}/pubgrub-%{pubgrub_rev}.tar.gz
 
-# We must use a git snapshot of reqwest-middleware/reqwest-retry because a
-# necessary incompatible change (originally carried in a uv-specific fork) is
-# now present upstream but has not yet appeared in a release, as described in
-#   https://github.com/astral-sh/uv/commit/4b193194858707795b5b64dd479f65ef22fed312
-# See issue:
-#   Add retries to error message
-#   https://github.com/TrueLayer/reqwest-middleware/pull/159
-# See also: https://github.com/astral-sh/uv/issues/5588#issuecomment-2257474183
-# It should be possible for uv to stop using a snapshot, and for us to stop
-# bundling, as soon as these changes appear in a new upstream release.
-# For now, we must bundle the snapshot as prescribed in
-#   https://docs.fedoraproject.org/en-US/packaging-guidelines/Rust/#_replacing_git_dependencies
-%global reqwest_middleware_git https://github.com/TrueLayer/reqwest-middleware
-%global reqwest_middleware_rev d95ec5a99fcc9a4339e1850d40378bbfe55ab121
-%global reqwest_middleware_baseversion 0.3.3
-%global reqwest_middleware_snapdate 20241017
-%global reqwest_retry_baseversion 0.7.1
-Source300:      %{reqwest_middleware_git}/archive/%{reqwest_middleware_rev}/reqwest-middleware-%{reqwest_middleware_rev}.tar.gz
-
 # For the time being, uv must use a fork of tl. See:
 #   Path back to using released tl crate dependency?
 #   https://github.com/astral-sh/uv/issues/6687
@@ -238,6 +218,17 @@ Patch:          0001-Downstream-only-use-the-zlib-ng-backend-for-flate2-o.patch
 # https://github.com/rust-lang/libz-sys/issues/225
 Patch:          0002-Downstream-only-don-t-upper-bound-the-libz-ng-sys-ve.patch
 
+# Use crates.io reqwest-middleware (#9058)
+#
+# Thanks to https://github.com/TrueLayer/reqwest-middleware/pull/198, we
+# can now remove the git dependency and switch back to a crates.io
+# dependency.
+# https://github.com/astral-sh/uv/commit/828045cd27fb6812a03f6b374234aa95ec9dd092
+# https://github.com/astral-sh/uv/pull/9058
+#
+# Modified to include only changes to Cargo.toml, without those to Cargo.lock
+Patch:          uv-0.4.30-released-reqwest-middleware.patch
+
 # This patch is for the forked, bundled pubgrub crate.
 #
 # Downstream-only: Revert "feat: ensure successful round-trip of RON (#193)"
@@ -245,17 +236,6 @@ Patch:          0002-Downstream-only-don-t-upper-bound-the-libz-ng-sys-ve.patch
 # We will not be packaging an alpha version of rust-ron. We can adjust this
 # after ron 0.9.x is released.
 Patch200:       0001-Downstream-only-Revert-feat-ensure-successful-round-.patch
-
-# This patch is for the forked, bundled reqwest-middleware crate.
-#
-# Downstream-only: do not attempt to run doctests from README.md
-#
-# This patch is copied from the rust-reqwest-middleware package. It is
-# justified there as avoiding a circular dependency on rust-reqwest-retry, but
-# it turns out that running doctests would also require the reqwest-tracing
-# crate, which we do not bundle (and is, as of this writing, not separately
-# packaged), so the patch is needed here as well.
-Patch300:       0001-Downstream-only-do-not-attempt-to-run-doctests-from-.patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
@@ -284,13 +264,6 @@ Provides:       bundled(crate(async_zip)) = %{async_zip_version}
 %global version_ranges_version %{version_ranges_baseversion}^%{pubgrub_snapinfo}
 Provides:       bundled(crate(pubgrub)) = %{pubgrub_version}
 Provides:       bundled(crate(version-ranges)) = %{version_ranges_version}
-# This is a fork of reqwest-middleware/reqwest-retry; see the notes about
-# Source300.
-%global reqwest_middleware_snapinfo %{reqwest_middleware_snapdate}git%{sub %{reqwest_middleware_rev} 1 7}
-%global reqwest_middleware_version %{reqwest_middleware_baseversion}^%{reqwest_middleware_snapinfo}
-%global reqwest_retry_version %{reqwest_retry_baseversion}^%{reqwest_middleware_snapinfo}
-Provides:       bundled(crate(reqwest-middleware)) = %{reqwest_middleware_version}
-Provides:       bundled(crate(reqwest-retry)) = %{reqwest_retry_version}
 # This is a fork of tl; see the notes about Source400.
 %global tl_snapinfo %{tl_snapdate}git%{sub %{tl_rev} 1 7}
 %global tl_version %{tl_baseversion}^%{tl_snapinfo}
@@ -471,34 +444,6 @@ tomcli set crates/pubgrub/Cargo.toml del workspace
 install -t LICENSE.bundled/version-ranges -D -p -m 0644 \
     crates/pubgrub/LICENSE
 git2path workspace.dependencies.version-ranges crates/pubgrub/version-ranges
-
-# See comments above Source300:
-%setup -q -T -D -b 300 -n uv-%{version}
-ln -s '../../reqwest-middleware-%{reqwest_middleware_rev}/reqwest-middleware' \
-    crates/reqwest-middleware
-pushd crates/reqwest-middleware
-%autopatch -p1 -m300 -M399
-popd
-install -t LICENSE.bundled/reqwest-middleware -D -p -m 0644 \
-    crates/reqwest-middleware/LICENSE-*
-git2path workspace.dependencies.reqwest-middleware crates/reqwest-middleware
-git2path patch.crates-io.reqwest-middleware crates/reqwest-middleware
-# These dev-dependencies are not really needed, are not packaged, and do not
-# appear in the published crates. We remove the unpacked reqwest-tracing source
-# to demonstrate we are not bundling it.
-tomcli set crates/reqwest-middleware/Cargo.toml del \
-    dev-dependencies.reqwest-tracing
-rm -r '../reqwest-middleware-%{reqwest_middleware_rev}/reqwest-tracing'
-tomcli set crates/reqwest-middleware/Cargo.toml del dev-dependencies.wiremock
-ln -s '../../reqwest-middleware-%{reqwest_middleware_rev}/reqwest-retry' \
-    crates/reqwest-retry
-install -t LICENSE.bundled/reqwest-retry -D -p -m 0644 \
-    crates/reqwest-retry/LICENSE-*
-git2path workspace.dependencies.reqwest-retry crates/reqwest-retry
-# * It is not practical to run the tests:
-# * - wiremock is unpackaged, and requires many other unpackaged crates
-tomcli set crates/reqwest-retry/Cargo.toml del dev-dependencies.wiremock
-mv crates/reqwest-retry/tests/all/main.rs{,.disabled}
 
 # See comments above Source400:
 %setup -q -T -D -b 400 -n uv-%{version}

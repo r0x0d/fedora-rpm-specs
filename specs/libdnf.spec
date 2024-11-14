@@ -5,7 +5,7 @@
 %global swig_version 3.0.12
 %global libdnf_major_version 0
 %global libdnf_minor_version 73
-%global libdnf_micro_version 3
+%global libdnf_micro_version 4
 
 %define __cmake_in_source_build 1
 
@@ -304,6 +304,9 @@ popd
 %endif
 
 %changelog
+* Tue Nov 12 2024 Evan Goode <egoode@redhat.com> - 0.73.4-1
+- Set POOL_FLAG_ADDFILEPROVIDESFILTERED only when not loading filelists
+
 * Wed Aug 14 2024 Evan Goode <egoode@redhat.com> - 0.73.3-1
 - Support colon in username, use LRO_USERNAME and LRO_PASSWORD
 - Set pool flag to fix pool_addfileprovides_queue() without filelists.xml

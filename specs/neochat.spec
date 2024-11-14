@@ -1,6 +1,6 @@
 Name: neochat
 Version: 24.08.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND GPL-3.0-or-later AND BSD-3-Clause
 URL: https://invent.kde.org/network/%{name}
@@ -45,6 +45,7 @@ BuildRequires: cmake(QCoro6Network)
 BuildRequires: cmake(KF6Purpose)
 BuildRequires: cmake(KF6Crash)
 BuildRequires: cmake(KF6SyntaxHighlighting)
+BuildRequires: cmake(KUnifiedPush)
 
 BuildRequires: pkgconfig(icu-uc)
 BuildRequires: pkgconfig(libcmark)
@@ -120,8 +121,12 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 %{_kf6_datadir}/qlogging-categories6/neochat.categories
 %{_libdir}/qt6/plugins/kf6/purpose/neochatshareplugin.so
 %{_mandir}/man1/neochat.1*
+%{_kf6_datadir}/dbus-1/services/org.kde.neochat.service
 
 %changelog
+* Tue Nov 12 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-2
+- Added KUnifiedPush as a build dependancy
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

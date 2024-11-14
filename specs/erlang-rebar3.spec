@@ -17,6 +17,7 @@ Patch1:   erlang-rebar3-0001-Skip-deps.patch
 Patch2:   erlang-rebar3-0002-Unbundle-hex_core-ver.-0.7.1.patch
 Patch3:   erlang-rebar3-0003-WIP-ignore-deps-on-demand.patch
 Patch4:   erlang-rebar3-0004-WIP-prefer-locally-installed-plugins.patch
+Patch5:   erlang-rebar3-0005-WIP-don-t-update-packages-if-IGNORE_MISSING_DEPS-is-.patch
 %if 0%{?bootstrap}
 # noop
 %else

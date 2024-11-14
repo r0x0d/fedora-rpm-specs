@@ -1,7 +1,7 @@
 Summary:	Firmware for Epson flatbed scanners
 Name:		iscan-firmware
-Version:	20190508
-Release:	13%{?dist}
+Version:	20241112
+Release:	14%{?dist}
 License:	Redistributable, no modification permitted
 URL:		http://download.ebz.epson.net/dsc/search/01/search/
 BuildArch:	noarch
@@ -34,18 +34,14 @@ Source8:    iscan-plugin-gt-1500-2.2.0-1.x86_64.rpm
 Source9:    esci-interpreter-gt-f720-0.1.1-2.x86_64.rpm
 # GT-X770, Perfection V500 Photo
 Source10:   iscan-plugin-gt-x770-2.1.2-1.i386.rpm
-# GT-X820, Perfection V600 Photo
-Source11:   iscan-plugin-gt-x820-2.2.0-1.x86_64.rpm
-# GT-F730, GT-S630, Perfection V33, Perfection V330 Photo
-Source12:   esci-interpreter-perfection-v330-0.2.0-1.x86_64.rpm
-# GT-F740, GT-S640, Perfection V37, Perfection V370
-Source13:   iscan-plugin-perfection-v370-1.0.0-2.x86_64.rpm
-# Perfection V550 Photo
-Source14:   iscan-plugin-perfection-v550-1.0.0-2.x86_64.rpm
-# GT-S650, Perfection V19, Perfection V39
-Source15:   imagescan-plugin-gt-s650-1.0.1-1epson4fedora30.x86_64.rpm
 # GT-X830
-Source16:   iscan-plugin-gt-x830-1.0.0-5.x86_64.rpm
+Source11:   iscan-plugin-gt-x830-1.0.1-1.x86_64.rpm
+# GT-X820, Perfection V600 Photo
+# GT-F730, GT-S630, Perfection V33, Perfection V330 Photo
+# GT-F740, GT-S640, Perfection V37, Perfection V370
+# GT-S650, Perfection V19, Perfection V39
+# Perfection V550 Photo
+Source12:   epsonscan2-non-free-plugin-1.0.0.6-1.x86_64.rpm
 
 Requires:	linux-firmware
 
@@ -69,14 +65,15 @@ Firmware for the following Epson flatbed scanners:
 * esfweb: Perfection V550 PHOTO
 * esfw010c: Perfection V19/V39 / GT-S650
 * esfw0111: GT-X830
+* esfw0282: Perfection V39II
 
 %prep
 %setup -c -T
 for f in \
     %{SOURCE0} %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} \
     %{SOURCE6} %{SOURCE7} %{SOURCE8} %{SOURCE9} %{SOURCE10} %{SOURCE11} \
-    %{SOURCE12} %{SOURCE13} %{SOURCE14} %{SOURCE15} %{SOURCE16}; do
-    rpm2cpio $f | cpio -idvm --no-absolute-filenames
+    %{SOURCE12}; do
+    rpm2cpio $f | cpio -idm --no-absolute-filenames
 done
 
 find ./%{_docdir} -name "*txt" -exec mv {} . \;
@@ -87,19 +84,40 @@ for file in *.txt ; do
     mv $file.new $file
 done
 
-%build
-# Nothing to build
-
 %install
-mkdir -p %{buildroot}/lib/firmware/epson
-install -pm644 .%{_datadir}/{iscan,esci,utsushi}/*.bin %{buildroot}/lib/firmware/epson
+mkdir -p %{buildroot}%{_prefix}/lib/firmware/epson
+install -pm644 .%{_datadir}/*/*.bin %{buildroot}%{_prefix}/lib/firmware/epson/
+
+mv %{buildroot}%{_prefix}/lib/firmware/epson/{Esfw0111.bin,esfw0111.bin}
 
 %files
 %license AVASYSPL.en.txt EAPL.en.txt LICENSE.EPSON.en.txt
 %lang(ja) %license AVASYSPL.ja.txt EAPL.ja.txt LICENSE.EPSON.ja.txt
-/lib/firmware/epson
+%dir %{_prefix}/lib/firmware/epson
+%{_prefix}/lib/firmware/epson/esfw32.bin
+%{_prefix}/lib/firmware/epson/esfw41.bin
+%{_prefix}/lib/firmware/epson/esfw43.bin
+%{_prefix}/lib/firmware/epson/esfw52.bin
+%{_prefix}/lib/firmware/epson/esfw54.bin
+%{_prefix}/lib/firmware/epson/esfw66.bin
+%{_prefix}/lib/firmware/epson/esfw68.bin
+%{_prefix}/lib/firmware/epson/esfw7A.bin
+%{_prefix}/lib/firmware/epson/esfw7C.bin
+%{_prefix}/lib/firmware/epson/esfw86.bin
+%{_prefix}/lib/firmware/epson/esfw8b.bin
+%{_prefix}/lib/firmware/epson/esfwA1.bin
+%{_prefix}/lib/firmware/epson/esfwad.bin
+%{_prefix}/lib/firmware/epson/esfwdd.bin
+%{_prefix}/lib/firmware/epson/esfweb.bin
+%{_prefix}/lib/firmware/epson/esfw010c.bin
+%{_prefix}/lib/firmware/epson/esfw0111.bin
+%{_prefix}/lib/firmware/epson/esfw0282.bin
 
 %changelog
+* Tue Nov 12 2024 Simone Caronni <negativo17@gmail.com> - 20241112-14
+- Update and clean up.
+- Trim changelog.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 20190508-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
@@ -120,27 +138,3 @@ install -pm644 .%{_datadir}/{iscan,esci,utsushi}/*.bin %{buildroot}/lib/firmware
 
 * Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 20190508-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
-
-* Thu Jul 22 2021 Fedora Release Engineering <releng@fedoraproject.org> - 20190508-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
-
-* Thu Apr 15 2021 Simone Caronni <negativo17@gmail.com> - 20190508-5
-- Clean up SPEC file.
-
-* Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 20190508-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
-
-* Tue Jul 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 20190508-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
-
-* Wed Jan 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 20190508-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
-
-* Mon Aug 19 2019 Simone Caronni <negativo17@gmail.com> - 20190508-1
-- Check all firmwares, add GT-S650/GT-X830 firmwares dated 2019-05-08.
-
-* Thu Jul 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 20130319-9
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
-
-* Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 20130319-8
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild

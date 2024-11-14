@@ -10,7 +10,7 @@ MNE-BIDS: Organizing MEG, EEG, and iEEG data according to the BIDS
 specification and facilitating their analysis with MNE-Python}
 
 Name:           python-mne-bids
-Version:        0.14
+Version:        0.15.0
 Release:        %autorelease
 Summary:        Experimental code for BIDS using MNE
 License:        BSD-3-Clause
@@ -41,9 +41,6 @@ Requires:  python3-tempita
 
 %prep
 %autosetup -n mne-bids-%{version}
-
-# Not required on the python versions Fedora uses
-sed -i '/importlib-resources/ d' setup.cfg
 
 sed -i 's/mne.externals.six/six/' mne_bids/utils.py
 find -type f -name '*.py' -exec sed -i \

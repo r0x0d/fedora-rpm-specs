@@ -52,7 +52,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        21.rocm%{rocm_version}%{?dist}
+Release:        22.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -117,7 +117,9 @@ Requires:       clang-resource-filesystem(major) = %{llvm_maj_ver}
 Requires:       lld-devel(major) = %{llvm_maj_ver}
 Requires:       llvm-devel(major) = %{llvm_maj_ver}
 %else
+Requires:       rocm-clang-devel
 Requires:       rocm-llvm-devel
+Requires:       rocm-lld-devel
 %endif
 
 %description -n rocm-device-libs
@@ -146,7 +148,9 @@ Requires:       rocm-comgr%{?_isa} = %{version}-%{release}
 Requires:       clang-devel(major) = %{llvm_maj_ver}
 Requires:       llvm-devel(major) = %{llvm_maj_ver}
 %else
+Requires:       rocm-clang-devel
 Requires:       rocm-llvm-devel
+Requires:       rocm-lld-devel
 %endif
 
 %description -n rocm-comgr-devel
@@ -158,8 +162,6 @@ Suggests:       rocminfo
 Requires:       rocm-device-libs = %{version}-%{release}
 %if %{without bundled_llvm}
 Requires:       compiler-rt(major) = %{llvm_maj_ver}
-%else
-Requires:       rocm-llvm-devel
 %endif
 
 %description -n hipcc
@@ -170,18 +172,15 @@ compiler and HIP infrastructure.
 hipcc will pass-through options to the target compiler. The tools calling hipcc
 must ensure the compiler options are appropriate for the target compiler.
 
+%if %{without bundled_llvm}
+
 %package -n rocm-llvm-devel
 Summary:        Meta package for install the LLVM devel used for ROCm
-%if %{without bundled_llvm}
 Requires:       llvm-devel(major) = %{llvm_maj_ver}
-%else
-Requires:       %{name}-macros
-Requires:       gcc-c++
-Requires:       libstdc++-devel
-%endif
 
 %description -n rocm-llvm-devel
 LLVM devel files used when building ROCm.
+%endif
 
 %package -n hipcc-libomp-devel
 Summary:        OpenMP header files for hipcc
@@ -194,6 +193,56 @@ Requires:       libomp-devel
 
 %description -n hipcc-libomp-devel
 OpenMP header files compatible with HIPCC.
+
+%if %{with bundled_llvm}
+
+# ROCM LLVM
+%package -n rocm-llvm
+Summary:	The ROCm Linker
+Requires:	libstdc++-devel
+Requires:	gcc-c++
+
+%description -n rocm-llvm
+The ROCm compiler.
+
+%package -n rocm-llvm-devel
+Summary:       Libraries and header files for LLVM
+Requires:      rocm-llvm%{?_isa} = %{version}-%{release}
+
+%description -n rocm-llvm-devel
+The libraries and headers to rocm-llvm.
+
+# ROCM CLANG
+%package -n rocm-clang
+Summary:	The ROCm compiler
+Requires:	libstdc++-devel
+Requires:	gcc-c++
+
+%description -n rocm-clang
+The ROCm compiler.
+
+%package -n rocm-clang-devel
+Summary:       Libraries and header files for CLANG
+Requires:      rocm-clang%{?_isa} = %{version}-%{release}
+
+%description -n rocm-clang-devel
+The libraries and headers to rocm-clang.
+
+# ROCM LLD
+%package -n rocm-lld
+Summary:	The ROCm Linker
+
+%description -n rocm-lld
+The ROCm linker.
+
+%package -n rocm-lld-devel
+Summary:       Libraries and header files for LLD
+Requires:      rocm-lld%{?_isa} = %{version}-%{release}
+
+%description -n rocm-lld-devel
+The libraries and headers to rocm-lld.
+
+%endif
 
 %prep
 %autosetup -p1 -n %{upstreamname}-rocm-%{rocm_version}
@@ -209,6 +258,8 @@ ls | grep -xv "amd" | xargs rm -r
 %else
 # Remove third-party
 rm -rf third-party
+# Force lld to be shared
+sed -i -e 's@llvm_add_library(${name} ${ARG_ENABLE_SHARED} ${ARG_UNPARSED_ARGUMENTS})@llvm_add_library(${name} SHARED ${ARG_UNPARSED_ARGUMENTS})@' lld/cmake/modules/AddLLD.cmake
 %endif
 
 ##Fix issue with HIP, where compilation flags are incorrect, see issue:
@@ -345,13 +396,15 @@ p=$PWD
 
 %global llvmrocm_cmake_config \\\
  -DBUILD_SHARED_LIBS=OFF \\\
+ -DLLVM_BUILD_LLVM_DYLIB=ON \\\
+ -DLLVM_LINK_LLVM_DYLIB=ON \\\
  -DBUILD_TESTING=OFF \\\
  -DCLANG_ENABLE_ARCMT=OFF \\\
  -DCLANG_ENABLE_STATIC_ANALYZER=OFF \\\
  -DCMAKE_BUILD_TYPE=%{build_type} \\\
  -DCMAKE_INSTALL_PREFIX=%{bundle_prefix} \\\
+ -DCOMPILER_RT_BUILD_SANITIZERS=OFF \\\
  -DLLVM_BINUTILS_INCDIR=%{_includedir} \\\
- -DLLVM_BUILD_LLVM_DYLIB=ON \\\
  -DLLVM_BUILD_RUNTIME=ON \\\
  -DLLVM_BUILD_TOOLS=ON \\\
  -DLLVM_BUILD_UTILS=ON \\\
@@ -379,13 +432,18 @@ pushd .
 %define _vpath_builddir build-llvm
 %endif
 
+export LD_LIBRARY_PATH=$PWD/build-llvm/lib
+
 %cmake %{llvmrocm_cmake_config} \
+       -DCMAKE_CXX_COMPILER=clang++ \
+       -DCMAKE_C_COMPILER=clang \
        -DCMAKE_INSTALL_PREFIX=%{bundle_prefix} \
        -DCMAKE_INSTALL_LIBDIR=lib \
        -DLLVM_ENABLE_PROJECTS="llvm;clang;lld" \
        -DLLVM_ENABLE_RUNTIMES="compiler-rt"
 
 %cmake_build -j ${JOBS}
+
 popd
 
 b=$p/build-llvm
@@ -571,11 +629,18 @@ popd
 
 rm -rf %{buildroot}%{bundle_prefix}/share
 rm -rf %{buildroot}%{_prefix}/hip
-
-if [ ! -f %{buildroot}%{bundle_prefix}/lib/LLVMgold.so ]; then
-    echo "Problem with LLVMgold.so"
-    find %{buildroot} -name 'LLVMgold.so'
-    false
+rm %{buildroot}%{bundle_prefix}/bin/git-clang-format
+rm %{buildroot}%{bundle_prefix}/bin/hmaptool
+rm -rf %{buildroot}%{bundle_prefix}/lib/libLLVM*.a
+rm -rf %{buildroot}%{bundle_prefix}/lib/libclang*.a
+if [ -f %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/LICENSE.TXT ]; then
+    rm %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/LICENSE.*
+fi
+if [ -f %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/NOTICES.txt ]; then
+    rm %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/NOTICES.txt
+fi
+if [ -f %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/README.md ]; then
+    rm %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/README.md
 fi
 
 %endif
@@ -633,19 +698,81 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 
 %files -n rocm-llvm-devel
 
-%else
-
-%files -n rocm-llvm-devel
-%{bundle_prefix}/*
-%if 0%{?is_opensuse}
-%{_docdir}/*
-%endif
-
 %endif
 
 %files -n hipcc-libomp-devel
 
+%if %{with bundled_llvm}
+
+# ROCM LLVM
+%files -n rocm-llvm
+%license llvm/LICENSE.TXT
+%{bundle_prefix}/bin/bugpoint
+%{bundle_prefix}/bin/llc
+%{bundle_prefix}/bin/lli
+%{bundle_prefix}/bin/amdgpu-arch
+%{bundle_prefix}/bin/amdgpu-offload-arch
+%{bundle_prefix}/bin/dsymutil
+%{bundle_prefix}/bin/llvm*
+%{bundle_prefix}/bin/nvidia-arch
+%{bundle_prefix}/bin/opt
+%{bundle_prefix}/bin/offload-arch
+%{bundle_prefix}/bin/sancov
+%{bundle_prefix}/bin/sanstats
+%{bundle_prefix}/bin/verify-uselistorder
+%{bundle_prefix}/lib/libLLVM-*.so
+%{bundle_prefix}/lib/libLTO.so.*
+%{bundle_prefix}/lib/libRemarks.so.*
+
+%files -n rocm-llvm-devel
+%license llvm/LICENSE.TXT
+%{bundle_prefix}/include/llvm
+%{bundle_prefix}/include/llvm-c
+%{bundle_prefix}/lib/cmake/llvm/
+%{bundle_prefix}/lib/libLLVM.so
+%{bundle_prefix}/lib/libLTO.so
+%{bundle_prefix}/lib/libRemarks.so
+%{bundle_prefix}/lib/LLVMgold.so
+
+# ROCM CLANG
+%files -n rocm-clang
+%license clang/LICENSE.TXT
+%{bundle_prefix}/bin/amdgpu-arch
+%{bundle_prefix}/bin/c-index-test
+%{bundle_prefix}/bin/clang*
+%{bundle_prefix}/bin/diagtool
+%{bundle_prefix}/bin/flang
+%{bundle_prefix}/bin/nvptx-arch
+%{bundle_prefix}/lib/libclang*.so.*
+%{bundle_prefix}/lib/clang/
+
+%files -n rocm-clang-devel
+%license clang/LICENSE.TXT
+%{bundle_prefix}/include/clang
+%{bundle_prefix}/include/clang-c
+%{bundle_prefix}/lib/libclang*.so
+%{bundle_prefix}/lib/cmake/clang/
+
+# ROCM LLD
+%files -n rocm-lld
+%license lld/LICENSE.TXT
+%{bundle_prefix}/bin/lld*
+%{bundle_prefix}/bin/ld*
+%{bundle_prefix}/bin/wasm-ld
+%{bundle_prefix}/lib/liblld*.so.*
+
+%files -n rocm-lld-devel
+%license lld/LICENSE.TXT
+%{bundle_prefix}/include/lld
+%{bundle_prefix}/lib/liblld*.so
+%{bundle_prefix}/lib/cmake/lld/
+
+%endif
+
 %changelog
+* Tue Nov 12 2024 Tom Rix <Tom.Rix@amd.com> - 18-22.rocm6.2.4
+- Split up bundled to subpackages
+
 * Sat Nov 9 2024 Tom Rix <Tom.Rix@amd.com> - 18-21.rocm6.2.4
 - Fix version
 - Rework bundle llvm to use existing package layouts.

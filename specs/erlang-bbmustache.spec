@@ -9,7 +9,6 @@ License:	MIT
 URL:		https://github.com/soranoba/%{realname}
 VCS:		git:%{url}.git
 Source0:	%{url}/archive/v%{version}/%{realname}-%{version}.tar.gz
-Patch1:		erlang-bbmustache-0001-FIXME-Rebar3-plugins-are-currently-broken.patch
 BuildRequires:	erlang-rebar3
 
 %description

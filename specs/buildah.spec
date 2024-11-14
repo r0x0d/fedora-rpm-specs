@@ -37,7 +37,7 @@ Epoch: 2
 # If that's what you're reading, Version must be 0, and will be updated by Packit for
 # copr and koji builds.
 # If you're reading this on dist-git, the version is automatically filled in by Packit.
-Version: 1.37.5
+Version: 1.38.0
 # The `AND` needs to be uppercase in the License for SPDX compatibility
 License: Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND ISC AND MIT AND MPL-2.0
 Release: %autorelease
@@ -133,6 +133,7 @@ export BUILDTAGS+=" btrfs_noversion exclude_graphdriver_btrfs"
 %gobuild -o bin/imgtype ./tests/imgtype
 %gobuild -o bin/copy ./tests/copy
 %gobuild -o bin/tutorial ./tests/tutorial
+%gobuild -o bin/inet ./tests/inet
 %{__make} docs
 
 %install
@@ -143,6 +144,7 @@ cp -pav tests/. %{buildroot}/%{_datadir}/%{name}/test/system
 cp bin/imgtype %{buildroot}/%{_bindir}/%{name}-imgtype
 cp bin/copy    %{buildroot}/%{_bindir}/%{name}-copy
 cp bin/tutorial %{buildroot}/%{_bindir}/%{name}-tutorial
+cp bin/inet     %{buildroot}/%{_bindir}/%{name}-inet
 
 rm %{buildroot}%{_datadir}/%{name}/test/system/tools/build/*
 
@@ -163,6 +165,7 @@ rm %{buildroot}%{_datadir}/%{name}/test/system/tools/build/*
 %{_bindir}/%{name}-imgtype
 %{_bindir}/%{name}-copy
 %{_bindir}/%{name}-tutorial
+%{_bindir}/%{name}-inet
 %{_datadir}/%{name}/test
 
 %changelog

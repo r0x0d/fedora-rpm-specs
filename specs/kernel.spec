@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc7.58
+%define pkgrelease 0.rc7.59
 %define kversion 6
 %define tarfile_release 6.12-rc7
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc7.58%{?buildid}%{?dist}
+%define specrelease 0.rc7.59%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4151,9 +4151,14 @@ fi\
 #
 #
 %changelog
-* Mon Nov 11 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc7.58]
+* Tue Nov 12 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc7.59]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Tue Nov 12 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc7.58]
+- redhat/configs: Update powerpc NR_CPUS config (Mamatha Inamdar)
+- redhat: use stricter rule for kunit.ko (Jan Stancek)
+- filtermod: fix clk kunit test and kunit location (Nico Pache)
 
 * Mon Nov 11 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc7.57]
 - redhat/configs: enable xr_serial on rhel (Desnes Nunes)

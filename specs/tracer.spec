@@ -17,8 +17,8 @@
 %endif
 
 Name:       tracer
-Version:    1.1
-Release:    4%{?dist}
+Version:    1.2
+Release:    1%{?dist}
 Summary:    Finds outdated running applications in your system
 
 BuildArch:  noarch
@@ -104,12 +104,18 @@ BuildRequires:  python3-dbus
 BuildRequires:  python3-rpm
 BuildRequires:  python3-distro
 BuildRequires:  python3-setuptools
+%if 0%{?fedora}
+BuildRequires:  python3-libdnf5
+%endif
 Requires:       python3-rpm
 Requires:       python3-psutil
 Requires:       python3-dbus
 Requires:       python3-six
 Requires:       python3-distro
 Requires:       %{name}-common = %{version}-%{release}
+%if 0%{?fedora}
+Requires:       python3-libdnf5
+%endif
 %if %{with suggest}
 Suggests:       python3-argcomplete
 %else
@@ -199,14 +205,8 @@ make DESTDIR=%{buildroot}%{_datadir} mo
 
 
 %changelog
-* Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Fri Jun 07 2024 Python Maint <python-maint@redhat.com> - 1.1-3
-- Rebuilt for Python 3.13
-
-* Sat Jan 27 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
+* Tue Nov 12 2024 Jakub Kadlcik <frostyx@email.cz> 1.2-1
+- Implement support for DNF5 (frostyx@email.cz)
 
 * Thu Oct 05 2023 Jakub Kadlcik <frostyx@email.cz> 1.1-1
 - Fix parameters for specifying the target user (frostyx@email.cz)

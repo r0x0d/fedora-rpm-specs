@@ -9,11 +9,7 @@
 %endif
 # linters are enabled by default if BUILD_DOCS OR BUILD_EXAMPLES
 %bcond_with     linters
-%if 0%{?rhel} >= 10
-%bcond_with  ffmpeg
-%else
 %bcond_without  ffmpeg
-%endif
 %bcond_without  gstreamer
 %bcond_with     eigen2
 %bcond_without  eigen3
@@ -26,11 +22,7 @@
 %endif
 %bcond_without  tbb
 %bcond_with     cuda
-%if 0%{?rhel} >= 10
-%bcond_with  xine
-%else
 %bcond_without  xine
-%endif
 # Atlas need (missing: Atlas_CLAPACK_INCLUDE_DIR Atlas_CBLAS_LIBRARY Atlas_BLAS_LIBRARY Atlas_LAPACK_LIBRARY)
 # LAPACK may use atlas or openblas since now it detect openblas, atlas is not used anyway, more info please
 # check OpenCVFindLAPACK.cmake
@@ -85,7 +77,7 @@ Version:        4.10.0
 %global minorver %(foo=%{version}; a=(${foo//./ }); echo ${a[1]} )
 %global padding  %(digits=00; num=%{minorver}; echo ${digits:${#num}:${#digits}} )
 %global abiver   %(echo %{majorver}%{padding}%{minorver} )
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Collection of algorithms for computer vision
 # This is normal three clause BSD.
 License:        BSD-3-Clause AND Apache-2.0 AND ISC
@@ -587,6 +579,9 @@ ln -s -r %{buildroot}%{_jnidir}/opencv-%{javaver}.jar %{buildroot}%{_jnidir}/ope
 
 
 %changelog
+* Tue Nov 12 2024 Sandro Mani <manisandro@gmail.com> - 4.10.0-7
+- Rebuild (tesseract)
+
 * Sat Nov 09 2024 Sandro Mani <manisandro@gmail.com> - 4.10.0-6
 - Rebuild (gdal)
 

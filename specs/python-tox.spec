@@ -20,7 +20,7 @@
 %undefine _py3_shebang_s
 
 Name:           python-tox
-Version:        4.21.2
+Version:        4.23.2
 Release:        %autorelease
 Summary:        Virtualenv-based automation of test activities
 
@@ -37,7 +37,8 @@ Patch:          fix-tests.patch
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
-BuildRequires:  pyproject-rpm-macros
+# for dependency-groups support:
+BuildRequires:  pyproject-rpm-macros >= 1.16
 
 %if %{with tests}
 BuildRequires:  /usr/bin/gcc
@@ -106,7 +107,7 @@ sed -ri -e 's/"(packaging|filelock|platformdirs|psutil|pyproject-api|pytest|pyte
 
 %generate_buildrequires
 export SETUPTOOLS_SCM_PRETEND_VERSION="%{version}"
-%pyproject_buildrequires -r %{?with_tests:-x testing}
+%pyproject_buildrequires -r %{?with_tests:-g test}
 
 
 %build

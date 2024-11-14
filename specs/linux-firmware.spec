@@ -4,8 +4,8 @@
 %define _binaries_in_noarch_packages_terminate_build 0
 
 Name:		linux-firmware
-Version:	20241017
-Release:	2%{?dist}
+Version:	20241110
+Release:	1%{?dist}
 Summary:	Firmware files used by the Linux kernel
 # Automatically converted from old format: GPL+ and GPLv2+ and MIT and Redistributable, no modification permitted - review is highly recommended.
 License:	GPL-1.0-or-later AND GPL-2.0-or-later AND LicenseRef-Callaway-MIT AND LicenseRef-Callaway-Redistributable-no-modification-permitted
@@ -633,6 +633,37 @@ sed -e 's/^/%%dir /' linux-firmware.dirs >> linux-firmware.files
 %{_firmwarepath}/v4l-cx2*
 
 %changelog
+* Mon Nov 11 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 20241110-1
+- Update to upstream 20241110
+- rtl_bt: Update RTL8852BT/RTL8852BE-VT BT USB FW to 0x04D7_63F7
+- cnm: update chips&media wave521c firmware.
+- MT7920: update WiFi/bluetooth firmware
+- copy-firmware.sh: Run check_whence.py only if in a git repo
+- cirrus: cs35l56: Add firmware for Cirrus CS35L56 for various Dell laptops
+- amdgpu: update DMCUB to v9.0.10.0 for DCN351
+- rtw89: 8852a: update fw to v0.13.36.2
+- rtw88: Add firmware v52.14.0 for RTL8812AU
+- i915: Update Xe2LPD DMC to v2.23
+- MT7925: update WiFi/bluetooth firmware
+- WHENCE: Add sof-tolg for mt8195
+- Update firmware file for Intel BlazarI core
+- qcom: Add link for QCS6490 GPU firmware
+- qcom: update gpu firmwares for qcs615 chipset
+- cirrus: cs35l56: Update firmware for Cirrus Amps for some HP laptops
+- ath11k: move WCN6750 firmware to the device-specific subdir
+- xe: Update LNL GSC to v104.0.0.1263
+- i915: Update MTL/ARL GSC to v102.1.15.1926
+- amdgpu: DMCUB updates for various AMDGPU ASICs
+- mediatek: Add sof-tolg for mt8195
+- i915: Add Xe3LPD DMC
+- Add firmware for Cirrus CS35L41
+- Update firmware file for Intel BlazarU core
+- Makefile: error out of 'install' if COPYOPTS is set
+- check_whence.py: skip some validation if git ls-files fails
+- qcom: Add Audio firmware for X1E80100 CRD/QCPs
+- amdgpu: DMCUB updates forvarious AMDGPU ASICs
+- brcm: replace NVRAM for Jetson TX1
+
 * Sat Oct 19 2024 Adam Williamson <awilliam@redhat.com> - 20241017-2
 - Fix compression / deduplication for upstream changes in 20241017
 

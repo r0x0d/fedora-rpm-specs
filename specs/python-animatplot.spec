@@ -9,7 +9,8 @@ Summary:        Making animating in Matplotlib easy
 License:        MIT
 URL:            https://github.com/boutproject/animatplot-ng
 Source0:        https://github.com/boutproject/animatplot-ng/archive/v%{version}/animatplot-ng-v%{version}.tar.gz
-Patch:          https://github.com/boutproject/animatplot-ng/pull/19.patch
+Patch:          https://github.com/boutproject/animatplot-ng/pull/19.patch#./matplotlib-390.patch
+Patch:          https://github.com/boutproject/animatplot-ng/commit/844ab4443c8987923b2a2f4d743bbd237d917028.patch#./no-custom-parsing.patch
 
 BuildArch:      noarch
 

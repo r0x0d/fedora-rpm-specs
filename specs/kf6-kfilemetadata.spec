@@ -23,8 +23,12 @@ BuildRequires:  cmake(QMobipocket6)
 BuildRequires:  qt6-qtbase-devel
 BuildRequires:  libattr-devel
 BuildRequires:  pkgconfig(exiv2) >= 0.20
+# catdoc is dead upstream and will not be in epel10
+# https://bugzilla.redhat.com/show_bug.cgi?id=2313773
+%if %[!(0%{?rhel} >= 10)]
 BuildRequires:  catdoc
 Recommends:     catdoc
+%endif
 BuildRequires:  ebook-tools-devel
 BuildRequires:  ffmpeg-free-devel
 BuildRequires:  pkgconfig(poppler-qt6)

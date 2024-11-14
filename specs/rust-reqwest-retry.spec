@@ -7,7 +7,7 @@
 %global crate reqwest-retry
 
 Name:           rust-reqwest-retry
-Version:        0.6.1
+Version:        0.7.0
 Release:        %autorelease
 Summary:        Retry middleware for reqwest
 
@@ -50,6 +50,18 @@ This package contains library source intended for building other packages which
 use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+tracing-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+tracing-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "tracing" feature of the "%{crate}" crate.
+
+%files       -n %{name}+tracing-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep

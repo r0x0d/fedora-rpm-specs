@@ -1,10 +1,10 @@
-%define upstream_version 2.1-45
+%define upstream_version 2.1-46
 %global debug_package %{nil}
 
 Summary:        Tool to transform and deploy CPU microcode update for x86
 Name:           microcode_ctl
 Version:        2.1
-Release:        65%{?dist}
+Release:        66%{?dist}
 Epoch:          2
 License:        GPL-2.0-or-later AND LicenseRef-Fedora-Firmware
 URL:            https://pagure.io/microcode_ctl
@@ -36,6 +36,12 @@ make DESTDIR=%{buildroot} PREFIX=%{_prefix} INSDIR=/usr/sbin install clean
 
 
 %changelog
+* Mon Nov 11 2024 Eugene Syromiatnikov <esyr@redhat.com> 2:2.1-66
+- Update to upstream 2.1-46. 20241029
+  - Update of 06-b7-01/0x32 (RPL-S B0) microcode from revision 0x129 up
+    to 0x12b.
+- Resolves RHBZ#2324127
+
 * Fri Sep 13 2024 Eugene Syromiatnikov <esyr@redhat.com> 2:2.1-65
 - Update to upstream 2.1-45. 20240910
   - Update of 06-97-02/0x07 (ADL-HX/S 8+8 C0) microcode from revision

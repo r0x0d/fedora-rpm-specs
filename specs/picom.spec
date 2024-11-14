@@ -7,7 +7,7 @@ ExcludeArch: %{ix86}
 %global tarball_version %%(echo %{version} | tr '~' '-')
 
 Name:           picom
-Version:        12.3
+Version:        12.4
 Release:        %autorelease
 Summary:        Lightweight compositor for X11
 

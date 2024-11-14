@@ -1,7 +1,7 @@
 Summary: Utilities for managing accounts and shadow password files
 Name: shadow-utils
 Version: 4.16.0
-Release: 6%{?dist}
+Release: 7%{?dist}
 Epoch: 2
 License: BSD-3-Clause AND GPL-2.0-or-later
 URL: https://github.com/shadow-maint/shadow
@@ -91,7 +91,6 @@ are used for managing group accounts.
 ### Subpackages ###
 %package subid
 Summary: A library to manage subordinate uid and gid ranges
-License: BSD and GPLv2+
 
 %description subid
 Utility library that provides a way to manage subid ranges.
@@ -99,7 +98,6 @@ Utility library that provides a way to manage subid ranges.
 
 %package subid-devel
 Summary: Development package for shadow-utils-subid
-License: BSD and GPLv2+
 Requires: shadow-utils-subid = %{epoch}:%{version}-%{release}
 
 %description subid-devel
@@ -294,6 +292,9 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libsubid.a
 %{_libdir}/libsubid.so
 
 %changelog
+* Tue Nov 12 2024 Iker Pedrosa <ipedrosa@redhat.com> - 2:4.16.0-7
+- SPDX license migration for subpackages
+
 * Wed Oct 16 2024 Iker Pedrosa <ipedrosa@redhat.com> - 2:4.16.0-6
 - Rebuilt for libeconf soname bump
 

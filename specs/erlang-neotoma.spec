@@ -16,8 +16,6 @@ BuildRequires:	erlang-rebar3
 
 %prep
 %autosetup -p1 -n %{realname}-%{version}
-# FIXME plugins are currently broken
-sed -i -e '/rebar3_hex/d' rebar.config
 
 %build
 %{erlang3_compile}

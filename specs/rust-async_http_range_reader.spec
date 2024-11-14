@@ -5,7 +5,7 @@
 %global crate async_http_range_reader
 
 Name:           rust-async_http_range_reader
-Version:        0.9.0
+Version:        0.9.1
 Release:        %autorelease
 Summary:        Library for streaming reading of files over HTTP using range requests
 

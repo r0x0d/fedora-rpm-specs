@@ -28,6 +28,7 @@ Obsoletes: java-%{?1}-openjdk-portable%{?2}%{?3} < 1:1000
 %{obsoleteLines -- %{?1} -openjfx-devel}
 %{obsoleteLines -- %{?1} -docs}
 %{obsoleteLines -- %{?1} -sources}
+%{obsoleteLines -- %{?1} -misc}
 }
 
 # 0/1 may vary in time, and is always enabled to 1 per FESCO exception

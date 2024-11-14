@@ -13,6 +13,8 @@ License:        MIT
 URL:            https://crates.io/crates/google-cloud-storage
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
+# * Allow reqwest-middleware 0.4, reqwest-retry 0.7, and retry-polices 0.4:
+#   https://github.com/yoshidan/google-cloud-rust/pull/322
 Patch:          google-cloud-storage-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
@@ -161,6 +163,7 @@ use the "trace" feature of the "%{crate}" crate.
 %check
 # these tests require setting up tokens + net access etc.
 # %%cargo_test -- --lib
+# * skip tests that require internet access and valid authentication tokens
 %cargo_test -- --doc
 %endif
 

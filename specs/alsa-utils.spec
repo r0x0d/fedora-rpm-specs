@@ -1,18 +1,17 @@
-%define   baseversion     1.2.12
+%define   baseversion     1.2.13
 #define   fixversion      .2
 %global   _hardened_build 1
 
 Summary: Advanced Linux Sound Architecture (ALSA) utilities
 Name:    alsa-utils
 Version: %{baseversion}%{?fixversion}
-Release: 2%{?dist}
+Release: 1%{?dist}
 License: GPL-2.0-or-later
 URL:     http://www.alsa-project.org/
 Source:  ftp://ftp.alsa-project.org/pub/utils/alsa-utils-%{version}.tar.bz2
 #Patch1:  alsa-utils-git.patch
 Source4: alsaunmute
 Source5: alsaunmute.1
-Source10: alsa.rules
 Source11: alsactl.conf
 Source20: alsa-restore.service
 Source22: alsa-state.service
@@ -69,7 +68,9 @@ Architecture (ALSA) framework and Fast Fourier Transform library.
 autoreconf -vif
 %configure CFLAGS="$RPM_OPT_FLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64" --disable-alsaconf \
    --with-udev-rules-dir=%{_prefix}/lib/udev/rules.d \
-   --with-systemdsystemunitdir=%{_unitdir}
+   --with-systemdsystemunitdir=%{_unitdir} \
+   --with-alsactl-udev-args="-E ALSA_CONFIG_PATH=/etc/alsa/alsactl.conf --initfile=/lib/alsa/init/00main" \
+   --with-alsactl-udev-extra-test=""
 make %{?_smp_mflags}
 cp %{SOURCE4} .
 
@@ -79,9 +80,8 @@ cp %{SOURCE4} .
 make install DESTDIR=%{buildroot}
 %find_lang %{name}
 
-# Install ALSA udev rules
+# Install ALSA udev rules and services
 mkdir -p %{buildroot}/%{_prefix}/lib/udev/rules.d
-install -p -m 644 %{SOURCE10} %{buildroot}/%{_prefix}/lib/udev/rules.d/90-alsa-restore.rules
 mkdir -p %{buildroot}/%{_unitdir}
 install -p -m 644 %{SOURCE20} %{buildroot}/%{_unitdir}/alsa-restore.service
 install -p -m 644 %{SOURCE22} %{buildroot}/%{_unitdir}/alsa-state.service
@@ -113,7 +113,7 @@ find %{buildroot} -name "*.la" -exec rm {} \;
 %config /etc/alsa/*
 %{_prefix}/lib/udev/rules.d/*
 %{_unitdir}/*
-%{_unitdir}/sound.target.wants/*
+#{_unitdir}/sound.target.wants/*
 %{alsacfgdir}/init/*
 %{_bindir}/aconnect
 %{_bindir}/alsaloop
@@ -123,8 +123,10 @@ find %{buildroot} -name "*.la" -exec rm {} \;
 %{_bindir}/amixer
 %{_bindir}/aplay
 %{_bindir}/aplaymidi
+%{_bindir}/aplaymidi2
 %{_bindir}/arecord
 %{_bindir}/arecordmidi
+%{_bindir}/arecordmidi2
 %{_bindir}/aseqdump
 %{_bindir}/aseqnet
 %{_bindir}/aseqsend
@@ -145,8 +147,10 @@ find %{buildroot} -name "*.la" -exec rm {} \;
 %{_mandir}/man1/amixer.1.gz
 %{_mandir}/man1/aplay.1.gz
 %{_mandir}/man1/aplaymidi.1.gz
+%{_mandir}/man1/aplaymidi2.1.gz
 %{_mandir}/man1/arecord.1.gz
 %{_mandir}/man1/arecordmidi.1.gz
+%{_mandir}/man1/arecordmidi2.1.gz
 %{_mandir}/man1/aseqdump.1.gz
 %{_mandir}/man1/aseqnet.1.gz
 %{_mandir}/man1/aseqsend.1.gz
@@ -201,6 +205,9 @@ fi
 %systemd_postun_with_restart alsa-state.service
 
 %changelog
+* Tue Nov 12 2024 Jaroslav Kysela <perex@perex.cz> - 1.2.13-1
+* Updated to 1.2.13
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.12-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -4,7 +4,7 @@
 
 Name: elfutils
 Version: 0.192
-%global baserelease 4
+%global baserelease 6
 Release: %{baserelease}%{?dist}
 URL: http://elfutils.org/
 %global source_url ftp://sourceware.org/pub/elfutils/%{version}/
@@ -62,6 +62,12 @@ BuildRequires: socat
 # For run-debuginfod-find-metadata.sh
 BuildRequires: jq
 
+# For debuginfod rpm IMA verification
+BuildRequires: rpm-devel
+BuildRequires: ima-evm-utils-devel
+BuildRequires: openssl-devel
+BuildRequires: rpm-sign
+
 # For eu-stacktrace
 %if %{enable_stacktrace}
 BuildRequires: sysprof-capture-devel
@@ -96,6 +102,15 @@ Patch2: elfutils-0.192-libelf-static.patch
 
 # Fix eu-stacktrace build with lto enabled.
 Patch3: elfutils-0.192-stacktrace-lto.patch
+
+# Fix ENABLE_IMA_VERIFICATION always evaluating to false.
+Patch4: elfutils-0.192-fix-configure-conditional.patch
+
+# Fix empty glob error on zsh.
+Patch5: elfutils-0.192-fix-zsh-profile.patch
+
+# Fix testsuite failure caused by ld changes.
+Patch6: elfutils-0.192-strip-ignore-non-ET_REL.patch
 
 %description
 Elfutils is a collection of utilities, including stack (to show
@@ -324,12 +339,14 @@ trap 'cat config.log' EXIT
 # not configure a default server.
 %configure CFLAGS="$RPM_OPT_FLAGS" \
 %if "%{?dist_debuginfod_url}"
+	--enable-debuginfod \
 	--enable-debuginfod-urls=%{dist_debuginfod_url} \
 %endif
 %if %{enable_stacktrace}
 	--enable-stacktrace \
 %endif
-	--enable-debuginfod
+	--enable-debuginfod-ima-verification \
+	--enable-debuginfod-ima-cert-path=%{_sysconfdir}/keys/ima
 trap '' EXIT
 %make_build
 
@@ -515,6 +532,15 @@ exit 0
 %systemd_postun_with_restart debuginfod.service
 
 %changelog
+* Tue Nov 12 2024 Aaron Merey <amerey@fedoraproject.org> - 0.192-6
+- Add elfutils-0.192-strip-ignore-non-ET_REL.patch
+- Set debuginfod IMA cert path
+
+* Tue Oct 29 2024 Aaron Merey <amerey@fedoraproject.org> - 0.192-5
+- Enable debuginfod IMA verification
+- Add elfutils-0.192-fix-configure-conditional.patch
+- Add elfutils-0.192-fix-zsh-profile.patch
+
 * Thu Oct 24 2024 Mark Wielaard <mjw@fedoraproject.org> - 0.192-4
 - Add elfutils-0.192-stacktrace-lto.patch
 - Enable eu-stacktrace on x86_64

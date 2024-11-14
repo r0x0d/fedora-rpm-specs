@@ -11,8 +11,8 @@
 
 %global github_owner     thephpleague
 %global github_name      container
-%global github_version   4.2.3
-%global github_commit    72f9bebe7bd623007782a40f5ec305661ab706d8
+%global github_version   4.2.4
+%global github_commit    7ea728b013b9a156c409c6f0fc3624071b742dec
 
 %global major            4
 
@@ -149,6 +149,9 @@ exit $RETURN_CODE
 
 
 %changelog
+* Tue Nov 12 2024 Remi Collet <remi@remirepo.net> - 4.2.4-1
+- update to 4.2.4
+
 * Wed Oct 23 2024 Remi Collet <remi@remirepo.net> - 4.2.3-1
 - update to 4.2.3
 

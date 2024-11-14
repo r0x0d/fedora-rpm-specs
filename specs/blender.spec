@@ -62,6 +62,8 @@ Patch1:         https://projects.blender.org/blender/blender/pulls/121960.patch
 # Python 3.13 compatibility
 # https://projects.blender.org/blender/blender/pulls/129191
 Patch2:         %{name}-python3.13.patch
+#  Fix crash on creating fluid domain with python 3.12 and up #130160
+Patch3:         https://projects.blender.org/blender/blender/pulls/130160.patch
 
 # Development stuff
 BuildRequires:  boost-devel

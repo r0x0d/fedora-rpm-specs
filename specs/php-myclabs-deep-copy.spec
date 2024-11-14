@@ -6,14 +6,9 @@
 #
 # Please, preserve the changelog entries
 #
-%if 0%{?fedora} >= 40 || 0%{?rhel} >= 10
-# Disabled as missing doctrine packages
-%bcond_with          tests
-%else
 %bcond_without       tests
-%endif
 
-%global gh_commit    3a6b9a42cd8f8771bd4295d13e1423fa7f3d942c
+%global gh_commit    123267b2c49fbf30d78a7b2d333f6be754b94845
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     myclabs
 %global gh_project   DeepCopy
@@ -22,8 +17,8 @@
 %global php_home     %{_datadir}/php
 
 Name:           php-myclabs-deep-copy%{major}
-Version:        1.12.0
-Release:        3%{?dist}
+Version:        1.12.1
+Release:        1%{?dist}
 
 Summary:        Create deep copies (clones) of your objects
 
@@ -44,8 +39,6 @@ BuildRequires:  php-spl
 #        "doctrine/common": "^2.13.3 || ^3.2.2",
 #        "phpspec/prophecy": "^1.10",
 #        "phpunit/phpunit": "^7.5.20 || ^8.5.23 || ^9.5.13"
-BuildRequires: (php-composer(doctrine/collections) >= 1.6.8 with php-composer(doctrine/collections) < 2)
-BuildRequires: (php-composer(doctrine/common)      >= 3.2.2 with php-composer(doctrine/common)      < 4)
 BuildRequires: (php-composer(phpspec/prophecy)     >= 1.10  with php-composer(phpspec/prophecy)     < 2)
 BuildRequires:  phpunit9 >= 9.5.13
 %endif
@@ -96,17 +89,21 @@ require '%{buildroot}%{php_home}/%{gh_project}%{major}/autoload.php';
 \Fedora\Autoloader\Autoload::addPsr4('DeepCopy\\', dirname(__DIR__).'/fixtures/');
 \Fedora\Autoloader\Autoload::addPsr4('DeepCopyTest\\', dirname(__DIR__).'/tests/DeepCopyTest/');
 \Fedora\Autoloader\Dependencies::required([
-    '%{php_home}/Doctrine/Common/Collections/autoload.php',
-    '%{php_home}/Doctrine/Common3/autoload.php',
     '%{php_home}/Prophecy/autoload.php',
 ]);
 EOF
 
+# disable doctrine related tests
+rm -r tests/DeepCopyTest/Matcher/Doctrine \
+      tests/DeepCopyTest/Filter/Doctrine
+
 ret=0
-for cmd in php php81 php82 php83; do
+for cmd in php php81 php82 php83 php84; do
   if which $cmd; then
     $cmd -d auto_prepend_file=vendor/autoload.php \
-         %{_bindir}/phpunit9 --verbose || ret=1
+       %{_bindir}/phpunit9 \
+         --filter '^((?!(test_it_can_apply_two_filters_with_chainable_filter|test_it_can_copy_property_after_applying_doctrine_proxy_filter_with_chainable_filter)).)*$' \
+         --verbose || ret=1
   fi
 done
 exit $ret
@@ -123,6 +120,9 @@ exit $ret
 
 
 %changelog
+* Tue Nov 12 2024 Remi Collet <remi@remirepo.net> - 1.12.1-1
+- update to 1.12.1
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.12.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

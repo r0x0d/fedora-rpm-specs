@@ -4,7 +4,7 @@
 Summary: SELinux library and simple utilities
 Name: libselinux
 Version: 3.7
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: LicenseRef-Fedora-Public-Domain
 # https://github.com/SELinuxProject/selinux/wiki/Releases
 Source0: https://github.com/SELinuxProject/selinux/releases/download/3.7/libselinux-3.7.tar.gz
@@ -25,6 +25,8 @@ Patch0003: 0003-libselinux-restorecon-Include-selinux-label.h.patch
 Patch0004: 0004-libselinux-Fix-integer-comparison-issues-when-compil.patch
 Patch0005: 0005-libselinux-deprecate-security_disable-3.patch
 Patch0006: 0006-libselinux-fix-swig-bindings-for-4.3.0.patch
+Patch0007: 0007-libselinux-setexecfilecon-Remove-useless-rc-check.patch
+Patch0008: 0008-libselinux-matchpathcon-RESOURCE_LEAK-Variable-con.patch
 # Patch list end
 BuildRequires: gcc make
 BuildRequires: ruby-devel ruby libsepol-static >= %{libsepolver} swig pcre2-devel

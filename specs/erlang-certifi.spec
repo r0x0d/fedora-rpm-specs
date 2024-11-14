@@ -10,7 +10,6 @@ URL:      https://github.com/%{realname}/erlang-%{realname}
 VCS:      git:%{url}.git
 Source0:  %{url}/archive/%{version}/%{realname}-%{version}.tar.gz
 Patch1:   erlang-certifi-0001-Enforce-Fedora-CA-bundle.patch
-Patch2:   erlang-certifi-0002-FIXME-disable-Rebar3-plugins.patch
 BuildRequires:  erlang-parse_trans
 BuildRequires:  erlang-rebar3
 

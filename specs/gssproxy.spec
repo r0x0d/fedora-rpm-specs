@@ -16,6 +16,8 @@ Source2:        gssproxy.sock.compat.conf
 %global gpsockpath %{_rundir}/gssproxy.default.sock
 
 ### Patches ###
+Patch0001: 0001-Fix-various-issues-detected-by-static-analysis.patch
+Patch0002: 0002-Make-systemd-use-0700-mode-on-cache-folders.patch
 
 ### Dependencies ###
 Requires: krb5-libs >= 1.12.0
