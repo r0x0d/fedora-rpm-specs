@@ -5,9 +5,9 @@
 %global crate color-print
 
 Name:           rust-color-print
-Version:        0.3.6
+Version:        0.3.7
 Release:        %autorelease
-Summary:        Colorize and stylize strings for terminal at compile-time, by using an HTML-like syntax
+Summary:        Colorize and stylize strings for terminal at compile-time
 
 License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/color-print

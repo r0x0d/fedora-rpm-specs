@@ -1,7 +1,7 @@
 %bcond xarray 1
 # Not yet packaged: python-uncertainties
 %bcond uncertainties 0
-# Requires babel <= 2.8; F41 has 2.15.0
+# Requires babel <= 2.8; F42 has 2.16.0
 %bcond babel 0
 # Not yet packaged: python-pint-pandas
 %bcond pandas 0
@@ -11,16 +11,13 @@
 %bcond dask 1
 
 Name:           python-pint
-Version:        0.24.3
+Version:        0.24.4
 Release:        %autorelease
 Summary:        Physical quantities module
 
 License:        BSD-3-Clause
 URL:            https://github.com/hgrecco/pint
 Source:         %{pypi_source pint}
-
-# Workaround from https://github.com/hgrecco/pint/issues/1969
-Patch:          dataclass-frozen.patch
 
 BuildArch:      noarch
 

@@ -41,7 +41,13 @@ Source0:    %{forgeurl}/archive/%{srcname}-%{version}/%{srcname}-%{srcname}-%{ve
 Source1:    README.fedora
 %endif
 # Add support for using a prctl to opt-in for receiving compat input events
-Patch:      %{forgeurl}/commit/6a07ea73a819a5ce4357721b4359956131d1b11e.patch
+Patch0:     %{forgeurl}/commit/6a07ea73a819a5ce4357721b4359956131d1b11e.patch
+# Steam fixes
+Patch1:     0001-Support-CLONE_FS-and-CLONE_FILES-with-fork-semantics.patch
+Patch2:     0002-FEXServer-Listen-on-both-abstract-named-sockets.patch
+Patch3:     0003-FEXLoader-Align-stack-base.patch
+Patch4:     0004-FileManagement-Hide-the-FEX-RootFS-fd-from-proc-self.patch
+Patch5:     0005-FileManagement-Hide-the-FEX-RootFS-fd-from-proc-self.patch
 
 # Bundled dependencies managed as git submodules upstream
 # These are too entangled with the build system to unbundle for now

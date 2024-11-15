@@ -5,7 +5,7 @@
 %global crate color-print-proc-macro
 
 Name:           rust-color-print-proc-macro
-Version:        0.3.6
+Version:        0.3.7
 Release:        %autorelease
 Summary:        Implementation for the package color-print
 

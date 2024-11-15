@@ -5,7 +5,7 @@
 Name:    plasma-workspace
 Summary: Plasma workspace, applications and applets
 Version: 6.2.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # Automatically converted from old format: BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND LGPL-3.0-or-later AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only) AND MIT - review is highly recommended.
 License: BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND LGPL-3.0-or-later AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only) AND MIT
@@ -28,6 +28,8 @@ Source40:       ssh-agent.conf
 Source41:       spice-vdagent.conf
 
 ## upstream patches
+# Drop xsetroot dependency, drop patch with 6.3.0
+Patch1:         https://invent.kde.org/plasma/plasma-workspace/-/merge_requests/4700.patch
 
 ## upstreamable Patches
 
@@ -55,6 +57,7 @@ BuildRequires:  libXcursor-devel
 BuildRequires:  libXtst-devel
 BuildRequires:  libXft-devel
 BuildRequires:  libxcb-devel
+BuildRequires:  xcb-util-cursor-devel
 BuildRequires:  xcb-util-keysyms-devel
 BuildRequires:  xcb-util-image-devel
 BuildRequires:  xcb-util-renderutil-devel
@@ -232,10 +235,7 @@ Requires:       qt6-qttools
 # kconf_update
 Requires:       /usr/bin/qtpaths-qt6
 
-Requires:       iceauth xrdb xprop
-
-# Set XWayland cursor. Remove in 6.3.0: https://invent.kde.org/plasma/plasma-workspace/-/merge_requests/4700
-Requires:       xsetroot
+Requires:       xrdb xprop
 
 Requires:       kde-settings-plasma
 
@@ -712,6 +712,10 @@ fi
 
 
 %changelog
+* Wed Nov 13 2024 Neal Gompa <ngompa@fedoraproject.org> - 6.2.3-2
+- Backport patch to drop xsetroot dependency
+- Drop unused iceauth dependency
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 6.2.3-1
 - 6.2.3
 

@@ -152,7 +152,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 17
+%global baserelease 18
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -341,7 +341,7 @@ Patch8: glibc-fedora-manual-dircategory.patch
 Patch13: glibc-fedora-localedata-rh61908.patch
 Patch17: glibc-cs-path.patch
 Patch23: glibc-python3.patch
-Patch24: glibc-add-back-support-non-glibc.patch
+Patch24: glibc-nolink-libc.patch
 
 ##############################################################################
 # Continued list of core "glibc" package information:
@@ -2358,6 +2358,9 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Wed Nov 13 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-18
+- Only relocate ld.so for the second time of libc.so has been loaded
+
 * Mon Nov 11 2024 DJ Delorie <dj@redhat.com> - 2.40.9000-17
 - Auto-sync with upstream branch master,
   commit 7b544224f82d20019f9b28522ebf8114a372d1a2.

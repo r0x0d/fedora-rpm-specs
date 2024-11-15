@@ -10,7 +10,7 @@ Version:        0.1.0.1
 Release:        %autorelease
 Summary:        A simple memoization function
 
-License:        LicenseRef-PublicDomain
+License:        LicenseRef-Fedora-Public-Domain
 Url:            https://hackage.haskell.org/package/%{pkg_name}
 # Begin cabal-rpm sources:
 Source0:        https://hackage.haskell.org/package/%{pkgver}/%{pkgver}.tar.gz

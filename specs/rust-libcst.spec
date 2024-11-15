@@ -8,15 +8,14 @@
 %global crate libcst
 
 Name:           rust-libcst
-Version:        1.4.0
+Version:        1.5.0
 Release:        %autorelease
 Summary:        Python parser and Concrete Syntax Tree library
 
-License:        MIT AND PSF-2.0
+License:        MIT AND (MIT AND PSF-2.0)
 URL:            https://crates.io/crates/libcst
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * specify license in crate metadata (only MIT and PSF-2.0 apply to this crate)
 # * drop unused, benchmark-only criterion dev-dependency
 # * drop unused support for building the crate as a Python extension module
 Patch:          libcst-fix-metadata.diff

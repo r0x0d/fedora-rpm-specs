@@ -1,5 +1,5 @@
 Name:             backintime
-Version:          1.5.2
+Version:          1.5.3
 Release:          1%{?dist}
 Summary:          Simple backup tool inspired from the Flyback project and TimeVault
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -8,12 +8,12 @@ URL:              https://github.com/bit-team/backintime
 Source0:          https://github.com/bit-team/backintime/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
 BuildArch:        noarch
+BuildRequires:    cronie
 BuildRequires:    desktop-file-utils
 BuildRequires:    gettext
 BuildRequires:    python-rpm-macros
 BuildRequires:    python%{python3_pkgversion}-devel
 BuildRequires:    systemd
-BuildRequires:    pylint
 Requires:         %{name}-common = %{version}-%{release}
 # we place additional icons
 Requires:         hicolor-icon-theme
@@ -22,7 +22,6 @@ Requires:         hicolor-icon-theme
 BuildRequires:    python%{python3_pkgversion}-keyring
 BuildRequires:    python%{python3_pkgversion}-pyfakefs
 BuildRequires:    python%{python3_pkgversion}-pytest
-BuildRequires:    python%{python3_pkgversion}-pylint
 BuildRequires:    python%{python3_pkgversion}-dbus
 BuildRequires:    python%{python3_pkgversion}-pyqt6-base
 BuildRequires:    /usr/bin/ssh-agent
@@ -159,6 +158,10 @@ EOF
 %check
 rm common/test/test_tools.py
 rm common/test/test_sshtools.py
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
+rm common/test/test_lint.py qt/test/test_lint.py
+# remove test until PyFakeFS is not updated 
+rm common/test/test_uniquenessset.py
 make -C common test-v
 
 %files common -f %{name}.lang
@@ -193,6 +196,9 @@ make -C common test-v
 
 
 %changelog
+* Wed Nov 13 2024 Johannes Lips <hannes@fedoraproject.org> - 1.5.3-1
+- update to latest upstream release
+
 * Tue Aug 06 2024 Johannes Lips <hannes@fedoraproject.org> - 1.5.2-1
 - update to latest upstream release
 

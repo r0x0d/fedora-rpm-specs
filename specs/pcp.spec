@@ -1,11 +1,14 @@
 Name:    pcp
 Version: 6.3.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: System-level performance monitoring and performance management
 License: GPL-2.0-or-later AND LGPL-2.1-or-later AND CC-BY-3.0
 URL:     https://pcp.io
 
 Source0: https://github.com/performancecopilot/pcp/releases/pcp-%{version}.src.tar.gz
+
+Patch0: pcp-xsos-fixes.patch
+
 %if 0%{?fedora} >= 40 || 0%{?rhel} >= 10
 ExcludeArch: %{ix86}
 %endif
@@ -3602,6 +3605,9 @@ fi
 %files zeroconf -f pcp-zeroconf-files.rpm
 
 %changelog
+* Thu Nov 14 2024 Nathan Scott <nathans@redhat.com> - 6.3.2-2
+- Back-port upstream bug fixes for pcp-xsos(1).
+
 * Wed Nov 06 2024 Nathan Scott <nathans@redhat.com> - 6.3.2-1
 - Update to latest upstream PCP version.
 

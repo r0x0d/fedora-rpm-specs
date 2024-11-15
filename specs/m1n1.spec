@@ -31,8 +31,8 @@ Source:         https://github.com/rafalh/rust-fatfs/archive/%{fatfs_commit}/rus
 Patch:          m1n1-rust-deps.patch
 # https://github.com/rafalh/rust-fatfs/commit/eb274ca10d035c176e5eac79420ca734c02613ae
 Patch:          rust-fatfs-fix-build-log.patch
-# Fix build failure in Fedora
-Patch:          %{url}/pull/415.patch
+# rust: 1.82.0 compat
+Patch:          %{url}/commit/b901c2706f214b3f7963152ffe826bd9cde66666.patch
 
 %ifarch aarch64
 # On aarch64 m1n1 does a native build

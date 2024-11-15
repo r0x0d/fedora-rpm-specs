@@ -7,12 +7,12 @@
 #
 %global wp_content %{_datadir}/wordpress/wp-content
 
-%global upstream_version 6.6.2
+%global upstream_version 6.7
 #global upstream_prever  RC5
 #global upstream_lower   rc5
 
 Summary:    Blog tool and publishing platform
-URL:        http://www.wordpress.org
+URL:        https://wordpress.org/
 Name:       wordpress
 Version:    %{upstream_version}%{?upstream_prever:~%upstream_lower}
 Release:    1%{?dist}
@@ -98,11 +98,11 @@ Requires: httpd
 Requires: ca-certificates
 # Bundled
 # grep "SIMPLEPIE_VERSION'" wordpress/wp-includes/class-simplepie.php
-Provides: bundled(php-simplepie) = 1.5.8
+Provides: bundled(php-simplepie) = 1.8.0
 # grep ' VERSION '  wordpress/wp-includes/ID3/getid3.php
 Provides: bundled(php-getid3) = 1.9.23
 # grep ' VERSION ' wordpress/wp-includes/PHPMailer/PHPMailer.php
-Provides: bundled(php-phpmailer)  = 6.9.1
+Provides: bundled(php-phpmailer)  = 6.9.2
 Provides: wordpress-mu = %{version}-%{release}
 Obsoletes: wordpress-mu < 2.9.3
 
@@ -174,9 +174,9 @@ sed -e 's/\r//' wp-config-sample.php >wp-config.php
 sed -i -e 's/\r//' license.txt
 
 : Bundled library versions
-grep "SIMPLEPIE_VERSION'" wp-includes/class-simplepie.php
-grep ' VERSION '          wp-includes/ID3/getid3.php
-grep ' VERSION '          wp-includes/PHPMailer/PHPMailer.php
+grep ' VERSION '  wp-includes/SimplePie/src/SimplePie.php
+grep ' VERSION '  wp-includes/ID3/getid3.php
+grep ' VERSION '  wp-includes/PHPMailer/PHPMailer.php
 
 
 %build
@@ -252,6 +252,9 @@ end
 
 
 %changelog
+* Wed Nov 13 2024 Remi Collet <remi@remirepo.net> - 6.7-1
+- WordPress 6.7 “Rollins”
+
 * Wed Sep 11 2024 Remi Collet <remi@remirepo.net> - 6.6.2-1
 - WordPress 6.6.2 Maintenance Release
 

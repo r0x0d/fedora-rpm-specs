@@ -1755,14 +1755,14 @@ echo "Those RPMs are just repacking portable tarballs extracted from portable RP
 echo "Usually this exact portable RPM can not be obtained via dnf install, but you can download it." >> %{repack_file}
 echo "The exact info is at bottom." >> %{repack_file}
 echo "All java- names and versions:" >> %{repack_file}
-ls -l %{_jvmdir} >> %{repack_file}
+ls -l %{portablejvmdir} >> %{repack_file}
 rpm -qa | grep "java-" >> %{repack_file}
 echo "Used %{compatiblename}.*portable:" >> %{repack_file}
-ls -l %{_jvmdir} | grep "%{compatiblename}.*portable" >> %{repack_file} || echo "Not found!" >> %{repack_file}
+ls -l %{portablejvmdir} | grep "%{compatiblename}.*portable" >> %{repack_file} || echo "Not found!" >> %{repack_file}
 echo "Used %{name}.*portable:" >> %{repack_file}
 rpm -qa | grep "%{name}.*portable" >> %{repack_file} || echo "Not found!" >> %{repack_file}
 echo "Used %{version}.*portable:" >> %{repack_file}
-ls -l %{_jvmdir} | grep "%{version}.*portable" >> %{repack_file} || echo "Not found!" >> %{repack_file}
+ls -l %{portablejvmdir} | grep "%{version}.*portable" >> %{repack_file} || echo "Not found!" >> %{repack_file}
 echo "Used portable.*%{version}:" >> %{repack_file}
 rpm -qa | grep "portable.*%{version}" >> %{repack_file} || echo "Not found!" >> %{repack_file}
 echo "Where this is %{fullversion}" >> %{repack_file}

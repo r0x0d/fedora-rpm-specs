@@ -1255,7 +1255,12 @@ CheckPython() {
   # freethreading{,-debug} build, skipping it to shorten the build time
   # see: https://github.com/python/cpython/issues/121719
   LD_LIBRARY_PATH=$ConfDir $ConfDir/python -m test.regrtest \
-    -wW --slowest %{_smp_mflags} --timeout=2700 \
+    -wW --slowest %{_smp_mflags} \
+    %ifarch riscv64
+    --timeout=8100 \
+    %else
+    --timeout=2700 \
+    %endif
     -i test_freeze_simple_script \
     -i test_check_probes \
     %ifarch %{mips64}

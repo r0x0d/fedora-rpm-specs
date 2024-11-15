@@ -1,7 +1,7 @@
 %global jsname jquery-ui
 
 Name:		js-%{jsname}
-Version:	1.14.0
+Version:	1.14.1
 Release:	1%{?dist}
 Summary:	jQuery user interface
 
@@ -49,6 +49,9 @@ install -m 644 -p themes/base/images/* %{buildroot}%{_jsdir}/%{jsname}/images
 %doc AUTHORS.txt CONTRIBUTING.md README.md
 
 %changelog
+* Wed Nov 13 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 1.14.1-1
+- Update to version 1.14.1
+
 * Mon Aug 12 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 1.14.0-1
 - Update to version 1.14.0
 

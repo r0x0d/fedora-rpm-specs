@@ -14,7 +14,7 @@
 Name:           ImageMagick
 Epoch:          1
 Version:        7.1.1.40
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An X application for displaying and manipulating images
 
 %global VER %(foo=%{version}; echo ${foo:0:5})
@@ -26,6 +26,7 @@ URL:            https://imagemagick.org/
 Source0:        https://imagemagick.org/archive/releases/%{name}-%{VER}-%{Patchlevel}.tar.xz
 Source1:        https://imagemagick.org/archive/releases/%{name}-%{VER}-%{Patchlevel}.tar.xz.asc
 Source2:        ImageMagick.keyring
+Patch0:         https://github.com/ImageMagick/ImageMagick/pull/7768/commits/8de691a078d95e1f2b75ac2fe940fd2478d6b99f.patch
 
 BuildRequires:  pkgconfig(bzip2)
 BuildRequires:  pkgconfig(freetype2)
@@ -413,6 +414,9 @@ rm PerlMagick/demo/Generic.ttf
 %endif
 
 %changelog
+* Thu Nov 14 2024 Sérgio Basto <sergio@serjux.com> - 1:7.1.1.40-2
+- Revert map changes breaking ABI
+
 * Sat Nov 09 2024 Packit <hello@packit.dev> - 1:7.1.1.40-1
 - Update to version 7.1.1.40
 - Resolves: rhbz#2324946

@@ -1,7 +1,7 @@
 Summary: A set of basic GNU tools commonly used in shell scripts
 Name:    coreutils
 Version: 9.5
-Release: 10%{?dist}
+Release: 11%{?dist}
 # some used parts of gnulib are under various variants of LGPL
 License: GPL-3.0-or-later AND GFDL-1.3-no-invariants-or-later AND LGPL-2.1-or-later AND LGPL-3.0-or-later
 Url:     https://www.gnu.org/software/coreutils/
@@ -35,6 +35,10 @@ Patch104: coreutils-df-direct.patch
 # coreutils no longer lists Cockpit logins in `who` (rhbz#2307847)
 # https://git.savannah.gnu.org/cgit/gnulib.git/patch/?id=43f7f428a1665950233557bd97611bd5e996b5cb
 Patch105: coreutils-9.5-readutmp-web-session.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=2325167
+Patch106: coreutils-nproc-affinity-1.patch
+Patch107: coreutils-nproc-affinity-2.patch
 
 # (sb) lin18nux/lsb compliance - multibyte functionality patch
 Patch800: coreutils-i18n.patch
@@ -278,6 +282,9 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 %license COPYING
 
 %changelog
+* Wed Nov 13 2024 Florian Weimer <fweimer@redhat.com> - 9.5-11
+- Affinity mask handling in nproc for large CPU counts (rhbz#2325167)
+
 * Fri Sep 27 2024 Lukáš Zaoral <lzaoral@redhat.com> - 9.5-10
 - fix fold -b with UTF8 locale (RHEL-60295)
 

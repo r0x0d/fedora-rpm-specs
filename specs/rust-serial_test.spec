@@ -5,7 +5,7 @@
 %global crate serial_test
 
 Name:           rust-serial_test
-Version:        3.1.1
+Version:        3.2.0
 Release:        %autorelease
 Summary:        Allows for the creation of serialised Rust tests
 
@@ -70,30 +70,6 @@ use the "docsrs" feature of the "%{crate}" crate.
 %files       -n %{name}+docsrs-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+document-features-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+document-features-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "document-features" feature of the "%{crate}" crate.
-
-%files       -n %{name}+document-features-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+env_logger-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+env_logger-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "env_logger" feature of the "%{crate}" crate.
-
-%files       -n %{name}+env_logger-devel
-%ghost %{crate_instdir}/Cargo.toml
-
 %package     -n %{name}+file_locks-devel
 Summary:        %{summary}
 BuildArch:      noarch
@@ -104,42 +80,6 @@ This package contains library source intended for building other packages which
 use the "file_locks" feature of the "%{crate}" crate.
 
 %files       -n %{name}+file_locks-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+fslock-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+fslock-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "fslock" feature of the "%{crate}" crate.
-
-%files       -n %{name}+fslock-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+futures-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+futures-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "futures" feature of the "%{crate}" crate.
-
-%files       -n %{name}+futures-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+log-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+log-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "log" feature of the "%{crate}" crate.
-
-%files       -n %{name}+log-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+logging-devel

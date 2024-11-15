@@ -2,7 +2,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 0.3.3
-Release: 16%{?dist}
+Release: 17%{?dist}
 Summary: Parsing and returning cookies in Ruby
 # Automatically converted from old format: BSD - review is highly recommended.
 License: LicenseRef-Callaway-BSD	
@@ -13,6 +13,9 @@ Source0: https://rubygems.org/gems/cookiejar-%{version}.gem
 Patch0: rubygem-cookiejar-0.3.3-Remove-rspec-collection_matchers-dependency.patch
 # https://github.com/dorianmariefr/cookiejar2/pull/2
 Patch1: cookiejar2-pr2-fix-regexp-3rd-arg.patch
+# Ref: https://github.com/ruby/uri/issues/125
+# Use URI::RFC2396_Parser explicitly for ruby34 (uri 1.0.1)
+Patch2: cookiejar-uri-1_0-use-rfc2396_regexp-explicitly.patch
 BuildRequires: rubygem(rspec)
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel 
@@ -38,6 +41,7 @@ Documentation for %{name}
 
 %patch -P0 -p1
 %patch -P1 -p1
+%patch -P2 -p1
 
 %build
 gem build ../%{gem_name}-%{version}.gemspec
@@ -73,6 +77,9 @@ cp -a .%{gem_dir}/* \
 %{gem_instdir}/Gemfile
 
 %changelog
+* Tue Nov 12 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.3.3-17
+- Use URI::RFC2396_Parser explicitly for ruby34 (uri 1.0.1)
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.3.3-16
 - convert license to SPDX
 

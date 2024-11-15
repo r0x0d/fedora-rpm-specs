@@ -1,25 +1,25 @@
 %global usesnapshot 0
-%global commit0 d524675772f4600c259414b535ff7a980ca1c962
+%global commit0 6da765d239de2527ba60b2a8823ad70d6cd8cd55
 %if 0%{?usesnapshot}
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global gitdate 20230928
+%global gitdate 20241112
 %endif
+%global metadata_name org.guayadeque.guayadeque
 
 # wx-config
 %global wxversion %(wx-config-3.2 --release)
 
 Name:           guayadeque
 %if 0%{?usesnapshot}
-Version:        0.4.8
-Release:        0.6.%{gitdate}git%{shortcommit0}%{?dist}
+Version:        0.6.1
+Release:        0.1.%{gitdate}git%{shortcommit0}%{?dist}
 %else
-Version:        0.6.0
+Version:        0.6.1
 Release:        1%{?dist}
 %endif
 Summary:        Music player
 # The entire source code is GPL-3.0-or-later except hmac/ which is BSD-3-Clause
-# and TagInfo.* which is LGPL-2.0-or-later
-License:        GPL-3.0-or-later AND BSD-3-Clause AND LGPL-2.0-or-later AND LGPL-2.0-or-later WITH WxWindows-exception-3.1
+License:        GPL-3.0-or-later AND BSD-3-Clause
 URL:            https://github.com/thothix/guayadeque
 %if 0%{?usesnapshot}
 Source0:        %url/archive/%{commit0}/%{name}-%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
@@ -158,11 +158,11 @@ mkdir -p %{buildroot}%{_datadir}/{applications,appdata}
 desktop-file-install --delete-original  \
         --dir %{buildroot}%{_datadir}/applications   \
         --remove-category Application \
-        %{buildroot}%{_datadir}/applications/%{name}.desktop
+        %{buildroot}%{_datadir}/applications/%{metadata_name}.desktop
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
-appstream-util validate-relax --nonet %{buildroot}%{_datadir}/appdata/*.appdata.xml
+appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.metainfo.xml
 
 %files
 %doc README
@@ -172,11 +172,15 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/appdata/*.appdata.
 %{_datadir}/%{name}/*.xml
 %dir %{_datadir}/%{name}
 %exclude %{_datadir}/locale/*/LC_MESSAGES/%{name}.mo
-%{_datadir}/pixmaps/%{name}.png
-%{_datadir}/applications/%{name}.desktop
-%{_datadir}/appdata/%{name}.appdata.xml
+%{_datadir}/applications/%{metadata_name}.desktop
+%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
+%{_datadir}/metainfo/%{metadata_name}.metainfo.xml
 
 %changelog
+* Wed Nov 13 2024 Martin Gansser <martinkg@fedoraproject.org> - 0.6.1-1
+- Correct license type
+- Update to 0.6.1
+
 * Sat Nov 09 2024 Martin Gansser <martinkg@fedoraproject.org> - 0.6.0-1
 - Add new github url
 - Update to 0.6.0

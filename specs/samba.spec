@@ -148,8 +148,6 @@
 %bcond lmdb 0
 %endif
 
-%define samba_requires_eq()  %(LC_ALL="C" echo '%*' | xargs -r rpm -q --qf 'Requires: %%{name} = %%{epoch}:%%{version}\\n' | sed -e 's/ (none):/ /' -e 's/ 0:/ /' | grep -v "is not")
-
 %global samba_version 4.21.1
 
 # The release field is extended:

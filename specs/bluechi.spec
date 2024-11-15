@@ -3,40 +3,55 @@
 %global with_python 1
 %endif
 
+# coverage collection is disabled by default , it can be enabled passing `--define "with_coverage 1"` option to rpmbuild
+%if 0%{?with_coverage}
+%global coverage_flags -Dwith_coverage=true
+%endif
+
+
 Name:		bluechi
-Version:	0.8.0
-Release:	4%{?dist}
+Version:	0.9.0
+Release:	3%{?dist}
 Summary:	A systemd service controller for multi-nodes environments
 License:	LGPL-2.1-or-later AND CC0-1.0
 URL:		https://github.com/eclipse-bluechi/bluechi
-Vendor:		Fedora Project
-Packager:	Red Hat
-# When downloading from github - no longer works due to a git submodule
-#Source0:	%{url}/archive/v%{version}/%{name}-%{version}.tar.gz
-# To download the manually uploaded tarball
 Source0:	%{url}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
 # Required to apply the patch
 BuildRequires:	git-core
 BuildRequires:	gcc
-# Meson needs to detect C++, because part of inih library (which we don't use)
-# provides C++ functionality
+# Meson needs to detect C++, because part of inih library (which we don't use) provides C++ functionality
 BuildRequires:	gcc-c++
 BuildRequires:	meson
 BuildRequires:	systemd-devel
 BuildRequires:	systemd-rpm-macros
 BuildRequires:	golang-github-cpuguy83-md2man
 
+%if 0%{?with_coverage}
+BuildRequires:	lcov
+BuildRequires: sed
+%endif
+
 %description
 BlueChi is a systemd service controller for multi-node environments with a
 predefined number of nodes and with a focus on highly regulated environments
 such as those requiring functional safety (for example in cars).
 
+
+##########################
+### bluechi-controller ###
+##########################
+
 %package	controller
 Summary:	BlueChi service controller
 Requires:	systemd
 Recommends:	bluechi-selinux
-Obsoletes:	hirte < 0.4.0
+
+%if 0%{?with_coverage}
+Requires:	bluechi-coverage = %{version}-%{release}
+%endif
+
+Obsoletes:	hirte < 0.6.0
 Provides:	hirte = %{version}-%{release}
 Obsoletes:	bluechi < 0.7.0
 Provides:	bluechi = %{version}-%{release}
@@ -77,13 +92,21 @@ This package contains the controller service.
 %{_unitdir}/bluechi-controller.service
 %{_unitdir}/bluechi-controller.socket
 
-#--------------------------------------------------
+
+#####################
+### bluechi-agent ###
+#####################
 
 %package agent
 Summary:	BlueChi service controller agent
 Requires:	systemd
 Recommends:	bluechi-selinux
-Obsoletes:	hirte-agent < 0.4.0
+
+%if 0%{?with_coverage}
+Requires:	bluechi-coverage = %{version}-%{release}
+%endif
+
+Obsoletes:	hirte-agent < 0.6.0
 Provides:	hirte-agent = %{version}-%{release}
 
 %description agent
@@ -124,7 +147,10 @@ This package contains the node agent.
 %{_unitdir}/bluechi-dep@.service
 %{_userunitdir}/bluechi-dep@.service
 
-#--------------------------------------------------
+
+#######################
+### bluechi-selinux ###
+#######################
 
 %package selinux
 Summary:	BlueChi SELinux policy
@@ -138,7 +164,7 @@ Requires:	selinux-policy >= %{_selinux_policy_version}
 
 Requires(post):	policycoreutils
 
-Obsoletes:	hirte-selinux < 0.4.0
+Obsoletes:	hirte-selinux < 0.6.0
 Provides:	hirte-selinux = %{version}-%{release}
 
 %global selinuxtype targeted
@@ -166,13 +192,19 @@ if [ $1 -eq 0 ]; then
 fi
 
 
-#--------------------------------------------------
+###################
+### bluechi-ctl ###
+###################
 
 %package ctl
 Summary:	BlueChi service controller command line tool
 Requires:	%{name} = %{version}-%{release}
-Provides:	bluechictl = %{version}
-Obsoletes:	hirte-ctl < 0.4.0
+
+%if 0%{?with_coverage}
+Requires:	bluechi-coverage = %{version}-%{release}
+%endif
+
+Obsoletes:	hirte-ctl < 0.6.0
 Provides:	hirte-ctl = %{version}-%{release}
 
 %description ctl
@@ -187,7 +219,37 @@ This package contains the service controller command line tool.
 %{_bindir}/bluechictl
 %{_mandir}/man1/bluechictl.*
 
-#--------------------------------------------------
+
+#########################
+### bluechi-is-online ###
+#########################
+
+%package is-online
+Summary:	Command line tool to monitor the connection state of BlueChi's components
+Recommends:	bluechi-controller = %{version}-%{release}
+Recommends:	bluechi-agent = %{version}-%{release}
+
+%if 0%{?with_coverage}
+Requires:	bluechi-coverage = %{version}-%{release}
+%endif
+
+%description is-online
+BlueChi is a systemd service controller for multi-nodes environements with a
+predefined number of nodes and with a focus on highly regulated environment
+such as those requiring functional safety (for example in cars).
+This package contains a command line tool for checking and monitoring the
+connection state of BlueChi's core components.
+
+%files is-online
+%doc README.md
+%license LICENSE
+%{_bindir}/bluechi-is-online
+%{_mandir}/man1/bluechi-is-online.*
+
+
+#######################
+### python3-bluechi ###
+#######################
 
 %if %{with_python}
 %package -n python3-bluechi
@@ -197,8 +259,8 @@ BuildRequires:	python3-devel
 BuildRequires:	python3-setuptools
 Requires:	python3-dasbus
 
-Obsoletes:	python3-pyhirte < 0.4.0
-Provides:	python3-pyhirte = %{version}-%{release}
+Obsoletes:	python3-hirte < 0.6.0
+Provides:	python3-hirte = %{version}-%{release}
 
 %description -n python3-bluechi
 bluechi is a python module to access the public D-Bus API of BlueChi project.
@@ -210,16 +272,36 @@ API description and manually written code to simplify recurring tasks.
 %doc README.md
 %{python3_sitelib}/bluechi-*.egg-info/
 %{python3_sitelib}/bluechi/
-
 %endif
 
-#--------------------------------------------------
+
+########################
+### bluechi-coverage ###
+########################
+
+%if 0%{?with_coverage}
+%package coverage
+Summary:	Code coverage files for BlueChi
+
+%description coverage
+This package contains code coverage files created during the build. Those files
+will be used during integration tests when creating code coverage report.
+
+%files coverage
+%license LICENSE
+%{_datadir}/bluechi-coverage/bin/*
+%{_datadir}/bluechi-coverage/*
+%dir %{_localstatedir}/tmp/bluechi-coverage/
+%endif
+
+
 
 %prep
 %autosetup -S git_am
 
+
 %build
-%meson -Dapi_bus=system
+%meson -Dapi_bus=system %{?coverage_flags}
 %meson_build
 
 %if %{with_python}
@@ -232,6 +314,16 @@ popd
 %install
 %meson_install
 
+%if 0%{?with_coverage}
+mkdir -p %{buildroot}/%{_datadir}/bluechi-coverage/bin
+cp tests/scripts/gather-code-coverage.sh %{buildroot}/%{_datadir}/bluechi-coverage/bin
+cp tests/scripts/setup-src-dir-for-coverage.sh %{buildroot}/%{_datadir}/bluechi-coverage/bin
+
+mkdir -p %{buildroot}/%{_datadir}/bluechi-coverage/unit-test-results
+
+mkdir -p %{buildroot}/%{_localstatedir}/tmp/bluechi-coverage/
+%endif
+
 %if %{with_python}
 pushd src/bindings/python
 %py3_install
@@ -242,8 +334,24 @@ popd
 %check
 %meson_test
 
+%if 0%{?with_coverage}
+# Generate code coverage report from unit tests execution
+build-scripts/generate-unit-tests-code-coverage.sh %{_vpath_builddir} %{buildroot}/%{_datadir}
+%endif
+
 
 %changelog
+* Wed Nov 13 2024 Mark Kemel <mkemel@redhat.com> - 0.9.0-2
+- Remove "Vendor" and "Packager" field
+
+* Wed Nov 13 2024 Mark Kemel <mkemel@redhat.com> - 0.9.0-2
+- Roll back Vendor field to "Fedora Project"
+
+* Wed Nov 13 2024 Mark Kemel <mkemel@redhat.com> - 0.9.0-1
+- Update to 0.9.0
+- Renamed vendor to Eclipse Bluechi
+- Overall alignment with upstream spec file
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

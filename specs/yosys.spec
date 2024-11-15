@@ -1,11 +1,11 @@
-%global commit0 a00137c2f691c02011db4d75e55c4e366f2b1938
+%global commit0 f20f913223c42fce6ecc4382b281cf67952e0a72
 %global shortcommit0 %%(c=%%{commit0}; echo ${c:0:7})
 
-%global snapdate 20241011
+%global snapdate 20241110
 
 Name:           yosys
-Version:        0.46
-Release:        4.%{snapdate}git%{shortcommit0}%{?dist}
+Version:        0.47
+Release:        1.%{snapdate}git%{shortcommit0}%{?dist}
 Summary:        Yosys Open SYnthesis Suite, including Verilog synthesizer
 License:        ISC and MIT
 URL:            http://www.clifford.at/yosys/
@@ -21,25 +21,38 @@ Source2:        http://http.debian.net/debian/pool/main/y/yosys/yosys_0.33-5.deb
 # Fedora-specific patch:
 # Change the substitution done when making yosys-config so that it outputs
 # CXXFLAGS with -I/usr/include/yosys
-Patch1:         yosys-cfginc.patch
+Patch1:         0001-fedora-yosys-cfginc-patch.patch
 
 # Fedora-specific patch:
 # When invoking yosys-config for examples in "make docs", need to use
 # relative path for includes, as they're not installed in build host
 # filesystem.
-Patch2:         yosys-mancfginc.patch
+Patch2:         0002-fedora-yosys-mancfginc-patch.patch
 
 # Fedora-specific patch:
 # When building docs, remove components designed to be pulled down from
 # the internet during build (that break the self-contained nature of the
 # sources)
-Patch3:         yosys-doc-offline.patch
+Patch3:         0003-fedora-yosys-doc-offline-patch.patch
+
+# Fedora-specific patch:
+# Use relative path (instead of assuming a bundled submodule) when
+# referencing the cxxopts.hpp include file.
+Patch4:         0004-fedora-yosys-cxxopts-patch.patch
 
 # https://github.com/YosysHQ/yosys/pull/4683
-Patch4:         0001-Respect-SOURCE_DATE_EPOCH-in-generate_bram_types_sim.patch
+Patch5:         0005-Respect-SOURCE_DATE_EPOCH-in-generate_bram_types_sim.patch
+
+# Fedora-specific patch:
+# Only link in furo-ys for building docs when the target is something
+# other than latexpdf (where it's not needed), to avoid failing due
+# to an unpackaged dependency.
+# see also: https://github.com/YosysHQ/yosys/issues/4725
+Patch6:         0006-fedora-yosys-furo-patch.patch
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
+BuildRequires:  cxxopts-devel
 BuildRequires:  bison flex readline-devel pkgconfig
 BuildRequires:  tcl-devel libffi-devel
 BuildRequires:  yosyshq-abc >= 0.46
@@ -47,6 +60,7 @@ BuildRequires:  iverilog >= 12.0
 BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  python3-devel
 BuildRequires:  txt2man
+BuildRequires:  gtkwave
 
 # required for documentation:
 BuildRequires: graphviz
@@ -102,12 +116,7 @@ Development files to build Yosys synthesizer plugins.
 
 
 %prep
-%setup -q -n %{name}-%{commit0}
-
-%patch 1 -p1 -b .cfginc
-%patch 2 -p1 -b .mancfginc
-%patch 3 -p1 -b .docoffline
-%patch 4 -p1 -b .timestamp
+%autosetup -p1 -n %{name}-%{commit0}
 
 # Ensure that Makefile doesn't wget viz.js
 cp %{SOURCE1} .
@@ -180,6 +189,10 @@ make test ABCEXTERNAL=%{_bindir}/abc SEED=314159265359
 
 
 %changelog
+* Sun Nov 10 2024 Gabriel Somlo <gsomlo@gmail.com> - 0.47.1.20241110gitf20f913
+- switch primary source & patches to autosetup
+- update to 0.47 snapshot
+
 * Thu Oct 24 2024 Zbigniew Jedrzejewski-Szmek <zbyszek@in.waw.pl> - 0.46-4.20241011gita00137c
 - Call %%py_byte_compile and apply patch to fix build reproducibility
 

@@ -5,7 +5,7 @@
 %global crate ignition-config
 
 Name:           rust-ignition-config
-Version:        0.4.1
+Version:        0.5.0
 Release:        %autorelease
 Summary:        Data structures for reading/writing Ignition configs
 

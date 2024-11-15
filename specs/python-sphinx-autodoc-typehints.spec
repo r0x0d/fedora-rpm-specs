@@ -11,7 +11,7 @@ Release:        %autorelease
 Summary:        Type hints support for the Sphinx autodoc extension
 
 License:        MIT
-URL:            https://github.com/agronholm/sphinx-autodoc-typehints
+URL:            https://github.com/tox-dev/sphinx-autodoc-typehints
 Source0:        %{pypi_source %{altname}}
 
 BuildArch:      noarch
@@ -30,6 +30,8 @@ Summary:        %{summary}
 %autosetup -p1 -n %{altname}-%{version}
 # Requires sphinx>=8.0.2, sphinx in Fedora lacks 6 months behind at the moment
 sed -i -e "s/sphinx>=[0-9.]*/sphinx/g" pyproject.toml
+# Relax the version constraint of hatchling, it is unnecessarily strict for EL10
+sed -i -e "s/hatchling>=1.25/hatchling>=1.24/" pyproject.toml
 
 %generate_buildrequires
 export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}

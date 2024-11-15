@@ -9,7 +9,7 @@
 
 Name:              valkey
 Version:           8.0.1
-Release:           2%{?dist}
+Release:           3%{?dist}
 Summary:           A persistent key-value database
 # valkey: BSD-3-Clause
 # hiredis: BSD-3-Clause
@@ -140,6 +140,7 @@ Redis API.
 %package           doc
 Summary:           Documentation and extra man pages for %{name}
 BuildArch:         noarch
+License:           CC-BY-SA-4.0
 %if 0%{?fedora} > 40 || 0%{?rhel} > 9
 Obsoletes:         redis-doc < 7.4
 Provides:          redis-doc = %{version}-%{release}
@@ -222,6 +223,9 @@ pushd %{name}-doc-%{version}
 # install html docs
 install -d %{buildroot}%{_docdir}/%{name}/
 cp -ra _build/html/* %{buildroot}%{_docdir}/%{name}/
+# install doc license
+install -d %{buildroot}%{_defaultlicensedir}/valkey-doc/
+cp -a LICENSE %{buildroot}%{_defaultlicensedir}/valkey-doc/
 popd
 %endif
 
@@ -264,6 +268,10 @@ install -Dpm 755 %{S:9} %{buildroot}%{_libexecdir}/migrate_redis_to_valkey.sh
 
 # compat header
 install -pDm644 src/redismodule.h %{buildroot}%{_includedir}/redismodule.h
+
+# compat systemd symlinks
+ln -sr %{buildroot}/usr/lib/systemd/system/valkey.service %{buildroot}/usr/lib/systemd/system/redis.service
+ln -sr %{buildroot}/usr/lib/systemd/system/valkey-sentinel.service %{buildroot}/usr/lib/systemd/system/redis-sentinel.service
 
 
 %check
@@ -367,6 +375,7 @@ fi
 
 %if %{with docs}
 %files doc
+%license LICENSE
 %doc %{_docdir}/valkey/
 %{_mandir}/man{3,7}/*%{name}*.gz
 %endif
@@ -382,13 +391,18 @@ fi
 %files compat-redis
 %{_libexecdir}/migrate_redis_to_valkey.sh
 %{_bindir}/redis-*
-
+%{_unitdir}/redis.service
+%{_unitdir}/redis-sentinel.service
 
 %files compat-redis-devel
 %{_includedir}/redismodule.h
 
 
 %changelog
+* Wed Nov 13 2024 Jonathan Wright <jonathan@almalinux.org> - 8.0.1-3
+- include license with doc sub-package
+- include systemd symlinks for redis in compat package
+
 * Mon Oct 07 2024 Jonathan Wright <jonathan@almalinux.org> - 8.0.1-2
 - fix spec for epel8
 - buildrequires python3 for docs

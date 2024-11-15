@@ -1,11 +1,10 @@
-# ppc64le started to fail permanently,
+# ppc64le started to fail permanently, apparently OOM,
 # first f42 https://koji.fedoraproject.org/koji/taskinfo?taskID=124917502
 # then f40 https://koji.fedoraproject.org/koji/taskinfo?taskID=125295645
 # then also f41 https://koji.fedoraproject.org/koji/taskinfo?taskID=125632253
-# At least get other archs out.
-#%%if 0%{?fedora} == 40
-ExcludeArch: ppc64le
-#%%endif
+%ifarch ppc64le
+%global rustflags_debuginfo 1
+%endif
 
 %if 0%{?fedora} > 35 || 0%{?rhel} > 9
 %global dictionarydir hunspell
@@ -93,13 +92,13 @@ ExcludeArch: s390x
 
 Summary:        Mozilla Thunderbird mail/newsgroup client
 Name:           thunderbird
-Version:        128.4.2
+Version:        128.4.3
 Release:        1%{?dist}
 URL:            http://www.mozilla.org/projects/thunderbird/
 License:        MPL-2.0 OR GPL-2.0-or-later OR LGPL-2.0-or-later
 Source0:        https://archive.mozilla.org/pub/thunderbird/releases/%{version}%{?pre_version}/source/thunderbird-%{version}%{?pre_version}.source.tar.xz
 %if %{build_langpacks}
-Source1:        thunderbird-langpacks-%{version}%{?pre_version}-20241107.tar.xz
+Source1:        thunderbird-langpacks-%{version}%{?pre_version}-20241113.tar.xz
 %endif
 Source3:        get-calendar-langpacks.sh
 Source4:        cbindgen-vendor.tar.xz
@@ -767,6 +766,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #===============================================================================
 
 %changelog
+* Wed Nov 13 2024 Eike Rathke <erack@redhat.com> - 128.4.3-1
+- Update to 128.4.3
+
 * Thu Nov 07 2024 Eike Rathke <erack@redhat.com> - 128.4.2-1
 - Update to 128.4.2
 

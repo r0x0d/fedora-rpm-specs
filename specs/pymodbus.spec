@@ -21,8 +21,8 @@ Server Features \
     * A number of backing contexts (database, redis, a slave device)
 
 Name: pymodbus
-Version: 3.6.9
-Release: 2%{?dist}
+Version: 3.7.4
+Release: 1%{?dist}
 Summary: %{sum}
 
 License: BSD-3-Clause
@@ -42,8 +42,6 @@ Summary: %{sum}
 
 BuildRequires: python3-devel
 Requires: python3-pyserial >= 2.6
-# upstream bundled temporarily pyserial-asyncio with additional bugfixes
-Provides: bundled(python3-pyserial-asyncio)
 
 %description -n python3-%{name}
 %{desc}
@@ -75,6 +73,10 @@ rm -rf %{buildroot}%{python3_sitelib}/test
 %{_bindir}/pymodbus.simulator
 
 %changelog
+* Wed Nov 13 2024 Christian Krause <chkr@fedoraproject.org> - 3.7.4-1
+- Update to 3.7.4 (#2302441)
+- Remove obsolete documentation of bundled pyserial-asyncio
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.6.9-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

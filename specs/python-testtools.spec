@@ -1,8 +1,3 @@
-%global srcname testtools
-%global common_description %{expand:
-testtools is a set of extensions to the Python standard library's unit testing
-framework.}
-
 # To build this package in a new environment (i.e. a new EPEL branch), you'll
 # need to build in a particular order.  Duplicate numbered steps can happen at
 # the same time.
@@ -15,32 +10,34 @@ framework.}
 # 3. python-testscenarios
 # 4. python-testresources
 # 5. python-testtools
-%bcond_with bootstrap
+%bcond bootstrap 0
 
-Name:           python-%{srcname}
-Version:        2.7.1
+Name:           python-testtools
+Version:        2.7.2
 Release:        %autorelease
 Summary:        Extensions to the Python standard library unit testing framework
 License:        MIT
 URL:            https://github.com/testing-cabal/testtools
-
-Source:         %pypi_source
-# When rebasing patches, be aware that setup.cfg uses spaces in the git source,
-# but tabs in the PyPI tarball.
-
-# Compatibility with pytest 8
-# https://github.com/testing-cabal/testtools/commit/48e689b4
-Patch:          Treat-methodName-runTest-similar-to-unittest.TestCas.patch
-
+Source:         %{pypi_source testtools}
 BuildArch:      noarch
 
-%description %{common_description}
+%global common_description %{expand:
+testtools is a set of extensions to the Python standard library's unit testing
+framework.}
 
-%package -n python3-%{srcname}
+
+%description
+%{common_description}
+
+
+%package -n python3-testtools
 Summary:        %{summary}
 BuildRequires:  python3-devel
 
-%description -n python3-%{srcname} %{common_description}
+
+%description -n python3-testtools
+%{common_description}
+
 
 %if %{without bootstrap}
 %package        doc
@@ -51,13 +48,14 @@ Summary:        Documentation for %{name}
 # https://fedoraproject.org/wiki/Packaging:No_Bundled_Libraries#Packages_granted_temporary_exceptions
 Provides:       bundled(jquery)
 
+
 %description doc
 This package contains HTML documentation for %{name}.
 %endif
 
 
 %prep
-%autosetup -p 1 -n %{srcname}-%{version}
+%autosetup -p 1 -n testtools-%{version}
 
 
 %generate_buildrequires
@@ -74,18 +72,21 @@ make -C doc html
 
 %install
 %pyproject_install
-%pyproject_save_files %{srcname}
+%pyproject_save_files -l testtools
 
 
 %check
-%if %{without bootstrap}
-PYTHONPATH=%{buildroot}%{python3_sitelib} %{python3} -m testtools.run testtools.tests.test_suite
-# Typically we would want an %%else condition to run an import check, but it
-# will fail during the bootstrap phase, so leave it out.
+%if %{with bootstrap}
+# Exclude modules that import things that are not available during bootstrap.
+%pyproject_check_import -e 'testtools.tests*' -e testtools.twistedsupport
+%else
+%{py3_test_envvars} %{python3} -m testtools.run testtools.tests.test_suite
 %endif
 
-%files -n python3-%{srcname} -f %{pyproject_files}
+
+%files -n python3-testtools -f %{pyproject_files}
 %doc NEWS README.rst
+
 
 %if %{without bootstrap}
 %files doc

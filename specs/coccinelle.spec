@@ -2,10 +2,10 @@
 ExcludeArch: %{ix86}
 
 %global forgeurl https://github.com/coccinelle/coccinelle
-%global tag 1.2
+%global tag 1.3
 #global commit 0afff7fab0dde3d100f078ce8fd9688693ec3237
 #global date   20230624
-Version:       1.2
+Version:       1.3
 %forgemeta
 
 # Build the documentation on Fedora only.
@@ -22,7 +22,7 @@ Version:       1.2
 %endif
 
 Name:           coccinelle
-Release:        8%{?dist}
+Release:        1%{?dist}
 Summary:        Semantic patching for Linux (spatch)
 
 License:        GPL-2.0-only
@@ -285,6 +285,9 @@ $spatch --sp-file %{SOURCE2} %{SOURCE1}
 
 
 %changelog
+* Wed Nov 13 2024 Richard W.M. Jones <rjones@redhat.com> - 1.3-1
+- Update to 1.3 (RHBZ#2326000)
+
 * Mon Aug  5 2024 Jerry James <loganjerry@gmail.com> - 1.2-8
 - Rebuild for ocaml-menhir 20240715
 

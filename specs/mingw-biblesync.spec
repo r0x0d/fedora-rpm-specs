@@ -9,7 +9,7 @@ Release:	13%{?dist}
 Summary:	A Cross-platform library for sharing Bible navigation
 
 Group:		System Environment/Libraries
-License:	Public Domain
+License:	LicenseRef-Fedora-Public-Domain
 URL:		http://www.xiphos.org
 Source0:	https://github.com/karlkleinpaste/%{_pkg_name}/releases/download/%{version}/%{_pkg_name}-%{version}.tar.gz
 

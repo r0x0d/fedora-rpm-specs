@@ -1,7 +1,7 @@
 %global major_minor_version %%(cut -d "." -f 1,2 <<<%{version})
 
 Name:           gnome-network-displays
-Version:        0.93.0
+Version:        0.94.0
 Release:        1%{?dist}
 Summary:        Screencasting for GNOME
 
@@ -79,6 +79,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 %{_prefix}/lib/firewalld/zones/P2P-WiFi-Display.xml
 
 %changelog
+* Wed Nov 13 2024 Packit <hello@packit.dev> - 0.94.0-1
+- Update to version 0.94.0
+- Resolves: rhbz#2303808
+
 * Fri Aug 09 2024 Christian Glombek <lorbus@fedoraproject.org> - 0.93.0-1
 - Update to v0.93.0
 - Fix License string

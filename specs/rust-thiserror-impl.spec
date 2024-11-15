@@ -5,7 +5,7 @@
 %global crate thiserror-impl
 
 Name:           rust-thiserror-impl
-Version:        1.0.68
+Version:        1.0.69
 Release:        %autorelease
 Summary:        Implementation detail of the thiserror crate
 

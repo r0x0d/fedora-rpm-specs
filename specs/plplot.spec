@@ -64,7 +64,7 @@
 
 Name:           plplot
 Version:        5.15.0
-Release:        72%{?dist}
+Release:        73%{?dist}
 Summary:        Library of functions for making scientific plots
 
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
@@ -777,6 +777,9 @@ export LD_LIBRARY_PATH=$PWD/%{_vpath_builddir}/bindings/ocaml:$RPM_BUILD_ROOT%{_
 
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 5.15.0-73
+- Rebuild for octave 9.2
+
 * Wed Oct 16 2024 Jitka Plesnikova <jplesnik@redhat.com> - 5.15.0-72
 - Fix for SWIG 4.3.0
 

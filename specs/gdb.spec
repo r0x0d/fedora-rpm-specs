@@ -45,7 +45,7 @@ Version: 15.2
 
 # The release always contains a leading reserved number, start it at 1.
 # `upstream' is not a part of `name' to stay fully rpm dependencies compatible for the testing.
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: GPL-3.0-or-later AND BSD-3-Clause AND FSFAP AND LGPL-2.1-or-later AND GPL-2.0-or-later AND LGPL-2.0-or-later AND LicenseRef-Fedora-Public-Domain AND GFDL-1.3-or-later AND LGPL-2.0-or-later WITH GCC-exception-2.0 AND GPL-3.0-or-later WITH GCC-exception-3.1 AND GPL-2.0-or-later WITH GNU-compiler-exception
 # Do not provide URL for snapshots as the file lasts there only for 2 days.
@@ -548,7 +548,7 @@ $(: ppc64 host build crashes on ppc variant of libexpat.so )    \
 %endif
         --with-auto-load-dir='$debugdir:$datadir/auto-load%{?scl::%{_root_datadir}/gdb/auto-load}'      \
         --with-auto-load-safe-path='$debugdir:$datadir/auto-load%{?scl::%{_root_datadir}/gdb/auto-load}'        \
-        --enable-targets=s390-linux-gnu,powerpc-linux-gnu,arm-linux-gnu,aarch64-linux-gnu,riscv64-linux-gnu     \
+        --enable-targets=s390-linux-gnu,powerpc-linux-gnu,arm-linux-gnu,aarch64-linux-gnu,riscv64-linux-gnu,x86_64-redhat-linux-gnu     \
         %{_target_platform}
 
 if [ -z "%{!?_with_profile:no}" ]
@@ -928,6 +928,14 @@ fi
 # endif scl
 
 %changelog
+* Wed Nov 13 2024 Alexandra Hájková <ahajkova@redhat.com>
+- Remove upstreamed (21dc8b8d287) gdb-test-dw2-aranges.patch.
+
+* Wed Nov 13 2024 Andrew Burgess <aburgess@redhat.com>
+- Add x86_64-redhat-linux-gnu to --enable-targets for full GDB build
+  in gdb.spec, this ensures we can remote debug x86-64 targets from
+  non-x86-64 hosts.  This fixes rhbz 2308522.
+
 * Tue Nov 12 2024 Andrew Burgess <aburgess@redhat.com>
 - Remove gdb-6.6-testsuite-timeouts.patch.  I updated the upstream
   tests in commit 06b8b0ad976 so this patch is no longer useful.

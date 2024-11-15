@@ -2,7 +2,7 @@ Name:           zasx
 Version:        1.30
 Release:        39%{?dist}
 Summary:        Asteroid like game with powerups
-License:        GPLv2+ and Freely redistributable without restriction
+License:        GPL-2.0-or-later AND Giftware
 URL:            https://www.allegro.cc/depot/Zasx/
 # Original link (down): http://www.bob.allegronetwork.com/zasx/zasx130s.zip
 Source0:        zasx130s.zip

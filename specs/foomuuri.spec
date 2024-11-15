@@ -1,5 +1,5 @@
 Name:           foomuuri
-Version:        0.25
+Version:        0.26
 Release:        1%{?dist}
 Summary:        Multizone bidirectional nftables firewall
 License:        GPL-2.0-or-later
@@ -7,6 +7,8 @@ URL:            https://github.com/FoobarOy/foomuuri
 Source0:        https://github.com/FoobarOy/foomuuri/archive/v%{version}/foomuuri-%{version}.tar.gz
 BuildArch:      noarch
 BuildRequires:  make
+BuildRequires:  python3-devel
+BuildRequires:  systemd-rpm-macros
 %if (%{defined fedora} || %{defined epel})
 BuildRequires:  pylint
 BuildRequires:  python3-dbus
@@ -16,7 +18,6 @@ BuildRequires:  python3-pycodestyle
 BuildRequires:  python3-requests
 BuildRequires:  python3-systemd
 %endif
-BuildRequires:  systemd-rpm-macros
 Requires:       nftables
 Requires:       python3-dbus
 Requires:       python3-gobject
@@ -65,7 +66,7 @@ make install DESTDIR=%{buildroot}
 
 %if (%{defined fedora} || %{defined epel})
 %check
-make test || true  # pylint in rawhide has new test which fails, ignore
+make test
 %endif
 
 
@@ -117,6 +118,9 @@ fi
 
 
 %changelog
+* Wed Nov 13 2024 Kim B. Heino <b@bbbs.net> - 0.26-1
+- Upgrade to 0.26
+
 * Tue Oct  1 2024 Kim B. Heino <b@bbbs.net> - 0.25-1
 - Upgrade to 0.25
 

@@ -2,7 +2,7 @@
 
 Name:		octave-%{octpkg}
 Version:	2.1.1
-Release:	15%{?dist}
+Release:	16%{?dist}
 Summary:	Octave bindings to the GNU Scientific Library
 # Some test files are GPLv3+ but they're not shipped.
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -36,6 +36,8 @@ in the Gnu Scientific Library, such as
 
 %install
 %octave_pkg_install
+# The are no docs, so there really shouldn't be a doc-cache. 9.1 doesn't preduce one, but earlier versions do
+rm -f %{buildroot}%{octpkgdir}/doc-cache
 
 %post
 %octave_cmd pkg rebuild
@@ -50,7 +52,6 @@ in the Gnu Scientific Library, such as
 %{octpkglibdir}
 %dir %{octpkgdir}
 %{octpkgdir}/*.m
-%doc %{octpkgdir}/doc-cache
 %dir %{octpkgdir}/packinfo
 %license %{octpkgdir}/packinfo/COPYING
 %{octpkgdir}/packinfo/DESCRIPTION
@@ -59,6 +60,9 @@ in the Gnu Scientific Library, such as
 %{octpkgdir}/packinfo/on_uninstall.m
 
 %changelog
+* Mon Nov 11 2024 Orion Poplawski <orion@nwra.com> - 2.1.1-16
+- Remove unneeded doc-cache file no longer produced with octave 9.1
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 2.1.1-15
 - convert license to SPDX
 

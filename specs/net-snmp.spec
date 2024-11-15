@@ -13,7 +13,7 @@ Version:    5.9.4
 Release:    8%{?dist}
 Epoch:      1
 
-License:    Net-SNMP and OpenSSL
+License:    MIT-CMU AND BSD-3-Clause AND MIT
 URL:        http://net-snmp.sourceforge.net/
 Source0:    https://downloads.sourceforge.net/project/net-snmp/net-snmp/%{version}/net-snmp-%{version}.tar.gz
 Source1:    net-snmp.redhat.conf

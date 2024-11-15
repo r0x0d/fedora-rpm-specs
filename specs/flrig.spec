@@ -6,7 +6,7 @@ Version:        2.0.05
 Release:        4%{?dist}
 Summary:        Transceiver control program
 
-License:        GPL-3.0-or-later AND LGPL-3.0-or-later AND GPL-3
+License:        GPL-3.0-or-later AND LGPL-3.0-or-later AND GPL-3.0-only
 URL:            http://www.w1hkj.com/
 %if %{alpha}
 Source0:        http://www.w1hkj.com/alpha/%{name}/%{name}-%{version}.tar.gz

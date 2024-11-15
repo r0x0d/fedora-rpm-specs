@@ -1,11 +1,11 @@
 Name:           iio-sensor-proxy
 Version:        3.5
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        IIO accelerometer sensor to input device proxy
 
 # tests/unittest_inspector.py is LGPL-2.1-or-later but it is not packaged
 License:        GPL-3.0-or-later
-URL:            https://github.com/hadess/iio-sensor-proxy
+URL:            https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/
 Source0:        https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/uploads/ae095b693b6317f14dfa4212c5c36c1a/iio-sensor-proxy-3.5.tar.xz
 
 BuildRequires:  meson
@@ -67,6 +67,10 @@ This package contains the documentation for %{name}.
 %{_datadir}/gtk-doc/html/%{name}/
 
 %changelog
+* Wed Nov 13 2024 Michel Lind <salimma@fedoraproject.org> - 3.5-5
+- Update URL
+- Resolves: rhbz#2324439
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.5-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

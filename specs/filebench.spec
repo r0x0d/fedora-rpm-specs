@@ -3,7 +3,7 @@ Version:        1.4.9.1
 Release:        24%{?dist}
 Summary:        A model based file system workload generator
 
-License:        CDDL
+License:        CDDL-1.1
 URL:            http://filebench.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source1:        LICENSE

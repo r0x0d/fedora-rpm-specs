@@ -5,7 +5,7 @@
 %global crate serial_test_derive
 
 Name:           rust-serial_test_derive
-Version:        3.1.1
+Version:        3.2.0
 Release:        %autorelease
 Summary:        Helper crate for serial_test
 

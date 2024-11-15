@@ -13,7 +13,7 @@ Summary:        High-quality splittable pseudorandom number generator
 # main license is BSD
 # brg_types.h is BSD and optionally GPL+
 # C code by Doug Whiting is Public Domain
-License:        BSD-3-Clause AND LicenseRef-PublicDomain
+License:        BSD-3-Clause AND LicenseRef-Fedora-Public-Domain
 Url:            https://hackage.haskell.org/package/%{pkg_name}
 # Begin cabal-rpm sources:
 Source0:        https://hackage.haskell.org/package/%{pkgver}/%{pkgver}.tar.gz

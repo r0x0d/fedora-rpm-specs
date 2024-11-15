@@ -1,11 +1,10 @@
 %global pypi_name json5
 
 Name:           python-%{pypi_name}
-Version:        0.9.25
-Release:        4%{?dist}
+Version:        0.9.28
+Release:        1%{?dist}
 Summary:        Python implementation of the JSON5 data format
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://github.com/dpranke/pyjson5
 Source0:        %{url}/archive/v%{version}/%{pypi_name}-%{version}.tar.gz
@@ -71,6 +70,9 @@ Command-line tool for working with the JSON5 data format.
 %{_bindir}/pyjson5
 
 %changelog
+* Wed Nov 13 2024 Fabian Affolter <mail@fabian-affolter.ch> - 0.9.28-1
+- Update to latest upstream release (closes rhbz#2325109)
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0.9.25-4
 - convert license to SPDX
 

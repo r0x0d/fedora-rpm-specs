@@ -185,7 +185,7 @@
 #################################################################################
 Name:		ceph
 Version:	19.2.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 %if 0%{?fedora} || 0%{?rhel}
 Epoch:		2
 %endif
@@ -195,8 +195,8 @@ Epoch:		2
 %global _epoch_prefix %{?epoch:%{epoch}:}
 
 Summary:	User space components of the Ceph file system
-License:	(LicenseRef-Callaway-LGPLv2+ OR LGPL-3.0-only) AND CC-BY-SA-3.0 AND GPL-2.0-only AND BSL-1.0 AND LicenseRef-Callaway-BSD AND MIT
-(LGPLv2+ or LGPLv3) and CC-BY-SA-3.0 and GPLv2 and Boost and BSD and MIT
+License:	License:       (LGPLv2+ or LGPLv3) and CC-BY-SA-3.0 and GPLv2 and Boost and BSD and MIT
+### License:	(LicenseRef-Callaway-LGPLv2+ OR LGPL-3.0-only) AND CC-BY-SA-3.0 AND GPL-2.0-only AND BSL-1.0 AND LicenseRef-Callaway-BSD AND MIT (LGPLv2+ or LGPLv3) and CC-BY-SA-3.0 and GPLv2 and Boost and BSD and MIT
 %if 0%{?suse_version}
 Group:		System/Filesystems
 %endif
@@ -722,7 +722,7 @@ Group:		System/Filesystems
 Requires:	ceph-mgr = %{_epoch_prefix}%{version}-%{release}
 Requires:	python%{python3_pkgversion}-numpy
 %if 0%{?fedora} || 0%{?suse_version} || 0%{?rhel} >= 10
-Requires:	python%{python3_pkgversion}-scikit-learn
+Requires:	python%{python3_pkgversion}-scikit_learn
 %endif
 Requires:	python3-scipy
 %description mgr-diskprediction-local
@@ -2716,6 +2716,9 @@ exit 0
 %{python3_sitelib}/ceph_node_proxy-*
 
 %changelog
+* Wed Nov 13 2024 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 2:19.2.0-3
+- ceph-19.2.0 scikit-learn -> scikit_learn  rhbz#2325990
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 2:19.2.0-2
 - Rebuild for yaml-cpp 0.8
 

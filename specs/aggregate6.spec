@@ -1,12 +1,10 @@
 Summary:        Tool to compress an unsorted list of IPv4 and IPv6 prefixes
 Name:           aggregate6
-Version:        1.0.12
-Release:        6%{?dist}
+Version:        1.0.13
+Release:        1%{?dist}
 License:        BSD-2-Clause
 URL:            https://github.com/job/aggregate6
 Source0:        https://github.com/job/aggregate6/archive/%{version}/%{name}-%{version}.tar.gz
-# Don't require Python nose and mock
-Patch0:         https://github.com/job/aggregate6/commit/b9571547316cf3d5b2f440d68f9f3fc99040dc0d.patch#/aggregate6-1.0.12-deprecated.patch
 BuildRequires:  python%{python3_pkgversion}-devel
 # Tests
 BuildRequires:  python%{python3_pkgversion}-pytest
@@ -36,6 +34,7 @@ filters.
 
 %prep
 %autosetup -p1
+sed -e 's/"1.0.12"/"%{version}"/' -i %{name}/__init__.py
 
 %if 0%{?fedora} || 0%{?rhel} >= 9
 %generate_buildrequires
@@ -84,6 +83,9 @@ touch -c -r %{name}/%{name}.py $RPM_BUILD_ROOT%{python3_sitelib}/%{name}/%{name}
 %license LICENSE
 
 %changelog
+* Thu Nov 14 2024 Robert Scheck <robert@fedoraproject.org> 1.0.13-1
+- Upgrade to 1.0.13 (#2325875)
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.12-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

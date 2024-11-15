@@ -1,17 +1,17 @@
 # Some tests fail. Pass --with all_tests to retry
 %bcond_with all_tests
 
-%global forgeurl https://github.com/pennersr/django-allauth
+%global forgeurl https://codeberg.org/allauth/django-allauth
 
 Name:           python-django-allauth
-Version:        65.0.1
+Version:        65.2.0
 Release:        %autorelease
 Summary:        Integrated set of Django authentication apps
 License:        MIT
-URL:            https://www.intenct.nl/projects/django-allauth/
+URL:            https://allauth.org/
 # PyPI source has no tests
 # Source0:        %%{pypi_source django-allauth}
-Source:         %{forgeurl}/archive/%{version}/django-allauth-%{version}.tar.gz
+Source:         %{forgeurl}/archive/%{version}.tar.gz#/django-allauth-%{version}.tar.gz
 # unpin coverage version
 Patch:          django-allauth-relax-coverage-version.diff
 # Temporarily lower from == 0.23.8 to >= 0.23.6
@@ -59,7 +59,7 @@ Summary:        %{summary}
 %pyproject_extras_subpkg -n python%{python3_pkgversion}-django-allauth mfa openid saml socialaccount steam
 
 %prep
-%autosetup -p1 -n django-allauth-%{version}
+%autosetup -p1 -n django-allauth
 %if %{without failedtests}
 %endif
 

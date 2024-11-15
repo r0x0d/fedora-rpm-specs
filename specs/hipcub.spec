@@ -1,7 +1,7 @@
 %global upstreamname hipCUB
 
 %global rocm_release 6.2
-%global rocm_patch 0
+%global rocm_patch 1
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 # Compiler is hipcc, which is clang based:

@@ -1,23 +1,20 @@
 %{!?python3_includedir: %global python3_includedir %(%{__python3} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())")}
 Name:       python-igraph
-Version:    0.11.6
+Version:    0.11.8
 %global igraph_version 0.9
-Release:    3%{?dist}
+Release:    1%{?dist}
 Summary:    Python bindings for igraph
 
 License:    GPL-2.0-or-later
 URL:        https://github.com/igraph/python-igraph
 Source0:    https://github.com/igraph/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
-
-# Fix for Python 3.13: https://github.com/igraph/python-igraph/commit/8abba79c19675f39e4648e9b03bcd000b965ee3c
-Patch:      https://github.com/igraph/python-igraph/commit/8abba79c19675f39e4648e9b03bcd000b965ee3c.patch
+Patch0:     setuptools.patch
 
 BuildRequires:  igraph-devel >= %{igraph_version}
 BuildRequires:  gcc-c++
 BuildRequires:  libxml2-devel
 
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
 BuildRequires:  cmake
 
 BuildRequires:  git-core
@@ -46,7 +43,6 @@ around.
 Summary:    %{summary}
 Requires:   libxml2
 Requires:   igraph >= %{igraph_version}
-%{?python_provide:%python_provide python3-igraph}
 
 %description -n python3-igraph
 This module extends Python with a Graph class which is capable of
@@ -67,27 +63,31 @@ documentation needed to develop application with %{name}.
 
 
 %prep
-%autosetup -S git
+%autosetup -S git -p0
+
+%generate_buildrequires
+%pyproject_buildrequires
 
 %build
-%py3_build -- --use-pkg-config
+%pyproject_wheel -C--global-option=--use-pkg-config
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l igraph
 
 %check
-%pytest -v
+%pytest -v -k 'not test_labels'
 
-%files -n python3-igraph
-%license LICENSE
-%{python3_sitearch}/igraph
-%{python3_sitearch}/igraph-%{version}-py*.egg-info
+%files -n python3-igraph -f %{pyproject_files}
 %{_bindir}/igraph
 
 %files -n python3-igraph-devel
 %{python3_includedir}/igraph
 
 %changelog
+* Mon Oct 28 2024 Gwyn Ciesla <gwync@protonmail.com> - 0.11.8-1
+- 0.11.8
+
 * Fri Sep 27 2024 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.11.6-3
 - Add patch to fix py3.13 builds
 - Enable tests

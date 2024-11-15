@@ -3,7 +3,7 @@
 %global selinuxtype targeted
 
 Name:           trafficserver
-Version:        9.2.6
+Version:        10.0.2
 Release:        1%{?dist}
 Summary:        Fast, scalable and extensible HTTP/1.1 and HTTP/2 caching proxy server
 
@@ -21,57 +21,33 @@ Source7:        %{modulename}.te
 Source8:        %{modulename}.if
 Source9:        %{modulename}.fc
 
-# Use Crypto Policies where supported
-%if 0%{?fedora} >= 21 || 0%{?rhel} >= 8
+# Use Crypto Policies 
 Patch0:         trafficserver-crypto-policy.patch
-%endif
 
 # Upstream does not support 32-bit architectures:
 # https://github.com/apache/trafficserver/issues/4432
 # s390x is also not a supported architecture and does not build
 ExcludeArch:    %{arm} %{ix86} s390x
 
-BuildRequires:  expat-devel hwloc-devel pcre-devel zlib-devel xz-devel brotli-devel
+BuildRequires:  expat-devel hwloc-devel pcre-devel pcre2-devel zlib-devel xz-devel brotli-devel
 BuildRequires:  libcurl-devel ncurses-devel gnupg python3
 BuildRequires:  gcc gcc-c++ perl-ExtUtils-MakeMaker
-BuildRequires:  automake libtool
+BuildRequires:  cmake
 BuildRequires:  libcap-devel
 BuildRequires:  systemd-rpm-macros
-# GCC 5 or higher is required (c++17)
-# Need OpenSSL 1.1.x for TLSv1.2 bug fixes
-%if 0%{?rhel} && 0%{?rhel} <= 7
-BuildRequires:  openssl11-devel
-BuildRequires:  devtoolset-8
-%else
 BuildRequires:  openssl-devel
-%endif
 # OpenSSL engines are deprecated in f41/c10
 %if 0%{?fedora} >= 41 || 0%{?rhel} >= 10
 BuildRequires:  openssl-devel-engine
 %endif
 
-Requires:       expat hwloc pcre xz ncurses pkgconfig
-# Need OpenSSL 1.1.x for TLSv1.2 bug fixes
-%if 0%{?rhel} && 0%{?rhel} <= 7
-Requires:       openssl11
-%else
+Requires:       expat hwloc pcre pcre2 xz ncurses pkgconfig
 Requires:       openssl
-%endif
-# Require an OpenSSL which supports PROFILE=SYSTEM
-Conflicts:      openssl-libs < 1:1.0.1h-4
-
-# Clean start for current Fedora/RHEL, so systemd units only
 Requires:       systemd
 Requires(postun): systemd
 
 %if 0%{?with_selinux}
-%if 0%{?fedora} >= 35 || 0%{?rhel} >= 8
-# This ensures that the *-selinux package and all it’s dependencies are not pulled
-# into containers and other systems that do not use SELinux
 Requires:        (%{name}-selinux = %{version}-%{release} if selinux-policy-%{selinuxtype})
-%else
-Requires:        %{name}-selinux = %{version}-%{release}
-%endif
 %endif
 
 %description
@@ -142,23 +118,17 @@ installations.
 
 %build
 
-%if 0%{?rhel} && 0%{?rhel} <= 7
-sed -i 's/PKG_CONFIG openssl /PKG_CONFIG openssl11 /' build/ax_check_openssl.m4
-source /opt/rh/devtoolset-8/enable
-autoreconf
-%endif
-
-# Strange libexecdir is because upstream puts plugins in libexec, which isn't
-# right since they are libraries and not helper applications.
-# Upstream Issue: https://github.com/apache/trafficserver/issues/8823
-%configure \
-  --enable-layout=RedHat \
-  --sysconfdir=%{_sysconfdir}/%{name} \
-  --libdir=%{_libdir}/%{name} \
-  --libexecdir=%{_libdir}/%{name}/plugins \
-  --enable-experimental-plugins \
-  --with-user=trafficserver --with-group=trafficserver
-%make_build
+%cmake\
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_SYSCONFDIR=%{_sysconfdir}/%{name} \
+    -DCMAKE_INSTALL_LIBDIR=%{_libdir}/%{name} \
+    -DCMAKE_INSTALL_LIBEXECDIR=%{_libdir}/%{name}/plugins \
+    -DCMAKE_INSTALL_RUNSTATEDIR=/run/%{name} \
+    -DCMAKE_INSTALL_LOGDIR=/var/log/%{name} \
+    -DCMAKE_INSTALL_CACHEDIR=/var/cache/%{name} \
+    -DBUILD_EXPERIMENTAL_PLUGINS=ON
+%cmake_build
 
 %if 0%{?with_selinux}
 mkdir selinux
@@ -171,15 +141,10 @@ bzip2 -9 %{modulename}.pp
 %endif
 
 %install
-%make_install
+%cmake_install
 
 %check
-
-%if 0%{?rhel} && 0%{?rhel} <= 7
-source /opt/rh/devtoolset-8/enable
-%endif
-
-make check
+%ctest 
 
 %if 0%{?with_selinux}
 install -D -m 0644 %{modulename}.pp.bz2 %{buildroot}%{_datadir}/selinux/packages/%{selinuxtype}/%{modulename}.pp.bz2
@@ -201,11 +166,6 @@ find %{buildroot} -type f -name "*.la" -delete
 find %{buildroot} -type f -name "*.a" -delete
 rm -f %{buildroot}%{_libdir}/%{name}/plugin_*.so
 rm -f %{buildroot}/usr/lib/debug%{_libdir}/%{name}/plugin_*.debug
-
-# Regenerate the @#$@! debuginfo manifests on el7
-%if 0%{?rhel} && 0%{?rhel} <= 7
-%{?__debug_package:%{__debug_install_post}}
-%endif
 
 # Why is the Perl stuff ending up in the wrong place ??
 mkdir -p %{buildroot}%{perl_vendorlib}
@@ -309,6 +269,12 @@ fi
 
 
 %changelog
+* Tue Nov 12 2024 Jered Floyd <jered@redhat.com> 10.0.2-1
+- Update to upstream 10.0.2
+- Remove conditionals for releases we will not support
+- NOTE: 10.x incorporaties a breaking change in configuration.
+  Please review https://docs.trafficserver.apache.org/en/10.0.x/release-notes/upgrading.en.html
+
 * Tue Nov 12 2024 Jered Floyd <jered@redhat.com> 9.2.6-1
 - Update to upstream 9.2.6
 

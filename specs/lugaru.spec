@@ -67,7 +67,7 @@ fellow rabbits from slavery.
 
 %package data
 Summary:	Architecture-independent game data files for Lugaru
-License:	CC-BY-SA
+License:	CC-BY-SA-3.0 AND (CC-BY-SA-3.0 OR CC-BY-3.0) AND CC-BY-SA-4.0
 BuildArch:	noarch
 
 %description data

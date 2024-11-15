@@ -65,7 +65,7 @@
 ##########
 %endif
 %if 0%{?fedora}
-%ifarch s390x x86_64 %{power64} aarch64
+%ifarch s390x x86_64 %{power64} aarch64 riscv64
 %global with_klu64 1
 %global with_fortran 1
 %endif
@@ -122,7 +122,7 @@ BuildRequires: epel-rpm-macros
 BuildRequires: cmake >= 3.10
 BuildRequires: %{blaslib}-devel
 %if 0%{?with_superlumt}
-%ifarch s390x x86_64 %{power64} aarch64
+%ifarch s390x x86_64 %{power64} aarch64 riscv64
 BuildRequires: SuperLUMT64-devel
 %endif
 %ifarch %{arm} %{ix86}
@@ -260,7 +260,7 @@ This package contains the documentation files.
 
 pushd %{name}-%{version}
 
-%ifarch s390x x86_64 %{power64} aarch64
+%ifarch s390x x86_64 %{power64} aarch64 riscv64
 %patch 1 -p0 -b .set_superlumt64_name
 %endif
 %ifarch %{arm} %{ix86}
@@ -296,7 +296,7 @@ export LIBBLASLINK=-l%{blaslib}%{blasvar}
 export INCBLAS=%{_includedir}/%{blaslib}
 
 %if 0%{?with_superlumt}
-%ifarch s390x x86_64 %{power64} aarch64
+%ifarch s390x x86_64 %{power64} aarch64 riscv64
 export LIBSUPERLUMTLINK=-lsuperlumt64_d
 %endif
 %ifarch %{arm} %{ix86}
@@ -395,7 +395,7 @@ export INCBLAS=%{_includedir}/%{blaslib}
 
 ## SuperLUMT
 %if 0%{?with_superlumt}
-%ifarch s390x x86_64 %{power64} aarch64
+%ifarch s390x x86_64 %{power64} aarch64 riscv64
 export LIBSUPERLUMTLINK=-lsuperlumt64_d
 %endif
 %ifarch %{arm} %{ix86}
@@ -531,7 +531,7 @@ export INCBLAS=%{_includedir}/%{blaslib}
 
 ## SuperLUMT
 %if 0%{?with_superlumt}
-%ifarch s390x x86_64 %{power64} aarch64
+%ifarch s390x x86_64 %{power64} aarch64 riscv64
 export LIBSUPERLUMTLINK=-lsuperlumt64_d
 %endif
 %ifarch %{arm} %{ix86}

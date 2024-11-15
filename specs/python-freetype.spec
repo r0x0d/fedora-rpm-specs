@@ -10,9 +10,6 @@ Source0: 	%{url}/archive/v%{version}/%{pypi_name}-%{version}.tar.gz
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
-# tests use tox
-BuildRequires:  python3dist(tox-current-env)
-BuildRequires:  python3dist(pytest)
 
 BuildRequires:  freetype
 
@@ -39,7 +36,7 @@ sed -i 's/"cmake"//' pyproject.toml
 
 %generate_buildrequires
 export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
-%pyproject_buildrequires
+%pyproject_buildrequires -t
 
 %build
 export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}

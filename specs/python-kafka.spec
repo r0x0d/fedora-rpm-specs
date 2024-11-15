@@ -76,7 +76,7 @@ Summary:          Documentation for Pure Python client for Apache Kafka
 BuildRequires:    make
 BuildRequires:    python3-sphinx_rtd_theme
 # BSD for sphinx. MIT for jquery.js and underscore.js.
-License:          ASL 2.0 and BSD and MIT
+License:          Apache-2.0 AND BSD-2-Clause AND MIT
 
 %description -n python-%{mod_name}-doc
 Documentation for Pure Python client for Apache Kafka.

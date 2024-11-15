@@ -101,7 +101,7 @@
 # Comment out go_prerelease and go_patch as needed
 %global go_api 1.23
 #global go_prerelease rc2
-%global go_patch 2
+%global go_patch 3
 
 %global go_version %{go_api}%{?go_patch:.%{go_patch}}%{?go_prerelease:~%{go_prerelease}}
 %global go_source %{go_api}%{?go_patch:.%{go_patch}}%{?go_prerelease}
@@ -157,6 +157,7 @@ Requires:       go-filesystem
 Patch1:         0001-Modify-go.env.patch
 Patch5:		0005-Skip-TestCrashDumpsAllThreads.patch
 Patch6:		0006-Default-to-ld.bfd-on-ARM64.patch
+Patch7:   0007-link-skip-TestPIESize-on-i386-and-s390x-due-to-Fedor.patch
 
 # Having documentation separate was broken
 Obsoletes:      %{name}-docs < 1.1-4

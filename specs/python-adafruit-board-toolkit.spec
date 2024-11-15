@@ -1,10 +1,10 @@
 Name:           python-adafruit-board-toolkit
-Version:        1.1.1
-Release:        8%{?dist}
+Version:        1.1.2
+Release:        1%{?dist}
 Summary:        CircuitPython board identification and information
 License:        MIT
 URL:            https://github.com/adafruit/Adafruit_Board_Toolkit
-Source0:        %{pypi_source adafruit-board-toolkit}
+Source0:        %{pypi_source adafruit_board_toolkit}
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -21,7 +21,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -p1 -n adafruit-board-toolkit-%{version}
+%autosetup -p1 -n adafruit_board_toolkit-%{version}
 # Remove bundled files we do not need
 rm adafruit_board_toolkit/_list_ports_{osx,windows}.py
 
@@ -48,6 +48,9 @@ rm adafruit_board_toolkit/_list_ports_{osx,windows}.py
 
 
 %changelog
+* Wed Nov 13 2024 Lumír Balhar <lbalhar@redhat.com> - 1.1.2-1
+- Update to 1.1.2 (rhbz#2325706)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.1-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -13,8 +13,8 @@ Release:        %autorelease
 Summary:        Lua interface to the readline and history libraries
 
 License:        MIT
-URL:            https://pjb.com.au/comp/lua/%{srcname}.html
-Source0:        https://pjb.com.au/comp/lua/%{srcname}-%{version}.tar.gz
+URL:            http://peterbillam.fastmail.com.user.fm/comp/lua/%{srcname}.html
+Source0:        http://peterbillam.fastmail.com.user.fm/comp/lua/%{srcname}-%{version}.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  lua-devel >= 5.1

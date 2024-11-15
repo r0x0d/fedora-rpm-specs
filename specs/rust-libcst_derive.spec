@@ -5,16 +5,13 @@
 %global crate libcst_derive
 
 Name:           rust-libcst_derive
-Version:        1.4.0
+Version:        1.5.0
 Release:        %autorelease
 Summary:        Proc macro helpers for libcst
 
 License:        MIT
 URL:            https://crates.io/crates/libcst_derive
 Source:         %{crates_source}
-# Manually created patch for downstream crate metadata changes
-# * specify license in crate metadata (only MIT applies to this crate)
-Patch:          libcst_derive-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

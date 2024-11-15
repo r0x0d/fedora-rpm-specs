@@ -1,57 +1,72 @@
-%bcond_with bootstrap
+%bcond bootstrap 0
 
 Name:           python-extras
 Version:        1.0.0
-Release:        35%{?dist}
+Release:        36%{?dist}
 Summary:        Useful extra bits for Python
 
 License:        MIT
 URL:            https://github.com/testing-cabal/extras
-Source:         %pypi_source extras
+Source:         %{pypi_source extras}
 
 BuildArch:      noarch
 
-%global _description\
-extras is a set of extensions to the Python standard library, originally\
-written to make the code within testtools cleaner, but now split out for\
-general use outside of a testing context.\
+%global _description %{expand:
+extras is a set of extensions to the Python standard library, originally
+written to make the code within testtools cleaner, but now split out for
+general use outside of a testing context.}
+
 
 %description %_description
 
+
 %package -n python3-extras
-Summary:        %summary
+Summary:        %{summary}
 BuildRequires:  python3-devel
 %if %{without bootstrap}
-BuildRequires:  python3-pytest
 BuildRequires:  python3-testtools
 %endif
 
+
 %description -n python3-extras %_description
+
 
 %prep
 %setup -q -n extras-%{version}
 # don't include extras.tests
 sed -e '/extras\.tests/d' -i setup.py
 
+
 %generate_buildrequires
 %pyproject_buildrequires
+
 
 %build
 %pyproject_wheel
 
+
 %install
 %pyproject_install
-%pyproject_save_files extras
+%pyproject_save_files -l extras
+
 
 %check
-%if %{without bootstrap}
-%pytest -v
+%if %{with bootstrap}
+%pyproject_check_import
+%else
+%{py3_test_envvars} %{python3} -m testtools.run extras.tests.test_suite
 %endif
+
 
 %files -n python3-extras -f %{pyproject_files}
 %doc NEWS README.rst
 
+
 %changelog
+* Wed Nov 13 2024 Carl George <carlwgeorge@fedoraproject.org> - 1.0.0-36
+- Run tests with testtools instead of pytest
+- Run import check while bootstrapping
+
 * Fri Aug 30 2024 Jan Friesse <jfriesse@redhat.com> - 1.0.0-36
 - migrated to SPDX license
 

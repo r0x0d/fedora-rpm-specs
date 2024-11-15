@@ -1,5 +1,5 @@
 # From src/version.h:#define OCTAVE_API_VERSION
-%global octave_api api-v58
+%global octave_api api-v59
 
 %global macrosdir %(d=%{_rpmconfigdir}/macros.d; [ -d $d ] || d=%{_sysconfdir}/rpm; echo $d)
 
@@ -36,8 +36,8 @@
 
 Name:           octave
 Epoch:          6
-Version:        8.4.0
-Release:        11%{?dist}
+Version:        9.2.0
+Release:        1%{?dist}
 Summary:        A high-level language for numerical computations
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
@@ -119,12 +119,10 @@ BuildRequires:  pcre2-devel
 BuildRequires:  portaudio-devel
 BuildRequires:  qhull-devel
 BuildRequires:  qrupdate-devel
-# EPEL9 is missing qscintilla-qt5-devel - https://bugzilla.redhat.com/show_bug.cgi?id=2092182
-%if 0%{?fedora} || 0%{?rhel} != 9
-BuildRequires:  qscintilla-qt5-devel
-%endif
-BuildRequires:  qt5-linguist
-BuildRequires:  qt5-qttools-devel
+BuildRequires:  qscintilla-qt6-devel
+BuildRequires:  qt6-linguist
+BuildRequires:  qt6-qttools-devel
+BuildRequires:  pkgconfig(Qt6Core5Compat)
 BuildRequires:  rapidjson-devel
 BuildRequires:  readline-devel
 %if %{with blas64}
@@ -308,8 +306,8 @@ touch %{buildroot}%{_datadir}/%{name}/ls-R
 
 desktop-file-validate %{buildroot}%{_datadir}/applications/org.octave.Octave.desktop
 # RHEL7 still doesn't like the GNU project_group
-%{?el7:sed -i -e /project_group/d %{buildroot}/%{_datadir}/metainfo/org.octave.Octave.appdata.xml}
-appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/org.octave.Octave.appdata.xml
+%{?el7:sed -i -e /project_group/d %{buildroot}/%{_datadir}/metainfo/org.octave.Octave.metainfo.xml}
+appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/org.octave.Octave.metainfo.xml
 
 # Create directories for add-on packages
 HOST_TYPE=`%{buildroot}%{_bindir}/octave-config -p CANONICAL_HOST_TYPE`
@@ -413,9 +411,9 @@ make check
 %{_bindir}/octave*
 %dir %{_libdir}/octave/
 %dir %{_libdir}/octave/%{version}
-%{_libdir}/octave/%{version}/liboctave.so.10*
-%{_libdir}/octave/%{version}/liboctgui.so.9*
-%{_libdir}/octave/%{version}/liboctinterp.so.11*
+%{_libdir}/octave/%{version}/liboctave.so.11*
+%{_libdir}/octave/%{version}/liboctgui.so.12*
+%{_libdir}/octave/%{version}/liboctinterp.so.12*
 %{_libdir}/octave/%{version}/mkoctfile-%{version}
 %{_libdir}/octave/%{version}/oct/
 %{_libdir}/octave/%{version}/octave-config-%{version}
@@ -429,7 +427,7 @@ make check
 %{_datadir}/applications/org.octave.Octave.desktop
 %{_datadir}/icons/hicolor/*/apps/octave.png
 %{_datadir}/icons/hicolor/scalable/apps/octave.svg
-%{_datadir}/metainfo/org.octave.Octave.appdata.xml
+%{_datadir}/metainfo/org.octave.Octave.metainfo.xml
 # octave_packages is %ghost, so need to list everything else separately
 %dir %{_datadir}/octave
 %{_datadir}/octave/%{version}%{?rctag}/
@@ -459,6 +457,10 @@ make check
 %{_pkgdocdir}/refcard*.pdf
 
 %changelog
+* Mon Nov 11 2024 Orion Poplawski <orion@nwra.com> - 6:9.2.0-1
+- Update to 9.2.0
+- Build with Qt6
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 6:8.4.0-11
 - Rebuild for hdf5 1.14.5
 

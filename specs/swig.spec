@@ -68,7 +68,7 @@
 Summary: Connects C/C++/Objective C to some high-level programming languages
 Name:    swig
 Version: 4.3.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPL-3.0-or-later AND BSD-3-Clause
 URL:     https://www.swig.org/
 Source0: http://downloads.sourceforge.net/project/swig/swig/swig-%{version}/swig-%{version}.tar.gz
@@ -365,6 +365,9 @@ install -pm 644 Tools/swig.gdb %{buildroot}%{_datadir}/%{name}/gdb
 %{_datadir}/%{name}/gdb
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 4.3.0-3
+- Rebuild for octave 9.2
+
 * Tue Oct 29 2024 Jitka Plesnikova <jplesnik@redhat.com> - 4.3.0-2
 - Fix precedence of casts
 

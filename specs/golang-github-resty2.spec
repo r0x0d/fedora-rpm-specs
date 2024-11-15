@@ -9,7 +9,7 @@
 
 # https://github.com/go-resty/resty
 %global goipath         github.com/go-resty/resty/v2
-Version:                2.15.3
+Version:                2.16.0
 
 %gometa -L -f
 

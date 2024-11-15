@@ -1,5 +1,5 @@
 Name:           python-flexparser
-Version:        0.3.1
+Version:        0.4
 Release:        %autorelease
 Summary:        Parsing made fun … using typing
 

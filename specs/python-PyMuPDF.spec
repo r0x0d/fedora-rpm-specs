@@ -22,6 +22,7 @@ BuildRequires:	python3-pillow
 BuildRequires:	python3-pip
 BuildRequires:	python3-psutil
 BuildRequires:	python3-pytest
+BuildRequires:	python3-setuptools
 %if %{with docs}
 BuildRequires:	python3-sphinx
 BuildRequires:	python3-sphinx-copybutton

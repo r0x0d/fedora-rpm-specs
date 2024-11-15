@@ -10,8 +10,8 @@ Version:        9.0.2.4
 Release:        %autorelease
 Summary:        Unicode en-/decoding functions for utf8, iso-latin-* and other encodings
 
-# src/Data/String/UTF8.hs is BSD
-License:        MIT AND BSD
+# src/Data/String/UTF8.hs is BSD-3-Clause
+License:        MIT AND BSD-3-Clause
 Url:            https://hackage.haskell.org/package/%{pkg_name}
 # Begin cabal-rpm sources:
 Source0:        https://hackage.haskell.org/package/%{pkgver}/%{pkgver}.tar.gz

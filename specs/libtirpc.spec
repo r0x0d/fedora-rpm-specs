@@ -2,13 +2,13 @@
 
 Name:			libtirpc
 Version:		1.3.6
-Release:		0.rc1%{?dist}
+Release:		1%{?dist}
 Summary:		Transport Independent RPC Library
 License:		SISSL AND BSD-3-Clause
 URL:  			http://git.linux-nfs.org/?p=steved/libtirpc.git;a=summary
 Source0:		http://downloads.sourceforge.net/libtirpc/libtirpc-%{version}.tar.bz2
 
-Patch001:  libtirpc.1.3.7-rc1.patch
+#Patch001:  libtirpc.1.3.7-rc1.patch
 
 BuildRequires:		automake, autoconf, libtool, pkgconfig
 BuildRequires:		krb5-devel
@@ -114,7 +114,11 @@ mv %{buildroot}%{_mandir}/man3 %{buildroot}%{_mandir}/man3t
 %{_mandir}/*/*
 
 %changelog
-* Mon Nov 11 2024 Steve Dickson <steved@redhat.com> - 1.3.5-rc1
+* Wed Nov 13 2024 Steve Dickson <steved@redhat.com> - 1.3.6-1
+- Fix regression in NVR 
+- Removed libtirpc-1-3-7-rc1 patch (bz 2325556)
+
+* Mon Nov 11 2024 Steve Dickson <steved@redhat.com> - 1.3.6-rc1
 - Updated to the latest upstream RC release: libtirpc-1-3-7-rc1
 
 * Fri Oct 18 2024 Steve Dickson <steved@redhat.com> - 1.3.6

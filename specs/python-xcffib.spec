@@ -11,10 +11,10 @@ BuildArch: noarch
 
 BuildRequires:  libxcb-devel
 
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-cffi >= 1.1.2
-BuildRequires:  python3-six
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-setuptools
+BuildRequires:  python%{python3_pkgversion}-cffi >= 1.1.2
+BuildRequires:  python%{python3_pkgversion}-six
 
 
 %description
@@ -25,12 +25,12 @@ some of the issues described above. xcffib also builds bindings for 27 of
 the 29 (xprint and xkb are missing) X extensions in 1.10.
 
 
-%package -n python3-xcffib
+%package -n python%{python3_pkgversion}-xcffib
 Summary: A drop in replacement for xpyb, an XCB python binding
-Requires:  python3-cffi
+Requires:  python%{python3_pkgversion}-cffi
 Requires:  libxcb
 
-%description -n python3-xcffib
+%description -n python%{python3_pkgversion}-xcffib
 xcffib is intended to be a (mostly) drop-in replacement for xpyb.  xpyb
 has an inactive upstream, several memory leaks, is python2 only and doesn't
 have pypy support. xcffib is a binding which uses cffi, which mitigates
@@ -50,7 +50,7 @@ the 29 (xprint and xkb are missing) X extensions in 1.10.
 %py3_install
 
 
-%files -n python3-xcffib
+%files -n python%{python3_pkgversion}-xcffib
 %doc LICENSE
 %doc README.md
 %{python3_sitelib}/xcffib

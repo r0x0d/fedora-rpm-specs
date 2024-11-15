@@ -1,6 +1,6 @@
 %bcond_without check
 
-%global srcname scikit-learn
+%global srcname scikit_learn
 
 %global _description %{expand: 
 Scikit-learn integrates machine learning algorithms in the tightly-knit 
@@ -11,7 +11,7 @@ simple and efficient, accessible to everybody, and reusable
 in various contexts.}
 
 Name: python-scikit-learn
-Version: 1.4.1.post1
+Version: 1.5.2
 Release: %autorelease
 Summary: Machine learning in Python
 # sklearn/externals/_arff.py is MIT
@@ -49,11 +49,12 @@ BuildRequires: %{py3_dist threadpoolctl} >= 2.0.0
 
 %prep
 %autosetup -n %{srcname}-%{version} -p1
+sed -i -e 's|numpy>=2|numpy|' pyproject.toml
 find sklearn/metrics/_dist_metrics.pyx.tp -type f | xargs sed -i 's/cdef inline {{INPUT_DTYPE_t}} rdist/cdef {{INPUT_DTYPE_t}} rdist/g'
 
 %generate_buildrequires
 # Some tests packages not in Fedora
-%pyproject_buildrequires 
+%pyproject_buildrequires -p
 
 %build
 %pyproject_wheel

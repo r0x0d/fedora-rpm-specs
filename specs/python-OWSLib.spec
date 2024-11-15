@@ -6,14 +6,29 @@
 %bcond doc_pdf %{undefined el10}
 
 Name:           python-OWSLib
-Version:        0.30.0
+Version:        0.32.0
 Release:        %autorelease
 Summary:        OGC Web Service utility library
 
 License:        BSD-3-Clause
 URL:            https://geopython.github.io/OWSLib
-%global forgeurl https://github.com/geopython/OWSLib
-Source:         %{forgeurl}/archive/%{version}/OWSLib-%{version}.tar.gz
+# A filtered source archive, obtained by (see Source1):
+#
+#   ./get_source %%{version}
+#
+# is required because tests/resources/ contains XML data files that appear to
+# have been pulled from various GIS databases, and the license terms for these
+# files are unclear.
+#
+# The unfiltered base source URL would be:
+#
+# https://github.com/geopython/OWSLib/archive/%%{version}/OWSLib-%%{version}.tar.gz
+#
+# We *could* use the PyPI sdist, which does not contain tests/resources/, but
+# it also does not contain any tests at all. We can still run some tests
+# without the XML files, and we would like to do so.
+Source0:        OWSLib-%{version}-filtered.tar.zst
+Source1:        get_source
 
 BuildArch:      noarch
 
@@ -109,40 +124,61 @@ PYTHONPATH="${PWD}" %make_build -C docs latex \
 # Otherwise, pytest finds the package twice in the Python path and complains.
 rm -rf owslib
 
-# There is a convenient “online” mark for deselecting tests that require
-# Internet access, but we still have to manually deselect doctests that try to
-# make network requests.
-k="${k-}${k+ and }not wms_geoserver_mass_gis.txt"
-k="${k-}${k+ and }not wfs_MapServerWFSFeature.txt"
-k="${k-}${k+ and }not wfs_MapServerWFSCapabilities.txt"
-k="${k-}${k+ and }not wfs2_storedqueries.txt"
-k="${k-}${k+ and }not wfs1_generic.txt"
-k="${k-}${k+ and }not wcs_thredds.txt"
-k="${k-}${k+ and }not test_wmts_example_informatievlaanderen"
+# This requires network access (during test collection!)
+ignore="${ignore-} --ignore=tests/test_ogcapi_connectedsystems_osh.py"
 
-# This is a trivial error where the representation of the expected TypeError
-# has changed over time:
-# Differences (unified diff with -expected +actual):
-#     @@ -1,3 +1,6 @@
-#      Traceback (most recent call last):
-#     -...
-#     -TypeError: get_namespace() ...
-#     +  File "/usr/lib64/python3.10/doctest.py", line 1346, in __run
-#     +    exec(compile(example.source, filename, "single",
-#     +  File "<doctest namespaces.txt[15]>", line 1, in <module>
-#     +    ns.get_namespace()
-#     +TypeError: Namespaces.get_namespace() missing 1 required positional argument: 'key'
-k="${k-}${k+ and }not namespaces.txt"
+# These require test data files from tests/resources/, which we have removed:
+ignore="${ignore-} --ignore-glob=tests/doctests/*.txt"
+k="${k-}${k+ and }not test_gm03"
+ignore="${ignore-} --ignore=tests/test_iso_parsing.py"
+ignore="${ignore-} --ignore=tests/test_ows_interfaces.py"
+ignore="${ignore-} --ignore=tests/test_owscontext_atomxml.py"
+k="${k-}${k+ and }not test_decode_single_json"
+k="${k-}${k+ and }not test_load_parse"
+k="${k-}${k+ and }not test_decode_full_json"
+k="${k-}${k+ and }not test_load_bulk"
+ignore="${ignore-} --ignore=tests/test_remote_metadata.py"
+k="${k-}${k+ and }not TestOffline"
+ignore="${ignore-} --ignore=tests/test_wfs_generic.py"
+ignore="${ignore-} --ignore=tests/test_wms_datageo_130.py"
+ignore="${ignore-} --ignore=tests/test_wms_jpl_capabilities.py"
+k="${k-}${k+ and }not test_wps_getOperationByName"
+k="${k-}${k+ and }not test_wps_checkStatus"
+k="${k-}${k+ and }not test_wps_process_representation"
+k="${k-}${k+ and }not test_wps_process_properties"
+k="${k-}${k+ and }not test_wps_literal_data_input_parsing_references"
+k="${k-}${k+ and }not test_wps_response_with_lineage"
+ignore="${ignore-} --ignore=tests/test_wps_describeprocess_bbox.py"
+ignore="${ignore-} --ignore=tests/test_wps_describeprocess_ceda.py"
+ignore="${ignore-} --ignore=tests/test_wps_describeprocess_emu_all.py"
+ignore="${ignore-} --ignore=tests/test_wps_describeprocess_usgs.py"
+ignore="${ignore-} --ignore=tests/test_wps_execute.py"
+ignore="${ignore-} --ignore=tests/test_wps_execute_invalid_request.py"
+ignore="${ignore-} --ignore=tests/test_wps_getcapabilities_52n.py"
+ignore="${ignore-} --ignore=tests/test_wps_getcapabilities_ceda.py"
+ignore="${ignore-} --ignore=tests/test_wps_getcapabilities_usgs.py"
+ignore="${ignore-} --ignore-glob=tests/test_wps_request*.py"
+ignore="${ignore-} --ignore-glob=tests/test_wps_response*.py"
+k="${k-}${k+ and }not test_metadata"
+k="${k-}${k+ and }not test_responsibility"
+k="${k-}${k+ and }not test_distributor"
+k="${k-}${k+ and }not test_online_distribution"
+k="${k-}${k+ and }not test_identification"
+k="${k-}${k+ and }not test_identification_contact"
+k="${k-}${k+ and }not test_identification_date"
+k="${k-}${k+ and }not test_identification_extent"
+k="${k-}${k+ and }not test_identification_keywords"
+k="${k-}${k+ and }not test_get_all_contacts"
+k="${k-}${k+ and }not test_aus"
+k="${k-}${k+ and }not test_service"
+k="${k-}${k+ and }not test_md_featurecataloguedesc"
+k="${k-}${k+ and }not test_md_imagedescription"
+k="${k-}${k+ and }not test_dq_dataquality"
+k="${k-}${k+ and }not test_md_reference_system"
+k="${k-}${k+ and }not test_service2"
+k="${k-}${k+ and }not test_md_distribution"
 
-# Unknown problem—check if it is fixed in a later version:
-k="${k-}${k+ and } not (TestOffline and test_wfs_110_remotemd_parse_all)"
-k="${k-}${k+ and } not (TestOffline and test_wfs_110_remotemd_parse_single)"
-k="${k-}${k+ and } not (TestOffline and test_wfs_200_remotemd_parse_all)"
-k="${k-}${k+ and } not (TestOffline and test_wfs_200_remotemd_parse_single)"
-k="${k-}${k+ and } not (TestOffline and test_wms_130_remotemd_parse_all)"
-k="${k-}${k+ and } not (TestOffline and test_wms_130_remotemd_parse_single)"
-
-%pytest -m 'not online' -k "${k-}"
+%pytest -m 'not online' -k "${k-}" ${ignore-} -v -rs
 
 
 %files -n python3-OWSLib -f %{pyproject_files}
