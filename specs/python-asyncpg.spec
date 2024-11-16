@@ -15,8 +15,11 @@ License:        Apache-2.0 AND PSF-2.0
 URL:            https://github.com/MagicStack/asyncpg
 Source:         %{pypi_source asyncpg}
 
+BuildSystem:            pyproject
+BuildOption(install):   -l asyncpg
+BuildOption(generate_buildrequires): -x gssauth,test
+
 BuildRequires:  gcc
-BuildRequires:  python3-devel
 BuildRequires:  tomcli
 
 # For tests:
@@ -62,9 +65,7 @@ Obsoletes:      %{name}-doc < 0.27.0-5
 %pyproject_extras_subpkg -n python3-asyncpg gssauth
 
 
-%prep
-%autosetup -n asyncpg-%{version} -p1
-
+%prep -a
 # Remove pre-generated C sources from Cython to ensure they are re-generated
 # and not used in the build. Note that recordobj.c is not a generated source,
 # and must not be removed!
@@ -80,22 +81,15 @@ tomcli set pyproject.toml lists delitem --no-first --type regex \
 %endif
 
 
-%generate_buildrequires
+%generate_buildrequires -p
 export ASYNCPG_BUILD_CYTHON_ALWAYS=1
-%pyproject_buildrequires -x gssauth,test
 
 
-%build
+%build -p
 export ASYNCPG_BUILD_CYTHON_ALWAYS=1
-%pyproject_wheel
 
 
-%install
-%pyproject_install
-%pyproject_save_files -l asyncpg
-
-
-%check
+%check -a
 # It is not clear why the tests always import asyncpg as ../asyncpg/__init__.py
 # even if we set PYTHONPATH to the installed sitearch directory. This
 # workaround is ugly, but there is nothing actually wrong with it, as the

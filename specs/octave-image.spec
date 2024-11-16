@@ -2,7 +2,7 @@
 
 Name:           octave-%{octpkg}
 Version:        2.14.0
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Image processing for Octave
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
@@ -59,6 +59,9 @@ export XTRA_CXXFLAGS="-fPIC"
 
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 2.14.0-12
+- Rebuild for octave 9.2
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 2.14.0-11
 - convert license to SPDX
 

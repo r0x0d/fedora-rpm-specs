@@ -1,6 +1,6 @@
 %global major_version 3
 %global minor_version 3
-%global teeny_version 5
+%global teeny_version 6
 %global major_minor_version %{major_version}.%{minor_version}
 
 %global ruby_version %{major_minor_version}.%{teeny_version}
@@ -27,25 +27,27 @@
 %global rubygems_dir %{_datadir}/rubygems
 
 # Bundled libraries versions
-%global rubygems_version 3.5.16
+%global rubygems_version 3.5.22
 %global rubygems_molinillo_version 0.8.0
-%global rubygems_net_http_version 0.4.0
+%global rubygems_net_http_version 0.4.1
 %global rubygems_net_protocol_version 0.2.2
 %global rubygems_optparse_version 0.4.0
-%global rubygems_resolv_version 0.3.0
+%global rubygems_resolv_version 0.4.0
+%global rubygems_securerandom_version 0.3.1
 %global rubygems_timeout_version 0.4.1
 %global rubygems_tsort_version 0.2.0
-%global rubygems_uri_version 0.13.0
+%global rubygems_uri_version 0.13.1
 
 # Default gems.
-%global bundler_version 2.5.16
+%global bundler_version 2.5.22
 %global bundler_connection_pool_version 2.4.1
 %global bundler_fileutils_version 1.7.2
-%global bundler_net_http_persistent_version 4.0.2
+%global bundler_net_http_persistent_version 4.0.4
 %global bundler_pub_grub_version 0.5.0
+%global bundler_securerandom_version 0.3.1
 %global bundler_thor_version 1.3.0
 %global bundler_tsort_version 0.2.0
-%global bundler_uri_version 0.13.0
+%global bundler_uri_version 0.13.1
 
 %global abbrev_version 0.1.2
 %global base64_version 0.2.0
@@ -86,7 +88,7 @@
 %global prettyprint_version 0.2.0
 %global pstore_version 0.1.3
 %global readline_version 0.0.4
-%global reline_version 0.5.7
+%global reline_version 0.5.10
 %global resolv_version 0.3.0
 %global resolv_replace_version 0.1.1
 %global rinda_version 0.2.0
@@ -97,7 +99,7 @@
 %global singleton_version 0.2.0
 %global stringio_version 3.1.1
 %global strscan_version 3.0.9
-%global syntax_suggest_version 2.0.0
+%global syntax_suggest_version 2.0.1
 %global syslog_version 0.1.2
 %global tempfile_version 0.2.1
 %global time_version 0.3.0
@@ -116,12 +118,12 @@
 %global bigdecimal_version 3.1.5
 %global io_console_version 0.7.1
 %global irb_version 1.13.1
-%global json_version 2.7.1
+%global json_version 2.7.2
 %global psych_version 5.1.2
 %global rdoc_version 6.6.3.1
 
 # Bundled gems.
-%global debug_version 1.9.1
+%global debug_version 1.9.2
 %global net_ftp_version 0.3.4
 %global net_imap_version 0.4.9.1
 %global net_pop_version 0.1.2
@@ -133,7 +135,7 @@
 %global racc_version 1.7.3
 %global rake_version 13.1.0
 %global rbs_version 3.4.0
-%global rexml_version 3.3.6
+%global rexml_version 3.3.9
 %global rss_version 0.3.1
 %global test_unit_version 3.6.1
 %global typeprof_version 0.21.9
@@ -171,7 +173,7 @@
 Summary: An interpreter of object-oriented scripting language
 Name: ruby
 Version: %{ruby_version}%{?development_release}
-Release: 15%{?dist}
+Release: 16%{?dist}
 # Licenses, which are likely not included in binary RPMs:
 # Apache-2.0:
 #   benchmark/gc/redblack.rb
@@ -280,19 +282,6 @@ Patch9: ruby-3.3.0-Disable-syntax-suggest-test-case.patch
 # Make sure hardeding flags are correctly applied.
 # https://bugs.ruby-lang.org/issues/20520
 Patch12: ruby-3.4.0-Extract-hardening-CFLAGS-to-a-special-hardenflags-variable.patch
-# Fix build error:
-#   RPM build errors:
-#   error: Installed (but unpackaged) file(s) found:
-#      /usr/bin/bundle.lock
-# This would break not only Ruby itself, but allso all rubygem-packages.
-# https://github.com/rubygems/rubygems/pull/7931
-Patch13: rubygems-3.5.17-Avoid-another-race-condition-of-open-mode.patch
-# https://github.com/rubygems/rubygems/pull/7939
-Patch14: rubygems-3.5.17-Remove-the-lock-file-for-binstubs.patch
-# Fix Bundler reaching to the interned with `--local` option.
-# https://github.com/rubygems/rubygems/issues/8025
-# https://github.com/rubygems/rubygems/pull/8027
-Patch15: bundler-2.5.19-Fix--local-hitting-the-network-when-default-gems-are.patch
 
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 %{?with_rubypick:Suggests: rubypick}
@@ -421,6 +410,7 @@ Provides:   bundled(rubygem-net-http) = %{rubygems_net_http_version}
 Provides:   bundled(rubygem-net-protocol) = %{rubygems_net_protocol_version}
 Provides:   bundled(rubygem-optparse) = %{rubygems_optparse_version}
 Provides:   bundled(rubygem-resolv) = %{rubygems_resolv_version}
+Provides:   bundled(rubygem-securerandom) = %{rubygems_securerandom_version}
 Provides:   bundled(rubygem-timeout) = %{rubygems_timeout_version}
 Provides:   bundled(rubygem-tsort) = %{rubygems_tsort_version}
 
@@ -593,6 +583,7 @@ Provides:   bundled(rubygem-connection_pool) = %{bundler_connection_pool_version
 Provides:   bundled(rubygem-fileutils) = %{bundler_fileutils_version}
 Provides:   bundled(rubygem-net-http-persistent) = %{bundler_net_http_persistent_version}
 Provides:   bundled(rubygem-pub_grub) = %{bundler_pub_grub_version}
+Provides:   bundled(rubygem-securerandom) = %{bundler_securerandom_version}
 Provides:   bundled(rubygem-thor) = %{bundler_thor_version}
 Provides:   bundled(rubygem-uri) = %{bundler_uri_version}
 BuildArch:  noarch
@@ -770,9 +761,6 @@ analysis result in RBS format, a standard type description format for Ruby
 %patch 6 -p1
 %patch 9 -p1
 %patch 12 -p1
-%patch 13 -p1
-%patch 14 -p1
-%patch 15 -p2
 
 # Provide an example of usage of the tapset:
 cp -a %{SOURCE3} .
@@ -1036,6 +1024,15 @@ make -C %{_vpath_builddir} -s runruby TESTRUN_SCRIPT="-e \" \
   exit 1 if Gem::Resolv::VERSION != '%{rubygems_resolv_version}'; \
 \""
 
+# SecureRandom.
+make -C %{_vpath_builddir} -s runruby TESTRUN_SCRIPT="-e \" \
+  module Gem; module Random; end; end; \
+  require 'rubygems/vendor/securerandom/lib/securerandom'; \
+  puts '%%{rubygems_securerandom_version}: %{rubygems_securerandom_version}'; \
+  puts %Q[Gem::SecureRandom::VERSION: #{Gem::SecureRandom::VERSION}]; \
+  exit 1 if Gem::SecureRandom::VERSION != '%{rubygems_securerandom_version}'; \
+\""
+
 # Timeout.
 make -C %{_vpath_builddir} -s runruby TESTRUN_SCRIPT="-e \" \
   module Gem; end; \
@@ -1100,6 +1097,15 @@ make -C %{_vpath_builddir} -s runruby TESTRUN_SCRIPT="-e \" \
   puts '%%{bundler_net_http_persistent_version}: %{bundler_net_http_persistent_version}'; \
   puts %Q[Gem::Net::HTTP::Persistent::VERSION: #{Gem::Net::HTTP::Persistent::VERSION}]; \
   exit 1 if Gem::Net::HTTP::Persistent::VERSION != '%{bundler_net_http_persistent_version}'; \
+\""
+
+# SecureRandom.
+make -C %{_vpath_builddir} -s runruby TESTRUN_SCRIPT="-e \" \
+  module Bundler; module Random; end; end; \
+  require 'bundler/vendor/securerandom/lib/securerandom'; \
+  puts '%%{bundler_securerandom_version}: %{bundler_securerandom_version}'; \
+  puts %Q[Bundler::SecureRandom::VERSION: #{Bundler::SecureRandom::VERSION}]; \
+  exit 1 if Bundler::SecureRandom::VERSION != '%{bundler_securerandom_version}'; \
 \""
 
 # Thor.
@@ -1749,6 +1755,9 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 
 
 %changelog
+* Mon Nov 11 2024 Vít Ondruch <vondruch@redhat.com> - 3.3.5-16
+- Upgrade to Ruby 3.3.6.
+
 * Fri Sep 13 2024 Vít Ondruch <vondruch@redhat.com> - 3.3.5-15
 - Fix Bundler `--local` option
   Resolves: rhbz#2311898

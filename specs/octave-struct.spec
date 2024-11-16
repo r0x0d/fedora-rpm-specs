@@ -2,7 +2,7 @@
 
 Name:           octave-%{octpkg}
 Version:        1.0.18
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Structure handling for Octave
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
@@ -50,6 +50,9 @@ included in the octave core.
 
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 1.0.18-8
+- Rebuild for octave 9.2
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.18-7
 - convert license to SPDX
 

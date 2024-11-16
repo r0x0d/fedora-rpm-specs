@@ -4,7 +4,7 @@
 Incremental is a small library that versions your Python projects.}
 
 Name:           python-%{srcname}
-Version:        22.10.0
+Version:        24.7.2
 Release:        %autorelease
 Summary:        It versions your Python projects
 
@@ -25,7 +25,7 @@ Provides:       %{srcname} = %{version}-%{release}
 %description -n python3-%{srcname} %{common_description}
 
 %prep
-%autosetup -p1 -n %{srcname}-%{srcname}-%{version}
+%autosetup -n %{srcname}-%{srcname}-%{version}
 
 %generate_buildrequires
 %pyproject_buildrequires

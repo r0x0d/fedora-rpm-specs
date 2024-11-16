@@ -2,7 +2,7 @@
 
 Name:           octave-%{octpkg}
 Version:        2.6.4
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Input/Output in external formats
 # Automatically converted from old format: GPLv3+ and BSD - review is highly recommended.
 License:        GPL-3.0-or-later AND LicenseRef-Callaway-BSD
@@ -52,6 +52,9 @@ Input/Output in external formats.
 
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 2.6.4-12
+- Rebuild for octave 9.2
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 2.6.4-11
 - convert license to SPDX
 

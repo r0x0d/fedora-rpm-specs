@@ -3,7 +3,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 1.7.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: MessagePack, a binary-based efficient data interchange format
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License: Apache-2.0
@@ -14,6 +14,9 @@ Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # git clone --no-checkout https://github.com/msgpack/msgpack-ruby
 # git -C msgpack-ruby archive -v -o msgpack-1.7.2-spec.txz v1.7.2 spec/
 Source1: %{gem_name}-%{version}-spec.txz
+# https://github.com/msgpack/msgpack-ruby/commit/0737d2e8edbda1520d97ef1851efa4c2d57b469b
+# support ruby3.4 formatting change
+Patch0:  msgpack-1.7.2-ruby34-format.patch
 
 BuildRequires: gcc
 BuildRequires: ruby(release)
@@ -40,6 +43,10 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version} -b 1
+(
+cd %{builddir}/spec
+%patch -P0 -p2
+)
 
 %build
 gem build ../%{gem_name}-%{version}.gemspec
@@ -83,6 +90,9 @@ popd
 %{gem_instdir}/msgpack.gemspec
 
 %changelog
+* Thu Nov 14 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.7.2-2
+- Backport upstream fix for ruby34 formating change
+
 * Thu Sep 12 2024 Pavel Valena <pvalena@redhat.com> - 1.7.2-1
 - Update to msgpack 1.7.2.
   Resolves: rhbz#2054672

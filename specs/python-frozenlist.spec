@@ -1,5 +1,5 @@
 Name:           python-frozenlist
-Version:        1.4.1
+Version:        1.5.0
 Release:        %autorelease
 Summary:        List-like structure which can be made immutable
 
@@ -15,12 +15,8 @@ Source:         %{pypi_source frozenlist}
 # an unbounded recursion of nested temporary directories.
 Patch:          0001-Downstream-only-Build-normal-wheels-in-place.patch
 
-# Work around the failing test in Python 3.13+ - skip the new
-# __static_attributes__ and __firstlineno__ methods
-# Reported upstream: https://github.com/aio-libs/frozenlist/issues/588
-Patch:          Skip-some-attributes-when-testing.patch
-
-BuildRequires:  python3-devel
+BuildSystem:            pyproject
+BuildOption(install):   -l frozenlist
 
 BuildRequires:  gcc
 
@@ -39,9 +35,7 @@ Summary:        %{summary}
 %description -n python3-frozenlist %{common_description}
 
 
-%prep
-%autosetup -n frozenlist-%{version} -p1
-
+%prep -a
 # Remove Cython-generated sources; we must ensure they are regenerated.
 find . -type f -name '*.c' -print -delete
 
@@ -50,20 +44,7 @@ find . -type f -name '*.c' -print -delete
 sed -r -i 's/^([[:blank:]]*)(.*[-_]cov)/\1# \2/' pytest.ini
 
 
-%generate_buildrequires
-%pyproject_buildrequires
-
-
-%build
-%pyproject_wheel
-
-
-%install
-%pyproject_install
-%pyproject_save_files -l frozenlist
-
-
-%check
+%check -a
 %pytest -v
 
 

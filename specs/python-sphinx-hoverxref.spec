@@ -2,7 +2,7 @@
 %global sum Sphinx extension to add tooltips on cross references
 
 Name:           python-%{srcname}
-Version:        1.3.0
+Version:        1.4.1
 Release:        %autorelease
 Summary:        %{sum}
 BuildArch:      noarch

@@ -33,6 +33,9 @@ Source0:        https://github.com/fplll/fplll/releases/download/%{version}/fpll
 Source1:        fplll.1
 Source2:        latticegen.1
 
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+ExcludeArch:    %{ix86}
+
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool
@@ -91,11 +94,17 @@ Summary:        Development files for libfplll
 Requires:       libfplll%{?_isa} = %{version}-%{release}
 Requires:       qd-devel%{?_isa}
 
-%if %{without bundled_thread_pool}
 # We unbundled this; the API header now references the system copy of the
-# header, so dependent packages need it installed. (Technically, they should
-# also explicitly BR the -static package, since they are indirectly using the
+# header, so dependent packages need it installed. (Technically, dependent
+# packages that directly or indirectly include <fplll/io/json.hpp> should also
+# explicitly BR the -static package, since they are indirectly using the
 # header-only library.)
+Requires:       json-devel
+Requires:       json-static
+%if %{without bundled_thread_pool}
+# Similarly to the json-devel case above; technically, dependent packages that
+# directly or indirectly include <fplll/io/thread_pool.hpp> or
+# <fplll/threadpool.h> should also explicitly BR the -static package.
 Requires:       cr-marcstevens-snippets-thread_pool-devel
 Requires:       cr-marcstevens-snippets-thread_pool-static
 %endif
@@ -138,8 +147,7 @@ the functionality of libfplll.
 echo '#include <nlohmann/json.hpp>' > fplll/io/json.hpp
 %if %{without bundled_thread_pool}
 # Unbundle cr-marcstevens-snippets-thread_pool-devel
-sed -r -i 's@io/thread_pool\.hpp@@' fplll/Makefile.am
-sed -r -i 's@fplll/io(/thread_pool\.hpp)@cr-marcstevens\1@' fplll/threadpool.h
+echo '#include <cr-marcstevens/thread_pool.hpp>' > fplll/io/thread_pool.hpp
 %endif
 
 

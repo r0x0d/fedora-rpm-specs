@@ -24,7 +24,7 @@
 %global __provides_exclude_from ^%{python3_sitearch}/lib.*\\.so$
 
 Name:		root
-Version:	6.32.06
+Version:	6.32.08
 %global libversion %(cut -d. -f 1-2 <<< %{version})
 Release:	1%{?dist}
 Summary:	Numerical data analysis framework
@@ -3584,6 +3584,9 @@ fi
 %endif
 
 %changelog
+* Thu Nov 14 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 6.32.08-1
+- Update to 6.32.08
+
 * Mon Sep 23 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 6.32.06-1
 - Update to 6.32.06
 - Split out ROOT 7 dependent parts of root-browsable to a separate package

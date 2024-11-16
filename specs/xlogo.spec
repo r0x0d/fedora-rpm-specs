@@ -1,6 +1,6 @@
 Name:          xlogo
-Version:       1.0.6
-Release:       6%{?dist}
+Version:       1.0.7
+Release:       1%{?dist}
 Summary:       Display the X11 logo
 
 License:       MIT-open-group
@@ -54,6 +54,9 @@ autoreconf -v --install
 %{_datadir}/X11/app-defaults/XLogo-color
 
 %changelog
+* Thu Nov 14 2024 David Cantrell <dcantrell@redhat.com> - 1.0.7-1
+- Upgrade to xlogo-1.0.7 (#2326145)
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.6-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

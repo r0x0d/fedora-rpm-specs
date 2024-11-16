@@ -2,7 +2,7 @@
 
 Name:           octave-%{octpkg}
 Version:        1.6.7
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Additional statistics functions for Octave
 License:        GPL-3.0-or-later AND LicenseRef-Fedora-Public-Domain
 URL:            https://github.com/gnu-octave/%{octpkg}
@@ -68,6 +68,9 @@ chmod a-x %{buildroot}/%{octpkgdir}/*.m
 
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 1.6.7-3
+- Rebuild for octave 9.2
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.6.7-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

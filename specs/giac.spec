@@ -377,10 +377,10 @@ find  %{buildroot}%{_datadir}/giac/doc -maxdepth 2 -type l| \
 %if %{with check}
 %check
 export LD_LIBRARY_PATH=%{buildroot}%{_libdir}
-#make -C check check
+make -C check check
 # This is for debugging purpose only
-make -C check check && exit 1
-cat check/test-suite.log && exit 1
+#make -C check check && exit 1
+#cat check/test-suite.log && exit 1
 %endif
 
 %files -f %{name}.lang

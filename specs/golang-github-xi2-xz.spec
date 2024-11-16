@@ -20,7 +20,7 @@ Version:        0
 Release:        %autorelease
 Summary:        Native Go XZ decompression package
 
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            %{gourl}
 Source0:        %{gosource}
 

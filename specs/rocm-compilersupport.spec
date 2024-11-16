@@ -52,7 +52,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        22.rocm%{rocm_version}%{?dist}
+Release:        23.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -198,12 +198,12 @@ OpenMP header files compatible with HIPCC.
 
 # ROCM LLVM
 %package -n rocm-llvm
-Summary:	The ROCm Linker
+Summary:	The ROCm LLVM
 Requires:	libstdc++-devel
 Requires:	gcc-c++
 
 %description -n rocm-llvm
-The ROCm compiler.
+The ROCm LLVM.
 
 %package -n rocm-llvm-devel
 Summary:       Libraries and header files for LLVM
@@ -211,6 +211,13 @@ Requires:      rocm-llvm%{?_isa} = %{version}-%{release}
 
 %description -n rocm-llvm-devel
 The libraries and headers to rocm-llvm.
+
+%package -n rocm-llvm-static
+Summary:       Static libraries for ROCm LLVM
+Requires:      rocm-llvm-devel = %{version}-%{release}
+
+%description -n rocm-llvm-static
+The static libraries for rocm-llvm.
 
 # ROCM CLANG
 %package -n rocm-clang
@@ -222,7 +229,7 @@ Requires:	gcc-c++
 The ROCm compiler.
 
 %package -n rocm-clang-devel
-Summary:       Libraries and header files for CLANG
+Summary:       Libraries and header files for ROCm CLANG
 Requires:      rocm-clang%{?_isa} = %{version}-%{release}
 
 %description -n rocm-clang-devel
@@ -236,11 +243,32 @@ Summary:	The ROCm Linker
 The ROCm linker.
 
 %package -n rocm-lld-devel
-Summary:       Libraries and header files for LLD
+Summary:       Libraries and header files for ROCm LLD
 Requires:      rocm-lld%{?_isa} = %{version}-%{release}
 
 %description -n rocm-lld-devel
 The libraries and headers to rocm-lld.
+
+# ROCM MLIR
+%package -n rocm-mlir
+Summary:	The ROCm MLIR
+
+%description -n rocm-mlir
+The ROCm linker.
+
+%package -n rocm-mlir-devel
+Summary:       Libraries and header files for ROCm MLIR
+Requires:      rocm-mlir%{?_isa} = %{version}-%{release}
+
+%description -n rocm-mlir-devel
+The libraries and headers to rocm-mlir.
+
+%package -n rocm-mlir-static
+Summary:       Static libraries for ROCm MLIR
+Requires:      rocm-mlir-devel = %{version}-%{release}
+
+%description -n rocm-mlir-static
+The static libraries for rocm-mlir.
 
 %endif
 
@@ -258,8 +286,11 @@ ls | grep -xv "amd" | xargs rm -r
 %else
 # Remove third-party
 rm -rf third-party
+# Force clang to be shared
+sed -i -e 's@if (NOT LLVM_INSTALL_TOOLCHAIN_ONLY OR ARG_INSTALL_WITH_TOOLCHAIN)@if (ARG_SHARED AND (NOT LLVM_INSTALL_TOOLCHAIN_ONLY OR ARG_INSTALL_WITH_TOOLCHAIN))@' clang/cmake/modules/AddClang.cmake
 # Force lld to be shared
 sed -i -e 's@llvm_add_library(${name} ${ARG_ENABLE_SHARED} ${ARG_UNPARSED_ARGUMENTS})@llvm_add_library(${name} SHARED ${ARG_UNPARSED_ARGUMENTS})@' lld/cmake/modules/AddLLD.cmake
+
 %endif
 
 ##Fix issue with HIP, where compilation flags are incorrect, see issue:
@@ -418,6 +449,8 @@ p=$PWD
  -DLLVM_INCLUDE_EXAMPLES=OFF \\\
  -DLLVM_INCLUDE_TESTS=OFF \\\
  -DLLVM_TARGETS_TO_BUILD=%{targets_to_build} \\\
+ -DMLIR_INSTALL_AGGREGATE_OBJECTS=OFF \\\
+ -DMLIR_BUILD_MLIR_C_DYLIB=ON \\\
  -DROCM_DIR=%{_prefix}
 
 #
@@ -439,7 +472,7 @@ export LD_LIBRARY_PATH=$PWD/build-llvm/lib
        -DCMAKE_C_COMPILER=clang \
        -DCMAKE_INSTALL_PREFIX=%{bundle_prefix} \
        -DCMAKE_INSTALL_LIBDIR=lib \
-       -DLLVM_ENABLE_PROJECTS="llvm;clang;lld" \
+       -DLLVM_ENABLE_PROJECTS="llvm;clang;lld;mlir" \
        -DLLVM_ENABLE_RUNTIMES="compiler-rt"
 
 %cmake_build -j ${JOBS}
@@ -448,10 +481,11 @@ popd
 
 b=$p/build-llvm
 %global llvmrocm_tools_config \\\
-    -DCMAKE_CXX_COMPILER=$b/bin/clang++ \\\
-    -DCMAKE_C_COMPILER=$b/bin/clang \\\
-    -DCMAKE_LINKER=$b/bin/ld.lld \\\
     -DCMAKE_AR=$b/bin/llvm-ar \\\
+    -DCMAKE_C_COMPILER=$b/bin/clang \\\
+    -DCMAKE_CXX_COMPILER=$b/bin/clang++ \\\
+    -DCMAKE_INSTALL_RPATH=%{bundle_prefix}/lib \\\
+    -DCMAKE_LINKER=$b/bin/ld.lld \\\
     -DCMAKE_RANLIB=$b/bin/llvm-ranlib \\\
     -DLLVM_ROOT=$b \\\
     -DClang_DIR=$b/lib/cmake/clang \\\
@@ -631,8 +665,6 @@ rm -rf %{buildroot}%{bundle_prefix}/share
 rm -rf %{buildroot}%{_prefix}/hip
 rm %{buildroot}%{bundle_prefix}/bin/git-clang-format
 rm %{buildroot}%{bundle_prefix}/bin/hmaptool
-rm -rf %{buildroot}%{bundle_prefix}/lib/libLLVM*.a
-rm -rf %{buildroot}%{bundle_prefix}/lib/libclang*.a
 if [ -f %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/LICENSE.TXT ]; then
     rm %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/LICENSE.*
 fi
@@ -734,6 +766,10 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %{bundle_prefix}/lib/libRemarks.so
 %{bundle_prefix}/lib/LLVMgold.so
 
+%files -n rocm-llvm-static
+%license llvm/LICENSE.TXT
+%{bundle_prefix}/lib/libLLVM*.a
+
 # ROCM CLANG
 %files -n rocm-clang
 %license clang/LICENSE.TXT
@@ -767,9 +803,33 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %{bundle_prefix}/lib/liblld*.so
 %{bundle_prefix}/lib/cmake/lld/
 
+# ROCM MLIR
+%files -n rocm-mlir
+%license mlir/LICENSE.TXT
+%{bundle_prefix}/bin/mlir-*
+%{bundle_prefix}/bin/tblgen-lsp-server
+%{bundle_prefix}/bin/tblgen-to-irdl
+%{bundle_prefix}/lib/libmlir*.so.*
+%{bundle_prefix}/lib/libMLIR*.so.*
+
+%files -n rocm-mlir-devel
+%license mlir/LICENSE.TXT
+%{bundle_prefix}/include/mlir
+%{bundle_prefix}/include/mlir-c
+%{bundle_prefix}/lib/libmlir*.so
+%{bundle_prefix}/lib/libMLIR*.so
+%{bundle_prefix}/lib/cmake/mlir/
+
+%files -n rocm-mlir-static
+%license mlir/LICENSE.TXT
+%{bundle_prefix}/lib/libMLIR*.a
+
 %endif
 
 %changelog
+* Thu Nov 14 2024 Tom Rix <Tom.Rix@amd.com> - 18-23.rocm6.2.4
+- Add mlir to bundled
+
 * Tue Nov 12 2024 Tom Rix <Tom.Rix@amd.com> - 18-22.rocm6.2.4
 - Split up bundled to subpackages
 

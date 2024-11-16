@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 38%{?dist}
+Release: 39%{?dist}
 # Python is Python
 # pip MIT is and bundles:
 #   appdirs: MIT
@@ -777,6 +777,14 @@ Patch437: 00437-cve-2024-6232-remove-backtracking-when-parsing-tarfile-headers.p
 #
 # (cherry picked from 3.9)
 Patch443: 00443-gh-124651-quote-template-strings-in-venv-activation-scripts.patch
+
+# 00444 # fed0071c8c86599091f93967a5fa2cce42ceb840
+# Security fix for CVE-2024-11168
+#
+# gh-103848: Adds checks to ensure that bracketed hosts found by urlsplit are of IPv6 or IPvFuture format (GH-103849)
+#
+# Tests are adjusted because Python <3.9 don't support scoped IPv6 addresses.
+Patch444: 00444-security-fix-for-cve-2024-11168.patch
 
 # (New patches go here ^^^)
 #
@@ -2047,6 +2055,9 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Thu Nov 14 2024 Lumír Balhar <lbalhar@redhat.com> - 3.6.15-39
+- Security fix for CVE-2024-11168
+
 * Mon Nov 04 2024 Lumír Balhar <lbalhar@redhat.com> - 3.6.15-38
 - Security fix for CVE-2024-9287 (rhbz#2321659)
 

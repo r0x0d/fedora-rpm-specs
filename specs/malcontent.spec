@@ -1,5 +1,5 @@
 Name:           malcontent
-Version:        0.12.0
+Version:        0.13.0
 Release:        1%{?dist}
 Summary:        Parental controls implementation
 
@@ -99,7 +99,7 @@ This package contains libmalcontent.
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/org.freedesktop.MalcontentControl.desktop
-appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/org.freedesktop.MalcontentControl.appdata.xml
+appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/org.freedesktop.MalcontentControl.metainfo.xml
 
 %files -f %{name}.lang
 %license COPYING COPYING-DOCS
@@ -116,7 +116,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/org.freed
 %{_datadir}/applications/org.freedesktop.MalcontentControl.desktop
 %{_datadir}/icons/hicolor/scalable/apps/org.freedesktop.MalcontentControl.svg
 %{_datadir}/icons/hicolor/symbolic/apps/org.freedesktop.MalcontentControl-symbolic.svg
-%{_datadir}/metainfo/org.freedesktop.MalcontentControl.appdata.xml
+%{_datadir}/metainfo/org.freedesktop.MalcontentControl.metainfo.xml
 
 %files pam
 %license COPYING
@@ -157,6 +157,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/org.freed
 %{_libdir}/libmalcontent-0.so.*
 
 %changelog
+* Thu Nov 14 2024 Michel Lind <salimma@fedoraproject.org> - 0.13.0-1
+- Update to 0.13.0
+- Resolves: rhbz#2325062
+
 * Thu Oct 24 2024 Steve Cossette <farchord@gmail.com> - 0.12.0-1
 - 0.12.0
 

@@ -1,6 +1,6 @@
 Name:           alot
 Version:        0.11
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Experimental terminal MUA based on notmuch mail
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -18,7 +18,7 @@ BuildRequires:  python3-wheel
 BuildRequires:  python3-setuptools_scm+toml
 # needed to generate manpages
 BuildRequires:  python3-notmuch
-BuildRequires: make
+BuildRequires:  make
 Requires:       python3-notmuch >= 0.27
 Requires:       python3-urwid >= 1.3.0
 Requires:       python3-urwidtrees >= 1.0
@@ -46,14 +46,19 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %pyproject_install
 %pyproject_save_files -l alot
 install -Dpm0644 docs/build/man/alot.1* -t %{buildroot}%{_mandir}/man1/
+install -Dpm0644 alot/defaults/* -t %{buildroot}/%{python3_sitelib}/alot/defaults/
 
 %files -f %{pyproject_files}
 %license COPYING
 %doc NEWS README.md
 %{_bindir}/alot
 %{_mandir}/man1/alot.1*
+%{python3_sitelib}/alot/defaults
 
 %changelog
+* Thu Nov 14 2024 Tomas Tomecek <ttomecek@redhat.com> - 0.11-2
+- Install defaults
+
 * Mon Aug 26 2024 Packit <hello@packit.dev> - 0.11-1
 - New upstream release 0.11
 

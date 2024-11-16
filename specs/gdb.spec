@@ -928,6 +928,11 @@ fi
 # endif scl
 
 %changelog
+* Thu Nov 14 2024 Kevin Buettner <kevinb@redhat.com>
+- Remove gdb-6.5-bz243845-stale-testing-zombie-test.patch.  This was a
+  test for a fix to a function that was named linux_test_for_tracefork,
+  which was removed in 2022 in upstream commit a288518611d.
+
 * Wed Nov 13 2024 Alexandra Hájková <ahajkova@redhat.com>
 - Remove upstreamed (21dc8b8d287) gdb-test-dw2-aranges.patch.
 

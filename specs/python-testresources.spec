@@ -1,11 +1,10 @@
 Name:           python-testresources
 Version:        2.0.1
-Release:        17%{?dist}
+Release:        18%{?dist}
 Summary:        Testresources, a pyunit extension for managing expensive test resources
-
-# Automatically converted from old format: ASL 2.0 and BSD and GPLv2+ - review is highly recommended.
-License:        Apache-2.0 AND LicenseRef-Callaway-BSD AND GPL-2.0-or-later
-# file testresources/tests/TestUtil.py is GPLv2+
+# mostly Apache-2.0 or BSD-3-Clause
+# testresources/tests/TestUtil.py is GPL-2.0-or-later
+License:        (Apache-2.0 OR BSD-3-Clause) AND GPL-2.0-or-later
 URL:            https://github.com/testing-cabal/testresources
 Source:         %{pypi_source testresources}
 BuildArch:      noarch
@@ -52,6 +51,9 @@ sed -i 's/failIf/assertFalse/' testresources/tests/test_resourced_test_case.py
 
 
 %changelog
+* Thu Nov 14 2024 Carl George <carlwgeorge@fedoraproject.org> - 2.0.1-18
+- Update license field
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.0.1-17
 - convert license to SPDX
 

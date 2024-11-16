@@ -10,7 +10,7 @@
 Summary: Printer Application Framework (PAPPL)
 Name: pappl
 Version: 1.4.7
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Apache-2.0 WITH LLVM-exception
 Source: https://github.com/michaelrsweet/pappl/releases/download/v%{version}/pappl-%{version}.tar.gz
 Url: https://www.msweet.org/pappl
@@ -22,6 +22,16 @@ Patch001: 0001-List-raw-sockets-during-printers-subcommand-if-avail.patch
 # raise MAX_VENDOR https://sourceforge.net/p/gimp-print/mailman/gimp-print-devel/thread/e24b2385-6576-a949-a40d-3786c8067520%40gmail.com/#msg37353830
 # downstream only, Mike does not want to merge the change
 Patch002: pappl-max-vendors.patch
+# Patches for registration on localhost-only - all from upstream:
+# 0001-Use-listen-hostname-as-hostname-Issue-369.patch
+# 0001-When-hostname-is-fixed-don-t-allow-changes-in-the-we.patch
+# 0001-Use-NULL-registration-hostname-Issue-369.patch
+Patch003: 0001-Use-listen-hostname-as-hostname-Issue-369.patch
+Patch004: 0001-When-hostname-is-fixed-don-t-allow-changes-in-the-we.patch
+Patch005: 0001-Use-NULL-registration-hostname-Issue-369.patch
+# Password was not parsed correctly
+# https://github.com/michaelrsweet/pappl/commit/f4d0039a
+Patch006: 0001-Fix-password-hash-comparisons-Issue-373.patch
 
 
 BuildRequires: avahi-devel
@@ -111,6 +121,10 @@ make test
 %{_mandir}/man3/pappl-system.3.gz
 
 %changelog
+* Thu Nov 14 2024 Zdenek Dohnal <zdohnal@redhat.com> - 1.4.7-2
+- provide support for registering on localhost-only
+- fix password parsing issue
+
 * Wed Oct 16 2024 Zdenek Dohnal <zdohnal@redhat.com> - 1.4.7-1
 - 1.4.7 (fedora#2319037)
 

@@ -15,7 +15,7 @@ BuildRequires:  python3-devel
 BuildRequires:  cairo
 BuildRequires:  gdk-pixbuf2
 BuildRequires:  gdk-pixbuf2-modules
-BuildRequires:  xorg-x11-server-Xvfb
+BuildRequires:  xwayland-run
 
 %global _description\
 cairocffi is a CFFI-based drop-in replacement for Pycairo, a set of\
@@ -39,10 +39,10 @@ Requires:       gtk3
 
 %prep
 %autosetup -n cairocffi-%{version} -p1
-sed -i -e "s/, 'flake8'//" -e "s/, 'isort'//" pyproject.toml
+sed -i -e "s/, 'ruff'//" pyproject.toml
 
 %generate_buildrequires
-%pyproject_buildrequires -x test
+%pyproject_buildrequires -x test,xcb
 
 %build
 %pyproject_wheel
@@ -53,7 +53,7 @@ sed -i -e "s/, 'flake8'//" -e "s/, 'isort'//" pyproject.toml
 
 %check
 # test_xcb.py needs a display
-%global __pytest xvfb-run /usr/bin/pytest
+%global __pytest xwfb-run -- /usr/bin/pytest
 %pytest -v --pyargs cairocffi
 
 

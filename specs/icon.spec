@@ -4,7 +4,7 @@ Name:           icon
 Version:        9.5.20i
 Release:        10%{?dist}
 Summary:        Icon programming language
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            https://www2.cs.arizona.edu/icon/
 Source0:        https://github.com/%{git_user0}/%{name}/archive/v%{version}/%{name}-v%{version}.tar.gz
 

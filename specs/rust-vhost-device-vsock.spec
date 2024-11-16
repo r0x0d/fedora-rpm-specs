@@ -25,7 +25,7 @@ Source100:      https://raw.githubusercontent.com/rust-vmm/vhost-device/c5ae1f38
 %if 0%{?bundled_rust_deps}
 # The source tarball is downloaded using the following commands:
 #   spectool -g rust-vhost-device-vsock.spec
-Source1: https://github.com/rust-vmm/vhost-device/archive/refs/tags/%{crate}-v%{version}.tar.gz
+Source1:        https://github.com/rust-vmm/vhost-device/archive/refs/tags/%{crate}-v%{version}.tar.gz
 
 # The vendor tarball is created using cargo-vendor-filterer to remove Windows
 # related files (https://github.com/cgwalters/cargo-vendor-filterer)
@@ -37,11 +37,15 @@ Source1: https://github.com/rust-vmm/vhost-device/archive/refs/tags/%{crate}-v%{
 #       --platform s390x-unknown-linux-gnu \
 #       --platform i686-unknown-linux-gnu
 #   tar Jcf rust-vhost-device-vsock-%%{version}-vendor.tar.xz vendor
-Source2: rust-vhost-device-vsock-%{version}-vendor.tar.xz
+Source2:        rust-vhost-device-vsock-%{version}-vendor.tar.xz
+%else
+Patch:          rust-vhost-device-vsock-update-deps.patch
 %endif
 
 # Package dependencies vmm-sys-util, virtio-bindings, virtio-vsock not built for s390x
-ExcludeArch: s390x
+ExcludeArch:    s390x
+# We depend on rust-vmm crates that don't support 32 bit targets
+ExcludeArch:    %{ix86}
 
 %if 0%{?bundled_rust_deps}
 BuildRequires:  rust-toolset

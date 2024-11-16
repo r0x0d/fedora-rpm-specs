@@ -1,12 +1,12 @@
 Name:           siege
-Version:        4.1.6
-Release:        6%{?dist}
+Version:        4.1.7
+Release:        1%{?dist}
 Summary:        HTTP regression testing and benchmarking utility
 
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
-License:        GPL-2.0-or-later
+License:        GPL-3.0-or-later
 URL:            http://www.joedog.org/JoeDog/Siege
 Source0:        http://download.joedog.org/siege/%{name}-%{version}.tar.gz
+Patch0:         siege-4.1.7-bindir.patch
 
 BuildRequires:  make
 BuildRequires:  openssl-devel
@@ -25,12 +25,12 @@ It allows the user hit a web server with a configurable number of concurrent
 simulated users. Those users place the web-server "under siege."
 
 %prep
-%setup -q
+%autosetup
 # Better default for log file (Bug 644631)
 sed -i.orig doc/siegerc.in -e 's/^# logfile = *$/logfile = ${HOME}\/siege.log/'
 
 %build
-%configure --sysconfdir=/etc/siege
+%configure --sysconfdir=%{_sysconfdir}/siege
 %make_build
 
 %install
@@ -53,6 +53,10 @@ mkdir -p %{buildroot}%{_sysconfdir}/siege
 %config(noreplace) %{_sysconfdir}/siege/siegerc
 
 %changelog
+* Thu Nov 14 2024 Denis Fateyev <denis@fateyev.com> - 4.1.7-1
+- Update to 4.1.7 (#2326279)
+- Fix bindir value (#2256670)
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 4.1.6-6
 - convert license to SPDX
 

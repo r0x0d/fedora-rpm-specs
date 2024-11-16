@@ -2,7 +2,7 @@
 
 Name:           octave-%{octpkg}
 Version:        2.4.0
-Release:        29%{?dist}
+Release:        30%{?dist}
 Summary:        Quaternion package for Octave
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
@@ -53,6 +53,9 @@ Package for the manipulation of Quaternions used for frame transformation
 
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 2.4.0-30
+- Rebuild for octave 9.2
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 2.4.0-29
 - convert license to SPDX
 

@@ -68,7 +68,7 @@ This is the dedicated server.
 Summary:	Game Data for alienarena, the FPS game
 Epoch:		1
 BuildArch:	noarch
-License:	Freely redistributable without restriction
+License:	GPL-2.0-or-later
 
 %description data
 Alien Arena is a furious frag fest with arenas ranging from the small

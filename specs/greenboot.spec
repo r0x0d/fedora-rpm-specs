@@ -1,8 +1,8 @@
 %global debug_package %{nil}
 
 Name:               greenboot
-Version:            0.15.6
-Release:            2%{?dist}
+Version:            0.15.7
+Release:            1%{?dist}
 Summary:            Generic Health Check Framework for systemd
 License:            LGPL-2.1-or-later
 
@@ -13,7 +13,7 @@ License:            LGPL-2.1-or-later
 URL:                https://github.com/%{repo_owner}/%{repo_name}
 Source0:            https://github.com/%{repo_owner}/%{repo_name}/archive/%{repo_tag}.tar.gz
 
-ExcludeArch: s390x {%ix86}
+ExcludeArch: s390x
 BuildRequires:      systemd-rpm-macros
 %{?systemd_requires}
 Requires:           systemd >= 240
@@ -176,6 +176,18 @@ fi
 %{_prefix}/lib/%{name}/check/required.d/02_watchdog.sh
 
 %changelog
+* Mon Nov 11 2024 Packit <hello@packit.dev> - 0.15.7-1
+## What's Changed
+ * packit: only use IoT relevant branches by @miabbott in https://github.com/fedora-iot/greenboot/pull/156
+ * Fixed the issue that boot_counter cannot be unset and some scripts do… by @ssk-wh in https://github.com/fedora-iot/greenboot/pull/151
+ * fix: reword warning message for disabled checks by @runcom in https://github.com/fedora-iot/greenboot/pull/160
+ * update to v0.15.7 by @say-paul in https://github.com/fedora-iot/greenboot/pull/162
+
+## New Contributors
+ * @ssk-wh made their first contribution in https://github.com/fedora-iot/greenboot/pull/151
+
+ **Full Changelog**: https://github.com/fedora-iot/greenboot/compare/v0.15.6...v0.15.7
+
 * Tue Sep 17 2024 Aashish Radhakrishnan <aaradhak@redhat.com> - 0.15.6-2
 - Exclude ix86
 

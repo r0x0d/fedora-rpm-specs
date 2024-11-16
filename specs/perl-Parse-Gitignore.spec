@@ -1,8 +1,7 @@
 Name:           perl-Parse-Gitignore
-Version:        0.04
-Release:        22%{?dist}
+Version:        1.0
+Release:        1%{?dist}
 Summary:        Parse a .gitignore file
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Parse-Gitignore
 
@@ -20,19 +19,17 @@ BuildRequires:  perl(warnings)
 # Run-time
 BuildRequires:  perl(Carp)
 BuildRequires:  perl(Exporter)
-BuildRequires:  perl(File::Basename)
 BuildRequires:  perl(File::Slurper) >= 0.010
-BuildRequires:  perl(File::Spec)
-BuildRequires:  perl(Path::Tiny) >= 0.076
+BuildRequires:  perl(File::Spec) >= 3.40
 
 # Testing
 BuildRequires:  perl(FindBin)
 BuildRequires:  perl(Test::More) >= 0.88
 
-Requires:       perl(Path::Tiny) >= 0.076
+Requires:       perl(File::Spec) >= 3.40
 
 %{?perl_default_filter}
-%global __requires_exclude %{?__requires_exclude:__requires_exclude|}perl\\(Path::Tiny\\)$
+%global __requires_exclude %{?__requires_exclude:__requires_exclude|}perl\\(File::Spec\\)$
 
 %description
 Parse a .gitignore file and check whether a file matches it.
@@ -59,6 +56,9 @@ make test
 
 
 %changelog
+* Thu Nov 14 2024 Denis Fateyev <denis@fateyev.com> - 1.0-1
+- Update to 1.0 release
+
 * Tue Aug 06 2024 Miroslav Suchý <msuchy@redhat.com> - 0.04-22
 - convert license to SPDX
 

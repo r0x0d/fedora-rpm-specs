@@ -5,7 +5,7 @@
 %global crate nu-glob
 
 Name:           rust-nu-glob
-Version:        0.96.1
+Version:        0.100.0
 Release:        %autorelease
 Summary:        Fork of glob
 

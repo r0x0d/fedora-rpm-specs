@@ -3,8 +3,8 @@
 #
 Summary: Kernel analysis utility for live systems, netdump, diskdump, kdump, LKCD or mcore dumpfiles
 Name: crash
-Version: 8.0.5
-Release: 5%{?dist}
+Version: 8.0.6
+Release: 1%{?dist}
 License: GPL-3.0-only
 Source0: https://github.com/crash-utility/crash/archive/crash-%{version}.tar.gz
 Source1: http://ftp.gnu.org/gnu/gdb/gdb-10.2.tar.gz
@@ -18,39 +18,7 @@ Requires: binutils
 Provides: bundled(libiberty)
 Provides: bundled(gdb) = 10.2
 Patch0: lzo_snappy_zstd.patch
-Patch1: crash-8.0.5_build.patch
-Patch2: 0001-Adding-the-zram-decompression-algorithm-lzo-rle.patch
-Patch3: 0002-Cleanup-replace-struct-zspage_5_17-with-union.patch
-Patch4: 0003-arm64-section_size_bits-compatible-with-macro-defini.patch
-Patch5: 0004-Reflect-__-start-end-_init_task-kernel-symbols-renam.patch
-Patch6: 0001-x86_64-fix-for-adding-top_of_kernel_stack_padding-fo.patch
-Patch7: 0002-Fix-kmem-v-option-on-Linux-6.9-and-later-kernels.patch
-Patch8: 0003-X86-64-fix-for-crash-session-loading-failure.patch
-Patch9: 0004-Fix-for-failing-to-load-kernel-module.patch
-Patch10: 0005-X86-64-fix-a-regression-issue-about-kernel-stack-pad.patch
-Patch11: 0001-Fix-kmem-i-and-swap-commands-on-Linux-6.10-rc1-and-l.patch
-Patch12: 0002-List-enable-LIST_HEAD_FORMAT-for-r-option.patch
-Patch13: 0003-arm64-fix-a-potential-segfault-when-unwind-frame.patch
-Patch14: 0004-arm64-Fix-bt-command-show-wrong-stacktrace-on-ramdum.patch
-Patch15: 0005-arm64-Introduction-of-support-for-16K-page-with-3-le.patch
-Patch16: 0006-LoongArch64-fix-incorrect-code-in-the-main.patch
-Patch17: 0007-Fix-irq-a-exceeding-the-memory-range-issue.patch
-Patch18: 0008-arm64-fix-the-determination-of-vmemmap-and-struct_pa.patch
-Patch19: 0001-Fix-a-segfault-issue-due-to-the-incorrect-irq_stack_.patch
-Patch20: 0002-s390x-Fix-bt-f-F-command-fail-with-seek-error.patch
-Patch21: 0003-arm64-Introduction-of-support-for-16K-page-with-2-le.patch
-Patch22: 0004-arm64-fix-for-help-m-M-to-correctly-display-the-pmd-.patch
-Patch23: 0005-arm64-cleanup-the-pud-description.patch
-Patch24: 0006-Fix-a-Bus-error-issue-caused-by-crash-osrelease-or-c.patch
-Patch25: 0001-kmem-address-not-working-properly-when-redzone-is-en.patch
-Patch26: 0002-arm64-fix-indent-issue-and-refactor-PTE_TO_PHYS.patch
-Patch27: 0003-arm64-use-the-same-expression-to-indicate-ptrs_per_p.patch
-Patch28: 0004-arm64-fix-64K-page-and-52-bits-VA-support.patch
-Patch29: 0005-arm64-Support-16K-page-48-VA-bits-and-4-level-page-t.patch
-Patch30: 0006-x86_64-Fix-the-bug-of-getting-incorrect-framesize.patch
-Patch31: 0007-kmem-fix-the-determination-for-slab-page.patch
-Patch32: 0008-X86-64-improve-the-method-of-determining-whether-kas.patch
-Patch33: 0009-Revert-arm64-section_size_bits-compatible-with-macro.patch
+Patch1: crash-8.0.6_build.patch
 
 %description
 The core analysis suite is a self-contained tool that can be used to
@@ -72,38 +40,6 @@ offered by Mission Critical Linux, or the LKCD kernel patch.
 %setup -n %{name}-%{version} -q
 %patch -P 0 -p1 -b lzo_snappy_zstd.patch
 %patch -P 1 -p1
-%patch -P 2 -p1
-%patch -P 3 -p1
-%patch -P 4 -p1
-%patch -P 5 -p1
-%patch -P 6 -p1
-%patch -P 7 -p1
-%patch -P 8 -p1
-%patch -P 9 -p1
-%patch -P 10 -p1
-%patch -P 11 -p1
-%patch -P 12 -p1
-%patch -P 13 -p1
-%patch -P 14 -p1
-%patch -P 15 -p1
-%patch -P 16 -p1
-%patch -P 17 -p1
-%patch -P 18 -p1
-%patch -P 19 -p1
-%patch -P 20 -p1
-%patch -P 21 -p1
-%patch -P 22 -p1
-%patch -P 23 -p1
-%patch -P 24 -p1
-%patch -P 25 -p1
-%patch -P 26 -p1
-%patch -P 27 -p1
-%patch -P 28 -p1
-%patch -P 29 -p1
-%patch -P 30 -p1
-%patch -P 31 -p1
-%patch -P 32 -p1
-%patch -P 33 -p1
 
 %build
 
@@ -129,6 +65,9 @@ cp -p defs.h %{buildroot}%{_includedir}/crash
 %{_includedir}/*
 
 %changelog
+* Tue Nov 12 2024 Lianbo Jiang <lijiang@redhat.com> - 8.0.6-1
+- Rebase to upstream crash 8.0.6
+
 * Thu Aug 22 2024 Lianbo Jiang <lijiang@redhat.com> - 8.0.5-5
 - arm64: Fix a segfault issue due to the incorrect irq_stack_size on ARM64
 - s390x: Fix "bt -f/-F" command fail with seek error

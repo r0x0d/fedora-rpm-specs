@@ -5,13 +5,12 @@
 %global         forgeurl https://github.com/osbuild/koji-osbuild
 
 Name:           koji-osbuild
-Version:        11
-Release:        9%{?dist}
+Version:        12
+Release:        1%{?dist}
 Summary:        Koji integration for osbuild composer
 
 %forgemeta
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            %{forgeurl}
 Source0:        %{forgesource}
@@ -147,7 +146,6 @@ Requires:       openssl
 Requires:       osbuild-composer >= 58
 Requires:       osbuild-composer-tests
 Requires:       podman
-Requires:       podman-plugins
 Requires:       python3-boto3
 
 %description tests
@@ -162,6 +160,27 @@ Integration tests for koji-osbuild. To be run on a dedicated system.
 
 
 %changelog
+* Thu Nov 14 2024 Packit <hello@packit.dev> - 12-1
+Changes with 12
+----------------
+  * Actions: add workflow for marking and closing stale issues and PRs (#124)
+    * Author: Tomáš Hozza, Reviewers: Achilleas Koutsou
+  * build(deps): bump ludeeus/action-shellcheck from 1.1.0 to 2.0.0 (#115)
+    * Author: dependabot[bot], Reviewers: Ondřej Budai
+  * ci: add Fedora 37 (#111)
+    * Author: Ondřej Budai, Reviewers: Tomáš Hozza
+  * docs: Update architecture diagram (#114)
+    * Author: Simon Steinbeiß, Reviewers: Tomáš Hozza
+  * hub: mark baseurl as required in repo schema (#112)
+    * Author: Tomáš Hozza, Reviewers: Ondřej Budai
+  * koji-osbuild.spec: migrate the license field to SPDX (#113)
+    * Author: Ondřej Budai, Reviewers: Tomáš Hozza
+  * plugin/builder: increase retries for requests to composer (#128)
+    * Author: Sanne Raymaekers, Reviewers: Simon de Vlieger
+
+— Somewhere on the Internet, 2024-11-14
+
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 11-9
 - convert license to SPDX
 

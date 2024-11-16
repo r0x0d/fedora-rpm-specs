@@ -5,7 +5,8 @@ Summary:        Pure-Python library for parsing and analyzing ELF files
 Name:           pyelftools
 Version:        0.31
 Release:        3%{?dist}
-License:        Public Domain
+# elftools/construct is MIT
+License:        Unlicense AND MIT
 URL:            https://github.com/eliben/pyelftools
 Source0:        https://github.com/eliben/pyelftools/archive/v%{version}/%{name}-%{version}.tar.gz
 %global _description \

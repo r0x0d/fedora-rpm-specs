@@ -2,7 +2,7 @@
 
 Name:           octave-%{octpkg}
 Version:        1.2.5
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Communications for Octave
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
@@ -78,6 +78,9 @@ chmod a-x %{buildroot}/%{octpkgdir}/@galois/*.m
 %{octpkgdir}/comms.info
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 1.2.5-8
+- Rebuild for octave 9.2
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1.2.5-7
 - Rebuild for hdf5 1.14.5
 

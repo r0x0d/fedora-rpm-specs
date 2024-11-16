@@ -1,6 +1,6 @@
 Name:       ydiff
-Version:    1.3
-Release:    4%{?dist}
+Version:    1.4.1
+Release:    1%{?dist}
 Summary:    View colored, incremental diff
 URL:        https://github.com/ymattw/ydiff
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -12,9 +12,9 @@ BuildArch: noarch
 Requires: less
 Requires: python%{python3_pkgversion}-%{name}
 %description
-Term based tool to view colored, incremental diff in a Git/Mercurial/Svn
-workspace or from stdin, with side by side (similar to diff -y) and auto
-pager support.
+Ydiff is a terminal-based tool to view colored, incremental diffs in
+a version-controlled workspace or from stdin, in side-by-side (similar to
+``diff -y``) or unified mode, and auto-paged.
 
 %package -n     python3-%{name}
 Summary:        %{summary}
@@ -43,6 +43,9 @@ Python library that implements API used by ydiff tool.
 %{python3_sitelib}/%{name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Thu Nov 14 2024 Alois Mahdal <n9042e84@vornet.cz> 1.4.1-1
+- Updated to 1.4.1 (RHBZ#2326169)
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.3-4
 - convert license to SPDX
 
@@ -51,7 +54,6 @@ Python library that implements API used by ydiff tool.
 
 * Fri Jun 07 2024 Python Maint <python-maint@redhat.com> - 1.3-2
 - Rebuilt for Python 3.13
-
 
 * Fri Apr 05 2024 Alois Mahdal <n9042e84@vornet.cz> 1.3-1
 - Updated to 1.3

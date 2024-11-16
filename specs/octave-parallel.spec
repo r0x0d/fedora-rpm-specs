@@ -2,7 +2,7 @@
 
 Name:           octave-%{octpkg}
 Version:        4.0.1
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Parallel execution package for cluster computers for Octave
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
@@ -73,6 +73,9 @@ rm -rf  %{buildroot}/%{octpkgdir}/doc
 %{octpkgdir}/bin/octave-pserver
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 4.0.1-7
+- Rebuild for octave 9.2
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 4.0.1-6
 - convert license to SPDX
 

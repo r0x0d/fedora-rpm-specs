@@ -5,20 +5,22 @@
 %global crate virtio-vsock
 
 Name:           rust-virtio-vsock
-Version:        0.6.0
+Version:        0.8.0
 Release:        %autorelease
 Summary:        Virtio vsock device implementation
 
 License:        Apache-2.0 OR BSD-3-Clause
 URL:            https://crates.io/crates/virtio-vsock
-Source0:         %{crates_source}
+Source0:        %{crates_source}
 # Missing license files within the crate.
 # Reported upstream: https://github.com/rust-vmm/vm-virtio/issues/298
-Source100:        https://raw.githubusercontent.com/rust-vmm/vm-virtio/main/LICENSE-APACHE
-Source101:        https://raw.githubusercontent.com/rust-vmm/vm-virtio/main/LICENSE-BSD-3-Clause
+Source100:      https://raw.githubusercontent.com/rust-vmm/vm-virtio/main/LICENSE-APACHE
+Source101:      https://raw.githubusercontent.com/rust-vmm/vm-virtio/main/LICENSE-BSD-3-Clause
 
 # Package dependencies vmm-sys-util and virtio-bindings not built for s390x
-ExcludeArch: s390x
+ExcludeArch:    s390x
+# We depend on rust-vmm crates that don't support 32 bit targets
+ExcludeArch:    %{ix86}
 
 BuildRequires:  cargo-rpm-macros >= 24
 

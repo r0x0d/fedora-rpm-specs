@@ -1,5 +1,5 @@
 Name:           reuse
-Version:        4.0.3
+Version:        5.0.2
 Release:        %autorelease
 Summary:        A tool for compliance with the REUSE recommendations
 # The CC0-1.0 licence applies to json data files, not code.
@@ -9,7 +9,6 @@ Url:            https://github.com/fsfe/reuse-tool
 Source0:        %pypi_source
 
 Patch:          0001-Use-importlib-mode-for-pytest.patch
-Patch:          0002-Skip-problematic-tests.patch
 
 # Build
 BuildRequires:  python3-devel

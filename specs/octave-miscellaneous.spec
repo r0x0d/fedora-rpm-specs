@@ -2,7 +2,7 @@
 
 Name:           octave-%{octpkg}
 Version:        1.3.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Miscellaneous functions for Octave
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
@@ -65,6 +65,9 @@ rm -rf %{buildroot}/%{octpkgdir}/test
 %license %{octpkgdir}/packinfo/COPYING
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 1.3.1-2
+- Rebuild for octave 9.2
+
 * Sun Jul 28 2024 Thomas Sailer <fedora@tsailer.ch> - 1.3.1-1
 - Update to 1.3.1 (#2299771)
 

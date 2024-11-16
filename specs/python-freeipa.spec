@@ -6,7 +6,7 @@
 
 Name:           python-%{srcname}
 Version:        1.0.8
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Lightweight FreeIPA client
 
 License:        MIT
@@ -15,6 +15,7 @@ Source0:        https://github.com/opennode/%{name}/archive/v%{version}/%{name}-
 BuildArch:      noarch
 
 BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  %{py3_dist pytest}
 BuildRequires:  %{py3_dist requests}
 BuildRequires:  %{py3_dist responses}
 BuildRequires:  %{py3_dist setuptools}
@@ -46,7 +47,7 @@ sed -e "s/version='1.0.6',/version='%{version}',/" -i setup.py
 %py3_install
 
 %check
-%python3 setup.py test
+%pytest src/python_freeipa/tests/*.py
 
 %files -n python%{python3_pkgversion}-%{srcname}
 %license LICENSE.md
@@ -55,6 +56,9 @@ sed -e "s/version='1.0.6',/version='%{version}',/" -i setup.py
 %{python3_sitelib}/python_freeipa-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Thu Nov 14 2024 Neal Gompa <ngompa@fedoraproject.org> - 1.0.8-4
+- Switch to pytest macro for running tests (#2319660)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.8-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -5,7 +5,7 @@ Version:            1.1.0
 Release:            18%{?dist}
 Summary:            Python 2 / 3 compatibility, like six, but favouring Python 3
 
-License:            Public Domain
+License:            LicenseRef-Fedora-Public-Domain
 URL:                http://pypi.python.org/pypi/nine
 Source0:            https://pypi.python.org/packages/source/n/%{modname}/%{modname}-%{version}.tar.gz
 BuildArch:          noarch

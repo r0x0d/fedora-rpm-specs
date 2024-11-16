@@ -1,6 +1,6 @@
 Name:      langpacks
 Version:   4.2
-Release:   1%{?dist}
+Release:   2%{?dist}
 Summary:   Langpacks meta-package
 
 License:   GPL-2.0-or-later
@@ -1272,7 +1272,10 @@ local langpacks_package_list = {
               },
    inputmethod="ibus-table-chinese-cangjie",
    meta={ requires={},
-          recommends={ "ibus-table-chinese-quick" }
+          recommends={ "ibus-table-chinese-quick",
+                       "ibus-cangjie-engine-cangjie",
+                       "ibus-cangjie-engine-quick",
+                     }
    },
  },
  { lang="zh_TW", fclang="", langname="Taiwan", default={
@@ -1789,6 +1792,9 @@ DESTDIR=%{buildroot} appstream-util split-appstream org.fedoraproject.default-fo
 DESTDIR=%{buildroot} appstream-util split-appstream org.fedoraproject.langpacks-fonts.xml
 
 %changelog
+* Thu Nov 14 2024 Mike FABIAN <mfabian@redht.com> - 4.2-2
+- Resolves: rhbz#2310426 Add ibus-cangjie-engine-cangjie and ibus-cangjie-engine-quick as recommends for zh_HK
+
 * Tue Oct 22 2024 Akira TAGOH <tagoh@redhat.com> - 4.2-1
 - Add sub-packages:
   - got for Gothic

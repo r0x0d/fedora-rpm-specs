@@ -5,7 +5,7 @@
 Summary: Advanced Linux Sound Architecture (ALSA) utilities
 Name:    alsa-utils
 Version: %{baseversion}%{?fixversion}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPL-2.0-or-later
 URL:     http://www.alsa-project.org/
 Source:  ftp://ftp.alsa-project.org/pub/utils/alsa-utils-%{version}.tar.bz2
@@ -15,6 +15,7 @@ Source5: alsaunmute.1
 Source11: alsactl.conf
 Source20: alsa-restore.service
 Source22: alsa-state.service
+Patch1:  alsa-git.patch
 
 BuildRequires: gcc
 BuildRequires: autoconf automake libtool
@@ -62,7 +63,7 @@ Architecture (ALSA) framework and Fast Fourier Transform library.
 
 %prep
 %setup -q -n %{name}-%{version}
-#patch -P 1 -p1 -b .alsa-git
+%patch -P1 -p1 -b .alsa-git
 
 %build
 autoreconf -vif
@@ -205,7 +206,7 @@ fi
 %systemd_postun_with_restart alsa-state.service
 
 %changelog
-* Tue Nov 12 2024 Jaroslav Kysela <perex@perex.cz> - 1.2.13-1
+* Thu Nov 14 2024 Jaroslav Kysela <perex@perex.cz> - 1.2.13-2
 * Updated to 1.2.13
 
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.12-2

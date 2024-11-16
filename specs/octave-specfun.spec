@@ -2,7 +2,7 @@
 
 Name:           octave-%{octpkg}
 Version:        1.1.0
-Release:        40%{?dist}
+Release:        41%{?dist}
 Summary:        Special functions for Octave, including ellipitic functions
 # announced on devel@lists.fedoraproject.org
 # Message-ID: <1323949577.12740.9.camel@xbox360.hq.axsem.com>
@@ -54,6 +54,9 @@ rm inst/{ellipke,expint}.m src/{ellipj.cc,Makefile}
 %doc %{octpkgdir}/packinfo/COPYING
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 1.1.0-41
+- Rebuild for octave 9.2
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.1.0-40
 - convert license to SPDX
 

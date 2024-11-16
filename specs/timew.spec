@@ -9,8 +9,9 @@ URL:        https://timewarrior.net/
 # They do not contain the libshared git submodule
 Source0:    https://github.com/GothenburgBitFactory/timewarrior/releases/download/v%{version}/%{name}-%{version}.tar.gz
 Source1:    README.Fedora
+# updated bash completion from https://raw.githubusercontent.com/lauft/timew-bashcompletion/refs/heads/master/timew
+Source2:    timew-bash-completion
 
-BuildRequires:  git-core
 BuildRequires:  cmake gcc-c++
 BuildRequires:  rubygem-asciidoctor
 
@@ -23,8 +24,9 @@ Please read the /usr/share/doc/timew/README.Fedora file on using the included
 extensions.
 
 %prep
-%autosetup -S git
+%autosetup
 cp -v %{SOURCE1} .
+cp -v %{SOURCE2} completion/timew-completion.bash
 chmod -x doc/holidays/*
 for lib in doc/holidays/*; do
  sed '1{\@^#!/usr/bin/env python@d}' $lib > $lib.new &&

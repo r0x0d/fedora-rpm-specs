@@ -1,6 +1,6 @@
 Name:           python-falcon
 Epoch:          1
-Version:        4.0.1
+Version:        4.0.2
 Release:        %autorelease
 Summary:        ASGI+WSGI framework for building data plane APIs
 License:        Apache-2.0

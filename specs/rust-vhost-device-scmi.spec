@@ -12,7 +12,7 @@
 %endif
 
 Name:           rust-vhost-device-scmi
-Version:        0.2.0
+Version:        0.3.0
 Release:        %autorelease
 Summary:        Vhost-user SCMI backend device
 
@@ -39,8 +39,11 @@ Source2: rust-vhost-device-scmi-%{version}-vendor.tar.xz
 
 # Upstream doesn't provide man pages
 Patch0:         rust-vhost-device-scmi-man-page.patch
-# Unused code removed to make rustc happy
-Patch1:         rust-vhost-device-scmi-unused-code.patch
+# Update rust-vmm deps
+Patch1:         rust-vhost-device-scmi-update-deps.patch
+
+# We depend on rust-vmm crates that don't support 32 bit targets
+ExcludeArch:    %{ix86}
 
 %if 0%{?bundled_rust_deps}
 BuildRequires:  rust-toolset

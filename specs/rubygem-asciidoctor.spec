@@ -7,7 +7,7 @@
 Summary: A fast, open source AsciiDoc implementation in Ruby
 Name: rubygem-%{gem_name}
 Version: 2.0.20
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: MIT
 URL: https://asciidoctor.org
 Source0: https://github.com/asciidoctor/asciidoctor/archive/%{gittag}/%{gem_name}-%{version}%{pre}.tar.gz
@@ -19,6 +19,10 @@ Patch0: 0001-use-single-line-block-in-manify-method-in-manpage-co.patch
 Patch1: 0002-change-dot-layout-in-chained-method-call-to-be-compa.patch
 # https://github.com/asciidoctor/asciidoctor/pull/4494
 Patch2: 0003-support-ruby33-Logger.patch
+# https://github.com/asciidoctor/asciidoctor/pull/4562/
+Patch3: 0004-remove-base64-dependency.patch
+# https://github.com/asciidoctor/asciidoctor/commit/e5442fc2
+Patch4: 0005-normalize-inspect-output.patch
 %if 0%{?el7}
 Requires: ruby(release)
 BuildRequires: ruby(release)
@@ -129,6 +133,10 @@ cp -a .%{gem_instdir}/man/*.1 \
 %doc %{gem_docdir}
 
 %changelog
+* Thu Nov 14 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.0.20-8
+- Backport upstream PR to remove base64 dependency
+- Backport upstream fix for ruby34 formatting change
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.20-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

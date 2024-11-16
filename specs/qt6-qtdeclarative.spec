@@ -16,7 +16,7 @@
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
 Version: 6.8.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -37,6 +37,8 @@ Source5: qv4global_p-multilib.h
 Patch1:  qtdeclarative-revert-fix-delegates-not-being-created-in-certain-cases.patch
 Patch2:  qtdeclarative-fix-delegates-not-being-created-in-certain-cases-v2.patch
 Patch3:  qtdeclarative-qquickitem-map-to-from-item-account-for-not-having-window-yet.patch
+Patch4:  qtdeclarative-log-state-transition-for-gc.patch
+Patch5:  qtdeclarative-engine-mark-created-wrapped-objects-after.patch
 
 ## upstreamable patches
 
@@ -365,6 +367,9 @@ make check -k -C tests ||:
 %endif
 
 %changelog
+* Thu Nov 14 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-3
+- Backport upstream fixes for QTBUG-130767
+
 * Mon Nov 04 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-2
 - Backport upstream fix:
   QQuickItem::map{To,From}Item: Account for not having a window yet

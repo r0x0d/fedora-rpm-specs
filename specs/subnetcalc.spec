@@ -1,5 +1,5 @@
 Name:           subnetcalc
-Version:        2.5.1
+Version:        2.6.0
 Release:        %autorelease
 Summary:        IPv4/IPv6 Subnet Calculator
 License:        GPL-3.0-or-later
@@ -10,6 +10,7 @@ Source0:        https://www.nntb.no/~dreibh/subnetcalc/download/%{name}-%{versio
 BuildRequires:  gcc gcc-c++
 BuildRequires:  GeoIP-devel
 BuildRequires:  cmake
+BuildRequires:  gettext
 
 %description
 SubNetCalc is an IPv4/IPv6 subnet address calculator. For given IPv4 or IPv6 
@@ -28,11 +29,13 @@ interface ID, etc.).
 
 %install
 %cmake_install
+%find_lang %{name}
 
-%files
+%files -f %{name}.lang
 %doc AUTHORS ChangeLog README.md
 %license COPYING
 %{_bindir}/subnetcalc
+%{_datadir}/bash-completion/completions/subnetcalc
 %{_mandir}/man1/subnetcalc.1*
 
 %changelog

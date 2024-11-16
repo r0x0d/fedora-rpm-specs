@@ -1,5 +1,5 @@
 Name:           python-ibm-vpc
-Version:        0.24.1
+Version:        0.25.0
 Release:        1%{?dist}
 Summary:        Python client library for IBM Cloud VPC Services
 
@@ -56,6 +56,10 @@ Summary:        %{summary}
 
 
 %changelog
+* Thu Nov 14 2024 Packit <hello@packit.dev> - 0.25.0-1
+- Update to version 0.25.0
+- Resolves: rhbz#2326209
+
 * Tue Nov 05 2024 Packit <hello@packit.dev> - 0.24.1-1
 - Update to version 0.24.1
 - Resolves: rhbz#2323981

@@ -2,7 +2,7 @@
 
 Name:           pungi
 Version:        4.7.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Distribution compose tool
 
 License:        GPL-2.0-only
@@ -146,6 +146,9 @@ rm %{buildroot}%{_bindir}/pungi
 %{_bindir}/%{name}-cache-cleanup
 
 %changelog
+* Thu Nov 14 2024 Adam Williamson <awilliam@redhat.com> - 4.7.0-6
+- Rebuild with no changes to bump past release used in infra tag
+
 * Wed Oct 16 2024 Adam Williamson <awilliam@redhat.com> - 4.7.0-5
 - Backport patches for subvariant and filename for ostree_container
 - Backport patch to split ostree phases out and improve compose speed

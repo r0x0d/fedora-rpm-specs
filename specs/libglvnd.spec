@@ -1,10 +1,19 @@
 %global commit0 faa23f21fc677af5792825dc30cb1ccef4bf33a6
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
+%if 0%{?rhel} >= 10
+%global compositor mutter
+%global x11_tests 0
+%elif 0%{?rhel}
+%global x11_tests 1
+%else
+%global compositor weston
+%global x11_tests 1
+%endif
 
 Name:           libglvnd
 Version:        1.7.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 # Provide an upgrade path from the negativo17.org pkgs which have Epoch 1
 Epoch:          1
 Summary:        The GL Vendor-Neutral Dispatch library
@@ -22,7 +31,14 @@ BuildRequires:  python3-libxml2
 BuildRequires:  pkgconfig(glproto)
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xext)
+%if 0%{?x11_tests}
 BuildRequires:  xorg-x11-server-Xvfb
+%endif
+%if 0%{?compositor:1}
+BuildRequires:  mesa-dri-drivers
+BuildRequires:  %{compositor}
+BuildRequires:  xwayland-run
+%endif
 
 %{?_without_mesa_glvnd_default:
 %global __provides_exclude_from %{_libdir}/%{name}
@@ -166,12 +182,23 @@ mkdir -p %{buildroot}%{_datadir}/egl/egl_external_platform.d/
 
 
 %check
+%if 0%{?x11_tests}
 export DO_X11_TESTS=1
 xvfb-run -s '-screen 0 640x480x24' -d make check V=1 || \
 %ifarch s390x ppc64
     :
 %else
     (cat `find . -name test-suite.log` ; exit 1)
+%endif
+%endif
+%if 0%{?compositor:1}
+export DO_X11_TESTS=1
+xwfb-run -c %{compositor} -- make check V=1 || \
+%ifarch s390x ppc64
+    :
+%else
+    (cat `find . -name test-suite.log` ; exit 1)
+%endif
 %endif
 
 
@@ -246,6 +273,9 @@ xvfb-run -s '-screen 0 640x480x24' -d make check V=1 || \
 
 
 %changelog
+* Tue Nov 05 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 1:1.7.0-6
+- Test on wayland/Xwayland
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:1.7.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

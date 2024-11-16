@@ -7,7 +7,7 @@ Release:        %autorelease
 Summary:        Avogadro2 libraries
 
 # BSD is main license
-License: BSD-3-Clause AND (ASL-2.0 AND/OR MIT) AND CDDL-1.0
+License: BSD-3-Clause AND (ASL-2.0 AND MIT) AND CDDL-1.0
 URL:     http://avogadro.openmolecules.net/
 Source0: https://github.com/OpenChemistry/avogadrolibs/archive/%{version}/avogadrolibs-%{version}.tar.gz
 Source1: https://github.com/OpenChemistry/avogenerators/archive/1.98.0/avogenerators-1.98.0.tar.gz

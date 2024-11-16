@@ -12,7 +12,7 @@
 
 %global goipath         github.com/osbuild/osbuild-composer
 
-Version:        124
+Version:        125
 
 %gometa
 
@@ -228,7 +228,7 @@ Provides: bundled(golang(github.com/opencontainers/runtime-spec)) = 1.2.0
 Provides: bundled(golang(github.com/opencontainers/selinux)) = 1.11.0
 Provides: bundled(golang(github.com/openshift-online/ocm-sdk-go)) = 0.1.438
 Provides: bundled(golang(github.com/oracle/oci-go-sdk/v54)) = 54.0.0
-Provides: bundled(golang(github.com/osbuild/images)) = 0.94.0
+Provides: bundled(golang(github.com/osbuild/images)) = 0.96.0
 Provides: bundled(golang(github.com/osbuild/osbuild-composer/pkg/splunk_logger)) = 0239db5
 Provides: bundled(golang(github.com/osbuild/pulp-client)) = 0.1.0
 Provides: bundled(golang(github.com/ostreedev/ostree-go)) = 719684c
@@ -698,6 +698,31 @@ Integration tests to be run on a pristine-dedicated system to test the osbuild-c
 %endif
 
 %changelog
+* Wed Nov 13 2024 Packit <hello@packit.dev> - 125-1
+Changes with 125
+----------------
+  * Implement running db tests locally (#4431)
+    * Author: Florian Schüller, Reviewers: Sanne Raymaekers
+  * Introduce grafana number of pending jobs (#4462)
+    * Author: Florian Schüller, Reviewers: Sanne Raymaekers
+  * Makefile: clean golangci-lint cache on `make clean` (#4444)
+    * Author: Florian Schüller, Reviewers: Brian C. Lane
+  * Test/data: add test repo configs for RHEL-9.6 (#4456)
+    * Author: Tomáš Hozza, Reviewers: Ondřej Budai
+  * cloud/awscloud: don't specify max spot price (#4446)
+    * Author: Sanne Raymaekers, Reviewers: Florian Schüller, Ondřej Budai
+  * go.mod: update osbuild/images to v0.95.0 (#4448)
+    * Author: Achilleas Koutsou, Reviewers: Lukáš Zapletal, Tomáš Hozza
+  * osbuild-worker: use the new ostree resolver API (HMS-4773) (#4412)
+    * Author: Lukáš Zapletal, Reviewers: Achilleas Koutsou
+  * worker/server: update metrics on requeue (#4461)
+    * Author: Sanne Raymaekers, Reviewers: Florian Schüller
+  * worker: check MTLS config for ostree (#4467)
+    * Author: Lukáš Zapletal, Reviewers: Achilleas Koutsou, Sanne Raymaekers
+
+— Somewhere on the Internet, 2024-11-13
+
+
 * Wed Oct 30 2024 Packit <hello@packit.dev> - 124-1
 Changes with 124
 ----------------

@@ -4,7 +4,7 @@
 
 
 Name:           mariadb-connector-odbc
-Version:        3.2.2
+Version:        3.2.3
 Release:        1%{?with_debug:.debug}%{?dist}
 Summary:        The MariaDB Native Client library (ODBC driver)
 License:        LGPL-2.1-or-later
@@ -13,7 +13,7 @@ Url:            https://mariadb.org/en/
 # Online documentation can be found at: https://mariadb.com/kb/en/library/mariadb-connector-odbc/
 
 BuildRequires:  cmake unixODBC-devel gcc-c++
-BuildRequires:  mariadb-connector-c-devel >= 3.4.0
+BuildRequires:  mariadb-connector-c-devel >= 3.4.3
 
 %description
 MariaDB Connector/ODBC is a standardized, LGPL licensed database driver using
@@ -74,6 +74,9 @@ FCFLAGS="$FCFLAGS   -O0 -g"; export FCFLAGS
 
 
 %changelog
+* Thu Nov 14 2024 Michal Schorm <mschorm@redhat.com> - 3.2.3-1
+- Rebase to 3.2.3
+
 * Thu Aug 22 2024 Michal Schorm <mschorm@redhat.com> - 3.2.2-1
 - Rebase to 3.2.2 GA
 

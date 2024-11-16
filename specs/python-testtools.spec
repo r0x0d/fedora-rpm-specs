@@ -12,6 +12,11 @@
 # 5. python-testtools
 %bcond bootstrap 0
 
+# Twisted support is optional, but introduces twisted as a build requirement,
+# and that has it's own pile of dependencies.  Let's avoid that during EPEL
+# bringup.
+%bcond twisted %{undefined rhel}
+
 Name:           python-testtools
 Version:        2.7.2
 Release:        %autorelease
@@ -26,8 +31,7 @@ testtools is a set of extensions to the Python standard library's unit testing
 framework.}
 
 
-%description
-%{common_description}
+%description %{common_description}
 
 
 %package -n python3-testtools
@@ -35,8 +39,7 @@ Summary:        %{summary}
 BuildRequires:  python3-devel
 
 
-%description -n python3-testtools
-%{common_description}
+%description -n python3-testtools %{common_description}
 
 
 %if %{without bootstrap}
@@ -57,9 +60,13 @@ This package contains HTML documentation for %{name}.
 %prep
 %autosetup -p 1 -n testtools-%{version}
 
+%if %{without twisted}
+sed -e '/twistedsupport,/d' -i testtools/tests/__init__.py
+%endif
+
 
 %generate_buildrequires
-%pyproject_buildrequires %{!?with_bootstrap:-x test -x twisted}
+%pyproject_buildrequires %{!?with_bootstrap:-x test %{?with_twisted:-x twisted}}
 
 
 %build

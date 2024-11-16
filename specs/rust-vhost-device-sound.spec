@@ -39,6 +39,8 @@ Source2: rust-vhost-device-sound-%{version}-vendor.tar.xz
 # Relax alsa and rstest dependencies, as upstream doesn't really depend
 # on newer features from those crates.
 Patch:          vhost-device-sound-relax-dependencies.patch
+# Update rust-vmm dependencies.
+Patch:          vhost-device-sound-update-deps.patch
 %endif
 
 # Upstream doesn't provide man pages

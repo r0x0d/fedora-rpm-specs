@@ -9,7 +9,7 @@
 %global _warning_options %_warning_options -Wformat
 
 Name:           micropython
-Version:        1.23.0
+Version:        1.24.0
 Release:        1%{?dist}
 Summary:        Implementation of Python 3 with very low memory footprint
 
@@ -28,16 +28,8 @@ Source1:       https://github.com/pfalcon/berkeley-db-1.xx/archive/%{berkley_com
 %global mbedtls_commit edb8fec9882084344a314368ac7fd957a187519c
 Source2:       https://github.com/Mbed-TLS/mbedtls/archive/%{mbedtls_commit}/mbedtls-%{mbedtls_commit}.tar.gz
 
-%global micropython_lib_commit 50ed36fbeb919753bcc26ce13a8cffd7691d06ef
+%global micropython_lib_commit 68e3e07bc7ab63931cead3854b2a114e9a084248
 Source3: https://github.com/micropython/micropython-lib/archive/%{micropython_lib_commit}/micropython-lib-%{micropython_lib_commit}.tar.gz
-
-# Security fix for CVE-2024-8946: micropython: heap buffer overflow via mp_vfs_umount
-# Resolved upstream: https://github.com/micropython/micropython/pull/13325
-Patch:        CVE-2024-8946.patch
-
-# Security fix for CVE-2024-8948: heap buffer overflow via int_to_bytes
-# Resolved upstream: https://github.com/micropython/micropython/pull/13087
-Patch:        CVE-2024-8948.patch
 
 # Other arches need active porting, i686 removed via:
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
@@ -57,10 +49,10 @@ BuildRequires:  openssl-devel
 # MICROPY_CPYTHON3 environment variable.
 # Normal %%{python3} is used anywhere else.
 # There is no runtime dependency on this CPython (or any other).
-%global cpython_version_tests 3.11
+%global cpython_version_tests 3.12
 BuildRequires:  %{_bindir}/python%{cpython_version_tests}
 
-Provides:       bundled(mbedtls) = 2.28.3
+Provides:       bundled(mbedtls) = 3.5.1
 Provides:       bundled(libdb) = 1.85
 Provides:       bundled(micropython-lib) = %{version}
 
@@ -124,6 +116,10 @@ install -pm 755 ports/unix/build-standard/micropython %{buildroot}%{_bindir}
 %{_bindir}/micropython
 
 %changelog
+* Thu Nov 14 2024 Charalampos Stratakis <cstratak@redhat.com> - 1.24.0-1
+- Update to 1.24.0
+Resolves: rhbz#2284183
+
 * Thu Oct 17 2024 Charalampos Stratakis <cstratak@redhat.com> - 1.23.0-1
 - Update to 1.23.0
 - Security fixes for CVE-2024-8946, CVE-2024-8947, CVE-2024-8948

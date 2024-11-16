@@ -27,7 +27,11 @@
 
 Name:           hipfft
 Version:        %{rocm_version}
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+Release:        1%{?dist}
+%else
 Release:        %autorelease
+%endif
 Summary:        ROCm FFT marshalling library
 Url:            https://github.com/ROCm/%{upstreamname}
 License:        MIT
@@ -52,8 +56,10 @@ BuildRequires:  boost-devel
 BuildRequires:  fftw-devel
 BuildRequires:  gtest-devel
 BuildRequires:  hiprand-devel
-BuildRequires:  libomp-devel
 BuildRequires:  rocrand-devel
+%if 0%{?is_opensuse}
+BuildRequires:  libboost_program_options-devel
+%endif
 %endif
 
 %description
@@ -90,6 +96,11 @@ do
     module load rocm/$gpu
 
     %cmake \
+	-DCMAKE_CXX_COMPILER=hipcc \
+	-DCMAKE_C_COMPILER=hipcc \
+	-DCMAKE_LINKER=%rocmllvm_bindir/ld.lld \
+	-DCMAKE_AR=%rocmllvm_bindir/llvm-ar \
+	-DCMAKE_RANLIB=%rocmllvm_bindir/llvm-ranlib \
            -DCMAKE_BUILD_TYPE=%{build_type} \
 	   -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
 	   -DCMAKE_SKIP_RPATH=ON \
@@ -98,6 +109,7 @@ do
 	   -DCMAKE_INSTALL_LIBDIR=$ROCM_LIB \
 	   -DCMAKE_INSTALL_BINDIR=$ROCM_BIN \
            -DBUILD_CLIENTS_TESTS=%{build_test} \
+	   -DBUILD_CLIENTS_TESTS_OPENMP=OFF \
 	   -DROCM_SYMLINK_LIBS=OFF \
            -DHIP_PLATFORM=amd
 
@@ -120,9 +132,13 @@ find %{buildroot}%{_libdir} -name '*.cmake'      | sed -f br.sed >> %{name}.deve
 find %{buildroot}           -name '%{name}-*'    | sed -f br.sed >  %{name}.test
 %endif
 
+if [ -f %{buildroot}%{_prefix}/share/doc/hipfft/LICENSE.md ]; then
+    rm %{buildroot}%{_prefix}/share/doc/hipfft/LICENSE.md
+fi
+
+
 %files -f %{name}.files
 %license LICENSE.md
-%exclude %{_docdir}/%{name}/LICENSE.md
 
 %files devel -f %{name}.devel
 %doc README.md
@@ -133,6 +149,12 @@ find %{buildroot}           -name '%{name}-*'    | sed -f br.sed >  %{name}.test
 %endif
 
 %changelog
+%if 0%{?is_opensuse}
+* Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif
 
 

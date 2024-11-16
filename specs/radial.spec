@@ -2,7 +2,7 @@ Summary: A simple program for calculating radial velocities of stars in a binary
 Name: radial
 Version: 1.0
 Release: 32%{?dist}
-License: Freely redistributable without restriction
+License: LicenseRef-Fedora-UltraPermissive
 Url: http://www.nhn.ou.edu/~hegarty/radial/
 Source0: http://www.nhn.ou.edu/~hegarty/radial/%{name}-%{version}.tar.gz
 Source1: http://www.nhn.ou.edu/~hegarty/radial/%{name}-%{version}.f

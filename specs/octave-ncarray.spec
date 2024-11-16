@@ -2,7 +2,7 @@
 
 Name:           octave-%{octpkg}
 Version:        1.0.6
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Access NetCDF files as a multi-dimensional array
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -64,6 +64,9 @@ Access a single or a collection of NetCDF files as a multi-dimensional array.
 
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 1.0.6-4
+- Rebuild for octave 9.2
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.6-3
 - convert license to SPDX
 

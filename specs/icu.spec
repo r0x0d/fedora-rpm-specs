@@ -12,7 +12,7 @@ Version:   74.2
 Release:   2%{?dist}
 Summary:   International Components for Unicode
 
-License:   Unicode-DFS-2016 AND BSD-2-Clause AND BSD-3-Clause AND LicenseRef-Fedora-Public-Domain
+License:   Unicode-DFS-2016 AND BSD-2-Clause AND BSD-3-Clause AND NAIST-2003 AND LicenseRef-Fedora-Public-Domain
 URL:       http://site.icu-project.org/
 Source0:   https://github.com/unicode-org/icu/releases/download/release-%{version_dash}/icu4c-%{version_underscore}-src-FIXED.tgz
 %if 0%{?use_tzdata_update}

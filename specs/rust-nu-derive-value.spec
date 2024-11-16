@@ -5,7 +5,7 @@
 %global crate nu-derive-value
 
 Name:           rust-nu-derive-value
-Version:        0.96.1
+Version:        0.100.0
 Release:        %autorelease
 Summary:        Macros implementation of #[derive(FromValue, IntoValue)]
 

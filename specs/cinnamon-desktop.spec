@@ -1,7 +1,7 @@
-%global commit0 fe21fa8c0475b38522db2b7a68f11e95cca4ac91
-%global date 20231109
+%global commit0 4ff8433fcaccd420afadd7199d54ea5d30893512
+%global date 20241114
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global tag %{version}
+#global tag %{version}
 
 %global gtk3_version                      3.16.0
 %global glib2_version                     2.37.3
@@ -10,8 +10,8 @@
 
 Summary: Shared code among cinnamon-session, nemo, etc
 Name:    cinnamon-desktop
-Version: 6.2.0
-Release: 3%{?dist}
+Version: 6.3.0%{!?tag:^%{date}git%{shortcommit0}}
+Release: 1%{?dist}
 # Automatically converted from old format: GPLv2+ and LGPLv2+ and MIT - review is highly recommended.
 License: GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-MIT
 URL:     https://github.com/linuxmint/%{name}
@@ -43,8 +43,10 @@ BuildRequires: pkgconfig(gdk-pixbuf-2.0)
 BuildRequires: pkgconfig(gio-2.0)
 BuildRequires: pkgconfig(glib-2.0)  >= %{glib2_version}
 BuildRequires: pkgconfig(gobject-introspection-1.0)
+BuildRequires: pkgconfig(iso-codes)
 BuildRequires: pkgconfig(libpulse)
 BuildRequires: pkgconfig(libsystemd)
+BuildRequires: pkgconfig(udev)
 BuildRequires: pkgconfig(x11)
 BuildRequires: pkgconfig(xext)
 BuildRequires: pkgconfig(xkbfile)
@@ -110,6 +112,9 @@ install -m 644 %SOURCE1 %buildroot%{_datadir}/applications/x-cinnamon-mimeapps.l
 %{_datadir}/gir-1.0/C*.gir
 
 %changelog
+* Thu Nov 14 2024 Leigh Scott <leigh123linux@gmail.com> - 6.3.0^20241114git4ff8433-1
+- Update to git snapshot
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 6.2.0-3
 - convert license to SPDX
 

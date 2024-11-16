@@ -1,6 +1,6 @@
 Name:           librime
-Version:        1.11.2
-Release:        4%{?dist}
+Version:        1.12.0
+Release:        1%{?dist}
 Summary:        Rime Input Method Engine Library
 
 License:        GPL-3.0-only
@@ -9,6 +9,8 @@ Source0:        https://github.com/rime/librime/archive/%{version}.tar.gz#/%{nam
 # The following librime lua plugin needs to access the librime internal API.
 # Build the librime lua plugin when build the librime package.
 Source1:        https://github.com/hchunhui/librime-lua/archive/refs/heads/master.tar.gz#/librime-lua.tar.gz
+
+Patch0:         librime-fixes-setup-log.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake, opencc-devel
@@ -104,6 +106,10 @@ popd
 
 
 %changelog
+* Thu Nov 14 2024 Peng Wu <pwu@redhat.com> - 1.12.0-1
+- Update to 1.12.0
+- Resolves: RHBZ#2325381
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1.11.2-4
 - Rebuild for yaml-cpp 0.8
 

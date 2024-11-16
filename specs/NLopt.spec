@@ -21,7 +21,7 @@
 %global relversion 2.8.0
 Name:              NLopt
 Version:           2.8.0^202409167cdebfe
-Release:           1%{?dist}
+Release:           2%{?dist}
 Summary:           Open-Source library for nonlinear optimization
 
 # Get a lowercase name for virtual provides.
@@ -301,6 +301,9 @@ EOF
 %{python3_sitearch}/%{lc_name}-%{relversion}.dist-info/METADATA
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 2.8.0^202409167cdebfe-2
+- Rebuild for octave 9.2
+
 * Sun Sep 29 2024 Benson Muite <benson_muite@emailplus.org> - 2.8.0^202409167cdebfe-1
 - Update to latest release
 - Update to Guile 3.0 for Guile subpackage 

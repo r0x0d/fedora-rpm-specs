@@ -11,7 +11,7 @@
 Summary: SELinux policy core utilities
 Name:    policycoreutils
 Version: 3.7
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPL-2.0-or-later
 # https://github.com/SELinuxProject/selinux/wiki/Releases
 Source0: https://github.com/SELinuxProject/selinux/releases/download/3.7/selinux-3.7.tar.gz
@@ -44,6 +44,7 @@ Patch0003: 0003-sandbox-Use-matchbox-window-manager-instead-of-openb.patch
 Patch0004: 0004-Use-SHA-2-instead-of-SHA-1.patch
 Patch0005: 0005-python-sepolicy-Fix-spec-file-dependencies.patch
 Patch0006: 0006-sepolgen-ifgen-allow-M4-escaped-filenames.patch
+Patch0007: 0007-fixfiles-use-grep-F-when-search-in-mounts.patch
 # Patch list end
 
 Obsoletes: policycoreutils < 2.0.61-2

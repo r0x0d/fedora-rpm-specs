@@ -2,7 +2,7 @@
 ExcludeArch: %{ix86}
 
 Name:           galera
-Version:        26.4.19
+Version:        26.4.20
 Release:        1%{?dist}
 Summary:        Synchronous multi-master wsrep provider (replication engine)
 
@@ -18,6 +18,7 @@ Source0:        http://releases.galeracluster.com/source/%{name}-%{version}.tar.
 Patch0:         cmake_paths.patch
 Patch1:         docs.patch
 Patch2:         network.patch
+Patch3:         openssl_engine.patch
 
 BuildRequires:  boost-devel check-devel openssl-devel cmake systemd gcc-c++ asio-devel
 Requires(pre):  /usr/sbin/useradd
@@ -39,6 +40,7 @@ description of Galera replication engine see https://www.galeracluster.com web.
 %patch -P0 -p1
 %patch -P1 -p1
 %patch -P2 -p1
+%patch -P3 -p1
 
 %build
 %{set_build_flags}
@@ -147,6 +149,9 @@ unlink /etc/systemd/system/garb.service || :
 
 
 %changelog
+* Thu Nov 14 2024 Michal Schorm <mschorm@redhat.com> - 26.4.20-1
+- Rebase to 26.4.20
+
 * Fri Oct 18 2024 Michal Schorm <mschorm@redhat.com> - 26.4.19-1
 - Rebase to 26.4.19
 

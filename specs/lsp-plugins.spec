@@ -1,6 +1,6 @@
 Name:           lsp-plugins
-Version:        1.2.16
-Release:        2%{?dist}
+Version:        1.2.19
+Release:        1%{?dist}
 Summary:        Linux Studio Plugins
 
 License:        LGPL-3.0-or-later and Zlib
@@ -12,7 +12,12 @@ ExcludeArch: %{ix86}
 BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  libstdc++-devel >= 4.7
+%if 0%{?fedora} || 0%{?rhel} >= 9
+BuildRequires:  pipewire-jack-audio-connection-kit-devel
+BuildRequires:  pipewire-jack-audio-connection-kit
+%else
 BuildRequires:  jack-audio-connection-kit-devel >= 1.9.5
+%endif
 BuildRequires:  lv2-devel >= 1.10
 BuildRequires:  ladspa-devel >= 1.13
 BuildRequires:  expat-devel >= 2.1
@@ -24,13 +29,14 @@ BuildRequires:  libGL-devel
 BuildRequires:  php-cli
 BuildRequires:  desktop-file-utils
 BuildRequires:  libXrandr-devel
+BuildRequires:  pkgconfig(gstreamer-audio-1.0)
 
 Requires:       redhat-menus
 Requires:       hicolor-icon-theme
 
 %description
 LSP (Linux Studio Plugins) is a collection of open-source plugins
-compatibles with LADSPA, LV2, LinuxVST formats and Standalone (using Jack).
+compatible with LADSPA, LV2, LinuxVST formats and Standalone (using Jack).
 
 %package -n liblsp-r3d-glx
 Summary:        liblsp-r3d-glx plugin
@@ -93,11 +99,18 @@ Summary:        Linux Studio Plugins CLAP format
 %description clap
 Linux Studio Plugins (LSP) compatible with the CLAP format.
 
+%package gstreamer
+Summary:        Linux Studio Plugins gstreamer format
+
+%description gstreamer
+Linux Studio Plugins (LSP) compatible with the gstreamer format.
+
 %prep
 %autosetup -p1 -n %{name}
 rm -rf include/3rdparty/ladspa
 sed -i "s|\$\(LDFLAGS_EXT\) -r|\$\(LDFLAGS_EXT\) -r %{build_ldflags}|" make/tools.mk
 # sed -i 's|march=i586|march=i686|' make/system.mk
+# sed -i 's|gst/|gstreamer-1.0/gst/|' modules/lsp-plugin-fw/include/lsp-plug.in/plug-fw/wrap/gstreamer/defs.h
 
 
 %build
@@ -120,7 +133,6 @@ rm %{buildroot}%{_libdir}/*.a
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 
-
 %files
 %license COPYING COPYING.LESSER
 %doc CHANGELOG README.md
@@ -133,7 +145,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 
 %files -n liblsp-r3d-glx
 %license COPYING COPYING.LESSER
-%{_libdir}/liblsp-r3d-glx-lib-1.0.18.so
+%{_libdir}/liblsp-r3d-glx-lib-1.0.21.so
 
 %files -n liblsp-r3d-glx-devel
 %{_libdir}/liblsp-r3d-glx-lib.so
@@ -171,9 +183,16 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 
 %files clap
 %dir %{_libdir}/clap
-%{_libdir}/clap/%{name}-clap.clap
+%{_libdir}/clap/%{name}.clap
+
+%files gstreamer
+%{_libdir}/gstreamer-1.0/libgstlsp-plugins*.so
 
 %changelog
+* Wed Nov 13 2024 Nikolas Nyby <nikolas@gnu.org> - 1.2.19-1
+- Update to 1.2.19
+- Switch to pipewire-jack-audio-connection-kit-devel where available
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.16-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

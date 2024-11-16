@@ -1,8 +1,8 @@
 %global modname bleach
 
 Name:           python-%{modname}
-Version:        6.1.0
-Release:        3%{?dist}
+Version:        6.2.0
+Release:        1%{?dist}
 Summary:        An easy whitelist-based HTML-sanitizing tool
 
 License:        Apache-2.0
@@ -82,6 +82,9 @@ fi;
 
 
 %changelog
+* Thu Nov 14 2024 Michel Lind <salimma@fedoraproject.org> - 6.2.0-1
+- new version
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.1.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

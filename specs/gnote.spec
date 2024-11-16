@@ -5,7 +5,7 @@ Version:        47.0
 Release:        1%{?dist}
 Summary:        Note-taking application
 
-License:        GPL-3.0-or-later AND GFDL-1.1 AND CC0-1.0
+License:        GPL-3.0-or-later AND GFDL-1.1-only AND CC0-1.0
 URL:            https://wiki.gnome.org/Apps/Gnote
 Source0:        https://download.gnome.org/sources/%{name}/47/%{name}-%{tarball_version}.tar.xz
 

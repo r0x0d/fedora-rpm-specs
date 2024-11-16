@@ -2,7 +2,7 @@
 
 Name:           octave-%{octpkg}
 Version:        3.2.1
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Interval arithmetic for Octave
 # The source code is GPLv3+ except src/crlibm/ which is LGPLv2+
 # Automatically converted from old format: GPLv3+ and LGPLv2+ - review is highly recommended.
@@ -73,6 +73,9 @@ arithmetic.
 
 
 %changelog
+* Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 3.2.1-11
+- Rebuild for octave 9.2
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 3.2.1-10
 - convert license to SPDX
 

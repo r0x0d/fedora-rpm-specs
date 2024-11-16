@@ -3,8 +3,8 @@
 %global pkgname openexr
 
 Name:          mingw-%{pkgname}
-Version:       3.2.4
-Release:       2%{?dist}
+Version:       3.3.2
+Release:       1%{?dist}
 Summary:       MinGW Windows %{pkgname} library
 
 License:       BSD-3-Clause
@@ -104,17 +104,17 @@ rm -rf %{buildroot}%{mingw64_docdir}/OpenEXR
 
 %files -n mingw32-%{pkgname}
 %license LICENSE.md
-%{mingw32_bindir}/libIex-3_2.dll
-%{mingw32_bindir}/libIlmThread-3_2.dll
-%{mingw32_bindir}/libOpenEXR-3_2.dll
-%{mingw32_bindir}/libOpenEXRCore-3_2.dll
-%{mingw32_bindir}/libOpenEXRUtil-3_2.dll
+%{mingw32_bindir}/libIex-3_3.dll
+%{mingw32_bindir}/libIlmThread-3_3.dll
+%{mingw32_bindir}/libOpenEXR-3_3.dll
+%{mingw32_bindir}/libOpenEXRCore-3_3.dll
+%{mingw32_bindir}/libOpenEXRUtil-3_3.dll
 %{mingw32_includedir}/OpenEXR/
-%{mingw32_libdir}/libIex-3_2.dll.a
-%{mingw32_libdir}/libIlmThread-3_2.dll.a
-%{mingw32_libdir}/libOpenEXR-3_2.dll.a
-%{mingw32_libdir}/libOpenEXRCore-3_2.dll.a
-%{mingw32_libdir}/libOpenEXRUtil-3_2.dll.a
+%{mingw32_libdir}/libIex-3_3.dll.a
+%{mingw32_libdir}/libIlmThread-3_3.dll.a
+%{mingw32_libdir}/libOpenEXR-3_3.dll.a
+%{mingw32_libdir}/libOpenEXRCore-3_3.dll.a
+%{mingw32_libdir}/libOpenEXRUtil-3_3.dll.a
 %{mingw32_libdir}/cmake/OpenEXR/
 %{mingw32_libdir}/pkgconfig/OpenEXR.pc
 
@@ -127,23 +127,24 @@ rm -rf %{buildroot}%{mingw64_docdir}/OpenEXR
 %{mingw32_bindir}/exrmakepreview.exe
 %{mingw32_bindir}/exrmaketiled.exe
 %{mingw32_bindir}/exrmanifest.exe
+%{mingw32_bindir}/exrmetrics.exe
 %{mingw32_bindir}/exrmultipart.exe
 %{mingw32_bindir}/exrmultiview.exe
 %{mingw32_bindir}/exrstdattr.exe
 
 %files -n mingw64-%{pkgname}
 %license LICENSE.md
-%{mingw64_bindir}/libIex-3_2.dll
-%{mingw64_bindir}/libIlmThread-3_2.dll
-%{mingw64_bindir}/libOpenEXR-3_2.dll
-%{mingw64_bindir}/libOpenEXRCore-3_2.dll
-%{mingw64_bindir}/libOpenEXRUtil-3_2.dll
+%{mingw64_bindir}/libIex-3_3.dll
+%{mingw64_bindir}/libIlmThread-3_3.dll
+%{mingw64_bindir}/libOpenEXR-3_3.dll
+%{mingw64_bindir}/libOpenEXRCore-3_3.dll
+%{mingw64_bindir}/libOpenEXRUtil-3_3.dll
 %{mingw64_includedir}/OpenEXR/
-%{mingw64_libdir}/libIex-3_2.dll.a
-%{mingw64_libdir}/libIlmThread-3_2.dll.a
-%{mingw64_libdir}/libOpenEXR-3_2.dll.a
-%{mingw64_libdir}/libOpenEXRCore-3_2.dll.a
-%{mingw64_libdir}/libOpenEXRUtil-3_2.dll.a
+%{mingw64_libdir}/libIex-3_3.dll.a
+%{mingw64_libdir}/libIlmThread-3_3.dll.a
+%{mingw64_libdir}/libOpenEXR-3_3.dll.a
+%{mingw64_libdir}/libOpenEXRCore-3_3.dll.a
+%{mingw64_libdir}/libOpenEXRUtil-3_3.dll.a
 %{mingw64_libdir}/cmake/OpenEXR/
 %{mingw64_libdir}/pkgconfig/OpenEXR.pc
 
@@ -156,12 +157,16 @@ rm -rf %{buildroot}%{mingw64_docdir}/OpenEXR
 %{mingw64_bindir}/exrmakepreview.exe
 %{mingw64_bindir}/exrmaketiled.exe
 %{mingw64_bindir}/exrmanifest.exe
+%{mingw64_bindir}/exrmetrics.exe
 %{mingw64_bindir}/exrmultipart.exe
 %{mingw64_bindir}/exrmultiview.exe
 %{mingw64_bindir}/exrstdattr.exe
 
 
 %changelog
+* Thu Nov 14 2024 Sandro Mani <manisandro@gmail.com> - 3.3.2-1
+- Update to 3.3.2
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.4-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
