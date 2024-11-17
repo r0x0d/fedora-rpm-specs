@@ -47,7 +47,7 @@ Name:           systemd
 Url:            https://systemd.io
 # Allow users to specify the version and release when building the rpm by 
 # setting the %%version_override and %%release_override macros.
-Version:        %{?version_override}%{!?version_override:257~rc1}
+Version:        %{?version_override}%{!?version_override:257~rc2}
 Release:        %autorelease
 
 %global stable %(c="%version"; [ "$c" = "${c#*.*}" ]; echo $?)
@@ -689,6 +689,10 @@ main systemd package and is meant for use in exitrds.
 %autosetup -n %{name}-%{version_no_tilde} -p1
 %endif
 
+# Disable user lockdown until rpm implements it natively.
+# https://github.com/rpm-software-management/rpm/issues/3450
+sed -r -i 's/^u!/u/' sysusers.d/*.conf*
+
 %build
 %global ntpvendor %(source /etc/os-release; echo ${ID})
 %{!?ntpvendor: echo 'NTP vendor zone is not set!'; exit 1}
@@ -1018,6 +1022,15 @@ rm %{buildroot}/etc/ssh/sshd_config.d/20-systemd-userdb.conf
 mv %{buildroot}/usr/lib/tmpfiles.d/20-systemd-userdb.conf{,.example}
 
 install -m 0644 -t %{buildroot}%{_prefix}/lib/pam.d/ %{SOURCE26}
+
+# Disable freezing of user sessions while we're working out the details.
+mkdir -p %{buildroot}/usr/lib/systemd/system/service.d/
+cat >>%{buildroot}/usr/lib/systemd/system/service.d/50-keep-warm.conf <<EOF
+# Disable freezing of user sessions to work around kernel bugs.
+# See https://bugzilla.redhat.com/show_bug.cgi?id=2321268
+[Service]
+Environment=SYSTEMD_SLEEP_FREEZE_USER_SESSIONS=0
+EOF
 
 %find_lang %{name}
 

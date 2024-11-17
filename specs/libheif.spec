@@ -1,13 +1,8 @@
 %global somajor 1
 
-# Unable to ship this in Fedora
-%bcond_with hevc
-
-%bcond_with check
-
 Name:           libheif
-Version:        1.17.6
-Release:        2%{?dist}
+Version:        1.19.3
+Release:        1%{?dist}
 Summary:        HEIF and AVIF file format decoder and encoder
 
 License:        LGPL-3.0-or-later and MIT
@@ -15,25 +10,19 @@ URL:            https://github.com/strukturag/libheif
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 Patch0:         libheif-no-hevc-tests.patch
 
-# Fix for CVE-2024-25269 (https://github.com/strukturag/libheif/issues/1073)
-Patch1:         https://github.com/strukturag/libheif/commit/877de6b398198bca387df791b9232922c5721c80.patch
-# Fix compilation with libsvtav1 2.0.0.
-Patch2:         https://github.com/strukturag/libheif/commit/a911b26a902c5f89fee2dc20ac4dfaafcb8144ec.patch
-# Backport memory leaks fix from master
-Patch3:         https://github.com/strukturag/libheif/commit/9598ddeb3dff4e51a9989067e912baf502410cee.patch
-Patch4:         https://github.com/strukturag/libheif/commit/dfd88deb1d80b4195ef16cddad256f33b46fbe29.patch
-Patch5:         https://github.com/strukturag/libheif/commit/90955e3118d687fa8c36747a7b349caebc82707d.patch
-Patch6:         https://github.com/strukturag/libheif/commit/bef5f0f49f9024957189b5b465cd4d07078cd06f.patch
-Patch7:         https://github.com/strukturag/libheif/commit/50aa08176e44178eeffcb7a66f37d7cad074f51b.patch
-
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  ninja-build
 BuildRequires:  pkgconfig(aom)
 BuildRequires:  pkgconfig(dav1d)
+BuildRequires:  pkgconfig(libbrotlidec)
 BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  pkgconfig(libopenjp2)
 BuildRequires:  pkgconfig(libpng)
+BuildRequires:  pkgconfig(openh264)
+%ifnarch %{ix86}
+BuildRequires:  pkgconfig(openjph) >= 0.18.0
+%endif
 %if ! (0%{?rhel} && 0%{?rhel} <= 9)
 BuildRequires:  pkgconfig(libsharpyuv)
 BuildRequires:  pkgconfig(rav1e)
@@ -47,12 +36,8 @@ file format decoder and encoder.
 %files
 %license COPYING
 %doc README.md
-%{_libdir}/*.so.%{somajor}{,.*}
+%{_libdir}/%{name}.so.%{somajor}{,.*}
 %dir %{_libdir}/%{name}
-%if ! (0%{?rhel} && 0%{?rhel} <= 9)
-%{_libdir}/%{name}/%{name}-rav1e.so
-%{_libdir}/%{name}/%{name}-svtenc.so
-%endif
 
 # ----------------------------------------------------------------------
 
@@ -86,24 +71,6 @@ This package provides tools for manipulating HEIF files.
 
 # ----------------------------------------------------------------------
 
-%if %{with hevc}
-%package        hevc
-Summary:        HEVC codec support for HEIC files
-BuildRequires:  pkgconfig(libde265)
-BuildRequires:  pkgconfig(x265)
-Supplements:    %{name}
-
-%description    hevc
-This package adds support for HEVC-encoded HEIC files to applications
-that use %{name} to read HEIF image files.
-
-%files hevc
-%{_libdir}/%{name}/%{name}-libde265.so
-%{_libdir}/%{name}/%{name}-x265.so
-%endif
-
-# ----------------------------------------------------------------------
-
 %package        devel
 Summary:        Development files for %{name}
 Requires:       %{name}%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
@@ -116,45 +83,45 @@ developing applications that use %{name}.
 %{_includedir}/%{name}/
 %{_libdir}/cmake/%{name}/
 %{_libdir}/pkgconfig/%{name}.pc
-%{_libdir}/*.so
+%{_libdir}/%{name}.so
 
 # ----------------------------------------------------------------------
 
 
 %prep
 %setup -q
-%if %{without hevc}
 %patch 0 -p1
-%endif
-%patch 1 -p1
-%patch 2 -p1
-%patch 3 -p1
-%patch 4 -p1
-%patch 5 -p1
-%patch 6 -p1
-%patch 7 -p1
 rm -rf third-party/
 
 
 %build
 %cmake \
  -GNinja \
+ -DBUILD_TESTING=ON \
+ -DCMAKE_COMPILE_WARNING_AS_ERROR=OFF \
  -DPLUGIN_DIRECTORY=%{_libdir}/%{name} \
  -DWITH_DAV1D=ON \
  -DWITH_DAV1D_PLUGIN=OFF \
  -DWITH_JPEG_DECODER=ON \
  -DWITH_JPEG_ENCODER=ON \
+ -DWITH_OpenH264_DECODER=ON \
+ -DWITH_OpenH264_ENCODER=ON \
  -DWITH_OpenJPEG_DECODER=ON \
  -DWITH_OpenJPEG_DECODER_PLUGIN=OFF \
  -DWITH_OpenJPEG_ENCODER=ON \
  -DWITH_OpenJPEG_ENCODER_PLUGIN=OFF \
+%ifnarch %{ix86}
+ -DWITH_OPENJPH_DECODER=ON \
+ -DWITH_OPENJPH_ENCODER=ON \
+ -DWITH_OPENJPH_ENCODER_PLUGIN=OFF \
+%endif
 %if ! (0%{?rhel} && 0%{?rhel} <= 9)
  -DWITH_RAV1E=ON \
+ -DWITH_RAV1E_PLUGIN=OFF \
  -DWITH_SvtEnc=ON \
+ -DWITH_SvtEnc_PLUGIN=OFF \
 %endif
  -DWITH_UNCOMPRESSED_CODEC=ON \
- %{?with_check:-DBUILD_TESTING=ON -DWITH_REDUCED_VISIBILITY=OFF} \
- %{?with_hevc:-DWITH_LIBDE265_PLUGIN:BOOL=ON -DWITH_X265_PLUGIN:BOOL=ON} \
  -Wno-dev
 
 %cmake_build
@@ -164,14 +131,20 @@ rm -rf third-party/
 %cmake_install
 
 
-%if %{with check}
 %check
-# Tests are not yet ported to CMake
 %ctest
-%endif
 
 
 %changelog
+* Tue Nov 12 2024 Dominik Mierzejewski <dominik@greysector.net> - 1.19.3-1
+- update to 1.19.3 (resolves rhbz#2295525)
+- drop obsolete patches
+- enable OpenH264, OpenJPH (64-bit only) and Brotli decoders
+- run tests unconditionally, they no longer require special build options
+- drop conditional hevc subpackage
+- use fewer wildcards in the file lists
+- stop building rav1e and svt AV1 encoders as plugins
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.17.6-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

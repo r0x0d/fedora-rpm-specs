@@ -1,10 +1,10 @@
 Name:           perl-Test-utf8
-Version:        1.02
-Release:        15%{?dist}
+Version:        1.03
+Release:        1%{?dist}
 Summary:        Handy utf8 tests
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Test-utf8
-Source0:        https://cpan.metacpan.org/modules/by-module/Test/Test-utf8-%{version}.tar.gz
+Source0:        https://www.cpan.org/modules/by-module/Test/Test-utf8-%{version}.tar.gz
 # Do not require author's dependencies
 Patch0:         Test-utf8-1.02-Drop-useless-build-time-dependencies.patch
 # Until the POD has changed, there is no point in regenerating README. This
@@ -31,7 +31,8 @@ BuildRequires:  perl(warnings)
 # Test Suite
 BuildRequires:  perl(Test::Builder::Tester) >= 0.09
 BuildRequires:  perl(Test::More)
-# Runtime
+# Dependencies
+# (none)
 
 %description
 This module is a collection of tests that's useful when dealing with utf8
@@ -62,6 +63,15 @@ make test
 %{_mandir}/man3/Test::utf8.3*
 
 %changelog
+* Fri Nov 15 2024 Paul Howarth <paul@city-fan.org> - 1.03-1
+- Update to 1.03
+  - Fix tests to adapt to Perl removing apostrophe as package separator
+    (CPAN RT#154915)
+  - Upgraded distro files like packaged Module::Install version and META.yml,
+    to avoid other looming Perl deprecation issues
+- Switch source URL from cpan.metacpan.org to www.cpan.org to work around
+  ongoing issues with metacpan
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.02-15
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

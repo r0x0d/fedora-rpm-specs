@@ -1,12 +1,12 @@
 %global octpkg communications
 
 Name:           octave-%{octpkg}
-Version:        1.2.5
-Release:        8%{?dist}
+Version:        1.2.6
+Release:        1%{?dist}
 Summary:        Communications for Octave
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
-URL:            https://octave.sourceforge.io/communications/
+URL:            https://gnu-octave.github.io/packages/communications/
 Source0:        https://downloads.sourceforge.net/octave/%{octpkg}-%{version}.tar.gz
 # the following are required to build the documentation, and they come from the main octave package
 Source1:        mkdoc
@@ -37,7 +37,7 @@ Digital Communications, Error Correcting Codes (Channel Code), Source Code
 functions, Modulation and Galois Fields
 
 %prep
-%setup -q -n %{octpkg}
+%setup -q -n %{octpkg}-%{version}
 cp -p %{SOURCE1} %{SOURCE2} .
 chmod a+x mkdoc mktexi
 cd src
@@ -78,6 +78,9 @@ chmod a-x %{buildroot}/%{octpkgdir}/@galois/*.m
 %{octpkgdir}/comms.info
 
 %changelog
+* Fri Nov 15 2024 Orion Poplawski <orion@nwra.com> - 1.2.6-1
+- Update to 1.2.6
+
 * Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 1.2.5-8
 - Rebuild for octave 9.2
 

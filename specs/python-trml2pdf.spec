@@ -2,7 +2,7 @@
 
 Name:		python-%{module}
 Version:	0.6
-Release:	13%{?dist}
+Release:	14%{?dist}
 # Automatically converted from old format: LGPLv2 - review is highly recommended.
 License:	LicenseRef-Callaway-LGPLv2
 Summary:	Easy creating PDF using ReportLab's RML
@@ -11,6 +11,8 @@ Source0:	https://github.com/romanlv/trml2pdf/archive/%{version}/%{module}-%{vers
 BuildRequires:	python3-setuptools
 # python3-devel
 BuildRequires:	pkgconfig(python3)
+# python3-pytest
+BuildRequires:	%{py3_dist pytest}
 # python3-six
 BuildRequires:	%{py3_dist six} >= 1.9
 # python3-reportlab
@@ -43,7 +45,7 @@ Open source implementation of RML (Report Markup Language) from ReportLab
 
 
 %check
-%py3_build test
+%{pytest}
 
 
 %files -n python3-%{module}
@@ -55,6 +57,9 @@ Open source implementation of RML (Report Markup Language) from ReportLab
 %{_mandir}/man1/trml2pdf.1.*
 
 %changelog
+* Fri Nov 15 2024 TI_Eugene <ti.eugene@gmail.com> - 0.6-14
+- setuptools-74+ fix (rhbz #2319732)
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.6-13
 - convert license to SPDX
 

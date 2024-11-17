@@ -4,7 +4,7 @@
 
 # https://github.com/xo/terminfo
 %global goipath         github.com/xo/terminfo
-%global commit          c22d04bf315912245205737149500d6b96ab9e4e
+%global commit          abceb7e1c41eed2857facd9bbdaaa5ff8137d901
 
 %gometa
 
@@ -16,7 +16,7 @@ A terminfo package in pure go!}
 
 Name:           %{goname}
 Version:        0
-Release:        0.14%{?dist}
+Release:        0.15%{?dist}
 Summary:        A terminfo package in pure go
 
 License:        MIT
@@ -54,6 +54,9 @@ install -m 0755 -vp %{gobuilddir}/bin/* %{buildroot}%{_bindir}/
 %gopkgfiles
 
 %changelog
+* Fri Nov 15 2024 Denis Fateyev <denis@fateyev.com> - 0-0.15.20220910gitabceb7e
+- Bump to commit abceb7e1c41eed2857facd9bbdaaa5ff8137d901
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0-0.14
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

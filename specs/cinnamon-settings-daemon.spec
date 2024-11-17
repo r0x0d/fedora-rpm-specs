@@ -1,13 +1,13 @@
-%global commit0 f5393cbc75172060a01e031ea749f94e495be16e
-%global date 20231109
+%global commit0 57b8a0a742a876d51403ad27613fe84b228d1081
+%global date 20241114
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global tag %{version}
+#global tag %{version}
 
 %global cinnamon_desktop_version 6.2.0
 
 Name:           cinnamon-settings-daemon
-Version:        6.2.0
-Release:        3%{?dist}
+Version:        6.3.0%{!?tag:^%{date}git%{shortcommit0}}
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from CINNAMON to GTK+/KDE applications
 
 # Automatically converted from old format: GPLv2+ and LGPLv2+ - review is highly recommended.
@@ -150,6 +150,9 @@ rm -rf %{buildroot}%{_libdir}/cinnamon-settings-daemon/
 
 
 %changelog
+* Thu Nov 14 2024 Leigh Scott <leigh123linux@gmail.com> - 6.3.0^20241114git1b36b7a-1
+- Update to git snapshot
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 6.2.0-3
 - convert license to SPDX
 

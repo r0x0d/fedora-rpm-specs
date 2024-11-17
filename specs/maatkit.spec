@@ -3,7 +3,7 @@ Version:        7540
 Release:        37%{?dist}
 Summary:        Essential command-line utilities for MySQL
 
-License:        GPLv2 or Artistic
+License:        GPL-2.0-or-later OR Artistic-1.0-Perl
 URL:            http://www.maatkit.org/
 Source0:        http://maatkit.googlecode.com/files/%{name}-%{version}.tar.gz
 

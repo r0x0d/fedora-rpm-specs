@@ -1,7 +1,7 @@
 
 Name:    annobin
 Summary: Annotate and examine compiled binary files
-Version: 12.75
+Version: 12.77
 Release: 1%{?dist}
 License: GPL-3.0-or-later AND LGPL-2.0-or-later AND (GPL-2.0-or-later WITH GCC-exception-2.0) AND (LGPL-2.0-or-later WITH GCC-exception-2.0) AND GFDL-1.3-or-later
 URL: https://sourceware.org/annobin/
@@ -532,6 +532,15 @@ make check
 #---------------------------------------------------------------------------------
 
 %changelog
+* Fri Nov 15 2024 Nick Clifton  <nickc@redhat.com> - 12.77-1
+- Annocheck: Fix overly long debug messages.
+
+* Fri Nov 15 2024 Nick Clifton  <nickc@redhat.com> - 12.76-1
+- Annocheck: Rename rwx-seg test to load-segments.  Add more checks.  Add check for gaps as a future fail.
+- Annocheck: Add --no-allow-excpetions to disable exceptions for known special binaries.
+- Annocheck: Add --enable-future to enable future fail components in normal tests.
+- Annocheck: Fix bug preventing the inclusion of the rpm name in reports.
+
 * Tue Nov 12 2024 Nick Clifton  <nickc@redhat.com> - 12.75-1
 - Annocheck: Add more exceptions for gcc binaries.  (RHEL-33365)
 - Annocheck: Add --skip-passes option.

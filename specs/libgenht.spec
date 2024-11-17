@@ -5,7 +5,7 @@ Version:        1.1.3
 Release:        6%{?dist}
 Summary:        Simple generic hash table implementation in C
 
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            http://repo.hu/projects/genht
 Source0:        http://repo.hu/projects/genht/releases/%{srcname}-%{version}.tar.gz
 

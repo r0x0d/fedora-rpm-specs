@@ -9,7 +9,7 @@
 
 Summary: Printer Application Framework (PAPPL)
 Name: pappl
-Version: 1.4.7
+Version: 1.4.8
 Release: 2%{?dist}
 License: Apache-2.0 WITH LLVM-exception
 Source: https://github.com/michaelrsweet/pappl/releases/download/v%{version}/pappl-%{version}.tar.gz
@@ -22,16 +22,6 @@ Patch001: 0001-List-raw-sockets-during-printers-subcommand-if-avail.patch
 # raise MAX_VENDOR https://sourceforge.net/p/gimp-print/mailman/gimp-print-devel/thread/e24b2385-6576-a949-a40d-3786c8067520%40gmail.com/#msg37353830
 # downstream only, Mike does not want to merge the change
 Patch002: pappl-max-vendors.patch
-# Patches for registration on localhost-only - all from upstream:
-# 0001-Use-listen-hostname-as-hostname-Issue-369.patch
-# 0001-When-hostname-is-fixed-don-t-allow-changes-in-the-we.patch
-# 0001-Use-NULL-registration-hostname-Issue-369.patch
-Patch003: 0001-Use-listen-hostname-as-hostname-Issue-369.patch
-Patch004: 0001-When-hostname-is-fixed-don-t-allow-changes-in-the-we.patch
-Patch005: 0001-Use-NULL-registration-hostname-Issue-369.patch
-# Password was not parsed correctly
-# https://github.com/michaelrsweet/pappl/commit/f4d0039a
-Patch006: 0001-Fix-password-hash-comparisons-Issue-373.patch
 
 
 BuildRequires: avahi-devel
@@ -95,17 +85,18 @@ export CPPFLAGS="$CPPFLAGS -D_FILE_OFFSET_BITS=64"
 make test
 
 %files
-%{_libdir}/libpappl.so.*
+%dir %{_datadir}/pappl
+%{_datadir}/pappl/*
+%dir %{_docdir}/pappl
 %doc *.md
+%{_libdir}/libpappl.so.*
 %license LICENSE NOTICE
 
 %files devel
-%doc %{_docdir}/pappl/*
-%dir %{_datadir}/pappl
-%dir %{_docdir}/pappl
-%dir %{_includedir}/pappl
 %{_bindir}/pappl-makeresheader
-%{_datadir}/pappl/*
+%{_docdir}/pappl/*.png
+%{_docdir}/pappl/*.html
+%dir %{_includedir}/pappl
 %{_includedir}/pappl/*.h
 %{_libdir}/libpappl.so
 %{_libdir}/pkgconfig/pappl.pc
@@ -121,6 +112,12 @@ make test
 %{_mandir}/man3/pappl-system.3.gz
 
 %changelog
+* Fri Nov 15 2024 Zdenek Dohnal <zdohnal@redhat.com> - 1.4.8-2
+- moved files between library and devel to prevent conflicts
+
+* Fri Nov 15 2024 Zdenek Dohnal <zdohnal@redhat.com> - 1.4.8-1
+- 1.4.8 (fedora#2326364)
+
 * Thu Nov 14 2024 Zdenek Dohnal <zdohnal@redhat.com> - 1.4.7-2
 - provide support for registering on localhost-only
 - fix password parsing issue

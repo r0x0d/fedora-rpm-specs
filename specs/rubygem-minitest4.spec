@@ -7,11 +7,13 @@ Summary:	Small and fast replacement for ruby's huge and slow test/unit
 Name:		rubygem-%{gem_name}4
 # With 4.7.5, some test fails, so for now use 4.7.0
 Version:	4.7.0
-Release:	24%{?dist}
+Release:	25%{?dist}
 
 License:	MIT
 URL:		https://github.com/seattlerb/minitest
 Source0:	https://rubygems.org/gems/%{gem_name}-%{version}.gem
+# support ruby3.4 formatting change
+Patch0:	minitest-4.7.0-ruby34-format.patch
 BuildRequires:	rubygems-devel
 BuildRequires:	ruby(release)
 BuildArch:			noarch
@@ -52,6 +54,8 @@ sed -i test/minitest/test_minitest_mock.rb \
 	-e 's|Fixnum|Integer|'
 # Ruby 3.2 removes Object#=~
 sed -i test/minitest/test_minitest_unit.rb -e 's|\(test_refute_match_matcher_object\)|\1; skip|'
+# Ruby 3.4 formatting change
+%patch -P0 -p1
 
 %build
 gem build %{gem_name}-%{version}.gemspec
@@ -98,6 +102,9 @@ done
 %doc	%{gem_docdir}/
 
 %changelog
+* Fri Nov 15 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 4.7.0-25
+- Support ruby34 formatting change for testsuite
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.7.0-24
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -4,7 +4,7 @@
 
 Name:          mingw-python-%{pypi_name}
 Summary:       MinGW Windows Python %{pypi_name}
-Version:       3.9
+Version:       3.10
 Release:       1%{?dist}
 BuildArch:     noarch
 
@@ -67,6 +67,9 @@ MinGW Windows Python3 %{pypi_name}.
 
 
 %changelog
+* Fri Nov 15 2024 Sandro Mani <manisandro@gmail.com> - 3.10-1
+- Update to 3.10
+
 * Mon Sep 23 2024 Sandro Mani <manisandro@gmail.com> - 3.9-1
 - Update to 3.9
 

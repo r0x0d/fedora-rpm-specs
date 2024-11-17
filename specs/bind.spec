@@ -86,8 +86,8 @@ License:  MPL-2.0 AND ISC AND MIT AND BSD-3-Clause AND BSD-2-Clause
 #
 # Before rebasing bind, ensure bind-dyndb-ldap is ready to be rebuild and use side-tag with it.
 # Updating just bind will cause freeipa-dns-server package to be uninstallable.
-Version:  9.18.30
-Release:  2%{?dist}
+Version:  9.18.31
+Release:  1%{?dist}
 Epoch:    32
 Url:      https://www.isc.org/downloads/bind/
 #
@@ -215,7 +215,7 @@ Provides: %{name}-license = %{epoch}:%{version}-%{release}
 Provides: %{name}-libs-lite = %{epoch}:%{version}-%{release}
 Obsoletes: %{name}-libs-lite < 32:9.16.13
 Obsoletes: %{name}-pkcs11-libs < 32:9.18.4-2
-Obsoletes: %{name}-license < 32:9.18.27-2
+Obsoletes: %{name}-license < 32:9.18.30-3
 
 %description libs
 Contains heavyweight version of BIND suite libraries used by both named DNS
@@ -982,6 +982,12 @@ fi;
 %endif
 
 %changelog
+* Thu Nov 14 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.31-1
+- Update to 9.18.31 (#2319214)
+
+* Thu Nov 14 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.30-3
+- Bump obsoleted license version (rhbz#2308102)
+
 * Tue Oct 08 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.30-2
 - Make OpenSSL engine support optional
 

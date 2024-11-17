@@ -6,9 +6,6 @@
 # https://bugzilla.redhat.com/show_bug.cgi?id=2129720
 ExcludeArch: i686
 
-# Disabled due to build failures
-ExcludeArch: ppc64le
-
 # Run Mozilla test suite as a part of compile rpm section. Turn off when
 # building locally and don't want to spend 24 hours waiting for results.
 %global run_firefox_tests 0
@@ -199,14 +196,14 @@ ExcludeArch: ppc64le
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        132.0.1
-Release:        2%{?pre_tag}%{?dist}
+Version:        132.0.2
+Release:        1%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 # Automatically converted from old format: MPLv1.1 or GPLv2+ or LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-MPLv1.1 OR GPL-2.0-or-later OR LicenseRef-Callaway-LGPLv2+
 Source0:        https://archive.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.xz
 %if %{with langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20241105.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20241115.tar.xz
 %endif
 Source2:        cbindgen-vendor.tar.xz
 Source3:        dump_syms-vendor.tar.xz
@@ -826,7 +823,7 @@ MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | sed -e 's/-O2//')
 # If MOZ_DEBUG_FLAGS is empty, firefox's build will default it to "-g" which
 # overrides the -g1 from line above and breaks building on s390/arm
 # (OOM when linking, rhbz#1238225)
-%ifarch %{ix86}
+%ifarch %{ix86} ppc64le
 MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | sed -e 's/-g/-g0/')
 %else
 # this reduces backtrace quality substantially, but seems to be needed
@@ -837,11 +834,11 @@ MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | sed -e 's/-g/-g1/')
 export MOZ_DEBUG_FLAGS=" "
 MOZ_LINK_FLAGS="%{build_ldflags}"
 %if !%{build_with_clang}
-%ifarch aarch64 %{ix86}
+%ifarch aarch64 %{ix86} ppc64le
 MOZ_LINK_FLAGS="$MOZ_LINK_FLAGS -Wl,--no-keep-memory -Wl,--reduce-memory-overheads"
 %endif
 %endif
-%ifarch %{ix86} s390x
+%ifarch %{ix86} s390x ppc64le
 export RUSTFLAGS="-Cdebuginfo=0"
 %endif
 %if %{build_with_asan}
@@ -1242,6 +1239,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Nov 15 2024 Martin Stransky <stransky@redhat.com> - 132.0.2-1
+- Updated to 132.0.2
+- Try to reduce build mem usage on ppc64le
+
 * Thu Nov 07 2024 Jan Grulich <jgrulich@redhat.com> - 132.0.1-2
 - PipeWire camera: use better unique device name for camera devices
 

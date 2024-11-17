@@ -1,6 +1,6 @@
 Name:    zsh-autosuggestions
-Version: 0.7.0
-Release: 8%{?dist}
+Version: 0.7.1
+Release: 1%{?dist}
 
 Summary: Fish-like autosuggestions for zsh
 License: MIT
@@ -35,6 +35,9 @@ install -D --preserve-timestamps --target-directory=%{buildroot}%{_datadir}/%{na
 %{_datadir}/%{name}
 
 %changelog
+* Fri Nov 15 2024 Michael Kuhn <suraia@fedoraproject.org> - 0.7.1-1
+- Update to 0.7.1
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.7.0-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

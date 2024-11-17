@@ -10,6 +10,8 @@ Summary:        Symbolic computations for Octave
 License:        GPL-3.0-or-later AND FSFAP
 URL:            https://gnu-octave.github.io/packages/%{octpkg}
 Source0:        https://downloads.sourceforge.net/octave/%{octpkg}-%{version}.tar.gz
+# Fix tests with sympy 1.13.3
+Patch:          https://github.com/gnu-octave/symbolic/pull/1311.patch
 
 BuildArch:      noarch
 BuildRequires:  octave-devel
@@ -31,7 +33,7 @@ operations, calculus, equation solving, Fourier and Laplace transforms,
 variable precision arithmetic and other features.
 
 %prep
-%setup -q -n %{octpkg}-%{version}
+%autosetup -p1 -n %{octpkg}-%{version}
 
 %build
 %octave_pkg_build

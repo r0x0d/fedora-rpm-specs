@@ -27,7 +27,7 @@ BuildRequires:  python%{python3_pkgversion}-vtk
 BuildRequires:  /usr/bin/sphinx-build-3
 Requires:       python%{python3_pkgversion}-mayavi
 BuildRequires:  desktop-file-utils 
-BuildRequires:  xorg-x11-server-Xvfb
+BuildRequires:  xwayland-run
 
 %description
 The Mayavi project includes two related packages for 3-dimensional 
@@ -108,8 +108,8 @@ chmod 0644 mayavi/tests/data/cellsnd.ascii.inp
 find -name '*.pyx' -exec cython --verbose {} \;
 
 %py3_build
-# Need xvfb-run for html doc building
-SPHINXBUILD=/usr/bin/sphinx-build-3 xvfb-run %{__python3} setup.py build_docs
+# Need xwfb-run for html doc building
+SPHINXBUILD=/usr/bin/sphinx-build-3 xwfb-run -- %{__python3} setup.py build_docs
 
 %install
 %py3_install

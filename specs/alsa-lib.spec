@@ -9,7 +9,7 @@
 Summary:  The Advanced Linux Sound Architecture (ALSA) library
 Name:     alsa-lib
 Version:  %{version_alsa_lib}
-Release:  2%{?prever_dot}%{?dist}
+Release:  3%{?prever_dot}%{?dist}
 License:  LGPL-2.1-or-later
 URL:      http://www.alsa-project.org/
 
@@ -20,7 +20,7 @@ Source10: asound.conf
 Source11: modprobe-dist-alsa.conf
 Source12: modprobe-dist-oss.conf
 Source40: alsa-ucm-conf.patch
-#Patch0:   alsa-git.patch
+Patch0:   alsa-git.patch
 Patch1:   alsa-lib-1.2.3.1-config.patch
 Patch2:   alsa-lib-1.2.10-glibc-open.patch
 
@@ -70,7 +70,7 @@ contains alsa-lib configuration of SoC topology
 
 %prep
 %setup -q -n %{name}-%{version}%{?prever}%{?postver}
-#patch -P0 -p1 -b .alsa-git
+%patch -P0 -p1 -b .alsa-git
 %patch -P1 -p1 -b .config
 %patch -P2 -p1 -b .glibc-open
 
@@ -167,7 +167,7 @@ rm %{buildroot}/%{_includedir}/asoundlib.h
 %{_datadir}/alsa/topology
 
 %changelog
-* Wed Nov 13 2024 Jaroslav Kysela <perex@perex.cz> - 1.2.13-2
+* Fri Nov 15 2024 Jaroslav Kysela <perex@perex.cz> - 1.2.13-3
 - update to 1.2.13
 
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.12-2

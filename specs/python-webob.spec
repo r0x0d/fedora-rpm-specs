@@ -1,4 +1,4 @@
-%global with_tests 1
+%bcond tests 1
 
 %global desc WebOb provides wrappers around the WSGI request environment, and an object to \
 help create WSGI responses. The objects map much of the specified behavior of \
@@ -8,22 +8,17 @@ environment.
 
 Name:           python-webob
 Summary:        WSGI request and response object
-Version:        1.8.8
-Release:        2%{?dist}
+Version:        1.8.9
+Release:        1%{?dist}
 License:        MIT
 URL:            https://webob.org
-Source0:        %{__pypi_url}W/WebOb/webob-%{version}.tar.gz
+Source:         %{pypi_source webob}
 
 BuildArch:      noarch
 
 
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-# only require legacy-cgi on on systems where it's present
-%if 0%{?fedora} > 40 || 0%{?rhel} > 9
-BuildRequires:  python3dist(legacy-cgi)
-%endif
-%if 0%{?with_tests}
+%if %{with tests}
 BuildRequires:  python3-pytest
 %endif
 
@@ -34,47 +29,54 @@ BuildRequires:  python3-pytest
 
 %package -n python3-webob
 Summary:        %{summary}
-Provides: python3-webob1.2 = %{version}-%{release}
-Obsoletes: python3-webob1.2 < 1.2.3-7
-
-# only require legacy-cgi on on systems where it's present
-%if 0%{?fedora} > 40 || 0%{?rhel} > 9
-Requires:       python3-cgi
-%endif
-
-%{?python_provide:%python_provide python3-webob}
 
 
 %description -n python3-webob
 %{desc}
 
+
 %prep
 %setup -q -n webob-%{version}
 # Disable performance_test, which requires repoze.profile, which isn't
 # in Fedora.
-%{__rm} -f tests/performance_test.py
+rm -f tests/performance_test.py
 
 # Remove an empty unneeded file that is there for scm purposes.
 rm docs/_static/.empty
 
+
+%generate_buildrequires
+%pyproject_buildrequires
+
+
 %build
-%py3_build
+%pyproject_wheel
+
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -L webob
+
 
 %check
-%if 0%{?with_tests}
+%if %{with tests}
 %pytest
+%else
+%pyproject_check_import
 %endif
 
-%files -n python3-webob
+
+%files -n python3-webob -f %{pyproject_files}
 %license docs/license.txt
 %doc docs/*
-%{python3_sitelib}/webob/
-%{python3_sitelib}/WebOb-%{version}-py%{python3_version}.egg-info
+
 
 %changelog
+* Tue Nov 12 2024 Carl George <carlwgeorge@fedoraproject.org> - 1.8.9-1
+- Update to version 1.8.9 rhbz#2325373
+- Port to pyproject macros
+- Remove old provides/obsoletes for python3-webob1.2
+
 * Sat Aug 17 2024 Ján ONDREJ (SAL) <ondrejj(at)salstar.sk> - 1.8.8-2
 - Disable legacy-cgi requires for Fedora 40 and older systems
 

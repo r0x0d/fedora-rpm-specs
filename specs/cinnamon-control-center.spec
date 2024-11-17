@@ -1,19 +1,19 @@
-%global commit0 7360582eb853682764eb4d276d9e8535c96fe763
-%global date 20231107
+%global commit0 8f1dd1e6b1791f639af78652294e60030835cb0e
+%global date 20241114
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global tag %{version}
+#global tag %{version}
 
 %global _artwork_version 1.7.5
 
 %global cinnamon_desktop_version 6.2.0
-%global csd_version 6.2.0
+%global csd_version 6.2.0%{!?tag:^%{date}git%{shortcommit0}}
 %global cinnamon_menus_version 6.2.0
 %global redhat_menus_version 1.8
 
 Summary: Utilities to configure the Cinnamon desktop
 Name:    cinnamon-control-center
-Version: 6.2.0
-Release: 3%{?dist}
+Version: 6.3.0%{!?tag:^%{date}git%{shortcommit0}}
+Release: 1%{?dist}
 # The following files contain code from
 # ISC for panels/network/rfkill.h
 # And MIT for wacom/calibrator/calibrator.c
@@ -154,6 +154,9 @@ install -pm 0644 mint-artwork/%{_datadir}/mint-artwork/sounds/* %{buildroot}/%{_
 
 
 %changelog
+* Thu Nov 14 2024 Leigh Scott <leigh123linux@gmail.com> - 6.3.0^20241114git8f1dd1e-1
+- Update to git snapshot
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 6.2.0-3
 - convert license to SPDX
 

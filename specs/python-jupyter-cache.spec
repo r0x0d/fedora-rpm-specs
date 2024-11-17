@@ -2,18 +2,10 @@
 # myst-nb, sphinx-book-theme
 %bcond doc 0
 
-# python-jupytext cannot be built for s390x at present
-# python-nbdime can only be built for x86_64 and aarch64 at present
-%ifarch x86_64 aarch64
-%bcond test 1
-%else
-%bcond test 0
-%endif
-
 %global giturl  https://github.com/executablebooks/jupyter-cache
 
 Name:           python-jupyter-cache
-Version:        1.0.0
+Version:        1.0.1
 Release:        %autorelease
 Summary:        Manage a cache of Jupyter notebooks
 
@@ -68,12 +60,13 @@ Documentation for %{name}.
 %prep
 %autosetup -n jupyter-cache-%{version}
 
+%conf
 # Use local objects.inv for intersphinx
 sed -e 's|\("https://docs\.python\.org/[.[:digit:]]*", \)None|\1"%{_docdir}/python3-docs/html/objects.inv"|' \
     -i docs/conf.py
 
 %generate_buildrequires
-%pyproject_buildrequires -x cli%{?with_doc:,rtd}%{?with_test:,testing -t}
+%pyproject_buildrequires -t -x cli,testing%{?with_doc:,rtd}
 
 %build
 %pyproject_wheel
@@ -94,10 +87,8 @@ help2man -N --version-string=%{version} \
   -n 'Manage a cache of Jupyter notebooks' \
   -o %{buildroot}%{_mandir}/man1/jcache.1 %{buildroot}%{_bindir}/jcache
 
-%if %{with test}
 %check
 %tox
-%endif
 
 %files -n python3-jupyter-cache -f %{pyproject_files}
 %doc CHANGELOG.md README.md

@@ -7,19 +7,11 @@
 
 Summary: TPM Emulator
 Name:           swtpm
-Version:        0.9.0
-Release:        4%{?dist}
+Version:        0.10.0
+Release:        3%{?dist}
 License:        BSD-3-Clause
 Url:            https://github.com/stefanberger/swtpm
 Source0:        https://github.com/stefanberger/swtpm/archive/v%{version}/%{name}-%{version}.tar.gz
-
-# Prevent crypto policies disabling SHA-1.
-# swtpm algorithm list is unconditional. Since it advertizes
-# SHA-1, we MUST always provide a working SHA-1 impl
-Source1:        openssl-swtpm.cnf
-Patch1:         swtpm-custom-openssl.patch
-Patch2:         0001-swtpm-Return-TPM_FAIL-from-invalid-header-version-ca.patch
-Patch3:         0002-selinux-Add-rule-for-logging-to-svirt_image_t-labele.patch
 
 BuildRequires: make
 BuildRequires:  git-core
@@ -101,6 +93,13 @@ BuildArch:      noarch
 %description    selinux
 SELinux security policy for swtpm.
 
+%package        tests
+Summary:        Installed swtpm tests
+Requires:       swtpm-tools-pkcs11 = %{version}-%{release}
+
+%description    tests
+Installed swtpm tests
+
 %prep
 %autosetup -S git -n %{name}-%{version} -p1
 
@@ -122,9 +121,6 @@ make %{?_smp_mflags} check VERBOSE=1
 
 %make_install
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.{a,la,so}
-
-%__install -d %{buildroot}%{_sysconfdir}/ssl
-cp %{SOURCE1} %{buildroot}/%{_sysconfdir}/ssl/
 
 %post selinux
 for pp in /usr/share/selinux/packages/swtpm.pp \
@@ -152,7 +148,6 @@ fi
 %doc README
 %{_bindir}/swtpm
 %{_mandir}/man8/swtpm.8*
-%{_sysconfdir}/ssl/openssl-swtpm.cnf
 
 %files selinux
 %{_datadir}/selinux/packages/swtpm.pp
@@ -202,7 +197,19 @@ fi
 %{_mandir}/man8/swtpm-create-tpmca.8*
 %{_datadir}/swtpm/swtpm-create-tpmca
 
+%files tests
+%{_libexecdir}/installed-tests/swtpm/
+
 %changelog
+* Fri Nov 15 2024 Stefan Berger <stefanb@linux.ibm.com> - 0.10.0-3
+- Rebuild with proper dates in changelog entries
+
+* Fri Nov 15 2024 Stefan Berger <stefanb@linux.ibm.com> - 0.10.0-2
+- Rebuild with proper changelog entries
+
+* Fri Nov 15 2024 Stefan Berger <stefanb@linux.ibm.com> - 0.10.0-1
+- Update to v0.10.0 release
+
 * Tue Oct  1 2024 Stefan Berger <stefanb@linux.ibm.com> - 0.9.0-4
 - Add rules for SELinux policy to allow appending to log (BZ 2306817)
 - Handle unknown swtpm file header version appropriately

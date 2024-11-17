@@ -14,8 +14,8 @@ BuildRequires: ansible-core >= 2.11.0
 Name: ansible-collection-microsoft-sql
 Url: https://github.com/linux-system-roles/mssql
 Summary: The Ansible collection for Microsoft SQL Server management
-Version: 2.2.3
-Release: 3%{?dist}
+Version: 2.4.0
+Release: 1%{?dist}
 
 License: MIT
 
@@ -316,6 +316,12 @@ find %{buildroot}%{ansible_roles_dir} -mindepth 1 -maxdepth 1 | \
 %endif
 
 %changelog
+* Fri Nov 15 2024 Sergei Petrosian <spetrosi@redhat.com> - 2.4.0-1
+- Support OpenSUSE/SLES
+- Fail on RHEL or CentOS 10 because it's not supported
+- Use new adutil functionality to enable AES encryption
+- Add support for Fedora
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org>
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

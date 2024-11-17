@@ -2,26 +2,25 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate docker_credential
+%global crate multipart-rs
 
-Name:           rust-docker_credential
-Version:        1.3.1
+Name:           rust-multipart-rs
+Version:        0.1.11
 Release:        %autorelease
-Summary:        Reads a user's docker credentials from config
+Summary:        Simple, zero-allocation, streaming, async multipart reader & writer for Rust
 
-License:        MIT OR Apache-2.0
-URL:            https://crates.io/crates/docker_credential
+License:        MIT
+URL:            https://crates.io/crates/multipart-rs
 Source:         %{crates_source}
-# Manually created patch for downstream crate metadata changes
-#  - Allow rstest 0.23; see:
-#    Update rstest to 0.23.0, the current version
-#    https://github.com/keirlawson/docker_credential/pull/15
-Patch:          docker_credential-fix-metadata.diff
+# add missing license text
+# https://github.com/feliwir/multipart-rs/pull/2
+Source:         https://raw.githubusercontent.com/michel-slm/multipart-rs/refs/heads/add-license/LICENSE
 
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-Reads a user's docker credentials from config.}
+A simple, zero-allocation, streaming, async multipart reader & writer
+for Rust.}
 
 %description %{_description}
 
@@ -35,8 +34,7 @@ This package contains library source intended for building other packages which
 use the "%{crate}" crate.
 
 %files          devel
-%license %{crate_instdir}/LICENSE-APACHE
-%license %{crate_instdir}/LICENSE-MIT
+%license %{crate_instdir}/LICENSE
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
@@ -54,6 +52,8 @@ use the "default" feature of the "%{crate}" crate.
 
 %prep
 %autosetup -n %{crate}-%{version} -p1
+# copy in license file
+cp -p %{SOURCE1} .
 %cargo_prep
 
 %generate_buildrequires

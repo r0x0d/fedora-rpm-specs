@@ -1,9 +1,3 @@
-%if 0%{?fedora} < 28 && 0%{?rhel} < 8
-%bcond_without libnm_glib
-%else
-# Disable the legacy version by default
-%bcond_with libnm_glib
-%endif
 %if 0%{?fedora} < 36 && 0%{?rhel} < 10
 %bcond_with gtk4
 %else
@@ -13,23 +7,18 @@
 Summary:   NetworkManager VPN plugin for vpnc
 Name:      NetworkManager-vpnc
 Epoch:     1
-Version:   1.2.8
-Release:   8%{?dist}
+Version:   1.4.0
+Release:   1%{?dist}
 License:   GPL-2.0-or-later
 URL:       http://www.gnome.org/projects/NetworkManager/
-Source0:   https://download.gnome.org/sources/NetworkManager-vpnc/1.2/%{name}-%{version}.tar.xz
+Source0:   https://download.gnome.org/sources/NetworkManager-vpnc/1.4/%{name}-%{version}.tar.xz
 
 BuildRequires: make
 BuildRequires: gcc
 BuildRequires: gtk3-devel
 BuildRequires: intltool gettext
-BuildRequires: libnma-devel >= 1.2.0
+BuildRequires: libnma-devel >= 1.8.0
 BuildRequires: libsecret-devel
-%if %with libnm_glib
-BuildRequires: NetworkManager-devel
-BuildRequires: NetworkManager-glib-devel >= 1:1.2.0
-BuildRequires: libnm-gtk-devel >= 1.2.0
-%endif
 %if %with gtk4
 BuildRequires: gtk4-devel
 BuildRequires: libnma-gtk4-devel
@@ -39,6 +28,11 @@ Requires: dbus-common
 Requires: NetworkManager >= 1:1.2.0
 Requires: vpnc
 Obsoletes: NetworkManager-vpnc < 1:0.9.8.2-2
+
+Recommends: (%{name}-gnome%{?_isa} = %{version}-%{release} if libnma%{?_isa})
+%if %with gtk4
+Recommends: (%{name}-gnome%{?_isa} = %{version}-%{release} if libnma-gtk4%{?_isa})
+%endif
 
 %global __provides_exclude ^libnm-.*\\.so
 
@@ -68,9 +62,6 @@ the vpnc server with NetworkManager (GNOME files).
         --disable-static \
 %if %with gtk4
         --with-gtk4 \
-%endif
-%if %with libnm_glib
-        --with-libnm-glib \
 %endif
         --enable-more-warnings=yes \
         --with-dist-version=%{version}-%{release}
@@ -108,7 +99,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_prefix}/lib/NetworkManager/VPN/nm-vpnc-service.name
 %{_libexecdir}/nm-vpnc-service
 %{_libexecdir}/nm-vpnc-service-vpnc-helper
-%doc AUTHORS ChangeLog NEWS
+%doc AUTHORS NEWS
 %license COPYING
 
 %files -n NetworkManager-vpnc-gnome
@@ -120,12 +111,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/NetworkManager/libnm-gtk4-vpn-plugin-vpnc-editor.so
 %endif
 
-%if %with libnm_glib
-%{_libdir}/NetworkManager/libnm-*-properties.so
-%{_sysconfdir}/NetworkManager/VPN/nm-vpnc-service.name
-%endif
-
 %changelog
+* Fri Nov 15 2024 Lubomir Rintel <lkundrak@v3.sk> - 1:1.4.0-1
+- Update to 1.4.0 release
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:1.2.8-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

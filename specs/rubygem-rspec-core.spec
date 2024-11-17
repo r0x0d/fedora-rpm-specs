@@ -3,7 +3,7 @@
 %global	rpmminorver	.%(echo %preminorver | sed -e 's|^\\.\\.*||')
 %global	fullver	%{majorver}%{?preminorver}
 
-%global	baserelease	2
+%global	baserelease	3
 
 %global	gem_name	rspec-core
 
@@ -36,6 +36,9 @@ Source2:	rspec-related-create-full-tarball.sh
 # Adjust backtrace filter for Fedora placement of StdLib.
 # https://github.com/rspec/rspec-core/pull/2881
 Patch0:		rubygem-rspec-core-3.10.1-Filter-content-of-usr-share-ruby.patch
+# https://github.com/rspec/rspec-core/issues/3123
+# <- by https://github.com/ruby/ruby/pull/12065
+Patch1:		rspec-core-3.13.2-issue3123-ruby34-string-chilled.patch
 
 #BuildRequires:	ruby(release)
 BuildRequires:	rubygems-devel
@@ -90,6 +93,7 @@ This package contains documentation for %{name}.
 %prep
 %setup -q -T -n %{gem_name}-%{version} -b 1
 %patch -P0 -p1
+%patch -P1 -p1
 gem specification %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 
 %build
@@ -209,6 +213,9 @@ done
 %{gem_docdir}
 
 %changelog
+* Fri Nov 15 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.13.2-3
+- Fix for ruby34 string behavior to be chilled
+
 * Wed Nov 06 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.13.2-2
 - add BR: rubygem(drb) for ruby34
 

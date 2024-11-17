@@ -15,6 +15,8 @@ URL:            https://crates.io/crates/domain
 VCS:            git:%{forgeurl0}
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
+# - allow rstest 0.23 (https://github.com/NLnetLabs/domain/pull/442)
+# - allow tokio-tfo 0.3
 Patch:          domain-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

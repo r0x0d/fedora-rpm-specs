@@ -163,13 +163,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 0.rc7.59
+%define pkgrelease 0.rc7.20241115gitcfaaa7d010d1.62
 %define kversion 6
-%define tarfile_release 6.12-rc7
+%define tarfile_release 6.12-rc7-125-gcfaaa7d010d1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc7.59%{?buildid}%{?dist}
+%define specrelease 0.rc7.20241115gitcfaaa7d010d1.62%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0
 
@@ -4151,9 +4151,21 @@ fi\
 #
 #
 %changelog
-* Tue Nov 12 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc7.59]
+* Fri Nov 15 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc7.cfaaa7d010d1.62]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Fri Nov 15 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc7.cfaaa7d010d1.61]
+- Linux v6.12.0-0.rc7.cfaaa7d010d1
+
+* Thu Nov 14 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc7.0a9b9d17f3a7.60]
+- Fedora configs for 6.12 (Justin M. Forbes)
+- redhat/configs: Add CONFIG_CRYPTO_HMAC_S390 config (Mete Durlu) [RHEL-50799]
+- Linux v6.12.0-0.rc7.0a9b9d17f3a7
+
+* Wed Nov 13 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc7.f1b785f4c787.59]
+- redhat: configs: common: generic: Clean up EM28XX that are masked behind CONFIG_VIDEO_EM28XX (Kate Hsuan)
+- Linux v6.12.0-0.rc7.f1b785f4c787
 
 * Tue Nov 12 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.12.0-0.rc7.58]
 - redhat/configs: Update powerpc NR_CPUS config (Mamatha Inamdar)

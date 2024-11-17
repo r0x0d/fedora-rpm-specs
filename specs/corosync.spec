@@ -17,8 +17,8 @@
 
 Name: corosync
 Summary: The Corosync Cluster Engine and Application Programming Interfaces
-Version: 3.1.8
-Release: 4%{?gitver}%{?dist}
+Version: 3.1.9
+Release: 1%{?gitver}%{?dist}
 License: BSD-3-Clause
 URL: http://corosync.github.io/corosync/
 Source0: http://build.clusterlabs.org/corosync/releases/%{name}-%{version}%{?gittarver}.tar.gz
@@ -116,7 +116,7 @@ BuildRequires: make
 
 %if %{with dbus}
 mkdir -p -m 0700 %{buildroot}/%{_sysconfdir}/dbus-1/system.d
-install -m 644 %{_builddir}/%{name}-%{version}%{?gittarver}/conf/corosync-signals.conf %{buildroot}/%{_sysconfdir}/dbus-1/system.d/corosync-signals.conf
+install -m 644 %{_builddir}/%{name}-%{version}%{?gittarver}/conf/corosync-signals.conf %{buildroot}/%{_datadir}/dbus-1/system.d/corosync-signals.conf
 %endif
 
 ## tree fixup
@@ -185,7 +185,7 @@ fi
 %config(noreplace) %{_sysconfdir}/sysconfig/corosync
 %config(noreplace) %{_sysconfdir}/logrotate.d/corosync
 %if %{with dbus}
-%{_sysconfdir}/dbus-1/system.d/corosync-signals.conf
+%{_datadir}/dbus-1/system.d/corosync-signals.conf
 %endif
 %if %{with snmp}
 %{_datadir}/snmp/mibs/COROSYNC-MIB.txt
@@ -289,6 +289,9 @@ network splits)
 %endif
 
 %changelog
+* Fri Nov 15 2024 Jan Friesse <jfriesse@redhat.com> - 3.1.9-1
+- New upstream release
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.1.8-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

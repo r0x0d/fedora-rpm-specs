@@ -6,7 +6,7 @@
 %global crate human-date-parser
 
 Name:           rust-human-date-parser
-Version:        0.1.2
+Version:        0.2.0
 Release:        %autorelease
 Summary:        Parses strings that express dates in a human way into ones usable by code
 
@@ -50,9 +50,6 @@ use the "default" feature of the "%{crate}" crate.
 
 %prep
 %autosetup -n %{crate}-%{version} -p1
-# cargo seems to have problems excluding this (possibly because of the space)
-# so just delete it here
-rm Missing\ phrases.md
 %cargo_prep
 
 %generate_buildrequires

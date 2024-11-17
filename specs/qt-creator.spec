@@ -1,4 +1,4 @@
-%define prerelease beta2
+%define prerelease rc1
 
 # We need avoid oython byte compiler to not crash over template .py file which
 # is not a valid python file, only for the IDE
@@ -6,7 +6,7 @@
 
 Name:           qt-creator
 Version:        15.0.0
-Release:        0.3%{?prerelease:.%prerelease}%{?dist}
+Release:        0.4%{?prerelease:.%prerelease}%{?dist}
 Summary:        Cross-platform IDE for Qt
 
 License:        GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -22,8 +22,6 @@ Patch2:         qt-creator_qmake-names.patch
 Patch3:         qt-creator-debuginfod.patch
 # Drop refereces to unbundled yaml-cpp
 Patch4:         qt-creator_unbundle.patch
-# Fix invalid overload on i686
-Patch5:         qt-creator_overload.patch
 
 BuildRequires:  chrpath
 BuildRequires:  cmake
@@ -211,6 +209,9 @@ diff -u %{SOURCE1} $outfile
 
 
 %changelog
+* Fri Nov 15 2024 Sandro Mani <manisandro@gmail.com> - 15.0.0-0.4.rc1
+- Update to 15.0.0-rc1
+
 * Thu Oct 31 2024 Sandro Mani <manisandro@gmail.com> - 15.0.0-0.3.beta2
 - Update to 15.0.0-beta2
 

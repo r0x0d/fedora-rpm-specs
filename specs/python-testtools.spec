@@ -2,14 +2,11 @@
 # need to build in a particular order.  Duplicate numbered steps can happen at
 # the same time.
 #
-# 1. bootstrap python-extras
-# 1. bootstrap python-fixtures
-# 2. bootstrap python-testtools
-# 3. python-extras
-# 3. python-fixtures
-# 3. python-testscenarios
-# 4. python-testresources
-# 5. python-testtools
+# 1. bootstrap python-testtools
+# 2. python-fixtures
+# 2. python-testscenarios
+# 3. python-testresources
+# 4. python-testtools
 %bcond bootstrap 0
 
 # Twisted support is optional, but introduces twisted as a build requirement,

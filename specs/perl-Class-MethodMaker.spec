@@ -1,10 +1,10 @@
 Name:           perl-Class-MethodMaker
-Version:        2.24
-Release:        33%{?dist}
+Version:        2.25
+Release:        1%{?dist}
 Summary:        Perl module for creating generic object-oriented methods
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Class-MethodMaker
-Source0:        https://cpan.metacpan.org/modules/by-module/Class/Class-MethodMaker-%{version}.tar.gz
+Source0:        https://www.cpan.org/modules/by-module/Class/Class-MethodMaker-%{version}.tar.gz
 # Module Build
 BuildRequires:  coreutils
 BuildRequires:  findutils
@@ -14,7 +14,7 @@ BuildRequires:  perl-devel
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(Config)
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 BuildRequires:  perl(File::Basename)
 BuildRequires:  perl(File::Find)
 BuildRequires:  perl(File::Spec::Functions)
@@ -67,12 +67,11 @@ methods for your objects that perform standard tasks.
 %setup -q -n Class-MethodMaker-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor OPTIMIZE="%{optflags}"
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor OPTIMIZE="%{optflags}" NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 find %{buildroot} -type f -name '*.bs' -empty -delete
 %{_fixperms} -c %{buildroot}
 
@@ -93,6 +92,12 @@ make test
 %{_mandir}/man3/Class::MethodMaker::scalar.3*
 
 %changelog
+* Fri Nov 15 2024 Paul Howarth <paul@city-fan.org> - 2.25-1
+- Update to 2.25 (rhbz#2326474)
+  - Deterministic hash key order, needed for reproducible builds (GH#6)
+- Use %%{make_build} and %%{make_install}
+- Switch source URL from cpan.metacpan.org to www.cpan.org
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.24-33
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

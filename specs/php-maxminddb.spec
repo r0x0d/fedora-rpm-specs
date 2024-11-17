@@ -9,7 +9,7 @@
 #
 # Please, preserve the changelog entries
 #
-%global gh_commit   1e66f73ffcf25e17c7a910a1317e9720a95497c7
+%global gh_commit   5b2d7a721dedfaef9dc20822c5fe7d26f9f8eb90
 %global gh_short    %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner    maxmind
 %global gh_project  MaxMind-DB-Reader-php
@@ -29,8 +29,8 @@
 
 Summary:       MaxMind DB Reader extension
 Name:          php-maxminddb
-Version:       1.11.1
-Release:       7%{?dist}
+Version:       1.12.0
+Release:       1%{?dist}
 License:       Apache-2.0
 URL:           https://github.com/%{gh_owner}/%{gh_project}
 
@@ -228,6 +228,9 @@ exit $ret
 
 
 %changelog
+* Fri Nov 15 2024 Remi Collet <remi@remirepo.net> - 1.12.0-1
+- update to 1.12.0
+
 * Fri Oct 18 2024 Remi Collet <remi@fedoraproject.org> - 1.11.1-7
 - modernize the spec file
 

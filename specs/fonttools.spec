@@ -28,8 +28,8 @@ an XML text format, which is also called TTX. It supports TrueType, OpenType,
 AFM and to an extent Type 1 and some Mac-specific formats.}
 
 Name:           fonttools
-Version:        4.54.1
-Release:        3%{?dist}
+Version:        4.55.0
+Release:        1%{?dist}
 Summary:        Tools to manipulate font files
 
 # https://spdx.org/licenses/MIT.html
@@ -194,6 +194,9 @@ k="${k-}${k+ and }not (InterpolatableTest and test_sparse_interpolatable_ufos)"
 %doc NEWS.rst README.rst
 
 %changelog
+* Fri Nov 15 2024 Parag Nemade <pnemade AT redhat DOT com> - 4.55.0-1
+- Update to 4.55.0 version (#2326307)
+
 * Tue Nov 05 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 4.54.1-3
 - Avoid tox dependency
 

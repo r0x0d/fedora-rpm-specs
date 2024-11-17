@@ -1,6 +1,6 @@
 Name:           opensc
-Version:        0.25.1
-Release:        5%{?dist}
+Version:        0.26.0
+Release:        1%{?dist}
 Summary:        Smart card library and applications
 
 License:        LGPL-2.1-or-later AND BSD-3-Clause
@@ -10,10 +10,6 @@ Source1:        opensc.module
 Patch1:         opensc-0.19.0-pinpad.patch
 # File caching by default (#2000626)
 Patch8:         %{name}-0.22.0-file-cache.patch
-# https://github.com/OpenSC/OpenSC/pull/3194
-Patch9:         %{name}-0.25.1-no-engine.patch
-# https://github.com/OpenSC/OpenSC/pull/3150
-Patch10:        %{name}-0.25.1-pcsc-reconnect.patch
 
 BuildRequires:  make
 BuildRequires:  pcsc-lite-devel
@@ -33,10 +29,10 @@ BuildRequires:  libcmocka-devel
 BuildRequires:  vim-common
 %if ! 0%{?rhel}
 BuildRequires:  softhsm
-%endif
 BuildRequires:  openssl
 BuildRequires:  openpace-devel
-Requires:       pcsc-lite-libs%{?_isa}
+%endif
+Requires:       %{name}-libs = %{version}-%{release}
 Requires:       pcsc-lite
 Obsoletes:      mozilla-opensc-signer < 0.12.0
 Obsoletes:      opensc-devel < 0.12.0
@@ -53,20 +49,31 @@ supporting this API (such as Mozilla Firefox and Thunderbird) can use it. On
 the card OpenSC implements the PKCS#15 standard and aims to be compatible with
 every software/card that does so, too.
 
+%package        libs
+Requires:       pcsc-lite-libs%{?_isa}
+Summary:        OpenSC libraries
+
+%description    libs
+OpenSC libraries.
+
 
 %prep
 %setup -q
 %patch 1 -p1 -b .pinpad
 %patch 8 -p1 -b .file-cache
-%patch 9 -p1 -b .no-engine
-%patch 10 -p1 -b .pcsc-reconnect
 
-# The test-pkcs11-tool-allowed-mechanisms already works in Fedora
-sed -i -e '/XFAIL_TESTS/,$ {
-  s/XFAIL_TESTS.*/XFAIL_TESTS=test-pkcs11-tool-test-threads.sh test-pkcs11-tool-test.sh/
+XFAIL_TESTS="test-pkcs11-tool-test-threads.sh test-pkcs11-tool-test.sh"
+
+# In FIPS mode, OpenSSL doesn't allow RSA-PKCS, this is hardcoded into OpenSSL
+# and we cannot influence it. Hence, the test is expected to fail in FIPS mode.
+if [[ -f "/proc/sys/crypto/fips_enabled" && $(cat /proc/sys/crypto/fips_enabled) == "1" ]]; then
+	XFAIL_TESTS+=" test-pkcs11-tool-unwrap-wrap-test.sh test-p11test.sh"
+fi
+
+sed -i -e "/XFAIL_TESTS/,$ {
+  s/XFAIL_TESTS.*/XFAIL_TESTS=$XFAIL_TESTS/
   q
-}' tests/Makefile.am
-
+}" tests/Makefile.am
 
 cp -p src/pkcs15init/README ./README.pkcs15init
 cp -p src/scconf/README.scconf .
@@ -125,9 +132,10 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libopensc.so
 rm -f $RPM_BUILD_ROOT%{_libdir}/pkgconfig/*.pc
 rm -f $RPM_BUILD_ROOT%{_libdir}/libsmm-local.so
 
-# the npa-tool builds to nothing since we do not have OpenPACE library
+%if 0%{?rhel}
 rm -rf %{buildroot}%{_bindir}/npa-tool
 rm -rf %{buildroot}%{_mandir}/man1/npa-tool.1*
+%endif
 
 # the pkcs11-register is not applicable to Fedora/RHEL where we use p11-kit
 rm -rf %{buildroot}%{_bindir}/pkcs11-register
@@ -143,24 +151,16 @@ rm %{buildroot}%{_mandir}/man1/opensc-notify.1*
 
 %{_datadir}/bash-completion/*
 
-%ifarch %{ix86}
-%{_mandir}/man5/opensc-%{_arch}.conf.5*
-%else
-%config(noreplace) %{_sysconfdir}/opensc.conf
-%{_mandir}/man5/opensc.conf.5*
-%endif
 
-%config(noreplace) %{_sysconfdir}/opensc-%{_arch}.conf
-# Co-owned with p11-kit so it is not hard dependency
-%dir %{_datadir}/p11-kit
-%dir %{_datadir}/p11-kit/modules
-%{_datadir}/p11-kit/modules/opensc.module
 %{_bindir}/cardos-tool
 %{_bindir}/cryptoflex-tool
 %{_bindir}/eidenv
 %{_bindir}/iasecc-tool
 %{_bindir}/gids-tool
 %{_bindir}/netkey-tool
+%if ! 0%{?rhel}
+%{_bindir}/npa-tool
+%endif
 %{_bindir}/openpgp-tool
 %{_bindir}/opensc-explorer
 %{_bindir}/opensc-tool
@@ -176,14 +176,6 @@ rm %{buildroot}%{_mandir}/man1/opensc-notify.1*
 %{_bindir}/egk-tool
 %{_bindir}/goid-tool
 %{_bindir}/dtrust-tool
-%{_libdir}/lib*.so.*
-%{_libdir}/opensc-pkcs11.so
-%{_libdir}/pkcs11-spy.so
-%{_libdir}/onepin-opensc-pkcs11.so
-%dir %{_libdir}/pkcs11
-%{_libdir}/pkcs11/opensc-pkcs11.so
-%{_libdir}/pkcs11/onepin-opensc-pkcs11.so
-%{_libdir}/pkcs11/pkcs11-spy.so
 %{_datadir}/opensc/
 %{_mandir}/man1/cardos-tool.1*
 %{_mandir}/man1/cryptoflex-tool.1*
@@ -192,6 +184,9 @@ rm %{buildroot}%{_mandir}/man1/opensc-notify.1*
 %{_mandir}/man1/goid-tool.1*
 %{_mandir}/man1/iasecc-tool.1*
 %{_mandir}/man1/netkey-tool.1*
+%if ! 0%{?rhel}
+%{_mandir}/man1/npa-tool.1*
+%endif
 %{_mandir}/man1/openpgp-tool.1*
 %{_mandir}/man1/opensc-explorer.*
 %{_mandir}/man1/opensc-tool.1*
@@ -208,12 +203,42 @@ rm %{buildroot}%{_mandir}/man1/opensc-notify.1*
 %{_mandir}/man1/dtrust-tool.1*
 %{_mandir}/man5/pkcs15-profile.5*
 
+%files libs
+%ifarch %{ix86}
+%{_mandir}/man5/opensc-%{_arch}.conf.5*
+%else
+%config(noreplace) %{_sysconfdir}/opensc.conf
+%{_mandir}/man5/opensc.conf.5*
+%endif
+
+%config(noreplace) %{_sysconfdir}/opensc-%{_arch}.conf
+# Co-owned with p11-kit so it is not hard dependency
+%dir %{_datadir}/p11-kit
+%dir %{_datadir}/p11-kit/modules
+%{_datadir}/p11-kit/modules/opensc.module
+%{_libdir}/lib*.so.*
+%{_libdir}/opensc-pkcs11.so
+%{_libdir}/pkcs11-spy.so
+%{_libdir}/onepin-opensc-pkcs11.so
+%dir %{_libdir}/pkcs11
+%{_libdir}/pkcs11/opensc-pkcs11.so
+%{_libdir}/pkcs11/onepin-opensc-pkcs11.so
+%{_libdir}/pkcs11/pkcs11-spy.so
+
 # For OpenPACE
+%if ! 0%{?rhel}
 %config(noreplace) %{_sysconfdir}/eac/cvc/DESCHSMCVCA00001
 %config(noreplace) %{_sysconfdir}/eac/cvc/DESRCACC100001
+%endif
 
 
 %changelog
+* Thu Nov 14 2024 Veronika Hanulikova <vhanulik@redhat.com> - 0.26.0-1
+- New upstream release (#2311896)
+- Separate OpenSC into libraries and binaries
+- Change expected test failures in FIPS mode
+- Do not build with OpenPACE on RHEL
+
 * Wed Oct 16 2024 Veronika Hanulikova <vhanulik@redhat.com> - 0.25.1-5
 - Fix unhandled error on reconnection in PCSC driver (#2316432)
 

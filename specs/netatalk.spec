@@ -2,8 +2,8 @@
 
 Name:              netatalk
 Epoch:             5
-Version:           4.0.5
-Release:           2%{?dist}
+Version:           4.0.6
+Release:           1%{?dist}
 Summary:           Open Source Apple Filing Protocol(AFP) File Server
 # Automatically converted from old format: GPL+ and GPLv2 and GPLv2+ and LGPLv2+ and BSD and FSFUL and MIT - review is highly recommended.
 License:           GPL-1.0-or-later AND GPL-2.0-only AND GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-BSD AND FSFUL AND LicenseRef-Callaway-MIT
@@ -11,6 +11,9 @@ License:           GPL-1.0-or-later AND GPL-2.0-only AND GPL-2.0-or-later AND Li
 URL:               http://netatalk.sourceforge.net
 Source0:           https://download.sourceforge.net/netatalk/netatalk-%{version}.tar.xz
 Source1:           netatalk.pam-system-auth
+
+# Only build Appletalk documentation when the appletalk flag is on
+Patch0:            netatalk-appletalk-docs.patch
 
 # Per i686 leaf package policy 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
@@ -53,6 +56,7 @@ BuildRequires:     systemd
 BuildRequires:     systemtap-sdt-devel
 BuildRequires:     tracker3
 BuildRequires:     tracker3-devel
+BuildRequires:     cups-devel
 
 Requires:     dconf
 Requires:     python3-dbus
@@ -165,16 +169,15 @@ sed -E -i 's|^(ExecStart=.*)|\1\nRuntimeDirectory=lock/netatalk|' distrib/initsc
         -Dwith-overwrite=true                                                  \
         -Dwith-lockfile-path=%{_rundir}/lock/netatalk/netatalk                 \
         -Dwith-tcp-wrappers=false                                              \
-        -Dwith-tests=true                                                      \
         -Dwith-dbus-sysconf-path=%{_sysconfdir}/dbus-1/system.d                \
         -Dwith-pkgconfdir-path=%{_sysconfdir}/netatalk                         \
         -Dwith-init-style=systemd                                              \
         -Dwith-init-hooks=false                                                \
         -Dwith-uams-path=%{_libdir}/netatalk                                   \
-        -Dwith-appletalk=true                                                  \
         -Dwith-cups=true                                                       \
         -Dwith-tests=true                                                      \
-        -Dwith-testsuite=true
+        -Dwith-testsuite=true                                                  \
+        %{?fedora:-Dwith-appletalk=true}                                       \
 
 %meson_build
 
@@ -270,9 +273,12 @@ find %{buildroot} \( -name '*.la' -o -name '*.a' \) -type f -delete -print
 %doc %{_pkgdocdir}/DEVELOPER
 %dir %{_includedir}/atalk
 %{_includedir}/atalk/*.h
+%{_libdir}/libatalk.so
+
+%if 0%{?fedora}
 %dir %{_includedir}/netatalk
 %{_includedir}/netatalk/*.h
-%{_libdir}/libatalk.so
+%endif
 
 %{_mandir}/man3/atalk_aton.3*
 %{_mandir}/man3/nbp_name.3*
@@ -348,9 +354,13 @@ find %{buildroot} \( -name '*.la' -o -name '*.a' \) -type f -delete -print
 %doc %{_pkgdocdir}/htmldoc
 
 %changelog
+* Fri Nov 15 2024 Andrew Bauer <zonexpertconsulting@outlook.com> - 5:4.0.6-1
+- 4.0.6 release
+- only build appletalk documentation for fedora
+
 * Tue Nov 12 2024 Andrew Bauer <zonexpertconsulting@outlook.com> - 5:4.0.5-2
 - improve descriptions of each subpackage
-- only build applettalk subpackage for fedora
+- only build appletalk subpackage for fedora
 
 * Mon Nov 11 2024 Andrew Bauer <zonexpertconsulting@outlook.com> - 5:4.0.5-1
 - 4.0.5 release

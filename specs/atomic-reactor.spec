@@ -4,7 +4,7 @@
 %global dock_obsolete_vr 1.3.7-2
 
 Name:           %{project}
-Version:        4.12.1
+Version:        4.13.0
 Release:        2%{?dist}
 
 Summary:        Improved builder for Docker images

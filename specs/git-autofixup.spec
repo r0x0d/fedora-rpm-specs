@@ -1,5 +1,5 @@
 Name:       git-autofixup
-Version:    0.004006
+Version:    0.004007
 Release:    %autorelease
 
 Summary:    Autofixup - create fixup commits for topic branches

@@ -5,7 +5,7 @@
 
 Name:		%{srcname}
 Version:	6.0.1
-Release:	4%{?dist}
+Release:	5%{?dist}
 Summary:	Python client library for PostgreSQL
 
 URL:		http://www.pygresql.org/
@@ -22,7 +22,7 @@ Source0:	https://github.com/PyGreSQL/%{name}/archive/%{uversion}/%{name}-%{uvers
 BuildRequires:	gcc
 BuildRequires:	libpq-devel
 BuildRequires:	python3-devel
-BuildRequires:	python3-setuptools
+BuildRequires:  pyproject-rpm-macros
 
 # For testsuite
 %if 0%{?runselftest:1}
@@ -49,6 +49,9 @@ Obsoletes: python3-PyGreSQL < %{uversion}-%{release}
 
 %prep
 %autosetup -n %{srcname}-%{uversion} -p1
+
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 # PyGreSQL releases have execute bits on all files
 find -type f -exec chmod 644 {} +
@@ -91,10 +94,14 @@ dbhost = ''
 dbport = $PGPORT
 EOF
 
-%{python3} setup.py test
+%tox
 
 
 %changelog
+* Fri Nov 15 2024 Ales Nezbeda <anezbeda@redhat.com> - 6.0.1-5
+- Switch to using 'tox' for testing, as setup.py integration is deprecated
+- Resolves: rhbz#2319638
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 6.0.1-4
 - convert license to SPDX
 

@@ -1,7 +1,7 @@
-%global commit0 3aed68c8650143692d568df033261ab95b2e499e
-%global date 20240613
+%global commit0 8525e744694fec369d355023fa486fcbfb9f2dff
+%global date 20241114
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global tag %{version}
+#global tag %{version}
 
 %global __requires_exclude ^lib%{name}.so|^lib%{name}-js.so
 
@@ -15,8 +15,8 @@
 %global __python %{__python3}
 
 Name:           cinnamon
-Version:        6.2.9
-Release:        2%{?dist}
+Version:        6.3.0%{!?tag:^%{date}git%{shortcommit0}}
+Release:        1%{?dist}
 Summary:        Window management and application launching for GNOME
 # Automatically converted from old format: GPLv2+ and LGPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+
@@ -42,12 +42,15 @@ ExcludeArch:    %{ix86}
 BuildRequires:  gcc-c++
 BuildRequires:  meson
 BuildRequires:  desktop-file-utils
+BuildRequires:  python3-libsass
 BuildRequires:  python3-rpm-macros
 BuildRequires:  pkgconfig(cjs-1.0) >= %{cjs_version}
 BuildRequires:  pkgconfig(dbus-glib-1)
+BuildRequires:  pkgconfig(gcr-base-3)
 BuildRequires:  pkgconfig(gl)
 BuildRequires:  pkgconfig(libgnome-menu-3.0)
 BuildRequires:  pkgconfig(lib%{name}-menu-3.0)
+BuildRequires:  pkgconfig(libsecret-1)
 BuildRequires:  pkgconfig(%{name}-desktop) >= %{cinnamon_desktop_version}
 BuildRequires:  gobject-introspection >= %{gobject_introspection_version}
 BuildRequires:  pkgconfig(json-glib-1.0) >= %{json_glib_version}
@@ -288,10 +291,8 @@ EOF
 %doc README.rst AUTHORS
 %license COPYING
 %{_bindir}/cinnamon
-%{_bindir}/cinnamon-close-dialog
 %{_bindir}/cinnamon-dbus-command
 %{_bindir}/cinnamon-desktop-editor
-%{_bindir}/cinnamon-display-changes-dialog
 %{_bindir}/cinnamon-file-dialog
 %{_bindir}/cinnamon-hover-click
 %{_bindir}/cinnamon-install-spice
@@ -346,6 +347,9 @@ EOF
 %endif
 
 %changelog
+* Thu Nov 14 2024 Leigh Scott <leigh123linux@gmail.com> - 6.3.0^20241114git8525e74-1
+- Update to git snapshot
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 6.2.9-2
 - convert license to SPDX
 

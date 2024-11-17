@@ -1,5 +1,5 @@
 Version:  3.003
-Release:  15%{?dist}
+Release:  16%{?dist}
 URL:      https://software.sil.org/padauk/
 
 %global         foundry         SIL
@@ -35,7 +35,7 @@ This package provide Padauk Book family font.}
 
 Source0:  https://github.com/silnrsi/font-padauk/releases/download/v%{version}/padauk-%{version}.zip
 Source10: 65-%{fontpkgname0}.conf
-Source11: 65-%{fontpkgname2}.conf
+Source11: 66-%{fontpkgname2}.conf
 
 %fontpkg -a
 
@@ -55,6 +55,10 @@ Source11: 65-%{fontpkgname2}.conf
 %fontfiles -a
 
 %changelog
+* Thu Nov 07 2024 Parag Nemade <pnemade AT fedoraproject DOT org> - 3.003-16
+- Update "Padauk Book" font priority to 66
+- Update CI files
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.003-15
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

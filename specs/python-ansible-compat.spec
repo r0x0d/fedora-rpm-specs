@@ -4,7 +4,7 @@
 %bcond_without tests
 
 Name:    %{pkgname}
-Version: 24.9.1
+Version: 24.10.0
 Release: %autorelease
 Summary: Ansible python helper functions
 
@@ -68,6 +68,7 @@ rm -rf html/.{doctrees,buildinfo}
         and not test_prerun_reqs_v1
         and not test_prerun_reqs_v2
         and not test_install_collection_from_disk
+        and not test_load_plugins
         and not test_require_collection
         and not test_install_collection_git
         and not test_runtime_has_playbook

@@ -1,6 +1,6 @@
 Name:           libtpms
-Version:        0.9.6
-Release:        9%{?dist}
+Version:        0.10.0
+Release:        1%{?dist}
 Summary:        Library providing Trusted Platform Module (TPM) functionality
 License:        BSD-3-Clause AND LicenseRef-TCGL
 
@@ -10,8 +10,7 @@ Source1:        %{url}/releases/download/v%{version}/v%{version}.tar.gz.asc#/%{n
 # https://github.com/stefanberger.gpg
 Source2:        gpgkey-B818B9CADF9089C2D5CEC66B75AD65802A0B4211.asc
 
-Patch0001:      0001-tpm12-Replace-include-of-engine.h-with-err.h.patch
-Patch0002:      0001-tpm2-Return-TPM_RC_VALUE-upon-decryption-failure.patch
+Patch0001:      0001-tpm2-Add-padding-to-OBJECT-for-32bit-targets.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -66,6 +65,9 @@ make check
 %{_mandir}/man3/TPM*
 
 %changelog
+* Fri Nov 15 2024 Stefan Berger <stefanb@linux.ibm.com> - 0.10.0-1
+- Build of libtpms 0.10.0
+
 * Mon Jul 29 2024 Stefan Berger <stefanb@linux.ibm.com> - 0.9.6-9
 - Pass -p1 for applying patches as parameter to autosetup
 

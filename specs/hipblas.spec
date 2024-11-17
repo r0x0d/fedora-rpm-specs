@@ -32,7 +32,11 @@
 
 Name:           hipblas
 Version:        %{rocm_version}
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+Release:        1%{?dist}
+%else
 Release:        %autorelease
+%endif
 Summary:        ROCm BLAS marshalling library
 Url:            https://github.com/ROCmSoftwarePlatform/%{upstreamname}
 License:        MIT
@@ -40,9 +44,11 @@ License:        MIT
 Source0:        %{url}/archive/refs/tags/rocm-%{rocm_version}.tar.gz#/%{upstreamname}-%{rocm_version}.tar.gz
 
 BuildRequires:  cmake
-BuildRequires:  git
+%if 0%{?is_opensuse}
+BuildRequires:  gcc-fortran
+%else
 BuildRequires:  gcc-gfortran
-BuildRequires:  ninja-build
+%endif
 BuildRequires:  rocblas-devel
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
@@ -54,10 +60,16 @@ BuildRequires:  rocm-rpm-macros-modules
 BuildRequires:  rocsolver-devel
 
 %if %{with test}
-BuildRequires:  blas-static
 BuildRequires:  gtest-devel
+%if 0%{?is_opensuse}
+BuildRequires:  blas-devel
+BuildRequires:  cblas-devel
+BuildRequires:  lapack-devel
+%else
+BuildRequires:  blas-static
 BuildRequires:  lapack-static
 BuildRequires:  python3-pyyaml
+%endif
 %endif
 
 Requires:       rocm-rpm-macros-modules
@@ -93,12 +105,20 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %prep
 %autosetup -p1 -n %{upstreamname}-rocm-%{version}
 
+# This is a tarball, no .git to query
+sed -i -e 's@find_package(Git REQUIRED)@#find_package(Git REQUIRED)@' library/CMakeLists.txt
+
 %build
 
 for gpu in %{rocm_gpu_list}
 do
     module load rocm/$gpu
-    %cmake -G Ninja \
+    %cmake \
+	-DCMAKE_CXX_COMPILER=hipcc \
+	-DCMAKE_C_COMPILER=hipcc \
+	-DCMAKE_LINKER=%rocmllvm_bindir/ld.lld \
+	-DCMAKE_AR=%rocmllvm_bindir/llvm-ar \
+	-DCMAKE_RANLIB=%rocmllvm_bindir/llvm-ranlib \
            -DCMAKE_BUILD_TYPE=%build_type \
 	   -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
 	   -DCMAKE_SKIP_RPATH=ON \
@@ -132,9 +152,12 @@ find %{buildroot}%{_libdir} -name '*.so'         | sed -f br.sed >  %{name}.deve
 find %{buildroot}%{_libdir} -name '*.cmake'      | sed -f br.sed >> %{name}.devel
 find %{buildroot}           -name '%{name}*'     | sed -f br.sed >  %{name}.test
 
+if [ -f %{buildroot}%{_prefix}/share/doc/hipblas/LICENSE.md ]; then
+    rm %{buildroot}%{_prefix}/share/doc/hipblas/LICENSE.md
+fi
+
 %files -f %{name}.files
 %license LICENSE.md
-%exclude %{_docdir}/%{name}/LICENSE.md
 
 %files devel -f %{name}.devel
 %doc README.md
@@ -145,4 +168,11 @@ find %{buildroot}           -name '%{name}*'     | sed -f br.sed >  %{name}.test
 %endif
 
 %changelog
+%if 0%{?is_opensuse}
+* Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif
+

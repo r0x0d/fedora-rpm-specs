@@ -15,7 +15,7 @@ WSGI pipeline and used by various modules such as logging.
 
 Name:           python-%{pkg_name}
 Version:        5.6.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        OpenStack Oslo Context library
 
 License:        Apache-2.0
@@ -47,6 +47,9 @@ BuildRequires:  python3-debtcollector
 BuildRequires:  python3-fixtures
 BuildRequires:  python3-hacking
 BuildRequires:  python3-oslotest
+BuildRequires:  python3-tox
+BuildRequires:  python3-tox-current-env
+BuildRequires:  python3-stestr
 
 Requires:       python3-debtcollector >= 1.2.0
 Requires:       python3-pbr
@@ -98,7 +101,7 @@ rm -fr doc/build/html/.{doctrees,buildinfo}
 %{py3_install}
 
 %check
-python3 setup.py test
+%tox
 
 %files -n python3-%{pkg_name}
 %license LICENSE
@@ -118,6 +121,9 @@ python3 setup.py test
 %{python3_sitelib}/oslo_context/tests
 
 %changelog
+* Fri Nov 15 2024 Joel Capitao <jcapitao@redhat.com> 5.6.0-2
+- Use %tox macro
+
 * Mon Oct 07 2024 Joel Capitao <jcapitao@redhat.com> 5.6.0-1
 - Update to upstream version 5.6.0
 

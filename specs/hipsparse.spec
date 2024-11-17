@@ -17,6 +17,9 @@
 %global build_type RelWithDebInfo
 %endif
 
+# Assumes gpu hw
+%bcond_with check
+
 # downloads tests, use mock --enable-network
 %bcond_with test
 %if %{with test}
@@ -31,7 +34,11 @@
 
 Name:           hipsparse
 Version:        %{rocm_version}
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+Release:        1%{?dist}
+%else
 Release:        %autorelease
+%endif
 Summary:        ROCm SPARSE marshalling library
 Url:            https://github.com/ROCmSoftwarePlatform/%{upstreamname}
 License:        MIT
@@ -44,7 +51,11 @@ Source0:        %{url}/archive/refs/tags/rocm-%{rocm_version}.tar.gz#/%{upstream
 Patch0:         0001-prepare-hipsparse-cmake-for-fedora.patch
 
 BuildRequires:  cmake
+%if 0%{?is_opensuse}
+BuildRequires:  gcc-fortran
+%else
 BuildRequires:  gcc-gfortran
+%endif
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
 BuildRequires:  rocm-compilersupport-macros
@@ -57,8 +68,12 @@ BuildRequires:  rocsparse-devel
 
 %if %{with test}
 BuildRequires:  gtest-devel
-BuildRequires:  libomp-devel
 BuildRequires:  rocblas-devel
+%if 0%{?is_opensuse}
+BuildRequires:  rocm-libomp-devel
+%else
+BuildRequires:  libomp-devel
+%endif
 %endif
 
 Requires:       rocm-rpm-macros-modules
@@ -97,6 +112,11 @@ for gpu in %{rocm_gpu_list}
 do
     module load rocm/$gpu
     %cmake \
+	-DCMAKE_CXX_COMPILER=hipcc \
+	-DCMAKE_C_COMPILER=hipcc \
+	-DCMAKE_LINKER=%rocmllvm_bindir/ld.lld \
+	-DCMAKE_AR=%rocmllvm_bindir/llvm-ar \
+	-DCMAKE_RANLIB=%rocmllvm_bindir/llvm-ranlib \
            -DCMAKE_BUILD_TYPE=%build_type \
 	   -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
 	   -DCMAKE_SKIP_RPATH=ON \
@@ -117,6 +137,14 @@ done
 
 %cmake_build
 
+%if %{with test}
+%if %{with check}
+%check
+gpu=default
+find . -name 'hipsparse-test' -exec {} \;
+%endif
+%endif
+
 %install
 for gpu in %{rocm_gpu_list}
 do
@@ -130,9 +158,12 @@ find %{buildroot}%{_libdir} -name '*.so'         | sed -f br.sed >  %{name}.deve
 find %{buildroot}%{_libdir} -name '*.cmake'      | sed -f br.sed >> %{name}.devel
 find %{buildroot}           -name '%{name}*'     | sed -f br.sed >  %{name}.test
 
+if [ -f %{buildroot}%{_prefix}/share/doc/hipsparse/LICENSE.md ]; then
+    rm %{buildroot}%{_prefix}/share/doc/hipsparse/LICENSE.md
+fi
+
 %files -f %{name}.files
 %license LICENSE.md
-%exclude %{_docdir}/%{name}/LICENSE.md
 
 %files devel -f %{name}.devel
 %doc README.md
@@ -143,4 +174,10 @@ find %{buildroot}           -name '%{name}*'     | sed -f br.sed >  %{name}.test
 %endif
 
 %changelog
+%if 0%{?is_opensuse}
+* Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif

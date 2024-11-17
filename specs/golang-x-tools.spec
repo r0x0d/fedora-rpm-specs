@@ -8,10 +8,11 @@
 
 # https://github.com/golang/tools
 %global goipath         golang.org/x/tools
+%global goipathsex      golang.org/x/tools/gopls
 %global forgeurl        https://github.com/golang/tools
 Epoch:                  1
 # This package should be split per go.mod
-Version:                0.22.0
+Version:                0.27.0
 
 %gometa -L
 
@@ -44,6 +45,11 @@ Summary:        Various packages and tools that support the Go programming langu
 License:        LicenseRef-Callaway-BSD
 URL:            %{gourl}
 Source0:        %{gosource}
+# This test imports "all of tools", but we delete gopls in order to build it
+# as a separate package. Thus this test can't work correctly, so remove it.
+Patch:          0001-Don-t-try-to-import-all-of-tools.patch
+# We can't use these tests since we run with GO111MODULE=off
+Patch:          0002-Skip-tests-that-require-module-mode.patch
 
 BuildRequires:  golang-tests
 
@@ -200,14 +206,6 @@ Summary:        Tool to start a new Go module by copying a template module
 
 See https://pkg.go.dev/golang.org/x/tools/cmd/gonew for more information.
 
-%package        gopls
-Summary:        LSP server for Go
-
-%description    gopls
-%{summary}.
-
-See https://pkg.go.dev/golang.org/x/tools/cmd/gopls for more information.
-
 %package        present
 Summary:        Display slide presentations and articles
 
@@ -275,6 +273,8 @@ See https://pkg.go.dev/golang.org/x/tools/cmd/goyacc for more information.
 
 %prep
 %goprep
+%autopatch -p1
+rm -rf gopls
 find . -type f -name "*.go" -exec sed -i "s|mvdan.cc/xurls/v2|mvdan.cc/xurls|" "{}" +;
 
 %if %{without bootstrap}
@@ -293,7 +293,6 @@ done
 for cmd in %commands; do
   %gobuild -o %{gobuilddir}/bin/$(basename $cmd) %{goipath}/cmd/$cmd
 done
-%gobuild -o %{gobuilddir}/bin/gopls %{goipath}/gopls
 %endif
 
 %install
@@ -309,7 +308,7 @@ mv %{buildroot}%{_bindir}/bundle %{buildroot}%{_bindir}/gobundle
 %if %{without bootstrap}
 %if %{with check}
 %check
-%gocheck -t cmd -d imports -t internal/lsp -d go/pointer -d internal/imports -t gopls/internal -d internal/packagesdriver -t go/packages -d go/analysis/unitchecker -d go/ssa -t internal/refactor
+%gocheck -t cmd -d imports -t internal/lsp -d go/pointer -d internal/imports -t gopls -d internal/packagesdriver -t go/packages -d go/analysis/unitchecker -d go/ssa -t internal/refactor
 %endif
 %endif
 
@@ -416,11 +415,6 @@ mv %{buildroot}%{_bindir}/bundle %{buildroot}%{_bindir}/gobundle
 %doc %{godocs}
 %license %{golicenses}
 %{_bindir}/gonew
-
-%files    gopls
-%doc %{godocs}
-%license %{golicenses}
-%{_bindir}/gopls
 
 %files    present
 %doc %{godocs}
