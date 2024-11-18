@@ -5,7 +5,7 @@
 %global crate nu-cmd-lang
 
 Name:           rust-nu-cmd-lang
-Version:        0.96.1
+Version:        0.99.1
 Release:        %autorelease
 Summary:        Nushell's core language commands
 
@@ -13,7 +13,7 @@ License:        MIT
 URL:            https://crates.io/crates/nu-cmd-lang
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * downgrade shadow-rs from 0.29 to 0.8
+# * downgrade shadow-rs from 0.35 to 0.8
 Patch:          nu-cmd-lang-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

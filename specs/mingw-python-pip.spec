@@ -4,7 +4,7 @@
 
 Name:          mingw-python-%{pypi_name}
 Summary:       MinGW Windows Python %{pypi_name} library
-Version:       24.2
+Version:       24.3.1
 Release:       1%{?dist}
 BuildArch:     noarch
 
@@ -117,6 +117,9 @@ sed -i '1d' %{buildroot}%{mingw64_python3_sitearch}/pip/_vendor/requests/certs.p
 
 
 %changelog
+* Sat Nov 16 2024 Sandro Mani <manisandro@gmail.com> - 24.3.1-1
+- Update to 24.3.1
+
 * Mon Aug 12 2024 Sandro Mani <manisandro@gmail.com> - 24.2-1
 - Update to 24.2
 

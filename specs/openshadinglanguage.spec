@@ -5,7 +5,7 @@
 %bcond  qt6     1
 %bcond  ninja   1
 
-#global llvm_compat 18
+%global llvm_compat 18
 
 Name:           openshadinglanguage
 Version:        1.13.11.0

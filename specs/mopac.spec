@@ -9,11 +9,11 @@
 
 # EPEL builds need this knob to build out-of-root
 %undefine __cmake_in_source_build
-%global soversion 1
+%global soversion 2
 
 Name:           mopac
-Version:        22.1.1
-Release:        3%{?dist}
+Version:        23.0.1
+Release:        1%{?dist}
 Summary:        A semiempirical quantum chemistry program
 License:        LGPL-3.0-or-later
 URL:            http://openmopac.net
@@ -80,8 +80,12 @@ export OMP_NUM_THREADS=1
 
 %files devel
 %{_libdir}/libmopac.so
+%{_includedir}/mopac.h
 
 %changelog
+* Sat Nov 16 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 23.0.1-1
+- Update to 23.0.1.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 22.1.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -5,7 +5,7 @@
 %global crate nu-cmd-extra
 
 Name:           rust-nu-cmd-extra
-Version:        0.96.1
+Version:        0.99.1
 Release:        %autorelease
 Summary:        Nushell's extra commands that are not part of the 1.0 api standard
 

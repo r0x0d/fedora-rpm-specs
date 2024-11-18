@@ -1,5 +1,5 @@
 Name:		sdrangel
-Version:	7.22.2
+Version:	7.22.4
 Release:	1%{?dist}
 Summary:	Software defined radio (SDR) and signal analyzer frontend to various hardware
 License:	GPL-3.0-or-later
@@ -102,6 +102,10 @@ appstream-util validate-relax \
 %{_metainfodir}/org.sdrangel.SDRangel.metainfo.xml
 
 %changelog
+* Sat Nov 16 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 7.22.4-1
+- New version
+  Resolves: rhbz#2325025
+
 * Tue Oct 22 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 7.22.2-1
 - New version
   Resolves: rhbz#2320051

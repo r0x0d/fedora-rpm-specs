@@ -1,5 +1,5 @@
 Name:           mariadb-java-client
-Version:        3.4.1
+Version:        3.5.0
 Release:        %autorelease
 Summary:        Connects applications developed in Java to MariaDB and MySQL databases
 License:        LGPL-2.1-only

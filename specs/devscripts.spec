@@ -1,11 +1,11 @@
 Name:           devscripts
 Version:        2.24.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Scripts for Debian Package maintainers
 BuildArch:      noarch
 
 License:        GPL-2.0-or-later
-URL:            https://packages.debian.org/sid/%{name}
+URL:            https://tracker.debian.org/pkg/%{name}
 Source0:        http://ftp.debian.org/debian/pool/main/d/%{name}/%{name}_%{version}.tar.xz
 # Fixes path to xsl-stylesheet manpages docbook.xsl
 Patch0:         devscripts_docbook.patch
@@ -152,6 +152,9 @@ rm -f %{buildroot}%{_datadir}/bash-completion/completions/bts
 
 
 %changelog
+* Thu Nov 14 2024 Sérgio Basto <sergio@serjux.com> - 2.24.3-2
+- Change homepage URL to https://tracker.debian.org/pkg/devscripts
+
 * Tue Nov 12 2024 Sérgio M. Basto <sergio@serjux.com> - 2.24.3-1
 - Update to version 2.24.3
 

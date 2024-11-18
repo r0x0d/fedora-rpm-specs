@@ -1,7 +1,7 @@
 %global pkgname qrcode
 
 Name:           python-%{pkgname}
-Version:        7.4.2
+Version:        8.0
 Release:        %autorelease
 Summary:        Python QR Code image generator
 
@@ -15,13 +15,6 @@ BuildRequires:  python3-pytest
 # Explicit requires (#2271500)
 Requires:       python3-pypng
 
-# Comment out failing test
-Patch0:         qrcode_test.patch
-# Fix failure with Python3.12
-Patch1:         qrcode_assert-has-calls.patch
-# Make pypng requirement optional
-# https://github.com/lincolnloop/python-qrcode/pull/338
-Patch2:         qrcode-optional-pypng.patch
 
 %description
 This module uses the Python Imaging Library (PIL) to allow for the\
@@ -36,6 +29,9 @@ Provides:       python3-qrcode-core = %{version}-%{release}
 %description -n python3-%{pkgname}
 This module uses the Python Imaging Library (PIL) to allow for the
 generation of QR Codes. Python 3 version.
+
+
+%pyproject_extras_subpkg -n python3-%{pkgname} pil
 
 
 %generate_buildrequires
@@ -57,14 +53,6 @@ sed -i '1d' qrcode/console_scripts.py
 %pyproject_install
 %pyproject_save_files qrcode
 
-#
-# In previous iterations of the package, the qr script had been
-# renamed to qrcode. This was an unnecessary change from upstream.
-#
-# We cary this symlink to maintain compat with old packages.
-#
-ln -s qr %{buildroot}%{_bindir}/qrcode
-
 
 %check
 %pytest -v
@@ -74,8 +62,7 @@ ln -s qr %{buildroot}%{_bindir}/qrcode
 %doc README.rst CHANGES.rst
 %license LICENSE
 %{_bindir}/qr
-%{_bindir}/qrcode
-%{_mandir}/man1/qr.1*
+
 
 %changelog
 %autochangelog

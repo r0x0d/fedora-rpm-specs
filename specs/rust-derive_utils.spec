@@ -2,23 +2,22 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate nu-path
+%global crate derive_utils
 
-Name:           rust-nu-path
-Version:        0.99.1
+Name:           rust-derive_utils
+Version:        0.14.2
 Release:        %autorelease
-Summary:        Path handling library for Nushell
+Summary:        Procedural macro helper for easily writing derive macros for enums
 
-License:        MIT
-URL:            https://crates.io/crates/nu-path
+License:        Apache-2.0 OR MIT
+URL:            https://crates.io/crates/derive_utils
 Source:         %{crates_source}
-# Automatically generated patch to strip dependencies and normalize metadata
-Patch:          nu-path-fix-metadata-auto.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
+BuildRequires:  tomcli
 
 %global _description %{expand:
-Path handling library for Nushell.}
+A procedural macro helper for easily writing derive macros for enums.}
 
 %description %{_description}
 
@@ -32,7 +31,9 @@ This package contains library source intended for building other packages which
 use the "%{crate}" crate.
 
 %files          devel
-%license %{crate_instdir}/LICENSE
+%license %{crate_instdir}/LICENSE-APACHE
+%license %{crate_instdir}/LICENSE-MIT
+%doc %{crate_instdir}/CHANGELOG.md
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
@@ -51,6 +52,9 @@ use the "default" feature of the "%{crate}" crate.
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
+# Cannot compile tests yet because they are using a fork of trybuild
+# https://github.com/taiki-e/derive_utils/issues/48
+tomcli set Cargo.toml arrays delitem --key path test tests/compiletest.rs
 
 %generate_buildrequires
 %cargo_generate_buildrequires

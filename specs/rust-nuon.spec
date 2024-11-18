@@ -5,7 +5,7 @@
 %global crate nuon
 
 Name:           rust-nuon
-Version:        0.96.1
+Version:        0.99.1
 Release:        %autorelease
 Summary:        Support for the NUON format
 

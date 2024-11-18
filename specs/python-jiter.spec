@@ -1,13 +1,6 @@
 %global srcname jiter
 %global _description %{summary}.
 
-# The Python extension module now gets a SONAME of libjiter_python.so; we
-# must ensure it is not used to generate automatic Provides. See:
-#   Rust 1.81+ implicitly / automatically sets soname on cdylib targets
-#   https://bugzilla.redhat.com/show_bug.cgi?id=2314879
-# https://docs.fedoraproject.org/en-US/packaging-guidelines/AutoProvidesAndRequiresFiltering/#_filtering_provides_and_requires_after_scanning
-%global __provides_exclude ^libjiter_python\.so.*$
-
 Name:           python-%{srcname}
 Version:        0.5.0
 Release:        %autorelease

@@ -2,8 +2,8 @@
 # gimp-2.99 branch:
 #
 # https://github.com/rpeyron/plugin-gimp-fourier/tree/gimp2.99
-%global commit 29d3400540812314d7a43cd471b8e8dbbf10ccfb
-%global snapdate 20241010
+%global commit 29697b2d24e7398e86ea5053c545677f85886acf
+%global snapdate 20241109
 
 Name:           gimp-fourier-plugin
 Version:        0.4.5^%{snapdate}git%{sub %{commit} 1 7}
@@ -33,7 +33,8 @@ BuildRequires:  pkgconfig(gimp-3.0)
 
 BuildRequires:  dos2unix
 
-Requires:       gimp
+# Minimum version for plugin API/ABI compatibility
+Requires:       gimp%{?_isa} >= 2:3.0.0~RC1
 
 %description
 GIMP Plugin to do forward and reverse Fourier Transform. The major advantage of

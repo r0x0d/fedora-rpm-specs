@@ -5,7 +5,7 @@
 %global crate nu-plugin-protocol
 
 Name:           rust-nu-plugin-protocol
-Version:        0.96.1
+Version:        0.99.1
 Release:        %autorelease
 Summary:        Protocol type definitions for Nushell plugins
 

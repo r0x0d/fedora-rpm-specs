@@ -5,13 +5,16 @@
 %global crate nu-cli
 
 Name:           rust-nu-cli
-Version:        0.96.1
+Version:        0.99.1
 Release:        %autorelease
 Summary:        CLI-related functionality for Nushell
 
 License:        MIT
 URL:            https://crates.io/crates/nu-cli
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+# * temporarily bump reedline from 0.36.0 to 0.37.0
+Patch:          nu-cli-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

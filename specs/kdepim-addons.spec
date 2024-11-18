@@ -3,7 +3,7 @@
 
 Name:    kdepim-addons
 Version: 24.08.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Additional plugins for KDE PIM applications
 # Cargo license summary:
 # MIT
@@ -18,6 +18,10 @@ URL:     https://invent.kde.org/pim/%{name}
 Source0: https://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
 
 ## upstream patches
+
+# Fix for calendar colors being wrong
+# https://invent.kde.org/pim/kdepim-addons/-/commit/b5f70b11b8f618d639598c5d04e264ab1463d321
+Patch0:  b5f70b11b8f618d639598c5d04e264ab1463d321.patch
 
 ## upstream patches (master)
 
@@ -149,7 +153,6 @@ popd
 %if %{with adblock}
 %license plugins/webengineurlinterceptor/adblock/LICENSE.dependencies
 %endif
-#%{_kf6_datadir}/icons/hicolor/scalable/status/moon-phase-*
 %{_kf6_datadir}/qlogging-categories6/*%{name}.*
 %if %{with adblock}
 %{_kf6_libdir}/libadblockplugin.so.*
@@ -190,6 +193,9 @@ popd
 
 
 %changelog
+* Sat Nov 16 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-2
+- Fix for calendar colors being wrong
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

@@ -1,4 +1,8 @@
-%bcond_without tests
+%bcond tests 1
+%bcond tests_clients %{undefined rhel}
+%bcond tests_flask %{undefined rhel}
+%bcond tests_django %{undefined rhel}
+%bcond tests_jose %{undefined rhel}
 
 Name:           python-authlib
 Version:        1.3.2
@@ -38,9 +42,13 @@ rm -rf \
   tests/clients/test_requests/test_oauth1_session.py \
   tests/clients/test_httpx/test_oauth1_client.py
 
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
+sed -i '/coverage/d' tests/requirements-base.txt
+sed -i 's/coverage run --source=authlib -p -m pytest/python3 -m pytest/' tox.ini
+
 
 %generate_buildrequires
-%pyproject_buildrequires %{?with_tests:-e %{toxenv},%{toxenv}-clients,%{toxenv}-flask,%{toxenv}-django,%{toxenv}-jose}
+%pyproject_buildrequires %{?with_tests:-e %{toxenv}%{?with_tests_clients:,%{toxenv}-clients}%{?with_tests_flask:,%{toxenv}-flask}%{?with_tests_django:,%{toxenv}-django}%{?with_tests_jose:,%{toxenv}-jose}}
 
 
 %build

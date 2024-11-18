@@ -5,7 +5,7 @@
 %global crate nu-command
 
 Name:           rust-nu-command
-Version:        0.96.1
+Version:        0.99.1
 Release:        %autorelease
 Summary:        Nushell's built-in commands
 
@@ -17,8 +17,12 @@ Patch:          nu-command-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * drop rusqlite's bundled feature
 # * Update brotli from 5.0 to 7.0: https://github.com/nushell/nushell/pull/13960
+# * Update quick-xml from 0.32.0 to >=0.33.0,<0.38.0
 # * allow chrono-tz 0.9
 Patch:          nu-command-fix-metadata.diff
+# * Allow compiling with quick-xml 0.33+
+# * https://github.com/nushell/nushell/pull/14354
+Patch2:         nu-command-fix-for-quick-xml-0_33.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -129,7 +133,8 @@ use the "trash-support" feature of the "%{crate}" crate.
 %if %{with check}
 %check
 # * these tests require unshipped fixtures
-%cargo_test -- -- --skip debug::timeit::test_time_block --skip strings::split::words::test::test_incompat_flags --skip commands:: --skip format_conversions:: --skip system::run_external::test::test_expand_glob
+# * test_count_counts_lines has a Unicode mismatch
+%cargo_test -- -- --skip commands:: --skip debug::timeit::test_time_block --skip format_conversions:: --skip strings::split::words::test::test_incompat_flags --skip strings::split::words::test::mixed_letter_number --skip strings::str_::stats::test_count_counts_lines --skip format_conversions:: --skip system::run_external::test::test_expand_glob
 %endif
 
 %changelog

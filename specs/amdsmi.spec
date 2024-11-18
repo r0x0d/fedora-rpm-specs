@@ -14,7 +14,7 @@
 
 Name:       amdsmi
 Version:    %{rocm_version}
-%if 0%{?rhel} < 10
+%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
 Release:    1%{?dist}
 %else
 Release:    %autorelease
@@ -32,6 +32,7 @@ Source0:    %{url}/archive/rocm-%{version}.tar.gz#/%{upstreamname}-%{version}.ta
 Source1:    https://github.com/amd/esmi_ib_library/archive/refs/tags/esmi_pkg_ver-%{esmi_ver}.tar.gz
 # https://github.com/ROCm/amdsmi/pull/48
 Patch0:     0001-Do-not-automatically-download-kernel-header-amd_hsmp.patch
+Patch1:     0001-Fix-empty-return.patch
 
 ExclusiveArch: x86_64
 
@@ -97,11 +98,21 @@ mv %{buildroot}/usr/share/setup.cfg %{buildroot}/%{python3_sitelib}/amdsmi/
 mv %{buildroot}/usr/share/pyproject.toml %{buildroot}/%{python3_sitelib}/amdsmi/
 
 # Remove some things
-rm -rf %{buildroot}/usr/share/example
-rm %{buildroot}%{_docdir}/amd_smi-asan/LICENSE.txt
-rm %{buildroot}%{_docdir}/amd_smi/LICENSE.txt
-rm %{buildroot}%{_docdir}/amd_smi/README.md
-rm %{buildroot}%{_datadir}/_version.py
+if [ -d %{buildroot}/usr/share/example ]; then
+    rm -rf %{buildroot}/usr/share/example
+fi
+if [ -f %{buildroot}/usr/share/doc/amd_smi-asan/LICENSE.txt ]; then
+    rm %{buildroot}/usr/share/doc/amd_smi-asan/LICENSE.txt
+fi
+if [ -f %{buildroot}/usr/share/doc/amd_smi/LICENSE.txt ]; then
+    rm %{buildroot}/usr/share/doc/amd_smi/LICENSE.txt
+fi
+if [ -f %{buildroot}/usr/share/doc/amd_smi/README.md ]; then
+    rm %{buildroot}/usr/share/doc/amd_smi/README.md
+fi
+if [ -f %{buildroot}%{_datadir}/_version.py ]; then
+    rm %{buildroot}%{_datadir}/_version.py
+fi
 
 # W: unstripped-binary-or-object /usr/lib/python3.13/site-packages/amdsmi/libamd_smi.so
 # Does an explict open, so can not just rm it
@@ -134,4 +145,11 @@ rm %{buildroot}%{_libdir}/cmake/amd_smi/amd_smi-config.cmake
 %endif
 
 %changelog
+%if 0%{?is_opensuse}
+* Sun Nov 3 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+- Stub for tumbleweed
+
+%else
 %autochangelog
+%endif
+

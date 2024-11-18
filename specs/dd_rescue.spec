@@ -27,6 +27,7 @@ BuildRequires:  automake
 BuildRequires:  gcc
 BuildRequires:  gnupg2
 BuildRequires:  lzo-devel
+BuildRequires:  xz-devel
 BuildRequires:  make
 
 # Shell script dd_rhelp.test requires several other things to run

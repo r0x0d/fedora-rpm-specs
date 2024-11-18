@@ -11,7 +11,7 @@
 %bcond tests 1
 
 Name:           python-%{pypi_name}
-Version:        1.1.15
+Version:        1.1.19
 Release:        %{autorelease}
 Summary:        High Level Expressions for Dask
 %forgemeta

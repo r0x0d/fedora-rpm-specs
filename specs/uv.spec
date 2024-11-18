@@ -146,6 +146,9 @@ License:        %{shrink:
 # LICENSE.dependencies contains a full license breakdown
 URL:            https://github.com/astral-sh/uv
 Source0:        %{url}/archive/%{version}/uv-%{version}.tar.gz
+# Default system-wide configuration file
+# https://docs.astral.sh/uv/configuration/files
+Source1:        uv.toml
 
 # Currently, uv must use a fork of async_zip, as explained in:
 #   Restore central directory buffering
@@ -684,6 +687,9 @@ do
   install -Dpm 0644 _${cmd} -t %{buildroot}/%{zsh_completions_dir}
 done
 
+# Install a default system-wide configuration file
+install -t '%{buildroot}%{_sysconfdir}/uv' -p -m 0644 -D '%{SOURCE1}'
+
 
 %check
 %if %{with check}
@@ -720,6 +726,9 @@ skip="${skip-} --skip remote_metadata::remote_metadata_with_and_without_cache"
 %{bash_completions_dir}/{uv,uvx}.bash
 %{fish_completions_dir}/{uv,uvx}.fish
 %{zsh_completions_dir}/_{uv,uvx}
+
+%dir %{_sysconfdir}/uv
+%config(noreplace) %{_sysconfdir}/uv/uv.toml
 
 
 %files -n python3-uv -f %{pyproject_files}

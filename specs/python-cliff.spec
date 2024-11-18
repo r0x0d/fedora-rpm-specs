@@ -17,7 +17,7 @@ http://readthedocs.org/docs/cliff/en/latest/
 
 Name:             python-%{modname}
 Version:          4.7.0
-Release:          1%{?dist}
+Release:          2%{?dist}
 Summary:          Command Line Interface Formulation Framework
 
 Group:            Development/Libraries
@@ -92,8 +92,7 @@ rm cliff/tests/test_sphinxext.py
 
 %check
 # stestr depends on cliff which introduces cyclic dep so i'm avoiding stestr.
-PYTHON=python3 python3 setup.py test
-
+%{python3} -m unittest
 
 %files -n python3-%{modname}
 %license LICENSE
@@ -106,6 +105,9 @@ PYTHON=python3 python3 setup.py test
 %{python3_sitelib}/%{modname}/tests
 
 %changelog
+* Sat Nov 16 2024 Kevin Fenzi <kevin@scrye.com> - 4.7.0-2
+- Move to unittests to fix FTBFS. fixes rhbz#2319643 rhbz#2261552
+
 * Mon Oct 07 2024 Joel Capitao <jcapitao@redhat.com> 4.7.0-1
 - Update to upstream version 4.7.0
 

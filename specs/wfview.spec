@@ -132,7 +132,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.%{name}.%{
 %{_sysusersdir}/wfserver.conf
 %{_datadir}/icons/hicolor/256x256/apps/%{name}.png
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/metainfo/org.wfview.wfview.metainfo.xml
+%{_metainfodir}/org.wfview.wfview.metainfo.xml
 
 %changelog
 * Mon Oct 28 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 1.64-3

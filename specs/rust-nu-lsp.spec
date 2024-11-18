@@ -6,13 +6,16 @@
 %global crate nu-lsp
 
 Name:           rust-nu-lsp
-Version:        0.96.1
+Version:        0.99.1
 Release:        %autorelease
 Summary:        Nushell's integrated LSP server
 
 License:        MIT
 URL:            https://crates.io/crates/nu-lsp
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+# * temporarily bump reedline from 0.36.0 to 0.37.0
+Patch:          nu-lsp-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

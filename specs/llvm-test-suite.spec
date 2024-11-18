@@ -1,12 +1,12 @@
 %global _binaries_in_noarch_packages_terminate_build %{nil}
 
-%global llvm_test_suite_version 19.1.0
+%global llvm_test_suite_version 19.1.3
 #global rc_ver 4
 %global test_suite_srcdir test-suite-%{llvm_test_suite_version}%{?rc_ver:-rc%{rc_ver}}.src.fedora
 
 Name:		llvm-test-suite
 Version:	%{llvm_test_suite_version}%{?rc_ver:~rc%{rc_ver}}
-Release:	3%{?dist}
+Release:	1%{?dist}
 Summary:	C/C++ Compiler Test Suite
 
 # Automatically converted from old format: NCSA and BSD and GPLv1 and GPLv2+ and GPLv2 and MIT and Python and Public Domain and CRC32 and AML and Rdisc and ASL 2.0 and LGPLv3 - review is highly recommended.
@@ -27,6 +27,8 @@ Source0:	%{test_suite_srcdir}.tar.xz
 Source1:	license-files.txt
 Source2:	pkg_test_suite.sh
 BuildArch:	noarch
+
+Patch0: fix-spurious-errors-in-halide-tests.patch
 
 # We need python3-devel for pathfix.py.
 BuildRequires: python3-devel
@@ -81,6 +83,9 @@ cp -R %{_builddir}/%{test_suite_srcdir}/* %{buildroot}%{_datadir}/llvm-test-suit
 
 
 %changelog
+* Fri Nov 08 2024 Timm Bäder <tbaeder@redhat.com> - 19.1.3-1
+- Update to 19.1.3
+
 * Tue Oct 15 2024 Konrad Kleine <kkleine@redhat.com> - 19.1.0-3
 - Remove MultiSource/Applications/ClamAV directory because of viruses in input files
 

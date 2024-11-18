@@ -1,8 +1,7 @@
 Name:           perl-Mock-MonkeyPatch
-Version:        1.02
-Release:        11%{?dist}
+Version:        1.03
+Release:        1%{?dist}
 Summary:        Monkey patching with test mocking in mind
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 URL:            https://metacpan.org/dist/Mock-MonkeyPatch
@@ -52,6 +51,9 @@ is replaced.
 %{_mandir}/man3/Mock*
 
 %changelog
+* Sun Nov 17 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 1.03-1
+- Update to 1.03
+
 * Tue Aug 06 2024 Miroslav Suchý <msuchy@redhat.com> - 1.02-11
 - convert license to SPDX
 

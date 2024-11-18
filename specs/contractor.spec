@@ -7,6 +7,10 @@ License:        GPL-3.0-or-later
 URL:            https://github.com/elementary/contractor
 Source:         %{url}/archive/%{version}/contractor-%{version}.tar.gz
 
+# Install into libexecdir instead of bindir
+# https://github.com/elementary/contractor/pull/36
+Patch:          %{url}/pull/36.patch
+
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
 
@@ -23,11 +27,7 @@ BuildRequires:  pkgconfig(gio-unix-2.0)
 BuildRequires:  pkgconfig(glib-2.0)
 
 # For %%{_datadir}/dbus-1/services/ directory:
-%if %{defined el7}
-Requires:       dbus
-%else
 Requires:       dbus-common
-%endif
 
 %description
 An extension service that allows apps to use the exposed functionality
@@ -36,7 +36,7 @@ coded into them.
 
 
 %prep
-%autosetup
+%autosetup -p1
 
 
 %conf
@@ -58,7 +58,7 @@ mkdir -p %{buildroot}/%{_datadir}/contractor
 %doc README.md
 %license COPYING
 
-%{_bindir}/contractor
+%{_libexecdir}/contractor
 
 %dir %{_datadir}/contractor
 %{_datadir}/dbus-1/services/org.elementary.contractor.service

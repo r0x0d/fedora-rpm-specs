@@ -3,7 +3,7 @@
 
 Summary:        Desktop full text search tool with Qt GUI
 Name:           recoll
-Version:        1.40.3
+Version:        1.40.4
 Release:        1%{?dist}
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
@@ -84,7 +84,6 @@ This package contains the Recoll GNOME Shell search provider
 
 %prep
 %setup -q -D -a 1
-%autopatch -p1
 sed -i -e '1{\,^#!/usr/bin/env,d}' python/recoll/recoll/rclconfig.py
 ln -s gssp-recoll-%{gsspver} gssp
 
@@ -154,7 +153,7 @@ echo "%{_libdir}/recoll" > %{buildroot}%{_sysconfdir}/ld.so.conf.d/recoll-%{_arc
 
 %files
 %license COPYING
-%doc ChangeLog README
+%doc README
 %{_sysconfdir}/ld.so.conf.d/recoll-%{_arch}.conf
 %{_bindir}/recoll
 %{_bindir}/recollindex
@@ -163,6 +162,7 @@ echo "%{_libdir}/recoll" > %{buildroot}%{_sysconfdir}/ld.so.conf.d/recoll-%{_arc
 %{_datadir}/metainfo/org.recoll.recoll.appdata.xml
 %{_datadir}/applications/recoll-searchgui.desktop
 %{_datadir}/icons/hicolor/48x48/apps/recoll.png
+%{_datadir}/icons/hicolor/scalable/apps/recoll.svg
 %{_datadir}/pixmaps/recoll.png
 %{python3_sitearch}/recoll
 %{python3_sitearch}/recollchm
@@ -203,6 +203,9 @@ echo "%{_libdir}/recoll" > %{buildroot}%{_sysconfdir}/ld.so.conf.d/recoll-%{_arc
 %{_datadir}/applications/org.recoll.Recoll.SearchProvider.desktop
 
 %changelog
+* Sat Nov 16 2024 Terje Rosten <terjeros@gmail.com> - 1.40.4-1
+- 1.40.4
+
 * Tue Oct 15 2024 Terje Rosten <terjeros@gmail.com> - 1.40.3-1
 - 1.40.3
 

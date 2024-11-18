@@ -5,7 +5,7 @@
 %global crate nu-plugin-engine
 
 Name:           rust-nu-plugin-engine
-Version:        0.96.1
+Version:        0.99.1
 Release:        %autorelease
 Summary:        Functionality for running Nushell plugins from a Nushell engine
 

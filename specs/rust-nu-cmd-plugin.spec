@@ -5,7 +5,7 @@
 %global crate nu-cmd-plugin
 
 Name:           rust-nu-cmd-plugin
-Version:        0.96.1
+Version:        0.99.1
 Release:        %autorelease
 Summary:        Commands for managing Nushell plugins
 

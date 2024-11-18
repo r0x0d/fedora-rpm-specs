@@ -4,11 +4,11 @@ Summary:        A C++ JIT assembler for x86
 Name:           xbyak
 License:        BSD-3-Clause
 
-Version:        7.21
+Version:        7.22
 Release:        %autorelease
 
 URL:            https://github.com/herumi/xbyak
-Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
+Source0:        %{url}/archive/v%{version}.tar.gz
 # exception testing of allocator gets hung up on glibc double free check
 Patch0:         xbyak-disable-noexecption-test3.patch
 

@@ -1,6 +1,6 @@
 # Plain package name for cases, where %%{name} differs (e.g. for versioned packages)
 %global majorname mariadb
-%define package_version 10.11.9
+%define package_version 10.11.10
 %define majorversion %(echo %{package_version} | cut -d'.' -f1-2 )
 
 # Set if this package will be the default one in distribution
@@ -15,7 +15,7 @@
 # The last version on which the full testsuite has been run
 # In case of further rebuilds of that version, don't require full testsuite to be run
 # run only "main" suite
-%global last_tested_version 10.11.9
+%global last_tested_version 10.11.10
 # Set to 1 to force run the testsuite even if it was already tested in current version
 %global force_run_testsuite 0
 
@@ -127,7 +127,7 @@
 # See mariadb-libfmt.patch for detailed description.
 %bcond bundled_fmt 1
 %if %{with bundled_fmt}
-%global fmt_bundled_version 11.0.1
+%global fmt_bundled_version 11.0.2
 %endif
 
 # Include systemd files
@@ -1779,6 +1779,9 @@ fi
 %endif
 
 %changelog
+* Sat Nov 16 2024 Michal Schorm <mschorm@redhat.com> - 3:10.11.10-1
+- Rebase to 10.11.10
+
 * Tue Aug 13 2024 Michal Schorm <mschorm@redhat.com> - 3:10.11.9-1
 - Rebase to 10.11.9
 

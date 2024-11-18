@@ -1,6 +1,7 @@
 %bcond_without check
 
 %global srcname scikit_learn
+%global pkgname scikit-learn
 
 %global _description %{expand: 
 Scikit-learn integrates machine learning algorithms in the tightly-knit 
@@ -33,7 +34,7 @@ ExcludeArch: %{ix86}
 
 %description %_description
 
-%package -n python3-%{srcname}
+%package -n python3-%{pkgname}
 Summary: %{summary}
 
 %if %{with check}
@@ -44,7 +45,7 @@ BuildRequires: %{py3_dist threadpoolctl} >= 2.0.0
 
 %{?python_provide:%python_provide python3-sklearn}
 
-%description -n python3-%{srcname} 
+%description -n python3-%{pkgname}
 %_description
 
 %prep
@@ -113,7 +114,7 @@ popd
 %py3_check_import sklearn
 %endif
 
-%files -n python3-%{srcname} -f %{pyproject_files}
+%files -n python3-%{pkgname} -f %{pyproject_files}
 %doc examples/
 %license COPYING sklearn/svm/src/liblinear/COPYRIGHT
 

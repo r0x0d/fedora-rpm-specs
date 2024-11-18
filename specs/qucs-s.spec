@@ -2,7 +2,7 @@
 
 Summary: Qucs circuit simulator which works with SPICE
 Name:    qucs-s
-Version: 24.4.0
+Version: 24.4.1
 Release: 1%{?dist}
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License: GPL-2.0-or-later
@@ -19,6 +19,8 @@ BuildRequires: gcc-c++
 BuildRequires: flex
 BuildRequires: bison
 BuildRequires: desktop-file-utils
+# for "appstream-util validate-relax"
+BuildRequires: libappstream-glib
 BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-linguist
 BuildRequires: qt5-qtsvg-devel
@@ -73,7 +75,11 @@ Qucs-S examples.
 
 %install
 %cmake_install
+
+
+%check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
+appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/io.github.ra3xdh.qucs_s.metainfo.xml
 
 
 %files
@@ -87,6 +93,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 %{_datadir}/applications/*
 %{_mandir}/man1/*
 %{_datadir}/icons/hicolor/*
+%{_metainfodir}/io.github.ra3xdh.qucs_s.metainfo.xml
 
 
 %files library
@@ -101,6 +108,10 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Sat Nov 16 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 24.4.1-1
+- New version
+  Resolves: rhbz#2326331
+
 * Tue Nov  5 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 24.4.0-1
 - New version
   Resolves: rhbz#2323122
