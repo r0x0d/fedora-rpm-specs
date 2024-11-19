@@ -2,9 +2,7 @@ Name:           perl-HTML-HTML5-Parser
 Version:        0.992
 Release:        9%{?dist}
 Summary:        Parse HTML reliably
-# COPYRIGHT:    Public Domain
-# other files:  GPL+ or Artistic
-License:        (GPL+ or Artistic) and Public Domain
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/HTML-HTML5-Parser
 Source0:        https://cpan.metacpan.org/authors/id/T/TO/TOBYINK/HTML-HTML5-Parser-%{version}.tar.gz
 BuildArch:      noarch

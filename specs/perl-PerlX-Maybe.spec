@@ -5,9 +5,7 @@ Name:           perl-PerlX-Maybe
 Version:        1.202
 Release:        8%{?dist}
 Summary:        Return a pair only if they are both defined
-# LICENSE:      GPL+ or Artistic
-# COPYRIGHT:    Public Domain
-License:        (GPL+ or Artistic) and Public Domain
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/PerlX-Maybe
 Source0:        https://cpan.metacpan.org/authors/id/T/TO/TOBYINK/PerlX-Maybe-%{version}.tar.gz
 BuildArch:      noarch

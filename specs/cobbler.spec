@@ -5,8 +5,8 @@
 %global selinuxtype targeted
 
 Name:           cobbler
-Version:        3.3.6
-Release:        2%{?dist}
+Version:        3.3.7
+Release:        1%{?dist}
 Summary:        Boot server configurator
 URL:            https://cobbler.github.io/
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -325,6 +325,9 @@ fi
 
 
 %changelog
+* Sun Nov 17 2024 Orion Poplawski <orion@nwra.com> - 3.3.7-1
+- Update to 3.3.7 (CVE-2024-47533)
+
 * Fri Sep 27 2024 Carl George <carlwgeorge@fedoraproject.org> - 3.3.6-2
 - Fix cheetah dependency rhbz#2314630
 

@@ -9,10 +9,10 @@
 # needed for this package
 %global extension_id \{73a6fe31-595d-460b-a920-fcc0f8843232\}
 
-%global nscl_commit 6b27713fe7a87fe79258b2333889e68cc14e5588
+%global nscl_commit 90cd2dba0a7e2c6bda1e742a1613a20f16859fe8
 
 Name:           mozilla-noscript
-Version:        11.4.42
+Version:        11.5.2
 Release:        1%{?dist}
 Summary:        JavaScript white list extension for Mozilla Firefox
 
@@ -76,6 +76,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/%{name}.m
 %{_datadir}/metainfo/%{name}.metainfo.xml
 
 %changelog
+* Sun Nov 17 2024 Dominik Mierzejewski <dominik@greysector.net> - 11.5.2-1
+- update to 11.5.2 (#2320870)
+- fix typo in Firefox AppID (#2279887)
+
 * Wed Oct 09 2024 Dominik Mierzejewski <dominik@greysector.net> - 11.4.42-1
 - update to 11.4.42 (#2309503)
 

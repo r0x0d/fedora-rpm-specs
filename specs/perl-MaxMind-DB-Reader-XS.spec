@@ -5,19 +5,19 @@ Name:           perl-MaxMind-DB-Reader-XS
 Version:        1.000009
 Release:        11%{?dist}
 Summary:        Fast XS implementation of MaxMind DB reader
-# Build.PL:                 Artistic 2.0
-# c/perl_math_int128.c:     Public Domain
-# c/perl_math_int64.c:      Public Domain
-# c/ppport.h:               GPL+ or Artistic
-# LICENSE:                  Artistic 2.0 text
-# lib/MaxMind/DB/Reader/XS.pm:  Artistic 2.0
+# Build.PL:                 Artistic-2.0
+# c/perl_math_int128.c:     LicenseRef-Fedora-Public-Domain
+# c/perl_math_int64.c:      LicenseRef-Fedora-Public-Domain
+# c/ppport.h:               GPL-1.0-or-later OR Artistic-1.0-Perl
+# LICENSE:                  Artistic-2.0 text
+# lib/MaxMind/DB/Reader/XS.pm:  Artistic-2.0
 # maxmind-db/LICENSE:       CC-BY-SA
 # maxmind-db/MaxMind-DB-spec.md:    CC-BY-SA
-# README.md:                Artistic 2.0
+# README.md:                Artistic-2.0
 ## Unbundled
-# inc/Capture/Tiny.pm:      ASL 2.0
-# inc/Config/AutoConf.pm:   GPL+ or Artistic
-License:        Artistic 2.0 and (GPL+ or Artistic) and Public Domain
+# inc/Capture/Tiny.pm:      Apache-2.0
+# inc/Config/AutoConf.pm:   GPL-1.0-or-later OR Artistic-1.0-Perl
+License:        Artistic-2.0 AND (GPL-1.0-or-later OR Artistic-1.0-Perl) AND LicenseRef-Fedora-Public-Domain
 URL:            https://metacpan.org/release/MaxMind-DB-Reader-XS
 Source0:        https://cpan.metacpan.org/authors/id/M/MA/MAXMIND/MaxMind-DB-Reader-XS-%{version}.tar.gz
 # Do not hardcore debugging

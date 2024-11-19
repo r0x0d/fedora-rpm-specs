@@ -6,16 +6,14 @@
 %bcond bootstrap 0
 
 Name:           python-%{srcname}
-Version:        0.14.4
+Version:        1.0.1
 Release:        %autorelease
 Summary:        Geographic Pandas extensions
 
 License:        BSD-3-Clause
 URL:            https://pypi.python.org/pypi/%{srcname}
-Source0:        https://github.com/%{srcname}/%{srcname}/archive/v%{version}/%{srcname}-%{version}.tar.gz
-# https://github.com/geopandas/geopandas/pull/3286
-# https://github.com/geopandas/geopandas/pull/3303
-Patch:          0001-Backport-fixes-for-GDAL-3.9.patch
+# PyPI source does not have test data.
+Source:         https://github.com/%{srcname}/%{srcname}/archive/v%{version}/%{srcname}-%{version}.tar.gz
 
 BuildArch:      noarch
 
@@ -36,14 +34,16 @@ Summary:        %{summary}
 BuildRequires:  python3-devel
 
 %if %{without bootstrap}
-BuildRequires:  python3dist(numpy) >= 1.15
-BuildRequires:  python3dist(pytest)
 BuildRequires:  python3dist(fsspec)
-BuildRequires:  python3dist(psycopg2)
-BuildRequires:  python3dist(rtree) >= 0.8
-BuildRequires:  python3dist(sqlalchemy)
-BuildRequires:  python3dist(matplotlib) >= 3.3.4
+BuildRequires:  python3dist(fiona)
+BuildRequires:  python3dist(geopy)
 BuildRequires:  python3dist(mapclassify)
+BuildRequires:  python3dist(matplotlib) >= 3.5
+BuildRequires:  python3dist(psycopg) >= 3.1
+BuildRequires:  python3dist(pyarrow) >= 8
+BuildRequires:  python3dist(pytest)
+BuildRequires:  python3dist(sqlalchemy) >= 1.3
+BuildRequires:  python3dist(xyzservices)
 # See:
 # Depend on pandas[test] for testing
 # https://github.com/geopandas/geopandas/pull/2438
@@ -69,8 +69,7 @@ BuildRequires:  python3dist(pandas[test])
 %if %{without bootstrap}
 %{pytest} -ra geopandas -m 'not web'
 %else
-# naturalearth_creation assumes zipfile from naturalearthdata was downloaded to current directory
-%pyproject_check_import -e 'geopandas.*test*' -e geopandas.datasets.naturalearth_creation
+%pyproject_check_import -e 'geopandas.*test*'
 %endif
 
 %files -n python3-%{srcname} -f %{pyproject_files}

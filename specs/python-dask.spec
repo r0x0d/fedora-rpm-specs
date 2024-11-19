@@ -86,78 +86,9 @@ Provides:       bundled(numpy)
 Dask is a flexible parallel computing library for analytics.
 
 
-# Based on (but with BuildArch: noarch):
-# %%pyproject_extras_subpkg -n python3-%%{srcname} array bag dataframe delayed
-#
-# Extras subpackages are arched, they should not be
-# https://bugzilla.redhat.com/show_bug.cgi?id=2293727
-#
-# Further discussion is in
-# https://src.fedoraproject.org/rpms/python-rpm-macros/pull-request/174.
-
-%package -n python3-%{srcname}+array
-Summary:        Metapackage for python3-%{srcname}: array extras
-Requires:       python3-%{srcname} = %{version}-%{release}
-
-BuildArch:      noarch
-
-%description -n python3-%{srcname}+array
-This is a metapackage bringing in array extras requires for python3-%{srcname}.
-It makes sure the dependencies are installed.
-
-%files -n python3-%{srcname}+array -f %{_pyproject_ghost_distinfo}
-
-%package -n python3-%{srcname}+bag
-Summary:        Metapackage for python3-%{srcname}: bag extras
-Requires:       python3-%{srcname} = %{version}-%{release}
-
-BuildArch:      noarch
-
-%description -n python3-%{srcname}+bag
-This is a metapackage bringing in bag extras requires for python3-%{srcname}.
-It makes sure the dependencies are installed.
-
-%files -n python3-%{srcname}+bag -f %{_pyproject_ghost_distinfo}
-
-%package -n python3-%{srcname}+dataframe
-Summary:        Metapackage for python3-%{srcname}: dataframe extras
-Requires:       python3-%{srcname} = %{version}-%{release}
-
-BuildArch:      noarch
-
-%description -n python3-%{srcname}+dataframe
-This is a metapackage bringing in dataframe extras requires for python3-%{srcname}.
-It makes sure the dependencies are installed.
-
-%files -n python3-%{srcname}+dataframe -f %{_pyproject_ghost_distinfo}
-
-%package -n python3-%{srcname}+delayed
-Summary:        Metapackage for python3-%{srcname}: delayed extras
-Requires:       python3-%{srcname} = %{version}-%{release}
-
-BuildArch:      noarch
-
-%description -n python3-%{srcname}+delayed
-This is a metapackage bringing in delayed extras requires for python3-%{srcname}.
-It makes sure the dependencies are installed.
-
-%files -n python3-%{srcname}+delayed -f %{_pyproject_ghost_distinfo}
-
+%pyproject_extras_subpkg -n python3-%{srcname} -a array bag dataframe delayed
 %if %{without bootstrap}
-# Based on (but with BuildArch: noarch):
-# %%pyproject_extras_subpkg -n python3-%%{srcname} distributed
-# (see comments for the other extras metapackages, above)
-%package -n python3-%{srcname}+distributed
-Summary:        Metapackage for python3-%{srcname}: distributed extras
-Requires:       python3-%{srcname} = %{version}-%{release}
-
-BuildArch:      noarch
-
-%description -n python3-%{srcname}+distributed
-This is a metapackage bringing in distributed extras requires for python3-%{srcname}.
-It makes sure the dependencies are installed.
-
-%files -n python3-%{srcname}+distributed -f %{_pyproject_ghost_distinfo}
+%pyproject_extras_subpkg -n python3-%{srcname} -a distributed
 %endif
 
 

@@ -5,7 +5,7 @@
 %endif
 
 Name:           python-%{pypi_name}
-Version:        14.0
+Version:        14.1
 Release:        %autorelease
 Summary:        Implementation of the WebSocket Protocol for Python
 

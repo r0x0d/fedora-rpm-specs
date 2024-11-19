@@ -9,8 +9,8 @@ or docs/index.rst in this distribution for detailed documentation.
 
 
 Name:           python-pyramid-tm
-Version:        2.5
-Release:        12%{?dist}
+Version:        2.6
+Release:        1%{?dist}
 Summary:        %{sum}
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -22,12 +22,12 @@ BuildArch:      noarch
 
 
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-pyramid >= 1.5
-BuildRequires:  python3-transaction >= 2.0
-BuildRequires:  python3-nose
-BuildRequires:  python3-coverage
-BuildRequires:  python3-webtest
+#BuildRequires:  python3-setuptools
+#BuildRequires:  python3-pyramid >= 1.5
+#BuildRequires:  python3-transaction >= 2.0
+#BuildRequires:  python3-nose
+#BuildRequires:  python3-coverage
+#BuildRequires:  python3-webtest
 
 
 %description
@@ -52,35 +52,43 @@ or docs/index.rst in this distribution for detailed documentation.
 
 
 %prep
-%setup -q -n %{modname}-%{version}
+%autosetup -p1 -n %{modname}-%{version}
 
 
 # Make sure that setuptools picks the right version of zope.interface (el6)
-awk 'NR==1{print "import __main__; __main__.__requires__ = __requires__ = [\"zope.interface>=3.8\"]; import pkg_resources"}1' setup.py > setup.py.tmp
-mv setup.py.tmp setup.py
+#awk 'NR==1{print "import __main__; __main__.__requires__ = __requires__ = [\"zope.interface>=3.8\"]; import pkg_resources"}1' setup.py > setup.py.tmp
+#mv setup.py.tmp setup.py
 
 # Remove bundled egg info
-rm -rf %{modname}.egg-info
+#rm -rf %{modname}.egg-info
 
-rm docs/.gitignore
+#rm docs/.gitignore
+
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+
+%pyproject_save_files -l pyramid_tm
 
 %check
-%{__python3} setup.py test
+%{py3_test_envvars} %{python3} -m unittest
 
-%files -n python3-pyramid-tm
+%files -n python3-pyramid-tm -f %{pyproject_files}
 %doc README.rst docs CONTRIBUTORS.txt CHANGES.rst
 %license LICENSE.txt COPYRIGHT.txt
-%{python3_sitelib}/%{modname}
-%{python3_sitelib}/%{modname}-%{version}*
 
 
 %changelog
+* Sun Nov 17 2024 Kevin Fenzi <kevin@scrye.com> - 2.6-1
+- Update to 2.6. Fixes rhbz#2326182
+- Moderize spec and check license
+- Fix FTBFS. Fixes rhbz#2319703
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.5-12
 - convert license to SPDX
 

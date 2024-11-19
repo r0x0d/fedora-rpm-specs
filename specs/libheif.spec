@@ -1,8 +1,11 @@
 %global somajor 1
+# disable openjph encoder support as it's causing crashes in Qt-based apps
+# see https://bugzilla.redhat.com/show_bug.cgi?id=2307795
+%bcond openjph 0
 
 Name:           libheif
 Version:        1.19.3
-Release:        1%{?dist}
+Release:        3%{?dist}
 Summary:        HEIF and AVIF file format decoder and encoder
 
 License:        LGPL-3.0-or-later and MIT
@@ -21,7 +24,9 @@ BuildRequires:  pkgconfig(libopenjp2)
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(openh264)
 %ifnarch %{ix86}
+%if %{with openjph}
 BuildRequires:  pkgconfig(openjph) >= 0.18.0
+%endif
 %endif
 %if ! (0%{?rhel} && 0%{?rhel} <= 9)
 BuildRequires:  pkgconfig(libsharpyuv)
@@ -111,9 +116,11 @@ rm -rf third-party/
  -DWITH_OpenJPEG_ENCODER=ON \
  -DWITH_OpenJPEG_ENCODER_PLUGIN=OFF \
 %ifnarch %{ix86}
+%if %{with openjph}
  -DWITH_OPENJPH_DECODER=ON \
  -DWITH_OPENJPH_ENCODER=ON \
  -DWITH_OPENJPH_ENCODER_PLUGIN=OFF \
+%endif
 %endif
 %if ! (0%{?rhel} && 0%{?rhel} <= 9)
  -DWITH_RAV1E=ON \
@@ -130,12 +137,43 @@ rm -rf third-party/
 %install
 %cmake_install
 
+# fix multilib issues: Rename the provided file with platform-bits in name.
+# Create platform independent file inplace of the provided one and conditionally
+# include the required one.
+# $1 - filename.h to process.
+function multilibFileVersions(){
+mv $1 ${1%%.h}-%{__isa_bits}.h
+
+local basename=$(basename $1)
+
+cat >$1 <<EOF
+#include <bits/wordsize.h>
+
+#if __WORDSIZE == 32
+# include "${basename%%.h}-32.h"
+#elif __WORDSIZE == 64
+# include "${basename%%.h}-64.h"
+#else
+# error "unexpected value for __WORDSIZE macro"
+#endif
+EOF
+}
+
+multilibFileVersions %{buildroot}%{_includedir}/%{name}/heif_version.h
+
 
 %check
 %ctest
 
 
 %changelog
+* Sun Nov 17 2024 Dominik Mierzejewski <dominik@greysector.net> - 1.19.3-3
+- disable OpenJPH encoder support to work-around crashes
+
+* Sat Nov 16 2024 Sérgio Basto <sergio@serjux.com> - 1.19.3-2
+- Add support to multilib in devel sub-package
+- Resolves: rhbz#2279891
+
 * Tue Nov 12 2024 Dominik Mierzejewski <dominik@greysector.net> - 1.19.3-1
 - update to 1.19.3 (resolves rhbz#2295525)
 - drop obsolete patches

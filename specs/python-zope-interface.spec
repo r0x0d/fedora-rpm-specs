@@ -72,8 +72,9 @@ rm -f docs/_build/html/.buildinfo
 # C files don't need to be packaged
 rm -f %{buildroot}%{python3_sitearch}/zope/interface/_zope_interface_coptimizations.c
 
-%if %{with tests}
 %check
+%py3_check_import zope.interface
+%if %{with tests}
 # We have to run tests installed together with the package
 # https://github.com/zopefoundation/zope.interface/issues/196
 pushd %{buildroot}%{python3_sitearch}

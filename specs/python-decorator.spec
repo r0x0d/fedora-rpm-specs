@@ -2,16 +2,16 @@
 
 Name:           python-%{pypi_name}
 Version:        5.1.1
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Module to simplify usage of decorators
 
 License:        BSD-2-Clause
 URL:            https://github.com/micheles/decorator
 Source0:        %pypi_source decorator
+Patch:          https://patch-diff.githubusercontent.com/raw/micheles/decorator/pull/155.patch
 
 BuildArch:      noarch
 
-BuildRequires:  python3-setuptools
 BuildRequires:  python3-devel
 
 %description
@@ -33,26 +33,28 @@ etc.  The core of this module is a decorator factory called decorator.
 %prep
 %autosetup -p1 -n %{pypi_name}-%{version}
 
+%generate_buildrequires
+%pyproject_buildrequires -t
+
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
 
-# Remove this when https://github.com/micheles/decorator/issues/32 is fixed.
-find %{buildroot} -name SOURCES.txt~ -exec rm -f {} \;
+%pyproject_save_files -l decorator
 
 %check
-%{__python3} setup.py test
+%{py3_test_envvars} %{python3} -m unittest src/tests/test.py
 
-%files -n python3-%{pypi_name}
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %doc README.rst CHANGES.md
 %license LICENSE.txt
-%{python3_sitelib}/decorator.py
-%{python3_sitelib}/decorator-*.egg-info/
-%{python3_sitelib}/__pycache__/*
 
 %changelog
+* Sat Nov 09 2024 Kevin Fenzi <kevin@scrye.com> - 5.1.1-12
+- Modernize spec. Fix FTBFS with new setuptools. Fixes rhbz#2319649
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.1.1-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -2,7 +2,7 @@ Name:		libmetal
 Version:	2024.10.0
 Release:	1%{?dist}
 Summary:	An abstraction layer across user-space Linux, baremetal, and RTOS environments 
-License:	BSD-3-Clause or Apache-2.0 or GPL-2.0
+License:	BSD-3-Clause OR Apache-2.0 OR GPL-2.0-only
 URL:		https://github.com/OpenAMP/libmetal/
 
 Source0:	https://github.com/OpenAMP/libmetal/archive/v%{version}/%{name}-%{version}.tar.gz

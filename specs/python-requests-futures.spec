@@ -1,20 +1,18 @@
 Name:           python-requests-futures
-Version:        1.0.1
+Version:        1.0.2
 Release:        1%{?dist}
 Summary:        Asynchronous Python HTTP Requests
 
 License:        Apache-2.0
 URL:            https://github.com/ross/requests-futures
-Source:         %{pypi_source requests-futures}
+Source:         %{pypi_source requests_futures}
 BuildArch:      noarch
 
 %global _description %{expand:
 Small add-on for the Python requests http library. Makes use of Python 3.2’s
 concurrent.futures or the back-port for prior versions of Python.}
 
-
 %description %_description
-
 
 %package -n python3-requests-futures
 Summary:        %{summary}
@@ -22,37 +20,33 @@ Obsoletes:      python-requests-futures < 1.0.0-14
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-pytest
-
+BuildRequires:  python3-pytest-httpbin
 
 %description -n python3-requests-futures %_description
 
-
 %prep
-%autosetup -n requests-futures-%{version}
-
+%autosetup -n requests_futures-%{version}
 
 %generate_buildrequires
 %pyproject_buildrequires
 
-
 %build
 %pyproject_wheel
-
 
 %install
 %pyproject_install
 %pyproject_save_files requests_futures
 
-
 %check
 %pytest -v -m 'not network'
-
 
 %files -n python3-requests-futures -f %{pyproject_files}
 %doc README.rst
 
-
 %changelog
+* Sun Nov 17 2024 Fabian Affolter <mail@fabian-affolter.ch> - 1.0.2-1
+- Update to latest upstream release (closes rhbz#2326646)
+
 * Thu Oct 24 2024 Carl George <carlwgeorge@fedoraproject.org> - 1.0.1-1
 - Update to version 1.0.1 rhbz#2321376
 

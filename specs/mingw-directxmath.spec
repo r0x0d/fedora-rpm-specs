@@ -3,11 +3,11 @@
 %global debug_package %{nil}
 
 %global pkgname directxmath
-%global tag feb2024
+%global tag oct2024
 
 Name:          mingw-%{pkgname}
-Version:       3.19
-Release:       2%{?dist}
+Version:       3.20
+Release:       1%{?dist}
 Summary:       MinGW Windows %{pkgname} library
 
 BuildArch:     noarch
@@ -72,6 +72,9 @@ Summary:       MinGW Windows %{pkgname} library
 
 
 %changelog
+* Sun Nov 17 2024 Sandro Mani <manisandro@gmail.com> - 3.20-1
+- Update to 3.20
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.19-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -4,7 +4,7 @@
 %global srcname pyogrio
 
 Name:           python-%{srcname}
-Version:        0.9.0
+Version:        0.10.0
 Release:        %autorelease
 Summary:        Vectorized spatial vector file format I/O using GDAL/OGR
 
@@ -15,13 +15,12 @@ Summary:        Vectorized spatial vector file format I/O using GDAL/OGR
 License:        MIT AND Apache-2.0 AND LicenseRef-Fedora-Public-Domain AND ODbl-1.0
 URL:            https://github.com/geopandas/pyogrio
 Source:         %pypi_source %{srcname}
-# https://github.com/geopandas/pyogrio/pull/460 + some Fedora-specific things
+# Some Fedora-specific things
 Patch:          0001-Drop-extra-dependencies.patch
-# https://github.com/geopandas/pyogrio/pull/434
-Patch:          0002-TST-Add-missing-network-marker.patch
-# https://github.com/geopandas/pyogrio/pull/441
-Patch:          0003-TST-Replace-test-datasets-with-pyogrio-generated-fil.patch
-BuildRequires:  git-core
+# https://github.com/geopandas/pyogrio/pull/497
+Patch:          0002-Fix-WKB-writing-on-big-endian-systems.patch
+# Fix compatibility with GDAL 3.10
+Patch:          https://github.com/geopandas/pyogrio/pull/489.patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
@@ -46,7 +45,7 @@ Summary:        %{summary}
 %description -n python3-%{srcname} %{_description}
 
 %prep
-%autosetup -n %{srcname}-%{version} -p1 -S git
+%autosetup -n %{srcname}-%{version} -p1
 
 %generate_buildrequires
 %pyproject_buildrequires -x dev,test%{?!without_bootstrap:,geopandas}

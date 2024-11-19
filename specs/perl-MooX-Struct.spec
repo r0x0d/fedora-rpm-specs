@@ -5,9 +5,7 @@ Name:           perl-MooX-Struct
 Version:        0.020
 Release:        14%{?dist}
 Summary:        Record structure-like Moo classes
-# COPYRIGHT:    Public Domain
-# other files:  GPL+ or Artistic
-License:        (GPL+ or Artistic) and Public Domain
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/MooX-Struct
 Source0:        https://cpan.metacpan.org/authors/id/T/TO/TOBYINK/MooX-Struct-%{version}.tar.gz
 BuildArch:      noarch

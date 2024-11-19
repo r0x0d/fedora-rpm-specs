@@ -2,24 +2,24 @@
 
 
 Name:           python-%{pkg_name}
-Version:        5.4.3
-Release:        3%{?dist}
+Version:        5.5.2
+Release:        1%{?dist}
 Summary:        Simple security for Flask apps
 License:        MIT
 
 BuildArch:      noarch
 URL:            https://github.com/Flask-Middleware/flask-security
-Source0:        %{pypi_source Flask-Security-Too}
+Source0:        %{pypi_source flask_security_too}
 # Drop missing test deps
 Patch0:         python-flask-security-too_testdeps.patch
 # Use phonenumbers instead of phonenumberslite
 Patch1:         python-flask-security-too_phonenumbers.patch
 # Don't fail on warnings in tests
 Patch2:         python-flask-security-too_ignorewarnings.patch
-# importlib is a backport from newer pythons
-Patch3:         0001-Use-importlib_resources-backport-only-on-old-Pythons.patch
 # FIXME Temporarily drop sqlalchemy-utils dependency and bundle required functions
-Patch4:         python-flask-security-too_no-sqla-utils.patch
+Patch3:         python-flask-security-too_no-sqla-utils.patch
+# Relax flask-sqlalchemy version requirement
+Patch4:         python-flask-security-too_flask-sqla.patch
 
 BuildRequires:  python3-devel
 
@@ -39,10 +39,8 @@ Flask-Security quickly adds security features to your Flask application.
 
 
 %prep
-%autosetup -p1 -n Flask-Security-Too-%{version}
-
-# Remove bundled egg-info
-rm -rf Flask_Security_Too.egg-info
+%autosetup -p1 -n flask_security_too-%{version}
+ln -s pyproject-too.toml pyproject.toml
 
 
 %generate_buildrequires
@@ -65,11 +63,14 @@ rm -rf Flask_Security_Too.egg-info
 
 
 %files -n python3-%{pkg_name} -f %{pyproject_files}
-%license LICENSE
+%license LICENSE.txt
 %doc README.rst AUTHORS
 
 
 %changelog
+* Wed Aug 21 2024 Sandro Mani <manisandro@gmail.com> - 5.5.2-1
+- Update to 5.5.2
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.4.3-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

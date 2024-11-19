@@ -1,5 +1,5 @@
 %global forgeurl https://github.com/ralph-irving/squeezelite/
-%global commit   fd4a82e7d0e53124d9618320f3c115d90654509d
+%global commit   54e39690d9882d56c56fbdced4661abce7d8beff
 %forgemeta
 
 # Allow AAC to be played directly in the client rather than
@@ -9,7 +9,7 @@
 
 
 Name:            squeezelite
-Version:         2.0.0.1486
+Version:         2.0.0.1504
 Release:         %autorelease
 Summary:         Headless music player for streaming from Lyrion Music Server
 
@@ -23,9 +23,6 @@ Source1:         %{name}.system.service
 Source2:         %{name}.user.service
 Source3:         %{name}.service.7.md
 Source4:         %{name}.sysconfig
-# Add compatibility with FFMPEG 7.0
-# https://github.com/ralph-irving/squeezelite/pull/223
-Patch1:          0001-Add-compatibility-with-FFMPEG-7.0.patch
 
 BuildRequires: make
 BuildRequires:   alsa-lib-devel
@@ -60,7 +57,6 @@ used in place of dedicated Squeezebox network music playing hardware.
 
 %prep
 %forgesetup
-%patch -P 1 -p 1
 
 
 %build

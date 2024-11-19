@@ -1,10 +1,10 @@
 Name:           perl-Text-MultiMarkdown
-Version:        1.002000
-Release:        4%{?dist}
+Version:        1.003000
+Release:        1%{?dist}
 Summary:        Convert MultiMarkdown syntax to (X)HTML
 License:        BSD-3-Clause
 URL:            https://metacpan.org/release/Text-MultiMarkdown
-Source0:        https://cpan.metacpan.org/authors/id/B/BO/BOBTFISH/Text-MultiMarkdown-1.002.tar.gz
+Source0:        https://cpan.metacpan.org/authors/id/B/BR/BRIANDFOY/Text-MultiMarkdown-1.003.tar.gz
 BuildArch:      noarch
 BuildRequires:  make
 BuildRequires:  perl-generators
@@ -19,7 +19,9 @@ BuildRequires:  perl(Digest::MD5)
 BuildRequires:  perl(Encode)
 BuildRequires:  perl(HTML::Entities)
 BuildRequires:  perl(Text::Markdown) >= 1.000026
+BuildRequires:  perl(Unicode::Normalize)
 BuildRequires:  perl(base)
+BuildRequires:  perl(open)
 BuildRequires:  perl(re)
 BuildRequires:  perl(strict)
 BuildRequires:  perl(warnings)
@@ -47,7 +49,7 @@ similar to that of plain text email, and supports features such as headers,
 *emphasis*, code blocks, block quotes, and links.
 
 %prep
-%setup -q -n Text-MultiMarkdown-1.002
+%setup -q -n Text-MultiMarkdown-1.003
 
 %build
 /usr/bin/perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
@@ -69,6 +71,9 @@ TEST_POD=1 TEST_SPELLING=1 %{make_build} test
 %{_mandir}/man3/*
 
 %changelog
+* Sun Nov 17 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 1.003000-1
+- Update to 1.003
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.002000-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

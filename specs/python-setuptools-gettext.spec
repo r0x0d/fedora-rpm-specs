@@ -1,45 +1,56 @@
 Name:           python-setuptools-gettext
-Version:        0.1.8
-Release:        6%{?dist}
+Version:        0.1.14
+Release:        1%{?dist}
 Summary:        Setuptools gettext extension plugin
 
 License:        GPL-2.0-or-later
 URL:            https://github.com/breezy-team/setuptools-gettext
-Source0:        %{pypi_source setuptools-gettext}
+Source:         %{pypi_source setuptools_gettext}
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
-BuildRequires:  python3dist(setuptools)
+BuildRequires:  %{py3_dist pytest}
+# Enables tests/test_example.py::test_update_pot
+BuildRequires:  gettext
 
-%description
-Setuptools helpers for gettext. Compile .po files into .mo files.
+%global _description %{expand:
+Setuptools helpers for gettext. Compile .po files into .mo files.}
+
+%description %{_description}
 
 %package -n     python3-setuptools-gettext
 Summary:        %{summary}
 
-%description -n python3-setuptools-gettext
-Setuptools helpers for gettext. Compile .po files into .mo files.
+%description -n python3-setuptools-gettext %{_description}
 
 %prep
-%autosetup -n setuptools-gettext-%{version}
-rm -rf ./setuptools_gettext.egg-info
+%autosetup -n setuptools_gettext-%{version}
+
+%generate_buildrequires
+%pyproject_buildrequires
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l setuptools_gettext
 
 %check
-%py3_check_import setuptools_gettext
+%pyproject_check_import
+# -rs: print reasons for skipped tests
+%pytest -v -rs
 
-%files -n python3-setuptools-gettext
+%files -n python3-setuptools-gettext -f %{pyproject_files}
 %doc README.md
-%license COPYING
-%{python3_sitelib}/setuptools_gettext/
-%{python3_sitelib}/setuptools_gettext-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Fri Nov 15 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 0.1.14-1
+- Update to 0.1.14 (close RHBZ#2260681)
+
+* Fri Nov 15 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 0.1.8-7
+- Port to pyproject-rpm-macros (”new Python guidelines”)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.1.8-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

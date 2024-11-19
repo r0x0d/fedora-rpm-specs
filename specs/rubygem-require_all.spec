@@ -2,11 +2,13 @@
 
 Name:          rubygem-%{gem_name}
 Version:       3.0.0
-Release:       11%{?dist}
+Release:       12%{?dist}
 Summary:       A wonderfully simple way to load your code
 License:       MIT
 URL:           http://github.com/jarmo/require_all
 Source0:       https://rubygems.org/gems/%{gem_name}-%{version}.gem
+# support ruby34 syntax change
+Patch0:        require_all-3.0.0-ruby34-syntax.patch
 %if 0%{?fc19} || 0%{?fc20} || 0%{?el7}
 Requires:      ruby(release)
 Requires:      ruby(rubygems)
@@ -46,6 +48,7 @@ Documentation for %{name}.
 gem unpack %{SOURCE0}
 
 %setup -q -D -T -n  %{gem_name}-%{version}
+%patch -P0 -p1
 
 gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 
@@ -89,6 +92,9 @@ popd
 %{gem_instdir}/spec
 
 %changelog
+* Sun Nov 17 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.0.0-12
+- support ruby34 syntax change
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.0-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

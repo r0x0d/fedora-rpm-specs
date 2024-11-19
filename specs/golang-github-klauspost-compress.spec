@@ -4,7 +4,7 @@
 # lower memory usage on 32-bit
 # shorten test duration on aarch64
 # https://github.com/klauspost/compress/issues/532
-%ifarch aarch64 armv7hl i686
+%ifarch aarch64 armv7hl i686 riscv64
 %global gotestflags -short %{gotestflags}
 %endif
 

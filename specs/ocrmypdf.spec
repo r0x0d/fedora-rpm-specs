@@ -1,7 +1,7 @@
 %global srcname ocrmypdf
 
 Name:           %{srcname}
-Version:        16.4.3
+Version:        16.6.2
 Release:        %autorelease
 Summary:        Add an OCR text layer to scanned PDF files
 
@@ -13,8 +13,6 @@ Source:         %pypi_source %{srcname}
 # Fedora specific.
 # We drop pi-heif for now, as it is optional.
 Patch:          0001-Remove-unnecessary-dependencies.patch
-# https://github.com/ocrmypdf/OCRmyPDF/pull/1382
-Patch:          0002-Fix-broken-test_rotate_page_level.patch
 
 BuildArch:      noarch
 

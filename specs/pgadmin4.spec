@@ -6,8 +6,8 @@
 Name:           pgadmin4
 # NOTE: Also regenerate requires as indicated below when updating!
 # Verify Patch4 on next update
-Version:        8.12
-Release:        5%{?dist}
+Version:        8.13
+Release:        1%{?dist}
 Summary:        Administration tool for PostgreSQL
 
 # i686, armv7hl: The webpack terser plugin aborts with JS heap memory exhaustion on these arches
@@ -35,22 +35,14 @@ Source7:        pgadmin4.conf
 
 # Patch requirements for Fedora compat
 Patch0:         pgadmin4_requirements.patch
-# Don't error out on sphinx warnings
-Patch1:         pgadmin4_sphinx_werror.patch
 # Fix python-azure-mgmt-rdbms-10.2.0~b5+ compatibility
-Patch4:         pgadmin4_azure-mgmt-rdbms.patch
+Patch1:         pgadmin4_azure-mgmt-rdbms.patch
 # Drop requirement on unpackaged python-sphinxcontrib-youtube
-Patch5:         pgadmin4_sphinx_youtube.patch
+Patch2:         pgadmin4_sphinx_youtube.patch
 # Drop packageManager field from package.json to avoid yarn complaining about corepack
-Patch6:         pgadmin4_corepack.patch
-# Drop GET from WTF_CSRF_METHODS, it breaks the icons
-Patch7:         pgadmin4_no-get-csrf.patch
-# Drop use of eventlet
-Patch8:         pgadmin4_no-eventlet.patch
+Patch3:         pgadmin4_corepack.patch
 # Don't store commit hash when building bundle
-Patch9:         pgadmin4_no-git.patch
-# Revert react-data-grid update (#2310230)
-Patch10:        pgadmin4_revert-react-data-grid.patch
+Patch4:         pgadmin4_no-git.patch
 
 # Patch for building bundled mozjpeg
 %global mozjpeg_ver 4.1.1
@@ -86,7 +78,7 @@ Requires: (python3dist(flask-compress) >= 1 with python3dist(flask-compress) < 2
 Requires: (python3dist(flask-paranoid) >= 0 with python3dist(flask-paranoid) < 1)
 Requires: (python3dist(flask-babel) >= 4 with python3dist(flask-babel) < 4.1)
 Requires: python3dist(flask-security-too) >= 5.4
-Requires: python3dist(flask-socketio) >= 5.3
+Requires: (python3dist(flask-socketio) >= 5.4 with python3dist(flask-socketio) < 5.5)
 Requires: python3dist(wtforms) >= 3
 Requires: (python3dist(passlib) >= 1 with python3dist(passlib) < 2)
 Requires: (python3dist(pytz) >= 2024 with python3dist(pytz) < 2025)
@@ -103,21 +95,20 @@ Requires: python3dist(gssapi) >= 1.7
 Requires: python3dist(user-agents) = 2.2
 Requires: (python3dist(authlib) >= 1.3 with python3dist(authlib) < 1.4)
 Requires: (python3dist(pyotp) >= 2 with python3dist(pyotp) < 3)
-Requires: (python3dist(qrcode) >= 7 with python3dist(qrcode) < 8)
+Requires: (python3dist(qrcode) >= 8 with python3dist(qrcode) < 9)
 Requires: (python3dist(boto3) >= 1.35 with python3dist(boto3) < 1.36)
-Requires: python3dist(urllib3) >= 1.26
+Requires: python3dist(urllib3) >= 1.25
 Requires: python3dist(azure-mgmt-rdbms) >= 10.1
-Requires: python3dist(azure-mgmt-resource) = 23.1.1
+Requires: python3dist(azure-mgmt-resource) >= 23.1
 Requires: python3dist(azure-mgmt-subscription) >= 3
-Requires: python3dist(azure-identity) = 1.17.1
+Requires: python3dist(azure-identity) >= 1.17
 Requires: (python3dist(google-api-python-client) >= 2 with python3dist(google-api-python-client) < 3)
 Requires: python3dist(google-auth-oauthlib) >= 0.8
 Requires: (python3dist(keyring) >= 25 with python3dist(keyring) < 26)
-Requires: python3dist(werkzeug) >= 3
+Requires: (python3dist(werkzeug) >= 3.1 with python3dist(werkzeug) < 3.2)
 Requires: python3dist(typer-slim)
-Requires: python3dist(setuptools) >= 69
+Requires: python3dist(setuptools) >= 74
 Requires: (python3dist(jsonformatter) >= 0.3.2 with python3dist(jsonformatter) < 0.4)
-Requires: (python3dist(libgravatar) >= 1 with python3dist(libgravatar) < 1.1)
 
 
 # Undeclared dependencies
@@ -214,7 +205,7 @@ rm -rf node_modules
 %ifarch %{qt6_qtwebengine_arches}
 g++ -o %{name}-qt %{SOURCE4} %{optflags} $(pkg-config --cflags --libs Qt6Core Qt6Widgets Qt6Network Qt6WebEngineCore Qt6WebEngineWidgets)
 %endif
-make docs PYTHON=%{__python3}
+make docs PYTHON=%{__python3} SPHINXBUILD=sphinx-build
 
 
 %install
@@ -274,6 +265,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Fri Nov 15 2024 Sandro Mani <manisandro@gmail.com> - 8.13-1
+- Update to 8.13
+
 * Sat Nov 09 2024 Sandro Mani <manisandro@gmail.com> - 8.12-5
 - Relax werkzeug requirement
 

@@ -1,4 +1,4 @@
-Version:        3.5.2
+Version:        3.5.3
 %global forgeurl https://github.com/complexlogic/rsgain/
 %forgemeta
 

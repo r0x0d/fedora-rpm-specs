@@ -15,6 +15,8 @@ Source0:        https://github.com/ResidentMario/%{srcname}/archive/%{version}/%
 Patch:          0001-Remove-some-unavailable-test-dependencies.patch
 # https://github.com/ResidentMario/geoplot/pull/286
 Patch:          0002-Fix-tests-with-Matplotlib-3.7.patch
+# Since geopandas removed datasets, use the one from our own package.
+Patch:          0003-Use-local-copy-of-NaturalEarth-data.patch
 # Accommodate UserWarning not in geopandas 0.11
 # https://github.com/ResidentMario/geoplot/pull/285
 #   Fixes:
@@ -38,6 +40,7 @@ geospatial.
 Summary:        %{summary}
  
 BuildRequires:  python3-devel
+BuildRequires:  natural-earth-map-data-110m
 
 %description -n python3-%{srcname} %{_description}
 
