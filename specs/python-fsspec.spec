@@ -7,14 +7,14 @@
 %global srcname fsspec
 
 Name:           python-%{srcname}
-Version:        2024.6.1
-%global tag     2024.6.1
+Version:        2024.10.0
+%global tag     2024.10.0
 Release:        %autorelease
 Summary:        Specification for Pythonic file system interfaces
 
 License:        BSD-3-Clause
 URL:            https://github.com/fsspec/filesystem_spec
-Source0:        %{url}/archive/%{tag}/%{srcname}-%{tag}.tar.gz
+Source:         %{url}/archive/%{tag}/%{srcname}-%{tag}.tar.gz
 
 BuildArch:      noarch
 
@@ -22,10 +22,9 @@ BuildRequires:  python3-devel
 BuildRequires:  python3dist(pytest)
 BuildRequires:  python3dist(pytest-asyncio)
 BuildRequires:  python3dist(pytest-mock)
-BuildRequires:  python3dist(pytest-vcr)
+BuildRequires:  python3dist(pytest-rerunfailures)
 BuildRequires:  python3dist(cloudpickle)
 %if %{without bootstrap}
-#BuildRequires:  python3dist(distributed) -- not yet available in Fedora
 BuildRequires:  python3dist(zarr)
 %endif
 BuildRequires:  python3dist(jinja2)

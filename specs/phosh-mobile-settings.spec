@@ -1,5 +1,5 @@
 Name:		phosh-mobile-settings
-Version:	0.42.0
+Version:	0.43.0
 Release:	%autorelease
 Summary:	Mobile Settings App for phosh and related components
 License:	GPL-3.0-or-later AND LGPL-3.0-or-later
@@ -14,10 +14,10 @@ BuildRequires:	gcc
 BuildRequires:	gcc-c++
 BuildRequires:	meson
 
-BuildRequires:	pkgconfig(glib-2.0) >= 2.74
-BuildRequires:	pkgconfig(gio-2.0) >= 2.74
-BuildRequires:	pkgconfig(gio-unix-2.0) >= 2.74
-BuildRequires:	pkgconfig(gmodule-2.0) >= 2.74
+BuildRequires:	pkgconfig(glib-2.0) >= 2.76
+BuildRequires:	pkgconfig(gio-2.0) >= 2.76
+BuildRequires:	pkgconfig(gio-unix-2.0) >= 2.76
+BuildRequires:	pkgconfig(gmodule-2.0) >= 2.76
 BuildRequires:	pkgconfig(gmobile) >= 0.2.0
 BuildRequires:	pkgconfig(gsound)
 BuildRequires:	pkgconfig(gtk4) >= 4.12.5

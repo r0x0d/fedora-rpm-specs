@@ -1,10 +1,6 @@
-%global pypi_name bodhi-client
-%global src_name bodhi_client
-%global pypi_version 8.2.0
-
-Name:           %{pypi_name}
-Version:        %{pypi_version}
-Release:        1%{?dist}
+Name:           bodhi-client
+Version:        8.2.0
+Release:        2%{?dist}
 Summary:        Bodhi client
 
 License:        GPL-2.0-or-later
@@ -13,10 +9,8 @@ Source0:        %{pypi_source bodhi_client}
 BuildArch:      noarch
 
 BuildRequires:  make
-BuildRequires:  pyproject-rpm-macros
 BuildRequires:  python3-devel
 BuildRequires:  python3-pytest
-BuildRequires:  python3-pytest-cov
 BuildRequires:  python3-pytest-mock
 BuildRequires:  python3-sphinx
 
@@ -32,9 +26,7 @@ Obsoletes: bodhi <= 5.7.5
 Command-line client for Bodhi, Fedora's update gating system.
 
 %prep
-%autosetup -n %{src_name}-%{pypi_version}
-# Remove bundled egg-info
-rm -rf %{pypi_name}.egg-info
+%autosetup -n bodhi_client-%{version}
 
 %generate_buildrequires
 %pyproject_buildrequires
@@ -42,11 +34,14 @@ rm -rf %{pypi_name}.egg-info
 
 %build
 %pyproject_wheel
-make %{?_smp_mflags} -C docs man
+%make_build -C docs man
 
 %install
 %pyproject_install
-%pyproject_save_files bodhi
+# Poetry doesn't support PEP 639 yet, so we still need to manually mark the
+# license file.
+# https://github.com/python-poetry/poetry/issues/9670
+%pyproject_save_files -L bodhi
 
 install -d %{buildroot}%{_mandir}/man1
 install -pm0644 docs/_build/bodhi.1 %{buildroot}%{_mandir}/man1/
@@ -57,12 +52,17 @@ install -pm0644 bodhi-client.bash %{buildroot}%{_sysconfdir}/bash_completion.d/b
 %pyproject_check_import
 %{pytest} -v
 
-%files -n %{pypi_name} -f %{pyproject_files}
+%files -f %{pyproject_files}
+%license %{python3_sitelib}/bodhi_client-%{version}.dist-info/COPYING
 %{_bindir}/bodhi
 %{_mandir}/man1/bodhi.1*
 %config(noreplace) %{_sysconfdir}/bash_completion.d/bodhi-client.bash
 
 %changelog
+* Mon Nov 11 2024 Carl George <carlwgeorge@fedoraproject.org> - 8.2.0-2
+- Correctly mark COPYING file as a license
+- Remove unnecessary pytest-cov build requirement
+
 * Mon Oct 28 2024 Mattia Verga <mattia.verga@proton.me> - 8.2.0-1
 - Update to 8.2.0
 

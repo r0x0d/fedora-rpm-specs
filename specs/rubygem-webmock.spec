@@ -15,7 +15,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 3.23.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Library for stubbing HTTP requests in Ruby
 License: MIT
 URL: https://github.com/bblimke/webmock
@@ -28,6 +28,12 @@ Patch0: rubygem-webmock-3.23.1-Revert-Retry-timed-out-real-requests-when-running
 # Fix REXML 3.3.3+ compatibility.
 # https://github.com/bblimke/webmock/pull/1066
 Patch1: rubygem-webmock-3.23.1-Rescue-exceptions.patch
+# https://github.com/bblimke/webmock/pull/1074
+# support ruby3.4 hash inspect change
+Patch2: rubygem-webmock-pr1074-ruby34-hash-inspect-change.patch
+# https://github.com/bblimke/webmock/pull/1081
+# ruby34 removes deprecated net-http constants
+Patch3: rubygem-webmock-pr1081-ruby34-net-http-constants.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
@@ -71,9 +77,11 @@ Documentation for %{name}.
 %gemspec_add_dep -g json
 
 %patch 1 -p1
+%patch 3 -p1
 
 pushd %{builddir}
 %patch 0 -p1
+%patch 2 -p1
 popd
 
 %build
@@ -147,6 +155,10 @@ popd
 %doc %{gem_instdir}/README.md
 
 %changelog
+* Mon Nov 18 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.23.1-2
+- Apply upstream patch for ruby34 hash inspect formatting change
+- Apply upstream patch for ruby34 net-http legacy constants removal
+
 * Tue Sep 10 2024 Vít Ondruch <vondruch@redhat.com> - 3.23.1-1
 - Update to WebMock 3.23.1.
   Resolves: rhbz#2235050

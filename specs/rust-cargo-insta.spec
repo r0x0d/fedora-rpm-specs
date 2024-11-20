@@ -4,13 +4,16 @@
 %global crate cargo-insta
 
 Name:           rust-cargo-insta
-Version:        1.40.0
+Version:        1.41.1
 Release:        %autorelease
 Summary:        Review tool for the insta snapshot testing library for Rust
 
 License:        Apache-2.0
 URL:            https://crates.io/crates/cargo-insta
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+# * Allow os_pipe 1.x: https://github.com/mitsuhiko/insta/pull/686
+Patch:          cargo-insta-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -58,7 +61,7 @@ License:        Apache-2.0 AND MIT AND Unicode-DFS-2016 AND (Apache-2.0 OR BSL-1
 %if %{with check}
 %check
 # * skip tests that can only be run in-tree
-%cargo_test -- -- --exact --skip test_force_update_inline_snapshot --skip test_force_update_snapshots --skip test_hashtag_escape_in_inline_snapshot --skip test_json_inline --skip test_root_crate_all --skip test_root_crate_no_all --skip test_utf8_inline --skip test_virtual_manifest_all --skip test_virtual_manifest_default --skip test_virtual_manifest_single_crate --skip test_yaml_inline
+%cargo_test -- -- --exact --skip binary::test_binary_accept --skip binary::test_binary_change_extension --skip binary::test_binary_pending --skip binary::test_binary_pending_snapshot_removal  --skip binary::test_binary_unreferenced_delete --skip binary::test_change_binary_to_text --skip binary::test_change_text_to_binary --skip inline::test_hashtag_escape_in_inline_snapshot --skip inline::test_json_inline --skip inline::test_old_yaml_format --skip inline::test_utf8_inline --skip inline::test_yaml_inline --skip test_force_update_inline_snapshot --skip test_force_update_inline_snapshot_hashes --skip test_force_update_inline_snapshot_linebreaks --skip test_force_update_snapshots --skip test_hashtag_escape_in_inline_snapshot --skip test_hidden_snapshots --skip test_ignored_snapshots --skip test_inline_snapshot_indent --skip test_json_inline --skip test_matches_fully_linebreaks --skip test_root_crate_all --skip test_root_crate_no_all --skip test_snapshot_name_clash --skip test_unreferenced_delete --skip test_utf8_inline --skip test_virtual_manifest_all --skip test_virtual_manifest_default --skip test_virtual_manifest_single_crate --skip test_yaml_inline --skip workspace::test_external_test_path --skip workspace::test_insta_workspace_root --skip workspace::test_manifest_option --skip workspace::test_root_crate_no_all --skip workspace::test_root_crate_workspace --skip workspace::test_root_crate_workspace_accept --skip workspace::test_virtual_manifest_all --skip workspace::test_virtual_manifest_default --skip workspace::test_virtual_manifest_single_crate --skip workspace::test_workspace_root_option
 %endif
 
 %changelog

@@ -1,7 +1,7 @@
 %global _hardened_build 1
 
 Name:           seafile
-Version:        9.0.7
+Version:        9.0.11
 Release:        1%{?dist}
 Summary:        Cloud storage cli client
 
@@ -19,6 +19,7 @@ BuildRequires:  make
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gobject-2.0)
 BuildRequires:  pkgconfig(jansson)
+BuildRequires:  pkgconfig(libargon2)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(libevent)
 BuildRequires:  pkgconfig(libevent_pthreads)
@@ -85,6 +86,9 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 
 %changelog
+* Sun Nov 17 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 9.0.11-1
+- Update to 9.0.11
+
 * Sun Jul 28 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 9.0.7-1
 - Update to 9.0.7
 

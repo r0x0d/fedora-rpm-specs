@@ -9,6 +9,7 @@ Source0:        https://github.com/latchset/%{name}/releases/download/v%{version
 Source1:        clevis.sysusers
 
 Patch0001:      0001-PKCS-11-pin-fix-dracut-for-unconfigured-device.patch
+Patch0002:      0002-tpm2-use-first-pcr-algorithm-bank-supported-by.patch
 
 BuildRequires:  git-core
 BuildRequires:  gcc

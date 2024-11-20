@@ -15,7 +15,7 @@
 Name:           mate-panel
 Version:        %{branch}.2
 %if 0%{?rel_build}
-Release:        3%{?dist}
+Release:        4%{?dist}
 %else
 Release:        0.21%{?git_rel}%{?dist}
 %endif
@@ -174,6 +174,9 @@ install -D -m 0644 %{SOURCE2} %{buildroot}%{_datadir}/mate-panel/layouts/rhel.la
 
 
 %changelog
+* Mon Nov 18 2024 Wolfgang Ulbrich <fedora@raveit.de> - 1.28.2-4
+- rebuild for glib2
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.28.2-3
 - convert license to SPDX
 

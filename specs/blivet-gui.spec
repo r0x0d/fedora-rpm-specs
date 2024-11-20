@@ -1,12 +1,9 @@
 Summary: Tool for data storage configuration
 Name: blivet-gui
-Version: 2.5.0
-Release: 4%{?dist}
+Version: 2.6.0
+Release: 1%{?dist}
 Source0: http://github.com/storaged-project/blivet-gui/releases/download/%{version}/%{name}-%{version}.tar.gz
 Source1: blivet-gui_event.conf
-# https://github.com/storaged-project/blivet-gui/pull/440
-# fixes a crash with recent blivet (dropped mdraid linear level)
-Patch: 0001-Guard-better-against-RaidChooser-s-selected_level-be.patch
 License: GPL-2.0-or-later
 BuildArch: noarch
 URL: http://github.com/storaged-project/blivet-gui
@@ -33,7 +30,7 @@ BuildRequires: make
 
 Requires: python3
 Requires: python3-gobject
-Requires: python3-blivet >= 1:3.3.0
+Requires: python3-blivet >= 1:3.8.0
 Requires: gtk3
 Requires: python3-pid
 Requires: libreport
@@ -77,6 +74,9 @@ mkdir -p %{buildroot}/%{_localstatedir}/log/blivet-gui
 %{_sysconfdir}/libreport/events.d/blivet-gui_event.conf
 
 %changelog
+* Mon Nov 18 2024 Packit <hello@packit.dev> - 2.6.0-1
+- Update to version 2.6.0
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.5.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

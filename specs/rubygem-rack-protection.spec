@@ -3,19 +3,24 @@
 %bcond_with bootstrap
 
 Name: rubygem-%{gem_name}
-Version: 3.0.5
-Release: 5%{?dist}
+Version: 3.2.0
+Release: 2%{?dist}
 Summary: Ruby gem that protects against typical web attacks
 License: MIT
-URL: http://sinatrarb.com/protection/
+URL: https://sinatrarb.com/protection/
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # git clone https://github.com/sinatra/sinatra.git && cd sinatra/rack-protection
-# git archive -v -o rack-protection-3.0.5-spec.txz v3.0.5 spec/
+# git archive -v -o rack-protection-3.2.0-spec.txz v3.2.0 spec/
 Source1: %{gem_name}-%{version}-spec.txz
+# Update the test suite for Ruby 3.4 Hash#inspect changes. This is downstream
+# patch, because this functinality was removed lately:
+# https://github.com/sinatra/sinatra/pull/1989
+Patch0: rubygem-rack-protection-3.2.0-Update-the-test-suite-for-Ruby-3.4-Hash-inspect-chan.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
 %if %{without bootstrap}
+BuildRequires: rubygem(base64)
 BuildRequires: rubygem(rack)
 BuildRequires: rubygem(rspec)
 BuildRequires: rubygem(rack-test)
@@ -38,6 +43,10 @@ Documentation for %{name}.
 %prep
 %setup -q -n %{gem_name}-%{version} -b 1
 
+pushd %{builddir}
+%patch 0 -p2
+popd
+
 %build
 gem build ../%{gem_name}-%{version}.gemspec
 %gem_install
@@ -52,7 +61,7 @@ cp -a .%{gem_dir}/* \
 pushd .%{gem_instdir}
 ln -s %{_builddir}/spec spec
 
-rspec -r 'spec_helper' spec
+rspec -rspec_helper spec
 popd
 %endif
 
@@ -71,6 +80,12 @@ popd
 %{gem_instdir}/rack-protection.gemspec
 
 %changelog
+* Mon Nov 18 2024 Vít Ondruch <vondruch@redhat.com> - 3.2.0-2
+- Compatibility with Ruby 3.4 `Hash#inspect` changes.
+
+* Mon Nov 18 2024 Vít Ondruch <vondruch@redhat.com> - 3.2.0-1
+- Update to rack-protection 3.2.0.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.5-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

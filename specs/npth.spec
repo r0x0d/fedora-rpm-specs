@@ -1,5 +1,5 @@
 Name:           npth
-Version:        1.7
+Version:        1.8
 Release:        %autorelease
 Summary:        The New GNU Portable Threads library
 License:        LGPL-2.1-or-later

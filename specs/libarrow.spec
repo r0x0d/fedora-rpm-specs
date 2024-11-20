@@ -31,7 +31,7 @@
 
 Name:		libarrow
 Version:	16.1.0
-Release:	10%{?dist}
+Release:	11%{?dist}
 Summary:	A toolbox for accelerated data interchange and in-memory processing
 License:	Apache-2.0
 URL:		https://arrow.apache.org/
@@ -94,6 +94,11 @@ BuildRequires:	gtk-doc
 
 # Additional pyarrow build requirements; see also %%generate_buildrequires
 BuildRequires:  python3dist(cffi)
+
+# python3-pyarrow provides bogus library SONAME provides
+# https://bugzilla.redhat.com/show_bug.cgi?id=2326774
+%global __provides_exclude (^libarrow_python(_[^.]+)?|.cpython-.*)\\.so.*$
+%global __requires_exclude ^libarrow_python(_[^.]+)?\\.so.*$
 
 %description
 Apache Arrow defines a language-independent columnar memory
@@ -813,6 +818,9 @@ export LD_LIBRARY_PATH='%{buildroot}%{_libdir}'
 #--------------------------------------------------------------------
 
 %changelog
+* Sun Nov 17 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 16.1.0-11
+- Filter out bogus Provides/Requires from python3-pyarrow; fixes RHBZ#2326774
+
 * Mon Oct 7 2024  Kaleb S. KEITHLEY <kkeithle [at] redhat.com> - 16.1.0-10
 - Arrow 16.1.0, rebuild with utf8proc 2.9.0
 

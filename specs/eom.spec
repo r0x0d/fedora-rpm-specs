@@ -15,7 +15,7 @@
 Name:          eom
 Version:       %{branch}.0
 %if 0%{?rel_build}
-Release:       4%{?dist}
+Release:       5%{?dist}
 %else
 Release:       0.21%{?git_rel}%{?dist}
 %endif
@@ -129,6 +129,9 @@ find ${RPM_BUILD_ROOT} -type f -name "*.la" -exec rm -f {} ';'
 
 
 %changelog
+* Mon Nov 18 2024 Wolfgang Ulbrich <fedora@raveit.de> - 1.28.0-5
+- another rebuild for unannounced so-name bump of image-magick !
+
 * Mon Nov 11 2024 Wolfgang Ulbrich <fedora@raveit.de> - 1.28.0-4
 - rebuild for unannounced so-name bump of image-magick !
 

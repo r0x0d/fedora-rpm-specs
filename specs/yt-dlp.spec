@@ -7,7 +7,7 @@
 %bcond_without tests
 
 Name:           yt-dlp
-Version:        2024.11.04
+Version:        2024.11.18
 Release:        1%{?dist}
 Summary:        A command-line program to download videos from online video platforms
 
@@ -127,6 +127,9 @@ make yt-dlp.1 completion-bash completion-zsh completion-fish
 %{fish_completions_dir}/%{name}.fish
 
 %changelog
+* Mon Nov 18 2024 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 2024.11.18-1
+- Update to 2024.11.18. Fixes rhbz#2326919
+
 * Tue Nov 05 2024 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 2024.11.04-1
 - Update to 2024.11.04. Fixes rhbz#2323783
 

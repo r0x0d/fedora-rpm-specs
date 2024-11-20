@@ -7,8 +7,8 @@ the backbone of Quaternion, Spectral and other projects. Versions 0.5.x and
 older use the previous name - libQMatrixClient.}
 
 Name: libquotient
-Version: 0.8.2
-Release: 3%{?dist}
+Version: 0.9.0
+Release: 1%{?dist}
 
 License: BSD-3-Clause AND LGPL-2.1-or-later
 URL: https://github.com/quotient-im/%{libname}
@@ -16,14 +16,6 @@ Summary: Qt library to write cross-platform clients for Matrix
 Source0: %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires: cmake(Olm)
-BuildRequires: cmake(Qt5Concurrent)
-BuildRequires: cmake(Qt5Core)
-BuildRequires: cmake(Qt5Keychain)
-BuildRequires: cmake(Qt5LinguistTools)
-BuildRequires: cmake(Qt5Multimedia)
-BuildRequires: cmake(Qt5Network)
-BuildRequires: cmake(Qt5Sql)
-BuildRequires: cmake(Qt5Widgets)
 BuildRequires: cmake(Qt6Core)
 BuildRequires: cmake(Qt6Keychain)
 BuildRequires: cmake(Qt6LinguistTools)
@@ -32,6 +24,7 @@ BuildRequires: cmake(Qt6Network)
 BuildRequires: cmake(Qt6Sql)
 BuildRequires: cmake(Qt6Widgets)
 BuildRequires: pkgconfig(openssl)
+BuildRequires: qt6-qtbase-private-devel
 
 BuildRequires: cmake
 BuildRequires: gcc
@@ -40,25 +33,9 @@ BuildRequires: ninja-build
 
 %description %_description
 
-%package qt5
-Summary: Files for qt5
-Provides: %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
-Obsoletes: %{name} < %{?epoch:%{epoch}:}%{version}-%{release}
-%description qt5 %_description
-
-%package qt5-devel
-Summary: Development files for %{name} for qt5
-Provides: %{name}-devel = %{?epoch:%{epoch}:}%{version}-%{release}
-Obsoletes: %{name}-devel < %{?epoch:%{epoch}:}%{version}-%{release}
-Requires: %{name}-qt5%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-Requires: cmake(Olm)
-Requires: cmake(Qt5Keychain)
-Requires: cmake(Qt5Sql)
-Requires: pkgconfig(openssl)
-%description qt5-devel %_description
-
 %package qt6
 Summary: Files for qt6
+Obsoletes: %{name}-qt5 < 0.9.0
 %description qt6 %_description
 
 %package qt6-devel
@@ -68,6 +45,7 @@ Requires: cmake(Olm)
 Requires: cmake(Qt6Keychain)
 Requires: cmake(Qt6Sql)
 Requires: pkgconfig(openssl)
+Obsoletes: %{name}-qt5-devel < 0.9.0
 %description qt6-devel %_description
 
 %prep
@@ -75,20 +53,7 @@ Requires: pkgconfig(openssl)
 rm -rf 3rdparty
 
 %build
-mkdir %{name}_qt5
-pushd %{name}_qt5
 %cmake -G Ninja \
-    -S'..' \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DQuotient_ENABLE_E2EE:BOOL=ON \
-    -DQuotient_INSTALL_TESTS:BOOL=OFF \
-    -DQuotient_INSTALL_EXAMPLE:BOOL=OFF
-%cmake_build
-popd
-mkdir %{name}_qt6
-pushd %{name}_qt6
-%cmake -G Ninja \
-    -S'..' \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_INCLUDEDIR=%{_includedir}/%{appname}Qt6 \
     -DQuotient_ENABLE_E2EE:BOOL=ON \
@@ -96,36 +61,14 @@ pushd %{name}_qt6
     -DQuotient_INSTALL_EXAMPLE:BOOL=OFF \
     -DBUILD_WITH_QT6=ON
 %cmake_build
-popd
 
 
 %check
-pushd %{name}_qt5
 %ctest --exclude-regex 'testolmaccount|testkeyverification'
-popd
-pushd %{name}_qt6
-%ctest --exclude-regex 'testolmaccount|testkeyverification'
-popd
 
 %install
-pushd %{name}_qt5
 %cmake_install
-popd
-pushd %{name}_qt6
-%cmake_install
-popd
 rm -rf %{buildroot}%{_datadir}/ndk-modules
-
-%files qt5
-%license COPYING
-%doc README.md CONTRIBUTING.md SECURITY.md
-%{_libdir}/%{libname}.so.0*
-
-%files qt5-devel
-%{_includedir}/%{appname}/
-%{_libdir}/cmake/%{appname}/
-%{_libdir}/pkgconfig/%{appname}.pc
-%{_libdir}/%{libname}.so
 
 %files qt6
 %license COPYING
@@ -139,6 +82,9 @@ rm -rf %{buildroot}%{_datadir}/ndk-modules
 %{_libdir}/pkgconfig/%{appname}Qt6.pc
 
 %changelog
+* Mon Nov 18 2024 Steve Cossette <farchord@gmail.com> - 0.9.0-1
+- 0.9.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

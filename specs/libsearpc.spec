@@ -1,13 +1,13 @@
 %global _hardened_build 1
 # checkout by commit for a valid persistent source link
 # the corresponding git tag is v3.3-latest
-%global commit      783141fb694f3bd1f8bd8a783670dd25a53b9fc1
-%global date        20230527
+%global commit      7f275255f089c72f3b3fb8128212fb58aad44b05
+%global date        20241024
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           libsearpc
 Version:        3.3
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        A simple and easy-to-use C language RPC framework
 
 # Main package license: Apache-2.0
@@ -44,7 +44,6 @@ applications that use %{name}.
 
 %prep
 %setup -qn %{name}-%{commit}
-sed -i -e /\(DESTDIR\)/d %{name}.pc.in
 %py3_shebang_fix ./lib/searpc-codegen.py ./pysearpc/test_pysearpc.py \
     ./tests/generate.py ./pysearpc/pygencode.py
 
@@ -86,6 +85,9 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 
 %changelog
+* Sun Nov 17 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 3.3-6
+- Sync with v3.3-latest
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.3-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

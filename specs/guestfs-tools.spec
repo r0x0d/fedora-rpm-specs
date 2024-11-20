@@ -15,7 +15,7 @@
 
 Summary:       Tools to access and modify virtual machine disk images
 Name:          guestfs-tools
-Version:       1.53.4
+Version:       1.53.5
 Release:       1%{?dist}
 License:       GPL-2.0-or-later AND LGPL-2.0-or-later
 
@@ -392,6 +392,9 @@ end
 
 
 %changelog
+* Mon Nov 18 2024 Richard W.M. Jones <rjones@redhat.com> - 1.53.5-1
+- New upstream development version 1.53.5
+
 * Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 1.53.4-1
 - New upstream development version 1.53.4
 - Replace Jansson with json-c

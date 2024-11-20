@@ -197,7 +197,7 @@ ExcludeArch: i686
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        132.0.2
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 # Automatically converted from old format: MPLv1.1 or GPLv2+ or LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-MPLv1.1 OR GPL-2.0-or-later OR LicenseRef-Callaway-LGPLv2+
@@ -834,7 +834,7 @@ MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | sed -e 's/-g/-g1/')
 export MOZ_DEBUG_FLAGS=" "
 MOZ_LINK_FLAGS="%{build_ldflags}"
 %if !%{build_with_clang}
-%ifarch aarch64 %{ix86} ppc64le
+%ifarch aarch64 %{ix86} ppc64le x86_64
 MOZ_LINK_FLAGS="$MOZ_LINK_FLAGS -Wl,--no-keep-memory -Wl,--reduce-memory-overheads"
 %endif
 %endif
@@ -1239,6 +1239,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Nov 18 2024 Martin Stransky <stransky@redhat.com> - 132.0.2-2
+- Added memory saving flags to x86_64
+
 * Fri Nov 15 2024 Martin Stransky <stransky@redhat.com> - 132.0.2-1
 - Updated to 132.0.2
 - Try to reduce build mem usage on ppc64le

@@ -3,13 +3,15 @@
 Summary:	Mock object library for ruby
 Name:		rubygem-%{gem_name}
 Version:	3.0.1
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	MIT
 URL:		https://github.com/doudou/flexmock
 Source0:	https://rubygems.org/gems/%{gem_name}-%{version}.gem
 Source1:	%{gem_name}-%{version}-test-missing-files.tar.gz
 # Source1 is created fron Source2
 Source2:	flexmock-create-missing-test-files.sh
+# make testsuite compatible for ruby34 formatting change
+Patch0:	flexmock-3.0.1-testsuite-ruby34-formatting.patch
 
 Requires:	ruby(release)
 BuildRequires:	ruby(release)
@@ -34,6 +36,11 @@ This package contains documentation for %{name}.
 %prep
 %setup -q -n %{gem_name}-%{version} -a 1
 mv ../%{gem_name}-%{version}.gemspec .
+
+(
+cd flexmock/test
+%patch -P0 -p2
+)
 
 find . -name \*.rb | xargs sed -i -e '\@/usr/bin/env@d'
 find . -name \*.gem -or -name \*.rb -or -name \*.rdoc | xargs chmod 0644
@@ -92,6 +99,9 @@ popd
 %{gem_docdir}/
 
 %changelog
+* Mon Nov 18 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.0.1-2
+- Make testsuite compatible with ruby34 formatting change
+
 * Wed Sep 11 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.0.1-1
 - 3.0.1
 

@@ -79,7 +79,6 @@ Summary:        %summary (MPICH)
 BuildRequires:  mpich-devel
 BuildRequires:  boost-mpich-devel
 BuildRequires:  boost-mpich
-BuildRequires:  rpm-mpi-hooks
 Requires:       mpich
 
 %description mpich
@@ -105,7 +104,6 @@ Summary:        %summary (OpenMPI)
 BuildRequires:  openmpi-devel
 BuildRequires:  boost-openmpi-devel
 BuildRequires:  boost-openmpi
-BuildRequires:  rpm-mpi-hooks
 BuildRequires:  make
 Requires:       openmpi
 
@@ -297,6 +295,7 @@ export MPI_COMPILE_TYPE="-serial"
 %{_mpich_load}
 export MPI_COMPILE_TYPE="-mpich"
 %{do_tests}
+%{_mpich_unload}
 %endif
 # mpich
 
@@ -304,6 +303,7 @@ export MPI_COMPILE_TYPE="-mpich"
 %{_openmpi_load}
 export MPI_COMPILE_TYPE="-openmpi"
 %{do_tests}
+%{_openmpi_unload}
 %endif
 # openmpi
 

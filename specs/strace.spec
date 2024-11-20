@@ -1,7 +1,7 @@
 Summary: Tracks and displays system calls associated with a running process
 Name: strace
-Version: 6.11
-Release: 3%{?dist}
+Version: 6.12
+Release: 1%{?dist}
 # The test suite is GPLv2+, the bundled headers are GPLv2 with Linux syscall
 # exception, all the rest is LGPLv2.1+.
 %if 0%{?fedora} >= 35 || 0%{?centos} >= 9 || 0%{?rhel} >= 9
@@ -108,9 +108,6 @@ BuildRequires: xz
 %else
 Source: strace-%{version}.tar.gz
 %endif
-Patch1: strace-sched_attr-1.patch
-Patch2: strace-sched_attr-2.patch
-Patch3: strace-denywrite.patch
 BuildRequires: gcc gzip make
 
 # Install Bluetooth headers for AF_BLUETOOTH sockets decoding.
@@ -152,7 +149,7 @@ Install strace if you need a tool to track the system calls made and
 received by a process.
 
 %prep
-%autosetup -p1
+%setup -q
 echo -n %version-%release > .tarball-version
 echo -n 2024 > .year
 echo -n 2024-06-30 > doc/.strace.1.in.date
@@ -208,6 +205,9 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Mon Nov 18 2024 Dmitry V. Levin <ldv@strace.io> - 6.12-1
+- v6.11 -> v6.12.
+
 * Mon Oct 28 2024 Florian Weimer <fweimer@redhat.com> - 6.11-3
 - Backport upstream patch for compatibility with kernel MAP_DENYWRITE changes
 

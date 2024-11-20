@@ -1,42 +1,49 @@
-%undefine __cmake_in_source_build
-
 Name:    hotspot
-Version: 1.4.1
-Release: 6%{?dist}
+Version: 1.5.1
+Release: 2%{?dist}
 Summary: The Linux perf GUI for performance analysis
 
 License: GPL-2.0-or-later
 URL:     https://github.com/KDAB/hotspot
 
 Source0: https://github.com/KDAB/%{name}/releases/download/v%{version}/%{name}-v%{version}.tar.gz
+Source1: https://github.com/KDAB/hotspot/releases/download/v%{version}/hotspot-perfparser-v%{version}.tar.gz
+Source2: https://github.com/KDAB/hotspot/releases/download/v%{version}/hotspot-PrefixTickLabels-v%{version}.tar.gz
 
+BuildRequires:  gcc-c++
+BuildRequires:  cmake
 BuildRequires:  extra-cmake-modules
-BuildRequires:  kf5-rpm-macros
-BuildRequires:  kf5-kcoreaddons-devel
-BuildRequires:  kf5-ki18n-devel
-BuildRequires:  kf5-kitemmodels-devel
-BuildRequires:  kf5-threadweaver-devel
-BuildRequires:  kf5-kconfigwidgets-devel
-BuildRequires:  kf5-kio-devel
-BuildRequires:  kf5-kwindowsystem-devel
-BuildRequires:  cmake(KF5Notifications)
-BuildRequires:  cmake(KF5IconThemes)
-BuildRequires:  cmake(KF5Parts)
-BuildRequires:  cmake(KF5Archive)
-BuildRequires:  cmake(KF5SyntaxHighlighting)
-BuildRequires:  cmake(KGraphViewerPart)
-BuildRequires:  kddockwidgets-devel
-
-BuildRequires:  qcustomplot-qt5-devel
-BuildRequires:  qt5-qtbase-devel
-BuildRequires:  qt5-qtsvg-devel
-BuildRequires:  cmake(Qt5X11Extras)
-
+BuildRequires:  kf6-rpm-macros
+BuildRequires:  pkgconfig(libelf)
 BuildRequires:  elfutils-devel
-BuildRequires:  elfutils-debuginfod-client-devel
+BuildRequires:  rust-zstd-devel
 
-Recommends:     rust-cpp_demangle
+Recommends:     binutils
+Requires:       hicolor-icon-theme
+BuildRequires:  desktop-file-utils
+BuildRequires:  libappstream-glib
 
+BuildRequires:  cmake(KF6ThreadWeaver)
+BuildRequires:  cmake(KF6ConfigWidgets)
+BuildRequires:  cmake(KF6CoreAddons)
+BuildRequires:  cmake(KF6ItemViews)
+BuildRequires:  cmake(KF6ItemModels)
+BuildRequires:  cmake(KF6KIO)
+BuildRequires:  cmake(KF6Solid)
+BuildRequires:  cmake(KF6WindowSystem)
+BuildRequires:  cmake(KF6Notifications)
+BuildRequires:  cmake(KF6IconThemes)
+BuildRequires:  cmake(KF6Parts)
+BuildRequires:  cmake(KF6I18n)
+BuildRequires:  cmake(KF6Archive)
+BuildRequires:  cmake(KF6SyntaxHighlighting)
+BuildRequires:  cmake(KDDockWidgets-qt6)
+BuildRequires:  pkgconfig(qcustomplot-qt6)
+BuildRequires:  cmake(KGraphViewerPart)
+BuildRequires:  cmake(Qt6Svg)
+
+Provides:       bundled(hotspot-perfparser)
+Provides:       bundled(hotspot-PrefixTickLabels)
 
 %description
 A standalone GUI for performance data. Attempting to provide a UI like
@@ -44,34 +51,36 @@ KCachegrind around Linux perf.
 
 
 %prep
-%autosetup -n %{name}-v%{version} -p1
-
+%setup -q -n %{name} -a 1 -a 2
+mv perfparser/* 3rdparty/perfparser/
+mv PrefixTickLabels/* 3rdparty/PrefixTickLabels/
 
 %build
-%{cmake_kf5}
-
+%cmake_kf6 -DQT6_BUILD=TRUE
 %cmake_build
 
 
 %install
 %cmake_install
+appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/*.appdata.xml
+desktop-file-validate %{buildroot}/%{_datadir}/applications/com.kdab.hotspot.desktop
 
 %files
 %license LICENSE.GPL.txt
-%{_kf5_bindir}/hotspot
-%{_kf5_datadir}/icons/hicolor/*/*/hotspot*
+%{_kf6_bindir}/hotspot
+%{_kf6_datadir}/icons/hicolor/*/*/hotspot*
 %{_libexecdir}/hotspot-perfparser
-%{_libexecdir}/elevate_perf_privileges.sh
-%{_kf5_libexecdir}/kauth/hotspot-auth-helper
-%{_kf5_datadir}/applications/com.kdab.hotspot.desktop
-%{_kf5_datadir}/dbus-1/system-services/com.kdab.hotspot.perf.service
-%{_kf5_datadir}/dbus-1/system.d/com.kdab.hotspot.perf.conf
-%{_kf5_datadir}/knotifications5/hotspot.notifyrc
-%{_kf5_metainfodir}/com.kdab.Hotspot.appdata.xml
-%{_kf5_datadir}/polkit-1/actions/com.kdab.hotspot.perf.policy
-
+%{_kf6_datadir}/applications/com.kdab.hotspot.desktop
+%{_kf6_metainfodir}/com.kdab.Hotspot.appdata.xml
+%{_kf6_datadir}/knotifications6/hotspot.notifyrc
 
 %changelog
+* Mon Nov 18 2024 Steve Cossette <farchord@gmail.com> - 1.5.1-2
+- Fix hicolor-icon-theme mistype mistake
+
+* Mon Nov 18 2024 Steve Cossette <farchord@gmail.com> - 1.5.1-1
+- Upgrade to 1.5.1 and switchover to Qt6
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.1-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

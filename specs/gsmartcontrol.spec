@@ -1,6 +1,6 @@
 Name:       gsmartcontrol
-Version:    1.1.4
-Release:    9%{?dist}
+Version:    2.0.0
+Release:    1%{?dist}
 Summary:    Graphical user interface for smartctl
 
 # Note that the "Whatever" license is effectively the MIT license.  See email
@@ -9,11 +9,10 @@ Summary:    Graphical user interface for smartctl
 License:    (GPL-2.0-only OR GPL-3.0-only) AND LicenseRef-Callaway-BSD AND Zlib AND BSL-1.0 AND LicenseRef-Callaway-MIT
 
 URL:        http://gsmartcontrol.sourceforge.net
-Source0:    https://downloads.sourceforge.net/project/%{name}/%{version}/%{name}-%{version}.tar.bz2
+Source0:    https://github.com/ashaduri/gsmartcontrol/archive/refs/tags/v%{version}.tar.gz
 
 BuildRequires:  gcc-c++
-BuildRequires:  autoconf
-BuildRequires:  automake
+BuildRequires:  cmake
 BuildRequires:  gtkmm30-devel
 BuildRequires:  pcre-devel
 BuildRequires:  desktop-file-utils
@@ -31,30 +30,23 @@ data to determine its health, as well as run various tests on it.
 
 %prep
 %autosetup -p1
-autoreconf -fiv
-
 
 %build
-%configure --docdir=%{_pkgdocdir}
-%make_build
+%cmake
+%cmake_build
 
 %install
-%make_install
-#Correct shebang
-sed -i 's|/usr/bin/env bash|/usr/bin/bash|' %{buildroot}%{_bindir}/%{name}-root
-
+%cmake_install
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 %files
-%license COPYING
+%license LICENSE.txt LICENSE.LGPL3.txt
 %{_bindir}/%{name}-root
 %{_sbindir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/%{name}
-%{_datadir}/pixmaps/%{name}.png
-%{_datadir}/pixmaps/%{name}.xpm
 %{_datadir}/icons/hicolor/*x*/apps/%{name}.png
 %{_datadir}/polkit-1/actions/org.%{name}.policy
 %{_mandir}/man1/%{name}.1.*
@@ -63,6 +55,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 %{_datadir}/metainfo/gsmartcontrol.appdata.xml
 
 %changelog
+* Mon Nov 18 2024 Vasiliy Glazov <vascom2@gmail.com> - 2.0.0-1
+- Update to 2.0.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.1.4-9
 - convert license to SPDX
 

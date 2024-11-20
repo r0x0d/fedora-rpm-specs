@@ -1,6 +1,6 @@
 Name:           kommit
-Version:        1.6.0
-Release:        2%{?dist}
+Version:        1.7.0
+Release:        1%{?dist}
 Summary:        Graphical Git Client
 
 License:        GPL-3.0-or-later AND GPL-2.0-or-later AND BSD-3-Clause
@@ -40,9 +40,15 @@ Obsoletes:      gitklient < 1.0
 %description
 %{summary}.
 
+%package devel
+Summary:        Development environment for %name
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+
+%description devel
+Development package for kommit.
+
 %prep
 %autosetup -n %{name}-v%{version}
-sed -i '/<release version="1.0.2" date="2023-05-04">/d' src/data/org.kde.kommit.appdata.xml
 
 
 %build
@@ -68,13 +74,13 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.%{
 %{_bindir}/%{name}merge
 %{_kf6_metainfodir}/org.kde.%{name}.appdata.xml
 %{_libdir}/lib%{name}.so.0
-%{_libdir}/lib%{name}.so.1.6.0
+%{_libdir}/lib%{name}.so.1.6.43
 %{_libdir}/lib%{name}diff.so.0
-%{_libdir}/lib%{name}diff.so.1.6.0
+%{_libdir}/lib%{name}diff.so.1.6.43
 %{_libdir}/lib%{name}gui.so.0
-%{_libdir}/lib%{name}gui.so.1.6.0
+%{_libdir}/lib%{name}gui.so.1.6.43
 %{_libdir}/lib%{name}widgets.so.0
-%{_libdir}/lib%{name}widgets.so.1.6.0
+%{_libdir}/lib%{name}widgets.so.1.6.43
 %{_kf6_qtplugindir}/dolphin/vcs/%{name}dolphinplugin.so
 %{_datadir}/applications/*.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
@@ -82,8 +88,14 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.%{
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 %{_datadir}/qlogging-categories6/kommit.categories
 
+%files devel
+%{_includedir}/*
+
 
 %changelog
+* Mon Nov 18 2024 Vasiliy Glazov <vascom2@gmail.com> 1.7.0-1
+- Update to 1.7.0
+
 * Fri Oct 04 2024 Pete Walter <pwalter@fedoraproject.org> - 1.6.0-2
 - Rebuild for libgit2 1.8.x
 

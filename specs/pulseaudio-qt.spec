@@ -1,6 +1,6 @@
 Name:    pulseaudio-qt
 Summary: Qt bindings for PulseAudio
-Version: 1.6.0
+Version: 1.6.1
 Release: 1%{?dist}
 
 License: CC0-1.0 AND LGPL-2.1-only AND LGPL-3.0-only
@@ -110,6 +110,9 @@ rm %{buildroot}%{_kf5_includedir}/pulseaudioqt_version.h
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Mon Nov 18 2024 Alessandro Astone <ales.astone@gmail.com> - 1.6.1-1
+- new version
+
 * Fri Sep 13 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 1.6.0-1
 - 1.6.0
 

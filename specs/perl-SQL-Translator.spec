@@ -3,8 +3,8 @@
 
 Name:           perl-SQL-Translator
 Summary:        Manipulate structured data definitions (SQL and more)
-Version:        1.65
-Release:        2%{?dist}
+Version:        1.66
+Release:        1%{?dist}
 # script/sqlt*: GPL-2.0-only
 # other files:  GPL-1.0-or-later OR Artistic-1.0-Perl
 License:        ( GPL-1.0-or-later OR Artistic-1.0-Perl ) AND GPL-2.0-only
@@ -154,6 +154,9 @@ depending on Graphviz.
 %package tests
 Summary:        Tests for %{name}
 Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       %{name}-Producer-Diagram = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       %{name}-Producer-GraphViz = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       sqlt-graph = %{?epoch:%{epoch}:}%{version}-%{release}
 Requires:       perl-Test-Harness
 Requires:       perl(DBD::SQLite)
 Requires:       perl(XML::Parser)
@@ -214,9 +217,15 @@ make test
 
 %files
 %doc Changes README
-%{_bindir}/*
-%{perl_vendorlib}/*
-%{_mandir}/man[13]/*
+%{_bindir}/sqlt*
+%dir %{perl_vendorlib}/SQL
+%{perl_vendorlib}/SQL/Translator*
+%dir %{perl_vendorlib}/Test
+%{perl_vendorlib}/Test/SQL
+%{perl_vendorlib}/auto
+%{_mandir}/man1/sqlt*
+%{_mandir}/man3/SQL::Translator*
+%{_mandir}/man3/Test::SQL::Translator*
 %exclude %{perl_vendorlib}/SQL/Translator/Producer/Diagram.pm
 %exclude %{perl_vendorlib}/SQL/Translator/Producer/GraphViz.pm
 %exclude %{_mandir}/man1/sqlt-graph.*
@@ -240,6 +249,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Mon Nov 18 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1.66-1
+- 1.66 bump (rhbz#2326987)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.65-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

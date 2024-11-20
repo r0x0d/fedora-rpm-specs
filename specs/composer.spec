@@ -10,7 +10,7 @@
 
 %bcond_with          generators
 
-%global gh_commit    6e543d03187c882ea1c6ba43add2467754427803
+%global gh_commit    2a7c71266b2545a3bed9f4860734081963f6e688
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_branch    2.0-dev
 %global gh_owner     composer
@@ -18,7 +18,7 @@
 %global api_version  2.6.0
 %global run_version  2.2.2
 
-%global upstream_version 2.8.2
+%global upstream_version 2.8.3
 #global upstream_prever  RC1
 #global upstream_lower   rc1
 
@@ -29,7 +29,7 @@
 
 Name:           composer
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_lower}}
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        Dependency Manager for PHP
 
 # SPDX: composer and all dependencies are MIT
@@ -114,34 +114,34 @@ Requires:       php-zlib
 # Bundled libraries
 %if %{without generators}
 # License MIT
-Provides:       bundled(php-composer-ca-bundle) = 1.5.2
-Provides:       bundled(php-composer-class-map-generator) = 1.4.0
-Provides:       bundled(php-composer-metadata-minifier) = 1.0.0
-Provides:       bundled(php-composer-pcre) = 2.3.1
-Provides:       bundled(php-composer-semver) = 3.4.3
-Provides:       bundled(php-composer-spdx-licenses) = 1.5.8
-Provides:       bundled(php-composer-xdebug-handler) = 3.0.5
-Provides:       bundled(php-justinrainbow-json-schema) = 5.3.0
-Provides:       bundled(php-psr-container) = 1.1.1
-Provides:       bundled(php-psr-log) = 1.1.4
-Provides:       bundled(php-react-promise) = v3.2.0
-Provides:       bundled(php-seld-jsonlint) = 1.11.0
-Provides:       bundled(php-seld-phar-utils) = 1.2.1
-Provides:       bundled(php-seld-signal-handler) = 2.0.2
-Provides:       bundled(php-symfony-console) = v5.4.45
-Provides:       bundled(php-symfony-deprecation-contracts) = v2.5.3
-Provides:       bundled(php-symfony-filesystem) = v5.4.45
-Provides:       bundled(php-symfony-finder) = v5.4.45
-Provides:       bundled(php-symfony-polyfill-ctype) = v1.31.0
-Provides:       bundled(php-symfony-polyfill-intl-grapheme) = v1.31.0
-Provides:       bundled(php-symfony-polyfill-intl-normalizer) = v1.31.0
-Provides:       bundled(php-symfony-polyfill-mbstring) = v1.31.0
-Provides:       bundled(php-symfony-polyfill-php73) = v1.31.0
-Provides:       bundled(php-symfony-polyfill-php80) = v1.31.0
-Provides:       bundled(php-symfony-polyfill-php81) = v1.31.0
-Provides:       bundled(php-symfony-process) = v5.4.45
-Provides:       bundled(php-symfony-service-contracts) = v2.5.3
-Provides:       bundled(php-symfony-string) = v5.4.45
+Provides:       bundled(php-composer(composer/ca-bundle)) = 1.5.3
+Provides:       bundled(php-composer(composer/class-map-generator)) = 1.4.0
+Provides:       bundled(php-composer(composer/metadata-minifier)) = 1.0.0
+Provides:       bundled(php-composer(composer/pcre)) = 2.3.2
+Provides:       bundled(php-composer(composer/semver)) = 3.4.3
+Provides:       bundled(php-composer(composer/spdx-licenses)) = 1.5.8
+Provides:       bundled(php-composer(composer/xdebug-handler)) = 3.0.5
+Provides:       bundled(php-composer(justinrainbow/json-schema)) = 5.3.0
+Provides:       bundled(php-composer(psr/container)) = 1.1.1
+Provides:       bundled(php-composer(psr/log)) = 1.1.4
+Provides:       bundled(php-composer(react/promise)) = v3.2.0
+Provides:       bundled(php-composer(seld/jsonlint)) = 1.11.0
+Provides:       bundled(php-composer(seld/phar-utils)) = 1.2.1
+Provides:       bundled(php-composer(seld/signal-handler)) = 2.0.2
+Provides:       bundled(php-composer(symfony/console)) = v5.4.47
+Provides:       bundled(php-composer(symfony/deprecation-contracts)) = v2.5.3
+Provides:       bundled(php-composer(symfony/filesystem)) = v5.4.45
+Provides:       bundled(php-composer(symfony/finder)) = v5.4.45
+Provides:       bundled(php-composer(symfony/polyfill-ctype)) = v1.31.0
+Provides:       bundled(php-composer(symfony/polyfill-intl-grapheme)) = v1.31.0
+Provides:       bundled(php-composer(symfony/polyfill-intl-normalizer)) = v1.31.0
+Provides:       bundled(php-composer(symfony/polyfill-mbstring)) = v1.31.0
+Provides:       bundled(php-composer(symfony/polyfill-php73)) = v1.31.0
+Provides:       bundled(php-composer(symfony/polyfill-php80)) = v1.31.0
+Provides:       bundled(php-composer(symfony/polyfill-php81)) = v1.31.0
+Provides:       bundled(php-composer(symfony/process)) = v5.4.47
+Provides:       bundled(php-composer(symfony/service-contracts)) = v2.5.3
+Provides:       bundled(php-composer(symfony/string)) = v5.4.47
 # Composer library
 Provides:       php-composer(composer/composer) = %{version}
 %endif
@@ -179,7 +179,7 @@ php -r '
     foreach($pkgs["packages"] as $pkg) {
 		$lic = implode(" and ", $pkg["license"]);
 		if (!isset($res[$lic])) $res[$lic] = [];
-		$res[$lic][] = sprintf("Provides:       bundled(php-%s) = %s", str_replace(["/", "_"], ["-", "-"], $pkg["name"]), $pkg["version"]);
+		$res[$lic][] = sprintf("Provides:       bundled(php-composer(%s)) = %s", $pkg["name"], $pkg["version"]);
 	}
 	foreach($res as $lic => $lib) {
 		sort($lib);
@@ -265,6 +265,9 @@ php -r '
 
 
 %changelog
+* Mon Nov 18 2024 Remi Collet <remi@remirepo.net> - 2.8.3-1
+- update to 2.8.3
+
 * Wed Oct 30 2024 Remi Collet <remi@remirepo.net> - 2.8.2-3
 - keep upstream layout for simplicity
 

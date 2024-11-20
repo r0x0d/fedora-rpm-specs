@@ -21,7 +21,7 @@
 #%%global	betaver	rc4
 #%%define	prerelease	1
 
-%global	baserelease	4
+%global	baserelease	5
 
 Name:		oniguruma
 Version:	%{mainver}%{?postver:.%postver}%{?gitversion:^%{?gitversion}}
@@ -33,6 +33,10 @@ License:	BSD-2-Clause
 URL:		https://github.com/kkos/oniguruma/
 Source0:	https://github.com/kkos/oniguruma/releases/download/v%{mainver}%{?betaver:_%betaver}/onig-%{mainver}%{?postver:.%postver}%{?betaver:-%betaver}%{?gitversion:-%{?gitversion}}.tar.gz
 Source1:	create-tarball-from-git.sh
+# https://github.com/kkos/oniguruma/issues/312
+# https://github.com/kkos/oniguruma/commit/5f1408dee4a01dee60c4cd67f2e2e46484ef50a5
+# make code C23 compliant
+Patch0:	oniguruma-issue312-c23-compliant.patch
 
 BuildRequires:	make
 BuildRequires:	gcc
@@ -61,12 +65,15 @@ developing applications that use %{name}.
 %setup -q -n onig-%{mainver}%{?gitversion:-%{?gitversion}}
 %{__sed} -i.multilib -e 's|-L@libdir@||' onig-config.in
 
+%patch -P0 -p1 -b .c23
 
 %build
 # This package fails its testsuite when compiled with LTO, but the real problem
 # is that it ends up mixing and matching regexp bits between itself and glibc.
 # Disable LTO
 %define _lto_cflags %{nil}
+%dnl %global optflags_orig %optflags
+%dnl %global optflags %optflags_orig -std=gnu23
 
 %if 0%{?git_snapshot}
 autoreconf -fi
@@ -124,6 +131,9 @@ autoreconf -fi
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Mon Nov 18 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 6.9.9-5
+- Apply upstream patch for C23 compliance
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.9.9-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

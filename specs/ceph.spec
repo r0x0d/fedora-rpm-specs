@@ -185,7 +185,7 @@
 #################################################################################
 Name:		ceph
 Version:	19.2.0
-Release:	3%{?dist}
+Release:	4%{?dist}
 %if 0%{?fedora} || 0%{?rhel}
 Epoch:		2
 %endif
@@ -721,7 +721,7 @@ Group:		System/Filesystems
 Requires:	ceph-mgr = %{_epoch_prefix}%{version}-%{release}
 Requires:	python%{python3_pkgversion}-numpy
 %if 0%{?fedora} || 0%{?suse_version} || 0%{?rhel} >= 10
-Requires:	python%{python3_pkgversion}-scikit_learn
+Requires:	python%{python3_pkgversion}-scikit-learn
 %endif
 Requires:	python3-scipy
 %description mgr-diskprediction-local
@@ -2715,6 +2715,9 @@ exit 0
 %{python3_sitelib}/ceph_node_proxy-*
 
 %changelog
+* Mon Nov 18 2024 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 2:19.2.0-4
+- and back; ceph-19.2.0 scikit_learn -> scikit-learn  rhbz#2327036
+
 * Wed Nov 13 2024 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 2:19.2.0-3
 - ceph-19.2.0 scikit-learn -> scikit_learn  rhbz#2325990
 

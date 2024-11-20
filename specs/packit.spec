@@ -6,7 +6,7 @@
 %endif
 
 Name:           packit
-Version:        0.103.0
+Version:        0.104.0
 Release:        1%{?dist}
 Summary:        A tool for integrating upstream projects with Fedora operating system
 
@@ -79,6 +79,26 @@ cp files/bash-completion/packit %{buildroot}%{bash_completions_dir}/packit
 %doc README.md
 
 %changelog
+* Fri Nov 15 2024 Packit <hello@packit.dev> - 0.104.0-1
+- Packit configuration file can now have a placeholder top-level key `_` that is ignored when read.
+  This is useful for storing yaml anchors in complex config files, e.g.:
+```yaml
+_:
+  base-test: &base-test
+    job: tests
+    fmf_path: .distro
+jobs:
+  - <<: *base-test
+    trigger: pull_request
+    manual_trigger: true
+  - <<: *internal-test
+    trigger: commit
+    use_internal_tf: true
+```
+(#2378)
+- You can now define `with_opts` and `without_opts` in target-specific configuration of `copr_build` job to build with `--with` and `--without` rpmbuild options. (#2463)
+- Resolves: rhbz#2325040
+
 * Sun Nov 10 2024 Packit <hello@packit.dev> - 0.103.0-1
 - Packit now supports and defaults to `fast_forward_merge_into` syntax via `--dist-git-branches-mapping` in `dist-git init`. (#2456)
 

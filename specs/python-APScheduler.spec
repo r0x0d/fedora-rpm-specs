@@ -16,6 +16,8 @@ Summary:        In-process task scheduler with Cron-like capabilities
 License:        MIT
 URL:            https://pypi.org/project/APScheduler/
 Source0:        %{pypi_source %{srcname}}
+# wait for tasks to finish, adjust misfire_grace_time
+Patch0:         01-test-executors.patch
 BuildArch:      noarch
 
 %description %_description

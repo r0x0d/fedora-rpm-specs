@@ -33,7 +33,7 @@
 %constrain_build -m 4096
 
 Name:           uv
-Version:        0.4.30
+Version:        0.5.2
 Release:        %autorelease
 Summary:        An extremely fast Python package installer and resolver, written in Rust
 
@@ -119,6 +119,7 @@ Summary:        An extremely fast Python package installer and resolver, written
 # MIT-0 OR Apache-2.0
 # MPL-2.0
 # Unlicense OR MIT
+# Zlib
 # Zlib OR Apache-2.0 OR MIT
 License:        %{shrink:
                 0BSD AND
@@ -141,7 +142,8 @@ License:        %{shrink:
                 (MIT OR Unlicense) AND
                 MPL-2.0 AND
                 OpenSSL AND
-                Unicode-DFS-2016
+                Unicode-DFS-2016 AND
+                Zlib
                 }
 # LICENSE.dependencies contains a full license breakdown
 URL:            https://github.com/astral-sh/uv
@@ -159,9 +161,9 @@ Source1:        uv.toml
 # We therefore bundle the fork as prescribed in
 #   https://docs.fedoraproject.org/en-US/packaging-guidelines/Rust/#_replacing_git_dependencies
 %global async_zip_git https://github.com/charliermarsh/rs-async-zip
-%global async_zip_rev 011b24604fa7bc223daaad7712c0694bac8f0a87
+%global async_zip_rev c909fda63fcafe4af496a07bfda28a5aae97e58d
 %global async_zip_baseversion 0.0.17
-%global async_zip_snapdate 20240729
+%global async_zip_snapdate 20241114
 Source100:      %{async_zip_git}/archive/%{async_zip_rev}/rs-async-zip-%{async_zip_rev}.tar.gz
 
 # For the foreseeable future, uv must use a fork of pubgrub (and the
@@ -221,16 +223,14 @@ Patch:          0001-Downstream-only-use-the-zlib-ng-backend-for-flate2-o.patch
 # https://github.com/rust-lang/libz-sys/issues/225
 Patch:          0002-Downstream-only-don-t-upper-bound-the-libz-ng-sys-ve.patch
 
-# Use crates.io reqwest-middleware (#9058)
+# These patches are for the forked, bundled async_zip crate.
 #
-# Thanks to https://github.com/TrueLayer/reqwest-middleware/pull/198, we
-# can now remove the git dependency and switch back to a crates.io
-# dependency.
-# https://github.com/astral-sh/uv/commit/828045cd27fb6812a03f6b374234aa95ec9dd092
-# https://github.com/astral-sh/uv/pull/9058
-#
-# Modified to include only changes to Cargo.toml, without those to Cargo.lock
-Patch:          uv-0.4.30-released-reqwest-middleware.patch
+# Revert "Update zip requirement from 0.6.3 to 2.1.5"
+# This reverts commit ba532d50a943ecf0fadb3c0a20c5e51bcb81441d.
+# See: Concerns with zip version 1.x
+# https://github.com/astral-sh/uv/issues/3642
+Patch100:       0001-Revert-Update-zip-requirement-from-0.6.3-to-2.1.5.patch
+Patch101:       0002-Revert-Update-mod.rs.patch
 
 # This patch is for the forked, bundled pubgrub crate.
 #
@@ -706,6 +706,31 @@ skip="${skip-} --skip keyring::tests::fetch_url_with_password"
 # build area; they might also require network access.
 # -p uv-client --test it:
 skip="${skip-} --skip remote_metadata::remote_metadata_with_and_without_cache"
+
+# This snapshot test fails due to a trivial difference in error message text
+# between url 2.5.2 and 2.5.3. The meaning of the message is the same. See
+# https://github.com/astral-sh/uv/commit/9368268e494cbf05374165f25cdf1e9f6d2cceb9.
+# We can stop skipping this test once the rust-url package is updated to 2.5.3,
+# https://bugzilla.redhat.com/show_bug.cgi?id=2323618.
+#
+# ---- metadata::requires_dist::test::invalid_url stdout ----
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Snapshot Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Snapshot: invalid_url
+# Source: crates/uv-distribution/src/metadata/requires_dist.rs:460
+# ────────────────────────────────────────────────────────────────────────────────
+# Expression: format_err(input).await
+# ────────────────────────────────────────────────────────────────────────────────
+# -old snapshot
+# +new results
+# ────────────┬───────────────────────────────────────────────────────────────────
+#     0     0 │ error: TOML parse error at line 8, column 16
+#     1     1 │   |
+#     2     2 │ 8 | tqdm = { url = "§invalid#+#*Ä" }
+#     3     3 │   |                ^^^^^^^^^^^^^^^^^
+#     4       │-relative URL without a base: "§invalid#+#*Ä"
+#           4 │+invalid value: string "§invalid#+#*Ä", expected relative URL without a base
+# ────────────┴───────────────────────────────────────────────────────────────────
+skip="${skip-} --skip metadata::requires_dist::test::invalid_url"
 
 %cargo_test -- -- --exact ${skip-}
 %endif

@@ -14,8 +14,8 @@
 # "obsoleted" features are still kept in the spec.
 
 Name:           openblas
-Version:        0.3.26
-Release:        5%{?dist}
+Version:        0.3.28
+Release:        1%{?dist}
 Summary:        An optimized BLAS library based on GotoBLAS2
 
 License:        BSD-3-Clause
@@ -30,8 +30,8 @@ Patch1:         openblas-0.2.5-libname.patch
 Patch2:         openblas-0.2.15-constructor.patch
 # Supply the proper flags to the test makefile
 Patch3:         openblas-0.3.11-tests.patch
-# Fix incompatible pointer types (causes FTBFS on ppc64le)
-Patch4:         openblas-0.3.26-incompatibletypes.patch
+# https://github.com/OpenMathLib/OpenBLAS/issues/49172
+Patch4:         openblas-0.3.28-zgemm-cgemm.patch
 
 BuildRequires: make
 BuildRequires:  gcc
@@ -245,7 +245,7 @@ cd OpenBLAS-%{version}
 %patch 2 -p1 -b .constructor
 %endif
 %patch 3 -p1 -b .tests
-%patch 4 -p1 -b .incompatibletypes
+%patch 4 -p1 -b .gemm
 
 # Fix source permissions
 find -name \*.f -exec chmod 644 {} \;
@@ -651,6 +651,11 @@ rm -rf %{buildroot}%{_libdir}/pkgconfig
 %endif
 
 %changelog
+* Wed Oct 02 2024 Pavel Simovec <psimovec@redhat.com> - 0.3.28-1
+- Update to 0.3.28
+  Resolves: BZ#2273704
+  Resolves: RHEL-54180
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.3.26-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

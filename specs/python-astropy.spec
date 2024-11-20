@@ -3,8 +3,8 @@
 %global srcname astropy
 
 Name: python-%{srcname}
-Version: 6.0.1
-Release: 5%{?dist}
+Version: 6.1.6
+Release: 1%{?dist}
 Summary: A Community Python Library for Astronomy
 # File _strptime.py is under Python-2.0.1
 # jquery is MIT
@@ -14,12 +14,11 @@ URL: http://astropy.org
 Source: %{pypi_source %{srcname}}
 Source: astropy-README.dist
 # To build with gcc 14
-Patch: python-astropy-ipointer.patch
 Patch: python-astropy-313tests.patch
 Patch: python-astropy-system-configobj.patch
 Patch: python-astropy-system-ply.patch
-# Upstream fix for python 3.13 incompatibility
-Patch: https://github.com/astropy/astropy/commit/c2800e2d9a008b3c4d486d15de9cbdc174aeaf66.patch
+# Drop build dep on numpy>=2
+Patch: python-astropy-deps.patch
 
 BuildRequires: gcc
 BuildRequires: expat-devel
@@ -117,6 +116,9 @@ pytest_args=(
 %doc README.rst 
 
 %changelog
+* Fri Nov 15 2024 Orion Poplawski <orion@nwra.com> - 6.1.6-1
+- Update to 6.1.6
+
 * Thu Aug 08 2024 Sergio Pascual <sergiopr@fedoraproject.org> - 6.0.1-5
 - Write the test macro correctly
 

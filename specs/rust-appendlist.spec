@@ -2,21 +2,21 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate quoted_printable
+%global crate appendlist
 
-Name:           rust-quoted_printable
-Version:        0.5.1
+Name:           rust-appendlist
+Version:        1.4.0
 Release:        %autorelease
-Summary:        Simple encoder/decoder for quoted-printable data
+Summary:        Append-only list that preserves references to its elements
 
-License:        0BSD
-URL:            https://crates.io/crates/quoted_printable
+License:        MIT
+URL:            https://crates.io/crates/appendlist
 Source:         %{crates_source}
 
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-A simple encoder/decoder for quoted-printable data.}
+An append-only list that preserves references to its elements.}
 
 %description %{_description}
 
@@ -44,18 +44,6 @@ This package contains library source intended for building other packages which
 use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+std-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+std-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "std" feature of the "%{crate}" crate.
-
-%files       -n %{name}+std-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep

@@ -5,7 +5,7 @@
 %global crate pythonize
 
 Name:           rust-pythonize
-Version:        0.21.1
+Version:        0.22.0
 Release:        %autorelease
 Summary:        Serde Serializer & Deserializer from Rust <--> Python, backed by PyO3
 

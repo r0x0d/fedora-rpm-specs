@@ -5,32 +5,26 @@
 %{?_with_bootstrap: %global bootstrap 1}
 
 Name: rubygem-%{gem_name}
-Version: 1.1.1
-Release: 12%{?dist}
+Version: 3.0.3
+Release: 1%{?dist}
 Summary: Your personal string matching expert
 License: MIT
 URL: https://github.com/sinatra/mustermann
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # Support and mustermann-contrib routines required by test suite.
 # git clone https://github.com/sinatra/mustermann.git && cd mustermann
-# git checkout v1.1.1 && tar czvf mustermann-1.1.1-support.tgz support/
+# git checkout v3.0.3 && tar czvf mustermann-3.0.3-support.tgz support/
 Source1: %{gem_name}-%{version}-support.tgz
-# tar czvf mustermann-1.1.1-mustermann-contrib.tgz mustermann-contrib/
+# tar czvf mustermann-3.0.3-mustermann-contrib.tgz mustermann-contrib/
 Source2: %{gem_name}-%{version}-mustermann-contrib.tgz
-# https://github.com/sinatra/mustermann/commit/8be5bd4ac3642d9c9582d0a7258f3197fa54bb96
-# Ruby3.2 removes Object#:~
-Patch0:  %{gem_name}-2.0.2-ruby32-regex_match-for-object.patch
-# Similarly, from https://github.com/sinatra/mustermann/pull/113
-Patch1:  %{gem_name}-1.1.1-ruby32-regex_match-for-object-2.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
-BuildRequires: ruby >= 2.2.0
+BuildRequires: ruby >= 2.6.0
 BuildRequires: rubygem(rspec)
 BuildRequires: rubygem(rspec-its)
 %if ! 0%{?bootstrap}
 BuildRequires: rubygem(sinatra)
 %endif
-BuildRequires: rubygem(rack-test)
 BuildArch: noarch
 
 %description
@@ -47,8 +41,7 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version} -b 1 -b 2
-%patch -P0 -p2
-%patch -P1 -p2
+
 # Drop ruby2_keywords dependency that is required by Ruby < 2.7.
 %gemspec_remove_dep -g ruby2_keywords
 
@@ -70,20 +63,13 @@ cp -a .%{gem_dir}/* \
 %check
 # We don't ship tool.
 sed -i "/^require 'tool\/warning_filter'/ s/^/#/" \
-  %{_builddir}/support/lib/support/env.rb
+  %{builddir}/support/lib/support/env.rb
 # We don't test coverage.
 sed -i "/^require 'support\/coverage'/ s/^/#/" \
-  %{_builddir}/support/lib/support.rb
+  %{builddir}/support/lib/support.rb
 
 pushd .%{gem_instdir}
-# Mustermann extension is only available on Sinatra 1.x.
-mv spec/extension_spec.rb{,.disabled}
-sed -i "/^require 'mustermann\/extension'/ s/^/#/" \
-  spec/mustermann_spec.rb
-sed -i '/^  describe :extend_object do$/,/^  end$/ s/^/#/' \
-  spec/mustermann_spec.rb
-
-rspec -I%{_builddir}/{support,mustermann-contrib}/lib spec
+rspec -I%{builddir}/{support,mustermann-contrib}/lib spec
 popd
 %endif
 
@@ -91,7 +77,6 @@ popd
 %dir %{gem_instdir}
 %license %{gem_instdir}/LICENSE
 %{gem_libdir}
-%exclude %{gem_instdir}/mustermann.gemspec
 %exclude %{gem_cache}
 %{gem_spec}
 
@@ -99,9 +84,14 @@ popd
 %doc %{gem_docdir}
 %doc %{gem_instdir}/README.md
 %{gem_instdir}/bench
+%{gem_instdir}/mustermann.gemspec
 %{gem_instdir}/spec
 
 %changelog
+* Mon Nov 18 2024 Vít Ondruch <vondruch@redhat.com> - 3.0.3-1
+- Update to Mustermann 3.0.3.
+  Resolves: rhbz#2107869
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.1-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -4,23 +4,23 @@
 %bcond_without tilt_integration_tests
 
 Name: rubygem-%{gem_name}
-Version: 3.0.5
-Release: 5%{?dist}
+Version: 3.2.0
+Release: 1%{?dist}
 Summary: Ruby-based web application framework
 License: MIT
 URL: http://sinatrarb.com/
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # git clone https://github.com/sinatra/sinatra.git && cd sinatra
-# git archive -v -o sinatra-3.0.5-test.tar.gz v3.0.5 test/
+# git archive -v -o sinatra-3.2.0-test.tar.gz v3.2.0 test/
 Source1: %{gem_name}-%{version}-test.tar.gz
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby >= 2.6.0
 %if %{without bootstrap}
-BuildRequires: rubygem(rack-protection) >= %{version}
-BuildRequires: rubygem(mustermann)
-BuildRequires: rubygem(rack-test)
 BuildRequires: rubygem(minitest) > 5
+BuildRequires: rubygem(mustermann)
+BuildRequires: rubygem(rack-protection) >= %{version}
+BuildRequires: rubygem(rack-test)
 # Tilt is actually required from base_test
 BuildRequires: rubygem(tilt)
 %if %{with tilt_integration_tests}
@@ -85,12 +85,14 @@ pushd .%{gem_instdir}
 cp -a %{_builddir}/test test
 
 # Avoid ActiveSupport dependency, which should not be needed anyway.
-sed -i '/active_support/ s/^/#/' test/helper.rb
+sed -i '/active_support/ s/^/#/' test/test_helper.rb
 
 # We can't do integration test
 # because we don't ship sinatra-contrib including Sinatra::Runner.
 mv test/integration_test.rb{,.disabled}
 mv test/integration_async_test.rb{,.disabled}
+# These would require additional dependencies, such as Zeitwerk, Puma, etc.
+mv test/integration_start_test.rb{,.disabled}
 
 # TODO: Is it worth of testing all the possible template engines integration?
 ruby -e 'Dir.glob "./test/*_test.rb", &method(:require)'
@@ -120,6 +122,9 @@ popd
 %{gem_instdir}/sinatra.gemspec
 
 %changelog
+* Mon Nov 18 2024 Vít Ondruch <vondruch@redhat.com> - 3.2.0-1
+- Update to Sinatra 3.2.0.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:3.0.5-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

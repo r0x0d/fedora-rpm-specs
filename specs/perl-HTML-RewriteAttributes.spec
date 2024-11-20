@@ -1,10 +1,10 @@
 Name:           perl-HTML-RewriteAttributes
-Version:        0.05
-Release:        35%{?dist}
+Version:        0.06
+Release:        2%{?dist}
 Summary:        Concise attribute rewriting
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/HTML-RewriteAttributes
-Source0:        https://cpan.metacpan.org/authors/id/T/TS/TSIBLEY/HTML-RewriteAttributes-%{version}.tar.gz
+Source0:        https://cpan.metacpan.org/authors/id/B/BP/BPS/HTML-RewriteAttributes-%{version}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  %{__make}
@@ -50,6 +50,13 @@ sed -i -e '/^inc\/.*$/d' MANIFEST
 %{_mandir}/man3/*
 
 %changelog
+* Mon Nov 18 2024 Corsépius <corsepiu@fedoraproject.org> - 0.06-2
+- Fix bogus changelog entry.
+
+* Mon Nov 18 2024 Corsépius <corsepiu@fedoraproject.org> - 0.06-1
+- Upstream update.
+- Reflect upstream URL having changed.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.05-35
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

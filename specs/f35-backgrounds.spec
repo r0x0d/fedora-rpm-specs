@@ -7,7 +7,7 @@
 
 Name:           %{bgname}-backgrounds
 Version:        %{relnum}.0.1
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Fedora %{relnum} default desktop background
 
 # Automatically converted from old format: CC-BY-SA - review is highly recommended.
@@ -19,7 +19,7 @@ Source0:        https://github.com/fedoradesign/backgrounds/releases/download/v%
 BuildArch:      noarch
 
 # for %%_kde4_* macros
-BuildRequires:  kde-filesystem
+BuildRequires:  kde4-filesystem
 BuildRequires:  make
 Requires:       %{name}-gnome = %{version}-%{release}
 Requires:       %{name}-kde = %{version}-%{release}
@@ -176,6 +176,9 @@ This package contains  supplemental wallpapers for XFCE
 %endif
 
 %changelog
+* Mon Nov 18 2024 David Auer <dreua@posteo.de> - 35.0.1-11
+- Fix buildrequires for f40+
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 35.0.1-10
 - convert license to SPDX
 

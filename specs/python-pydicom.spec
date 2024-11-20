@@ -36,6 +36,9 @@ Patch:          pydicom-3.0.1-endian-numpy.patch
 # https://github.com/pydicom/pydicom/issues/2147#issuecomment-2423736084
 Patch:          pydicom-3.0.1-endian-pillow.patch
 
+# Fix for python 3.14
+Patch:          https://github.com/pydicom/pydicom/pull/2173/commits/016abf0fa18a6f578a55d9816084f901a9809367.patch
+
 # The package contains no compiled code, and the binary RPMs are noarch, but
 # the base package is arched because there are arch-dependent test failures and
 # we need to test on all architectures.

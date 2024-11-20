@@ -9,7 +9,7 @@
 %endif
 
 Name:           perl-CPAN
-Version:        2.37
+Version:        2.38
 Release:        1%{?dist}
 Summary:        Query, download and build perl modules from CPAN sites
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -282,7 +282,7 @@ perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
 mkdir -p %{buildroot}%{_libexecdir}/%{name}
 cp -a t distroprefs %{buildroot}%{_libexecdir}/%{name}
 # Does not work with system module
-rm %{buildroot}%{_libexecdir}/%{name}/t/51pod.t
+rm %{buildroot}%{_libexecdir}/%{name}/t/5*pod*.t
 # Remove the tests which need ./lib and ./blib
 rm %{buildroot}%{_libexecdir}/%{name}/t/03pkgs.t
 rm %{buildroot}%{_libexecdir}/%{name}/t/04clean_load.t
@@ -329,6 +329,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Mon Nov 18 2024 Jitka Plesnikova <jplesnik@redhat.com> - 2.38-1
+- 2.38 bump (rhbz#2326875)
+
 * Mon Sep 02 2024 Jitka Plesnikova <jplesnik@redhat.com> - 2.37-1
 - 2.37 bump (rhbz#2309019)
 

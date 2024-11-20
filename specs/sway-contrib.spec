@@ -1,15 +1,16 @@
-%global tag     1.9-rc2
+%global tag     1.10-contrib.0
 
 Name:           sway-contrib
-Version:        1.9~rc2
+Version:        1.10+contrib.0
 Release:        %autorelease
 Summary:        Collection of user-contributed scripts for Sway
 
 License:        MIT
 URL:            https://github.com/OctopusET/sway-contrib
-Source:         %{url}/archive/%{tag}/%{name}-%{version}.tar.gz
+Source:         %{url}/archive/%{tag}/%{name}-%{tag}.tar.gz
 BuildArch:      noarch
 
+BuildRequires:  make
 BuildRequires:  python3-devel
 BuildRequires:  scdoc
 
@@ -18,6 +19,16 @@ Requires:       python3dist(i3ipc)
 
 %description
 %{summary}.
+
+%package -n     grimpicker
+Summary:        A simple color picker for wlroots
+Requires:       grim
+Requires:       slurp
+Recommends:     /usr/bin/wl-copy
+Recommends:     /usr/bin/notify-send
+
+%description -n grimpicker
+grimpicker is a color picker that uses slurp and grim.
 
 %package -n     grimshot
 Summary:        Helper for screenshots within sway
@@ -36,28 +47,48 @@ interface.
 
 %prep
 %autosetup -n %{name}-%{tag}
-%py3_shebang_fix *.py
+%py3_shebang_fix grimpicker/grimpicker *.py
 
 
 %build
-scdoc <grimshot.1.scd >grimshot.1
+%make_build -C grimpicker
+scdoc <grimshot/grimshot.1.scd >grimshot/grimshot.1
 
 
 %install
 install -D -pv -t %{buildroot}%{_libexecdir}/%{name}  *.py
-install -D -pv -m0644 -t %{buildroot}%{_mandir}/man1  grimshot.1
-install -D -pv -m0755 -t %{buildroot}%{_bindir}  grimshot
+# grimpicker
+%make_install -C grimpicker PREFIX=%{_prefix}
+install -D -pv -m0644 grimpicker/completion.zsh \
+    %{buildroot}%{zsh_completions_dir}/_grimpicker
+# grimshot
+install -D -pv -m0644 grimshot/grimshot.1 \
+    -t %{buildroot}%{_mandir}/man1
+install -D -pv -m0755 grimshot/grimshot \
+    -t %{buildroot}%{_bindir}
+install -D -pv -m0644 grimshot/grimshot-completion.bash \
+    %{buildroot}%{bash_completions_dir}/grimshot
 
 
 %files
 %license LICENSE
+%doc README.md
 %dir %{_libexecdir}/%{name}
 %{_libexecdir}/%{name}/*.py
+
+%files -n grimpicker
+%license LICENSE
+%{_bindir}/grimpicker
+%{_mandir}/man1/grimpicker.1*
+%{bash_completions_dir}/grimpicker
+%{fish_completions_dir}/grimpicker.fish
+%{zsh_completions_dir}/_grimpicker
 
 %files -n grimshot
 %license LICENSE
 %{_bindir}/grimshot
 %{_mandir}/man1/grimshot.1*
+%{bash_completions_dir}/grimshot
 
 
 %changelog

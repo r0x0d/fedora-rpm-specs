@@ -41,7 +41,7 @@ ExcludeArch: %{ix86}
 Summary:       Access and modify virtual machine disk images
 Name:          libguestfs
 Epoch:         1
-Version:       1.55.1
+Version:       1.55.2
 Release:       1%{?dist}
 License:       LGPL-2.1-or-later
 
@@ -802,6 +802,10 @@ find $RPM_BUILD_ROOT -name .packlist -delete
 find $RPM_BUILD_ROOT -name '*.bs' -delete
 find $RPM_BUILD_ROOT -name 'bindtests.pl' -delete
 
+# debuginfo generation fails with debugedit >= 5.1 unless the files
+# are writable:
+find $RPM_BUILD_ROOT -name Guestfs.so -exec chmod u+w {} \;
+
 # golang: Ignore what libguestfs upstream installs, and just copy the
 # source files to %%{_datadir}/gocode/src.
 %ifarch %{golang_arches}
@@ -1100,6 +1104,9 @@ rm ocaml/html/.gitignore
 
 
 %changelog
+* Mon Nov 18 2024 Richard W.M. Jones <rjones@redhat.com> - 1:1.55.2-1
+- New upstream development version 1.55.2
+
 * Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 1:1.55.1-1
 - New upstream development version 1.55.1
 - Replace jansson with json-c

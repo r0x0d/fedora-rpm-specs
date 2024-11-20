@@ -9,7 +9,7 @@
 Name:    kreport
 Summary: Framework for creation and generation of reports
 Version: 3.2.0
-Release: 17%{?dist}
+Release: 18%{?dist}
 
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License: LicenseRef-Callaway-LGPLv2+
@@ -51,7 +51,7 @@ BuildRequires: cmake
 BuildRequires: pkgconfig
 
 # plugins
-BuildRequires: cmake(Marble)
+#BuildRequires: cmake(Marble)
 #BuildRequires: cmake(Qt5WebKitWidgets)
 
 %if 0%{?tests}
@@ -112,7 +112,7 @@ make test ARGS="--output-on-failure --timeout 20" -C %{_target_platform} ||:
 %dir %{_qt5_plugindir}/kreport3/
 # TODO: consider splitting some into subpkgs (maps/marble in particular)
 %{_qt5_plugindir}/kreport3/org.kde.kreport.barcode.so
-%{_qt5_plugindir}/kreport3/org.kde.kreport.maps.so
+#%%{_qt5_plugindir}/kreport3/org.kde.kreport.maps.so
 #%%{_qt5_plugindir}/kreport3/org.kde.kreport.web.so
 %{_kf5_datadir}/kservicetypes5/kreport_elementplugin.desktop
 # .rcc icon resources
@@ -127,6 +127,9 @@ make test ARGS="--output-on-failure --timeout 20" -C %{_target_platform} ||:
 
 
 %changelog
+* Fri Nov 15 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 3.2.0-18
+- Disable maps plugin
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 3.2.0-17
 - convert license to SPDX
 

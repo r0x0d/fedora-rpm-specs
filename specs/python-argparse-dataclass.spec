@@ -12,7 +12,9 @@ Source:         %{url}/archive/%{version}/argparse_dataclass-%{version}.tar.gz
 
 BuildArch:      noarch
 
-BuildRequires:  python3-devel
+BuildSystem:            pyproject
+BuildOption(install):   -l argparse_dataclass
+
 # The dev extra and the requirements_dev.txt file both have too many linters
 # and other unwanted dependencies; it makes more sense to BR what we need for
 # testing manually.
@@ -30,24 +32,7 @@ Summary:        %{summary}
 %description -n python3-argparse-dataclass %{common_description}
 
 
-%prep
-%autosetup -n argparse_dataclass-%{version}
-
-
-%generate_buildrequires
-%pyproject_buildrequires
-
-
-%build
-%pyproject_wheel
-
-
-%install
-%pyproject_install
-%pyproject_save_files -l argparse_dataclass
-
-
-%check
+%check -a
 %pytest --doctest-modules -v
 
 

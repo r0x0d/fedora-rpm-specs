@@ -2,17 +2,31 @@
 # on build sandboxes.
 %bcond_with check
 
+%if 0%{?rhel}
+%global bundled_rust_deps 1
+%else
+%global bundled_rust_deps 0
+%endif
+
 Name:           libkrun
-Version:        1.9.5
-Release:        2%{?dist}
+Version:        1.9.8
+Release:        1%{?dist}
 Summary:        Dynamic library providing Virtualization-based process isolation capabilities
 
 License:        Apache-2.0
 URL:            https://github.com/containers/libkrun
 Source:         https://github.com/containers/libkrun/archive/refs/tags/v%{version}.tar.gz
+%if 0%{?bundled_rust_deps}
 # Generated with:
 #  cargo vendor-filterer --platform=*-unknown-linux-gnu --features blk,net,gpu,snd,amd-sev
 Source1:        %{name}-%{version}-vendor.tar.xz
+%else
+# Remove references to unused deps so we don't need to install them for
+# building this package
+Patch0:         libkrun-remove-unused-deps.diff
+# For aarch64, remove references to SEV deps which are only available on x86_64
+Patch1:         libkrun-remove-sev-deps.diff
+%endif
 
 # libkrun only supports x86_64 and aarch64
 ExclusiveArch:  x86_64 aarch64
@@ -44,6 +58,46 @@ BuildRequires:  libkrunfw-sev-devel >= 4.0.0
 %endif
 %ifarch aarch64
 BuildRequires:  libfdt-devel
+%endif
+
+%if ! 0%{?bundled_rust_deps}
+BuildRequires:  crate(libc/default) >= 0.2.39
+BuildRequires:  crate(vm-memory/backend-mmap) >= 0.16.0
+BuildRequires:  crate(vm-memory/default) >= 0.16.0
+BuildRequires:  crate(kvm-bindings/default) >= 0.10.0
+BuildRequires:  crate(kvm-bindings/fam-wrappers) >= 0.10.0
+BuildRequires:  crate(kvm-ioctls/default) >= 0.19.0
+BuildRequires:  crate(vmm-sys-util/default) >= 0.12.0
+BuildRequires:  crate(vm-fdt/default) >= 0.2.0
+BuildRequires:  (crate(virtio-bindings/default) >= 0.2.0 with crate(virtio-bindings/default) < 0.3.0~)
+BuildRequires:  (crate(bitflags/default) >= 1.2.0 with crate(bitflags/default) < 2.0.0~)
+BuildRequires:  (crate(env_logger/default) >= 0.9.0 with crate(env_logger/default) < 0.10.0~)
+BuildRequires:  (crate(log/default) >= 0.4.0 with crate(log/default) < 0.5.0~)
+BuildRequires:  (crate(nix/default) >= 0.24.1 with crate(nix/default) < 0.25.0~)
+BuildRequires:  (crate(nix/default) >= 0.26.1 with crate(nix/default) < 0.27.0~)
+BuildRequires:  (crate(nix/default) >= 0.27.1 with crate(nix/default) < 0.28.0~)
+BuildRequires:  (crate(rand/default) >= 0.8.5 with crate(rand/default) < 0.9.0~)
+BuildRequires:  (crate(once_cell/default) >= 1.4.1 with crate(once_cell/default) < 2.0.0~)
+BuildRequires:  (crate(crossbeam-channel/default) >= 0.5.0 with crate(crossbeam-channel/default) < 0.6.0~)
+BuildRequires:  (crate(pipewire/default) >= 0.8.0 with crate(pipewire/default) < 0.9.0~)
+BuildRequires:  (crate(zerocopy/default) >= 0.6.0 with crate(zerocopy/default) < 0.7.0~)
+BuildRequires:  (crate(zerocopy/default) >= 0.7.0 with crate(zerocopy/default) < 0.8.0~)
+BuildRequires:  (crate(remain/default) >= 0.2.0 with crate(remain/default) < 0.3.0~)
+
+%ifarch x86_64
+# SEV variant dependencies
+BuildRequires:  (crate(kbs-types/default) >= 0.8.0 with crate(kbs-types/default) < 0.9.0~)
+BuildRequires:  (crate(kbs-types/tee-sev) >= 0.8.0 with crate(kbs-types/tee-sev) < 0.9.0~)
+BuildRequires:  (crate(kbs-types/tee-snp) >= 0.8.0 with crate(kbs-types/tee-snp) < 0.9.0~)
+BuildRequires:  (crate(codicon/default) >= 3.0.0 with crate(codicon/default) < 4.0.0~)
+BuildRequires:  (crate(curl/default) >= 0.4.0 with crate(curl/default) < 0.5.0~)
+BuildRequires:  (crate(procfs/default) >= 0.12.0 with crate(procfs/default) < 0.13.0~)
+BuildRequires:  (crate(sev/default) >= 4.0.0 with crate(sev/default) < 5.0.0~)
+BuildRequires:  (crate(sev/openssl) >= 4.0.0 with crate(sev/openssl) < 5.0.0~)
+BuildRequires:  (crate(serde/default) >= 1.0.0 with crate(serde/default) < 2.0.0~)
+BuildRequires:  (crate(serde/derive) >= 1.0.0 with crate(serde/derive) < 2.0.0~)
+BuildRequires:  (crate(serde_json/default) >= 1.0.0 with crate(serde_json/default) < 2.0.0~)
+%endif
 %endif
 
 %description
@@ -82,8 +136,17 @@ capabilities.
 %endif
 
 %prep
-%autosetup -n %{name}-%{version_no_tilde} -p1 -a1
+%if 0%{?bundled_rust_deps}
+%autosetup -n %{name}-%{version_no_tilde} -a1
 %cargo_prep -v vendor
+%else
+%setup -q -n %{name}-%{version_no_tilde}
+%patch -P 0 -p1
+%ifnarch x86_64
+%patch -P 1 -p1
+%endif
+%cargo_prep
+%endif
 
 %build
 %make_build init/init
@@ -97,9 +160,11 @@ patchelf --set-soname libkrun.so.1 --output target/release/libkrun.so.%{version}
     mv target/release/libkrun.so target/release/libkrun-sev.so
     patchelf --set-soname libkrun-sev.so.1 --output target/release/libkrun-sev.so.%{version} target/release/libkrun-sev.so
 %endif
+%if 0%{?bundled_rust_deps}
 %cargo_license_summary
 %{cargo_license} > LICENSE.dependencies
 %cargo_vendor_manifest
+%endif
 
 %install
 %make_install PREFIX=%{_prefix}
@@ -109,8 +174,10 @@ patchelf --set-soname libkrun.so.1 --output target/release/libkrun.so.%{version}
 
 %files
 %license LICENSE
+%if 0%{?bundled_rust_deps}
 %license LICENSE.dependencies
 %license cargo-vendor.txt
+%endif
 %doc README.md
 %{_libdir}/libkrun.so.%{version}
 %{_libdir}/libkrun.so.1
@@ -123,8 +190,10 @@ patchelf --set-soname libkrun.so.1 --output target/release/libkrun.so.%{version}
 %ifarch x86_64
 %files sev
 %license LICENSE
+%if 0%{?bundled_rust_deps}
 %license LICENSE.dependencies
 %license cargo-vendor.txt
+%endif
 %doc README.md
 %{_libdir}/libkrun-sev.so.%{version}
 %{_libdir}/libkrun-sev.so.1

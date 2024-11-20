@@ -5,7 +5,7 @@
 
 Name:		mingw-libsoup
 Version:	2.74.3
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	MinGW library for HTTP and XML-RPC functionality
 
 # Automatically converted from old format: LGPLv2 - review is highly recommended.
@@ -14,6 +14,12 @@ URL:		https://wiki.gnome.org/Projects/libsoup
 Source0:	https://download.gnome.org/sources/libsoup/%{release_version}/libsoup-%{version}.tar.xz
 # Fix initialization from incompatible pointer type
 Patch0:         libsoup-incompat-pointer-type.patch
+# Backport fix for CVE-2024-52532
+# https://gitlab.gnome.org/GNOME/libsoup/-/commit/6adc0e3eb74c257ed4e2a23eb4b2774fdb0d67be
+Patch1:         CVE-2024-52532.patch
+# Backport fix for CVE-2024-52530
+# https://gitlab.gnome.org/GNOME/libsoup/-/commit/04df03bc092ac20607f3e150936624d4f536e68b
+Patch2:         CVE-2024-52530.patch
 
 BuildArch:	noarch
 
@@ -148,6 +154,9 @@ rm -f %{buildroot}%{mingw64_libdir}/*.la
 %{mingw64_libdir}/pkgconfig/libsoup-gnome-2.4.pc
 
 %changelog
+* Mon Nov 18 2024 Sandro Mani <manisandro@gmail.com> - 2.74.3-8
+- Backport fix for CVE-2024-52530 and CVE-2024-52532
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 2.74.3-7
 - convert license to SPDX
 

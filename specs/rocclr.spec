@@ -226,7 +226,6 @@ p=$PWD
     -DCMAKE_LINKER=%rocmllvm_bindir/ld.lld \
     -DCMAKE_AR=%rocmllvm_bindir/llvm-ar \
     -DCMAKE_RANLIB=%rocmllvm_bindir/llvm-ranlib \
-    -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-z,noexecstack \
     -DHIP_COMMON_DIR=$p/HIP-rocm-%{version} \
     -DCMAKE_INSTALL_LIBDIR=%{_lib} \
     -DHIPCC_BIN_DIR=%{_bindir} \

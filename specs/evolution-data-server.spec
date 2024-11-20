@@ -54,13 +54,17 @@
 
 Name: evolution-data-server
 Version: 3.54.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Backend data server for Evolution
 License: LGPL-2.0-or-later
 URL: https://gitlab.gnome.org/GNOME/evolution/-/wikis/home
 Source: http://download.gnome.org/sources/%{name}/3.54/%{name}-%{version}.tar.xz
 
 # 0-99: General patches
+# https://gitlab.gnome.org/GNOME/evolution-data-server/-/merge_requests/166
+# https://gitlab.gnome.org/GNOME/evolution-data-server/-/issues/571
+# Fix build with GTK 4.17+
+Patch0: 0001-I-571-libedataserverui-Avoid-initializing-the-icon_t.patch
 
 # 100-199: Flatpak-specific patches
 # https://gitlab.gnome.org/GNOME/evolution-data-server/-/merge_requests/144
@@ -513,6 +517,10 @@ find $RPM_BUILD_ROOT -name '*.so.*' -exec chmod +x {} \;
 %{_datadir}/installed-tests
 
 %changelog
+* Mon Nov 18 2024 Adam Williamson <awilliam@redhat.com> - 3.54.1-2
+- Backport MR #166 to fix build with GTK 4.17+
+- Rebuild for libphonenumber 8.13.50
+
 * Fri Oct 18 2024 Milan Crha <mcrha@redhat.com> - 3.54.1-1
 - Update to 3.54.1
 

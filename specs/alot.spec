@@ -1,6 +1,6 @@
 Name:           alot
 Version:        0.11
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Experimental terminal MUA based on notmuch mail
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -11,21 +11,9 @@ Source0:        %{url}/archive/%{version}/%{version}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
-BuildRequires:  python3-sphinx
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-pip
-BuildRequires:  python3-wheel
-BuildRequires:  python3-setuptools_scm+toml
 # needed to generate manpages
-BuildRequires:  python3-notmuch
+BuildRequires:  python3-sphinx
 BuildRequires:  make
-Requires:       python3-notmuch >= 0.27
-Requires:       python3-urwid >= 1.3.0
-Requires:       python3-urwidtrees >= 1.0
-Requires:       python3-twisted >= 10.2.0
-Requires:       python3-magic
-Requires:       python3-configobj >= 4.7.0
-Requires:       python3-gpg
 
 %description
 alot makes use of existing solutions where possible: It does not fetch, send or
@@ -36,6 +24,8 @@ its display. You are responsible for automatic initial tagging.
 %autosetup -p1
 
 %generate_buildrequires
+export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
+%pyproject_buildrequires
 
 %build
 export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
@@ -48,6 +38,9 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 install -Dpm0644 docs/build/man/alot.1* -t %{buildroot}%{_mandir}/man1/
 install -Dpm0644 alot/defaults/* -t %{buildroot}/%{python3_sitelib}/alot/defaults/
 
+%check
+%pyproject_check_import
+
 %files -f %{pyproject_files}
 %license COPYING
 %doc NEWS README.md
@@ -56,6 +49,9 @@ install -Dpm0644 alot/defaults/* -t %{buildroot}/%{python3_sitelib}/alot/default
 %{python3_sitelib}/alot/defaults
 
 %changelog
+* Mon Nov 18 2024 Miro Hrončok <mhroncok@redhat.com> - 0.11-3
+- Run import check during the build
+
 * Thu Nov 14 2024 Tomas Tomecek <ttomecek@redhat.com> - 0.11-2
 - Install defaults
 

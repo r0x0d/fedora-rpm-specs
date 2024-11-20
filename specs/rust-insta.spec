@@ -5,7 +5,7 @@
 %global crate insta
 
 Name:           rust-insta
-Version:        1.40.0
+Version:        1.41.1
 Release:        %autorelease
 Summary:        Snapshot testing library for Rust
 
@@ -280,7 +280,10 @@ use the "yaml" feature of the "%{crate}" crate.
 
 %if %{with check}
 %check
-%cargo_test
+# * In env::test_get_cargo_workspace, there is an assumption that the last path
+#   component of CARGO_MANIFEST_DIR is "insta", as would be the case by default
+#   in a git checkout. This assumption does not hold here.
+%cargo_test -- -- --exact --skip env::test_get_cargo_workspace
 %endif
 
 %changelog

@@ -1,6 +1,6 @@
 Name:     primesieve
 Version:  12.6
-Release:  1%{?dist}
+Release:  2%{?dist}
 Summary:  Fast prime number generator
 License:  LicenseRef-Callaway-BSD
 URL:      https://github.com/kimwalisch/primesieve
@@ -71,6 +71,9 @@ It also contains the API documentation of the library.
 %{_libdir}/pkgconfig/primesieve.pc
 
 %changelog
+* Mon Nov 18 2024 Kim Walisch <walki@fedoraproject.org> - 12.6-2
+- Improved CPU cache detection
+
 * Sun Nov 17 2024 Kim Walisch <walki@fedoraproject.org> - 12.6-1
 - Added AVX512 and ARM SVE pre-sieving.
 

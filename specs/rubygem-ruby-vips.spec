@@ -3,7 +3,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 2.0.17
-Release: 12%{?dist}
+Release: 13%{?dist}
 Summary: Ruby extension for the vips image processing library
 License: MIT
 URL: http://github.com/libvips/ruby-vips
@@ -14,6 +14,8 @@ Patch1: %{name}-%{version}-use-nil-for-object-rb.patch
 # Extracted from
 # https://github.com/libvips/ruby-vips/commit/e0203e9ed8be27ed195b4c5b0ca87c35daff36cc
 Patch2:  %{name}-%{version}-proc-capture-for-object-rb.patch
+# https://github.com/libvips/ruby-vips/pull/407
+Patch3:  %{name}-pr407-variadic-func-call-sentinel.patch
 # Tests are not shipped with the gem, you may check them out like so:
 # git clone --no-checkout http://github.com/libvips/ruby-vips
 # cd ruby-vips && git archive -v -o ruby-vips-2.0.17-spec.txz v2.0.17 spec/
@@ -47,6 +49,7 @@ Documentation for %{name}.
 %setup -q -n %{gem_name}-%{version} -b1
 %patch -P1 -p1
 %patch -P2 -p1
+%patch -P3 -p1
 
 # Do not use `env` in shebangs
 # https://github.com/libvips/ruby-vips/pull/245
@@ -89,6 +92,9 @@ popd
 %{gem_instdir}/install-vips.sh
 
 %changelog
+* Mon Nov 18 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.0.17-13
+- Apply upstream patch to add sentinel when calling variadic C func
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.17-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

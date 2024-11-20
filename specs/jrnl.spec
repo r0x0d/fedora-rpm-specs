@@ -1,5 +1,5 @@
 Name:           jrnl
-Version:        4.1
+Version:        4.2
 Release:        %autorelease
 Summary:        Collect your thoughts and notes without leaving the command line
 
@@ -14,10 +14,6 @@ Source:         %{forgeurl}/archive/v%{version}/jrnl-%{version}.tar.gz
 # is ready or not.
 Patch:          0001-Downstream-only-do-not-upper-bound-the-Python-interp.patch
 
-# Support pytest_bdd 7.1.2 and later
-# https://github.com/jrnl-org/jrnl/pull/1878
-Patch:          %{forgeurl}/pull/1878.patch
-
 BuildSystem:            pyproject
 BuildOption(install):   jrnl
 BuildOption(generate_buildrequires): -t
@@ -26,14 +22,6 @@ BuildArch:      noarch
 
 BuildRequires:  dos2unix
 BuildRequires:  help2man
-
-# The mkdocs-generated HTML documentation is not suitable for packaging; see
-# https://bugzilla.redhat.com/show_bug.cgi?id=2006555 for discussion.
-#
-# We can package the Markdown sources without building them; they are still
-# relatively legible as plain text. However, the text documentation files are
-# no longer large or numerous enough to justify a separate -doc subpackage.
-Obsoletes:      jrnl-doc < 3.3-1
 
 %description
 jrnl is a simple journal application for the command line.
@@ -63,12 +51,7 @@ install -D -t '%{buildroot}%{_mandir}/man1' -p -m 0644 'jrnl.1'
 
 
 %check -a
-%if v"0%{?python3_version}" >= v"3.13"
-# Add Python 3.13 support
-# https://github.com/jrnl-org/jrnl/issues/1893
-k="${k-}${k+ and }not (TestYaml and test_export_to_nonexisting_folder)"
-%endif
-%tox -- -- -k "${k-}" -rs
+%tox -- -- -rs
 
 
 %files -f %{pyproject_files}

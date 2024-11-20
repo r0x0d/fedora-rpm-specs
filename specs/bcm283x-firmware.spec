@@ -4,10 +4,10 @@
 # git clone https://github.com/raspberrypi/firmware.git
 # cd firmware/boot
 # tar cJvf ../bcm283x-firmware-%{gitshort}.tar.xz *bin *dat *elf bcm2709*dtb bcm271*dtb LICENCE.broadcom COPYING.linux overlays/
-%define gitshort 48cd9f9
+%define gitshort 545e5aa
 
 Name:          bcm283x-firmware
-Version:       20240913
+Version:       20241118
 Release:       1.%{gitshort}%{?dist}
 Summary:       Firmware for the Broadcom bcm283x/bcm271x used in the Raspberry Pi
 # see LICENSE.broadcom
@@ -41,6 +41,7 @@ shipped in the Raspberry Pi series of devices.
 
 %package     -n bcm283x-overlays
 Summary:     HAT Overlays for the Raspberry Pi
+License:     GPLv2
 
 %description -n bcm283x-overlays
 Hardware Attached Ontop (HATs) overlays for the Raspberry Pi series of devices.
@@ -105,6 +106,9 @@ install -p %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{buildro
 %{efi_esp_root}/start4*
 
 %changelog
+* Mon Nov 18 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 20241118-1.545e5aa
+- Update to latest firmware
+
 * Fri Sep 13 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 20240913-1.48cd9f9
 - Update to latest firmware
 

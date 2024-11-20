@@ -2,7 +2,7 @@
 %global libcall_ui_version 0.1.4
 
 Name:		phosh
-Version:	0.42.0
+Version:	0.43.0
 Release:	%autorelease
 Summary:	Graphical shell for mobile devices
 License:	GPL-3.0-or-later
@@ -33,7 +33,7 @@ BuildRequires:	pkgconfig(gmobile) >= 0.1.0
 BuildRequires:	pkgconfig(gnome-bluetooth-3.0) >= 46.0
 BuildRequires:	pkgconfig(gnome-desktop-3.0) >= 3.26
 BuildRequires:	pkgconfig(gobject-2.0) >= 2.76
-BuildRequires:	pkgconfig(gsettings-desktop-schemas) >= 42
+BuildRequires:	pkgconfig(gsettings-desktop-schemas) >= 47
 BuildRequires:	pkgconfig(gtk+-3.0) >= 3.24.36
 BuildRequires:	pkgconfig(gtk+-wayland-3.0) >= 3.22
 BuildRequires:	pkgconfig(gudev-1.0)
@@ -101,7 +101,7 @@ other projects to embed Phosh.
 
 %package -n libphosh-devel
 Summary:    Development headers for libphosh.
-Requires:   %{name}%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:   lib%{name}%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description -n libphosh-devel
 Development headers for libphosh.
@@ -127,7 +127,7 @@ desktop-file-install --dir %{buildroot}%{_datadir}/applications %{SOURCE4}
 %find_lang %{name}
 
 %{__install} -Dpm 0644 data/phosh.service %{buildroot}%{_unitdir}/phosh.service
-rm %{buildroot}%{_libdir}/libphosh-0.42.a
+rm %{buildroot}%{_libdir}/libphosh-0.43.a
 
 %check
 desktop-file-validate \
@@ -147,6 +147,7 @@ SH
 %{_datadir}/glib-2.0/schemas/sm.puri.phosh.plugins.ticket-box.gschema.xml
 %{_datadir}/glib-2.0/schemas/sm.puri.phosh.plugins.launcher-box.gschema.xml
 %{_datadir}/glib-2.0/schemas/sm.puri.phosh.plugins.upcoming-events.gschema.xml
+%{_datadir}/glib-2.0/schemas/mobi.phosh.plugins.pomodoro.gschema.xml
 %{_datadir}/gnome-session/sessions/phosh.session
 %{_datadir}/wayland-sessions/phosh.desktop
 %{_datadir}/phosh
@@ -165,6 +166,13 @@ SH
 %{_libdir}/phosh/plugins/dark-mode-quick-setting.plugin
 %{_libdir}/phosh/plugins/emergency-info.plugin
 %{_libdir}/phosh/plugins/launcher-box.plugin
+%{_libdir}/phosh/plugins/mobile-data-quick-setting.plugin
+%{_libdir}/phosh/plugins/night-light-quick-setting.plugin
+%{_libdir}/phosh/plugins/simple-custom-quick-setting.plugin
+%{_libdir}/phosh/plugins/ticket-box.plugin
+%{_libdir}/phosh/plugins/upcoming-events.plugin
+%{_libdir}/phosh/plugins/wifi-hotspot-quick-setting.plugin
+%{_libdir}/phosh/plugins/pomodoro-quick-setting.plugin
 %{_libdir}/phosh/plugins/libphosh-plugin-caffeine-quick-setting.so
 %{_libdir}/phosh/plugins/libphosh-plugin-calendar.so
 %{_libdir}/phosh/plugins/libphosh-plugin-dark-mode-quick-setting.so
@@ -176,31 +184,29 @@ SH
 %{_libdir}/phosh/plugins/libphosh-plugin-ticket-box.so
 %{_libdir}/phosh/plugins/libphosh-plugin-upcoming-events.so
 %{_libdir}/phosh/plugins/libphosh-plugin-wifi-hotspot-quick-setting.so
-%{_libdir}/phosh/plugins/mobile-data-quick-setting.plugin
-%{_libdir}/phosh/plugins/night-light-quick-setting.plugin
-%{_libdir}/phosh/plugins/simple-custom-quick-setting.plugin
-%{_libdir}/phosh/plugins/ticket-box.plugin
-%{_libdir}/phosh/plugins/upcoming-events.plugin
+%{_libdir}/phosh/plugins/libphosh-plugin-pomodoro-quick-setting.so
 %{_libdir}/phosh/plugins/prefs/libphosh-plugin-prefs-emergency-info.so
 %{_libdir}/phosh/plugins/prefs/libphosh-plugin-prefs-ticket-box.so
 %{_libdir}/phosh/plugins/prefs/libphosh-plugin-prefs-upcoming-events.so
-%{_libdir}/phosh/plugins/wifi-hotspot-quick-setting.plugin
+%{_libdir}/phosh/plugins/prefs/libphosh-plugin-prefs-pomodoro-quick-setting.so
 
 %doc README.md
 %license COPYING
 
 %files devel
+%{_datadir}/gir-1.0/Phosh-0.gir
 %{_includedir}/phosh
 %{_libdir}/pkgconfig/phosh-plugins.pc
 %{_libdir}/pkgconfig/phosh-settings.pc
 
 %files -n libphosh
-%{_libdir}/libphosh-0.42.so.0
+%{_libdir}/girepository-1.0/Phosh-0.typelib
+%{_libdir}/libphosh-0.43.so.0
 
 %files -n libphosh-devel
-%{_includedir}/libphosh-0.42
-%{_libdir}/libphosh-0.42.so
-%{_libdir}/pkgconfig/libphosh-0.42.pc
+%{_includedir}/libphosh-0.43
+%{_libdir}/libphosh-0.43.so
+%{_libdir}/pkgconfig/libphosh-0.43.pc
 
 %changelog
 %autochangelog

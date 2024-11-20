@@ -16,6 +16,9 @@ Source:         %forgesource
 # https://github.com/NeuralEnsemble/ephyviewer/pull/184
 Patch:          %{forgeurl}/pull/185.patch
 
+# Fix for neo 0.13.4
+Patch:          %{forgeurl}/pull/188.patch
+
 # python-pyedflib does not support s390x
 # https://src.fedoraproject.org/rpms/python-pyedflib/blob/rawhide/f/python-pyedflib.spec
 #

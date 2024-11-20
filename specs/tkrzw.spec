@@ -1,9 +1,9 @@
 %global _lto_cflags %{nil}
-%global _lib_min_ver 74
+%global _lib_min_ver 75
 
 Name:		tkrzw
-Version:	1.0.31
-Release:	3%{?dist}
+Version:	1.0.32
+Release:	1%{?dist}
 Summary:	A straightforward implementation of DBM
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:	Apache-2.0
@@ -111,6 +111,9 @@ install -t %{buildroot}%{_mandir}/man1 -m 0644 -p tkrzw_*.1
 
 
 %changelog
+* Mon Nov 18 2024 TI_Eugene <ti.eugene@gmail.com> - 1.0.32-1
+- Version bump
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.31-3
 - convert license to SPDX
 

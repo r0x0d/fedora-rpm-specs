@@ -32,6 +32,14 @@ Patch:          https://github.com/mu-editor/mu/pull/2448.patch
 # Needed for pytest 8+
 Patch:          https://github.com/mu-editor/mu/commit/75464e8d.patch
 
+# Tests: Avoid calling reset_mock() on a mock of super() to avoid RecursionError
+# Resolves half of https://bugzilla.redhat.com/2325887
+Patch:          https://github.com/mu-editor/mu/pull/2528.patch
+
+# Tests: Explicitly set cursor position
+# Resolves the other half of https://bugzilla.redhat.com/2325887
+Patch:          https://github.com/mu-editor/mu/pull/2529.patch
+
 BuildArch:      noarch
 
 BuildRequires:  pyproject-rpm-macros

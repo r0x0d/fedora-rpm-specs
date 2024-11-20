@@ -1,18 +1,17 @@
 Summary:	Various ancient mail-related perl modules
 Name:		perl-MailTools
-Version:	2.21
-Release:	17%{?dist}
+Version:	2.22
+Release:	1%{?dist}
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:		https://metacpan.org/release/MailTools
 Source0:	https://cpan.metacpan.org/authors/id/M/MA/MARKOV/MailTools-%{version}.tar.gz
 BuildArch:	noarch
 # Module Build
 BuildRequires:	coreutils
-BuildRequires:	findutils
 BuildRequires:	make
 BuildRequires:	perl-generators
 BuildRequires:	perl-interpreter
-BuildRequires:	perl(ExtUtils::MakeMaker)
+BuildRequires:	perl(ExtUtils::MakeMaker) >= 6.76
 BuildRequires:	sed
 # Module Runtime
 BuildRequires:	perl(base)
@@ -24,11 +23,10 @@ BuildRequires:	perl(Exporter)
 BuildRequires:	perl(IO::Handle)
 BuildRequires:	perl(Net::Domain) >= 1.05
 BuildRequires:	perl(Net::NNTP)
-BuildRequires:	perl(Net::SMTP) >= 1.03
+BuildRequires:	perl(Net::SMTP) >= 1.28
 BuildRequires:	perl(Net::SMTP::SSL)
 BuildRequires:	perl(POSIX)
 BuildRequires:	perl(strict)
-BuildRequires:	perl(vars)
 # Test Suite
 BuildRequires:	perl(Test::More)
 BuildRequires:	perl(warnings)
@@ -56,12 +54,11 @@ cd -
 sed -i -e '/^examples\/.*\.PL/d' MANIFEST
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 %{_fixperms} -c %{buildroot}
 
 %check
@@ -120,6 +117,11 @@ make test TEST_FILES="xt/*.t"
 %{_mandir}/man3/MailTools.3*
 
 %changelog
+* Mon Nov 18 2024 Paul Howarth <paul@city-fan.org> - 2.22-1
+- Update to 2.22 (rhbz#2326982)
+  - To/Cc/Bcc/From fields may appear only once (GH#4)
+- Use %%{make_build} and %%{make_install}
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.21-17
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

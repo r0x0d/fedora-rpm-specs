@@ -13,9 +13,9 @@
 
 %bcond_without       tests
 
-%global gh_commit    70c08f8d20c0eb4fe56f26644dd94dae76a7f450
+%global gh_commit    19473c30efe4f7b3cd42522d0b2e6e7f243c6f87
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
-%global gh_date      2024-11-12
+%global gh_date      2024-11-16
 %global gh_owner     PHPCSStandards
 %global gh_project   PHP_CodeSniffer
 # keep in old PEAR tree
@@ -23,7 +23,7 @@
 
 
 Name:           php-pear-PHP-CodeSniffer
-Version:        3.11.0
+Version:        3.11.1
 Release:        1%{?dist}
 Summary:        PHP coding standards enforcement tool
 
@@ -141,6 +141,9 @@ fi
 
 
 %changelog
+* Mon Nov 18 2024 Remi Collet <remi@remirepo.net> - 3.11.1-1
+- update to 3.11.1
+
 * Tue Nov 12 2024 Remi Collet <remi@remirepo.net> - 3.11.0-1
 - update to 3.11.0
 

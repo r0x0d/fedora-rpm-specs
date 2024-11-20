@@ -5,7 +5,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 7.0.8
-Release: 6%{?dist}
+Release: 7%{?dist}
 Summary: Rendering framework putting the V in MVC (part of Rails)
 License: MIT
 URL: http://rubyonrails.org
@@ -30,6 +30,12 @@ Patch2: rubygem-actionview-pr49416-RenderCallExtractor-ruby33-compat.patch
 # From https://github.com/rails/rails/pull/51510
 # Remove OpenStruct usage due to json 2.7.2 change
 Patch3: rubygem-actionview-pr51510-remove-openstruct-usage.patch
+# Ruby 3.4 backticks compatibility.
+# https://github.com/rails/rails/pull/51101
+Patch4: rubygem-actionview-7.2.0-Update-test-suite-for-compatibility-with-Ruby-3-4-dev.patch
+# Ruby 3.4 `Hash#inspect` formatting.
+# https://github.com/rails/rails/pull/53202/commits/4b7570899e86dda156029b0a3b31e6549bcc49e4
+Patch5: rubygem-actionview-7.2.0-Update-Action-View-test-suite-for-Ruby-3-4-Hash-inspect.patch
 
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
@@ -58,10 +64,12 @@ Documentation for %{name}.
 %prep
 %setup -q -n %{gem_name}-%{version}%{?prerelease} -b1 -b2
 
-pushd %{_builddir}
+pushd %{builddir}
 %patch 0 -p2
 %patch 1 -p2
 %patch 3 -p2
+%patch 4 -p2
+%patch 5 -p2
 popd
 %patch 2 -p2
 
@@ -114,6 +122,9 @@ popd
 %doc %{gem_instdir}/CHANGELOG.md
 
 %changelog
+* Fri Nov 15 2024 Vít Ondruch <vondruch@redhat.com> - 7.0.8-7
+- Ruby 3.4 backtick and `Hash#inspect` compatibility.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.8-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
