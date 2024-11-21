@@ -2,7 +2,7 @@
 
 Name:           pungi
 Version:        4.7.0
-Release:        6%{?dist}
+Release:        8%{?dist}
 Summary:        Distribution compose tool
 
 License:        GPL-2.0-only
@@ -13,6 +13,8 @@ Patch:          https://pagure.io/pungi/pull-request/1782.patch
 Patch:          https://pagure.io/pungi/pull-request/1788.patch
 Patch:          https://pagure.io/pungi/pull-request/1789.patch
 Patch:          https://pagure.io/pungi/pull-request/1790.patch
+Patch:          https://pagure.io/pungi/pull-request/1796.patch
+Patch:          https://pagure.io/pungi/pull-request/1798.patch
 
 BuildRequires:  make
 BuildRequires:  python3-pytest
@@ -146,6 +148,12 @@ rm %{buildroot}%{_bindir}/pungi
 %{_bindir}/%{name}-cache-cleanup
 
 %changelog
+* Tue Nov 19 2024 Adam Williamson <awilliam@redhat.com> - 4.7.0-8
+- Backport #1798 to infer types/formats for new FEX backing images
+
+* Tue Nov 19 2024 Adam Williamson <awilliam@redhat.com> - 4.7.0-7
+- Backport #1796 to speed up compose some more
+
 * Thu Nov 14 2024 Adam Williamson <awilliam@redhat.com> - 4.7.0-6
 - Rebuild with no changes to bump past release used in infra tag
 

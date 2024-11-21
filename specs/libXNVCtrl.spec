@@ -1,5 +1,5 @@
 Name:           libXNVCtrl
-Version:        560.35.03
+Version:        565.57.01
 Release:        %autorelease
 Summary:        Library providing the NV-CONTROL API
 License:        GPL-2.0-or-later

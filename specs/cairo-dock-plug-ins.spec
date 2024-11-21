@@ -4,8 +4,8 @@
 %global	core_least_ver	3.5.99
 
 %global	use_git	1
-%global	gitdate	20241024
-%global	githash	d9652122e6b563bd0cfb2759a31e0e90d6b7307e
+%global	gitdate	20241117
+%global	githash	e9d3fcdab6158390ef8a3e6acb5ec3b12ccb9cac
 %global	shorthash	%(c=%{githash} ; echo ${c:0:7})
 
 %global	tarballver	%{mainver}%{?use_git:-%{gitdate}git%{shorthash}}
@@ -417,6 +417,9 @@ popd
 %{_datadir}/cairo-dock/plug-ins/Dbus/CDApplet.h
 
 %changelog
+* Tue Nov 19 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.5.99^20241117gite9d3fcd-1
+- Update to the latest git (3.5.99-20241117gite9d3fcd)
+
 * Thu Oct 24 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.5.99^20241024gitd965212-1
 - Update to the latest git (20241024gitd965212)
 

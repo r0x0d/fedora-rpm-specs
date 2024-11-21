@@ -3,7 +3,7 @@
 
 Name:           rubygem-%{gem_name}
 Version:        0.10.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Builds man pages from Markdown
 License:        MIT
 URL:            https://github.com/apjanke/ronn-ng
@@ -11,6 +11,9 @@ Source0:        https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # git clone https://github.com/apjanke/ronn-ng.git && cd ronn-ng
 # git archive -v -o ronn-ng-0.10.1-test.tar.gz v0.10.1 test/
 Source1: %{gem_name}-%{version}-test.tar.gz
+# https://github.com/apjanke/ronn-ng/pull/125
+# load fileutils explicitly for ruby34
+Patch0:         ronn-ng-pr125-ruby34-fileutils-deps.patch
 BuildRequires:  ruby(release)
 BuildRequires:  rubygems-devel
 BuildRequires:  ruby
@@ -43,6 +46,10 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version} -b 1
+(
+cd %{_builddir}/test
+%patch -P0 -p2
+)
 
 %build
 # Create the gem as gem install only works on a gem file
@@ -106,6 +113,9 @@ popd
 %{gem_instdir}/ronn-ng.gemspec
 
 %changelog
+* Tue Nov 19 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.10.1-5
+- Load fileutils explicitly for test for ruby34
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.10.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

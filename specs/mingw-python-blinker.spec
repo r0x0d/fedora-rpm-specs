@@ -4,20 +4,20 @@
 
 Name:          mingw-python-%{pypi_name}
 Summary:       MinGW Windows Python %{pypi_name} library
-Version:       1.7.0
-Release:       2%{?dist}
+Version:       1.9.0
+Release:       1%{?dist}
 BuildArch:     noarch
 
 License:       MIT
 URL:           https://github.com/pallets-eco/blinker
 Source0:       %{pypi_source}
 
-BuildRequires: mingw32-filesystem >= 95
+BuildRequires: mingw32-filesystem
 BuildRequires: mingw32-python3
 BuildRequires: mingw32-python3-build
 BuildRequires: mingw32-python3-flit-core
 
-BuildRequires: mingw64-filesystem >= 95
+BuildRequires: mingw64-filesystem
 BuildRequires: mingw64-python3
 BuildRequires: mingw64-python3-build
 BuildRequires: mingw64-python3-flit-core
@@ -56,17 +56,20 @@ MinGW Windows Python3 %{pypi_name}.
 
 
 %files -n mingw32-python3-%{pypi_name}
-%license LICENSE.rst
+%license LICENSE.txt
 %{mingw32_python3_sitearch}/%{pypi_name}/
 %{mingw32_python3_sitearch}/%{pypi_name}-%{version}.dist-info/
 
 %files -n mingw64-python3-%{pypi_name}
-%license LICENSE.rst
+%license LICENSE.txt
 %{mingw64_python3_sitearch}/%{pypi_name}/
 %{mingw64_python3_sitearch}/%{pypi_name}-%{version}.dist-info/
 
 
 %changelog
+* Tue Nov 19 2024 Sandro Mani <manisandro@gmail.com> - 1.9.0-1
+- Update to 1.9.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.7.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

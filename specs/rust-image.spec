@@ -5,7 +5,7 @@
 %global crate image
 
 Name:           rust-image
-Version:        0.25.2
+Version:        0.25.5
 Release:        %autorelease
 Summary:        Imaging library
 
@@ -244,6 +244,18 @@ use the "rayon" feature of the "%{crate}" crate.
 %files       -n %{name}+rayon-devel
 %ghost %{crate_instdir}/Cargo.toml
 
+%package     -n %{name}+serde-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+serde-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "serde" feature of the "%{crate}" crate.
+
+%files       -n %{name}+serde-devel
+%ghost %{crate_instdir}/Cargo.toml
+
 %package     -n %{name}+tga-devel
 Summary:        %{summary}
 BuildArch:      noarch
@@ -296,7 +308,7 @@ use the "webp" feature of the "%{crate}" crate.
 %if %{with check}
 %check
 # * skip tests that require files which are not included in published crates
-%cargo_test -- -- --exact --skip codecs::bmp::decoder::test::read_rect --skip codecs::bmp::decoder::test::test_no_header --skip codecs::openexr::test::compare_cropped --skip codecs::openexr::test::compare_exr_hdr --skip codecs::openexr::test::compare_rgba_rgb --skip codecs::png::tests::ensure_no_decoder_off_by_one --skip codecs::png::tests::underlying_error --skip codecs::qoi::tests::decode_test_image --skip codecs::tga::encoder::tests::compressed::round_trip_bw --skip dynimage::test::image_dimensions --skip dynimage::test::open_16bpc_png --skip imageops::sample::tests::resize_transparent_image --skip imageops::sample::tests::test_resize_same_size --skip imageops::sample::tests::test_sample_bilinear --skip imageops::sample::tests::test_sample_nearest
+%cargo_test -- -- --exact --skip codecs::bmp::decoder::test::read_rect --skip codecs::bmp::decoder::test::test_no_header --skip codecs::jpeg::decoder::tests::test_exif_orientation --skip codecs::openexr::test::compare_cropped --skip codecs::openexr::test::compare_exr_hdr --skip codecs::openexr::test::compare_rgba_rgb --skip codecs::png::tests::ensure_no_decoder_off_by_one --skip codecs::png::tests::underlying_error --skip codecs::qoi::tests::decode_test_image --skip codecs::tga::encoder::tests::compressed::round_trip_bw --skip dynimage::test::image_dimensions --skip dynimage::test::open_16bpc_png --skip imageops::sample::tests::resize_transparent_image --skip imageops::sample::tests::test_resize_same_size --skip imageops::sample::tests::test_sample_bilinear --skip imageops::sample::tests::test_sample_nearest --skip imageops::tests::fast_blur_approximates_gaussian_blur_well
 %endif
 
 %changelog

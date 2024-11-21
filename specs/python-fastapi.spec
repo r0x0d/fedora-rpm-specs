@@ -9,8 +9,7 @@
 
 %bcond orjson 1
 %bcond uvicorn 1
-# Not yet packaged: https://pypi.org/project/sqlmodel/
-%bcond sqlmodel 0
+%bcond sqlmodel 1
 # Not yet packaged: https://pypi.org/project/PyJWT/
 %bcond pyjwt 0
 
@@ -66,8 +65,6 @@ BuildRequires:  %{py3_dist httpx} >= 0.23
 # requirements-tests.txt:
 BuildRequires:  %{py3_dist pytest} >= 7.1.3
 BuildRequires:  %{py3_dist dirty-equals} >= 0.6
-# Omit sqlmodel, https://pypi.org/project/sqlmodel/, because it is not yet
-# packaged and only has very limited use in the tests.
 %if %{with sqlmodel}
 BuildRequires:  %{py3_dist sqlmodel} >= 0.0.22
 %endif
@@ -729,7 +726,6 @@ ignore="${ignore-} --ignore=tests/test_tutorial/test_custom_response/test_tutori
 ignore="${ignore-} --ignore-glob=tests/test_tutorial/test_security/test_tutorial005*"
 
 %if %{without sqlmodel}
-# These require python-sqlmodel, which is not packaged.
 ignore="${ignore-} --ignore-glob=tests/test_tutorial/test_sql_databases/test_tutorial001.py"
 ignore="${ignore-} --ignore-glob=tests/test_tutorial/test_sql_databases/test_tutorial002.py"
 %endif

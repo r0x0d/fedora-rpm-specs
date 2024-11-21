@@ -9,7 +9,7 @@
 
 Name:    kf5-%{framework}
 Version: 23.08.5
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: The KMailTransport Library
 
 License: BSD-3-Clause AND CC0-1.0 AND LGPL-2.0-or-later AND LGPL-2.1-or-later
@@ -23,14 +23,11 @@ URL:     https://invent.kde.org/frameworks/%{framework}
 %endif
 Source0:        http://download.kde.org/%{stable}/release-service/%{version}/src/%{framework}-%{version}.tar.xz
 
-# /usr/share/config.kcfg/mailtransport.kcfg is co-owned by
-# kf5-kmailtransport and kf6-kmailtransport so they must match.
-Conflicts:      kmailtransport < 24.05.0-1
-# Backport changes from KPim6 here.
-# https://invent.kde.org/pim/kmailtransport/-/commit/ab4672568afa25a036947b5ad21cff4c6dac6db9
-Patch0:         mailtransport.kcfg-change-default-encryption.patch
-# https://invent.kde.org/pim/kmailtransport/-/commit/2e7fa8f24c41dfac2e2a7dbca637c6dce35381ba
-Patch1:         mailtransport.kcfg-add-activities.patch
+%if %{undefined flatpak}
+# /usr/share/config.kcfg/mailtransport.kcfg is used by both
+# kf5-kmailtransport and (kf6-)kmailtransport, only the latter is being updated
+Recommends:     kmailtransport >= 24.05.0
+%endif
 
 # handled by qt5-srpm-macros, which defines %%qt5_qtwebengine_arches
 %{?qt5_qtwebengine_arches:ExclusiveArch: %{qt5_qtwebengine_arches}}
@@ -103,6 +100,10 @@ developing applications that use %{name}.
 
 %find_lang %{name} --all-name --with-html
 
+%if %{undefined flatpak}
+rm -f %{buildroot}%{_kf5_datadir}/config.kcfg/mailtransport.kcfg
+%endif
+
 
 %check
 %if 0%{?tests}
@@ -119,7 +120,9 @@ make test ARGS="--output-on-failure --timeout 20" -C %{_target_platform} ||:
 %license LICENSES/*
 %{_kf5_datadir}/qlogging-categories5/*%{framework}.*
 %{_kf5_libdir}/libKPim5MailTransport.so.*
+%if %{defined flatpak}
 %{_kf5_datadir}/config.kcfg/mailtransport.kcfg
+%endif
 %dir %{_kf5_qtplugindir}/pim5
 %{_kf5_qtplugindir}/pim5/mailtransport/mailtransport_smtpplugin.so
 
@@ -133,6 +136,9 @@ make test ARGS="--output-on-failure --timeout 20" -C %{_target_platform} ||:
 
 
 %changelog
+* Tue Nov 19 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 23.08.5-5
+- Avoid file conflict with (kf6-)kmailtransport
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 23.08.5-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

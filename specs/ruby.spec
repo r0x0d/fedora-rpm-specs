@@ -1755,7 +1755,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 
 
 %changelog
-* Mon Nov 11 2024 Vít Ondruch <vondruch@redhat.com> - 3.3.5-16
+* Mon Nov 11 2024 Vít Ondruch <vondruch@redhat.com> - 3.3.6-16
 - Upgrade to Ruby 3.3.6.
 
 * Fri Sep 13 2024 Vít Ondruch <vondruch@redhat.com> - 3.3.5-15

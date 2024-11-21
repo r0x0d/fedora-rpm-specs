@@ -5,8 +5,8 @@
 %define with_worker 1
 
 Name:           kobo
-Version:        0.37.0
-Release:        3%{?dist}
+Version:        0.38.0
+Release:        1%{?dist}
 License:        LGPL-2.1-only
 Summary:        Python modules for tools development
 URL:            https://github.com/release-engineering/kobo
@@ -194,6 +194,9 @@ rm -rf $RPM_BUILD_ROOT/%{python3_sitelib}/kobo/worker
 
 
 %changelog
+* Tue Nov 19 2024 Kamil Dudka <kdudka@redhat.com> - 0.38.0-1
+- rebase to latest upstream release (rhbz#2327211)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.37.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

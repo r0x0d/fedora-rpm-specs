@@ -26,7 +26,9 @@ BuildRequires: pkgconfig
 BuildRequires: pkgconfig(libnl-3.0)
 BuildRequires: pkgconfig(libnl-route-3.0)
 BuildRequires: /usr/bin/rst2man
+%ifarch %{valgrind_arches}
 BuildRequires: valgrind-devel
+%endif
 BuildRequires: systemd
 BuildRequires: systemd-devel
 %if 0%{?fedora} >= 32 || 0%{?rhel} >= 8

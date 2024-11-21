@@ -36,7 +36,7 @@ ExclusiveArch: x86_64
 
 Name:		gnome-boxes
 Version:	47.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A simple GNOME 3 application to access remote or virtual systems
 
 # Sources are under LGPL-2.0-or-later, AppData is CC0-1.0 and help is
@@ -44,6 +44,8 @@ Summary:	A simple GNOME 3 application to access remote or virtual systems
 License:	LGPL-2.0-or-later AND CC0-1.0 AND CC-BY-SA-3.0
 URL:		https://wiki.gnome.org/Apps/Boxes
 Source0:	https://download.gnome.org/sources/%{name}/%{major_version}/%{name}-%{tarball_version}.tar.xz
+# fix validation of metainfo
+Patch0:         https://gitlab.gnome.org/GNOME/gnome-boxes/-/merge_requests/667.patch
 
 BuildRequires:	gettext >= 0.19.8
 BuildRequires:	meson
@@ -69,6 +71,7 @@ BuildRequires:	pkgconfig(webkit2gtk-4.1)
 BuildRequires:	spice-gtk3-vala
 BuildRequires:	libosinfo-vala
 BuildRequires:	desktop-file-utils
+BuildRequires:	libappstream-glib
 
 # Pulls in libvirtd + KVM, but no NAT / firewall configs
 %if %{with_qemu_kvm}
@@ -76,7 +79,7 @@ Requires:	libvirt-daemon-kvm
 %else
 Requires:	libvirt-daemon-qemu
 %endif
-Requires:	/usr/bin/virsh
+Requires:	libvirt-client
 
 # Pulls in the libvirtd NAT 'default' network
 # Original request: https://bugzilla.redhat.com/show_bug.cgi?id=1081762
@@ -135,6 +138,7 @@ rm -rf %{buildroot}%{_datadir}/gnome-boxes/vapi/
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/org.gnome.Boxes.desktop
+appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.gnome.Boxes.metainfo.xml
 
 %files -f %{name}.lang
 %license COPYING copyright
@@ -155,6 +159,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.gnome.Boxes.deskt
 %{_metainfodir}/org.gnome.Boxes.metainfo.xml
 
 %changelog
+* Mon Nov 18 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 47.0-2
+- Validate metainfo file
+
 * Wed Sep 18 2024 nmontero <nmontero@redhat.com> - 47.0-1
 - Update to 47.0
 

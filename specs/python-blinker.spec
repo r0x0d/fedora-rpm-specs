@@ -1,8 +1,8 @@
 %global mod_name blinker
 
 Name:           python-blinker
-Version:        1.7.0
-Release:        3%{?dist}
+Version:        1.9.0
+Release:        1%{?dist}
 Summary:        Fast, simple object-to-object and broadcast signaling
 
 License:        MIT
@@ -49,10 +49,13 @@ of interested parties to subscribe to events, or "signals".
 %tox
 
 %files -n python3-blinker -f %{pyproject_files}
-%doc CHANGES.rst LICENSE.rst README.rst
+%doc CHANGES.rst LICENSE.txt README.md
 
 
 %changelog
+* Tue Nov 12 2024 Frantisek Zatloukal <fzatlouk@redhat.com> - 1.9.0-1
+- Bump to blinker 1.9.0 (fixes RHBZ#2183824)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.7.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

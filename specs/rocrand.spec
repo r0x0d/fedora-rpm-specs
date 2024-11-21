@@ -43,7 +43,7 @@ Release:        %autorelease
 Summary:        ROCm random number generator
 
 Url:            https://github.com/ROCm/rocRAND
-License:        MIT and BSD
+License:        MIT AND BSD-3-Clause
 Source0:        %{url}/archive/rocm-%{version}.tar.gz#/%{upstreamname}-%{version}.tar.gz
 
 #BuildRequires:  git
@@ -152,18 +152,21 @@ fi
 %license LICENSE.txt
 
 %files devel -f %{name}.devel
-%{_includedir}/%{name}
+%dir %{_libdir}/cmake/%{name}
+%dir %{_includedir}/%{name}
+%{_includedir}/%{name}/*
 
 %if %{with test}
 %files test -f %{name}.test
 %endif
 
-%changelog
 %if 0%{?is_opensuse}
+%changelog
 * Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 
 %else
+%changelog
 %autochangelog
 %endif
 

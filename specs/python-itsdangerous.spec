@@ -1,8 +1,8 @@
 %global srcname itsdangerous
 
 Name:           python-%{srcname}
-Version:        2.1.2
-Release:        9%{?dist}
+Version:        2.2.0
+Release:        1%{?dist}
 Summary:        Library for passing trusted data to untrusted environments
 License:        BSD-3-Clause
 URL:            https://itsdangerous.palletsprojects.com
@@ -52,11 +52,14 @@ BuildRequires:  python3dist(freezegun)
 
 
 %files -n python3-%{srcname} -f %{pyproject_files}
-%license LICENSE.rst
-%doc CHANGES.rst README.rst
+%license LICENSE.txt
+%doc CHANGES.rst README.md
 
 
 %changelog
+* Tue Nov 19 2024 Frantisek Zatloukal <fzatlouk@redhat.com> - 2.2.0-1
+- Update to 2.2.0 (RHBZ#)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.2-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

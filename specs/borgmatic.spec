@@ -1,5 +1,5 @@
 Name:           borgmatic
-Version:        1.9.1
+Version:        1.9.2
 Release:        %autorelease
 Summary:        Simple Python wrapper script for borgbackup
 
@@ -31,8 +31,7 @@ according to a retention policy, and validates backups for consistency.
 
 %prep
 %autosetup -n %{name}
-# Workaround missing (commented out) build-backend in pyproject.toml
-sed -i '/build-backend/s/^#//g' pyproject.toml
+
 
 %build
 %pyproject_wheel

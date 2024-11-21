@@ -30,7 +30,7 @@ Version:        0
 Release:        0.15%{?dist}
 Summary:        YAML support for the Go language
 
-License:        MIT and LGPL-3.0
+License:        MIT AND LGPL-3.0-only WITH LGPL-3.0-linking-exception
 URL:            %{gourl}
 Source:         %{gosource}
 

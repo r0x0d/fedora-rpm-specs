@@ -1,5 +1,5 @@
 Name:             ansible-pcp
-Version:          2.4.0
+Version:          2.4.1
 Release:          1%{?dist}
 Summary:          Ansible Metric collection for Performance Co-Pilot
 License:          MIT
@@ -116,6 +116,9 @@ ansible-lint `find roles -name \*.yml`
 %{ansible_collection_files}
 
 %changelog
+* Tue Nov 19 2024 Sam Feife <sfeifer@redhat.com> 2.4.1-1
+- Latest upstream release to resolve build issues
+
 * Tue Oct 15 2024 Nathan Scott <nathans@redhat.com> 2.4.0-1
 - Latest upstream release
 

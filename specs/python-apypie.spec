@@ -1,8 +1,8 @@
 %global pypi_name apypie
 
 Name:           python-%{pypi_name}
-Version:        0.4.0
-Release:        7%{?dist}
+Version:        0.5.0
+Release:        1%{?dist}
 Summary:        Apipie bindings for Python
 
 License:        MIT
@@ -40,6 +40,9 @@ rm -rf %{pypi_name}.egg-info
 %{python3_sitelib}/%{pypi_name}-%{version}-py*.egg-info
 
 %changelog
+* Tue Nov 19 2024 Packit <hello@packit.dev> - 0.5.0-1
+- New release 0.5.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

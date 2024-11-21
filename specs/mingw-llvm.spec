@@ -13,7 +13,7 @@
 %global libver 18
 
 Name:          mingw-%{pkgname}
-Version:       19.1.0
+Version:       19.1.4
 Release:       1%{?dist}
 Summary:       LLVM for MinGW
 
@@ -261,6 +261,9 @@ chrpath --delete %{buildroot}%{_prefix}/%{mingw64_target}/bin/llvm-tblgen
 
 
 %changelog
+* Tue Nov 19 2024 Sandro Mani <manisandro@gmail.com> - 19.1.4-1
+- Update to 19.1.4
+
 * Sun Sep 29 2024 Sandro Mani <manisandro@gmail.com> - 19.1.0-1
 - Update to 19.1.0
 

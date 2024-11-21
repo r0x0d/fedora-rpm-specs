@@ -4,22 +4,23 @@
 
 Name:          mingw-python-%{pypi_name}
 Summary:       MinGW Windows Python %{pypi_name} library
-Version:       2.1.2
-Release:       8%{?dist}
+Version:       2.2.0
+Release:       1%{?dist}
 BuildArch:     noarch
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:       LicenseRef-Callaway-BSD
+License:       BSD-3-Clause
 URL:           http://pythonhosted.org/itsdangerous/
 Source0:       %{pypi_source}
 
-BuildRequires: mingw32-filesystem >= 95
+BuildRequires: mingw32-filesystem
 BuildRequires: mingw32-python3
 BuildRequires: mingw32-python3-build
+BuildRequires: mingw32-python3-flit-core
 
-BuildRequires: mingw64-filesystem >= 95
+BuildRequires: mingw64-filesystem
 BuildRequires: mingw64-python3
 BuildRequires: mingw64-python3-build
+BuildRequires: mingw64-python3-flit-core
 
 
 %description
@@ -55,17 +56,20 @@ MinGW Windows Python3 %{pypi_name} library.
 
 
 %files -n mingw32-python3-%{pypi_name}
-%license LICENSE.rst
+%license LICENSE.txt
 %{mingw32_python3_sitearch}/%{pypi_name}/
 %{mingw32_python3_sitearch}/%{pypi_name}-%{version}.dist-info/
 
 %files -n mingw64-python3-%{pypi_name}
-%license LICENSE.rst
+%license LICENSE.txt
 %{mingw64_python3_sitearch}/%{pypi_name}/
 %{mingw64_python3_sitearch}/%{pypi_name}-%{version}.dist-info/
 
 
 %changelog
+* Tue Nov 19 2024 Sandro Mani <manisandro@gmail.com> - 2.2.0-1
+- Update to 2.2.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 2.1.2-8
 - convert license to SPDX
 

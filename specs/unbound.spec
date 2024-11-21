@@ -63,6 +63,11 @@ Source19: https://keys.openpgp.org/pks/lookup?op=get&search=0x9F6F1C2D7E045F8D#/
 Source20: unbound.sysusers
 Source21: remote-control.conf
 Source22: https://nlnetlabs.nl/downloads/keys/Yorgos.asc
+Source23: unbound-as112-networks.conf
+Source24: unbound-local-root.conf
+Source25: openssl-sha1.conf
+Source26: remote-control-include.conf
+Source27: fedora-defaults.conf
 
 # Downstream configuration changes
 Patch1:   unbound-fedora-config.patch
@@ -233,6 +238,7 @@ Python 3 modules and extensions for unbound
             --enable-relro-now --enable-pie \\\
             --enable-subnet --enable-ipsecmod \\\
             --with-conf-file=%{_sysconfdir}/%{name}/unbound.conf \\\
+            --with-share-dir=%{_datadir}/%{name} \\\
             --with-pidfile=%{_rundir}/%{name}/%{name}.pid \\\
             --enable-sha2 --disable-gost --enable-ecdsa \\\
             --with-rootkey-file=%{_sharedstatedir}/%{name}/root.key \\\
@@ -262,9 +268,6 @@ autoreconf -fiv
 %endif
 %if %{with doh}
             --with-libnghttp2 \
-%endif
-%if 0%{?rhel} || 0%{?fedora} > 40
-            --disable-sha1 \
 %endif
 %if %{with redis}
             --with-libhiredis \
@@ -363,7 +366,14 @@ mkdir -p %{buildroot}%{_sysconfdir}/unbound/{keys.d,conf.d,local.d}
 install -p -m 0644 %{SOURCE9} %{buildroot}%{_sysconfdir}/unbound/keys.d/
 install -p -m 0644 %{SOURCE10} %{buildroot}%{_sysconfdir}/unbound/conf.d/
 install -p -m 0644 %{SOURCE11} %{buildroot}%{_sysconfdir}/unbound/local.d/
-install -p -m 0644 %{SOURCE21} %{buildroot}%{_sysconfdir}/unbound/conf.d/
+install -p -m 0644 %{SOURCE26} %{buildroot}%{_sysconfdir}/unbound/conf.d/remote-control.conf
+install -p -m 0644 %{SOURCE25} %{buildroot}%{_sysconfdir}/unbound/openssl-sha1.conf
+
+mkdir -p %{buildroot}%{_datadir}/%{name}/conf.d
+install -p -m 0644 %{SOURCE21} %{buildroot}%{_datadir}/%{name}/conf.d/
+install -p -m 0644 %{SOURCE23} %{buildroot}%{_datadir}/%{name}/conf.d/
+install -p -m 0644 %{SOURCE24} %{buildroot}%{_datadir}/%{name}/conf.d/
+install -p -m 0644 %{SOURCE27} %{buildroot}%{_datadir}/%{name}/
 
 # Link unbound-control-setup.8 manpage to unbound-control.8
 echo ".so man8/unbound-control.8" > %{buildroot}/%{_mandir}/man8/unbound-control-setup.8
@@ -399,17 +409,11 @@ fi
 %systemd_postun_with_restart unbound-anchor.service unbound-anchor.timer
 
 %check
-#pushd pythonmod
-#make test
-#popd
-
+export OPENSSL_CONF="%{buildroot}%{_sysconfdir}/unbound/openssl-sha1.conf"
 make check
 
 %if 0%{?python_secondary:1}
 pushd %{dir_secondary}
-#pushd pythonmod
-#make test
-#popd
 make check
 popd
 %endif
@@ -422,6 +426,7 @@ popd
 %attr(0755,unbound,unbound) %dir %{_rundir}/%{name}
 %attr(0644,root,root) %{_tmpfilesdir}/unbound.conf
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/%{name}/unbound.conf
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/%{name}/openssl-sha1.conf
 %dir %attr(0755,root,unbound) %{_sysconfdir}/%{name}/keys.d
 %attr(0644,root,unbound) %config(noreplace) %{_sysconfdir}/%{name}/keys.d/*.key
 %dir %attr(0755,root,unbound) %{_sysconfdir}/%{name}/conf.d
@@ -436,6 +441,7 @@ popd
 %{_sbindir}/unbound-checkconf
 %{_sbindir}/unbound-control
 %{_sbindir}/unbound-control-setup
+%{_datadir}/%{name}/
 %{_mandir}/man5/*
 %exclude %{_mandir}/man8/unbound-anchor*
 %{_mandir}/man8/*

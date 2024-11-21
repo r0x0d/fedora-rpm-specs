@@ -3,7 +3,7 @@
 # identically and released at the same time, it makes sense to build them from
 # a single source package.
 Name:           python-typer
-Version:        0.13.0
+Version:        0.13.1
 Release:        %autorelease
 Summary:        Build great CLIs; easy to code; based on Python type hints
 
@@ -35,12 +35,6 @@ BuildRequires:  python3-devel
 # but remove upper bounds, as we must try to make do with what we have.
 BuildRequires:  %{py3_dist pytest} >= 4.4
 BuildRequires:  %{py3_dist pytest-xdist} >= 1.32
-# As much as possible, we patch out linters, coverage tools, and typecheckers
-# (https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters),
-# but there are dozens of tests that explicitly run scripts indirectly via the
-# coverage module, and patching all of these tests correctly has become
-# onerous.
-BuildRequires:  %{py3_dist coverage[toml]} >= 6.2
 
 %global common_description %{expand:
 Typer is a library for building CLI applications that users will love using and
@@ -145,6 +139,16 @@ export _TYPER_RUN_INSTALL_COMPLETION_TESTS=1
 # These cannot find the typer package because the tests override PYTHONPATH.
 ignore="${ignore-} --ignore=tests/test_tutorial/test_subcommands/test_tutorial001.py"
 ignore="${ignore-} --ignore=tests/test_tutorial/test_subcommands/test_tutorial003.py"
+
+mkdir _stub
+cat > _stub/coverage.py <<'EOF'
+from subprocess import run
+from sys import argv, executable, exit
+if len(argv) < 3 or argv[1] != "run":
+    exit(f"Unsupported arguments: {argv!r}")
+exit(run([executable] + argv[2:]).returncode)
+EOF
+export PYTHONPATH="${PWD}/_stub:%{buildroot}%{python3_sitelib}"
 
 %pytest -k "${k-}" ${ignore-} -n auto -v -rs
 

@@ -4,7 +4,7 @@
 
 Name:           gjs
 Version:        1.82.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Javascript Bindings for GNOME
 
 # The following files contain code from Mozilla which
@@ -31,10 +31,11 @@ BuildRequires:  pkgconfig(sysprof-capture-4)
 BuildRequires:  gtk3
 # For dbus tests
 BuildRequires:  /usr/bin/dbus-run-session
-#dbus-x11, xvfb, mesa-dri-drivers for test suite
+#dbus-x11, xwfb, mesa-dri-drivers for test suite
 BuildRequires:  dbus-x11
 BuildRequires:  mesa-dri-drivers
-BuildRequires:  xorg-x11-server-Xvfb
+BuildRequires:  mutter
+BuildRequires:  xwayland-run
 
 Requires: glib2%{?_isa} >= %{glib2_version}
 Requires: gobject-introspection%{?_isa} >= %{gobject_introspection_version}
@@ -73,7 +74,7 @@ the functionality of the installed gjs package.
 %meson_install
 
 %check
-%{shrink:xvfb-run -s "-screen 0 1600x1200x24" %meson_test --timeout-multiplier=5}
+%{shrink:xwfb-run -c mutter -- %meson_test --timeout-multiplier=5}
 
 %files
 %license COPYING
@@ -98,6 +99,9 @@ the functionality of the installed gjs package.
 %{_datadir}/installed-tests/
 
 %changelog
+* Thu Oct 31 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 1.82.1-2
+- Replace Xvfb dependency with xwayland-run
+
 * Mon Oct 21 2024 nmontero <nmontero@redhat.com> - 1.82.1-1
 - Update to 1.82.1
 

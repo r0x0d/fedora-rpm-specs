@@ -1,10 +1,9 @@
 Name:           intel-gmmlib
-Version:        22.5.2
+Version:        22.5.3
 Release:        %autorelease
 Summary:        Intel Graphics Memory Management Library
 
-# Automatically converted from old format: MIT and BSD - review is highly recommended.
-License:        LicenseRef-Callaway-MIT AND LicenseRef-Callaway-BSD
+License:        MIT AND BSD-3-Clause
 URL:            https://github.com/intel/gmmlib
 Source0:        %{url}/archive/%{name}-%{version}.tar.gz
 

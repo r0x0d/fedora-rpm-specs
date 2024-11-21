@@ -40,6 +40,9 @@
 # Visit https://bugzilla.redhat.com/show_bug.cgi?id=1540300
 %undefine _strict_symbol_defs_build
 
+# BIND9 does not work with fortify 3 level, make builds work on Fedora
+%global _fortify_level 2
+
 # Upstream package name
 %global upname bind
 # Provide only bind-utils on f37+, it has better behaviour
@@ -53,7 +56,7 @@ Summary:  The Berkeley Internet Name Domain (BIND) DNS (Domain Name System) serv
 Name:     bind9-next
 License:  MPL-2.0 AND ISC AND BSD-3-clause AND Expat AND BSD-2-clause
 #
-Version:  9.19.24
+Version:  9.21.2
 Release:  %autorelease
 Epoch:    32
 Url:      https://www.isc.org/downloads/bind/
@@ -89,9 +92,6 @@ Source49: named-chroot.files
 # Common patches
 # Red Hat specific documentation is not relevant to upstream
 Patch1: bind-9.16-redhat_doc.patch
-# Correct support for building without openssl/engine.h header
-# https://gitlab.isc.org/isc-projects/bind9/-/merge_requests/9228
-Patch2: bind-9.20-openssl-no-engine.patch
 
 %{?systemd_ordering}
 Requires:       coreutils

@@ -1,5 +1,5 @@
 Name:           spdlog
-Version:        1.14.1
+Version:        1.15.0
 Release:        %autorelease
 
 License:        MIT
@@ -11,6 +11,7 @@ Patch0:         %{name}-fmt_external.patch
 BuildRequires:  catch-devel >= 3.0.0
 BuildRequires:  fmt-devel >= 10.0.0
 BuildRequires:  google-benchmark-devel
+BuildRequires:  systemd-devel
 
 BuildRequires:  cmake
 BuildRequires:  gcc
@@ -58,7 +59,7 @@ rm -f tests/catch.hpp
 %files
 %license LICENSE
 %doc README.md
-%{_libdir}/lib%{name}.so.1.14*
+%{_libdir}/lib%{name}.so.1.15*
 
 %files devel
 %doc example

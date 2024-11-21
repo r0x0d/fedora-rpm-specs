@@ -1,7 +1,7 @@
 %bcond tests 1
 
 Name:           python-aiohttp
-Version:        3.10.10
+Version:        3.10.11
 Release:        %autorelease
 Summary:        Python HTTP client/server for asyncio
 
@@ -44,14 +44,14 @@ Recommends:     python3-aiohttp+speedups
 rm -rv vendor/llhttp
 # Disable test coverage reports
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
-sed -r -i '/--cov=/d' setup.cfg
+sed -r -i '/--cov=|-p pytest_cov/d' setup.cfg
 # Comment out:
 #   - optional test dependencies that are not yet packaged or are useless here
-#   - coverage dependnecies
+#   - coverage and benchmarking dependenecies
 #   - the “-c” constraint, which the pyproject-rpm-macros don’t support
 sed -r \
    -e 's/^(proxy[-\.]py|python-on-whales|wait-for-it)/# &/' \
-   -e 's/^(coverage|pytest-cov|mypy)/# &/' \
+   -e 's/^(coverage|pytest-cov|pytest_codspeed|mypy)/# &/' \
    -e 's/^(setuptools-git)/# &/' \
    -e 's/^-c /# &/' \
    requirements/test.in |
@@ -96,6 +96,8 @@ rm -rvf .git
 %if %{with tests}
 # Fixes problems importing compiled extensions from subprocesses.
 export PYTHONSAFEPATH=1
+# We do not want to run benchmarks (and we patched out their dependencies)
+ignore="${ignore-} --ignore-glob=tests/test_benchmarks_*"
 # test_proxy_functional.py requires python3dist(proxy-py)
 ignore="${ignore-} --ignore=tests/test_proxy_functional.py"
 # These require python-on-whales and a running Docker

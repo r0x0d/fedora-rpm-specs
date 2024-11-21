@@ -1,11 +1,14 @@
 Name:           python-productmd
 Version:        1.41
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library providing parsers for metadata related to OS installation
 
 License:        LGPL-2.1-only
 URL:            https://github.com/release-engineering/productmd
 Source:         %{pypi_source productmd}
+# https://github.com/release-engineering/productmd/pull/180
+# adds new image formats/types for FEX backing images
+Patch:          0001-images-add-type-and-formats-for-erofs-and-squashfs-t.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -43,6 +46,9 @@ Summary:        %{summary}
 %doc AUTHORS
 
 %changelog
+* Tue Nov 19 2024 Adam Williamson <awilliam@redhat.com> - 1.41-2
+- Backport #180 to add types/formats to support new FEX backing images
+
 * Mon Nov 04 2024 Lubomír Sedlář <lsedlar@redhat.com> - 1.41-1
 - Update RPM_ARCHES to match dnf
 

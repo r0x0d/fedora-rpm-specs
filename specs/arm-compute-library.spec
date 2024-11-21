@@ -15,8 +15,8 @@ Summary:	ARM compute library
 License:	MIT AND Apache-2.0
 URL:		https://github.com/arm-software/ComputeLibrary
 Source0:	%{url}/archive/v%{version}/%{name}-%{version}.tar.gz
-Source1:	libarm_compute.pc.in
-Source2:	libarm_compute_graph.pc.in
+Source1:	arm_compute.pc.in
+Source2:	arm_compute_graph.pc.in
 
 Patch0:		mathjax-doc.patch
 Patch1:		disable-doxygen-timestamp.patch
@@ -85,13 +85,13 @@ cat %{SOURCE1} | sed -e "s,%%prefix%%,%{_prefix},g" \
 	-e "s,%%libdir%%,%{_libdir},g" \
 	-e "s,%%includedir%%,%{_includedir},g" \
 	-e "s,%%VERSION%%,%{version},g" \
-	> build/install/libarm_compute.pc
+	> build/install/arm_compute.pc
 cat %{SOURCE2} | sed -e "s,%%prefix%%,%{_prefix},g" \
 	-e "s,%%exec_prefix%%,%{_prefix},g" \
 	-e "s,%%libdir%%,%{_libdir},g" \
 	-e "s,%%includedir%%,%{_includedir},g" \
 	-e "s,%%VERSION%%,%{version},g" \
-	> build/install/libarm_compute_graph.pc
+	> build/install/arm_compute_graph.pc
 
 %install
 mkdir -p %{buildroot}%{_includedir}/ArmCompute
@@ -100,8 +100,8 @@ mkdir -p %{buildroot}%{_libdir}
 rm -f build/*.a
 cp -a build/libarm_compute* %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_libdir}/pkgconfig
-install -m 0644 build/install/libarm_compute.pc %{buildroot}%{_libdir}/pkgconfig
-install -m 0644 build/install/libarm_compute_graph.pc %{buildroot}%{_libdir}/pkgconfig
+install -m 0644 build/install/arm_compute.pc %{buildroot}%{_libdir}/pkgconfig
+install -m 0644 build/install/arm_compute_graph.pc %{buildroot}%{_libdir}/pkgconfig
 mkdir -p %{buildroot}%{_docdir}/%{name}
 cp -a build/docs/html %{buildroot}%{_docdir}/%{name} 
 
@@ -124,8 +124,8 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir}:$LD_LIBRARY_PATH ./build/tests/arm_comput
 %{_includedir}/ArmCompute/*
 %{_libdir}/libarm_compute.so
 %{_libdir}/libarm_compute_graph.so
-%{_libdir}/pkgconfig/libarm_compute.pc
-%{_libdir}/pkgconfig/libarm_compute_graph.pc
+%{_libdir}/pkgconfig/arm_compute.pc
+%{_libdir}/pkgconfig/arm_compute_graph.pc
 
 %files doc
 %{_docdir}/%{name}

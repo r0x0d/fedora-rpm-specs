@@ -29,7 +29,6 @@ BuildRequires:  docbook-style-xsl libxslt
 BuildRequires:  gcc
 BuildRequires:  gettext
 BuildRequires:  meson
-BuildRequires:  setxkbmap
 BuildRequires:  pkgconfig(accountsservice)
 BuildRequires:  pkgconfig(colord)
 BuildRequires:  pkgconfig(colord-gtk4)

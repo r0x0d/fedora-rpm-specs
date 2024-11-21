@@ -1,10 +1,9 @@
 Name: eth-tools
-Version: 11.7.0.0
-Release: 112%{?dist}
+Version: 11.7.0.2
+Release: 2%{?dist}
 Summary: Intel Ethernet Fabric Suite basic tools and libraries for fabric management
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License: LicenseRef-Callaway-BSD
+License: BSD-3-Clause
 Url: https://github.com/intel/eth-fast-fabric
 Source: %url/releases/download/v%{version_no_tilde}/eth-fast-fabric-%{version_no_tilde}.tar.gz
 ExclusiveArch: x86_64
@@ -95,8 +94,8 @@ BUILDDIR=%{_builddir} DESTDIR=%{buildroot} LIBDIR=%{_prefix}/lib DSAP_LIBDIR=%{_
 %config(noreplace) /usr/lib/eth-tools/osid_wrapper
 
 %changelog
-* Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 1:11.7.0.0-112
-- convert license to SPDX
+* Mon Nov 18 2024 Jijun Wang <jijun.wang@intel.com> - 11.7.0.2-2
+- Fixed ethudstress cq poll regression issue
 
 * Tue Jul 16 2024 Jijun Wang <jijun.wang@intel.com> - 11.7.0.0-110
 - Improved to support RHEL 9.4/8.10 and SLES 15.6

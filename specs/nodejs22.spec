@@ -169,6 +169,7 @@ Source203: v8.pc.in
 Patch: 0001-Remove-unused-OpenSSL-config.patch
 Patch: 0002-build-conditionally-compile-bundled-sqlite.patch
 Patch: 0003-deps-ncrypto-include-openssl-rand.h.patch
+Patch: 0004-tools-fix-riscv64-build-failed.patch
 
 %if 0%{?nodejs_default}
 %global pkgname nodejs

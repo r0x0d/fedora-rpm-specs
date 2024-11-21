@@ -11,7 +11,7 @@ URL:     https://github.com/googlefonts/RobotoMono
 %global foundry           google
 # The font family license identifier. Adjust as necessary. The OFL is our
 # recommended font license.
-%global fontlicense       ASL-2.0
+%global fontlicense       Apache-2.0
 #
 # The following directives are lists of space-separated shell globs
 #   – matching files associated with the font family,

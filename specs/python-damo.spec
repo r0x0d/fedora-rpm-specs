@@ -11,7 +11,7 @@ patterns of your system or workloads and make data access-aware memory
 management optimizations.}
 
 Name:           python-%{srcname}
-Version:        2.5.5
+Version:        2.5.6
 Release:        %autorelease
 Summary:        Data Access Monitoring Operator
 
@@ -85,7 +85,7 @@ touch -r damo src/damo/__init__.py
 
 %files -n %{srcname} -f %{pyproject_files}
 %license COPYING
-%doc CONTRIBUTING README.md SECURITY.md USAGE.md release_note
+%doc CONTRIBUTING FEATURES_DEPRECATION_PROCESS.md FEATURES_DEPRECATION_SCHEDULE.md README.md REPORTING.md SECURITY.md TODO USAGE.md release_note
 %{_bindir}/%{srcname}
 
 

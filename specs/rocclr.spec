@@ -128,8 +128,10 @@ ROCm Compute Language Runtime
 %package -n rocm-opencl
 Summary:        ROCm OpenCL platform and device tool
 Requires:       comgr(major) = %{comgr_maj_api_ver}
+%if 0%{?rhel} || 0%{?fedora}
 Requires:       ocl-icd%{?_isa}
 Requires:       opencl-filesystem
+%endif
 
 %description -n rocm-opencl
 ROCm OpenCL language runtime.
@@ -287,6 +289,10 @@ fi
 
 %if %{with ocl}
 %files -n rocm-opencl
+%if 0%{?is_opensuse}
+%dir %{_sysconfdir}/OpenCL/
+%dir %{_sysconfdir}/OpenCL/vendors
+%endif
 %license opencl/LICENSE.txt
 %config(noreplace) %{_sysconfdir}/OpenCL/vendors/amdocl64.icd
 %{_libdir}/libamdocl64.so.%{rocm_major}{,.*}

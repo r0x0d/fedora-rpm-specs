@@ -5,18 +5,13 @@
 %global crate fallible_collections
 
 Name:           rust-fallible_collections
-Version:        0.4.9
+Version:        0.5.1
 Release:        %autorelease
 Summary:        Which adds fallible allocation api to std collections
 
-# Upstream license specification: MIT/Apache-2.0
 License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/fallible_collections
 Source:         %{crates_source}
-# Manually created patch for downstream crate metadata changes
-# * use hashbrown 0.14 instead of 0.13
-#   (https://github.com/vcombey/fallible_collections/pull/46)
-Patch:          fallible_collections-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -50,18 +45,6 @@ This package contains library source intended for building other packages which
 use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+hashbrown-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+hashbrown-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "hashbrown" feature of the "%{crate}" crate.
-
-%files       -n %{name}+hashbrown-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+hashmap-devel

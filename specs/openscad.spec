@@ -3,11 +3,10 @@ Version:        2021.01
 %global upversion %{version}
 Release:        %autorelease
 Summary:        The Programmers Solid 3D CAD Modeller
-# COPYING contains a linking exception for CGAL
-# Appdata file is CC0
-# Examples are CC0
-# Automatically converted from old format: GPLv2 with exceptions and CC0 - review is highly recommended.
-License:        LicenseRef-Callaway-GPLv2-with-exceptions AND CC0-1.0
+# OpenSCAD is GPL-2.0-only WITH CGAL-linking-exception
+# Appdata file is CC0-1.0
+# Examples are CC0-1.0
+License:        GPL-2.0-only WITH CGAL-linking-exception AND CC0-1.0
 URL:            http://www.%{name}.org/
 Source0:        http://files.%{name}.org/%{name}-%{upversion}.src.tar.gz
 Patch0:         %{name}-polyclipping.patch
@@ -89,8 +88,7 @@ interested in creating computer-animated movies.
 ###############################################
 %package        MCAD
 Summary:        OpenSCAD Parametric CAD Library
-# Automatically converted from old format: LGPLv2+ and LGPLv2 and LGPLv3+ and (GPLv3 or LGPLv2) and (GPLv3+ or LGPLv2) and (CC-BY-SA or LGPLv2+) and (CC-BY-SA or LGPLv2) and CC-BY and BSD and MIT and Public Domain - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-LGPLv2 AND LGPL-3.0-or-later AND (GPL-3.0-only OR LicenseRef-Callaway-LGPLv2) AND (GPL-3.0-or-later OR LicenseRef-Callaway-LGPLv2) AND (LicenseRef-Callaway-CC-BY-SA OR LicenseRef-Callaway-LGPLv2+) AND (LicenseRef-Callaway-CC-BY-SA OR LicenseRef-Callaway-LGPLv2) AND LicenseRef-Callaway-CC-BY AND LicenseRef-Callaway-BSD AND LicenseRef-Callaway-MIT AND LicenseRef-Callaway-Public-Domain
+License:        LGPL-2.0-or-later AND LGPL-2.1-or-later AND LGPL-2.1-only AND LGPL-3.0-or-later AND (GPL-3.0-only OR LGPL-2.1-only) AND (GPL-3.0-or-later OR LGPL-2.1-or-later) AND (CC-BY-SA-3.0 OR LGPL-2.0-or-later) AND CC-BY-3.0 AND BSD-2-Clause AND MIT AND LicenseRef-Fedora-Public-Domain
 URL:            https://www.github.com/openscad/MCAD
 Requires:       %{name} = %{version}-%{release}
 BuildArch:      noarch
@@ -102,63 +100,63 @@ changes, however many things are already working.
 
 ### LICENSES:
 
-##  LGPLv2+:
+##  LGPL-2.0-or-later:
+#   multiply.scad
+
+##  LGPL-2.1-or-later:
 #   2Dshapes.scad
 #   3d_triangle.scad
-#   fonts.scad
 #   gridbeam.scad
-#   hardware.scad
 #   libtriangles.scad
-#   multiply.scad
 #   shapes.scad
 #   screw.scad
+#   transformations.scad
 
-##  LGPLv2:
+##  LGPL-2.1-only:
+#   fonts.scad
 #   gears.scad
+#   hardware.scad
 #   involute_gears.scad
 #   servos.scad
-#   transformations.scad
 #   triangles.scad
 #   unregular_shapes.scad
 #   bitmap/letter_necklace.scad
 
-##  LGPLv3+:
+##  LGPL-3.0-or-later:
 #   teardrop.scad
 
-##  GPLv3 or LGPLv2:
+##  GPL-3.0-only OR LGPL-2.1-only:
 #   motors.scad
 #   nuts_and_bolts.scad
 
 
-##  GPLv3+ or LGPLv2:
+##  GPL-3.0-or-later OR LGPL-2.1-or-later:
 #   metric_fastners.scad
 #   regular_shapes.scad
 
-##  CC-BY-SA or LGPLv2+:
+##  CC-BY-SA-3.0 OR LGPL-2.0-or-later:
 #   bearing.scad
 #   materials.scad
 #   stepper.scad
+#   units.scad
 #   utilities.scad
 
-##  CC-BY-SA or LGPLv2:
-#   units.scad
-
-##  CC-BY:
+##  CC-BY-3.0:
 #   polyholes.scad
 #   bitmap/alphabet_block.scad
 #   bitmap/bitmap.scad
 #   bitmap/height_map.scad
 #   bitmap/name_tag.scad
 
-## BSD
+##  BSD-2-Clause:
 #   boxes.scad
 
-## MIT
+##  MIT:
 #   constants.scad
 #   curves.scad
 #   math.scad
 
-## Public Domain
+##  LicenseRef-Fedora-Public-Domain:
 #   lego_compatibility.scad
 #   trochoids.scad
 

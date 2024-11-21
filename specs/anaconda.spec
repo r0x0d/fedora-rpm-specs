@@ -1,6 +1,6 @@
 Summary: Graphical system installer
 Name:    anaconda
-Version: 42.14
+Version: 42.15
 Release: 1%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
@@ -490,6 +490,15 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Tue Nov 19 2024 Packit <hello@packit.dev> - 42.15-1
+- doc: RDP boot option is not supported in live (jkonecny)
+- Fix RDP var contains string instead of bool (jkonecny)
+- Remove stray comma from widgets/configure.ac (vtrefny)
+- Explicitly place biosboot partition only on stage1 disk (vtrefny)
+- network: add warning for kickstart network configuration when running from
+  nfs (rvykydal)
+- liveinst: Allow running as a Wayland-native application (neal)
+
 * Tue Nov 12 2024 Packit <hello@packit.dev> - 42.14-1
 - Update to version 42.14
 

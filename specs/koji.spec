@@ -9,7 +9,7 @@
 
 Name: koji
 Version: 1.35.1
-Release: 3%{?dist}
+Release: 4%{?dist}
 # the included arch lib from yum's rpmUtils is GPLv2+
 # Automatically converted from old format: LGPLv2 and GPLv2+ - review is highly recommended.
 License: LicenseRef-Callaway-LGPLv2 AND GPL-2.0-or-later
@@ -22,6 +22,9 @@ Patch1: https://pagure.io/koji/pull-request/4258.patch#/0001-repos-check-for-new
 # Not upstreamable
 Patch100: fedora-config.patch
 Patch101: pr4228-wait-repo-current.patch
+# unittest patch needed to cleanly apply cgi patch
+Patch102: pr4239-use-unittest-mock.patch
+Patch103: pr4251-drop-cgi-import.patch
 
 BuildArch: noarch
 Requires: python%{python3_pkgversion}-%{name} = %{version}-%{release}
@@ -365,6 +368,12 @@ done
 %systemd_postun kojira.service
 
 %changelog
+* Tue Nov 19 2024 Igor Raits <ignatenkobrain@fedoraproject.org> - 1.35.1-4
+- Fix symlink_if_latest() logic
+
+* Thu Oct 31 2024 Mike McLean <mikem@redhat.com> - 1.35.1-3
+- Backport PR #4251: drop cgi import
+
 * Thu Oct 24 2024 Mike McLean <mikem@redhat.com> - 1.35.1-2
 - Backport PR #4228: wait for a current repo by default
 

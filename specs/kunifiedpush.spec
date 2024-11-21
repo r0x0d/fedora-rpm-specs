@@ -1,6 +1,6 @@
 Name:           kunifiedpush
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        UnifiedPush client library and distributor daemon
 License:        BSD-2-Clause AND CC0-1.0 AND BSD-3-Clause AND LGPL-2.0-or-later
 URL:            https://invent.kde.org/libraries/kunifiedpush
@@ -65,5 +65,8 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/kcm_push_notificatio
 %{_kf6_libdir}/cmake/KUnifiedPush/
 
 %changelog
+* Tue Nov 19 2024 Steve Cossette <farchord@gmail.com> - 1.0.0-2
+- Bump for rebuild on f41/f40
+
 * Sun Nov 3 2024 Steve Cossette <farchord@gmail.com> - 1.0.0-1
 - Initial build

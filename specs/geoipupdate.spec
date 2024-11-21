@@ -2,12 +2,12 @@
 
 # https://github.com/maxmind/geoipupdate
 %global goipath	github.com/maxmind/geoipupdate
-Version:	7.0.1
+Version:	7.1.0
 
 %gometa
 
 Name:		geoipupdate
-Release:	2%{?dist}
+Release:	1%{?dist}
 Summary:	Update GeoIP2 binary databases from MaxMind
 
 License:	Apache-2.0 OR MIT
@@ -107,6 +107,14 @@ install -p -m 0644 _build/GeoIP.conf.5 %{buildroot}%{_mandir}/man5/GeoIP.conf.5
 %config(noreplace) %{_sysconfdir}/cron.weekly/geoipupdate
 
 %changelog
+* Tue Nov 19 2024 Paul Howarth <paul@city-fan.org> - 7.1.0-1
+- Update to 7.1.0
+  - Allow the 'Host' configuration directive and the 'GEOIPUPDATE_HOST'
+    environment variable to accept a value with the scheme set; if not set, it
+    will continue to default to 'https://' (GH#310)
+  - Export 'HTTPError' to enable fine-grained error handling for users of
+    'github.com/maxmind/geoipupdate/client' (GH#341)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

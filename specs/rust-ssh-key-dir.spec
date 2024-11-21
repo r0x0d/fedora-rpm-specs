@@ -4,8 +4,8 @@
 %global crate ssh-key-dir
 
 Name:           rust-%{crate}
-Version:        0.1.4
-Release:        10%{?dist}
+Version:        0.1.5
+Release:        1%{?dist}
 Summary:        sshd AuthorizedKeysCommand to read ~/.ssh/authorized_keys.d
 
 License:        Apache-2.0
@@ -95,6 +95,9 @@ install -Dpm0644 -t %{buildroot}%{_sysconfdir}/ssh/sshd_config.d conf/40-ssh-key
 %endif
 
 %changelog
+* Mon Nov 18 2024 Huijing Hei <hhei@redhat.com> - 0.1.5-1
+- New release
+
 * Fri Sep 06 2024 Aashish Radhakrishnan <aaradhak@redhat.com> - 0.1.4-10
 - Exclude ix86
 

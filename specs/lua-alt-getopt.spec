@@ -1,9 +1,6 @@
-%global luaver 5.3
-%global luapkgdir %{_datadir}/lua/%{luaver}
-
 Name:           lua-alt-getopt
 Version:        0.8.0
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Argument processing module for Lua
 
 License:        MIT
@@ -11,8 +8,9 @@ URL:            https://github.com/cheusov/lua-alt-getopt
 Source0:        https://github.com/cheusov/lua-alt-getopt/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
-BuildRequires:  lua >= %{luaver}
-Requires:       lua >= %{luaver}
+
+BuildRequires:  lua-devel
+Requires:       lua(abi) = %{lua_version}
 
 %description
 alt-getopt is a module for Lua programming language for processing
@@ -22,25 +20,29 @@ Guidelines" guidelines 3-13.
 
 
 %prep
-%autosetup
+%autosetup -p1
 
 
 %build
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{luapkgdir}
-cp -p alt_getopt.lua $RPM_BUILD_ROOT%{luapkgdir}
+mkdir -p %{buildroot}%{lua_pkgdir}
+cp -p alt_getopt.lua %{buildroot}%{lua_pkgdir}
 
 
 %files
 %license LICENSE
 %doc NEWS README
-%{luapkgdir}/alt_getopt.lua
+%{lua_pkgdir}/alt_getopt.lua
 
 
 %changelog
+* Tue Nov 19 2024 Michel Lind <salimma@fedoraproject.org> - 0.8.0-12
+- Stop hardcoding the system Lua version
+- Modernize spec
+- Resolves: rhbz#2298100
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.0-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

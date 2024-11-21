@@ -14,7 +14,7 @@ Requires: %1 \
 %{expand: %%global latest_requires_packages %1 %%{?latest_requires_packages}}
 
 Name:    copr-rpmbuild
-Version: 1.1
+Version: 1.2
 Summary: Run COPR build tasks
 Release: 1%{?dist}
 URL: https://github.com/fedora-copr/copr
@@ -84,7 +84,7 @@ Recommends: dist-git-client
 Suggests: tito
 Suggests: rubygem-gem2rpm
 Suggests: pyp2rpm
-Suggests: pyp2spec
+Suggests: pyp2spec >= 0.10.0
 %endif
 
 %description
@@ -117,7 +117,7 @@ Requires: podman
 # not supported
 %else
 Requires: pyp2rpm
-Requires: pyp2spec
+Requires: pyp2spec >= 0.10.0
 Requires: rubygem-gem2rpm
 Requires: scl-utils-build
 Requires: fedora-review >= 0.8
@@ -298,6 +298,9 @@ EOF
 
 
 %changelog
+* Tue Nov 19 2024 Pavel Raiskup <praiskup@redhat.com> 1.2-1
+- change the pyp2spec invocation for v0.10.0+
+
 * Tue Oct 22 2024 Jakub Kadlcik <frostyx@email.cz> 1.1-1
 - Make_srpmbuild, set recursive safe.directory
 - Activate Red Hat subscription on demand

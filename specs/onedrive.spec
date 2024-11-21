@@ -2,7 +2,7 @@
 %global repo onedrive
 
 Name:           onedrive
-Version:        2.5.2
+Version:        2.5.3
 Release:        1%{?dist}
 Summary:        OneDrive Free Client written in D
 # Automatically converted from old format: GPLv3 - review is highly recommended.
@@ -60,6 +60,9 @@ chmod a-x %{buildroot}/%{_mandir}/man1/%{name}*
 %config %{_sysconfdir}/logrotate.d/onedrive
 
 %changelog
+* Fri Nov 15 2024 Fedora Release Monitoring <release-monitoring@fedoraproject.org> - 2.5.3-1
+- Update to 2.5.3 (#2326647)
+
 * Mon Oct 14 2024 Zamir SUN <sztsian@gmail.com> - 2.5.2-1
 - Update to 2.5.2
 - Fixes RHBZ#2315073 RHBZ#2258756

@@ -593,13 +593,6 @@ tomcli set crates/uv/Cargo.toml del dependencies.tracing-durations-export
 tomcli set Cargo.toml str \
     workspace.dependencies.unicode-width.version '0.1.12'
 
-# mailparse
-#   wanted: 0.15.0
-#   currently packaged: 0.14.0
-#   https://bugzilla.redhat.com/show_bug.cgi?id=2258714
-tomcli set Cargo.toml str \
-    workspace.dependencies.mailparse.version '>=0.14,<0.16'
-
 # procfs
 #   wanted: 0.17.0
 #   currently packaged: 0.16.0

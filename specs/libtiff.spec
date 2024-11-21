@@ -1,11 +1,13 @@
 Summary:       Library of functions for manipulating TIFF format image files
 Name:          libtiff
 Version:       4.7.0
-Release:       1%{?dist}
+Release:       2%{?dist}
 License:       libtiff
 URL:           http://www.simplesystems.org/libtiff/
 
 Source:        http://download.osgeo.org/libtiff/tiff-%{version}.tar.gz
+#from upstream, for <=4.7.0, fix s390x test failure, upstream issue #652
+Patch1:        libsndfile-1.2.2-fixdirectorytest.patch
 
 BuildRequires: gcc, gcc-c++
 BuildRequires: zlib-devel libjpeg-devel jbigkit-devel libzstd-devel libwebp-devel liblerc-devel
@@ -58,7 +60,7 @@ image files using the libtiff library.
 
 %prep
 %autosetup -n tiff-%{version} -N
-
+%patch -P 1 -p1 -b .fixdirtest
 # Use build system's libtool.m4, not the one in the package.
 rm -f libtool.m4
 
@@ -139,7 +141,12 @@ cp %{_libdir}/libtiffxx.so.5* $RPM_BUILD_ROOT%{_libdir}
 %ldconfig_scriptlets
 
 %check
-LD_LIBRARY_PATH=$PWD:$LD_LIBRARY_PATH make check
+export LD_LIBRARY_PATH=$PWD:$LD_LIBRARY_PATH
+if ! make check
+then
+  cat test/test-suite.log
+  false
+fi
 
 %files
 %license LICENSE.md
@@ -163,6 +170,9 @@ LD_LIBRARY_PATH=$PWD:$LD_LIBRARY_PATH make check
 %{_mandir}/man1/*
 
 %changelog
+* Tue Nov 19 2024 Michal Hlavinka <mhlavink@redhat.com> - 4.7.0-2
+- fix s390x test failure
+
 * Thu Sep 26 2024 Michal Hlavinka <mhlavink@redhat.com> - 4.7.0-1
 - updated to 4.7.0 (#2313222)
 

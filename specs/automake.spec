@@ -23,7 +23,7 @@ Summary:    A GNU tool for automatically creating Makefiles
 Name:       automake
 # Any bump here requires libtool rebuild, rhbz#1813010
 Version:    %{api_version}.5
-Release:    17%{?dist}
+Release:    18%{?dist}
 
 # To help future rebase, the following licenses were seen in the following files/folders:
 # usr/bin/* - GPL-2.0-or-later
@@ -107,7 +107,6 @@ BuildRequires: flex
 BuildRequires: gcc-gfortran
 BuildRequires: gettext-devel
 BuildRequires: libtool
-BuildRequires: ncompress
 BuildRequires: sharutils
 BuildREquires: texlive-dvips
 BuildRequires: texinfo-tex
@@ -117,6 +116,7 @@ BuildRequires: gcc-objc
 BuildRequires: gcc-objc++
 BuildRequires: imake
 BuildRequires: lzip
+BuildRequires: ncompress
 %endif
 %endif
 %endif
@@ -177,6 +177,9 @@ make -k %{?_smp_mflags} check %{?TESTS_FLAGS: TESTS="%{TESTS_FLAGS}"} \
 
 
 %changelog
+* Tue Nov 12 2024 Frédéric Bérat <fberat@redhat.com> - 1.16.5-18
+- Filter ncompress out for rhel (RHEL-66594)
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.16.5-17
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

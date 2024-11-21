@@ -35,7 +35,7 @@ BuildRequires: pciutils-devel
 BuildRequires: libdrm-devel
 
 %if %{with kfdtest}
-BuildRequires: rocm-llvm-devel
+BuildRequires: rocm-llvm-static
 BuildRequires: rocm-compilersupport-macros
 %endif
 

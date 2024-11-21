@@ -1,28 +1,46 @@
+# widely used
+%bcond openssl 1
+# used by libreoffice
+%bcond nss 1
+# not used
+%bcond gcrypt %{undefined rhel}
+# not used; gnutls depends on gcrypt
+%bcond gnutls %{with gcrypt}
+
 Summary: Library providing support for "XML Signature" and "XML Encryption" standards
 Name: xmlsec1
 Version: 1.2.39
 %global uversion %%(echo %{version} | tr '.' '_')
-Release: 4%{?dist}%{?extra_release}
+Release: 5%{?dist}%{?extra_release}
 Epoch: 1
 License: MIT
 Source0: https://github.com/lsh123/xmlsec/releases/download/xmlsec-%{uversion}/xmlsec1-%{version}.tar.gz
 URL: http://www.aleksey.com/xmlsec/
 
+Patch0: 0001-Conditional-include-for-openssl-engines.patch
+
 BuildRequires: make
 BuildRequires: pkgconfig(libxml-2.0) >= 2.8.0
 BuildRequires: pkgconfig(libxslt) >= 1.0.20
+%if %{with openssl}
 BuildRequires: pkgconfig(openssl) >= 3.0.0
+%endif
+%if %{with nss}
 BuildRequires: pkgconfig(nss) >= 3.49.0
 BuildRequires: pkgconfig(nspr) >= 4.25.0
+%endif
+%if %{with gcrypt}
 BuildRequires: libgcrypt-devel >= 1.4.0
+%endif
+%if %{with gnutls}
 BuildRequires: pkgconfig(gnutls) >= 3.6.13
+%endif
 BuildRequires: libtool-ltdl-devel
 # autoreconf stuff
 BuildRequires: autoconf
 BuildRequires: automake
 BuildRequires: gettext-devel
 BuildRequires: libtool
-BuildRequires: openssl-devel-engine >= 3.0.0
 
 %description
 XML Security Library is a C library based on LibXML2  and OpenSSL.
@@ -38,6 +56,7 @@ Requires: openssl-devel%{?_isa} >= 1.0.0
 Libraries, includes, etc. you can use to develop applications with XML Digital
 Signatures and XML Encryption support.
 
+%if %{with openssl}
 %package openssl
 Summary: OpenSSL crypto plugin for XML Security Library
 Requires: xmlsec1%{?_isa} = 1:%{version}-%{release}
@@ -53,7 +72,9 @@ Requires: xmlsec1-openssl%{?_isa} = 1:%{version}-%{release}
 
 %description openssl-devel
 Libraries, includes, etc. for developing XML Security applications with OpenSSL
+%endif
 
+%if %{with gcrypt}
 %package gcrypt
 Summary: GCrypt crypto plugin for XML Security Library
 Requires: xmlsec1%{?_isa} = 1:%{version}-%{release}
@@ -71,7 +92,9 @@ Provides: deprecated()
 
 %description gcrypt-devel
 Libraries, includes, etc. for developing XML Security applications with GCrypt.
+%endif
 
+%if %{with gnutls}
 %package gnutls
 Summary: GNUTls crypto plugin for XML Security Library
 Requires: xmlsec1%{?_isa} = 1:%{version}-%{release}
@@ -90,7 +113,9 @@ Provides: deprecated()
 
 %description gnutls-devel
 Libraries, includes, etc. for developing XML Security applications with GNUTls.
+%endif
 
+%if %{with nss}
 %package nss
 Summary: NSS crypto plugin for XML Security Library
 Requires: xmlsec1%{?_isa} = 1:%{version}-%{release}
@@ -106,6 +131,7 @@ Requires: xmlsec1-nss%{?_isa} = 1:%{version}-%{release}
 
 %description nss-devel
 Libraries, includes, etc. for developing XML Security applications with NSS.
+%endif
 
 %prep
 %autosetup -p1
@@ -128,10 +154,6 @@ rm -vf %{buildroot}%{_libdir}/*.la
 rm -rf __tmp_doc ; mkdir __tmp_doc
 mv %{buildroot}%{_docdir}/xmlsec1/* __tmp_doc
 
-%ldconfig_scriptlets
-%ldconfig_scriptlets gnutls
-%ldconfig_scriptlets openssl
-
 %files
 %doc AUTHORS ChangeLog NEWS Copyright
 %{_mandir}/man1/xmlsec1.1*
@@ -150,6 +172,7 @@ mv %{buildroot}%{_docdir}/xmlsec1/* __tmp_doc
 %{_mandir}/man1/xmlsec1-config.1*
 %doc HACKING __tmp_doc/*
 
+%if %{with openssl}
 %files openssl
 %{_libdir}/libxmlsec1-openssl.so.*
 %{_libdir}/libxmlsec1-openssl.so
@@ -157,7 +180,9 @@ mv %{buildroot}%{_docdir}/xmlsec1/* __tmp_doc
 %files openssl-devel
 %{_includedir}/xmlsec1/xmlsec/openssl/
 %{_libdir}/pkgconfig/xmlsec1-openssl.pc
+%endif
 
+%if %{with gcrypt}
 %files gcrypt
 %{_libdir}/libxmlsec1-gcrypt.so.*
 %{_libdir}/libxmlsec1-gcrypt.so
@@ -165,7 +190,9 @@ mv %{buildroot}%{_docdir}/xmlsec1/* __tmp_doc
 %files gcrypt-devel
 %{_includedir}/xmlsec1/xmlsec/gcrypt/
 %{_libdir}/pkgconfig/xmlsec1-gcrypt.pc
+%endif
 
+%if %{with gnutls}
 %files gnutls
 %{_libdir}/libxmlsec1-gnutls.so.*
 %{_libdir}/libxmlsec1-gnutls.so
@@ -173,7 +200,9 @@ mv %{buildroot}%{_docdir}/xmlsec1/* __tmp_doc
 %files gnutls-devel
 %{_includedir}/xmlsec1/xmlsec/gnutls/
 %{_libdir}/pkgconfig/xmlsec1-gnutls.pc
+%endif
 
+%if %{with nss}
 %files nss
 %{_libdir}/libxmlsec1-nss.so.*
 %{_libdir}/libxmlsec1-nss.so
@@ -181,8 +210,13 @@ mv %{buildroot}%{_docdir}/xmlsec1/* __tmp_doc
 %files nss-devel
 %{_includedir}/xmlsec1/xmlsec/nss/
 %{_libdir}/pkgconfig/xmlsec1-nss.pc
+%endif
 
 %changelog
+* Thu Nov 7 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 1:1.2.39-5
+- Conditionalize the backends
+- Remove openssl-devel-engine dependency
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:1.2.39-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

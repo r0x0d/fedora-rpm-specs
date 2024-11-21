@@ -4,7 +4,7 @@
 %bcond_with bootstrap
 
 Name:           python-%{srcname}
-Version:        2.0.0
+Version:        3.0.2
 Release:        %autorelease
 Summary:        Sphinx theme for readthedocs.org
 
@@ -15,12 +15,6 @@ Source:         %{url}/archive/%{version}/%{srcname}-%{version}.tar.gz
 # The koji builders do not have network access, and this file is not included
 # in any Fedora package, so we retrieve it for offline use.
 Source:         https://docs.readthedocs.io/en/latest/objects.inv
-# Remove all traces of html5shiv.  We have no interest in supporting ancient
-# versions of Internet Explorer.
-Patch:          %{name}-html5shiv.patch
-
-# Adjust the test_basic expected output for compatibility with Sphinx 7.3+
-Patch:          https://github.com/readthedocs/sphinx_rtd_theme/pull/1572.patch
 
 BuildArch:      noarch
 

@@ -9,6 +9,10 @@ License: MPL-2.0
 URL: https://gitlab.com/ixion/ixion
 Source0: https://kohei.us/files/ixion/src/%{name}-%{version}.tar.xz
 
+# _WIN32 is not defined when not on Windows.
+# https://gitlab.com/ixion/ixion/-/commit/7b1df6fc2b989d8a64edaa47fe04edea95c45174
+Patch0:  7b1df6fc2b989d8a64edaa47fe04edea95c45174.patch
+
 BuildRequires: boost-devel
 BuildRequires: gcc-c++
 BuildRequires: help2man

@@ -1,6 +1,6 @@
 Name:    ofono
 Summary: Open Source Telephony
-Version: 2.11
+Version: 2.12
 Release: 1%{?dist}
 
 # oFono is GPL. This covers most of the source files.
@@ -10,7 +10,7 @@ URL:     http://www.ofono.org/
 Source0: https://git.kernel.org/pub/scm/network/ofono/ofono.git/snapshot/ofono-%{version}.tar.gz
 
 BuildRequires: make
-BuildRequires: libell-devel >= 0.66
+BuildRequires: libell-devel >= 0.70
 BuildRequires: automake libtool
 BuildRequires: pkgconfig(glib-2.0)
 BuildRequires: pkgconfig(dbus-1)
@@ -89,6 +89,9 @@ make check
 
 
 %changelog
+* Tue Nov 19 2024 Artur Frenszek-Iwicki <fedora@svgames.pl> - 2.12-1
+- Update to v2.12
+
 * Sun Oct 20 2024 Artur Frenszek-Iwicki <fedora@svgames.pl> - 2.11-1
 - Update to v2.11
 
