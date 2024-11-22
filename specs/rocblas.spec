@@ -189,7 +189,9 @@ fi
 
 %files devel -f %{name}.devel
 %doc README.md
-%{_includedir}/%{name}
+%dir %{_libdir}/cmake/%{name}
+%dir %{_includedir}/%{name}
+%{_includedir}/%{name}/*
 
 %if %{with test}
 %files test -f %{name}.test

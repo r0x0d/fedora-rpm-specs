@@ -19,6 +19,8 @@ Source:         %{crates_source}
 Patch:          pam-fix-metadata.diff
 # Fixing doctest and library name, PR not needed as fixed upstream
 Patch:          pam-fix-authenticator.diff
+# Fixing users -> uzers
+Patch:          pam-fix-uzers.diff
 
 BuildRequires:  rust-packaging >= 21
 

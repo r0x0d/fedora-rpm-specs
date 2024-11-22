@@ -1,5 +1,5 @@
 Name:           kio-gdrive
-Version:        24.08.3
+Version:        24.11.80
 Release:        1%{?dist}
 Summary:        An Google Drive KIO slave for KDE
 
@@ -39,7 +39,7 @@ Provides KIO Access to Google Drive using the gdrive:/// protocol.
 %autosetup -p1
 
 %build
-%cmake_kf6 -DQT_MAJOR_VERSION=6
+%cmake_kf6
 %cmake_build
 
 %install
@@ -65,6 +65,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.metainf
 %{_datadir}/purpose/purpose_gdrive_config.qml
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

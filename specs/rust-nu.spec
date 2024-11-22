@@ -28,10 +28,9 @@ Source:         %{crates_source}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          nu-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
-# * remove minimum Rust version, only bumped for a Windows CVE
 # * drop unused tango-bench dependency and benchmarks
 # * temporarily bump reedline from 0.36.0 to 0.37.0
-# * temporarily downgrade serial_test from 3.1 to 3.0
+# * allow rstest 0.23: https://github.com/nushell/nushell/pull/14350
 Patch:          nu-fix-metadata.diff
 
 # OOM when linking. We don't ship binaries on ix86 anyway, exclude it
@@ -46,8 +45,30 @@ A new type of shell.}
 
 %package     -n %{crate}
 Summary:        %{summary}
-# FIXME: paste output of %%cargo_license_summary here
-License:        # FIXME
+# (Apache-2.0 OR MIT) AND BSD-3-Clause
+# (MIT OR Apache-2.0) AND Unicode-DFS-2016
+# 0BSD OR MIT OR Apache-2.0
+# Apache-2.0
+# Apache-2.0 OR BSL-1.0
+# Apache-2.0 OR MIT
+# Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
+# BSD-2-Clause OR Apache-2.0 OR MIT
+# BSD-3-Clause
+# BSD-3-Clause AND MIT
+# CC-PDDC
+# CC0-1.0
+# ISC
+# MIT
+# MIT AND Apache-2.0
+# MIT OR Apache-2.0
+# MIT OR Apache-2.0 OR Zlib
+# MIT OR Zlib OR Apache-2.0
+# MIT-0 OR Apache-2.0
+# MPL-2.0
+# Unlicense OR MIT
+# Zlib
+# Zlib OR Apache-2.0 OR MIT
+License:        MIT AND (Apache-2.0 OR MIT) AND BSD-3-Clause AND Unicode-DFS-2016 AND (0BSD OR MIT OR Apache-2.0) AND Apache-2.0 AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND (BSD-2-Clause OR Apache-2.0 OR MIT) AND CC-PDDC AND CC0-1.0 AND ISC AND (MIT OR Apache-2.0 OR Zlib) AND (MIT-0 OR Apache-2.0) AND MPL-2.0 AND (Unlicense OR MIT) AND Zlib
 # LICENSE.dependencies contains a full license breakdown
 
 %description -n %{crate} %{_description}

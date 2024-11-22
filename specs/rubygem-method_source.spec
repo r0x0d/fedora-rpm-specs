@@ -1,14 +1,16 @@
 # Generated from method_source-0.7.1.gem by gem2rpm -*- rpm-spec -*-
 %global gem_name method_source
 
-Summary: Retrieve the source code for a method
 Name: rubygem-%{gem_name}
-Version: 1.0.0
-Release: 9%{?dist}
+Version: 1.1.0
+Release: 1%{?dist}
+Summary: Retrieve the source code for a method
 License: MIT
-URL: http://banisterfiend.wordpress.com
-Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
-
+URL: https://github.com/banister/method_source/
+Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
+# Fix compatibility with Prism parser in Ruby 3.4
+# https://github.com/banister/method_source/pull/84
+Patch0: rubygem-method_source-1.1.0-Update-error-message-expectations-to-work-on-MRI-with-Prism.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
@@ -16,7 +18,7 @@ BuildRequires: rubygem(rspec)
 BuildArch: noarch
 
 %description
-Retrieve the source code for a method
+Retrieve the source code for a method.
 
 
 %package doc
@@ -25,10 +27,12 @@ Requires: %{name} = %{version}-%{release}
 BuildArch: noarch
 
 %description doc
-Documentation for %{name}
+Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version}
+
+%patch 0 -p1
 
 %build
 gem build ../%{gem_name}-%{version}.gemspec
@@ -56,14 +60,18 @@ popd
 
 %files doc
 %doc %{gem_docdir}
+%doc %{gem_instdir}/CHANGELOG.md
 %{gem_instdir}/Gemfile
 %doc %{gem_instdir}/README.markdown
-%doc %{gem_instdir}/CHANGELOG.md
 %{gem_instdir}/Rakefile
 %{gem_instdir}/method_source.gemspec
 %{gem_instdir}/spec
 
 %changelog
+* Wed Nov 20 2024 Vít Ondruch <vondruch@redhat.com> - 1.1.0-1
+- Update to method_source 1.1.0.
+  Resolves: rhbz#2275133
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.0-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

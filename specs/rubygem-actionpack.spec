@@ -7,7 +7,7 @@
 Name: rubygem-%{gem_name}
 Epoch: 1
 Version: 7.0.8
-Release: 5%{?dist}
+Release: 6%{?dist}
 Summary: Web-flow and rendering framework putting the VC in MVC (part of Rails)
 License: MIT
 URL: http://rubyonrails.org
@@ -28,6 +28,19 @@ Patch0: rubygem-actionpack-7.0.2.3-Fix-tests-for-minitest-5.16.patch
 # From https://github.com/rails/rails/pull/51510
 # Remove OpenStruct usage due to json 2.7.2 change
 Patch1: rubygem-actionpack-pr51510-remove-openstruct-usage.patch
+# Ruby 3.4 `Hash#inspect` compatibility.
+# https://github.com/rails/rails/pull/53202/commits/f5401a4175187cb52f93f9666723040ca0cc0843
+Patch2: rubygem-actionpack-8.0.0-Update-Action-Pack-test-suite-for-Ruby-3-4-Hash-inspect.patch
+# Ruby 3.4 Prism parser fixes.
+# https://github.com/rails/rails/pull/52943
+Patch3: rubygem-actionpack-8.0.0-Address-DebugExceptionsTest-failures-against-Ruby-with.patch
+# Ruby 3.4 backtrace compatibility.
+# https://github.com/rails/rails/pull/51101
+Patch4: rubygem-actionpack-7.2.0-Update-test-suite-for-compatibility-with-Ruby-3-4-dev.patch
+# Drop mutex_m dependency to ease Ruby 3.4 compatibility.
+# https://github.com/rails/rails/pull/49674
+Patch5: rubygem-actionpack-7.2.0-Drop-dependency-on-mutex-m.patch
+
 
 # Let's keep Requires and BuildRequires sorted alphabeticaly
 BuildRequires: ruby(release)
@@ -68,7 +81,12 @@ Documentation for %{name}.
 pushd %{_builddir}
 %patch 0 -p2
 %patch 1 -p2
+%patch 2 -p2
+%patch 3 -p2
+%patch 4 -p2
 popd
+
+%patch 5 -p2
 
 %build
 gem build ../%{gem_name}-%{version}%{?prerelease}.gemspec
@@ -114,6 +132,9 @@ popd
 %doc %{gem_instdir}/README.rdoc
 
 %changelog
+* Wed Nov 20 2024 Vít Ondruch <vondruch@redhat.com> - 1:7.0.8-6
+- Ruby 3.4 compatibility fixes.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:7.0.8-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

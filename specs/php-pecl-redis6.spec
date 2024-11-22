@@ -1,4 +1,4 @@
-# Fedora spec file for php-pecl-redis6
+# RHEL/Fedora spec file for php-pecl-redis6
 # without SCL compatibility from:
 #
 # remirepo spec file for php-pecl-redis6
@@ -11,8 +11,17 @@
 #
 
 %bcond_without       tests
+%if 0%{?fedora}
+# optional compressors/serializers enabled by default
 %bcond_without       igbinary
 %bcond_without       msgpack
+%bcond_without       liblzf
+%else
+# optional compressors/serializers disabled by default
+%bcond_with          igbinary
+%bcond_with          msgpack
+%bcond_with          liblzf
+%endif
 %bcond_without       valkey
 
 %global pecl_name    redis
@@ -26,7 +35,7 @@
 Summary:       PHP extension for interfacing with key-value stores
 Name:          php-pecl-redis6
 Version:       %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:       2%{?dist}
+Release:       3%{?dist}
 License:       PHP-3.01
 URL:           https://pecl.php.net/package/redis
 Source0:       https://pecl.php.net/get/%{sources}.tgz
@@ -35,7 +44,7 @@ ExcludeArch:   %{ix86}
 
 BuildRequires: make
 BuildRequires: gcc
-BuildRequires: php-devel >= 7.2
+BuildRequires: php-devel >= 7.4
 BuildRequires: php-pear
 BuildRequires: php-json
 %if %{with igbinary}
@@ -44,15 +53,17 @@ BuildRequires: php-pecl-igbinary-devel
 %if %{with msgpack}
 BuildRequires: php-pecl-msgpack-devel >= 2.0.3
 %endif
+%if %{with liblzf}
 BuildRequires: pkgconfig(liblzf)
+%endif
 BuildRequires: pkgconfig(libzstd) >= 1.3.0
 BuildRequires: pkgconfig(liblz4)
 # to run Test suite
 %if %{with tests}
 %if %{with valkey}
-BuildRequires: valkey >= 7
+BuildRequires: valkey
 %else
-BuildRequires: redis >= 7
+BuildRequires: redis
 %endif
 %endif
 
@@ -184,8 +195,12 @@ peclconf() {
 %if %{with msgpack}
     --enable-redis-msgpack \
 %endif
+%if %{with liblzf}
     --enable-redis-lzf \
     --with-liblzf \
+%else
+    --disable-redis-lzf \
+%endif
     --enable-redis-zstd \
     --with-libzstd \
     --enable-redis-lz4 \
@@ -230,6 +245,8 @@ done
 
 %if %{with tests}
 cd %{sources}/tests
+: Ignore ONLINE test
+sed -e 's/testConnectException/skipConnectException/' -i RedisTest.php
 
 : Launch redis server
 %if %{with valkey}
@@ -283,6 +300,9 @@ exit $ret
 
 
 %changelog
+* Wed Nov 20 2024 Remi Collet <rcollet@redhat.com> - 6.1.0-3
+- ignore 1 ONLINE test
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 6.1.0-2
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

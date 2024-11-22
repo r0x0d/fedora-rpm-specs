@@ -3,7 +3,7 @@
 %global pypi_name ramalama
 %global forgeurl  https://github.com/containers/%{pypi_name}
 # see ramalama/version.py
-%global version0  0.1.1
+%global version0  0.1.2
 %forgemeta
 
 %global desc      RamaLama is a command line tool for working with AI LLM models
@@ -49,6 +49,8 @@ Requires: python%{python3_pkgversion}-tqdm
 %else
 Recommends: python%{python3_pkgversion}-tqdm
 %endif
+# Needed as seen by BZ: 2327515
+Requires: python%{python3_pkgversion}-omlmd
 Summary: %{summary}
 Provides: %{pypi_name} = %{version}-%{release}
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}

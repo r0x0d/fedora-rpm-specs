@@ -2,32 +2,33 @@
 Name:           jss
 ################################################################################
 
-%global         product_id dogtag-jss
+%global         vendor_id dogtag
+%global         product_id %{vendor_id}-jss
 
 # Upstream version number:
 %global         major_version 5
-%global         minor_version 5
-%global         update_version 1
+%global         minor_version 6
+%global         update_version 0
 
 # Downstream release number:
 # - development/stabilization (unsupported): 0.<n> where n >= 1
 # - GA/update (supported): <n> where n >= 1
-%global         release_number 1
+%global         release_number 0.1
 
 # Development phase:
 # - development (unsupported): alpha<n> where n >= 1
 # - stabilization (unsupported): beta<n> where n >= 1
 # - GA/update (supported): <none>
-#global         phase
+%global         phase alpha1
 
 %undefine       timestamp
 %undefine       commit_id
 
 Summary:        Java Security Services (JSS)
 URL:            https://github.com/dogtagpki/jss
-License:        (MPL-1.1 or GPL-2.0-or-later or LGPL-2.1-or-later) and Apache-2.0
+License:        (MPL-1.1 OR GPL-2.0-or-later OR LGPL-2.1-or-later) AND Apache-2.0
 Version:        %{major_version}.%{minor_version}.%{update_version}
-Release:        %{release_number}%{?phase:.}%{?phase}%{?timestamp:.}%{?timestamp}%{?commit_id:.}%{?commit_id}%{?dist}.1
+Release:        %{release_number}%{?phase:.}%{?phase}%{?timestamp:.}%{?timestamp}%{?commit_id:.}%{?commit_id}%{?dist}
 
 # To generate the source tarball:
 # $ git clone https://github.com/dogtagpki/jss.git
@@ -158,6 +159,23 @@ Conflicts:      pki-servlet-engine <= 9.0
 JSS Connector for Tomcat is a Java Secure Socket Extension (JSSE)
 module for Apache Tomcat that uses Java Security Services (JSS),
 a Java interface to Network Security Services (NSS).
+
+################################################################################
+%package -n %{product_id}-tools
+################################################################################
+
+Summary:        Java Security Services (JSS) Tools
+
+Provides:       jss-tools = %{version}-%{release}
+Provides:       jss-tools = %{major_version}.%{minor_version}
+Provides:       %{product_id}-tools = %{major_version}.%{minor_version}
+
+# Some PKI tools have been moved into jss-tools.
+Conflicts:      pki-tools < 11.6
+Conflicts:      %{vendor_id}-pki-tools < 11.6
+
+%description -n %{product_id}-tools
+This package contains JSS tools.
 
 %if %{with javadoc}
 ################################################################################
@@ -332,6 +350,14 @@ cp base/target/jss-tests.jar %{buildroot}%{_datadir}/jss/tests/lib
 %files -n %{product_id}-tomcat -f .mfiles-jss-tomcat
 ################################################################################
 
+################################################################################
+%files -n %{product_id}-tools
+################################################################################
+
+%{_bindir}/p12tool
+%{_bindir}/p7tool
+%{_bindir}/sslget
+
 %if %{with javadoc}
 ################################################################################
 %files -n %{product_id}-javadoc -f .mfiles-javadoc
@@ -350,8 +376,12 @@ cp base/target/jss-tests.jar %{buildroot}%{_datadir}/jss/tests/lib
 
 ################################################################################
 %changelog
+* Wed Nov 20 2024 Dogtag PKI Team <devel@lists.dogtagpki.org> 5.6.0-1
+- Rebase to JSS 5.6.0-alpha1
+
 * Fri Oct 04 2024 Dogtag PKI Team <devel@lists.dogtagpki.org> 5.5.1-1
 - Rebase to JSS 5.5.1
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.5.0-2.1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

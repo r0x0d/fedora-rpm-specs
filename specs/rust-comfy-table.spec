@@ -5,7 +5,7 @@
 %global crate comfy-table
 
 Name:           rust-comfy-table
-Version:        7.1.1
+Version:        7.1.3
 Release:        %autorelease
 Summary:        Library for building beautiful tables with automatic content wrapping
 
@@ -16,6 +16,7 @@ Source:         %{crates_source}
 Patch:          comfy-table-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * drop unused, benchmark-only criterion dev-dependency
+# * loosen the rstest version bound until it can be updated
 Patch:          comfy-table-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

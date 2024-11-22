@@ -1,6 +1,6 @@
 Name:    krdc
 Summary: Remote desktop client
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 
 # Automatically converted from old format: GPLv2+ and GFDL - review is highly recommended.
@@ -35,6 +35,7 @@ BuildRequires: cmake(KF6I18n)
 BuildRequires: cmake(KF6KIO)
 BuildRequires: cmake(KF6StatusNotifierItem)
 BuildRequires: cmake(KF6DocTools)
+BuildRequires: cmake(KF6Crash)
 BuildRequires: cmake(PlasmaActivities)
 BuildRequires: (cmake(FreeRDP) >= 2.10 with cmake(FreeRDP) < 3)
 BuildRequires: (cmake(FreeRDP-Client) >= 2.10 with cmake(FreeRDP-Client) < 3)
@@ -103,6 +104,7 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 %{_kf6_metainfodir}/org.kde.%{name}.appdata.xml
 %{_datadir}/icons/hicolor/*/apps/krdc.*
 %{_kf6_datadir}/config.kcfg/krdc.kcfg
+%{_kf6_datadir}/mime/packages/org.kde.krdc-mime.xml
 
 %files libs
 %{_kf6_libdir}/libkrdccore.so.5*
@@ -116,6 +118,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

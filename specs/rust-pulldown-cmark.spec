@@ -21,8 +21,10 @@ A pull parser for CommonMark.}
 
 %package     -n %{crate}
 Summary:        %{summary}
-# FIXME: paste output of %%cargo_license_summary here
-License:        # FIXME
+# MIT
+# MIT OR Apache-2.0
+# Unlicense OR MIT
+License:        MIT AND (MIT OR Apache-2.0) AND (Unlicense OR MIT)
 # LICENSE.dependencies contains a full license breakdown
 
 %description -n %{crate} %{_description}

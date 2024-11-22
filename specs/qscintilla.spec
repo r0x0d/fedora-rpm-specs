@@ -48,6 +48,8 @@ Requires: qt5-qtbase-devel
 %{summary}.
 
 
+# EPEL 10 does not have python3-qt5 yet
+%if %{defined fedora}
 %package -n python3-qscintilla-qt5
 Summary:  QScintilla-qt5 python3 bindings
 BuildRequires: python3-devel
@@ -68,6 +70,7 @@ Requires: python3-qt5-devel
 
 %description -n python3-qscintilla-qt5-devel
 %{summary}.
+%endif
 %endif
 
 
@@ -136,6 +139,7 @@ pushd designer-qt5
 %make_build
 popd
 
+%if %{defined fedora}
 cp -a Python Python-qt5
 pushd Python-qt5
 ln -s pyproject-qt5.toml pyproject.toml
@@ -144,6 +148,7 @@ LD_LIBRARY_PATH=$PWD/../src-qt5 sip-build --no-make   --qmake=%{_qt5_qmake} --ap
     --qsci-include-dir=../src-qt5 --qsci-library-dir=../src-qt5/ --qsci-features-dir=../src-qt5/features
 %make_build -C build
 popd
+%endif
 %endif
 
 %if %{with qt6}
@@ -174,7 +179,9 @@ popd
 %if %{with qt5}
 %make_install -C src-qt5 INSTALL_ROOT=%{buildroot}
 %make_install -C designer-qt5 INSTALL_ROOT=%{buildroot}
+%if %{defined fedora}
 %make_install -C Python-qt5/build INSTALL_ROOT=%{buildroot}
+%endif
 
 # Drop Python api files
 rm -f %{buildroot}%{_qt5_datadir}/qsci/api/python/Python*.api
@@ -219,6 +226,7 @@ grep "%{_qt6_translationdir}" qscintilla.lang > qscintilla-qt6.lang
 %{_qt5_libdir}/libqscintilla2_qt5.so
 %{_qt5_archdatadir}/mkspecs/features/qscintilla2.prf
 
+%if %{defined fedora}
 %files -n python3-qscintilla-qt5
 %{python3_sitearch}/PyQt5/Qsci.*
 %{_qt5_datadir}/qsci/
@@ -230,6 +238,7 @@ grep "%{_qt6_translationdir}" qscintilla.lang > qscintilla-qt6.lang
 %dir %{_qt5_datadir}/qsci/api/
 %dir %{_qt5_datadir}/qsci/api/python/
 %doc %{_qt5_datadir}/qsci/api/python/QScintilla.api
+%endif
 %endif
 
 %if %{with qt6}

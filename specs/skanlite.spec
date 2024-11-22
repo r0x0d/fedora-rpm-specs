@@ -1,5 +1,5 @@
 Name:           skanlite
-Version:        24.08.3
+Version:        24.11.80
 Release:        1%{?dist}
 Summary:        Lightweight scanning program
 # Actually: GPLv2 or GPLv3 or any later Version approved by KDE e.V.
@@ -24,6 +24,7 @@ BuildRequires:  cmake(KF6I18n)
 BuildRequires:  cmake(KF6KIO)
 BuildRequires:  cmake(KF6XmlGui)
 BuildRequires:  cmake(KSaneWidgets6)
+BuildRequires:  cmake(KF6Crash)
 
 
 %description
@@ -60,6 +61,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/org.kde.
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

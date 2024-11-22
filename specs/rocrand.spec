@@ -160,13 +160,12 @@ fi
 %files test -f %{name}.test
 %endif
 
-%if 0%{?is_opensuse}
 %changelog
+%if 0%{?is_opensuse}
 * Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 
 %else
-%changelog
 %autochangelog
 %endif
 

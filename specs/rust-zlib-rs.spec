@@ -5,7 +5,7 @@
 %global crate zlib-rs
 
 Name:           rust-zlib-rs
-Version:        0.3.1
+Version:        0.4.0
 Release:        %autorelease
 Summary:        Memory-safe zlib implementation written in rust
 

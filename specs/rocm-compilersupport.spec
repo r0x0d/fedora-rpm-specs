@@ -14,6 +14,11 @@
 
 %global toolchain clang
 
+# rocMLIR has a different fork from rocm and omp
+# So it is unlikely to work as-is, so disable building
+# until this issue is resolved.
+%bcond_with mlir
+
 %if 0%{?is_opensuse}
 %bcond_without bundled_llvm
 %else
@@ -47,7 +52,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        24.rocm%{rocm_version}%{?dist}
+Release:        25.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -281,6 +286,7 @@ Requires:      rocm-lld%{?_isa} = %{version}-%{release}
 %description -n rocm-lld-devel
 %{summary}
 
+%if %{with mlir}
 # ROCM MLIR
 %package -n rocm-mlir-libs
 Summary:        The ROCm MLIR libs
@@ -308,6 +314,7 @@ Requires:      rocm-mlir-devel%{?_isa} = %{version}-%{release}
 
 %description -n rocm-mlir-static
 %{summary}
+%endif
 
 %endif
 
@@ -503,12 +510,18 @@ pushd .
 
 export LD_LIBRARY_PATH=$PWD/build-llvm/lib
 
+%if %{with mlir}
+%global llvm_projects "llvm;clang;lld;mlir"
+%else
+%global llvm_projects "llvm;clang;lld"
+%endif
+
 %cmake %{llvmrocm_cmake_config} \
        -DCMAKE_CXX_COMPILER=clang++ \
        -DCMAKE_C_COMPILER=clang \
        -DCMAKE_INSTALL_PREFIX=%{bundle_prefix} \
        -DCMAKE_INSTALL_LIBDIR=lib \
-       -DLLVM_ENABLE_PROJECTS="llvm;clang;lld;mlir" \
+       -DLLVM_ENABLE_PROJECTS=%{llvm_projects} \
        -DLLVM_ENABLE_RUNTIMES="compiler-rt"
 
 %cmake_build -j ${JOBS}
@@ -803,6 +816,13 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %{bundle_prefix}/bin/dsymutil
 %{bundle_prefix}/bin/llvm*
 %{bundle_prefix}/bin/nvidia-arch
+%{bundle_prefix}/bin/opt
+%{bundle_prefix}/bin/offload-arch
+%{bundle_prefix}/bin/sancov
+%{bundle_prefix}/bin/sanstats
+%{bundle_prefix}/bin/verify-uselistorder
+
+%if %{with mlir}
 %{bundle_prefix}/bin/mlir-cpu-runner
 %{bundle_prefix}/bin/mlir-linalg-ods-yaml-gen
 %{bundle_prefix}/bin/mlir-lsp-server
@@ -810,13 +830,9 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %{bundle_prefix}/bin/mlir-pdll-lsp-server
 %{bundle_prefix}/bin/mlir-query
 %{bundle_prefix}/bin/mlir-reduce
-%{bundle_prefix}/bin/mlir-translate 
-%{bundle_prefix}/bin/opt
-%{bundle_prefix}/bin/offload-arch
-%{bundle_prefix}/bin/sancov
-%{bundle_prefix}/bin/sanstats
+%{bundle_prefix}/bin/mlir-translate
 %{bundle_prefix}/bin/tblgen-lsp-server
-%{bundle_prefix}/bin/verify-uselistorder
+%endif
 
 %files -n rocm-llvm-devel
 %dir %{bundle_prefix}/include
@@ -887,6 +903,7 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %{bundle_prefix}/include/lld/*
 %{bundle_prefix}/lib/cmake/lld/*
 
+%if %{with mlir}
 # ROCM MLIR
 %files -n rocm-mlir-libs
 %{bundle_prefix}/lib/libmlir*.so.*
@@ -912,10 +929,14 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %files -n rocm-mlir-static
 %license mlir/LICENSE.TXT
 %{bundle_prefix}/lib/libMLIR*.a
+%endif
 
 %endif
 
 %changelog
+* Wed Nov 20 2024 Tom Rix <Tom.Rix@amd.com> - 18-25.rocm6.2.4
+- Disable bundled mlir
+
 * Tue Nov 19 2024 Tom Rix <Tom.Rix@amd.com> - 18-24.rocm6.2.4
 - Clean up bundled install
 

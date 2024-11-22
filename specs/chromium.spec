@@ -145,7 +145,10 @@
 %global __requires_exclude ^(%{chromium_path}/.*\\.so|%{chromium_path}/.*\\.so.*)$
 
 # enable|disable use_custom_libcxx
+%global use_custom_libcxx 0
+%if 0%{?rhel} || 0%{?fedora} == 39
 %global use_custom_libcxx 1
+%endif
 
 # enable|disable control flow integrity support
 %global cfi 0
@@ -154,9 +157,11 @@
 %endif
 
 # enable qt backend
+%global enable_qt 0
 %global use_qt6 0
 %global use_qt 0
 
+%if %{enable_qt}
 %if 0%{?rhel} > 9 || 0%{?fedora} > 39
 %global use_qt6 1
 %global use_qt 1
@@ -164,6 +169,7 @@
 %if 0%{?rhel} == 8 || 0%{?rhel} == 9 || 0%{?fedora}
 %global use_qt6 0
 %global use_qt 1
+%endif
 %endif
 %endif
 
@@ -187,6 +193,7 @@
 %global bundlelibdrm 1
 %global bundlefontconfig 1
 %global bundleffmpegfree 1
+# openjpeg2, need to update to 2.5.x
 %global bundlelibopenjpeg2 1
 %global bundlelibtiff 1
 %global bundlelibxml 1
@@ -212,7 +219,7 @@
 # disable bundleminizip for epel and Fedora39 due to old minizip version
 %global bundleminizip 1
 
-%if 0%{?fedora} || 0%{?rhel} >= 9
+%if 0%{?fedora} || 0%{?rhel} > 8
 %global bundlezstd 0
 %global bundlefontconfig 0
 %global bundledav1d 0
@@ -223,18 +230,17 @@
 %global bundlefreetype 0
 %global bundlelibtiff 0
 %global bundlelibxml 0
-%if 0%{?rhel} == 9
-# old version, need to update openjpeg to 2.5.x
-%global bundlelibopenjpeg2 1
-%global bundlecrc32c 1
-%global bundleharfbuzz 1
-%global bundlebrotli 1
-%global bundlelibwebp 1
-%else
+%if 0%{?rhel} > 9
+%global bundlelibopenjpeg2 0
+%global bundleharfbuzz 0
+%global bundlebrotli 0
+%global bundlelibwebp 0
+%endif
+%if 0%{?fedora}
 %global bundlelibopenjpeg2 0
 %global bundlecrc32c 0
 %global bundleharfbuzz 0
-%global bundlebrotli 0 
+%global bundlebrotli 0
 %global bundlelibwebp 0
 %endif
 %endif
@@ -273,7 +279,7 @@
 %endif
 
 Name:	chromium%{chromium_channel}
-Version: 130.0.6723.116
+Version: 131.0.6778.85
 Release: 1%{?dist}
 Summary: A WebKit (Blink) powered web browser that Google doesn't want you to use
 Url: http://www.chromium.org/Home
@@ -305,6 +311,9 @@ Patch91: chromium-108-system-opus.patch
 
 # python-3,13, Deprecationwarning: 'count' is passed as positionaö argument
 Patch100: chromium-128.0.6613.137-python-3.13-warning.patch
+
+# fix build error with system freetype
+Patch101: chromium-131-system-freetype.patch
 
 # system ffmpeg
 # need for old ffmpeg 5.x on epel9
@@ -1018,6 +1027,8 @@ Qt6 UI for chromium.
 %patch -P100 -p1 -b .python-3.13-warning
 %endif
 
+%patch -P101 -p1 -b .chromium-131-system-freetype
+
 %if ! %{bundleffmpegfree}
 %if 0%{?rhel} == 9
 %patch -P129 -p1 -R -b .ffmpeg-5.x-reordered_opaque
@@ -1185,10 +1196,6 @@ sed -i 's|/opt/google/chrome-remote-desktop|%{crd_path}|g' remoting/host/setup/d
 # bz#2265957, add correct platform
 sed -i "s/Linux x86_64/Linux %{_arch}/" content/common/user_agent.cc
  
-%if ! %{bundledav1d}
-cp -a third_party/dav1d/version/version.h third_party/dav1d/libdav1d/include/dav1d/
-%endif
-
 %build
 
 # reduce warnings
@@ -1917,6 +1924,21 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Wed Nov 20 2024 Than Ngo <than@redhat.com> - 131.0.6778.85-1
+- Update to 131.0.6778.85
+  * High CVE-2024-11395: Type Confusion in V8
+
+* Tue Nov 12 2024 Than Ngo <than@redhat.com> - 131.0.6778.69-1
+- Update to 131.0.6778.69
+  * High CVE-2024-11110: Inappropriate implementation in Blink
+  * Medium CVE-2024-11111: Inappropriate implementation in Autofill
+  * Medium CVE-2024-11112: Use after free in Media
+  * Medium CVE-2024-11113: Use after free in Accessibility
+  * Medium CVE-2024-11114: Inappropriate implementation in Views
+  * Medium CVE-2024-11115: Insufficient policy enforcement in Navigation
+  * Medium CVE-2024-11116: Inappropriate implementation in Paint
+  * Low CVE-2024-11117: Inappropriate implementation in FileSystem
+
 * Sun Nov 10 2024 Than Ngo <than@redhat.com> - 130.0.6723.116-1
 - Update to 130.0.6723.116
   * High CVE-2024-10826: Use after free in Family Experience

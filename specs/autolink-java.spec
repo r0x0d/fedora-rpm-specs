@@ -20,7 +20,7 @@ Autolink is a Java library to extract links such as URLs and email
 addresses from plain text.  It's smart about where a link ends, such as
 with trailing punctuation.
 
-%javadoc_package
+%{?javadoc_package}
 
 %prep
 %autosetup -n %{name}-autolink-%{version}

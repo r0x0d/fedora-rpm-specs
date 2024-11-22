@@ -14,6 +14,7 @@ URL:            https://crates.io/crates/nu-cli
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * temporarily bump reedline from 0.36.0 to 0.37.0
+# * Allow rstest 0.23 (https://github.com/nushell/nushell/pull/14350)
 Patch:          nu-cli-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

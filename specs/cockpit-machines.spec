@@ -16,7 +16,7 @@
 #
 
 Name:           cockpit-machines
-Version:        323
+Version:        324
 Release:        1%{?dist}
 Summary:        Cockpit user interface for virtual machines
 License:        LGPL-2.1-or-later AND MIT
@@ -126,6 +126,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 
 # The changelog is automatically generated and merged
 %changelog
+* Wed Nov 20 2024 Packit <hello@packit.dev> - 324-1
+- Limit size of descriptions
+
 * Wed Nov 06 2024 Packit <hello@packit.dev> - 323-1
 - Action to add a TPM
 

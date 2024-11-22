@@ -104,7 +104,7 @@ Summary:       Commons VFS Parent POM
 %description   project
 Commons VFS Parent POM.
 
-%javadoc_package
+%{?javadoc_package}
 
 %prep
 %{gpgverify} --data=%{SOURCE0} --signature=%{SOURCE1} --keyring=%{SOURCE2}

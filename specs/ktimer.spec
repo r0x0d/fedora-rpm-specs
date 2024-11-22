@@ -2,7 +2,7 @@
 
 Name:    ktimer
 Summary: Task Scheduler
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -85,7 +85,7 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 
 
 %files -f %{name}.lang
-%license COPYING*
+%license LICENSES/*
 %{_kf6_bindir}/%{name}
 %{_kf6_datadir}/applications/org.kde.%{name}.desktop
 %{_kf6_metainfodir}/org.kde.%{name}.appdata.xml
@@ -93,6 +93,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

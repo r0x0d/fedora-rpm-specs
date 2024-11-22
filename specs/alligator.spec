@@ -1,5 +1,5 @@
 Name:           alligator 
-Version:        24.08.3
+Version:        24.11.80
 Release:        1%{?dist}
 # Automatically converted from old format: GPLv2 or GPLv3 - review is highly recommended.
 License:        GPL-2.0-only OR GPL-3.0-only
@@ -26,8 +26,10 @@ BuildRequires:  cmake(Qt6Sql)
 
 BuildRequires:  cmake(KF6CoreAddons)
 BuildRequires:  cmake(KF6Syndication)
+BuildRequires:  cmake(KF6ColorScheme)
 BuildRequires:  cmake(KF6Config)
 BuildRequires:  cmake(KF6I18n)
+BuildRequires:  cmake(KF6Kirigami)
 BuildRequires:  cmake(KF6KirigamiAddons)
 
 Requires:       hicolor-icon-theme
@@ -66,6 +68,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.%{name}.deskt
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

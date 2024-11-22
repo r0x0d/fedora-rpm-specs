@@ -1,6 +1,6 @@
 Name:    krfb
 Summary: Desktop sharing
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 
 License: GPL-2.0-only AND LGPL-2.1-only AND GFDL-1.2-no-invariants-only
@@ -113,6 +113,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.krfb.desk
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

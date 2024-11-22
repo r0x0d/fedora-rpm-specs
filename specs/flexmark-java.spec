@@ -65,7 +65,7 @@ Emulation.}
 This package contains the core library for parsing markdown and
 rendering to HTML.
 
-%javadoc_package
+%{?javadoc_package}
 
 %package        all
 Summary:        All flexmark extension and converter modules

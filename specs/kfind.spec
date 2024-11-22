@@ -1,6 +1,6 @@
 Name:    kfind
 Summary: KDE Find File Utility
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 
 # Documentation is GFDL, rest GPLv2+
@@ -23,6 +23,7 @@ BuildRequires: cmake(KF6I18n)
 BuildRequires: cmake(KF6KIO)
 BuildRequires: cmake(KF6WidgetsAddons)
 BuildRequires: cmake(KF6XmlGui)
+BuildRequires: cmake(KF6Crash)
 
 BuildRequires: cmake(Qt6Concurrent)
 BuildRequires: cmake(Qt6Core5Compat)
@@ -63,6 +64,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

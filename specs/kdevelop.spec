@@ -3,7 +3,7 @@
 Name:           kdevelop
 Summary:        Integrated Development Environment for C++/C
 Epoch:          9
-Version:        24.08.3
+Version:        24.11.80
 Release:        1%{?dist}
 License:        GPL-2.0-only
 URL:            https://www.kdevelop.org/
@@ -218,7 +218,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.kde.kdevel
 %{_qt6_qmldir}/org/kde/plasma/private/kdevelopsessions/qmldir
 
 %files libs
-%{_libdir}/libKDev*.so.{60,6.*}
+%{_libdir}/libKDev*.so.{61,6.*}
 %{_libdir}/libKDevelopSessionsWatch.so
 %{_kf6_qtplugindir}/kdevplatform/
 %{_kf6_plugindir}/krunner/kdevelopsessions.so
@@ -234,6 +234,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.kde.kdevel
 %{rpm_macros_dir}/macros.kdevelop
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 9:24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 9:24.08.3-1
 - 24.08.3
 

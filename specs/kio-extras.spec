@@ -1,5 +1,5 @@
 Name:    kio-extras
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 Summary: Additional components to increase the functionality of KIO Framework
 
@@ -108,6 +108,8 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %{_datadir}/mime/packages/org.kde.kio.smb.xml
 %{_datadir}/remoteview/
 %{_datadir}/konqueror/
+%dir %{_kf6_datadir}/kio_filenamesearch/
+%{_kf6_datadir}/kio_filenamesearch/kio-filenamesearch-grep
 
 %{_kf6_datadir}/qlogging-categories6/kio-extras*
 %{_kf6_datadir}/solid/actions/solid_afc.desktop
@@ -135,6 +137,9 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

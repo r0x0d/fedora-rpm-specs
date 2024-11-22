@@ -3,7 +3,7 @@
 
 #
 Name:           opentrep
-Version:        0.07.15
+Version:        0.07.16
 Release:        %autorelease
 
 Summary:        C++ library providing a clean API for parsing travel-focused requests
@@ -21,8 +21,8 @@ BuildRequires:  pkgconfig(readline)
 BuildRequires:  soci-mysql-devel
 BuildRequires:  soci-sqlite3-devel
 BuildRequires:  xapian-core-devel
+BuildRequires:  mysql-devel
 BuildRequires:  sqlite-devel
-BuildRequires:  mariadb-connector-c-devel
 BuildRequires:  libicu-devel
 BuildRequires:  protobuf-devel
 BuildRequires:  protobuf-compiler

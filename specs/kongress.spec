@@ -1,5 +1,5 @@
 Name:           kongress
-Version:        24.08.3
+Version:        24.11.80
 Release:        1%{?dist}
 # Automatically converted from old format: CC0 and CC-BY-SA and BSD and GPLv3+ - review is highly recommended.
 License:        CC0-1.0 AND LicenseRef-Callaway-CC-BY-SA AND LicenseRef-Callaway-BSD AND GPL-3.0-or-later
@@ -30,6 +30,7 @@ BuildRequires: cmake(KF6CalendarCore)
 BuildRequires: cmake(KF6CoreAddons)
 BuildRequires: cmake(KF6DBusAddons)
 BuildRequires: cmake(KF6Notifications)
+BuildRequires: cmake(KF6Crash)
 BuildRequires: cmake(KOSMIndoorMap)
 
 %description
@@ -64,6 +65,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.%{
 %license LICENSES/*
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

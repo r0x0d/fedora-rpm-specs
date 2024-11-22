@@ -1,5 +1,5 @@
 Name:          ktrip
-Version:       24.08.3
+Version:       24.11.80
 Release:       1%{?dist}
 Summary:       Public transport navigation, allows you to find journeys between specified locations, departures for a specific station and shows real-time delay and disruption information.
 
@@ -26,6 +26,7 @@ BuildRequires: cmake(KF6CoreAddons)
 BuildRequires: cmake(KF6I18n)
 BuildRequires: cmake(KPublicTransport)
 BuildRequires: cmake(KF6KirigamiAddons)
+BuildRequires: cmake(KF6Crash)
 
 BuildRequires: pkgconfig(zlib)
 
@@ -62,6 +63,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 %{_kf6_metainfodir}/org.kde.%{name}.appdata.xml
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

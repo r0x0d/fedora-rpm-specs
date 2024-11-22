@@ -1,5 +1,5 @@
 Name:    kleopatra
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 Summary: KDE certificate manager and unified crypto GUI
 
@@ -39,6 +39,7 @@ BuildRequires:  cmake(KF6StatusNotifierItem)
 BuildRequires:  cmake(KF6DBusAddons)
 BuildRequires:  cmake(KF6Notifications)
 BuildRequires:  cmake(KF6TextWidgets)
+BuildRequires:  cmake(KF6GuiAddons)
 
 BuildRequires:  cmake(KPim6Libkleo)
 BuildRequires:  cmake(KPim6Mime)
@@ -83,8 +84,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 
 %files -f %{name}.lang
 %license LICENSES/*
-%{_datadir}/kleopatra/pics/kleopatra_*
-%{_datadir}/kwatchgnupg/pics/kwatchgnupg*
+%{_sysconfdir}/xdg/kleopatradebugcommandsrc
 %{_kf6_bindir}/kleopatra
 %{_kf6_bindir}/kwatchgnupg
 %{_kf6_datadir}/applications/kleopatra_import.desktop
@@ -93,7 +93,13 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 %{_kf6_datadir}/mime/packages/kleopatra-mime.xml
 %{_kf6_datadir}/kio/servicemenus/kleopatra_*.desktop
 %{_kf6_datadir}/icons/hicolor/*/apps/kleopatra.*
-%{_kf6_datadir}/icons/hicolor/*/apps/kwatchgnupg.*
+%{_kf6_datadir}/icons/hicolor/128x128/apps/org.kde.kwatchgnupg.png
+%{_kf6_datadir}/icons/hicolor/16x16/apps/org.kde.kwatchgnupg.png
+%{_kf6_datadir}/icons/hicolor/22x22/apps/org.kde.kwatchgnupg.png
+%{_kf6_datadir}/icons/hicolor/256x256/apps/org.kde.kwatchgnupg.png
+%{_kf6_datadir}/icons/hicolor/32x32/apps/org.kde.kwatchgnupg.png
+%{_kf6_datadir}/icons/hicolor/64x64/apps/org.kde.kwatchgnupg.png
+%{_kf6_datadir}/icons/hicolor/scalable/apps/org.kde.kwatchgnupg.svg
 %{_kf6_datadir}/mime/packages/application-vnd-kde-kleopatra.xml
 %{_kf6_datadir}/qlogging-categories6/kleopatra.*
 %{_kf6_metainfodir}/org.kde.kleopatra.appdata.xml
@@ -104,6 +110,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 %{_kf6_qtplugindir}/pim6/kcms/kleopatra/kleopatra_config_gnupgsystem.so
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

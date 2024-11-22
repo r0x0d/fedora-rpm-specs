@@ -31,6 +31,7 @@ Requires:       mesa-dri-drivers(x86-32)
 Requires:       mesa-vulkan-drivers(x86-32)
 Requires:       vulkan-loader(x86-32)
 Requires:       mesa-libGL(x86-32)
+Requires:       libXScrnSaver(x86-32)
 Recommends:     pipewire(x86-32)
 Recommends:     libFAudio(x86-32)
 Recommends:     wine-pulseaudio(x86-32)
@@ -38,6 +39,7 @@ Recommends:     wine-core(x86-32)
 %endif
 %endif
 
+Requires:       libXScrnSaver
 Requires:       mesa-vulkan-drivers
 Requires:       mesa-dri-drivers
 Requires:       vulkan-loader

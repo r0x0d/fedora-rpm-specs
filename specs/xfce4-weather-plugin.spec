@@ -5,7 +5,7 @@
 %global xfceversion 4.16
 
 Name:           xfce4-weather-plugin
-Version:        0.11.2
+Version:        0.11.3
 Release:        %autorelease
 Summary:        Weather plugin for the Xfce panel
 

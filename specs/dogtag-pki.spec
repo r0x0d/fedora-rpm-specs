@@ -8,19 +8,19 @@ Name:             dogtag-pki
 
 # Upstream version number:
 %global           major_version 11
-%global           minor_version 5
+%global           minor_version 6
 %global           update_version 0
 
 # Downstream release number:
 # - development/stabilization (unsupported): 0.<n> where n >= 1
 # - GA/update (supported): <n> where n >= 1
-%global           release_number 3
+%global           release_number 0.1
 
 # Development phase:
 # - development (unsupported): alpha<n> where n >= 1
 # - stabilization (unsupported): beta<n> where n >= 1
 # - GA/update (supported): <none>
-#global           phase
+%global           phase alpha1
 
 %undefine         timestamp
 %undefine         commit_id
@@ -28,9 +28,9 @@ Name:             dogtag-pki
 Summary:          %{product_name} Package
 URL:              https://www.dogtagpki.org
 # The entire source code is GPLv2 except for 'pki-tps' which is LGPLv2
-License:          GPL-2.0-only and LGPL-2.0-only
+License:          GPL-2.0-only AND LGPL-2.0-only
 Version:          %{major_version}.%{minor_version}.%{update_version}
-Release:          %{release_number}%{?phase:.}%{?phase}%{?timestamp:.}%{?timestamp}%{?commit_id:.}%{?commit_id}%{?dist}.2
+Release:          %{release_number}%{?phase:.}%{?phase}%{?timestamp:.}%{?timestamp}%{?commit_id:.}%{?commit_id}%{?dist}
 
 # To create a tarball from a version tag:
 # $ git archive \
@@ -63,16 +63,9 @@ ExcludeArch: i686
 # Java
 ################################################################################
 
-%global java_devel java-devel
-%global java_headless java-headless
-# where the find approach may be more readable, it is not friendly in case of
-# local rpm builds, where _jvmdir is dirty
-#%%global java_home %%(find  {_jvmdir} -maxdepth 1 | grep "jre-[0-9]\+$")
-%global java_home %(
-                  source /usr/share/java-utils/java-functions ;
-                  _prefer_jre=true ;
-                  set_javacmd ;
-                  echo $JAVA_HOME )
+%define java_devel java-21-openjdk-devel
+%define java_headless java-21-openjdk-headless
+%define java_home %{_jvmdir}/jre-21-openjdk
 
 ################################################################################
 # Application Server
@@ -84,6 +77,15 @@ ExcludeArch: i686
 # PKI
 ################################################################################
 
+# Use external build dependencies unless --without build_deps is specified.
+%bcond_without build_deps
+
+# Use bundled runtime dependencies unless --with runtime_deps is specified.
+%bcond_with runtime_deps
+
+# Build with Maven unless --without maven is specified.
+%bcond_without maven
+
 # Execute unit tests unless --without test is specified.
 %bcond_without test
 
@@ -93,6 +95,7 @@ ExcludeArch: i686
 %bcond_without server
 %bcond_without acme
 %bcond_without ca
+%bcond_without esc
 %bcond_without est
 %bcond_without kra
 %bcond_without ocsp
@@ -100,8 +103,8 @@ ExcludeArch: i686
 %bcond_without tps
 %bcond_without javadoc
 %bcond_without theme
-%bcond_without tests
 %bcond_without meta
+%bcond_without tests
 %bcond_without debug
 
 # Don't build console unless --with console is specified.
@@ -124,7 +127,7 @@ ExcludeArch: i686
 %define pki_uid 17
 %define pki_groupname pkiuser
 %define pki_gid 17
-%define pki_homedir /usr/share/pki
+%define pki_homedir /home/%{pki_username}
 
 %global saveFileContext() \
 if [ -s /etc/selinux/config ]; then \
@@ -167,24 +170,50 @@ BuildRequires:    maven-local
 BuildRequires:    xmvn-tools
 %endif
 BuildRequires:    javapackages-tools
+
+%if %{without runtime_deps}
+BuildRequires:    xmlstarlet
+%endif
+
 BuildRequires:    mvn(commons-cli:commons-cli)
 BuildRequires:    mvn(commons-codec:commons-codec)
 BuildRequires:    mvn(commons-io:commons-io)
-BuildRequires:    mvn(org.apache.commons:commons-lang3)
 BuildRequires:    mvn(commons-logging:commons-logging)
 BuildRequires:    mvn(commons-net:commons-net)
+BuildRequires:    mvn(org.apache.commons:commons-lang3)
+BuildRequires:    mvn(org.apache.httpcomponents:httpclient)
 BuildRequires:    mvn(org.slf4j:slf4j-api)
 BuildRequires:    mvn(xml-apis:xml-apis)
 BuildRequires:    mvn(xml-resolver:xml-resolver)
 BuildRequires:    mvn(org.junit.jupiter:junit-jupiter-api)
+
+
+%if %{with build_deps}
+BuildRequires:    mvn(jakarta.activation:jakarta.activation-api)
+BuildRequires:    mvn(jakarta.annotation:jakarta.annotation-api)
+BuildRequires:    mvn(jakarta.xml.bind:jakarta.xml.bind-api)
+
+BuildRequires:    mvn(com.fasterxml.jackson.core:jackson-annotations)
+BuildRequires:    mvn(com.fasterxml.jackson.core:jackson-core)
+BuildRequires:    mvn(com.fasterxml.jackson.core:jackson-databind)
+BuildRequires:    mvn(com.fasterxml.jackson.module:jackson-module-jaxb-annotations)
+BuildRequires:    mvn(com.fasterxml.jackson.jaxrs:jackson-jaxrs-base)
+BuildRequires:    mvn(com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider)
+
+BuildRequires:    mvn(org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.0_spec)
+BuildRequires:    mvn(org.jboss.logging:jboss-logging)
+
+BuildRequires:    mvn(org.jboss.resteasy:resteasy-jaxrs)
 BuildRequires:    mvn(org.jboss.resteasy:resteasy-client)
 BuildRequires:    mvn(org.jboss.resteasy:resteasy-jackson2-provider)
-BuildRequires:    mvn(org.jboss.resteasy:resteasy-jaxrs)
 BuildRequires:    mvn(org.jboss.resteasy:resteasy-servlet-initializer)
+%endif
+
 BuildRequires:    mvn(org.apache.tomcat:tomcat-catalina) >= 9.0.62
 BuildRequires:    mvn(org.apache.tomcat:tomcat-servlet-api) >= 9.0.62
 BuildRequires:    mvn(org.apache.tomcat:tomcat-jaspic-api) >= 9.0.62
 BuildRequires:    mvn(org.apache.tomcat:tomcat-util-scan) >= 9.0.62
+
 BuildRequires:    mvn(org.dogtagpki.jss:jss-base) >= 5.5.0
 BuildRequires:    mvn(org.dogtagpki.jss:jss-tomcat) >= 5.5.0
 BuildRequires:    mvn(org.dogtagpki.ldap-sdk:ldapjdk) >= 5.5.0
@@ -210,8 +239,6 @@ BuildRequires:    apr-util-devel
 BuildRequires:    cyrus-sasl-devel
 BuildRequires:    httpd-devel >= 2.4.2
 BuildRequires:    systemd
-BuildRequires:    zlib
-BuildRequires:    zlib-devel
 
 # build dependency to build man pages
 BuildRequires:    golang-github-cpuguy83-md2man
@@ -259,7 +286,6 @@ Obsoletes:        pki-symkey < %{version}
 Obsoletes:        %{product_id}-symkey < %{version}
 Obsoletes:        pki-console < %{version}
 Obsoletes:        pki-console-theme < %{version}
-Obsoletes:        idm-console-framework < 2.0
 
 %if %{with base}
 Requires:         %{product_id}-base = %{version}-%{release}
@@ -274,38 +300,92 @@ Requires:         %{product_id}-server = %{version}-%{release}
 
 %if %{with acme}
 Requires:         %{product_id}-acme = %{version}-%{release}
+%else
+Obsoletes:        pki-acme < %{version}
+Conflicts:        pki-acme < %{version}
+
+Obsoletes:        %{product_id}-acme < %{version}
+Conflicts:        %{product_id}-acme < %{version}
 %endif
 
 %if %{with ca}
 Requires:         %{product_id}-ca = %{version}-%{release}
+%else
+Obsoletes:        pki-ca < %{version}
+Conflicts:        pki-ca < %{version}
+
+Obsoletes:        %{product_id}-ca < %{version}
+Conflicts:        %{product_id}-ca < %{version}
 %endif
 
 %if %{with est}
 Requires:         %{product_id}-est = %{version}-%{release}
+%else
+Obsoletes:        pki-est < %{version}
+Conflicts:        pki-est < %{version}
+
+Obsoletes:        %{product_id}-est < %{version}
+Conflicts:        %{product_id}-est < %{version}
 %endif
 
 %if %{with kra}
 Requires:         %{product_id}-kra = %{version}-%{release}
+%else
+Obsoletes:        pki-kra < %{version}
+Conflicts:        pki-kra < %{version}
+
+Obsoletes:        %{product_id}-kra < %{version}
+Conflicts:        %{product_id}-kra < %{version}
 %endif
 
 %if %{with ocsp}
 Requires:         %{product_id}-ocsp = %{version}-%{release}
+%else
+Obsoletes:        pki-ocsp < %{version}
+Conflicts:        pki-ocsp < %{version}
+
+Obsoletes:        %{product_id}-ocsp < %{version}
+Conflicts:        %{product_id}-ocsp < %{version}
 %endif
 
 %if %{with tks}
 Requires:         %{product_id}-tks = %{version}-%{release}
+%else
+Obsoletes:        pki-tks < %{version}
+Conflicts:        pki-tks < %{version}
+
+Obsoletes:        %{product_id}-tks < %{version}
+Conflicts:        %{product_id}-tks < %{version}
 %endif
 
 %if %{with tps}
 Requires:         %{product_id}-tps = %{version}-%{release}
+%else
+Obsoletes:        pki-tps < %{version}
+Conflicts:        pki-tps < %{version}
+
+Obsoletes:        %{product_id}-tps < %{version}
+Conflicts:        %{product_id}-tps < %{version}
 %endif
 
 %if %{with javadoc}
 Requires:         %{product_id}-javadoc = %{version}-%{release}
+%else
+Obsoletes:        pki-javadoc < %{version}
+Conflicts:        pki-javadoc < %{version}
+
+Obsoletes:        %{product_id}-javadoc < %{version}
+Conflicts:        %{product_id}-javadoc < %{version}
 %endif
 
 %if %{with console}
 Requires:         %{product_id}-console = %{version}-%{release}
+%else
+Obsoletes:        pki-console < %{version}
+Conflicts:        pki-console < %{version}
+
+Obsoletes:        %{product_id}-console < %{version}
+Conflicts:        %{product_id}-console < %{version}
 %endif
 
 %if %{with theme}
@@ -313,16 +393,33 @@ Requires:         %{product_id}-theme = %{version}-%{release}
 %if %{with console}
 Requires:         %{product_id}-console-theme = %{version}-%{release}
 %endif
+%else
+Obsoletes:        pki-theme < %{version}
+Conflicts:        pki-theme < %{version}
+
+Obsoletes:        %{product_id}-theme < %{version}
+Conflicts:        %{product_id}-theme < %{version}
+
+Obsoletes:        pki-console-theme < %{version}
+Conflicts:        pki-console-theme < %{version}
+
+Obsoletes:        %{product_id}-console-theme < %{version}
+Conflicts:        %{product_id}-console-theme < %{version}
 %endif
 
 %if %{with tests}
 Requires:         %{product_id}-tests = %{version}-%{release}
 %endif
 
+%if %{with esc}
 # Make certain that this 'meta' package requires the latest version(s)
 # of ALL PKI clients -- except for s390/s390x where 'esc' is not built
 %ifnarch s390 s390x
-Requires:         esc >= 1.1.1
+Requires:         esc >= 1.1.2
+%endif
+%else
+Obsoletes:        esc <= 1.1.2
+Conflicts:        esc <= 1.1.2
 %endif
 
 # description for top-level package (unless there is a separate meta package)
@@ -415,14 +512,49 @@ Requires:         %{java_headless}
 Requires:         mvn(commons-cli:commons-cli)
 Requires:         mvn(commons-codec:commons-codec)
 Requires:         mvn(commons-io:commons-io)
-Requires:         mvn(org.apache.commons:commons-lang3)
 Requires:         mvn(commons-logging:commons-logging)
 Requires:         mvn(commons-net:commons-net)
+Requires:         mvn(org.apache.commons:commons-lang3)
+Requires:         mvn(org.apache.httpcomponents:httpclient)
 Requires:         mvn(org.slf4j:slf4j-api)
 Requires:         mvn(org.slf4j:slf4j-jdk14)
+
+%if %{with runtime_deps}
+Requires:         mvn(jakarta.activation:jakarta.activation-api)
+Requires:         mvn(jakarta.annotation:jakarta.annotation-api)
+Requires:         mvn(jakarta.xml.bind:jakarta.xml.bind-api)
+
+Requires:         mvn(com.fasterxml.jackson.core:jackson-annotations)
+Requires:         mvn(com.fasterxml.jackson.core:jackson-core)
+Requires:         mvn(com.fasterxml.jackson.core:jackson-databind)
+Requires:         mvn(com.fasterxml.jackson.jaxrs:jackson-jaxrs-base)
+Requires:         mvn(com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider)
+
+Requires:         mvn(org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.0_spec)
+Requires:         mvn(org.jboss.logging:jboss-logging)
+
+Requires:         mvn(org.jboss.resteasy:resteasy-jaxrs)
 Requires:         mvn(org.jboss.resteasy:resteasy-client)
 Requires:         mvn(org.jboss.resteasy:resteasy-jackson2-provider)
-Requires:         mvn(org.jboss.resteasy:resteasy-jaxrs)
+%else
+Provides:         bundled(jakarta-activation)
+Provides:         bundled(jakarta-annotations)
+Provides:         bundled(jaxb-api)
+
+Provides:         bundled(jackson-annotations)
+Provides:         bundled(jackson-core)
+Provides:         bundled(jackson-databind)
+Provides:         bundled(jackson-jaxrs-providers)
+Provides:         bundled(jackson-jaxrs-json-provider)
+
+Provides:         bundled(jboss-jaxrs-2.0-api)
+Provides:         bundled(jboss-logging)
+
+Provides:         bundled(resteasy-jaxrs)
+Provides:         bundled(resteasy-client)
+Provides:         bundled(resteasy-jackson2-provider)
+%endif
+
 Requires:         mvn(org.dogtagpki.jss:jss-base) >= 5.5.0
 Requires:         mvn(org.dogtagpki.ldap-sdk:ldapjdk) >= 5.5.0
 Requires:         %{product_id}-base = %{version}-%{release}
@@ -443,6 +575,7 @@ Requires:         openldap-clients
 Requires:         nss-tools >= 3.36.1
 Requires:         %{product_id}-java = %{version}-%{release}
 Requires:         p11-kit-trust
+Requires:         file
 
 # PKICertImport depends on certutil and openssl
 Requires:         nss-tools
@@ -489,7 +622,12 @@ Requires:         python3-policycoreutils
 
 Requires:         selinux-policy-targeted >= 3.13.1-159
 
+%if %{with runtime_deps}
 Requires:         mvn(org.jboss.resteasy:resteasy-servlet-initializer)
+%else
+Provides:         bundled(resteasy-servlet-initializer)
+%endif
+
 Requires:         tomcat >= 1:9.0.62
 Requires:         mvn(org.dogtagpki.jss:jss-tomcat) >= 5.5.0
 
@@ -769,14 +907,16 @@ This package provides %{product_name} API documentation.
 Summary:          %{product_name} Console Package
 BuildArch:        noarch
 
-BuildRequires:    mvn(org.dogtagpki.console-framework:console-framework) >= 2.1.0
-
 Obsoletes:        pki-console < %{version}-%{release}
 Provides:         pki-console = %{version}-%{release}
 
-Requires:         mvn(org.dogtagpki.console-framework:console-framework) >= 2.1.0
 Requires:         %{product_id}-java = %{version}-%{release}
 Requires:         %{product_id}-console-theme = %{version}-%{release}
+
+# IDM Console Framework has been merged into PKI Console.
+# This will remove installed IDM Console Framework packages.
+Obsoletes:        idm-console-framework <= 2.1
+Conflicts:        idm-console-framework <= 2.1
 
 %description -n   %{product_id}-console
 %{product_name} Console is a Java application used to administer %{product_name} Server.
@@ -865,7 +1005,99 @@ This package provides test suite for %{product_name}.
 
 %autosetup -n pki-%{version}%{?phase:-}%{?phase} -p 1
 
-echo "Java home is: %{java_home}"
+%if %{without runtime_deps}
+
+if [ ! -d base/common/lib ]
+then
+    # import common libraries from RPMs
+
+    mkdir -p base/common/lib
+    pushd base/common/lib
+
+    JAKARTA_ACTIVATION_API_VERSION=$(rpm -q jakarta-activation | sed -n 's/^jakarta-activation-\([^-]*\)-.*$/\1/p')
+    echo "JAKARTA_ACTIVATION_API_VERSION: $JAKARTA_ACTIVATION_API_VERSION"
+
+    cp /usr/share/java/jakarta-activation/jakarta.activation-api.jar \
+        jakarta.activation-api-$JAKARTA_ACTIVATION_API_VERSION.jar
+
+    JAKARTA_ANNOTATION_API_VERSION=$(rpm -q jakarta-annotations | sed -n 's/^jakarta-annotations-\([^-]*\)-.*$/\1/p')
+    echo "JAKARTA_ANNOTATION_API_VERSION: $JAKARTA_ANNOTATION_API_VERSION"
+
+    cp /usr/share/java/jakarta-annotations/jakarta.annotation-api.jar \
+        jakarta.annotation-api-$JAKARTA_ANNOTATION_API_VERSION.jar
+
+    JAXB_API_VERSION=$(rpm -q jaxb-api | sed -n 's/^jaxb-api-\([^-]*\)-.*$/\1/p')
+    echo "JAXB_API_VERSION: $JAXB_API_VERSION"
+
+    if [ -f /usr/share/java/jaxb-api.jar ]
+    then
+        cp /usr/share/java/jaxb-api.jar \
+            jakarta.xml.bind-api-$JAXB_API_VERSION.jar
+    elif [ -f /usr/share/java/jaxb-api/jakarta.xml.bind-api.jar ]
+    then
+        cp /usr/share/java/jaxb-api/jakarta.xml.bind-api.jar \
+            jakarta.xml.bind-api-$JAXB_API_VERSION.jar
+    fi
+
+    JACKSON_VERSION=$(rpm -q jackson-annotations | sed -n 's/^jackson-annotations-\([^-]*\)-.*$/\1/p')
+    echo "JACKSON_VERSION: $JACKSON_VERSION"
+
+    cp /usr/share/java/jackson-annotations.jar \
+        jackson-annotations-$JACKSON_VERSION.jar
+    cp /usr/share/java/jackson-core.jar \
+        jackson-core-$JACKSON_VERSION.jar
+    cp /usr/share/java/jackson-databind.jar \
+        jackson-databind-$JACKSON_VERSION.jar
+    cp /usr/share/java/jackson-jaxrs-providers/jackson-jaxrs-base.jar \
+        jackson-jaxrs-base-$JACKSON_VERSION.jar
+    cp /usr/share/java/jackson-jaxrs-providers/jackson-jaxrs-json-provider.jar \
+        jackson-jaxrs-json-provider-$JACKSON_VERSION.jar
+    cp /usr/share/java/jackson-modules/jackson-module-jaxb-annotations.jar \
+        jackson-module-jaxb-annotations-$JACKSON_VERSION.jar
+
+    JAXRS_VERSION=$(rpm -q jboss-jaxrs-2.0-api | sed -n 's/^jboss-jaxrs-2.0-api-\([^-]*\)-.*$/\1.Final/p')
+    echo "JAXRS_VERSION: $JAXRS_VERSION"
+
+    cp /usr/share/java/jboss-jaxrs-2.0-api.jar \
+        jboss-jaxrs-api_2.0_spec-$JAXRS_VERSION.jar
+
+    JBOSS_LOGGING_VERSION=$(rpm -q jboss-logging | sed -n 's/^jboss-logging-\([^-]*\)-.*$/\1.Final/p')
+    echo "JBOSS_LOGGING_VERSION: $JBOSS_LOGGING_VERSION"
+
+    cp /usr/share/java/jboss-logging/jboss-logging.jar \
+        jboss-logging-$JBOSS_LOGGING_VERSION.jar
+
+    RESTEASY_VERSION=$(rpm -q pki-resteasy-core | sed -n 's/^pki-resteasy-core-\([^-]*\)-.*$/\1.Final/p')
+    echo "RESTEASY_VERSION: $RESTEASY_VERSION"
+
+    cp /usr/share/java/resteasy/resteasy-jaxrs.jar \
+        resteasy-jaxrs-$RESTEASY_VERSION.jar
+    cp /usr/share/java/resteasy/resteasy-client.jar \
+        resteasy-client-$RESTEASY_VERSION.jar
+    cp /usr/share/java/resteasy/resteasy-jackson2-provider.jar \
+        resteasy-jackson2-provider-$RESTEASY_VERSION.jar
+
+    ls -l
+    popd
+fi
+
+if [ ! -d base/server/lib ]
+then
+    # import server libraries from RPMs
+
+    mkdir -p base/server/lib
+    pushd base/server/lib
+
+    RESTEASY_VERSION=$(rpm -q pki-resteasy-servlet-initializer | sed -n 's/^pki-resteasy-servlet-initializer-\([^-]*\)-.*$/\1.Final/p')
+    echo "RESTEASY_VERSION: $RESTEASY_VERSION"
+
+    cp /usr/share/java/resteasy/resteasy-servlet-initializer.jar \
+        resteasy-servlet-initializer-$RESTEASY_VERSION.jar
+
+    ls -l
+    popd
+fi
+%endif
 
 %if ! %{with base}
 %pom_disable_module common base
@@ -911,8 +1143,10 @@ echo "Java home is: %{java_home}"
 %pom_disable_module console base
 %endif
 
-# flatten-maven-plugin is not available in RPM
+# remove plugins not needed to build RPM
 %pom_remove_plugin org.codehaus.mojo:flatten-maven-plugin
+%pom_remove_plugin org.apache.maven.plugins:maven-deploy-plugin
+%pom_remove_plugin com.github.github:site-maven-plugin
 
 # specify Maven artifact locations
 %mvn_file org.dogtagpki.pki:pki-common            pki/pki-common
@@ -962,6 +1196,7 @@ echo "Java home is: %{java_home}"
 
 export JAVA_HOME=%{java_home}
 
+%if %{with maven}
 # build Java binaries and run unit tests with Maven
 %mvn_build %{!?with_test:-f} -j
 
@@ -1015,26 +1250,45 @@ ln -sf ../../base/console/target/pki-console.jar
 
 popd
 
+# with maven
+%endif
+
 # Remove all symbol table and relocation information from the executable.
 C_FLAGS="-s"
+CXX_FLAGS="$CXX_FLAGS -g -fPIE -pie"
 
 %if 0%{?fedora}
 # https://sourceware.org/annobin/annobin.html/Test-gaps.html
 C_FLAGS="$C_FLAGS -fplugin=annobin"
 
-%if 0%{?fedora} < 40
 # https://sourceware.org/annobin/annobin.html/Test-cf-protection.html
 C_FLAGS="$C_FLAGS -fcf-protection=full"
-%endif
 
 # https://sourceware.org/annobin/annobin.html/Test-optimization.html
 C_FLAGS="$C_FLAGS -O2"
+CXX_FLAGS="$CXX_FLAGS -O2"
 
 # https://sourceware.org/annobin/annobin.html/Test-glibcxx-assertions.html
 C_FLAGS="$C_FLAGS -D_GLIBCXX_ASSERTIONS"
+CXX_FLAGS="$CXX_FLAGS -D_GLIBCXX_ASSERTIONS"
 
 # https://sourceware.org/annobin/annobin.html/Test-lto.html
 C_FLAGS="$C_FLAGS -fno-lto"
+
+# https://sourceware.org/annobin/annobin.html/Test-fortify.html
+C_FLAGS="$C_FLAGS -D_FORTIFY_SOURCE=3"
+CXX_FLAGS="$CXX_FLAGS -D_FORTIFY_SOURCE=3"
+
+# https://sourceware.org/annobin/annobin.html/Test-stack-clash.html
+C_FLAGS="$C_FLAGS -fstack-clash-protection"
+CXX_FLAGS="$CXX_FLAGS -fstack-clash-protection"
+
+%ifarch aarch64
+# https://sourceware.org/annobin/annobin.html/Test-dynamic-tags.html
+C_FLAGS="$C_FLAGS -mbranch-protection=standard"
+CXX_FLAGS="$CXX_FLAGS -mbranch-protection=standard"
+%endif
+
 %endif
 
 pkgs=base\
@@ -1068,12 +1322,13 @@ pkgs=base\
     --share-dir=%{_datadir} \
     --cmake=%{__cmake} \
     --c-flags="$C_FLAGS" \
+    --cxx-flags="$CXX_FLAGS" \
     --java-home=%{java_home} \
     --jni-dir=%{_jnidir} \
     --unit-dir=%{_unitdir} \
     --python=%{python3} \
     --python-dir=%{python3_sitelib} \
-    --without-java \
+    %{?with_maven:--without-java} \
     --with-pkgs=$pkgs \
     %{?with_console:--with-console} \
     --without-test \
@@ -1083,8 +1338,10 @@ pkgs=base\
 %install
 ################################################################################
 
+%if %{with maven}
 # install Java binaries
 %mvn_install
+%endif
 
 # install PKI console, Javadoc, and native binaries
 ./build.sh \
@@ -1093,13 +1350,199 @@ pkgs=base\
     --install-dir=%{buildroot} \
     install
 
+%if %{without runtime_deps}
+
+%if %{with maven}
+
+%if %{with meta}
+echo "Removing RPM deps from %{buildroot}%{_datadir}/maven-metadata/pki.xml"
+xmlstarlet edit --inplace \
+    -d "//_:dependency[_:groupId='jakarta.activation']" \
+    -d "//_:dependency[_:groupId='jakarta.annotation']" \
+    -d "//_:dependency[_:groupId='jakarta.xml.bind']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.core']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.module']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.jaxrs']" \
+    -d "//_:dependency[_:groupId='org.jboss.spec.javax.ws.rs']" \
+    -d "//_:dependency[_:groupId='org.jboss.logging']" \
+    -d "//_:dependency[_:groupId='org.jboss.resteasy']" \
+    %{buildroot}%{_datadir}/maven-metadata/%{name}.xml
+%endif
+
+%if %{with base}
+echo "Removing RPM deps from %{buildroot}%{_datadir}/maven-metadata/pki-pki-java.xml"
+xmlstarlet edit --inplace \
+    -d "//_:dependency[_:groupId='jakarta.activation']" \
+    -d "//_:dependency[_:groupId='jakarta.annotation']" \
+    -d "//_:dependency[_:groupId='jakarta.xml.bind']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.core']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.module']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.jaxrs']" \
+    -d "//_:dependency[_:groupId='org.jboss.spec.javax.ws.rs']" \
+    -d "//_:dependency[_:groupId='org.jboss.logging']" \
+    -d "//_:dependency[_:groupId='org.jboss.resteasy']" \
+    %{buildroot}%{_datadir}/maven-metadata/%{name}-pki-java.xml
+
+echo "Removing RPM deps from %{buildroot}%{_datadir}/maven-metadata/pki-pki-tools.xml"
+xmlstarlet edit --inplace \
+    -d "//_:dependency[_:groupId='jakarta.activation']" \
+    -d "//_:dependency[_:groupId='jakarta.annotation']" \
+    -d "//_:dependency[_:groupId='jakarta.xml.bind']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.core']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.module']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.jaxrs']" \
+    -d "//_:dependency[_:groupId='org.jboss.spec.javax.ws.rs']" \
+    -d "//_:dependency[_:groupId='org.jboss.logging']" \
+    -d "//_:dependency[_:groupId='org.jboss.resteasy']" \
+    %{buildroot}%{_datadir}/maven-metadata/%{name}-pki-tools.xml
+%endif
+
+%if %{with server}
+echo "Removing RPM deps from %{buildroot}%{_datadir}/maven-metadata/pki-pki-server.xml"
+xmlstarlet edit --inplace \
+    -d "//_:dependency[_:groupId='jakarta.activation']" \
+    -d "//_:dependency[_:groupId='jakarta.annotation']" \
+    -d "//_:dependency[_:groupId='jakarta.xml.bind']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.core']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.module']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.jaxrs']" \
+    -d "//_:dependency[_:groupId='org.jboss.spec.javax.ws.rs']" \
+    -d "//_:dependency[_:groupId='org.jboss.logging']" \
+    -d "//_:dependency[_:groupId='org.jboss.resteasy']" \
+    %{buildroot}%{_datadir}/maven-metadata/%{name}-pki-server.xml
+%endif
+
+%if %{with ca}
+echo "Removing RPM deps from %{buildroot}%{_datadir}/maven-metadata/pki-pki-ca.xml"
+xmlstarlet edit --inplace \
+    -d "//_:dependency[_:groupId='jakarta.activation']" \
+    -d "//_:dependency[_:groupId='jakarta.annotation']" \
+    -d "//_:dependency[_:groupId='jakarta.xml.bind']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.core']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.module']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.jaxrs']" \
+    -d "//_:dependency[_:groupId='org.jboss.spec.javax.ws.rs']" \
+    -d "//_:dependency[_:groupId='org.jboss.logging']" \
+    -d "//_:dependency[_:groupId='org.jboss.resteasy']" \
+    %{buildroot}%{_datadir}/maven-metadata/%{name}-pki-ca.xml
+%endif
+
+%if %{with kra}
+echo "Removing RPM deps from %{buildroot}%{_datadir}/maven-metadata/pki-pki-kra.xml"
+xmlstarlet edit --inplace \
+    -d "//_:dependency[_:groupId='jakarta.activation']" \
+    -d "//_:dependency[_:groupId='jakarta.annotation']" \
+    -d "//_:dependency[_:groupId='jakarta.xml.bind']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.core']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.module']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.jaxrs']" \
+    -d "//_:dependency[_:groupId='org.jboss.spec.javax.ws.rs']" \
+    -d "//_:dependency[_:groupId='org.jboss.logging']" \
+    -d "//_:dependency[_:groupId='org.jboss.resteasy']" \
+    %{buildroot}%{_datadir}/maven-metadata/%{name}-pki-kra.xml
+%endif
+
+%if %{with ocsp}
+echo "Removing RPM deps from %{buildroot}%{_datadir}/maven-metadata/pki-pki-ocsp.xml"
+xmlstarlet edit --inplace \
+    -d "//_:dependency[_:groupId='jakarta.activation']" \
+    -d "//_:dependency[_:groupId='jakarta.annotation']" \
+    -d "//_:dependency[_:groupId='jakarta.xml.bind']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.core']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.module']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.jaxrs']" \
+    -d "//_:dependency[_:groupId='org.jboss.spec.javax.ws.rs']" \
+    -d "//_:dependency[_:groupId='org.jboss.logging']" \
+    -d "//_:dependency[_:groupId='org.jboss.resteasy']" \
+    %{buildroot}%{_datadir}/maven-metadata/%{name}-pki-ocsp.xml
+%endif
+
+%if %{with tks}
+echo "Removing RPM deps from %{buildroot}%{_datadir}/maven-metadata/pki-pki-tks.xml"
+xmlstarlet edit --inplace \
+    -d "//_:dependency[_:groupId='jakarta.activation']" \
+    -d "//_:dependency[_:groupId='jakarta.annotation']" \
+    -d "//_:dependency[_:groupId='jakarta.xml.bind']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.core']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.module']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.jaxrs']" \
+    -d "//_:dependency[_:groupId='org.jboss.spec.javax.ws.rs']" \
+    -d "//_:dependency[_:groupId='org.jboss.logging']" \
+    -d "//_:dependency[_:groupId='org.jboss.resteasy']" \
+    %{buildroot}%{_datadir}/maven-metadata/%{name}-pki-tks.xml
+%endif
+
+%if %{with tps}
+echo "Removing RPM deps from %{buildroot}%{_datadir}/maven-metadata/pki-pki-tps.xml"
+xmlstarlet edit --inplace \
+    -d "//_:dependency[_:groupId='jakarta.activation']" \
+    -d "//_:dependency[_:groupId='jakarta.annotation']" \
+    -d "//_:dependency[_:groupId='jakarta.xml.bind']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.core']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.module']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.jaxrs']" \
+    -d "//_:dependency[_:groupId='org.jboss.spec.javax.ws.rs']" \
+    -d "//_:dependency[_:groupId='org.jboss.logging']" \
+    -d "//_:dependency[_:groupId='org.jboss.resteasy']" \
+    %{buildroot}%{_datadir}/maven-metadata/%{name}-pki-tps.xml
+%endif
+
+%if %{with acme}
+echo "Removing RPM deps from %{buildroot}%{_datadir}/maven-metadata/pki-pki-acme.xml"
+xmlstarlet edit --inplace \
+    -d "//_:dependency[_:groupId='jakarta.activation']" \
+    -d "//_:dependency[_:groupId='jakarta.annotation']" \
+    -d "//_:dependency[_:groupId='jakarta.xml.bind']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.core']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.module']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.jaxrs']" \
+    -d "//_:dependency[_:groupId='org.jboss.spec.javax.ws.rs']" \
+    -d "//_:dependency[_:groupId='org.jboss.logging']" \
+    -d "//_:dependency[_:groupId='org.jboss.resteasy']" \
+    %{buildroot}%{_datadir}/maven-metadata/%{name}-pki-acme.xml
+%endif
+
+%if %{with est}
+echo "Removing RPM deps from %{buildroot}%{_datadir}/maven-metadata/pki-pki-est.xml"
+xmlstarlet edit --inplace \
+    -d "//_:dependency[_:groupId='jakarta.activation']" \
+    -d "//_:dependency[_:groupId='jakarta.annotation']" \
+    -d "//_:dependency[_:groupId='jakarta.xml.bind']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.core']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.module']" \
+    -d "//_:dependency[_:groupId='com.fasterxml.jackson.jaxrs']" \
+    -d "//_:dependency[_:groupId='org.jboss.spec.javax.ws.rs']" \
+    -d "//_:dependency[_:groupId='org.jboss.logging']" \
+    -d "//_:dependency[_:groupId='org.jboss.resteasy']" \
+    %{buildroot}%{_datadir}/maven-metadata/%{name}-pki-est.xml
+%endif
+
+# with maven
+%endif
+
+# without runtime_deps
+%endif
+
 %if %{with server}
 
 %pre -n %{product_id}-server
+
+# create PKI group if it doesn't exist
 getent group %{pki_groupname} >/dev/null || groupadd -f -g %{pki_gid} -r %{pki_groupname}
+
+# create PKI user if it doesn't exist
 if ! getent passwd %{pki_username} >/dev/null ; then
     useradd -r -u %{pki_uid} -g %{pki_groupname} -d %{pki_homedir} -s /sbin/nologin -c "Certificate System" %{pki_username}
 fi
+
+# create PKI home directory if it doesn't exist
+if [ ! -d %{pki_homedir} ] ; then
+    cp -ar /etc/skel %{pki_homedir}
+    chown -R %{pki_username}:%{pki_groupname} %{pki_homedir}
+    chmod 700 %{pki_homedir}
+    usermod -d %{pki_homedir} %{pki_username}
+fi
+
 exit 0
 
 # with server
@@ -1171,10 +1614,10 @@ fi
 %if %{with meta}
 %if "%{name}" != "%{product_id}"
 ################################################################################
-%files -n %{product_id} -f .mfiles
+%files -n %{product_id} %{?with_maven:-f .mfiles}
 ################################################################################
 %else
-%files -f .mfiles
+%files %{?with_maven:-f .mfiles}
 %endif
 
 %doc %{_datadir}/doc/pki/README
@@ -1210,13 +1653,17 @@ fi
 %{_mandir}/man8/pki-upgrade.8.gz
 
 ################################################################################
-%files -n %{product_id}-java -f .mfiles-pki-java
+%files -n %{product_id}-java %{?with_maven:-f .mfiles-pki-java}
 ################################################################################
 
 %license base/common/LICENSE
 %license base/common/LICENSE.LESSER
 %{_datadir}/pki/examples/java/
 %{_datadir}/pki/lib/*.jar
+
+%if %{without maven}
+%{_datadir}/java/pki/pki-common.jar
+%endif
 
 ################################################################################
 %files -n python3-%{product_id}
@@ -1230,18 +1677,15 @@ fi
 %{python3_sitelib}/pki
 
 ################################################################################
-%files -n %{product_id}-tools -f .mfiles-pki-tools
+%files -n %{product_id}-tools %{?with_maven:-f .mfiles-pki-tools}
 ################################################################################
 
 %license base/tools/LICENSE
 %doc base/tools/doc/README
-%{_bindir}/p12tool
-%{_bindir}/p7tool
 %{_bindir}/pistool
 %{_bindir}/pki
 %{_bindir}/revoker
 %{_bindir}/setpin
-%{_bindir}/sslget
 %{_bindir}/tkstool
 %{_bindir}/tpsclient
 %{_bindir}/AtoB
@@ -1299,12 +1743,16 @@ fi
 %{_mandir}/man1/PKICertImport.1.gz
 %{_mandir}/man1/tpsclient.1.gz
 
+%if %{without maven}
+%{_datadir}/java/pki/pki-tools.jar
+%endif
+
 # with base
 %endif
 
 %if %{with server}
 ################################################################################
-%files -n %{product_id}-server -f .mfiles-pki-server
+%files -n %{product_id}-server %{?with_maven:-f .mfiles-pki-server}
 ################################################################################
 
 %license base/common/THIRD_PARTY_LICENSES
@@ -1315,7 +1763,6 @@ fi
 %{_sbindir}/pkispawn
 %{_sbindir}/pkidestroy
 %{_sbindir}/pki-server
-%{_sbindir}/pki-server-upgrade
 %{_sbindir}/pki-healthcheck
 %{python3_sitelib}/pki/server/
 %{python3_sitelib}/pkihealthcheck-*.egg-info/
@@ -1358,82 +1805,117 @@ fi
 %{_datadir}/pki/setup/
 %{_datadir}/pki/server/
 
+%if %{without maven}
+%{_datadir}/java/pki/pki-server.jar
+%{_datadir}/java/pki/pki-server-webapp.jar
+%{_datadir}/java/pki/pki-tomcat.jar
+%{_datadir}/java/pki/pki-tomcat-9.0.jar
+%endif
+
 # with server
 %endif
 
 %if %{with acme}
 ################################################################################
-%files -n %{product_id}-acme -f .mfiles-pki-acme
+%files -n %{product_id}-acme %{?with_maven:-f .mfiles-pki-acme}
 ################################################################################
 
 %{_datadir}/pki/acme/
+
+%if %{without maven}
+%{_datadir}/java/pki/pki-acme.jar
+%endif
 
 # with acme
 %endif
 
 %if %{with ca}
 ################################################################################
-%files -n %{product_id}-ca -f .mfiles-pki-ca
+%files -n %{product_id}-ca %{?with_maven:-f .mfiles-pki-ca}
 ################################################################################
 
 %license base/ca/LICENSE
 %{_datadir}/pki/ca/
+
+%if %{without maven}
+%{_datadir}/java/pki/pki-ca.jar
+%endif
 
 # with ca
 %endif
 
 %if %{with est}
 ################################################################################
-%files -n %{product_id}-est -f .mfiles-pki-est
+%files -n %{product_id}-est %{?with_maven:-f .mfiles-pki-est}
 ################################################################################
 
 %{_datadir}/pki/est/
+
+%if %{without maven}
+%{_datadir}/java/pki/pki-est.jar
+%endif
 
 # with est
 %endif
 
 %if %{with kra}
 ################################################################################
-%files -n %{product_id}-kra -f .mfiles-pki-kra
+%files -n %{product_id}-kra %{?with_maven:-f .mfiles-pki-kra}
 ################################################################################
 
 %license base/kra/LICENSE
 %{_datadir}/pki/kra/
+
+%if %{without maven}
+%{_datadir}/java/pki/pki-kra.jar
+%endif
 
 # with kra
 %endif
 
 %if %{with ocsp}
 ################################################################################
-%files -n %{product_id}-ocsp -f .mfiles-pki-ocsp
+%files -n %{product_id}-ocsp %{?with_maven:-f .mfiles-pki-ocsp}
 ################################################################################
 
 %license base/ocsp/LICENSE
 %{_datadir}/pki/ocsp/
+
+%if %{without maven}
+%{_datadir}/java/pki/pki-ocsp.jar
+%endif
 
 # with ocsp
 %endif
 
 %if %{with tks}
 ################################################################################
-%files -n %{product_id}-tks -f .mfiles-pki-tks
+%files -n %{product_id}-tks %{?with_maven:-f .mfiles-pki-tks}
 ################################################################################
 
 %license base/tks/LICENSE
 %{_datadir}/pki/tks/
+
+%if %{without maven}
+%{_datadir}/java/pki/pki-tks.jar
+%endif
 
 # with tks
 %endif
 
 %if %{with tps}
 ################################################################################
-%files -n %{product_id}-tps -f .mfiles-pki-tps
+%files -n %{product_id}-tps %{?with_maven:-f .mfiles-pki-tps}
 ################################################################################
 
 %license base/tps/LICENSE
 %{_datadir}/pki/tps/
 %{_mandir}/man5/pki-tps-connector.5.gz
 %{_mandir}/man5/pki-tps-profile.5.gz
+
+%if %{without maven}
+%{_datadir}/java/pki/pki-tps.jar
+%endif
 
 # with tps
 %endif
@@ -1450,11 +1932,15 @@ fi
 
 %if %{with console}
 ################################################################################
-%files -n %{product_id}-console -f .mfiles-pki-console
+%files -n %{product_id}-console %{?with_maven:-f .mfiles-pki-console}
 ################################################################################
 
 %license base/console/LICENSE
 %{_bindir}/pkiconsole
+
+%if %{without maven}
+%{_datadir}/java/pki/pki-console.jar
+%endif
 
 # with console
 %endif
@@ -1509,6 +1995,9 @@ fi
 
 ################################################################################
 %changelog
+* Wed Nov 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 11.6.0-0.1
+- Rebase to PKI 11.6.0-alpha1
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 11.5.0-3.2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

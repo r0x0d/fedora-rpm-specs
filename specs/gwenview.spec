@@ -1,7 +1,7 @@
 Name:    gwenview
 Summary: An image viewer
 Epoch:   1
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 
 # app: GPLv2+
@@ -30,6 +30,7 @@ BuildRequires: cmake(KF6Notifications)
 BuildRequires: cmake(KF6GuiAddons)
 BuildRequires: cmake(KF6DocTools)
 BuildRequires: cmake(KF6Purpose)
+BuildRequires: cmake(KF6Crash)
 BuildRequires: cmake(KDcrawQt6)
 BuildRequires: cmake(kColorPicker-Qt6)
 BuildRequires: cmake(kImageAnnotator-Qt6)
@@ -120,6 +121,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.gwenview.
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 1:24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 1:24.08.3-1
 - 24.08.3
 

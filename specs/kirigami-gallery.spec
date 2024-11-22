@@ -1,5 +1,5 @@
 Name:    kirigami-gallery
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 Summary: Gallery application built using Kirigami
 License: LGPL-2.1-or-later
@@ -8,14 +8,6 @@ URL:     https://apps.kde.org/en/kirigami2.gallery
 Source:  https://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
 
 ## upstream patches
-# Remove higUrl links
-Patch:   https://invent.kde.org/sdk/kirigami-gallery/-/merge_requests/83.patch
-# Remove remaining mentions of CardsGridViewGallery
-Patch:   https://invent.kde.org/sdk/kirigami-gallery/-/merge_requests/84.patch
-# Update apiUrl links
-Patch:   https://invent.kde.org/sdk/kirigami-gallery/-/merge_requests/85.patch
-# More KF6 porting
-Patch:   https://invent.kde.org/sdk/kirigami-gallery/-/merge_requests/95.patch
 
 BuildRequires: desktop-file-utils
 BuildRequires: appstream
@@ -74,6 +66,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.kirigami2.gal
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

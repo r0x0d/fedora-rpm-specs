@@ -14,6 +14,7 @@ URL:            https://crates.io/crates/reedline
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * drop unavailable rusqlite feature for statically linking libsqlite3
+# * allow rstest 0.23: https://github.com/nushell/reedline/pull/852
 Patch:          reedline-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

@@ -8,8 +8,8 @@
 #global external_lilypond_fonts 1
 
 Name:    calligra 
-Version: 4.0.1
-Release: 2%{?dist}
+Version: 24.11.80
+Release: 1%{?dist}
 Summary: An integrated office suite
 
 License: GPL-2.0-or-later AND GPL-3.0-or-later AND (GPL-2.0-only OR GPL-3.0-only) AND LGPL-2.0-only AND LGPL-2.1-only AND LGPL-2.0-or-later AND LGPL-2.1-or-later AND BSD-3-Clause AND BSD-2-Clause
@@ -23,7 +23,6 @@ URL:     https://calligra.org/
 Source0: https://download.kde.org/%{stable}/calligra/calligra-%{version}.tar.xz
 
 ## upstream patches
-Patch2: 0002-Remove-extra-arguments-from-okular-generator-desktop.patch
 
 ## upstreamable patches
 
@@ -513,6 +512,9 @@ done
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Sep 03 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 4.0.1-2
 - Fix okular generator desktop files
 

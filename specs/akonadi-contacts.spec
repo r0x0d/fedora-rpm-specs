@@ -1,5 +1,5 @@
 Name:    akonadi-contacts
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 Summary: The Akonadi Contacts Library
 
@@ -26,6 +26,7 @@ BuildRequires:  cmake(KPim6GrantleeTheme)
 BuildRequires:  cmake(KF6Contacts)
 BuildRequires:  cmake(KPim6Mime)
 BuildRequires:  cmake(KF6IconThemes)
+BuildRequires:  cmake(KF6GuiAddons)
 
 Obsoletes:      kf5-akonadi-contacts < 24.01.80-1
 
@@ -88,6 +89,9 @@ find ./po -type f -name akonadicontact5-serializer.po -execdir mv {} akonadicont
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

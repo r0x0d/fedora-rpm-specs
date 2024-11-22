@@ -171,7 +171,9 @@ fi
 %license LICENSE.md
 
 %files devel -f %{name}.devel
-%{_includedir}/%{name}
+%dir %{_libdir}/cmake/%{name}
+%dir %{_includedir}/%{name}
+%{_includedir}/%{name}/*
 
 %if %{with test}
 %files test -f %{name}.test

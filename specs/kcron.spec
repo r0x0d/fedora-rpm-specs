@@ -1,6 +1,6 @@
 Name:    kcron
 Summary: Cron KDE configuration module
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -23,6 +23,8 @@ BuildRequires: cmake(KF6I18n)
 BuildRequires: cmake(KF6KIO)
 BuildRequires: cmake(KF6KCMUtils)
 BuildRequires: cmake(KF6DocTools)
+BuildRequires: cmake(KF6Declarative)
+BuildRequires: cmake(KF6KirigamiAddons)
 
 %description
 Systemsettings module for the cron task scheduler.
@@ -54,9 +56,12 @@ Systemsettings module for the cron task scheduler.
 %{_kf6_datadir}/dbus-1/system.d/local.kcron.crontab.conf
 %{_kf6_datadir}/polkit-1/actions/local.kcron.crontab.policy
 %{_kf6_datadir}/applications/kcm_cron.desktop
-%{_kf6_qtplugindir}/plasma/kcms/systemsettings_qwidgets/kcm_cron.so
+%{_kf6_qtplugindir}/plasma/kcms/systemsettings/kcm_cron.so
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

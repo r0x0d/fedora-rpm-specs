@@ -20,7 +20,9 @@ Patch:          uu_tail-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * relax notify dependency from =6.0.1 to 6.0.1
 # * drop dependency on its macos_kqueue
-# * temporarily lower rstest dependency from 0.21.0 to 0.18.0
+# * allow rstest 0.23:
+#   https://github.com/uutils/coreutils/commit/f44f244236cd4908c33af161c951f8be20f07426;
+#   temporarily allow rstest 0.18 until it can be updated
 Patch:          uu_tail-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 26

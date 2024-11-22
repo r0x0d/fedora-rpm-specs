@@ -4,7 +4,7 @@
 
 # https://github.com/gabriel-vasile/mimetype
 %global goipath         github.com/gabriel-vasile/mimetype
-Version:                1.4.6
+Version:                1.4.7
 
 %gometa -L -f
 

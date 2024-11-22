@@ -13,6 +13,10 @@ URL:            https://crates.io/crates/zoxide
 Source:         %{crates_source}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          zoxide-fix-metadata-auto.diff
+# Manually created patch for downstream crate metadata changes
+# * Allow rstest 0.23 and rstest_reuse 0.7:
+#   https://github.com/nidnogg/zeitfetch/pull/22
+Patch:          zoxide-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 %if %{with check}

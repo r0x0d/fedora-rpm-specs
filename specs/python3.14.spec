@@ -14,10 +14,10 @@ URL: https://www.python.org/
 #  WARNING  When rebasing to a new Python version,
 #           remember to update the python3-docs package as well
 %global general_version %{pybasever}.0
-%global prerel a1
+%global prerel a2
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 2%{?dist}
+Release: 1%{?dist}
 License: Python-2.0.1
 
 
@@ -57,7 +57,7 @@ License: Python-2.0.1
 # This needs to be manually updated when we update Python.
 # Explore the sources tarball (you need the version before %%prep is executed):
 #  $ tar -tf Python-%%{upstream_version}.tar.xz | grep whl
-%global pip_version 24.2
+%global pip_version 24.3.1
 %global setuptools_version 67.6.1
 %global wheel_version 0.43.0
 # All of those also include a list of indirect bundled libs:
@@ -65,8 +65,8 @@ License: Python-2.0.1
 #  $ %%{_rpmconfigdir}/pythonbundles.py <(unzip -p Lib/ensurepip/_bundled/pip-*.whl pip/_vendor/vendor.txt)
 %global pip_bundled_provides %{expand:
 Provides: bundled(python3dist(cachecontrol)) = 0.14
-Provides: bundled(python3dist(certifi)) = 2024.7.4
-Provides: bundled(python3dist(distlib)) = 0.3.8
+Provides: bundled(python3dist(certifi)) = 2024.8.30
+Provides: bundled(python3dist(distlib)) = 0.3.9
 Provides: bundled(python3dist(distro)) = 1.9
 Provides: bundled(python3dist(idna)) = 3.7
 Provides: bundled(python3dist(msgpack)) = 1.0.8
@@ -79,9 +79,9 @@ Provides: bundled(python3dist(resolvelib)) = 1.0.1
 Provides: bundled(python3dist(rich)) = 13.7.1
 Provides: bundled(python3dist(setuptools)) = 70.3
 Provides: bundled(python3dist(tomli)) = 2.0.1
-Provides: bundled(python3dist(truststore)) = 0.9.1
+Provides: bundled(python3dist(truststore)) = 0.10
 Provides: bundled(python3dist(typing-extensions)) = 4.12.2
-Provides: bundled(python3dist(urllib3)) = 1.26.18
+Provides: bundled(python3dist(urllib3)) = 1.26.20
 }
 # setuptools
 # vendor.txt files not in .whl
@@ -123,10 +123,10 @@ Provides: bundled(python3dist(packaging)) = 24
 
 # PEP 744: JIT Compilation
 # Whether to build with the experimental JIT compiler
-# We can only have this on Fedora 40+, where clang 18+ is available
+# We can only have this on Fedora 41+, where clang 19+ is available
 # And only on certain architectures: https://peps.python.org/pep-0744/#support
 # The freethreading build (when enabled) does not support JIT yet
-%bcond jit %[(0%{?fedora} >= 40 || 0%{?rhel} >= 10) && ("%{_arch}" == "x86_64" || "%{_arch}" == "aarch64")]
+%bcond jit %[(0%{?fedora} >= 41 || 0%{?rhel} >= 10) && ("%{_arch}" == "x86_64" || "%{_arch}" == "aarch64")]
 %if %{with jit}
 # When built with JIT, it still needs to be enabled on runtime via PYTHON_JIT=1
 %global jit_flag --enable-experimental-jit=yes-off
@@ -279,8 +279,8 @@ BuildRequires: tzdata
 %endif
 
 %if %{with jit}
-BuildRequires: clang(major) = 18
-BuildRequires: llvm(major) = 18
+BuildRequires: clang(major) = 19
+BuildRequires: llvm(major) = 19
 %endif
 
 %ifarch %{valgrind_arches}
@@ -334,7 +334,7 @@ Source11: idle3.appdata.xml
 
 # (Patches taken from github.com/fedora-python/cpython)
 
-# 00251 # 60dd97be7bf3662ff65edd8471e948924b4175b2
+# 00251 # f5b56b9d4a79df04e9d90ceff7388554c5f818b6
 # Change user install location
 #
 # Set values of base and platbase in sysconfig from /usr
@@ -350,16 +350,6 @@ Source11: idle3.appdata.xml
 #
 # pypa/distutils integration: https://github.com/pypa/distutils/pull/70
 Patch251: 00251-change-user-install-location.patch
-
-# 00441 # 482bf31a8339a4df224d13e7e3f69b9cf306a09a
-# Make vectorized versions of Blake2 available on x86, too
-#
-# Source: https://github.com/python/cpython/pull/125244
-Patch441: 00441-make-vectorized-versions-of-blake2-available-on-x86-too.patch
-
-# 00442 # 86fff8cce3d6259e0f7efb75c8153f2d8eec4564
-# gh-125584: Require network resource in ``test_urllib2.HandlerTests.test_ftp_error`` (#125586)
-Patch442: 00442-gh-125584-require-network-resource-in-test_urllib2-handlertests-test_ftp_error-125586.patch
 
 # (New patches go here ^^^)
 #
@@ -1698,6 +1688,9 @@ CheckPython freethreading
 # ======================================================
 
 %changelog
+* Wed Nov 20 2024 Karolina Surma <ksurma@redhat.com> - 3.14.0~a2-1
+- Update to Python 3.14.0a2
+
 * Fri Oct 18 2024 Karolina Surma <ksurma@redhat.com> - 3.14.0~a1-2
 - Build Python 3.14 using Python 3.14
 

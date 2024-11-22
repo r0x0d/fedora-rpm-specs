@@ -16,6 +16,7 @@ Source:         %{crates_source}
 Patch:          nu-protocol-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * Update brotli from 5.0 to 7.0: https://github.com/nushell/nushell/pull/13960
+# * allow rstest 0.23: https://github.com/nushell/nushell/pull/14350
 Patch:          nu-protocol-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24

@@ -50,16 +50,16 @@ sed -i 's/\r//' KEYS LICENSE.resolver.txt NOTICE-resolver.txt
 %mvn_install -J build/apidocs/resolver
 
 # Scripts
-mkdir -p $RPM_BUILD_ROOT%{_bindir}
+mkdir -p %{buildroot}%{_bindir}
 %jpackage_script org.apache.xml.resolver.apps.resolver "" "" %{name} xml-resolver true
 %jpackage_script org.apache.xml.resolver.apps.xread "" "" %{name} xml-xread true
 %jpackage_script org.apache.xml.resolver.apps.xparse "" "" %{name} xml-xparse true
 
 # Man pages
-install -d -m 755 ${RPM_BUILD_ROOT}%{_mandir}/man1
-install -p -m 644 %{SOURCE6} ${RPM_BUILD_ROOT}%{_mandir}/man1/xml-resolver.1
-install -p -m 644 %{SOURCE7} ${RPM_BUILD_ROOT}%{_mandir}/man1/xml-xparse.1
-install -p -m 644 %{SOURCE8} ${RPM_BUILD_ROOT}%{_mandir}/man1/xml-xread.1
+install -d -m 755 %{buildroot}%{_mandir}/man1
+install -p -m 644 %{SOURCE6} %{buildroot}%{_mandir}/man1/xml-resolver.1
+install -p -m 644 %{SOURCE7} %{buildroot}%{_mandir}/man1/xml-xparse.1
+install -p -m 644 %{SOURCE8} %{buildroot}%{_mandir}/man1/xml-xread.1
 
 %files -f .mfiles
 %doc KEYS

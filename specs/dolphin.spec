@@ -2,7 +2,7 @@
 
 Name:           dolphin
 Summary:        KDE File Manager
-Version:        24.08.3
+Version:        24.11.80
 Release:        1%{?dist}
 
 License:        BSD-2-Clause AND BSD-3-Clause AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-3.0-only AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only)
@@ -39,6 +39,7 @@ BuildRequires:  cmake(KF6TextWidgets)
 BuildRequires:  cmake(KF6UserFeedback)
 BuildRequires:  cmake(KF6WidgetsAddons)
 BuildRequires:  cmake(KF6WindowSystem)
+BuildRequires:  cmake(KF6GuiAddons)
 
 BuildRequires:  cmake(PlasmaActivities)
 
@@ -150,6 +151,9 @@ xvfb-run -a bash -c "%ctest" || :
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

@@ -124,8 +124,12 @@ ln -s git-remote-brz %{buildroot}%{_bindir}/git-remote-bzr
 echo ".so man1/brz.1" > %{buildroot}%{_mandir}/man1/bzr.1
 echo ".so man1/git-remote-brz.1" > %{buildroot}%{_mandir}/man1/git-remote-bzr.1
 
-# locales are generated to a weird directory, move them to datadir
-mv %{buildroot}%{buildroot}%{_datadir}/locale %{buildroot}%{_datadir}
+# With older versions of setuptools-gettext, locales are generated to a weird
+# directory; move them to datadir.
+if [ -d %{buildroot}%{buildroot}%{_datadir}/locale ]
+then
+  mv %{buildroot}%{buildroot}%{_datadir}/locale %{buildroot}%{_datadir}
+fi
 %find_lang %{name}
 
 %files -f %{name}.lang

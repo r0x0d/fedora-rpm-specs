@@ -14,8 +14,9 @@ Source:         %{crates_source}
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          onefetch-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
-# * Allow older rstest 0.18 until rust-rstest can be updated
-#   (https://bugzilla.redhat.com/show_bug.cgi?id=2274161)
+# * Allow rstest 0.23 (see https://github.com/o2sh/onefetch/pull/1426), and
+#   allow older rstest 0.18 until rust-rstest can be updated
+#   (https://bugzilla.redhat.com/show_bug.cgi?id=2274161).
 # * Allow image 0.25 (see https://github.com/o2sh/onefetch/pull/1396)
 # * Patch out tests/repo.rs, which requires gix-testtools
 # * Update strum from 0.25.0 to 0.26.3:

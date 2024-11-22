@@ -1,5 +1,5 @@
 Name:           zanshin
-Version:        24.08.3
+Version:        24.11.80
 Release:        1%{?dist}
 Summary:        Todo/action management software
 
@@ -33,6 +33,7 @@ BuildRequires:  cmake(KF6WindowSystem)
 BuildRequires:  cmake(KF6I18n)
 BuildRequires:  cmake(KF6CalendarCore)
 BuildRequires:  cmake(KF6Parts)
+BuildRequires:  cmake(KF6Crash)
 
 BuildRequires:  cmake(KPim6Akonadi)
 BuildRequires:  cmake(KPim6AkonadiCalendar)
@@ -92,6 +93,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.%{name}.deskt
 %{_kf6_plugindir}/krunner/org.kde.%{name}.so
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

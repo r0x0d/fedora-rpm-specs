@@ -15,6 +15,9 @@ Patch:          gnutls-hmac.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=2192204
 Patch:          default-terminal.patch
 
+# https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4406
+Patch:          0001-glib-gbytes-Be-more-careful-when-saving-a-GBytes-of-.patch
+
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  gettext

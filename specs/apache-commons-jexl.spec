@@ -50,7 +50,7 @@ script or ECMAScript.  Its goal is to expose scripting features usable
 by technical operatives or consultants working with enterprise
 platforms.
 
-%javadoc_package
+%{?javadoc_package}
 
 %prep
 %{gpgverify} --data=%{SOURCE0} --signature=%{SOURCE1} --keyring=%{SOURCE2}

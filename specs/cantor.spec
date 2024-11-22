@@ -25,12 +25,12 @@
 
 Name:    cantor
 Summary: KDE Frontend to Mathematical Software
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 
 License: GPL-2.0-or-later
 URL:     https://apps.kde.org/cantor/
-Source:  https://download.kde.org/%{stable_kf5}/release-service/%{version}/src/%{name}-%{version}.tar.xz
+Source:  https://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
 
 # handled by qt5-srpm-macros, which defines %%qt5_qtwebengine_arches
 %{?qt5_qtwebengine_arches:ExclusiveArch: %{qt5_qtwebengine_arches}}
@@ -47,33 +47,35 @@ BuildRequires: desktop-file-utils
 BuildRequires: libappstream-glib
 
 BuildRequires: extra-cmake-modules
-BuildRequires: kf5-rpm-macros
-BuildRequires: cmake(KF5Archive)
-BuildRequires: cmake(KF5Completion)
-BuildRequires: cmake(KF5Config)
-BuildRequires: cmake(KF5CoreAddons)
-BuildRequires: cmake(KF5Crash)
-BuildRequires: cmake(KF5DocTools)
-BuildRequires: cmake(KF5I18n)
-BuildRequires: cmake(KF5IconThemes)
-BuildRequires: cmake(KF5KIO)
-BuildRequires: cmake(KF5NewStuff)
-BuildRequires: cmake(KF5Parts)
-BuildRequires: cmake(KF5Pty)
-BuildRequires: cmake(KF5SyntaxHighlighting)
-BuildRequires: cmake(KF5TextEditor)
-BuildRequires: cmake(KF5TextWidgets)
-BuildRequires: cmake(KF5XmlGui)
+BuildRequires: kf6-rpm-macros
+BuildRequires: cmake(KF6Archive)
+BuildRequires: cmake(KF6Completion)
+BuildRequires: cmake(KF6Config)
+BuildRequires: cmake(KF6CoreAddons)
+BuildRequires: cmake(KF6Crash)
+BuildRequires: cmake(KF6DocTools)
+BuildRequires: cmake(KF6I18n)
+BuildRequires: cmake(KF6IconThemes)
+BuildRequires: cmake(KF6KIO)
+BuildRequires: cmake(KF6NewStuff)
+BuildRequires: cmake(KF6Parts)
+BuildRequires: cmake(KF6Pty)
+BuildRequires: cmake(KF6SyntaxHighlighting)
+BuildRequires: cmake(KF6TextEditor)
+BuildRequires: cmake(KF6TextWidgets)
+BuildRequires: cmake(KF6XmlGui)
 
-BuildRequires: cmake(Qt5Help)
-BuildRequires: cmake(Qt5WebEngine)
-BuildRequires: pkgconfig(Qt5PrintSupport)
-BuildRequires: pkgconfig(Qt5Svg)
-BuildRequires: pkgconfig(Qt5Widgets)
-BuildRequires: pkgconfig(Qt5Xml)
-BuildRequires: pkgconfig(Qt5XmlPatterns)
-BuildRequires: pkgconfig(Qt5Test)
-BuildRequires: poppler-qt5-devel
+BuildRequires: cmake(Qt6Help)
+BuildRequires: cmake(Qt6WebEngineCore)
+BuildRequires: cmake(Qt6WebEngineWidgets)
+BuildRequires: pkgconfig(Qt6PrintSupport)
+BuildRequires: pkgconfig(Qt6Svg)
+BuildRequires: pkgconfig(Qt6Widgets)
+BuildRequires: pkgconfig(Qt6Xml)
+BuildRequires: pkgconfig(Qt6Test)
+BuildRequires: pkgconfig(libxslt)
+BuildRequires: poppler-qt6-devel
+BuildRequires: cmake(Qt6Core5Compat)
 
 # optional deps/plugins
 
@@ -153,7 +155,7 @@ Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 %build
 # PYTHONLIBS_FOUND is used to find Python 2.7
 # PYTHONLIBS3_FOUND is used to find Python 3.x
-%cmake_kf5
+%cmake_kf6
 
 %cmake_build
 
@@ -165,61 +167,61 @@ Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 
 
 %check
-appstream-util validate-relax --nonet %{buildroot}%{_kf5_metainfodir}/org.kde.%{name}.appdata.xml ||:
-desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.%{name}.desktop
+appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.%{name}.appdata.xml ||:
+desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.desktop
 
 
 %files -f %{name}.lang
 %doc README*
 %license LICENSES/*
-%{_kf5_bindir}/cantor*
-%{_kf5_metainfodir}/org.kde.%{name}.appdata.xml
-%{_kf5_datadir}/applications/org.kde.%{name}.desktop
-%{_kf5_datadir}/knsrcfiles/cantor.knsrc
+%{_kf6_bindir}/cantor*
+%{_kf6_metainfodir}/org.kde.%{name}.appdata.xml
+%{_kf6_datadir}/applications/org.kde.%{name}.desktop
+%{_kf6_datadir}/knsrcfiles/cantor.knsrc
 %if 0%{?analitza}
-%{_kf5_datadir}/knsrcfiles/cantor_kalgebra.knsrc
+%{_kf6_datadir}/knsrcfiles/cantor_kalgebra.knsrc
 %endif
 %if 0%{?luajit}
-%{_kf5_datadir}/knsrcfiles/cantor_lua.knsrc
+%{_kf6_datadir}/knsrcfiles/cantor_lua.knsrc
 %endif
-%{_kf5_datadir}/knsrcfiles/cantor_maxima.knsrc
-%{_kf5_datadir}/knsrcfiles/cantor_octave.knsrc
+%{_kf6_datadir}/knsrcfiles/cantor_maxima.knsrc
+%{_kf6_datadir}/knsrcfiles/cantor_octave.knsrc
 %if 0%{?python3}
-%{_kf5_datadir}/knsrcfiles/cantor_python.knsrc
+%{_kf6_datadir}/knsrcfiles/cantor_python.knsrc
 %endif
 %if 0%{?qalculate}
-%{_kf5_datadir}/knsrcfiles/cantor_qalculate.knsrc
+%{_kf6_datadir}/knsrcfiles/cantor_qalculate.knsrc
 %endif
-%{_kf5_datadir}/knsrcfiles/cantor_sage.knsrc
-%{_kf5_datadir}/knsrcfiles/cantor_scilab.knsrc
-%{_kf5_datadir}/knsrcfiles/cantor-documentation.knsrc
+%{_kf6_datadir}/knsrcfiles/cantor_sage.knsrc
+%{_kf6_datadir}/knsrcfiles/cantor_scilab.knsrc
+%{_kf6_datadir}/knsrcfiles/cantor-documentation.knsrc
 %{_datadir}/icons/hicolor/*/*/*
-%dir %{_kf5_datadir}/cantor/
-%{_kf5_datadir}/cantor/latex/
-%{_kf5_datadir}/cantor/maximabackend/
-%{_kf5_datadir}/cantor/octave/
-%{_kf5_datadir}/cantor/octavebackend/
-%{_kf5_datadir}/cantor/xslt/
-%{_kf5_datadir}/config.kcfg/*
-%{_kf5_datadir}/mime/packages/cantor.xml
+%dir %{_kf6_datadir}/cantor/
+%{_kf6_datadir}/cantor/latex/
+%{_kf6_datadir}/cantor/maximabackend/
+%{_kf6_datadir}/cantor/octave/
+%{_kf6_datadir}/cantor/octavebackend/
+%{_kf6_datadir}/cantor/xslt/
+%{_kf6_datadir}/config.kcfg/*
+%{_kf6_datadir}/mime/packages/cantor.xml
 
 %if 0%{?julia}
 %files julia
-# %{_kf5_datadir}/cantor/julia/
-# %{_kf5_datadir}/cantor/juliabackend/
-%{_kf5_qtplugindir}/cantor/backends/cantor_juliabackend.so
-%{_kf5_datadir}/cantor/julia/graphic_packages.xml
-%{_kf5_datadir}/cantor/juliabackend/scripts/variables_cleaner.jl
-%{_kf5_datadir}/cantor/juliabackend/scripts/variables_loader.jl
-%{_kf5_datadir}/cantor/juliabackend/scripts/variables_saver.jl
+# %{_kf6_datadir}/cantor/julia/
+# %{_kf6_datadir}/cantor/juliabackend/
+%{_kf6_qtplugindir}/cantor_plugins/backends/cantor_juliabackend.so
+%{_kf6_datadir}/cantor/julia/graphic_packages.xml
+%{_kf6_datadir}/cantor/juliabackend/scripts/variables_cleaner.jl
+%{_kf6_datadir}/cantor/juliabackend/scripts/variables_loader.jl
+%{_kf6_datadir}/cantor/juliabackend/scripts/variables_saver.jl
 %endif
 
 %if 0%{?libr}
 %files R
-%{_kf5_bindir}/cantor_rserver
-%{_kf5_qtplugindir}/cantor/backends/cantor_rbackend.so
-%{_kf5_datadir}/config.kcfg/rserver.kcfg
-%{_kf5_datadir}/knsrcfiles/cantor_r.knsrc
+%{_kf6_bindir}/cantor_rserver
+%{_kf6_qtplugindir}/cantor_plugins/backends/cantor_rbackend.so
+%{_kf6_datadir}/config.kcfg/rserver.kcfg
+%{_kf6_datadir}/knsrcfiles/cantor_r.knsrc
 %endif
 
 %ldconfig_scriptlets libs
@@ -228,31 +230,30 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.%{name}.d
 %{_libdir}/libcantorlibs.so.%{soname}*
 %{_libdir}/libcantorlibs.so.%{version}
 %{_libdir}/libcantor_config.so
-%{_kf5_plugindir}/parts/cantorpart.so
+%{_kf6_plugindir}/parts/cantorpart.so
 ## backend/plugins
 %if 0%{?python3}
-%{_kf5_datadir}/cantor/python/
-%{_kf5_libdir}/cantor_pythonbackend.so
-%{_kf5_qtplugindir}/cantor/backends/cantor_pythonbackend.so
+%{_kf6_datadir}/cantor/python/
+%{_kf6_libdir}/cantor_pythonbackend.so
+%{_kf6_qtplugindir}/cantor_plugins/backends/cantor_pythonbackend.so
 %endif
-%dir %{_kf5_qtplugindir}/cantor/
-%{_kf5_qtplugindir}/cantor/assistants/
-%{_kf5_qtplugindir}/cantor/panels/
-%dir %{_kf5_qtplugindir}/cantor/backends/
+%dir %{_kf6_qtplugindir}/cantor_plugins/
+%{_kf6_qtplugindir}/cantor_plugins/assistants/
+%{_kf6_qtplugindir}/cantor_plugins/panels/
+%dir %{_kf6_qtplugindir}/cantor_plugins/backends/
 %if 0%{?analitza}
-%{_kf5_qtplugindir}/cantor/backends/cantor_kalgebrabackend.so
+%{_kf6_qtplugindir}/cantor_plugins/backends/cantor_kalgebrabackend.so
 %endif
 %if 0%{?luajit}
-%{_kf5_qtplugindir}/cantor/backends/cantor_luabackend.so
+%{_kf6_qtplugindir}/cantor_plugins/backends/cantor_luabackend.so
 %endif
-%{_kf5_qtplugindir}/cantor/backends/cantor_maximabackend.so
-%{_kf5_qtplugindir}/cantor/backends/cantor_octavebackend.so
+%{_kf6_qtplugindir}/cantor_plugins/backends/cantor_maximabackend.so
+%{_kf6_qtplugindir}/cantor_plugins/backends/cantor_octavebackend.so
 %if 0%{?qalculate}
-%{_kf5_qtplugindir}/cantor/backends/cantor_qalculatebackend.so
+%{_kf6_qtplugindir}/cantor_plugins/backends/cantor_qalculatebackend.so
 %endif
-%{_kf5_qtplugindir}/cantor/backends/cantor_sagebackend.so
-%{_kf5_qtplugindir}/cantor/backends/cantor_scilabbackend.so
-
+%{_kf6_qtplugindir}/cantor_plugins/backends/cantor_sagebackend.so
+%{_kf6_qtplugindir}/cantor_plugins/backends/cantor_scilabbackend.so
 %files devel
 %{_includedir}/cantor/
 %{_libdir}/libcantorlibs.so
@@ -260,6 +261,9 @@ desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.%{name}.d
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

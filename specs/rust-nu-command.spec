@@ -19,6 +19,7 @@ Patch:          nu-command-fix-metadata-auto.diff
 # * Update brotli from 5.0 to 7.0: https://github.com/nushell/nushell/pull/13960
 # * Update quick-xml from 0.32.0 to >=0.33.0,<0.38.0
 # * allow chrono-tz 0.9
+# * allow rstest 0.23: https://github.com/nushell/nushell/pull/14350
 Patch:          nu-command-fix-metadata.diff
 # * Allow compiling with quick-xml 0.33+
 # * https://github.com/nushell/nushell/pull/14354

@@ -4,7 +4,7 @@ Name: rubygem-%{gem_name}
 Version: 2.2.4
 # Introduce Epoch (related to bug 552972)
 Epoch:  1
-Release: 7%{?dist}
+Release: 8%{?dist}
 Summary: A modular Ruby webserver interface
 # lib/rack/show_{status,exceptions}.rb contains snippets from Django under BSD license.
 # Automatically converted from old format: MIT and BSD - review is highly recommended.
@@ -13,6 +13,10 @@ URL: https://rack.github.io/
 Source0: https://rubygems.org/downloads/%{gem_name}-%{version}.gem
 # https://github.com/rack/rack/pull/1998
 Patch0:  rack-pr1998-fix-regexp-3rd-arg.patch
+# https://github.com/rack/rack-session/pull/46/commits/57a6152d874420345475f94aee3e09a925bfc512
+# Note that recet rack split Rack::Session to seperate gem:
+# https://github.com/rack/rack/pull/1805
+Patch1:  rack-session-pr46-ruby34-hash-formatting-change.patch
 # git clone https://github.com/rack/rack.git && cd rack/
 # git archive -v -o rack-2.2.4-tests.tar.gz 2.2.4 test/
 Source1: rack-%{version}-tests.tar.gz
@@ -21,6 +25,7 @@ BuildRequires: rubygems-devel
 BuildRequires: ruby >= 2.2.2
 BuildRequires: rubygem(minitest)
 BuildRequires: rubygem(webrick)
+BuildRequires: rubygem(base64)
 BuildArch: noarch
 
 %global __brp_mangle_shebangs_exclude_from ^%{gem_instdir}/test/cgi/test.ru$
@@ -44,6 +49,12 @@ Documentation for %{name}.
 %prep
 %setup -q -n %{gem_name}-%{version} -b 1
 %patch -P0 -p1
+(
+cd %{_builddir}
+%patch -P1 -p1
+)
+
+%gemspec_add_dep -g base64 ">= 0.2.0"
 
 %build
 # Create the gem as gem install only works on a gem file
@@ -99,6 +110,10 @@ popd
 %doc %{gem_instdir}/example
 
 %changelog
+* Wed Nov 20 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1:2.2.4-8
+- Backport upstream patch for ruby34 hash formatting change
+- Add dependency for rubygem(base64) explicitly
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1:2.2.4-7
 - convert license to SPDX
 

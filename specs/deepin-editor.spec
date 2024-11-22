@@ -1,5 +1,5 @@
 Name:           deepin-editor
-Version:        6.5.3
+Version:        6.5.4
 Release:        %autorelease
 Summary:        Text editor for DDE
 License:        GPL-3.0-or-later

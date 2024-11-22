@@ -4,7 +4,7 @@
 Name: rubygem-%{gem_name}
 Epoch: 1
 Version: 7.0.8
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: Object-relational mapper framework (part of Rails)
 License: MIT
 URL: http://rubyonrails.org
@@ -27,6 +27,16 @@ Patch2: rubygem-activerecord-7.0.2.3-Fix-tests-for-minitest-5.16.patch
 # https://github.com/rails/rails/pull/46831
 Patch3: rubygem-activerecord-7.0.5-remove-require-pathname-from-drop-method.patch
 Patch4: rubygem-activerecord-7.0.5-remove-require-pathname-from-drop-method-tests.patch
+# Drop mutex_m dependency to ease Ruby 3.4 compatibility.
+# https://github.com/rails/rails/pull/49674
+Patch5: rubygem-activerecord-7.2.0-Drop-dependency-on-mutex-m.patch
+# This is inspired by https://github.com/rails/rails/commit/a1c0173ee3f5fef4ea0d6d2c90dc2b1d8672d473
+# but upstream rather added the dependency in AS:
+# https://github.com/rails/rails/commit/81699b52d2acff1840e3ace5e59412f4fa3934ab
+Patch6: rubygem-activerecord-7.0.8-Replace-Mutex_m-by-MonitorMixin.patch
+# Ruby 3.4 `Hash#inspect` compatibility.
+# https://github.com/rails/rails/pull/53202/commits/2fc43621ff0b965d25b0140be0c9599baa52501b
+Patch7: rubygem-activerecord-8.0.0-Update-Active-Record-test-suite-for-Ruby-3-4-Hash-inspect.patch
 
 # Database dump/load reuires the executable.
 Suggests: %{_bindir}/sqlite3
@@ -69,7 +79,10 @@ pushd %{_builddir}
 %patch 1 -p2
 %patch 2 -p2
 %patch 4 -p2
+%patch 7 -p2
 popd
+%patch 5 -p2
+%patch 6 -p2
 
 %build
 gem build ../%{gem_name}-%{version}%{?prerelease}.gemspec
@@ -137,6 +150,9 @@ popd
 %{gem_instdir}/examples
 
 %changelog
+* Wed Nov 20 2024 Vít Ondruch <vondruch@redhat.com> - 1:7.0.8-5
+- Ruby 3.4 compatibility fixes.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:7.0.8-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -5,19 +5,15 @@
 %global _docdir_fmt python3-zope-testrunner
 
 Name:           python-zope-testrunner
-Version:        6.4
+Version:        6.6
 Release:        %autorelease
 Summary:        Zope testrunner script
 
 License:        ZPL-2.1
 URL:            https://pypi.python.org/pypi/zope.testrunner
 VCS:            https://github.com/zopefoundation/zope.testrunner
-Source0:        %{vcs}/archive/%{version}/zope.testrunner-%{version}.tar.gz
-
-# Use more ... in doctests to make them pass for Python 3.13, merged upstream
-Patch:          https://github.com/zopefoundation/zope.testrunner/pull/172.patch
-# Fix subunit tests for Python 3.13, merged upstream
-Patch:          https://github.com/zopefoundation/zope.testrunner/pull/173.patch
+Source:         %{vcs}/archive/%{version}/zope.testrunner-%{version}.tar.gz
+Patch:          zope.testrunner-allow-setuptools-74.diff
 
 BuildArch:      noarch
 BuildRequires:  help2man

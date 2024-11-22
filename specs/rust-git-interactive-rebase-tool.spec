@@ -22,10 +22,10 @@ Patch:          git-interactive-rebase-tool-fix-metadata-auto.diff
 # * bump captur dependency from 0.1 to 1.0
 # * bump git2 dependency from 0.18 to 0.19
 # * bump version-track dependency from 0.1 to 1.0
-# * relax rstest dev-dependency from 0.19 to >=0.18.2,<0.20
+# * relax rstest dev-dependency from 0.19 to >=0.18.2,<0.24
 Patch:          git-interactive-rebase-tool-fix-metadata.diff
 # * https://github.com/MitMaro/git-interactive-rebase-tool/pull/928
-Patch2:         git-interactive-rebase-tool-fix-test.diff
+Patch2:        git-interactive-rebase-tool-fix-test.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 
@@ -39,13 +39,15 @@ Summary:        %{summary}
 # (MIT OR Apache-2.0) AND BSD-3-Clause AND GPL-2.0-only WITH GCC-exception-2.0 AND MIT
 # Apache-2.0
 # Apache-2.0 OR MIT
+# BSD-2-Clause OR Apache-2.0 OR MIT
 # GPL-3.0-or-later
 # ISC
 # MIT
 # MIT OR Apache-2.0
 # MIT OR Apache-2.0 OR Zlib
+# Unlicense OR MIT
 # Zlib OR Apache-2.0 OR MIT
-License:        Apache-2.0 AND (Apache-2.0 OR MIT) AND (Apache-2.0 OR MIT OR Zlib) AND BSD-3-Clause AND (GPL-2.0-only WITH GCC-exception-2.0) AND GPL-3.0-or-later AND ISC AND MIT
+License:        Apache-2.0 AND (Apache-2.0 OR MIT) AND (Apache-2.0 OR MIT OR Zlib) AND (Apache-2.0 OR BSD-2-Clause OR MIT) AND BSD-3-Clause AND (GPL-2.0-only WITH GCC-exception-2.0) AND GPL-3.0-or-later AND ISC AND MIT AND (MIT OR Unlicense)
 # LICENSE.dependencies contains a full license breakdown
 
 %description -n %{crate} %{_description}

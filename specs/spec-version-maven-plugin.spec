@@ -24,7 +24,7 @@ BuildRequires:  mvn(org.codehaus.mojo:build-helper-maven-plugin)
 %description
 Maven Plugin to configure APIs version and specs in a MANIFEST.MF file.
 
-%javadoc_package
+%{?javadoc_package}
 
 %prep
 %autosetup -n glassfish-%{name}-%{version}

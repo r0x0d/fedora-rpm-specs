@@ -5,7 +5,7 @@
 %global _lto_cflags %{nil}
 
 Name:    libkgapi
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 Summary: Library to access to Google services
 
@@ -87,6 +87,9 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

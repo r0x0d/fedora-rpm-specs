@@ -49,7 +49,7 @@ Summary:        Web Console for Linux servers
 License:        LGPL-2.1-or-later
 URL:            https://cockpit-project.org/
 
-Version:        328
+Version:        329
 Release:        1%{?dist}
 Source0:        https://github.com/cockpit-project/cockpit/releases/download/%{version}/cockpit-%{version}.tar.xz
 
@@ -328,19 +328,19 @@ Recommends: (reportd if abrt)
 %endif
 
 Provides: bundled(npm(@patternfly/patternfly)) = 5.4.2
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.2
-Provides: bundled(npm(@patternfly/react-icons)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-styles)) = 5.4.0
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.2
-Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.0
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.8
+Provides: bundled(npm(@patternfly/react-icons)) = 5.4.2
+Provides: bundled(npm(@patternfly/react-styles)) = 5.4.1
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.9
+Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.1
 Provides: bundled(npm(@xterm/addon-canvas)) = 0.7.0
 Provides: bundled(npm(@xterm/xterm)) = 5.5.0
 Provides: bundled(npm(argparse)) = 1.0.10
-Provides: bundled(npm(attr-accept)) = 2.2.4
+Provides: bundled(npm(attr-accept)) = 2.2.5
 Provides: bundled(npm(autolinker)) = 3.16.2
 Provides: bundled(npm(dequal)) = 2.0.3
 Provides: bundled(npm(file-selector)) = 2.1.0
-Provides: bundled(npm(focus-trap)) = 7.5.4
+Provides: bundled(npm(focus-trap)) = 7.6.0
 Provides: bundled(npm(js-sha1)) = 0.7.0
 Provides: bundled(npm(js-sha256)) = 0.11.0
 Provides: bundled(npm(js-tokens)) = 4.0.0
@@ -350,7 +350,7 @@ Provides: bundled(npm(loose-envify)) = 1.4.0
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
 Provides: bundled(npm(react-dom)) = 18.3.1
-Provides: bundled(npm(react-dropzone)) = 14.3.2
+Provides: bundled(npm(react-dropzone)) = 14.3.5
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.3.1
 Provides: bundled(npm(remarkable)) = 2.0.1
@@ -359,7 +359,7 @@ Provides: bundled(npm(sprintf-js)) = 1.0.3
 Provides: bundled(npm(tabbable)) = 6.2.0
 Provides: bundled(npm(throttle-debounce)) = 5.0.2
 Provides: bundled(npm(tslib)) = 2.8.1
-Provides: bundled(npm(uuid)) = 11.0.2
+Provides: bundled(npm(uuid)) = 11.0.3
 
 %description system
 This package contains the Cockpit shell and system configuration interfaces.
@@ -612,6 +612,9 @@ via PackageKit.
 
 # The changelog is automatically generated and merged
 %changelog
+* Wed Nov 20 2024 Packit <hello@packit.dev> - 329-1
+- Shell: Extra warnings when connecting to remote hosts
+
 * Wed Nov 06 2024 Packit <hello@packit.dev> - 328-1
 - Bug fixes and performance improvements
 

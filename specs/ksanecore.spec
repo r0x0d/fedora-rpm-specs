@@ -1,13 +1,6 @@
-# EPEL10 does not have kf5
-%if 0%{?rhel} && 0%{?rhel} >= 10
-%bcond_with kf5
-%else
-%bcond_without kf5
-%endif
-
 Name:    ksanecore
 Summary: Library providing logic to interface scanners
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 
 License: BSD and LGPLv2.1-only and LGPLv3.0-only
@@ -18,39 +11,16 @@ BuildRequires: cmake
 BuildRequires: extra-cmake-modules
 BuildRequires: gcc-c++
 
-%if %{with kf5}
-BuildRequires: kf5-rpm-macros
-BuildRequires: cmake(KF5I18n)
-BuildRequires: cmake(Qt5Core)
-BuildRequires: cmake(Qt5Gui)
-%endif
-
 BuildRequires: kf6-rpm-macros
 BuildRequires: cmake(KF6I18n)
 BuildRequires: cmake(Qt6Core)
 BuildRequires: cmake(Qt6Gui)
+BuildRequires: qt6-qtbase-private-devel
 
 BuildRequires: pkgconfig(sane-backends)
 
 %description
 %{summary}.
-
-%if %{with kf5}
-%package qt5
-Summary: Qt5 library providing logic to interface scanners
-Requires: %{name}-common = %{version}-%{release}
-Obsoletes: %{name} < 24.01
-%description qt5
-%{summary}.
-
-%package qt5-devel
-Summary: Development files for %{name}-qt5
-Requires: %{name}-qt5%{?_isa} = %{version}-%{release}
-Requires: cmake(Qt5Gui)
-Obsoletes: %{name}-devel < 24.01
-%description qt5-devel
-%{summary}.
-%endif
 
 %package qt6
 Summary: Qt6 library providing logic to interface scanners
@@ -78,22 +48,11 @@ Provides internationalization files.
 
 
 %build
-%if %{with kf5}
-%global _vpath_builddir %{_target_platform}-qt5
-%cmake_kf5 -DBUILD_WITH_QT6=OFF
-%cmake_build
-%endif
-
 %global _vpath_builddir %{_target_platform}-qt6
 %cmake_kf6 -DBUILD_WITH_QT6=ON
 %cmake_build
 
 %install
-%if %{with kf5}
-%global _vpath_builddir %{_target_platform}-qt5
-%cmake_install
-%endif
-
 %global _vpath_builddir %{_target_platform}-qt6
 %cmake_install
 
@@ -102,16 +61,6 @@ Provides internationalization files.
 %files common -f %{name}.lang
 %doc README.md
 %license LICENSES/*
-
-%if %{with kf5}
-%files qt5
-%{_libdir}/libKSaneCore.so.{1,%{maj_ver_kf6}.*}
-
-%files qt5-devel
-%{_includedir}/KSaneCore/
-%{_libdir}/cmake/KSaneCore/
-%{_libdir}/libKSaneCore.so
-%endif
 
 %files qt6
 %{_libdir}/libKSaneCore6.so.{1,%{maj_ver_kf6}.*}
@@ -123,6 +72,9 @@ Provides internationalization files.
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

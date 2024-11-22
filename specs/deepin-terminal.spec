@@ -1,5 +1,5 @@
 Name:           deepin-terminal
-Version:        6.0.14
+Version:        6.0.15
 Release:        %autorelease
 Summary:        Default terminal emulation application for Deepin
 License:        GPL-3.0-or-later
@@ -18,23 +18,17 @@ BuildRequires:  cmake(Qt5LinguistTools)
 BuildRequires:  cmake(Qt5Network)
 BuildRequires:  cmake(Qt5X11Extras)
 BuildRequires:  qt5-qtbase-private-devel
-%{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
+
 BuildRequires:  cmake(lxqt2-build-tools)
 # required by lxqt2-build-tools
-BuildRequires:  qt6-qtbase-devel
+BuildRequires:  cmake(Qt6Core)
 BuildRequires:  cmake(Qt6LinguistTools)
 
 BuildRequires:  pkgconfig(dtkwidget)
-BuildRequires:  pkgconfig(dtkgui)
-BuildRequires:  pkgconfig(dtkcore)
-BuildRequires:  pkgconfig(gobject-2.0)
 BuildRequires:  pkgconfig(libsecret-1)
 BuildRequires:  pkgconfig(xcb-ewmh)
-BuildRequires:  pkgconfig(x11)
 
 BuildRequires:  fontconfig-devel
-
-BuildRequires:  desktop-file-utils
 
 Requires:       hicolor-icon-theme
 Recommends:     deepin-manual
@@ -49,8 +43,7 @@ sed -i 's|lxqt-build-tools|lxqt2-build-tools|; s|SHARED|STATIC|' 3rdparty/termin
 sed -i 's|DDE;||' src/deepin-terminal.desktop
 
 %build
-%cmake -GNinja \
-#     -DDTKCORE_TOOL_DIR=%{_libexecdir}/dtk5/DCore/bin
+%cmake -GNinja
 %cmake_build
 
 %install
@@ -63,10 +56,14 @@ rm -r %{buildroot}%{_includedir}/terminalwidget5/ \
     %{buildroot}%{_datadir}/terminalwidget5/ \
     %{buildroot}%{_datadir}/deepin-terminal/translations/deepin-terminal.qm
 
+# debuginfo generation fails with debugedit >= 5.1
+# https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/GG4LQYBEKGWAGFSJ5PKTKJAOHLAB3A27/#QYIK5E642MDB4NGBXLRLLTMU7HAJOVV5
+chmod u+w %{buildroot}%{_bindir}/deepin-terminal
+
 %find_lang deepin-terminal --with-qt
 
 %check
-desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
+%ctest
 
 %files -f deepin-terminal.lang
 %doc README.md

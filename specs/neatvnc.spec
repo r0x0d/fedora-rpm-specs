@@ -1,19 +1,22 @@
 # -*-Mode: rpm-spec -*-
 
 Name:     neatvnc
-Version:  0.8.1
-Release:  3%{?dist}
-Summary:  a liberally licensed VNC server library
+Version:  0.9.0
+Release:  2%{?dist}
+Summary:  Liberally licensed VNC server library
 # main source is ISC
 # include/sys/queue.h is BSD
-# bundled miniz is MIT and Unlicense
-# Automatically converted from old format: ISC and MIT and Unlicense and BSD - review is highly recommended.
-License:  ISC AND LicenseRef-Callaway-MIT AND Unlicense AND LicenseRef-Callaway-BSD
+License:  ISC AND BSD-2-Clause AND BSD-3-Clause
 
 URL:      https://github.com/any1/neatvnc
 Source:   %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
+# Backport to fix i686 builds
+# From: https://github.com/any1/neatvnc/commit/e0e0ce5c579cafc763992f1c1bb964eb95999fb7
+Patch:    0001-server-Use-correct-type-for-length-in-compress.patch
+
 BuildRequires: gcc
+BuildRequires: git-core
 BuildRequires: meson
 BuildRequires: cmake
 BuildRequires: pkgconfig(gbm)
@@ -29,7 +32,6 @@ BuildRequires: pkgconfig(zlib)
 BuildRequires: turbojpeg-devel
 
 %description
-
 This is a liberally licensed VNC server library that's intended to be
 fast and neat. Note: This is a beta release, so the interface is not
 yet stable.
@@ -37,11 +39,12 @@ yet stable.
 %package devel
 Summary: Development files for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
+
 %description devel
 This package contains header files for %{name}.
 
 %prep
-%autosetup
+%autosetup -S git_am
 
 %build
 %meson
@@ -51,18 +54,22 @@ This package contains header files for %{name}.
 %meson_install
 
 %files
-%{_libdir}/lib%{name}.so.0*
-
 %doc README.md
-
 %license COPYING
+%{_libdir}/lib%{name}.so.0{,.*}
 
 %files devel
 %{_includedir}/%{name}.h
 %{_libdir}/lib%{name}.so
-%{_libdir}/pkgconfig/*
+%{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Wed Nov 20 2024 Neal Gompa <ngompa@fedoraproject.org> - 0.9.0-2
+- Backport fix for i686 builds
+
+* Wed Nov 20 2024 Neal Gompa <ngompa@fedoraproject.org> - 0.9.0-1
+- Update to 0.9.0
+
 * Mon Sep 23 2024 Fabio Valentini <decathorpe@gmail.com> - 0.8.1-3
 - Rebuild for ffmpeg 7
 

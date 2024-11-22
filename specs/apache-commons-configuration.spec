@@ -93,7 +93,7 @@ sources of configuration parameters can be created by using custom
 configuration objects.  This customization can be achieved by extending
 AbstractConfiguration or AbstractHierarchicalConfiguration.
 
-%javadoc_package
+%{?javadoc_package}
 
 %prep
 %{gpgverify} --data=%{SOURCE0} --signature=%{SOURCE1} --keyring=%{SOURCE2}

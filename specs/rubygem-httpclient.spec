@@ -12,7 +12,7 @@
 Summary:        HTTP Client interface for ruby
 Name:           rubygem-%{gem_name}
 Version:        2.8.3
-Release:        13%{?dist}
+Release:        14%{?dist}
 # httpclient is licensed under Ruby license from 2003 or later.
 License:        Ruby
 URL:            https://github.com/nahi/httpclient
@@ -20,6 +20,7 @@ Source0:        http://gems.rubyforge.org/gems/%{gem_name}-%{version}.gem
 Requires:       ruby(release)
 BuildRequires:  rubygems-devel
 %if %{with tests}
+BuildRequires:  rubygem(mutex_m)
 BuildRequires:  rubygem(test-unit)
 BuildRequires:  rubygem(http-cookie)
 BuildRequires:  rubygem(webrick)
@@ -114,6 +115,9 @@ popd
 
 
 %changelog
+* Wed Nov 20 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.8.3-14
+- Add BR: rubygem(mutex_m) explicitly
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.8.3-13
 - convert license to SPDX
 

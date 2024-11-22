@@ -1,12 +1,12 @@
 
-%global commit 69fedb41f3c41b3c81ba7707c606ce3010a3e445
-%global commitdate 20240128
+%global commit 560bdc17e7079c1b834dc9728a5ff9e4e0ca1420
+%global commitdate 20241119
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           clazy
 Summary:        Qt oriented code checker based on clang framework
-Version:        1.11%{?commitdate:^git%{commitdate}.%{shortcommit}}
-Release:        7%{?dist}
+Version:        1.12%{?commitdate:^git%{commitdate}.%{shortcommit}}
+Release:        1%{?dist}
 License:        LGPL-2.0-or-later
 URL:            https://invent.kde.org/sdk/%{name}
 
@@ -17,8 +17,6 @@ Source0:        https://download.kde.org/stable/%{name}/%{version}/src/%{name}-%
 %endif
 
 Patch0:         clazy-no-rpath.patch
-# Fix for clang-18
-Patch1: 	0001-s-isPure-isPureVirtual.patch
 
 BuildRequires: cmake
 BuildRequires: gcc-c++
@@ -47,7 +45,7 @@ refactoring.
 %ldconfig_scriptlets
 
 %files
-%doc HOWTO
+%doc HOWTO.md README.md
 %license LICENSES/*
 %{_bindir}/clazy
 %{_bindir}/clazy-standalone
@@ -59,6 +57,9 @@ refactoring.
 
 
 %changelog
+* Wed Nov 20 2024 Jan Grulich <jgrulich@redhat.com> - 1.12^git20241119.560bdc1-1
+- Update to latest snapshot with LLVM-19 support
+
 * Mon Oct 21 2024 Jan Grulich <jgrulich@redhat.com> - 1.11^git20240128.69fedb4-7
 - Rebuild (LLVM-19)
 

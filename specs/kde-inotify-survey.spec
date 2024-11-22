@@ -1,5 +1,5 @@
 Name:          kde-inotify-survey
-Version:       24.08.3
+Version:       24.11.80
 Release:       1%{?dist}
 Summary:       Monitors inotify limits and lets the user know when exceeded
 
@@ -59,6 +59,9 @@ install -m644 -p -D %{SOURCE1} %{buildroot}%{_datadir}/dbus-1/system.d/org.kde.k
 %{_datadir}/polkit-1/actions/org.kde.kded.inotify.policy
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

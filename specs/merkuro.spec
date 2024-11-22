@@ -1,5 +1,5 @@
 Name: merkuro
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 Summary: A calendar application using Akonadi to sync with external services (Nextcloud, GMail, ...)
 
@@ -7,6 +7,10 @@ License: GPL-3.0-or-later
 URL:     https://invent.kde.org/pim/%{name}
 
 Source:  https://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
+
+## upstream patches
+# https://invent.kde.org/pim/merkuro/-/commit/15be32bea0f052a9058959176a1a86101646fc7c
+Patch0: 15be32bea0f052a9058959176a1a86101646fc7c.patch
 
 BuildRequires:  kf6-rpm-macros
 BuildRequires:  extra-cmake-modules
@@ -39,6 +43,7 @@ BuildRequires:  cmake(KF6QQC2DesktopStyle)
 BuildRequires:  cmake(KF6WindowSystem)
 BuildRequires:  cmake(KF6XmlGui)
 BuildRequires:  cmake(KF6Notifications)
+BuildRequires:  cmake(KF6Crash)
 
 BuildRequires:  cmake(KF6KirigamiAddons)
 BuildRequires:  gpgme-devel
@@ -103,34 +108,39 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.me
 %files -f %{name}.lang
 %license LICENSES/*
 %doc README.md
-%{_bindir}/merkuro-calendar
-%{_bindir}/merkuro-contact
-%{_bindir}/merkuro-mail
+%{_kf6_bindir}/merkuro-calendar
+%{_kf6_bindir}/merkuro-contact
+%{_kf6_bindir}/merkuro-mail
 %{_kf6_qmldir}/org/kde/akonadi/*
 %{_kf6_qmldir}/org/kde/merkuro/*
-%{_datadir}/plasma/plasmoids/org.kde.merkuro.contact/
-%{_datadir}/applications/org.kde.merkuro.calendar.desktop
-%{_datadir}/applications/org.kde.merkuro.contact.desktop
-%{_datadir}/applications/org.kde.merkuro.mail.desktop
-%{_datadir}/icons/hicolor/128x128/apps/org.kde.merkuro*.png
-%{_datadir}/icons/hicolor/256x256/apps/org.kde.merkuro*.png
-%{_datadir}/icons/hicolor/48x48/apps/org.kde.merkuro*.png
-%{_datadir}/icons/hicolor/16x16/apps/org.kde.merkuro*.png
-%{_datadir}/icons/hicolor/24x24/apps/org.kde.merkuro*.png
-%{_datadir}/icons/hicolor/32x32/apps/org.kde.merkuro*.png
+%{_kf6_datadir}/plasma/plasmoids/org.kde.merkuro.contact/
+%{_kf6_datadir}/applications/org.kde.merkuro.calendar.desktop
+%{_kf6_datadir}/applications/org.kde.merkuro.contact.desktop
+%{_kf6_datadir}/applications/org.kde.merkuro.mail.desktop
+%{_kf6_datadir}/applications/org.kde.merkuro.desktop
+%{_kf6_datadir}/icons/hicolor/128x128/apps/org.kde.merkuro*.png
+%{_kf6_datadir}/icons/hicolor/256x256/apps/org.kde.merkuro*.png
+%{_kf6_datadir}/icons/hicolor/48x48/apps/org.kde.merkuro*.png
+%{_kf6_datadir}/icons/hicolor/16x16/apps/org.kde.merkuro*.png
+%{_kf6_datadir}/icons/hicolor/24x24/apps/org.kde.merkuro*.png
+%{_kf6_datadir}/icons/hicolor/32x32/apps/org.kde.merkuro*.png
 %{_kf6_metainfodir}/org.kde.merkuro.*.metainfo.xml
 %{_kf6_metainfodir}/org.kde.merkuro.contact.appdata.xml
-%{_datadir}/qlogging-categories6/akonadi.quick.categories
-%{_datadir}/qlogging-categories6/merkuro.categories
-%{_datadir}/qlogging-categories6/merkuro.contact.categories
-%{_libdir}/libMerkuroComponents.so
-%{_libdir}/libMerkuroComponents.so.{6,%{version}}
-%{_libdir}/libmerkuro_contact.so
-%{_libdir}/libmerkuro_contact.so.{6,%{version}}
-%{_datadir}/knotifications6/merkuro.mail.notifyrc
-%{_metainfodir}/org.kde.merkuro.metainfo.xml
+%{_kf6_datadir}/qlogging-categories6/akonadi.quick.categories
+%{_kf6_datadir}/qlogging-categories6/merkuro.categories
+%{_kf6_datadir}/qlogging-categories6/merkuro.contact.categories
+%{_kf6_libdir}/libMerkuroComponents.so
+%{_kf6_libdir}/libMerkuroComponents.so.{6,%{version}}
+%{_kf6_libdir}/libmerkuro_contact.so
+%{_kf6_libdir}/libmerkuro_contact.so.{6,%{version}}
+%{_kf6_libdir}/libmerkuro_contact_plugin.so
+%{_kf6_datadir}/knotifications6/merkuro.mail.notifyrc
+%{_kf6_metainfodir}/org.kde.merkuro.metainfo.xml
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

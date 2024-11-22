@@ -1,4 +1,4 @@
-%global glibcsrcdir glibc-2.40.9000-327-g7b544224f8
+%global glibcsrcdir glibc-2.40.9000-357-g47311cca31
 %global glibcversion 2.40.9000
 # Pre-release tarballs are pulled in from git using a command that is
 # effectively:
@@ -152,7 +152,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 18
+%global baserelease 19
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -2358,6 +2358,19 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Wed Nov 20 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-19
+- Auto-sync with upstream branch master,
+  commit 47311cca31e685fa7bfe19bb8cef17d2d3d7fff9:
+- manual: Add description of AArch64-specific pkey flags
+- AArch64: Add support for memory protection keys
+- AArch64: Remove thunderx{,2} memcpy
+- powerpc64le: Optimized strcat for POWER10
+- powerpc: Improve the inline asm for syscall wrappers
+- elf: handle addition overflow in _dl_find_object_update_1 [BZ #32245]
+- x86/string: Use `movsl` instead of `movsd` in strncpy/strncat [BZ #32344]
+- manual: Fix overeager s/int/size_t/ in memory.texi
+- linux: Add support for getrandom vDSO
+
 * Wed Nov 13 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-18
 - Only relocate ld.so for the second time of libc.so has been loaded
 

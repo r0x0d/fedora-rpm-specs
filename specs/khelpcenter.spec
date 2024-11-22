@@ -2,7 +2,7 @@ Name:    khelpcenter
 Summary: Show documentation for KDE applications
 # Override khelpcenter subpackage from kde-runtime-15.04 (no longer built)
 Epoch:   1
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 
 # Automatically converted from old format: GPLv2 or GPLv3 - review is highly recommended.
@@ -10,9 +10,6 @@ License: GPL-2.0-only OR GPL-3.0-only
 URL:     https://invent.kde.org/system/%{name}
 
 Source0: https://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
-
-# https://invent.kde.org/system/khelpcenter/-/merge_requests/53
-Patch1:  0001-searchhandlers-Replace-Perl-manpage-script-with-Pyth.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  extra-cmake-modules
@@ -102,6 +99,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.%{name}.deskt
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 1:24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 1:24.08.3-1
 - 24.08.3
 

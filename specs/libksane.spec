@@ -1,13 +1,6 @@
-# EPEL10 does not have kf5
-%if 0%{?rhel} && 0%{?rhel} >= 10
-%bcond_with kf5
-%else
-%bcond_without kf5
-%endif
-
 Name:    libksane
 Summary: SANE Library interface for KDE
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 
 License: CC0-1.0 AND LGPL-2.1-only AND LGPL-3.0-only
@@ -16,18 +9,6 @@ Source0: http://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{
 
 BuildRequires: extra-cmake-modules
 BuildRequires: gettext
-
-%if %{with kf5}
-BuildRequires: kf5-rpm-macros
-BuildRequires: cmake(Qt5Core)
-BuildRequires: cmake(Qt5Widgets)
-BuildRequires: cmake(KF5Config)
-BuildRequires: cmake(KF5I18n)
-BuildRequires: cmake(KF5TextWidgets)
-BuildRequires: cmake(KF5Wallet)
-BuildRequires: cmake(KF5WidgetsAddons)
-BuildRequires: cmake(KSaneCore)
-%endif
 
 BuildRequires: kf6-rpm-macros
 BuildRequires: cmake(Qt6Core)
@@ -44,24 +25,6 @@ BuildRequires: pkgconfig(sane-backends)
 %description
 %{summary}.
 
-%if %{with kf5}
-%package qt5
-Summary: Qt5 library providing logic to interface scanners
-Requires: %{name}-common = %{version}-%{release}
-Obsoletes: kf5-libksane < 24.01
-Provides:  kf5-libksane = %{version}-%{release}
-%description qt5
-%{summary}.
-
-%package qt5-devel
-Summary: Development files for %{name}-qt5
-Requires: %{name}-qt5%{?_isa} = %{version}-%{release}
-Requires: cmake(Qt5Widgets)
-Obsoletes: kf5-libksane-devel < 24.01
-Provides:  kf5-libksane-devel = %{version}-%{release}
-%description qt5-devel
-%{summary}.
-%endif
 
 %package qt6
 Summary: Qt6 library providing logic to interface scanners
@@ -89,23 +52,12 @@ Provides internationalization files.
 
 
 %build
-%if %{with kf5}
-%global _vpath_builddir %{_target_platform}-qt5
-%cmake_kf5 -DBUILD_WITH_QT6=OFF
-%cmake_build
-%endif
-
 %global _vpath_builddir %{_target_platform}-qt6
 %cmake_kf6 -DBUILD_WITH_QT6=ON
 %cmake_build
 
 
 %install
-%if %{with kf5}
-%global _vpath_builddir %{_target_platform}-qt5
-%cmake_install
-%endif
-
 %global _vpath_builddir %{_target_platform}-qt6
 %cmake_install
 
@@ -118,17 +70,6 @@ Provides internationalization files.
 %license LICENSES/*
 %{_datadir}/icons/hicolor/*/actions/*
 
-%if %{with kf5}
-%files qt5
-%{_libdir}/libKF5Sane.so.{6,%{version}}
-%{_datadir}/icons/hicolor/*/actions/*
-
-%files qt5-devel
-%{_includedir}/KF5/KSane/
-%{_libdir}/libKF5Sane.so
-%{_libdir}/cmake/KF5Sane/
-%endif
-
 %files qt6
 %{_libdir}/libKSaneWidgets6.so.{6,%{version}}
 
@@ -138,6 +79,9 @@ Provides internationalization files.
 %{_libdir}/cmake/KSaneWidgets6/
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

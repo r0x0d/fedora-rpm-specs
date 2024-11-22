@@ -16,7 +16,7 @@
 #
 
 Name:           cockpit-podman
-Version:        98
+Version:        99
 Release:        1%{?dist}
 Summary:        Cockpit component for Podman containers
 License:        LGPL-2.1-or-later
@@ -64,7 +64,7 @@ Provides: bundled(npm(loose-envify)) = 1.4.0
 Provides: bundled(npm(object-assign)) = 4.1.1
 Provides: bundled(npm(prop-types)) = 15.8.1
 Provides: bundled(npm(react-dom)) = 18.3.1
-Provides: bundled(npm(react-dropzone)) = 14.3.2
+Provides: bundled(npm(react-dropzone)) = 14.3.5
 Provides: bundled(npm(react-is)) = 16.13.1
 Provides: bundled(npm(react)) = 18.3.1
 Provides: bundled(npm(scheduler)) = 0.23.2
@@ -92,6 +92,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 %{_datadir}/metainfo/*
 
 %changelog
+* Wed Nov 20 2024 Packit <hello@packit.dev> - 99-1
+- Update to translations
+
 * Wed Nov 06 2024 Packit <hello@packit.dev> - 98-1
 - Bug fixes and translation updates
 

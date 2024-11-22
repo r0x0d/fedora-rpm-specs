@@ -3,7 +3,7 @@
 
 Name: python-%{srcname}
 Version: 0.13.2
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: Statistical data visualization in Python
 # Automatically converted from old format: BSD - review is highly recommended.
 License: LicenseRef-Callaway-BSD
@@ -33,6 +33,7 @@ BuildRequires: %{py3_dist flit_core}
 %if %{with check}
 BuildRequires: %{py3_dist husl}
 BuildRequires: %{py3_dist numpydoc}
+BuildRequires: %{py3_dist pytest}
 %endif
 
 Requires: %{py3_dist husl}
@@ -49,7 +50,7 @@ rm -rf seaborn/external/docscrape.py
 %autosetup -p1 -n %{srcname}-%{version}
 
 %generate_buildrequires
-%pyproject_buildrequires
+%pyproject_buildrequires -x stats
 
 %build
 %pyproject_wheel
@@ -62,13 +63,16 @@ rm -rf seaborn/external/docscrape.py
 
 %if %{with check}
 %check
-%pyproject_check_import -t
+%pytest
 %endif
 
 %files -n python3-%{srcname} -f %{pyproject_files}
 %doc README.md
 
 %changelog
+* Wed Nov 20 2024 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 0.13.2-5
+- Enable full testing
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.13.2-4
 - convert license to SPDX
 

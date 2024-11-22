@@ -1,5 +1,5 @@
 Name:          arianna
-Version:       24.08.3
+Version:       24.11.80
 Release:       1%{?dist}
 Summary:       EPub Reader for mobile devices
 # Complete license breakdown can be found in the "LICENSE-BREAKDOWN" file.
@@ -88,6 +88,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.ar
 %{_kf6_metainfodir}/org.kde.arianna.appdata.xml
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

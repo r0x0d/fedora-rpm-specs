@@ -1,5 +1,5 @@
 Name:           koko
-Version:        24.08.3
+Version:        24.11.80
 Release:        1%{?dist}
 # Automatically converted from old format: GPLv2+ and GPLv3 and LGPLv2 and LGPLv2+ and CC0 and BSD - review is highly recommended.
 License:        GPL-2.0-or-later AND GPL-3.0-only AND LicenseRef-Callaway-LGPLv2 AND LicenseRef-Callaway-LGPLv2+ AND CC0-1.0 AND LicenseRef-Callaway-BSD
@@ -37,6 +37,8 @@ BuildRequires: cmake(KF6FileMetaData)
 BuildRequires: cmake(KF6DBusAddons)
 BuildRequires: cmake(KF6Kirigami)
 BuildRequires: cmake(KQuickImageEditor)
+BuildRequires: cmake(KF6Purpose)
+BuildRequires: cmake(KF6KirigamiAddons)
 
 BuildRequires: pkgconfig(exiv2)
 BuildRequires: pkgconfig(xcb)
@@ -82,16 +84,12 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.%{
 %{_kf6_datadir}/icons/hicolor/*/apps/org.kde.%{name}.*
 %{_kf6_datadir}/knotifications6/*
 %{_kf6_datadir}/%{name}
-
-%{_kf6_libdir}/libkokocommon.so.0.0.1
-# internal library, no public API, no need for devel package
-%exclude %{_kf6_libdir}/libkokocommon.so
-
 %{_kf6_metainfodir}/org.kde.%{name}.appdata.xml
 
-%{_kf6_qmldir}/org/kde/%{name}/
-
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

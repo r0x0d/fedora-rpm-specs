@@ -7,6 +7,12 @@
 #   current tooling, nor is there a well-defined place where a nupkg should be
 #   installed.
 
+%if 0%{?rhel}
+%bcond_with swift
+%else
+%bcond_without swift
+%endif
+
 %global giturl      https://github.com/antlr/antlr4
 %global swiftarches x86_64 aarch64
 %global swiftdir    %{_prefix}/lib/swift/linux
@@ -175,6 +181,7 @@ BuildArch:      noarch
 
 This package provides the runtime library used by Python 3 ANTLR parsers.
 
+%if %{with swift}
 %ifarch %swiftarches
 %package     -n swift-antlr4-runtime
 Summary:        ANTLR runtime for swift
@@ -184,6 +191,7 @@ BuildRequires:  swift-lang
 %description -n swift-antlr4-runtime %_desc
 
 This package provides the runtime library used by swift ANTLR parsers.
+%endif
 %endif
 
 %prep
@@ -250,6 +258,7 @@ cd runtime/Python3
 %pyproject_wheel
 cd -
 
+%if %{with swift}
 %ifarch %swiftarches
 # Build the Swift runtime
 cd runtime/Swift
@@ -258,6 +267,7 @@ swift build -c release %{?_smp_build_ncpus:-j %_smp_build_ncpus} \
   -Xlinker --build-id -Xlinker --as-needed -Xlinker -z -Xlinker relro \
   -Xlinker -z -Xlinker now
 cd -
+%endif
 %endif
 
 %install
@@ -301,6 +311,7 @@ cd runtime/Python3
 %pyproject_save_files antlr4
 cd -
 
+%if %{with swift}
 %ifarch %swiftarches
 # Install the Swift runtime
 mkdir -p %{buildroot}%{swiftdir}/%{_arch}
@@ -312,6 +323,7 @@ cp -p .build/release/description.json %{buildroot}%{swiftdir}/%{_arch}
 # Fix the rpath to have $ORIGIN first
 oldrunpath=$(chrpath %{buildroot}%{swiftdir}/libAntlr4Dynamic.so | cut -d= -f2 | cut -d: -f1)
 chrpath -r "\$ORIGIN:$oldrunpath" %{buildroot}%{swiftdir}/libAntlr4Dynamic.so
+%endif
 %endif
 
 # Create man pages
@@ -383,10 +395,12 @@ rm -fr %{buildroot}%{_docdir}/libantlr4
 %{_bindir}/pygrun
 %{_mandir}/man1/pygrun.1*
 
+%if %{with swift}
 %ifarch %swiftarches
 %files -n swift-antlr4-runtime
 %license LICENSE.txt
 %{swiftdir}/
+%endif
 %endif
 
 %changelog

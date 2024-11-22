@@ -9,8 +9,8 @@
 
 Name:           perl-Module-ScanDeps
 Summary:        Recursively scan Perl code for dependencies
-Version:        1.35
-Release:        4%{?dist}
+Version:        1.37
+Release:        1%{?dist}
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Module-ScanDeps
 Source0:        https://cpan.metacpan.org/authors/id/R/RS/RSCHUPP/Module-ScanDeps-%{version}.tar.gz
@@ -169,6 +169,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Wed Nov 20 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1.37-1
+- 1.37 bump (rhbz#2327393); Fix CVE-2024-10224
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.35-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

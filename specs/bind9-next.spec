@@ -92,6 +92,10 @@ Source49: named-chroot.files
 # Common patches
 # Red Hat specific documentation is not relevant to upstream
 Patch1: bind-9.16-redhat_doc.patch
+# https://gitlab.isc.org/isc-projects/bind9/-/merge_requests/9753
+Patch2: bind-9.21-unittest-isc-time-32b.patch
+# Downstream only. TODO: find a cause and remove this workaround
+Patch3: bind-9.21-unittest-isc_rwlock-s390x.patch
 
 %{?systemd_ordering}
 Requires:       coreutils

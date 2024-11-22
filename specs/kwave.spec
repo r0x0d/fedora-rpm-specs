@@ -3,7 +3,7 @@
 %undefine _include_frame_pointers
 
 Name:           kwave
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 Summary:        Sound Editor for KDE
 Summary(de):    Sound-Editor für KDE
@@ -12,21 +12,21 @@ Summary(de):    Sound-Editor für KDE
 # Automatically converted from old format: GPLv2+ and BSD and CC-BY-SA - review is highly recommended.
 License:        GPL-2.0-or-later AND LicenseRef-Callaway-BSD AND LicenseRef-Callaway-CC-BY-SA
 URL:            http://kwave.sourceforge.net
-Source0:        http://download.kde.org/%{stable_kf5}/release-service/%{version}/src/%{name}-%{version}.tar.xz
+Source0:        http://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
 
 BuildRequires:  extra-cmake-modules
-BuildRequires:  cmake(Qt5Multimedia)
-BuildRequires:  cmake(KF5Archive)
-BuildRequires:  cmake(KF5CoreAddons)
-BuildRequires:  cmake(KF5WidgetsAddons)
-BuildRequires:  cmake(KF5I18n)
-BuildRequires:  cmake(KF5Completion)
-BuildRequires:  cmake(KF5KIO)
-BuildRequires:  cmake(KF5IconThemes)
-BuildRequires:  cmake(KF5Crash)
-BuildRequires:  cmake(KF5DBusAddons)
-BuildRequires:  cmake(KF5TextWidgets)
-BuildRequires:  cmake(KF5DocTools)
+BuildRequires:  cmake(Qt6Multimedia)
+BuildRequires:  cmake(KF6Archive)
+BuildRequires:  cmake(KF6CoreAddons)
+BuildRequires:  cmake(KF6WidgetsAddons)
+BuildRequires:  cmake(KF6I18n)
+BuildRequires:  cmake(KF6Completion)
+BuildRequires:  cmake(KF6KIO)
+BuildRequires:  cmake(KF6IconThemes)
+BuildRequires:  cmake(KF6Crash)
+BuildRequires:  cmake(KF6DBusAddons)
+BuildRequires:  cmake(KF6TextWidgets)
+BuildRequires:  cmake(KF6DocTools)
 BuildRequires:  alsa-lib-devel
 BuildRequires:  audiofile-devel >= 0.3.0
 BuildRequires:  desktop-file-utils
@@ -78,39 +78,39 @@ speziell die HTML-Dokumentation.
 %autosetup -p1
 
 %build
-%cmake_kf5 \
+%cmake_kf6 \
    -DWITH_MP3=ON
 
 %cmake_build
 
 %install
 %cmake_install
-gzip -dS z %{buildroot}%{_datadir}/icons/hicolor/scalable/actions/*.svgz
-gzip -dS z %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/kwave.svgz
 
 %find_lang %{name}
 
 %check
-appstream-util validate-relax --nonet %{buildroot}%{_kf5_metainfodir}/org.kde.%{name}.appdata.xml
-desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.%{name}.desktop
+appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.%{name}.appdata.xml
+desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.desktop
 
 %files -f %{name}.lang
-%doc AUTHORS CHANGES README TODO
+%doc AUTHORS CHANGES TODO
 %license GNU-LICENSE LICENSES
-%{_kf5_bindir}/%{name}
-%{_kf5_datadir}/applications/org.kde.%{name}.desktop
-%{_kf5_metainfodir}/org.kde.%{name}.appdata.xml
-%{_kf5_datadir}/icons/hicolor/*/apps/%{name}.*
-%{_kf5_datadir}/icons/hicolor/*/actions/%{name}*
-%{_kf5_datadir}/%{name}/
-%{_kf5_qtplugindir}/%{name}/
-%{_kf5_libdir}/lib%{name}.so.*
-%{_kf5_libdir}/lib%{name}gui.so.*
+%{_kf6_bindir}/%{name}
+%{_kf6_datadir}/applications/org.kde.%{name}.desktop
+%{_kf6_metainfodir}/org.kde.%{name}.appdata.xml
+%{_kf6_datadir}/icons/hicolor/*/apps/%{name}.*
+%{_kf6_datadir}/%{name}/
+%{_kf6_qtplugindir}/%{name}/
+%{_kf6_libdir}/lib%{name}.so.*
+%{_kf6_libdir}/lib%{name}gui.so.*
 
 %files doc
-%{_kf5_docdir}/HTML/*/%{name}
+%{_kf6_docdir}/HTML/*/%{name}
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

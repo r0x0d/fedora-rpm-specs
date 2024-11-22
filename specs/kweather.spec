@@ -1,5 +1,5 @@
 Name:           kweather
-Version:        24.08.3
+Version:        24.11.80
 Release:        1%{?dist}
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
@@ -34,6 +34,7 @@ BuildRequires:  cmake(KF6Notifications)
 BuildRequires:  cmake(KF6KirigamiAddons)
 BuildRequires:  cmake(KWeatherCore)
 BuildRequires:  cmake(Plasma)
+BuildRequires:  cmake(KF6Crash)
 
 Requires:       hicolor-icon-theme
 # QML module dependencies
@@ -93,6 +94,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 %{_kf6_qtplugindir}/plasma/applets/plasma_applet_%{name}_1x4.so
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

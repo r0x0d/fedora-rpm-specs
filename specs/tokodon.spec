@@ -1,6 +1,6 @@
 Name:           tokodon 
-Version:        24.08.3
-Release:        2%{?dist}
+Version:        24.11.80
+Release:        1%{?dist}
 # Automatically converted from old format: GPLv3 and CC0 and BSD and LGPLv2+ and GPLv3+ and GPLv2 - review is highly recommended.
 License:        GPL-3.0-only AND CC0-1.0 AND LicenseRef-Callaway-BSD AND LicenseRef-Callaway-LGPLv2+ AND GPL-3.0-or-later AND GPL-2.0-only
 # For a breakdown of the licensing, see PACKAGE-LICENSING
@@ -94,6 +94,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 %{_kf6_datadir}/dbus-1/services/org.kde.tokodon.service
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 12 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-2
 - Enabled some disabled build dependancies (KCrash, KUnifiedPush)
 

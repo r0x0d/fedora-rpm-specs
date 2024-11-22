@@ -34,6 +34,8 @@ Patch5: dnssec-trigger-configure-c99.patch
 # https://github.com/NLnetLabs/dnssec-trigger/commit/f187c2be221a26f3c4ef4d9b16f1df67104ae634
 Patch6: dnssec-trigger-0.17-allowed-characters.patch
 Patch7: dnssec-trigger-0.17-openssl-3.2.patch
+# https://github.com/NLnetLabs/dnssec-trigger/pull/15
+Patch8: dnssec-trigger-0.17-server-recipe.patch
 
 # to obsolete the version in which the panel was in main package
 Obsoletes: %{name} < 0.12-22

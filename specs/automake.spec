@@ -23,7 +23,7 @@ Summary:    A GNU tool for automatically creating Makefiles
 Name:       automake
 # Any bump here requires libtool rebuild, rhbz#1813010
 Version:    %{api_version}.5
-Release:    18%{?dist}
+Release:    19%{?dist}
 
 # To help future rebase, the following licenses were seen in the following files/folders:
 # usr/bin/* - GPL-2.0-or-later
@@ -74,6 +74,9 @@ Patch5: v2-0001-tests-Don-t-try-to-prevent-flex-to-include-unistd.patch
 # From upstream: 6d6fc91c472fd84bd71a1b012fa9ab77bd94efea
 # Reveals failures due to C99 porting that wouldn't be seen otherwise
 Patch6: 0001-tests-depcomp-ensure-make_ok-fails-when-run_make-fai.patch
+
+# From upstream: ab347652df9ff8f65ba1be6aaa357cf3c2b16dca
+Patch7: 0001-python-support-noinst_PYTHON-preceding-foo_PYTHON.patch
 
 URL:        http://www.gnu.org/software/automake/
 Requires:   autoconf >= 2.65
@@ -177,6 +180,9 @@ make -k %{?_smp_mflags} check %{?TESTS_FLAGS: TESTS="%{TESTS_FLAGS}"} \
 
 
 %changelog
+* Tue Nov 19 2024 Frédéric Bérat <fberat@redhat.com> - 1.16.5-19
+- Fix pep3147_tweak regression (RHEL-59974)
+
 * Tue Nov 12 2024 Frédéric Bérat <fberat@redhat.com> - 1.16.5-18
 - Filter ncompress out for rhel (RHEL-66594)
 

@@ -12,6 +12,9 @@ Summary:        Nushell's parser
 License:        MIT
 URL:            https://crates.io/crates/nu-parser
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+# * allow rstest 0.23: https://github.com/nushell/nushell/pull/14350
+Patch:          nu-parser-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

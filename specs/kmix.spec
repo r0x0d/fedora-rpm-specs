@@ -1,12 +1,12 @@
 Name:    kmix
 Summary: KDE volume control
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 
 License: CC0-1.0 AND GPL-2.0-or-later
 URL:     https://invent.kde.org/multimedia/%{name}
 
-Source0: http://download.kde.org/%{stable_kf5}/release-service/%{version}/src/%{name}-%{version}.tar.xz
+Source0: http://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
 
 ## upstream patches
 
@@ -18,23 +18,26 @@ BuildRequires: desktop-file-utils
 BuildRequires: libappstream-glib
 
 BuildRequires: pkgconfig(alsa)
-# FIXME/TODO: kf5 build seems to expects libcanberra cmake support, update? -- rex
 BuildRequires: pkgconfig(libcanberra)
 BuildRequires: pkgconfig(libpulse) pkgconfig(libpulse-mainloop-glib)
 
 BuildRequires: extra-cmake-modules
-BuildRequires: kf5-rpm-macros
-BuildRequires: kf5-kconfigwidgets-devel
-BuildRequires: kf5-kglobalaccel-devel
-BuildRequires: kf5-ki18n-devel
-BuildRequires: kf5-kcmutils-devel
-BuildRequires: kf5-kdbusaddons-devel
-BuildRequires: kf5-kiconthemes-devel
-BuildRequires: kf5-kxmlgui-devel
-BuildRequires: kf5-kdelibs4support-devel
-BuildRequires: kf5-kinit-devel >= 5.10.0-3
-%{?kf5_kinit_requires}
-BuildRequires: kf5-plasma-devel
+BuildRequires: kf6-rpm-macros
+BuildRequires: cmake(KF6Config)
+BuildRequires: cmake(KF6ConfigWidgets)
+BuildRequires: cmake(KF6Crash)
+BuildRequires: cmake(KF6CoreAddons)
+BuildRequires: cmake(KF6Crash)
+BuildRequires: cmake(KF6DBusAddons)
+BuildRequires: cmake(KF6DocTools)
+BuildRequires: cmake(KF6GlobalAccel)
+BuildRequires: cmake(KF6I18n)
+BuildRequires: cmake(KF6Notifications)
+BuildRequires: cmake(KF6Solid)
+BuildRequires: cmake(KF6StatusNotifierItem)
+BuildRequires: cmake(KF6WidgetsAddons)
+BuildRequires: cmake(KF6WindowSystem)
+BuildRequires: cmake(KF6XmlGui)
 
 BuildRequires: pkgconfig(Qt5Gui)
 
@@ -54,7 +57,7 @@ Conflicts: kde-l10n < 17.03
 
 
 %build
-%cmake_kf5
+%cmake_kf6
 
 %cmake_build
 
@@ -66,37 +69,38 @@ Conflicts: kde-l10n < 17.03
 
 
 %check
-appstream-util validate-relax --nonet %{buildroot}%{_kf5_metainfodir}/org.kde.kmix.appdata.xml
+appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.kmix.appdata.xml
 desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.kmix.desktop
 
 
 %files -f %{name}.lang
 %doc AUTHORS ChangeLog TODO
 %license COPYING*
-%{_datadir}/dbus-1/interfaces/org.kde.kmix.control.xml
-%{_datadir}/dbus-1/interfaces/org.kde.kmix.mixer.xml
-%{_datadir}/dbus-1/interfaces/org.kde.kmix.mixset.xml
-%{_datadir}/icons/hicolor/*/*/kmix.*
-%{_kf5_bindir}/kmix
-%{_kf5_bindir}/kmixctrl
-%{_kf5_bindir}/kmixremote
-%{_kf5_datadir}/applications/org.kde.kmix.desktop
-%{_kf5_metainfodir}/org.kde.kmix.appdata.xml
-%{_kf5_datadir}/config.kcfg/kmixsettings.kcfg
-%{_kf5_datadir}/kmix/
-%{_kf5_datadir}/kxmlgui5/kmix/
-%{_kf5_datadir}/qlogging-categories5/kmix*
+%{_kf6_datadir}/dbus-1/interfaces/org.kde.kmix.control.xml
+%{_kf6_datadir}/dbus-1/interfaces/org.kde.kmix.mixer.xml
+%{_kf6_datadir}/dbus-1/interfaces/org.kde.kmix.mixset.xml
+%{_kf6_datadir}/icons/hicolor/*/*/kmix.*
+%{_kf6_bindir}/kmix
+%{_kf6_bindir}/kmixctrl
+%{_kf6_bindir}/kmixremote
+%{_kf6_datadir}/applications/org.kde.kmix.desktop
+%{_kf6_metainfodir}/org.kde.kmix.appdata.xml
+%{_kf6_datadir}/config.kcfg/kmixsettings.kcfg
+%{_kf6_datadir}/kmix/
+%{_kf6_datadir}/kxmlgui5/kmix/
+%{_kf6_datadir}/qlogging-categories6/kmix*
 %{_sysconfdir}/xdg/autostart/restore_kmix_volumes.desktop
 %{_sysconfdir}/xdg/autostart/kmix_autostart.desktop
-%{_kf5_datadir}/knotifications5/kmix.notifyrc
-%{_kf5_datadir}/kservices5/kmixctrl_restore.desktop
+%{_kf6_datadir}/knotifications6/kmix.notifyrc
 # -libs subpkg?
-%{_kf5_libdir}/libkmixcore.so.5*
-%{_kf5_libdir}/libkmixcore.so.%{version}
-%{_kf5_plugindir}/kded/kmixd.so
+%{_kf6_libdir}/libkmixcore.so.6*
+%{_kf6_libdir}/libkmixcore.so.%{version}
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

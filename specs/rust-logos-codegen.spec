@@ -12,6 +12,9 @@ Summary:        Create ridiculously fast Lexers
 License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/logos-codegen
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+# * Allow rstest 0.23 (https://github.com/maciejhirsz/logos/pull/438)
+Patch:          logos-codegen-fix-metadata.diff
 # * Fix issue with s390x test failure
 # * https://github.com/maciejhirsz/logos/pull/431
 Patch2:        rust-logos-codegen-0.14.2-Fix_s390x_issue.patch

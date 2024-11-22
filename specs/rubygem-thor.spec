@@ -3,7 +3,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 1.2.1
-Release: 7%{?dist}
+Release: 8%{?dist}
 Summary: Thor is a toolkit for building powerful command-line interfaces
 License: MIT
 URL: http://whatisthor.com/
@@ -21,6 +21,9 @@ Patch1: rubygem-thor-1.2.1-Fix-rspec-mocks-3.11.0-compatibility.patch
 # https://github.com/rails/thor/pull/789
 # did_you_mean behavior changed in ruby3.2
 Patch2: rubygem-thor-1.2.1-did_you_mean-ruby32.patch
+# https://github.com/rails/thor/commit/e43a9cd1f9d25ada999e19508216c6052344502f
+# Support ruby3.4 error msg formatting change
+Patch3: rubygem-thor-1.2.1-ruby34-error-formatting.patch
 # ruby package has just soft dependency on rubygem(io-console), while
 # Thor always requires it.
 Requires: rubygem(io-console)
@@ -53,6 +56,7 @@ Documentation for %{name}.
 pushd %{_builddir}
 %patch 0 -p1
 %patch 1 -p1
+%patch 3 -p1
 popd
 
 %build
@@ -107,6 +111,9 @@ popd
 %{gem_instdir}/thor.gemspec
 
 %changelog
+* Tue Nov 19 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.2.1-8
+- Apply upstream fix for ruby34 error msg formatting change
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.1-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

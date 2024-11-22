@@ -2,7 +2,7 @@
 %global orig_name org.kde.kclock
 
 Name:           kclock
-Version:        24.08.3
+Version:        24.11.80
 Release:        1%{?dist}
 License:        GPLv2+ and LGPLv2.1+ and CC-BY and GPLv3+
 Summary:        Clock app for Plasma Mobile
@@ -36,6 +36,7 @@ BuildRequires:  cmake(KF6Notifications)
 BuildRequires:  cmake(KF6DBusAddons)
 BuildRequires:  cmake(KF6StatusNotifierItem)
 BuildRequires:  cmake(KF6KirigamiAddons)
+BuildRequires:  cmake(KF6Crash)
 
 BuildRequires:  cmake(Plasma)
 
@@ -102,6 +103,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.%{name}.deskt
 %{_qt6_plugindir}/plasma/applets/org.kde.plasma.%{name}_1x2.so
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

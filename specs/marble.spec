@@ -1,7 +1,7 @@
 Name:    marble
 Summary: Virtual globe and world atlas
 Epoch:   1
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 
 License: Apache-2.0 AND BSD-3-Clause AND CC0-1.0 AND GPL-3.0-only AND GPL-3.0-or-later AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND MIT AND (LGPL-2.1-only WITH Qt-LGPL-exception-1.1)
@@ -258,6 +258,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.marble-qt.des
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 1:24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 1:24.08.3-1
 - 24.08.3
 

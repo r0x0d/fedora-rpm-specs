@@ -46,7 +46,7 @@ BuildRequires:  mvn(org.apache.maven.reporting:maven-reporting-impl)
 %description
 Maven Plugin for processing JavaCC grammar files.
 
-%javadoc_package
+%{?javadoc_package}
 
 %prep
 %autosetup -p1 -C

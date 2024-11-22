@@ -3,7 +3,7 @@
 %global srcname contourpy
 
 Name:           python-%{srcname}
-Version:        1.3.0
+Version:        1.3.1
 Release:        %autorelease
 Summary:        Python library for calculating contours in 2D quadrilateral grids
 
@@ -51,6 +51,7 @@ Summary:        %{summary}
 
 %files -n python3-%{srcname} -f %{pyproject_files}
 %doc README.md
+%license LICENSE
 
 %changelog
 %autochangelog

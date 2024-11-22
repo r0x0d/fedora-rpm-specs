@@ -2,8 +2,8 @@
 %bcond adblock 1
 
 Name:    kdepim-addons
-Version: 24.08.3
-Release: 2%{?dist}
+Version: 24.11.80
+Release: 1%{?dist}
 Summary: Additional plugins for KDE PIM applications
 # Cargo license summary:
 # MIT
@@ -18,10 +18,6 @@ URL:     https://invent.kde.org/pim/%{name}
 Source0: https://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
 
 ## upstream patches
-
-# Fix for calendar colors being wrong
-# https://invent.kde.org/pim/kdepim-addons/-/commit/b5f70b11b8f618d639598c5d04e264ab1463d321
-Patch0:  b5f70b11b8f618d639598c5d04e264ab1463d321.patch
 
 ## upstream patches (master)
 
@@ -83,6 +79,7 @@ BuildRequires:  cmake(KPim6TextEdit)
 BuildRequires:  cmake(KPim6IdentityManagementCore)
 BuildRequires:  cmake(KPim6IMAP)
 BuildRequires:  cmake(KPim6KSieveUi)
+BuildRequires:  cmake(KPim6LdapWidgets)
 
 BuildRequires:  cmake(KPim6Tnef)
 BuildRequires:  cmake(KPim6MailTransport)
@@ -193,6 +190,9 @@ popd
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Sat Nov 16 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-2
 - Fix for calendar colors being wrong
 

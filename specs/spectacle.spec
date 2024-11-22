@@ -1,6 +1,6 @@
 Name:    spectacle
 Summary: Screenshot capture utility
-Version: 24.08.3
+Version: 24.11.80
 Release: 1%{?dist}
 
 # Automatically converted from old format: GPLv2 - review is highly recommended.
@@ -43,6 +43,7 @@ BuildRequires: cmake(KF6WindowSystem)
 BuildRequires: cmake(KF6XmlGui)
 BuildRequires: cmake(KF6StatusNotifierItem)
 BuildRequires: cmake(KF6Prison)
+BuildRequires: cmake(KF6Crash)
 
 BuildRequires: cmake(KPipeWire)
 BuildRequires: cmake(LayerShellQt)
@@ -56,6 +57,7 @@ BuildRequires: cmake(Qt6QuickControls2)
 BuildRequires: cmake(Qt6Quick)
 BuildRequires: cmake(Qt6WaylandClient)
 BuildRequires: cmake(Qt6Multimedia)
+BuildRequires: cmake(Qt6QWebpPlugin)
 BuildRequires: cmake(ZXing)
 
 BuildRequires: pkgconfig(wayland-client)
@@ -117,6 +119,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.spectacle
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

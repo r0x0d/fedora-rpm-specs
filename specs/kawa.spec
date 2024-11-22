@@ -1,7 +1,7 @@
 Epoch:          1
 Name:           kawa
 Version:        3.1.1
-Release:        20%{?dist}
+Release:        21%{?dist}
 Summary:        Scheme programming language
 License:        MIT
 URL:            https://www.gnu.org/software/kawa/
@@ -11,7 +11,7 @@ ExcludeArch:    i686
 BuildRequires:  ant
 BuildRequires:  antlr
 BuildRequires:  groff
-BuildRequires:  java-11-openjdk-devel
+BuildRequires:  java-21-openjdk-devel
 BuildRequires:  libtool
 BuildRequires:  ncurses-devel
 BuildRequires:  readline-devel
@@ -20,12 +20,24 @@ BuildRequires:  texinfo
 BuildRequires:  util-linux-ng
 BuildRequires:  make
 Requires:       jakarta-servlet
-Requires:       java-11-openjdk-headless
+Requires:       java-21-openjdk-headless
 
 #Test doesn't pass against Jboss servlet 3.0 till Kawa support Tomcat servlet 4.0
 #See https://gitlab.com/kashell/Kawa/issues/41
 Patch0:         kawa-3.1.1-disable-servelet-tests.patch
 Patch1:         kawa-3.1.1-remove-unfound-javadoc.patch
+# Port https://gitlab.com/kashell/Kawa/-/commit/53b9750e1a4707902ecb0743284d667cba944031
+# Removed ChangLog modification
+Patch2:         kawa-3.1.1-CharSequence-isEmpty-was-added-in-JDK15-so-override.patch
+# Port https://gitlab.com/kashell/Kawa/-/commit/42f88a1dcba7264587fc177a2721a012d035ef66
+# Removed ChangLog modification
+Patch3:         kawa-3.1.1-IString.java-isEmpty-New-method-added-for-Java-15.patch
+# Port https://gitlab.com/kashell/Kawa/-/commit/2b9674927ba82847cc830eb05466086d3fdcebd2
+# Removed ChangLog modification
+Patch4:         kawa-3.1.1-standard-make.java-Explicitly-import-kawa.lang.Recor.patch
+# Port https://gitlab.com/kashell/Kawa/-/commit/dd940c01f4ee9dd3263bca844f035bc4a31c76c4
+# Removed ChangLog modification
+Patch5:         kawa-3.1.1-gnu-.java-kawa-.java-Fix-Java17-depreciation-warning.patch
 
 %description
 Kawa is an implementation of the Scheme programming language.  It is
@@ -75,6 +87,10 @@ rm -rf %{buildroot}%{_datadir}/kawa/bin
 
 
 %changelog
+* Wed Nov 20 2024 Markku Korkeala <markku.korkeala@iki.fi> - 1:3.1.1-21
+- Port patches from version control to fix builds on JDK 21
+- Closes rhbz#2323985
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:3.1.1-20
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -75,8 +75,8 @@ BuildRequires:  %{py3_dist ipython}
 %ifnarch ppc64le
 BuildRequires:  %{py3_dist lark}
 %endif
-# FIXME: Crashes in llvmlite on ppc64le and s390x
-%ifnarch ppc64le s390x
+# FIXME: Crashes in llvmlite on ppc64le, s390x and riscv64
+%ifnarch ppc64le s390x riscv64
 BuildRequires:  %{py3_dist llvmlite}
 %endif
 BuildRequires:  %{py3_dist lxml}

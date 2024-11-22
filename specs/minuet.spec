@@ -1,5 +1,5 @@
 Name:           minuet
-Version:        24.08.3
+Version:        24.11.80
 Release:        1%{?dist}
 Summary:        A KDE Software for Music Education
 #OFL license for bundled Bravura.otf font
@@ -100,6 +100,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/org.kde.%{name}.desk
 
 
 %changelog
+* Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
+- 24.11.80
+
 * Tue Nov 05 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

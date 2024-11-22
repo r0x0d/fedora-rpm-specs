@@ -3,7 +3,7 @@
 %global crate bootupd
 
 Name:           rust-%{crate}
-Version:        0.2.24
+Version:        0.2.25
 Release:        %autorelease
 Summary:        Bootloader updater
 
@@ -32,12 +32,13 @@ Summary:        %{summary}
 # Apache-2.0
 # Apache-2.0 OR BSL-1.0
 # Apache-2.0 OR MIT
+# Apache-2.0 WITH LLVM-exception
 # Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
 # BSD-3-Clause
 # MIT
 # MIT OR Apache-2.0
 # Unlicense OR MIT
-License:        Apache-2.0 AND BSD-3-Clause AND MIT AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND (Unlicense OR MIT)
+License:        Apache-2.0 AND (Apache-2.0 WITH LLVM-exception) AND BSD-3-Clause AND MIT AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND (Unlicense OR MIT)
 %{?systemd_requires}
 
 %description -n %{crate} %{_description}

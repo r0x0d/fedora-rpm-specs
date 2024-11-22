@@ -94,7 +94,7 @@ Requires:       %{name} = %{version}-%{release}
 %description demo
 Examples for %{name}.
 
-%javadoc_package
+%{?javadoc_package}
 
 %prep
 %autosetup -p1 -C
