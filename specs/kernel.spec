@@ -162,13 +162,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.13.0
 %define specversion 6.13.0
 %define patchversion 6.13
-%define pkgrelease 0.rc0.20241119git158f238aa69d.2
+%define pkgrelease 0.rc0.20241121gitfcc79e1714e8.5
 %define kversion 6
-%define tarfile_release 6.12-971-g158f238aa69d
+%define tarfile_release 6.12-5480-gfcc79e1714e8
 # This is needed to do merge window version magic
 %define patchlevel 13
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc0.20241119git158f238aa69d.2%{?buildid}%{?dist}
+%define specrelease 0.rc0.20241121gitfcc79e1714e8.5%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.13.0
 
@@ -1342,7 +1342,7 @@ analysing the logical and timing behavior of Linux.
 # output with bpftool -V.
 %define bpftoolversion  %specrpmversion
 %else
-%define bpftoolversion 7.5.0
+%define bpftoolversion 7.6.0
 %endif
 
 %package -n bpftool
@@ -4270,9 +4270,21 @@ fi\
 #
 #
 %changelog
-* Tue Nov 19 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.158f238aa69d.2]
+* Thu Nov 21 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.fcc79e1714e8.5]
 - tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
 - tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+
+* Thu Nov 21 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.fcc79e1714e8.4]
+- One more pending to fix a mismatch (Justin M. Forbes)
+- redhat: fix RT PREEMPT configs for Fedora and RHEL (Clark Williams)
+- Pending fixes to avoid mismatch for 6.13 (Justin M. Forbes)
+- Linux v6.13.0-0.rc0.fcc79e1714e8
+
+* Thu Nov 21 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.bf9aa14fc523.3]
+- Linux v6.13.0-0.rc0.bf9aa14fc523
+
+* Wed Nov 20 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.158f238aa69d.2]
+- Reset changelog for 6.13 (Justin M. Forbes)
 
 * Tue Nov 19 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.158f238aa69d.1]
 - Reset RHEL_RELEASE for 6.13 (Justin M. Forbes)
@@ -6908,3 +6920,10 @@ fi\
 - [initial commit] Add configs (Laura Abbott)
 - [initial commit] Add Makefiles (Laura Abbott)
 - Linux v6.13.0-0.rc0.158f238aa69d
+
+###
+# The following Emacs magic makes C-c C-e use UTC dates.
+# Local Variables:
+# rpm-change-log-uses-utc: t
+# End:
+###

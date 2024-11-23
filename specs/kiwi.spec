@@ -8,7 +8,7 @@ and cloud systems like Xen, KVM, VMware, EC2 and more.
 
 
 Name:           kiwi
-Version:        10.1.13
+Version:        10.2.0
 Release:        1%{?dist}
 URL:            http://osinside.github.io/kiwi/
 Summary:        Flexible operating system image builder
@@ -596,6 +596,9 @@ done
 
 
 %changelog
+* Thu Nov 21 2024 Neal Gompa <ngompa@fedoraproject.org> - 10.2.0-1
+- Update to 10.2.0
+
 * Thu Sep 26 2024 Neal Gompa <ngompa@fedoraproject.org> - 10.1.13-1
 - Update to 10.1.13
 

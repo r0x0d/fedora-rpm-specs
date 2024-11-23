@@ -2,7 +2,7 @@ Name:           oneko
 Summary:        Cat chases the cursor
 Version:        1.2
 Release:        40%{?dist}
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 # Modified Source to remove BSD images, due to copyright.
 # Source0:      http://www.daidouji.com/oneko/distfiles/oneko-1.2.sakura.5.tar.gz
 Source0:        oneko-1.2.sakura.5.noBSD.tar.gz

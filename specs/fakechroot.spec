@@ -1,6 +1,6 @@
 Name:           fakechroot
 Version:        2.20.1
-Release:        20%{?dist}
+Release:        21%{?dist}
 Summary:        Gives a fake chroot environment
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-LGPLv2+
@@ -9,9 +9,8 @@ Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 Patch1:         https://github.com/dex4er/fakechroot/commit/b42d1fb9538f680af2f31e864c555414ccba842a.patch
 Patch2:         https://github.com/dex4er/fakechroot/pull/80.patch
 Patch4:         https://github.com/dex4er/fakechroot/pull/104.patch
-Patch8:         disable_cp.t.patch
-#Patch9:         fix_test_on_32bits.patch
 Patch10:        autoupdate.patch
+Patch11:        disable_socket-af_unix.t.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -83,6 +82,10 @@ find %{buildroot}%{_libdir} -name '*.la' -delete -print
 %{_libdir}/%{name}/
 
 %changelog
+* Thu Nov 21 2024 Sérgio Basto <sergio@serjux.com> - 2.20.1-21
+- Update 104 PR which fixes cp.t and disable disable_socket-af_unix.t to fix
+  FTBFS
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 2.20.1-20
 - convert license to SPDX
 

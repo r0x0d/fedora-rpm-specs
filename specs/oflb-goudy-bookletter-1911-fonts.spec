@@ -5,7 +5,7 @@ Name:		%{fontname}-fonts
 Summary:	Clean serif font based on Kennerly Old Style
 Version:	20080206
 Release:	29%{?dist}
-License:	Public Domain
+License:	LicenseRef-Fedora-Public-Domain
 # Source was originally downloaded from here:
 # http://openfontlibrary.org/people/chemoelectric/chemoelectric_-_Goudy_Bookletter_1.zip
 # It is no longer available. The main website has this zip for download:

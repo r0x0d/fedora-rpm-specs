@@ -2,7 +2,6 @@ Name:           perl-Goo-Canvas
 Version:        0.06
 Release:        57%{?dist}
 Summary:        Perl interface to the GooCanvas
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Goo-Canvas
 Source0:        https://cpan.metacpan.org/authors/id/Y/YE/YEWENBIN/Goo-Canvas-%{version}.tar.gz

@@ -3,11 +3,11 @@
 %global project_version_minor 7
 %global project_version_micro 0
 
-%bcond dnf5_obsoletes_dnf %[0%{?fedora} > 40 || 0%{?rhel} > 11]
+%bcond dnf5_obsoletes_dnf %[0%{?fedora} > 40 || 0%{?rhel} > 10]
 
 Name:           dnf5
 Version:        %{project_version_prime}.%{project_version_major}.%{project_version_minor}.%{project_version_micro}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Command-line package manager
 License:        GPL-2.0-or-later
 URL:            https://github.com/rpm-software-management/dnf5
@@ -895,6 +895,9 @@ popd
 %ldconfig_scriptlets
 
 %changelog
+* Thu Nov 21 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 5.2.7.0-2
+- Toggle dnf5_obsoletes_dnf for ELN
+
 * Tue Nov 12 2024 Packit <hello@packit.dev> - 5.2.7.0-1
 ## What's Changed
  * copr: use pubkey URL returned by Copr API by @FrostyX in https://github.com/rpm-software-management/dnf5/pull/1725

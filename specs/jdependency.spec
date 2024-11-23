@@ -1,6 +1,6 @@
 Name:           jdependency
-Version:        2.10
-Release:        3%{?dist}
+Version:        2.11
+Release:        1%{?dist}
 Summary:        Class dependency analysis library for Java
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
@@ -54,6 +54,9 @@ Summary:        API documentation for %{name}
 %license LICENSE.txt
 
 %changelog
+* Fri Nov 22 2024 Sérgio Basto <sergio@serjux.com> - 2.11-1
+- Update jdependency to 2.11 (#2313642)
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 2.10-3
 - convert license to SPDX
 

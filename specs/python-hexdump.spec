@@ -11,7 +11,7 @@ Version:        3.4
 Release:        0.26.%{commitdate}hg%{shortcommit}%{?dist}
 Summary:        Dump binary data to hex format and restore from there
 
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 #               https://pypi.python.org/pypi/hexdump
 #               https://bitbucket.org/techtonik/hexdump
 URL:            https://bitbucket.com/%{hguser}/%{srcname}

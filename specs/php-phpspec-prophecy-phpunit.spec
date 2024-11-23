@@ -9,14 +9,14 @@
 
 %bcond_without       tests
 
-%global gh_commit    16e1247e139434bce0bac09848bc5c8d882940fc
+%global gh_commit    8819516c1b489ecee4c60db5f5432fac1ea8ac6f
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     phpspec
 %global gh_project   prophecy-phpunit
 
 Name:           php-%{gh_owner}-%{gh_project}
-Version:        2.2.0
-Release:        2%{?dist}
+Version:        2.3.0
+Release:        1%{?dist}
 Summary:        Integrating the Prophecy mocking library in PHPUnit test cases
 
 License:        MIT
@@ -94,7 +94,7 @@ sed -e 's:src/::' -i tests/MockFailure.phpt
 
 : upstream test suite
 ret=0
-for cmd in php php81 php82 php83; do
+for cmd in php php81 php82 php83 php84; do
   if which $cmd; then
 	sed -e 's/@PHPUNIT@/PHPUnit9/' vendor/autoload.php.in > vendor/autoload.php
     $cmd -d auto_prepend_file=vendor/autoload.php \
@@ -105,7 +105,7 @@ for cmd in php php81 php82 php83; do
       %{_bindir}/phpunit10 --no-coverage|| ret=1
   fi
 done
-for cmd in php php82 php83; do
+for cmd in php php82 php83 php84; do
   if which %{_bindir}/phpunit11 && which $cmd; then
 	sed -e 's/@PHPUNIT@/PHPUnit11/' vendor/autoload.php.in > vendor/autoload.php
     $cmd -d auto_prepend_file=vendor/autoload.php \
@@ -126,6 +126,9 @@ exit $ret
 
 
 %changelog
+* Thu Nov 21 2024 Remi Collet <remi@remirepo.net> - 2.3.0-1
+- update to 2.3.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.2.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

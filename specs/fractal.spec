@@ -7,7 +7,7 @@
 
 Name:           fractal
 Version:        9
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Matrix group messaging app
 
 # fractal itself is GPL-3.0-or-later. The rest are statically linked rust libraries based on cargo_license_summary output.
@@ -47,6 +47,9 @@ BuildRequires:  pkgconfig(xdg-desktop-portal)
 # for check
 BuildRequires:  /usr/bin/appstream-util
 BuildRequires:  /usr/bin/desktop-file-validate
+
+# for image loading
+Requires:       glycin-loaders%{?_isa}
 
 %description
 Fractal is a Matrix messaging app for GNOME written in Rust. Its interface is
@@ -91,6 +94,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/*.desktop
 
 
 %changelog
+* Wed Nov 20 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 9-2
+- Add glycin-loaders dependency
+
 * Tue Sep 03 2024 Pete Walter <pwalter@fedoraproject.org> - 8-1
 - Update to 8
 

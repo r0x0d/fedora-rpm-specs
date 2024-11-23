@@ -6,7 +6,7 @@ Version:        4.2.06
 Release:        1%{?dist}
 Summary:        Digital modem program for Linux
 
-License:        GPL-3.0-or-later AND GPL-2.0-or-later AND LGPL-2.0-or-later AND LGPL-3.0-or-later AND GPL-3.0 AND LGPL-2.0 AND GPL-2.0 AND BSL-1.0 AND MIT-0 AND LGPL-3 AND GPL AND Apache-2.0
+License:        GPL-3.0-or-later AND GPL-2.0-or-later AND LGPL-2.0-or-later AND LGPL-3.0-or-later AND GPL-3.0-only AND LGPL-2.0-only AND GPL-2.0-only AND BSL-1.0 AND MIT-0 AND LGPL-3.0-only AND GPL-1.0-only AND Apache-2.0
 
 URL:            http://www.w1hkj.com/Fldigi.html
 %if %{alpha}

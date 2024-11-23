@@ -3,7 +3,7 @@
 
 # https://github.com/onsi/ginkgo
 %global goipath         github.com/onsi/ginkgo/v2
-Version:                2.21.0
+Version:                2.22.0
 
 %gometa -f
 

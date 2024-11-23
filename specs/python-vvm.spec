@@ -3,7 +3,7 @@
 Python wrapper and version management tool for the Vyper compiler.}
 
 Name:          python-%{pypi_name}
-Version:       0.3.1
+Version:       0.3.2
 Release:       %autorelease
 BuildArch:     noarch
 Summary:       Vyper version manager
@@ -11,7 +11,6 @@ License:       MIT
 URL:           https://github.com/vyperlang/vvm
 VCS:           git:%{url}.git
 # FIXME PyPi package missing ./tests/conftest.py
-# Source0:       %{pypi_source %{pypi_name}}
 Source0:       %{url}/archive/v%{version}/%{pypi_name}-%{version}.tar.gz
 BuildRequires: python3-devel
 BuildRequires: python3-pytest

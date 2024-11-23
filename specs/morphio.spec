@@ -24,24 +24,22 @@ One important concept is that MorphIO is split into a read-only part and a
 read/write one.
 }
 
-%global pretty_name MorphIO
-
 # cpp tests
-%bcond_without tests
+%bcond tests 1
 # python tests
-%bcond_without pytests
+%bcond pytests 1
 
 Name:           morphio
-Version:        3.3.9
+Version:        3.4.0
 Release:        %autorelease
 Summary:        A python and C++ library for reading and writing neuronal morphologies
 %forgemeta
 # The entire source is Apache-2.0 except the following, which is BSD-3-Clause:
-#   - CMake/CodeCoverage.cmake
-# The “effective license” remains Apache-2.0.
-License:        Apache-2.0 AND BSD-3-Clause
+#   - CMake/CodeCoverage.cmake: just a build-system file; it is not installed
+#     and does not contribute to the licenses of the binary RPMs
+License:        Apache-2.0
 URL:            %forgeurl
-Source0:        %forgesource
+Source:         %forgesource
 
 # Patches
 # https://github.com/sanjayankur31/MorphIO/tree/fedora-3.3.2
@@ -52,8 +50,11 @@ Patch:          stop-them-using-a-random-env-var.patch
 Patch:          remove-upstreams-flags.patch
 # Add install target for the compiled python module
 Patch:          install-python-shared-object.patch
-# Stop setup.py from running the cmake build, we’ll run it ourselves
-Patch:          stop-setup.py-from-cmake-build.patch
+# Downstream-only: Allow passing CMake defs through an env. var.
+#
+# It is too hard to get the build_ext command-line arguments passed
+# through when building a wheel.
+Patch:          0001-Downstream-only-Allow-passing-CMake-defs-through-an-.patch
 # Some Python tests are failing because “expected” results are float32 and then
 # promoted back to float64 for comparison with the actual results. We are not
 # sure why upstream is not experiencing this.
@@ -71,9 +72,17 @@ Patch:          allow_use_of_external_ghc_filesystem.patch
 #  Target "ghc_filesystem" not found.
 # So let's circumvent CMake foo for ghc_filesystem
 Patch:          dont_use_cmake_for_finding_ghc_filesystem.patch
+# Fix a test regression with pybind11 2.11.2, 2.12.1, 2.13.6+
+# https://github.com/BlueBrain/MorphIO/pull/515
+Patch:          %{forgeurl}/pull/515.patch
+
+# skip locale check if std::locale fails
+Patch:          https://github.com/BlueBrain/MorphIO/pull/512.patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
+
+BuildRequires:  tomcli
 
 BuildRequires:  hdf5-devel
 BuildRequires:  boost-devel
@@ -83,9 +92,7 @@ BuildRequires:  cmake(Catch2) < 3
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
-# Our choice: the make backend works fine too
 BuildRequires:  ninja-build
-BuildRequires:  lcov
 
 # Header-only libraries; -static required by guidelines for tracking
 BuildRequires:  cmake(gsl-lite)
@@ -96,17 +103,18 @@ BuildRequires:  lexertl14-devel
 BuildRequires:  lexertl14-static
 BuildRequires:  cmake(ghc_filesystem)
 BuildRequires:  gulrak-filesystem-static
-# We cannot currently figure out how to unbundle this:
 BuildRequires:  cmake(pybind11)
 BuildRequires:  pybind11-static
+
+BuildRequires:  python3-devel
 
 %description %_description
 
 
 %package        devel
-Summary:        Development files for %{name}
-Requires:       %{name}%{?_isa} = %{version}-%{release}
-Provides:       %{name}-static = %{version}-%{release}
+Summary:        Development files for MorphIO
+Requires:       morphio%{?_isa} = %{version}-%{release}
+Provides:       morphio-static = %{version}-%{release}
 
 # A gsl header is included from the public morphio/types.h header.
 Requires:       gsl-lite-devel%{?_isa}
@@ -118,40 +126,30 @@ Requires:       highfive-static
 # gsl-lite-static and highfive-static for header-only library tracking.
 
 %description    devel
-The %{name}-devel package contains libraries and header files for
-developing applications that use %{name}.
+The morphio-devel package contains libraries and header files for
+developing applications that use MorphIO.
 
 
-%package -n python3-%{name}
-Summary:        Python bindings for %{name}
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-setuptools_scm
-%if %{with pytests}
-# tests/requirements-tests.txt
-BuildRequires:  %{py3_dist h5py} >= 2.9.0
-BuildRequires:  %{py3_dist pytest} >= 6.0
-BuildRequires:  %{py3_dist numpy} >= 1.14.2
-BuildRequires:  %{py3_dist requests} >= 2.25.1
-%endif
+%package -n python3-morphio
+Summary:        Python bindings for MorphIO
 
 # Note that this package does not depend at all on the base package (it does
 # not link against the shared library).
 
-%description -n python3-%{name}
-This package includes the Python 3 bindings for %{name}.
+%description -n python3-morphio
+This package includes the Python 3 bindings for MorphIO.
 
 
 %package doc
-Summary:        Documentation for %{name}
+Summary:        Documentation for MorphIO
 BuildArch:      noarch
 
 %description doc
-This package provides documentation for %{name}
+This package provides documentation for MorphIO
 
 
 %prep
-%autosetup -n %{pretty_name}-%{version} -p1
+%autosetup -n MorphIO-%{version} -p1
 
 # Unbundle gsl-lite
 rm -rvf 3rdparty/GSL_LITE
@@ -176,47 +174,60 @@ ln -s '%{_includedir}/lexertl' '3rdparty/'
 # Some of these could make it into the installed package:
 find . -type f -name .gitignore -print -delete
 
+# We already depend on system versions of these; depending on “PyPI versions”
+# of these is just a hack to install them in a virtualenv. Even if these are
+# satisfiable, nothing relies on having the Python dist-info metadata.
+tomcli set pyproject.toml lists delitem --type regex --no-first \
+    build-system.requires '^(cmake|ninja)$'
+
+
+%generate_buildrequires
+export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
+%pyproject_buildrequires %{?with_pytests:tests/requirement_tests.txt}
+
 
 %build
 export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 %cmake \
-    -DEXTERNAL_PYBIND11:BOOL=TRUE \
-    -DEXTERNAL_HIGHFIVE:BOOL=TRUE \
-    -DEXTERNAL_GHC_FILESYSTEM:BOOL=TRUE \
-    -DMORPHIO_USE_DOUBLE:BOOL=TRUE \
-    -DBUILD_BINDINGS:BOOL=TRUE \
-    -DMorphIO_CXX_WARNINGS:BOOL=FALSE \
-    -DMORPHIO_TESTS:BOOL=%{?with_tests:TRUE}%{?!with_tests:FALSE} \
+    -DBUILD_BINDINGS:BOOL=FALSE \
     -DEXTERNAL_CATCH2:BOOL=TRUE \
-    -DMORPHIO_ENABLE_COVERAGE:BOOL=TRUE \
+    -DEXTERNAL_GHC_FILESYSTEM:BOOL=TRUE \
+    -DEXTERNAL_HIGHFIVE:BOOL=TRUE \
+    -DEXTERNAL_PYBIND11:BOOL=TRUE \
+    -DMORPHIO_ENABLE_COVERAGE:BOOL=FALSE \
+    -DMORPHIO_TESTS:BOOL=%{?with_tests:TRUE}%{?!with_tests:FALSE} \
     -DMORPHIO_USE_DOUBLE:BOOL=TRUE \
     -DMORPHIO_VERSION_STRING:STRING="%{version}" \
+    -DMorphIO_CXX_WARNINGS:BOOL=FALSE \
     -GNinja \
     -Wno-dev
 %cmake_build
 
-# Build pure python bits
-%py3_build
+# Applicable options from the main %%cmake invocation, above:
+mcd="${mcd-}${mcd+,}EXTERNAL_GHC_FILESYSTEM:BOOL=TRUE"
+mcd="${mcd-}${mcd+,}MORPHIO_USE_DOUBLE:BOOL=TRUE"
+mcd="${mcd-}${mcd+,}MorphIO_CXX_WARNINGS:BOOL=FALSE"
+mcd="${mcd-}${mcd+,}EXTERNAL_HIGHFIVE:BOOL=TRUE"
+mcd="${mcd-}${mcd+,}EXTERNAL_PYBIND11:BOOL=TRUE"
+# Selected possibly-applicable options from the definition of %%cmake in
+# /usr/lib/rpm/macros.d/macros.cmake:
+mcd="${mcd-}${mcd+,}CMAKE_C_FLAGS_RELEASE:STRING=-DNDEBUG"
+mcd="${mcd-}${mcd+,}CMAKE_CXX_FLAGS_RELEASE:STRING=-DNDEBUG"
+mcd="${mcd-}${mcd+,}CMAKE_VERBOSE_MAKEFILE:BOOL=ON"
+mcd="${mcd-}${mcd+,}CMAKE_INSTALL_DO_STRIP:BOOL=OFF"
+# Keep pybind11 from automagically stripping the compiled extension
+mcd="${mcd-}${mcd+,}CMAKE_STRIP=/bin/true"
+export MORPHIO_CMAKE_DEFS="${mcd-}"
+%pyproject_wheel
 
 
 %install
-export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 %cmake_install
-# Install pure python bits
-%py3_install
-
-# Move module to sitearch so that the binding can be correctly imported.
-if [ '%{python3_sitelib}' != '%{python3_sitearch}' ]
-then
-  mv -v %{buildroot}%{python3_sitelib}/%{name}/* \
-        %{buildroot}%{python3_sitearch}/%{name}
-  mv -v %{buildroot}%{python3_sitelib}/%{name}*egg-info \
-        %{buildroot}%{python3_sitearch}/
-fi
+%pyproject_install
+%pyproject_save_files -l morphio
 
 
 %check
-export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 %if %{with tests}
 # From ci/cpp_test.sh
 %ctest -VV
@@ -228,35 +239,44 @@ xdir="$(basename "${PWD}")"
 cd ..
 # Fetches from the Internet:
 k='not test_v2'
-# Still fails in 3.3.6
+# Still fails in 3.4.0
 # TODO: Is this a real problem? The answer is only slightly outside tolerances.
 #
 # >               assert_array_almost_equal(neuron.markers[0].points,
 #                                           np.array([[81.58, -77.98, -20.32]], dtype=np.float32))
-# E               AssertionError:
-# E               Arrays are not almost equal to 6 decimals
+# E           AssertionError:
+# E           Arrays are not almost equal to 6 decimals
 # E
-# E               Mismatched elements: 2 / 3 (66.7%)
-# E               Max absolute difference: 3.35693359e-06
-# E               Max relative difference: 4.30486464e-08
-# E                x: array([[ 81.58, -77.98, -20.32]])
-# E                y: array([[ 81.58, -77.98, -20.32]], dtype=float32)
+# E           Mismatched elements: 1 / 3 (33.3%)
+# E           Max absolute difference: 2.e-06
+# E           Max relative difference: 3.87747174e-08
+# E            x: array([[ 51.58, -77.78, -24.32]])
+# E            y: array([[ 51.580002, -77.779999, -24.32    ]])
+#
 k="${k} and not test_neurolucida_markers"
-# Still fails to 3.3.6
+# Still fails to 3.4.0
 # TODO: Is this a real problem? The answer is only slightly outside tolerances.
 #
 # >       assert_array_equal(m.markers[0].points, np.array([[  -0.97    , -141.169998,   84.769997]],
 #                                                          dtype=np.float32))
-# E       AssertionError:
-# E       Arrays are not equal
+# E           AssertionError:
+# E           Arrays are not equal
 # E
-# E       Mismatched elements: 3 / 3 (100%)
-# E       Max absolute difference: 3.35693359e-06
-# E       Max relative difference: 3.96004922e-08
-# E        x: array([[  -0.97, -141.17,   84.77]])
-# E        y: array([[  -0.97, -141.17,   84.77]], dtype=float32)
+# E           Mismatched elements: 2 / 3 (66.7%)
+# E           Max absolute difference: 2.99999999e-06
+# E           Max relative difference: 3.53898797e-08
+# E            x: array([[  -0.97, -141.17,   84.77]])
+# E            y: array([[  -0.97    , -141.169998,   84.769997]])
 k="${k} and not test_marker_with_string"
-# In the same vein as above, failing since 3.3.6
+# In the same vein as above, failing since 3.4.0
+# E           AssertionError:
+# E           Arrays are not equal
+# E
+# E           Mismatched elements: 1 / 2 (50%)
+# E           Max absolute difference: 2.38418579e-08
+# E           Max relative difference: 3.97364299e-08
+# E            x: array([0.5, 0.6])
+# E            y: array([0.5, 0.6])
 k="${k} and not test_mitochondria"
 k="${k} and not test_mitochondria_read"
 # TODO: pytest segfaults while writing a temporary file..
@@ -271,15 +291,12 @@ k="${k} and not test_dendritic_spine_round_trip_empty_postsynaptic_density"
 
 
 %files devel
-%{_includedir}/%{name}
+%{_includedir}/morphio/
 %{_libdir}/libmorphio.so
-%{_libdir}/cmake/%{pretty_name}
+%{_libdir}/cmake/MorphIO/
 
 
-%files -n python3-%{name}
-%license LICENSE.txt
-%{python3_sitearch}/%{name}
-%{python3_sitearch}/%{name}-%{version}-py%{python3_version}.egg-info
+%files -n python3-morphio -f %{pyproject_files}
 
 
 %files doc

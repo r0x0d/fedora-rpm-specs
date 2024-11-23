@@ -1,5 +1,5 @@
 Name:		fprintd
-Version:	1.94.2
+Version:	1.94.4
 Release:	%autorelease
 Summary:	D-Bus service for Fingerprint reader access
 
@@ -24,7 +24,6 @@ BuildRequires:	pkgconfig(systemd)
 BuildRequires:	python3-dbusmock
 BuildRequires:	python3-libpamtest
 
-Patch0: 0001-Don-t-try-to-clear-storage-on-devices-without-intern.patch
 
 %description
 D-Bus service to access fingerprint readers.

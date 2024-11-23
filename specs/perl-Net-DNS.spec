@@ -1,11 +1,11 @@
 Name:          perl-Net-DNS
-Version:       1.47
+Version:       1.48
 Release:       1%{?dist}
 Summary:       DNS resolver modules for Perl
 License:       MIT
 URL:           https://www.net-dns.org
 Source0:       https://www.net-dns.org/download/Net-DNS-%{version}.tar.gz
-Source1:       https://www.net-dns.org/download/Net-DNS-%{version}.tar.gz.sig
+Source1:       https://www.net-dns.org/download/Net-DNS-%{version}.tar.gz.asc
 Source2:       http://keys.openpgp.org/pks/lookup?op=get&search=0xE5F8F8212F77A498#/willem.nlnetlabs.nl
 
 BuildArch:     noarch
@@ -182,6 +182,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Thu Nov 21 2024 Michal Josef Špaček <mspacek@redhat.com> - 1.48-1
+- 1.48 bump (rhbz#2324708)
+
 * Mon Sep 23 2024 Michal Josef Špaček <mspacek@redhat.com> - 1.47-1
 - 1.47 bump (rhbz#2313498)
 

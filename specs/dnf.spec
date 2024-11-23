@@ -12,7 +12,7 @@
 %global conflicts_dnf_plugins_extras_version 4.0.4
 %global conflicts_dnfdaemon_version 0.3.19
 
-%bcond dnf5_obsoletes_dnf %[0%{?fedora} > 40 || 0%{?rhel} > 11]
+%bcond dnf5_obsoletes_dnf %[0%{?fedora} > 40 || 0%{?rhel} > 10]
 
 # override dependencies for rhel 7
 %if 0%{?rhel} == 7
@@ -66,7 +66,7 @@ It supports RPMs, modules and comps groups & environments.
 
 Name:           dnf
 Version:        4.22.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        %{pkg_summary}
 # For a breakdown of the licensing, see PACKAGE-LICENSING
 License:        GPL-2.0-or-later AND GPL-1.0-only
@@ -420,6 +420,9 @@ popd
 %endif
 
 %changelog
+* Thu Nov 21 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 4.22.0-2
+- Toggle dnf5_obsoletes_dnf for ELN
+
 * Tue Nov 12 2024 Evan Goode <egoode@redhat.com> - 4.22.0-1
 - doc: Naming of source and debug repos
 - spec: Move /var/cache/dnf from dnf to python3-dnf

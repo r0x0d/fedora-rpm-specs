@@ -3,7 +3,7 @@
 %global nvnc_version 0.9.0
 
 Name:     wayvnc
-Version:  0.9.0
+Version:  0.9.1
 Release:  1%{?dist}
 Summary:  A VNC server for wlroots based Wayland compositors
 License:  ISC
@@ -60,6 +60,9 @@ physical display attached.
 %license COPYING
 
 %changelog
+* Thu Nov 21 2024 Neal Gompa <ngompa@fedoraproject.org> - 0.9.1-1
+- Update to 0.9.1
+
 * Wed Nov 20 2024 Neal Gompa <ngompa@fedoraproject.org> - 0.9.0-1
 - Update to 0.9.0
 

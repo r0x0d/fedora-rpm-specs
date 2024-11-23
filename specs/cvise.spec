@@ -1,5 +1,5 @@
 Name: cvise
-Version: 2.10.0.1
+Version: 2.11.0
 Release: 1%{?dist}
 Summary: Super-parallel Python port of the C-Reduce
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -68,6 +68,9 @@ export CXXFLAGS="$RPM_OPT_FLAGS -Wno-error=restrict"
 %{_datadir}/cvise
 
 %changelog
+* Thu Nov 21 2024 Marek Polacek <polacek@redhat.com> - 2.11.0-1
+- update to cvise-2.11.0 (#2123703)
+
 * Wed Oct 2 2024 Marek Polacek <polacek@redhat.com> - 2.10.0.1-1
 - update to cvise-2.10.0 (#2300616)
 - require python3-chardet (#2292488)

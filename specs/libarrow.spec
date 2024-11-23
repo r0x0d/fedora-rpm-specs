@@ -29,9 +29,6 @@
 %bcond_without have_re2
 %bcond_without have_utf8proc
 
-%global arrow_test_data_commit 4d209492d514c2d3cb2d392681b9aa00e6d8da1c
-%global parquet_test_data_commit cb7a9674142c137367bf75a01b79c6e214a73199
-
 Name:		libarrow
 Version:	16.1.0
 Release:	12%{?dist}
@@ -40,8 +37,6 @@ License:	Apache-2.0
 URL:		https://arrow.apache.org/
 Requires:	%{name}-doc = %{version}-%{release}
 Source0:	https://dist.apache.org/repos/dist/release/arrow/arrow-%{version}/apache-arrow-%{version}.tar.gz
-Source1:	https://github.com/apache/arrow-testing/archive/%{arrow_test_data_commit}/apache-arrow-test-data-%{arrow_test_data_commit}.tar.gz
-Source2:	https://github.com/apache/parquet-testing/archive/%{parquet_test_data_commit}/apache-arrow-parquet-test-data-%{parquet_test_data_commit}.tar.gz
 Patch0001:	0001-python-pyarrow-src-arrow-python-udf.cc.patch
 
 # Apache ORC (liborc) has numerous compile errors and apparently assumes
@@ -661,34 +656,6 @@ Libraries and header files for Apache Parquet GLib.
 
 #--------------------------------------------------------------------
 
-%package testing
-Summary:	Libraries for Apache Arrow Testing
-Requires:	%{name}%{?_isa} = %{version}-%{release}
-
-%description testing
-Libraries for Apache for Apache Arrow Testing
-
-%files testing
-%{_libdir}/libarrow_testing.so*
-%{_libdir}/cmake/ArrowTesting*
-%{_libdir}/pkgconfig/arrow-testing.pc
-
-#--------------------------------------------------------------------
-
-%package flight-testing
-Summary:	Libraries for Apache Arrow Flight Testing
-Requires:	%{name}%{?_isa} = %{version}-%{release}
-
-%description flight-testing
-Libraries for Apache for Apache Arrow Flight Testing
-
-%files flight-testing
-%{_libdir}/libarrow_flight_testing.so*
-%{_libdir}/cmake/ArrowFlightTesting*
-%{_libdir}/pkgconfig/arrow-flight-testing.pc
-
-#--------------------------------------------------------------------
-
 %package -n python3-pyarrow
 Summary: Python library for Apache Arrow
 
@@ -717,8 +684,6 @@ Development files for python3-pyarrow
 
 %prep
 %autosetup -p1 -n apache-arrow-%{version}
-%setup -q -n apache-arrow-%{version} -T -D -a 1
-%setup -q -n apache-arrow-%{version} -T -D -a 2
 # We do not need to (nor can we) build for an old version of numpy:
 sed -r -i 's/(oldest-supported-)(numpy)/\2/' python/pyproject.toml
 
@@ -761,7 +726,6 @@ pushd cpp
   -DARROW_WITH_ZSTD:BOOL=ON \
   -DARROW_USE_XSIMD:BOOL=ON \
   -DARROW_BUILD_STATIC:BOOL=OFF \
-  -DARROW_BUILD_TESTS:BOOL=ON \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
   -DCMAKE_COLOR_MAKEFILE:BOOL=OFF \
   -DARROW_USE_CCACHE:BOOL=OFF \
@@ -832,16 +796,6 @@ popd
 
 
 %check
-%ifnarch aarch64 ppc64le
-# https://github.com/apache/arrow/issues/12681
-export \
-  ARROW_TEST_DATA=$PWD/arrow-testing-%{arrow_test_data_commit}/data \
-  PARQUET_TEST_DATA=$PWD/parquet-testing-%{parquet_test_data_commit}/data \
-  PYTHON=%{python3}
-pushd cpp
-%ctest
-popd
-%endif
 export LD_LIBRARY_PATH='%{buildroot}%{_libdir}'
 # While https://github.com/apache/arrow/pull/13904 partially fixes
 # https://issues.apache.org/jira/browse/ARROW-17389, conftest.py is still
@@ -864,10 +818,9 @@ export LD_LIBRARY_PATH='%{buildroot}%{_libdir}'
 #--------------------------------------------------------------------
 
 %changelog
-* Sun Nov 17 2024 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 16.1.0-11
-- Enable testing of C++ library
-    see https://src.fedoraproject.org/rpms/libarrow/pull-request/10
-- also rebuild with liborc-2.0.3
+* Thu Nov 21 2024  Kaleb S. KEITHLEY <kkeithle [at] redhat.com> - 16.1.0-12
+- Arrow 16.1.0, rebuild with liborc-2.0.3
+- revert testing PR
 
 * Sun Nov 17 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 16.1.0-11
 - Filter out bogus Provides/Requires from python3-pyarrow; fixes RHBZ#2326774
@@ -875,7 +828,7 @@ export LD_LIBRARY_PATH='%{buildroot}%{_libdir}'
 * Mon Oct 7 2024  Kaleb S. KEITHLEY <kkeithle [at] redhat.com> - 16.1.0-10
 - Arrow 16.1.0, rebuild with utf8proc 2.9.0
 
-* Wed Oct 2 2024  Kaleb S. KEITHLEY <kkeithle [at] redhat.com> - 16.1.0-9
+* Wed Oct 3 2024  Kaleb S. KEITHLEY <kkeithle [at] redhat.com> - 16.1.0-9
 - Arrow 16.1.0, rebuild with liborc-2.0.2
 
 * Sun Aug 25 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 16.1.0-8

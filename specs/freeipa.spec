@@ -200,7 +200,7 @@
 
 Name:           %{package_name}
 Version:        %{IPA_VERSION}
-Release:        5%{?rc_version:.%rc_version}%{?dist}
+Release:        6%{?rc_version:.%rc_version}%{?dist}
 Summary:        The Identity, Policy and Audit system
 
 License:        GPL-3.0-or-later
@@ -221,6 +221,7 @@ Source2:        gpgkey-0E63D716D76AC080A4A33513F40800B6298EB963.asc
 
 Patch0001:      0001-freeipa-disable-nis.patch
 Patch0002:      freeipa-fix-ca-uninstall.patch
+Patch0003:      freeipa-samba-4.21-fix.patch
 
 # RHEL spec file only: START: Change branding to IPA and Identity Management
 # Moved branding logos and background to redhat-logos-ipa-80.4:
@@ -1861,6 +1862,9 @@ fi
 %endif
 
 %changelog
+* Thu Nov 21 2024 Alexander Bokovoy <abokovoy@redhat.com> - 4.12.2-6
+- Adjust to Samba 4.21
+
 * Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 4.12.2-5
 - Rebuild for Jansson 2.14
   (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)

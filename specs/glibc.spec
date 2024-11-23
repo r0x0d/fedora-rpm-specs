@@ -152,7 +152,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 19
+%global baserelease 20
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -342,6 +342,8 @@ Patch13: glibc-fedora-localedata-rh61908.patch
 Patch17: glibc-cs-path.patch
 Patch23: glibc-python3.patch
 Patch24: glibc-nolink-libc.patch
+Patch25: glibc-rh2327564-1.patch
+Patch26: glibc-rh2327564-2.patch
 
 ##############################################################################
 # Continued list of core "glibc" package information:
@@ -2358,6 +2360,9 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Thu Nov 21 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-20
+- Revert aarch64 memset changes (cec3aef3241cec3aef32412779e) (#2327564)
+
 * Wed Nov 20 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-19
 - Auto-sync with upstream branch master,
   commit 47311cca31e685fa7bfe19bb8cef17d2d3d7fff9:

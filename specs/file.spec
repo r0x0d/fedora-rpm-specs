@@ -15,7 +15,7 @@
 Summary: Utility for determining file types
 Name: file
 Version: 5.45
-Release: 7%{?dist}
+Release: 8%{?dist}
 
 # Main license is BSD-2-Clause-Darwin
 # Shipped exceptions:
@@ -108,9 +108,7 @@ BuildRequires: python3-devel
 BuildRequires: python3-setuptools
 BuildArch: noarch
 Requires: file-libs = %{version}-%{release}
-Provides: python3-magic = %{version}-%{release}
-Obsoletes: python3-magic < %{version}-%{release}
-Conflicts: python3-magic < %{version}-%{release}
+Conflicts: python3-magic
 
 %description -n python3-file-magic
 This package contains the Python 3 bindings to allow access to the
@@ -232,6 +230,9 @@ make -C tests check
 %endif
 
 %changelog
+* Fri Nov 15 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 5.45-8
+- Do not provide or obsolete python3-magic
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.45-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -9,7 +9,7 @@
 
 %bcond_without      tests
 
-%global gh_commit   124722b5045baa41a24ce2e2d7c52a47467e7ac0
+%global gh_commit   84b81cd97a1b5515d3d4b304796680da24c666d8
 %global gh_short    %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner    alanxz
 %global gh_project  rabbitmq-c
@@ -18,8 +18,8 @@
 
 Name:      %{libname}
 Summary:   Client library for AMQP
-Version:   0.14.0
-Release:   3%{?dist}
+Version:   0.15.0
+Release:   1%{?dist}
 License:   MIT
 URL:       https://github.com/alanxz/rabbitmq-c
 
@@ -145,6 +145,9 @@ make test
 
 
 %changelog
+* Thu Nov 21 2024 Remi Collet <remi@remirepo.net> - 0.15.0-1
+- update to 0.15.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.14.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -2,13 +2,16 @@
 
 Name:           weston
 Version:        14.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Reference compositor for Wayland
 
-# Automatically converted from old format: MIT and CC-BY-SA-3.0 - review is highly recommended.
 License:        MIT and CC-BY-SA-3.0
 URL:            http://wayland.freedesktop.org/
 Source0:        https://gitlab.freedesktop.org/wayland/%{name}/-/releases/%{version}/downloads/%{name}-%{version}.tar.xz
+
+# Backport from upstream
+## Allow neatvnc 0.9.0 as a build dependency
+Patch0:         https://gitlab.freedesktop.org/wayland/weston/-/merge_requests/1649.patch
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
@@ -52,7 +55,7 @@ BuildRequires:  pkgconfig(libva-drm) >= 0.34.0
 BuildRequires:  pkgconfig(libwebp)
 BuildRequires:  pkgconfig(libxml-2.0) >= 2.6
 BuildRequires:  pkgconfig(mtdev) >= 1.1.0
-BuildRequires:  (pkgconfig(neatvnc) >= 0.7.0 with pkgconfig(neatvnc) < 0.9.0)
+BuildRequires:  (pkgconfig(neatvnc) >= 0.7.0 with pkgconfig(neatvnc) < 0.10.0)
 BuildRequires:  pkgconfig(pangocairo)
 BuildRequires:  pkgconfig(pixman-1) >= 0.25.2
 BuildRequires:  pkgconfig(wayland-client) >= 1.22.0
@@ -214,6 +217,9 @@ Common headers for weston
 %{_datadir}/libweston-%{apiver}/protocols/
 
 %changelog
+* Thu Nov 21 2024 Neal Gompa <ngompa@fedoraproject.org> - 14.0.1-2
+- Backport patch to allow neatvnc 0.9.0 as a dependency
+
 * Mon Nov 11 2024 Neal Gompa <ngompa@fedoraproject.org> - 14.0.1-1
 - Update to 14.0.1
 

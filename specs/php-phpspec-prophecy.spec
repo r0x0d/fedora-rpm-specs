@@ -1,12 +1,12 @@
 # remirepo/fedora spec file for php-phpspec-prophecy
 #
-# Copyright (c) 2015-2023 Remi Collet
+# Copyright (c) 2015-2024 Remi Collet
 # License: CC-BY-SA-4.0
 # http://creativecommons.org/licenses/by-sa/4.0/
 #
 # Please, preserve the changelog entries
 #
-%global gh_commit    67a759e7d8746d501c41536ba40cd9c0a07d6a87
+%global gh_commit    a0165c648cab6a80311c74ffc708a07bb53ecc93
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     phpspec
 %global gh_project   prophecy
@@ -15,8 +15,8 @@
 %bcond_with          phpspec
 
 Name:           php-phpspec-prophecy
-Version:        1.19.0
-Release:        2%{?dist}
+Version:        1.20.0
+Release:        1%{?dist}
 Summary:        Highly opinionated mocking framework for PHP
 
 License:        MIT
@@ -32,6 +32,7 @@ BuildRequires:  (php-composer(sebastian/comparator)              >= 3.0   with p
 BuildRequires:  (php-composer(sebastian/recursion-context)       >= 3.0   with php-composer(sebastian/recursion-context)       < 7)
 BuildRequires:  (php-composer(doctrine/instantiator)             >= 1.2   with php-composer(doctrine/instantiator)             < 3)
 # from composer.json, "require-dev": {
+#        "friendsofphp/php-cs-fixer": "^3.40",
 #        "phpspec/phpspec": "^6.0 || ^7.0"
 #        "phpstan/phpstan": "^1.9",
 #        "phpunit/phpunit": "^8.0 || ^9.0 || ^10.0"
@@ -46,7 +47,7 @@ BuildRequires:  phpunit10
 BuildRequires:  php-fedora-autoloader-devel
 
 # from composer.json, "requires": {
-#        "php":                               "^7.2 || 8.0.* || 8.1.* || 8.2.* || 8.3.*",
+#        "php":                               "^7.2 || 8.0.* || 8.1.* || 8.2.* || 8.3.* || 8.4.*",
 #        "phpdocumentor/reflection-docblock": "^5.2",
 #        "sebastian/comparator":              "^3.0 || ^4.0 || ^5.0 || ^6.0",
 #        "doctrine/instantiator":             "^1.2 || ^2.0",
@@ -144,7 +145,7 @@ phpspec --version
 
 ret=0
 # ignore it_can_not_double_an_enum on all version. Not ready
-for cmd in php php81 php82 php83; do
+for cmd in php php81 php82 php83 php84; do
   if which $cmd; then
 %if %{with phpspec}
     $cmd -d auto_prepend_file=vendor/autoload.php \
@@ -175,6 +176,9 @@ exit $ret
 
 
 %changelog
+* Thu Nov 21 2024 Remi Collet <remi@remirepo.net> - 1.20.0-1
+- update to 1.20.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.19.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
