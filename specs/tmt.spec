@@ -1,5 +1,5 @@
 Name:           tmt
-Version:        1.38.0
+Version:        1.39.0
 Release:        %autorelease
 Summary:        Test Management Tool
 
@@ -90,6 +90,16 @@ Recommends:     qemu-system-x86-core
 
 %description -n tmt+provision-virtual %_metapackage_description
 
+%package -n     tmt+provision-bootc
+Summary:        Dependencies required for tmt bootc machine provisioner
+Provides:       tmt-provision-bootc == %{version}-%{release}
+Requires:       tmt == %{version}-%{release}
+Requires:       tmt+provision-virtual == %{version}-%{release}
+Requires:       podman
+Recommends:     podman-machine
+
+%description -n tmt+provision-bootc %_metapackage_description
+
 %package -n     tmt+provision-beaker
 Summary:        Dependencies required for tmt beaker provisioner
 Provides:       tmt-provision-beaker == %{version}-%{release}
@@ -152,12 +162,16 @@ install -pm 644 %{name}/steps/provision/mrack/mrack* %{buildroot}/etc/%{name}/
 
 %files -n tmt+provision-container -f %{_pyproject_ghost_distinfo}
 %files -n tmt+provision-virtual -f %{_pyproject_ghost_distinfo}
+%files -n tmt+provision-bootc -f %{_pyproject_ghost_distinfo}
 %files -n tmt+test-convert -f %{_pyproject_ghost_distinfo}
 %files -n tmt+provision-beaker -f %{_pyproject_ghost_distinfo}
 %config(noreplace) %{_sysconfdir}/%{name}/mrack*
 %files -n tmt+all -f %{_pyproject_ghost_distinfo}
 
 %changelog
+* Fri Nov 22 2024 Packit <hello@packit.dev> - 1.39.0-1
+- Update to version 1.39.0
+
 * Fri Oct 25 2024 Packit <hello@packit.dev> - 1.38.0-1
 - Update to version 1.38.0
 

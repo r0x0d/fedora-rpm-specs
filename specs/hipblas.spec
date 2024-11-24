@@ -32,7 +32,7 @@
 
 Name:           hipblas
 Version:        %{rocm_version}
-%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:        1%{?dist}
 %else
 Release:        %autorelease
@@ -44,7 +44,7 @@ License:        MIT
 Source0:        %{url}/archive/refs/tags/rocm-%{rocm_version}.tar.gz#/%{upstreamname}-%{rocm_version}.tar.gz
 
 BuildRequires:  cmake
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 BuildRequires:  gcc-fortran
 %else
 BuildRequires:  gcc-gfortran
@@ -61,7 +61,7 @@ BuildRequires:  rocsolver-devel
 
 %if %{with test}
 BuildRequires:  gtest-devel
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 BuildRequires:  blas-devel
 BuildRequires:  cblas-devel
 BuildRequires:  lapack-devel
@@ -170,7 +170,7 @@ fi
 %endif
 
 %changelog
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 * Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 

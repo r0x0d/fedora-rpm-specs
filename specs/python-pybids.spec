@@ -1,7 +1,7 @@
 %bcond_without tests
 
 Name:       python-pybids
-Version:    0.17.2
+Version:    0.18.0
 Release:    %autorelease
 Summary:    Interface with datasets conforming to BIDS
 
@@ -34,7 +34,11 @@ BuildArch:      noarch
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
 
+BuildRequires:  git-core
 BuildRequires:  hardlink
+BuildRequires:  python3-devel
+# Unbundled
+BuildRequires:  %{py3_dist inflect}
 
 %global _description %{expand:
 PyBIDS is a Python library to centralize interactions with datasets conforming
@@ -51,13 +55,8 @@ visit https://bids.neuroimaging.io.}
 
 %package -n python3-pybids
 Summary:    Interface with datasets conforming to BIDS
-
-BuildRequires:  python3-devel
-
 Obsoletes:      python-pybids-doc < 0.15.5-13
-
 # unbundled
-BuildRequires:  %{py3_dist inflect}
 Requires:  %{py3_dist inflect}
 
 %description -n python3-pybids %{_description}
@@ -100,15 +99,15 @@ Requires:       python3-pybids+test = %{version}-%{release}
 
 
 %prep
-%autosetup -n pybids-%{version}
+%autosetup -n pybids-%{version} -S git
 
 # loosen formulaic dep: one test fails, reported upstream
 # https://github.com/bids-standard/pybids/issues/1000
 sed -i 's/formulaic .*"/formulaic"/' pyproject.toml
 
 # Remove bundled inflect
-rm -rf bids/external
-sed -r -i.backup 's/from.*external (import)/\1/' bids/layout/layout.py
+rm -rf src/bids/external
+sed -r -i.backup 's/from.*external (import)/\1/' src/bids/layout/layout.py
 
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 sed -r -i 's/^([[:blank:]]*)"(pytest-cov|coverage)\b/\1# "\2/' pyproject.toml
@@ -119,7 +118,16 @@ sed -r -i 's/^([[:blank:]]*)"(pytest-cov|coverage)\b/\1# "\2/' pyproject.toml
 sed -r -i 's/^([[:blank:]]*)"(altair)\b/\1# "\2/' pyproject.toml
 
 # Remove bogus executable bits for non-script files
-find bids doc -type f -perm /0111 -execdir chmod -v a-x '{}' '+'
+find src/bids doc -type f -perm /0111 -execdir chmod -v a-x '{}' '+'
+
+# Drop test dependency on `s3fs`
+sed -r -i '/s3fs/d' pyproject.toml
+
+# Commit everything and tag to allow Versioneer to set the version.
+# Make sure this is the last step in prep.
+git add --all
+git commit -m "[Fedora] Apply downstream changes"
+git tag %{version}
 
 
 %generate_buildrequires
@@ -140,9 +148,12 @@ hardlink -c -v '%{buildroot}%{python3_sitelib}/bids/tests/data/'
 %check
 %if %{with tests}
 # temporarily disable failing tests
-# https://github.com/bids-standard/pybids/issues/1012
 # https://github.com/bids-standard/pybids/issues/1000
-%pytest -v -k "not test_run_variable_collection_bad_length_to_df_all_dense_vars and not test_split"
+k="${k-}${k+ and }not test_split"
+# test_remote_bids.py requires network
+%pytest -v \
+    ${k+-k } "${k-}" \
+    --ignore src/bids/layout/tests/test_remote_bids.py
 %else
 %pyproject_check_import
 %endif

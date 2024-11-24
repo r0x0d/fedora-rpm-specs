@@ -30,14 +30,15 @@
 %bcond_without have_utf8proc
 
 Name:		libarrow
-Version:	16.1.0
-Release:	12%{?dist}
+Version:	18.0.0
+Release:	1%{?dist}
 Summary:	A toolbox for accelerated data interchange and in-memory processing
 License:	Apache-2.0
 URL:		https://arrow.apache.org/
 Requires:	%{name}-doc = %{version}-%{release}
 Source0:	https://dist.apache.org/repos/dist/release/arrow/arrow-%{version}/apache-arrow-%{version}.tar.gz
-Patch0001:	0001-python-pyarrow-src-arrow-python-udf.cc.patch
+Patch0001:	0001-python-pyarrow-tests-read_record_patch.py.patch
+Patch0002:	0002-python-pyarrow-tests-test_ipc.py.patch
 
 # Apache ORC (liborc) has numerous compile errors and apparently assumes
 # a 64-bit build and runtime environment. This is only consumer of the liborc
@@ -69,6 +70,10 @@ BuildRequires:	pkgconfig
 BuildRequires:	python%{python3_pkgversion}-devel
 BuildRequires:	python%{python3_pkgversion}-numpy
 BuildRequires:	python%{python3_pkgversion}-Cython
+BuildRequires:	python%{python3_pkgversion}-pandas
+BuildRequires:	python%{python3_pkgversion}-pytest
+BuildRequires:	python%{python3_pkgversion}-hypothesis
+BuildRequires:	python%{python3_pkgversion}-pytzdata
 BuildRequires:	xsimd-devel
 BuildRequires:	abseil-cpp-devel
 BuildRequires:	c-ares-devel
@@ -109,6 +114,10 @@ fast data access without serialization overhead
 
 %files
 %{_libdir}/libarrow.so.*
+%exclude %{python3_sitearch}/benchmarks/*
+%exclude %{python3_sitearch}/cmake_modules/*
+%exclude %{python3_sitearch}/examples/*
+%exclude %{python3_sitearch}/scripts/*
 
 #--------------------------------------------------------------------
 
@@ -165,14 +174,11 @@ Libraries and header files for Apache Arrow C++.
 %endif
 %exclude %{_libdir}/cmake/Arrow/FindBrotliAlt.cmake
 %exclude %{_libdir}/cmake/Arrow/Findlz4Alt.cmake
-%exclude %{_libdir}/cmake/Arrow/FindORC.cmake
 %exclude %{_libdir}/cmake/Arrow/FindorcAlt.cmake
 %exclude %{_libdir}/cmake/Arrow/FindSnappyAlt.cmake
-%exclude %{_libdir}/cmake/Arrow/FindgRPCAlt.cmake
 %exclude %{_libdir}/cmake/Arrow/Findre2Alt.cmake
 %exclude %{_libdir}/cmake/Arrow/Findutf8proc.cmake
 %exclude %{_libdir}/cmake/Arrow/FindzstdAlt.cmake
-%exclude %{_libdir}/cmake/Arrow/FindThriftAlt.cmake
 %exclude %{_libdir}/cmake/Arrow/FindOpenSSLAlt.cmake
 %exclude %{_libdir}/cmake/Arrow/FindProtobufAlt.cmake
 %dir %{_libdir}/cmake/Arrow/
@@ -480,7 +486,6 @@ This package contains the libraries for Apache Arrow GLib.
 %{_libdir}/libarrow-glib.so.*
 %dir %{_libdir}/girepository-1.0/
      %{_libdir}/girepository-1.0/Arrow-1.0.typelib
-%exclude %{_datadir}/doc/arrow-glib/*
 
 #--------------------------------------------------------------------
 
@@ -811,13 +816,16 @@ export LD_LIBRARY_PATH='%{buildroot}%{_libdir}'
     -e 'pyarrow.cuda' \
     -e 'pyarrow.libarrow_python' -e 'pyarrow._libarrow_python' \
     -e 'pyarrow.libarrow_python_flight' -e 'pyarrow._libarrow_python_flight' \
-    -e 'pyarrow.libarrow_python_parquet_encryption'}
-
-
+    -e 'pyarrow.libarrow_python_parquet_encryption' \
+    -e 'pyarrow.tests.read_record_batch' -e 'pyarrow.tests.test_cuda' \
+    -e 'pyarrow.tests.test_cuda_numba_interop' -e 'pyarrow.tests.test_jvm'}
 
 #--------------------------------------------------------------------
 
 %changelog
+* Fri Nov 22 2024  Kaleb S. KEITHLEY <kkeithle [at] redhat.com> - 16.0.0-1
+- Arrow 18.0.0 GA
+
 * Thu Nov 21 2024  Kaleb S. KEITHLEY <kkeithle [at] redhat.com> - 16.1.0-12
 - Arrow 16.1.0, rebuild with liborc-2.0.3
 - revert testing PR
@@ -828,7 +836,7 @@ export LD_LIBRARY_PATH='%{buildroot}%{_libdir}'
 * Mon Oct 7 2024  Kaleb S. KEITHLEY <kkeithle [at] redhat.com> - 16.1.0-10
 - Arrow 16.1.0, rebuild with utf8proc 2.9.0
 
-* Wed Oct 3 2024  Kaleb S. KEITHLEY <kkeithle [at] redhat.com> - 16.1.0-9
+* Thu Oct 3 2024  Kaleb S. KEITHLEY <kkeithle [at] redhat.com> - 16.1.0-9
 - Arrow 16.1.0, rebuild with liborc-2.0.2
 
 * Sun Aug 25 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 16.1.0-8

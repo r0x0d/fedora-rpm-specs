@@ -17,6 +17,8 @@ Source0:        %{url}/archive/%{version}/%{modname}-%{version}.tar.gz
 
 # Force NO_COLOR=1 to fix test failures with Python 3.13+ REPL
 Patch:          https://github.com/pexpect/pexpect/pull/794.patch
+# Tests: Avoid the multiprocessing forkserver method (for Python 3.14+ compatibility)
+Patch:          https://github.com/pexpect/pexpect/pull/808.patch
 
 BuildRequires:  /usr/bin/man
 %if %{with check}

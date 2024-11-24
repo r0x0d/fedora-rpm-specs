@@ -89,7 +89,7 @@ BuildRequires:  junit5
 %endif
 
 Requires:       %{name}-lib = %{version}-%{release}
-Requires:       %{name}-jdk-binding = %{version}-%{release}
+Requires:       %{name}-jdk-binding
 Suggests:       %{name}-openjdk21 = %{version}-%{release}
 
 # Require full javapackages-tools since the ant script uses
@@ -331,18 +331,6 @@ Javadoc pour %{name}.
 
 %endif
 
-%package openjdk21
-Summary:        OpenJDK 21 binding for Ant
-RemovePathPostfixes: -openjdk21
-Provides: ant-jdk-binding = %{version}-%{release}
-Requires: ant = %{version}-%{release}
-Requires: java-21-openjdk-headless
-Recommends: java-21-openjdk-devel
-Conflicts: ant-jdk-binding
-
-%description openjdk21
-Configures Ant to run with OpenJDK 21.
-
 # -----------------------------------------------------------------------------
 
 %prep
@@ -500,7 +488,11 @@ echo "junit hamcrest/core ant/ant-junit4" > %{buildroot}%{_sysconfdir}/%{name}.d
 
 # JDK bindings
 install -d -m 755 %{buildroot}%{_javaconfdir}/
-echo 'JAVA_HOME=%{_jvmdir}/jre-21-openjdk' > %{buildroot}%{_javaconfdir}/ant.conf-openjdk21
+ln -sf %{_jpbindingdir}/ant.conf %{buildroot}%{_javaconfdir}/ant.conf
+echo 'JAVA_HOME=%{_jvmdir}/jre-21-openjdk' > %{buildroot}%{_javaconfdir}/ant-openjdk21.conf
+%jp_binding --verbose --variant openjdk21 --ghost ant.conf --target %{_javaconfdir}/ant-openjdk21.conf --provides %{name}-jdk-binding --requires java-21-openjdk-headless --recommends java-21-openjdk-devel
+touch %{buildroot}%{_javaconfdir}/ant-unbound.conf
+%jp_binding --verbose --variant unbound --ghost ant.conf --target %{_javaconfdir}/ant-unbound.conf --provides %{name}-jdk-binding
 
 %if %{without ant_minimal}
 
@@ -544,6 +536,7 @@ install -p -m 644 man/%{name}.1 %{buildroot}%{_mandir}/man1/%{name}.1
 %files
 %doc KEYS README WHATSNEW
 %license LICENSE NOTICE
+%config %{_javaconfdir}/%{name}*.conf
 %config(noreplace) %{_sysconfdir}/%{name}.conf
 %attr(0755,root,root) %{_bindir}/ant
 %dir %{ant_home}/bin
@@ -665,9 +658,6 @@ install -p -m 644 man/%{name}.1 %{buildroot}%{_mandir}/man1/%{name}.1
 %{_javadocdir}/%{name}
 
 %endif
-
-%files openjdk21
-%config %{_javaconfdir}/%{name}.conf-openjdk21
 
 # -----------------------------------------------------------------------------
 

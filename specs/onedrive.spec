@@ -3,7 +3,7 @@
 
 Name:           onedrive
 Version:        2.5.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        OneDrive Free Client written in D
 # Automatically converted from old format: GPLv3 - review is highly recommended.
 License:        GPL-3.0-only
@@ -17,12 +17,14 @@ BuildRequires:  sqlite-devel
 BuildRequires:  systemd
 Requires(preun): systemd
 ExclusiveArch:  %{ldc_arches}
+Patch0: Fix-unable-to-parse-SSL-version.patch
 
 %description
 Free CLI client for Microsoft OneDrive written in D.
 
 %prep
 %setup -q -n %repo-%{version}
+%patch -P 0 -p 1
 # sed -i 's|version ||g' Makefile
 # sed -i '/chown/d' Makefile.in
 sed -i 's/-o root -g users//g' Makefile.in
@@ -60,6 +62,9 @@ chmod a-x %{buildroot}/%{_mandir}/man1/%{name}*
 %config %{_sysconfdir}/logrotate.d/onedrive
 
 %changelog
+* Fri Nov 22 2024 Zamir SUN <sztsian@gmail.com> - 2.5.3-2
+- Fix unable to parse SSL version
+
 * Fri Nov 15 2024 Fedora Release Monitoring <release-monitoring@fedoraproject.org> - 2.5.3-1
 - Update to 2.5.3 (#2326647)
 

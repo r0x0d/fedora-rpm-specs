@@ -7,7 +7,7 @@
 
 Name:     rocm-cmake
 Version:  %{rocm_version}
-%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:    1%{?dist}
 %else
 Release:  %autorelease
@@ -56,7 +56,7 @@ fi
 %{_datadir}/rocmcmakebuildtools/*
 
 %changelog
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 * Sat Nov 9 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 

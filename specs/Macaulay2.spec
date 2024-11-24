@@ -51,7 +51,7 @@
 Summary: System for algebraic geometry and commutative algebra
 Name:    Macaulay2
 Version: 1.24.05
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 # GPL-2.0-only OR GPL-3.0-only:
 #   - the project as a whole
@@ -635,6 +635,9 @@ make check -C BUILD/%{_target_platform}/Macaulay2/bin
 
 
 %changelog
+* Fri Nov 22 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 1.24.05-5
+- Rebuild for libfplll 5.5.0
+
 * Mon Sep 23 2024 Jerry James <loganjerry@gmail.com> - 1.24.05-4
 - Rebuild for nauty 2.8.9
 

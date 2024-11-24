@@ -4,7 +4,7 @@
 %bcond tests 1
 
 Name:           python-annarchy
-Version:        4.8.1
+Version:        4.8.2
 Release:        %{autorelease}
 Summary:        Artificial Neural Networks architect
 
@@ -20,6 +20,7 @@ Source:         %forgesource
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 # Tests fail on ppc64le (under investigation)
 ExcludeArch:    %{ix86} ppc64le
+BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  python3-devel
 %if %{with tests}
@@ -43,6 +44,7 @@ package only supports OpenMP and single thread.}
 Summary:        %{summary}
 Requires:       (flexiblas-openblas-openmp or openblas-openmp)
 # Also `tensorflow` and `tensorboardX` (not availabale in Fedora)
+Recommends:     python3dist(h5py)
 Recommends:     python3dist(lxml)
 Recommends:     pandoc
 

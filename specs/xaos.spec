@@ -1,18 +1,19 @@
-# Use forge macros for pulling from GitHub
-%global forgeurl https://github.com/xaos-project/XaoS
-
 %global alt_name XaoS
 
 Name:           xaos
-Version:        4.3.2
+Version:        4.3.3
 Release:        %autorelease
 Summary:        A fast, portable real-time interactive fractal zoomer
+
+%global forgeurl https://github.com/xaos-project/XaoS
 %global tag release-%{version}
 %forgemeta
+
 License:        GPL-2.0-or-later
 URL:            %forgeurl
 Source:         %forgesource
 
+ExcludeArch:    %{ix86}
 BuildRequires:  qt6-qtbase-devel
 BuildRequires:  qt6-rpm-macros qt6-linguist
 

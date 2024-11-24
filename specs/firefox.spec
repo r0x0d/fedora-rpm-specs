@@ -152,7 +152,7 @@ ExcludeArch: i686
 %if %{?system_nss}
 %global nspr_version 4.32
 %global nspr_build_version %{nspr_version}
-%global nss_version 3.105
+%global nss_version 3.106
 %global nss_build_version %{nss_version}
 %endif
 
@@ -196,14 +196,14 @@ ExcludeArch: i686
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        132.0.2
-Release:        2%{?pre_tag}%{?dist}
+Version:        133.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 # Automatically converted from old format: MPLv1.1 or GPLv2+ or LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-MPLv1.1 OR GPL-2.0-or-later OR LicenseRef-Callaway-LGPLv2+
 Source0:        https://archive.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.xz
 %if %{with langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20241115.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20241122.tar.xz
 %endif
 Source2:        cbindgen-vendor.tar.xz
 Source3:        dump_syms-vendor.tar.xz
@@ -282,17 +282,6 @@ Patch242:        0026-Add-KDE-integration-to-Firefox.patch
 # Upstream patches
 Patch402:        mozilla-1196777.patch
 Patch407:        mozilla-1667096.patch
-Patch420:        D209910.1715685533.diff
-Patch421:        D209911.1715685535.diff
-Patch422:        D210158.1715685536.diff
-Patch423:        D210159.1715685538.diff
-Patch424:        D210430.1715848796.diff
-
-Patch436:        D223285.1729586039.diff
-Patch437:        D224842.1729586219.diff
-Patch438:        D225439.1729586066.diff
-Patch439:        D225760.1729586239.diff
-Patch440:        D225868.1729586247.diff
 
 # WebRTC/PipeWire camera patches
 # https://phabricator.services.mozilla.com/D228635
@@ -601,11 +590,6 @@ export LIBCLANG_RT=`pwd`/wasi-sdk-20/build/compiler-rt/lib/wasi/libclang_rt.buil
 %patch -P407 -p1 -b .1667096
 
 %if 0%{?fedora} > 40
-%patch -P436 -p1 -b .D223313
-%patch -P437 -p1 -b .D224842
-%patch -P438 -p1 -b .D225439
-%patch -P439 -p1 -b .D225760
-%patch -P440 -p1 -b .D225868
 %patch -P450 -p1 -b .libwebrtc-pipewire-camera-use-better-unique-device-name-for-camera-devices
 %endif
 
@@ -1215,7 +1199,6 @@ fi
 %{_datadir}/icons/hicolor/symbolic/apps/firefox-symbolic.svg
 %if %{enable_mozilla_crashreporter}
 %{mozappdir}/crashreporter
-%{mozappdir}/minidump-analyzer
 %endif
 %{mozappdir}/*.so
 %{mozappdir}/defaults/pref/channel-prefs.js
@@ -1239,6 +1222,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Nov 22 2024 Martin Stransky <stransky@redhat.com> - 133.0-1
+- Updated to latest upstream (133.0)
+
 * Mon Nov 18 2024 Martin Stransky <stransky@redhat.com> - 132.0.2-2
 - Added memory saving flags to x86_64
 

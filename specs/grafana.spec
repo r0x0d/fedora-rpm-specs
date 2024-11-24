@@ -25,7 +25,7 @@ end}
 
 Name:             grafana
 Version:          10.2.6
-Release:          6%{?dist}
+Release:          7%{?dist}
 Summary:          Metrics dashboard and graph editor
 License:          AGPL-3.0-only
 URL:              https://grafana.org
@@ -1025,6 +1025,9 @@ fi
 %{_datadir}/selinux/*/grafana.pp
 
 %changelog
+* Fri Nov 22 2024 Sam Feifer <sfeifer@redhat.com> 10.2.6-7
+- Update configurations to allow loading the valkey datasource
+
 * Fri Nov 8 2024 Sam Feifer <sfeifer@redhat.com> 10.2.6-6
 - Update selinux policy for the new valkey executable
 

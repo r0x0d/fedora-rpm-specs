@@ -10,7 +10,7 @@
 # tests cover the entire single-precision domain, about four billion inputs.
 # Still, we can finish before we hit any timeouts, and running the exhaustive
 # tests brings peace of mind.
-%bcond exhaustive 1
+%bcond exhaustive 0
 
 Name:           fast_float
 Summary:        Fast & exact implementation of C++ from_chars for number types

@@ -2,20 +2,22 @@
 %global gem_name webrick
 
 Name: rubygem-%{gem_name}
-Version: 1.7.0
-Release: 9%{?dist}
+Version: 1.9.0
+Release: 1%{?dist}
 Summary: HTTP server toolkit
-License: Ruby and BSD-2-Clause
+License: Ruby AND BSD-2-Clause
 URL: https://github.com/ruby/webrick
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # Test suite is not packaged with the gem, you may check out it like so:
 # git clone --no-checkout https://github.com/ruby/webrick
-# cd webrick && git archive -v -o webrick-1.7.0-tests.txz v1.7.0 test
+# cd webrick && git archive -v -o webrick-1.9.0-tests.txz v1.9.0 test
 Source1: %{gem_name}-%{version}-tests.txz
 
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
-BuildRequires: ruby >= 2.3.0
+BuildRequires: ruby >= 2.4.0
+BuildRequires: rubygem(test-unit)
+BuildRequires: rubygem(test-unit-ruby-core)
 BuildArch: noarch
 
 %description
@@ -48,13 +50,19 @@ pushd .%{gem_instdir}
 # Symlink the test suite.
 ln -s %{_builddir}/test .
 
-ruby -Ilib:test:test/lib -e 'Dir.glob "./test/**/test_*.rb", &method(:require)'
+# Use --verbose to set $VERBOSE to true. `test_sni` in test/webrick/test_https.rb
+# relies on output in $stderr from lib/webrick/ssl.rb that is only written there
+# if $VERBOSE is true.
+# https://github.com/ruby/webrick/pull/158
+ruby --verbose           \
+     -Ilib:test:test/lib \
+     -rhelper            \
+     -e 'Dir.glob "./test/**/test_*.rb", &method(:require)'
 popd
 
 %files
 %dir %{gem_instdir}
 %license %{gem_instdir}/LICENSE.txt
-%{gem_instdir}/bin
 %{gem_libdir}
 %exclude %{gem_cache}
 %{gem_spec}
@@ -64,9 +72,14 @@ popd
 %{gem_instdir}/Gemfile
 %doc %{gem_instdir}/README.md
 %{gem_instdir}/Rakefile
+%{gem_instdir}/sig
 %{gem_instdir}/webrick.gemspec
 
 %changelog
+* Thu Nov 21 2024 Jarek Prokop <jprokop@redhat.com> - 1.9.0-1
+- Upgrade to webrick 1.9.0.
+  Resolves: CVE-2024-47220
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.7.0-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

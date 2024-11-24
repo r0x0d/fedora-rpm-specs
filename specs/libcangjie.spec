@@ -1,5 +1,5 @@
 %global forgeurl https://gitlab.freedesktop.org/cangjie/libcangjie
-%global archiveext tar.bz2
+%global archiveext tar.xz
 
 Name:             libcangjie
 Summary:          Cangjie Input Method Library
@@ -7,7 +7,7 @@ Version:          1.4.0
 Release:          %autorelease
 License:          LGPL-3.0-or-later
 URL:              http://cangjians.github.io/projects/%{name}
-Source0:          https://gitlab.freedesktop.org/cangjie/%{name}/-/archive/v%{version}/%{name}-v%{version}.%{archiveext}
+Source0:          https://gitlab.freedesktop.org/cangjie/%{name}/-/archive/v%{version}/%{name}-%{version}.%{archiveext}
 
 BuildRequires:    gcc
 BuildRequires:    sqlite-devel
@@ -38,7 +38,7 @@ Development files for %{name}.
 
 
 %prep
-%autosetup -n %{name}-v%{version}
+%autosetup
 
 
 %build

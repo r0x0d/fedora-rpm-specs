@@ -34,7 +34,7 @@
 
 Name:           hipsparse
 Version:        %{rocm_version}
-%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:        1%{?dist}
 %else
 Release:        %autorelease
@@ -51,7 +51,7 @@ Source0:        %{url}/archive/refs/tags/rocm-%{rocm_version}.tar.gz#/%{upstream
 Patch0:         0001-prepare-hipsparse-cmake-for-fedora.patch
 
 BuildRequires:  cmake
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 BuildRequires:  gcc-fortran
 %else
 BuildRequires:  gcc-gfortran
@@ -69,7 +69,7 @@ BuildRequires:  rocsparse-devel
 %if %{with test}
 BuildRequires:  gtest-devel
 BuildRequires:  rocblas-devel
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 BuildRequires:  rocm-libomp-devel
 %else
 BuildRequires:  libomp-devel
@@ -176,7 +176,7 @@ fi
 %endif
 
 %changelog
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 * Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 

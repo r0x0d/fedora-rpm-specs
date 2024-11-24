@@ -1,6 +1,6 @@
 Name:           python-grokmirror
-Version:        2.0.11
-Release:        11%{?dist}
+Version:        2.0.12
+Release:        1%{?dist}
 Summary:        Framework to smartly mirror git repositories
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -10,50 +10,58 @@ Source0:        https://www.kernel.org/pub/software/network/grokmirror/grokmirro
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
 
-%global _description\
-Grokmirror was written to make mirroring large git repository\
-collections more efficient. Grokmirror uses the manifest file published\
-by the master mirror in order to figure out which repositories to\
-clone, and to track which repositories require updating. The process is\
-extremely lightweight and efficient both for the master and for the\
-mirrors.
+%global _description %{expand:
+Grokmirror was written to make mirroring large git repository
+collections more efficient. Grokmirror uses the manifest file published
+by the master mirror in order to figure out which repositories to
+clone, and to track which repositories require updating. The process is
+extremely lightweight and efficient both for the master and for the
+mirrors.}
 
 %description %_description
 
+
 %package -n python3-grokmirror
 Summary:        %summary
-Requires:       python3-GitPython, python3-anyjson, python3-setuptools, python3-enlighten
-%{?python_provide:%python_provide python3-grokmirror}
 
 %description -n python3-grokmirror %_description
 
+
 %prep
 %autosetup -n grokmirror-%{version}
-
+%generate_buildrequires
+%pyproject_buildrequires
 
 %build
-%py3_build
+%pyproject_wheel
 
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l grokmirror
 
-%{__mkdir_p} -m 0755 \
-    %{buildroot}%{_mandir}/man1
-
-%{__install} -m 0644 man/*.1 %{buildroot}/%{_mandir}/man1/
+mkdir -p -m 0755 %{buildroot}%{_mandir}/man1
+install -pm 0644 man/*.1 %{buildroot}/%{_mandir}/man1/
 
 
-%files -n python3-grokmirror
+%check
+%pyproject_check_import
+
+
+%files -n python3-grokmirror -f %{pyproject_files}
 %license LICENSE.txt
-%doc README.rst CHANGELOG.rst
-%{python3_sitelib}/*
+%doc README.rst CHANGELOG.rst UPGRADING.rst grokmirror.conf pi-piper.conf
 %{_bindir}/grok-*
-%{_mandir}/*/*
+%{_mandir}/man1/grok-*.1*
+
 
 %changelog
+* Fri Nov 22 2024 Robby Callicotte <rcallicotte@fedoraproject.org> - 2.0.12-1
+- Update to 2.0.12
+- Added grokmirror.conf to docs
+- Added pi-piper.conf to docs
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 2.0.11-11
 - convert license to SPDX
 

@@ -1,7 +1,7 @@
 %global srcname numcodecs
 
 Name:           python-%{srcname}
-Version:        0.13.1
+Version:        0.14.1
 Release:        %autorelease
 Summary:        Buffer compression and transformation for data storage and communication
 
@@ -14,8 +14,10 @@ Patch:          0002-Unbundle-zstd.patch
 Patch:          0003-Unbundle-lz4.patch
 # Fedora is not missing Snappy support in Blosc.
 Patch:          0004-Re-add-Snappy-to-tests.patch
-# We don't need coverage reports.
-Patch:          0005-Remove-coverage-from-testing-requirements.patch
+# We don't need coverage reports, and don't want to test the current directory.
+Patch:          0005-Fix-testing-setup-for-Fedora.patch
+# Allow older NumPy.
+Patch:          0006-Reduce-numpy-build-requirement.patch
 
 # Stop building on i686
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
@@ -57,7 +59,7 @@ rm -rf c-blosc
 
 
 %generate_buildrequires
-%pyproject_buildrequires -x docs,msgpack,test,test_extras
+%pyproject_buildrequires -x crc32c,docs,msgpack,test,test_extras
 
 
 %build
@@ -71,10 +73,11 @@ rm -rf html/.{doctrees,buildinfo} html/_static/donotdelete
 
 %install
 %pyproject_install
-%pyproject_save_files %{srcname}
+%pyproject_save_files -l %{srcname}
 
 
 %check
+rm pyproject.toml
 cd docs  # Avoid using unbuilt existing copy.
 ln -s ../fixture
 %{pytest} --pyargs numcodecs

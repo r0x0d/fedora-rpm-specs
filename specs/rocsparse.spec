@@ -35,7 +35,7 @@
 
 Name:           rocsparse
 Version:        %{rocm_version}
-%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:        1%{?dist}
 %else
 Release:        %autorelease
@@ -167,7 +167,7 @@ fi
 %endif
 
 %changelog
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 * Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 

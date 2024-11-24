@@ -2,7 +2,7 @@
 %bcond_with gpgcheck
 
 Name:          pkcs11-provider
-Version:       0.5
+Version:       0.6
 Release:       %autorelease
 Summary:       A PKCS#11 provider for OpenSSL 3.0+
 License:       Apache-2.0
@@ -35,7 +35,6 @@ BuildRequires: gnutls-utils
 BuildRequires: xz
 BuildRequires: expect
 
-Patch01: 0001-Fix-types-for-old-32-bit-systems.patch
 
 %description
 This is an Openssl 3.x provider to access Hardware or Software Tokens using

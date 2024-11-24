@@ -3,7 +3,7 @@
 %global rocm_patch 4
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 %bcond_with kfdtest
 %else
 %bcond_without kfdtest
@@ -22,7 +22,7 @@ Source0:        https://github.com/RadeonOpenCompute/ROCT-Thunk-Interface/archiv
 # https://github.com/ROCm/ROCT-Thunk-Interface/pull/108
 Patch1:         0001-Improve-finding-rocm-smi.patch
 
-%if 0%{?rhel} || 0%{?is_opensuse}
+%if 0%{?rhel} || 0%{?suse_version}
 ExclusiveArch:  x86_64
 %else
 # Fedora builds AMD HSA kernel support for these 64bit targets:
@@ -39,7 +39,7 @@ BuildRequires: rocm-llvm-static
 BuildRequires: rocm-compilersupport-macros
 %endif
 
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 BuildRequires: libnuma-devel
 %else
 BuildRequires: numactl-devel

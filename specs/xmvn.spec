@@ -15,6 +15,8 @@ ExclusiveArch:  %{java_arches} noarch
 
 Source0:        https://github.com/fedora-java/xmvn/releases/download/%{version}/xmvn-%{version}.tar.xz
 
+Source21:       toolchains-openjdk21.xml
+
 %if %{with bootstrap}
 BuildRequires:  javapackages-bootstrap
 %else
@@ -211,6 +213,11 @@ cp -P ${maven_home}/bin/m2.conf %{buildroot}%{_datadir}/%{name}/bin/
 
 # Make sure javapackages config is not bundled
 rm -rf %{buildroot}%{_datadir}/%{name}/{configuration.xml,config.d/,conf/toolchains.xml,maven-metadata/}
+
+# Toolchains
+ln -sf %{_jpbindingdir}/xmvn-toolchains.xml %{buildroot}%{_datadir}/%{name}/conf/toolchains.xml
+install -p -m 644 %{SOURCE21} %{buildroot}%{_datadir}/%{name}/conf/toolchains-openjdk21.xml
+%jp_binding --verbose --base-pkg xmvn-minimal --binding-pkg xmvn-toolchain-openjdk21 --variant openjdk21 --ghost xmvn-toolchains.xml --target %{_datadir}/%{name}/conf/toolchains-openjdk21.xml --requires java-21-openjdk-devel
 
 %files
 %{_bindir}/mvn-local

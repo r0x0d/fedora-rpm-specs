@@ -11,8 +11,8 @@
 
 Summary: Roles and playbooks to deploy FreeIPA servers, replicas and clients
 Name: ansible-freeipa
-Version: 1.13.2
-Release: 3%{?dist}
+Version: 1.14.0
+Release: 2%{?dist}
 URL: https://github.com/freeipa/ansible-freeipa
 License: GPL-3.0-or-later
 Source: https://github.com/freeipa/ansible-freeipa/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
@@ -23,6 +23,8 @@ BuildRequires: python
 Provides: ansible-collection-%{collection_namespace}-%{collection_name} = %{version}-%{release}
 Provides: ansible-freeipa-tests
 Obsoletes: ansible-freeipa-tests < 1.12.1-2
+Provides: ansible-freeipa-collection
+Obsoletes: ansible-freeipa-collection < 1.14.0
 
 %description
 Ansible collection %{collection_namespace}.%{collection_name} providing
@@ -155,7 +157,18 @@ cp %{buildroot}/%{ansible_collections_dir}/%{collection_namespace}/%{collection_
 %{ansible_collections_dir}/%{collection_namespace}/%{collection_name}
 
 %changelog
-* Tue Oct  8 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.13.2-3
+* Fri Nov 22 2024 Thomas Woerner <twoerner@redhat.com> - 1.14.0-2
+- Provide and obsolete the collection sub package to enable flawless update
+
+* Fri Nov 22 2024 Thomas Woerner <twoerner@redhat.com> - 1.14.0-1
+- Update to version 1.14.0
+  https://github.com/freeipa/ansible-freeipa/releases/tag/v1.14.0
+  - Multi sudorule management with the ipasudorule module
+  - Use batch command internally for ipasudorule
+  - Lots of CI/infra fixes and enhancements
+  - Documentation fixes
+
+* Tue Oct  8 2024 Thomas Woerner <twoerner@redhat.com> - 1.13.2-3
 - Only provide Ansible collection freeipa.ansible_freeipa
   - Roles and modules are not installed into %{_datadir}/ansible/ anymore
   - Drops tests sub package, part of the collection

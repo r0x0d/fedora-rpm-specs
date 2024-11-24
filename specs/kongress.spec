@@ -1,6 +1,6 @@
 Name:           kongress
 Version:        24.11.80
-Release:        1%{?dist}
+Release:        2%{?dist}
 # Automatically converted from old format: CC0 and CC-BY-SA and BSD and GPLv3+ - review is highly recommended.
 License:        CC0-1.0 AND LicenseRef-Callaway-CC-BY-SA AND LicenseRef-Callaway-BSD AND GPL-3.0-or-later
 Summary:        A companion application for conferences made by KDE
@@ -32,6 +32,12 @@ BuildRequires: cmake(KF6DBusAddons)
 BuildRequires: cmake(KF6Notifications)
 BuildRequires: cmake(KF6Crash)
 BuildRequires: cmake(KOSMIndoorMap)
+
+Requires:      kf6-kirigami-addons%{?_isa}
+Requires:      kf6-kirigami%{?_isa}
+Requires:      kosmindoormap%{?_isa}
+Requires:      qt6-qtlocation%{?_isa}
+Requires:      qt6-qtpositioning%{?_isa}
 
 %description
 %{summary}.
@@ -65,6 +71,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.%{
 %license LICENSES/*
 
 %changelog
+* Fri Nov 22 2024 Pavel Solovev <daron439@gmail.com> - 24.11.80-2
+- Add missing QML deps
+
 * Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
 - 24.11.80
 

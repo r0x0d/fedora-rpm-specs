@@ -51,7 +51,7 @@
 
 Name:           rocclr
 Version:        %{rocm_version}
-%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:        1%{?dist}
 %else
 Release:        %autorelease
@@ -91,7 +91,7 @@ BuildRequires:  gcc-c++
 BuildRequires:  hipcc
 BuildRequires:  libffi-devel
 BuildRequires:  perl
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 BuildRequires:  pkgconfig(gl)
 %elif 0%{?rhel} && 0%{?rhel} < 10
 BuildRequires:  libglvnd-devel
@@ -289,7 +289,7 @@ fi
 
 %if %{with ocl}
 %files -n rocm-opencl
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 %dir %{_sysconfdir}/OpenCL/
 %dir %{_sysconfdir}/OpenCL/vendors
 %endif
@@ -335,7 +335,7 @@ fi
 %endif
 
 %changelog
-%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 * Tue Sep 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.0-1
 - A placeholder for rhel 9
 %else

@@ -12,17 +12,21 @@
 %global llvm_maj_ver 18
 %global upstreamname llvm-project
 
-%global toolchain clang
-
 # rocMLIR has a different fork from rocm and omp
 # So it is unlikely to work as-is, so disable building
 # until this issue is resolved.
 %bcond_with mlir
 
-%if 0%{?is_opensuse}
-%bcond_without bundled_llvm
-%else
+%if 0%{?fedora}
 %bcond_with bundled_llvm
+%else
+%bcond_without bundled_llvm
+%endif
+
+%if %{with bundled_llvm}
+%global toolchain gcc
+%else
+%global toolchain clang
 %endif
 
 %if %{with bundled_llvm}
@@ -47,7 +51,8 @@
 %if %{with debug}
 %global build_type DEBUG
 %else
-%global build_type RelWithDebInfo
+%global build_type RELEASE
+%global debug_package %{nil}
 %endif
 
 Name:           rocm-compilersupport
@@ -74,7 +79,7 @@ Patch4:         0001-Replace-use-of-mktemp-with-mkstemp.patch
 
 BuildRequires:  cmake
 BuildRequires:  perl
-%if 0%{?fedora} || 0%{?is_opensuse}
+%if 0%{?fedora} || 0%{?suse_version}
 BuildRequires:  fdupes
 %endif
 BuildRequires:  libffi-devel
@@ -87,13 +92,11 @@ BuildRequires:  clang-devel(major) = %{llvm_maj_ver}
 BuildRequires:  lld-devel(major) = %{llvm_maj_ver}
 %else
 BuildRequires:  binutils-devel
-BuildRequires:  clang
-BuildRequires:  clang-devel
-BuildRequires:  llvm-devel
+BuildRequires:  gcc-c++
 Provides:       bundled(llvm-project) = %{llvm_maj_ver}
 %endif
 
-%if 0%{?rhel} || 0%{?is_opensuse}
+%if 0%{?rhel} || 0%{?suse_version}
 ExclusiveArch:  x86_64
 %global targets_to_build "X86;AMDGPU"
 %else
@@ -461,6 +464,10 @@ if [ "$LINK_JOBS" -lt "$JOBS" ]; then
     JOBS=$LINK_JOBS
 fi
 
+# Some rpm added gcc flags, do not work with a clang build
+%global build_cflags %(echo %{optflags} | sed -e 's/-mtls-dialect=gnu2//')
+%global build_cxxflags %(echo %{optflags} | sed -e 's/-mtls-dialect=gnu2//')
+
 p=$PWD
 
 %global llvmrocm_cmake_config \\\
@@ -472,9 +479,6 @@ p=$PWD
  -DCMAKE_BUILD_TYPE=%{build_type} \\\
  -DCMAKE_INSTALL_DO_STRIP=ON \\\
  -DCMAKE_INSTALL_PREFIX=%{bundle_prefix} \\\
- -DCOMPILER_RT_BUILD_SANITIZERS=OFF \\\
- -DCOMPILER_RT_BUILD_MEMPROF=OFF \\\
- -DCOMPILER_RT_BUILD_XRAY=OFF \\\
  -DLLVM_BUILD_LLVM_DYLIB=ON \\\
  -DLLVM_LINK_LLVM_DYLIB=ON \\\
  -DLLVM_BINUTILS_INCDIR=%{_includedir} \\\
@@ -500,7 +504,7 @@ p=$PWD
 # BASE LLVM
 #
 pushd .
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 %define __sourcedir llvm
 %define __builddir build-llvm
 %else
@@ -517,18 +521,51 @@ export LD_LIBRARY_PATH=$PWD/build-llvm/lib
 %endif
 
 %cmake %{llvmrocm_cmake_config} \
-       -DCMAKE_CXX_COMPILER=clang++ \
-       -DCMAKE_C_COMPILER=clang \
+       -DCMAKE_CXX_COMPILER=g++ \
+       -DCMAKE_C_COMPILER=gcc \
        -DCMAKE_INSTALL_PREFIX=%{bundle_prefix} \
        -DCMAKE_INSTALL_LIBDIR=lib \
-       -DLLVM_ENABLE_PROJECTS=%{llvm_projects} \
-       -DLLVM_ENABLE_RUNTIMES="compiler-rt"
+       -DLLVM_ENABLE_PROJECTS=%{llvm_projects}
 
 %cmake_build -j ${JOBS}
 
 popd
 
 b=$p/build-llvm
+
+#
+# COMPILER-RT
+#
+pushd .
+%if 0%{?suse_version}
+%define __sourcedir compiler-rt
+%define __builddir build-compiler-rt
+%else
+%define _vpath_srcdir compiler-rt
+%define _vpath_builddir build-compiler-rt
+%endif
+
+%cmake %{llvmrocm_cmake_config} \
+       -DCOMPILER_RT_BUILD_BUILTINS=ON \
+       -DCOMPILER_RT_BUILD_GWP_ASAN=OFF \
+       -DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
+       -DCOMPILER_RT_BUILD_MEMPROF=OFF \
+       -DCOMPILER_RT_BUILD_ORC=OFF \
+       -DCOMPILER_RT_BUILD_PROFILE=OFF \
+       -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
+       -DCOMPILER_RT_BUILD_XRAY=OFF \
+       -DCMAKE_C_COMPILER=$b/bin/clang \
+       -DCMAKE_CXX_COMPILER=$b/bin/clang++ \
+       -DCMAKE_INSTALL_PREFIX=%{bundle_prefix}/lib/clang/%{llvm_maj_ver} \
+       -DCMAKE_INSTALL_LIBDIR=lib \
+       -DLLVM_ROOT=$b \
+       -DClang_DIR=$b/lib/cmake/clang \
+       -DLLD_DIR=$b/lib/cmake/lld
+
+
+%cmake_build -j ${JOBS}
+popd
+
 %global llvmrocm_tools_config \\\
     -DCMAKE_AR=$b/bin/llvm-ar \\\
     -DCMAKE_C_COMPILER=$b/bin/clang \\\
@@ -544,7 +581,7 @@ b=$p/build-llvm
 # DEVICE LIBS
 #
 pushd .
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 %define __sourcedir amd/device-libs
 %define __builddir build-devicelibs
 %else
@@ -570,7 +607,7 @@ d=$p/build-devicelibs
 # COMGR
 #
 pushd .
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 %define __sourcedir amd/comgr
 %define __builddir build-comgr
 %else
@@ -592,7 +629,7 @@ popd
 # HIPCC
 #
 pushd .
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 %define __sourcedir amd/hipcc
 %define __builddir build-hipcc
 %else
@@ -662,7 +699,7 @@ popd
 # BASE LLVM
 #
 pushd .
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 %define __builddir build-llvm
 %else
 %define _vpath_builddir build-llvm
@@ -672,10 +709,23 @@ pushd .
 popd
 
 #
+# COMPILER-RT
+#
+pushd .
+%if 0%{?suse_version}
+%define __builddir build-compiler-rt
+%else
+%define _vpath_builddir build-compiler-rt
+%endif
+
+%cmake_install
+popd
+
+#
 # DEVICE LIBS
 #
 pushd .
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 %define __builddir build-devicelibs
 %else
 %define _vpath_builddir build-devicelibs
@@ -688,7 +738,7 @@ popd
 # COMGR
 #
 pushd .
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 %define __builddir build-comgr
 %else
 %define _vpath_builddir build-comgr
@@ -701,7 +751,7 @@ popd
 # HIPCC
 #
 pushd .
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 %define __builddir build-hipcc
 %else
 %define _vpath_builddir build-hipcc
@@ -710,21 +760,12 @@ pushd .
 %cmake_install
 popd
 
-rm -rf %{buildroot}%{bundle_prefix}/share
 rm -rf %{buildroot}%{_prefix}/hip
-rm %{buildroot}%{bundle_prefix}/bin/git-clang-format
-rm %{buildroot}%{bundle_prefix}/bin/hmaptool
-if [ -f %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/LICENSE.TXT ]; then
-    rm %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/LICENSE.*
-fi
-if [ -f %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/NOTICES.txt ]; then
-    rm %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/NOTICES.txt
-fi
-if [ -f %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/README.md ]; then
-    rm %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/README.md
+if [ -d %{buildroot}%{_prefix}/share/doc ]; then
+    rm -rf %{buildroot}%{_prefix}/share/doc
 fi
 
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 find %{buildroot}%{bundle_prefix}/bin -type f -executable -exec strip {} \;
 find %{buildroot}%{bundle_prefix}/lib -type f -name '*.so*' -exec strip {} \;
 %endif
@@ -737,7 +778,7 @@ mkdir -p %{buildroot}%{perl_vendorlib}
 mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 
 #Clean up dupes:
-%if 0%{?fedora} || 0%{?is_opensuse}
+%if 0%{?fedora} || 0%{?suse_version}
 %fdupes %{buildroot}%{_prefix}
 %endif
 
@@ -807,6 +848,8 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 
 %files -n rocm-llvm
 %dir %{bundle_prefix}/bin
+%dir %{bundle_prefix}/share
+%dir %{bundle_prefix}/share/opt-viewer
 %license llvm/LICENSE.TXT
 %{bundle_prefix}/bin/bugpoint
 %{bundle_prefix}/bin/llc
@@ -821,6 +864,7 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %{bundle_prefix}/bin/sancov
 %{bundle_prefix}/bin/sanstats
 %{bundle_prefix}/bin/verify-uselistorder
+%{bundle_prefix}/share/opt-viewer/*
 
 %if %{with mlir}
 %{bundle_prefix}/bin/mlir-cpu-runner
@@ -861,17 +905,33 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %dir %{bundle_prefix}/lib/clang
 %dir %{bundle_prefix}/lib/clang/%{llvm_maj_ver}
 %dir %{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include
+%dir %{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/cuda_wrappers
+%dir %{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/llvm_libc_wrappers
+%dir %{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/openmp_wrappers
+%dir %{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/ppc_wrappers
 %dir %{bundle_prefix}/lib/clang/%{llvm_maj_ver}/lib
-%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/*
-%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/lib/*
+%dir %{bundle_prefix}/lib/clang/%{llvm_maj_ver}/lib/linux
+%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/*.h
+%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/module.modulemap
+%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/cuda_wrappers/*
+%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/llvm_libc_wrappers/*
+%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/openmp_wrappers/*
+%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/ppc_wrappers/*
+%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/lib/linux/clang_rt.crtbegin-x86_64.o
+%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/lib/linux/clang_rt.crtend-x86_64.o
+%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/lib/linux/libclang_rt.builtins-x86_64.a
 
 %files -n rocm-clang
 %license clang/LICENSE.TXT
+%dir %{bundle_prefix}/share/clang
 %{bundle_prefix}/bin/c-index-test
 %{bundle_prefix}/bin/clang*
 %{bundle_prefix}/bin/diagtool
 %{bundle_prefix}/bin/flang
+%{bundle_prefix}/bin/git-clang-format
+%{bundle_prefix}/bin/hmaptool
 %{bundle_prefix}/bin/nvptx-arch
+%{bundle_prefix}/share/clang/*
 
 %files -n rocm-clang-devel
 %dir %{bundle_prefix}/include/clang

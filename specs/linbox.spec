@@ -3,7 +3,7 @@
 Name:           linbox
 Version:        1.7.0
 %global so_version 0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        C++ Library for High-Performance Exact Linear Algebra
 
 License:        LGPL-2.1-or-later
@@ -154,6 +154,9 @@ LD_LIBRARY_PATH=$PWD/linbox/.libs %make_build check -j1
 
 
 %changelog
+* Fri Nov 22 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 1.7.0-8
+- Rebuild for libfplll 5.5.0
+
 * Mon Nov 11 2024 Dominik Mierzejewski <dominik@greysector.net> - 1.7.0-7
 - rebuild for tinyxml2
 

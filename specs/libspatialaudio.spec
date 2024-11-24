@@ -1,15 +1,18 @@
-%global commit0 0b6b25eba39fe1d2f4a981867957b9dcf62016db
+%global commit0 d926a2ee469a3fefd50a9364fb9ac6fb484c3f70
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date0 20240506
+%global date0 20200406
 
 Name:           libspatialaudio
 Version:        3.1
-Release:        19.%{date0}git%{?shortcommit0}%{?dist}
+Release:        20.%{date0}git%{?shortcommit0}%{?dist}
 Summary:        Ambisonic encoding / decoding and binauralization library
 
 License:        LGPL-2.1-or-later
 URL:            https://github.com/videolabs/libspatialaudio
 Source0:        %{url}/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
+# https://github.com/videolabs/libspatialaudio/pull/41
+# Needed to fix the VLC build
+Patch1:         0001-Fix-MySofa-library-directory-detection.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc
@@ -64,6 +67,9 @@ developing applications that use %{name}.
 
 
 %changelog
+* Fri Nov 22 2024 Nicolas Chauvet <kwizart@gmail.com> - 3.1-20.20200406gitd926a2e
+- Revert to 20200406 snapshot
+
 * Tue Oct 22 2024 Nicolas Chauvet <kwizart@gmail.com> - 3.1-19.20240506git0b6b25e
 - Bump
 

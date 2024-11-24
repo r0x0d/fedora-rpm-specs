@@ -3,7 +3,7 @@
 
 Name:           python-%{pkg_name}
 Version:        5.5.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Simple security for Flask apps
 License:        MIT
 
@@ -20,6 +20,9 @@ Patch2:         python-flask-security-too_ignorewarnings.patch
 Patch3:         python-flask-security-too_no-sqla-utils.patch
 # Relax flask-sqlalchemy version requirement
 Patch4:         python-flask-security-too_flask-sqla.patch
+# Flask 3.1 support
+# https://github.com/pallets-eco/flask-security/pull/1040
+Patch5:         1040.patch
 
 BuildRequires:  python3-devel
 
@@ -68,6 +71,9 @@ ln -s pyproject-too.toml pyproject.toml
 
 
 %changelog
+* Fri Nov 22 2024 Frantisek Zatloukal <fzatlouk@redhat.com> - 5.5.2-2
+- Backport fix for Flask >= 3.1
+
 * Wed Aug 21 2024 Sandro Mani <manisandro@gmail.com> - 5.5.2-1
 - Update to 5.5.2
 

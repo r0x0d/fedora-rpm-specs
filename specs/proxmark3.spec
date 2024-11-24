@@ -1,5 +1,5 @@
 Name:		proxmark3
-Version:	4.18994
+Version:	4.19552
 Release:	%autorelease
 Summary:	The Swiss Army Knife of RFID Research - RRG/Iceman repo
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -49,6 +49,9 @@ rm -rf %{buildroot}%{_datadir}/doc/proxmark3
 %doc doc/ AUTHORS.md CHANGELOG.md COMPILING.txt CONTRIBUTING.md README.md
 
 %changelog
+
+* Fri Nov 22 2024 Marlin Soose <marlin.soose@esque.ca> - 4.19552
+- Bumping package to v4.19552
 
 * Thu Sep 12 2024 Marlin Soose <marlin.soose@esque.ca> - 4.18994
 - Bumping package to v4.18994

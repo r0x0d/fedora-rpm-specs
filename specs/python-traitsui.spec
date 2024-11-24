@@ -5,10 +5,9 @@ Release:        6%{?dist}
 Summary:        User interface tools designed to complement Traits
 
 # Images have different licenses. For image license breakdown check
-# image_LICENSE.txt file. Except traitsui/editors_gen.py
-# which is GPLv2+ all remaining source or image files are in BSD
-# 3-clause license
-License:        BSD and EPL and LGPLv2 and GPLv2+
+# image_LICENSE.txt file.
+# All remaining source or image files are in BSD-3-clause license
+License:        BSD-3-clause AND EPL-1.0 AND LGPL-2.0-or-later AND LGPL-2.1-only
 URL:            https://github.com/enthought/traitsui
 Source0:        https://github.com/enthought/traitsui/archive/%{version}/traitsui-%{version}.tar.gz
 # https://github.com/enthought/traitsui/pull/2028

@@ -7,7 +7,7 @@
 #
 %global wp_content %{_datadir}/wordpress/wp-content
 
-%global upstream_version 6.7
+%global upstream_version 6.7.1
 #global upstream_prever  RC5
 #global upstream_lower   rc5
 
@@ -252,6 +252,9 @@ end
 
 
 %changelog
+* Fri Nov 22 2024 Remi Collet <remi@remirepo.net> - 6.7.1-1
+- WordPress 6.7.1 Maintenance Release
+
 * Wed Nov 13 2024 Remi Collet <remi@remirepo.net> - 6.7-1
 - WordPress 6.7 “Rollins”
 

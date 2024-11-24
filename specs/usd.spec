@@ -2,7 +2,7 @@
 # package version, as a reminder of the need to rebuild dependent packages on
 # every update. See additional notes near the downstream ABI versioning patch.
 # It should be 0.MAJOR.MINOR without leading zeros, e.g. 22.03 → 0.22.3.
-%global downstream_so_version 0.24.8
+%global downstream_so_version 0.24.11
 
 %bcond alembic       1
 %bcond draco         1
@@ -27,7 +27,7 @@
 %bcond test          0
 
 Name:           usd
-Version:        24.08
+Version:        24.11
 Release:        %autorelease
 Summary:        3D VFX pipeline interchange file format
 
@@ -48,6 +48,8 @@ Summary:        3D VFX pipeline interchange file format
 #     pxr/imaging/plugin/hioAvif/AVIF/src/src-libyuv/;
 #     pxr/imaging/plugin/hioAvif/AVIF/src/avif_obu.c has a different copyright
 #   - pxr/imaging/plugin/hioAvif/aom/
+# BSL-1.0:
+#   - pxr/external/boost/
 # MIT:
 #   - docs/doxygen/doxygen-awesome-css/ (removed in %%prep)
 #   - pxr/base/js/rapidjson/, except pxr/base/js/rapidjson/msinttypes/ (both
@@ -57,14 +59,12 @@ Summary:        3D VFX pipeline interchange file format
 #   - pxr/imaging/garch/khrplatform.h
 #   - pxr/imaging/hgiVulkan/vk_mem_alloc.h
 #   - pxr/imaging/hio/OpenEXR/deflate/ (removed in %%prep)
-#   - third_party/renderman-25/plugin/rmanArgsParser/pugixml/ (removed in %%prep)
 #   - third_party/renderman-26/plugin/rmanArgsParser/pugixml/ (removed in %%prep)
 # MIT OR Unlicense:
 #   - pxr/imaging/hio/stb/
 # Pixar AND GPL-3.0-or-later WITH Bison-exception-2.2:
 #   - pxr/usd/sdf/path.tab.{cpp,h}
 #   - pxr/usd/sdf/textFileFormat.tab.{cpp,h}
-#   - third_party/renderman-25/plugin/hdPrman/virtualStructConditionalGrammar.tab.{cpp,h}
 #   - third_party/renderman-26/plugin/hdPrman/virtualStructConditionalGrammar.tab.{cpp,h}
 #
 # Additionally, the following would be listed above but are removed in %%prep:
@@ -88,6 +88,7 @@ License:        %{shrink:
                 Apache-2.0 AND
                 BSD-3-Clause AND
                 BSD-2-Clause AND
+                BSL-1.0 AND
                 MIT AND
                 (MIT OR Unlicense) AND
                 (Pixar AND GPL-3.0-or-later WITH Bison-exception-2.2)
@@ -164,7 +165,6 @@ BuildRequires:  dos2unix
 BuildRequires:  help2man
 
 BuildRequires:  pkgconfig(blosc)
-BuildRequires:  boost-devel
 BuildRequires:  pkgconfig(dri)
 BuildRequires:  hdf5-devel
 BuildRequires:  opensubdiv-devel >= 3.6.0
@@ -288,6 +288,27 @@ Provides:       bundled(PEGTL) = 3.2.7
 #   marking from the few global data tables.
 # This suggests that it may not be entirely safe to unbundle this.
 Provides:       bundled(openexr) = 3.2.0
+# Version from the message for the commit
+# e7a8d718c7c113e1c653ee31dc52421f17e09b42 that introduced pxr/external/boost/:
+#
+#   python: Initial import of boost::python from boost 1.85.0
+#   This change just brings boost::python into the tree as a starting point for
+#   the pxr_boost::python implementation. The src/ and test/ directories are
+#   placed next to the public headers since we don't have separate
+#   public/private directory hierarchies like boost, but the code itself is
+#   unchanged and not included in the build.
+#
+#   We use boost 1.85.0 as the starting point even though we're currently on
+#   VFX Reference Platform 2022, which specifies boost 1.76.0. This is because
+#   later versions of boost are needed for other platforms and versions of
+#   Python that OpenUSD supports. For example Python 3.11 requires boost
+#   1.82.0+.
+#
+# This is not a candidate for unbundling because upstream has explicitly forked
+# boost::python and modified it to work without the rest of Boost as part of an
+# effort to remove the Boost dependency. While pxr_boost::python is derived
+# from boost::python, it is not intended to remain compatible with it.
+Provides:       bundled(boost) = 1.85.0
 
 # We are currently able to unbundle these and use system libraries, but we
 # retain the virtual Provides, commented out, as documentation and in case we
@@ -300,15 +321,15 @@ Provides:       bundled(openexr) = 3.2.0
 # Version from: pxr/base/tf/pxrCLI11/README.md
 # Provides:       bundled(cli11) = 2.3.1
 # Version from:
-# third_party/renderman-25/plugin/rmanArgsParser/pugixml/pugiconfig.hpp
 # third_party/renderman-26/plugin/rmanArgsParser/pugixml/pugiconfig.hpp
 # (header comment)
 # Provides:       bundled(pugixml) = 1.9
 # Version from: pxr/base/js/rapidjson/rapidjson.h
 # (RAPIDJSON_{MAJOR,MINOR,PATCH}_VERSION)
 # Provides:       bundled(rapidjson) = 1.1.0
-# Forked from an unknown version: pxr/base/tf/pxrTslRobinMap/
-# Provides:       bundled(robin-map)
+# Version from: pxr/base/tf/pxrTslRobinMap/robin_growth_policy.h
+# (PXR_TSL_RH_VERSION_{MAJOR,MINOR,PATCH})
+# Provides:       bundled(robin-map) = 1.3.0
 # Version from pxr/imaging/hio/OpenEXR/deflate/libdeflate.h
 # Provides:       bundled(libdeflate) = 1.18
 # Version from pxr/imaging/plugin/hioAvif/AVIF/src/avif/avif.h
@@ -621,6 +642,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.openusd.usdview.d
 %{_bindir}/usdedit
 %{_bindir}/usdfixbrokenpixarschemas
 %{_bindir}/usdgenschemafromsdr
+%{_bindir}/usdmeasureperformance
 %{_bindir}/usdrecord
 %{_bindir}/usdresolve
 %{_bindir}/usdstitch
@@ -647,6 +669,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.openusd.usdview.d
 %{_mandir}/man1/usdedit.1*
 %{_mandir}/man1/usdfixbrokenpixarschemas.1*
 %{_mandir}/man1/usdgenschemafromsdr.1*
+%{_mandir}/man1/usdmeasureperformance.1*
 %{_mandir}/man1/usdrecord.1*
 %{_mandir}/man1/usdresolve.1*
 %{_mandir}/man1/usdstitch.1*

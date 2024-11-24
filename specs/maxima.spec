@@ -2,7 +2,7 @@ Summary: Symbolic Computation Program
 Name:    maxima
 Version: 5.47.0
 
-Release: 4%{?dist}
+Release: 5%{?dist}
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License: GPL-2.0-only
 URL:     http://maxima.sourceforge.net/
@@ -45,7 +45,7 @@ Requires: emacs-filesystem >= %{_emacs_version}
 %define _enable_sbcl --enable-sbcl-exec
 %if 0%{?fedora} && !0%{?flatpak}
 %define _enable_clisp --enable-clisp-exec
-%define _enable_ecl --enable-ecl
+#define _enable_ecl --enable-ecl
 %define _enable_gcl --enable-gcl
 %endif
 %endif
@@ -55,7 +55,7 @@ Requires: emacs-filesystem >= %{_emacs_version}
 %define _enable_sbcl --enable-sbcl-exec
 %if 0%{?fedora} && !0%{?flatpak}
 %define _enable_gcl --enable-gcl
-%define _enable_ecl --enable-ecl
+#define _enable_ecl --enable-ecl
 %endif
 %endif
 
@@ -64,7 +64,7 @@ Requires: emacs-filesystem >= %{_emacs_version}
 %define _enable_sbcl --enable-sbcl-exec
 %if 0%{?fedora} && !0%{?flatpak}
 #define _enable_gcl --enable-gcl
-%define _enable_ecl --enable-ecl
+#define _enable_ecl --enable-ecl
 %endif
 %endif
 
@@ -413,6 +413,9 @@ fi
 
 
 %changelog
+* Fri Nov 22 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 5.47.0-5
+- Disable ECL runtime
+
 * Mon Jul  29 2024 Miroslav Suchý <msuchy@redhat.com> - 5.47.0-4
 - convert license to SPDX
 

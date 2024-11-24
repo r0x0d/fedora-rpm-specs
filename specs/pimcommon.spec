@@ -1,6 +1,6 @@
 Name:    pimcommon
 Version: 24.11.80
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: PIM common libraries
 
 License: BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-or-later AND (GPL-2.0-only OR GPL-3.0-only)
@@ -45,6 +45,8 @@ BuildRequires:  cmake(Qt6Network)
 BuildRequires:  cmake(Qt6Widgets)
 BuildRequires:  cmake(Qt6Xml)
 
+BuildRequires:  cmake(PlasmaActivities)
+
 %description
 %{summary}.
 
@@ -60,6 +62,7 @@ Requires:       cmake(KPim6Akonadi)
 Requires:       cmake(KPim6AkonadiContactWidgets)
 Requires:       cmake(KF6Contacts)
 Requires:       cmake(KPim6IMAP)
+Requires:       cmake(PlasmaActivities)
 %description    devel
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
@@ -86,23 +89,30 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 %license LICENSES/*
 %{_kf6_libdir}/libKPim6PimCommon.so.*
 %{_kf6_libdir}/libKPim6PimCommonAkonadi.so.*
+%{_kf6_libdir}/libKPim6PimCommonActivities.so.*
 %{_kf6_datadir}/qlogging-categories6/*%{name}.*
 
 %files devel
 %{_includedir}/KPim6/PimCommon/
+%{_includedir}/KPim6/PimCommonActivities/
 %{_includedir}/KPim6/PimCommonAkonadi/
 %{_kf6_libdir}/libKPim6PimCommon.so
+%{_kf6_libdir}/libKPim6PimCommonActivities.so
 %{_kf6_libdir}/libKPim6PimCommonAkonadi.so
 %{_kf6_libdir}/cmake/KPim6PimCommon/
+%{_kf6_libdir}/cmake/KPim6PimCommonActivities/
 %{_kf6_libdir}/cmake/KPim6PimCommonAkonadi/
 %{_qt6_plugindir}/designer/pimcommon6widgets.so
 %{_qt6_plugindir}/designer/pimcommon6akonadiwidgets.so
 %{_qt6_docdir}/*.tags
- 
+
 %files doc
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Fri Nov 22 2024 Pavel Solovev <daron439@gmail.com> - 24.11.80-2
+- Add optional PlasmaActivities
+
 * Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
 - 24.11.80
 

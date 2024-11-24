@@ -1,12 +1,15 @@
+%global debug_package %{nil}
 %{?!python3_pkgversion:%global python3_pkgversion 3}
 
 %global pypi_name ramalama
 %global forgeurl  https://github.com/containers/%{pypi_name}
 # see ramalama/version.py
-%global version0  0.1.2
+%global version0  0.2.0
 %forgemeta
 
 %global desc      RamaLama is a command line tool for working with AI LLM models
+
+%global _python_dist_allow_version_zero 1
 
 Name:             python-%{pypi_name}
 # DO NOT TOUCH the Version string!
@@ -20,6 +23,7 @@ License:          MIT
 Release:          %{autorelease}
 Summary:          %{desc}
 URL:              %{forgeurl}
+# Tarball fetched from upstream
 Source0:          %{forgesource}
 BuildArch:        noarch
 
@@ -27,8 +31,18 @@ BuildRequires:    git-core
 BuildRequires:    golang
 BuildRequires:    golang-github-cpuguy83-md2man
 BuildRequires:    make
+BuildRequires:    pyproject-rpm-macros
+
+BuildRequires:    python%{python3_pkgversion}-argcomplete
 BuildRequires:    python%{python3_pkgversion}-devel
+BuildRequires:    python%{python3_pkgversion}-pip
 BuildRequires:    python%{python3_pkgversion}-setuptools
+BuildRequires:    python%{python3_pkgversion}-wheel
+%if 0%{?fedora} >= 40
+BuildRequires:    python%{python3_pkgversion}-tqdm
+%endif
+
+Requires: python%{python3_pkgversion}-argcomplete
 
 %{?python_enable_dependency_generator}
 
@@ -44,11 +58,7 @@ will run the AI Models within a container based on the OCI image.
 
 %package -n python%{python3_pkgversion}-%{pypi_name}
 Requires: podman
-%if 0%{?fedora} >= 40
 Requires: python%{python3_pkgversion}-tqdm
-%else
-Recommends: python%{python3_pkgversion}-tqdm
-%endif
 # Needed as seen by BZ: 2327515
 Requires: python%{python3_pkgversion}-omlmd
 Summary: %{summary}

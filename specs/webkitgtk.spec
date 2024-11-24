@@ -39,7 +39,7 @@ Summary:        GTK web content engine library
 # Source/ThirdParty/ANGLE/tools/flex-bison/third_party/m4sugar/m4sugar.m4 is GPL-3.0-only WITH Autoconf-exception-3.0
 # Source/ThirdParty/pdfjs/web/images/annotation-paperclip.svg is MPL-2.0i
 # Source/ThirdParty/pdfjs/web/standard_fonts/LICENSE_LIBERATION is OFL-1.1
-# Source/ThirdParty/xdgmime/ is AFL-2.0 GPL-2.0-or-later
+# Source/ThirdParty/xdgmime/ is AFL-2.0 OR GPL-2.0-or-later
 # Source/WebCore/dom/PseudoElement.h is BSD-Source-Code
 # Source/WebCore/dom/SecurityContext.cpp is BSD-2-Clause-Views
 # Source/WebKit/UIProcess/Launcher/glib/BubblewrapLauncher.cpp is LGPL-2.1-or-later
@@ -48,7 +48,7 @@ Summary:        GTK web content engine library
 # Source/WTF/icu/LICENSE is ICU
 # Source/WTF/wtf/Markable.h is BSL-1.0
 # The license tag and above comment is up to date as of WebKitGTK 2.42.2.
-License:        LGPL-2.1-only AND BSD-2-Clause AND BSD-3-Clause AND ISC AND bzip2-1.0.6 AND NCSA AND MIT AND GPL-2.0-only AND MPL-1.1 AND SunPro AND Unicode-TOU AND Apache-2.0 AND GPL-3.0-or-later WITH Bison-exception-2.2 AND GPL-3.0-only WITH Autoconf-exception-3.0 AND MPL-2.0 AND OFL-1.1 AND (AFL-2.0 GPL-2.0-or-later) AND BSD-Source-Code AND BSD-2-Clause-Views AND LGPL-2.1-or-later AND (NCSA OR MIT) AND Apache-2.0 WITH LLVM-exception AND ICU AND BSL-1.0
+License:        LGPL-2.1-only AND BSD-2-Clause AND BSD-3-Clause AND ISC AND bzip2-1.0.6 AND NCSA AND MIT AND GPL-2.0-only AND MPL-1.1 AND SunPro AND Unicode-TOU AND Apache-2.0 AND GPL-3.0-or-later WITH Bison-exception-2.2 AND GPL-3.0-only WITH Autoconf-exception-3.0 AND MPL-2.0 AND OFL-1.1 AND (AFL-2.0 OR GPL-2.0-or-later) AND BSD-Source-Code AND BSD-2-Clause-Views AND LGPL-2.1-or-later AND (NCSA OR MIT) AND Apache-2.0 WITH LLVM-exception AND ICU AND BSL-1.0
 URL:            https://www.webkitgtk.org/
 Source0:        https://webkitgtk.org/releases/webkitgtk-%{version}.tar.xz
 Source1:        https://webkitgtk.org/releases/webkitgtk-%{version}.tar.xz.asc

@@ -84,7 +84,7 @@ BuildRequires:  mvn(org.slf4j:slf4j-simple::sources:)
 %endif
 
 Requires: %{name}-lib = %{epoch}:%{version}-%{release}
-Requires: %{name}-jdk-binding = %{epoch}:%{version}-%{release}
+Requires: %{name}-jdk-binding
 Suggests: %{name}-openjdk21 = %{epoch}:%{version}-%{release}
 
 Requires(post): alternatives
@@ -114,18 +114,6 @@ Obsoletes:      maven-openjdk17 < 3.9.9-2
 
 %description lib
 Core part of Apache Maven that can be used as a library.
-
-%package openjdk21
-Summary:        OpenJDK 21 binding for Maven
-RemovePathPostfixes: -openjdk21
-Provides: %{name}-jdk-binding = %{epoch}:%{version}-%{release}
-Requires: %{name} = %{epoch}:%{version}-%{release}
-Requires: java-21-openjdk-headless
-Recommends: java-21-openjdk-devel
-Conflicts: %{name}-jdk-binding
-
-%description openjdk21
-Configures Maven to run with OpenJDK 21.
 
 %{?javadoc_package}
 
@@ -227,8 +215,11 @@ ln -s %{homedir}/bin/mvnDebug.1.gz %{buildroot}%{_mandir}/man1/mvnDebug%{maven_v
 
 # JDK bindings
 install -d -m 755 %{buildroot}%{_javaconfdir}/
-echo JAVA_HOME=%{_jvmdir}/jre-21-openjdk >%{buildroot}%{_javaconfdir}/maven%{?maven_version_suffix}.conf-openjdk21
-
+ln -sf %{_jpbindingdir}/maven%{?maven_version_suffix}.conf %{buildroot}%{_javaconfdir}/maven%{?maven_version_suffix}.conf
+echo JAVA_HOME=%{_jvmdir}/jre-21-openjdk >%{buildroot}%{_javaconfdir}/maven%{?maven_version_suffix}-openjdk21.conf
+%jp_binding --verbose --variant openjdk21 --ghost maven%{?maven_version_suffix}.conf --target %{_javaconfdir}/maven%{?maven_version_suffix}-openjdk21.conf --provides %{name}-jdk-binding --requires java-21-openjdk-headless --recommends java-21-openjdk-devel
+touch %{buildroot}%{_javaconfdir}/maven%{?maven_version_suffix}-unbound.conf
+%jp_binding --verbose --variant unbound --ghost maven%{?maven_version_suffix}.conf --target %{_javaconfdir}/maven%{?maven_version_suffix}-unbound.conf --provides %{name}-jdk-binding
 
 %post
 update-alternatives --install %{_bindir}/mvn mvn %{homedir}/bin/mvn %{?maven_alternatives_priority}0 \
@@ -246,6 +237,7 @@ if [[ $1 -eq 0 ]]; then update-alternatives --remove mvn %{homedir}/bin/mvn; fi
 %exclude %{homedir}/bin/mvn*
 %dir %{confdir}
 %dir %{confdir}/logging
+%config %{_javaconfdir}/maven%{?maven_version_suffix}*.conf
 %config(noreplace) %{_sysconfdir}/m2%{?maven_version_suffix}.conf
 %config(noreplace) %{confdir}/settings.xml
 %config(noreplace) %{confdir}/logging/simplelogger.properties
@@ -263,9 +255,6 @@ if [[ $1 -eq 0 ]]; then update-alternatives --remove mvn %{homedir}/bin/mvn; fi
 %{_mandir}/man1/mvn%{maven_version_suffix}.1.gz
 %{_mandir}/man1/mvnDebug%{maven_version_suffix}.1.gz
 %endif
-
-%files openjdk21
-%config %{_javaconfdir}/maven%{?maven_version_suffix}.conf-openjdk21
 
 %changelog
 %autochangelog

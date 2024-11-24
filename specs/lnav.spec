@@ -1,6 +1,6 @@
 Name:          lnav
-Version:       0.12.2
-Release:       3%{?dist}
+Version:       0.12.3
+Release:       1%{?dist}
 Summary:       Curses-based tool for viewing and analyzing log files
 # Automatically converted from old format: BSD - review is highly recommended.
 License:       LicenseRef-Callaway-BSD
@@ -50,6 +50,10 @@ quickly and efficiently zero in on problems.
 
 
 %changelog
+* Fri Nov 22 2024 Peter Schiffer <peter+fedora@pschiffer.eu> - 0.12.3-1
+- resolves: #2326844
+  updated to 0.12.3
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 0.12.2-3
 - convert license to SPDX
 

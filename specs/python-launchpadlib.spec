@@ -43,7 +43,7 @@ BuildRequires:  python3dist(wadllib)
 %py3_install
 
 %check
-%{__python3} setup.py test
+%{py3_test_envvars} %{python3} -m unittest src/%{pypi_name}/tests/*py
 
 %files -n python3-%{pypi_name}
 %license COPYING.txt

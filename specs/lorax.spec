@@ -4,7 +4,7 @@
 %global forgeurl https://github.com/weldr/lorax
 
 Name:           lorax
-Version:        42.3
+Version:        42.4
 Release:        1%{?dist}
 Summary:        Tool for creating the anaconda install images
 License:        GPL-2.0-or-later
@@ -39,7 +39,7 @@ Requires:       isomd5sum
 Requires:       module-init-tools
 Requires:       parted
 Requires:       squashfs-tools >= 4.2
-Requires:       erofs-utils
+Requires:       erofs-utils >= 1.8.2
 Requires:       util-linux
 Requires:       xz-lzma-compat
 Requires:       xz
@@ -171,6 +171,10 @@ make DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir} install
 %{_datadir}/lorax/templates.d/*
 
 %changelog
+* Fri Nov 22 2024 Brian C. Lane <bcl@redhat.com> 42.4-1
+- runtime-cleanup: Newer glibc installs into /usr/lib64 (bcl@redhat.com)
+- erofs: Change the erofs compression default to zstd (bcl@redhat.com)
+
 * Mon Oct 21 2024 Brian C. Lane <bcl@redhat.com> 42.3-1
 - Update template for anaconda webui to start as user (adamkankovsky@gmail.com)
 - tests: Fix mkksiso unit test (bcl@redhat.com)

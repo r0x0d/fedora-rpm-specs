@@ -78,7 +78,7 @@ make PREFIX=%{_prefix} LIBDIR=%{_prefix}/lib INSTALLROOT=%{buildroot} install
 mkdir -p %{buildroot}/%{efi_esp_dir}/%{efi_arch}
 mv %{buildroot}/usr/lib/gnuefi/apps/*.efi %{buildroot}%{efi_esp_dir}/%{efi_arch}/
 
-%ifarch x86_64 aarch64
+%ifarch x86_64 aarch64 riscv64
 mkdir -p %{buildroot}%{_libdir}
 mv %{buildroot}%{_prefix}/lib/pkgconfig %{buildroot}%{_libdir}
 %endif

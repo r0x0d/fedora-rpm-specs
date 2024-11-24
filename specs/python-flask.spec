@@ -2,7 +2,7 @@
 %global srcname flask
 
 Name:           python-%{modname}
-Version:        3.0.3
+Version:        3.1.0
 Release:        %autorelease
 Epoch:          1
 Summary:        A micro-framework for Python based on Werkzeug, Jinja 2 and good intentions

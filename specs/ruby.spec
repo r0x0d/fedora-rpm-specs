@@ -173,7 +173,7 @@
 Summary: An interpreter of object-oriented scripting language
 Name: ruby
 Version: %{ruby_version}%{?development_release}
-Release: 16%{?dist}
+Release: 17%{?dist}
 # Licenses, which are likely not included in binary RPMs:
 # Apache-2.0:
 #   benchmark/gc/redblack.rb
@@ -968,6 +968,7 @@ sed -i 's/^/%lang(ja) /' .ruby-doc.ja
 %define fortification_aarch64 fortified="10" fortify-able="26"
 %define fortification_ppc64le fortified="7" fortify-able="24"
 %define fortification_s390x   fortified="10" fortify-able="24"
+%define fortification_riscv64 fortified="10" fortify-able="26"
 # https://unix.stackexchange.com/questions/366/convince-grep-to-output-all-lines-not-just-those-with-matches
 checksec --format=xml --file=%{_vpath_builddir}/libruby.so.%{ruby_version} | \
   sed -r "s/<file (.*)\/>/\1/" | \
@@ -1755,6 +1756,9 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 
 
 %changelog
+* Wed Nov 20 2024 David Abdurachmanov <davidlt@rivosinc.com> - 3.3.6-17
+- Add riscv64 information for checksec
+
 * Mon Nov 11 2024 Vít Ondruch <vondruch@redhat.com> - 3.3.6-16
 - Upgrade to Ruby 3.3.6.
 

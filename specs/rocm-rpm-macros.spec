@@ -1,6 +1,6 @@
 Name:           rocm-rpm-macros
 Version:        6.2.2
-%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:    1%{?dist}
 %else
 Release:        %autorelease
@@ -34,7 +34,7 @@ Source17:       default.rhel
 # Just some files
 %global debug_package %{nil}
 
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 Requires:       Modules
 %else
 Requires:       environment-modules
@@ -47,7 +47,7 @@ This package contains ROCm RPM macros for building ROCm packages.
 # $> source /etc/profile.d/modules.sh
 %package modules
 Summary: ROCm enviroment modules
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 Requires:       Modules
 %else
 Requires: environment(modules)
@@ -86,7 +86,7 @@ install -pm 644 %{SOURCE16} modules
 %install
 mkdir -p %{buildroot}%{_rpmmacrodir}/
 install -Dpm 644 %{SOURCE0} %{buildroot}%{_rpmmacrodir}/
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 mkdir -p %{buildroot}%{_datadir}/modules/rocm/
 cp -p modules/* %{buildroot}%{_datadir}/modules/rocm/
 %else
@@ -107,14 +107,14 @@ done
 %files modules
 %license GPL
 %{_libdir}/rocm
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 %{_datadir}/modules
 %else
 %{_datadir}/modulefiles/rocm/
 %endif
 
 %changelog
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 * Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 

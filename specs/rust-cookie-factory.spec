@@ -14,7 +14,7 @@ URL:            https://crates.io/crates/cookie-factory
 Source:         %{crates_source}
 # cargo does not detect license folder
 # https://github.com/rust-bakery/cookie-factory/pull/42
-Source:         https://github.com/rust-bakery/cookie-factory/blob/0.3.3/LICENSES/MIT.txt
+Source:         https://raw.githubusercontent.com/rust-bakery/cookie-factory/refs/tags/0.3.3/LICENSES/MIT.txt
 # Manually created patch for downstream crate metadata changes
 # * disable examples and tests that are not actually in the crate
 Patch:          cookie-factory-fix-metadata.diff

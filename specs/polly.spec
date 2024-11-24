@@ -1,5 +1,5 @@
 %global toolchain clang
-%global polly_version 19.1.3
+%global polly_version 19.1.4
 #global rc_ver 4
 %global polly_srcdir polly-%{polly_version}%{?rc_ver:-rc%{rc_ver}}.src
 
@@ -108,6 +108,9 @@ export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
 %doc %{_pkgdocdir}/html
 
 %changelog
+* Fri Nov 22 2024 Timm Bäder <tbaeder@redhat.com> - 19.1.4-1
+- Update to 19.1.4
+
 * Fri Nov 08 2024 Timm Bäder <tbaeder@redhat.com> - 19.1.3-1
 - Update to 19.1.3
 

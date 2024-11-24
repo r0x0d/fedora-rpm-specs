@@ -6,16 +6,16 @@
 #
 # Please preserve changelog entries
 #
-%global gh_commit    65b095d87bc00898d8fa7737bdbcda93a3fbcc55
+%global gh_commit    a567b8ab9b6145a23e6a9ec2b6b74f56d52f7ad1
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     simplepie
 %global gh_project   simplepie
-%global gh_version   1.8.0
+%global gh_version   1.8.1
 %bcond_with       tests
 
 Name:       php-%{gh_project}
-Version:    1.8.0
-Release:    6%{?dist}
+Version:    1.8.1
+Release:    1%{?dist}
 Summary:    A simple Atom/RSS parsing library for PHP
 
 Group:      Development/Libraries
@@ -127,6 +127,9 @@ exit $ret
 
 
 %changelog
+* Fri Nov 22 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.8.1-1
+- 1.8.1
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.8.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

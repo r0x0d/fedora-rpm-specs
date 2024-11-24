@@ -9,8 +9,10 @@
 
 %global maven_home %{_usr}/share/xmvn
 
+%global _jpbindingdir %{_datadir}/jpbinding
+
 Name:           javapackages-tools
-Version:        6.3.4
+Version:        6.4.0
 Release:        %autorelease
 Summary:        Macros and scripts for Java packaging support
 License:        BSD-3-Clause
@@ -18,8 +20,6 @@ URL:            https://github.com/fedora-java/javapackages
 BuildArch:      noarch
 
 Source:         https://github.com/fedora-java/javapackages/archive/%{version}.tar.gz
-
-Source21:       toolchains-openjdk21.xml
 
 Patch:          0001-Disable-dependency-generators.patch
 Patch:          0002-Fall-back-to-JRE-21-until-all-packages-explicitly-se.patch
@@ -53,12 +53,13 @@ install their content.
 
 %package -n maven-local-openjdk21
 Summary:        Macros and scripts for Maven packaging support
-RemovePathPostfixes: -openjdk21
 Requires:       java-21-openjdk-devel
 Provides:       maven-local = %{version}-%{release}
 Requires:       %{name} = %{version}-%{release}
 Requires:       javapackages-local-openjdk21 = %{version}-%{release}
 Requires:       xmvn-minimal
+# Add later once xmvn is built
+#Requires:       xmvn-toolchain-openjdk21
 Requires:       mvn(org.fedoraproject.xmvn:xmvn-mojo)
 # Common Maven plugins required by almost every build. It wouldn't make
 # sense to explicitly require them in every package built with Maven.
@@ -152,9 +153,6 @@ rm -rf %{buildroot}%{_sysconfdir}/ivy
 rm -rf %{buildroot}%{_sysconfdir}/ant.d
 %endif
 
-mkdir -p %{buildroot}%{maven_home}/conf/
-cp -p %{SOURCE21} %{buildroot}%{maven_home}/conf/toolchains.xml-openjdk21
-
 %if 0%{?flatpak}
 # make both /app (runtime deps) and /usr (build-only deps) builds discoverable
 sed -e '/^JAVA_LIBDIR=/s|$|:/usr/share/java|' \
@@ -175,6 +173,36 @@ ln -s %{_datadir}/java-utils %{buildroot}%{_usr}/share/java-utils
 %check
 ./check
 
+%transfiletriggerin -- %{_jpbindingdir}
+shopt -s nullglob
+grep -E '^%{_jpbindingdir}/.*\.d/' | sed 's|%{_jpbindingdir}/\(.*\)/\(.*\)|\1 \2|' | while read dir tgt; do
+  lnk=${dir/%.d}
+  ln -sf "$dir/$tgt" %{_jpbindingdir}/"$lnk"
+done
+
+%transfiletriggerun -- %{_jpbindingdir}
+shopt -s nullglob
+grep -E '^%{_jpbindingdir}/.*\.d/' | sed 's|%{_jpbindingdir}/\(.*\)/\(.*\)|\1 \2|' | while read dir tgt; do
+  lnk=${dir/%.d}
+  was=$(readlink %{_jpbindingdir}/"$lnk" || :)
+  if [[ "$was" = "$dir/$tgt" ]]; then
+    unlink %{_jpbindingdir}/"$lnk"
+  fi
+done
+
+%transfiletriggerpostun -- %{_jpbindingdir}
+shopt -s nullglob
+for bindd in %{_jpbindingdir}/*.d/; do
+  lnk=${bindd/%.d\/}
+  if ! [[ -e "$lnk" ]]; then
+    for ftgt in "$bindd"*; do
+      tgt=$(realpath -m -s --relative-to=%{_jpbindingdir} "$ftgt")
+      ln -sf "$tgt" "$lnk"
+      break
+    done
+  fi
+done
+
 %files -f files-tools
 %if 0%{?flatpak}
 %{_usr}/bin/build-classpath
@@ -190,8 +218,6 @@ ln -s %{_datadir}/java-utils %{buildroot}%{_usr}/share/java-utils
 %files -n javapackages-local-openjdk21 -f files-local-openjdk21
 
 %files -n maven-local-openjdk21
-%dir %{maven_home}/conf
-%{maven_home}/conf/toolchains.xml-openjdk21
 
 %if %{with ivy}
 %files -n ivy-local -f files-ivy

@@ -8,7 +8,7 @@
 
 Name:       rocm-runtime
 Version:    %{rocm_version}
-%if 0%{?is_opensuse} || 0%{?rhel} && 0%{?rhel} < 10
+%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:    1%{?dist}
 %else
 Release:    %autorelease
@@ -29,11 +29,11 @@ BuildRequires:  libdrm-devel
 BuildRequires:  libffi-devel
 BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  rocm-device-libs
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 BuildRequires:  xxd
 %endif
 
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 BuildRequires:  libelf-devel
 %else
 BuildRequires:  elfutils-libelf-devel
@@ -95,7 +95,7 @@ fi
 %{_libdir}/cmake/hsa-runtime64/
 
 %changelog
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 * Sun Nov 3 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 

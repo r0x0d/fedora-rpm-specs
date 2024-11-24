@@ -14,7 +14,7 @@
 Summary: An extensible library which provides authentication for applications
 Name: pam
 Version: 1.7.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
 # pam_timestamp and pam_loginuid modules are GPLv2+.
@@ -35,6 +35,8 @@ Source18: https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
 Patch1:  pam-1.7.0-redhat-modules.patch
 Patch2:  pam-1.5.3-unix-nomsg.patch
 Patch3:  pam-1.7.0-fop-optional.patch
+# https://github.com/linux-pam/linux-pam/commit/940747f88c16e029b69a74e80a2e94f65cb3e628
+Patch4:  pam-1.5.1-pam-access-resolve-ip.patch
 
 %{load:%{SOURCE3}}
 
@@ -133,6 +135,7 @@ cp %{SOURCE18} .
 %patch -P 1 -p1 -b .redhat-modules
 %patch -P 2 -p1 -b .nomsg
 %patch -P 3 -p1 -b .fop
+%patch -P 4 -p1 -b .pam-access-resolve-ip
 
 %build
 %meson \
@@ -364,6 +367,10 @@ done
 %{_pam_libdir}/libpam_misc.so.%{so_ver}*
 
 %changelog
+* Fri Nov 22 2024 Iker Pedrosa <ipedrosa@redhat.com> - 1.7.0-3
+- pam_access: rework resolving of tokens as hostname.
+  Resolves: CVE-2024-10963
+
 * Thu Oct 31 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 1.7.0-2
 - Fix documentation
 

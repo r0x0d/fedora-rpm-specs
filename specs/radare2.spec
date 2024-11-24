@@ -1,6 +1,6 @@
 Name:           radare2
 Summary:        The reverse engineering framework
-Version:        5.9.6
+Version:        5.9.8
 URL:            https://radare.org/
 %global         vcsurl          https://github.com/radareorg/radare2
 VCS:            git:%{vcsurl}
@@ -21,9 +21,14 @@ VCS:            git:%{vcsurl}
 
 %global         gituser         radareorg
 %global         gitname         radare2
-%global         gitdate         20241013
-%global         commit          2d36454e9914a5e0c03906b3e8d1e9fe4a2df6b7
+%global         gitdate         20241119
+%global         commit          4eb49d5ad8c99eaecc8850a2f10bad407067c898
 %global         shortcommit     %(c=%{commit}; echo ${c:0:7})
+
+# autorelease not available on epel7
+%if ! ( 0%{?rhel} && 0%{?rhel} <= 7 )
+%global         autorelease    1
+%endif
 
 
 %if %{with releasetag}
@@ -51,8 +56,10 @@ Patch3:         radare2-5.9.0-use_magic.patch
 # https://github.com/radareorg/radare2/commit/1bdda93e348c160c84e30da3637acef26d0348de
 # Patch6:         radare2-5.8.8-CVE-2023-5686.patch
 
-
-
+# Build reports need for C99 compatibility mode for the index type declaration in the for cycle.
+# As rest of the radare2 is strictly defining all index variables prior to for cycle, it is recommended
+# to change this one as well
+Patch7:           radare2-5.9.8-dec99.patch
 
 
 License:        LGPL-3.0-or-later AND GPL-2.0-or-later AND BSD-2-Clause AND BSD-3-Clause AND MIT AND Apache-2.0 AND MPL-2.0 AND Zlib
@@ -371,10 +378,14 @@ mkdir -p %{buildroot}%{_libdir}/%{name}/%{version}
 %{_datadir}/%{name}/%{version}/syscall
 %{_datadir}/%{name}/%{version}/charsets
 %{_datadir}/%{name}/%{version}/platform
+%{_datadir}/%{name}/%{version}/scripts
+
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/doc/%{name}
 %dir %{_datadir}/%{name}/%{version}
 
 
 %changelog
+%if ! ( 0%{?rhel} && 0%{?rhel} <= 7 )
 %autochangelog
+%endif

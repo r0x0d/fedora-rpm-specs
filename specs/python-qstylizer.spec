@@ -1,7 +1,7 @@
 %global pypi_name qstylizer
 
 Name:           python-%{pypi_name}
-Version:        0.2.3
+Version:        0.2.4
 Release:        %autorelease
 Summary:        Stylesheet generator for PyQt/PySide
 

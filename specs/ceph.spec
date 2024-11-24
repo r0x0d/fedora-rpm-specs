@@ -185,7 +185,7 @@
 #################################################################################
 Name:		ceph
 Version:	19.2.0
-Release:	4%{?dist}
+Release:	5%{?dist}
 %if 0%{?fedora} || 0%{?rhel}
 Epoch:		2
 %endif
@@ -2715,6 +2715,9 @@ exit 0
 %{python3_sitelib}/ceph_node_proxy-*
 
 %changelog
+* Fri Nov 22 2024 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 2:19.2.0-5
+- build in f42-build-side-100844
+
 * Mon Nov 18 2024 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 2:19.2.0-4
 - and back; ceph-19.2.0 scikit_learn -> scikit-learn  rhbz#2327036
 

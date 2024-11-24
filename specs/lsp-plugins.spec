@@ -1,11 +1,15 @@
 Name:           lsp-plugins
 Version:        1.2.19
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Linux Studio Plugins
 
 License:        LGPL-3.0-or-later and Zlib
 URL:            https://lsp-plug.in/
 Source0:        https://github.com/sadko4u/%{name}/releases/download/%{version}/%{name}-src-%{version}.tar.gz
+
+# Fixed atomic operations for AArch64
+# https://github.com/lsp-plugins/lsp-common-lib/commit/156be4d61c57d805745b85d7fadb781a4bc581b0
+Patch0:         156be4d61c57d805745b85d7fadb781a4bc581b0.patch
 
 ExcludeArch: %{ix86}
 
@@ -189,6 +193,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 %{_libdir}/gstreamer-1.0/libgstlsp-plugins*.so
 
 %changelog
+* Thu Nov 21 2024 Janne Grunau <janne-fdr@jannau.net> - 1.2.19-2
+- Backport upstream aarch64 atomic_swap fix. Fixes rhbz#2327886
+
 * Wed Nov 13 2024 Nikolas Nyby <nikolas@gnu.org> - 1.2.19-1
 - Update to 1.2.19
 - Switch to pipewire-jack-audio-connection-kit-devel where available

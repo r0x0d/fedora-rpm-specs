@@ -1,13 +1,11 @@
 Name:           mediawriter
-Version:        5.1.90
-Release:        2%{?dist}
+Version:        5.2.0
+Release:        1%{?dist}
 Summary:        Fedora Media Writer
 
 License:        LGPL-2.0-or-later AND GPL-2.0-or-later
 URL:            https://github.com/FedoraQt/MediaWriter
 Source0:        https://github.com/FedoraQt/MediaWriter/archive/MediaWriter-%{version}.tar.gz
-
-Patch0:         mediawriter-fix-overfloating-heading-for-longer-texts.patch
 
 Provides:       liveusb-creator = %{version}-%{release}
 Obsoletes:      liveusb-creator <= 3.95.4-2
@@ -74,6 +72,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/org.fedo
 %{_datadir}/icons/hicolor/512x512/apps/org.fedoraproject.MediaWriter.png
 
 %changelog
+* Fri Nov 22 2024 Jan Grulich <jgrulich@redhat.com> - 5.2.0-1
+- 5.2.0
+
 * Mon Nov 11 2024 Jan Grulich <jgrulich@redhat.com> - 5.1.90-2
 - Fix overfloating heading for longer texts
   Resolves: bz#2324977

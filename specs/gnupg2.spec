@@ -3,7 +3,7 @@
 Summary: Utility for secure communication and data storage
 Name:    gnupg2
 Version: 2.4.5
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: CC0-1.0 AND GPL-2.0-or-later AND GPL-3.0-or-later AND LGPL-2.1-or-later AND LGPL-3.0-or-later AND (BSD-3-Clause OR LGPL-3.0-or-later OR GPL-2.0-or-later) AND CC-BY-4.0 AND MIT
 Source0: https://gnupg.org/ftp/gcrypt/%{?pre:alpha/}gnupg/gnupg-%{version}%{?pre}.tar.bz2
@@ -228,6 +228,9 @@ make -k check
 
 
 %changelog
+* Wed Nov 13 2024 Michael J Gruber <mjg@fedoraproject.org> - 2.4.5-4
+- rebuild against npth-1.8
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.5-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

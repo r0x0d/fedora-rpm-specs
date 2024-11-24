@@ -1,5 +1,5 @@
-%global nspr_version 4.35.0
-%global nss_version 3.105.0
+%global nspr_version 4.36.0
+%global nss_version 3.106.0
 # NOTE: To avoid NVR clashes of nspr* packages:
 # - reset %%{nspr_release} to 1, when updating %%{nspr_version}
 # - increment %%{nspr_version}, when updating the NSS part only
@@ -7,7 +7,7 @@
 %global nss_release %baserelease
 # use "%%global nspr_release %%[%%baserelease+n]" to handle offsets when
 # release number between nss and nspr are different.
-%global nspr_release %[%baserelease+29]
+%global nspr_release %[%baserelease+0]
 # only need to update this as we added new
 # algorithms under nss policy control
 %global crypto_policies_version 20240521
@@ -135,6 +135,7 @@ Patch41:          nss-3.101-enable-kyber-policy.patch
 
 # fix unused variable warnings
 Patch42:          nss-3.103-unused-cipherwrap2.patch
+Patch43:          nss-3.106.0-tests.patch
 
 Patch100:         nspr-config-pc.patch
 Patch101:         nspr-gcc-atomics.patch
@@ -1084,6 +1085,9 @@ fi
 
 
 %changelog
+* Tue Nov 19 2024 Bojan Smojver <bojan@rexursive.com> - 3.106.0-1
+- Update NSS to 3.106.0
+
 * Thu Oct 3 2024 Frantisek Krenzelok <krenzelok.frantisek@gmail.com> - 3.105.0-1
 - Update NSS to 3.105.0
 

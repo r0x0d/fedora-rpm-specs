@@ -1,4 +1,5 @@
 %bcond_without  tests
+%global pypi_name distroinfo
 
 %global summary Parsing and querying distribution metadata stored in text/YAML files
 
@@ -12,13 +13,13 @@ well suited for the task of interfacing with distribution metadata in a human\
 friendly way. If you consider code reviews human friendly, that is.\
 
 Name:             python-distroinfo
-Version:          0.6.2
+Version:          0.6.3
 Release:          %autorelease
 Summary:          %{summary}
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:          Apache-2.0
 URL:              https://github.com/softwarefactory-project/distroinfo
-Source0:          https://pypi.io/packages/source/d/distroinfo/distroinfo-%{version}.tar.gz
+Source0:          %pypi_source
 BuildArch:        noarch
 
 %description %desc
@@ -31,7 +32,7 @@ Requires:         git-core
 %description -n python3-distroinfo %{desc}
 
 %prep
-%autosetup -n distroinfo-%{version} -p1
+%autosetup -n %{pypi_name}-%{version} -p1
 
 %generate_buildrequires
 %pyproject_buildrequires %{?with_tests:-t}
@@ -40,6 +41,7 @@ Requires:         git-core
 %pyproject_wheel
 
 %if %{with tests}
+rm -rf tests/integration
 %check
 %tox
 %endif

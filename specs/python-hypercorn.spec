@@ -1,5 +1,5 @@
 Name:           python-hypercorn
-Version:        0.17.2
+Version:        0.17.3
 Release:        %autorelease
 Summary:        ASGI Server based on Hyper libraries and inspired by Gunicorn
 
@@ -13,9 +13,9 @@ Source:         %{url}/archive/%{version}/hypercorn-%{version}.tar.gz
 #
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 Patch:          0001-Downstream-only-patch-out-coverage-analysis.patch
-# Remove executable permissions from non-script sources
-# https://github.com/pgjones/hypercorn/pull/186
-Patch:          %{url}/pull/186.patch
+# Remove unnecessary aioquic version limit
+# https://github.com/pgjones/hypercorn/pull/267
+Patch:          %{url}/pull/267.patch
 
 BuildArch:      noarch
 
@@ -70,7 +70,13 @@ install -d %{buildroot}%{_mandir}/man1
 
 
 %check
-%tox -- -- -v
+# This test requires a current python-trio, but updating it has been blocked by
+# various compatibility issues; see
+# https://src.fedoraproject.org/rpms/python-trio/pull-request/6 and
+# https://bugzilla.redhat.com/show_bug.cgi?id=2254476.
+k="${k-}${k+ and }not test_startup_failure"
+
+%tox -- -- -v -k "${k-}"
 
 
 %files -n python3-hypercorn -f %{pyproject_files}
