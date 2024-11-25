@@ -2,7 +2,7 @@
 %global debug_package %{nil}
 
 %global forgeurl https://github.com/root-project/veccore
-Version:        0.8.1
+Version:        0.8.2
 %forgemeta
 
 Name:           veccore

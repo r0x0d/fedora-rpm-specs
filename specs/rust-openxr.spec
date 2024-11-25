@@ -13,6 +13,9 @@ Summary:        High-level, mostly-safe OpenXR bindings
 License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/openxr
 Source:         %{crates_source}
+# https://github.com/Ralith/openxrs/issues/179
+Source100:      https://raw.githubusercontent.com/Ralith/openxrs/refs/heads/master/LICENSE-APACHE
+Source101:      https://raw.githubusercontent.com/Ralith/openxrs/refs/heads/master/LICENSE-MIT
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          openxr-fix-metadata-auto.diff
 
@@ -33,7 +36,8 @@ This package contains library source intended for building other packages which
 use the "%{crate}" crate.
 
 %files          devel
-# FIXME: no license files detected
+%license %{crate_instdir}/LICENSE-APACHE
+%license %{crate_instdir}/LICENSE-MIT
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
@@ -112,6 +116,8 @@ use the "static" feature of the "%{crate}" crate.
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
+# Copy LICENSE files
+cp -pav %{SOURCE100} %{SOURCE101} .
 
 %generate_buildrequires
 %cargo_generate_buildrequires

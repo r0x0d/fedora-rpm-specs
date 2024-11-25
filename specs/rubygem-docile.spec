@@ -3,12 +3,15 @@
 Summary:       Docile keeps your Ruby DSLs tame and well-behaved
 Name:          rubygem-%{gem_name}
 Version:       1.1.5
-Release:       21%{?dist}
+Release:       22%{?dist}
 License:       MIT
 URL:           https://ms-ati.github.com/docile/
 Source0:       https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # https://github.com/ms-ati/docile/pull/106
 Patch0:        docile-pr106-ruby33-NomethodError-msg.patch
+# From https://github.com/ms-ati/docile/pull/108
+# Extract patch to support ruby34 error msg syntax change
+Patch1:        docile-pr108-support-ruby34-error-msg-syntax.patch
 %if 0%{?fc19} || 0%{?fc20} || 0%{?el7}
 Requires:      ruby(release)
 Requires:      ruby(rubygems)
@@ -45,6 +48,7 @@ Documentation for %{name}
 gem unpack %{SOURCE0}
 %setup -q -D -T -n  %{gem_name}-%{version}
 %patch -P0 -p1
+%patch -P1 -p1
 gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 
 %build
@@ -79,6 +83,9 @@ rspec -Ilib spec
 %{gem_instdir}/spec
 
 %changelog
+* Sat Nov 23 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.1.5-22
+- Extract patch from upstream to support ruby34 error msg syntax change
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.5-21
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

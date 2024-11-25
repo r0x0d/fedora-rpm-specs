@@ -5,9 +5,9 @@
 %global crate claims
 
 Name:           rust-claims
-Version:        0.7.1
+Version:        0.8.0
 Release:        %autorelease
-Summary:        Assertion macros
+Summary:        Additional assertion macros for testing
 
 License:        Apache-2.0 OR MIT
 URL:            https://crates.io/crates/claims
@@ -16,7 +16,7 @@ Source:         %{crates_source}
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-Assertion macros.}
+Additional assertion macros for testing.}
 
 %description %{_description}
 

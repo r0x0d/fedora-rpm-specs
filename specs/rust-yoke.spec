@@ -5,7 +5,7 @@
 %global crate yoke
 
 Name:           rust-yoke
-Version:        0.7.4
+Version:        0.7.5
 Release:        %autorelease
 Summary:        Abstraction allowing borrowed data to be carried along with its backing data
 
@@ -14,7 +14,7 @@ URL:            https://crates.io/crates/yoke
 Source:         %{crates_source}
 # * Downstream-only: ignore an example that would depend on the postcard crate:
 #   it is not worth packaging this merely to compile an example.
-Patch10:       0001-Downstream-only-ignore-an-example-that-would-depend-.patch
+Patch10:        0001-Downstream-only-ignore-an-example-that-would-depend-.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 BuildRequires:  tomcli

@@ -1,7 +1,7 @@
 %global         forgeurl https://github.com/osbuild/osbuild
 %global         selinuxtype targeted
 
-Version:        132
+Version:        135
 
 %forgemeta
 
@@ -138,7 +138,10 @@ Summary:        Dependency solving support for DNF
 Requires:       %{name} = %{version}-%{release}
 
 # RHEL 11 and Fedora 41 and later use libdnf5, RHEL < 11 and Fedora < 41 use dnf
-%if 0%{?fedora} >= 41 || 0%{?rhel} >= 11
+# On Fedora 41 however, we force dnf4 (and depend on python3-dnf) until dnf5 issues are resolved.
+# See https://github.com/rpm-software-management/dnf5/issues/1748
+# and https://issues.redhat.com/browse/COMPOSER-2361
+%if 0%{?rhel} >= 11
 Requires: python3-libdnf5 >= 5.2.1
 %else
 Requires: python3-dnf
@@ -227,7 +230,10 @@ install -p -m 0755 tools/osbuild-depsolve-dnf %{buildroot}%{_libexecdir}/osbuild
 # Configure the solver for dnf
 mkdir -p %{buildroot}%{_datadir}/osbuild
 # RHEL 11 and Fedora 41 and later use dnf5, RHEL < 11 and Fedora < 41 use dnf
-%if 0%{?fedora} >= 41 || 0%{?rhel} >= 11
+# On Fedora 41 however, we force dnf4 (and depend on python3-dnf) until dnf5 issues are resolved.
+# See https://github.com/rpm-software-management/dnf5/issues/1748
+# and https://issues.redhat.com/browse/COMPOSER-2361
+%if 0%{?rhel} >= 11
 install -p -m 0644 tools/solver-dnf5.json %{buildroot}%{pkgdir}/solver.json
 %else
 install -p -m 0644 tools/solver-dnf.json %{buildroot}%{pkgdir}/solver.json
@@ -310,6 +316,15 @@ fi
 %{pkgdir}/solver.json
 
 %changelog
+* Fri Nov 22 2024 Packit <hello@packit.dev> - 135-1
+Changes with 135
+----------------
+  * test: regenerate X509 test certs (#1931)
+    * Author: Lukáš Zapletal, Reviewers: Ondřej Ezr, Tomáš Hozza
+
+— Somewhere on the Internet, 2024-11-22
+
+
 * Wed Oct 23 2024 Packit <hello@packit.dev> - 132-1
 Changes with 132
 ----------------

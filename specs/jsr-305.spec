@@ -45,8 +45,8 @@ sed -i /^package/s/net.jcip.annotations/javax.annotation.concurrent/ ri/src/main
 %pom_xpath_set "pom:plugin[pom:artifactId='maven-compiler-plugin']/pom:configuration/*" 1.8
 %pom_remove_plugin :maven-compiler-plugin ri
 
-sed -i 's|<groupId>com\.google\.code\.findbugs</groupId>|<groupId>org.jsr-305</groupId>|' ri/pom.xml
-sed -i 's|<artifactId>jsr305</artifactId>|<artifactId>ri</artifactId>|' ri/pom.xml
+%pom_xpath_set '/pom:project/pom:groupId' 'org.jsr-305' ri/pom.xml
+%pom_xpath_set '/pom:project/pom:artifactId' 'ri' ri/pom.xml
 
 %mvn_file :ri %{name}
 %mvn_alias :ri com.google.code.findbugs:jsr305

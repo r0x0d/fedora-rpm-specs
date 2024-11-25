@@ -18,11 +18,11 @@
 %global		git_builddir	%{nil}
 
 %if 0%{?use_gitbare} >= 1
-%global		gitbaredate	20240825
-%global		gitbaretime	1605
+%global		tarballdate	20241123
+%global		tarballtime	1608
 
-%global		githeaddate	20240821
-%global		git_rev		aa4860d6a7d55284eb92ae8c42df0af879d0b6df
+%global		githeaddate	20241103
+%global		git_rev		1312f60320ea3e8dde9777838c42af897ea08548
 %global		git_short		%(echo %{git_rev} | cut -c-8)
 %global		git_version	%{githeaddate}git%{git_short}
 %endif
@@ -32,21 +32,30 @@
 
 %undefine		_changelog_trimtime
 
-%if 0%{?use_git} || 0%{?use_gitbare}
+%if 0%{?use_gitbare}
 %global		git_ver_rpm	^%{git_version}
 %global		git_builddir	-%{git_version}
 %endif
 
+%global		use_gcc_strict_sanitize	0
+
+%global		flagrel	%{nil}
+%if	0%{?use_gcc_strict_sanitize} >= 1
+%global		flagrel	%{flagrel}.san
+%endif
+
+#%%undefine _annotated_build
+
 Name:		pcmanfm
 Version:	%{main_version}%{git_ver_rpm}
-Release:	1%{?dist}
+Release:	1%{?dist}%{flagrel}
 Summary:	Extremly fast and lightweight file manager
 
 # SPDX confirmed
 License:	GPL-2.0-or-later
 URL:		http://pcmanfm.sourceforge.net/
 %if 0%{?use_gitbare} >= 1
-Source0:	%{name}-%{gitbaredate}T%{gitbaretime}.tar.gz
+Source0:	%{name}-%{tarballdate}T%{tarballtime}.tar.gz
 %endif
 %if 0%{?use_release} >= 1
 Source0:	http://downloads.sourceforge.net/pcmanfm/%{name}-%{main_version}%{?prever}.tar.xz
@@ -80,6 +89,10 @@ BuildRequires:	intltool
 %if 0%{?use_gitbare}
 BuildRequires:	automake
 BuildRequires:	intltool
+%endif
+%if 0%{?use_gcc_strict_sanitize}
+BuildRequires:	libasan
+BuildRequires:	libubsan
 %endif
 
 BuildRequires:	git
@@ -148,7 +161,7 @@ cat %PATCH103 | git am
 cat %PATCH104 | git am
 cat %PATCH202 | git am
 
-%if 0%{?use_git} || 0%{?use_gitbare}
+%if 0%{?use_gitbare}
 sh autogen.sh
 
 # Patch0
@@ -164,6 +177,12 @@ chmod u+x configure
 chmod u+x */
 
 %build
+%if 0%{?use_gcc_strict_sanitize}
+export CC="${CC} -fsanitize=address -fsanitize=undefined"
+export CXX="${CXX} -fsanitize=address -fsanitize=undefined"
+export LDFLAGS="${LDFLAGS} -pthread"
+%endif
+
 %if 0%{?use_gitbare}
 cd %{name}
 %endif
@@ -219,6 +238,9 @@ cd ..
 %{_includedir}/pcmanfm-modules.h
 
 %changelog
+* Sat Nov 23 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.3.2^20241103git1312f603-1
+- Update to the latest git
+
 * Sun Aug 25 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.3.2^20240821gitaa4860d6-1
 - Update to the latest git
 

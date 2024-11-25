@@ -1,7 +1,6 @@
-# 6/27/24 - temporary disable __brp_add_determinism
-# as it prevents the package from successfully building
+
 %if 0%{?fedora} >= 41
-# on Fedora 41/Rawhide
+# on Fedora >= 41
 %undefine __brp_add_determinism
 %endif
 %global debug_package %{nil}
@@ -12,8 +11,8 @@
 #################################################
 # Make sure these are changed for every release!
 #################################################
-%global swift_version 6.0.1-RELEASE
-%global package_version 6.0.1
+%global swift_version 6.0.2-RELEASE
+%global package_version 6.0.2
 %global fedora_release 1
 
 %global swift_source_location swift-source
@@ -101,6 +100,9 @@ Patch3:         enable_lzma.patch
 Patch4:         resource_dir.patch
 Patch5:         have_strcat.patch
 Patch6:         latest_python.patch
+Patch7:         disable_warning.patch
+Patch8:         no_testable_package.patch
+Patch9:         clang_crash_fix.patch
 
 BuildRequires:  clang
 BuildRequires:  swig
@@ -121,9 +123,29 @@ Requires:       glibc-devel
 Requires:       binutils-gold
 Requires:       gcc
 
+Recommends:     libstdc++-devel
+Recommends:     gcc-c++
+
 ExclusiveArch:  x86_64 aarch64 
 
 Provides:       swiftlang = %{version}-%{release}
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=2291122
+# (python3-swiftclient provides a program called "swift" 
+# that clashes with the binary created by this package)
+# This is currently for all versions, so we don't
+# specify one
+Conflicts:      python3-swiftclient
+
+
+# Per https://bugzilla.redhat.com/show_bug.cgi?id=2324076 we
+# need to exclude all of the LLVM libraries, basically everything
+# we bundle, from being picked up by the RPM dependency 
+# generator for "provides" (i.e. we don't want to have our
+# version of liblldb.so found when someone is searching for 
+# general version of LLDB).
+%global __provides_exclude ^(libLTO[.]so.*|libclang_rt.*.so.*|liblldb[.]so.*)$
+%global __requires_exclude ^(libLTO[.]so.*|libclang_rt.*.so.*|liblldb[.]so.*)$
 
 
 %description
@@ -229,9 +251,23 @@ popd
 %patch -P6 -p0
 %endif
 
+# disable warning treated as error in libdispatch
+%patch -P7 -p0
+
+# Disable integration tests as they are causing the packaging
+# to fail (after Swift has been successfully built)
+%patch -P8 -p0
+
+# The clang compiler crashes on Fedora 42 and Rawhide
+# on x86_64 on a particular file
+%if 0%{?fedora} >= 42 
+%ifarch x86_64 
+%patch -P9 -p0
+%endif
+%endif
+
 %build
 export VERBOSE=1
-
 # Here we go!
 swift/utils/build-script --preset=buildbot_linux,no_test install_destdir=%{_builddir} installable_package=%{_builddir}/swift-%{version}-%{linux_version}.tar.gz
 
@@ -277,9 +313,13 @@ export QA_SKIP_RPATHS=1
 
 
 %changelog
+* Thu Nov 14 2024 Ron Olson <tachoknight@gmail.com> - 6.0.2-1
+- Updated to Swift 6.0.2-RELEASE
+  Resolves: rhbz#2291122
+  Resolves: rhbz#2322729
+  Resolves: rhbz#2324076
 * Wed Sep 25 2024 Ron Olson <tachoknight@gmail.com> - 6.0.1-1
 - Updated to Swift 6.0.1-RELEASE
-  Resolves: rhbz#2313366
 * Mon Sep 16 2024 Ron Olson <tachoknight@gmail.com> - 6.0-1
 - Updated to Swift 6.0-RELEASE
 * Mon Aug 26 2024 Zephyr Lykos <fedora@mochaa.ws> - 6.0-1

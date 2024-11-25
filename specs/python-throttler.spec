@@ -8,6 +8,9 @@ License:        MIT
 URL:            https://github.com/uburuntu/throttler
 # GitHub archive contains tests and examples; PyPI sdist does not
 Source:         %{url}/archive/v%{version}/throttler-%{version}.tar.gz
+# Fix tests for Python 3.14
+# https://github.com/uburuntu/throttler/pull/6
+Patch:          %{url}/pull/6.patch
 
 BuildArch:      noarch
 
@@ -28,7 +31,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -n throttler-%{version}
+%autosetup -n throttler-%{version} -p1
 
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 sed -r -i 's/^(codecov|flake8|pytest-cov)/# &/' requirements-dev.txt

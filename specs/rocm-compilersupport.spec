@@ -479,6 +479,7 @@ p=$PWD
  -DCMAKE_BUILD_TYPE=%{build_type} \\\
  -DCMAKE_INSTALL_DO_STRIP=ON \\\
  -DCMAKE_INSTALL_PREFIX=%{bundle_prefix} \\\
+ -DENABLE_LINKER_BUILD_ID=ON \\\
  -DLLVM_BUILD_LLVM_DYLIB=ON \\\
  -DLLVM_LINK_LLVM_DYLIB=ON \\\
  -DLLVM_BINUTILS_INCDIR=%{_includedir} \\\
@@ -531,8 +532,17 @@ export LD_LIBRARY_PATH=$PWD/build-llvm/lib
 
 popd
 
-b=$p/build-llvm
+build_stage1=$p/build-llvm
 
+%global llvmrocm_tools_config \\\
+    -DCMAKE_AR=$build_stage1/bin/llvm-ar \\\
+    -DCMAKE_C_COMPILER=$build_stage1/bin/clang \\\
+    -DCMAKE_CXX_COMPILER=$build_stage1/bin/clang++ \\\
+    -DCMAKE_LINKER=$build_stage1/bin/ld.lld \\\
+    -DCMAKE_RANLIB=$build_stage1/bin/llvm-ranlib \\\
+    -DLLVM_ROOT=$build_stage1 \\\
+    -DClang_DIR=$build_stage1/lib/cmake/clang \\\
+    -DLLD_DIR=$build_stage1/lib/cmake/lld
 #
 # COMPILER-RT
 #
@@ -546,6 +556,7 @@ pushd .
 %endif
 
 %cmake %{llvmrocm_cmake_config} \
+       %{llvmrocm_tools_config} \
        -DCOMPILER_RT_BUILD_BUILTINS=ON \
        -DCOMPILER_RT_BUILD_GWP_ASAN=OFF \
        -DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
@@ -554,28 +565,11 @@ pushd .
        -DCOMPILER_RT_BUILD_PROFILE=OFF \
        -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
        -DCOMPILER_RT_BUILD_XRAY=OFF \
-       -DCMAKE_C_COMPILER=$b/bin/clang \
-       -DCMAKE_CXX_COMPILER=$b/bin/clang++ \
-       -DCMAKE_INSTALL_PREFIX=%{bundle_prefix}/lib/clang/%{llvm_maj_ver} \
        -DCMAKE_INSTALL_LIBDIR=lib \
-       -DLLVM_ROOT=$b \
-       -DClang_DIR=$b/lib/cmake/clang \
-       -DLLD_DIR=$b/lib/cmake/lld
-
+       -DCMAKE_INSTALL_PREFIX=%{bundle_prefix}/lib/clang/%{llvm_maj_ver}
 
 %cmake_build -j ${JOBS}
 popd
-
-%global llvmrocm_tools_config \\\
-    -DCMAKE_AR=$b/bin/llvm-ar \\\
-    -DCMAKE_C_COMPILER=$b/bin/clang \\\
-    -DCMAKE_CXX_COMPILER=$b/bin/clang++ \\\
-    -DCMAKE_INSTALL_RPATH=%{bundle_prefix}/lib \\\
-    -DCMAKE_LINKER=$b/bin/ld.lld \\\
-    -DCMAKE_RANLIB=$b/bin/llvm-ranlib \\\
-    -DLLVM_ROOT=$b \\\
-    -DClang_DIR=$b/lib/cmake/clang \\\
-    -DLLD_DIR=$b/lib/cmake/lld
 
 #
 # DEVICE LIBS
@@ -599,9 +593,9 @@ pushd .
 %cmake_build -j ${JOBS}
 popd
 
-d=$p/build-devicelibs
+build_devicelibs=$p/build-devicelibs
 %global llvmrocm_devicelibs_config \\\
-	-DAMDDeviceLibs_DIR=$d/%{_lib}/cmake/AMDDeviceLibs
+	-DAMDDeviceLibs_DIR=$build_devicelibs/%{_lib}/cmake/AMDDeviceLibs
 
 #
 # COMGR
@@ -618,6 +612,7 @@ pushd .
 %cmake %{llvmrocm_cmake_config} \
        %{llvmrocm_tools_config} \
        %{llvmrocm_devicelibs_config} \
+       -DCMAKE_INSTALL_RPATH=%{bundle_prefix}/lib \
        -DBUILD_SHARED_LIBS=ON \
        -DCMAKE_INSTALL_PREFIX=%{_prefix} \
        -DCMAKE_INSTALL_LIBDIR=%{_lib}
@@ -640,6 +635,7 @@ pushd .
 %cmake %{llvmrocm_cmake_config} \
        %{llvmrocm_tools_config} \
        %{llvmrocm_devicelibs_config} \
+       -DCMAKE_INSTALL_RPATH=%{bundle_prefix}/lib \
        -DCMAKE_INSTALL_PREFIX=%{_prefix} \
        -DCMAKE_INSTALL_LIBDIR=%{_lib}
 
@@ -761,8 +757,14 @@ pushd .
 popd
 
 rm -rf %{buildroot}%{_prefix}/hip
-if [ -d %{buildroot}%{_prefix}/share/doc ]; then
-    rm -rf %{buildroot}%{_prefix}/share/doc
+if [ -f %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/LICENSE.TXT ]; then
+    rm %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/LICENSE.*
+fi
+if [ -f %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/NOTICES.txt ]; then
+    rm %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/NOTICES.txt
+fi
+if [ -f %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/README.md ]; then
+    rm %{buildroot}%{_prefix}/share/doc/packages/rocm-compilersupport/README.md
 fi
 
 %if 0%{?suse_version}

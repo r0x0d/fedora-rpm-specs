@@ -20,12 +20,13 @@ Source3:        COPYING
 Patch:          git-interactive-rebase-tool-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * bump captur dependency from 0.1 to 1.0
+# * relax claims dependency from 0.7.1 to >=0.7.1,<0.9
 # * bump git2 dependency from 0.18 to 0.19
-# * bump version-track dependency from 0.1 to 1.0
 # * relax rstest dev-dependency from 0.19 to >=0.18.2,<0.24
+# * bump version-track dependency from 0.1 to 1.0
 Patch:          git-interactive-rebase-tool-fix-metadata.diff
 # * https://github.com/MitMaro/git-interactive-rebase-tool/pull/928
-Patch2:        git-interactive-rebase-tool-fix-test.diff
+Patch2:         git-interactive-rebase-tool-fix-test.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

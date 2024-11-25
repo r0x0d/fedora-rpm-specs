@@ -1,6 +1,6 @@
 Name:           ncdu
-Version:        1.20
-Release:        2%{?dist}
+Version:        1.21
+Release:        1%{?dist}
 Summary:        Text-based disk usage viewer
 
 License:        MIT
@@ -36,6 +36,9 @@ and provides a fast way to see what directories are using your disk space.
 %{_bindir}/ncdu
 
 %changelog
+* Sat Nov 23 2024 Richard Fearn <richardfearn@gmail.com> - 1.21-1
+- Update to 1.21
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.20-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

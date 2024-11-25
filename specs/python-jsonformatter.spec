@@ -1,8 +1,8 @@
 %global pkg_name jsonformatter
 
 Name:           python-%{pkg_name}
-Version:        0.3.2
-Release:        5%{?dist}
+Version:        0.3.4
+Release:        1%{?dist}
 Summary:        Formatter to output json logs
 
 License:        BSD-2-Clause
@@ -11,8 +11,6 @@ BuildArch:      noarch
 # PyPI source is incomplete
 Source0:        https://github.com/MyColorfulDays/jsonformatter/archive/v%{version}/%{pkg_name}-%{version}.tar.gz
 
-# Python3.13 compatibility
-Patch0:         jsonformatter-py313.patch
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-pytest
@@ -56,6 +54,9 @@ jsonformatter is a formatter for python to output json logs.
 
 
 %changelog
+* Sat Nov 23 2024 Sandro Mani <manisandro@gmail.com> - 0.3.4-1
+- Update to 0.3.4
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.3.2-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

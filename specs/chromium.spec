@@ -157,7 +157,7 @@
 %endif
 
 # enable qt backend
-%global enable_qt 0
+%global enable_qt 1
 %global use_qt6 0
 %global use_qt 0
 
@@ -280,7 +280,7 @@
 
 Name:	chromium%{chromium_channel}
 Version: 131.0.6778.85
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: A WebKit (Blink) powered web browser that Google doesn't want you to use
 Url: http://www.chromium.org/Home
 License: BSD-3-Clause AND LGPL-2.1-or-later AND Apache-2.0 AND IJG AND MIT AND GPL-2.0-or-later AND ISC AND OpenSSL AND (MPL-1.1 OR GPL-2.0-only OR LGPL-2.0-only)
@@ -337,6 +337,10 @@ Patch141: chromium-118-dma_buf_export_sync_file-conflict.patch
 
 # add correct path for Qt6Gui header and libs
 Patch150: chromium-124-qt6.patch
+Patch151: chromium-131-qt-ui.patch
+
+# revert, it causes ramdom crash on aarch64
+Patch300: chromium-131-revert-decommit-pooled-pages-by-default.patch
 
 # disable memory tagging (epel8 on aarch64) due to new feature IFUNC-Resolver
 # it is not supported in old glibc < 2.30, error: fatal error: 'sys/ifunc.h' file not found
@@ -1053,6 +1057,11 @@ Qt6 UI for chromium.
 
 %if 0%{?rhel} > 9 || 0%{?fedora} > 39
 %patch -P150 -p1 -b .qt6
+%patch -P151 -p1 -b .qt-ui
+%endif
+
+%ifarch aarch64 ppc64le
+%patch -P300 -p1 -R -b .revert-decommit-pooled-pages-by-default
 %endif
 
 %if 0%{?rhel} == 8
@@ -1930,6 +1939,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Sat Nov 23 2024 Than Ngo <than@redhat.com> - 131.0.6778.85-2
+- Enable qt-ui
+- Workaround for random crash
+
 * Wed Nov 20 2024 Than Ngo <than@redhat.com> - 131.0.6778.85-1
 - Update to 131.0.6778.85
   * High CVE-2024-11395: Type Confusion in V8

@@ -1,6 +1,6 @@
 %global module_name cangjie
 %global forgeurl https://gitlab.freedesktop.org/cangjie/pycangjie
-%global archiveext tar.bz2
+%global archiveext tar.xz
 
 Name:             python3-%{module_name}
 Summary:          Python bindings to libcangjie

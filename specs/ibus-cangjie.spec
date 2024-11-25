@@ -4,7 +4,7 @@
 
 Name:             ibus-cangjie
 Summary:          IBus engine to input Cangjie and Quick
-Version:          2.4.1
+Version:          2.5.0
 Release:          %autorelease
 
 %forgemeta
@@ -27,14 +27,14 @@ BuildRequires:    gobject-introspection
 BuildRequires:    gtk3
 BuildRequires:    gsound
 BuildRequires:    libcangjie-data
-BuildRequires:    python3-cangjie >= 1.4
+BuildRequires:    python3-cangjie >= 1.5
 BuildRequires:    python3-coverage
 BuildRequires:    python3-gobject
 
 Requires:         gobject-introspection
 Requires:         gtk3
 Requires:         gsound
-Requires:         python3-cangjie >= 1.4
+Requires:         python3-cangjie >= 1.5
 Requires:         python3-gobject
 
 %description
@@ -93,11 +93,7 @@ export CANGJIE_DB=/usr/share/libcangjie/cangjie.db
 %{_datadir}/glib-2.0/schemas/org.freedesktop.cangjie.ibus.Cangjie.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.freedesktop.cangjie.ibus.Quick.gschema.xml
 %{_datadir}/icons/hicolor/*/intl/*
-
-# Using %%{_prefix}/lib is allowed here because the package is exempt from
-# multilib (because it is noarch), see:
-#     https://fedoraproject.org/wiki/Packaging:Guidelines#Multilib_Exempt_Locations
-%{_prefix}/lib/%{name}
+%{_libexecdir}/ibus-engine-cangjie
 
 %files engine-cangjie
 %{_datadir}/applications/ibus-setup-cangjie.desktop
@@ -105,11 +101,17 @@ export CANGJIE_DB=/usr/share/libcangjie/cangjie.db
 %{_datadir}/metainfo/org.freedesktop.cangjie.ibus.Cangjie.metainfo.xml
 %{_datadir}/ibus/component/org.freedesktop.cangjie.ibus.Cangjie.xml
 
+# Old schema file, for schema migration in this release
+%{_datadir}/glib-2.0/schemas/org.cangjians.ibus.cangjie.gschema.xml
+
 %files engine-quick
 %{_datadir}/applications/ibus-setup-quick.desktop
 %{_datadir}/applications/org.freedesktop.cangjie.ibus.quick-setup.desktop
 %{_datadir}/metainfo/org.freedesktop.cangjie.ibus.Quick.metainfo.xml
 %{_datadir}/ibus/component/org.freedesktop.cangjie.ibus.Quick.xml
+
+# Old schema file, for schema migration in this release
+%{_datadir}/glib-2.0/schemas/org.cangjians.ibus.quick.gschema.xml
 
 %changelog
 %autochangelog

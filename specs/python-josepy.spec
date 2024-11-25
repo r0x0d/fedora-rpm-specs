@@ -5,30 +5,22 @@
 %bcond_without docs
 
 Name:           python-%{pypi_name}
-Version:        1.13.0
-Release:        11%{?dist}
+Version:        1.14.0
+Release:        1%{?dist}
 Summary:        JOSE protocol implementation in Python
 
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://pypi.python.org/pypi/josepy
 Source0:        %{pypi_source}
-Source1:        %{pypi_source}.asc
 Source2:        https://dl.eff.org/certbot.pub
 BuildArch:      noarch
-
-# Remove various unpackaged testing dependencies that are used only for linting
-Patch0:         0000-ignore-missing-linters.patch
-
-# Backport part of the upstream patch to stop using pkg_resources
-# Upstream PR:  https://github.com/certbot/josepy/pull/158
-Patch1:         0001-stop-using-pkg_resources.patch
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-pytest
 
 # Used to verify OpenPGP signature
-BuildRequires:  gnupg2
+#BuildRequires:  gnupg2
 %if 0%{?rhel} && 0%{?rhel} == 8
 # "gpgverify" macro, not in COPR buildroot by default
 BuildRequires:  epel-rpm-macros >= 8-5
@@ -68,8 +60,8 @@ Documentation for python-%{pypi_name}
 %endif
 
 %prep
-%{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup -p1 -n %{pypi_name}-%{version}
+%autosetup -n %{pypi_name}-%{version}
+
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
@@ -82,7 +74,6 @@ rm -rf %{pypi_name}.egg-info
 
 # Build documentation
 %if %{with docs}
-%{__python3} setup.py install --user
 make -C docs man PATH=${HOME}/.local/bin:$PATH SPHINXBUILD=sphinx-build-3
 %endif
 
@@ -105,10 +96,15 @@ install -Dpm0644 -t %{buildroot}%{_mandir}/man1 docs/_build/man/*.1*
 %if %{with docs}
 %files -n python-%{pypi_name}-doc
 %doc README.rst
+%doc %{python3_sitelib}/CHANGELOG.rst
+%doc %{python3_sitelib}/CONTRIBUTING.md
 %{_mandir}/man1/*
 %endif
 
 %changelog
+* Sat Nov 23 2024 Nick Bebout <nb@fedoraproject.org> - 1.14.0-1
+- Update to 1.14.0
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 1.13.0-11
 - convert license to SPDX
 

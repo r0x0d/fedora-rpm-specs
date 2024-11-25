@@ -5,13 +5,17 @@
 %global crate zerofrom-derive
 
 Name:           rust-zerofrom-derive
-Version:        0.1.4
+Version:        0.1.5
 Release:        %autorelease
 Summary:        Custom derive for the zerofrom crate
 
 License:        Unicode-3.0
 URL:            https://crates.io/crates/zerofrom-derive
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+# * Patch out the "zf_derive" example to avoid a circular dependency on the
+#   zerofrom crate.
+Patch:          zerofrom-derive-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

@@ -58,8 +58,7 @@ Provides:       maven-local = %{version}-%{release}
 Requires:       %{name} = %{version}-%{release}
 Requires:       javapackages-local-openjdk21 = %{version}-%{release}
 Requires:       xmvn-minimal
-# Add later once xmvn is built
-#Requires:       xmvn-toolchain-openjdk21
+Requires:       xmvn-toolchain-openjdk21
 Requires:       mvn(org.fedoraproject.xmvn:xmvn-mojo)
 # Common Maven plugins required by almost every build. It wouldn't make
 # sense to explicitly require them in every package built with Maven.

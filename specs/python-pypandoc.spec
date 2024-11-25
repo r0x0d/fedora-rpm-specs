@@ -7,10 +7,10 @@ License:        MIT
 URL:            https://github.com/bebraw/pypandoc
 Source:         https://github.com/JessicaTegner/pypandoc/archive/v%{version_no_tilde}/%{name}-%{version_no_tilde}.tar.gz
 
-# Upstream is too strict with Python version constraint,
-# relax to allow building with Python 3.13
-# Submitted upstream: https://github.com/JessicaTegner/pypandoc/pull/360
-Patch:          Allow-Python-3.13.patch
+# Remove the upper bound of Python version
+# That's the upstream's apporach: https://github.com/JessicaTegner/pypandoc/pull/379
+# Not yet in the released version.
+Patch:          Dont-set-Python-upper-bound.patch
 
 BuildArch:      noarch
 

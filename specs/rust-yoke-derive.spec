@@ -5,13 +5,16 @@
 %global crate yoke-derive
 
 Name:           rust-yoke-derive
-Version:        0.7.4
+Version:        0.7.5
 Release:        %autorelease
 Summary:        Custom derive for the yoke crate
 
 License:        Unicode-3.0
 URL:            https://crates.io/crates/yoke-derive
 Source:         %{crates_source}
+# Manually created patch for downstream crate metadata changes
+# * Patch out the examples to avoid a circular dependency on the yoke crate.
+Patch:          yoke-derive-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

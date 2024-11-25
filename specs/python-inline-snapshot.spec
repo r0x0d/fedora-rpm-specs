@@ -1,3 +1,10 @@
+# This package has support for integrating with Pydantic, including tests that
+# require Pydantic; but both python-pydantic-core and python-pydantic use
+# python-inline-snapshot in their tests, creating a dependency cycle. We can
+# break it by disabling the Pydantic integration tests during bootstrapping.
+%bcond bootstrap 0
+%bcond pydantic_tests %{without bootstrap}
+
 Name:           python-inline-snapshot
 Version:        0.14.0
 Release:        %autorelease
@@ -39,7 +46,10 @@ Summary:        %{summary}
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters).
 tomcli get pyproject.toml -F newline-list \
     'tool.hatch.envs.hatch-test.extra-dependencies' |
-    grep -vE '^(pyright|mypy)' |
+    grep -vE '^(pyright|mypy%{?!with_pydantic_tests:|pydantic})\b' |
+%if %{without pydantic_tests}
+    grep -vE '^(pydantic)\b' |
+%endif
     tee _test-requirements.txt
 
 
@@ -59,6 +69,9 @@ tomcli get pyproject.toml -F newline-list \
 %check
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 ignore="${ignore-} --ignore=tests/test_typing.py"
+%if %{without pydantic_tests}
+ignore="${ignore-} --ignore=tests/test_pydantic.py"
+%endif
 
 # Ignore all DeprecationWarning messages; they may pop up from anywhere in our
 # dependency tree, and this can cause tests that expect precisely-matching
