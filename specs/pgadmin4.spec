@@ -7,7 +7,7 @@ Name:           pgadmin4
 # NOTE: Also regenerate requires as indicated below when updating!
 # Verify Patch4 on next update
 Version:        8.13
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Administration tool for PostgreSQL
 
 # i686, armv7hl: The webpack terser plugin aborts with JS heap memory exhaustion on these arches
@@ -68,7 +68,7 @@ BuildRequires:  optipng
 # cd pgadmin4-<ver>
 # patch -p1 < pgadmin4_requirements.patch
 # python3 /usr/lib/rpm/redhat/pyproject_buildrequires.py -N requirements.txt --output requires 2>/dev/null && cat requires | awk '{print "Requires: "$0}'
-Requires: (python3dist(flask) >= 3 with python3dist(flask) < 3.1)
+Requires: python3dist(flask) >= 3
 Requires: (python3dist(flask-login) >= 0 with python3dist(flask-login) < 1)
 Requires: (python3dist(flask-mail) >= 0 with python3dist(flask-mail) < 1)
 Requires: (python3dist(flask-migrate) >= 4 with python3dist(flask-migrate) < 5)
@@ -265,6 +265,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Sun Nov 24 2024 Sandro Mani <manisandro@gmail.com> - 8.13-2
+- Relax flask requires
+
 * Fri Nov 15 2024 Sandro Mani <manisandro@gmail.com> - 8.13-1
 - Update to 8.13
 

@@ -1,5 +1,5 @@
 Name:    buildbox
-Version: 1.2.29
+Version: 1.2.33
 Release: %autorelease
 Summary: Building blocks to execute actions conforming to the Remote Execution API
 
@@ -53,6 +53,7 @@ Remote Execution API, also supporting the Remote Worker API.
 %license LICENSE
 %{_bindir}/buildbox-casd
 %{_bindir}/buildbox-fuse
+%{_bindir}/buildbox-run
 %{_bindir}/buildbox-run-bubblewrap
 %{_bindir}/buildbox-run-hosttools
 %{_bindir}/buildbox-run-oci

@@ -10,7 +10,8 @@ BuildRequires:  make
 BuildRequires:  pkgconfig(bitlbee) >= 3.4
 BuildRequires:  pkgconfig(json-glib-1.0) >= 0.14.0
 # Tests
-BuildRequires:  util-linux
+# script(1) comes from somewhere in the overall util-linux* package mess
+BuildRequires:  %{_bindir}/script
 
 %description
 The Facebook protocol plugin for BitlBee. This plugin uses the Facebook

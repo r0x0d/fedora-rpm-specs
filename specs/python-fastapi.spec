@@ -48,6 +48,9 @@ BuildArch:      noarch
 # Downstream-only: run test_fastapi_cli without coverage
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 Patch:          0001-Downstream-only-run-test_fastapi_cli-without-coverag.patch
+# ♻️ Update tests and internals for compatibility with Pydantic >=2.10
+# https://github.com/fastapi/fastapi/pull/12971
+Patch:          %{url}/pull/12971.patch
 
 BuildRequires:  python3-devel
 

@@ -1,7 +1,7 @@
 %bcond tests 1
 
 Name:           python-pydantic
-Version:        2.9.2
+Version:        2.10.1
 %global srcversion %{lua:return(rpm.expand("%{version}"):gsub("~",""))}
 Release:        %autorelease
 Summary:        Data validation using Python type hinting
@@ -85,8 +85,28 @@ tomcli-set pyproject.toml append 'tool.pytest.ini_options.filterwarnings' \
 %check
 %pyproject_check_import -e pydantic.mypy -e pydantic.v1.mypy
 %if %{with tests}
+%if %{defined fc40}
+# An error message has different text than the test expects, but the expected
+# error occurs and the message is semantically equivalent, so we can safely
+# skip this test.
+# E       AssertionError: Regex pattern did not match.
+# E        Regex: "Unable\\ to\\ evaluate\\ type\\ annotation\\ 'CustomType\\[int\\]'\\."
+# E        Input: "type 'CustomType' is not subscriptable"
+k="${k-}${k+ and }not test_invalid_forward_ref"
+# This seems to be related to adaptations in the tests for pytest version 8;
+# Fedora 40 still has pytest version 7. See
+# https://github.com/pydantic/pydantic/issues/8674.
+# E       Failed: DID NOT WARN. No warnings of type (<class
+#         'pydantic.json_schema.PydanticJsonSchemaWarning'>,) were emitted.
+# E       The list of emitted warnings is: [].
+k="${k-}${k+ and }not test_callable_fallback_with_non_serializable_default"
+%endif
+
 # We don't build docs or care about benchmarking
-%pytest --ignore=tests/{test_docs.py,benchmarks} -k "${k-}" -rs
+ignore="${ignore-} --ignore=tests/test_docs.py"
+ignore="${ignore-} --ignore=tests/benchmarks"
+
+%pytest ${ignore-} -k "${k-}" -rs
 %endif
 
 

@@ -10,7 +10,7 @@ Name:           python-%{srcname}
 Version:        0.6.2
 Release:        %autorelease
 Summary:        Easier pdb debugging for Django
-License:        Public Domain
+License:        LicenseRef-Fedora-Public-Domain
 URL:            https://github.com/tomchristie/django-pdb
 # PyPI tarball doesn't contain some requirements files
 Source0:        %{pypi_source %{srcname}}

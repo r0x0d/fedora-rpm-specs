@@ -33,7 +33,7 @@
 %constrain_build -m 4096
 
 Name:           uv
-Version:        0.5.2
+Version:        0.5.4
 Release:        %autorelease
 Summary:        An extremely fast Python package installer and resolver, written in Rust
 
@@ -173,10 +173,10 @@ Source100:      %{async_zip_git}/archive/%{async_zip_rev}/rs-async-zip-%{async_z
 # We therefore bundle the fork as prescribed in
 #   https://docs.fedoraproject.org/en-US/packaging-guidelines/Rust/#_replacing_git_dependencies
 %global pubgrub_git https://github.com/astral-sh/pubgrub
-%global pubgrub_rev 95e1390399cdddee986b658be19587eb1fdb2d79
+%global pubgrub_rev 57afc831bf2551f164617a10383cf288bf5d190d
 %global pubgrub_baseversion 0.2.1
-%global pubgrub_snapdate 20241029
-%global version_ranges_baseversion 0.1.0
+%global pubgrub_snapdate 20241115
+%global version_ranges_baseversion 0.1.1
 Source200:      %{pubgrub_git}/archive/%{pubgrub_rev}/pubgrub-%{pubgrub_rev}.tar.gz
 
 # For the time being, uv must use a fork of tl. See:
@@ -188,7 +188,7 @@ Source200:      %{pubgrub_git}/archive/%{pubgrub_rev}/pubgrub-%{pubgrub_rev}.tar
 #   https://github.com/y21/tl/pull/69
 # We therefore bundle the fork as prescribed in
 #   https://docs.fedoraproject.org/en-US/packaging-guidelines/Rust/#_replacing_git_dependencies
-%global tl_git https://github.com/charliermarsh/tl
+%global tl_git https://github.com/astral-sh/tl
 %global tl_rev 6e25b2ee2513d75385101a8ff9f591ef51f314ec
 %global tl_baseversion 0.7.8
 %global tl_snapdate 20240825
@@ -210,18 +210,11 @@ Patch:          0001-Downstream-only-do-not-override-the-default-allocato.patch
 #   https://github.com/astral-sh/uv/issues/4451
 Patch:          0001-Downstream-patch-always-find-the-system-wide-uv-exec.patch
 
-# Downstream-only: use the zlib-ng backend for flate2 on all architectures
+# Downstream-only: Use zlib-ng instead of zlib-rs
 #
-# Upstream excludes s390x and ppc64le because there are issues with the
-# build system for the bundled zlib-ng in the libz-ng-sys crate on those
-# platforms, but we have no such issues because we always link the system
-# zlib-ng, which works fine on these architectures.
-Patch:          0001-Downstream-only-use-the-zlib-ng-backend-for-flate2-o.patch
-# Downstream-only: don’t upper-bound the libz-ng-sys version
-#
-# The upper bound was added for a Windows-specific issue,
-# https://github.com/rust-lang/libz-sys/issues/225
-Patch:          0002-Downstream-only-don-t-upper-bound-the-libz-ng-sys-ve.patch
+# We must package the libz-rs-sys crate in order to unhide the zlib-rs
+# feature of flate2.
+Patch:          0001-Downstream-only-Use-zlib-ng-instead-of-zlib-rs.patch
 
 # These patches are for the forked, bundled async_zip crate.
 #
@@ -442,10 +435,9 @@ mv crates/pubgrub/tests/proptest.rs{,.disabled}
 mv crates/pubgrub/tests/sat_dependency_provider.rs{,.disabled}
 # We can’t have two workspaces!
 tomcli set crates/pubgrub/Cargo.toml del workspace
-# Add missing LICENSE file in published version-ranges crates
-# https://github.com/pubgrub-rs/pubgrub/pull/267
+# Note that install does always dereference symlinks, which is what we want:
 install -t LICENSE.bundled/version-ranges -D -p -m 0644 \
-    crates/pubgrub/LICENSE
+    crates/pubgrub/version-ranges/LICENSE
 git2path workspace.dependencies.version-ranges crates/pubgrub/version-ranges
 
 # See comments above Source400:
@@ -599,6 +591,15 @@ tomcli set Cargo.toml str \
 #   https://bugzilla.redhat.com/show_bug.cgi?id=2316899
 tomcli set Cargo.toml str \
     workspace.dependencies.procfs.version '>=0.16,<0.18'
+
+# thiserror
+#   wanted: 2.0
+#   currently packaged: 1.0.69
+#   https://bugzilla.redhat.com/show_bug.cgi?id=2323087
+tomcli set Cargo.toml str \
+    workspace.dependencies.thiserror.version '>=1.0.69,<3.0'
+tomcli set crates/pubgrub/Cargo.toml str \
+    dependencies.thiserror '>=1.0.69,<3.0'
 
 # which
 #   wanted: 7.0.0

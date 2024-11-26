@@ -8,7 +8,6 @@ URL:              https://www.mirbsd.org/mksh.htm
 Source0:          https://www.mirbsd.org/MirOS/dist/mir/%{name}/%{name}-R%{version}.tgz
 Source1:          dot-mkshrc
 Source2:          rtchecks.expected
-Conflicts:        filesystem < 3
 Provides:         /bin/ksh
 Provides:         /bin/lksh
 Provides:         /bin/mksh
@@ -17,12 +16,14 @@ Provides:         /bin/rksh
 %endif
 Provides:         /bin/rlksh
 Provides:         /bin/rmksh
+Requires:         filesystem >= 3
 Requires(post):   grep
 Requires(post):   alternatives
 Requires(preun):  alternatives
 Requires(postun): sed
 BuildRequires:    gcc
-BuildRequires:    util-linux
+# script(1) comes from somewhere in the overall util-linux* package mess
+BuildRequires:    %{_bindir}/script
 BuildRequires:    ed
 BuildRequires:    perl-interpreter
 BuildRequires:    perl(Getopt::Std)
@@ -229,7 +230,7 @@ done
 
 * Sun Feb 18 2018 Robert Scheck <robert@fedoraproject.org> 56c-3
 - Build flags injection is only partially successful (#1543842)
- 
+
 * Thu Feb 08 2018 Fedora Release Engineering <releng@fedoraproject.org> - 56c-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 

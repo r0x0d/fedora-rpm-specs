@@ -13,8 +13,8 @@ Forerunner 610, Garmin Forerunner 910XT, Garmin FR70,
 Garmin Swim}
 
 Name:           python-%{pretty_name}
-Version:        1.3.1
-Release:        5%{?dist}
+Version:        1.3.2
+Release:        1%{?dist}
 Summary:        A python library to communicate with ANT-FS compliant devices
 
 License:        MIT
@@ -42,13 +42,17 @@ Summary:        %{summary}
 %prep
 %autosetup -n %{pretty_name}-%{version}
 
-%build
-%py3_build
+%generate_buildrequires
+%pyproject_buildrequires -r
 
-%install
+%build
+%pyproject_wheel
+
+%pyproject_install
+%pyproject_save_files openant
+
 %{!?_udevrulesdir: %global _udevrulesdir %{_sysconfdir}/udev/rules.d}
 
-%py3_install
 mkdir -pm 755 %{buildroot}/%{_udevrulesdir}	
 install -pm 644 %{SOURCE2} %{buildroot}/%{_udevrulesdir}
 
@@ -61,16 +65,16 @@ install -pm 644 %{SOURCE2} %{buildroot}/%{_udevrulesdir}
 %postun
 %udev_rules_update
 
-%files -n python3-%{pretty_name}
+%files -n python3-%{pretty_name} -f %{pyproject_files}
 %license LICENSE
 %doc README.md
-%{python3_sitelib}/%{pretty_name}-%{version}-py%{python3_version}.egg-info
-%{python3_sitelib}/%{extract_name}
-%{python3_sitelib}/%{pretty_name}
 %{_bindir}/openant
 %config(noreplace) %{_udevrulesdir}/*
 
 %changelog
+* Sun Nov 24 2024 Iztok Fister Jr. <iztok@iztok-jr-fister.eu> - 1.3.2-1
+- Update to 1.3.2
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

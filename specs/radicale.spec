@@ -16,12 +16,12 @@
 # fedpkg local --define "gitcommit 49d0ad5b18a3867925e2ffd1d8cec21d99e13b3e" -- --undefine=_disable_source_fetch
 #
 ## rebuild SRPMS on a different system using
-# rpmbuild --rebuild -D "gitcommit 49d0ad5b18a3867925e2ffd1d8cec21d99e13b3e" radicale3-<VERSION>-<RELEASE>.YYYYMMDDgitSHORTHASH.DIST.src.rpm
+# rpmbuild --rebuild --define "gitcommit 49d0ad5b18a3867925e2ffd1d8cec21d99e13b3e" radicale3-<VERSION>-<RELEASE>.YYYYMMDDgitSHORTHASH.DIST.src.rpm
 
 %define	radicale_major	3
 
-%define	radicale_version	3.3.0
-%define	radicale_release	2
+%define	radicale_version	3.3.1
+%define	radicale_release	1
 #define gitcommit 8e9fdf391acb79d3fb1cb6e6b8f882f8999192cf
 
 %define	radicale_name	radicale
@@ -166,9 +166,10 @@ Requires(postun): policycoreutils-python-utils
 
 %description -n %{radicale_package_name}-selinux
 SELinux definitions for Radicale (Python3).
-
-Note: storage hooks configuration is currently not supported by packaged
- SELinux policy and requires a local custom policy extension (RHBZ#1928899)
+Supported toggles:
+ - httpd_can_read_write_radicale
+ - radicale_use_fusefs
+ - radicale_use_hook
 
 
 %prep
@@ -180,7 +181,7 @@ Note: storage hooks configuration is currently not supported by packaged
 %autosetup -n Radicale-%{build_version} -p 1
 
 # inject SELinux note
-sed -i 's|\(#hook =\)|# Note: storage hook configuration is currently not supported by packaged SELinux policy and requires a local custom policy extension (RHBZ#1928899)\n\1|' config
+sed -i 's|\(#hook =\)|# Note: in case SELinux is active, set related toggle: setsebool -P radicale_exec_storage_hook 1\n\1|' config
 
 mkdir SELinux
 cp -p %{SOURCE4} %{SOURCE5} %{SOURCE6} SELinux
@@ -417,6 +418,10 @@ fi
 
 
 %changelog
+* Sun Nov 24 2024 Peter Bieringer <pb@bieringer.de> - 3.3.1-1
+- Add sebool for hook (supports RHBZ#1928899)
+- Update to 3.3.1
+
 * Mon Oct 14 2024 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 3.3.0-2
 - Rebuild for rust-add-determinism-0.4.0-2.fc42
 

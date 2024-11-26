@@ -4,8 +4,8 @@
 %global crate pleaser
 
 Name:           rust-pleaser
-Version:        0.5.4
-Release:        5%{?dist}
+Version:        0.5.6
+Release:        1%{?dist}
 Summary:        Please, a polite regex-first sudo alternative
 
 License:        GPL-3.0-or-later
@@ -13,9 +13,8 @@ URL:            https://crates.io/crates/pleaser
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * restrict dependencies on nix and syslog crates to compatible versions
-Patch:          pleaser-fix-metadata.diff
 
-BuildRequires:  rust-packaging >= 23
+BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
 Please, a polite regex-first sudo alternative.}
@@ -131,6 +130,9 @@ EOF
 %endif
 
 %changelog
+* Thu Nov 21 2024 ed neville <ed@s5h.net> - 0.5.6-1
+- Switch to uzers
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.5.4-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

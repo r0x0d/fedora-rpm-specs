@@ -7,10 +7,12 @@
 # Optional integration tests (no effect if tests are disabled)
 %bcond numpy_tests 1
 %bcond pandas_tests 1
+# No python-inline-snapshot on Fedora 40 (dependencies are too old)
+%bcond inline_snapshot_tests %{undefined fc40}
 
 Name:           python-pydantic-core
-Version:        2.23.4
-Release:        2%{?dist}
+Version:        2.27.1
+Release:        1%{?dist}
 Summary:        Core validation logic for pydantic written in rust
 
 License:        MIT
@@ -27,6 +29,9 @@ BuildRequires:  rust-packaging
 BuildRequires:  tomcli >= 0.3.0
 %if %{with tests}
 BuildRequires:  %{py3_dist dirty-equals}
+%if %{with inline_snapshot_tests}
+BuildRequires:  %{py3_dist inline-snapshot}
+%endif
 %if %{with numpy_tests}
 BuildRequires:  %{py3_dist numpy}
 %endif
@@ -38,7 +43,6 @@ BuildRequires:  %{py3_dist pandas}
 %endif
 BuildRequires:  %{py3_dist pytest}
 BuildRequires:  %{py3_dist pytest-mock}
-BuildRequires:  %{py3_dist pytz}
 %endif
 
 
@@ -114,11 +118,11 @@ export RUSTFLAGS="%{build_rustflags}"
 %check
 %pyproject_check_import
 %if %{with tests}
-%if v"0%{?python3_version}" >= v"3.13"
-# the tested output of test_string.py::test_invalid_regex[python-re] has changed in Python 3.13
-deselect='--deselect tests/validators/test_string.py::test_invalid_regex[python-re]'
+ignore="${ignore-} --ignore=tests/benchmarks"
+%if %{without inline_snapshot_tests}
+ignore="${ignore-} --ignore=tests/validators/test_allow_partial.py"
 %endif
-%pytest --ignore=tests/benchmarks ${deselect-} -rs
+%pytest ${ignore-} -rs
 %endif
 
 
@@ -128,6 +132,9 @@ deselect='--deselect tests/validators/test_string.py::test_invalid_regex[python-
 
 
 %changelog
+* Sat Nov 23 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.27.1-1
+- Update to 2.27.1
+
 * Thu Sep 26 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.23.4-2
 - Fix automatic provides on Python extension due to SONAME
 

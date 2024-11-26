@@ -3,7 +3,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 0.21.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: Makes http fun! Also, makes consuming restful web services dead easy
 License: MIT
 URL: https://github.com/jnunemaker/httparty
@@ -11,11 +11,13 @@ Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # git clone https://github.com/jnunemaker/httparty.git && cd httparty
 # git archive -v -o httparty-0.21.0-spec.tar.gz v0.21.0 spec/
 Source1: %{gem_name}-%{version}-spec.tar.gz
-# lib/httparty.rb:require 'json'
-Requires: rubygem(json)
+# https://github.com/jnunemaker/httparty/issues/807
+# support ruby3.4 hash inspect format change
+Patch0:  httparty-issue807-ruby34-inspect-format-change.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby >= 2.3.0
+BuildRequires: rubygem(csv)
 BuildRequires: rubygem(mini_mime)
 BuildRequires: rubygem(multi_xml)
 BuildRequires: rubygem(rspec)
@@ -36,8 +38,15 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version} -b 1
+(
+cd %{_builddir}
+%patch -P0 -p1
+)
 
 %build
+# lib/httparty.rb:require 'json'
+%gemspec_add_dep -g json ">= 2.6"
+%gemspec_add_dep -g base64 ">= 0.2.0"
 # Create the gem as gem install only works on a gem file
 gem build ../%{gem_name}-%{version}.gemspec
 
@@ -97,6 +106,10 @@ popd
 %{gem_instdir}/website
 
 %changelog
+* Sun Nov 24 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.21.0-5
+- Support ruby3.4 hash inspect format change
+- Explicitly add base64 dependency
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.21.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

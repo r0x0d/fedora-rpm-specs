@@ -2,7 +2,7 @@
 %global _description %{summary}.
 
 Name:           python-%{srcname}
-Version:        0.5.0
+Version:        0.7.1
 Release:        %autorelease
 Summary:        Fast iterable JSON parser
 
@@ -19,7 +19,7 @@ License:        %{shrink:
                 MIT
                 }
 URL:            https://github.com/pydantic/jiter/
-Source0:         %{pypi_source %{srcname}}
+Source:         %{pypi_source %{srcname}}
 
 BuildRequires:  python3-devel
 BuildRequires:  tomcli
@@ -53,6 +53,14 @@ rm -r crates/jiter
 # E.g., for 0.5.0, this would allow 0.5.x.
 tomcli set crates/jiter-python/Cargo.toml str dependencies.jiter.version "%{version}"
 tomcli set crates/jiter-python/Cargo.toml del dependencies.jiter.path
+
+# This feature only applies to Windows, and is hidden in our PyO3 packages.
+# We can and should remove it with no consequence.
+tomcli set pyproject.toml lists delitem \
+    tool.maturin.features pyo3/generate-import-lib
+tomcli set crates/jiter-python/Cargo.toml lists delitem \
+    features.extension-module pyo3/generate-import-lib
+
 %cargo_prep
 
 

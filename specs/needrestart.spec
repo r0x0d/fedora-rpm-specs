@@ -1,9 +1,8 @@
 Name:           needrestart
-Version:        3.6
-Release:        14%{?dist}
+Version:        3.8
+Release:        1%{?dist}
 Summary:        Restart daemons after library updates
 
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            https://github.com/liske/%{name}
 Source0:        https://github.com/liske/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
@@ -113,6 +112,13 @@ echo "IUCODE_TOOL_EXTRA_OPTIONS=--ignore-broken" >%{buildroot}/%{_sysconfdir}/de
 
 
 %changelog
+* Sun Nov 24 2024 Steve Cossette <farchord@gmail.com> - 3.8-1
+- Update to 3.8 to fix several CVEs:
+- CVE-2024-48991: Prevent race condition on /proc/$PID/exec evaluation
+- CVE-2024-11003: Drop usage of Module::ScanDeps to prevent LPE.
+- CVE-2024-48990: Do not set PYTHONPATH environment variable to prevent a LPE.
+- CVE-2024-48992: Do not set RUBYLIB environment variable to prevent a LPE.
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 3.6-14
 - convert license to SPDX
 

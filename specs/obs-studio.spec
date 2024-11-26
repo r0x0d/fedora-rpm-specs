@@ -24,8 +24,8 @@
 %global libvlc_soversion 5
 
 
-%global obswebsocket_version 5.5.3
-%global obsbrowser_commit c794b64be90c87387973098ca012a7f79483e1ff
+%global obswebsocket_version 5.5.4
+%global obsbrowser_commit 082a0a2d1c393f66dc68b62fa402ca23d4c02dbe
 %global cef_version 6533
 
 #global commit ad859a3f66daac0d30eebcc9b07b0c2004fb6040
@@ -33,8 +33,8 @@
 #global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           obs-studio
-Version:        31.0.0~beta1
-Release:        4%{?dist}
+Version:        31.0.0~rc1
+Release:        1%{?dist}
 Summary:        Open Broadcaster Software Studio
 
 # OBS itself is GPL-2.0-or-later, while various plugin dependencies are of various other licenses
@@ -52,8 +52,6 @@ Source2:        https://github.com/obsproject/obs-browser/archive/%{obsbrowser_c
 # Backports from upstream
 
 # Proposed upstream
-## From: https://github.com/obsproject/obs-studio/pull/11345
-Patch0100:      https://github.com/obsproject/obs-studio/pull/11345.patch
 ## From: https://github.com/obsproject/obs-studio/pull/8529
 Patch0101:      0101-UI-Consistently-reference-the-software-H264-encoder-.patch
 Patch0102:      0102-obs-ffmpeg-Add-initial-support-for-the-OpenH264-H.26.patch
@@ -101,7 +99,7 @@ BuildRequires:  luajit-devel
 BuildRequires:  mbedtls-devel
 BuildRequires:  nv-codec-headers
 %if %{with vpl}
-BuildRequires:  oneVPL-devel
+BuildRequires:  libvpl-devel
 %endif
 BuildRequires:  pciutils-devel
 BuildRequires:  pipewire-devel
@@ -361,6 +359,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.metainf
 
 
 %changelog
+* Sun Nov 24 2024 Neal Gompa <ngompa@fedoraproject.org> - 31.0.0~rc1-1
+- Update to 31.0.0~rc1
+
 * Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 31.0.0~beta1-4
 - Rebuild for Jansson 2.14
   (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)

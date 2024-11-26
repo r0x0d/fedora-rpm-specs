@@ -22,7 +22,6 @@ BuildArch:      noarch
 Source:         https://github.com/fedora-java/javapackages/archive/%{version}.tar.gz
 
 Patch:          0001-Disable-dependency-generators.patch
-Patch:          0002-Fall-back-to-JRE-21-until-all-packages-explicitly-se.patch
 
 BuildRequires:  coreutils
 BuildRequires:  make
@@ -35,8 +34,6 @@ BuildRequires:  %{python_prefix}-pytest
 Requires:       javapackages-filesystem = %{version}-%{release}
 Requires:       coreutils
 Requires:       findutils
-# provisional
-Requires:       java-21-openjdk-headless
 
 Provides:       jpackage-utils = %{version}-%{release}
 

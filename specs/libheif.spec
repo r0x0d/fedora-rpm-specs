@@ -4,8 +4,8 @@
 %bcond openjph 0
 
 Name:           libheif
-Version:        1.19.3
-Release:        3%{?dist}
+Version:        1.19.5
+Release:        1%{?dist}
 Summary:        HEIF and AVIF file format decoder and encoder
 
 License:        LGPL-3.0-or-later and MIT
@@ -167,6 +167,10 @@ multilibFileVersions %{buildroot}%{_includedir}/%{name}/heif_version.h
 
 
 %changelog
+* Sun Nov 24 2024 Packit <hello@packit.dev> - 1.19.5-1
+- Update to version 1.19.5
+- Resolves: rhbz#2327307
+
 * Sun Nov 17 2024 Dominik Mierzejewski <dominik@greysector.net> - 1.19.3-3
 - disable OpenJPH encoder support to work-around crashes
 

@@ -11,9 +11,9 @@
 %global tag %{version}
 
 Name:           python-niapy
-Version:        2.3.1
+Version:        2.5.1
 %forgemeta
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        Microframework for building nature-inspired algorithms
 
 License:        MIT
@@ -145,6 +145,9 @@ PYTHONPATH="${PWD}" %make_build -C docs latex SPHINXOPTS='%{?_smp_mflags}'
 %doc CONTRIBUTING.md CODE_OF_CONDUCT.md
 
 %changelog
+* Sun Nov 24 2024 Iztok Fister Jr. <iztok@iztok-jr-fister.eu> - 2.5.1-1
+- Update to 2.5.1
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.3.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

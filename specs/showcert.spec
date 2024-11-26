@@ -1,5 +1,5 @@
 Name:           showcert
-Version:        0.2.3
+Version:        0.2.9
 Release:        1%{?dist}
 Summary:        inspect TLS certificates presented by remote servers
 
@@ -7,8 +7,6 @@ License:        MIT
 URL:            https://github.com/yaroslaff/showcert
 Source:         %{pypi_source showcert}
 
-# https://github.com/yaroslaff/showcert/issues/4
-Patch1:         %{name}-add-cryptography-dependency.patch
 BuildArch:      noarch
 BuildRequires:  python3-devel
 
@@ -55,6 +53,10 @@ gencert --help
 %{_bindir}/gencert
 
 %changelog
+* Sun Nov 24 2024 Felix Schwarz <fschwarz@fedoraproject.org> - 0.2.9-1
+- update to 0.2.9
+
+
 * Thu Aug 08 2024 Felix Schwarz <fschwarz@fedoraproject.org> - 0.2.3-1
 - initial package
 

@@ -3,7 +3,7 @@
 
 Name:          sbsigntools
 Version:       0.9.5
-Release:       6%{?dist}
+Release:       7%{?dist}
 Summary:       Signing utility for UEFI secure boot
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:       GPL-3.0-or-later
@@ -16,6 +16,8 @@ Source1:       %{name}-mktarball.sh
 Patch0:        %{name}-no-git.patch
 # add Fedora gnu-efi path and link statically against libefi.a/libgnuefi.a
 Patch1:        %{name}-gnuefi.patch
+# fix wchar_t (a.k.a. CHAR16) abuse
+Patch2:        %{name}-no-wchar_t.patch
 # same as gnu-efi
 ExclusiveArch: x86_64 aarch64 %{arm} %{ix86}
 BuildRequires: make
@@ -87,6 +89,9 @@ make check
 %{_mandir}/man1/sbverify.1.*
 
 %changelog
+* Mon Nov 18 2024 Dominik Mierzejewski <dominik@greysector.net> - 0.9.5-7
+- fix wchar_t usage in sbvarsign (fixes rhbz#2310759)
+
 * Wed Aug 21 2024 Michel Lind <salimma@fedoraproject.org> - 0.9.5-6
 - Fix building with gnu-efi 3.0.18
 - Fix building on Fedora 41+ due to OpenSSL engine deprecation

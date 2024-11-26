@@ -162,13 +162,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.13.0
 %define specversion 6.13.0
 %define patchversion 6.13
-%define pkgrelease 0.rc0.20241122gitfcc79e1714e8.6
+%define pkgrelease 0.rc0.20241123git228a1157fb9f.7
 %define kversion 6
-%define tarfile_release 6.12-5480-gfcc79e1714e8
+%define tarfile_release 6.12-8446-g228a1157fb9f
 # This is needed to do merge window version magic
 %define patchlevel 13
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc0.20241122gitfcc79e1714e8.6%{?buildid}%{?dist}
+%define specrelease 0.rc0.20241123git228a1157fb9f.7%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.13.0
 
@@ -4270,9 +4270,13 @@ fi\
 #
 #
 %changelog
-* Fri Nov 22 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.fcc79e1714e8.6]
-- tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
-- tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+* Sat Nov 23 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.228a1157fb9f.7]
+- Better fixes for the fedora mismatch (Justin M. Forbes)
+- Mismatch fix ups for Fedora (Justin M. Forbes)
+- Linux v6.13.0-0.rc0.228a1157fb9f
+
+* Sat Nov 23 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.28eb75e178d3.6]
+- Linux v6.13.0-0.rc0.28eb75e178d3
 
 * Fri Nov 22 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.fcc79e1714e8.5]
 - redhat/configs: Enable Intel Bluetooth PCIE drivers (Bastien Nocera)
