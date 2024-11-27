@@ -8,8 +8,8 @@
 %bcond selinux 1
 
 Name:           frr
-Version:        10.1
-Release:        4%{?dist}
+Version:        10.2
+Release:        1%{?dist}
 Summary:        Routing daemon
 License:        GPL-2.0-or-later AND ISC AND LGPL-2.0-or-later AND BSD-2-Clause AND BSD-3-Clause AND (GPL-2.0-or-later  OR ISC) AND MIT
 URL:            http://www.frrouting.org
@@ -26,7 +26,6 @@ Patch0002:      0002-enable-openssl.patch
 Patch0003:      0003-disable-eigrp-crypto.patch
 Patch0004:      0004-fips-mode.patch
 Patch0005:      0005-remove-grpc-test.patch
-Patch0006:      0006-noprefixroute-network-manager.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -110,6 +109,8 @@ cp -p %{SOURCE3} %{SOURCE4} %{SOURCE5} selinux
 sed -r -i 's/(AX_CXX_COMPILE_STDCXX\(\[)11(\])/\117\2/' configure.ac
 
 %build
+#hopefully just temporary due to rhbz#2327314
+export LDFLAGS="%{build_ldflags} -Wl,-z,noseparate-code"
 autoreconf -ivf
 
 %configure \
@@ -277,6 +278,9 @@ rm tests/lib/*grpc*
 %endif
 
 %changelog
+* Fri Nov 22 2024 Michal Ruprich <mruprich@redhat.com> - 10.2-1
+- New version 10.2
+
 * Tue Sep 10 2024 Michal Ruprich <mruprich@redhat.com> - 10.1-4
 - Resolves: #2311119 - Multiple AVCs for accessing lib_t in FRR-10.1
 - Resolves: #2311120 - AVCs for using a netlink socket in FRR

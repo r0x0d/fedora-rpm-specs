@@ -30,20 +30,24 @@
 %global github_owner    os-autoinst
 %global github_name     os-autoinst
 %global github_version  4.6
-%global github_commit   abb9288a638e628e884f86f8fbfb7672627e4a94
+%global github_commit   b64e21930954562826566f2b8421324dfaff3559
 # if set, will be a post-release snapshot build, otherwise a 'normal' build
-%global github_date     20240729
+%global github_date     20241125
 %global shortcommit     %(c=%{github_commit}; echo ${c:0:7})
 
 Name:           os-autoinst
 Version:        %{github_version}%{?github_date:^%{github_date}git%{shortcommit}}
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        OS-level test automation
 # there are some files under other licenses in the tarball, but we
 # do not distribute any of them in the binary packages
 License:        GPL-2.0-or-later
 URL:            https://os-autoinst.github.io/openQA/
+ExcludeArch:    %{ix86}
 Source0:        https://github.com/%{github_owner}/%{github_name}/archive/%{github_commit}/%{github_name}-%{github_commit}.tar.gz
+# https://github.com/os-autoinst/os-autoinst/pull/2550
+# Fix for qemu 9.1.0+
+Patch:          2550.patch
 
 # on SUSE this is conditional, for us it doesn't have to be but we
 # still use a macro just to keep build_requires similar for ease of
@@ -51,6 +55,8 @@ Source0:        https://github.com/%{github_owner}/%{github_name}/archive/%{gith
 %define opencv_require pkgconfig(opencv)
 # Ditto
 %define ocr_requires tesseract tesseract-langpack-eng
+# Ditto
+%define python_style_requires python3-black
 # The following line is generated from dependencies.yaml (upstream)
 %define build_base_requires %opencv_require gcc-c++ perl(Pod::Html) pkg-config pkgconfig(fftw3) pkgconfig(libpng) pkgconfig(sndfile) pkgconfig(theoraenc)
 # diff from SUSE: SUSE has 'ninja', Fedora has 'ninja-build'
@@ -66,7 +72,7 @@ Source0:        https://github.com/%{github_owner}/%{github_name}/archive/%{gith
 # their versioning of mojolicious is different due to
 # https://github.com/openSUSE/cpanspec/issues/47
 # The following line is generated from dependencies.yaml (upstream)
-%define main_requires %main_requires_additional git-core perl(B::Deparse) perl(Carp) perl(Carp::Always) perl(Config) perl(Cpanel::JSON::XS) perl(Crypt::DES) perl(Cwd) perl(Data::Dumper) perl(Digest::MD5) perl(DynaLoader) perl(English) perl(Errno) perl(Exception::Class) perl(Exporter) perl(ExtUtils::testlib) perl(Fcntl) perl(File::Basename) perl(File::Find) perl(File::Map) perl(File::Path) perl(File::Temp) perl(File::Touch) perl(File::Which) perl(File::chdir) perl(IO::Handle) perl(IO::Scalar) perl(IO::Select) perl(IO::Socket) perl(IO::Socket::INET) perl(IO::Socket::UNIX) perl(IPC::Open3) perl(IPC::Run::Debug) perl(IPC::System::Simple) perl(JSON::Validator) perl(List::MoreUtils) perl(List::Util) perl(Mojo::IOLoop::ReadWriteProcess) >= 0.26 perl(Mojo::JSON) perl(Mojo::Log) perl(Mojo::URL) perl(Mojo::UserAgent) perl(Mojolicious) >= 9.34 perl(Mojolicious::Lite) perl(Net::DBus) perl(Net::IP) perl(Net::SNMP) perl(Net::SSH2) perl(POSIX) perl(Scalar::Util) perl(Socket) perl(Socket::MsgHdr) perl(Term::ANSIColor) perl(Thread::Queue) perl(Time::HiRes) perl(Time::Moment) perl(Time::Seconds) perl(Try::Tiny) perl(XML::LibXML) perl(XML::SemanticDiff) perl(YAML::PP) perl(YAML::XS) perl(autodie) perl(base) perl(constant) perl(integer) perl(strict) perl(version) perl(warnings) rsync sshpass
+%define main_requires %main_requires_additional git-core perl(B::Deparse) perl(Carp) perl(Carp::Always) perl(Config) perl(Cpanel::JSON::XS) perl(Crypt::DES) perl(Cwd) perl(Data::Dumper) perl(Digest::MD5) perl(DynaLoader) perl(English) perl(Errno) perl(Exception::Class) perl(Exporter) perl(ExtUtils::testlib) perl(Fcntl) perl(File::Basename) perl(File::Find) perl(File::Map) perl(File::Path) perl(File::Temp) perl(File::Which) perl(File::chdir) perl(IO::Handle) perl(IO::Scalar) perl(IO::Select) perl(IO::Socket) perl(IO::Socket::INET) perl(IO::Socket::UNIX) perl(IPC::Open3) perl(IPC::Run::Debug) perl(IPC::System::Simple) perl(JSON::Validator) perl(List::MoreUtils) perl(List::Util) perl(Mojo::IOLoop::ReadWriteProcess) >= 0.26 perl(Mojo::JSON) perl(Mojo::Log) perl(Mojo::URL) perl(Mojo::UserAgent) perl(Mojolicious) >= 9.34 perl(Mojolicious::Lite) perl(Net::DBus) perl(Net::IP) perl(Net::SNMP) perl(Net::SSH2) perl(POSIX) perl(Scalar::Util) perl(Socket) perl(Socket::MsgHdr) perl(Term::ANSIColor) perl(Thread::Queue) perl(Time::HiRes) perl(Time::Moment) perl(Time::Seconds) perl(Try::Tiny) perl(XML::LibXML) perl(XML::SemanticDiff) perl(YAML::PP) perl(YAML::XS) perl(autodie) perl(base) perl(constant) perl(integer) perl(strict) perl(version) perl(warnings) rsync sshpass
 # diff from SUSE: SUSE has python3-yamllint, Fedora has just yamllint
 # The following line is generated from dependencies.yaml (upstream)
 %define yamllint_requires yamllint
@@ -80,15 +86,14 @@ Source0:        https://github.com/%{github_owner}/%{github_name}/archive/%{gith
 %define test_base_requires %main_requires cpio icewm ipxe-bootimgs-x86 ipxe-bootimgs-aarch64 perl(Benchmark) perl(Devel::Cover) perl(FindBin) perl(Pod::Coverage) perl(Test::Fatal) perl(Test::Mock::Time) perl(Test::MockModule) perl(Test::MockObject) perl(Test::MockRandom) perl(Test::Mojo) perl(Test::Most) perl(Test::Output) perl(Test::Pod) perl(Test::Strict) perl(Test::Warnings) >= 0.029 procps python3-setuptools qemu-kvm /usr/bin/qemu-img /usr/bin/qemu-system-i386 socat tigervnc-server-minimal xterm xterm-console
 # The following line is generated from dependencies.yaml (upstream)
 %define test_version_only_requires perl(Mojo::IOLoop::ReadWriteProcess) >= 0.28
-# diff from SUSE: it's python3-pillow-tk, not python3-Pillow-tk
+# diff from SUSE: it's python3-pillow-tk, not python3-Pillow-tk, and
+# ffmpeg-free, not ffmpeg
 # we don't use test_non_s390_requires because on Fedora all the deps
-# are available on s390x
+# are available on s390x, ditto python_support_requires
 # The following line is generated from dependencies.yaml (upstream)
-%define test_requires %build_requires %ocr_requires %test_base_requires %yamllint_requires perl(Inline::Python) perl(YAML::PP) python3-pillow-tk
-# diff from SUSE: dropped perl(Devel::Cover::Report::Codecov) as it's
-# not currently packaged for Fedora
+%define test_requires %build_requires %ocr_requires %test_base_requires %yamllint_requires ffmpeg-free perl(Inline::Python) perl(YAML::PP) python3-pillow-tk
 # The following line is generated from dependencies.yaml (upstream)
-%define devel_requires %test_requires ShellCheck perl(Code::TidyAll) perl(Devel::Cover) perl(Module::CPANfile) perl(Perl::Tidy) perl(Template::Toolkit) shfmt
+%define devel_requires %python_style_requires %test_requires ShellCheck file perl(Code::TidyAll) perl(Devel::Cover) perl(Module::CPANfile) perl(Perl::Tidy) perl(Template::Toolkit) sed shfmt
 
 BuildRequires:  perl-devel
 BuildRequires:  perl-generators
@@ -175,7 +180,7 @@ rm xt/30-make.t
 %ninja_install -C %{__cmake_builddir} install-openvswitch
 # we don't really need to ship this in the package, usually the web UI
 # is much better for needle editing
-rm %{buildroot}%{_prefix}/lib/os-autoinst/crop.py*
+rm %{buildroot}%{_prefix}/lib/os-autoinst/script/crop.py*
 # this is only useful on SUSE
 rm %{buildroot}%{_bindir}/os-autoinst-setup-multi-machine
 # we're going to %%license this
@@ -243,9 +248,10 @@ fi
 %{_prefix}/lib/os-autoinst/consoles
 %{_prefix}/lib/os-autoinst/autotest.pm
 %{_prefix}/lib/os-autoinst/*.py
-%{_prefix}/lib/os-autoinst/check_qemu_oom
-%{_prefix}/lib/os-autoinst/dewebsockify
-%{_prefix}/lib/os-autoinst/vnctest
+%dir %{_prefix}/lib/os-autoinst/script
+%{_prefix}/lib/os-autoinst/script/check_qemu_oom
+%{_prefix}/lib/os-autoinst/script/dewebsockify
+%{_prefix}/lib/os-autoinst/script/vnctest
 
 %dir %{_prefix}/lib/os-autoinst/schema
 %{_prefix}/lib/os-autoinst/schema/Wheels-01.yaml
@@ -255,13 +261,18 @@ fi
 %{_bindir}/snd2png
 
 %files openvswitch
-%{_prefix}/lib/os-autoinst/os-autoinst-openvswitch
+%dir %{_prefix}/lib/os-autoinst/script
+%{_prefix}/lib/os-autoinst/script/os-autoinst-openvswitch
 %{_unitdir}/os-autoinst-openvswitch.service
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/org.opensuse.os_autoinst.switch.conf
 
 %files devel
 
 %changelog
+* Mon Nov 25 2024 Adam Williamson <awilliam@redhat.com> - 4.6^20241125gitb64e219-1
+- Update to latest git
+- Backport PR #2550 to fix for qemu 9.1.0
+
 * Mon Jul 29 2024 Adam Williamson <awilliam@redhat.com> - 4.6^20240729gitabb9288-3
 - Update to latest git
 

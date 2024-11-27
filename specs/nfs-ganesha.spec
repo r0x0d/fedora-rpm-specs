@@ -122,7 +122,7 @@ Requires: openSUSE-release
 #%%global dev rc6
 
 Name:		nfs-ganesha
-Version:	6.2
+Version:	6.3
 Release:	1%{?dev:%{dev}}%{?dist}
 Summary:	NFS-Ganesha is a NFS Server running in user space
 License:	LGPL-3.0-or-later
@@ -133,7 +133,6 @@ Url:		https://github.com/nfs-ganesha/nfs-ganesha/wiki
 Source0:	https://github.com/%{name}/%{name}/archive/V%{version}%{?dev:-%{dev}}/%{name}-%{version}%{?dev:%{dev}}.tar.gz
 Source1:	https://github.com/biaks/prometheus-cpp-lite/archive/%{prometh_ver_long}/prometheus-cpp-lite-%{prometh_ver_short}.tar.gz
 Patch0001:	0001-config_samples-log_rotate.patch
-Patch0002:	0002-monitoring-exposer.cc.patch
 
 BuildRequires:	cmake
 BuildRequires:	make
@@ -175,7 +174,7 @@ BuildRequires: zlib-ng-devel
 %endif
 BuildRequires:	gcc-c++
 %if ( 0%{?with_system_ntirpc} )
-BuildRequires:	libntirpc-devel >= 6.0
+BuildRequires:	libntirpc-devel >= 6.3
 %else
 Requires: libntirpc = @NTIRPC_VERSION_EMBED@
 %endif
@@ -968,6 +967,9 @@ exit 0
 %endif
 
 %changelog
+* Mon Nov 25 2024 Kaleb S. KEITHLEY <kkeithle at redhat.com> - 6.3-1
+- NFS-Ganesha 6.3 GA
+
 * Mon Oct 21 2024 Kaleb S. KEITHLEY <kkeithle at redhat.com> - 6.2-1
 - NFS-Ganesha 6.2 GA
 

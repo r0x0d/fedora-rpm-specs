@@ -1,7 +1,7 @@
 # Upstream has not made a new release since 2010
 %global srcname clisp
-%global commit  c735dd548ba2365804bcee9c2bdd3c291657e8ae
-%global date    20240901
+%global commit  9ff8aedb796fbf7c47e594bfc2357b69c8e64dc9
+%global date    20241123
 %global forgeurl https://gitlab.com/gnu-clisp/clisp
 
 # There is a plus on the end for unreleased versions, not for released versions
@@ -14,7 +14,7 @@
 
 Name:		clisp
 Summary:	ANSI Common Lisp implementation
-Version:	2.49.93
+Version:	2.49.95
 
 %forgemeta
 
@@ -24,7 +24,7 @@ Version:	2.49.93
 # - src/socket.d and modules/clx/mit-clx/doc.lisp are HPND
 # - src/xthread.d and modules/asdf/asdf.lisp are X11
 License:	GPL-2.0-or-later AND (GPL-2.0-or-later OR GFDL-1.2-or-later) AND LGPL-2.1-or-later AND HPND AND X11
-Release:	40%{?dist}
+Release:	1%{?dist}
 URL:		http://www.clisp.org/
 VCS:		git:%{forgeurl}.git
 Source0:	%{forgesource}
@@ -33,30 +33,17 @@ Source1:	https://gitlab.com/sam-s/clhs/-/raw/master/clhs.el
 # Updated translations
 Source2:	http://translationproject.org/latest/clisp/sv.po
 Source3:	http://translationproject.org/latest/clisp/de.po
-# https://sourceforge.net/p/clisp/patches/35/
-Patch0:		%{name}-db.patch
 # https://sourceforge.net/p/clisp/patches/32/
-Patch1:		%{name}-format.patch
+Patch0:		%{name}-format.patch
 # The combination of register and volatile is nonsensical
-Patch2:		%{name}-register-volatile.patch
+Patch1:		%{name}-register-volatile.patch
 # A test that writes to /dev/pts/0 succeeds or fails apparently at random.
 # I can only guess that /dev/pts/0 may or may not be what the test expects.
 # Perhaps we are racing with something else that allocates a pty.  Disable
 # the test for now.
-Patch3:		%{name}-pts-access.patch
-# Fix HAVE_DB_STAT_ACCEPT_TXN test in the Berkeley DB module
-# https://gitlab.com/gnu-clisp/clisp/-/merge_requests/8
-Patch4:		%{name}-c99.patch
-# Fix mismatched pointer types in the Berkeley DB module
-# https://gitlab.com/gnu-clisp/clisp/-/merge_requests/9
-Patch5:		%{name}-bdb-mismatched-pointer.patch
-# Fix the new-clx build, which was broken by a recent gnulib update
-# https://gitlab.com/gnu-clisp/clisp/-/merge_requests/10
-Patch6:		%{name}-new-clx.patch
+Patch2:		%{name}-pts-access.patch
 # Do not call the deprecated siginterrupt function
-Patch7:		%{name}-siginterrupt.patch
-# Adapt to changes in pari 2.17
-Patch8:		%{name}-pari.patch
+Patch3:		%{name}-siginterrupt.patch
 
 # Work around a problem inlining a function on ppc64le
 # See https://bugzilla.redhat.com/show_bug.cgi?id=2049371
@@ -452,6 +439,10 @@ make -C build base-mod-check
 
 
 %changelog
+* Mon Nov 25 2024 Jerry James <loganjerry@gmail.com> - 2.49.95-1
+- Version 2.49.95
+- Drop upstreamed patches: db, c99, bdb-mismatched-pointer, new-clx, pari
+
 * Sat Oct  5 2024 Jerry James <loganjerry@gmail.com> - 2.49.93-40
 - Rebuild for pari 2.17.0
 

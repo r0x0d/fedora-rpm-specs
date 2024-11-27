@@ -1,5 +1,5 @@
 Name:           xdg-desktop-portal-xapp
-Version:        1.0.9
+Version:        1.1.0
 Release:        1%{?dist}
 Summary:        Backend implementation for xdg-desktop-portal using Xapp
 
@@ -59,6 +59,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Mon Nov 25 2024 Leigh Scott <leigh123linux@gmail.com> - 1.1.0-1
+- Update to 1.1.0
+
 * Tue Aug 20 2024 Leigh Scott <leigh123linux@gmail.com> - 1.0.9-1
 - Update to 1.0.9
 

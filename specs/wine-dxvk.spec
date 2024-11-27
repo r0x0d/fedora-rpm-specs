@@ -1,6 +1,9 @@
 %global debug_package %{nil}
 %{?mingw_package_header}
 
+%global libdisplay_commit 275e6459c7ab1ddd4b125f28d0440716e4888078
+%global libdisplay_shortcommit %(c=%{libdisplay_commit}; echo ${c:0:7})
+
 %ifarch x86_64
 %global winepedir x86_64-windows
 %global target_x86_type 64
@@ -16,20 +19,14 @@
 %endif
 
 Name:           wine-dxvk
-Version:        1.10.3
+Version:        2.5.1
 Release:        %autorelease
-Summary:        Vulkan-based D3D11 and D3D10 implementation for Linux / Wine
+Summary:        Vulkan-based implementation of D3D8, 9, 10 and 11 for Linux / Wine
 
-License:        zlib
+License:        zlib AND MIT
 URL:            https://github.com/doitsujin/dxvk
 Source0:        %{url}/archive/v%{version}/dxvk-%{version}.tar.gz
-
-# Apply fixes from git/1.10.x released after 1.10.3 till 2nd of Aug 2023
-Patch01:        postrel_fixxes.patch
-
-# GCC 13 buildfixes
-# https://github.com/doitsujin/dxvk/pull/3308
-Patch02:        3308.patch
+Source1:        https://gitlab.freedesktop.org/frog/libdisplay-info/-/archive/%{libdisplay_commit}/libdisplay-info-%{libdisplay_shortcommit}.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
@@ -45,6 +42,8 @@ BuildRequires:  mingw64-cpp
 BuildRequires:  mingw64-gcc
 BuildRequires:  mingw64-gcc-c++
 BuildRequires:  mingw64-winpthreads-static
+BuildRequires:  mingw64-vulkan-headers
+BuildRequires:  mingw64-spirv-headers
 %else
 BuildRequires:  mingw32-filesystem
 BuildRequires:  mingw32-binutils
@@ -53,12 +52,14 @@ BuildRequires:  mingw32-cpp
 BuildRequires:  mingw32-gcc
 BuildRequires:  mingw32-gcc-c++
 BuildRequires:  mingw32-winpthreads-static
+BuildRequires:  mingw32-vulkan-headers
+BuildRequires:  mingw32-spirv-headers
 %endif
 
 Requires(pre):  vulkan-tools
 
-Requires:       wine-core%{?_isa} >= 6.8
-Recommends:     wine-dxvk-dxgi%{?_isa} = %{version}-%{release}
+Requires:       wine-core%{?_isa}
+Requires:       wine-dxvk-dxgi%{?_isa} = %{version}-%{release}
 Requires:       vulkan-loader%{?_isa}
 
 # We want x86_64 users to always have also 32 bit lib, it's the same what wine does
@@ -66,13 +67,17 @@ Requires:       vulkan-loader%{?_isa}
 Requires:       wine-dxvk(x86-32) = %{version}-%{release}
 %endif
 
-# Recommend also the d3d9 (former D9VK)
-Recommends:     wine-dxvk-d3d9%{?_isa} = %{version}-%{release}
+# Recommend also d3d8, d3d9, and d3d10
+Recommends:     wine-dxvk-d3d8%{?_isa}  = %{version}-%{release}
+Recommends:     wine-dxvk-d3d9%{?_isa}  = %{version}-%{release}
+Recommends:     wine-dxvk-d3d10%{?_isa} = %{version}-%{release}
 
-Requires(posttrans):   %{_sbindir}/alternatives wine-core%{?_isa} >= 6.8
+Requires(posttrans):   %{_sbindir}/alternatives wine-core%{?_isa}
 Requires(preun):       %{_sbindir}/alternatives
 
 ExclusiveArch:  %{ix86} x86_64
+
+Provides:       bundled(libdisplay-info) = 0.3.0~dev^git%{libdisplay_shortcommit}
 
 %description
 %{summary}
@@ -89,6 +94,19 @@ Requires:       wine-dxvk-dxgi(x86-32) = %{version}-%{release}
 This package doesn't enable the use of this DXGI implementation,
 it should be installed and overridden per prefix.
 
+%package d3d10
+Summary:        DXVK D3D10 implementation
+
+Requires:       wine-dxvk%{?_isa} = %{version}-%{release}
+
+# We want x86_64 users to always have also 32 bit lib, it's the same what wine does
+%ifarch x86_64
+Requires:       wine-dxvk-d3d10(x86-32) = %{version}-%{release}
+%endif
+
+%description d3d10
+%{summary}
+
 %package d3d9
 Summary:        DXVK D3D9 implementation
 
@@ -102,8 +120,22 @@ Requires:       wine-dxvk-d3d9(x86-32) = %{version}-%{release}
 %description d3d9
 %{summary}
 
+%package d3d8
+Summary:        DXVK D3D8 implementation
+
+Requires:       wine-dxvk%{?_isa} = %{version}-%{release}
+
+# We want x86_64 users to always have also 32 bit lib, it's the same what wine does
+%ifarch x86_64
+Requires:       wine-dxvk-d3d8(x86-32) = %{version}-%{release}
+%endif
+
+%description d3d8
+%{summary}
+
 %prep
-%autosetup -n dxvk-%{version} -p1
+%autosetup -n dxvk-%{version} -p1 -a1
+rm -rf subprojects/libdisplay-info && mv libdisplay-info-%{libdisplay_commit} subprojects/libdisplay-info
 
 %build
 %mingw_meson --buildtype=plain --wrap-mode=nodownload --auto-features=enabled --cross-file ../build-win%{target_x86_type}.txt --buildtype release
@@ -112,18 +144,16 @@ Requires:       wine-dxvk-d3d9(x86-32) = %{version}-%{release}
 %install
 %mingw_ninja_install
 winebuild --builtin %buildroot%mingw_sysroot/mingw/bin/dxgi.dll
+winebuild --builtin %buildroot%mingw_sysroot/mingw/bin/d3d8.dll
 winebuild --builtin %buildroot%mingw_sysroot/mingw/bin/d3d9.dll
-winebuild --builtin %buildroot%mingw_sysroot/mingw/bin/d3d10.dll
 winebuild --builtin %buildroot%mingw_sysroot/mingw/bin/d3d10core.dll
-winebuild --builtin %buildroot%mingw_sysroot/mingw/bin/d3d10_1.dll
 winebuild --builtin %buildroot%mingw_sysroot/mingw/bin/d3d11.dll
 
 mkdir -p %{buildroot}%{_libdir}/wine/%{winepedir}/
 install -p -m 644 %buildroot%mingw_sysroot/mingw/bin/dxgi.dll %{buildroot}%{_libdir}/wine/%{winepedir}/dxvk-dxgi.dll
+install -p -m 644 %buildroot%mingw_sysroot/mingw/bin/d3d8.dll %{buildroot}%{_libdir}/wine/%{winepedir}/dxvk-d3d8.dll
 install -p -m 644 %buildroot%mingw_sysroot/mingw/bin/d3d9.dll %{buildroot}%{_libdir}/wine/%{winepedir}/dxvk-d3d9.dll
-install -p -m 644 %buildroot%mingw_sysroot/mingw/bin/d3d10.dll %{buildroot}%{_libdir}/wine/%{winepedir}/dxvk-d3d10.dll
 install -p -m 644 %buildroot%mingw_sysroot/mingw/bin/d3d10core.dll %{buildroot}%{_libdir}/wine/%{winepedir}/dxvk-d3d10core.dll
-install -p -m 644 %buildroot%mingw_sysroot/mingw/bin/d3d10_1.dll %{buildroot}%{_libdir}/wine/%{winepedir}/dxvk-d3d10_1.dll
 install -p -m 644 %buildroot%mingw_sysroot/mingw/bin/d3d11.dll %{buildroot}%{_libdir}/wine/%{winepedir}/dxvk-d3d11.dll
 
 # Clean-up
@@ -131,14 +161,8 @@ rm -rf %buildroot%mingw_sysroot/mingw
 
 %posttrans
 if vulkaninfo |& grep "ERROR_INITIALIZATION_FAILED\|ERROR_SURFACE_LOST_KHR\|Vulkan support is incomplete" > /dev/null; then
-    %{_sbindir}/alternatives --install %{_libdir}/wine/%{winepedir}/d3d10.dll 'wine-d3d10%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d10.dll 5 \
-    --slave %{_libdir}/wine/%{winepedir}/d3d10_1.dll 'wine-d3d10_1%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d10_1.dll \
-    --slave %{_libdir}/wine/%{winepedir}/d3d10core.dll 'wine-d3d10core%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d10core.dll
     %{_sbindir}/alternatives --install %{_libdir}/wine/%{winepedir}/d3d11.dll 'wine-d3d11%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d11.dll 5
 else
-    %{_sbindir}/alternatives --install %{_libdir}/wine/%{winepedir}/d3d10.dll 'wine-d3d10%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d10.dll 20 \
-    --slave %{_libdir}/wine/%{winepedir}/d3d10_1.dll 'wine-d3d10_1%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d10_1.dll \
-    --slave %{_libdir}/wine/%{winepedir}/d3d10core.dll 'wine-d3d10core%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d10core.dll
     %{_sbindir}/alternatives --install %{_libdir}/wine/%{winepedir}/d3d11.dll 'wine-d3d11%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d11.dll 20
 fi
 
@@ -146,19 +170,28 @@ fi
 if vulkaninfo |& grep "ERROR_INITIALIZATION_FAILED\|ERROR_SURFACE_LOST_KHR\|Vulkan support is incomplete" > /dev/null; then
     %{_sbindir}/alternatives --install %{_libdir}/wine/%{winepedir}/dxgi.dll 'wine-dxgi%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-dxgi.dll 5
 else
-    %{_sbindir}/alternatives --install %{_libdir}/wine/%{winepedir}/dxgi.dll 'wine-dxgi%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-dxgi.dll 5
+    %{_sbindir}/alternatives --install %{_libdir}/wine/%{winepedir}/dxgi.dll 'wine-dxgi%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-dxgi.dll 20
+fi
+
+%posttrans d3d10
+if vulkaninfo |& grep "ERROR_INITIALIZATION_FAILED\|ERROR_SURFACE_LOST_KHR\|Vulkan support is incomplete" > /dev/null; then
+    %{_sbindir}/alternatives --install %{_libdir}/wine/%{winepedir}/d3d10core.dll 'wine-d3d10core%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d10core.dll 5
+else
+    %{_sbindir}/alternatives --install %{_libdir}/wine/%{winepedir}/d3d10core.dll 'wine-d3d10core%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d10core.dll 20
 fi
 
 %posttrans d3d9
 if vulkaninfo |& grep "ERROR_INITIALIZATION_FAILED\|ERROR_SURFACE_LOST_KHR\|Vulkan support is incomplete" > /dev/null; then
     %{_sbindir}/alternatives --install %{_libdir}/wine/%{winepedir}/d3d9.dll 'wine-d3d9%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d9.dll 5
 else
-    %{_sbindir}/alternatives --install %{_libdir}/wine/%{winepedir}/d3d9.dll 'wine-d3d9%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d9.dll 5
+    %{_sbindir}/alternatives --install %{_libdir}/wine/%{winepedir}/d3d9.dll 'wine-d3d9%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d9.dll 20
 fi
 
 %postun
-%{_sbindir}/alternatives --remove 'wine-d3d10%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d10.dll
 %{_sbindir}/alternatives --remove 'wine-d3d11%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d11.dll
+
+%postun d3d10
+%{_sbindir}/alternatives --remove 'wine-d3d10core%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d10core.dll
 
 %postun d3d9
 %{_sbindir}/alternatives --remove 'wine-d3d9%{?_isa}' %{_libdir}/wine/%{winepedir}/dxvk-d3d9.dll
@@ -169,19 +202,23 @@ fi
 %files
 %license LICENSE
 %doc README.md
-%{_libdir}/wine/%{winepedir}/dxvk-d3d10.dll
-%{_libdir}/wine/%{winepedir}/dxvk-d3d10_1.dll
-%{_libdir}/wine/%{winepedir}/dxvk-d3d10core.dll
 %{_libdir}/wine/%{winepedir}/dxvk-d3d11.dll
+
+%files d3d10
+%license LICENSE
+%{_libdir}/wine/%{winepedir}/dxvk-d3d10core.dll
 
 %files d3d9
 %license LICENSE
 %{_libdir}/wine/%{winepedir}/dxvk-d3d9.dll
 
+%files d3d8
+%license LICENSE
+%{_libdir}/wine/%{winepedir}/dxvk-d3d8.dll
+
 %files dxgi
 %license LICENSE
 %{_libdir}/wine/%{winepedir}/dxvk-dxgi.dll
-
 
 %changelog
 %autochangelog

@@ -16,7 +16,8 @@ Version:            15.0.2
 Release:            2%{?dist}
 Summary:            Cross platform network backup for Linux, Unix, Mac and Windows
 # See LICENSE for details
-License:            AGPL-3.0-only with exceptions
+# See https://gitlab.com/fedora/legal/fedora-license-data/-/issues/277
+License:            LicenseRef-Bacula
 URL:                http://www.bacula.org
 
 # AGPL-3.0-only with exceptions

@@ -12,8 +12,8 @@
 
 Name: fence-agents
 Summary: Set of unified programs capable of host isolation ("fencing")
-Version: 4.15.0
-Release: 2%{?alphatag:.%{alphatag}}%{?dist}
+Version: 4.16.0
+Release: 1%{?alphatag:.%{alphatag}}%{?dist}
 License: GPL-2.0-or-later AND LGPL-2.0-or-later
 Group: System Environment/Base
 URL: https://github.com/ClusterLabs/fence-agents
@@ -65,6 +65,7 @@ fence-agents-ldom \\
 fence-agents-lpar \\
 fence-agents-mpath \\
 fence-agents-netio \\
+fence-agents-nutanix-ahv \\
 fence-agents-ovh \\
 fence-agents-ovm \\
 fence-agents-redfish \\
@@ -925,6 +926,18 @@ via telnet or SSH.
 %{_sbindir}/fence_netio
 %{_mandir}/man8/fence_netio.8*
 
+%package nutanix-ahv
+License: GPL-2.0-or-later AND LGPL-2.0-or-later
+Summary: Fence agent for Nutanix AHV
+Requires: fence-agents-common = %{version}-%{release}
+BuildArch: noarch
+Obsoletes: fence-agents < 3.1.13
+%description nutanix-ahv
+Fence agent for Nutanix AHV clusters.
+%files nutanix-ahv
+%{_sbindir}/fence_nutanix_ahv
+%{_mandir}/man8/fence_nutanix_ahv.8*
+
 %ifarch x86_64 ppc64le
 %package openstack
 License: GPL-2.0-or-later AND LGPL-2.0-or-later
@@ -1300,6 +1313,9 @@ are located on corosync cluster nodes.
 %{_libdir}/fence-virt/cpg.so
 
 %changelog
+* Mon Nov 25 2024 Oyvind Albrigtsen <oalbrigt@redhat.com> - 4.16.0-1
+- new upstream release
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.15.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

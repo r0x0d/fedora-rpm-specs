@@ -1,6 +1,6 @@
 Name:           perl-App-Cme
-Version:        1.040
-Release:        2%{?dist}
+Version:        1.041
+Release:        1%{?dist}
 Summary:        Check or edit configuration data with Config::Model
 License:        LGPL-2.1-or-later
 URL:            https://metacpan.org/release/App-Cme
@@ -122,16 +122,20 @@ unset AUTHOR_TESTING
 %files
 %license LICENSE
 %doc Changes README.pod
-%{_bindir}/*
-%{perl_vendorlib}/*
-%{_mandir}/man1/*
-%{_mandir}/man3/*
+%{_bindir}/cme
+%dir %{perl_vendorlib}/App
+%{perl_vendorlib}/App/Cme*
+%{_mandir}/man1/cme*
+%{_mandir}/man3/App::Cme*
 %{_sysconfdir}/bash_completion.d
 
 %files tests
 %{_libexecdir}/%{name}
 
 %changelog
+* Mon Nov 25 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1.041-1
+- 1.041 bump (rhbz#2328491)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.040-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

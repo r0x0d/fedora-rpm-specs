@@ -1,7 +1,7 @@
 Summary: File system tree viewer
 Name: tree-pkg
 Version: 2.1.0
-Release: 6%{?dist}
+Release: 7%{?dist}
 
 # The entire source code is LGPL-2.1-or-later except strverscmp.c
 # which is LGPL-2.1-or-later.
@@ -29,6 +29,10 @@ Patch7: tree-size-field-len.patch
 # fix programming mistakes detected by static analysis
 # Sent upstream via email 20181106
 Patch8: tree-static-analysis.patch
+
+# fix programming mistakes detected by static analysis
+# Upstream is not active
+Patch9: tree-static-analysis-2.patch
 
 %description
 The source RPM package of tree, which has to be named differently due to
@@ -63,6 +67,9 @@ sed -e 's/LINUX/__linux__/' -i tree.c
 %doc README
 
 %changelog
+* Mon Nov 04 2024 Vincent Mihalkovic <vmihalko@redhat.com> - 2.1.0-7
+- fix programming mistakes detected by static analysis
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

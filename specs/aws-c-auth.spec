@@ -2,7 +2,7 @@
 C99 library implementation of AWS client-side authentication}
 
 Name:           aws-c-auth
-Version:        0.7.31
+Version:        0.8.0
 Release:        1%{?dist}
 Summary:        C99 library implementation of AWS client-side authentication
 
@@ -79,6 +79,10 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 
 %changelog
+* Fri Oct 25 2024 Packit <hello@packit.dev> - 0.8.0-1
+- Update to version 0.8.0
+- Resolves: rhbz#2321728
+
 * Thu Sep 26 2024 Dominik Wombacher <dominik@wombacher.cc> - 0.7.31-1
 - update to 0.7.31
 

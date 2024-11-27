@@ -1,5 +1,5 @@
 Name:           autorandr
-Version:        1.13.3
+Version:        1.15
 Release:        %autorelease
 Summary:        Automatically select a display configuration based on connected devices
 

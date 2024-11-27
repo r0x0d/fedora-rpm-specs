@@ -7,7 +7,7 @@
 # Please preserve changelog entries
 #
 # Github
-%global gh_commit    a7b17b42fa4887c92146243f3d2f4ccb962af17c
+%global gh_commit    2f5c94fe7493efc213f643c23b1b1c249d40f47e
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     PHPMailer
 %global gh_project   PHPMailer
@@ -23,7 +23,7 @@
 %global php_home     %{_datadir}/php
 
 Name:           php-%{pk_project}%{major}
-Version:        6.9.2
+Version:        6.9.3
 Release:        1%{?dist}
 Summary:        Full-featured email creation and transfer class for PHP
 
@@ -204,6 +204,9 @@ exit $ret
 
 
 %changelog
+* Mon Nov 25 2024 Remi Collet <remi@remirepo.net> - 6.9.3-1
+- update to 6.9.3
+
 * Wed Oct  9 2024 Remi Collet <remi@remirepo.net> - 6.9.2-1
 - update to 6.9.2
 

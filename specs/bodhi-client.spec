@@ -1,6 +1,6 @@
 Name:           bodhi-client
-Version:        8.2.0
-Release:        2%{?dist}
+Version:        8.3.0
+Release:        1%{?dist}
 Summary:        Bodhi client
 
 License:        GPL-2.0-or-later
@@ -59,6 +59,9 @@ install -pm0644 bodhi-client.bash %{buildroot}%{_sysconfdir}/bash_completion.d/b
 %config(noreplace) %{_sysconfdir}/bash_completion.d/bodhi-client.bash
 
 %changelog
+* Mon Nov 25 2024 Mattia Verga <mattia.verga@proton.me> - 8.3.0-1
+- Update to 8.3.0
+
 * Mon Nov 11 2024 Carl George <carlwgeorge@fedoraproject.org> - 8.2.0-2
 - Correctly mark COPYING file as a license
 - Remove unnecessary pytest-cov build requirement

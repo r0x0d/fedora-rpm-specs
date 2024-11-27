@@ -1,15 +1,16 @@
 # Upstream hasn't packaged tests.
 %bcond_with    tests
 
-%global         srcname     azure-mgmt-appconfiguration
+%global         srcname      azure-mgmt-appconfiguration
+%global         tarball_name azure_mgmt_appconfiguration
 
 Name:           python-%{srcname}
-Version:        3.0.0
+Version:        3.1.0
 Release:        %autorelease
 Summary:        Microsoft Azure App Configuration Management Client Library for Python
 License:        MIT
 URL:            https://pypi.org/project/%{srcname}/
-Source0:        %{pypi_source %{srcname} %{version} zip}
+Source0:        %{pypi_source %{tarball_name} %{version}}
 
 BuildArch:      noarch
 
@@ -36,7 +37,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -n %{srcname}-%{version}
+%autosetup -n %{tarball_name}-%{version}
 
 
 %generate_buildrequires

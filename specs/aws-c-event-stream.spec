@@ -2,7 +2,7 @@
 C99 implementation of the vnd.amazon.eventstream content-type.}
 
 Name:           aws-c-event-stream
-Version:        0.4.3
+Version:        0.5.0
 Release:        1%{?dist}
 Summary:        C99 implementation of the vnd.amazon.eventstream content-type
 
@@ -74,6 +74,10 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 
 %changelog
+* Fri Oct 25 2024 Packit <hello@packit.dev> - 0.5.0-1
+- Update to version 0.5.0
+- Resolves: rhbz#2321726
+
 * Tue Aug 20 2024 Packit <hello@packit.dev> - 0.4.3-1
 - Update to version 0.4.3
 - Resolves: rhbz#2306010

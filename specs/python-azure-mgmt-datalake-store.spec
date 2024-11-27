@@ -4,12 +4,13 @@
 %global         srcname     azure-mgmt-datalake-store
 
 Name:           python-%{srcname}
-Version:        0.5.0
+Version:        1.1.0~b1
+%global         pypi_version 1.1.0b1
 Release:        %autorelease
 Summary:        Microsoft Azure Datalake Store Management Client Library for Python
 License:        MIT
 URL:            https://pypi.org/project/%{srcname}/
-Source0:        %{pypi_source %{srcname} %{version} zip}
+Source0:        %{pypi_source %{srcname} %{pypi_version} zip}
 
 BuildArch:      noarch
 
@@ -40,7 +41,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -n %{srcname}-%{version}
+%autosetup -n %{srcname}-%{pypi_version}
 
 # Remove the customized wheel builder included by Microsoft that adds
 # azure-mgmt-nspkg to the requirements.
@@ -78,9 +79,9 @@ rm -rf %{buildroot}%{python3_sitelib}/azure/mgmt/datalake/{__init__.py,__pycache
 
 
 %files -n python3-%{srcname}
-%doc README.rst HISTORY.rst
+%doc README.md CHANGELOG.md
 %{python3_sitelib}/azure/mgmt/datalake/store
-%{python3_sitelib}/azure_mgmt_datalake_store-%{version}.dist-info
+%{python3_sitelib}/azure_mgmt_datalake_store-%{pypi_version}.dist-info
 
 
 %changelog

@@ -148,7 +148,7 @@
 %bcond lmdb 0
 %endif
 
-%global samba_version 4.21.1
+%global samba_version 4.21.2
 
 # The release field is extended:
 # <pkgrel>[.<extraver>][.<snapinfo>]%%{?dist}[.<minorbump>]
@@ -1584,6 +1584,12 @@ cp -a lib/ldb/apidocs/man/* %{buildroot}%{_mandir}
 rm -f %{buildroot}%{_mandir}/man3/_*
 rm -f %{buildroot}%{_mandir}/man3/PyLdb*
 
+# CTDB
+%if %{with clustering}
+touch %{buildroot}%{_libexecdir}/ctdb/statd_callout
+#endif with clustering
+%endif
+
 %if %{with testsuite}
 %check
 #
@@ -2640,6 +2646,7 @@ fi
 %{python3_sitearch}/samba/dcerpc/ntlmssp.*.so
 %{python3_sitearch}/samba/dcerpc/preg.*.so
 %{python3_sitearch}/samba/dcerpc/samr.*.so
+%{python3_sitearch}/samba/dcerpc/schannel.*.so
 %{python3_sitearch}/samba/dcerpc/security.*.so
 %{python3_sitearch}/samba/dcerpc/server_id.*.so
 %{python3_sitearch}/samba/dcerpc/smb_acl.*.so
@@ -3809,7 +3816,7 @@ fi
 
 %{_sysconfdir}/ctdb/functions
 %{_sysconfdir}/ctdb/nfs-linux-kernel-callout
-%{_sysconfdir}/ctdb/statd-callout
+%ghost %{_sysconfdir}/ctdb/statd-callout
 
 # CTDB scripts, no config files
 # script with executable bit means activated

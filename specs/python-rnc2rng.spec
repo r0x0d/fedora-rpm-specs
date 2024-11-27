@@ -10,7 +10,7 @@ Version:        2.7.0
 Release:        4%{?dist}
 Summary:        RELAX NG Compact to regular syntax conversion library
 
-License:        Public Domain
+License:        MIT
 URL:            https://github.com/djc/rnc2rng
 Source0:        %{pypi_source rnc2rng}
 BuildArch:      noarch

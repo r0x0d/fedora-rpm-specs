@@ -1,6 +1,6 @@
 %global pypi_name bodhi-messages
 %global src_name bodhi_messages
-%global pypi_version 8.2.0
+%global pypi_version 8.3.0
 
 Name:           %{pypi_name}
 Version:        %{pypi_version}
@@ -51,6 +51,9 @@ rm -rf %{pypi_name}.egg-info
 %doc README.rst
 
 %changelog
+* Mon Nov 25 2024 Mattia Verga <mattia.verga@proton.me> - 8.3.0-1
+- Update to 8.3.0
+
 * Mon Oct 28 2024 Mattia Verga <mattia.verga@proton.me> - 8.2.0-1
 - Update to 8.2.0
 

@@ -1,14 +1,12 @@
 Name:       python-mygpoclient
-Version:    1.9
-Release:    6%{?dist}
+Version:    1.10
+Release:    1%{?dist}
 Summary:    Python module to connect to the my.gpodder.org webservice
 
 License:    GPL-3.0-or-later
 URL:        http://thpinfo.com/2010/mygpoclient/ 
 Source0:    http://thpinfo.com/2010/mygpoclient/mygpoclient-%{version}.tar.gz  
 BuildArch:  noarch
-
-Patch0:     18.patch
 
 %global _description\
 %{name} is a client-library to connect the my.gpodder.org webservice.
@@ -21,7 +19,6 @@ Summary: %summary
 BuildRequires: python3-devel
 BuildRequires: python3-minimock
 BuildRequires: python3-coverage
-#BuildRequires: python3-nose
 BuildRequires: python3-pytest
 BuildRequires: python3-simplejson
 
@@ -30,8 +27,6 @@ BuildRequires: python3-simplejson
 %prep
 %setup -q -n mygpoclient-%{version}
 
-%patch -P 0 -p1
-
 # Leave out http-tests as they currently fail occasionally (reported upstream)
 rm mygpoclient/http_test.py
 
@@ -39,7 +34,6 @@ rm mygpoclient/http_test.py
 %py3_build
 
 %check
-#nosetests-3 --cover-erase --with-coverage --with-doctest --cover-package=mygpoclient
 %pytest
 
 %install
@@ -56,6 +50,9 @@ rm mygpoclient/http_test.py
 
 
 %changelog
+* Mon Nov 25 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.10-1
+- 1.10
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.9-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

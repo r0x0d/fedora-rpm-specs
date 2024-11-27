@@ -7,9 +7,6 @@
 # hipcc does not support some clang flags
 %global build_cxxflags %(echo %{optflags} | sed -e 's/-fstack-protector-strong/-Xarch_host -fstack-protector-strong/' -e 's/-fcf-protection/-Xarch_host -fcf-protection/')
 
-# $gpu will be evaluated in the loops below
-%global _vpath_builddir %{_vendor}-%{_target_os}-build-${gpu}
-
 %bcond_with debug
 %if %{with debug}
 %global build_type DEBUG
@@ -35,11 +32,17 @@
 # Problems reported with gfx10, removing gfx10 and default (gfx10 and gfx11) from build list
 #
 # Handle with a custom gpu list
-%global rccl_gpu_list gfx9 gfx11 gfx90a gfx942 gfx1100
+# Because this package is a leaf, set it to the minimum until there is a request for
+# more support or it is used by another package
+%global rccl_gpu_list gfx1100
 
 Name:           rccl
 Version:        %{rocm_version}
+%if 0%{?fedora}
 Release:        %autorelease
+%else
+Release:        100%{?dist}
+%endif
 Summary:        ROCm Communication Collectives Library
 
 Url:            https://github.com/ROCm/rccl
@@ -54,7 +57,6 @@ Source0:        %{url}/archive/rocm-%{rocm_version}.tar.gz#/%{upstreamname}-%{ro
 
 BuildRequires:  cmake
 BuildRequires:  hipify
-BuildRequires:  ninja-build
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
 BuildRequires:  rocm-hip-devel
@@ -126,32 +128,22 @@ sed -i -e '/parallel-jobs/d' CMakeLists.txt
 sed -i -e 's@cat ${ROCM_PATH}/.info/version@echo %{rocm_version}@' CMakeLists.txt
 
 %build
-for gpu in %{rccl_gpu_list}
-do
-    module load rocm/$gpu
+%cmake \
+    -DCMAKE_CXX_COMPILER=/usr/bin/hipcc \
+    -DCMAKE_C_COMPILER=/usr/bin/hipcc \
+    -DCMAKE_BUILD_TYPE=%{build_type} \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
+    -DCMAKE_INSTALL_LIBDIR=%{_libdir} \
+    -DROCM_SYMLINK_LIBS=OFF \
+    -DAMDGPU_TARGETS=%{rccl_gpu_list} \
+    -DBUILD_TESTS=%{build_test} \
+    -DHIP_PLATFORM=amd
 
-    %cmake -G Ninja \
-           -DCMAKE_BUILD_TYPE=%{build_type} \
-	   -DCMAKE_SKIP_RPATH=ON \
-           -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
-           -DCMAKE_INSTALL_LIBDIR=%{_libdir} \
-           -DROCM_SYMLINK_LIBS=OFF \
-           -DAMDGPU_TARGETS=${ROCM_GPUS} \
-           -DCMAKE_INSTALL_LIBDIR=$ROCM_LIB \
-           -DCMAKE_INSTALL_BINDIR=$ROCM_BIN \
-           -DBUILD_TESTS=%{build_test} \
-           -DHIP_PLATFORM=amd
-
-    %cmake_build
-    module purge
-done
+%cmake_build
 
 %install
-
-for gpu in %{rccl_gpu_list}
-do
-    %cmake_install
-done
+%cmake_install
 
 echo s@%{buildroot}@@ > br.sed
 find %{buildroot}%{_libdir} -name '*.so.*.[0-9]' | sed -f br.sed >  %{name}.files
@@ -162,9 +154,12 @@ find %{buildroot}%{_libdir} -name '*.cmake'      | sed -f br.sed >> %{name}.deve
 find %{buildroot}           -name '%{name}*'     | sed -f br.sed >  %{name}.test
 %endif
 
+if [ -f %{buildroot}%{_prefix}/share/doc/%{name}/LICENSE.txt ]; then
+    rm %{buildroot}%{_prefix}/share/doc/%{name}/LICENSE.txt
+fi
+
 %files -f %{name}.files
 %license LICENSE.txt
-%exclude %{_docdir}/%{name}/LICENSE.txt
 
 %files data
 %dir %{_datadir}/%{name}
@@ -174,11 +169,15 @@ find %{buildroot}           -name '%{name}*'     | sed -f br.sed >  %{name}.test
 
 %files devel -f %{name}.devel
 %doc README.md
-%{_includedir}/%{name}
+%dir %{_includedir}/%{name}
+%{_includedir}/%{name}/*
 
 %if %{with test}
 %files test -f %{name}.test
 %endif
 
 %changelog
+%if 0%{?fedora}
 %autochangelog
+%endif
+

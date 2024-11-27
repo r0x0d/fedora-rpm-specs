@@ -3,7 +3,7 @@
 
 # https://github.com/cpuguy83/go-md2man
 %global goipath         github.com/cpuguy83/go-md2man
-Version:                2.0.3
+Version:                2.0.5
 
 %gometa
 
@@ -30,16 +30,10 @@ Provides:       go-md2man = %{version}-%{release}
 %gopkg
 
 %prep
-%if %{defined rhel}
-%goprep -k
-# unpack vendored dependencies to GOPATH
-tar c -C vendor/ . | tar x -C %{gobuilddir}/src
-%else
 %goprep
 
 %generate_buildrequires
 %go_generate_buildrequires
-%endif
 
 %build
 %gobuild -o %{gobuilddir}/bin/go-md2man %{goipath}
@@ -58,7 +52,7 @@ install -Dpm 0644 go-md2man.1 -t %{buildroot}%{_mandir}/man1/
 %endif
 
 %files
-%license LICENSE.md %{?rhel:vendor/modules.txt}
+%license LICENSE.md
 %doc go-md2man.1.md README.md
 %{_bindir}/*
 %{_mandir}/man1/go-md2man.1*

@@ -2,8 +2,7 @@
 #global bootstrap 1
 
 %if !0%{?bootstrap}
-# analitza has been ported to Qt6, but cantor has not yet
-%global analitza 0
+%global analitza 1
 %global qalculate 1
 %if 0%{?fedora} && ! 0%{?flatpak}
 # match julia.spec: ExclusiveArch:  x86_64
@@ -26,14 +25,14 @@
 Name:    cantor
 Summary: KDE Frontend to Mathematical Software
 Version: 24.11.80
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPL-2.0-or-later
 URL:     https://apps.kde.org/cantor/
 Source:  https://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
 
-# handled by qt5-srpm-macros, which defines %%qt5_qtwebengine_arches
-%{?qt5_qtwebengine_arches:ExclusiveArch: %{qt5_qtwebengine_arches}}
+# handled by qt6-srpm-macros, which defines %%qt6_qtwebengine_arches
+%{?qt6_qtwebengine_arches:ExclusiveArch: %{qt6_qtwebengine_arches}}
 
 ## upstream fixes
 
@@ -80,7 +79,7 @@ BuildRequires: cmake(Qt6Core5Compat)
 # optional deps/plugins
 
 %if 0%{?analitza}
-BuildRequires: cmake(Analitza5)
+BuildRequires: cmake(Analitza6)
 %endif
 %if 0%{?qalculate}
 BuildRequires: pkgconfig(libqalculate)
@@ -261,6 +260,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.%{name}.d
 
 
 %changelog
+* Sat Nov 23 2024 Pavel Solovev <daron439@gmail.com> - 24.11.80-2
+- Re-enable analitza
+
 * Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
 - 24.11.80
 

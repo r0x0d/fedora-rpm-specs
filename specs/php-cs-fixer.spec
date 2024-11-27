@@ -10,14 +10,14 @@
 # For compatibility with SCL
 %undefine __brp_mangle_shebangs
 
-%global gh_commit    58dd9c931c785a79739310aef5178928305ffa67
+%global gh_commit    79d4f3e77b250a7d8043d76c6af8f0695e8a469f
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
-%global gh_date      2024-08-30
+%global gh_date      2024-11-25
 %global gh_owner     FriendsOfPHP
 %global gh_project   PHP-CS-Fixer
 
 Name:           php-cs-fixer
-Version:        3.64.0
+Version:        3.65.0
 Release:        1%{?dist}
 Summary:        PHP Coding Standards Fixer
 
@@ -51,41 +51,41 @@ Provides:       php-cs-fixer3 = %{version}
 
 # Bundled PHP libraries
 # License BSD-3-Clause
-Provides:       bundled(php-sebastian-diff) = 5.1.1
+Provides:       bundled(php-composer(sebastian/diff)) = 5.1.1
 # License MIT
-Provides:       bundled(php-clue-ndjson-react) = v1.3.0
-Provides:       bundled(php-composer-pcre) = 3.3.1
-Provides:       bundled(php-composer-semver) = 3.4.2
-Provides:       bundled(php-composer-xdebug-handler) = 3.0.5
-Provides:       bundled(php-evenement-evenement) = v3.0.2
-Provides:       bundled(php-fidry-cpu-core-counter) = 1.2.0
-Provides:       bundled(php-psr-container) = 2.0.2
-Provides:       bundled(php-psr-event-dispatcher) = 1.0.0
-Provides:       bundled(php-psr-log) = 2.0.0
-Provides:       bundled(php-react-cache) = v1.2.0
-Provides:       bundled(php-react-child-process) = v0.6.5
-Provides:       bundled(php-react-dns) = v1.13.0
-Provides:       bundled(php-react-event-loop) = v1.5.0
-Provides:       bundled(php-react-promise) = v3.2.0
-Provides:       bundled(php-react-socket) = v1.16.0
-Provides:       bundled(php-react-stream) = v1.4.0
-Provides:       bundled(php-symfony-console) = v6.4.11
-Provides:       bundled(php-symfony-deprecation-contracts) = v3.5.0
-Provides:       bundled(php-symfony-event-dispatcher) = v6.4.8
-Provides:       bundled(php-symfony-event-dispatcher-contracts) = v3.5.0
-Provides:       bundled(php-symfony-filesystem) = v6.4.9
-Provides:       bundled(php-symfony-finder) = v6.4.11
-Provides:       bundled(php-symfony-options-resolver) = v6.4.8
-Provides:       bundled(php-symfony-polyfill-ctype) = v1.30.0
-Provides:       bundled(php-symfony-polyfill-intl-grapheme) = v1.30.0
-Provides:       bundled(php-symfony-polyfill-intl-normalizer) = v1.30.0
-Provides:       bundled(php-symfony-polyfill-mbstring) = v1.30.0
-Provides:       bundled(php-symfony-polyfill-php80) = v1.30.0
-Provides:       bundled(php-symfony-polyfill-php81) = v1.30.0
-Provides:       bundled(php-symfony-process) = v6.4.8
-Provides:       bundled(php-symfony-service-contracts) = v3.5.0
-Provides:       bundled(php-symfony-stopwatch) = v6.4.8
-Provides:       bundled(php-symfony-string) = v6.4.11
+Provides:       bundled(php-composer(clue/ndjson-react)) = v1.3.0
+Provides:       bundled(php-composer(composer/pcre)) = 3.3.2
+Provides:       bundled(php-composer(composer/semver)) = 3.4.3
+Provides:       bundled(php-composer(composer/xdebug-handler)) = 3.0.5
+Provides:       bundled(php-composer(evenement/evenement)) = v3.0.2
+Provides:       bundled(php-composer(fidry/cpu-core-counter)) = 1.2.0
+Provides:       bundled(php-composer(psr/container)) = 2.0.2
+Provides:       bundled(php-composer(psr/event-dispatcher)) = 1.0.0
+Provides:       bundled(php-composer(psr/log)) = 2.0.0
+Provides:       bundled(php-composer(react/cache)) = v1.2.0
+Provides:       bundled(php-composer(react/child-process)) = v0.6.5
+Provides:       bundled(php-composer(react/dns)) = v1.13.0
+Provides:       bundled(php-composer(react/event-loop)) = v1.5.0
+Provides:       bundled(php-composer(react/promise)) = v3.2.0
+Provides:       bundled(php-composer(react/socket)) = v1.16.0
+Provides:       bundled(php-composer(react/stream)) = v1.4.0
+Provides:       bundled(php-composer(symfony/console)) = v6.4.15
+Provides:       bundled(php-composer(symfony/deprecation-contracts)) = v3.5.0
+Provides:       bundled(php-composer(symfony/event-dispatcher)) = v6.4.13
+Provides:       bundled(php-composer(symfony/event-dispatcher-contracts)) = v3.5.0
+Provides:       bundled(php-composer(symfony/filesystem)) = v6.4.13
+Provides:       bundled(php-composer(symfony/finder)) = v6.4.13
+Provides:       bundled(php-composer(symfony/options-resolver)) = v6.4.13
+Provides:       bundled(php-composer(symfony/polyfill-ctype)) = v1.31.0
+Provides:       bundled(php-composer(symfony/polyfill-intl-grapheme)) = v1.31.0
+Provides:       bundled(php-composer(symfony/polyfill-intl-normalizer)) = v1.31.0
+Provides:       bundled(php-composer(symfony/polyfill-mbstring)) = v1.31.0
+Provides:       bundled(php-composer(symfony/polyfill-php80)) = v1.31.0
+Provides:       bundled(php-composer(symfony/polyfill-php81)) = v1.31.0
+Provides:       bundled(php-composer(symfony/process)) = v6.4.15
+Provides:       bundled(php-composer(symfony/service-contracts)) = v3.5.0
+Provides:       bundled(php-composer(symfony/stopwatch)) = v6.4.13
+Provides:       bundled(php-composer(symfony/string)) = v6.4.15
 
 Provides:       php-composer(friendsofphp/php-cs-fixer) = %{version}
 
@@ -120,7 +120,7 @@ php -r '
     foreach($pkgs["packages"] as $pkg) {
         $lic = implode(" and ", $pkg["license"]);
         if (!isset($res[$lic])) $res[$lic] = [];
-        $res[$lic][] = sprintf("Provides:       bundled(php-%s) = %s", str_replace(["/", "_"], ["-", "-"], $pkg["name"]), $pkg["version"]);
+        $res[$lic][] = sprintf("Provides:       bundled(php-composer(%s)) = %s", $pkg["name"], $pkg["version"]);
     }
     ksort($res);
     foreach($res as $lic => $lib) {
@@ -158,6 +158,9 @@ PHP_CS_FIXER_IGNORE_ENV=1 ./%{name} --version | grep %{version}
 
 
 %changelog
+* Mon Nov 25 2024 Remi Collet <remi@remirepo.net> - 3.65.0-1
+- update to 3.65.0
+
 * Sat Aug 31 2024 Remi Collet <remi@remirepo.net> - 3.64.0-1
 - update to 3.64.0
 

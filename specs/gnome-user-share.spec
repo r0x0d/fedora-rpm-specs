@@ -1,7 +1,7 @@
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 Name: gnome-user-share
-Version: 47.0
+Version: 47.2
 Release: 1%{?dist}
 Summary: Gnome user file sharing
 
@@ -62,6 +62,9 @@ up in the Network location in GNOME.
 %{_userunitdir}/gnome-user-share-webdav.service
 
 %changelog
+* Mon Nov 25 2024 nmontero <nmontero@redhat.com> - 47.2-1
+- Update to 47.2
+
 * Mon Sep 16 2024 nmontero <nmontero@redhat.com> - 47.0-1
 - Update to 47.0
 

@@ -1,16 +1,16 @@
-%global srcname extension-helpers
+%global srcname extension_helpers
 %global modname extension_helpers
 
 %bcond_with doc
 
-Name:           python-%{srcname}
-Version:        1.1.1
+Name:           python-extension-helpers
+Version:        1.2.0
 Release:        %autorelease
 Summary:        A build time package to simplify C/Cython extensions
 
 License:        BSD-3-Clause
 URL:            https://pypi.python.org/pypi/extension-helpers
-Source0:        %{pypi_source}
+Source0:        %{pypi_source %srcname}
 
 BuildArch:      noarch
 

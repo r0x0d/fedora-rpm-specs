@@ -4,7 +4,7 @@ Release:        53%{?dist}
 Summary:        Parse Outlook Express mailboxes
 # libdbx/libdbx.c:  GPLv2+
 # README:           GPL+ or Artistic
-License:        GPLv2+ and (GPL+ or Artistic)
+License:        GPL-2.0-or-later AND (GPL-1.0-or-later OR Artistic-1.0-Perl)
 URL:            https://metacpan.org/release/Mail-Transport-Dbx
 Source0:        https://cpan.metacpan.org/authors/id/V/VP/VPARSEVAL/Mail-Transport-Dbx-%{version}.tar.gz
 # Declare POD encoding, CPAN RT#79031

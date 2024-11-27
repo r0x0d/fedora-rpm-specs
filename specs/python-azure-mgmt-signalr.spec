@@ -4,8 +4,8 @@
 %global         srcname     azure-mgmt-signalr
 
 Name:           python-%{srcname}
-Version:        2.0.0~b1
-%global         pypi_version 2.0.0b1
+Version:        2.0.0~b2
+%global         pypi_version 2.0.0b2
 Release:        %autorelease
 Summary:        Microsoft Azure SignalR Client Library for Python
 License:        MIT

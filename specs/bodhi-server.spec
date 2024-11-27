@@ -1,6 +1,6 @@
 %global pypi_name bodhi-server
 %global src_name bodhi_server
-%global pypi_version 8.2.0
+%global pypi_version 8.3.0
 
 Name:           %{pypi_name}
 Version:        %{pypi_version}
@@ -29,7 +29,7 @@ BuildRequires:  createrepo_c
 BuildRequires:  skopeo
 BuildRequires:  dnf
 
-Requires: bodhi-client >= 8.1.0
+Requires: bodhi-client >= 8.3.0
 Requires: python3-bodhi-messages >= 8.1.0
 Requires: fedora-messaging
 Requires: git
@@ -160,6 +160,9 @@ export BODHI_CONFIG=$(pwd)/tests/testing.ini
 %pycached %{python3_sitelib}/bodhi/server/metadata.py
 
 %changelog
+* Mon Nov 25 2024 Mattia Verga <mattia.verga@proton.me> - 8.3.0-1
+- Update to 8.3.0
+
 * Mon Oct 28 2024 Mattia Verga <mattia.verga@proton.me> - 8.2.0-1
 - Update to 8.2.0
 

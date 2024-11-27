@@ -1,5 +1,5 @@
 Name:           aws-c-sdkutils
-Version:        0.1.19
+Version:        0.2.1
 Release:        1%{?dist}
 Summary:        Utility package for AWS SDK for C
 
@@ -77,6 +77,10 @@ Utility package for AWS SDK for C
 
 
 %changelog
+* Sat Nov 09 2024 Packit <hello@packit.dev> - 0.2.1-1
+- Update to version 0.2.1
+- Resolves: rhbz#2321722
+
 * Thu Sep 05 2024 Packit <hello@packit.dev> - 0.1.19-1
 - Update to version 0.1.19
 - Resolves: rhbz#2302714

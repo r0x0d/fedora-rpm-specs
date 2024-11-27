@@ -14,6 +14,9 @@ License:        MIT
 URL:            %forgeurl
 Source:         %forgesource
 
+# Avoid the multiprocessing forkserver method (for Python 3.14+ compatibility)
+Patch:          https://github.com/giampaolo/pyftpdlib/pull/656.patch
+
 BuildArch:      noarch
 
 BuildRequires:  help2man

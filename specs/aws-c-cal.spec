@@ -3,8 +3,8 @@ AWS Crypto Abstraction Layer: Cross-Platform, C99 wrapper for
 cryptography primitives}
 
 Name:           aws-c-cal
-Version:        0.7.4
-Release:        1%{?dist}
+Version:        0.8.1
+Release:        2%{?dist}
 Summary:        AWS Crypto Abstraction Layer
 
 License:        Apache-2.0
@@ -12,6 +12,10 @@ URL:            https://github.com/awslabs/%{name}
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 # Install cmake files in 'libdir/cmake/<pkgname>' rather than 'libdir/<pkgname>/cmake'
 Patch0:         aws-c-cal-cmake.patch
+# Upstream introduced SHA1 related code and tests in v0.8.1
+# Fedora 41 and RHEL 9 distrust SHA1 signatures
+# Disabling tests of additional functionality to unblock package build
+Patch0001:      0001-patch-Disable-SHA1-related-tests.patch
 
 BuildRequires:  gcc
 BuildRequires:  cmake
@@ -81,6 +85,13 @@ Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
 
 %changelog
+* Mon Nov 25 2024 Dominik Wombacher <dominik@wombacher.cc> - 0.8.1-2
+- Patch added to disable SHA1 related tests.
+
+* Mon Nov 18 2024 Packit <hello@packit.dev> - 0.8.1-1
+- Update to version 0.8.1
+- Resolves: rhbz#2321724
+
 * Sun Aug 25 2024 Packit <hello@packit.dev> - 0.7.4-1
 - Update to version 0.7.4
 - Resolves: rhbz#2304748

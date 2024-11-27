@@ -1,6 +1,6 @@
 Name:           aws-checksums
-Version:        0.1.20
-Release:        2%{?dist}
+Version:        0.2.2
+Release:        1%{?dist}
 Summary:        Efficient CRC32c and CRC32 implementations
 
 License:        Apache-2.0
@@ -84,6 +84,10 @@ with language bindings for each of our SDKs
 
 
 %changelog
+* Wed Nov 13 2024 Packit <hello@packit.dev> - 0.2.2-1
+- Update to version 0.2.2
+- Resolves: rhbz#2321725
+
 * Thu Sep 26 2024 Dominik Wombacher <dominik@wombacher.cc> - 0.1.20-2
 - Update to version 0.1.20, add new binary 'checksum-profile'
 - Resolves: rhbz#2310537

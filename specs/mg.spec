@@ -1,12 +1,10 @@
-Name:		mg
-Version:	20240709
-Release:	2%{?dist}
-Summary:	Tiny Emacs-like editor
-
-# Automatically converted from old format: BSD and ISC and MirOS - review is highly recommended.
-License:	LicenseRef-Callaway-BSD AND ISC AND MirOS
-URL:		https://github.com/hboetes/mg
-Source0:	https://github.com/hboetes/%{name}/archive/%{version}.tar.gz
+Name:          mg
+Version:       20240709
+Release:       3%{?dist}
+Summary:       Tiny Emacs-like editor
+License:       LicenseRef-Fedora-Public-Domain
+URL:           https://github.com/hboetes/mg
+Source0:       https://github.com/hboetes/%{name}/archive/%{version}.tar.gz
 BuildRequires: make
 BuildRequires: gcc
 BuildRequires: ncurses-devel
@@ -33,6 +31,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/mg.1.*
 
 %changelog
+* Mon Nov 25 2024 Mark McKinstry <mmckinst@fedoraproject.org> - 20240709-3
+- change license to LicenseRef-Fedora-Public-Domain (RHBZ#2328778)
+
 * Mon Sep  2 2024 Miroslav Suchý <msuchy@redhat.com> - 20240709-2
 - convert license to SPDX
 

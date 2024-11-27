@@ -3,8 +3,8 @@
 
 
 Name:		xed
-Version:	3.6.6
-Release:	2%{?dist}
+Version:	3.6.7
+Release:	1%{?dist}
 Summary:	X-Apps [Text] Editor (Cross-DE, backward-compatible, GTK3, traditional UI)
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -21,7 +21,6 @@ BuildRequires:	gnome-common
 BuildRequires:	gtk-doc
 BuildRequires:	intltool
 BuildRequires:	libappstream-glib
-BuildRequires:	pkgconfig(enchant)
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(gspell-1)
 BuildRequires:	pkgconfig(gtk+-3.0)
@@ -130,6 +129,9 @@ This package contains the documentation files for %{name}.
 
 
 %changelog
+* Mon Nov 25 2024 Leigh Scott <leigh123linux@gmail.com> - 3.6.7-1
+- Update to 3.6.7
+
 * Mon Aug 26 2024 David King <amigadave@amigadave.com> - 3.6.6-2
 - Rebuild against gspell
 

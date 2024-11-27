@@ -49,7 +49,7 @@ Summary:        Web Console for Linux servers
 License:        LGPL-2.1-or-later
 URL:            https://cockpit-project.org/
 
-Version:        329
+Version:        329.1
 Release:        1%{?dist}
 Source0:        https://github.com/cockpit-project/cockpit/releases/download/%{version}/cockpit-%{version}.tar.xz
 
@@ -612,6 +612,9 @@ via PackageKit.
 
 # The changelog is automatically generated and merged
 %changelog
+* Mon Nov 25 2024 Packit <hello@packit.dev> - 329.1-1
+- cockpit.js: Put back cockpit.{resolve,reject}() to fix subscription-manager-cockpit
+
 * Wed Nov 20 2024 Packit <hello@packit.dev> - 329-1
 - Shell: Extra warnings when connecting to remote hosts
 

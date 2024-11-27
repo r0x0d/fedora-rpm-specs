@@ -1,6 +1,6 @@
 # There have been no official releases yet, so we pull from git
-%global gitdate  20240323
-%global gittag   062bd473b0773f3c75435755e4972b2c6948271e
+%global gitdate  20241107
+%global gittag   8ce9b7bc36a3d1c96b5e98f875e08c724238ec2c
 %global shorttag %(cut -b -7 <<< %{gittag})
 %global user     gap-packages
 %global pkgname  nautytracesinterface
@@ -16,7 +16,7 @@
 
 Name:           gap-pkg-%{pkgname}
 Version:        0.2
-Release:        35.%{gitdate}git%{shorttag}%{?dist}
+Release:        36.%{gitdate}git%{shorttag}%{?dist}
 Summary:        GAP interface to nauty and Traces
 
 License:        GPL-2.0-or-later
@@ -101,6 +101,9 @@ gap -l '%{buildroot}%{gap_archdir};' tst/testall.g
 %{gap_archdir}/pkg/%{pkgname}/examples/
 
 %changelog
+* Mon Nov 25 2024 Jerry James <loganjerry@gmail.com> - 0.2-36.20241107git8ce9b7b
+- Update to use the kext interface in gap 4.12+
+
 * Mon Sep 23 2024 Jerry James <loganjerry@gmail.com> - 0.2-35.20240323git062bd47
 - Rebuild for nauty 2.8.9
 

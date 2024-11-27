@@ -1,26 +1,18 @@
-%bcond_without tests
-%if 0%{?fedora}
-%bcond_without pkcs11
-%else
-%bcond_with pkcs11
-%endif
-%if 0%{?fedora}
-%bcond_without libproxy
-%else
-%bcond_with libproxy
-%endif
+%bcond tests 1
+%bcond pkcs11 %{undefined rhel}
+%bcond libproxy %{undefined rhel}
 
 # Disable automatic .la file removal
 %global __brp_remove_la_files %nil
 
 Summary: An HTTP and WebDAV client library
 Name: neon
-Version: 0.33.0
-Release: 2%{?dist}
+Version: 0.34.0
+Release: 1%{?dist}
 License: LGPL-2.0-or-later
 URL: https://notroj.github.io/neon/
 Source0: https://notroj.github.io/neon/neon-%{version}.tar.gz
-Patch0: neon-0.32.2-multilib.patch
+Patch0: neon-0.34.0-multilib.patch
 BuildRequires: expat-devel, openssl-devel, zlib-devel, krb5-devel
 BuildRequires: pkgconfig, make, gcc, xmlto
 %if %{with pkcs11}
@@ -52,7 +44,7 @@ License: LGPL-2.0-or-later AND GPL-2.0-or-later
 The development library for the C language HTTP and WebDAV client library.
 
 %prep
-%autosetup -p1
+%autosetup -p1 -S gendiff
 
 # prevent installation of HTML docs
 sed -i '/^install-docs/s/install-html//' Makefile.in
@@ -99,6 +91,10 @@ make %{?_smp_mflags} check
 %{_libdir}/*.so
 
 %changelog
+* Mon Nov 25 2024 Joe Orton <jorton@redhat.com> - 0.34.0-1
+- update to 0.34.0
+- simplify bconds
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.33.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

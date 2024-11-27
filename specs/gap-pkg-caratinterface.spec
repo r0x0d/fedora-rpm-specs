@@ -1,9 +1,8 @@
 %global pkgname caratinterface
 %global upname  CaratInterface
-%global giturl  https://github.com/gap-packages/CaratInterface
 
 Name:           gap-pkg-%{pkgname}
-Version:        2.3.6
+Version:        2.3.7
 Release:        %autorelease
 Summary:        GAP interface to CARAT
 
@@ -12,8 +11,8 @@ BuildArch:      noarch
 # See https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
 URL:            https://www.math.uni-bielefeld.de/~gaehler/gap/packages.php
-VCS:            git:%{giturl}.git
-Source:         %{giturl}/archive/v%{version}/%{upname}-%{version}.tar.gz
+VCS:            git:https://github.com/gap-packages/CaratInterface.git
+Source:         https://www.math.uni-bielefeld.de/~gaehler/gap/%{upname}/%{upname}-%{version}.tar.gz
 
 BuildRequires:  carat
 BuildRequires:  gap-devel
@@ -61,8 +60,6 @@ This package contains documentation for gap-pkg-%{pkgname}.
 rm -f carat*.tgz
 
 %build
-export LC_ALL=C.UTF-8
-
 # Look for the CARAT binaries where they exist in Fedora
 for f in read.g PackageInfo.g; do
   sed -i.orig 's,DirectoriesPackagePrograms( "%{upname}" ),Directory( "%{_libexecdir}/carat" ),' $f
@@ -84,15 +81,15 @@ cp -a *.g gap htm tst %{buildroot}%{gap_libdir}/pkg/%{upname}
 %gap_copy_docs -n %{upname}
 
 %check
-export LC_ALL=C.UTF-8
-gap -l "%{buildroot}%{gap_libdir};" tst/testall.g
+gap -l '%{buildroot}%{gap_libdir};' tst/testall.g
 
 %files
 %doc Changelog README
 %license GPL
-%{gap_libdir}/pkg/%{upname}/
-%exclude %{gap_libdir}/pkg/%{upname}/doc/
-%exclude %{gap_libdir}/pkg/%{upname}/htm/
+%dir %{gap_libdir}/pkg/%{upname}/
+%{gap_libdir}/pkg/%{upname}/*.g
+%{gap_libdir}/pkg/%{upname}/gap/
+%{gap_libdir}/pkg/%{upname}/tst/
 
 %files doc
 %docdir %{gap_libdir}/pkg/%{upname}/doc/

@@ -150,6 +150,11 @@ mkdir images
 cp -p data/images/{a-dogs-day,hero}.png images/
 sed -i 's:data/images/:images/:g' README.md
 
+# Relax lxml version pin on older releases
+%if 0%{?fedora} < 42
+sed -i 's:^lxml>=.*:lxml:' requirements.txt
+%endif
+
 # Generate Python dependencies for the converter
 %generate_buildrequires
 %pyproject_buildrequires -N requirements.txt

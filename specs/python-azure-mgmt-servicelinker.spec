@@ -1,16 +1,17 @@
 # This SDK component has no tests upstream yet. 😭
 %bcond_with     tests
 
-%global         srcname     azure-mgmt-servicelinker
+%global         srcname      azure-mgmt-servicelinker
+%global         tarball_name azure_mgmt_servicelinker
 
 Name:           python-%{srcname}
-Version:        1.2.0~b2
-%global         pypi_version 1.2.0b2
+Version:        1.2.0~b3
+%global         pypi_version 1.2.0b3
 Release:        %autorelease
 Summary:        Microsoft Azure Servicelinker Management Client Library for Python
 License:        MIT
 URL:            https://pypi.org/project/%{srcname}/
-Source0:        %{pypi_source %{srcname} %{pypi_version}}
+Source0:        %{pypi_source %{tarball_name} %{pypi_version}}
 
 # NOTE(mhayden): Set an epoch number because I used 1.0.0b1 as a version as a mistake
 # and 1.0.0~b2 sorts poorly with it. 🤦🏻‍♂️
@@ -42,7 +43,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -n %{srcname}-%{pypi_version}
+%autosetup -n %{tarball_name}-%{pypi_version}
 
 
 %generate_buildrequires

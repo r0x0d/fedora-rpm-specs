@@ -1,7 +1,7 @@
 # Upstream has only made one release, but there have been lots of bug fixes
 # since, so we use a git checkout.
-%global commit      cd9ee4c4449775a2f867acf31c84b7fe4b132ad5
-%global date        20231107
+%global commit      41fee1f99f9276008b7cd112fca19dc3ea84ac32
+%global date        20241020
 %global forgeurl    https://github.com/brendangregg/FlameGraph
 
 %if 0%{?fedora} >= 41
@@ -33,7 +33,7 @@ Summary:        Stack trace visualizer
 
 %forgemeta
 
-Release:        19%{?dist}
+Release:        20%{?dist}
 License:        CDDL-1.0
 URL:            http://www.brendangregg.com/flamegraphs.html
 VCS:            git:%{forgeurl}.git
@@ -212,6 +212,9 @@ sed -i 's/ pid tid//' test.sh
 %endif
 
 %changelog
+* Mon Nov 25 2024 Jerry James <loganjerry@gmail.com> - 1.0-20
+- Update to latest git HEAD for null search fix
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0-19
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -3,7 +3,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 1.5.9
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: A Ruby interface to the PostgreSQL RDBMS
 License: (BSD-2-Clause OR Ruby) AND PostgreSQL
 URL: https://github.com/ged/ruby-pg
@@ -14,6 +14,9 @@ Source1: %{gem_name}-%{version}-spec.tar.gz
 # Disable RPATH.
 # https://github.com/ged/ruby-pg/issues/183
 Patch0: rubygem-pg-1.3.0-remove-rpath.patch
+# Fix test compatibility with Linux 6.10+.
+# https://github.com/ged/ruby-pg/pull/607
+Patch1: rubygem-pg-1.5.9-Fix-writing-lots-of-data-through-the-TcpGateScheduler.patch
 # lib/pg/text_{de,en}coder.rb
 Requires: rubygem(json)
 # This is optional dependency now.
@@ -50,6 +53,10 @@ Documentation for %{name}.
 
 %patch 0 -p1
 
+pushd %{builddir}
+%patch 1 -p1
+popd
+
 %build
 # Create the gem as gem install only works on a gem file
 gem build ../%{gem_name}-%{version}.gemspec
@@ -73,11 +80,6 @@ rm -rf %{buildroot}%{gem_instdir}/ext/
 %check
 pushd .%{gem_instdir}
 ln -s %{_builddir}/spec .
-
-# Some test cases fail starting with Linux kernel 6.10
-# https://bugzilla.redhat.com/show_bug.cgi?id=2324182
-# https://github.com/ged/ruby-pg/issues/601
-EXAMPLE_MATCHES='^(?!with a Fiber scheduler (can send lots of data per put_copy_data|waits when sending query data|should convert strings and parameters to #prepare and #exec_prepared)).*$'
 
 # Assign a random port to consider a case of multi builds in parallel in a host.
 # https://github.com/ged/ruby-pg/pull/39
@@ -124,6 +126,10 @@ popd
 %{gem_instdir}/sample
 
 %changelog
+* Mon Nov 25 2024 Vít Ondruch <vondruch@redhat.com> - 1.5.9-2
+- Fix test compatibility with Linux 6.10+.
+  Resolves: rhbz#2324182
+
 * Fri Nov 08 2024 Vít Ondruch <vondruch@redhat.com> - 1.5.9-1
 - Update to pg 1.5.9.
   Resolves: rhbz#2310465

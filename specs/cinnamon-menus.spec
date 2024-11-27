@@ -1,7 +1,7 @@
 Summary: A menu system for the Cinnamon project
 Name:    cinnamon-menus
-Version: 6.2.0
-Release: 3%{?dist}
+Version: 6.4.0
+Release: 1%{?dist}
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License: LicenseRef-Callaway-LGPLv2+
 URL:     https://github.com/linuxmint/%{name} 
@@ -59,6 +59,9 @@ writing applications that use the Cinnamon menu system.
 %{_datadir}/gir-1.0/CMenu-3.0.gir
 
 %changelog
+* Mon Nov 25 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
+- Update to 6.4.0
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 6.2.0-3
 - convert license to SPDX
 

@@ -14,7 +14,7 @@
 %endif
 
 Name:           gnome-initial-setup
-Version:        47.1
+Version:        47.2
 Release:        %autorelease
 Summary:        Bootstrapping your OS
 

@@ -162,13 +162,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.13.0
 %define specversion 6.13.0
 %define patchversion 6.13
-%define pkgrelease 0.rc0.20241123git228a1157fb9f.7
+%define pkgrelease 0.rc0.20241125git9f16d5e6f220.8
 %define kversion 6
-%define tarfile_release 6.12-8446-g228a1157fb9f
+%define tarfile_release 6.12-9073-g9f16d5e6f220
 # This is needed to do merge window version magic
 %define patchlevel 13
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc0.20241123git228a1157fb9f.7%{?buildid}%{?dist}
+%define specrelease 0.rc0.20241125git9f16d5e6f220.8%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.13.0
 
@@ -4270,6 +4270,12 @@ fi\
 #
 #
 %changelog
+* Mon Nov 25 2024 Justin M. Forbes <jforbes@fedoraproject.org> [6.13.0-0.rc0.20241125git9f16d5e6f220.8]
+- Partially revert "crypto: akcipher - Disable signing and decryption" (Jan Stancek)
+
+* Sun Nov 24 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.9f16d5e6f220.8]
+- Linux v6.13.0-0.rc0.9f16d5e6f220
+
 * Sat Nov 23 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.228a1157fb9f.7]
 - Better fixes for the fedora mismatch (Justin M. Forbes)
 - Mismatch fix ups for Fedora (Justin M. Forbes)

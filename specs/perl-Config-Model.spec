@@ -2,7 +2,7 @@
 %bcond_with test_fuse
 
 Name:           perl-Config-Model
-Version:        2.154
+Version:        2.155
 Release:        1%{?dist}
 Summary:        Framework to create configuration validation tools and editors
 License:        LGPL-2.1-or-later
@@ -127,6 +127,9 @@ modprobe fuse
 %{_mandir}/man3/*
 
 %changelog
+* Mon Nov 25 2024 Jitka Plesnikova <jplesnik@redhat.com> - 2.155-1
+- 2.155 bump
+
 * Mon Sep 16 2024 Jitka Plesnikova <jplesnik@redhat.com> - 2.154-1
 - 2.154 bump (rhbz#2295344)
 

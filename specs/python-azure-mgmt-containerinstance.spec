@@ -1,15 +1,17 @@
 # Upstream no longer includes tests.
 %bcond_with     tests
 
-%global         srcname     azure-mgmt-containerinstance
+%global         srcname      azure-mgmt-containerinstance
+%global         tarball_name azure_mgmt_containerinstance
 
 Name:           python-%{srcname}
-Version:        10.1.0
+Version:        10.2.0~b1
+%global         pypi_version    10.2.0b1
 Release:        %autorelease
 Summary:        Microsoft Azure Container Instance Client Library for Python
 License:        MIT
 URL:            https://pypi.org/project/%{srcname}/
-Source0:        %{pypi_source %{srcname} %{version} zip}
+Source0:        %{pypi_source %{tarball_name} %{pypi_version}}
 
 BuildArch:      noarch
 
@@ -44,7 +46,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -n %{srcname}-%{version}
+%autosetup -n %{tarball_name}-%{pypi_version}
 
 
 %generate_buildrequires

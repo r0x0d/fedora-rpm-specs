@@ -12,7 +12,7 @@
 %endif
 
 Name:           gnome-shell-extensions
-Version:        47.1
+Version:        47.2
 Release:        %autorelease
 Summary:        Modify and extend GNOME Shell functionality and behavior
 

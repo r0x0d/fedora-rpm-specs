@@ -9,7 +9,11 @@
 
 Name:           hipify
 Version:        %{rocm_version}
+%if 0%{?fedora}
 Release:        %autorelease
+%else
+Release:        100%{?dist}
+%endif
 Summary:        Convert CUDA to HIP
 
 Url:            https://github.com/ROCm
@@ -75,4 +79,6 @@ fi
 %{_libexecdir}/%{name}
 
 %changelog
+%if 0%{?fedora}
 %autochangelog
+%endif

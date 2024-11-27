@@ -1,7 +1,7 @@
 %global pkgname 4ti2interface
 %global upname  4ti2Interface
-%global upver   2023.02-04
-%global giturl  https://github.com/homalg-project/homalg_project/
+%global upver   2024.11-01
+%global giturl  https://github.com/homalg-project/homalg_project
 
 Name:           gap-pkg-%{pkgname}
 Version:        %(tr - . <<< %{upver})
@@ -46,7 +46,6 @@ This package contains documentation for gap-pkg-%{pkgname}.
 %autosetup -n homalg_project-%{upname}-%{upver}/%{upname} -p1
 
 %build
-export LC_ALL=C.UTF-8
 gap makedoc.g
 
 %install
@@ -55,8 +54,7 @@ cp -a examples gap tst *.g  %{buildroot}%{gap_libdir}/pkg/%{upname}
 %gap_copy_docs -n %{upname}
 
 %check
-export LC_ALL=C.UTF-8
-gap -l "%{buildroot}%{gap_libdir};" tst/testall.g
+gap -l '%{buildroot}%{gap_libdir};' tst/testall.g
 
 %files
 %doc README.md

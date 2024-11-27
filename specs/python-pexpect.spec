@@ -5,7 +5,7 @@
 Name:           python-%{modname}
 Summary:        Unicode-aware Pure Python Expect-like module
 Version:        4.9.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 
 # All the files have ISC license except the
 # following two that have BSD license:
@@ -71,7 +71,7 @@ pty module.
 %autosetup -n %{modname}-%{version} -p 1
 
 %generate_buildrequires
-%pyproject_buildrequires -t
+%pyproject_buildrequires
 
 %build
 %pyproject_wheel
@@ -104,6 +104,9 @@ export CI=true
 %{python3_sitelib}/%{modname}-*.dist-info
 
 %changelog
+* Mon Nov 25 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 4.9.0-8
+- Avoid tox dependency
+
 * Fri Nov 01 2024 Dan Radez <dradez@redhat.com> - 4.9.0-7
 - updates for compat with setuptools 74.x rhbz#2319691
 

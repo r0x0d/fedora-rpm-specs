@@ -7,8 +7,8 @@
 %bcond tests %{without bootstrap}
 
 Name:           python-flit-core
-Version:        3.9.0
-Release:        9%{?dist}
+Version:        3.10.1
+Release:        1%{?dist}
 Summary:        PEP 517 build backend for packages using Flit
 
 # flit-core is BSD-3-Clause
@@ -17,9 +17,6 @@ License:        BSD-3-Clause AND BSD-2-Clause
 
 URL:            https://flit.pypa.io/
 Source:         %{pypi_source flit_core}
-
-# ast.Str has been removed in Python 3.14.0a1
-Patch:          https://github.com/pypa/flit/pull/684.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -83,11 +80,6 @@ rm %{buildroot}%{python3_sitelib}/flit_core-*.dist-info/RECORD
 %pyproject_install
 %endif
 
-# don't ship tests in flit_core package
-# if upstream decides to change the installation, it can be removed:
-# https://github.com/takluyver/flit/issues/403
-rm -r %{buildroot}%{python3_sitelib}/flit_core/tests/
-
 %check
 %py3_check_import flit_core flit_core.buildapi
 %if %{with tests}
@@ -103,6 +95,10 @@ rm -r %{buildroot}%{python3_sitelib}/flit_core/tests/
 
 
 %changelog
+* Fri Nov 22 2024 Michel Lind <salimma@fedoraproject.org> - 3.10.1-1
+- Update to 3.10.1
+- Resolves: rhbz#2322947
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.9.0-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

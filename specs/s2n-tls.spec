@@ -3,7 +3,7 @@ s2n-tls is a C99 implementation of the TLS/SSL protocols that is
 designed to be simple, small, fast, and with security as a priority.}
 
 Name:           s2n-tls
-Version:        1.5.3
+Version:        1.5.9
 Release:        1%{?dist}
 Summary:        A C99 implementation of the TLS/SSL protocols
 
@@ -93,6 +93,10 @@ install -p -m 644 docs/images/*.svg %{buildroot}/%{_docdir}/s2n-tls/docs/images/
 
 
 %changelog
+* Thu Nov 14 2024 Packit <hello@packit.dev> - 1.5.9-1
+- Update to version 1.5.9
+- Resolves: rhbz#2316588
+
 * Fri Sep 20 2024 Packit <hello@packit.dev> - 1.5.3-1
 - Update to version 1.5.3
 - Resolves: rhbz#2307472, rhbz#2304838, rhbz#2304837, rhbz#2304681

@@ -5,9 +5,9 @@
 Summary: Tool Command Language, pronounced tickle
 Name: tcl
 Version: %{vers}
-Release: 2%{?dist}
+Release: 3%{?dist}
 Epoch: 1
-License: TCL AND GPL-3.0-or-later WITH bison-exception-2.2 AND BSD-3-Clause
+License: TCL AND GPL-3.0-or-later WITH Bison-exception-2.2 AND BSD-3-Clause
 URL: http://tcl.sourceforge.net/
 Source0: http://downloads.sourceforge.net/sourceforge/tcl/tcl-core%{version}-src.tar.gz
 BuildRequires: make
@@ -147,6 +147,10 @@ ln -s %{_bindir}/tclsh %{_bindir}/tclsh%{majorver} %{buildroot}%{_usr}/bin/
 %{_datadir}/%{name}%{majorver}/tclAppInit.c
 
 %changelog
+* Mon Nov 25 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 1:8.6.15-3
+- Fixed SPDX license case, it was according to the SPDX standard, but
+  now it should be more easy to validate with some XML validators
+
 * Thu Oct 17 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 1:8.6.15-2
 - Fixed systemtap probes to be built-in
 

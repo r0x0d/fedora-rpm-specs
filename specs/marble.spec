@@ -12,66 +12,56 @@ Source0:  http://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%
 
 ## upstreamable patches
 
-# Introduced here: https://src.fedoraproject.org/rpms/kde-filesystem/c/3cc17949d085bef5476638f2fbade0f19dbcea32?branch=rawhide
-%if 0%{?fedora} >= 40 || 0%{?rhel} >= 10
-BuildRequires: kde4-filesystem
-%endif
-
 BuildRequires: desktop-file-utils
+BuildRequires: extra-cmake-modules
+BuildRequires: gcc-c++
+BuildRequires: kf6-rpm-macros
 BuildRequires: libappstream-glib
 
-BuildRequires: extra-cmake-modules
-BuildRequires: kf5-kconfig-devel
-BuildRequires: kf5-kcoreaddons-devel
-BuildRequires: kf5-kcrash-devel
-BuildRequires: kf5-kdoctools-devel
-BuildRequires: kf5-ki18n-devel
-BuildRequires: kf5-kio-devel
-BuildRequires: kf5-knewstuff-devel
-BuildRequires: kf5-kparts-devel
-BuildRequires: kf5-krunner-devel
-BuildRequires: kf5-kservice-devel
-BuildRequires: kf5-kwallet-devel
-BuildRequires: kf5-rpm-macros
+BuildRequires: cmake(Qt6Core)
+BuildRequires: cmake(Qt6Xml)
+BuildRequires: cmake(Qt6Network)
+BuildRequires: cmake(Qt6Widgets)
+BuildRequires: cmake(Qt6Svg)
+BuildRequires: cmake(Qt6SvgWidgets)
+BuildRequires: cmake(Qt6Concurrent)
+BuildRequires: cmake(Qt6Quick)
+BuildRequires: cmake(Qt6PrintSupport)
+BuildRequires: cmake(Qt6Core5Compat)
+BuildRequires: cmake(Qt6Test)
+%ifarch %{?qt6_qtwebengine_arches}
+BuildRequires: cmake(Qt6WebChannel)
+BuildRequires: cmake(Qt6WebEngineWidgets)
+BuildRequires: cmake(Qt6WebEngineQuick)
+%endif
+BuildRequires: cmake(Qt6DBus)
+BuildRequires: cmake(Qt6Positioning)
+BuildRequires: cmake(Qt6SerialPort)
+BuildRequires: cmake(Qt6LinguistTools)
+#BuildRequires: cmake(Qt6Designer)
+
+BuildRequires: cmake(KF6CoreAddons)
+BuildRequires: cmake(KF6I18n)
+BuildRequires: cmake(KF6Config)
+BuildRequires: cmake(KF6Crash)
+BuildRequires: cmake(KF6Parts)
+BuildRequires: cmake(KF6KIO)
+BuildRequires: cmake(KF6Runner)
+BuildRequires: cmake(KF6DocTools)
+BuildRequires: cmake(Phonon4Qt6)
+BuildRequires: cmake(Plasma)
+
+BuildRequires: cmake(absl)
 %if 0%{?fedora} && ! 0%{?flatpak}
 BuildRequires: pkgconfig(libgps)
 %endif
-BuildRequires: pkgconfig(phonon4qt5)
 BuildRequires: pkgconfig(protobuf)
-BuildRequires: pkgconfig(Qt5Core)
-BuildRequires: pkgconfig(Qt5Xml)
-BuildRequires: pkgconfig(Qt5Network)
-BuildRequires: pkgconfig(Qt5Test)
-BuildRequires: pkgconfig(Qt5Script)
-BuildRequires: pkgconfig(Qt5Widgets)
-BuildRequires: pkgconfig(Qt5Quick)
-# re-enable for EPEL 10+ when migrating to Qt6
-%if ! (0%{?rhel} >= 10)
-%ifarch %{?qt5_qtwebengine_arches}
-BuildRequires: cmake(Qt5WebEngine)
-BuildRequires: cmake(Qt5WebEngineWidgets)
-%endif
-%endif
-BuildRequires: pkgconfig(Qt5SerialPort)
-BuildRequires: pkgconfig(Qt5Svg)
-BuildRequires: pkgconfig(Qt5Sql)
-BuildRequires: pkgconfig(Qt5Concurrent)
-BuildRequires: pkgconfig(Qt5PrintSupport)
-BuildRequires: pkgconfig(Qt5Location) pkgconfig(Qt5Positioning)
-BuildRequires: cmake(Qt5LinguistTools)
 BuildRequires: pkgconfig(shapelib)
 BuildRequires: pkgconfig(shared-mime-info)
 BuildRequires: zlib-devel
 
-# when split occurred
-Obsoletes: kdeedu-marble < 4.7.0-10
-Provides:  kdeedu-marble = %{version}-%{release}
-Provides:  kdeedu-marble%{?_isa} = %{version}-%{release}
-
-# fixme, insert last build this was included -- rex
-Obsoletes: python-marble < %{epoch}:%{version}-%{release}
-
-Requires: %{name}-widget-qt5%{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-widget-qt6%{?_isa} = %{epoch}:%{version}-%{release}
+Recommends: (%{name}-plasma%{?_isa} = %{epoch}:%{version}-%{release} if plasmashell)
 
 # filter plugin provides
 %global __provides_exclude_from ^(%{_libdir}/marble/plugins/.*\\.so)$
@@ -93,9 +83,16 @@ starry sky and the twilight zone on the map change.
 In opposite to other virtual globes Marble also features multiple
 projections: Choose between a Flat Map ("Plate carré"), Mercator or the Globe.
 
+%package plasma
+Summary: Marble Plasma applets
+Requires: %{name}-widget-qt6%{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+%description plasma
+%{summary}.
+
 %package qt
 Summary: Marble qt-only interface
-Requires: %{name}-widget-qt5%{?_isa} = %{epoch}:%{version}-%{release}
+Requires: %{name}-widget-qt6%{?_isa} = %{epoch}:%{version}-%{release}
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
 %description qt
 %{summary}.
@@ -131,41 +128,45 @@ BuildArch: noarch
 %description widget-data
 %{summary}.
 
-%package widget-qt5
+%package widget-qt6
 Summary: Marble Widget Library
 Requires: %{name}-astro%{?_isa} = %{epoch}:%{version}-%{release}
 Requires: %{name}-widget-data = %{epoch}:%{version}-%{release}
-%description widget-qt5
+Obsoletes: %{name}-widget-qt5 < %{epoch}:%{version}-%{release}
+Conflicts: %{name}-widget-qt5 < %{epoch}:%{version}-%{release}
+%description widget-qt6
 %{summary}.
 
-%package widget-qt5-devel
-Summary: Development files for Qt5 Marble Widget
-Requires: %{name}-widget-qt5%{?_isa} = %{epoch}:%{version}-%{release}
-Requires: cmake(Qt5Xml)
-Requires: cmake(Qt5Widgets)
-# re-enable for EPEL 10+ when migrating to Qt6
-%if ! (0%{?rhel} >= 10)
-%ifarch %{?qt5_qtwebengine_arches}
-Requires: cmake(Qt5WebEngine)
-Requires: cmake(Qt5WebEngineWidgets)
+%package widget-qt6-devel
+Summary: Development files for Qt6 Marble Widget
+Requires: %{name}-widget-qt6%{?_isa} = %{epoch}:%{version}-%{release}
+Requires: cmake(Qt6Core5Compat)
+Requires: cmake(Qt6Xml)
+Requires: cmake(Qt6Widgets)
+%ifarch %{?qt6_qtwebengine_arches}
+Requires: cmake(Qt6WebEngineWidgets)
 %endif
-%endif
-%description widget-qt5-devel
+Obsoletes: %{name}-widget-qt5-devel < %{epoch}:%{version}-%{release}
+Conflicts: %{name}-widget-qt5-devel < %{epoch}:%{version}-%{release}
+%description widget-qt6-devel
 %{summary}.
 
 
 %prep
 %autosetup -p1
+# https://invent.kde.org/education/marble/-/merge_requests/143
+sed -i -e '/^Exec=/s/Behaim/behaim/' src/apps/behaim/org.kde.marble.behaim.desktop
 
 mv src/3rdparty/zlib src/3rdparty/zlib.UNUSED ||:
 
 
 %build
-%cmake_kf5 \
+%cmake_kf6 \
   -Wno-dev \
   -DBUILD_MARBLE_TESTS:BOOL=OFF \
+  -DBUILD_QT_AND_KDE:BOOL=ON \
   -DMARBLE_DATA_PATH:PATH="%{_datadir}/marble/data" \
-  -DMARBLE_PRI_INSTALL_DIR:PATH="%{_qt5_archdatadir}/mkspecs/modules" \
+  -DMARBLE_PRI_INSTALL_DIR:PATH="%{_qt6_archdatadir}/mkspecs/modules" \
   -DWITH_DESIGNER_PLUGIN:BOOL=OFF
 
 %cmake_build
@@ -176,51 +177,57 @@ mv src/3rdparty/zlib src/3rdparty/zlib.UNUSED ||:
 
 %find_lang %{name} --all-name --with-html
 # hack around buggy --with-qt ^^
-%find_lang_kf5 marble_qt
+%find_lang_kf6 marble_qt
 cat marble_qt.lang >> %{name}.lang
 
 
 %check
-appstream-util validate-relax --nonet %{buildroot}%{_kf5_metainfodir}/org.kde.marble.appdata.xml
-appstream-util validate-relax --nonet %{buildroot}%{_kf5_metainfodir}/org.kde.plasma.worldclock.appdata.xml ||:
-appstream-util validate-relax --nonet %{buildroot}%{_kf5_metainfodir}/org.kde.plasma.worldmap.appdata.xml ||:
+appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.marble.appdata.xml
+appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.marble.behaim.appdata.xml ||:
+appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.marble.maps.appdata.xml ||:
 desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.marble.desktop
 desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.marble-qt.desktop
 
 
 %files
 %{_bindir}/marble
+%{_bindir}/marble-behaim
+%{_bindir}/marble-maps
 %{_datadir}/kxmlgui5/marble/
-%{_kf5_metainfodir}/org.kde.marble.appdata.xml
-%{_kf5_metainfodir}/org.kde.plasma.worldclock.appdata.xml
-%{_kf5_metainfodir}/org.kde.plasma.worldmap.appdata.xml
-%{_datadir}/plasma/plasmoids/org.kde.plasma.worldclock/
-%{_datadir}/plasma/wallpapers/org.kde.plasma.worldmap/
-%{_kf5_datadir}/kservices5/plasma-applet-org.kde.plasma.worldclock.desktop
-%{_kf5_datadir}/kservices5/plasma-wallpaper-org.kde.plasma.worldmap.desktop
+%{_kf6_metainfodir}/org.kde.marble.appdata.xml
+%{_kf6_metainfodir}/org.kde.marble.behaim.appdata.xml
+%{_kf6_metainfodir}/org.kde.marble.maps.appdata.xml
 %{_datadir}/applications/org.kde.marble.desktop
+%{_datadir}/applications/org.kde.marble.behaim.desktop
+%{_datadir}/applications/org.kde.marble.maps.desktop
 %{_datadir}/applications/marble_geo.desktop
 %{_datadir}/applications/marble_geojson.desktop
 %{_datadir}/applications/marble_gpx.desktop
 %{_datadir}/applications/marble_kml.desktop
 %{_datadir}/applications/marble_kmz.desktop
 %{_datadir}/applications/marble_shp.desktop
+%{_datadir}/applications/marble_thumbnail_kml.desktop
+%{_datadir}/applications/marble_thumbnail_kmz.desktop
+%{_datadir}/applications/marble_thumbnail_osm.desktop
+%{_datadir}/applications/marble_thumbnail_shp.desktop
 %{_datadir}/applications/marble_worldwind.desktop
 %{_datadir}/config.kcfg/marble.kcfg
-%{_datadir}/kservices5/marble_thumbnail_geojson.desktop
-%{_datadir}/kservices5/marble_thumbnail_gpx.desktop
-%{_datadir}/kservices5/marble_thumbnail_kml.desktop
-%{_datadir}/kservices5/marble_thumbnail_kmz.desktop
-%{_datadir}/kservices5/marble_thumbnail_osm.desktop
-%{_datadir}/kservices5/marble_thumbnail_shp.desktop
-%{_datadir}/qlogging-categories5/marble.categories
+%{_datadir}/qlogging-categories6/marble.categories
 
 %files common -f %{name}.lang
 %license LICENSE.txt
 %doc CREDITS MANIFESTO.txt USECASES
 %{_datadir}/icons/hicolor/*/apps/marble.*
+%{_datadir}/icons/hicolor/*/apps/org.kde.marble.*
 %{_datadir}/mime/packages/geo.xml
 %dir %{_datadir}/marble/
+
+%files plasma
+%{_kf6_plugindir}/krunner/plasma_runner_marble.so
+%{_kf6_metainfodir}/org.kde.plasma.worldclock.appdata.xml
+%{_kf6_metainfodir}/org.kde.plasma.worldmap.appdata.xml
+%{_datadir}/plasma/plasmoids/org.kde.plasma.worldclock/
+%{_datadir}/plasma/wallpapers/org.kde.plasma.worldmap/
 
 %files qt
 %{_bindir}/marble-qt
@@ -231,30 +238,27 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.marble-qt.des
 
 %files astro-devel
 %{_includedir}/astro/
-%{_kde4_libdir}/libastro.so
+%{_libdir}/libastro.so
 %dir %{_libdir}/cmake/
 %{_libdir}/cmake/Astro/
 
 %files widget-data
 %{_datadir}/marble/data/
 
-%files widget-qt5
-%{_libdir}/libmarblewidget-qt5.so.*
+%files widget-qt6
+%{_libdir}/libmarblewidget-qt6.so.*
 %{_libdir}/marble/plugins/
-%{_qt5_plugindir}/marblethumbnail.so
-%{_kf5_plugindir}/krunner/plasma_runner_marble.so
+%{_qt6_plugindir}/marblethumbnail.so
 # include part here too
-%{_datadir}/kservices5/marble_part.desktop
-%{_qt5_plugindir}/libmarble_part.so
-%{_libdir}/libmarbledeclarative.so
-%{_kf5_qmldir}/org/kde/marble/
+%{_qt6_plugindir}/libmarble_part.so
+%{_kf6_qmldir}/org/kde/marble/
 
-%files widget-qt5-devel
+%files widget-qt6-devel
 %{_includedir}/marble/
-%{_libdir}/libmarblewidget-qt5.so
+%{_libdir}/libmarblewidget-qt6.so
 %dir %{_libdir}/cmake/
 %{_libdir}/cmake/Marble/
-%{_qt5_archdatadir}/mkspecs/modules/qt_Marble.pri
+%{_qt6_archdatadir}/mkspecs/modules/qt_Marble.pri
 
 
 %changelog

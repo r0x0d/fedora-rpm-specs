@@ -1,5 +1,5 @@
 Name:           aws-c-compression
-Version:        0.2.19
+Version:        0.3.0
 Release:        1%{?dist}
 Summary:        C99 implementation of huffman encoding/decoding
 
@@ -83,6 +83,10 @@ Currently only huffman is implemented.
 
 
 %changelog
+* Fri Oct 25 2024 Packit <hello@packit.dev> - 0.3.0-1
+- Update to version 0.3.0
+- Resolves: rhbz#2321723
+
 * Wed Aug 21 2024 Packit <hello@packit.dev> - 0.2.19-1
 - Update to version 0.2.19
 - Resolves: rhbz#2307057

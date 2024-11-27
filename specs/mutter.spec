@@ -12,7 +12,7 @@
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 Name:          mutter
-Version:       47.1
+Version:       47.2
 Release:       %autorelease
 Summary:       Window and compositing manager based on Clutter
 
@@ -38,10 +38,6 @@ Patch:         0001-gschema-Enable-fractional-scaling-experimental-featu.patch
 # not upstreamed because for upstream we'd really want to find a way
 # to fix *both* problems
 Patch:         0001-Revert-x11-Use-input-region-from-frame-window-for-de.patch
-
-# https://gitlab.gnome.org/GNOME/mutter/-/issues/3696
-# https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/4099
-Patch:         0001-wayland-pointer-constraints-Warp-pointer-after-destr.patch
 
 BuildRequires: pkgconfig(gobject-introspection-1.0) >= 1.41.0
 BuildRequires: pkgconfig(sm)

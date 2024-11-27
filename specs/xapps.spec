@@ -1,5 +1,5 @@
 Name:           xapps
-Version:        2.8.5
+Version:        2.8.6
 Release:        1%{?dist}
 Summary:        Common files for XApp desktop apps
 
@@ -124,6 +124,9 @@ rm %{buildroot}%{_datadir}/format
 %{python3_sitearch}/gi/overrides/__pycache__/XApp.cpython-%{python3_version_nodots}*.py*
 
 %changelog
+* Mon Nov 25 2024 Leigh Scott <leigh123linux@gmail.com> - 2.8.6-1
+- Update to 2.8.6
+
 * Mon Jul 22 2024 Leigh Scott <leigh123linux@gmail.com> - 2.8.5-1
 - Update to 2.8.5
 

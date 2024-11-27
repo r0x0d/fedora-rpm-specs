@@ -8,7 +8,7 @@
 %bcond tests 1
 
 Name:           python-orjson
-Version:        3.10.11
+Version:        3.10.12
 Release:        %autorelease
 Summary:        Fast, correct Python JSON library
 
@@ -83,8 +83,6 @@ Provides:       bundled(crate(pyo3-ffi)) = 0.23.0~dev^20241018gitdc415fa
 # requires the x86_64 architecture
 tomcli-set Cargo.toml del 'features.unstable-simd'
 tomcli-set Cargo.toml del 'features.avx512'
-# Remove no-panic feature
-tomcli-set Cargo.toml del 'features.no-panic'
 # Remove unwind feature, which is not useful here: the comment above it says
 # “Avoid bundling libgcc on musl.”
 tomcli-set Cargo.toml del 'features.unwind'

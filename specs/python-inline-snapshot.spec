@@ -46,7 +46,7 @@ Summary:        %{summary}
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters).
 tomcli get pyproject.toml -F newline-list \
     'tool.hatch.envs.hatch-test.extra-dependencies' |
-    grep -vE '^(pyright|mypy%{?!with_pydantic_tests:|pydantic})\b' |
+    grep -vE '^(pyright|mypy)\b' |
 %if %{without pydantic_tests}
     grep -vE '^(pydantic)\b' |
 %endif

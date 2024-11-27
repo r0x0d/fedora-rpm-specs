@@ -25,7 +25,7 @@
 %global __provides_exclude_from ^%{_libdir}/%{name}/plugins-%{gs_plugin_version}/.*\\.so.*$
 
 Name:      gnome-software
-Version:   47.1
+Version:   47.2
 Release:   1%{?dist}
 Summary:   A software center for GNOME
 
@@ -89,8 +89,10 @@ Requires: gnome-app-list
 # gnome-menus is needed for app folder .directory entries
 Requires: gnome-menus%{?_isa}
 Requires: gsettings-desktop-schemas%{?_isa}
+Requires: gtk4 >= %{gtk4_version}
 Requires: json-glib%{?_isa} >= %{json_glib_version}
 Requires: iso-codes
+Requires: libadwaita >= %{libadwaita_version}
 # librsvg2 is needed for gdk-pixbuf svg loader
 Requires: librsvg2%{?_isa}
 Requires: libxmlb%{?_isa} >= %{libxmlb_version}
@@ -286,6 +288,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 %{_datadir}/gtk-doc/html/gnome-software/
 
 %changelog
+* Mon Nov 25 2024 Milan Crha <mcrha@redhat.com> - 47.2-1
+- Update to 47.2
+
 * Thu Oct 10 2024 Milan Crha <mcrha@redhat.com> - 47.1-1
 - Update to 47.1
 

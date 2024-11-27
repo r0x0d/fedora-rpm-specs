@@ -2,7 +2,7 @@
 C99 implementation of the MQTT 3.1.1 and MQTT 5 specifications}
 
 Name:           aws-c-mqtt
-Version:        0.10.6
+Version:        0.11.0
 Release:        1%{?dist}
 Summary:        C99 implementation of the MQTT 3.1.1 and MQTT 5 specifications.
 
@@ -94,6 +94,10 @@ Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
 
 %changelog
+* Fri Oct 25 2024 Packit <hello@packit.dev> - 0.11.0-1
+- Update to version 0.11.0
+- Resolves: rhbz#2317409
+
 * Thu Sep 26 2024 Dominik Wombacher <dominik@wombacher.cc> - 0.10.6-1
 - update to 0.10.6
 

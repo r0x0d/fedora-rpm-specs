@@ -31,7 +31,9 @@ Parse Ducktype files and convert them to Mallard.
 
 
 %check
-%{__python3} setup.py test
+pushd tests
+%{py3_test_envvars} ./runtests
+popd
 
 
 %files

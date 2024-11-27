@@ -2,13 +2,13 @@
 #%%global		dev rc3
 
 Name:		libntirpc
-Version:	6.0
-Release:	2%{?dev:%{dev}}%{?dist}
+Version:	6.3
+Release:	1%{?dev:%{dev}}%{?dist}
 Summary:	New Transport Independent RPC Library
 License:	BSD-3-Clause
 Url:		https://github.com/nfs-ganesha/ntirpc
 
-Source0:	https://github.com/nfs-ganesha/ntirpc/archive/v%{version}.1/ntirpc-%{version}.1%{?dev:%{dev}}.tar.gz
+Source0:	https://github.com/nfs-ganesha/ntirpc/archive/v%{version}/ntirpc-%{version}%{?dev:%{dev}}.tar.gz
 
 BuildRequires:	gcc cmake
 %ifarch x86_64 aarch64
@@ -46,7 +46,7 @@ Requires:	%{name}%{?_isa} = %{version}
 Development headers and auxiliary files for developing with %{name}.
 
 %prep
-%autosetup -p1 -n ntirpc-%{version}.1%{?dev:%{dev}}
+%autosetup -p1 -n ntirpc-%{version}%{?dev:%{dev}}
 
 %build
 %cmake \
@@ -85,6 +85,9 @@ ln -s %{name}.so.%{version} %{buildroot}%{_libdir}/%{name}.so.4
 %{_libdir}/pkgconfig/libntirpc.pc
 
 %changelog
+* Mon Nov 25 2024 Kaleb S. KEITHLEY <kkeithle at redhat.com> 6.3-1
+- ntirpc-6.3 GA
+
 * Wed Aug 28 2024 Kaleb S. KEITHLEY <kkeithle at redhat.com> 6.0-2
 - ntirpc-6.0, enable RDMA
 
