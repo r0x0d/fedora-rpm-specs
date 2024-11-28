@@ -257,7 +257,7 @@ Requires:       stb_image-static = %{stb_image_version}%{snapinfo}-%{release}
 # For compatibility, we still depend on the subpackages for the original,
 # deprecated-upstream stb_image_library in existing stable releases, but we
 # drop the dependendency going forward as an acknowledgement of its status.
-%if 0%{?fc39} || 0%{?el9} || 0%{?el8} || 0%{?el7}
+%if 0%{?el9} || 0%{?el8}
 Requires:       stb_image_resize-devel%{?_isa} = %{stb_image_resize_version}%{snapinfo}-%{release}
 Requires:       stb_image_resize-static = %{stb_image_resize_version}%{snapinfo}-%{release}
 %endif

@@ -25,7 +25,7 @@
 # consider these environments.
 %bcond httplib 0
 %bcond httpx 0
-# Only compatible with pynamodb < 6.0.0 (F39)
+# Only compatible with pynamodb < 6.0.0
 %bcond pynamodb 0
 %bcond requests 0
 

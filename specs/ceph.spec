@@ -185,7 +185,7 @@
 #################################################################################
 Name:		ceph
 Version:	19.2.0
-Release:	5%{?dist}
+Release:	6%{?dist}
 %if 0%{?fedora} || 0%{?rhel}
 Epoch:		2
 %endif
@@ -222,6 +222,7 @@ Patch0042:	0042-src-common-dout.h.patch
 Patch0043:	0043_src_common_crc32c_ppc_asm.S.patch
 Patch0044:	0044_src_cpp_redis_CMakeLists.txt.patch
 Patch0045:	0045_src-commom-crc32c_ppc_fast_zero_asm.S.patch
+Patch0046:	0046-src-s3select-include-s3select_parquet_intrf.h.patch
 
 # ceph 14.0.1 does not support 32-bit architectures, bugs #1727788, #1727787
 ExcludeArch:	i686 armv7hl
@@ -2715,6 +2716,9 @@ exit 0
 %{python3_sitelib}/ceph_node_proxy-*
 
 %changelog
+* Tue Nov 26 2024 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 2:19.2.0-6
+- build in f42-build-side-100844 again
+
 * Fri Nov 22 2024 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 2:19.2.0-5
 - build in f42-build-side-100844
 

@@ -1,5 +1,5 @@
 Name:           ansible-collection-community-general
-Version:        9.4.0
+Version:        10.0.1
 Release:        1%{?dist}
 Summary:        Modules and plugins supported by Ansible community
 
@@ -86,6 +86,9 @@ find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{
 %doc README.md CHANGELOG.rst CHANGELOG.md
 
 %changelog
+* Tue Nov 26 2024 Maxwell G <maxwell@gtmx.me> - 10.0.1-1
+- Update to 10.0.1. Fixes rhbz#2317266.
+
 * Mon Sep 23 2024 Maxwell G <maxwell@gtmx.me> - 9.4.0-1
 - Update to 9.4.0. Fixes rhbz#2311426.
 

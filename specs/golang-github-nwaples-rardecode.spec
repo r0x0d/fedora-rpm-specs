@@ -5,7 +5,7 @@
 
 # https://github.com/nwaples/rardecode
 %global goipath         github.com/nwaples/rardecode
-Version:                1.1.2
+Version:                1.1.3
 
 %gometa
 

@@ -1,6 +1,6 @@
 Name:           gqrx
 Version:        2.17.5
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Software defined radio receiver powered by GNU Radio and Qt
 
 # Automatically converted from old format: GPLv3+ and GPLv2+ and BSD - review is highly recommended.
@@ -81,6 +81,9 @@ appstream-util validate-relax --nonet \
 %doc COPYING README.md
 
 %changelog
+* Tue Nov 26 2024 František Zatloukal <fzatlouk@redhat.com> - 2.17.5-7
+- Rebuilt for spdlog 1.15.0
+
 * Mon Sep  2 2024 Miroslav Suchý <msuchy@redhat.com> - 2.17.5-6
 - convert license to SPDX
 

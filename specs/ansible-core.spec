@@ -14,7 +14,7 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.16.12
+Version: 2.18.0
 %global uversion %{version_no_tilde %{quote:%nil}}
 Release: 1%{?dist}
 # The main license is GPLv3+. Many of the files in lib/ansible/module_utils
@@ -25,35 +25,19 @@ License: GPL-3.0-or-later AND BSD-2-Clause AND PSF-2.0 AND MIT AND Apache-2.0
 Source0: https://github.com/ansible/ansible/archive/v%{uversion}/%{name}-%{uversion}.tar.gz
 Source1: https://github.com/ansible/ansible-documentation/archive/v%{uversion}/ansible-documentation-%{uversion}.tar.gz
 
-# ansible-core 2.16 does not support Python 3.13 and upstream does not plan to do so until 2.18
-# This downstream-only patch makes it possible to build 2.16 with Python 3.13
-Patch: python3.13.patch
-
 Url: https://ansible.com
 BuildArch: noarch
 
 # Virtual provides for bundled libraries
 # Search for `_BUNDLED_METADATA` to find them
 
-# lib/ansible/module_utils/urls.py
-# SPDX-License-Identifier: BSD-2-Clause AND PSF-2.0
-Provides: bundled(python3dist(backports-ssl-match-hostname)) = 3.7.0.1
-
 # lib/ansible/module_utils/distro/*
 # SPDX-License-Identifier: Apache-2.0
-Provides: bundled(python3dist(distro)) = 1.6.0
+Provides: bundled(python3dist(distro)) = 1.9.0
 
 # lib/ansible/module_utils/six/*
 # SPDX-License-Identifier: MIT
 Provides: bundled(python3dist(six)) = 1.16.0
-
-# lib/ansible/module_utils/compat/selectors.py
-# SPDX-License-Identifier: GPL-3.0-or-later
-Provides: bundled(python3dist(selectors2)) = 1.1.1
-
-# lib/ansible/module_utils/compat/ipaddress.py
-# SPDX-License-Identifier: PSF-2.0
-Provides: bundled(python3dist(ipaddress)) = 1.0.22
 
 Conflicts: ansible <= 2.9.99
 #
@@ -278,6 +262,9 @@ install -Dpm 0644 licenses/* -t %{buildroot}%{_pkglicensedir}
 
 
 %changelog
+* Tue Nov 26 2024 Maxwell G <maxwell@gtmx.me> - 2.18.0-1
+- Update to 2.18.0. Fixes rhbz#2282011.
+
 * Fri Oct 11 2024 Maxwell G <maxwell@gtmx.me> - 2.16.12-1
 - Update to 2.16.12.
 

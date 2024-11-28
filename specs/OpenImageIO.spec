@@ -1,9 +1,9 @@
 %undefine __cmake_in_source_build
-%global sover 2.5
+%global sover 3.0
 
 Name:           OpenImageIO
-Version:        2.5.16.0
-Release:        3%{?dist}
+Version:        3.0.0.3
+Release:        1%{?dist}
 Summary:        Library for reading and writing images
 
 License:        BSD-3-Clause AND MIT
@@ -204,6 +204,9 @@ cp -a src/doc/*.1 %{buildroot}%{_mandir}/man1
 
 
 %changelog
+* Tue Nov 26 2024 Richard Shaw <hobbes1069@gmail.com> - 3.0.0.3-1
+- Update to 3.0.0.3.
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 2.5.16.0-3
 - Rebuild for hdf5 1.14.5
 

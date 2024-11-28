@@ -2,11 +2,12 @@ Summary:	A library for generating Enhanced Metafiles
 Summary(pl):	Biblioteka do generowania plików w formacie Enhanced Metafile
 Name:		libEMF
 Version:	1.0.13
-Release:	12%{?dist}
+Release:	13%{?dist}
 # Automatically converted from old format: LGPLv2+ and GPLv2+ - review is highly recommended.
 License:	LicenseRef-Callaway-LGPLv2+ AND GPL-2.0-or-later
 URL:		http://libemf.sourceforge.net/
 Source0:	https://downloads.sourceforge.net/project/libemf/libemf/%{version}/libemf-%{version}.tar.gz
+Patch:		add-riscv64-support.patch
 BuildRequires:	gcc-c++
 BuildRequires: make
 
@@ -37,7 +38,7 @@ libEMF header files.
 Pliki nagłówkowe libEMF.
 
 %prep
-%setup -q -n libemf-%{version}
+%autosetup -n libemf-%{version} -p1
 
 %build
 %configure \
@@ -70,6 +71,9 @@ make check
 %{_includedir}/libEMF
 
 %changelog
+* Tue Nov 26 2024 Songsong Zhang <U2FsdGVkX1@gmail.com> - 1.0.13-13
+- Add riscv64 support
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.13-12
 - convert license to SPDX
 

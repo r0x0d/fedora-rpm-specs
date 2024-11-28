@@ -1,6 +1,6 @@
 Summary:        Dynamic Kernel Module Support Framework
 Name:           dkms
-Version:        3.1.1
+Version:        3.1.2
 Release:        1%{?dist}
 License:        GPL-2.0-or-later
 URL:            http://linux.dell.com/dkms
@@ -23,6 +23,7 @@ Requires:       grep
 Requires:       gzip
 Requires:       kmod
 Requires:       make
+Requires:       patch
 Requires:       sed
 Requires:       tar
 Requires:       which
@@ -78,6 +79,9 @@ sed -i -e 's/# modprobe_on_install="true"/modprobe_on_install="true"/g' %{buildr
 %{_unitdir}/%{name}.service
 
 %changelog
+* Tue Nov 26 2024 Simone Caronni <negativo17@gmail.com> - 3.1.2-1
+- Update to 3.1.2.
+
 * Mon Oct 21 2024 Simone Caronni <negativo17@gmail.com> - 3.1.1-1
 - Update to 3.1.1.
 

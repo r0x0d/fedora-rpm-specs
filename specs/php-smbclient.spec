@@ -17,8 +17,8 @@
 %global sources    %{pecl_name}-%{version}%{?prever}
 
 Name:           php-smbclient
-Version:        1.1.1
-Release:        11%{?dist}
+Version:        1.1.2
+Release:        1%{?dist}
 Summary:        PHP wrapper for libsmbclient
 
 License:        BSD-2-Clause
@@ -27,8 +27,6 @@ Source0:        https://pecl.php.net/get/%{sources}.tgz
 %if %{with tests}
 Source2:        %{pecl_name}-phpunit.xml
 %endif
-
-Patch0:         %{pecl_name}-upstream.patch
 
 ExcludeArch:    %{ix86}
 
@@ -71,8 +69,6 @@ sed -e 's/role="test"/role="src"/' \
     -i package.xml
 
 cd %{sources}
-%patch -P0 -p1 -b .up
-
 # Check extension version
 ver=$(sed -n '/define PHP_SMBCLIENT_VERSION/{s/.* "//;s/".*$//;p}' php_smbclient.h)
 if test "$ver" != "%{version}%{?prever}"; then
@@ -141,6 +137,9 @@ cp %{SOURCE2} phpunit.xml
 
 
 %changelog
+* Tue Nov 26 2024 Remi Collet <remi@remirepo.net> - 1.1.2-1
+- update to 1.1.2
+
 * Wed Oct 16 2024 Remi Collet <remi@fedoraproject.org> - 1.1.1-11
 - modernize the spec file
 

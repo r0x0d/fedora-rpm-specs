@@ -28,7 +28,7 @@
 %endif
 
 # htps://github.com/kata-containers/kata-containers
-Version: 3.9.0
+Version: 3.11.0
 %global tag         %{version}%{?rcstr}
 
 %global domain      github.com
@@ -69,9 +69,8 @@ Patch0999:  0999-osbuilder-Adjust-agent_version-for-our-builds.patch
 Patch1000:  1000-Remove-shebang-in-non-executable-completion-script.patch
 Patch1001:  1001-Remove-warnings-as-compilation-errors.patch
 Patch1002:  1002-Remove-warnings-as-errors-from-genpolicy.patch
-Patch1003:  1003-Fix-time-dependency-compilation-error.patch
+Patch1003:  1003-Bumping-time-dependency-for-Kata.patch
 Patch1004:  1004-Fix-arch-name-compilation-failure.patch
-Patch1005:  1005-build-Fix-RPM-build-fail-due-to-AGENT_POLICY.patch
 
 %if 0%{?have_go_rpm_macros}
 BuildRequires: go-rpm-macros
@@ -393,6 +392,9 @@ fi
 
 
 %changelog
+* Tue Nov 26 2024 Emanuel Lima <emlima@redhat.com> - 3.11.0-1
+- kata-containers 3.11.0
+
 * Mon Oct 07 2024 Emanuel Lima <emlima@redhat.com> - 3.9.0-1
 - kata-containers 3.9.0
   Fix warnings as compilation errors patch

@@ -6,7 +6,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 0.5.5
-Release: 5%{?dist}
+Release: 6%{?dist}
 Summary: A simple, fast Mysql library for Ruby, binding to libmysql
 License: MIT
 URL: https://github.com/brianmario/mysql2
@@ -176,7 +176,21 @@ user:
   socket: ${MYSQL_TEST_SOCKET}
 EOF
 
-rspec -Ilib:%{buildroot}%{gem_extdir_mri} -f d spec
+# Exclude example which are failing since mariadb-connector-c-3.4.1-1.fc42
+# has landed in Fedora.
+# https://bugzilla.redhat.com/show_bug.cgi?id=2323148
+# https://github.com/brianmario/mysql2/issues/1382
+EXCLUDE_EXAMPLES=$"Mysql2::Client#automatic_close should not close connections when running in a child process"
+EXCLUDE_EXAMPLES=$"${EXCLUDE_EXAMPLES}|Mysql2::Client#query should detect closed connection on query read error"
+EXCLUDE_EXAMPLES=$"${EXCLUDE_EXAMPLES}|Mysql2::Client#query should be impervious to connection-corrupting timeouts in #execute"
+EXCLUDE_EXAMPLES=$"${EXCLUDE_EXAMPLES}|Mysql2::Result streaming should raise an exception if streaming ended due to a timeout"
+# The following are actually hang.
+EXCLUDE_EXAMPLES=$"${EXCLUDE_EXAMPLES}|Mysql2::Client#query when a non-standard exception class is raised should handle Timeouts without leaving the connection hanging if reconnect is true"
+EXCLUDE_EXAMPLES=$"${EXCLUDE_EXAMPLES}|Mysql2::Client#query when a non-standard exception class is raised should handle Timeouts without leaving the connection hanging if reconnect is set to true after construction"
+
+EXAMPLE_MATCHES="^(?!${EXCLUDE_EXAMPLES}).*"
+
+rspec -Ilib:%{buildroot}%{gem_extdir_mri} -f d spec -E "${EXAMPLE_MATCHES}"
 popd
 
 # Clean up
@@ -200,6 +214,10 @@ kill "$(cat "${MYSQL_TEST_PID_FILE}")"
 
 
 %changelog
+* Tue Nov 26 2024 Vít Ondruch <vondruch@redhat.com> - 0.5.5-6
+- Disable test cases to workadoun FTBFS due to mariadb-connector-c-3.4.1-1.fc42
+  Related: rhbz#2323148
+
 * Tue Jul 16 2024 Jarek Prokop <jprokop@redhat.com> - 0.5.5-5
 - Stop setting RPATH in the resulting solib.
 

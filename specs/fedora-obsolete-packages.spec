@@ -139,6 +139,13 @@ Source0:    README
 # %%obsolete_ticket https://bugzilla.redhat.com/show_bug.cgi?id=1234567
 # %%obsolete foo 3.5-7
 
+# Remove in F43
+# Retired during F41, prevents upgrade to F41 because it requires libfmt.so.10
+%obsolete_ticket https://src.fedoraproject.org/rpms/rstudio/c/67a9644580937f93325961293246e49d79c648c2?branch=rawhide
+%obsolete rstudio-common 2024.04.2+764-4
+%obsolete rstudio-desktop 2024.04.2+764-4
+%obsolete rstudio-server 2024.04.2+764-4
+
 # Remove in F42
 # Retired during F39, prevents upgrade to F40 because requires libruby.so.3.2
 %obsolete_ticket https://src.fedoraproject.org/rpms/rubygem-byebug/c/245925a225da471c45cc0eae8d499046a6db7800?branch=rawhide

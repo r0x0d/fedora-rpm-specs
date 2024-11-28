@@ -1,7 +1,7 @@
 %global commit0 8f1dd1e6b1791f639af78652294e60030835cb0e
 %global date 20241114
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-#global tag %{version}
+%global tag %{version}
 
 %global _artwork_version 1.7.5
 
@@ -12,7 +12,7 @@
 
 Summary: Utilities to configure the Cinnamon desktop
 Name:    cinnamon-control-center
-Version: 6.3.0%{!?tag:^%{date}git%{shortcommit0}}
+Version: 6.4.0
 Release: 1%{?dist}
 # The following files contain code from
 # ISC for panels/network/rfkill.h
@@ -154,6 +154,9 @@ install -pm 0644 mint-artwork/%{_datadir}/mint-artwork/sounds/* %{buildroot}/%{_
 
 
 %changelog
+* Tue Nov 26 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
+- Update to 6.4.0
+
 * Thu Nov 14 2024 Leigh Scott <leigh123linux@gmail.com> - 6.3.0^20241114git8f1dd1e-1
 - Update to git snapshot
 

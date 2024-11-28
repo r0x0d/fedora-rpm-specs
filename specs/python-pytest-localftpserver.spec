@@ -13,6 +13,16 @@ License:        MIT
 URL:            https://pytest-localftpserver.readthedocs.io/
 Source:         %forgesource
 
+# Avoid the multiprocessing forkserver method
+# https://github.com/oz123/pytest-localftpserver/pull/351
+#
+# Fixes:
+#
+# python-pytest-localftpserver fails to build with Python 3.14: multiprocessing
+# has changed the start method to 'forkserver'
+# https://bugzilla.redhat.com/show_bug.cgi?id=2328701
+Patch:          %{forgeurl}/pull/351.patch
+
 BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(cryptography)

@@ -1,19 +1,18 @@
 %global pkg yaml-mode
 
-Name:	emacs-%{pkg}
-Version:	0.0.16
-Release:	2%{?dist}
-Summary:	Major mode to edit YAML files for emacs
+Name:      emacs-%{pkg}
+Version:   0.0.16
+Release:   3%{?dist}
+Summary:   Major mode to edit YAML files for emacs
+License:   GPL-3.0-or-later
+URL:       https://github.com/yoshiki/yaml-mode
+Source0:   https://github.com/yoshiki/%{pkg}/archive/%{version}.tar.gz
+Source1:   yaml-mode-init.el
+BuildArch: noarch
+Requires:  emacs(bin) >= %{_emacs_version}
+BuildRequires: emacs
+BuildRequires: make
 
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
-License:	GPL-2.0-or-later
-URL:	https://github.com/yoshiki/yaml-mode
-Source0:	https://github.com/yoshiki/%{pkg}/archive/%{version}.tar.gz
-Source1:	yaml-mode-init.el
-BuildArch:	noarch
-BuildRequires:	emacs
-BuildRequires:	make
-Requires:	emacs(bin) >= %{_emacs_version}
 
 %description
 Major mode to edit YAML files for emacs
@@ -42,6 +41,9 @@ install -pm 644 %SOURCE1 %{buildroot}%{_emacs_sitestartdir}
 
 
 %changelog
+* Tue Nov 26 2024 Mark McKinstry <mmckinst@fedoraproject.org> - 0.0.16-3
+- change license to GPL-3.0-or-later per https://github.com/yoshiki/yaml-mode/pull/94
+
 * Thu Aug  8 2024 Mark McKinstry <mmckinst@fedoraproject.org> - 0.0.16-2
 - fix dist tag
 

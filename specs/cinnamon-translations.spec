@@ -2,8 +2,8 @@
 
 
 Name:           cinnamon-translations
-Version:        6.2.2
-Release:        2%{?dist}
+Version:        6.4.0
+Release:        1%{?dist}
 Summary:        Translations for Cinnamon and Nemo
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -50,6 +50,9 @@ Translations for Cinnamon, Nemo and Mintlocale.
 
 
 %changelog
+* Tue Nov 26 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
+- Update to 6.4.0
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 6.2.2-2
 - convert license to SPDX
 

@@ -1,5 +1,5 @@
 %global srcname extension_helpers
-%global modname extension_helpers
+%global pkgname extension-helpers
 
 %bcond_with doc
 
@@ -30,15 +30,20 @@ dependency in pyproject.toml files.}
 
 %description %_description
 
-%package -n python3-%{srcname}
+%package -n python3-%{pkgname}
 Summary: %{summary}
 
-%description -n python3-%{srcname} %_description
+# Fix for an accidental name change
+# The Obsoletes can be removed when Rawhide is F44
+Obsoletes: python3-extension_helpers < 1.2.0-2
+
+
+%description -n python3-%{pkgname} %_description
 
 
 %if %{with doc}
 %package doc
-Summary:        Documentation for %{srcname}
+Summary:        Documentation for %{pkgname}
 BuildRequires:  python3dist(sphinx)
 
 %description doc %_description
@@ -46,9 +51,10 @@ BuildRequires:  python3dist(sphinx)
 
 %prep
 %autosetup -n %{srcname}-%{version}
+sed -i -e 's|312|312,313|' tox.ini
 
 %generate_buildrequires
-%pyproject_buildrequires -x test 
+%pyproject_buildrequires -t -x test 
 
 %build
 %pyproject_wheel
@@ -64,14 +70,13 @@ rm -f _build/html/.buildinfo
 popd
 %endif
 
-%pyproject_save_files %{modname}
+%pyproject_save_files %{srcname}
 
 
 %check
-%pytest -q %{modname}/tests
+%tox
 
-
-%files -n python3-%{srcname} -f %{pyproject_files}
+%files -n python3-%{pkgname} -f %{pyproject_files}
 %license LICENSE.rst licenses/LICENSE_ASTROSCRAPPY.rst
 %doc README.rst
 

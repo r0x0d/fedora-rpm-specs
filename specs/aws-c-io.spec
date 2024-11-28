@@ -3,8 +3,8 @@ IO package for AWS SDK for C. It handles all IO and TLS work
 for application protocols.}
 
 Name:           aws-c-io
-Version:        0.14.18
-Release:        1%{?dist}
+Version:        0.15.3
+Release:        2%{?dist}
 Summary:        IO package for AWS SDK for C
 
 License:        Apache-2.0
@@ -74,6 +74,13 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 
 %changelog
+* Mon Nov 25 2024 Dominik Wombacher <dominik@wombacher.cc> - 0.15.3-2
+- Patch '0001-disable-tests-that-require-internet-connectivity.patch' updated to work with 0.15.3
+
+* Thu Nov 14 2024 Packit <hello@packit.dev> - 0.15.3-1
+- Update to version 0.15.3
+- Resolves: rhbz#2318007
+
 * Mon Aug 12 2024 Packit <hello@packit.dev> - 0.14.18-1
 - Update to version 0.14.18
 - Resolves: rhbz#2302713

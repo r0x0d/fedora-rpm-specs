@@ -5,7 +5,9 @@
 
 %global toolchain rocm
 # hipcc does not support some clang flags
-%global build_cxxflags %(echo %{optflags} | sed -e 's/-fstack-protector-strong/-Xarch_host -fstack-protector-strong/' -e 's/-fcf-protection/-Xarch_host -fcf-protection/')
+%global build_cxxflags %(echo %{optflags} | sed -e 's/-fstack-protector-strong/-Xarch_host -fstack-protector-strong/' -e 's/-fcf-protection/-Xarch_host -fcf-protection/' -e 's/-flto=thin//' )
+
+%global _lto_cflags %{nil}
 
 %bcond_with debug
 %if %{with debug}
@@ -164,12 +166,14 @@ fi
 %files data
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/%{name}/msccl-algorithms
+%dir %{_datadir}/%{name}/msccl-unit-test-algorithms
 %{_datadir}/%{name}/msccl-algorithms/*.xml
 %{_datadir}/%{name}/msccl-unit-test-algorithms/*.xml
 
 %files devel -f %{name}.devel
 %doc README.md
 %dir %{_includedir}/%{name}
+%dir %{_libdir}/cmake/%{name}
 %{_includedir}/%{name}/*
 
 %if %{with test}

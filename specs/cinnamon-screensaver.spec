@@ -5,8 +5,8 @@
 
 Summary: Cinnamon Screensaver
 Name:    cinnamon-screensaver
-Version: 6.2.0
-Release: 3%{?dist}
+Version: 6.4.0
+Release: 1%{?dist}
 # Automatically converted from old format: GPLv2+ and LGPLv2+ - review is highly recommended.
 License: GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+
 URL:     https://github.com/linuxmint/%{name}
@@ -52,7 +52,6 @@ Requires: xprop
 # since we use it, and pam spams the log if a module is missing
 Requires: gnome-keyring-pam%{?_isa}
 
-Obsoletes: cinnamon-screensaver-unsupported < %{version}
 
 %description
 cinnamon-screensaver is a screen saver and locker.
@@ -92,8 +91,6 @@ chmod a-x %{buildroot}%{_datadir}/cinnamon-screensaver/{__init__,config}.py
 chmod a+x %{buildroot}%{_datadir}/cinnamon-screensaver/pamhelper/authClient.py
 
 # Delete development files
-rm %{buildroot}%{_libdir}/libcscreensaver.so
-rm %{buildroot}%{_libdir}/pkgconfig/cscreensaver.pc
 rm %{buildroot}%{_datadir}/gir-1.0/CScreensaver-1.0.gir
 
 
@@ -110,12 +107,15 @@ rm %{buildroot}%{_datadir}/gir-1.0/CScreensaver-1.0.gir
 %{_datadir}/cinnamon-screensaver/
 %{_datadir}/dbus-1/services/org.cinnamon.ScreenSaver.service
 %{_datadir}/icons/hicolor/scalable/*/*
-%{_libexecdir}/cinnamon-screensaver-pam-helper
-%{_libexecdir}/cs-backup-locker
-%{_libdir}/libcscreensaver.so.*
-%{_libdir}/girepository-1.0/CScreensaver-1.0.typelib
+%{_libexecdir}/cinnamon-screensaver/cinnamon-screensaver-pam-helper
+%{_libexecdir}/cinnamon-screensaver/cs-backup-locker
+%{_libexecdir}/cinnamon-screensaver/libcscreensaver.so
+%{_libexecdir}/cinnamon-screensaver/girepository-1.0/CScreensaver-1.0.typelib
 
 %changelog
+* Tue Nov 26 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
+- Update to 6.4.0
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 6.2.0-3
 - convert license to SPDX
 

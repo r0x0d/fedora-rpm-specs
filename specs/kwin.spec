@@ -2,8 +2,8 @@
 %bcond x11 0
 
 Name:    kwin
-Version: 6.2.3
-Release: 2%{?dist}
+Version: 6.2.4
+Release: 1%{?dist}
 Summary: KDE Window manager
 
 License: BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND GPL-3.0-or-later AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only) AND MIT
@@ -311,6 +311,9 @@ rm -v %{buildroot}%{_kf6_bindir}/kwin_x11 %{buildroot}%{_userunitdir}/plasma-kwi
 
 
 %changelog
+* Tue Nov 26 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.2.4-1
+- 6.2.4
+
 * Sun Nov 17 2024 Alessandro Astone <ales.astone@gmail.com> - 6.2.3-2
 - Backport fix for keyboard focus after using the task switcher
   https://bugs.kde.org/show_bug.cgi?id=495844

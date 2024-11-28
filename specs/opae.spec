@@ -7,7 +7,7 @@ License:        LicenseRef-Callaway-BSD
 Version:        2.12.0
 %define opae_release 4
 %define patch_level 1
-Release:        %{opae_release}.%{patch_level}%{?dist}.5
+Release:        %{opae_release}.%{patch_level}%{?dist}.6
 
 URL:            https://github.com/OPAE/%{name}-sdk
 Source0:        https://github.com/OPAE/opae-sdk/archive/refs/tags/%{version}-%{opae_release}.tar.gz
@@ -312,6 +312,9 @@ chmod a+x %{buildroot}%{_usr}/lib/opae-%{version}/modules/*.cmake
 %{python3_sitelib}/uio*
 
 %changelog
+* Tue Nov 26 2024 František Zatloukal <fzatlouk@redhat.com> - 2.12.0-4.1.6
+- Rebuilt for spdlog 1.15.0
+
 * Wed Nov 6 2024 Tom Rix <Tom.Rix@amd.com> - 2.12.0-4.1.5
 - Rebuild for json-c
 

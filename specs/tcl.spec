@@ -5,7 +5,7 @@
 Summary: Tool Command Language, pronounced tickle
 Name: tcl
 Version: %{vers}
-Release: 3%{?dist}
+Release: 4%{?dist}
 Epoch: 1
 License: TCL AND GPL-3.0-or-later WITH Bison-exception-2.2 AND BSD-3-Clause
 URL: http://tcl.sourceforge.net/
@@ -116,6 +116,10 @@ mkdir -p %{buildroot}%{_usr}/bin
 ln -s %{_bindir}/tclsh %{_bindir}/tclsh%{majorver} %{buildroot}%{_usr}/bin/
 %endif
 
+# workaround for FTBFS caused by read-only library:
+# https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/DH5N6XV2NJHBIMX226HPDFUMO5NODE2V/
+chmod u+w %{buildroot}%{_libdir}/lib%{name}%{majorver}.so
+
 %ldconfig_scriptlets
 
 %files
@@ -147,6 +151,9 @@ ln -s %{_bindir}/tclsh %{_bindir}/tclsh%{majorver} %{buildroot}%{_usr}/bin/
 %{_datadir}/%{name}%{majorver}/tclAppInit.c
 
 %changelog
+* Tue Nov 26 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 1:8.6.15-4
+- Workaround for FTBFS caused by read-only library
+
 * Mon Nov 25 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 1:8.6.15-3
 - Fixed SPDX license case, it was according to the SPDX standard, but
   now it should be more easy to validate with some XML validators

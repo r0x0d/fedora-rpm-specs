@@ -1,7 +1,7 @@
 Name:           mint-themes
 Epoch:          1
-Version:        2.1.8
-Release:        2%{?dist}
+Version:        2.1.9
+Release:        1%{?dist}
 Summary:        Mint themes
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -58,8 +58,6 @@ Collection of the best themes available for Cinnamon
 %prep
 %autosetup -p1
 
-%{__sed} -i -e 's@Ubuntu@Noto Sans@g' files/usr/share/themes/Linux\ Mint/cinnamon/cinnamon.css
-
 %build
 make
 
@@ -99,11 +97,13 @@ make
 %files -n cinnamon-themes
 %license debian/copyright
 %doc debian/changelog
-"%{_datadir}/themes/Linux Mint"
 %{_datadir}/themes/Mint-X*/cinnamon/
 %{_datadir}/themes/Mint-Y*/cinnamon/
 
 %changelog
+* Tue Nov 26 2024 Leigh Scott <leigh123linux@gmail.com> - 1:2.1.9-1
+- Update to 2.1.9
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 1:2.1.8-2
 - convert license to SPDX
 

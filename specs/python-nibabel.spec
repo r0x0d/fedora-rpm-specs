@@ -32,6 +32,19 @@ Source0:        %forgesource
 # Two test failures and one test error in 5.3.2
 # https://github.com/nipy/nibabel/issues/1382
 Patch:          %{forgeurl}/pull/1383.patch
+# Adapt to functools.partial becoming a method descriptor in Python 3.14
+# https://github.com/nipy/nibabel/pull/1391
+#
+# Fixes:
+#
+# Python 3.14: failing test
+# https://github.com/nipy/nibabel/issues/1390
+#
+# python-nibabel fails to build with Python 3.14:
+# TestDeprecatorMaker.test_deprecator_maker: TypeError: Deprecator.__init__()
+# got multiple values for argument 'warn_class'
+# https://bugzilla.redhat.com/show_bug.cgi?id=2328709
+Patch:          %{forgeurl}/pull/1391.patch
 
 BuildArch:      noarch
 

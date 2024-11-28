@@ -1,7 +1,7 @@
 Name:    pjproject
 Summary: Libraries for building embedded/non-embedded VoIP applications
 Version: 2.13.1
-Release: 4%{?dist}
+Release: 5%{?dist}
 # main source code is GPL-2.0-or-later
 # third_party/srtp is BSD-3-Clause
 # third_party/webrtc is BSD-3-Clause
@@ -17,6 +17,7 @@ Patch: 0004-Add-aarch64-detection.patch
 Patch: 0005-Add-ppc64-detection.patch
 Patch: 0006-Add-s390-detection.patch
 Patch: 0007-Don-t-use-SSE2-if-it-is-not-available.patch
+Patch: 0008-Add-riscv-support.patch
 
 BuildRequires: make
 BuildRequires: autoconf
@@ -188,6 +189,9 @@ find %{buildroot} -type f -name "*.a" -delete
 
 
 %changelog
+* Sun Nov 24 2024 Zhengyu He <hezhy472013@gmail.com> - 2.13.1-5
+- Add Support for RISCV
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.13.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

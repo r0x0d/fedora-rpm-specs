@@ -32,7 +32,7 @@
 
 Name:           ansible
 Summary:        Curated set of Ansible collections included in addition to ansible-core
-Version:        9.11.0
+Version:        11.0.0
 %global uversion %{version_no_tilde %{quote:%nil}}
 Release:        1%{?dist}
 
@@ -156,7 +156,7 @@ chmod 0755 %{buildroot}%{python3_sitelib}/ansible_collections/ngine_io/cloudstac
 %files
 %license COPYING
 %license %{_licensedir}/ansible/ansible_collections/
-%doc README.rst PKG-INFO porting_guide_?.rst CHANGELOG-v?.rst
+%doc README.rst PKG-INFO porting_guide_*.rst CHANGELOG-v*.rst
 %doc %{_pkgdocdir}/ansible_collections/
 %{_bindir}/ansible-community
 # Note (dmsimard): This ansible package installs collections to the python sitelib to mirror the UX
@@ -169,6 +169,9 @@ chmod 0755 %{buildroot}%{python3_sitelib}/ansible_collections/ngine_io/cloudstac
 
 
 %changelog
+* Tue Nov 26 2024 Maxwell G <maxwell@gtmx.me> - 11.0.0-1
+- Update to 11.0.0.
+
 * Fri Oct 11 2024 Maxwell G <maxwell@gtmx.me> - 9.11.0-1
 - Update to 9.11.0.
 

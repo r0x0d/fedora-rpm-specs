@@ -565,6 +565,9 @@ Requires: lmdb
 %endif
 Requires: tdb-tools
 Requires: python3-gpg
+# The `crypt` module has been removed in Python 3.13, this is a copy
+# See also python3-crypt-r.x86_64
+Requires: python3-crypt-r
 %endif
 
 %description tools

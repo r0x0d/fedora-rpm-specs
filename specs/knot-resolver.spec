@@ -7,7 +7,7 @@
 
 Name:           knot-resolver
 Version:        5.7.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Caching full DNS Resolver
 
 License:        GPL-3.0-or-later
@@ -378,6 +378,9 @@ fi
 %endif
 
 %changelog
+* Tue Nov 26 2024 Jakub Ružička <jakub.ruzicka@nic.cz> - 5.7.4-2
+- Rebuilt for Knot DNS 3.4
+
 * Wed Jul 24 2024 Jakub Ružička <jakub.ruzicka@nic.cz> - 5.7.4-1
 - New upstream version 5.7.4
 

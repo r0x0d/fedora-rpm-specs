@@ -4,8 +4,8 @@
 %bcond backend_ufw %[%{undefined rhel}]
 
 Name:    plasma-firewall
-Version: 6.2.3
-Release: 2%{?dist}
+Version: 6.2.4
+Release: 1%{?dist}
 Summary: Control Panel for your system firewall
 
 License: BSD-3-Clause AND CC0-1.0 AND FSFAP AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND GPL-3.0-or-later AND (GPL-2.0-only OR GPL-3.0-only)
@@ -106,6 +106,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/kcm_firewall.desktop
 %endif
 
 %changelog
+* Tue Nov 26 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.2.4-1
+- 6.2.4
+
 * Fri Nov 08 2024 Neal Gompa <ngompa@fedoraproject.org> - 6.2.3-2
 - Disable ufw backend on RHEL
 

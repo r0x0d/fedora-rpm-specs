@@ -1,8 +1,7 @@
-%define _hardened_build 1
 Summary: Common Address Redundancy Protocol (CARP) for Unix
 Name: ucarp
 Version: 1.5.2
-Release: 38%{?dist}
+Release: 39%{?dist}
 # See the COPYING file which details everything
 License: ISC AND BSD-2-Clause
 URL: http://www.ucarp.org/
@@ -21,6 +20,7 @@ BuildRequires: gettext
 BuildRequires: autoconf, automake, libtool
 BuildRequires: libpcap-devel
 BuildRequires: systemd
+Requires:      initscripts
 
 %description
 UCARP allows a couple of hosts to share common virtual IP addresses in order
@@ -93,6 +93,9 @@ fi
 %{_sbindir}/ucarp
 
 %changelog
+* Tue Nov 26 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.5.2-39
+- Require initscripts
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.2-38
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

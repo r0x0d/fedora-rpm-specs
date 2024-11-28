@@ -29,13 +29,10 @@ Patch:          libcramjam-fix-metadata.diff
 # * Fix tests that assume C char is signed
 # * https://github.com/milesgranger/cramjam/pull/150
 # * Adjusted to apply to the released crate.
-Patch10:       0001-Fix-tests-that-assume-C-char-is-signed.patch
+Patch10:        0001-Fix-tests-that-assume-C-char-is-signed.patch
 # * Do not test a hard-coded expected compressed data size
 # * Suggested upstream: https://github.com/cramjam/libcramjam/issues/6
-Patch11:       0001-Do-not-test-a-hard-coded-expected-compressed-data-si.patch
-
-# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
-ExcludeArch:    %{ix86}
+Patch11:        0001-Do-not-test-a-hard-coded-expected-compressed-data-si.patch
 
 BuildRequires:  cargo-rpm-macros >= 24
 BuildRequires:  cargo-c
@@ -46,7 +43,6 @@ possible API.}
 
 %description %{_description}
 
-%if !0%{?fc39}
 %package     -n %{crate}
 Summary:        %{summary}
 # 0BSD OR MIT OR Apache-2.0
@@ -90,9 +86,6 @@ that use the "%{crate}" crate via a C API.
 %{_includedir}/cramjam/cramjam.h
 %{_libdir}/%{crate}.so
 %{_libdir}/pkgconfig/%{crate}.pc
-%else
-%global debug_package %{nil}
-%endif
 
 %package        devel
 Summary:        %{summary}
@@ -155,17 +148,13 @@ use the "libc" feature of the "%{crate}" crate.
 %cargo_build -a
 %{cargo_license_summary -a}
 %{cargo_license -a} > LICENSE.dependencies
-%if !0%{?fc39}
 %cargo_cbuild -a
-%endif
 
 %install
 %cargo_install -a
-%if !0%{?fc39}
 %cargo_cinstall -a
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/#packaging-static-libraries
 rm '%{buildroot}%{_libdir}/%{crate}.a'
-%endif
 
 %if %{with check}
 %check

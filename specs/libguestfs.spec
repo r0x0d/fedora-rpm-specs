@@ -248,8 +248,8 @@ BuildRequires: scrub
 BuildRequires: sed
 %if !0%{?rhel}
 BuildRequires: sleuthkit
-%endif
 BuildRequires: squashfs-tools
+%endif
 BuildRequires: strace
 %if !0%{?rhel}
 %ifarch %{ix86} x86_64

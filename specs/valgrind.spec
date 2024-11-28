@@ -3,7 +3,7 @@
 Summary: Dynamic analysis tools to detect memory or thread bugs and profile
 Name: %{?scl_prefix}valgrind
 Version: 3.24.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 Epoch: 1
 
 # This ignores licenses that are only found in the test or perf sources
@@ -84,6 +84,19 @@ Patch3: valgrind-3.16.0-some-stack-protector.patch
 
 # Add some -Wl,z,now.
 Patch4: valgrind-3.16.0-some-Wl-z-now.patch
+
+# VALGRIND_3_24_BRANCH patches
+Patch5: 0001-Prepare-NEWS-for-branch-3.24-fixes.patch
+Patch6: 0002-vgdb.c-fork_and_exec_valgrind-Fix-off-by-one-error-w.patch
+Patch7: 0003-vgdb.c-fork_and_exec_valgrind-Fix-another-off-by-one.patch
+Patch8: 0004-regtest-add-a-fdleak-filter-for-write-on-write-on-li.patch
+Patch9: 0005-Add-exp-and-supp-patterns-for-missing-main-frame-for.patch
+Patch10: 0006-Add-additional-exp-ppc64le-files-to-EXTRA_DIST.patch
+Patch11: 0007-Add-support-for-landlock_create_ruleset-444-landlock.patch
+Patch12: 0008-helgrind-tests-tc17_sembar.c-Remove-bool-typedef.patch
+Patch13: 0009-drd-tests-swapcontext.c-Rename-typedef-struct-thread.patch
+Patch14: 0010-none-tests-bug234814.c-sa_handler-take-an-int-as-arg.patch
+Patch15: 0011-Add-open_tree-move_mount-fsopen-fsconfig-fsmount-fsp.patch
 
 BuildRequires: make
 BuildRequires: glibc-devel
@@ -222,6 +235,18 @@ Valgrind User Manual for details.
 %patch -P2 -p1
 %patch -P3 -p1
 %patch -P4 -p1
+
+%patch -P5 -p1
+%patch -P6 -p1
+%patch -P7 -p1
+%patch -P8 -p1
+%patch -P9 -p1
+%patch -P10 -p1
+%patch -P11 -p1
+%patch -P12 -p1
+%patch -P13 -p1
+%patch -P14 -p1
+%patch -P15 -p1
 
 %build
 # LTO triggers undefined symbols in valgrind.  But valgrind has a
@@ -438,6 +463,20 @@ echo ===============END TESTING===============
 %endif
 
 %changelog
+* Tue Nov 26 2024 Mark Wielaard <mjw@fedoraproject.org> - 3.24.0-2
+- Add VALGRIND_3_24_BRANCH patches
+  0001-Prepare-NEWS-for-branch-3.24-fixes.patch
+  0002-vgdb.c-fork_and_exec_valgrind-Fix-off-by-one-error-w.patch
+  0003-vgdb.c-fork_and_exec_valgrind-Fix-another-off-by-one.patch
+  0004-regtest-add-a-fdleak-filter-for-write-on-write-on-li.patch
+  0005-Add-exp-and-supp-patterns-for-missing-main-frame-for.patch
+  0006-Add-additional-exp-ppc64le-files-to-EXTRA_DIST.patch
+  0007-Add-support-for-landlock_create_ruleset-444-landlock.patch
+  0008-helgrind-tests-tc17_sembar.c-Remove-bool-typedef.patch
+  0009-drd-tests-swapcontext.c-Rename-typedef-struct-thread.patch
+  0010-none-tests-bug234814.c-sa_handler-take-an-int-as-arg.patch
+  0011-Add-open_tree-move_mount-fsopen-fsconfig-fsmount-fsp.patch
+
 * Mon Nov  4 2024 Mark Wielaard <mjw@fedoraproject.org> - 3.24.0-1
 - Upstream 3.24.0 final
 

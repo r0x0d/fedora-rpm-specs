@@ -1,11 +1,12 @@
 Name:           perl-Types-DateTime
 Version:        0.002
-Release:        19%{?dist}
+Release:        20%{?dist}
 Summary:        Type constraints and coercions for datetime objects
-License:        (GPL+ or Artistic) and Public Domain
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Types-DateTime/
 Source0:        https://cpan.metacpan.org/authors/id/T/TO/TOBYINK/Types-DateTime-%{version}.tar.gz
 BuildArch:      noarch
+
 BuildRequires:  coreutils
 BuildRequires:  findutils
 BuildRequires:  make
@@ -16,7 +17,7 @@ BuildRequires:  perl(DateTime::Duration)
 BuildRequires:  perl(DateTime::Format::ISO8601)
 BuildRequires:  perl(DateTime::Locale)
 BuildRequires:  perl(DateTime::TimeZone)
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 BuildRequires:  perl(Locale::Maketext)
 BuildRequires:  perl(Module::Runtime)
 BuildRequires:  perl(Moose) >= 2.06
@@ -27,6 +28,7 @@ BuildRequires:  perl(Type::Library)
 BuildRequires:  perl(Types::Standard)
 BuildRequires:  perl(Type::Tiny) >= 0.041
 BuildRequires:  perl(Type::Utils)
+BuildRequires:  perl(:VERSION) >= 5.8.0
 BuildRequires:  perl(warnings)
 
 %description
@@ -37,16 +39,12 @@ Moo/Moose attributes, Kavorka sub signatures, and so forth.
 %setup -q -n Types-DateTime-%{version}
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS=vendor
+%{__perl} Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
 %make_build
 
 %install
-make pure_install DESTDIR=$RPM_BUILD_ROOT
-
-find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
-find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
-
-%{_fixperms} $RPM_BUILD_ROOT/*
+%make_install
+%{_fixperms} %{buildroot}/*
 
 %check
 make test
@@ -54,10 +52,14 @@ make test
 %files
 %doc Changes COPYRIGHT CREDITS README
 %license LICENSE
-%{perl_vendorlib}/*
-%{_mandir}/man3/*
+%{perl_vendorlib}/Types/
+%{_mandir}/man3/Types::DateTime.3pm*
 
 %changelog
+* Tue Nov 26 2024 Xavier Bachelot <xavier@bachelot.org> - 0.002-20
+- Convert License: to SPDX
+- Clean up specfile
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.002-19
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

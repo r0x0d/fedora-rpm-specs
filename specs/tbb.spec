@@ -6,8 +6,8 @@
 
 Name:    tbb
 Summary: The Threading Building Blocks library abstracts low-level threading details
-Version: 2021.13.0
-Release: 2%{?dist}
+Version: 2022.0.0
+Release: 1%{?dist}
 License: Apache-2.0 AND BSD-3-Clause
 URL:     http://threadingbuildingblocks.org/
 VCS:     git:%{giturl}.git
@@ -16,10 +16,6 @@ Source0: %{giturl}/archive/v%{version}/%{name}-%{version}.tar.gz
 # These two are downstream sources.
 Source7: tbbmalloc.pc
 Source8: tbbmalloc_proxy.pc
-
-# TBB tries to remove -Werror from the compiler flags, which turns
-# -Werror=format-security into =format-security
-Patch0: tbb-2021-Werror.patch
 
 BuildRequires: cmake
 BuildRequires: gcc-c++
@@ -89,13 +85,6 @@ Python 3 TBB module.
 %prep
 %autosetup -p1 -n oneTBB-%{version}
 
-# Invoke the right python binary directly
-for fil in $(grep -Frl %{_bindir}/env python); do
-    sed -i.orig 's,env python3,python3,' $fil
-    touch -r $fil.orig $fil
-    rm $fil.orig
-done
-
 %if %{with py3docs}
 # Use local objects.inv for intersphinx
 sed -e "s|\('https://docs\.python\.org/': \)None|\1'%{_docdir}/python3-docs/html/objects.inv'|" \
@@ -112,9 +101,7 @@ export PYTHONPATH=$(sed "s,%{_prefix},$PWD/%{_vpath_builddir}/python/build," <<<
 %cmake \
     -DCMAKE_CXX_STANDARD=17 \
     -DTBB4PY_BUILD:BOOL=ON \
-    -DTBB_STRICT:BOOL=OFF \
-    -DCMAKE_HWLOC_2_4_LIBRARY_PATH=%{_libdir}/libhwloc.so \
-    -DCMAKE_HWLOC_2_4_INCLUDE_PATH=%{_includedir}/hwloc \
+    -DTBB_STRICT:BOOL=OFF
 %cmake_build
 
 # The python package is not built the Fedora way.  Do it over.
@@ -187,6 +174,12 @@ ctest --output-on-failure --force-new-ctest-process
 %{python3_sitearch}/__pycache__/TBB*
 
 %changelog
+* Mon Nov 25 2024 Jerry James <loganjerry@gmail.com> - 2022.0.0-1
+- Version 2022.0.0
+- Drop unnecessary Werror patch
+- Drop unnecessary python shebang mangling
+- Let pkgconfig specify the version of hwloc to use
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2021.13.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

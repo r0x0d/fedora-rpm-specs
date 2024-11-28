@@ -1,18 +1,17 @@
 %global gittag 20190131
 
-Name:           fpdns
-Epoch:          1
-Version:        0.10.0
-Release:        17.%{gittag}%{?dist}
-Summary:        Fingerprint DNS servers
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
-URL:            https://github.com/kirei/fpdns
-Source0:        https://github.com/kirei/fpdns/archive/%{gittag}/%{name}-%{version}.tar.gz
-BuildArch:      noarch
-BuildRequires:  perl-generators
-BuildRequires:  perl(ExtUtils::MakeMaker)
-BuildRequires:  perl(Net::DNS)
+Name:          fpdns
+Epoch:         1
+Version:       0.10.0
+Release:       18.%{gittag}%{?dist}
+Summary:       Fingerprint DNS servers
+License:       BSD-3-Clause
+URL:           https://github.com/kirei/fpdns
+Source0:       https://github.com/kirei/fpdns/archive/%{gittag}/%{name}-%{version}.tar.gz
+BuildArch:     noarch
+BuildRequires: perl-generators
+BuildRequires: perl(ExtUtils::MakeMaker)
+BuildRequires: perl(Net::DNS)
 BuildRequires: make
 
 
@@ -48,6 +47,9 @@ make test
 %{_bindir}/fpdns
 
 %changelog
+* Tue Nov 26 2024 Mark McKinstry <mmckinst@fedoraproject.org> - 1:0.10.0-18.20190131
+- change license to BSD-3-Clause
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 1:0.10.0-17.20190131
 - convert license to SPDX
 

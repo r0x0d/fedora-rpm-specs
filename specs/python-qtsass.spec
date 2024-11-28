@@ -1,9 +1,3 @@
-# PySide2 is broken with Python 3.12 and later:
-#   python-pyside2 fails to build with Python 3.12: error: use of undeclared
-#       identifier 'PyUnicode_AS_UNICODE'
-#   https://bugzilla.redhat.com/show_bug.cgi?id=2155447
-%bcond pyside2 0
-
 Name:           python-qtsass
 Version:        0.4.0
 Release:        %autorelease
@@ -31,9 +25,6 @@ BuildRequires:  python3-devel
 # file are for linters, code coverage, etc.
 BuildRequires:  %{py3_dist pytest}
 BuildRequires:  %{py3_dist flaky}
-%if %{with pyside2}
-BuildRequires:  %{py3_dist PySide2}
-%endif
 
 BuildRequires:  help2man
 
@@ -51,12 +42,6 @@ those variations.}
 
 %package -n python3-qtsass
 Summary:        %{summary}
-
-%if %{with pyside2}
-# F39FailsToInstall: python3-pyside2, python3-shiboken2, python3-shiboken2-devel
-# https://bugzilla.redhat.com/show_bug.cgi?id=2220452
-Recommends:     %{py3_dist PySide2}
-%endif
 
 %description -n python3-qtsass %{common_description}
 

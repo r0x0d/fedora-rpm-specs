@@ -1,6 +1,6 @@
 Summary: Graphical system installer
 Name:    anaconda
-Version: 42.15
+Version: 42.16
 Release: 1%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
@@ -490,6 +490,15 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Tue Nov 26 2024 Packit <hello@packit.dev> - 42.16-1
+- util: correct errors and suppress stderr for common cases (riehecky)
+- payload: utilize `du` command for finding the required disk size in live OS
+  (k.koukiou)
+- Fix typo in anaconda hints (jstodola)
+- doc: Fix bullet list in Wayland migration rel note (jkonecny)
+- doc: Add dropped kernel options to Wayland relnote (jkonecny)
+- payload: raise exception on non zero exit code from rsync (k.koukiou)
+
 * Tue Nov 19 2024 Packit <hello@packit.dev> - 42.15-1
 - doc: RDP boot option is not supported in live (jkonecny)
 - Fix RDP var contains string instead of bool (jkonecny)

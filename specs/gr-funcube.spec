@@ -8,7 +8,7 @@
 Name:          gr-funcube
 URL:           https://github.com/dl1ksv/gr-funcube
 Version:       3.10.0~rc3^%{git_suffix}
-Release:       1%{?dist}
+Release:       2%{?dist}
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:       GPL-3.0-or-later
 BuildRequires: cmake
@@ -102,6 +102,9 @@ exit 0
 %doc %{_docdir}/%{name}/xml
 
 %changelog
+* Tue Nov 26 2024 František Zatloukal <fzatlouk@redhat.com> - 3.10.0~rc3^20240726gitcbda6c6c-2
+- Rebuilt for spdlog 1.15.0
+
 * Fri Jul 26 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 3.10.0~rc3^20240726gitcbda6c6c-1
 - New snapshot
 

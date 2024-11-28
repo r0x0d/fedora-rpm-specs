@@ -1,8 +1,5 @@
 %bcond_without check
 
-%global srcname scikit_learn
-%global pkgname scikit-learn
-
 %global _description %{expand: 
 Scikit-learn integrates machine learning algorithms in the tightly-knit 
 scientific Python world, building upon numpy, scipy, and matplotlib. 
@@ -16,13 +13,15 @@ Version: 1.5.2
 Release: %autorelease
 Summary: Machine learning in Python
 # sklearn/externals/_arff.py is MIT
-# sklearn/src/liblinear is BSD
-# sklearn/src/libsvm is BSD
-# Automatically converted from old format: BSD and MIT - review is highly recommended.
-License: LicenseRef-Callaway-BSD AND LicenseRef-Callaway-MIT
+# sklearn/externals/_packaging is BSD-2-Clause
+# sklearn/metrics/_scorer.py is BSD-2-Clause
+# sklearn/datasets/images/china.jpg  is CC-BY-2.0
+# sklearn/datasets/images/flower.jpg is CC-BY-2.0
+# sklearn/utils/_pprint.py is Python-2.0
+License: BSD-3-Clause AND CC-BY-2.0 AND MIT AND BSD-2-Clause AND Python-2.0
 
 URL: http://scikit-learn.org/
-Source0: %{pypi_source}
+Source0: %{pypi_source scikit_learn}
 
 BuildRequires: gcc
 BuildRequires: gcc-c++
@@ -34,8 +33,12 @@ ExcludeArch: %{ix86}
 
 %description %_description
 
-%package -n python3-%{pkgname}
+%package -n python3-scikit-learn
 Summary: %{summary}
+
+# For a brief moment, this package was accidentally named this way
+# The Obsoletes clears the upgrade path and can be removed when Rawhide is F44
+Obsoletes: python3-scikit_learn < 1.5.2-2
 
 %if %{with check}
 BuildRequires: %{py3_dist pytest} >= 7.1.2
@@ -45,11 +48,11 @@ BuildRequires: %{py3_dist threadpoolctl} >= 2.0.0
 
 %{?python_provide:%python_provide python3-sklearn}
 
-%description -n python3-%{pkgname}
+%description -n python3-scikit-learn
 %_description
 
 %prep
-%autosetup -n %{srcname}-%{version} -p1
+%autosetup -n scikit_learn-%{version} -p1
 sed -i -e 's|numpy>=2|numpy|' pyproject.toml
 find sklearn/metrics/_dist_metrics.pyx.tp -type f | xargs sed -i 's/cdef inline {{INPUT_DTYPE_t}} rdist/cdef {{INPUT_DTYPE_t}} rdist/g'
 
@@ -114,7 +117,7 @@ popd
 %py3_check_import sklearn
 %endif
 
-%files -n python3-%{pkgname} -f %{pyproject_files}
+%files -n python3-scikit-learn -f %{pyproject_files}
 %doc examples/
 %license COPYING sklearn/svm/src/liblinear/COPYRIGHT
 

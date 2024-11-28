@@ -32,6 +32,12 @@ License:        BSD-3-Clause
 URL:            %{gourl}
 Source:         %{gosource}
 Patch:          0001-Skip-tests-that-require-module-mode.patch
+# https://github.com/golang/tools/commit/b5bfa9cc3f8a6e3ad9a05d63679fe9327631e41a
+# move the fuzzy package to gopls
+# This has been released as part of golang-x-tools 0.27 but no gopls stable
+# version that contains this change has been released yet.
+# Remove with 0.17.0
+Patch:          b5bfa9cc3f8a6e3ad9a05d63679fe9327631e41a.patch
 
 Obsoletes:      golang-x-tools-gopls < 1:0.22.0-3
 Provides:       golang-x-tools-gopls = %{version}-%{release}

@@ -6,7 +6,7 @@
 
 %global maj_ver 19
 %global min_ver 1
-%global patch_ver 0
+%global patch_ver 4
 #global rc_ver 4
 %global bolt_version %{maj_ver}.%{min_ver}.%{patch_ver}
 %global bolt_srcdir llvm-project-%{bolt_version}%{?rc_ver:-rc%{rc_ver}}.src
@@ -160,6 +160,9 @@ rm -f %{buildroot}/%{_builddir}/%{bolt_srcdir}/%{_vpath_builddir}/%{_lib}/lib*.a
 %doc %{_pkgdocdir}
 
 %changelog
+* Mon Nov 25 2024 Timm Bäder <tbaeder@redhat.com> - 19.1.4-1
+- Update to 19.1.4
+
 * Fri Sep 20 2024 Timm Bäder <tbaeder@redhat.com> - 19.1.0-1
 - Update to 19.1.0
 

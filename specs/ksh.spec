@@ -4,11 +4,17 @@ URL:          http://www.kornshell.com/
 License:      EPL-2.0
 Epoch:        3
 Version:      1.0.10
-Release:      2%{?dist}
+Release:      4%{?dist}
 Source0:      https://github.com/ksh93/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:      kshcomp.conf
 Source2:      kshrc.rhs
 Source3:      dotkshrc
+
+# https://github.com/ksh93/ksh/commit/caae9aa23e2851cadf55f858a8f38b9f0de74314
+Patch1:       ksh-1.0.11-SHLVL.patch
+
+# https://github.com/ksh93/ksh/commit/5def43983de3ecfa38c805c02a1f0d6f1581160c
+Patch2:       ksh-1.0.11-redir.patch
 
 Conflicts:    pdksh
 Requires: coreutils, diffutils
@@ -138,6 +144,12 @@ fi
 %config(noreplace) %{_sysconfdir}/binfmt.d/kshcomp.conf
 
 %changelog
+* Fri Nov 08 2024 Vincent Mihalkovic <vmihalko@redhat.com> - 3:1.0.10-4
+- Add forking workaround for block stdout redir
+
+* Thu Nov 07 2024 Vincent Mihalkovic <vmihalko@redhat.com> - 3:1.0.10-3
+- Fix crash on 'exec' after 'unset SHLVL'
+
 * Tue Nov 05 2024 Vincent Mihalkovic <vmihalko@redhat.com> - 3:1.0.10-2
 - Change BuildRequires from util-linux to util-linux-script
 

@@ -5,14 +5,14 @@
 
 Summary: Helps troubleshoot SELinux problems
 Name: setroubleshoot
-Version: 3.3.34
+Version: 3.3.35
 Release: 1%{?dist}
 License: GPL-2.0-or-later
 URL: https://gitlab.com/setroubleshoot/setroubleshoot
 Source0: https://gitlab.com/setroubleshoot/setroubleshoot/-/archive/%{version}/setroubleshoot-%{version}.tar.gz
 Source1: %{name}.tmpfiles
 Source2: %{name}.sysusers
-# git format-patch -N 3.3.33
+# git format-patch -N 3.3.34
 # i=1; for j in 00*patch; do printf "Patch%04d: %s\n" $i $j; i=$((i+1));done
 BuildRequires: gcc
 BuildRequires: make
@@ -196,6 +196,13 @@ to user preference. The same tools can be run on existing log files.
 %doc AUTHORS COPYING ChangeLog DBUS.md NEWS README TODO
 
 %changelog
+* Tue Nov 26 2024 Petr Lautrbach <lautrbach@redhat.com> - 3.3.35-1
+- Do not hardcode /var/lib/selinux as store_root
+
+* Fri Nov 15 2024 Petr Lautrbach <lautrbach@redhat.com> - 3.3.34-2
+- Do not hardcode /var/lib/selinux as store_root
+- Fix icon file name (bz#2300369)
+
 * Mon Nov 04 2024 Petr Lautrbach <lautrbach@redhat.com> - 3.3.34-1
 - data: update app icon
 - Disable bug reporting, if libreport is not available

@@ -3,8 +3,8 @@
 %define fontconfig_version 2.2.95
 
 Name:           cairo
-Version:        1.18.0
-Release:        4%{?dist}
+Version:        1.18.2
+Release:        1%{?dist}
 Summary:        A 2D graphics library
 
 License:        LGPL-2.1-only OR MPL-1.1
@@ -155,6 +155,9 @@ This package contains tools for working with the cairo graphics library.
 %{_libdir}/cairo/
 
 %changelog
+* Tue Nov 26 2024 Nieves Montero <nmontero@redhat.com> - 1.18.2-1
+- Update to 1.18.2
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.18.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

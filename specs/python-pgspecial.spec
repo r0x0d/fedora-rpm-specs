@@ -1,5 +1,5 @@
 Name:           python-pgspecial
-Version:        2.1.1
+Version:        2.1.3
 Release:        %autorelease
 Summary:        Python implementation of postgres meta (backslash) commands
 
@@ -23,8 +23,8 @@ Summary:        %{summary}
 # Workaround for missing dependency for pure-Python implementation and missing
 # python_c module in python-psycopg3,
 # https://bugzilla.redhat.com/show_bug.cgi?id=2266555.
-BuildRequires:  libpq
-Requires:       libpq
+# This can be removed after Fedora 41 reaches end-of-life.
+Requires:       python-psycopg3 >= 3.1.19-1
 
 %description -n python3-pgspecial %{common_description}
 

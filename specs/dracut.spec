@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 103
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 Summary: Initramfs generator using udev
 
@@ -46,6 +46,9 @@ Patch7:  0007-feat-fips-crypto-policies-make-c-p-follow-FIPS-mode-.patch
 # fix(fips-crypto-policies): make it depend on fips dracut module
 # Author: Jo Zzsi <jozzsicsataban@gmail.com>
 Patch8:  0008-fix-fips-crypto-policies-make-it-depend-on-fips-drac.patch
+# fix(pcsc): add libpcsclite_real.so.*
+# Author: Manuel Fombuena <fombuena@outlook.com>
+Patch9:  0009-fix-pcsc-add-libpcsclite_real-so.patch
 
 # Please use source-git to work with this spec file:
 # HowTo: https://packit.dev/source-git/work-with-source-git
@@ -456,6 +459,9 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %{_prefix}/lib/kernel/install.d/51-dracut-rescue.install
 
 %changelog
+* Thu Oct 31 2024 Manuel Fombuena <fombuena@outlook.com> - 103-2
+- fix(pcsc): add libpcsclite_real.so.*
+
 * Mon Sep 16 2024 Pavel Valena <pvalena@redhat.com> - 103-1
 - Update to dracut 103.
 - build: enable dracut-cpio binary

@@ -1,15 +1,14 @@
-%global srcname pytest-doctestplus
-%global pythonicname pytest_doctestplus
-%global sum Pytest plugin with advanced doctest features
+%global srcname pytest_doctestplus
+%global pkgname pytest-doctestplus
 
-Name:           python-%{srcname}
-Version:        1.2.1
+Name:           python-%{pkgname}
+Version:        1.3.0
 Release:        %autorelease
 Summary:        Pytest plugin with advanced doctest features
 
 License:        BSD-3-Clause
 URL:            https://github.com/scientific-python/pytest-doctestplus
-Source0:        %{pypi_source}
+Source0:        %{pypi_source %srcname}
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -38,37 +37,35 @@ providing the following features:
 %description %_description
 
 
-%package -n python3-%{srcname}
+%package -n python3-%{pkgname}
 Summary:        %{summary}
 
 
-%description -n python3-%{srcname} %_description
+%description -n python3-%{pkgname} %_description
 
 
 %prep
 %autosetup -n %{srcname}-%{version}
 
 # Remove egg files from source
-rm -r %{pythonicname}.egg-info
+rm -r %{srcname}.egg-info
 
 %generate_buildrequires
-%pyproject_buildrequires -x test
-
+%pyproject_buildrequires -x test 
 
 %build
 %pyproject_wheel
 
-
 %install
 %pyproject_install
-%pyproject_save_files %{pythonicname}
+%pyproject_save_files %{srcname}
 
 
 %check
 %pyproject_check_import
 
 
-%files -n python3-%{srcname} -f %{pyproject_files}
+%files -n python3-%{pkgname} -f %{pyproject_files}
 %license LICENSE.rst
 %doc CHANGES.rst README.rst
 

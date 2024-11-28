@@ -1,17 +1,28 @@
 Name:           perl-Image-Xbm
-Version:        1.10
-Release:        26%{?dist}
+Version:        1.11
+Release:        1%{?dist}
 Summary:        Load, create, manipulate and save xbm image files in Perl
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+# t/xbm.t : GNU General Public License
+# t/xbm-badfile.t : Perl 5 License
+# Eveything else : LGPL
+License:        LGPL-2.0-only AND GPL-1.0-only AND (GPL-1.0-or-later OR Artistic-1.0-Perl)
 URL:            https://metacpan.org/release/Image-Xbm
-Source0:        https://cpan.metacpan.org/authors/id/S/SU/SUMMER/Image-Xbm-%{version}.tar.gz
+Source0:        https://cpan.metacpan.org/authors/id/S/SR/SREZIC/Image-Xbm-%{version}.tar.gz
 BuildArch:      noarch
-BuildRequires: make
+
+BuildRequires:  make
 BuildRequires:  perl-generators
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl(Carp)
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 BuildRequires:  perl(Image::Base)
-BuildRequires:	perl(Test::More)
+BuildRequires:  perl(strict)
+BuildRequires:  perl(Symbol)
+BuildRequires:  perl(vars)
+# Runtime
+BuildRequires:  perl(IO::String)
+# Tests
+BuildRequires:  perl(File::Temp)
+BuildRequires:  perl(Test::More)
 
 %description
 This class module provides basic load, manipulate and save functionality for
@@ -22,14 +33,12 @@ manipulation functionality.
 %setup -q -n Image-Xbm-%{version}
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+%{__perl} Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%make_build
 
 %install
-make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
-find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} ';'
-find $RPM_BUILD_ROOT -type d -depth -exec rmdir {} 2>/dev/null ';'
-chmod -R u+w $RPM_BUILD_ROOT/*
+%make_install
+%{_fixperms} %{buildroot}/*
 
 %check
 make test
@@ -40,6 +49,12 @@ make test
 %{_mandir}/man3/*.3pm*
 
 %changelog
+* Tue Nov 26 2024 Xavier Bachelot <xavier@bachelot.org> - 1.11-1
+- Update to 1.11 (RHBZ#2325417)
+- Modernize specfile
+- Specify all deps
+- Clarify License:
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.10-26
 - convert license to SPDX
 

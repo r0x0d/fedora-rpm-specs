@@ -6,7 +6,7 @@
 
 Name:           gr-rds
 Version:        3.10
-Release:        18.%{git_suffix}%{?dist}
+Release:        19.%{git_suffix}%{?dist}
 Summary:        GNU Radio FM RDS Receiver
 License:        GPL-3.0-or-later
 URL:            https://github.com/bastibl/gr-rds
@@ -74,6 +74,9 @@ install -p -m 644 examples/* %{buildroot}%{_docdir}/%{name}/examples
 %doc %{_docdir}/%{name}/examples
 
 %changelog
+* Tue Nov 26 2024 František Zatloukal <fzatlouk@redhat.com> - 3.10-19.20220804gitf3646d04
+- Rebuilt for spdlog 1.15.0
+
 * Fri Jul 26 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 3.10-18.20220804gitf3646d04
 - Rebuilt for new gnuradio
 

@@ -16,6 +16,7 @@ Patch4:		rtpproxy-0004-Reverse-debug-nodebug-flags.patch
 Patch5:		rtpproxy-0005-Remove-bundled-libucl.patch
 Patch6:		rtpproxy-0006-Remove-bundled-xxHash.patch
 Patch7:		rtpproxy-0007-Missing-include.patch
+Patch8:		rtpproxy-0008-Use-legacy-run-directory.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bcg729-devel

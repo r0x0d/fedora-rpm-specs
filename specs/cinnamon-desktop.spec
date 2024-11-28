@@ -1,7 +1,7 @@
 %global commit0 4ff8433fcaccd420afadd7199d54ea5d30893512
 %global date 20241114
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-#global tag %{version}
+%global tag %{version}
 
 %global gtk3_version                      3.16.0
 %global glib2_version                     2.37.3
@@ -10,7 +10,7 @@
 
 Summary: Shared code among cinnamon-session, nemo, etc
 Name:    cinnamon-desktop
-Version: 6.3.0%{!?tag:^%{date}git%{shortcommit0}}
+Version: 6.4.0
 Release: 1%{?dist}
 # Automatically converted from old format: GPLv2+ and LGPLv2+ and MIT - review is highly recommended.
 License: GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-MIT
@@ -112,6 +112,9 @@ install -m 644 %SOURCE1 %buildroot%{_datadir}/applications/x-cinnamon-mimeapps.l
 %{_datadir}/gir-1.0/C*.gir
 
 %changelog
+* Tue Nov 26 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
+- Update to 6.4.0
+
 * Thu Nov 14 2024 Leigh Scott <leigh123linux@gmail.com> - 6.3.0^20241114git4ff8433-1
 - Update to git snapshot
 

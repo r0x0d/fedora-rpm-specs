@@ -37,12 +37,6 @@ BuildRequires:  appstream
 # For %%{_datadir}/icons/hicolor and its subdirectories:
 Requires:       hicolor-icon-theme
 
-# Upstream renamed/rewrote qalculate-kde as qalculate-qt. This package replaces
-# qalculate-kde, and qalculate-kde is retired, beginning with F37. The
-# Provides/Obsoletes could be removed no earlier than F40.
-Provides:       qalculate-kde = %{?epoch:%{epoch}:}%{version}-%{release}
-Obsoletes:      qalculate-kde < 0.9.7.10-34
-
 %description
 Qalculate! is a multi-purpose cross-platform desktop calculator. It is simple
 to use but provides power and versatility normally reserved for complicated

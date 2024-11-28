@@ -1,6 +1,6 @@
 Name:           mint-y-icons
-Version:        1.7.7
-Release:        2%{?dist}
+Version:        1.7.8
+Release:        1%{?dist}
 Summary:        The Mint-Y icon theme
 
 # Automatically converted from old format: CC-BY-SA - review is highly recommended.
@@ -53,6 +53,9 @@ done
 
 
 %changelog
+* Tue Nov 26 2024 Leigh Scott <leigh123linux@gmail.com> - 1.7.8-1
+- Update to 1.7.8
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.7.7-2
 - convert license to SPDX
 

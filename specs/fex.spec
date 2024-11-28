@@ -1,15 +1,13 @@
-Name:		fex
-Version:	2.0.0
-Release:	21%{?dist}
-Summary:	Field split/extraction like cut/awk
+Name:    fex
+Version: 2.0.0
+Release: 22%{?dist}
+Summary: Field split/extraction like cut/awk
+License: Apache-2.0
+URL:     http://semicomplete.com/projects/fex/
+Source0: https://github.com/jordansissel/%{name}/archive/v%{version}.tar.gz
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:	LicenseRef-Callaway-BSD
-URL:		http://semicomplete.com/projects/fex/
-Source0:	https://github.com/jordansissel/%{name}/archive/v%{version}.tar.gz
-
-BuildRequires:  gcc
-BuildRequires:  perl(Pod::Man)
+BuildRequires: gcc
+BuildRequires: perl(Pod::Man)
 BuildRequires: make
 
 %description
@@ -38,6 +36,9 @@ make install DESTDIR=%{buildroot}  PREFIX=%{_prefix}
 
 
 %changelog
+* Tue Nov 26 2024 Mark McKinstry <mmckinst@fedoraproject.org> - 2.0.0-22
+- update license to Apache-2.0 per https://github.com/jordansissel/fex/commit/6be33327f5bc425f66dbb901a045c4c5e905517d
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 2.0.0-21
 - convert license to SPDX
 

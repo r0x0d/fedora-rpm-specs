@@ -1,11 +1,5 @@
-# Sphinx-generated HTML documentation is not suitable for packaging; see
-# https://bugzilla.redhat.com/show_bug.cgi?id=2006555 for discussion.
-#
-# We can generate PDF documentation as a substitute.
-%bcond doc_pdf 1
-
 Name:           python-pybv
-Version:        0.7.5
+Version:        0.7.6
 Release:        %autorelease
 Summary:        A lightweight I/O utility for the BrainVision data format
 
@@ -24,31 +18,25 @@ URL:            https://pybv.readthedocs.io/en/stable/
 #
 # We have asked upstream to stop distributing the specification/ directory in
 # PyPI sdists: https://github.com/bids-standard/pybv/pull/106
+#
+# However, we still must package from GitHub if we want to run the tests, since
+# the sdist does not contain tests.
 Source0:        pybv-%{version}-filtered.tar.zst
 Source1:        get_source
 
-# Replace deprecated mne.utils.requires_version
-# https://github.com/bids-standard/pybv/pull/105
-Patch:          https://github.com/bids-standard/pybv/pull/105.patch
-
-# Fix version quote handling
-# This is a partial backport of:
-# https://github.com/bids-standard/pybv/commit/11b47b7a5a21230c1d7fd208e27bbd3ae721cc28
-Patch:          0001-Fix-version-quote-handling.patch
+BuildSystem:            pyproject
+BuildOption(install):   -l pybv
 
 BuildArch:      noarch
 ExcludeArch:    %{ix86}
 
 BuildRequires:  python3-devel
 
-%if %{with doc_pdf}
-# Extra dependencies for building PDF instead of HTML
-BuildRequires:  make
-BuildRequires:  python3-sphinx-latex
-BuildRequires:  latexmk
-BuildRequires:  /usr/bin/xindy
-BuildRequires:  tex-xetex-bin
-%endif
+# For tests; see the test extra, but it has linters, coverage tools, and other
+# unwanted dev dependencies mixed in, so we list these manually.
+BuildRequires:  %{py3_dist matplotlib}
+BuildRequires:  %{py3_dist mne}
+BuildRequires:  %{py3_dist pytest}
 
 %global common_description %{expand:
 pybv is a lightweight I/O utility for the BrainVision data format.
@@ -62,81 +50,37 @@ Imaging Data Structure.}
 %package -n python3-pybv
 Summary:        %{summary}
 
+# The export extra was removed in 0.7.6 for Fedora 42; we can remove the
+# following line after Fedora 44 reaches end-of-life.
+Obsoletes:      python3-pybv+export < 0.7.6-1
+# We stopped building PDF documentation for Fedora 42; we can remove the
+# following line after Fedora 44 reaches end-of-life.
+Obsoletes:      python-pybv-doc < 0.7.6-2
+
 %description -n python3-pybv %{common_description}
 
 
-%pyproject_extras_subpkg -n python3-pybv export
+%prep -a
+# Patch out options for pytest-cov:
+sed -r -i 's/--cov[^[:blank:]]+//g' pyproject.toml
 
 
-%package        doc
-Summary:        Documentation for python-pybv
-
-%description    doc %{common_description}
+%generate_buildrequires -p
+export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 
 
-%prep
-%autosetup -n pybv-%{version} -p1
-
-# Filter unwanted dev dependencies:
-#
-# - linters
-# - coverage analysis and other unnecessary pytest plugins
-# - formatters etc.
-# - documentation dependencies (if building docs is disabled)
-#
-# See also:
-# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
-sed -r \
-    -e 's/^(check-manifest|flake8(-.*)?|pycodestyle|pre-commit)\b/# &/' \
-    -e 's/^(pytest-(cov|sugar))/# &/' \
-    -e 's/^(black|isort)/# &/' \
-    %{?!with_doc_pdf:-e 's/^(sphinx(-(copybutton))?|numpydoc)\b/# &/'} \
-    requirements-dev.txt | tee requirements-dev-filtered.txt
-
-cat >>docs/conf.py <<'EOF'
-# We can’t resolve intersphinx mapping URLs in an offline build.
-intersphinx_mapping.clear()
-EOF
-# Since pdflatex cannot handle Unicode inputs in general:
-echo "latex_engine = 'xelatex'" >> docs/conf.py
+%build -p
+export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 
 
-%generate_buildrequires
-%pyproject_buildrequires -x export -r requirements-dev-filtered.txt
-
-
-%build
-%pyproject_wheel
-%if %{with doc_pdf}
-PYTHONPATH="${PWD}" %make_build -C docs latex \
-    SPHINXOPTS='-j%{?_smp_build_ncpus}'
-%make_build -C docs/_build/latex LATEXMKOPTS='-quiet'
-%endif
-
-
-%install
-%pyproject_install
-%pyproject_save_files -l pybv
-
-
-%check
-%{pytest}
+%check -a
+PYTHONPATH="${PWD}" %pytest --ignore=docs
 
 
 %files -n python3-pybv -f %{pyproject_files}
-
-
-%files doc
-%license LICENSE
 %doc CITATION.cff
 %doc README.rst
-# The changelog is included in the PDF documentation, but it’s useful to
-# package it as a text file too.
 %doc docs/changelog.rst
-
-%if %{with doc_pdf}
-%doc docs/_build/latex/pybv.pdf
-%endif
 
 
 %changelog

@@ -15,7 +15,7 @@ end}
 %global gomodulesmode GO111MODULE=auto
 
 Name:           grafana-pcp
-Version:        5.2.1
+Version:        5.2.2
 Release:        1%{?dist}
 Summary:        Performance Co-Pilot Grafana Plugin
 License:        Apache-2.0
@@ -144,7 +144,7 @@ bpftrace scripts from pmdabpftrace(1), as well as several dashboards.
 %endif
 
 # Build backend data source
-%gobuild -o dist/datasources/redis/pcp_redis_datasource_$(go env GOOS)_$(go env GOARCH) ./pkg
+%gobuild -o dist/datasources/valkey/pcp_valkey_datasource_$(go env GOOS)_$(go env GOARCH) ./pkg
 
 
 %install
@@ -194,6 +194,9 @@ yarn test
 
 
 %changelog
+* Tue Nov 26 2024 Sam Feifer <sfeifer@redhat.org> - 5.2.2-1
+- update to 5.2.2 tagged upstream sources, see CHANGELOG
+
 * Tue Nov 12 2024 Sam Feifer <sfeifer@redhat.org> - 5.2.1-1
 - update to 5.2.1 to resolve vulnerabilities in dependencies
 

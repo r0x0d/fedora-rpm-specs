@@ -1,7 +1,7 @@
 %global srcname cppy
 
 Name:           python-%{srcname}
-Version:        1.2.1
+Version:        1.3.0
 Release:        %autorelease
 Summary:        C++ headers for C extension development
 
@@ -51,7 +51,7 @@ Documentation for cppy
 %pyproject_wheel
 
 # generate html docs
-PYTHONPATH="%{pyproject_build_lib}" sphinx-build-3 docs/source html
+PYTHONPATH="$PWD/build/lib" sphinx-build-3 docs/source html
 # remove the sphinx-build leftovers
 rm -rf html/.{doctrees,buildinfo}
 

@@ -3,12 +3,12 @@
 # TODO: BR: perl(HTTP::Tiny::Mech) and perl(WWW::Mechanize::Cached) when available
 
 Name:		perl-MetaCPAN-Client
-Version:	2.032000
-Release:	2%{?dist}
+Version:	2.033000
+Release:	1%{?dist}
 Summary:	A comprehensive, DWIM-featured client to the MetaCPAN API
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:		https://github.com/CPAN-API/metacpan-client
-Source0:	http://cpan.metacpan.org/authors/id/M/MI/MICKEY/MetaCPAN-Client-%{version}.tar.gz
+Source0:	http://www.cpan.org/authors/id/M/MI/MICKEY/MetaCPAN-Client-%{version}.tar.gz
 BuildArch:	noarch
 # Build
 BuildRequires:	coreutils
@@ -108,6 +108,11 @@ mv ./[a-z]*.t t/api/
 %{_mandir}/man3/MetaCPAN::Client::Types.3*
 
 %changelog
+* Mon Nov 25 2024 Paul Howarth <paul@city-fan.org> - 2.033000-1
+- Update to 2.033000
+  - Remove backpan_directory option (GH#127)
+- Switch upstream source URL from cpan.metacpan.org to www.cpan.org
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.032000-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

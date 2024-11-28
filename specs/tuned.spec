@@ -49,15 +49,14 @@
 
 Summary: A dynamic adaptive system tuning daemon
 Name: tuned
-Version: 2.24.0
-Release: 6%{?prerel1}%{?git_suffix:.%{git_suffix}}%{?dist}
+Version: 2.24.1
+Release: 1%{?prerel1}%{?git_suffix:.%{git_suffix}}%{?dist}
 License: GPL-2.0-or-later AND CC-BY-SA-3.0
 %if 0%{?git_commit:1}
 Source0: https://github.com/redhat-performance/%{name}/archive/%{git_commit}/%{name}-%{version}-%{git_suffix}.tar.gz
 %else
 Source0: https://github.com/redhat-performance/%{name}/archive/v%{version}%{?prerel2}/%{name}-%{version}%{?prerel2}.tar.gz
 %endif
-Patch: 0001-controller-init-set-_on_battery-before-switching-pro.patch
 # https://github.com/redhat-performance/tuned/pull/684
 Patch: 0001-tuned-ppd-Support-the-new-UPower-PPD-namespace.patch
 # https://github.com/redhat-performance/tuned/pull/705
@@ -633,6 +632,14 @@ fi
 %config(noreplace) %{_sysconfdir}/tuned/ppd.conf
 
 %changelog
+* Tue Nov 26 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 2.24.1-1
+- new release
+  - fixed privileged execution of arbitrary scripts by active local user
+    resolves: CVE-2024-52336
+  - added sanity checks for API methods parameters
+    resolves: CVE-2024-52337
+  - tuned-ppd: fixed controller init to correctly set _on_battery
+
 * Tue Nov  5 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 2.24.0-6
 - Added workaround for systemd-boot
   Resolves: rhbz#2323514

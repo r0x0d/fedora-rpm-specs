@@ -1,14 +1,14 @@
-Name:		nawk
-Version:	20240728
-Release:	1%{?dist}
-Summary:	"The one true awk" descended from UNIX V7
-License:	MIT
-URL:		https://github.com/onetrueawk/awk
-Source0:	https://github.com/onetrueawk/awk/archive/%{version}.tar.gz
+Name:    nawk
+Version: 20240728
+Release: 1%{?dist}
+Summary: "The one true awk" descended from UNIX V7
+License: MIT
+URL:     https://github.com/onetrueawk/awk
+Source0: https://github.com/onetrueawk/awk/archive/%{version}.tar.gz
 
 # rename awk to nawk
-Patch0:	 nawk-manpage.patch
-BuildRequires:	make gcc bison
+Patch0:  nawk-manpage.patch
+BuildRequires: make gcc bison
 
 %description
 This is the version of awk described in The AWK Programming Language, Second

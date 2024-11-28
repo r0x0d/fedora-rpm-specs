@@ -2,8 +2,8 @@
 %global __provides_exclude perl\\(
 
 Name:              monitorix
-Version:           3.15.0
-Release:           8%{?dist}
+Version:           3.15.90
+Release:           1%{?dist}
 Summary:           A free, open source, lightweight system monitoring tool
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:           GPL-2.0-or-later
@@ -102,6 +102,9 @@ install -pDm644 docs/%{name}.service %{buildroot}%{_unitdir}/%{name}.service
 %attr(755,root,root) %{_sharedstatedir}/%{name}/usage
 
 %changelog
+* Tue Nov 26 2024 Jordi Sanfeliu <jordi@fibranet.cat> - 3.15.90-1
+- Updated to 3.15.90.
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 3.15.0-8
 - convert license to SPDX
 

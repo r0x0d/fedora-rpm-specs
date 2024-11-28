@@ -2,7 +2,7 @@
 
 Name:		rubygem-%{gem_name}
 Version:	0.17.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 
 Summary:	Contracts for Ruby
 # SPDX confirmed
@@ -10,6 +10,9 @@ License:	BSD-2-Clause
 URL:		http://egonschiele.github.io/contracts.ruby/
 Source0:	https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # Upstream patches
+# https://github.com/egonSchiele/contracts.ruby/issues/309
+# Workaround for ruby34 hash inspect format change
+Patch0:	contracts.ruby-issue309-ruby34-hash-inspect-change.patch
 
 BuildRequires:	ruby(release)
 BuildRequires:	rubygems-devel
@@ -33,6 +36,8 @@ Documentation for %{name}.
 %prep
 %setup -q -n %{gem_name}-%{version}
 mv ../%{gem_name}-%{version}.gemspec .
+
+%patch -P0 -p1
 
 %build
 gem build %{gem_name}-%{version}.gemspec
@@ -78,6 +83,9 @@ popd
 %{gem_instdir}/benchmarks/
 
 %changelog
+* Tue Nov 26 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.17.2-2
+- Workaround for ruby34 hash inspect format change
+
 * Fri Oct 18 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.17.2-1
 - 0.17.2
 

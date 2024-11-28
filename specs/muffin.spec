@@ -4,8 +4,8 @@
 %global tag %{version}
 
 Name:          muffin
-Version:       6.2.0
-Release:       3%{?dist}
+Version:       6.4.0
+Release:       1%{?dist}
 Summary:       Window and compositing manager based on Clutter
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -142,6 +142,9 @@ rm -rf %{buildroot}%{_datadir}/applications/
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Tue Nov 26 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
+- Update to 6.4.0
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 6.2.0-3
 - convert license to SPDX
 

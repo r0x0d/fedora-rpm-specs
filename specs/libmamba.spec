@@ -1,6 +1,6 @@
 Name:           libmamba
 Version:        1.5.10
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        C++ API for mamba depsolving library
 
 License:        BSD-3-Clause
@@ -165,6 +165,9 @@ cp -p %{_vpath_builddir}/micromamba/micromamba.1 %{buildroot}%{_mandir}/man1/
 
 
 %changelog
+* Tue Nov 26 2024 František Zatloukal <fzatlouk@redhat.com> - 1.5.10-3
+- Rebuilt for spdlog 1.15.0
+
 * Thu Oct 24 2024 Orion Poplawski <orion@nwra.com> - 1.5.10-2
 - Drop yaml-cpp patch
 

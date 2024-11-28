@@ -1,39 +1,53 @@
 Name:           perl-Image-Info
-Version:        1.44
-Release:        4%{?dist}
+Version:        1.45
+Release:        1%{?dist}
 Summary:        Image meta information extraction module for Perl
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Image-Info
 Source0:        https://cpan.metacpan.org/authors/id/S/SR/SREZIC/Image-Info-%{version}.tar.gz
 BuildArch:      noarch
+
 BuildRequires:  coreutils
 BuildRequires:  findutils
 BuildRequires:  make
 BuildRequires:  perl-interpreter
 BuildRequires:  perl-generators
+# Build
 BuildRequires:  perl(Carp)
-BuildRequires:  perl(Compress::Zlib)
 BuildRequires:  perl(Config)
 BuildRequires:  perl(constant)
-BuildRequires:  perl(Exporter)
+BuildRequires:  perl(Data::Dumper)
 BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl(File::Compare)
+BuildRequires:  perl(File::Temp)
+BuildRequires:  perl(Image::Xbm)
+BuildRequires:  perl(Image::Xpm)
+BuildRequires:  perl(lib)
+BuildRequires:  perl(overload)
+BuildRequires:  perl(PerlIO::scalar)
+BuildRequires:  perl(strict)
+BuildRequires:  perl(warnings)
+BuildRequires:  perl(XML::LibXML::Reader)
+BuildRequires:  perl(XML::Simple)
+# Run
+BuildRequires:  perl(Compress::Zlib)
+BuildRequires:  perl(Encode)
+BuildRequires:  perl(Exporter)
+BuildRequires:  perl(IO::Scalar)
+BuildRequires:  perl(IO::String)
+BuildRequires:  perl(Symbol)
+# Tests
 BuildRequires:  perl(File::Basename)
 BuildRequires:  perl(File::Spec)
 BuildRequires:  perl(FindBin)
-BuildRequires:  perl(Getopt::Long)
-BuildRequires:  perl(Image::Xbm)
-BuildRequires:  perl(Image::Xpm)
-BuildRequires:  perl(IO::Scalar)
-BuildRequires:  perl(IO::String)
-BuildRequires:  perl(lib)
-BuildRequires:  perl(overload)
-BuildRequires:  perl(strict)
+BuildRequires:  perl(IPC::Run)
+BuildRequires:  perl(List::Util)
+BuildRequires:  perl(Test::Kwalitee)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Test::Pod)
 BuildRequires:  perl(Test::Pod::Coverage) >= 1.00
-BuildRequires:  perl(vars)
-BuildRequires:  perl(XML::LibXML::Reader)
-BuildRequires:  perl(XML::Simple)
+BuildRequires:  perl(Test::Strict)
+BuildRequires:  perl(XML::SAX::PurePerl)
 Requires:       rgb
 Requires:       perl(Compress::Zlib)
 Requires:       perl(IO::Scalar)
@@ -47,12 +61,11 @@ various types of image files.
 chmod -c 644 exifdump imgdump
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
 %make_build
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%make_install
 %{_fixperms} %{buildroot}/*
 
 %check
@@ -65,6 +78,10 @@ make test
 %{_mandir}/man3/*.3pm*
 
 %changelog
+* Tue Nov 26 2024 Xavier Bachelot <xavier@bachellot.org> - 1.45-1
+- Update to 1.45 (RHBZ#2328653)
+- Clean up dependencies
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.44-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

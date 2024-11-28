@@ -2,8 +2,8 @@
 
 
 Name:           mint-x-icons
-Version:        1.7.1
-Release:        2%{?dist}
+Version:        1.7.2
+Release:        1%{?dist}
 Summary:        Icon theme for Linux Mint
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -65,6 +65,9 @@ done
 
 
 %changelog
+* Tue Nov 26 2024 Leigh Scott <leigh123linux@gmail.com> - 1.7.2-1
+- Update to 1.7.2
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 1.7.1-2
 - convert license to SPDX
 

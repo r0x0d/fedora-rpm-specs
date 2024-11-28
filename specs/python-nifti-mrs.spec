@@ -47,8 +47,8 @@ Source17:       mrs_tools-vis.1
 # binary packages are noarch and contain no compiled code.
 %global debug_package %{nil}
 
-# Requires python3dist(fslpy), which requires python3dist(h5py), which (as of
-# F40) is ExcludeArch: %%{ix86}.
+# Requires python3dist(fslpy), which requires python3dist(h5py), which is
+# ExcludeArch: %%{ix86}.
 ExcludeArch:    %{ix86}
  
 BuildRequires:  python3-devel

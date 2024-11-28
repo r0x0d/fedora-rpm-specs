@@ -77,7 +77,7 @@ Conflicts:      python3-zmq < 25.1.1-29
 
 
 %package -n python3-pyzmq-tests
-Summary:        %{summary}, testsuite
+Summary:        Test suite for Python bindings for zeromq
 # This subpackage does not contain any of the files that are under other
 # licenses; see the comment above the main License tag.
 License:        BSD-3-Clause
@@ -89,7 +89,7 @@ Requires:       python3-pyzmq%{?_isa} = %{version}-%{release}
 Obsoletes:      python3-zmq-tests < 25.1.1-29
 Conflicts:      python3-zmq-tests < 25.1.1-29
 
-# Based on test-requirements.txt; see test-requirement-filtered.txt, as
+# Based on test-requirements.txt; see test-requirements-filtered.txt, as
 # generated in %%prep. The BR’s duplicate the generated ones, which is
 # unfortunate, but necessary to make sure that we don’t have unsatisfied
 # runtime/install-time dependencies. It would be better if we didn’t have to

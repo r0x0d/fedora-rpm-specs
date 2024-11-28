@@ -14,7 +14,11 @@
 
 Name:           python-tensile
 Version:        %{rocm_version}
+%if 0%{?fedora}
 Release:        %autorelease
+%else
+Release:        100%{?dist}
+%endif
 Summary:        Tool for creating benchmark-driven backend libraries for GEMMs
 
 Url:            https://github.com/ROCmSoftwarePlatform/Tensile
@@ -31,6 +35,12 @@ Patch3:         0001-Add-gfx1035.patch
 # Patch1:         0001-tensile-workaround-cache-problem.patch
 
 BuildRequires:  python3-devel
+%if 0%{?suse_version}
+# TW
+BuildRequires:  python311-setuptools
+%else
+BuildRequires:  python3dist(setuptools)
+%endif
 
 %if %{with check}
 # Some of these might not be needed
@@ -47,6 +57,8 @@ BuildRequires:  rocm-runtime-devel
 
 Requires:       hipcc
 Requires:       rocminfo
+Requires:       python3dist(joblib)
+Requires:       python3dist(msgpack)
 
 # Straight python, but only usable for ROCm which is only on x86_64
 BuildArch:      noarch
@@ -61,7 +73,7 @@ rocBLAS. Tensile acts as the performance backbone for a wide variety of
 
 %package -n python3-tensile
 Summary:        %{summary}
-Requires:       cmake-filesystem
+Requires:       cmake
 
 %description -n python3-tensile
 Tensile is a tool for creating benchmark-driven backend libraries for GEMMs,
@@ -75,8 +87,8 @@ rocBLAS. Tensile acts as the performance backbone for a wide variety of
 
 #Fix a few things:
 chmod 755 Tensile/Configs/miopen/convert_cfg.py
-%py3_shebang_fix Tensile/Configs/miopen/convert_cfg.py
-%py3_shebang_fix Tensile/Tests/create_tests.py
+sed -i -e 's@bin/python@bin/python3@' Tensile/Configs/miopen/convert_cfg.py
+sed -i -e 's@bin/python@bin/python3@' Tensile/Tests/create_tests.py
 
 # I'm assuming we don't need these:
 rm -r %{upstreamname}/Configs/miopen/archives
@@ -93,15 +105,11 @@ sed -i -e 's@globalParameters["IgnoreAsmCapCache"] = False@globalParameters["Ign
 sed -i -e 's@arguments["IgnoreAsmCapCache"] = args.IgnoreAsmCapCache@arguments["IgnoreAsmCapCache"] = True@' Tensile/TensileCreateLibrary.py
 sed -i -e 's@if not ignoreCacheCheck and derivedAsmCaps@if False and derivedAsmCaps@' Tensile/Common.py
 
-%generate_buildrequires
-%pyproject_buildrequires -t
-
 %build
-%pyproject_wheel
+%py3_build
 
 %install
-%pyproject_install
-%pyproject_save_files %{upstreamname}
+%py3_install
 
 mkdir -p %{buildroot}%{_datadir}/cmake/Tensile
 mv %{buildroot}%{_prefix}/cmake/* %{buildroot}%{_datadir}/cmake/Tensile/
@@ -110,17 +118,28 @@ rm -rf %{buildroot}%{_prefix}/cmake
 # Do not distribute broken bins
 rm %{buildroot}%{_bindir}/tensile*
 
+# Do not distribute tests
+rm -rf %{buildroot}%{python3_sitelib}/%{upstreamname}/Tests
+
 %check
 %if %{with check}
 %tox
 %endif
 
-%files -n python3-tensile -f %{pyproject_files}
+%files -n python3-tensile
+%dir %{_datadir}/cmake/Tensile
+%dir %{_datadir}/cmake/Tensile
+%dir %{python3_sitelib}/%{upstreamname}
+%dir %{python3_sitelib}/%{upstreamname}*.egg-info
 %doc README.md
 %license LICENSE.md
 %{_bindir}/%{upstreamname}*
-%{_datadir}/cmake/Tensile
-%exclude %{python3_sitelib}/%{upstreamname}/Tests
+%{_datadir}/cmake/Tensile/*.cmake
+%{python3_sitelib}/%{upstreamname}/*
+%{python3_sitelib}/%{upstreamname}*.egg-info/*
 
 %changelog
+%if 0%{?fedora}
 %autochangelog
+%endif
+

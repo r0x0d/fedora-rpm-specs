@@ -83,6 +83,15 @@ install -Dpm 0644 containerd.toml %{buildroot}%{_sysconfdir}/containerd/config.t
 %make_build %{makeflags} test
 %endif
 
+%post
+%systemd_post containerd.service
+
+%preun
+%systemd_preun containerd.service
+
+%postun
+%systemd_postun_with_restart containerd.service
+
 %files -f %{go_vendor_license_filelist}
 %license vendor/modules.txt
 %doc ROADMAP.md ADOPTERS.md BUILDING.md README.md RELEASES.md SCOPE.md
