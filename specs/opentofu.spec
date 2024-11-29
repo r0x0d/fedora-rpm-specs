@@ -3,7 +3,7 @@
 
 # https://github.com/opentofu/opentofu
 %global goipath         github.com/opentofu/opentofu
-Version:                1.8.5
+Version:                1.8.6
 
 %gometa -L -f
 

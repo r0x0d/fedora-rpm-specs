@@ -80,7 +80,7 @@ Fish command line completion support for %{name}.
 
 %prep
 %autosetup -N
-%if %{defined fedora} && %{fedora} <= 41
+%if %{defined fedora} && 0%{?fedora} <= 41
 # Revert patch for compatibility with older websockets
 %patch -P1000 -p1 -R
 %endif

@@ -57,26 +57,27 @@ sed -i '/pytest-cov/d' pyproject.toml
 
 %install
 %pyproject_install
-%if 0%{?fc38}
-%pyproject_save_files rope
-%else
 %pyproject_save_files -l rope
-%endif
 
 
 %check
-# Test fails with Python 3.13:
-# PermissionError: [Errno 13] Permission denied: '/tmp/tmp46hrq_vn'
-%if %{fedora} >= 41
-k="${k-}${k+ and }not permission_error"
+%if v"0%{?python3_version}" >= v"3.13"
+# Test failures with Python 3.13.3rc3
+# https://github.com/python-rope/rope/issues/801
+k="${k-}${k+ and }not (AutoImportTest and test_skipping_directories_not_accessible_because_of_permission_error)"
+k="${k-}${k+ and }not (DocstringNoneAssignmentHintingTest and test_hint_parametrized_iterable)"
+k="${k-}${k+ and }not (DocstringNoneAssignmentHintingTest and test_hint_parametrized_iterator)"
+k="${k-}${k+ and }not (DocstringNotImplementedAssignmentHintingTest and test_hint_parametrized_iterable)"
+k="${k-}${k+ and }not (DocstringNotImplementedAssignmentHintingTest and test_hint_parametrized_iterator)"
+k="${k-}${k+ and }not (PEP0484CommentNoneAssignmentHintingTest and test_hint_parametrized_iterable)"
+k="${k-}${k+ and }not (PEP0484CommentNoneAssignmentHintingTest and test_hint_parametrized_iterator)"
+k="${k-}${k+ and }not (PEP0484CommentNotImplementedAssignmentHintingTest and test_hint_parametrized_iterable)"
+k="${k-}${k+ and }not (PEP0484CommentNotImplementedAssignmentHintingTest and test_hint_parametrized_iterator)"
 %endif
 %pytest -v ${k+-k }"${k-}"
 
 
 %files -n python3-rope -f %{pyproject_files}
-%if 0%{?fc38}
-%license COPYING
-%endif
 %doc docs/README.md *.md
 
 

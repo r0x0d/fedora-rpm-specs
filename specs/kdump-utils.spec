@@ -1,7 +1,7 @@
 # kdump-utils has no debug source
 %global debug_package %{nil}
 Name: kdump-utils
-Version: 1.0.49
+Version: 1.0.50
 Release: %autorelease
 Summary: Kernel crash dump collection utilities
 
@@ -55,6 +55,10 @@ touch /etc/kdump.conf
 servicelog_notify --remove --command=/usr/lib/kdump/kdump-migrate-action.sh 2>/dev/null
 servicelog_notify --add --command=/usr/lib/kdump/kdump-migrate-action.sh --match='refcode="#MIGRATE" and serviceable=0' --type=EVENT --method=pairs_stdin >/dev/null
 %endif
+
+# RPM scriptlet should always return 0. Otherwise it can break
+# installs/upgrades/erases.
+:
 
 
 %postun

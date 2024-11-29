@@ -2,7 +2,7 @@
 %global __provides_exclude perl\\(
 
 Name:              monitorix
-Version:           3.15.90
+Version:           3.16.0
 Release:           1%{?dist}
 Summary:           A free, open source, lightweight system monitoring tool
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -102,6 +102,9 @@ install -pDm644 docs/%{name}.service %{buildroot}%{_unitdir}/%{name}.service
 %attr(755,root,root) %{_sharedstatedir}/%{name}/usage
 
 %changelog
+* Wed Nov 27 2024 Jordi Sanfeliu <jordi@fibranet.cat> - 3.16.0-1
+- Updated to 3.16.0.
+
 * Tue Nov 26 2024 Jordi Sanfeliu <jordi@fibranet.cat> - 3.15.90-1
 - Updated to 3.15.90.
 

@@ -1,10 +1,10 @@
 Name:		perl-Mail-Message
-Version:	3.015
-Release:	4%{?dist}
+Version:	3.016
+Release:	1%{?dist}
 Summary:	MIME message handling
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:		https://metacpan.org/release/Mail-Message
-Source0:	https://cpan.metacpan.org/modules/by-module/Mail/Mail-Message-%{version}.tar.gz
+Source0:	https://www.cpan.org/modules/by-module/Mail/Mail-Message-%{version}.tar.gz
 BuildArch:	noarch
 # Build
 BuildRequires:	coreutils
@@ -62,7 +62,6 @@ BuildRequires:	perl(URI) >= 1.23
 BuildRequires:	perl(User::Identity) >= 1.02
 BuildRequires:	perl(User::Identity::Collection::Emails)
 BuildRequires:	perl(utf8)
-BuildRequires:	perl(vars)
 BuildRequires:	perl(warnings)
 # Test Suite
 BuildRequires:	perl(Data::Dumper)
@@ -124,6 +123,10 @@ make test
 %{_mandir}/man3/Mail::*.3*
 
 %changelog
+* Wed Nov 27 2024 Paul Howarth <paul@city-fan.org> - 3.016-1
+- Update to 3.016 (rhbz#2329121)
+- Switch source URL from cpan.metacpan.org to www.cpan.org
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.015-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -174,6 +174,11 @@
 %endif
 %endif
 
+%define have_qatzip 0
+%ifarch x86_64
+%define have_qatzip 1
+%endif
+
 # LTO still has issues with qemu on armv7hl and aarch64
 # https://bugzilla.redhat.com/show_bug.cgi?id=1952483
 %global _lto_cflags %{nil}
@@ -349,6 +354,8 @@
 %{obsoletes_block_gluster} \
 %{obsoletes_block_rbd} \
 %{obsoletes_package_virtiofsd} \
+Obsoletes: %{name}-system-cris <= %{epoch}:%{version}-%{release} \
+Obsoletes: %{name}-system-cris-core <= %{epoch}:%{version}-%{release} \
 Obsoletes: %{name}-system-lm32 <= %{epoch}:%{version}-%{release} \
 Obsoletes: %{name}-system-lm32-core <= %{epoch}:%{version}-%{release} \
 Obsoletes: %{name}-system-moxie <= %{epoch}:%{version}-%{release} \
@@ -360,18 +367,18 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release} \
 Obsoletes: sgabios-bin <= 1:0.20180715git-10.fc38
 
 # Release candidate version tracking
-# global rcver rc4
+%global rcver rc1
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
 %endif
 
 # To prevent rpmdev-bumpspec breakage
-%global baserelease 2
+%global baserelease 0.1
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
-Version: 9.1.1
+Version: 9.2.0
 Release: %{baserelease}%{?rcrel}%{?dist}
 Epoch: 2
 License: %{shrink:
@@ -422,17 +429,6 @@ Source36: README.tests
 Patch: 0001-Disable-9p-local-tests-that-fail-on-copr-aarch64.patch
 # Fix compat with new glibc (not upstream yet)
 Patch: schedattr.patch
-
-# Openat2 support (upstream commit 9651cea)
-Patch: 0001-linux-user-add-openat2-support-in-linux-user.patch
-# linux-user-cris support for openat2, can be removed once "cris" is
-# removed (after v9.1.0)
-Patch: 0001-linux-user-guard-openat2-with-if-defined-TARGET_NR_o.patch
-
-# Fix spice audio with qemu 9.1.1
-# https://lists.gnu.org/archive/html/qemu-devel/2024-11/msg00906.html
-# https://gitlab.com/qemu-project/qemu/-/issues/2639
-Patch: 0001-hw-audio-hda-avoid-unnecessary-re-open-stream-on-rec.patch
 
 BuildRequires: gnupg2
 BuildRequires: meson >= %{meson_version}
@@ -603,6 +599,12 @@ BuildRequires: rutabaga-gfx-ffi-devel
 # Builds on centos-stream 9 require python-tomli
 BuildRequires: python-tomli
 %endif
+%if %{have_qatzip}
+# --enable-qatzip
+BuildRequires: qatzip-devel
+%endif
+# --enable-libcbor
+BuildRequires: libcbor-devel
 
 %if %{user_static}
 BuildRequires: glibc-static
@@ -619,7 +621,6 @@ Requires: %{name}-system-aarch64 = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-alpha = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-arm = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-avr = %{epoch}:%{version}-%{release}
-Requires: %{name}-system-cris = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-loongarch64 = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-m68k = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-microblaze = %{epoch}:%{version}-%{release}
@@ -1108,7 +1109,6 @@ Requires(postun): systemd-units
 Requires: qemu-user-static-aarch64
 Requires: qemu-user-static-alpha
 Requires: qemu-user-static-arm
-Requires: qemu-user-static-cris
 Requires: qemu-user-static-hexagon
 Requires: qemu-user-static-hppa
 Requires: qemu-user-static-loongarch64
@@ -1124,6 +1124,7 @@ Requires: qemu-user-static-sparc
 Requires: qemu-user-static-x86
 Requires: qemu-user-static-xtensa
 Obsoletes: qemu-user-static-nios2 <= %{epoch}:%{version}-%{release}
+Obsoletes: qemu-user-static-cris <= %{epoch}:%{version}-%{release}
 
 
 %description user-static
@@ -1146,12 +1147,6 @@ static binaries
 Summary: QEMU user mode emulation of arm qemu targets static build
 %description user-static-arm
 This package provides the arm user mode emulation of qemu targets built as
-static binaries
-
-%package user-static-cris
-Summary: QEMU user mode emulation of cris qemu targets static build
-%description user-static-cris
-This package provides the cris user mode emulation of qemu targets built as
 static binaries
 
 %package user-static-hexagon
@@ -1300,20 +1295,6 @@ Summary: QEMU system emulator for AVR
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
 %description system-avr-core
 This package provides the QEMU system emulator for AVR systems.
-
-
-%package system-cris
-Summary: QEMU system emulator for CRIS
-Requires: %{name}-system-cris-core = %{epoch}:%{version}-%{release}
-%{requires_all_modules}
-%description system-cris
-This package provides the system emulator for CRIS systems.
-
-%package system-cris-core
-Summary: QEMU system emulator for CRIS
-Requires: %{name}-common = %{epoch}:%{version}-%{release}
-%description system-cris-core
-This package provides the system emulator for CRIS boards.
 
 
 %package system-hppa
@@ -1559,6 +1540,7 @@ mkdir -p %{static_builddir}
   --audio-drv-list=                \\\
   --disable-af-xdp                 \\\
   --disable-alsa                   \\\
+  --disable-asan                   \\\
   --disable-attr                   \\\
   --disable-auth-pam               \\\
   --disable-avx2                   \\\
@@ -1610,6 +1592,7 @@ mkdir -p %{static_builddir}
   --disable-jack                   \\\
   --disable-kvm                    \\\
   --disable-l2tpv3                 \\\
+  --disable-libcbor                \\\
   --disable-libdaxctl              \\\
   --disable-libdw                  \\\
   --disable-libkeyutils            \\\
@@ -1651,10 +1634,10 @@ mkdir -p %{static_builddir}
   --disable-rdma                   \\\
   --disable-relocatable            \\\
   --disable-replication            \\\
+  --disable-rust                   \\\
   --disable-rutabaga-gfx           \\\
   --disable-rng-none               \\\
   --disable-safe-stack             \\\
-  --disable-sanitizers             \\\
   --disable-sdl                    \\\
   --disable-sdl-image              \\\
   --disable-seccomp                \\\
@@ -1667,6 +1650,7 @@ mkdir -p %{static_builddir}
   --disable-sparse                 \\\
   --disable-spice                  \\\
   --disable-spice-protocol         \\\
+  --disable-strict-rust-lints      \\\
   --disable-strip                  \\\
   --disable-system                 \\\
   --disable-tcg                    \\\
@@ -1675,6 +1659,7 @@ mkdir -p %{static_builddir}
   --disable-tsan                   \\\
   --disable-uadk                   \\\
   --disable-u2f                    \\\
+  --disable-ubsan                  \\\
   --disable-usb-redir              \\\
   --disable-user                   \\\
   --disable-vpc                    \\\
@@ -1783,6 +1768,7 @@ run_configure \
 %endif
   --enable-kvm \
   --enable-l2tpv3 \
+  --enable-libcbor \
   --enable-libiscsi \
 %if %{have_pmem}
   --enable-libpmem \
@@ -1871,6 +1857,9 @@ run_configure \
   --enable-linux-user \
   --enable-multiprocess \
   --enable-parallels \
+%if %{have_qatzip}
+  --enable-qatzip \
+%endif
   --enable-qcow1 \
   --enable-qed \
   --enable-qom-cast-debug \
@@ -1896,7 +1885,6 @@ run_configure \
 %endif
   --enable-vhdx \
   --enable-virtfs \
-  --enable-virtfs-proxy-helper \
   --enable-vpc \
   --enable-vnc-jpeg \
   --enable-vte \
@@ -2163,7 +2151,12 @@ echo "Testing %{name}-build"
 # ppc64le random qtest segfaults with no discernable pattern
 #   Last check: 2023-10
 #   Added: 2022-06
-%ifnarch %{power64}
+#
+# i686 test failing as of qemu-9.2.0-rcX. Discussed here:
+# https://src.fedoraproject.org/rpms/qemu/pull-request/71
+# Decided to disable i686 tests entirely, en route to fully
+# removing i686 support in the future
+%ifnarch %{power64} %{ix86}
 %make_build check
 %endif
 
@@ -2215,11 +2208,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %post user-static-arm
 /bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
 %postun user-static-arm
-/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
-
-%post user-static-cris
-/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
-%postun user-static-cris
 /bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
 
 %post user-static-hexagon
@@ -2394,8 +2382,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 # Fedora specific
 %{_datadir}/applications/qemu.desktop
 %exclude %{_datadir}/%{name}/qemu-nsis.bmp
-%{_libexecdir}/virtfs-proxy-helper
-%{_mandir}/man1/virtfs-proxy-helper.1*
 
 
 %files tests
@@ -2550,7 +2536,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_bindir}/qemu-alpha
 %{_bindir}/qemu-arm
 %{_bindir}/qemu-armeb
-%{_bindir}/qemu-cris
 %{_bindir}/qemu-hppa
 %{_bindir}/qemu-hexagon
 %{_bindir}/qemu-loongarch64
@@ -2593,9 +2578,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_datadir}/systemtap/tapset/qemu-arm.stp
 %{_datadir}/systemtap/tapset/qemu-arm-log.stp
 %{_datadir}/systemtap/tapset/qemu-arm-simpletrace.stp
-%{_datadir}/systemtap/tapset/qemu-cris.stp
-%{_datadir}/systemtap/tapset/qemu-cris-log.stp
-%{_datadir}/systemtap/tapset/qemu-cris-simpletrace.stp
 %{_datadir}/systemtap/tapset/qemu-hexagon.stp
 %{_datadir}/systemtap/tapset/qemu-hexagon-log.stp
 %{_datadir}/systemtap/tapset/qemu-hexagon-simpletrace.stp
@@ -2723,12 +2705,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_exec_prefix}/lib/binfmt.d/qemu-arm-static.conf
 %endif
 %{_exec_prefix}/lib/binfmt.d/qemu-armeb-static.conf
-
-%files user-static-cris
-%{_bindir}/qemu-cris-static
-%{_datadir}/systemtap/tapset/qemu-cris-log-static.stp
-%{_datadir}/systemtap/tapset/qemu-cris-simpletrace-static.stp
-%{_datadir}/systemtap/tapset/qemu-cris-static.stp
 
 %files user-static-hexagon
 %{_bindir}/qemu-hexagon-static
@@ -2948,15 +2924,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_mandir}/man1/qemu-system-avr.1*
 
 
-%files system-cris
-%files system-cris-core
-%{_bindir}/qemu-system-cris
-%{_datadir}/systemtap/tapset/qemu-system-cris.stp
-%{_datadir}/systemtap/tapset/qemu-system-cris-log.stp
-%{_datadir}/systemtap/tapset/qemu-system-cris-simpletrace.stp
-%{_mandir}/man1/qemu-system-cris.1*
-
-
 %files system-hppa
 %files system-hppa-core
 %{_bindir}/qemu-system-hppa
@@ -3089,7 +3056,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_datadir}/systemtap/tapset/qemu-system-s390x-simpletrace.stp
 %{_mandir}/man1/qemu-system-s390x.1*
 %{_datadir}/%{name}/s390-ccw.img
-%{_datadir}/%{name}/s390-netboot.img
 
 
 %files system-sh4
@@ -3179,6 +3145,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Nov 25 2024 Cole Robinson <crobinso@redhat.com> - 9.2.0-0.1.rc1
+- Rebase to qemu 9.2.0-rc1
+
 * Tue Nov 05 2024 Cole Robinson <crobinso@redhat.com> - 9.1.1-2
 - Fix spice audio regression with qemu 9.1.1
 

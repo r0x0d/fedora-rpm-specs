@@ -2,7 +2,7 @@
 
 Name:           python-%{pypi_name}
 Version:        5.1.1
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        Module to simplify usage of decorators
 
 License:        BSD-2-Clause
@@ -34,7 +34,7 @@ etc.  The core of this module is a decorator factory called decorator.
 %autosetup -p1 -n %{pypi_name}-%{version}
 
 %generate_buildrequires
-%pyproject_buildrequires -t
+%pyproject_buildrequires
 
 %build
 %pyproject_wheel
@@ -52,6 +52,9 @@ etc.  The core of this module is a decorator factory called decorator.
 %license LICENSE.txt
 
 %changelog
+* Wed Nov 20 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 5.1.1-13
+- Avoid tox dependency
+
 * Sat Nov 09 2024 Kevin Fenzi <kevin@scrye.com> - 5.1.1-12
 - Modernize spec. Fix FTBFS with new setuptools. Fixes rhbz#2319649
 

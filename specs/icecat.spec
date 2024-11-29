@@ -110,7 +110,7 @@ ExcludeArch: %{ix86} %{arm}
 
 Name:    icecat
 Epoch:   2
-Version: 115.17.0
+Version: 115.18.0
 Release: %autorelease -e %{redhat_ver}
 Summary: GNU version of Firefox browser
 

@@ -6,7 +6,7 @@
 %endif
 
 Name:           packit
-Version:        0.104.0
+Version:        0.104.1
 Release:        1%{?dist}
 Summary:        A tool for integrating upstream projects with Fedora operating system
 
@@ -79,6 +79,10 @@ cp files/bash-completion/packit %{buildroot}%{bash_completions_dir}/packit
 %doc README.md
 
 %changelog
+* Mon Nov 25 2024 Packit <hello@packit.dev> - 0.104.1-1
+- Packit now uses the fedora-distro-aliases library to expand Fedora aliases. This is Packit's original code being improved and properly maintained by the Copr team. For further suggestions about aliases, use github.com/rpm-software-management/fedora-distro-aliases.
+- Resolves: rhbz#2328698
+
 * Fri Nov 15 2024 Packit <hello@packit.dev> - 0.104.0-1
 - Packit configuration file can now have a placeholder top-level key `_` that is ignored when read.
   This is useful for storing yaml anchors in complex config files, e.g.:

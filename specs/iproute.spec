@@ -1,6 +1,6 @@
 Summary:            Advanced IP routing and network device configuration tools
 Name:               iproute
-Version:            6.10.0
+Version:            6.12.0
 Release:            %autorelease
 URL:                https://kernel.org/pub/linux/utils/net/%{name}2/
 Source0:            https://kernel.org/pub/linux/utils/net/%{name}2/%{name}2-%{version}.tar.xz

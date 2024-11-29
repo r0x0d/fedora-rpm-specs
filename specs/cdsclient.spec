@@ -5,8 +5,8 @@ Summary:        Tools to query databases at CDS
 
 # Automatically converted from old format: GPLv3 - review is highly recommended.
 License:        GPL-3.0-only
-URL:            http://cdsarc.u-strasbg.fr/doc/cdsclient.html
-Source0:        ftp://cdsarc.u-strasbg.fr/pub/sw/%{name}-%{version}.tar.gz
+URL:            https://cdsarc.u-strasbg.fr/doc/cdsclient.html
+Source0:        https://cdsarc.cds.unistra.fr/ftp/pub/sw/cdsclient-%{version}.tar.gz
 # Patch to get useful debuginfo. strip was called in Makefile before and compiler
 # flags were ignored, submitted upstream by email
 Patch0:         fix_makefile_debuginfo.patch

@@ -34,6 +34,7 @@ Patch3:         0001-Add-gfx1035.patch
 # Tensile::FATAL: Cached asm caps differ from derived asm caps for (9, 0, 10)
 # Patch1:         0001-tensile-workaround-cache-problem.patch
 
+BuildRequires:  fdupes
 BuildRequires:  python3-devel
 %if 0%{?suse_version}
 # TW
@@ -55,11 +56,6 @@ BuildRequires:  rocm-rpm-macros
 BuildRequires:  rocm-runtime-devel
 %endif
 
-Requires:       hipcc
-Requires:       rocminfo
-Requires:       python3dist(joblib)
-Requires:       python3dist(msgpack)
-
 # Straight python, but only usable for ROCm which is only on x86_64
 BuildArch:      noarch
 ExclusiveArch:  x86_64
@@ -71,16 +67,27 @@ contractions on a GPU. The Tensile library is mainly used as backend library to
 rocBLAS. Tensile acts as the performance backbone for a wide variety of
 'compute' applications running on AMD GPUs.
 
-%package -n python3-tensile
-Summary:        %{summary}
-Requires:       cmake
+# There are headers and code as part of the code generation.
+# This make rpm checkers unhappy
+%package -n python3-tensile-devel
+Summary:        Tool for creating benchmark-driven backend libraries for GEMMs
+%if 0%{?fedora}
+Requires:       cmake-filesystem
+%endif
+Requires:       hipcc
+Requires:       rocminfo
+Requires:       python3dist(joblib)
+Requires:       python3dist(msgpack)
+Requires:       python3dist(pyyaml)
+Provides:       python3dist(tensile)
 
-%description -n python3-tensile
+%description -n python3-tensile-devel
 Tensile is a tool for creating benchmark-driven backend libraries for GEMMs,
 GEMM-like problems (such as batched GEMM), and general N-dimensional tensor
 contractions on a GPU. The Tensile library is mainly used as backend library to
 rocBLAS. Tensile acts as the performance backbone for a wide variety of
 'compute' applications running on AMD GPUs.
+
 
 %prep
 %autosetup -p1 -n %{upstreamname}-rocm-%{version}
@@ -89,6 +96,8 @@ rocBLAS. Tensile acts as the performance backbone for a wide variety of
 chmod 755 Tensile/Configs/miopen/convert_cfg.py
 sed -i -e 's@bin/python@bin/python3@' Tensile/Configs/miopen/convert_cfg.py
 sed -i -e 's@bin/python@bin/python3@' Tensile/Tests/create_tests.py
+sed -i -e 's@bin/env python3@bin/python3@' Tensile/bin/Tensile
+sed -i -e 's@bin/env python3@bin/python3@' Tensile/bin/TensileCreateLibrary
 
 # I'm assuming we don't need these:
 rm -r %{upstreamname}/Configs/miopen/archives
@@ -121,21 +130,49 @@ rm %{buildroot}%{_bindir}/tensile*
 # Do not distribute tests
 rm -rf %{buildroot}%{python3_sitelib}/%{upstreamname}/Tests
 
+#Clean up dupes:
+%fdupes %{buildroot}%{_prefix}
+
+# rm hard links and replace
+rm %{buildroot}%{python3_sitelib}/%{upstreamname}/cmake/*.cmake
+cp %{buildroot}%{_datadir}/cmake/Tensile/*.cmake %{buildroot}%{python3_sitelib}/%{upstreamname}/cmake/
+
 %check
 %if %{with check}
 %tox
 %endif
 
-%files -n python3-tensile
-%dir %{_datadir}/cmake/Tensile
+%files -n python3-tensile-devel
+%if 0%{?suse_version}
+# Should not have to do this
+%dir %{_datadir}/cmake
+%endif
 %dir %{_datadir}/cmake/Tensile
 %dir %{python3_sitelib}/%{upstreamname}
+%dir %{python3_sitelib}/%{upstreamname}/__pycache__
+%dir %{python3_sitelib}/%{upstreamname}/bin
+%dir %{python3_sitelib}/%{upstreamname}/cmake
+%dir %{python3_sitelib}/%{upstreamname}/Components
+%dir %{python3_sitelib}/%{upstreamname}/Configs
+%dir %{python3_sitelib}/%{upstreamname}/CustomKernels
+%dir %{python3_sitelib}/%{upstreamname}/Source
+%dir %{python3_sitelib}/%{upstreamname}/Perf
+%dir %{python3_sitelib}/%{upstreamname}/Utilities
 %dir %{python3_sitelib}/%{upstreamname}*.egg-info
 %doc README.md
 %license LICENSE.md
 %{_bindir}/%{upstreamname}*
 %{_datadir}/cmake/Tensile/*.cmake
-%{python3_sitelib}/%{upstreamname}/*
+%{python3_sitelib}/%{upstreamname}/*.py
+%{python3_sitelib}/%{upstreamname}/__pycache__/*
+%{python3_sitelib}/%{upstreamname}/bin/*
+%{python3_sitelib}/%{upstreamname}/cmake/*
+%{python3_sitelib}/%{upstreamname}/Components/*
+%{python3_sitelib}/%{upstreamname}/Configs/*
+%{python3_sitelib}/%{upstreamname}/CustomKernels/*
+%{python3_sitelib}/%{upstreamname}/Perf/*
+%{python3_sitelib}/%{upstreamname}/Source/*
+%{python3_sitelib}/%{upstreamname}/Utilities/*
 %{python3_sitelib}/%{upstreamname}*.egg-info/*
 
 %changelog

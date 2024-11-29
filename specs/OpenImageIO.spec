@@ -14,6 +14,9 @@ Source0:        https://github.com/AcademySoftwareFoundation/OpenImageIO/archive
 # Images for test suite
 #Source1:        https://github.com/OpenImageIO/oiio-images/archive/master/oiio-images.tar.gz
 
+# LifHeif modifies the headers to make things work for multilib systems.
+Patch0:         oiio-libheif_version.patch
+
 # OpenVDB no longer builds for i686
 ExcludeArch:    i686
 
@@ -144,7 +147,7 @@ rm -rf src/include/tbb
 # CMAKE_SKIP_RPATH is OK here because it is set to FALSE internally and causes
 # CMAKE_INSTALL_RPATH to be cleared, which is the desiered result.
 mkdir build/linux && pushd build/linux
-%cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+%cmake --debug-output -DCMAKE_BUILD_TYPE=RelWithDebInfo \
        -DCMAKE_CXX_STANDARD=17 \
        -DCMAKE_SKIP_RPATH:BOOL=TRUE \
        -DPYTHON_VERSION=%{python3_version} \

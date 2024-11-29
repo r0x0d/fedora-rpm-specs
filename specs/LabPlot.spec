@@ -3,68 +3,72 @@
 
 %global genname labplot
 
+%global gitcommit 4e770ae2d988362dca637aef2b74610a4a1456c2
+%global gitdate 20241117.082905
+%global shortcommit %(c=%{gitcommit}; echo ${c:0:7})
+
 Name:           LabPlot
-Version:        2.11.1
+Version:        2.11.80~%{gitdate}.%{shortcommit}
 Release:        %autorelease
 Summary:        Data Analysis and Visualization
 License:        GPL-2.0-or-later
 URL:            https://labplot.kde.org/
 
-#Source0:        https://download.kde.org/stable/labplot/labplot-%{version}.tar.xz
-Source0:        https://invent.kde.org/education/labplot/-/archive/%{version}/labplot-%{version}.tar.bz2
+# REASON: cantor
+# handled by qt6-srpm-macros, which defines %%qt6_qtwebengine_arches
+%{?qt6_qtwebengine_arches:ExclusiveArch: %{qt6_qtwebengine_arches}}
+
+#Source0:        https://download.kde.org/stable/labplot/labplot-%%{version}.tar.xz
+#Source0:        https://invent.kde.org/education/labplot/-/archive/%%{version}/labplot-%%{version}.tar.bz2
+Source0:        https://invent.kde.org/education/labplot/-/archive/%{gitcommit}/labplot-%{gitcommit}.tar.bz2
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
 BuildRequires:  extra-cmake-modules
+BuildRequires:  kf6-rpm-macros
 
-BuildRequires:  cmake(Qt5Concurrent)
-BuildRequires:  cmake(Qt5Gui)
-BuildRequires:  cmake(Qt5PrintSupport)
-BuildRequires:  cmake(Qt5Sql)
-BuildRequires:  cmake(Qt5Svg)
-BuildRequires:  cmake(Qt5Widgets)
-BuildRequires:  cmake(Qt5Test)
-BuildRequires:  cmake(Qt5SerialPort)
-BuildRequires:  qt5-qtbase-private-devel
-%{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
-
-BuildRequires:  cmake(KF5Archive)
-BuildRequires:  cmake(KF5Completion)
-BuildRequires:  cmake(KF5Config)
-BuildRequires:  cmake(KF5ConfigWidgets)
-BuildRequires:  cmake(KF5CoreAddons)
-BuildRequires:  cmake(KF5Crash)
-BuildRequires:  cmake(KF5DocTools)
-BuildRequires:  cmake(KF5I18n)
-BuildRequires:  cmake(KF5IconThemes)
-BuildRequires:  cmake(KF5KIO)
-BuildRequires:  cmake(KF5TextWidgets)
-BuildRequires:  cmake(KF5WidgetsAddons)
-BuildRequires:  cmake(KF5XmlGui)
-BuildRequires:  cmake(KF5NewStuffCore)
-BuildRequires:  cmake(KF5NewStuff)
-BuildRequires:  cmake(KF5Service)
-BuildRequires:  cmake(KF5Parts)
-BuildRequires:  cmake(KF5Purpose)
-BuildRequires:  cmake(KF5SyntaxHighlighting)
-
-BuildRequires:  cmake(KUserFeedback)
 BuildRequires:  bison
+BuildRequires:  cmake(Qt6Concurrent)
+BuildRequires:  cmake(Qt6Gui)
+BuildRequires:  cmake(Qt6PrintSupport)
+BuildRequires:  cmake(Qt6Sql)
+BuildRequires:  cmake(Qt6Svg)
+BuildRequires:  cmake(Qt6Widgets)
+BuildRequires:  cmake(Qt6Test)
+BuildRequires:  cmake(Qt6SerialPort)
 
-BuildRequires:  poppler-qt5-devel
+BuildRequires:  cmake(KF6Archive)
+BuildRequires:  cmake(KF6Completion)
+BuildRequires:  cmake(KF6Config)
+BuildRequires:  cmake(KF6ConfigWidgets)
+BuildRequires:  cmake(KF6CoreAddons)
+BuildRequires:  cmake(KF6Crash)
+BuildRequires:  cmake(KF6DocTools)
+BuildRequires:  cmake(KF6I18n)
+BuildRequires:  cmake(KF6IconThemes)
+BuildRequires:  cmake(KF6KIO)
+BuildRequires:  cmake(KF6TextWidgets)
+BuildRequires:  cmake(KF6WidgetsAddons)
+BuildRequires:  cmake(KF6XmlGui)
+BuildRequires:  cmake(KF6NewStuffCore)
+BuildRequires:  cmake(KF6NewStuff)
+# Optional
+BuildRequires:  cmake(KF6Service)
+BuildRequires:  cmake(KF6UserFeedback)
+BuildRequires:  cmake(KF6Parts)
+BuildRequires:  cmake(KF6Purpose)
+BuildRequires:  cmake(KF6SyntaxHighlighting)
 
 BuildRequires:  gsl-devel
 BuildRequires:  gettext-devel
-# cantor not ported to qt6
-%ifarch %{qt5_qtwebengine_arches}
-BuildRequires:  cantor-devel
-%endif
 
+BuildRequires:  cantor-devel
+BuildRequires:  pkgconfig(poppler-qt6)
 BuildRequires:  fftw-devel
 BuildRequires:  hdf5-devel
 BuildRequires:  netcdf-devel
-# qt6 mqtt
-# BuildRequires:  cmake(Qt6Mqtt)
+
+BuildRequires:  cmake(Qt6Mqtt)
 BuildRequires:  cfitsio-devel
 BuildRequires:  libcerf-devel
 BuildRequires:  libspectre-devel
@@ -73,10 +77,9 @@ BuildRequires:  lz4-devel
 BuildRequires:  readstat-devel
 
 BuildRequires:  liborigin-devel
-# QXlsx is built against Qt6
-# BuildRequires:  QXlsx-devel
-# BuildRequires:  qt6-qtbase-private-devel
-# %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
+BuildRequires:  QXlsx-devel
+BuildRequires:  qt6-qtbase-private-devel
+%{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
 
 BuildRequires:  matio-devel
 BuildRequires:  libmarkdown-devel
@@ -106,13 +109,13 @@ Analysis software accessible to everyone.
 - Available for Windows, macOS, Linux and FreeBSD
 
 %prep
-%autosetup -p1 -n %{genname}-%{version}
+%autosetup -p1 -n %{genname}-%{gitcommit}
 sed -i 's|${PC_LIBORIGIN_INCLUDE_DIRS}|/usr/include/liborigin|' cmake/FindLibOrigin.cmake
 sed -i 's|${PC_ORCUS_INCLUDE_DIRS}|/usr/include/liborcus-0.18|' cmake/FindOrcus.cmake
 sed -i 's|${PC_IXION_INCLUDE_DIRS}|/usr/include/libixion-0.18|' cmake/FindOrcus.cmake
 
 %build
-%cmake_kf5
+%cmake_kf6
 %cmake_build
 
 %install
@@ -127,13 +130,13 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.xml
 %license LICENSES/*
 %doc README.md ChangeLog AUTHORS INSTALL
 %{_datadir}/icons/hicolor/*/apps/%{genname}*
-%{_bindir}/%{genname}2
-%{_datadir}/mime/packages/%{genname}2.xml
-%{_datadir}/%{genname}2/
+%{_bindir}/%{genname}
+%{_datadir}/mime/packages/%{genname}.xml
+%{_datadir}/%{genname}/
 %{_datadir}/applications/org.kde.%{genname}2.desktop
-%{_datadir}/metainfo/org.kde.%{genname}2.appdata.xml
-%{_mandir}/man1/labplot2.1*
-%{_mandir}/*/man1/labplot2.1*
+%{_datadir}/applications/org.kde.%{genname}.desktop
+%{_datadir}/metainfo/org.kde.%{genname}.appdata.xml
+%{_mandir}/man1/%{genname}.1*
 %{_includedir}/labplot/
 %{_libdir}/liblabplot.so
 

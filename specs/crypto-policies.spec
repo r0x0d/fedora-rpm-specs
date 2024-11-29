@@ -1,5 +1,5 @@
-%global git_date 20241106
-%global git_commit 35892dee787d6b0b6b6d436d047702114e860b3d
+%global git_date 20241126
+%global git_commit bb3f7dc3362986a6401145d32fff53760ff31fc5
 %{?git_commit:%global git_commit_hash %(c=%{git_commit}; echo ${c:0:7})}
 
 %global _python_bytecompile_extra 0
@@ -295,6 +295,10 @@ exit 0
 %{_mandir}/man8/fips-finish-install.8*
 
 %changelog
+* Tue Nov 26 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20241126-1.gitbb3f7dc
+- openssh: map mlkem768x25519-sha256 to KEM-ECDH & MLKEM768-X25519 & SHA2-256
+- update-crypto-policies: don't output FIPS warning in fips mode
+
 * Wed Nov 06 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20241106-1.git35892de
 - gnutls: add GROUP-X25519-MLKEM768 and GROUP-SECP256R1-MLKEM768
 - nss: add mlkem768x25519

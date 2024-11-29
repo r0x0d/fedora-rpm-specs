@@ -182,7 +182,7 @@
 #region main package
 Name:		%{pkg_name_llvm}
 Version:	%{maj_ver}.%{min_ver}.%{patch_ver}%{?rc_ver:~rc%{rc_ver}}%{?llvm_snapshot_version_suffix:~%{llvm_snapshot_version_suffix}}
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The Low Level Virtual Machine
 
 License:	Apache-2.0 WITH LLVM-exception OR NCSA
@@ -291,6 +291,7 @@ BuildRequires:	cmake
 BuildRequires:	chrpath
 BuildRequires:	ninja-build
 BuildRequires:	zlib-devel
+BuildRequires:	libzstd-devel
 BuildRequires:	libffi-devel
 BuildRequires:	ncurses-devel
 # This intentionally does not use python3_pkgversion. RHEL 8 does not have
@@ -973,7 +974,8 @@ popd
 	-DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=ON \\\
 	-DLLVM_ENABLE_PROJECTS="%{projects}" \\\
 	-DLLVM_ENABLE_RUNTIMES="compiler-rt;openmp;offload" \\\
-	-DLLVM_ENABLE_ZLIB:BOOL=ON \\\
+	-DLLVM_ENABLE_ZLIB:BOOL=FORCE_ON \\\
+	-DLLVM_ENABLE_ZSTD:BOOL=FORCE_ON \\\
 	-DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=%{experimental_targets_to_build} \\\
 	-DLLVM_INCLUDE_BENCHMARKS=OFF \\\
 	-DLLVM_INCLUDE_EXAMPLES:BOOL=ON \\\
@@ -1601,6 +1603,13 @@ test_list_filter_out+=("libomp :: worksharing/for/omp_collapse_one_int.c")
 
 %ifarch s390x
 test_list_filter_out+=("libomp :: flush/omp_flush.c")
+%endif
+
+%ifarch aarch64 s390x
+# The following test has been failling intermittently on aarch64 and s390x.
+# Re-enable it after https://github.com/llvm/llvm-project/issues/117773
+# gets fixed.
+test_list_filter_out+=("libarcher :: races/taskwait-depend.c")
 %endif
 
 # The following tests seem pass on ppc64le and x86_64 and aarch64 only:
@@ -2496,6 +2505,9 @@ fi
 
 #region changelog
 %changelog
+* Tue Nov 26 2024 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 19.1.4-2
+- Enable LLVM_ENABLE_ZSTD (rhbz#2321848)
+
 * Thu Nov 21 2024 Timm Bäder <tbaeder@redhat.com> - 19.1.4-1
 - Update to 19.1.4
 

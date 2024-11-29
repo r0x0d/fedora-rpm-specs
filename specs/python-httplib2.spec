@@ -1,8 +1,8 @@
 %global srcname httplib2
 
 Name:           python-%{srcname}
-Version:        0.21.0
-Release:        9%{?dist}
+Version:        0.22.0
+Release:        1%{?dist}
 Summary:        Comprehensive HTTP client library
 License:        MIT
 URL:            https://pypi.python.org/pypi/httplib2
@@ -69,6 +69,9 @@ sed -i '/--cov/d' setup.cfg
 %doc README.md
 
 %changelog
+* Wed Oct 27 2024 Joel Capitao <jcapitao@redhat.com> - 0.22.0-1
+- Update to 0.22.0 rhbz#2180642
+
 * Sun Sep 22 2024 Kevin Fenzi <kevin@scrye.com> - 0.21.0-9
 - Modernize spec
 

@@ -1,11 +1,31 @@
 Name:    adcli
 Version: 0.9.2
-Release: 7%{?dist}
+Release: 8%{?dist}
 Summary: Active Directory enrollment
 License: LGPL-2.1-or-later
 URL:     https://gitlab.freedesktop.org/realmd/adcli
 Source0: https://gitlab.freedesktop.org/realmd/adcli/uploads/ea560656ac921b3fe0d455976aaae9be/adcli-%{version}.tar.gz
 
+# Add support for Samba's offline join feature
+Patch1: 0001-disco-Add-functions-to-extract-domain-GUID-from-LDAP.patch
+Patch2: 0002-disco-Extract-domain-GUID-from-LDAP-ping.patch
+Patch3: 0003-conn-Copy-domain-GUID-from-disco.patch
+Patch4: 0004-conn-Copy-forest-name-from-disco.patch
+Patch5: 0005-conn-Stop-as-soon-as-we-have-a-valid-LDAP-connection.patch
+Patch6: 0006-conn-Store-the-address-of-the-connected-server.patch
+Patch7: 0007-conn-Allow-to-retrieve-the-connected-LDAP-address.patch
+Patch8: 0008-util-Allow-to-append-variables-to-external-program-e.patch
+Patch9: 0009-util-Flag-write-end-of-pipe-as-invalid-after-closing.patch
+Patch10: 0010-util-Return-failure-if-child-exit-status-reports-so.patch
+Patch11: 0011-enroll-Issue-a-warning-if-Samba-provision-was-reques.patch
+Patch12: 0012-enroll-Add-a-function-to-convert-an-IP-address-to-te.patch
+Patch13: 0013-build-Check-for-NetComposeOfflineDomainJoin-in-samba.patch
+Patch14: 0014-enroll-Populate-Samba-s-secrets-database-using-offli.patch
+Patch15: 0015-doc-improve-some-Samba-related-doc-items.patch
+
+# fixes for issues found by static analyser
+Patch16: 0016-Various-fixes-for-issues-found-by-static-code-scanne.patch
+Patch17: 0017-krb5-add-adcli_krb5_get_error_message.patch
 
 BuildRequires: gcc
 BuildRequires: intltool pkgconfig
@@ -16,6 +36,7 @@ BuildRequires: openldap-devel
 BuildRequires: libxslt
 BuildRequires: xmlto
 BuildRequires: make
+BuildRequires: libnetapi-devel
 
 Requires: cyrus-sasl-gssapi
 Conflicts: adcli-doc < %{version}-%{release}
@@ -70,6 +91,9 @@ documentation.
 %doc %{_datadir}/doc/adcli/*
 
 %changelog
+* Wed Nov 20 2024 Sumit Bose <sbose@redhat.com> - 0.9.2-8
+- support for Samba's offline join and static analyser fixes
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.2-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

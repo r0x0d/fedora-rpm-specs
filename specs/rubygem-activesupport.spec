@@ -5,7 +5,7 @@
 Name: rubygem-%{gem_name}
 Epoch: 1
 Version: 7.0.8
-Release: 8%{?dist}
+Release: 9%{?dist}
 Summary: A support libraries and Ruby core extensions extracted from the Rails framework
 License: MIT
 URL: http://rubyonrails.org
@@ -97,12 +97,16 @@ pushd %{_builddir}
 %patch 7 -p2
 popd
 
-# Add several dependencies to avoid Ruby 3.3 warnings.
+# Add several dependencies to avoid Ruby 3.3+ warnings.
 # https://github.com/rails/rails/commit/81699b52d2acff1840e3ace5e59412f4fa3934ab
 %gemspec_add_dep -g base64
 %gemspec_add_dep -g drb
 # https://github.com/rails/rails/commit/a77535c74c7047a517cc45ff8ecb416ea439c28d
 %gemspec_add_dep -g bigdecimal
+# https://github.com/rails/rails/commit/455b5f106e5a3eeba1e7139c63fd83dc0dd81caf
+%gemspec_add_dep -g logger
+%gemspec_add_dep -g securerandom
+%gemspec_add_dep -g benchmark
 
 %build
 gem build ../%{gem_name}-%{version}%{?prerelease}.gemspec
@@ -161,6 +165,9 @@ popd
 %doc %{gem_instdir}/README.rdoc
 
 %changelog
+* Tue Nov 26 2024 Vít Ondruch <vondruch@redhat.com> - 1:7.0.8-9
+- Add extracted standard gems dependencies.
+
 * Mon Nov 04 2024 Vít Ondruch <vondruch@redhat.com> - 1:7.0.8-8
 - Ruby 3.4 compatibility fixes.
 

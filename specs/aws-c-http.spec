@@ -2,8 +2,8 @@
 C99 implementation of the HTTP/1.1 and HTTP/2 specifications.}
 
 Name:           aws-c-http
-Version:        0.8.10
-Release:        2%{?dist}
+Version:        0.9.2
+Release:        1%{?dist}
 Summary:        C99 implementation of the HTTP/1.1 and HTTP/2 specifications
 
 License:        Apache-2.0
@@ -86,6 +86,10 @@ Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
 
 %changelog
+* Wed Nov 27 2024 Packit <hello@packit.dev> - 0.9.2-1
+- Update to version 0.9.2
+- Resolves: rhbz#2321727
+
 * Fri Sep 27 2024 Dominik Wombacher <dominik@wombacher.cc> - 0.8.10-2
 - '0001-disable-tests-that-require-internet-connectivity.patch' updated to work with new release.
 

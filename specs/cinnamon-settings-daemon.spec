@@ -1,12 +1,12 @@
 %global commit0 57b8a0a742a876d51403ad27613fe84b228d1081
 %global date 20241114
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-#global tag %{version}
+%global tag %{version}
 
-%global cinnamon_desktop_version 6.2.0
+%global cinnamon_desktop_version 6.4.0
 
 Name:           cinnamon-settings-daemon
-Version:        6.3.0%{!?tag:^%{date}git%{shortcommit0}}
+Version:        6.4.0
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from CINNAMON to GTK+/KDE applications
 
@@ -150,6 +150,9 @@ rm -rf %{buildroot}%{_libdir}/cinnamon-settings-daemon/
 
 
 %changelog
+* Wed Nov 27 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
+- Update to 6.4.0
+
 * Thu Nov 14 2024 Leigh Scott <leigh123linux@gmail.com> - 6.3.0^20241114git1b36b7a-1
 - Update to git snapshot
 

@@ -48,11 +48,6 @@ Summary:        Documentation for %{name}
 # not sure why this was changed: https://github.com/BlueBrain/NeuroM/commit/dbc3bd069a6fbded6c4a64cc038adb37c0b06932
 sed -i 's|graft neurom/config|graft neurom/apps/config|' MANIFEST.in
 
-# Unpin setuptools_scm for <= f39
-%if 0%{?fedora} <= 39
-sed -r -i 's/"(setuptools_scm).*"/"\1"/' pyproject.toml
-%endif
-
 %generate_buildrequires
 export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %pyproject_buildrequires -x plotly

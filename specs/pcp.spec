@@ -1,6 +1,6 @@
 Name:    pcp
 Version: 6.3.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: System-level performance monitoring and performance management
 License: GPL-2.0-or-later AND LGPL-2.1-or-later AND CC-BY-3.0
 URL:     https://pcp.io
@@ -3605,6 +3605,9 @@ fi
 %files zeroconf -f pcp-zeroconf-files.rpm
 
 %changelog
+* Wed Nov 27 2024 Richard W.M. Jones <rjones@redhat.com> - 6.3.2-3
+- Rebuild for libarrow 18
+
 * Thu Nov 14 2024 Nathan Scott <nathans@redhat.com> - 6.3.2-2
 - Back-port upstream bug fixes for pcp-xsos(1).
 

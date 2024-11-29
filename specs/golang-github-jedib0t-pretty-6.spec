@@ -4,7 +4,7 @@
 
 # https://github.com/jedib0t/go-pretty
 %global goipath         github.com/jedib0t/go-pretty/v6
-Version:                6.6.2
+Version:                6.6.3
 
 %gometa -f
 

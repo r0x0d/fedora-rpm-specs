@@ -6,7 +6,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 7.0.8
-Release: 5%{?dist}
+Release: 6%{?dist}
 Summary: Tools for creating, working with, and running Rails applications
 License: MIT
 URL: http://rubyonrails.org
@@ -39,6 +39,13 @@ Patch6: rubygem-railties-7.1.0-Bump-Puma-to-v6-0-0-test.patch
 # Minitest 5.21.0 started to output relative paths.
 # https://github.com/rails/rails/pull/50724
 Patch7: rubygem-railties-7.1.4-Fix-failing-test-due-to-the-relative-path-output-of-minitest.patch
+# Ruby 3.4 `Hash#inspect` compatibility.
+# https://github.com/rails/rails/pull/53202/commits/ab97c585c4b1b53bc2391fd99b0269df217629b7
+Patch8: rubygem-railties-8.0.0-Update-Railties-test-suite-for-Ruby-3-4-Hash-inspect.patch
+# Ruby 3.4 backtrace compatibility.
+# https://github.com/rails/rails/pull/51101
+Patch9: rubygem-railties-7.2.0-Update-test-suite-for-compatibility-with-Ruby-3-4-dev.patch
+
 
 # Needed by `rails console`.
 Recommends: rubygem(irb)
@@ -113,6 +120,8 @@ pushd %{_builddir}
 %patch 4 -p2
 %patch 6 -p2
 %patch 7 -p2
+%patch 8 -p2
+%patch 9 -p2
 popd
 
 %build
@@ -262,6 +271,9 @@ popd
 %doc %{gem_instdir}/README.rdoc
 
 %changelog
+* Tue Nov 26 2024 Vít Ondruch <vondruch@redhat.com> - 7.0.8-6
+- Ruby 3.4 compatibility fixes.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.8-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

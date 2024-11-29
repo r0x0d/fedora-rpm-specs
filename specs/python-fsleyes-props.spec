@@ -11,13 +11,13 @@ fsleyes-props is a library which is used by FSLeyes, and which allows you to:
   attributes of a python object.}
 
 Name:           python-fsleyes-props
-Version:        1.11.0
+Version:        1.12.0
 Release:        %autorelease
 Summary:        [wx]Python event programming framework
 
 License:        Apache-2.0
 URL:            https://pypi.python.org/pypi/fsleyes-props
-Source:         %{pypi_source fsleyes-props}
+Source:         %{pypi_source fsleyes_props}
 
 BuildArch:      noarch
 
@@ -40,7 +40,7 @@ BuildRequires:  %{py3_dist pytest}
 
 
 %prep
-%autosetup -n fsleyes-props-%{version}
+%autosetup -n fsleyes_props-%{version}
 
 find fsleyes_props -name '*.py' -exec sed -r -i '1{/^#!/d}' '{}' '+'
 

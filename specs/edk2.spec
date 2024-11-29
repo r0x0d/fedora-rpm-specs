@@ -16,15 +16,15 @@
 %global debug_package %{nil}
 %endif
 
-# edk2-stable202408
-%define GITDATE        20240813
-%define GITCOMMIT      b158dad150bf
+# edk2-stable202411
+%define GITDATE        20241117
+%define GITCOMMIT      0f3867fa6ef0
 %define TOOLCHAIN      GCC
 
-%define PLATFORMS_COMMIT 7dad9da43942
+%define PLATFORMS_COMMIT 4b3530dfbbda
 
 %define OPENSSL_VER    3.0.7
-%define OPENSSL_COMMIT db0287935122edceb91dcda8dfb53b4090734e22
+%define OPENSSL_COMMIT 8e5beb77088bfec064d60506b1e76ddb0ac417fe
 
 %define DBXDATE        20230509
 
@@ -49,7 +49,6 @@
 %define build_loongarch64 1
 %endif
 
-%global softfloat_version 20180726-gitb64af41
 %define cross %{defined fedora}
 %define disable_werror %{defined fedora}
 
@@ -68,7 +67,6 @@ URL:        http://www.tianocore.org
 Source0: edk2-%{GITCOMMIT}.tar.xz
 Source1: ovmf-whitepaper-c770f8c.txt
 Source2: openssl-rhel-%{OPENSSL_COMMIT}.tar.xz
-Source3: softfloat-%{softfloat_version}.tar.xz
 Source4: edk2-platforms-%{PLATFORMS_COMMIT}.tar.xz
 Source5: jansson-2.13.1.tar.bz2
 Source6: dtc-1.7.0.tar.xz
@@ -79,8 +77,6 @@ Source10: 50-edk2-aarch64-qcow2.json
 Source11: 51-edk2-aarch64-raw.json
 Source12: 52-edk2-aarch64-verbose-qcow2.json
 Source13: 53-edk2-aarch64-verbose-raw.json
-
-Source20: 50-edk2-arm-verbose.json
 
 Source30: 30-edk2-ovmf-ia32-sb-enrolled.json
 Source31: 40-edk2-ovmf-ia32-sb.json
@@ -121,15 +117,14 @@ Patch0009: 0009-OvmfPkg-QemuRamfbDxe-Do-not-report-DXE-failure-on-Aa.patch
 Patch0010: 0010-OvmfPkg-silence-EFI_D_VERBOSE-0x00400000-in-NvmExpre.patch
 Patch0011: 0011-OvmfPkg-QemuKernelLoaderFsDxe-suppress-error-on-no-k.patch
 Patch0012: 0012-SecurityPkg-Tcg2Dxe-suppress-error-on-no-swtpm-in-si.patch
-Patch0013: 0013-UefiCpuPkg-MpInitLib-fix-apic-mode-for-cpu-hotplug.patch
-Patch0014: 0014-CryptoPkg-CrtLib-add-stat.h.patch
-Patch0015: 0015-CryptoPkg-CrtLib-add-access-open-read-write-close-sy.patch
-Patch0016: 0016-OvmfPkg-set-PcdVariableStoreSize-PcdMaxVolatileVaria.patch
+Patch0013: 0013-CryptoPkg-CrtLib-add-stat.h.patch
+Patch0014: 0014-CryptoPkg-CrtLib-add-access-open-read-write-close-sy.patch
+Patch0015: 0015-OvmfPkg-set-PcdVariableStoreSize-PcdMaxVolatileVaria.patch
+Patch0016: 0016-OvmfPkg-PlatformInitLib-enable-x2apic-mode-if-needed.patch
 %if 0%{?fedora} >= 38 || 0%{?rhel} >= 10
 Patch0017: 0017-silence-.-has-a-LOAD-segment-with-RWX-permissions-wa.patch
 %endif
-Patch0018: 0018-CVE-2023-6237.patch
-Patch0099: edk2-platform-build-fix.patch
+Patch0018: 0018-xen-pcd-lib-override.patch
 
 
 # needed by %prep
@@ -171,7 +166,6 @@ BuildRequires:  python3-virt-firmware >= 24.2
 
 %if %{cross}
 BuildRequires:  gcc-aarch64-linux-gnu
-BuildRequires:  gcc-arm-linux-gnu
 BuildRequires:  gcc-x86_64-linux-gnu
 BuildRequires:  gcc-riscv64-linux-gnu
 BuildRequires:  gcc-loongarch64-linux-gnu
@@ -279,14 +273,6 @@ BuildArch:      noarch
 EFI Development Kit II
 Open Virtual Machine Firmware (experimental builds)
 
-%package arm
-Summary:        ARM Virtual Machine Firmware
-BuildArch:      noarch
-License:        Apache-2.0 AND (BSD-2-Clause OR GPL-2.0-or-later) AND BSD-2-Clause-Patent AND BSD-3-Clause AND BSD-4-Clause AND ISC AND LicenseRef-Fedora-Public-Domain
-%description arm
-EFI Development Kit II
-ARMv7 UEFI Firmware
-
 %package riscv64
 Summary:        RISC-V Virtual Machine Firmware
 BuildArch:      noarch
@@ -336,12 +322,6 @@ you probably want to install edk2-tools only.
 # We init the git dir ourselves, then tell %%autosetup not to blow it away.
 %setup -q -n edk2-%{GITCOMMIT}
 tar -xf %{SOURCE4} --strip-components=1 "*/Drivers" "*/Features" "*/Platform" "*/Silicon"
-# extract submodules into place, allow patching them from main repo
-tar -C CryptoPkg/Library/OpensslLib -a -f %{SOURCE2} -x
-tar -xf %{SOURCE3} --strip-components=1 --directory ArmPkg/Library/ArmSoftFloatLib/berkeley-softfloat-3/
-tar -xf %{SOURCE5} --strip-components=1 --directory RedfishPkg/Library/JsonLib/jansson
-tar -xf %{SOURCE6} --strip-components=1 --directory MdePkg/Library/BaseFdtLib/libfdt
-find . -name ".git" | xargs rm -rf
 git init -q
 git config core.whitespace cr-at-eol
 git config am.keepcr true
@@ -350,6 +330,10 @@ git config am.keepcr true
 %autosetup -T -D -n edk2-%{GITCOMMIT} -S git_am
 
 cp -a -- %{SOURCE1} .
+tar -C CryptoPkg/Library/OpensslLib -a -f %{SOURCE2} -x
+# extract softfloat into place
+tar -xf %{SOURCE5} --strip-components=1 --directory RedfishPkg/Library/JsonLib/jansson
+tar -xf %{SOURCE6} --strip-components=1 --directory MdePkg/Library/BaseFdtLib/libfdt
 # include paths pointing to unused submodules
 mkdir -p MdePkg/Library/MipiSysTLib/mipisyst/library/include
 mkdir -p CryptoPkg/Library/MbedTlsLib/mbedtls/include
@@ -363,7 +347,6 @@ chmod -Rf a+rX,u+w,g-w,o-w .
 cp -a -- \
    %{SOURCE9} \
    %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} \
-   %{SOURCE20} \
    %{SOURCE30} %{SOURCE31} %{SOURCE32} \
    %{SOURCE40} %{SOURCE41} %{SOURCE42} %{SOURCE43} %{SOURCE44} \
    %{SOURCE45} %{SOURCE46} %{SOURCE47} %{SOURCE48} \
@@ -598,10 +581,6 @@ ln -s ../%{name}/aarch64/QEMU_EFI-silent-pflash.raw \
   %{buildroot}%{_datadir}/AAVMF/AAVMF_CODE.fd
 ln -s ../%{name}/aarch64/vars-template-pflash.raw \
   %{buildroot}%{_datadir}/AAVMF/AAVMF_VARS.fd
-%if %{defined fedora}
-ln -s ../%{name}/arm/QEMU_EFI-pflash.raw \
-   %{buildroot}%{_datadir}/AAVMF/AAVMF32_CODE.fd
-%endif
 
 # json description files
 install -m 0644 \
@@ -610,11 +589,6 @@ install -m 0644 \
         52-edk2-aarch64-verbose-qcow2.json \
         53-edk2-aarch64-verbose-raw.json \
         %{buildroot}%{_datadir}/qemu/firmware
-%if %{defined fedora}
-install -m 0644 \
-        50-edk2-arm-verbose.json \
-        %{buildroot}%{_datadir}/qemu/firmware
-%endif
 
 # endif build_aarch64
 %endif
@@ -730,7 +704,6 @@ done
 %{_datadir}/%{name}/aarch64/QEMU_EFI.silent.fd
 %{_datadir}/%{name}/aarch64/QEMU_VARS.fd
 %if %{defined fedora}
-%{_datadir}/%{name}/aarch64/BL32_AP_MM.fd
 %{_datadir}/%{name}/aarch64/QEMU_EFI.kernel.fd
 %endif
 %{_datadir}/qemu/firmware/50-edk2-aarch64-qcow2.json
@@ -796,19 +769,6 @@ done
 %common_files
 %dir %{_datadir}/%{name}/xen
 %{_datadir}/%{name}/xen/*.fd
-%endif
-
-%if %{build_aarch64}
-%files arm
-%common_files
-%dir %{_datadir}/AAVMF/
-%{_datadir}/AAVMF/AAVMF32_CODE.fd
-%dir %{_datadir}/%{name}/arm
-%{_datadir}/%{name}/arm/QEMU_EFI-pflash.raw
-%{_datadir}/%{name}/arm/QEMU_EFI.fd
-%{_datadir}/%{name}/arm/QEMU_VARS.fd
-%{_datadir}/%{name}/arm/vars-template-pflash.raw
-%{_datadir}/qemu/firmware/50-edk2-arm-verbose.json
 %endif
 
 %if %{build_riscv64}

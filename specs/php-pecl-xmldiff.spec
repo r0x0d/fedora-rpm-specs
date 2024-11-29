@@ -1,28 +1,15 @@
-# we don't want -z defs linker flag
-%undefine _strict_symbol_defs_build
+%global pecl_name  xmldiff
+%global ini_name   40-%{pecl_name}.ini
+%global sources    %{pecl_name}-%{version}
 
-%global peclName  xmldiff
-
-%{!?__pecl:     %{expand: %%global __pecl     %{_bindir}/pecl}}
-
-%if "%{php_version}" < "5.6"
-# After dom
-%global ini_name %peclName.ini
-%else
-# After 20-dom
-%global ini_name 40-%peclName.ini
-%endif
-
-Name:             php-pecl-%peclName
-Version:          1.1.3
-Release:          14%{?dist}
+Name:             php-pecl-%{pecl_name}
+Version:          1.1.4
+Release:          1%{?dist}
 Summary:          Pecl package for XML diff and merge
 
 License:          BSD-2-Clause
-URL:              http://pecl.php.net/package/%peclName
-Source0:          http://pecl.php.net/get/%peclName-%{version}.tgz
-
-Patch0:           2.patch
+URL:              http://pecl.php.net/package/%{pecl_name}
+Source0:          http://pecl.php.net/get/%{sources}.tgz
 
 ExcludeArch:      %{ix86}
 
@@ -30,25 +17,23 @@ BuildRequires:    make
 BuildRequires:    gcc
 BuildRequires:    php-pear
 BuildRequires:    php-devel
-BuildRequires:    libxml2-devel, diffmark-devel, dos2unix
+BuildRequires:    libxml2-devel
+BuildRequires:    diffmark-devel
+BuildRequires:    dos2unix
 # dom.so needed by %%check
-BuildRequires:    php-dom, php-libxml
-Requires:         php-dom%{_isa}, php-libxml%{?_isa}
-%if 0%{?fedora} < 24
-Requires(post):   %{__pecl}
-Requires(postun): %{__pecl}
-%endif
+BuildRequires:    php-dom
+BuildRequires:    php-libxml
+
+Requires:         php-dom%{?_isa}
+Requires:         php-libxml%{?_isa}
 Requires:         php(zend-abi) = %{php_zend_api}
 Requires:         php(api) = %{php_core_api}
-Requires:         php-xml
 
-Provides:         php-%peclName = %{version}
-Provides:         php-%peclName%{?_isa} = %{version}
+Provides:         php-%{pecl_name}               = %{version}
+Provides:         php-%{pecl_name}%{?_isa}       = %{version}
+Provides:         php-pecl(%{pecl_name})         = %{version}
+Provides:         php-pecl(%{pecl_name})%{?_isa} = %{version}
 
-# Filter private shared (RPM 4.9) (f20+ (and rhel7) does not require that)
-%if 0%{?fedora} < 20 && 0%{?rhel} < 7
-%global __provides_exclude_from %{?__provides_exclude_from:%__provides_exclude_from|}%{php_extdir}/.*\\.so$
-%endif
 
 %description
 The extension is able to produce diffs of two XML documents and then
@@ -61,77 +46,84 @@ memory can be processed.
 %prep
 %setup -qc
 
-cd %peclName-%{version}
-%patch -P0 -p1
+sed -e '/name="diffmark/d' \
+    -e '/LICENSE/s/role="doc"/role="src"/' \
+    -i package.xml
 
-#rm bundled diffmark
+cd %{sources}
+
+# drop bundled library to ensure it is not used
 rm -rf diffmark
 
 # to make rpmlint happy
 dos2unix --keepdate LICENSE
 
+# Create configuration file
+cat > %{ini_name} << 'EOF'
+; Enable %{pecl_name} extension module
+extension=%{pecl_name}.so
+EOF
+
 
 %build
-cd %peclName-%{version}
-phpize
-%{configure} --with-%peclName --with-libdiffmark=%{_libdir}
-make %{?_smp_mflags}
+cd %{sources}
+%{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
+
+%configure \
+    --with-libdiffmark \
+    --with-libdir=%{_lib} \
+    --with-php-config=%{__phpconfig}
+
+%make_build
 
 
 %install
-cd %peclName-%{version}
+cd %{sources}
 
-make %{?_smp_mflags} install INSTALL_ROOT=%{buildroot}
+: Install the extension
+%make_install
 
-# Install XML package description
-install -m 0755 -d %{buildroot}%{pecl_xmldir}
-install -m 0664 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
-install -d %{buildroot}%{php_inidir}
-# install config file
-install -d %{buildroot}%{php_inidir}
-cat << 'EOF' | tee %{buildroot}%{php_inidir}/%{ini_name}
-extension=%{php_extdir}/%peclName.so
-EOF
+: Install config file
+install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-mkdir -p %{buildroot}/%{pecl_docdir}/%peclName/
-mv {CREDITS,LICENSE} %{buildroot}/%{pecl_docdir}/%peclName/
+: Install XML package description
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
-rm -rf %{buildroot}/%{_includedir}/php/ext/%peclName/
+: Install the documentation
+install -D -m 644 CREDITS %{buildroot}/%{pecl_docdir}/%{pecl_name}/CREDITS
+
+: Clean devel 
+rm -rf %{buildroot}/%{_includedir}/php/ext/%{pecl_name}
+
 
 %check
 # only check if build extension can be loaded
 php \
     --no-php-ini \
     --define extension=dom.so \
-    --define extension=%{buildroot}%{php_extdir}/%peclName.so \
-    --modules | grep %peclName
+    --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
+    --modules | grep '^%{pecl_name}$'
 
-cd %peclName-%{version}
+cd %{sources}
+TEST_PHP_ARGS="-n -d extension=dom.so -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
+php -n run-tests.php -q --show-diff
 
-# Can't do just 'make %{?_smp_mflags} test' because path and option hardcoded. Makefile patching needed or run tests manually
-TEST_PHP_EXECUTABLE=%{__php} \
-  NO_INTERACTION=1 \
-    TEST_PHP_ARGS="-n -d extension=dom.so -d extension=%{buildroot}%{php_extdir}/%peclName.so" \
-      php -n run-tests.php
-
-%if 0%{?fedora} < 24
-%post
-%{pecl_install} %{pecl_xmldir}/%{name}.xml >/dev/null || :
-
-
-%postun
-if [ "$1" -eq "0" ]; then
-  %{pecl_uninstall} %peclName >/dev/null || :
-fi
-%endif
 
 %files
-%doc %{pecl_docdir}/%peclName
+%license %{sources}/LICENSE
+%doc %{pecl_docdir}/%{pecl_name}
 %config(noreplace) %{php_inidir}/%{ini_name}
-%{php_extdir}/%peclName.so
+%{php_extdir}/%{pecl_name}.so
 %{pecl_xmldir}/%{name}.xml
 
+
 %changelog
+* Wed Nov 27 2024 Remi Collet <remi@remirepo.net> - 1.1.4-1
+- update to 1.1.4
+- drop patch merged upstream
+- modernize the spec file
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.1.3-14
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 - fix PHP 8.4 build using patch from

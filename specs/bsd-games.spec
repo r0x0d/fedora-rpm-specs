@@ -6,7 +6,7 @@
 Summary: Collection of text-based games
 Name: bsd-games
 Version: 2.17
-Release: 78%{?dist}
+Release: 79%{?dist}
 # Automatically converted from old format: BSD and BSD with advertising - review is highly recommended.
 License: LicenseRef-Callaway-BSD AND LicenseRef-Callaway-BSD-with-advertising
 URL: ftp://metalab.unc.edu/pub/Linux/games/
@@ -44,8 +44,8 @@ Patch23: bsd-games-2.17-printf.patch
 Patch24: bsd-games-2.17-printw.patch
 Patch25: bsd-games-c99.patch
 Patch26: atc.patch
+Patch27: boggle_fread_chk.patch
 
-BuildRequires: gcc
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: ncurses-devel
@@ -97,6 +97,7 @@ popd
 %patch -P24 -p1 -b .printw
 %patch -P25 -p1 -b .c99
 %patch -P26 -p1 -b .atc
+%patch -P27 -p1 -b .fread_chk
 
 %build
 # We include a templatized configuration settings file to set
@@ -225,6 +226,9 @@ exit 0
 %doc AUTHORS COPYING ChangeLog ChangeLog.0 THANKS YEAR2000 README.hunt trek/USD.doc/trek.me
 
 %changelog
+* Wed Nov 27 2024 Sérgio Basto <sergio@serjux.com> - 2.17-79
+- Add boggle_fread_chk.patch
+
 * Tue Sep 24 2024 Sérgio Basto <sergio@serjux.com> - 2.17-78
 - Only show offensive acronyms with usage: wtf [-o] [-f dbfile] [is] term ...
 

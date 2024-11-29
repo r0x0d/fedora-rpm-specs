@@ -1,13 +1,4 @@
-# We shouldn’t *add* ExcludeArch in a stable release, so we must skip the tests
-# instead. We can remove this after F39 goes end-of-life, or when the spec
-# files for older branches diverge from those in F40+.
-%ifarch s390x
-%if 0%{?fc38} || 0%{?fc39}
-%global tests_default_off 1
-%endif
-%endif
-
-%bcond tests 0%{?!tests_default_off:1}
+%bcond tests 1
 # Run examples as additional tests?
 %bcond test_examples 1
 
@@ -67,13 +58,7 @@ Patch:          https://github.com/SmokinCaterpillar/pypet/pull/73.patch
 # Many python-pypet tests fail on s390x due to apparent endian issues in
 # pandas.HDFStore
 # https://bugzilla.redhat.com/show_bug.cgi?id=2244500
-ExcludeArch:    %{ix86}
-# We shouldn’t *add* ExcludeArch in a stable release. We can remove the
-# conditional after F39 goes end-of-life, or when the spec files for older
-# branches diverge from those in F40+.
-%if !0%{?fc38} && !0%{?fc39}
-ExcludeArch:    s390x
-%endif
+ExcludeArch:    %{ix86} s390x
 
 %description %_description
 

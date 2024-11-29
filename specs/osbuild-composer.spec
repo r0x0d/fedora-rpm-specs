@@ -12,7 +12,7 @@
 
 %global goipath         github.com/osbuild/osbuild-composer
 
-Version:        125
+Version:        126
 
 %gometa
 
@@ -228,7 +228,7 @@ Provides: bundled(golang(github.com/opencontainers/runtime-spec)) = 1.2.0
 Provides: bundled(golang(github.com/opencontainers/selinux)) = 1.11.0
 Provides: bundled(golang(github.com/openshift-online/ocm-sdk-go)) = 0.1.438
 Provides: bundled(golang(github.com/oracle/oci-go-sdk/v54)) = 54.0.0
-Provides: bundled(golang(github.com/osbuild/images)) = 0.96.0
+Provides: bundled(golang(github.com/osbuild/images)) = 0.99.0
 Provides: bundled(golang(github.com/osbuild/osbuild-composer/pkg/splunk_logger)) = 0239db5
 Provides: bundled(golang(github.com/osbuild/pulp-client)) = 0.1.0
 Provides: bundled(golang(github.com/ostreedev/ostree-go)) = 719684c
@@ -698,6 +698,39 @@ Integration tests to be run on a pristine-dedicated system to test the osbuild-c
 %endif
 
 %changelog
+* Wed Nov 27 2024 Packit <hello@packit.dev> - 126-1
+Changes with 126
+----------------
+  * Schutzfile: update osbuild commit (COMPOSER-2406) (#4490)
+    * Author: Sanne Raymaekers, Reviewers: Tomáš Hozza
+  * Support customizing azure HyperV generation (HMS-4986) (#4470)
+    * Author: Sanne Raymaekers, Reviewers: Brian C. Lane
+  * Test with rhel-9.6 nightly (#4468)
+    * Author: Tomáš Koscielniak, Reviewers: Jakub Rusz
+  * awscloud/secure-instance: enrich logging with secure instance id (#4479)
+    * Author: Florian Schüller, Reviewers: Sanne Raymaekers
+  * awscloud/secure-instance: fix cleaning up fleets with creation errors (#4489)
+    * Author: Sanne Raymaekers, Reviewers: Florian Schüller
+  * awscloud/secure-instance: retry on error in terminated waiter (#4485)
+    * Author: Florian Schüller, Reviewers: Sanne Raymaekers
+  * awscloud: add very verbose logging to createFleet creation (COMPOSER-2407) (#4494)
+    * Author: Ondřej Budai, Reviewers: Florian Schüller, Sanne Raymaekers
+  * deps: update images to 0.99 (#4481)
+    * Author: Lukáš Zapletal, Reviewers: Simon de Vlieger
+  * internal/worker/server: return an error on depsolve timeout (HMS-2989) (#4398)
+    * Author: Florian Schüller, Reviewers: Sanne Raymaekers
+  * templates/composer: bump rhel-9 distro alias (#4492)
+    * Author: Sanne Raymaekers, Reviewers: Tomáš Hozza
+  * worker: check MTLS proxy for nil (#4472)
+    * Author: Lukáš Zapletal, Reviewers: Ondřej Ezr
+  * worker: log proxy setting (#4477)
+    * Author: Lukáš Zapletal, Reviewers: Sanne Raymaekers
+  * worker: report cashes directly to logrus (#4482)
+    * Author: Michael Vogt, Reviewers: Lukáš Zapletal, Sanne Raymaekers
+
+— Somewhere on the Internet, 2024-11-27
+
+
 * Wed Nov 13 2024 Packit <hello@packit.dev> - 125-1
 Changes with 125
 ----------------

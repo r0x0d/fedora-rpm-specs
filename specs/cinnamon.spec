@@ -1,22 +1,22 @@
-%global commit0 8525e744694fec369d355023fa486fcbfb9f2dff
-%global date 20241114
+%global commit0 66ad76e3d5ad00f5768bd6340c614fb2e2bafaa1
+%global date 20241127
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 #global tag %{version}
 
 %global __requires_exclude ^lib%{name}.so|^lib%{name}-js.so
 
-%global cjs_version 6.2.0
-%global cinnamon_desktop_version 6.2.0
-%global cinnamon_translations_version 6.2.0
+%global cjs_version 6.4.0
+%global cinnamon_desktop_version 6.4.0
+%global cinnamon_translations_version 6.4.0
 %global gobject_introspection_version 1.38.0
-%global muffin_version 6.2.0
+%global muffin_version 6.4.0
 %global json_glib_version 0.13.2
 
 %global __python %{__python3}
 
 Name:           cinnamon
 Version:        6.3.0%{!?tag:^%{date}git%{shortcommit0}}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Window management and application launching for GNOME
 # Automatically converted from old format: GPLv2+ and LGPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+
@@ -34,8 +34,7 @@ Patch0:         set_wheel.patch
 #Patch1:         revert_25aef37.patch
 Patch2:         default_panal_launcher.patch
 Patch3:         remove_crap_from_menu.patch
-Patch4:         fix_path.patch
-Patch5:         use_internal_polkitagent.patch
+Patch4:         use_internal_polkitagent.patch
 
 ExcludeArch:    %{ix86}
 
@@ -347,6 +346,9 @@ EOF
 %endif
 
 %changelog
+* Wed Nov 27 2024 Leigh Scott <leigh123linux@gmail.com> - 6.3.0^20241127git66ad76e-2
+- Update git snapshot
+
 * Thu Nov 14 2024 Leigh Scott <leigh123linux@gmail.com> - 6.3.0^20241114git8525e74-1
 - Update to git snapshot
 

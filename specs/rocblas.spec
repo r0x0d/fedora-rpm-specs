@@ -32,7 +32,7 @@
 %global build_test OFF
 %endif
 
-%if 0%{?suse_version} || 0%{?rhel}
+%if 0%{?rhel}
 # RHEL does not have a working tensile
 %bcond_with tensile
 %else
@@ -75,8 +75,12 @@ BuildRequires:  rocm-rpm-macros
 BuildRequires:  rocm-rpm-macros-modules
 
 %if %{with tensile}
+%if 0%{?suse_version}
+BuildRequires:  msgpack-cxx-devel
+%else
 BuildRequires:  msgpack-devel
-BuildRequires:  python-tensile
+%endif
+BuildRequires:  python3dist(tensile)
 %endif
 
 %if %{with compress}
@@ -87,7 +91,7 @@ BuildRequires:  pkgconfig(libzstd)
 BuildRequires:  gtest-devel
 BuildRequires:  blas-devel
 BuildRequires:  libomp-devel
-BuildRequires:  python3-pyyaml
+BuildRequires:  python3dist(pyyaml)
 BuildRequires:  rocminfo
 BuildRequires:  rocm-smi-devel
 %endif

@@ -1,6 +1,6 @@
-%global commit b80cbdd516e3220315031be2dfa34064823db34a
+%global commit 3169e26daf7fb12cb4ec79780231efda1b8a7ed6
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global gitdate 20240602
+%global gitdate 20241017
 
 %global app_id  org.kde.atlantik
 
@@ -16,14 +16,19 @@ Source:         https://invent.kde.org/games/atlantik/-/archive/%{commit}/atlant
 Source:         https://download.kde.org/%{stable_kf6}/%{name}/%{version}/%{name}-%{version}.tar.xz
 %endif
 
+BuildRequires:  desktop-file-utils
 BuildRequires:  extra-cmake-modules
 BuildRequires:  gcc-c++
 BuildRequires:  gettext
+BuildRequires:  kf6-rpm-macros
+BuildRequires:  libappstream-glib
+
 BuildRequires:  cmake(Qt6Core)
 BuildRequires:  cmake(Qt6Gui)
 BuildRequires:  cmake(Qt6Network)
 BuildRequires:  cmake(Qt6Xml)
 BuildRequires:  cmake(Qt6Widgets)
+
 BuildRequires:  cmake(KF6Config)
 BuildRequires:  cmake(KF6ConfigWidgets)
 BuildRequires:  cmake(KF6CoreAddons)
@@ -36,9 +41,8 @@ BuildRequires:  cmake(KF6NotifyConfig)
 BuildRequires:  cmake(KF6XmlGui)
 BuildRequires:  cmake(KF6WidgetsAddons)
 BuildRequires:  cmake(KF6DocTools)
+
 BuildRequires:  cmake(KDEGames6)
-BuildRequires:  desktop-file-utils
-BuildRequires:  libappstream-glib
 
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 Requires:       hicolor-icon-theme

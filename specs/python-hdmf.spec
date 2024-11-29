@@ -27,7 +27,7 @@ Documentation of HDMF can be found at https://hdmf.readthedocs.io}
 %global schema_version 1.8.0
 
 Name:           python-hdmf
-Version:        3.14.3
+Version:        3.14.5
 Release:        %autorelease
 Summary:        A package for standardizing hierarchical object data
 
@@ -36,11 +36,6 @@ URL:            https://github.com/hdmf-dev/hdmf
 Source0:        %{url}/releases/download/%{version}/hdmf-%{version}.tar.gz
 # Man page hand-written for Fedora in groff_man(7) format based on help output
 Source1:        validate_hdmf_spec.1
-# Workaround for regression in pytest
-# https://github.com/pytest-dev/pytest/issues/12275#issuecomment-2096751244
-# https://bugzilla.redhat.com/show_bug.cgi?id=2279858
-# https://github.com/hdmf-dev/hdmf/issues/1114
-Patch:          pytest.patch
 
 BuildArch:      noarch
 
@@ -50,7 +45,7 @@ BuildRequires:  python3dist(pytest)
 # Enables an optional integration test with this library:
 BuildRequires:  python3dist(tqdm)
 %endif
-%if 0%{?fc39} || 0%{?fc40}
+%if 0%{?fc40}
 # The zarr extra was removed in 1.14.2, but we patched it back in; see %%prep.
 BuildRequires:  tomcli
 %endif
@@ -66,7 +61,7 @@ Summary:        %{summary}
 %global schema_epoch 1
 BuildRequires:  hdmf-common-schema = %{schema_epoch}:%{schema_version}
 Requires:       hdmf-common-schema = %{schema_epoch}:%{schema_version}
-%if !0%{?fc39} && !0%{?fc40}
+%if !0%{?fc40}
 # The zarr extra was removed in 1.14.2; we patched it back in for compatibility
 # in F39/F40, but it is gone in F41, so we must Obsolete it. This can be
 # removed in F44 (three releases later).
@@ -76,7 +71,7 @@ Obsoletes:      python3-hdmf+zarr < 1.14.2-1
 %description -n python3-hdmf %{desc}
 
 %pyproject_extras_subpkg -n python3-hdmf tqdm %{?with_termset:termset}
-%if 0%{?fc39} || 0%{?fc40}
+%if 0%{?fc40}
 # The zarr extra was removed in 1.14.2, but we patched it back in; see %%prep.
 %pyproject_extras_subpkg -n python3-hdmf zarr
 %endif
@@ -101,7 +96,7 @@ end
 %autosetup -n hdmf-%{version} -p1
 rm -vrf src/hdmf/common/hdmf-common-schema/
 
-%if 0%{?fc39} || 0%{?fc40}
+%if 0%{?fc40}
 # The zarr extra was removed in 1.14.2, via
 # https://github.com/hdmf-dev/hdmf/commit/539ecf47ad1ad70e23666f7a7d750d2d84535632,
 # which removed the extra and made the zarr dependency mandatory, and then
@@ -116,7 +111,7 @@ tomcli set pyproject.toml lists str \
 
 %generate_buildrequires
 %pyproject_buildrequires -x tqdm%{?with_termset:,termset}
-%if 0%{?fc39} || 0%{?fc40}
+%if 0%{?fc40}
 # The zarr extra was removed in 1.14.2, but we patched it back in; see %%prep.
 %pyproject_buildrequires -x zarr
 %endif

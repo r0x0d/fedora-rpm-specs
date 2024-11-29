@@ -11,7 +11,7 @@
 %global crate zram-generator
 
 Name:           rust-zram-generator
-Version:        1.1.2
+Version:        1.2.0
 Release:        %autorelease
 Summary:        Systemd unit generator for zram swap devices
 

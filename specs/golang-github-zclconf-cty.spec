@@ -9,7 +9,7 @@
 
 # https://github.com/zclconf/go-cty
 %global goipath         github.com/zclconf/go-cty
-Version:                1.15.0
+Version:                1.15.1
 
 %gometa -L
 

@@ -11,14 +11,14 @@
 
 Summary: Roles and playbooks to deploy FreeIPA servers, replicas and clients
 Name: ansible-freeipa
-Version: 1.14.0
-Release: 2%{?dist}
+Version: 1.14.1
+Release: 1%{?dist}
 URL: https://github.com/freeipa/ansible-freeipa
 License: GPL-3.0-or-later
 Source: https://github.com/freeipa/ansible-freeipa/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 BuildArch: noarch
-Requires: ansible-core >= 2.15.0
-BuildRequires: ansible-core >= 2.15.0
+Requires: ansible-core >= 2.14.0
+BuildRequires: ansible-core >= 2.14.0
 BuildRequires: python
 Provides: ansible-collection-%{collection_namespace}-%{collection_name} = %{version}-%{release}
 Provides: ansible-freeipa-tests
@@ -104,7 +104,7 @@ Supported Distributions
 Requirements
 
   Controller
-  - Ansible version: 2.13+
+  - Ansible version: 2.14+
 
   Node
   - Supported FreeIPA version (see above)
@@ -157,6 +157,11 @@ cp %{buildroot}/%{ansible_collections_dir}/%{collection_namespace}/%{collection_
 %{ansible_collections_dir}/%{collection_namespace}/%{collection_name}
 
 %changelog
+* Wed Nov 27 2024 Thomas Woerner <twoerner@redhat.com> - 1.14.1-1
+- Update to version 1.14.1
+  https://github.com/freeipa/ansible-freeipa/releases/tag/v1.14.1
+  - Change minimum Ansible version to 2.14
+
 * Fri Nov 22 2024 Thomas Woerner <twoerner@redhat.com> - 1.14.0-2
 - Provide and obsolete the collection sub package to enable flawless update
 

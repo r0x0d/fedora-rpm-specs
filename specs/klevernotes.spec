@@ -1,11 +1,13 @@
 Name:          klevernotes
 Version:       1.1.0
-Release:       1%{?dist}
+Release:       2%{?dist}
 License:       BSD-3-Clause AND CC-BY-SA-4.0 AND CC0-1.0 AND FSFAP AND GPL-2.0-or-later AND GPL-3.0-only AND GPL-3.0-or-later AND LGPL-2.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only
 Summary:       A convergent markdown note taking application
 URL:           https://apps.kde.org/klevernotes/
 
 Source0:       https://download.kde.org/stable/%{name}/%{version}/%{name}-%{version}.tar.xz
+
+Patch0:        no-ksandbox.patch
 
 # handled by qt6-srpm-macros, which defines %%qt6_qtwebengine_arches
 %{?qt6_qtwebengine_arches:ExclusiveArch: %{qt6_qtwebengine_arches}}
@@ -72,5 +74,8 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 %{_kf6_metainfodir}/org.kde.klevernotes.metainfo.xml
 
 %changelog
+* Tue Nov 26 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 1.1.0-2
+- Do not exit sandbox for additional tools
+
 * Mon Nov 25 2024 Steve Cossette <farchord@gmail.com> - 1.1.0-1
 - Initial Release

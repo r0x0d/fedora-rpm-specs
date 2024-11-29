@@ -1,10 +1,10 @@
 # Don't bother building debug packages as koji bitches about n-v-r from nemo package
 %global debug_package %{nil}
-%global cjs_version 6.2.0
+%global cjs_version 6.4.0
 
 Name:           nemo-extensions
-Version:        6.2.0
-Release:        4%{?dist}
+Version:        6.4.0
+Release:        1%{?dist}
 Summary:        Extensions for Nemo
 
 License:        GPLv2+ and LGPLv2
@@ -18,7 +18,7 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  gpgme-devel
 BuildRequires:  pkgconfig(cryptui-0.0) 
 BuildRequires:  pkgconfig(gcr-3)
-BuildRequires:  pkgconfig(libnemo-extension) >= 6.2.0
+BuildRequires:  pkgconfig(libnemo-extension) >= 6.4.0
 BuildRequires:  python3-distutils-extra
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
@@ -80,7 +80,7 @@ License:     GPL-2.0-or-later
 Obsoletes:   python2-nemo < %{version}-%{release}
 Obsoletes:   python3-nemo < %{version}-%{release}
 Provides:    python3-nemo = %{version}-%{release}
-Requires:    nemo >= 6.2.0
+Requires:    nemo >= 6.4.0
 Requires:    python3-gobject-base
 
 %description -n nemo-python
@@ -335,6 +335,9 @@ rm -rf %{buildroot}/%{_datadir}/doc/nemo-python/
 %{_mandir}/man1/nemo-seahorse-tool.1.* 
 
 %changelog
+* Wed Nov 27 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
+- Update to 6.4.0
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 6.2.0-4
 - convert license to SPDX
 

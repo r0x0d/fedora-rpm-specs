@@ -33,7 +33,7 @@
 %constrain_build -m 4096
 
 Name:           uv
-Version:        0.5.4
+Version:        0.5.5
 Release:        %autorelease
 Summary:        An extremely fast Python package installer and resolver, written in Rust
 
@@ -173,9 +173,9 @@ Source100:      %{async_zip_git}/archive/%{async_zip_rev}/rs-async-zip-%{async_z
 # We therefore bundle the fork as prescribed in
 #   https://docs.fedoraproject.org/en-US/packaging-guidelines/Rust/#_replacing_git_dependencies
 %global pubgrub_git https://github.com/astral-sh/pubgrub
-%global pubgrub_rev 57afc831bf2551f164617a10383cf288bf5d190d
+%global pubgrub_rev 9cd9049a64c7352de2ff3b525b9ae36421b0cc18
 %global pubgrub_baseversion 0.2.1
-%global pubgrub_snapdate 20241115
+%global pubgrub_snapdate 20241126
 %global version_ranges_baseversion 0.1.1
 Source200:      %{pubgrub_git}/archive/%{pubgrub_rev}/pubgrub-%{pubgrub_rev}.tar.gz
 
@@ -215,6 +215,12 @@ Patch:          0001-Downstream-patch-always-find-the-system-wide-uv-exec.patch
 # We must package the libz-rs-sys crate in order to unhide the zlib-rs
 # feature of flate2.
 Patch:          0001-Downstream-only-Use-zlib-ng-instead-of-zlib-rs.patch
+
+# Escape path in batch script
+# https://github.com/astral-sh/uv/pull/9466
+# This is related to CVE-2024-53899. It probably only matters on Windows, but
+# backporting does no harm.
+Patch:          %{url}/pull/9466.patch
 
 # These patches are for the forked, bundled async_zip crate.
 #

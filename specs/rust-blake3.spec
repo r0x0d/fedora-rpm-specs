@@ -6,7 +6,7 @@
 %global crate blake3
 
 Name:           rust-blake3
-Version:        1.5.4
+Version:        1.5.5
 Release:        %autorelease
 Summary:        BLAKE3 hash function
 
@@ -50,6 +50,18 @@ This package contains library source intended for building other packages which
 use the "default" feature of the "%{crate}" crate.
 
 %files       -n %{name}+default-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+digest-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+digest-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "digest" feature of the "%{crate}" crate.
+
+%files       -n %{name}+digest-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+mmap-devel

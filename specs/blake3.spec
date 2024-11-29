@@ -5,7 +5,7 @@
 %global needs_gcc_toolset 0%{?el8} || 0%{?el9}
 
 Name:           blake3
-Version:        1.5.4
+Version:        1.5.5
 Release:        %autorelease
 Summary:        Official C implementation of the BLAKE3 cryptographic hash function
 

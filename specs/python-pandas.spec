@@ -13,7 +13,7 @@
 
 Name:           python-pandas
 Version:        2.2.1
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Python library providing high-performance data analysis tools
 
 # Drop support for i686 in preparation for `libarrow`
@@ -703,6 +703,9 @@ export PYTHONHASHSEED="$(
 
 
 %changelog
+* Wed Nov 27 2024 Richard W.M. Jones <rjones@redhat.com> - 2.2.1-8
+- Rebuild for libarrow 18
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.2.1-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

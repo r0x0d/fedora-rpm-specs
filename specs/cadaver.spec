@@ -1,6 +1,6 @@
 Name: cadaver
-Version: 0.24
-Release: 7%{?dist}
+Version: 0.26
+Release: 1%{?dist}
 Summary: Command-line WebDAV client
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License: GPL-2.0-or-later
@@ -19,21 +19,25 @@ and resource locking.
 %setup -q
 
 %build
-%configure --with-neon=%{_prefix} --disable-nls
+%configure --with-neon=%{_prefix}
 make %{?_smp_mflags}
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
 
 # broken in 0.24
-#find_lang %{name}
+%find_lang %{name}
 
-%files
-%doc NEWS FAQ THANKS TODO COPYING README.md ChangeLog
+%files -f %{name}.lang
+%doc NEWS FAQ THANKS TODO COPYING README.md
 %{_bindir}/*
 %{_mandir}/*/*
 
 %changelog
+* Wed Nov 27 2024 Joe Orton <jorton@redhat.com> - 0.26-1
+- update to 0.26 (#2300583)
+- enable NLS again
+
 * Thu Jul  25 2024 Miroslav Suchý <msuchy@redhat.com> - 0.24-7
 - convert license to SPDX
 

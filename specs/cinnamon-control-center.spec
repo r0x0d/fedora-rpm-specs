@@ -5,15 +5,15 @@
 
 %global _artwork_version 1.7.5
 
-%global cinnamon_desktop_version 6.2.0
-%global csd_version 6.2.0%{!?tag:^%{date}git%{shortcommit0}}
-%global cinnamon_menus_version 6.2.0
+%global cinnamon_desktop_version 6.4.0
+%global csd_version 6.4.0
+%global cinnamon_menus_version 6.4.0
 %global redhat_menus_version 1.8
 
 Summary: Utilities to configure the Cinnamon desktop
 Name:    cinnamon-control-center
 Version: 6.4.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 # The following files contain code from
 # ISC for panels/network/rfkill.h
 # And MIT for wacom/calibrator/calibrator.c
@@ -154,6 +154,9 @@ install -pm 0644 mint-artwork/%{_datadir}/mint-artwork/sounds/* %{buildroot}/%{_
 
 
 %changelog
+* Wed Nov 27 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-2
+- Update requires versions
+
 * Tue Nov 26 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
 - Update to 6.4.0
 

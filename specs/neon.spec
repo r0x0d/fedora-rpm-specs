@@ -8,7 +8,7 @@
 Summary: An HTTP and WebDAV client library
 Name: neon
 Version: 0.34.0
-Release: 1%{?dist}
+Release: 3%{?dist}
 License: LGPL-2.0-or-later
 URL: https://notroj.github.io/neon/
 Source0: https://notroj.github.io/neon/neon-%{version}.tar.gz
@@ -91,6 +91,12 @@ make %{?_smp_mflags} check
 %{_libdir}/*.so
 
 %changelog
+* Wed Nov 27 2024 Joe Orton <jorton@redhat.com> - 0.34.0-3
+- restore neon-config patch, restore package notes
+
+* Wed Nov 27 2024 Joe Orton <jorton@redhat.com> - 0.34.0-2
+- disable package notes
+
 * Mon Nov 25 2024 Joe Orton <jorton@redhat.com> - 0.34.0-1
 - update to 0.34.0
 - simplify bconds

@@ -1,6 +1,6 @@
 
 Name:		console-setup
-Version:	1.231
+Version:	1.232
 Release:	1%{?dist}
 Summary:	Tools for configuring the console using X Window System key maps
 
@@ -8,6 +8,8 @@ Summary:	Tools for configuring the console using X Window System key maps
 License:	GPL-2.0-or-later AND MIT AND LicenseRef-Fedora-Public-Domain
 URL:		http://packages.debian.org/cs/sid/console-setup
 Source0:	http://ftp.de.debian.org/debian/pool/main/c/%{name}/%{name}_%{version}.tar.xz
+# Doubled bdf fonts taken from console-setup-1.231
+Source1:	doubled-fonts.tar.gz
 
 # Fixes installing paths to Fedora style
 Patch0:		console-setup-1.76-paths.patch
@@ -15,13 +17,17 @@ Patch0:		console-setup-1.76-paths.patch
 Patch1:		console-setup-1.76-fsf-address.patch
 # Removes Caps_Lock to CtrlL_Lock substitution
 Patch2:		console-setup-1.84-ctrll-lock.patch
+# Changes path to DejaVu fonts on Fedora, disables creation of
+# doubled bdf fonts, we don't have bdfresize in Fedora (see source1)
+Patch3:		console-setup-1.232-dejavu-font-path.patch
 
 Requires:	kbd
 # require 'xkeyboard-config' to have X Window keyboard descriptions?
 
 BuildRequires:	perl-generators
 BuildRequires:	perl(encoding) perl(open)
-BuildRequires: make
+BuildRequires:	make
+BuildRequires:	unifont dejavu-sans-mono-fonts otf2bdf
 BuildArch:	noarch
 
 %description
@@ -46,13 +52,18 @@ not wasted but used for another symbol.
 
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q -n %{name}
 %autopatch -p1
 
 cp -a --remove-destination debian/copyright COPYRIGHT
 cp -a --remove-destination debian/changelog CHANGES
 
+tar xzf %{SOURCE1} -C Fonts/bdf --strip-components=1
+
 %build
+# create bdf fonts
+make bdf
+
 make build-linux
 
 
@@ -94,11 +105,18 @@ cp -a Fonts/fontsets Fonts/*.equivalents Fonts/*.set \
 
 
 %changelog
+* Wed Nov 27 2024 Vitezslav Crhonek <vcrhonek@redhat.com> - 1.232-1
+- Update to latest upstream version
+- Add doubled bdf fonts from previous release to sources
+  (bdfresize is needed to create them, not present in Fedora)
+- Add otf2bdf and packages with fonts to BR (used to create bdf fonts)
+- Fix wrong date order in %%changelog
+
 * Fri Oct 25 2024 Vitezslav Crhonek <vcrhonek@redhat.com> - 1.231-1
 - Update to latest upstream version
   Resolves: #2320102
 
-* Mon Jul 15 2024 Packit <hello@packit.dev> - 1.230-1
+* Wed Jul 17 2024 Packit <hello@packit.dev> - 1.230-1
 - Update to latest upstream version
 
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.228-2

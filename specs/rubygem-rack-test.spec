@@ -2,7 +2,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 1.1.0
-Release: 10%{?dist}
+Release: 11%{?dist}
 Summary: Simple testing API built on Rack
 License: MIT
 URL: http://github.com/rack-test/rack-test
@@ -10,6 +10,9 @@ Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # git clone https://github.com/rack-test/rack-test.git && cd rack-test
 # git archive -v -o rack-test-1.1.0-spec.tar.gz v1.1.0 spec/
 Source1: %{gem_name}-%{version}-spec.tar.gz
+# https://github.com/rack/rack-test/commit/8e5a77b0e962a4c7bff45c5899eedf49c511c80c
+# Adjust to ruby3.4 Hash#inspect formatting change
+Patch0:  rack-test-8e5a77b-ruby34-hash-inspect-change.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby >= 2.2.2
@@ -34,6 +37,10 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n  %{gem_name}-%{version} -b 1
+(
+cd %{_builddir}
+%patch -P0 -p1
+)
 
 %build
 # Create the gem as gem install only works on a gem file
@@ -80,6 +87,9 @@ popd
 %doc %{gem_instdir}/README.md
 
 %changelog
+* Wed Nov 27 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.1.0-11
+- Apply upstream fix for ruby34 Hash inspect formatting change
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.0-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

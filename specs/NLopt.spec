@@ -16,12 +16,11 @@
 %endif
 %global guile_pkg    %(echo guile%{?guile_ver} | sed -e 's!\\\.!!g')
 
-%global commit 7cdebfe5f777b12d3c5b0788c38fe595444d69c6
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global relversion 2.8.0
+%global relversion 2.9.1
 Name:              NLopt
-Version:           2.8.0^202409167cdebfe
-Release:           2%{?dist}
+Version:           2.9.1
+%global tag        v%{version}
+Release:           1%{?dist}
 Summary:           Open-Source library for nonlinear optimization
 
 # Get a lowercase name for virtual provides.
@@ -58,10 +57,10 @@ Summary:           Open-Source library for nonlinear optimization
 # Automatically converted from old format: BSD and LGPLv2+ and MIT and Public Domain - review is highly recommended.
 License:           LicenseRef-Callaway-BSD AND LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-MIT AND LicenseRef-Callaway-Public-Domain
 URL:               http://ab-initio.mit.edu/%{lc_name}
-Source0:           https://github.com/stevengj/%{lc_name}/archive/%{commit}/%{lc_name}-%{shortcommit}.tar.gz
+Source0:           https://github.com/stevengj/%{lc_name}/archive/%{tag}/%{lc_name}-%{version}.tar.gz
 
 # Kill RPATH.
-Patch0:            nlopt-2.8.0-kill_rpath.patch
+Patch0:            nlopt-2.9.1-kill_rpath.patch
 
 BuildRequires:     cmake3
 BuildRequires:     gcc
@@ -167,7 +166,7 @@ This package contains Python3 bindings for %{name}.
 
 
 %prep
-%autosetup -n %{lc_name}-%{commit} -p 1
+%autosetup -n %{lc_name}-%{version} -p 1
 
 # Move all %%doc to topdir and append their belonging.
 [[ -f README.md ]] &&  \
@@ -301,6 +300,9 @@ EOF
 %{python3_sitearch}/%{lc_name}-%{relversion}.dist-info/METADATA
 
 %changelog
+* Wed Nov 27 2024 Benson Muite <benson_muite@emailplus.org> - 2.9.1-1
+- Update to latest release 2.9.1
+
 * Thu Nov 14 2024 Orion Poplawski <orion@nwra.com> - 2.8.0^202409167cdebfe-2
 - Rebuild for octave 9.2
 

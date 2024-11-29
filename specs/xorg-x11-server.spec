@@ -17,7 +17,7 @@
 Summary:    X.Org X11 X server
 Name:       xorg-x11-server
 Version:    21.1.14
-Release:    1%{?dist}
+Release:    2%{?dist}
 URL:        http://www.x.org
 # SPDX
 License:    Adobe-Display-PostScript AND BSD-3-Clause AND DEC-3-Clause AND HPND AND HPND-sell-MIT-disclaimer-xserver AND HPND-sell-variant AND ICU AND ISC AND MIT AND MIT-open-group AND NTP AND SGI-B-2.0 AND SMLNJ AND X11 AND X11-distribute-modifications-variant
@@ -41,6 +41,9 @@ Patch1:     0001-xfree86-use-modesetting-driver-by-default-on-GeForce.patch
 Patch2:     0001-xf86-dri2-Use-va_gl-as-vdpau_driver-for-Intel-i965-G.patch
 # because the display-managers are not ready yet, do not upstream
 Patch3:     0001-Fedora-hack-Make-the-suid-root-wrapper-always-start-.patch
+Patch4:     0001-Revert-xfree86-Set-appropriate-install_mode-for-suid.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=2326701
+Patch5:     0001-add-a-quirk-for-apple-silicon.patch
 
 BuildRequires:  bison
 BuildRequires:  flex
@@ -415,6 +418,12 @@ find %{buildroot} -type f -name '*.la' -delete
 
 
 %changelog
+* Mon Nov 18 2024 José Expósito <jexposit@redhat.com> - 21.1.14-2
+- Fix build issues caused by Xorg.wrap
+- Restore quirks for Apple silicon
+  Fixes: 422064e45a42 ("Update X11-server to 21.1.13 and ABI numbers of videodrv and xinput")
+  Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2326701
+
 * Tue Oct 29 2024 José Expósito <jexposit@redhat.com> - 21.1.14-1
 - Update to v21.1.14
 

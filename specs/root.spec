@@ -26,7 +26,7 @@
 Name:		root
 Version:	6.32.08
 %global libversion %(cut -d. -f 1-2 <<< %{version})
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Numerical data analysis framework
 
 License:	LGPL-2.1-or-later
@@ -3584,6 +3584,9 @@ fi
 %endif
 
 %changelog
+* Wed Nov 27 2024 Richard W.M. Jones <rjones@redhat.com> - 6.32.08-2
+- Rebuild for libarrow 18
+
 * Thu Nov 14 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 6.32.08-1
 - Update to 6.32.08
 

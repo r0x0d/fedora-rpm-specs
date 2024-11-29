@@ -5,8 +5,8 @@
 
 Name:           nemo
 Summary:        File manager for Cinnamon
-Version:        6.2.8
-Release:        2%{?dist}
+Version:        6.4.0
+Release:        1%{?dist}
 # Automatically converted from old format: GPLv2+ and LGPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+
 URL:            https://github.com/linuxmint/%{name}
@@ -27,7 +27,7 @@ Requires:       gvfs-goa%{?_isa}
 Requires:       xapps%{?_isa} >= 2.2.0
 # required for for gtk-stock fallback
 Requires:       adwaita-icon-theme
-Recommends:     cinnamon-translations >= 6.2.0
+Recommends:     cinnamon-translations >= 6.4.0
 Recommends:     nemo-search-helpers
 Recommends:     folder-color-switcher-nemo
 
@@ -46,7 +46,7 @@ BuildRequires:  pkgconfig(gmodule-no-export-2.0)
 BuildRequires:  pkgconfig(gobject-2.0)
 BuildRequires:  pkgconfig(gobject-introspection-1.0)
 BuildRequires:  pkgconfig(json-glib-1.0)
-BuildRequires:  pkgconfig(cinnamon-desktop) >= 6.2.0
+BuildRequires:  pkgconfig(cinnamon-desktop) >= 6.4.0
 BuildRequires:  pkgconfig(gail-3.0)
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(x11)
@@ -150,7 +150,9 @@ rm %{buildroot}%{_datadir}/nemo/search-helpers/pdf2txt.nemo_search_helper
 %{_bindir}/nemo-action-layout-editor
 %{_bindir}/nemo-open-with
 %{_libexecdir}/nemo-*
+%dir %{_datadir}/nemo/
 %{_datadir}/nemo/action-info.md
+%{_datadir}/nemo/nemo-action-layout-editor-resources.gresource
 %{_datadir}/nemo/actions/
 %{_datadir}/nemo/icons/
 %{_datadir}/nemo/layout-editor/
@@ -174,6 +176,7 @@ rm %{buildroot}%{_datadir}/nemo/search-helpers/pdf2txt.nemo_search_helper
 %files search-helpers
 %{_bindir}/nemo-epub2text
 %{_bindir}/nemo-mso-to-txt
+%{_bindir}/nemo-odf-to-txt
 %{_bindir}/nemo-ppt-to-txt
 %{_bindir}/nemo-xls-to-txt
 %{_datadir}/nemo/search-helpers/
@@ -185,6 +188,9 @@ rm %{buildroot}%{_datadir}/nemo/search-helpers/pdf2txt.nemo_search_helper
 %{_datadir}/gir-1.0/*.gir
 
 %changelog
+* Wed Nov 27 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
+- Update to 6.4.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 6.2.8-2
 - convert license to SPDX
 
