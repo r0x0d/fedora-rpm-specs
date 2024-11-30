@@ -6,8 +6,8 @@
 %endif
 
 Name:           perl-IO-Socket-IP
-Version:        0.42
-Release:        512%{?dist}
+Version:        0.43
+Release:        1%{?dist}
 Summary:        Drop-in replacement for IO::Socket::INET supporting both IPv4 and IPv6
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/IO-Socket-IP
@@ -38,7 +38,7 @@ BuildRequires:  perl(strict)
 buildrequires:  perl(warnings)
 # Tests only
 BuildRequires:  perl(IO::Socket::INET)
-BuildRequires:  perl(Test::More)
+BuildRequires:  perl(Test2::V0)
 %if %{with perl_IO_Socket_IP_enables_optional_test} && !%{defined perl_bootstrap}
 # Optional tests only
 BuildRequires:  perl(Test::Pod) >= 1.00
@@ -101,6 +101,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Thu Nov 28 2024 Jitka Plesnikova <jplesnik@redhat.com> - 0.43-1
+- 0.43 bump (rhbz#2328740)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.42-512
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

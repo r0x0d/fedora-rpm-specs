@@ -1,9 +1,9 @@
 %bcond_without check
 %global cargo_install_lib  0
-%global envision_version   0.0.2
+%global envision_version   1.1.0
 %global forgeurl           https://gitlab.com/gabmus/envision
 %global tag                %{envision_version}
-%global date               20241102
+%global date               20241127
 %forgemeta
 
 
@@ -169,8 +169,11 @@ License:        AGPL-3.0-only AND (Apache-2.0 OR MIT OR BSD-3-Clause OR GPL-2.0-
 
 URL:            %{forgeurl}
 Source0:        %{forgesource}
-# https://gitlab.com/gabmus/envision/-/issues/137
-Patch0:         envision-0.0.2-no-devel-profile.patch
+# https://gitlab.com/gabmus/envision/-/issues/148
+Patch0:         envision-1.1.0-no-devel-profile.patch
+# Manually created patch for downstream crate metadata changes
+# Relax zbus dependency, https://github.com/hoodie/notify-rust/pull/234
+Patch1:         envision-fix-metadata.diff
 
 BuildRequires:  cargo
 BuildRequires:  cargo-rpm-macros >= 26
@@ -236,8 +239,9 @@ sickness or physical injury. Be very careful while in VR using this app!
 %meson_install
 
 
-%if %{with check}
 %check
+desktop-file-validate %{buildroot}%{_datadir}/applications/org.gabmus.envision.desktop
+%if %{with check}
 %meson_test
 %endif
 

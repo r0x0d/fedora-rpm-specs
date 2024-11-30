@@ -14,23 +14,23 @@
 # After 40-smbclient.ini, see https://jira.mongodb.org/browse/PHPC-658
 %global ini_name          50-%{pecl_name}.ini
 
-%global upstream_version  1.20.0
+%global upstream_version  1.20.1
 #global upstream_prever   RC1
 #global upstream_lower    ~rc1
 %global sources           %{pecl_name}-%{upstream_version}%{?upstream_prever}
 
 # Required versions from config.m4
-%global minimal_libmongo  1.28.0
+%global minimal_libmongo  1.28.1
 %global minimal_libcrypt  1.11.0
 
 # Build dependencies
-%global system_libmongo   1.28.0
+%global system_libmongo   1.28.1
 %global system_libcrypt   1.11.0
 
 Summary:        MongoDB driver for PHP
 Name:           php-pecl-%{pecl_name}
 Version:        %{upstream_version}%{?upstream_lower}
-Release:        3%{?dist}
+Release:        1%{?dist}
 License:        Apache-2.0
 URL:            https://pecl.php.net/package/%{pecl_name}
 Source0:        https://pecl.php.net/get/%{pecl_name}-%{upstream_version}%{?upstream_prever}.tgz
@@ -153,6 +153,9 @@ OPT="-n"
 
 
 %changelog
+* Thu Nov 28 2024 Remi Collet <remi@remirepo.net> - 1.20.1-1
+- update to 1.20.1
+
 * Mon Oct 28 2024 Remi Collet <remi@fedoraproject.org> - 1.20.0-3
 - modernize the spec file
 

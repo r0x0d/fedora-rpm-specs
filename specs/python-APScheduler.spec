@@ -1,4 +1,4 @@
-%global srcname APScheduler
+%global srcname apscheduler
 %global _description %{expand:
 Advanced Python Scheduler (APScheduler) is a Python library that lets you
 schedule your Python code to be executed later, either just once or

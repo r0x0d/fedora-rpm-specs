@@ -1,7 +1,7 @@
 %global commit0 66ad76e3d5ad00f5768bd6340c614fb2e2bafaa1
 %global date 20241127
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-#global tag %{version}
+%global tag %{version}
 
 %global __requires_exclude ^lib%{name}.so|^lib%{name}-js.so
 
@@ -15,8 +15,8 @@
 %global __python %{__python3}
 
 Name:           cinnamon
-Version:        6.3.0%{!?tag:^%{date}git%{shortcommit0}}
-Release:        2%{?dist}
+Version:        6.4.0
+Release:        1%{?dist}
 Summary:        Window management and application launching for GNOME
 # Automatically converted from old format: GPLv2+ and LGPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+
@@ -346,6 +346,9 @@ EOF
 %endif
 
 %changelog
+* Thu Nov 28 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
+- Update to 6.4.0
+
 * Wed Nov 27 2024 Leigh Scott <leigh123linux@gmail.com> - 6.3.0^20241127git66ad76e-2
 - Update git snapshot
 

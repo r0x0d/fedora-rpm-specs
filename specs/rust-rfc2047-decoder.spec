@@ -5,16 +5,13 @@
 %global crate rfc2047-decoder
 
 Name:           rust-rfc2047-decoder
-Version:        1.0.5
+Version:        1.0.6
 Release:        %autorelease
 Summary:        Rust library for decoding RFC 2047 MIME Message Headers
 
 License:        MIT
 URL:            https://crates.io/crates/rfc2047-decoder
 Source:         %{crates_source}
-# Manually created patch for downstream crate metadata changes
-# * Allow base64 0.22
-Patch:          rfc2047-decoder-fix-metadata.diff
 
 BuildRequires:  cargo-rpm-macros >= 24
 

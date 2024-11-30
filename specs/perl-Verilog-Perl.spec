@@ -103,7 +103,7 @@ for i in vhier vpassert vppreproc vrename vsplitmodule; do
     ln -s %{_bindir}/$i %{buildroot}%{_libexecdir}/%{name}/
 done
 cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
-#!/bin/sh
+#!/bin/bash
 set -e
 # Some tests write into temporary files/directories. The easiest solution
 # is to copy the tests into a writable directory and execute them from there.

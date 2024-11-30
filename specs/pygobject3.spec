@@ -1,16 +1,20 @@
 %define glib2_version                  2.64.0
-%define gobject_introspection_version  1.64.0
+%define gobject_introspection_version  1.81.0
 %define pycairo_version                1.16.0
 %define python3_version                3.8
 
 Name:           pygobject3
-Version:        3.48.2
-Release:        3%{?dist}
+Version:        3.50.0
+Release:        1%{?dist}
 Summary:        Python bindings for GObject Introspection
 
 License:        LGPL-2.1-or-later
 URL:            https://wiki.gnome.org/Projects/PyGObject
-Source0:        https://download.gnome.org/sources/pygobject/3.48/pygobject-%{version}.tar.xz
+Source0:        https://download.gnome.org/sources/pygobject/3.50/pygobject-%{version}.tar.xz
+
+# async: Use correct T_BOOL type for _asyncio_future_blocking (merged upstream)
+# Fixes failures on s390x
+Patch:          https://gitlab.gnome.org/GNOME/pygobject/-/merge_requests/367.patch
 
 BuildRequires:  pkgconfig(cairo-gobject)
 BuildRequires:  pkgconfig(glib-2.0) >= %{glib2_version}
@@ -88,7 +92,7 @@ export TEST_GTK_VERSION=3.0
 %{python3_sitearch}/gi/repository/
 %pycached %{python3_sitearch}/gi/*.py
 %{python3_sitearch}/gi/_gi.*.so
-%{python3_sitearch}/PyGObject-*.egg-info
+%{python3_sitearch}/PyGObject-*.dist-info/
 %{python3_sitearch}/pygtkcompat/
 
 %files -n python3-gobject-devel
@@ -97,6 +101,9 @@ export TEST_GTK_VERSION=3.0
 %{_libdir}/pkgconfig/pygobject-3.0.pc
 
 %changelog
+* Fri Nov 22 2024 Miro Hrončok <mhroncok@redhat.com> - 3.50.0-1
+- Update to 3.50.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.48.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

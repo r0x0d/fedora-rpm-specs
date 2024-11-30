@@ -5,7 +5,7 @@
 
 Name:           sstp-client
 Version:        1.0.18
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Secure Socket Tunneling Protocol(SSTP) Client
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
@@ -111,6 +111,9 @@ rm -rf %{_localstatedir}/run/%{commonname}
 %{_libdir}/pkgconfig/sstp-client-1.0.pc
 
 %changelog
+* Wed Nov 27 2024 Adam Williamson <awilliam@redhat.com> - 1.0.18-8
+- Rebuild for ppp 2.5.1
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.18-7
 - convert license to SPDX
 

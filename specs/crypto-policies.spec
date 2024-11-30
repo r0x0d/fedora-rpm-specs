@@ -1,5 +1,5 @@
-%global git_date 20241126
-%global git_commit bb3f7dc3362986a6401145d32fff53760ff31fc5
+%global git_date 20241128
+%global git_commit bb7b0b01d0790ab10ff0c4d17bb510efa62a707f
 %{?git_commit:%global git_commit_hash %(c=%{git_commit}; echo ${c:0:7})}
 
 %global _python_bytecompile_extra 0
@@ -295,6 +295,9 @@ exit 0
 %{_mandir}/man8/fips-finish-install.8*
 
 %changelog
+* Thu Nov 28 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20241128-1.gitbb7b0b0
+- openssl, BSI: add TLS 1.3 Brainpool identifiers
+
 * Tue Nov 26 2024 Alexander Sosedkin <asosedkin@redhat.com> - 20241126-1.gitbb3f7dc
 - openssh: map mlkem768x25519-sha256 to KEM-ECDH & MLKEM768-X25519 & SHA2-256
 - update-crypto-policies: don't output FIPS warning in fips mode

@@ -1,12 +1,14 @@
+%bcond author_tests 0
+
 Name:           perl-Finance-Quote
-%global cpan_version 1.63
+%global cpan_version 1.64
 # RPM version needs 4 digits after the decimal to preserve upgrade path
 Version:        %(LANG=C printf "%.4f" %{cpan_version})
 Release:        1%{?dist}
 Summary:        A Perl module that retrieves stock and mutual fund quotes
 License:        GPL-2.0-or-later
 URL:            https://metacpan.org/release/Finance-Quote
-Source0:        https://cpan.metacpan.org/modules/by-module/Finance/Finance-Quote-%{cpan_version}.tar.gz
+Source0:        https://www.cpan.org/modules/by-module/Finance/Finance-Quote-%{cpan_version}.tar.gz
 BuildArch:      noarch
 # Module Build
 BuildRequires:  coreutils
@@ -69,7 +71,13 @@ BuildRequires:  perl(DateTime::Format::ISO8601)
 BuildRequires:  perl(feature)
 BuildRequires:  perl(File::Spec)
 BuildRequires:  perl(Test::More)
-BuildRequires:  perl(Test::Pod::Coverage)
+# Author Tests
+%if %{with author_tests}
+BuildRequires:  perl(Test::Kwalitee)
+BuildRequires:  perl(Test::Perl::Critic)
+BuildRequires:  perl(Test::Pod) >= 1.41
+BuildRequires:  perl(Test::Pod::Coverage) >= 1.00
+%endif
 # Dependencies
 Requires:       perl(LWP::Protocol::https)
 
@@ -97,7 +105,11 @@ find %{buildroot} -type f -name .packlist -delete
 
 %check
 unset DEBUG
+%if %{with author_tests}
+make test TEST_AUTHOR=1 AUTHOR_TESTING=1
+%else
 make test
+%endif
 
 %files
 %license LICENSE
@@ -120,6 +132,7 @@ make test
 %{_mandir}/man3/Finance::Quote::CurrencyRates::AlphaVantage.3*
 %{_mandir}/man3/Finance::Quote::CurrencyRates::CurrencyFreaks.3*
 %{_mandir}/man3/Finance::Quote::CurrencyRates::ECB.3*
+%{_mandir}/man3/Finance::Quote::CurrencyRates::FinanceAPI.3*
 %{_mandir}/man3/Finance::Quote::CurrencyRates::Fixer.3*
 %{_mandir}/man3/Finance::Quote::CurrencyRates::OpenExchange.3*
 %{_mandir}/man3/Finance::Quote::CurrencyRates::YahooJSON.3*
@@ -133,7 +146,6 @@ make test
 %{_mandir}/man3/Finance::Quote::GoldMoney.3*
 %{_mandir}/man3/Finance::Quote::GoogleWeb.3*
 %{_mandir}/man3/Finance::Quote::HU.3*
-%{_mandir}/man3/Finance::Quote::IEXCloud.3*
 %{_mandir}/man3/Finance::Quote::IndiaMutual.3*
 %{_mandir}/man3/Finance::Quote::MarketWatch.3*
 %{_mandir}/man3/Finance::Quote::MorningstarAU.3*
@@ -164,6 +176,25 @@ make test
 %{_mandir}/man3/Finance::Quote::ZA.3*
 
 %changelog
+* Thu Nov 28 2024 Paul Howarth <paul@city-fan.org> - 1.6400-1
+- Update to 1.64
+  - Update AlphaVantage.pm (GH#447)
+  - Fix to Stooq.pm (GH#445)
+  - Updated ASX.pm (GH#404)
+  - Added more fields to CSE.pm and exposed all labels
+  - Changed parsing in Comdirect.pm (GH#413)
+  - Complete rewrite of OnVista.pm (GH#414)
+  - Minor fix to FinanceAPI decoding JSON (GH#434)
+  - Modified YahooJSON to deal with "nan" as dividend yield in JSON
+  - New CurrencyRates module, CurrencyRates/FinanceAPI (GH#427)
+  - Fixed Bourso.pm (GH#417)
+  - Allowed Currency Rates modules Fixer.pm and OpenExchange.pm to read their
+    API keys from environment variables (GH#426)
+  - Removed references to IEXCloud (IEX ended support for all products at the
+    end of August 2024)
+- Switch source URL from cpan.metacpan.org to www.cpan.org
+- Add build conditional for author tests, disabled by default
+
 * Sun Sep 22 2024 Paul Howarth <paul@city-fan.org> - 1.6300-1
 - Update to 1.63
   - Fixed TesouroDireto.pm - using different source URL (GH#424)

@@ -1,20 +1,17 @@
-%define libsepolver 3.7-1
-%define libselinuxver 3.7-1
+%define libsepolver 3.8-0
+%define libselinuxver 3.8-0
 
 Summary: SELinux binary policy manipulation library
 Name: libsemanage
-Version: 3.7
-Release: 4%{?dist}
+Version: 3.8
+Release: 0.rc1.1%{?dist}
 License: LGPL-2.1-or-later
-Source0: https://github.com/SELinuxProject/selinux/releases/download/3.7/libsemanage-3.7.tar.gz
-Source1: https://github.com/SELinuxProject/selinux/releases/download/3.7/libsemanage-3.7.tar.gz.asc
+Source0: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/libsemanage-%{version}-rc1.tar.gz
+Source1: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/libsemanage-%{version}-rc1.tar.gz.asc
 Source2: https://github.com/bachradsusi.gpg
-# git format-patch -N 3.7 -- libsemanage
+# git format-patch -N 3.8 -- libsemanage
 # i=1; for j in 00*patch; do printf "Patch%04d: %s\n" $i $j; i=$((i+1));done
 # Patch list start
-Patch0001: 0001-libsemanage-Preserve-file-context-and-ownership-in-p.patch
-Patch0002: 0002-libsemanage-fix-swig-bindings-for-4.3.0.patch
-Patch0003: 0003-libsemanage-direct_api-INTEGER_OVERFLOW-read_len-rea.patch
 # Patch list end
 URL: https://github.com/SELinuxProject/selinux/wiki
 Source3: semanage.conf
@@ -82,7 +79,7 @@ SELinux management applications.
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup -p 2 -n libsemanage-%{version}
+%autosetup -p 2 -n libsemanage-%{version}-rc1
 
 
 %build

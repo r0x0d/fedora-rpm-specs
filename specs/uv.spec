@@ -216,12 +216,6 @@ Patch:          0001-Downstream-patch-always-find-the-system-wide-uv-exec.patch
 # feature of flate2.
 Patch:          0001-Downstream-only-Use-zlib-ng-instead-of-zlib-rs.patch
 
-# Escape path in batch script
-# https://github.com/astral-sh/uv/pull/9466
-# This is related to CVE-2024-53899. It probably only matters on Windows, but
-# backporting does no harm.
-Patch:          %{url}/pull/9466.patch
-
 # These patches are for the forked, bundled async_zip crate.
 #
 # Revert "Update zip requirement from 0.6.3 to 2.1.5"

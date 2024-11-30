@@ -14,7 +14,7 @@
 
 Name:           perl-IO-Compress
 Version:        2.213
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Read and write compressed data
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/IO-Compress
@@ -152,7 +152,7 @@ rm %{buildroot}%{_libexecdir}/%{name}/t/999pod.t
 rm %{buildroot}%{_libexecdir}/%{name}/t/999meta-*.t
 perl -i -pe "s{\"./bin/\"}{\"%{_bindir}\"}" %{buildroot}%{_libexecdir}/%{name}/t/011-streamzip.t
 cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
-#!/bin/sh
+#!/bin/bash
 set -e
 # Lots of tests write into temporary files/directories. The easiest solution
 # is to copy the tests into a writable directory and execute them from there.
@@ -211,6 +211,9 @@ make test COMPRESS_ZLIB_RUN_%{?with_long_tests:ALL}%{!?with_long_tests:MOST}=1
 %{_libexecdir}/%{name}
 
 %changelog
+* Wed Nov 27 2024 Michal Josef Špaček <mspacek@redhat.com> - 2.213-2
+- Fix shell
+
 * Thu Aug 29 2024 Paul Howarth <paul@city-fan.org> - 2.213-1
 - 2.213 bump
 

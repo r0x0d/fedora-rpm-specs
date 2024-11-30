@@ -2,21 +2,21 @@
 %bcond check 1
 %global debug_package %{nil}
 
-%global crate gix-validate
+%global crate thiserror
 
-Name:           rust-gix-validate
-Version:        0.9.2
+Name:           rust-thiserror1
+Version:        1.0.69
 Release:        %autorelease
-Summary:        Validation functions for various kinds of names in git
+Summary:        Derive(Error)
 
 License:        MIT OR Apache-2.0
-URL:            https://crates.io/crates/gix-validate
+URL:            https://crates.io/crates/thiserror
 Source:         %{crates_source}
 
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-Validation functions for various kinds of names in git.}
+Derive(Error).}
 
 %description %{_description}
 
@@ -32,6 +32,7 @@ use the "%{crate}" crate.
 %files          devel
 %license %{crate_instdir}/LICENSE-APACHE
 %license %{crate_instdir}/LICENSE-MIT
+%doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
 %package     -n %{name}+default-devel

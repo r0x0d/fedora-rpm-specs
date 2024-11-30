@@ -1,14 +1,14 @@
 %define ruby_inc %(pkg-config --cflags ruby)
-%define libsepolver 3.7-1
+%define libsepolver 3.8-0
 
 Summary: SELinux library and simple utilities
 Name: libselinux
-Version: 3.7
-Release: 7%{?dist}
+Version: 3.8
+Release: 0.rc1.1%{?dist}
 License: LicenseRef-Fedora-Public-Domain
 # https://github.com/SELinuxProject/selinux/wiki/Releases
-Source0: https://github.com/SELinuxProject/selinux/releases/download/3.7/libselinux-3.7.tar.gz
-Source1: https://github.com/SELinuxProject/selinux/releases/download/3.7/libselinux-3.7.tar.gz.asc
+Source0: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/libselinux-%{version}-rc1.tar.gz
+Source1: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/libselinux-%{version}-rc1.tar.gz.asc
 Source2: https://github.com/bachradsusi.gpg
 Source3: selinuxconlist.8
 Source4: selinuxdefcon.8
@@ -16,17 +16,10 @@ Source4: selinuxdefcon.8
 Url: https://github.com/SELinuxProject/selinux/wiki
 # $ git clone https://github.com/fedora-selinux/selinux.git
 # $ cd selinux
-# $ git format-patch -N 3.7 -- libselinux
+# $ git format-patch -N 3.8 -- libselinux
 # $ i=1; for j in 00*patch; do printf "Patch%04d: %s\n" $i $j; i=$((i+1));done
 # Patch list start
 Patch0001: 0001-Use-SHA-2-instead-of-SHA-1.patch
-Patch0002: 0002-libselinux-set-free-d-data-to-NULL.patch
-Patch0003: 0003-libselinux-restorecon-Include-selinux-label.h.patch
-Patch0004: 0004-libselinux-Fix-integer-comparison-issues-when-compil.patch
-Patch0005: 0005-libselinux-deprecate-security_disable-3.patch
-Patch0006: 0006-libselinux-fix-swig-bindings-for-4.3.0.patch
-Patch0007: 0007-libselinux-setexecfilecon-Remove-useless-rc-check.patch
-Patch0008: 0008-libselinux-matchpathcon-RESOURCE_LEAK-Variable-con.patch
 # Patch list end
 BuildRequires: gcc make
 BuildRequires: ruby-devel ruby libsepol-static >= %{libsepolver} swig pcre2-devel
@@ -99,7 +92,7 @@ needed for developing SELinux applications.
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup -p 2 -n libselinux-%{version}
+%autosetup -p 2 -n libselinux-%{version}-rc1
 
 %build
 export DISABLE_RPM="y"
@@ -197,6 +190,7 @@ rm -f %{buildroot}%{_mandir}/man8/togglesebool*
 %{_sbindir}/selinuxexeccon
 %{_sbindir}/selinuxenabled
 %{_sbindir}/setenforce
+%{_sbindir}/selabel_compare
 %{_sbindir}/selabel_digest
 %{_sbindir}/selabel_lookup
 %{_sbindir}/selabel_lookup_best_match

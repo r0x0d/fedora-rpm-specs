@@ -3,7 +3,7 @@ Version:	0.8.2
 Release:	27%{?dist}
 Summary:	Python modules for umtp records
 
-License:	Copyright only
+License:	LicenseRef-Fedora-UltraPermissive
 URL:		http://kassiopeia.juls.savba.sk/~garabik/software/python-utmp/
 Source0:	http://kassiopeia.juls.savba.sk/~garabik/software/python-utmp/%{name}_%{version}.tar.gz
 

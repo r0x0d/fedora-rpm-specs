@@ -10,7 +10,7 @@
 
 Name:           perl-CPAN
 Version:        2.38
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Query, download and build perl modules from CPAN sites
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/CPAN
@@ -294,7 +294,7 @@ perl -i -ple 's{-Mblib}{}' %{buildroot}%{_libexecdir}/%{name}/t/97-return_values
 mkdir -p %{buildroot}%{_libexecdir}/%{name}/blib/script
 ln -s %{_bindir}/cpan %{buildroot}%{_libexecdir}/%{name}/blib/script
 cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
-#!/bin/sh
+#!/bin/bash
 set -e
 unset AUTHOR_TEST CPAN_EXPECT_TIMEOUT CPAN_RUN_SHELL_TEST_WITHOUT_EXPECT \
     ftp_proxy http_proxy no_proxy \
@@ -329,6 +329,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Thu Nov 28 2024 Jitka Plesnikova <jplesnik@redhat.com> - 2.38-2
+- Fix shell in test script
+
 * Mon Nov 18 2024 Jitka Plesnikova <jplesnik@redhat.com> - 2.38-1
 - 2.38 bump (rhbz#2326875)
 

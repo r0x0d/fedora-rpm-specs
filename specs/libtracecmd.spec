@@ -57,7 +57,7 @@ chrpath --delete %{buildroot}/%{_libdir}/libtracecmd.so*
 %license COPYING COPYING.LIB
 %doc README
 %{_libdir}/libtracecmd.so.1
-%{_libdir}/libtracecmd.so.1.5.2
+%{_libdir}/libtracecmd.so.%{version}
 %{_docdir}/libtracecmd-doc
 %{_mandir}/man3/libtracecmd*
 %{_mandir}/man3/tracecmd*

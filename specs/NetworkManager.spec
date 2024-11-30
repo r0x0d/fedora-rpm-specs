@@ -6,7 +6,7 @@
 %global epoch_version 1
 %global real_version 1.51.2
 %global rpm_version %{real_version}
-%global release_version 2
+%global release_version 4
 %global snapshot %{nil}
 %global git_sha %{nil}
 %global bcond_default_debug 0
@@ -1064,6 +1064,12 @@ fi
 
 
 %changelog
+* Wed Nov 27 2024 Adam Williamson <awilliam@redhat.com> - 1.51.2-4
+- Rebuild for ppp 2.5.1 again on a side tag, ugh
+
+* Wed Nov 27 2024 Adam Williamson <awilliam@redhat.com> - 1.51.2-3
+- Rebuild for ppp 2.5.1
+
 * Tue Oct 22 2024 Richard W.M. Jones <rjones@redhat.com> - 1:1.51.2-2
 - Rebuild for Jansson 2.14
   (https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3PYINSQGKQ4BB25NQUI2A2UCGGLAG5ND/)

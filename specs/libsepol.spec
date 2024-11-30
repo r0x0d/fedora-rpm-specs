@@ -1,23 +1,17 @@
 Summary: SELinux binary policy manipulation library
 Name: libsepol
-Version: 3.7
-Release: 4%{?dist}
+Version: 3.8
+Release: 0.rc1.1%{?dist}
 License: LGPL-2.1-or-later
-Source0: https://github.com/SELinuxProject/selinux/releases/download/3.7/libsepol-3.7.tar.gz
-Source1: https://github.com/SELinuxProject/selinux/releases/download/3.7/libsepol-3.7.tar.gz.asc
+Source0: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/libsepol-%{version}-rc1.tar.gz
+Source1: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/libsepol-%{version}-rc1.tar.gz.asc
 Source2: https://github.com/bachradsusi.gpg
 URL: https://github.com/SELinuxProject/selinux/wiki
 # $ git clone https://github.com/fedora-selinux/selinux.git
 # $ cd selinux
-# $ git format-patch -N libsepol-3.7 -- libsepol
+# $ git format-patch -N libsepol-3.8 -- libsepol
 # $ i=1; for j in 0*patch; do printf "Patch%04d: %s\n" $i $j; i=$((i+1));done
 # Patch list start
-Patch0001: 0001-libsepol-sepol_compute_sid-Do-not-destroy-uninitiali.patch
-Patch0002: 0002-libsepol-cil-Check-that-sym_index-is-within-bounds.patch
-Patch0003: 0003-libsepol-cil-Initialize-avtab_datum-on-declaration.patch
-Patch0004: 0004-libsepol-mls-Do-not-destroy-context-on-memory-error.patch
-Patch0005: 0005-libsepol-cil-cil_post-Initialize-tmp-on-declaration.patch
-Patch0006: 0006-libsepol-Initialize-strs-on-declaration.patch
 # Patch list end
 BuildRequires: make
 BuildRequires: gcc
@@ -66,7 +60,7 @@ The libsepol-utils package contains the utilities
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup -p 2 -n libsepol-%{version}
+%autosetup -p 2 -n libsepol-%{version}-rc1
 
 # sparc64 is an -fPIC arch, so we need to fix it here
 %ifarch sparc64

@@ -77,7 +77,7 @@ find %{buildroot} -type f -name '*.bs' -size 0 -delete
 mkdir -p %{buildroot}%{_libexecdir}/%{name}
 cp -a t %{buildroot}%{_libexecdir}/%{name}
 cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
-#!/bin/sh
+#!/bin/bash
 set -e
 # Some tests write into temporary files/directories. The easiest solution
 # is to copy the tests into a writable directory and execute them from there.

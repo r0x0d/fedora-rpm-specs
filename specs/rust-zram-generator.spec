@@ -11,7 +11,7 @@
 %global crate zram-generator
 
 Name:           rust-zram-generator
-Version:        1.2.0
+Version:        1.2.1
 Release:        %autorelease
 Summary:        Systemd unit generator for zram swap devices
 
@@ -22,7 +22,7 @@ Source1:        zram-generator.conf
 # To create the vendor tarball:
 #   tar xf %%{crate}-%%{version}.crate ; pushd %%{crate}-%%{version} ; \
 #   cargo vendor && tar Jcvf ../%%{crate}-%%{version}-vendor.tar.xz vendor/ ; popd
-Source2:        %{crate}-%{version}-vendor.tar.xz
+Source2:        %{crate}-1.2.0-vendor.tar.xz
 
 %if 0%{?bundled_rust_deps}
 BuildRequires:  rust-toolset

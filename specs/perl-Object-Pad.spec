@@ -4,7 +4,7 @@
 %bcond_without perl_Object_Pad_enables_optional_test
 
 Name:           perl-Object-Pad
-Version:        0.814
+Version:        0.816
 Release:        1%{dist}
 Summary:        Simple syntax for lexical slot-based objects
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -68,14 +68,16 @@ BuildRequires:  perl(Future) >= %{future_min_ver}
 BuildRequires:  perl(Future::AsyncAwait) >= %{future_asyncawait_min_ver}
 # Some tests are skipped with Future::XS < 0.08
 BuildRequires:  perl(Moo)
-BuildRequires:  perl(Sublike::Extended)
+%define sublike_externeded_min_ver 0.29
+BuildRequires:  perl(Sublike::Extended) >= %{sublike_externeded_min_ver}
 %define syntax_keyword_dynamically_min_ver 0.04
 BuildRequires:  perl(Syntax::Keyword::Dynamically) >= %{syntax_keyword_dynamically_min_ver}
 BuildRequires:  perl(Test::MemoryGrowth)
 BuildRequires:  perl(Test::Pod) >= 1.00
+BuildRequires:  perl(Test2::Require::Module)
 %endif
 %if %{with perl_Object_Pad_enables_optional_test} && %{with perl_Object_Pad_enables_Devel_MAT}
-BuildRequires:  perl(Devel::MAT) >= 0.46
+BuildRequires:  perl(Devel::MAT) >= %{devel_mat_min_ver}
 BuildRequires:  perl(Devel::MAT::Dumper)
 BuildRequires:  perl(List::Util)
 %endif
@@ -94,6 +96,9 @@ Requires:       perl(XS::Parse::Sublike) >= %{xs_parse_sublike_min_ver}
 Provides:       perl(:Object_Pad_ABI) = 0.57
 Provides:       perl(:Object_Pad_ABI) = 0.76
 Provides:       perl(:Object_Pad_ABI) = 0.810
+
+# Filter under-specified modules
+%global __requires_exclude %{?__requires_exclude:%{__requires_exclude}|}^perl\\((Future::AsyncAwait|Sublike::Extended|Syntax::Keyword::Dynamically)\\)$
 
 # Filter private modules
 %global __requires_exclude %{?__requires_exclude:%{__requires_exclude}|}^perl\\((91rt141483Role|ARole|BaseClass|Example)\\)
@@ -114,12 +119,13 @@ Requires:       perl(strict)
 %if %{with perl_Object_Pad_enables_optional_test} && !%{defined perl_bootstrap}
 Requires:       perl(Future) >= %{future_min_ver}
 Requires:       perl(Future::AsyncAwait) >= %{future_asyncawait_min_ver}
-Requires:       perl(Sublike::Extended)
+Requires:       perl(Sublike::Extended) >= %{sublike_externeded_min_ver}
 Requires:       perl(Syntax::Keyword::Dynamically) >= %{syntax_keyword_dynamically_min_ver}
 Requires:       perl(Test::MemoryGrowth)
 %endif
 %if %{with perl_Object_Pad_enables_optional_test} && %{with perl_Object_Pad_enables_Devel_MAT}
-Requires:       perl(Devel::MAT) >= 0.46
+%define devel_mat_min_ver 0.53
+Requires:       perl(Devel::MAT) >= %{devel_mat_min_ver}
 Requires:       perl(Devel::MAT::Dumper)
 Requires:       perl(List::Util)
 %endif
@@ -193,9 +199,11 @@ export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print
 %dir %{perl_vendorarch}/Object
 %{perl_vendorarch}/Object/Pad.pm
 %dir %{perl_vendorarch}/Object/Pad
+%{perl_vendorarch}/Object/Pad/Guide
 %{perl_vendorarch}/Object/Pad/MetaFunctions.pm
 %{perl_vendorarch}/Object/Pad/MOP
 %{_mandir}/man3/Object::Pad.*
+%{_mandir}/man3/Object::Pad::Guide::*
 %{_mandir}/man3/Object::Pad::MetaFunctions*
 %{_mandir}/man3/Object::Pad::MOP::*
 
@@ -211,6 +219,9 @@ export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print
 %{_libexecdir}/%{name}
 
 %changelog
+* Tue Nov 26 2024 Petr Pisar <ppisar@redhat.com> - 0.816-1
+- 0.816 bump
+
 * Mon Sep 23 2024 Petr Pisar <ppisar@redhat.com> - 0.814-1
 - 0.814 bump
 

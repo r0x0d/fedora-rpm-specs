@@ -2,21 +2,21 @@
 %bcond check 1
 %global debug_package %{nil}
 
-%global crate gix-validate
+%global crate thiserror-impl
 
-Name:           rust-gix-validate
-Version:        0.9.2
+Name:           rust-thiserror-impl1
+Version:        1.0.69
 Release:        %autorelease
-Summary:        Validation functions for various kinds of names in git
+Summary:        Implementation detail of the thiserror crate
 
 License:        MIT OR Apache-2.0
-URL:            https://crates.io/crates/gix-validate
+URL:            https://crates.io/crates/thiserror-impl
 Source:         %{crates_source}
 
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-Validation functions for various kinds of names in git.}
+Implementation detail of the `thiserror` crate.}
 
 %description %{_description}
 

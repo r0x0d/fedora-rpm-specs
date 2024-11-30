@@ -1,7 +1,7 @@
 Summary: Graphical system installer
 Name:    anaconda
 Version: 42.16
-Release: 1%{?dist}
+Release: 2%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
 URL:     http://fedoraproject.org/wiki/Anaconda
@@ -12,6 +12,11 @@ URL:     http://fedoraproject.org/wiki/Anaconda
 # ./autogen.sh
 # make dist
 Source0: https://github.com/rhinstaller/%{name}/releases/download/%{name}-%{version}/%{name}-%{version}.tar.bz2
+
+# https://github.com/rhinstaller/anaconda/pull/6029
+# https://bugzilla.redhat.com/show_bug.cgi?id=2329379
+# Revert raising an exception on rsync failure as it breaks KDE live install
+Patch: 0001-Revert-payload-raise-exception-on-non-zero-exit-code.patch
 
 # Versions of required components (done so we make sure the buildrequires
 # match the requires versions of things).
@@ -490,6 +495,9 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Thu Nov 28 2024 Adam Williamson <awilliam@redhat.com> - 42.16-2
+- Backport PR #6029 to revert rsync check that breaks KDE install (#2329379)
+
 * Tue Nov 26 2024 Packit <hello@packit.dev> - 42.16-1
 - util: correct errors and suppress stderr for common cases (riehecky)
 - payload: utilize `du` command for finding the required disk size in live OS

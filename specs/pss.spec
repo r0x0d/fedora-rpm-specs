@@ -3,7 +3,8 @@ Version:        1.40
 Release:        33%{?dist}
 Summary:        A power-tool for searching inside source code files
 
-License:        Public Domain
+# psslib/colorama is BSD-3-Clause
+License:        Unlicense AND BSD-3-Clause
 URL:            https://github.com/eliben/pss
 Source0:        https://pypi.python.org/packages/source/p/%{name}/%{name}-%{version}.tar.gz
 BuildRequires:  python3-devel, python3-setuptools

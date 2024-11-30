@@ -2,9 +2,7 @@ Name:           perl-Module-Install-DOAP
 Version:        0.006
 Release:        24%{?dist}
 Summary:        Generate META.yml data from DOAP
-# COPYRIGHT:    Public Domain
-# other files:  GPL+ or Artistic
-License:        (GPL+ or Artistic) and Public Domain
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Module-Install-DOAP
 Source0:        https://cpan.metacpan.org/authors/id/T/TO/TOBYINK/Module-Install-DOAP-%{version}.tar.gz
 # Break build cycle

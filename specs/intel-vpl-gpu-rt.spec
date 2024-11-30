@@ -1,8 +1,8 @@
 %global mfx_ver_major 2
-%global mfx_ver_minor 12
+%global mfx_ver_minor 13
 
 Name:           intel-vpl-gpu-rt
-Version:        24.3.3
+Version:        24.3.4
 Release:        1%{?dist}
 Summary:        Intel Video Processing Library (Intel VPL) GPU Runtime
 License:        MIT
@@ -60,6 +60,9 @@ developing applications that use %{name}.
 %{_libdir}/pkgconfig/libmfx-gen.pc
 
 %changelog
+* Thu Nov 28 2024 Simone Caronni <negativo17@gmail.com> - 24.3.4-1
+- Update to 24.3.4.
+
 * Tue Sep 10 2024 Simone Caronni <negativo17@gmail.com> - 24.3.3-1
 - Update to 24.3.3.
 

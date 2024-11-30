@@ -5,7 +5,7 @@ Version:        0.6.8
 Release:        16%{?dist}
 Summary:        Various utilities for working with date and datetime objects
 
-License:        Public Domain
+License:        0BSD
 URL:            https://github.com/jmcantrell/python-dateutils
 Source0:        %{pypi_source}
 BuildArch:      noarch

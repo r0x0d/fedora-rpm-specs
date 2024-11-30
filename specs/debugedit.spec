@@ -1,6 +1,6 @@
 Name: debugedit
 Version: 5.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Tools and scripts for creating debuginfo and source file distributions, collect build-ids and rewrite source paths in DWARF data for debugging, tracing and profiling.
 License: GPL-3.0-or-later AND GPL-2.0-or-later AND LGPL-2.0-or-later
 URL: https://sourceware.org/debugedit/
@@ -44,6 +44,8 @@ Requires: grep
 
 %global _hardened_build 1
 
+Patch1: 0001-find-debuginfo-Check-files-are-writable-before-modif.patch
+
 %description
 The debugedit project provides programs and scripts for creating
 debuginfo and source file distributions, collect build-ids and rewrite
@@ -84,6 +86,9 @@ make check %{?_smp_mflags}
 %{_mandir}/man1/find-debuginfo.1*
 
 %changelog
+* Thu Nov 28 2024 Mark Wielaard <mjw@fedoraproject.org> - 5.1-2
+- Add 0001-find-debuginfo-Check-files-are-writable-before-modif.patch
+
 * Tue Oct 29 2024 Mark Wielaard <mjw@fedoraproject.org> - 5.1-1
 - New upstream 5.1 release
 - Drop all local patches

@@ -132,7 +132,7 @@ cp -a t %{buildroot}%{_libexecdir}/%{name}
 mkdir -p %{buildroot}%{_libexecdir}/%{name}/bin
 ln -s %{_libexecdir}/git-core/git-cpan %{buildroot}%{_libexecdir}/%{name}/bin
 cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
-#!/bin/sh
+#!/bin/bash
 git config --global user.email "perl-Git-CPAN-Patch-owner@fedoraproject.org"
 git config --global user.name "perl-Git-CPAN-Patch Owner"
 git config --global init.defaultBranch "development"

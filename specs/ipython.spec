@@ -47,7 +47,6 @@ BuildRequires:  python3-matplotlib-inline
 BuildRequires:  python3-pymongo
 BuildRequires:  python3-tornado >= 4.0
 BuildRequires:  python3-zmq
-BuildRequires:  python3-zmq-tests
 BuildRequires:  python3-nbformat
 BuildRequires:  python3-pytest
 BuildRequires:  python3-pytest-asyncio
@@ -139,7 +138,6 @@ Requires:       python3-ipykernel
 Requires:       python3-ipython = %{version}-%{release}
 Requires:       python3-jupyter-client
 Requires:       python3-nbformat
-Requires:       python3-zmq-tests
 # For latex
 Requires:       /usr/bin/dvipng
 Requires:       tex(amsmath.sty)

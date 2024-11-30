@@ -162,13 +162,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.13.0
 %define specversion 6.13.0
 %define patchversion 6.13
-%define pkgrelease 0.rc0.20241127gitaaf20f870da0.11
+%define pkgrelease 0.rc0.20241128gitb86545e02e8c.11
 %define kversion 6
-%define tarfile_release 6.12-10296-gaaf20f870da0
+%define tarfile_release 6.12-10553-gb86545e02e8c
 # This is needed to do merge window version magic
 %define patchlevel 13
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc0.20241127gitaaf20f870da0.11%{?buildid}%{?dist}
+%define specrelease 0.rc0.20241128gitb86545e02e8c.11%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.13.0
 
@@ -4164,8 +4164,9 @@ fi\
 #
 #
 %changelog
-* Wed Nov 27 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.aaf20f870da0.11]
-- Partially revert "crypto: akcipher - Disable signing and decryption" (Jan Stancek)
+* Thu Nov 28 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.b86545e02e8c.11]
+- crypto: sig - Disable signing (Herbert Xu)
+- Linux v6.13.0-0.rc0.b86545e02e8c
 
 * Wed Nov 27 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc0.aaf20f870da0.10]
 - redhat/configs: enable SERIAL_AMBA_PL011 for automotive (Radu Rendec)

@@ -1,7 +1,7 @@
 %global pypi_name pydrive2
 
 Name:           PyDrive2
-Version:        1.21.1
+Version:        1.21.2
 Release:        %autorelease
 Summary:        Google Drive API Python wrapper library, maintained fork of PyDrive
 

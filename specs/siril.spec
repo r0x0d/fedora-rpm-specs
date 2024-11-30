@@ -2,7 +2,7 @@
 ExcludeArch:    %{ix86}
 
 %global forgeurl https://gitlab.com/free-astro/siril
-%global tag 1.3.3
+%global commit 764f1ca02a40c33bf5b2fd2a6a078e7a24242e01
 %forgemeta
 
 Name:           siril
@@ -99,7 +99,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/org.siril
 
 %files -f %{name}.lang
 %license LICENSE.md 3rdparty_licenses/GPL-2.0-or-later.txt 3rdparty_licenses/LICENSE_sleef.txt 3rdparty_licenses/LICENSE_zlib.txt
-%doc AUTHORS ChangeLog NEWS README.md
+%doc AUTHORS ChangeLog README.md
 %{_bindir}/%{name}*
 %{_datadir}/applications/org.siril.Siril.desktop
 %{_datadir}/mime/packages/%{name}.xml

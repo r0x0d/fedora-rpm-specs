@@ -1,6 +1,6 @@
 Name:		voms-api-java
 Version:	3.3.3
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Virtual Organization Membership Service Java API
 
 License:	Apache-2.0
@@ -83,7 +83,7 @@ Virtual Organization Membership Service (VOMS) Java API Documentation.
 # Remove license plugin
 %pom_remove_plugin com.mycila.maven-license-plugin:maven-license-plugin
 
-%if %{?fedora}%{!?fedora:0} >= 40
+%if %{?fedora}%{!?fedora:0} >= 40 || %{?rhel}%{!?rhel:0} >= 10
 # Update bouncycastle dependencies
 %pom_change_dep org.bouncycastle:bcprov-jdk15on org.bouncycastle:bcprov-jdk18on
 %pom_change_dep org.bouncycastle:bcpkix-jdk15on org.bouncycastle:bcpkix-jdk18on
@@ -108,6 +108,9 @@ Virtual Organization Membership Service (VOMS) Java API Documentation.
 %license LICENSE
 
 %changelog
+* Thu Nov 28 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 3.3.3-2
+- Update bouncycastle dependencies for EPEL 10
+
 * Sat Aug 03 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 3.3.3-1
 - Update to version 3.3.3
 

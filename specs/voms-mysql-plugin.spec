@@ -3,7 +3,6 @@ Version:	3.1.7
 Release:	23%{?dist}
 Summary:	VOMS server plugin for MySQL
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:	Apache-2.0
 URL:		https://italiangrid.github.io/voms/
 Source:		https://github.com/italiangrid/%{name}/archive/v%{version}.tar.gz

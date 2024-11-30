@@ -2,9 +2,7 @@ Name:           perl-lexical-underscore
 Version:        0.004
 Release:        23%{?dist}
 Summary:        Access your caller's lexical underscore
-# COPYRIGHT:    Public Domain
-# other files:  GPL+ or Artistic
-License:        (GPL+ or Artistic) and Public Domain
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/lexical-underscore
 Source0:        https://cpan.metacpan.org/authors/id/T/TO/TOBYINK/lexical-underscore-%{version}.tar.gz
 BuildArch:      noarch

@@ -4,7 +4,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 7.1.0
-Release: 10%{?dist}
+Release: 11%{?dist}
 Summary: Tool to execute plain-text documents as functional tests
 License: MIT
 URL: https://cucumber.io/
@@ -26,6 +26,7 @@ BuildRequires: ruby
 %if %{without bootstrap}
 BuildRequires: rubygem(aruba)
 %endif
+BuildRequires: rubygem(base64)
 BuildRequires: rubygem(builder)
 BuildRequires: rubygem(cucumber-core)
 BuildRequires: rubygem(cucumber-wire)
@@ -72,6 +73,8 @@ Documentation for %{name}.
 
 %gemspec_remove_dep -g cucumber-messages "~> 17.1", ">= 17.1.1"
 %gemspec_add_dep -g cucumber-messages ">= 17.0"
+
+%gemspec_add_dep -g base64 ">= 0.2.0"
 
 %build
 # Create the gem as gem install only works on a gem file
@@ -135,6 +138,9 @@ popd
 %doc %{gem_instdir}/CHANGELOG.md
 
 %changelog
+* Thu Nov 28 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 7.1.0-11
+- Add base64 dependency explicitly for ruby34
+
 * Fri Nov 01 2024 Vít Ondruch <vondruch@redhat.com> - 7.1.0-10
 - Fix Ruby 3.4 compatibility due to `Hash.new` now accepting `:capacity`
   keyword option.

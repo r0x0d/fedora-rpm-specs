@@ -10,10 +10,15 @@
 %global harden -Wl,-z,relro,-z,now
 %endif
 
+# this package ships a ppp plugin, these are strictly tied to the ppp
+# version, so it must be rebuilt when the ppp version changes or else this happens:
+# /usr/sbin/pppd: Plugin /usr/lib64/pptpd/pptpd-logwtmp.so is for pppd version 2.5.0, this is 2.5.1
+%global ppp_version %(pkg-config --modversion pppd 2>/dev/null || echo bad)
+
 Summary:	PoPToP Point to Point Tunneling Server
 Name:		pptpd
 Version:	1.5.0
-Release:	3%{?dist}
+Release:	4%{?dist}
 # Automatically converted from old format: GPLv2+ and LGPLv2+ - review is highly recommended.
 License:	GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+
 BuildRequires:	make
@@ -26,7 +31,7 @@ Source1:	pptpd.service
 Source2:	pptpd.sysconfig
 Source3:	modules-load.conf
 Source4:	20-pptpd.conf
-Requires:	ppp >= 2.4.2
+Requires:	ppp = %{ppp_version}
 Requires:	perl-interpreter
 
 Requires(post): systemd
@@ -136,6 +141,10 @@ fi
 %endif
 
 %changelog
+* Thu Nov 28 2024 Adam Williamson <awilliam@redhat.com> - 1.5.0-4
+- Rebuild for ppp 2.5.1
+- Add strong version tie to ppp dependency
+
 * Wed Sep  4 2024 Miroslav Suchý <msuchy@redhat.com> - 1.5.0-3
 - convert license to SPDX
 

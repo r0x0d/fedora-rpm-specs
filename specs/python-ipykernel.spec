@@ -1,8 +1,7 @@
 %global modname ipykernel
 
 # When we bootstrap new Python, we need to avoid a build dependnecy loop
-%bcond_without tests
-%bcond_without doc
+%bcond tests 1
 
 Name:           python-%{modname}
 Version:        6.29.3
@@ -31,18 +30,8 @@ Summary:        %{summary}
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{modname}}
 Requires:       python-jupyter-filesystem
 
-%if %{with doc}
-BuildRequires:  make
-BuildRequires:  python3-sphinx
-BuildRequires:  python3-sphinx-autodoc-typehints
-BuildRequires:  python3-sphinxcontrib-github-alt
-BuildRequires:  python3-myst-parser
-BuildRequires:  python3-pydata-sphinx-theme
-# for intersphinx:
-BuildRequires:  python%{python3_pkgversion}-docs
-BuildRequires:  python%{python3_pkgversion}-ipython-doc
-BuildRequires:  python-jupyter-client-doc
-%endif
+# We removed the -doc subpackage for Fedora 42.
+Obsoletes:      python-ipykernel-doc < 6.29.3-8
 
 Recommends:     python%{python3_pkgversion}-matplotlib
 Recommends:     python%{python3_pkgversion}-numpy
@@ -52,17 +41,6 @@ Recommends:     python%{python3_pkgversion}-pillow
 
 %description -n python%{python3_pkgversion}-%{modname} %{_description}
 
-%if %{with doc}
-%package doc
-Summary:        Documentation for %{name}
-Requires:       python%{python3_pkgversion}-docs
-Requires:       python%{python3_pkgversion}-ipython-doc
-Requires:       python-jupyter-client-doc
-
-%description    doc
-This package contains the documentation of %{name}.
-%endif
-
 %prep
 %autosetup -p1 -n %{modname}-%{version}
 
@@ -70,32 +48,15 @@ This package contains the documentation of %{name}.
 # See https://github.com/ipython/ipykernel/pull/767
 sed -i '/"debugpy/d' pyproject.toml
 
-%if %{with doc}
-# Use local objects.inv for intersphinx:
-sed -e "s|\(('https://docs.python.org/3/', \)None)|\1'/usr/share/doc/python3-docs/html/objects.inv')|" \
-    -e "s|\(('https://ipython.readthedocs.io/en/latest', \)None)|\1'/usr/share/doc/python3-ipython-doc/html/objects.inv')|" \
-    -e "s|\(('https://jupyter.readthedocs.io/en/latest', \)None)|\1'/usr/share/doc/python-jupyter-client/html/objects.inv')|" \
-    -i docs/conf.py
-%endif
-
 %generate_buildrequires
 %pyproject_buildrequires %{?with_tests:-x test}
 
 %build
 %pyproject_wheel
 
-%if %{with doc}
-%make_build -C docs html
-%endif
-
 %install
 %pyproject_install
 %pyproject_save_files %{modname} %{modname}_launcher
-%if %{with doc}
-mkdir -p %{buildroot}%{_docdir}/%{name}
-cp -fpavr docs/_build/html %{buildroot}%{_docdir}/%{name}
-rm %{buildroot}%{_docdir}/%{name}/html/.buildinfo
-%endif
 
 # Install the kernel so it can be found
 # See https://bugzilla.redhat.com/show_bug.cgi?id=1327979#c19
@@ -130,11 +91,6 @@ cat %{buildroot}%{_datadir}/jupyter/kernels/python3/kernel.json
 %pycached %{python3_sitelib}/%{modname}_launcher.py
 %{python3_sitelib}/%{modname}*.dist-info/
 %{_datadir}/jupyter/kernels/python3
-
-%if %{with doc}
-%files doc
-%doc %{_docdir}/%{name}/html
-%endif
 
 
 %changelog

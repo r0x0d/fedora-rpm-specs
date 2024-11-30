@@ -4,7 +4,7 @@
 Summary: Statistics collection daemon for filling RRD files
 Name: collectd
 Version: 5.12.0
-Release: 44%{?dist}
+Release: 45%{?dist}
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License: GPL-2.0-only
 URL: https://collectd.org/
@@ -695,7 +695,7 @@ touch src/pinba.proto
     --disable-xmms \
     --disable-zone \
 %ifarch %{java_arches}
-    --with-java=%{java_home}/ \
+    --with-java \
 %else
     --disable-java \
 %endif
@@ -1238,6 +1238,9 @@ make check
 
 
 %changelog
+* Thu Nov 28 2024 Kevin Fenzi <kevin@scrye.com> - 5.12.0-45
+- Fix FTBFS issue with java. Fixes rhbz#2317175
+
 * Sun Aug 04 2024 Kevin Fenzi <kevin@scrye.com> - 5.12.0-44
 - Rebuild for new xen
 

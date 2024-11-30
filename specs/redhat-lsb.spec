@@ -5,75 +5,6 @@
 %global snapshot %{gitdate}git%{gitversion}
 %global gver .%{gitdate}git%{gitversion}
 
-# Define this to link to which library version  eg. /lib64/ld-lsb-x86-64.so.3
-%global lsbsover 3
-
-%ifarch %{ix86}
-%global ldso ld-linux.so.2
-%global lsbldso ld-lsb.so
-%global archname ia32
-%endif
-
-%ifarch alpha
-%global ldso ld-linux-alpha.so.2
-%global lsbldso ld-lsb-alpha.so
-%define archname alpha
-%endif
-
-%ifarch ia64
-%global ldso ld-linux-ia64.so.2
-%global lsbldso ld-lsb-ia64.so
-%global archname ia64
-%endif
-
-%ifarch ppc
-%global ldso ld.so.1
-%global lsbldso ld-lsb-ppc32.so
-%global archname ppc32
-%endif
-
-%ifarch ppc64
-%global ldso ld64.so.1
-%global lsbldso ld-lsb-ppc64.so
-%global archname ppc64
-%endif
-
-%ifarch ppc64le
-%global ldso ld64.so.2
-%global lsbldso ld-lsb-ppc64le.so
-%global archname ppc64le
-%endif
-
-%ifarch s390
-%global ldso ld.so.1
-%global lsbldso ld-lsb-s390.so
-%global archname s390
-%endif
-
-%ifarch s390x
-%global ldso ld64.so.1
-%global lsbldso ld-lsb-s390x.so
-%global archname s390x
-%endif
-
-%ifarch x86_64
-%global ldso ld-linux-x86-64.so.2
-%global lsbldso ld-lsb-x86-64.so
-%global archname amd64
-%endif
-
-%ifarch %{arm}
-%global ldso ld-linux.so.2
-%global lsbldso ld-lsb-arm.so
-%global archname arm
-%endif
-
-%ifarch aarch64
-%global ldso ld-linux-aarch64.so.1
-%global lsbldso ld-lsb-aarch64.so
-%global archname aarch64
-%endif
-
 %global upstreamlsbrelver 2.0
 %global lsbrelver 5.0
 %global disclaimer This package is not compliance with LSB, because various \
@@ -84,26 +15,17 @@ removed from the repositories and possibly replaced with new ones. \
 This package tries its best to comply with the LSB. Hoping to be helpful and \
 continue to support the LSB project and software that uses it
 
-# for >= f28, __brp_ldconfig is added in __os_install_post, it removes the symlink %%{lsbldso}
-# and thus leading to the FTBS.
-%global __brp_ldconfig %{nil}
-
-# The packages are architecture-specific, but do not contain any ELF
-# binaries with debuginfo to extract.
-%global debug_package %{nil}
-
 Summary: Implementation of Linux Standard Base specification
 Name: redhat-lsb
 Version: 5.0
-Release: 0.12%{gver}%{?dist}
+Release: 0.13%{gver}%{?dist}
 URL: https://wiki.linuxfoundation.org/lsb/start
 # https://github.com/LinuxStandardBase/lsb-samples/
 Source0: redhat-lsb-%{snapshot}.tar.gz
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License: GPL-2.0-only
 BuildRequires: make
-BuildRequires: perl-generators
-BuildRequires: perl(Getopt::Long)
+BuildRequires: help2man
 
 Provides: lsb = %{version}-%{release}
 Provides: lsb-%{archname} = %{version}-%{release}
@@ -111,7 +33,15 @@ Provides: lsb-noarch = %{version}-%{release}
 Obsoletes: redhat-lsb-trialuse < 5
 Obsoletes: redhat-lsb-submod-multimedia < 5
 Obsoletes: redhat-lsb-submod-security < 5
+Obsoletes: redhat-lsb-core <= 5.0-0.12
+Obsoletes: redhat-lsb-cxx <= 5.0-0.12
+Obsoletes: redhat-lsb-desktop <= 5.0-0.12
+Obsoletes: redhat-lsb-languages <= 5.0-0.12
+Obsoletes: redhat-lsb-printing <= 5.0-0.12
+Obsoletes: redhat-lsb-supplemental <= 5.0-0.12
 Conflicts: lsb_release
+
+BuildArch:      noarch
 
 %description
 The Linux Standard Base (LSB) is an attempt to develop a set of standards that
@@ -125,325 +55,6 @@ The lsb package provides utilities, libraries etc. needed for LSB Compliant
 Applications. It also contains requirements that will ensure that all 
 components required by the LSB are installed on the system.
 
-%package core
-Summary: LSB Core module support
-Requires: redhat-lsb = %{version}-%{release}
-Provides: lsb-core-%{archname} = %{version}-%{release}
-Provides: lsb-core-noarch = %{version}-%{release}
-
-# gLSB Library
-Requires: glibc%{?_isa}
-Requires: glibc-common
-Requires: libgcc%{?_isa}
-#LSB requires libcrypt.so.1
-Requires: libxcrypt-compat%{?_isa}
-#LSB requires libncurses.so.5 for some reason
-Requires: ncurses-compat-libs%{?_isa}
-# ncurses includes
-#    infocmp
-#    tic
-#    tput
-Requires: ncurses
-Requires: pam%{?_isa}
-Requires: zlib%{?_isa}
-
-# gLSB Command and Utilities
-Requires: /usr/bin/[
-Requires: /usr/bin/ar
-Requires: /usr/bin/at
-Requires: /usr/bin/awk
-Requires: /usr/bin/basename
-Requires: /usr/bin/batch
-Requires: /usr/bin/bc
-Requires: /usr/bin/cat
-Requires: /usr/bin/chfn
-Requires: /usr/bin/chgrp
-Requires: /usr/bin/chmod
-Requires: /usr/bin/chown
-Requires: /usr/bin/chsh
-Requires: /usr/bin/cksum
-Requires: /usr/bin/cmp
-Requires: /usr/bin/col
-Requires: /usr/bin/comm
-Requires: /usr/bin/cp
-Requires: /usr/bin/cpio
-Requires: /usr/bin/crontab
-Requires: /usr/bin/csplit
-Requires: /usr/bin/cut
-Requires: /usr/bin/date
-Requires: /usr/bin/dd
-Requires: /usr/bin/df
-Requires: /usr/bin/diff
-Requires: /usr/bin/dirname
-Requires: /usr/bin/dmesg
-Requires: /usr/bin/du
-Requires: /usr/bin/echo
-Requires: /usr/bin/ed
-Requires: /usr/bin/egrep
-Requires: /usr/bin/env
-Requires: /usr/bin/expand
-Requires: /usr/bin/expr
-Requires: /usr/bin/false
-Requires: /usr/bin/fgrep
-Requires: /usr/bin/file
-Requires: /usr/bin/find
-Requires: /usr/bin/fold
-Requires: /usr/sbin/fuser
-Requires: /usr/bin/gencat
-Requires: /usr/bin/getconf
-Requires: /usr/bin/gettext
-Requires: /usr/bin/grep
-Requires: /usr/sbin/groupadd
-Requires: /usr/sbin/groupdel
-Requires: /usr/sbin/groupmod
-Requires: /usr/bin/groups
-Requires: /usr/bin/gunzip
-Requires: /usr/bin/gzip
-Requires: /usr/bin/head
-Requires: /usr/bin/hostname
-Requires: /usr/bin/iconv
-Requires: /usr/bin/id
-Requires: /usr/bin/install
-Requires: /usr/bin/ipcrm
-Requires: /usr/bin/ipcs
-Requires: /usr/bin/join
-Requires: /usr/bin/kill
-Requires: /usr/bin/killall
-Requires: /usr/bin/ln
-Requires: /usr/bin/locale
-Requires: /usr/bin/localedef
-Requires: /usr/bin/logger
-Requires: /usr/bin/logname
-Requires: /usr/bin/lp
-Requires: /usr/bin/lpr
-Requires: /usr/bin/ls
-Requires: /usr/bin/m4
-Requires: /bin/mailx
-Requires: /usr/bin/make
-Requires: /usr/bin/man
-Requires: /usr/bin/md5sum
-Requires: /usr/bin/mkdir
-Requires: /usr/bin/mkfifo
-Requires: /usr/bin/mknod
-Requires: /usr/bin/mktemp
-Requires: /usr/bin/more
-Requires: /usr/bin/mount
-Requires: /usr/bin/msgfmt
-Requires: /usr/bin/mv
-Requires: /usr/bin/newgrp
-Requires: /usr/bin/nice
-Requires: /usr/bin/nl
-Requires: /usr/bin/nohup
-Requires: /usr/bin/od
-Requires: /usr/bin/passwd
-Requires: /usr/bin/paste
-Requires: /usr/bin/patch
-Requires: /usr/bin/pathchk
-#better POSIX conformance of /usr/bin/pax
-%if 0%{?fedora} || 0%{?epel} <= 8
-# not available on epel9
-Requires: spax
-%endif
-Requires: /usr/bin/pidof
-Requires: /usr/bin/pr
-Requires: /usr/bin/printf
-Requires: /usr/bin/ps
-Requires: /usr/bin/pwd
-Requires: /usr/bin/renice
-Requires: /usr/bin/rm
-Requires: /usr/bin/rmdir
-Requires: /usr/bin/sed
-Requires: /usr/sbin/sendmail
-Requires: /usr/bin/seq
-Requires: /usr/bin/sh
-Requires: /usr/sbin/shutdown
-Requires: /usr/bin/sleep
-Requires: /usr/bin/sort
-Requires: /usr/bin/split
-Requires: /usr/bin/strings
-Requires: /usr/bin/strip
-Requires: /usr/bin/stty
-Requires: /usr/bin/su
-Requires: /usr/bin/sync
-Requires: /usr/bin/tail
-Requires: /usr/bin/tar
-Requires: /usr/bin/tee
-Requires: /usr/bin/test
-Requires: /usr/bin/time
-Requires: /usr/bin/touch
-Requires: /usr/bin/tr
-Requires: /usr/bin/true
-Requires: /usr/bin/tsort
-Requires: /usr/bin/tty
-Requires: /usr/bin/umount
-Requires: /usr/bin/uname
-Requires: /usr/bin/unexpand
-Requires: /usr/bin/uniq
-Requires: /usr/sbin/useradd
-Requires: /usr/sbin/userdel
-Requires: /usr/sbin/usermod
-Requires: /usr/bin/wc
-Requires: /usr/bin/xargs
-Requires: /usr/bin/zcat
-
-%description core
-%{disclaimer}
-
-The Linux Standard Base (LSB) Core module support provides the fundamental
-system interfaces, libraries, and runtime environment upon which all conforming
-applications and libraries depend.
-
-
-%package cxx
-Summary: LSB CXX module support
-Requires: redhat-lsb-core%{?_isa} = %{version}-%{release}
-Provides: lsb-cxx-%{archname} = %{version}-%{release}
-Provides: lsb-cxx-noarch = %{version}-%{release}
-
-Requires: libstdc++%{?_isa}
-
-%description cxx
-%{disclaimer}
-
-The Linux Standard Base (LSB) CXX module supports the core interfaces by
-providing system interfaces, libraries, and a runtime environment for
-applications built using the C++ programming language. These interfaces
-provide low-level support for the core constructs of the language, and
-implement the standard base C++ libraries.
-
-%package desktop
-Summary: LSB Desktop module support
-Requires: redhat-lsb-core%{?_isa} = %{version}-%{release}
-Provides: lsb-desktop-%{archname} = %{version}-%{release}
-Provides: lsb-desktop-noarch = %{version}-%{release}
-Provides: lsb-graphics-%{archname} = %{version}-%{release}
-Provides: lsb-graphics-noarch = %{version}-%{release}
-Obsoletes: redhat-lsb-graphics < %{version}-%{release}
-
-Requires: xdg-utils
-# LSB_Graphics library
-Requires: libICE%{?_isa}
-Requires: libSM%{?_isa}
-Requires: libX11%{?_isa}
-Requires: libXext%{?_isa}
-Requires: libXi%{?_isa}
-Requires: libXt%{?_isa}
-Requires: libXtst%{?_isa}
-Requires: mesa-libGL%{?_isa}
-Requires: mesa-libGLU%{?_isa}
-# gLSB Graphics and gLSB Graphics Ext Command and Utilities
-Requires: /usr/bin/fc-cache
-Requires: /usr/bin/fc-list
-Requires: /usr/bin/fc-match
-# gLSB Graphics Ext library
-Requires: cairo%{?_isa}
-Requires: freetype%{?_isa}
-Requires: libjpeg-turbo%{?_isa}
-Requires: libpng%{?_isa}
-Requires: libXft%{?_isa}
-Requires: libXrender%{?_isa}
-# toolkit-gtk
-Requires: atk%{?_isa}
-Requires: gdk-pixbuf2%{?_isa}
-Requires: glib2%{?_isa}
-Requires: gtk2%{?_isa}
-Requires: pango%{?_isa}
-%if 0%{?fedora}
-# qt4 not available on epel9 and epel8
-# toolkit-qt is not in rhel
-Requires: qt%{?_isa}
-Requires: qt-x11%{?_isa}
-%endif
-# xml
-Requires: libxml2%{?_isa}
-
-%description desktop
-%{disclaimer}
-
-The Linux Standard Base (LSB) Desktop Specifications define components that are
-required to be present on an LSB conforming system.
-
-%package languages
-Summary: LSB Languages module support
-Requires: redhat-lsb-core%{?_isa} = %{version}-%{release}
-Provides: lsb-languages-%{archname} = %{version}-%{release}
-Provides: lsb-languages-noarch = %{version}-%{release}
-
-# Perl and Perl non-builtin modules
-Requires: /usr/bin/perl
-Requires: perl(CGI)
-Requires: perl(CPAN)
-# Locale::Constants has been Locale::Codes::Costants, so we need
-# create a /usr/share/perl5/vendor_perl/Constants.pm manually.
-# Requires: perl(Locale::Constants)
-# perl(Locale::Constants) requires perl(Locale::Codes)
-# DB module is a builtin module, but perl package doesn't contain this provide.
-# Requires: perl(DB)
-# we also need perl(Pod::Plainer), we need to rpm this package ourself
-Requires: perl(Locale::Codes)
-Requires: perl(File::Spec)
-Requires: perl(Scalar::Util)
-Requires: perl(Test::Harness)
-Requires: perl(Test::Simple)
-Requires: perl(ExtUtils::MakeMaker)
-Requires: perl(XML::LibXML)
-Requires: perl(Pod::Checker)
-Requires: perl(Text::Soundex)
-Requires: perl(Env)
-Requires: perl(Time::HiRes)
-Requires: perl(Locale::Maketext)
-Requires: perl(Fatal)
-Requires: perl(Sys::Syslog)
-Requires: perl(Getopt::Long)
-%if 0%{?fedora} || 0%{?epel} <= 8
-Requires: perl(B::Lint)
-Requires: perl(Class::ISA)
-Requires: perl(File::CheckTree)
-Requires: perl(Pod::LaTeX)
-Requires: perl(Pod::Plainer)
-%endif
-# python3
-Requires: /usr/bin/python3
-# java
-
-%description languages
-%{disclaimer}
-
-The Linux Standard Base (LSB) Languages module supports components for runtime
-languages which are found on an LSB conforming system.
-
-%package printing
-Summary: LSB Printing module support
-Requires: redhat-lsb-core%{?_isa} = %{version}-%{release}
-Provides: lsb-printing-%{archname} = %{version}-%{release}
-Provides: lsb-printing-noarch = %{version}-%{release}
-
-# gLSB Printing Libraries
-Requires: cups-libs
-# gLSB Printing Command and Utilities
-Requires: /usr/bin/foomatic-rip
-Requires: /usr/bin/gs
-
-%description printing
-The Linux Standard Base (LSB) Printing specifications define components that
-are required to be present on an LSB conforming system.
-
-%package supplemental
-Summary: LSB supplemental dependencies required by LSB certification tests
-Requires: net-tools
-Requires: xorg-x11-fonts-ISO8859-1-75dpi
-Requires: xorg-x11-fonts-ISO8859-1-100dpi
-Requires: abattis-cantarell-fonts
-Requires: sil-abyssinica-fonts
-Requires: xorg-x11-server-Xvfb
-
-%description supplemental
-%{disclaimer}
-
-This subpackage brings in supplemental dependencies for components required for
-passing LSB (Linux Standard Base) certification testsuite, but not directly required
-to be on LSB conforming system.
-
 %prep
 %setup -q -n redhat-lsb-%{snapshot}
 
@@ -454,11 +65,6 @@ cd lsb_release/src
 %install
 pushd redhat-lsb
 %make_install
-
-# manually add Locale::Constants. This module is just an alias of Locale::Codes::Constants
-mkdir -p %{buildroot}%{perl_vendorlib}/Locale
-cp -p Constants.pm %{buildroot}%{perl_vendorlib}/Locale
-cp -p Constants.pod %{buildroot}%{perl_vendorlib}/Locale
 popd
 
 pushd lsb_release/src
@@ -469,42 +75,6 @@ popd
 cp -p lsb_release/src/COPYING .
 cp -p lsb_release/src/README README.lsb_release
 
-# modules
-mkdir -p %{buildroot}%{_sysconfdir}/lsb-release.d/
-modules="core cxx desktop languages printing"
-
-core="core security"
-cxx="cpp"
-desktop="desktop-misc graphics graphics-ext multimedia toolkit-gtk toolkit-qt toolkit-qt3"
-desktop="${desktop} xml"
-languages="perl python"
-printing="printing"
-trialuse="security multimedia"
-
-for mod in ${modules};do
-  touch $RPM_BUILD_ROOT%{_sysconfdir}/lsb-release.d/${mod}-%{lsbrelver}-%{archname}
-  touch $RPM_BUILD_ROOT%{_sysconfdir}/lsb-release.d/${mod}-%{lsbrelver}-noarch
-done
-
-mkdir -p %{buildroot}%{_libdir}
-for LSBVER in %{lsbsover}; do
-  ln -snf %{ldso} %{buildroot}%{_libdir}/%{lsbldso}.$LSBVER
-done
-
-# LSB uses /usr/lib rather than /usr/lib64 even for 64bit OS
-# According to the lsb-core documentation provided by
-# http://refspecs.linux-foundation.org/LSB_3.2.0/LSB-Core-generic/LSB-Core-generic.pdf
-# it's OK to put non binary in /usr/lib.
-ln -snf ../../../sbin/chkconfig %{buildroot}/usr/lib/lsb/install_initd
-ln -snf ../../../sbin/chkconfig %{buildroot}/usr/lib/lsb/remove_initd
-#ln -snf mail %{buildroot}/bin/mailx
-
-#mkdir -p %{buildroot}/usr/X11R6/lib/X11/xserver
-#ln -snf /usr/%{_lib}/xserver/SecurityPolicy %{buildroot}/usr/X11R6/lib/X11/xserver/SecurityPolicy
-#ln -snf /usr/share/X11/fonts %{buildroot}/usr/X11R6/lib/X11/fonts
-#ln -snf /usr/share/X11/rgb.txt  %{buildroot}/usr/X11R6/lib/X11/rgb.txt
-
-
 %files
 %doc README.md README.lsb_release
 %license COPYING
@@ -513,30 +83,13 @@ ln -snf ../../../sbin/chkconfig %{buildroot}/usr/lib/lsb/remove_initd
 %{_bindir}/lsb_release
 /usr/lib/lsb
 
-%files core
-%dir %{_sysconfdir}/lsb-release.d
-%{_libdir}/*so*
-%{_sysconfdir}/lsb-release.d/core*
-
-%files cxx
-%{_sysconfdir}/lsb-release.d/cxx*
-
-%files desktop
-%{_sysconfdir}/lsb-release.d/desktop*
-
-%files languages
-%{_sysconfdir}/lsb-release.d/languages*
-%{perl_vendorlib}/Locale/Constants.pm
-%{perl_vendorlib}/Locale/Constants.pod
-
-%files printing
-%{_sysconfdir}/lsb-release.d/printing*
-
-%files supplemental
-#no files, just dependencies
-
 
 %changelog
+* Thu Nov 28 2024 Sérgio Basto <sergio@serjux.com> - 5.0-0.13.20231006git8d00acdc
+- Remove sub-pacakges: redhat-lsb-core, redhat-lsb-cxx, redhat-lsb-desktop,
+  redhat-lsb-languages and redhat-lsb-printing aren't useful for a long time
+- Switch to a noarch package
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 5.0-0.12.20231006git8d00acdc
 - convert license to SPDX
 

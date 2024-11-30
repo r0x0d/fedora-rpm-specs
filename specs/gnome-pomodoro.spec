@@ -3,8 +3,8 @@
 
 Epoch:          1
 Name:           gnome-pomodoro
-Version:        0.25.1
-Release:        3%{?dist}
+Version:        0.26.0
+Release:        1%{?dist}
 Summary:        A time management utility for GNOME
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -81,6 +81,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/*/org.gnome.Pomod
 %{_datadir}/dbus-1/services/org.gnome.Pomodoro.service
 
 %changelog
+* Wed Oct 09 2024 Vicente Maroto Garzón <vicente.maroto.garzon@c512l.dev> 1:0.26.0-1
+- Update to 0.26.0
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 1:0.25.1-3
 - convert license to SPDX
 

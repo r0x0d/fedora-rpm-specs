@@ -11,7 +11,7 @@
 %bcond malcontent %[!0%{?rhel}]
 
 Name:           flatpak
-Version:        1.15.11
+Version:        1.15.12
 Release:        1%{?dist}
 Summary:        Application deployment framework for desktop apps
 
@@ -296,6 +296,9 @@ fi
 
 
 %changelog
+* Thu Nov 28 2024 Kalev Lember <klember@redhat.com> - 1.15.12-1
+- Update to 1.15.12
+
 * Wed Nov 27 2024 Kalev Lember <klember@redhat.com> - 1.15.11-1
 - Update to 1.15.11
 
