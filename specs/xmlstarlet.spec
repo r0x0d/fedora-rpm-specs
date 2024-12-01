@@ -2,7 +2,7 @@
 
 Name: xmlstarlet
 Version: 1.6.1
-Release: 25%{?dist}
+Release: 26%{?dist}
 Summary: Command Line XML Toolkit
 License: MIT
 URL: http://xmlstar.sourceforge.net/
@@ -15,7 +15,6 @@ BuildRequires: make
 BuildRequires: gcc
 BuildRequires: xmlto automake autoconf libxslt-devel
 BuildRequires: libxml2-devel >= 2.6.23
-BuildRequires: docbook5-schemas
 
 
 %description
@@ -54,6 +53,9 @@ make check
 
 
 %changelog
+* Fri Nov 29 2024 Paul W. Frields <stickster@gmail.com> - 1.6.1-26
+- Remove docbook5-schemas BR due to deprecation
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.6.1-25
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

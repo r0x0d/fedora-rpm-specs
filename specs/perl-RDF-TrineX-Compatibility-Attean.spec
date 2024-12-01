@@ -2,9 +2,7 @@ Name:           perl-RDF-TrineX-Compatibility-Attean
 Version:        0.100
 Release:        15%{?dist}
 Summary:        Compatibility layer between Attean and RDF::Trine
-# COPYRIGHT:    Public Domain
-# LICENSE:      GPL+ or Artistic
-License:        (GPL+ or Artistic) and Public Domain
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/RDF-TrineX-Compatibility-Attean
 Source0:        https://cpan.metacpan.org/authors/id/K/KJ/KJETILK/RDF-TrineX-Compatibility-Attean-%{version}.tar.gz
 BuildArch:      noarch

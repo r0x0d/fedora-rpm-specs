@@ -1,14 +1,13 @@
 %global pypi_name pulsectl
 
 Name:           python-%{pypi_name}
-Version:        22.3.2
-Release:        10%{?dist}
+Version:        24.11.0
+Release:        1%{?dist}
 Summary:        Python high-level interface and ctypes-based bindings for PulseAudio
 
 License:        MIT
 URL:            https://pypi.org/project/%{pypi_name}
-Source0:        https://files.pythonhosted.org/packages/1a/a9/cdd1a19889f78ddd45775b9830045df2b4eb25f63911a2ddc3aaf8ec614f/%{pypi_name}-%{version}.tar.gz
-
+Source0:        %{pypi_source %{pypi_name}}
 BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
@@ -51,6 +50,9 @@ samples to play, player-like client).
 
 
 %changelog
+* Thu Nov 28 2024 Peter Oliver <rpm@mavit.org.uk> - 24.11.0-1
+- Update to version 24.11.0.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 22.3.2-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

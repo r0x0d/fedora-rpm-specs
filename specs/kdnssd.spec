@@ -2,7 +2,7 @@
 
 Name:    kdnssd
 Summary: KDE Network Monitor for DNS-SD services (Zeroconf)
-Version: 24.11.80
+Version: 24.11.90
 Release: 1%{?dist}
 
 License: GPL-2.0-or-later AND LGPL-2.0-only
@@ -62,6 +62,9 @@ Provides:  kdenetwork-kdnssd = 7:%{version}-%{release}
 
 
 %changelog
+* Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
+- 24.11.90
+
 * Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
 - 24.11.80
 

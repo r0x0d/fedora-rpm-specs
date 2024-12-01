@@ -92,10 +92,6 @@ Requires:       %{name}-lib = %{version}-%{release}
 Requires:       %{name}-jdk-binding
 Suggests:       %{name}-openjdk21 = %{version}-%{release}
 
-# Require full javapackages-tools since the ant script uses
-# /usr/share/java-utils/java-functions
-Requires:       javapackages-tools
-
 %description
 Apache Ant is a Java library and command-line tool whose mission is to
 drive processes described in build files as targets and extension

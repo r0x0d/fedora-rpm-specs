@@ -31,11 +31,6 @@ BuildRequires:  jflex
 BuildRequires:  java_cup
 %endif
 
-# Explicit javapackages-tools requires since scripts use
-# /usr/share/java-utils/java-functions
-Requires:       javapackages-tools
-
-
 %description
 java_cup is a LALR Parser Generator for Java
 

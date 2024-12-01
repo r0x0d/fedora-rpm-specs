@@ -1,4 +1,4 @@
-%global pypi_version 24.7
+%global pypi_version 24.11
 
 Name:           python-virt-firmware
 Version:        %{pypi_version}

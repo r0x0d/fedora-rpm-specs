@@ -1,4 +1,4 @@
-%global glibcsrcdir glibc-2.40.9000-357-g47311cca31
+%global glibcsrcdir glibc-2.40.9000-399-ge2436d6f5a
 %global glibcversion 2.40.9000
 # Pre-release tarballs are pulled in from git using a command that is
 # effectively:
@@ -152,7 +152,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 20
+%global baserelease 21
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -342,8 +342,6 @@ Patch13: glibc-fedora-localedata-rh61908.patch
 Patch17: glibc-cs-path.patch
 Patch23: glibc-python3.patch
 Patch24: glibc-nolink-libc.patch
-Patch25: glibc-rh2327564-1.patch
-Patch26: glibc-rh2327564-2.patch
 
 ##############################################################################
 # Continued list of core "glibc" package information:
@@ -2360,6 +2358,46 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Fri Nov 29 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-21
+- Drop glibc-rh2327564-1.patch, glibc-rh2327564-2.patch.  Fixed upstream.
+  (#2327564)
+- Auto-sync with upstream branch master,
+  commit e2436d6f5aa47ce8da80c2ba0f59dfb9ffde08f3:
+- malloc: send freed small chunks to smallbin
+- AArch64: Remove zva_128 from memset
+- benchtests: Add calloc test
+- libio: make _IO_least_marker static
+- malloc: Avoid func call for tcache quick path in free()
+- math: Add internal roundeven_finite
+- RISC-V: Use builtin for fma and fmaf
+- RISC-V: Use builtin for copysign and copysignf
+- Silence most -Wzero-as-null-pointer-constant diagnostics
+- sysdeps: linux: Fix output of LD_SHOW_AUXV=1 for AT_RSEQ_*
+- nptl: initialize cpu_id_start prior to rseq registration
+- math: Fix branch hint for 68d7128942
+- ﻿powerpc64le: ROP Changes for strncpy/ppc-mount
+- math: Fix non-portability in the computation of signgam in lgammaf
+- malloc: Split _int_free() into 3 sub functions
+- math: Use tanf from CORE-MATH
+- math: Use lgammaf from CORE-MATH
+- math: Use erfcf from CORE-MATH
+- math: Use erff from CORE-MATH
+- math: Split s_erfF in erff and erfc
+- math: Use cbrtf from CORE-MATH
+- benchtests: Add tanf benchmark
+- benchtests: Add lgammaf benchmark
+- benchtests: Add erfcf benchmark
+- benchtests: Add erff benchmark
+- benchtests: Add cbrtf benchmark
+- elf: Handle static PIE with non-zero load address [BZ #31799]
+- x86/string: Use `movsl` instead of `movsd` in strncat [BZ #32344]
+- stdlib: Make getenv thread-safe in more cases
+- aarch64: Remove non-temporal load/stores from oryon-1's memset
+- aarch64: Remove non-temporal load/stores from oryon-1's memcpy
+- ﻿powerpc64le: _init/_fini file changes for ROP
+- misc: remove extra va_end in error_tail (bug 32233)
+- intl: avoid alloca for arbitrary sizes (bug 32380)
+
 * Thu Nov 21 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-20
 - Revert aarch64 memset changes (cec3aef3241cec3aef32412779e) (#2327564)
 

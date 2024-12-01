@@ -12,7 +12,6 @@ ExclusiveArch: %{java_arches}
 # ./generate-tarball.sh
 Source0:       antlr-%{version}.tar.gz
 Source1:       %{name}-build.xml
-Source2:       %{name}-script
 Source3:       http://repo2.maven.org/maven2/antlr/antlr/%{version}/%{name}-%{version}.pom
 # Repack the tarball without prebuilt binaries of unknown origin
 Source4:       generate-tarball.sh
@@ -35,9 +34,6 @@ parsers].
 %package     tool
 Summary:       ANother Tool for Language Recognition
 Provides:      %{name} = %{version}-%{release}
-# Explicit requires for javapackages-tools since antlr-script
-# uses /usr/share/java-utils/java-functions
-Requires:      javapackages-tools
 BuildArch:     noarch
 
 %description tool
@@ -100,8 +96,9 @@ chmod 0644 doc/*
 %mvn_install -J work/api
 
 mkdir -p $RPM_BUILD_ROOT{%{_includedir}/%{name},%{_libdir},%{_bindir}}
+
 # script
-install -p -m 755 %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/antlr
+%jpackage_script antlr.Tool "" "" antlr antlr
 
 # C++ lib and headers, antlr-config
 install -p -m 644 lib/cpp/antlr/*.hpp $RPM_BUILD_ROOT%{_includedir}/%{name}

@@ -1,5 +1,5 @@
 Name:           ncdu
-Version:        1.21
+Version:        2.7
 Release:        1%{?dist}
 Summary:        Text-based disk usage viewer
 
@@ -9,10 +9,16 @@ Source0:        https://dev.yorhel.nl/download/ncdu-%{version}.tar.gz
 Source1:        https://dev.yorhel.nl/download/ncdu-%{version}.tar.gz.asc
 Source2:        https://yorhel.nl/key.asc
 
+Patch0:         ncdu-allow-shlib-undefined.patch
+
+ExclusiveArch:  %{zig_arches}
+
 BuildRequires:  make
-BuildRequires:  gcc
+BuildRequires:  zig
+BuildRequires:  zig-rpm-macros
 BuildRequires:  gnupg2
 BuildRequires:  ncurses-devel
+BuildRequires:  libzstd-devel
 
 %description
 ncdu (NCurses Disk Usage) is a curses-based version of the well-known 'du',
@@ -20,22 +26,26 @@ and provides a fast way to see what directories are using your disk space.
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%setup -q
+%setup -q -n ncdu-%{version}
+%patch -P0 -p1
 
 %build
-%configure
-%make_build
+%zig_build -Dpie
 
 %install
-%make_install
+%zig_install -Dpie
+%{__make} install-doc PREFIX=%{buildroot}%{_prefix}
 
 %files
 %{_mandir}/man1/ncdu.1*
 %doc ChangeLog
-%license COPYING
+%license LICENSES/MIT.txt
 %{_bindir}/ncdu
 
 %changelog
+* Fri Nov 29 2024 Richard Fearn <richardfearn@gmail.com> - 2.7-1
+- Update to 2.7
+
 * Sat Nov 23 2024 Richard Fearn <richardfearn@gmail.com> - 1.21-1
 - Update to 1.21
 

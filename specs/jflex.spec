@@ -27,10 +27,6 @@ BuildRequires:  mvn(org.apache.ant:ant)
 BuildRequires:  jflex
 %endif
 
-# Explicit javapackages-tools requires since scripts use
-# /usr/share/java-utils/java-functions
-Requires:       javapackages-tools
-
 %description
 JFlex is a lexical analyzer generator (also known as scanner
 generator) for Java, written in Java.  It is also a rewrite of the

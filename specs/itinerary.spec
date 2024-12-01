@@ -1,5 +1,5 @@
 Name:           itinerary
-Version:        24.11.80
+Version:        24.11.90
 Release:        1%{?dist}
 Summary:        Itinerary and boarding pass management application
 
@@ -97,6 +97,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 %{_datadir}/qlogging-categories6/org_kde_itinerary.categories
 
 %changelog
+* Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
+- 24.11.90
+
 * Mon Nov 18 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
 - 24.11.80
 

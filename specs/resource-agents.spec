@@ -52,7 +52,7 @@
 Name:		resource-agents
 Summary:	Open Source HA Reusable Cluster Resource Scripts
 Version:	4.16.0
-Release:	1%{?rcver:%{rcver}}%{?numcomm:.%{numcomm}}%{?alphatag:.%{alphatag}}%{?dirty:.%{dirty}}%{?dist}
+Release:	2%{?rcver:%{rcver}}%{?numcomm:.%{numcomm}}%{?alphatag:.%{alphatag}}%{?dirty:.%{dirty}}%{?dist}
 License:	GPL-2.0-or-later AND LGPL-2.1-or-later
 URL:		https://github.com/ClusterLabs/resource-agents
 Source0:	%{upstream_prefix}-%{upstream_version}.tar.gz
@@ -108,14 +108,14 @@ Requires: /usr/sbin/fuser
 %endif
 
 # Filesystem / fs.sh / netfs.sh
-%if 0%{?fedora} > 39 || 0%{?suse_version}
+%if 0%{?fedora} > 39 || 0%{?rhel} > 9 || 0%{?suse_version}
 Requires: /usr/sbin/fsck
 %else
 Requires: /sbin/fsck
 %endif
 Requires: /usr/sbin/fsck.ext2 /usr/sbin/fsck.ext3 /usr/sbin/fsck.ext4
 Requires: /usr/sbin/fsck.xfs
-%if 0%{?fedora} > 40 || 0%{?suse_version}
+%if 0%{?fedora} > 40 || 0%{?rhel} > 9 || 0%{?suse_version}
 Requires: /usr/sbin/mount.nfs /usr/sbin/mount.nfs4
 %else
 Requires: /sbin/mount.nfs /sbin/mount.nfs4
@@ -135,7 +135,7 @@ Requires: /sbin/ip
 Requires: /usr/sbin/lvm
 
 # nfsserver / netfs.sh
-%if 0%{?fedora} > 40 || 0%{?suse_version}
+%if 0%{?fedora} > 40 || 0%{?rhel} > 9 || 0%{?suse_version}
 Requires: /usr/sbin/rpc.statd
 %else
 Requires: /sbin/rpc.statd
@@ -149,7 +149,7 @@ Requires: /usr/sbin/ethtool
 Requires: /sbin/rdisc /usr/sbin/arping /bin/ping /bin/ping6
 
 # nfsexport.sh
-%if 0%{?fedora} > 39
+%if 0%{?fedora} > 39 || 0%{?rhel} > 9
 Requires: /usr/sbin/findfs
 Requires: /usr/sbin/quotaon /usr/sbin/quotacheck
 %else
@@ -394,6 +394,9 @@ ccs_update_schema > /dev/null 2>&1 ||:
 %endif
 
 %changelog
+* Thu Nov 28 2024 Oyvind Albrigtsen <oalbrigt@redhat.com> - 4.16.0-2
+- Update Requires paths for RHEL/CentOS 10
+
 * Wed Nov  6 2024 Oyvind Albrigtsen <oalbrigt@redhat.com> - 4.16.0-1
 - Rebase to resource-agents 4.16.0 upstream release.
 

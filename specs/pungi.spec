@@ -1,20 +1,13 @@
 %{?python_enable_dependency_generator}
 
 Name:           pungi
-Version:        4.7.0
-Release:        8%{?dist}
+Version:        4.8.0
+Release:        1%{?dist}
 Summary:        Distribution compose tool
 
 License:        GPL-2.0-only
 URL:            https://pagure.io/pungi
 Source0:        https://pagure.io/releases/%{name}/%{name}-%{version}.tar.bz2
-Patch:          https://pagure.io/pungi/pull-request/1780.patch
-Patch:          https://pagure.io/pungi/pull-request/1782.patch
-Patch:          https://pagure.io/pungi/pull-request/1788.patch
-Patch:          https://pagure.io/pungi/pull-request/1789.patch
-Patch:          https://pagure.io/pungi/pull-request/1790.patch
-Patch:          https://pagure.io/pungi/pull-request/1796.patch
-Patch:          https://pagure.io/pungi/pull-request/1798.patch
 
 BuildRequires:  make
 BuildRequires:  python3-pytest
@@ -112,8 +105,6 @@ gzip _build/man/pungi.1
 %{__install} -d %{buildroot}%{_mandir}/man1
 %{__install} -m 0644 doc/_build/man/pungi.1.gz %{buildroot}%{_mandir}/man1
 
-rm %{buildroot}%{_bindir}/pungi
-
 %check
 %pytest
 
@@ -148,6 +139,21 @@ rm %{buildroot}%{_bindir}/pungi
 %{_bindir}/%{name}-cache-cleanup
 
 %changelog
+* Fri Nov 29 2024 Lubomír Sedlář <lsedlar@redhat.com> - 4.8.0-1
+- Drop spec file (lsedlar)
+- Remove python 2.7 from tox configuration (lsedlar)
+- Remove forgotten multilib module for yum (lsedlar)
+- Drop usage of six (lsedlar)
+- Ensure ostree phase threads are stopped (lsedlar)
+- scm: Clone git submodules (lsedlar)
+- Drop unittest2 (lsedlar)
+- Remove pungi/gather.py and associated code (lsedlar)
+- Reduce legacy pungi script to gather phase only (#1792) (awilliam)
+- Install dnf4 into test image (lsedlar)
+- ostree_container: make filename configurable, include arch (awilliam)
+- Correct subvariant handling for ostree_container phase (awilliam)
+- Drop compatibility helper for dnf.Package.source_name (lsedlar)
+
 * Tue Nov 19 2024 Adam Williamson <awilliam@redhat.com> - 4.7.0-8
 - Backport #1798 to infer types/formats for new FEX backing images
 

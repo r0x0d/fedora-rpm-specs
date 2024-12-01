@@ -19,7 +19,7 @@ a command-line script (barbican).
 
 Name:           python-barbicanclient
 Version:        7.0.0
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Client Library for OpenStack Barbican Key Management API
 
 License:        Apache-2.0
@@ -119,96 +119,4 @@ ln -s ./barbican %{buildroot}%{_bindir}/barbican-3
 %endif
 
 %changelog
-* Mon Oct 07 2024 Joel Capitao <jcapitao@redhat.com> 7.0.0-1
-- Update to upstream version 7.0.0
-
-* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.7.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Sat Jul 13 2024 Python Maint <python-maint@redhat.com> - 5.7.0-2
-- Rebuilt for Python 3.13
-
-* Mon May 06 2024 Alfredo Moralejo <amoralej@redhat.com> 5.7.0-1
-- Update to upstream version 5.7.0
-
-* Fri Jan 26 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.6.1-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Sun Jan 21 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.6.1-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Wed Oct 25 2023 Alfredo Moralejo <amoralej@gmail.com> 5.6.1-1
-- Update to upstream version 5.6.1
-
-* Wed Aut 16 2023 Alfredo Moralejo <amoralej@gmail.com> - 5.5.0-4
-- Switch to sphinx-build to create the documentation
-
-* Fri Jul 21 2023 Fedora Release Engineering <releng@fedoraproject.org> - 5.5.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Mon Jul 03 2023 Python Maint <python-maint@redhat.com> - 5.5.0-2
-- Rebuilt for Python 3.12
-
-* Fri Apr 14 2023 Karolina Kula <kkula@redhat.com> 5.5.0-1
-- Update to upstream version 5.5.0
-
-* Fri Jan 20 2023 Fedora Release Engineering <releng@fedoraproject.org> - 5.4.0-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
-
-* Thu Nov 17 2022 Alfredo Moralejo <amoralej@redhat.com> 5.4.0-1
-- Update to upstream version 5.4.0
-
-* Fri Jul 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 5.3.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
-
-* Thu Jun 16 2022 Python Maint <python-maint@redhat.com> - 5.3.0-2
-- Rebuilt for Python 3.11
-
-* Wed May 18 2022 Joel Capitao <jcapitao@redhat.com> 5.3.0-1
-- Update to upstream version 5.3.0
-
-* Fri Jan 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 5.1.0-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
-
-* Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 5.1.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
-
-* Fri Jun 04 2021 Python Maint <python-maint@redhat.com> - 5.1.0-2
-- Rebuilt for Python 3.10
-
-* Tue Mar 16 2021 Joel Capitao <jcapitao@redhat.com> 5.1.0-1
-- Update to upstream version 5.1.0
-
-* Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.1-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
-
-* Wed Oct 28 2020 Alfredo Moralejo <amoralej@redhat.com> 5.0.1-2
-- Update to upstream version 5.0.1
-
-* Tue Jul 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 4.10.0-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
-
-* Wed Jun 03 2020 Joel Capitao <jcapitao@redhat.com> 4.10.0-1
-- Update to upstream version 4.10.0
-
-* Tue May 26 2020 Miro Hrončok <mhroncok@redhat.com> - 4.9.0-4
-- Rebuilt for Python 3.9
-
-* Thu Jan 30 2020 Fedora Release Engineering <releng@fedoraproject.org> - 4.9.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
-
-* Wed Nov 06 2019 Alfredo Moralejo <amoralej@redhat.com> 4.9.0-2
-- Update to upstream version 4.9.0
-
-* Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 4.8.1-4
-- Rebuilt for Python 3.8.0rc1 (#1748018)
-
-* Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 4.8.1-3
-- Rebuilt for Python 3.8
-
-* Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 4.8.1-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
-
-* Tue Mar 12 2019 RDO <dev@lists.rdoproject.org> 4.8.1-1
-- Update to 4.8.1
-
+%autochangelog

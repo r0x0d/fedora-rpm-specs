@@ -1,9 +1,8 @@
 Name:           gcompris-qt
-Version:        4.2
+Version:        4.3
 Release:        1%{?dist}
 Summary:        Educational software suite for children aged 2 to 10
 
-# Automatically converted from old format: AGPLv3
 License:        AGPL-3.0-only
 URL:            http://gcompris.net
 Source0:        https://download.kde.org/stable/gcompris/qt/src/%{name}-%{version}.tar.xz
@@ -102,6 +101,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf5_metainfodir}/org.kde.gc
 
 
 %changelog
+* Wed Nov 27 2024 Andrea Musuruane <musuruan@gmail.com> - 4.3-1
+- Updated to new upstream release
+
 * Sat Sep 21 2024 Andrea Musuruane <musuruan@gmail.com> - 4.2-1
 - Updated to new upstream release
 

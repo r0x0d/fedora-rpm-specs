@@ -1,6 +1,6 @@
 Name:           kongress
-Version:        24.11.80
-Release:        2%{?dist}
+Version:        24.11.90
+Release:        1%{?dist}
 # Automatically converted from old format: CC0 and CC-BY-SA and BSD and GPLv3+ - review is highly recommended.
 License:        CC0-1.0 AND LicenseRef-Callaway-CC-BY-SA AND LicenseRef-Callaway-BSD AND GPL-3.0-or-later
 Summary:        A companion application for conferences made by KDE
@@ -71,6 +71,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.%{
 %license LICENSES/*
 
 %changelog
+* Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
+- 24.11.90
+
 * Fri Nov 22 2024 Pavel Solovev <daron439@gmail.com> - 24.11.80-2
 - Add missing QML deps
 

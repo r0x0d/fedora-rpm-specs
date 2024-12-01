@@ -19,9 +19,6 @@ Patch:          %{name}-1.2-osgi.patch
 BuildRequires:  javapackages-local
 BuildRequires:  ant
 BuildRequires:  apache-parent
-# Explicit javapackages-tools requires since scripts use
-# /usr/share/java-utils/java-functions
-Requires:       javapackages-tools
 
 %description
 Resolver subproject of xml-commons.

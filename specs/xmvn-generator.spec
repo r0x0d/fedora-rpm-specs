@@ -2,7 +2,7 @@
 %bcond_with bootstrap
 
 Name:           xmvn-generator
-Version:        2.0.1
+Version:        2.0.2
 Release:        %autorelease
 Summary:        RPM dependency generator for Java
 License:        Apache-2.0

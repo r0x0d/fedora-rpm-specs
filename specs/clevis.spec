@@ -10,6 +10,7 @@ Source1:        clevis.sysusers
 
 Patch0001:      0001-PKCS-11-pin-fix-dracut-for-unconfigured-device.patch
 Patch0002:      0002-tpm2-use-first-pcr-algorithm-bank-supported-by.patch
+Patch0003:      0003-Include-tpm2_getcap-as-dracut-required-binary.patch
 
 BuildRequires:  git-core
 BuildRequires:  gcc

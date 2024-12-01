@@ -12,12 +12,12 @@
 %bcond_without     tests
 
 %global pecl_name  xdebug
-%global gh_commit  921255659710b07db816bc0c71941a5a00b6bf6c
+%global gh_commit  4284879cc0e3d749f872c2b7eec49521ca4b9ad0
 %global gh_short   %(c=%{gh_commit}; echo ${c:0:7})
 
 # version/release
 %global upstream_version 3.4.0
-%global upstream_prever  beta1
+#global upstream_prever  beta1
 %global upstream_lower   %(echo %{upstream_prever} | tr '[:upper:]' '[:lower:]')
 %global sources          src
 
@@ -29,8 +29,6 @@ Summary:        Provides functions for function traces and profiling
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_lower}}
 Release:        1%{?dist}
 Source0:        https://github.com/%{pecl_name}/%{pecl_name}/archive/%{gh_commit}/%{pecl_name}-%{upstream_version}%{?upstream_prever}-%{gh_short}.tar.gz
-# file is corrupted in 3.4.0beta1 tag
-Source1:        https://raw.githubusercontent.com/%{pecl_name}/%{pecl_name}/refs/tags/3.4.0alpha1/xdebug.ini
 
 License:        Xdebug-1.03
 URL:            https://xdebug.org/
@@ -88,16 +86,14 @@ mv %{sources}/package.xml .
 
 sed -e '/LICENSE/s/role="doc"/role="src"/' -i package.xml
 
-cd %{sources}
-cp %{SOURCE1} xdebug.ini
-
+pushd %{sources}
 # Check extension version
 ver=$(sed -n '/XDEBUG_VERSION/{s/.* "//;s/".*$//;p}' php_xdebug.h)
 if test "$ver" != "%{upstream_version}%{?upstream_prever}%{?gh_date:-dev}"; then
    : Error: Upstream XDEBUG_VERSION version is ${ver}, expecting %{upstream_version}%{?upstream_perver}%{?gh_date:-dev}.
    exit 1
 fi
-cd ..
+popd
 
 cat << 'EOF' >%{ini_name}
 ; Enable xdebug extension module
@@ -204,6 +200,9 @@ TEST_PHP_ARGS="-n $modules -d zend_extension=%{buildroot}%{php_extdir}/%{pecl_na
 
 
 %changelog
+* Thu Nov 28 2024 Remi Collet <remi@remirepo.net> - 3.4.0-1
+- update to 3.4.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.3.2-2
 - update to 3.4.0beta1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild

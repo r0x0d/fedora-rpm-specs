@@ -6,17 +6,12 @@
 %global _docdir_fmt %{name}
 
 Name:		python-zope-interface
-Version:	7.1.1
+Version:	7.2
 Release:	%autorelease
 Summary:	Zope 3 Interface Infrastructure
 License:	ZPL-2.1
 URL:		https://pypi.io/project/zope.interface
 Source0:	%{pypi_source zope.interface}
-
-# Patch for Python 3.14 compatibility
-# From: https://github.com/zopefoundation/zope.interface/pull/335
-# Unrelated changes removed from the patch.
-Patch:		py314.patch
 
 %description
 Interfaces are a mechanism for labeling objects as conforming to a given API

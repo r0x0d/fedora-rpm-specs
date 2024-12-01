@@ -16,7 +16,7 @@
 
 Name:    kalzium
 Summary: Periodic Table of Elements
-Version: 24.11.80
+Version: 24.11.90
 Release: 1%{?dist}
 
 License: GPL-2.0-or-later
@@ -148,6 +148,9 @@ desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.kalzium_c
 
 
 %changelog
+* Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
+- 24.11.90
+
 * Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
 - 24.11.80
 

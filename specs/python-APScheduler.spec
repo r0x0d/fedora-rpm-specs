@@ -1,4 +1,3 @@
-%global srcname apscheduler
 %global _description %{expand:
 Advanced Python Scheduler (APScheduler) is a Python library that lets you
 schedule your Python code to be executed later, either just once or
@@ -8,41 +7,36 @@ scheduler restarts and maintain their state. When the scheduler is
 restarted, it will then run all the jobs it should have run while it was
 offline.}
 
-Name:           python-%{srcname}
-Version:        3.10.4
+Name:           python-APScheduler
+Version:        3.11.0
 Release:        %autorelease
 Summary:        In-process task scheduler with Cron-like capabilities
 
 License:        MIT
 URL:            https://pypi.org/project/APScheduler/
-Source0:        %{pypi_source %{srcname}}
-# wait for tasks to finish, adjust misfire_grace_time
-Patch0:         01-test-executors.patch
+Source0:        %{pypi_source apscheduler}
 BuildArch:      noarch
 
 %description %_description
 
-%package -n python3-%{srcname}
+%package -n python3-APScheduler
 Summary:        %{summary}
 BuildRequires:  python3-devel
 
-%description -n python3-%{srcname} %_description
+%description -n python3-APScheduler %_description
 
 %prep
-%autosetup -n %{srcname}-%{version} -p1
+%autosetup -n apscheduler-%{version} -p1
 # Remove that test as it require services (redis, zookeeper, ...)
 # up and running. Upstream provides a docker compose to spawn
 # services before running these tests.
 rm tests/test_jobstores.py
-sed -i 's/pytest-tornado5/pytest-tornado/' setup.py
-# Remove coverage
-sed -i 's/addopts = -rsx --cov/addopts = -rsx/' setup.cfg
-sed -i '/pytest-cov/d' setup.py
-# It is in the tarball and is not used
-rm -r APScheduler.egg-info
+# Skip missing dependencies in Fedora 42
+sed -i 's/    "anyio >= 4.5.2",//' pyproject.toml
+sed -i 's/,rethinkdb//' pyproject.toml
 
 %generate_buildrequires
-%pyproject_buildrequires -x testing -x tornado
+%pyproject_buildrequires -x test -x tornado
 
 %build
 %pyproject_wheel
@@ -56,7 +50,7 @@ rm -r APScheduler.egg-info
 export TZ=UTC
 %pytest
 
-%files -n python3-%{srcname} -f %{pyproject_files}
+%files -n python3-APScheduler -f %{pyproject_files}
 %doc README.rst
 
 %changelog

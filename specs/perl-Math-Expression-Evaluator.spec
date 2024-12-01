@@ -5,8 +5,8 @@ Name:           perl-Math-Expression-Evaluator
 Version:        0.3.2
 Release:        36%{?dist}
 Summary:        Parses, compiles and evaluates mathematics expressions
-# lib/Math/Expression/Evaluator/Lexer.pm:   (GPL+ or Artistic) and Public Domain
-License:        (GPL+ or Artistic) and Public Domain
+# lib/Math/Expression/Evaluator/Lexer.pm:   (GPL-1.0-or-later OR Artistic-1.0-Perl) AND LicenseRef-Fedora-Public-Domain
+License:        (GPL-1.0-or-later OR Artistic-1.0-Perl) AND LicenseRef-Fedora-Public-Domain
 URL:            https://metacpan.org/release/Math-Expression-Evaluator
 Source0:        https://cpan.metacpan.org/authors/id/M/MO/MORITZ/Math-Expression-Evaluator-v%{version}.tar.gz
 BuildArch:      noarch

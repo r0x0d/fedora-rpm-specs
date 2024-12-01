@@ -103,9 +103,6 @@ be called directly from Maven command line.
 
 %package        tools
 Summary:        XMvn tools
-# Explicit javapackages-tools requires since scripts use
-# /usr/share/java-utils/java-functions
-Requires:       javapackages-tools
 
 %description    tools
 This package provides various XMvn tools:

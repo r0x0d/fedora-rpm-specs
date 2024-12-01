@@ -60,10 +60,6 @@ BuildRequires:  ant
 BuildRequires:  javacc
 %endif
 
-# Explicit javapackages-tools requires since scripts use
-# /usr/share/java-utils/java-functions
-Requires:       javapackages-tools
-
 BuildArch:      noarch
 ExclusiveArch:  %{java_arches} noarch
 

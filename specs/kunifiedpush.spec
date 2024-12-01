@@ -1,5 +1,5 @@
 Name:           kunifiedpush
-Version:        24.11.80
+Version:        24.11.90
 Release:        1%{?dist}
 Summary:        UnifiedPush client library and distributor daemon
 License:        BSD-2-Clause AND CC0-1.0 AND BSD-3-Clause AND LGPL-2.0-or-later
@@ -65,6 +65,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/kcm_push_notificatio
 %{_kf6_libdir}/cmake/KUnifiedPush/
 
 %changelog
+* Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
+- 24.11.90
+
 * Tue Nov 19 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
 - 24.11.80
 

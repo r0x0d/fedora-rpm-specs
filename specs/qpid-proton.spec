@@ -7,8 +7,8 @@
 %undefine __brp_mangle_shebangs
 
 Name:           qpid-proton
-Version:        0.38.0
-Release:        10%{?dist}
+Version:        0.40.0
+Release:        1%{?dist}
 Summary:        A high performance, lightweight messaging library
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
@@ -16,7 +16,6 @@ URL:            http://qpid.apache.org/proton/
 
 Source0:        %{name}-%{version}.tar.gz
 Patch0:         proton.patch
-
 Source1:        licenses.xml
 
 %global proton_licensedir %{_licensedir}/proton
@@ -25,24 +24,21 @@ Source1:        licenses.xml
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
+BuildRequires:  make
 BuildRequires:  cmake
-BuildRequires:  swig
-BuildRequires:  pkgconfig
-BuildRequires:  doxygen
 BuildRequires:  libuuid-devel
 BuildRequires:  openssl-devel
+BuildRequires:  cyrus-sasl-devel
+BuildRequires:  cyrus-sasl-plain
+BuildRequires:  cyrus-sasl-md5
 BuildRequires:  python3-devel
-BuildRequires:  python3-pip
-BuildRequires:  python3-rpm-macros
+BuildRequires:  python3-build
+BuildRequires:  python3-cffi
+BuildRequires:  python3-setuptools
 BuildRequires:  python3-sphinx
 BuildRequires:  python3-wheel
-BuildRequires:  glibc-headers
-BuildRequires:  cyrus-sasl-devel
-BuildRequires:  jsoncpp-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  libuv-devel
-BuildRequires:  nspr-devel
-#BuildRequires:  opentelemetry-cpp-devel
+BuildRequires:  pkgconfig
+
 
 %description
 Proton is a high performance, lightweight messaging library. It can be used in
@@ -165,7 +161,6 @@ Obsoletes: qpid-proton-cpp-devel-docs
 %doc %{proton_datadir}/examples/cpp/README.dox
 %doc %{proton_datadir}/examples/cpp/CMakeLists.txt
 %doc %{proton_datadir}/examples/cpp/ssl-certs
-%doc %{proton_datadir}/examples/cpp/tracing.dox
 %doc %{proton_datadir}/examples/cpp/tutorial.dox
 
 
@@ -214,7 +209,6 @@ BuildArch: noarch
 %setup -q -n %{name}-%{version}
 %patch -p1 0
 
-
 %build
 mkdir -p BLD
 cd BLD
@@ -236,16 +230,13 @@ cd BLD
 # Need to remove anything built by the python cmake build in proton
 # so that we rebuild from scratch
 rm -rf build
-# Need to do the python package build here as we rely on the qpid-proton-core
-# library to be installed so we don't duplicate it inside the extension
-# That is also why we have to point pkg-config at the installed library
-PKG_CONFIG_PATH=%{buildroot}%{_libdir}/pkgconfig %py3_build_wheel
 %global whl_tags cp%{python3_version_nodots}-cp%{python3_version_nodots}-%(echo %{python3_platform} | tr -- - _)
+cd ..
 %py3_install_wheel python_qpid_proton-%{version}-%{whl_tags}.whl
 # We seem to need to strip the build extension otherwise it seems to embed a reference to
 # the buildroot in the debug info which fails the rpmbuild - probably because we massaged
 # the pkgconfig path above
-strip %{buildroot}%{python3_sitearch}/_cproton*.so)
+strip %{buildroot}%{python3_sitearch}/cproton*.so)
 
 install -dm 755 %{buildroot}%{proton_licensedir}
 install -pm 644 %{SOURCE1} %{buildroot}%{proton_licensedir}
@@ -314,6 +305,9 @@ rm -f  %{buildroot}%{proton_datadir}/CMakeLists.txt
 %check
 
 %changelog
+* Fri Nov 29 2024 Hirotaka Wakabayashi <hiwkby@yahoo.com> - 0.40.0-1
+- Rebased to 0.40.0
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0.38.0-10
 - convert license to SPDX
 

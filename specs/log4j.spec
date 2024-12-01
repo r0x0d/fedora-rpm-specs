@@ -64,9 +64,6 @@ BuildRequires:  mvn(org.slf4j:slf4j-api)
 BuildRequires:  mvn(org.slf4j:slf4j-ext)
 BuildRequires:  mvn(org.zeromq:jeromq)
 BuildRequires:  mvn(sun.jdk:jconsole)
-# Explicit requires for javapackages-tools since log4j-jmx script
-# uses /usr/share/java-utils/java-functions
-Requires:       javapackages-tools
 
 # Also needs:
 # - Various Spring dependencies

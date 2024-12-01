@@ -1,14 +1,14 @@
 Summary: SELinux Translation Daemon
 Name: mcstrans
-Version: 3.7
-Release: 2%{?dist}
+Version: 3.8
+Release: 0.rc1.1%{?dist}
 License: GPL-2.0-or-later
 Url: https://github.com/SELinuxProject/selinux/wiki
-Source0: https://github.com/SELinuxProject/selinux/releases/download/3.7/mcstrans-3.7.tar.gz
-Source1: https://github.com/SELinuxProject/selinux/releases/download/3.7/mcstrans-3.7.tar.gz.asc
+Source0: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/mcstrans-%{version}-rc1.tar.gz
+Source1: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/mcstrans-%{version}-rc1.tar.gz.asc
 Source2: https://github.com/bachradsusi.gpg
 Source3: secolor.conf.8
-# fedora-selinux/selinux: git format-patch -N 3.3 -- mcstrans
+# fedora-selinux/selinux: git format-patch -N 3.8 -- mcstrans
 # i=1; for j in 00*patch; do printf "Patch%04d: %s\n" $i $j; i=$((i+1));done
 # Patch list start
 # Patch list end
@@ -39,7 +39,7 @@ from internal representations to user defined representation.
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup -p 2 -n mcstrans-%{version}
+%autosetup -p 2 -n mcstrans-%{version}-rc1
 
 %build
 %set_build_flags
@@ -92,7 +92,4 @@ install -m644 %{SOURCE3} %{buildroot}%{_mandir}/man8/
 %{_usr}/share/mcstrans/util/*
 
 %changelog
-* Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.7-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
 %autochangelog

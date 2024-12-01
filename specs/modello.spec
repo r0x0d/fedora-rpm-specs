@@ -39,10 +39,6 @@ BuildRequires:  mvn(org.jsoup:jsoup)
 BuildRequires:  mvn(org.sonatype.plexus:plexus-build-api)
 %endif
 
-# Explicit javapackages-tools requires since modello script uses
-# /usr/share/java-utils/java-functions
-Requires:         javapackages-tools
-
 %description
 Modello is a Data Model toolkit in use by the Apache Maven Project.
 

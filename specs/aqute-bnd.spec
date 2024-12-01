@@ -62,10 +62,6 @@ BuildRequires:  mvn(org.eclipse.aether:aether-api)
 BuildRequires:  mvn(org.sonatype.plexus:plexus-build-api)
 %endif
 
-# Explicit javapackages-tools requires since bnd script uses
-# /usr/share/java-utils/java-functions
-Requires:       javapackages-tools
-
 %description
 The bnd tool helps you create and diagnose OSGi bundles.
 The key functions are:

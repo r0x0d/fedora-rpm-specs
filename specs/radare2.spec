@@ -26,8 +26,8 @@ VCS:            git:%{vcsurl}
 %global         shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 # autorelease not available on epel7
-%if ! ( 0%{?rhel} && 0%{?rhel} <= 7 )
-%global         autorelease    1
+%if ( 0%{?rhel} && 0%{?rhel} <= 7 )
+%global         autorelease    1%{?dist}
 %endif
 
 
@@ -89,16 +89,16 @@ License:        LGPL-3.0-or-later AND GPL-2.0-or-later AND BSD-2-Clause AND BSD-
 
 # Removed from the final package because of the presence of minified JS and
 # absence of the source JS - this should be packaged with radare2-webui
-# shlr/www/m - Apache-2.0
-# shlr/www/enyo/vendors/jquery-ui.min.js - GPL + MIT
+# shlr/www/m                                        - Apache-2.0
+# shlr/www/enyo/vendors/jquery-ui.min.js            - GPL + MIT
 # shlr/www/enyo/vendors/jquery.layout-latest.min.js - GPL + MIT
-# shlr/www/enyo/vendors/jquery.scrollTo.min.js - MIT
-# shlr/www/enyo/vendors/lodash.min.js - lodash license
-# shlr/www/enyo/vendors/joint.* - Mozilla MPL 2.0
-# shlr/www/enyo/vendors/jquery.min.js - Apache License version 2.0
-# shlr/www/p/vendors/jquery* - GPL + MIT
-# shlr/www/p/vendors/dagre*|graphlib* - 3 clause BSD
-# shlr/www/p/vendors/jquery.onoff.min.js - MIT
+# shlr/www/enyo/vendors/jquery.scrollTo.min.js      - MIT
+# shlr/www/enyo/vendors/lodash.min.js               - lodash license
+# shlr/www/enyo/vendors/joint.*                     - Mozilla MPL 2.0
+# shlr/www/enyo/vendors/jquery.min.js               - Apache License version 2.0
+# shlr/www/p/vendors/jquery*                        - GPL + MIT
+# shlr/www/p/vendors/dagre*|graphlib*               - 3 clause BSD
+# shlr/www/p/vendors/jquery.onoff.min.js            - MIT
 
 BuildRequires:  sed
 BuildRequires:  gcc
@@ -218,15 +218,10 @@ Provides:       bundled(mpc) = 0.8.7
 # https://dev.yorhel.nl/yxml
 Provides:       bundled(yxml) = 20201108
 
-
 # ./shlr/qjs
 # https://github.com/quickjs-ng/quickjs
 # License: MIT
 Provides:       bundled(quickjs-ng) = 0.7.0
-
-
-
-
 
 # and likely some more in libr/... borrowed from other projects
 
@@ -295,13 +290,13 @@ echo "The radare2 source usually comes with a pre-built version of the web-inter
 echo "This has been removed in the Fedora package to follow the Fedora Packaging Guidelines." >> ./shlr/www/README.Fedora
 echo "Available under https://github.com/radare/radare2-webui" >> ./shlr/www/README.Fedora
 
-%if 0%{?rhel} && 0%{?rhel} == 8
-# Meson on EPEL8 is older than meson on EPEL7 and older than recommended one
-# on EPEL8 downgrade the recommendation in meson.build and pray
-# meson_version : '>=0.50.1' => meson_version : '>=0.49.1'
-sed -i -e "s|meson_version : '>=......'|meson_version : '>=0.49.1'|;" meson.build
+%if 0%{?rhel} && 0%{?rhel} <= 8
+# Meson on EPEL8 / EPEL7 is older than recommended one
+sed -i -e "s|meson_version : '>=......'|meson_version : '>=0.47.2'|;" meson.build
 %endif
 
+# On RHEL8 the shabeng for "/usr/bin/env -S" is mangled wrongly as "/usr/bin/-S"
+sed -i -e "s|/usr/bin/env -S r2|/usr/bin/r2|" ./scripts/licenses.r2.js
 
 %build
 # Whereever possible use the system-wide libraries instead of bundles

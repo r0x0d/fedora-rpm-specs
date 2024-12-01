@@ -1,5 +1,5 @@
 Name:          kjournald
-Version:       24.11.80
+Version:       24.11.90
 Release:       1%{?dist}
 Summary:       Framework for interacting with systemd-journald
 
@@ -58,12 +58,16 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.kj
 %{_kf6_datadir}/applications/org.kde.kjournaldbrowser.desktop
 %{_kf6_metainfodir}/org.kde.kjournaldbrowser.appdata.xml
 %{_kf6_datadir}/qlogging-categories6/kjournald.categories
+%{_kf6_qmldir}/org/kde/kjournald/
 
 %files libs
 %{_kf6_libdir}/libkjournald.so.0
 %{_kf6_libdir}/libkjournald.so.%{version}
 
 %changelog
+* Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
+- 24.11.90
+
 * Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
 - 24.11.80
 

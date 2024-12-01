@@ -3,7 +3,7 @@ Version:	1.5.7
 Release:	34%{?dist}
 Summary:	Recover files by "carving" them from a raw disk
 
-License:	Public Domain
+License:	LicenseRef-Fedora-Public-Domain
 URL:		http://foremost.sf.net
 Source0:	http://foremost.sourceforge.net/pkg/%{name}-%{version}.tar.gz
 Patch0:		foremost-broken-jpeg.patch

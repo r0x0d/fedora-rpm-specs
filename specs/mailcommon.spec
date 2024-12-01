@@ -1,5 +1,5 @@
 Name:    mailcommon
-Version: 24.11.80
+Version: 24.11.90
 Release: 1%{?dist}
 Summary: Mail applications support library
 
@@ -105,6 +105,9 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
+- 24.11.90
+
 * Fri Nov 15 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.80-1
 - 24.11.80
 

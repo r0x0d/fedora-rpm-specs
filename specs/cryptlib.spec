@@ -5,7 +5,7 @@
 
 Name:       cryptlib
 Version:    3.4.7  
-Release:    8%{?dist}
+Release:    9%{?dist}
 Summary:    Security library and toolkit for encryption and authentication services    
 
 License:    Sleepycat and OpenSSL     
@@ -27,6 +27,7 @@ Source9:    cryptlibConverter.py3-final
 # soname is now libcl.so.3.4
 Patch0:     m64patch
 Patch1:     testpatch
+Patch2:     constantspatch
 
 ExclusiveArch: x86_64 aarch64 ppc64le
 
@@ -155,6 +156,7 @@ cd %{name}-%{version}
 
 %patch 0 -p1
 %patch 1 -p1
+%patch 2 -p1
 
 # enable ADDFLAGS
 sed -i '97s/-I./-I. \$(ADDFLAGS)/' makefile
@@ -358,6 +360,9 @@ cp /%{buildroot}%{cryptlibdir}/tools/man/clsmime.1 %{buildroot}%{_mandir}/man1
 
 
 %changelog
+* Fri Nov 29 2024 Ralf Senderek <innovation@senderek.ie>  3.4.7-9
+- update MIN_TIME_VALUE in misc/consts.h
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.4.7-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

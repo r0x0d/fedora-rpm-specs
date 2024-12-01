@@ -1,5 +1,5 @@
 %global pypi_name llama-cpp-python
-%global pypi_version 0.3.1
+%global pypi_version 0.3.2
 # it's all python code
 %global debug_package %{nil}
 
@@ -61,9 +61,8 @@ OpenAI compatible web server
 
 %if %{with test}
 %check
-# test_mistral_instruct is failing
-# llama tests need ggml model
-%pytest -v -k 'not test_mistral_instruct and not test_llama_cpp_tokenization and not test_llama_patch and not test_llama_pickle and not test_utf8 and not test_llama_server and not test_real_llama and not test_real_model' tests/
+# these 3 llama tests need ggml-vocab-llama-spm model, we'll run them in testing farm, see plans/
+%pytest -v -k 'not test_llama_cpp_tokenization and not test_real_llama and not test_real_model' tests/
 %endif
 
 %install

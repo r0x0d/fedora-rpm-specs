@@ -1,8 +1,8 @@
 %global pypi_name pyftdi
 
 Name:           python-%{pypi_name}
-Version:        0.55.4
-Release:        4%{?dist}
+Version:        0.56.0
+Release:        1%{?dist}
 Summary:        Python support for FTDI devices
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -33,7 +33,6 @@ PyFtdi aims at providing a user-space driver for modern FTDI devices.
 %install
 %py3_install
 
-
 %files -n python3-%{pypi_name}
 %doc README.md
 %{_bindir}/*.py
@@ -41,6 +40,9 @@ PyFtdi aims at providing a user-space driver for modern FTDI devices.
 %{python3_sitelib}/%{pypi_name}*.egg-info/
 
 %changelog
+* Fri Nov 29 2024 Fabian Affolter <mail@fabian-affolter.ch> - 0.56.0-1
+- Update to latest upstream release (closes rhbz#2328517)
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.55.4-4
 - convert license to SPDX
 

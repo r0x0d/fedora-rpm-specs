@@ -3,7 +3,7 @@
 # identically and released at the same time, it makes sense to build them from
 # a single source package.
 Name:           python-typer
-Version:        0.13.1
+Version:        0.14.0
 Release:        %autorelease
 Summary:        Build great CLIs; easy to code; based on Python type hints
 

@@ -11,7 +11,7 @@ out of nbconvert (formerly ExecutePreprocessor). NBClient lets you execute noteb
 }
 
 Name:           python-%{pypi_name}
-Version:        0.10.0
+Version:        0.10.1
 Release:        %autorelease
 Summary:        A client library for executing notebooks
 
@@ -19,9 +19,6 @@ Summary:        A client library for executing notebooks
 License:        LicenseRef-Callaway-BSD
 URL:            https://jupyter.org
 Source0:        %{pypi_source}
-
-# Avoid a DeprecationWarning on Python 3.13+
-Patch:          https://github.com/jupyter/nbclient/pull/315.patch
 
 # Fix tests with Python 3.13
 Patch:          https://github.com/jupyter/nbclient/pull/317.patch

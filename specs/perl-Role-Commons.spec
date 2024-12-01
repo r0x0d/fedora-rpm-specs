@@ -5,9 +5,7 @@ Name:           perl-Role-Commons
 Version:        0.104
 Release:        17%{?dist}
 Summary:        Roles that can be commonly used
-# COPYRIGHT:    Public Domain
-# LICENSE:      GPL+ or Artistic
-License:        (GPL+ or Artistic) and Public Domain
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Role-Commons/
 Source0:        https://cpan.metacpan.org/authors/id/T/TO/TOBYINK/Role-Commons-%{version}.tar.gz
 BuildArch:      noarch

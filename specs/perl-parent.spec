@@ -1,6 +1,6 @@
 Name:		perl-parent
 Epoch:		1
-Version:	0.242
+Version:	0.243
 Release:	1%{?dist}
 Summary:	Establish an ISA relationship with base classes at compile time
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -9,16 +9,14 @@ Source0:	https://cpan.metacpan.org/authors/id/C/CO/CORION/parent-%{version}.tar.
 BuildArch:	noarch
 # Module Build
 BuildRequires:	coreutils
-BuildRequires:	findutils
 BuildRequires:	make
 BuildRequires:	perl-generators
 BuildRequires:	perl-interpreter
-BuildRequires:	perl(ExtUtils::MakeMaker)
+BuildRequires:	perl(ExtUtils::MakeMaker) >= 6.76
 # Module Runtime
 BuildRequires:	perl(strict)
 # Test Suite
 BuildRequires:	perl(Data::Dumper)
-BuildRequires:	perl(if)
 BuildRequires:	perl(lib)
 BuildRequires:	perl(Test::More) >= 0.40
 # Dependencies
@@ -41,12 +39,11 @@ from those modules at the same time. Mostly similar in effect to:
 %setup -q -n parent-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 %{_fixperms} -c %{buildroot}
 
 %check
@@ -58,6 +55,12 @@ make test
 %{_mandir}/man3/parent.3*
 
 %changelog
+* Fri Nov 29 2024 Paul Howarth <paul@city-fan.org> - 1:0.243-1
+- Update to 0.243
+  - Reinstate test for apostrophe as package separator, as that package
+    separator is allowed again (no code change, only tests have been amended)
+- Use %%{make_build} and %%{make_install}
+
 * Wed Aug 14 2024 Paul Howarth <paul@city-fan.org> - 1:0.242-1
 - Update to 0.242
   - Don't test for apostrophe as package separator on Perl versions after 5.41

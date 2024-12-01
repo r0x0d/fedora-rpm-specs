@@ -1,6 +1,6 @@
 Name:    realmd
 Version: 0.17.1
-Release: 13%{?dist}
+Release: 14%{?dist}
 Summary: Kerberos realm enrollment service
 License: LGPL-2.1-or-later
 URL:     https://gitlab.freedesktop.org/realmd/realmd
@@ -12,6 +12,13 @@ Patch0003: 0003-doc-fix-reference-in-realmd.conf-man-page.patch
 Patch0004: 0001-sssd-package-fix.patch
 Patch0005: 0001-tools-fix-ccache-handling-for-leave-operation.patch
 Patch0006: 0001-ipa-Propagate-hostname-error.patch
+Patch0007: 0001-configure.ac-Install-dbus-policy-in-usr-share-not-et.patch
+Patch0008: 0001-Systemd-security-settings.patch
+Patch0009: 0002-Disable-NoNewPrivileges-in-Systemd-service.patch
+Patch0010: 0003-service-use-dnshostname-with-net-ads-join.patch
+Patch0011: 0004-systemd-set-CacheDirectory.patch
+Patch0012: 0005-Various-fixes-for-issues-found-by-static-code-scanne.patch
+Patch0013: 0006-krb5-add-realm_krb5_get_error_message.patch
 
 BuildRequires: make
 BuildRequires: gcc
@@ -80,7 +87,7 @@ make check
 
 %files -f realmd.lang
 %doc AUTHORS COPYING NEWS README
-%{_sysconfdir}/dbus-1/system.d/org.freedesktop.realmd.conf
+%{_datadir}/dbus-1/system.d/org.freedesktop.realmd.conf
 %{_sbindir}/realm
 %dir %{_prefix}/lib/realmd
 %{_libexecdir}/realmd
@@ -98,6 +105,12 @@ make check
 %doc ChangeLog
 
 %changelog
+* Fri Nov 29 2024 Sumit Bose <sbose@redhat.com> - 0.17.1-14
+- Various fixes for issues found by static code scanners
+- Systemd security setting and CacheDirectory
+- use 'dnshostname' with net ads join
+- Install dbus policy in /usr/share, not /etc
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.17.1-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

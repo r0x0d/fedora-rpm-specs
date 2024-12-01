@@ -374,7 +374,7 @@ Obsoletes: sgabios-bin <= 1:0.20180715git-10.fc38
 %endif
 
 # To prevent rpmdev-bumpspec breakage
-%global baserelease 0.1
+%global baserelease 0.2
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
@@ -429,6 +429,8 @@ Source36: README.tests
 Patch: 0001-Disable-9p-local-tests-that-fail-on-copr-aarch64.patch
 # Fix compat with new glibc (not upstream yet)
 Patch: schedattr.patch
+# Crash with virtio-balloon stats
+Patch: 0001-hw-virtio-fix-crash-in-processing-balloon-stats.patch
 
 BuildRequires: gnupg2
 BuildRequires: meson >= %{meson_version}
@@ -3145,6 +3147,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Nov 29 2024 Daniel P. Berrangé <berrange@redhat.com> - 9.2.0-0.2.rc1
+- Fix crash querying virtio-balloon stats
+
 * Mon Nov 25 2024 Cole Robinson <crobinso@redhat.com> - 9.2.0-0.1.rc1
 - Rebase to qemu 9.2.0-rc1
 

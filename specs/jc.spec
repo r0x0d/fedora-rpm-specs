@@ -2,19 +2,11 @@ Name: jc
 Summary: Serialize the output of CLI tools and file-types to structured JSON
 License: MIT
 
-Version: 1.25.3
-Release: 4%{?dist}
+Version: 1.25.4
+Release: 1%{?dist}
 
 URL: https://github.com/kellyjonbrazil/%{name}
 Source0: %{URL}/archive/v%{version}/%{name}-%{version}.tar.gz
-
-# Backport upstream commits that fix test failures under Python 3.13.
-# Minor changes made to make the patches apply cleanly to v1.25.3.
-#
-# Based on:
-# - https://github.com/kellyjonbrazil/jc/commit/9eb4df34b190c57d020b70153ef3faa8984c02ca.patch
-# - https://github.com/kellyjonbrazil/jc/commit/71af0c55553e17c598c9f43b8271bfb069795af5.patch
-Patch0: 0000-python-3.13.patch
 
 BuildArch: noarch
 
@@ -83,6 +75,10 @@ TZ="America/Los_Angeles" ./runtests.sh
 
 
 %changelog
+* Fri Nov 29 2024 Artur Frenszek-Iwicki <fedora@svgames.pl> - 1.25.4-1
+- Update to v1.25.4
+- Drop Patch0 (Python 3.13 compatibility - backport from this release)
+
 * Mon Sep 09 2024 Artur Frenszek-Iwicki <fedora@svgames.pl> - 1.25.3-4
 - Add patch to fix test failures under Python 3.13
 

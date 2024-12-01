@@ -1,6 +1,6 @@
 %bcond_without check
 %global cargo_install_lib  0
-%global envision_version   1.1.0
+%global envision_version   1.1.1
 %global forgeurl           https://gitlab.com/gabmus/envision
 %global tag                %{envision_version}
 %global date               20241127

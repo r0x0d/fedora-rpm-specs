@@ -11,6 +11,9 @@ Source0:        %{url}/releases/download/v%{version}/%{srcname}-%{version}.tar.g
 Source1:        %{url}/releases/download/v%{version}/%{srcname}-%{version}.tar.gz.asc
 Source2:        https://nmstate.io/nmstate.gpg
 Source3:        %{url}/releases/download/v%{version}/%{srcname}-vendor-%{version}.tar.xz
+# Force nmstate-libs upgrade along with nmstate rpm when installed
+# https://issues.redhat.com/browse/RHEL-52890
+Requires:       (nmstate-libs%{?_isa} = %{version}-%{release} if nmstate-libs)
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  gnupg2

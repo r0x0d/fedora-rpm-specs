@@ -40,13 +40,9 @@ BuildRequires: ant
 BuildRequires: apache-parent
 BuildRequires: xml-commons-apis >= 1.4.01
 BuildRequires: xml-commons-resolver >= 1.2
-BuildRequires: java-devel
 
 Requires:      xml-commons-apis >= 1.4.01
 Requires:      xml-commons-resolver >= 1.2
-# Explicit javapackages-tools requires since scripts use
-# /usr/share/java-utils/java-functions
-Requires:      javapackages-tools
 
 Provides:      jaxp_parser_impl = 1.4
 Provides:      %{name}-scripts = %{version}-%{release}

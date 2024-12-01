@@ -1,6 +1,6 @@
 Name:    pimcommon
-Version: 24.11.80
-Release: 2%{?dist}
+Version: 24.11.90
+Release: 1%{?dist}
 Summary: PIM common libraries
 
 License: BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-or-later AND (GPL-2.0-only OR GPL-3.0-only)
@@ -110,6 +110,9 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
+- 24.11.90
+
 * Fri Nov 22 2024 Pavel Solovev <daron439@gmail.com> - 24.11.80-2
 - Add optional PlasmaActivities
 

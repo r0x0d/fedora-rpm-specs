@@ -2,9 +2,7 @@ Name:           perl-Scalar-Does
 Version:        0.203
 Release:        24%{?dist}
 Summary:        Check an object implements an interface
-# COPYRIGHT:    Public Domain
-# other files:  GPL+ or Artistic
-License:        (GPL+ or Artistic) and Public Domain
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Scalar-Does
 Source0:        https://cpan.metacpan.org/authors/id/T/TO/TOBYINK/Scalar-Does-%{version}.tar.gz
 BuildArch:      noarch

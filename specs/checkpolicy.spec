@@ -1,17 +1,17 @@
-%define libselinuxver 3.7-1
-%define libsepolver 3.7-1
+%define libselinuxver 3.8-0
+%define libsepolver 3.8-0
 
 Summary: SELinux policy compiler
 Name: checkpolicy
-Version: 3.7
-Release: 2%{?dist}
+Version: 3.8
+Release: 0.rc1.1%{?dist}
 License: GPL-2.0-or-later AND LGPL-2.1-or-later
-Source0: https://github.com/SELinuxProject/selinux/releases/download/3.7/checkpolicy-3.7.tar.gz
-Source1: https://github.com/SELinuxProject/selinux/releases/download/3.7/checkpolicy-3.7.tar.gz.asc
+Source0: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/checkpolicy-%{version}-rc1.tar.gz
+Source1: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/checkpolicy-%{version}-rc1.tar.gz.asc
 Source2: https://github.com/bachradsusi.gpg
 # $ git clone https://github.com/fedora-selinux/selinux.git
 # $ cd selinux
-# $ git format-patch -N 3.7 -- checkpolicy
+# $ git format-patch -N 3.8 -- checkpolicy
 # $ i=1; for j in 00*patch; do printf "Patch%04d: %s\n" $i $j; i=$((i+1));done
 # Patch list start
 # Patch list end
@@ -36,7 +36,7 @@ Only required for building policies.
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup -p 2 -n checkpolicy-%{version}
+%autosetup -p 2 -n checkpolicy-%{version}-rc1
 
 %build
 
@@ -63,7 +63,4 @@ install test/dispol ${RPM_BUILD_ROOT}%{_bindir}/sedispol
 %{_bindir}/sedispol
 
 %changelog
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.7-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
 %autochangelog
