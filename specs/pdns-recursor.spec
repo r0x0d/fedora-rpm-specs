@@ -15,12 +15,12 @@ Provides: powerdns-recursor = %{version}-%{release}
 BuildRequires: make
 BuildRequires: boost-devel
 BuildRequires: gcc-c++
-%ifarch %{arm} %{ix86} x86_64 %{mips} aarch64
+%ifarch %{ix86} x86_64 aarch64
 BuildRequires: luajit-devel
 %else
 BuildRequires: lua-devel
 %endif
-%ifarch ppc64 ppc64le
+%ifarch ppc64le
 BuildRequires: libatomic
 %endif
 BuildRequires: libcap-devel
@@ -67,7 +67,7 @@ cd settings/rust
     --enable-reproducible \
     --enable-dnstap \
     --enable-dns-over-tls \
-%ifarch %{arm} %{ix86} x86_64 %{mips} aarch64
+%ifarch %{ix86} x86_64 aarch64
     --with-lua=luajit \
 %else
     --with-lua \

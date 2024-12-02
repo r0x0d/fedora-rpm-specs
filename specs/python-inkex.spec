@@ -1,25 +1,30 @@
+%global         commit          7e13b1b747ef01b240cf8c8581c48a87518370fe
+%global         shortcommit     %(c=%{commit}; echo ${c:0:8})
+%global         commitdate      20241008
+%global         reponame        extensions
 %global         srcname         inkex
 %global         forgeurl        https://gitlab.com/inkscape/extensions
-Version:        1.3.1
+Version:        1.4.0
 %global         tag             v%{version}
 %forgemeta
 
 Name:           python-%{srcname}
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        Python extensions for Inkscape core
 
 License:        GPL-2.0-or-later
 URL:            %forgeurl
-Source:         %{pypi_source %{srcname}}
-Patch:          scour-version.patch
+Source:         %{url}/-/archive/%{commit}/%{reponame}-%{shortcommit}.tar.gz
 BuildRequires:  python3-devel
 # Tests
+BuildRequires:  gtk3-devel
+BuildRequires:  gzip
 BuildRequires:  python3dist(pytest)
-BuildRequires:  python3-gobject-devel
 BuildRequires:  python3-gobject
 BuildRequires:  python3-gobject-base
 BuildRequires:  python3-gobject-base-noarch
-BuildRequires:  gtk3-devel
+BuildRequires:  python3-gobject-devel
+BuildRequires:  which
 BuildArch: noarch
 
 %global _description %{expand:
@@ -54,10 +59,46 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -p1 -n %{srcname}-%{version}
+%autosetup -p1 -n %{reponame}-%{commit}
+# Remove unneeded files
+rm *.lock
+
+rm tests/test_w*
+rm tests/test_v*
+rm tests/test_t*
+rm tests/test_s*
+rm tests/test_r*
+rm tests/test_p*
+rm tests/test_o*
+rm tests/test_n*
+rm tests/test_m*
+rm tests/test_l*
+rm tests/test_j*
+rm tests/test_int*
+rm tests/test_ins*
+rm tests/test_inks*
+rm tests/test_inkw*
+rm tests/test_ink2*
+rm tests/test_im*
+rm tests/test_h*
+rm tests/test_g*
+rm tests/test_f*
+rm tests/test_e*
+rm tests/test_d*
+rm tests/test_c*
+rm tests/test_a*
+rm tests/test_u*
+rm tests/add_pylint.py
+
 # Remove version limit from lxml
 sed -i "s/lxml = .*/lxml = '\*'/" pyproject.toml
-
+# Relax version limit for scour
+sed -i 's/scour = "^0.37"/scour = ">=0.37"/' pyproject.toml
+# Update version in configuration files
+sed -i 's/cssselect = "^1.2.0"/cssselect = ">=1.1.0,<2.0.0"/' pyproject.toml
+# Update python command
+sed -i 's/call("python"/call("python3"/' tests/test_inkex_command.py
+			     
 %generate_buildrequires
 %pyproject_buildrequires
 
@@ -74,13 +115,16 @@ sed -i /env\ python/d %{buildroot}%{python3_sitelib}/inkex/tester/inx.py
 
 %check
 %pyproject_check_import
-
+%pytest -k "not test_inkex_gui"
 
 %files -n python3-%{srcname} -f %{pyproject_files}
 %doc package-readme.md
 %license LICENSE.txt
  
 %changelog
+* Sat Nov 30 2024 Benson Muite <benson_muite@emailplus.org> - 1.4.0-1
+- Update to commit corresponding to Inkscape 1.4
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

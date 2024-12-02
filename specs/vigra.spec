@@ -1,30 +1,19 @@
 Summary:        Generic Programming for Computer Vision
 Name:           vigra
-Version:        1.11.1
-Release:        55%{?dist}
+Version:        1.11.2
+Release:        1%{?dist}
 License:        MIT
 # The "Lenna" files are non-free, we need to remove them from the source tarball.
-# wget https://github.com/ukoethe/vigra/releases/download/Version-1-11-1/vigra-1.11.1-src.tar.gz
-# tar xf vigra-1.11.1-src.tar.gz
-# find vigra-1.11.1/ -name "lenna*" -delete
-# tar zcf vigra-1.11.1-src-clean.tar.gz vigra-1.11.1/
+# wget https://github.com/ukoethe/vigra/archive/refs/tags/Version-1-11-2.tar.gz
+# tar -zxvf Version-1-11-2.tar.gz
+# mv vigra-Version-1-11-2 vigra-1.11.2
+# find vigra-1.11.2/ -name "lenna*" -delete
+# tar zcf vigra-1.11.2-src-clean.tar.gz vigra-1.11.2/
 Source0:        %{name}-%{version}-src-clean.tar.gz
 Source1:        vigra-config.sh
-# Backported from upstream master, fixes a build failure:
-# https://github.com/ukoethe/vigra/issues/414
-Patch0:         https://github.com/ukoethe/vigra/commit/81958d302494e137f98a8b1d7869841532f90388.patch
 # Avoid attempt to install non-free 'lenna' files
 Patch1:         vigra-1.10.0-no-lenna.patch
 Patch2:         vigra-1.11.1.docdir.patch
-# https://bugzilla.redhat.com/show_bug.cgi?id=1597394
-Patch3:         vigra-1.11.1.py37.patch
-# As of OpenEXR 3 upstream has significantly reorganized the libraries
-# including splitting out imath as a standalone library (which this project may
-# or may not need). Please see
-# https://github.com/AcademySoftwareFoundation/Imath/blob/master/docs/PortingGuide2-3.md
-# for porting details and encourage upstream to support it. 
-# Minimal patch provided.
-Patch4:         vigra-openexr3.patch
 URL:            http://ukoethe.github.io/vigra/
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -41,12 +30,8 @@ Requires: python3
 BuildRequires:  hdf5-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-sphinx
-%if 0%{?fedora} > 34
 BuildRequires:  cmake(OpenEXR)
 BuildRequires:  cmake(Imath)
-%else
-BuildRequires:  OpenEXR-devel
-%endif
 BuildRequires:  python3-numpy-f2py
 BuildRequires:  python3-nose
 BuildRequires:  boost-python3
@@ -61,8 +46,6 @@ library that puts its main emphasis on customizable algorithms and data
 structures. By using template techniques similar to those in the C++ Standard
 Template Library, you can easily adapt any VIGRA component to the needs of your
 application without thereby giving up execution speed.
-
-#'
 
 %package devel
 Summary: Development tools for programs which will use the vigra library
@@ -136,14 +119,10 @@ make install DESTDIR=%{buildroot}
 
 rm -rf %{buildroot}%{_prefix}/doc
 (
- cd $RPM_BUILD_ROOT%{_bindir}
+ cd %{buildroot}%{_bindir}
  mv vigra-config vigra-config-%{__isa_bits}
 )
-install -p -m755 -D %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/vigra-config
-
-#fixme: this fails,
-#%check
-#make VERBOSE=1 check
+install -p -m755 -D %{SOURCE1} %{buildroot}%{_bindir}/vigra-config
 
 %ldconfig_scriptlets
 
@@ -156,7 +135,7 @@ install -p -m755 -D %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/vigra-config
 %{_bindir}/vigra-config*
 %{_libdir}/libvigraimpex.so
 %{_libdir}/vigra
-%doc doc/vigra doc/vigranumpy
+%doc doc/vigra
 
 %if ! 0%{?rhel}
 %files -n python3-vigra
@@ -165,6 +144,10 @@ install -p -m755 -D %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/vigra-config
 %endif
 
 %changelog
+* Sat Nov 30 2024 Bruno Postle <bruno@postle.net> - 1.11.2-1
+- Upstream maintenance release
+- dropped vigra-1.11.1.py37.patch, 81958d302494e137f98a8b1d7869841532f90388.patch and vigra-openexr3.patch
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1.11.1-55
 - Rebuild for hdf5 1.14.5
 

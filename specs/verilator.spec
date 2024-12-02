@@ -1,30 +1,17 @@
-# Blocked by perl-parallel-forker not being packaged
-# https://bugzilla.redhat.com/show_bug.cgi?id=2268659
-%bcond longtests 0
-
-# Warnings in <F40 fails build
-%if 0%{?fedora} <= 39
-    %ifarch ppc64le
-    %bcond ccwarn 0
-    %endif
-%else
-    %bcond ccwarn 1
-%endif
-
 %bcond tcmalloc 1
 %bcond ccache 0
 %bcond mold 0
+%bcond longtests 0
+%bcond ccwarn 0
+%bcond z3 1
 
 Name:           verilator
-Version:        5.028
+Version:        5.030
 Release:        %autorelease
 Summary:        A fast simulator for synthesizable Verilog
 License:        LGPL-3.0-only OR Artistic-2.0
 URL:            https://veripool.org/verilator/
 Source0:        https://github.com/verilator/verilator/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
-
-# Undesirable upstream, fixes warnings with FORTIFY_SOURCE
-Patch:          0003-Enable-optimization-in-tests.patch
 
 BuildRequires:  autoconf
 BuildRequires:  bison
@@ -56,14 +43,22 @@ BuildRequires:  gperftools-libs
 BuildRequires:  gperftools-devel
 %endif
 %if %{with mold}
-Requires:       mold
+BuildRequires:  mold
 %endif
 %if %{with ccache}
+Requires:       ccache
 BuildRequires:  ccache
+%endif
+%if %{with z3}
+Requires:       z3
+BuildRequires:  z3
 %endif
 
 # required for further tests
 BuildRequires:  gdb
+
+# devel is required to run verilator at all
+Requires: %{name}-devel = %{version}-%{release}
 
 %description
 Verilator is the fastest free Verilog HDL simulator. It compiles
@@ -136,7 +131,7 @@ rm -rf %{buildroot}%{_datadir}/verilator/examples
 rm -rf %{buildroot}%{_datadir}/verilator/tests
 
 %check
-make test 
+make test
 
 
 %files

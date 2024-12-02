@@ -197,7 +197,7 @@ ExcludeArch: i686
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        133.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 # Automatically converted from old format: MPLv1.1 or GPLv2+ or LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-MPLv1.1 OR GPL-2.0-or-later OR LicenseRef-Callaway-LGPLv2+
@@ -282,6 +282,7 @@ Patch242:        0026-Add-KDE-integration-to-Firefox.patch
 # Upstream patches
 Patch402:        mozilla-1196777.patch
 Patch407:        mozilla-1667096.patch
+Patch408:        mzbz-1934217.patch
 
 # WebRTC/PipeWire camera patches
 # https://phabricator.services.mozilla.com/D228635
@@ -588,6 +589,7 @@ export LIBCLANG_RT=`pwd`/wasi-sdk-20/build/compiler-rt/lib/wasi/libclang_rt.buil
 
 %patch -P402 -p1 -b .1196777
 %patch -P407 -p1 -b .1667096
+%patch -P408 -p1 -b .1934217
 
 %if 0%{?fedora} > 40
 %patch -P450 -p1 -b .libwebrtc-pipewire-camera-use-better-unique-device-name-for-camera-devices
@@ -1222,6 +1224,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Nov 30 2024 Martin Stransky <stransky@redhat.com> - 133.0-2
+- Add fix for mzbz#1934217
+
 * Fri Nov 22 2024 Martin Stransky <stransky@redhat.com> - 133.0-1
 - Updated to latest upstream (133.0)
 

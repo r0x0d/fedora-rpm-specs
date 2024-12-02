@@ -1,7 +1,7 @@
 %bcond_without build_lib
 
 Name:       ddcutil
-Version:    2.1.2
+Version:    2.1.4
 Release:    %autorelease
 Summary:    Query and update monitor settings
 # Automatically converted from old format: GPLv2+ - review is highly recommended.

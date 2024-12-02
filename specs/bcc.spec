@@ -10,12 +10,6 @@
 %endif
 %endif
 
-%ifarch x86_64 ppc64 ppc64le aarch64 s390x riscv64
-%bcond_without libbpf_tools
-%else
-%bcond_with libbpf_tools
-%endif
-
 %bcond_with llvm_static
 
 %if %{without llvm_static}
@@ -25,7 +19,7 @@
 
 Name:           bcc
 Version:        0.31.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        BPF Compiler Collection (BCC)
 License:        Apache-2.0
 URL:            https://github.com/iovisor/bcc
@@ -57,7 +51,6 @@ BuildRequires:  libbpf-devel >= 2:0.8.0-1, libbpf-static >= 2:0.8.0-1
 Requires:       libbpf >= 2:0.8.0-1
 Requires:       tar
 Recommends:     kernel-devel
-
 Recommends:     %{name}-tools = %{version}-%{release}
 
 %description
@@ -118,7 +111,6 @@ Requires:       python3-netaddr
 %description tools
 Command line tools for BPF Compiler Collection (BCC)
 
-%if %{with libbpf_tools}
 %package -n libbpf-tools
 Summary:        Command line libbpf tools for BPF Compiler Collection (BCC)
 BuildRequires:  libbpf-devel >= 2:0.8.0-1, libbpf-static >= 2:0.8.0-1
@@ -126,7 +118,6 @@ BuildRequires:  bpftool
 
 %description -n libbpf-tools
 Command line libbpf tools for BPF Compiler Collection (BCC)
-%endif
 
 %prep
 %autosetup -p1
@@ -144,7 +135,6 @@ Command line libbpf tools for BPF Compiler Collection (BCC)
 # Installing libbpf-tools binaries in temp directory and
 # renaming them in there and the install code will just
 # take them.
-%if %{with libbpf_tools}
 pushd libbpf-tools;
 make BPFTOOL=bpftool LIBBPF_OBJ=%{_libdir}/libbpf.a CFLAGS="%{optflags}" LDFLAGS="%{build_ldflags}"
 make DESTDIR=./tmp-install prefix= install
@@ -160,7 +150,6 @@ make DESTDIR=./tmp-install prefix= install
     done
 )
 popd
-%endif
 
 %install
 %cmake_install
@@ -190,13 +179,11 @@ rm -rf %{buildroot}%{_datadir}/%{name}/tools/old/
 # the machine (e.g, IP address)
 # %%check
 
-%if %{with libbpf_tools}
 mkdir -p %{buildroot}/%{_sbindir}
 # We cannot use `install` because some of the tools are symlinks and `install`
 # follows those. Since all the tools already have the correct permissions set,
 # we just need to copy them to the right place while preserving those
 cp -a libbpf-tools/tmp-install/bin/* %{buildroot}/%{_sbindir}/
-%endif
 
 %ldconfig_scriptlets
 
@@ -232,12 +219,13 @@ cp -a libbpf-tools/tmp-install/bin/* %{buildroot}/%{_sbindir}/
 %{_bindir}/bcc-lua
 %endif
 
-%if %{with libbpf_tools}
 %files -n libbpf-tools
 %{_sbindir}/bpf-*
-%endif
 
 %changelog
+* Sat Nov 30 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 0.31.0-2
+- All supported arches support libbpf
+
 * Mon Sep 30 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 0.31.0-1
 - Rebase to the latest release version (#2253688)
 

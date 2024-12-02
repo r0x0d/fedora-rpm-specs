@@ -37,6 +37,7 @@ Python 3 bindings for the lz4 compression library.
 %prep
 %autosetup -n %{srcname}-%{version} -p1
 sed -i -e '/pytest-cov/d' setup.py
+sed -i -e 's/--cov=lz4\/block --cov=lz4\/frame//' tox.ini
 
 rm lz4libs/lz4*.[ch]
 

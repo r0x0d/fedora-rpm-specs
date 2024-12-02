@@ -13,24 +13,12 @@
 
 Name:		xrootd
 Epoch:		1
-Version:	5.7.1
-Release:	2%{?dist}
+Version:	5.7.2
+Release:	1%{?dist}
 Summary:	Extended ROOT file server
 License:	LGPL-3.0-or-later AND BSD-2-Clause AND BSD-3-Clause AND curl AND MIT AND Zlib
 URL:		https://xrootd.web.cern.ch
 Source0:	%{url}/download/v%{version}/%{name}-%{version}.tar.gz
-#		https://github.com/xrootd/xrootd/pull/2328
-Patch0:		0001-Server-Correct-spelling-permision-permission.patch
-#		https://github.com/xrootd/xrootd/pull/2329
-Patch1:		0001-Protect-against-array-index-out-of-bounds.patch
-Patch2:		0002-Add-error-string-to-e2sMap-if-EBADE-is-out-of-range.patch
-#		https://github.com/xrootd/xrootd/pull/2330
-Patch3:		0001-Change-type-in-XrdSutCacheArg_t-to-long-long.patch
-#		https://github.com/xrootd/xrootd/pull/2337
-#		https://github.com/doxygen/doxygen/issues/11138
-Patch4:		0001-Reproducible-doxygen-output.patch
-#		https://github.com/xrootd/xrootd/pull/2340
-Patch5:		0001-Increase-client-timeouts-for-XRootD-server-tests.patch
 
 BuildRequires:	cmake
 BuildRequires:	gcc-c++
@@ -70,6 +58,7 @@ BuildRequires:	libradosstriper-devel
 BuildRequires:	isa-l-devel
 %endif
 BuildRequires:	attr
+BuildRequires:	curl
 BuildRequires:	davix
 BuildRequires:	gtest-devel
 BuildRequires:	openssl
@@ -266,12 +255,6 @@ This package contains the API documentation of the xrootd libraries.
 
 %prep
 %setup -q
-%patch -P0 -p1
-%patch -P1 -p1
-%patch -P2 -p1
-%patch -P3 -p1
-%patch -P4 -p1
-%patch -P5 -p1
 
 %build
 %cmake \
@@ -662,6 +645,10 @@ fi
 %doc %{_pkgdocdir}
 
 %changelog
+* Fri Nov 29 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 1:5.7.2-1
+- Update to version 5.7.2
+- Drop patches accepted upstream
+
 * Mon Sep 16 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 1:5.7.1-2
 - Workaround doxygen non-reproducibility - make doc package noarch again
 - Increase client timeouts for XRootD server tests

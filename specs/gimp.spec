@@ -49,7 +49,7 @@ gimp:app / single-window-mode\
 gimp:app / ui
 
 # luajit isn’t available on all arches
-%global plain_lua_arches riscv64 ppc64 ppc64le
+%global plain_lua_arches riscv64 ppc64le s390x
 
 %global prerelease 1
 

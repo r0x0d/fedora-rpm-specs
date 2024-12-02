@@ -76,10 +76,17 @@ Requires:       cmake-filesystem
 %endif
 Requires:       hipcc
 Requires:       rocminfo
+%if 0%{?suse_version}
+# TW
+Requires:       python311-joblib
+Requires:       python311-msgpack
+Requires:       python311-PyYAML
+%else
 Requires:       python3dist(joblib)
 Requires:       python3dist(msgpack)
 Requires:       python3dist(pyyaml)
-Provides:       python3dist(tensile)
+%endif
+Provides:       python3-tensile
 
 %description -n python3-tensile-devel
 Tensile is a tool for creating benchmark-driven backend libraries for GEMMs,

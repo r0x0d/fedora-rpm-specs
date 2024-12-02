@@ -53,7 +53,7 @@ BuildRequires:  pkgconfig(libwebp) >= 0.5.0
 BuildRequires:  pkgconfig(lua) >= 5.1.0
 
 %if ! 0%{?rhel}
-%ifarch %{arm} %{ix86} x86_64
+%ifarch aarch64 %{ix86} x86_64
 BuildRequires:  pkgconfig(luajit) >= 2.0.4
 %endif
 BuildRequires:  pkgconfig(OpenEXR) >= 2.5.4
@@ -156,7 +156,7 @@ chrpath --delete %{buildroot}%{_libdir}/gegl-%{apiver}/*.so
 %{_libdir}/girepository-1.0/Gegl-%{apiver}.typelib
 
 %if ! 0%{?rhel}
-%ifarch %{arm} %{ix86} x86_64
+%ifarch aarch64 %{ix86} x86_64
 %dir %{_datadir}/gegl-%{apiver}/
 %{_datadir}/gegl-%{apiver}/lua/
 %endif

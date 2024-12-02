@@ -5,7 +5,7 @@
 
 Name:           pygobject3
 Version:        3.50.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Python bindings for GObject Introspection
 
 License:        LGPL-2.1-or-later
@@ -15,6 +15,10 @@ Source0:        https://download.gnome.org/sources/pygobject/3.50/pygobject-%{ve
 # async: Use correct T_BOOL type for _asyncio_future_blocking (merged upstream)
 # Fixes failures on s390x
 Patch:          https://gitlab.gnome.org/GNOME/pygobject/-/merge_requests/367.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=2329587
+# https://gitlab.gnome.org/GNOME/pygobject/-/issues/658
+# Revert override of connection.register_object to avoid breaking anaconda
+Patch:          0001-revert-override-of-connection.register_object.patch
 
 BuildRequires:  pkgconfig(cairo-gobject)
 BuildRequires:  pkgconfig(glib-2.0) >= %{glib2_version}
@@ -101,6 +105,9 @@ export TEST_GTK_VERSION=3.0
 %{_libdir}/pkgconfig/pygobject-3.0.pc
 
 %changelog
+* Sat Nov 30 2024 Adam Williamson <awilliam@redhat.com> - 3.50.0-2
+- Revert a dbus override to avoid breaking anaconda (#2329587)
+
 * Fri Nov 22 2024 Miro Hrončok <mhroncok@redhat.com> - 3.50.0-1
 - Update to 3.50.0
 

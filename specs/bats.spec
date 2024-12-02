@@ -1,15 +1,13 @@
 %global         upstreamname  bats-core
 
 Name:           bats
-Version:        1.11.0
+Version:        1.11.1
 Release:        %autorelease
 Summary:        Bash Automated Testing System
 
 License:        MIT
 URL:            https://github.com/%{upstreamname}/%{upstreamname}
 Source:         https://github.com/%{upstreamname}/%{upstreamname}/archive/v%{version}.tar.gz#/%{upstreamname}-%{version}.tar.gz
-# Fix for https://github.com/bats-core/bats-core/pull/904
-Patch:          904.patch
 
 BuildArch:      noarch
 

@@ -2,7 +2,7 @@
 %global sum A goodie-bag of unix shell and environment tools for py.test
 
 Name:           python-%{srcname}
-Version:        1.8.0
+Version:        1.8.1
 Release:        %autorelease
 Summary:        %{sum}
 

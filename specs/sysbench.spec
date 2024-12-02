@@ -1,11 +1,10 @@
 Summary:       System performance benchmark
 Name:          sysbench
 Version:       1.0.20
-Release:       15%{?dist}
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
+Release:       16%{?dist}
 License:       GPL-2.0-or-later
-Source0:       https://github.com/akopytov/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 URL:           https://github.com/akopytov/sysbench/
+Source0:       https://github.com/akopytov/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 
 # https://github.com/akopytov/sysbench/pull/379
 Patch0:        sysbench-1.0.20-python3.patch
@@ -20,37 +19,19 @@ BuildRequires: libaio-devel
 BuildRequires: libtool
 BuildRequires: libxslt
 BuildRequires: luajit-devel
-%if 0%{?el7}
-BuildRequires: mariadb-devel
-%endif
-%if 0%{?fedora} || 0%{?rhel} > 7
 BuildRequires: mariadb-connector-c-devel
-%endif
-%if 0%{?fedora} || 0%{?rhel} > 7
 BuildRequires: libpq-devel
-%else
-BuildRequires: postgresql-devel
-%endif
 # Tests
 BuildRequires: /usr/bin/cram
-%if 0%{?fedora} || 0%{?rhel} > 7
 BuildRequires: python3
-%else
-BuildRequires: python
-%endif
 
 # luajit is needed and is not available for ppc64le and s390x
 # Use the same arches as luajit.
-# luajit 2.0.4, which is in EL6 and EL7, doesn't have support for aarch64
-%if 0%{?el7}
-ExclusiveArch:  %{arm} %{ix86} x86_64 %{mips}
-%else
-%if 0%{?fedora} >= 35 || 0%{?rhel} >= 9
 # On F35+ and EL9+, luajit doesn't support s390x and ppc64le anymore
+%if 0%{?fedora} >= 35 || 0%{?rhel} >= 9
 ExclusiveArch:  %{arm} %{ix86} x86_64 %{mips} aarch64
 %else
 ExclusiveArch:  %{arm} %{ix86} x86_64 %{mips} aarch64 ppc64le s390x
-%endif
 %endif
 
 
@@ -100,26 +81,19 @@ mv %{buildroot}%{_docdir}/sysbench/manual.html .
 
 %check
 cd tests
-# opt_repot_interval test never returns on armv7hl
-%ifarch armv7hl
-rm t/opt_report_interval.t
-%endif
-# Test suite segfaults in koji aarch64
-# Although it works on different aarch64 hardware...
-%ifnarch aarch64
 ./test_run.sh
-%else
-./test_run.sh || :
-%endif
 
 %files
-%doc ChangeLog README.md manual.html
 %license COPYING
+%doc ChangeLog README.md manual.html
 %{_bindir}/*
 %{_datadir}/%{name}
 
 
 %changelog
+* Sat Nov 30 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1.0.20-16
+- Drop EOL releases, fix luajit arches
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.20-15
 - convert license to SPDX
 

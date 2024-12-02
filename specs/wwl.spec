@@ -2,8 +2,7 @@ Summary: Calculates distance and azimuth between two Maidenhead locators
 Name: wwl
 Version: 1.3
 Release: 10%{?dist}
-# https://lists.fedoraproject.org/archives/list/legal@lists.fedoraproject.org/thread/SVSSA3AYDGFHA4NZWJPZCNNBRSSUV5DT/
-License: Semi-Permissive
+License: wwl
 URL: http://www.db.net/downloads/
 Source: http://www.db.net/downloads/wwl+db-%{version}.tgz
 BuildRequires: gcc

@@ -5,17 +5,17 @@
 %global efi_vendor %{name}
 
 # Git commit mentioned at https://github.com/pbatard/efifs
-%global grub2_version    2.11-0
-%global grub2_commit     d9b4638c50b16d4722e66d334e2c1a674b4a45cc
+%global grub2_version    2.13-0
+%global grub2_commit     6811f6f09d61996a3acbc4fc0414e45964f0e2d9
 
 # Preferrably the latest stable version shipped in Fedora
-%global edk2_stable_date 20240524
+%global edk2_stable_date 20241117
 %global edk2_stable_str  edk2-stable%(d=%{edk2_stable_date}; echo ${d:0:6})
 
 Summary:        Free software EFI/UEFI standalone file system drivers
 Name:           efifs
-Version:        1.9
-Release:        7%{?dist}
+Version:        1.11
+Release:        1%{?dist}
 License:        GPL-3.0-or-later
 URL:            https://efi.akeo.ie/
 Source0:        https://github.com/pbatard/efifs/archive/v%{version}/%{name}-%{version}.tar.gz
@@ -29,6 +29,10 @@ Source2:        https://github.com/tianocore/edk2/archive/%{edk2_stable_str}.tar
 Source3:        efifs-enable.sh
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
+%if 0%{?rhel} == 8
+# GCC >= 9.1 supports -mstack-protector-guard=global on aarch64
+BuildRequires:  gcc-toolset-12
+%endif
 BuildRequires:  make
 BuildRequires:  libuuid-devel
 BuildRequires:  python3
@@ -42,15 +46,16 @@ Provides:       bundled(grub2-efi-modules) = %{grub2_version}.git%(c=%{grub2_com
 Provides:       bundled(edk2-tools) = %{edk2_stable_date}
 
 %description
-Free software EFI/UEFI standalone file system drivers, based on the GRUB 2.0
-read-only drivers: AFFS (Amiga Fast FileSystem), BFS (BeOS FileSystem), btrfs,
-exFAT, ext2/ext3/ext4, F2FS (experimental), HFS and HFS+ (Mac OS, including
-the compression support), ISO9660, JFS (Journaled FileSystem), nilfs2, NTFS
-(including compression support), ReiserFS, SFS (Amiga Smart FileSystem), UDF,
-UFS/FFS, UFS2/FFS2, XFS, ZFS and more.
+Free software EFI/UEFI standalone file system drivers, based on the GRUB
+2.0 read-only drivers: AFFS (Amiga Fast FileSystem), BFS (BeOS FileSystem),
+btrfs, exFAT, ext2/ext3/ext4, EROFS, F2FS, HFS and HFS+ (Mac OS, including
+compression support), ISO9660, JFS (Journaled FileSystem), nilfs2, NTFS
+(including compression support), ReiserFS, SFS (Amiga Smart FileSystem),
+UDF, UFS/FFS, UFS2/FFS2, XFS, ZFS and more.
 
 %prep
 %setup -q -T -c %{name}-%{version} -a 0 -a 2
+mv -f EfiFs-%{version} %{name}-%{version}
 cp -p %{SOURCE3} .
 
 pushd %{name}-%{version}
@@ -74,6 +79,10 @@ ln -s ../%{name}-%{version} EfiFsPkg
 popd
 
 %build
+%if 0%{?rhel} == 8
+. /opt/rh/gcc-toolset-12/enable
+%endif
+
 pushd edk2-%{edk2_stable_str}
 export PYTHON_COMMAND=%{__python3}
 %make_build -C BaseTools EXTRA_OPTFLAGS="$RPM_OPT_FLAGS" EXTRA_LDFLAGS="$RPM_LD_FLAGS"
@@ -102,6 +111,9 @@ install -p -m 0700 edk2-%{edk2_stable_str}/Build/EfiFs/RELEASE_GCC5/%{efi_arch_u
 %{efi_esp_dir}/
 
 %changelog
+* Sun Dec 01 2024 Robert Scheck <robert@fedoraproject.org> 1.11-1
+- Upgrade to 1.11 (#2290813)
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.9-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,76 +1,60 @@
+%global github_version 1.0-1
+%global fedora_version %(echo -n %{github_version} | sed 's/-/./')
+
 Name:           jcip-annotations
-Version:        1
-Release:        44.20060626%{?dist}
-Summary:        Java annotations for multithreaded software
+Version:        %{fedora_version}
+Release:        1%{?dist}
+Summary:        A clean room implementation of the JCIP Annotations
 
-License:        CC-BY-2.5
-URL:            http://www.jcip.net/
-Source0:        http://jcip.net.s3-website-us-east-1.amazonaws.com/%{name}-src.jar
-Source1:        http://mirrors.ibiblio.org/pub/mirrors/maven2/net/jcip/%{name}/1.0/%{name}-1.0.pom
+License:        Apache-2.0
+URL:            https://github.com/stephenc/jcip-annotations
+Source0:        https://github.com/stephenc/jcip-annotations/archive/refs/tags/jcip-annotations-%{github_version}.tar.gz
 
-BuildRequires:  javapackages-local
-
-# There is no point in building native libraries, as the sources contain only
-# annotation definitions, so no code would be generated.
 BuildArch:      noarch
 ExclusiveArch:  %{java_arches} noarch
-BuildRequires:  java-devel >= 1.5.0, jpackage-utils
 
-Requires:       java-headless >= 1.5.0, jpackage-utils
-
+BuildRequires:  maven-local
 
 %description
-This package provides class, field, and method level annotations for
-describing thread-safety policies.  These annotations are relatively
-unintrusive and are beneficial to both users and maintainers.  Users can see
-immediately whether a class is thread-safe, and maintainers can see
-immediately whether thread-safety guarantees must be preserved.  Annotations
-are also useful to a third constituency: tools.  Static code-analysis tools
-may be able to verify that the code complies with the contract indicated by
-the annotation, such as verifying that a class annotated with @Immutable
-actually is immutable.
+A clean room implementation of the JCIP Annotations based entirely on the
+specification provided by the javadocs.
 
 %package javadoc
 Summary:        Javadoc for jcip-annotations
 
 %description javadoc
 Javadoc documentation for the jcip-annotations package.
-On systems where javadoc is sinjdoc, this package contains nothing useful
-since sinjdoc does not understand annotations.
 
 %prep
-%setup -q -c
+%setup -q -n %{name}-%{name}-%{github_version}
 
-cp %{SOURCE1} pom.xml
+# Remove unnecessary dependency on parent POM
+%pom_remove_parent
 
-# Get rid of the manifest created upstream with ant
-rm -fr META-INF
+# Remove unnecessary dependency on JUnit
+%pom_remove_dep junit:junit
 
-# Fix DOS line endings
-sed -i 's/\r//' net/jcip/annotations/package.html
+# Compile for Java 8
+%pom_xpath_set "pom:plugin[pom:artifactId='maven-compiler-plugin']/pom:configuration/*" 1.8
 
-%mvn_file net.jcip:%{name} %{name}
-%mvn_alias "net.jcip:%{name}" "com.github.stephenc.jcip:jcip-annotations"
+# Install JAR directly in /usr/share/java
+%mvn_file :jcip-annotations %{name}
 
 %build
-mkdir classes
-find . -name '*.java' | xargs %javac -g -source 1.8 -target 1.8 -d classes
-cd classes
-%jar cf ../%{name}.jar net
-cd ..
-%javadoc -Xdoclint:none -d docs -source 1.8 net.jcip.annotations
-
-%mvn_artifact pom.xml %{name}.jar
+%mvn_build
 
 %install
-
-%mvn_install -J docs
+%mvn_install
 
 %files -f .mfiles
 
 %files javadoc -f .mfiles-javadoc
 
 %changelog
+* Sat Nov 30 2024 Richard Fearn <richardfearn@gmail.com> - 1.0_1-1
+- Switch to clean room implementation, as original implementation uses
+  CC-BY-2.5 licence, which is not allowed for code in Fedora
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1-44.20060626
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

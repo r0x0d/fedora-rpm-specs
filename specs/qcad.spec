@@ -43,7 +43,6 @@ BuildRequires: qt5-qtscript-devel >= 5.9.0
 BuildRequires: qt5-qtsvg-devel >= 5.9.0
 BuildRequires: qt5-qtxmlpatterns-devel >= 5.9.0
 BuildRequires: qt5-qtdeclarative-devel >= 5.9.0
-Requires:      qt5-designer%{?_isa} >= 5.9.0
 Requires:      qt5-qtsvg%{?_isa}
 Requires:      qt5-qtscript%{?_isa}
 Provides:      bundled(qtscriptgenerator) = 5.15.11
@@ -64,16 +63,15 @@ BuildRequires: mesa-libGLU-devel
 BuildRequires: desktop-file-utils
 BuildRequires: libappstream-glib
 BuildRequires: fontpackages-devel
-
-Requires:      hicolor-icon-theme
-Requires:      qgnomeplatform-qt5
-
 BuildRequires: vlgothic-fonts
 BuildRequires: dejavu-sans-fonts
 BuildRequires: dejavu-sans-mono-fonts
-Requires:      vlgothic-fonts
+
 Requires:      dejavu-sans-fonts
 Requires:      dejavu-sans-mono-fonts
+Requires:      hicolor-icon-theme
+Requires:      vlgothic-fonts
+
 
 Provides:      bundled(dxflib) = 1.0.0
 Provides:      bundled(opennurbs) = 201004095

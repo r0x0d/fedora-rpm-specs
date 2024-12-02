@@ -2,7 +2,7 @@ Name:           gnome-shell-extension-gamemode
 Version:        11.0
 Release:        %autorelease
 Summary:        GameMode integration for GNOME Shell
-License:        LGPLv2
+License:        LGPL-2.1-only
 URL:            https://github.com/trsnaqe/gamemode-shell-extension
 Source0:        %{url}/archive/V%{version}/gamemode-extension-V%{version}.tar.gz
 Source1:        lgpl-2.1.md

@@ -1,6 +1,6 @@
 Summary:        Simple TTY terminal I/O application
 Name:           tio
-Version:        3.7
+Version:        3.8
 Release:        1%{?dist}
 License:        GPL-2.0-or-later
 URL:            https://tio.github.io/
@@ -39,6 +39,9 @@ commandline interface to easily connect to TTY devices for basic input/output.
 %{_mandir}/man1/%{name}.1*
 
 %changelog
+* Sat Nov 30 2024 Robert Scheck <robert@fedoraproject.org> 3.8-1
+- Upgrade to 3.8 (#2329609)
+
 * Fri Sep 06 2024 Robert Scheck <robert@fedoraproject.org> 3.7-1
 - Upgrade to 3.7 (#2309659)
 

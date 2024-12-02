@@ -2,8 +2,8 @@
 %undefine __cmake_in_source_build
 
 Name:           kokkos
-Version:        4.3.01
-%global         sover 4.3
+Version:        4.4.01
+%global         sover 4.4
 Release:        1%{?dist}
 Summary:        Kokkos C++ Performance Portability Programming
 # no support for 32-bit archs https://github.com/kokkos/kokkos/issues/2312
@@ -12,7 +12,7 @@ ExcludeArch: i686 armv7hl
 # Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
 URL:            https://github.com/kokkos/kokkos
-Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+Source0:        %{url}/releases/download/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake >= 3.16
@@ -85,6 +85,9 @@ This package contains the development files of %{name}.
 %{_bindir}/kokkos_launch_compiler
 
 %changelog
+* Sat Nov 30 2024 Richard Berger <richard.berger@outlook.com> - 4.4.01-1
+- Version bump to v4.4.01
+
 * Mon Sep 2 2024 Richard Berger <richard.berger@outlook.com> - 4.3.01-1
 - Version bump to v4.3.01
 

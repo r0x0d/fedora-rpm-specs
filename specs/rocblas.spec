@@ -80,7 +80,7 @@ BuildRequires:  msgpack-cxx-devel
 %else
 BuildRequires:  msgpack-devel
 %endif
-BuildRequires:  python3dist(tensile)
+BuildRequires:  python3-tensile
 %endif
 
 %if %{with compress}
@@ -190,6 +190,10 @@ fi
     
 %files -f %{name}.files
 %license LICENSE.md
+%if %{with tensile}
+%dir %{_libdir}/%{name}
+%dir %{_libdir}/%{name}/library
+%endif
 
 %files devel -f %{name}.devel
 %doc README.md

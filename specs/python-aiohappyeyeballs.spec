@@ -1,5 +1,5 @@
 Name:           python-aiohappyeyeballs
-Version:        2.4.3
+Version:        2.4.4
 Release:        %autorelease
 Summary:        Happy Eyeballs for asyncio
 

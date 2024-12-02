@@ -1,66 +1,42 @@
-%global _hardened_build 1
 %global has_luajit 1
 
-%if 0%{?rhel} && 0%{?rhel} <= 7
-%global has_luajit 0
-%endif
 %ifarch ppc64le s390x riscv64
 %global has_luajit 0
 %endif
-# PANIC: unprotected error in call to Lua API (bad light userdata pointer)
-# Disabling luajit for aarch64
-# %%ifarch aarch64
-# %%global has_luajit 0
-# %%endif
 
 # Look, you probably don't want this. scim is so 2012. ibus is the new hotness.
 # Enabling this means you'll almost certainly need to pass ECORE_IMF_MODULE=xim
 # to get anything to work. (*cough*terminology*cough*)
 %global with_scim 0
 
-# Fedora <= 22 and EPEL 7 does not have wayland dependency
-%if 0%{?fedora} || 0%{?rhel} > 7
-%global use_wayland 1
-%else
-# EPEL
-%global use_wayland 0
-%endif
-
 # Enable avif support (this broke before)
 %bcond_without avif
 
 Name:		efl
 Version:	1.27.0
-Release:	12%{?dist}
+Release:	13%{?dist}
 Summary:	Collection of Enlightenment libraries
 # Automatically converted from old format: BSD and LGPLv2+ and GPLv2 and zlib - review is highly recommended.
 License:	LicenseRef-Callaway-BSD AND LicenseRef-Callaway-LGPLv2+ AND GPL-2.0-only AND Zlib
 URL:		http://enlightenment.org/
 Source0:	http://download.enlightenment.org/rel/libs/efl/efl-%{version}.tar.xz
-# There is probably a way to conditionalize this in the code that could go upstream
-# but this works for now.
-#Patch1:		efl-1.17.1-old-nomodifier-in-drm_mode_fb_cmd2.patch
-# If luaL_reg is not defined, define it.
-#Patch2:		efl-1.23.1-luajitfix.patch
-# Our armv7 builds do not use neon
-Patch3:		efl-1.25.0-no-neon.patch
 # This is hacky, but it gets us building in rawhide again.
 # Upstream efl probably needs to rework how they use check in their C tests
-Patch4:		efl-1.25.0-check-fix.patch
+Patch1:		efl-1.25.0-check-fix.patch
 
 # Fix headerless .po files that modern gettext doesn't like
-Patch5:		efl-1.27.0-gettextfix.patch
+Patch2:		efl-1.27.0-gettextfix.patch
 
 # Build ecore_sdl versioned so. So efl no longer requires efl-devel
-Patch6:		efl-1.27.0-sdl-version-build.patch
+Patch3:		efl-1.27.0-sdl-version-build.patch
 
 # Handle incompatible pointer types in the bigendian cases
-Patch7:		efl-1.27.0-bigendian-gcc-fix.patch
+Patch4:		efl-1.27.0-bigendian-gcc-fix.patch
 # Fix weird pointer to pointer issue on aarc64
 # Note: I am not 100% sure this is right.
-Patch8:		efl-1.27.0-pointerpointerfix.patch
+Patch5:		efl-1.27.0-pointerpointerfix.patch
 
-%ifnarch s390 s390x
+%ifnarch s390x
 BuildRequires:	libunwind-devel
 %endif
 BuildRequires:  gcc-c++
@@ -88,10 +64,8 @@ BuildRequires:	scim-devel
 %endif
 BuildRequires:	ibus-devel
 BuildRequires:	doxygen systemd giflib-devel openjpeg2-devel libdrm-devel
-%if %{use_wayland}
 BuildRequires:	wayland-devel >= 1.11.0
 BuildRequires:	wayland-protocols-devel >= 1.7
-%endif
 BuildRequires:	meson >= 0.50
 BuildRequires:	ninja-build gettext-devel mesa-libGLES-devel
 BuildRequires:	mesa-libgbm-devel libinput-devel
@@ -215,23 +189,8 @@ Obsoletes:	libeina-devel <= 1.7.10
 Development files for EFL.
 
 %prep
-%setup -q
-%if 0%{?rhel} && 0%{?rhel} <= 7
-#%patch1 -p1 -b .old
-%endif
-#%patch2 -p1 -b .luajitfix
-%patch -P3 -p1 -b .noneon
-%patch -P4 -p1 -b .checkfix
-%patch -P5 -b .gettextfix
-%patch -P6 -b .sdl-version-build
-%patch -P7 -p1 -b .bigendianfix
-%patch -P8 -p1 -b .pointerpointerfix
+%autosetup -n %{name}-%{version} -p1
 
-# This is why hardcoding paths is bad.
-# sed -i -e 's|/opt/efl-%{version}/share/|%{_datadir}/|' \
-#  data/libeo.so.%{version}-gdb.py
-
-# libheif is legally encumbered (and not in Fedora)
 
 %build
 %{meson} \
@@ -253,9 +212,7 @@ Development files for EFL.
  -Dglib=true \
 %endif
  -Dfb=true \
-%if %{use_wayland}
  -Dwl=true \
-%endif
  -Ddrm=true \
  -Dinstall-eo-files=true \
 %if 0%{?has_luajit}
@@ -284,7 +241,7 @@ mv %{buildroot}%{_datadir}/gdb/auto-load/usr/lib %{buildroot}%{_datadir}/gdb/aut
 # fix perms
 chmod -x src/bin/edje/edje_cc_out.c
 
-find %{buildroot} -name '*.la' -exec rm -f {} ';'
+find %{buildroot} -name '*.la' -delete
 
 %find_lang %{name}
 
@@ -455,10 +412,7 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_includedir}/ecore-input-evas-1/
 %{_includedir}/ecore-ipc-1/
 %{_includedir}/ecore-sdl-1/
-%if %{use_wayland}
-
 %{_includedir}/ecore-wl2-1/
-%endif
 %{_includedir}/ecore-x-1/
 %{_libdir}/cmake/Ecore*/
 %{_libdir}/libecore*.so
@@ -597,6 +551,9 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/libexactness*.so
 
 %changelog
+* Sat Nov 30 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1.27.0-13
+- Cleanup arch/spec, EOL releases
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 1.27.0-12
 - convert license to SPDX
 

@@ -29,7 +29,7 @@
 %endif
 
 Name:      weechat
-Version:   4.4.3
+Version:   4.4.4
 Release:   %autorelease
 Summary:   Portable, fast, light and extensible IRC client
 Group:     Applications/Communications
@@ -75,9 +75,6 @@ BuildRequires: source-highlight
 BuildRequires: tcl-devel
 BuildRequires: libzstd-devel
 BuildRequires: zlib-devel
-%if 0%{?rhel}
-BuildRequires: cmake3
-%endif
 
 Requires:      hicolor-icon-theme
 
@@ -126,17 +123,17 @@ find doc/ -type f -name 'CMakeLists.txt' \
   -DENABLE_MAN=OFF \
 %endif
   %{nil}
-%cmake3_build
+%cmake_build
 
 
 %install
-%cmake3_install
+%cmake_install
 
 %find_lang %name
 
 
 %if %{with check}
-%ctest3 -- -V
+%ctest --verbose
 %endif
 
 

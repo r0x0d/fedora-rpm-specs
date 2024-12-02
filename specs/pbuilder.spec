@@ -1,6 +1,6 @@
 Name:           pbuilder
 Version:        0.231.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Personal package builder for Debian packages
 
 License:        GPL-2.0-or-later
@@ -43,7 +43,7 @@ BuildRequires:  tex(pdflscape.sty)
 
 Requires:       debootstrap
 Requires:       dpkg-dev
-Requires:       mount
+Requires:       util-linux-core
 Recommends:     devscripts
 Recommends:     fakeroot
 Recommends:     iproute
@@ -141,6 +141,10 @@ make check
 
 
 %changelog
+* Sat Nov 30 2024 Sérgio Basto <sergio@serjux.com> - 0.231.1-3
+- Requires util-linux-core instead mount, which doesn't exist as package on
+  Fedora
+
 * Sat Sep 21 2024 Sérgio Basto <sergio@serjux.com> - 0.231.1-2
 - Update requires and recommends following upstream
 - devscripts is not available on EPEL (yet)
