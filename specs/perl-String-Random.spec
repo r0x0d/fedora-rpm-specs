@@ -2,7 +2,7 @@ Name:           perl-String-Random
 Version:        0.32
 Release:        9%{?dist}
 Summary:        Perl module to generate random strings based on a pattern
-License:        GPL+ or Artistic
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/String-Random
 Source0:        https://cpan.metacpan.org/authors/id/S/SH/SHLOMIF/String-Random-%{version}.tar.gz
 BuildArch:      noarch

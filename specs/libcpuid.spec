@@ -1,13 +1,10 @@
 Name:           libcpuid
-Version:        0.7.0
-Release:        3%{?dist}
+Version:        0.7.1
+Release:        1%{?dist}
 Summary:        Provides CPU identification for x86 and ARM
 License:        BSD-2-Clause
 URL:            https://github.com/anrieff/libcpuid
 Source0:        https://github.com/anrieff/libcpuid/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
-# https://github.com/anrieff/libcpuid/pull/203
-Patch0:         0001-Python-Refactor-the-build-of-the-bindings.patch
-Patch1:         0002-Python-Do-not-fail-sanity-tests-if-current-CPU-is-un.patch
 ExcludeArch:    ppc64le s390x
 
 BuildRequires:  automake
@@ -101,6 +98,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} %pytest python/tests
 
 
 %changelog
+* Sun Dec 01 2024 Martin Gansser <martinkg@fedoraproject.org> - 0.7.1-1
+- Update to 0.7.1
+
 * Tue Sep 03 2024 Martin Gansser <martinkg@fedoraproject.org> - 0.7.0-3
 - Add BR pyproject-rpm-macros
 

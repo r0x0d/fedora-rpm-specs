@@ -1,12 +1,11 @@
 Name:           ack
 Version:        3.7.0
-%global cpan_version v%{version}
 Release:        %autorelease
 Summary:        Grep-like text finder
 # SPDX migration
 License:        Artistic-2.0
 URL:            http://beyondgrep.com/
-Source0:        https://cpan.metacpan.org/authors/id/P/PE/PETDANCE/%{name}-%{cpan_version}.tar.gz
+Source:         https://github.com/beyondgrep/ack3/archive/v%{version}/ack3-%{version}.tar.gz
 BuildArch:      noarch
 BuildRequires:  coreutils
 BuildRequires:  findutils
@@ -17,6 +16,7 @@ BuildRequires:  perl(:VERSION) >= 5.10.1
 BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  perl(strict)
 BuildRequires:  perl(warnings)
+BuildRequires:  perl(Template)
 # Run-time:
 BuildRequires:  perl(Config)
 BuildRequires:  perl(Cwd) >= 3.00
@@ -61,14 +61,18 @@ Requires:       perl(Pod::Usage) >= 1.26
 Ack is designed as a replacement for grep.
 
 %prep
-%setup -q -n %{name}-%{cpan_version}
+%setup -q -n ack3-%{version}
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS=vendor
 make
+make completion.bash
+make completion.zsh
 
 %install
 make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
+install -D -p -m 0644 completion.bash %{buildroot}%{bash_completions_dir}/ack
+install -D -p -m 0644 completion.zsh  %{buildroot}%{zsh_completions_dir}/_ack
 
 find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
 find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
@@ -84,6 +88,8 @@ make test
 %{perl_vendorlib}/*
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}*
+%{bash_completions_dir}/ack
+%{zsh_completions_dir}/_ack
 
 
 %changelog

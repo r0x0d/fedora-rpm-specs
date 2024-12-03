@@ -13,9 +13,9 @@
 
 Name:           lammps
 %if %{git}
-Version:        20240829^%{shortcommit}
+Version:        20241119^%{shortcommit}
 %else
-Version:        20240829
+Version:        20241119
 %endif
 %global         uversion %(v=%{version}; \
                   patch=${v##*.}; [[ $v = $patch ]] && patch= \
@@ -25,7 +25,7 @@ Version:        20240829
                   m=${v:4:2};
                   y=${v:0:4};
                   echo $([[ -z $patch ]] && echo patch || echo stable)_${d#0}${months[${m#0}]}${y}$([[ -n $patch ]] && echo _update${patch}))
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        Molecular Dynamics Simulator
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License:        GPL-2.0-only
@@ -39,7 +39,6 @@ Source1:        https://github.com/google/googletest/archive/release-1.12.1.tar.
 Source2:        https://pyyaml.org/download/libyaml/yaml-0.2.5.tar.gz
 Source3:        https://download.lammps.org/thirdparty/opencl-loader-2024.05.09.tar.gz
 Source4:        https://github.com/spglib/spglib/archive/refs/tags/v1.11.2.1.tar.gz#/spglib-1.11.2.1.tar.gz
-Patch0:         detect_mpi4py_v4.patch
 BuildRequires:  fftw-devel
 BuildRequires:  gcc-c++
 BuildRequires:  gcc-fortran
@@ -211,7 +210,6 @@ cd python
 %else
 %setup -q -n %{name}-%{uversion}
 %endif
-%patch 0 -p1
 
 %build
 %global _vpath_srcdir cmake
@@ -370,6 +368,11 @@ done
 %config %{_sysconfdir}/profile.d/lammps.*
 
 %changelog
+* Sat Nov 30 2024 Richard Berger <richard.berger@outlook.com> - 20241119-1
+- Version bump to 20241119
+- First release that makes use of Kokkos 4.4.01
+- Dropped detect_mpi4py_v4.patch. got merged upstream
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 20240829-2
 - Rebuild for hdf5 1.14.5
 

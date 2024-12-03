@@ -16,6 +16,10 @@ BuildRequires:  cairo
 BuildRequires:  gdk-pixbuf2
 BuildRequires:  gdk-pixbuf2-modules
 BuildRequires:  xwayland-run
+# Both weston and mutter appear to work. We pick weston explicitly, here and in
+# the xwfb-run invocation, to accommodate different defaults in Fedora and EL.
+# Details: https://src.fedoraproject.org/rpms/python-cairocffi/pull-request/14
+BuildRequires:  weston
 
 %global _description\
 cairocffi is a CFFI-based drop-in replacement for Pycairo, a set of\
@@ -53,7 +57,7 @@ sed -i -e "s/, 'ruff'//" pyproject.toml
 
 %check
 # test_xcb.py needs a display
-%global __pytest xwfb-run -- /usr/bin/pytest
+%global __pytest xwfb-run -c weston -- /usr/bin/pytest
 %pytest -v --pyargs cairocffi
 
 

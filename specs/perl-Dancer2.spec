@@ -1,6 +1,6 @@
 Name:           perl-Dancer2
-Version:        1.1.1
-Release:        2%{?dist}
+Version:        1.1.2
+Release:        1%{?dist}
 Summary:        Lightweight yet powerful web application framework
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
@@ -184,6 +184,9 @@ provides nice, easily-extendable CLI interface for it.
 %{_bindir}/*
 
 %changelog
+* Sun Dec 01 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 1.1.2-1
+- Update to 1.1.2
+
 * Sun Aug 18 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 1.1.1-2
 - Fix CONTRIBUTING.md filename
 

@@ -5,7 +5,7 @@ Version:        1.3
 Release:        33%{?dist}
 Summary:        Firmware for Atmel at76c50x wireless network chips
 
-License:        Redistributable, no modification permitted
+License:        LicenseRef-Fedora-Firmware
 URL:            http://at76c503a.berlios.de/
 Source0:        http://www.thekelleys.org.uk/atmel/atmel-firmware-%{version}.tar.gz
 Source1:        http://download.berlios.de/at76c503a/at76_usb-firmware-%{usb_version}.tar.gz

@@ -10,6 +10,9 @@ Summary: Library for replacing scanf and std::istream
 URL: https://github.com/eliaskosunen/%{upname}
 Source0: %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
+# https://github.com/eliaskosunen/scnlib/pull/136
+Patch100:      %{name}-4.0.1-fast_float-fixes.patch
+
 BuildRequires: doctest-devel
 BuildRequires: fast_float-devel
 # Since fast_float is header-only, we are required to BR the -static virtual

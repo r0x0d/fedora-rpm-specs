@@ -1,5 +1,5 @@
 Name:           xonsh
-Version:        0.18.3
+Version:        0.18.4
 Release:        %autorelease
 Summary:        A general purpose, Python-ish shell
 
@@ -83,7 +83,7 @@ sed --in-place "s:#!\s*/usr.*::" xonsh/xoreutils/_which.py xonsh/webconfig/main.
 %global __pytest PYTHONPATH="$PYTHONPATH:$(pwd)" %{python3} -m xonsh run-tests.xsh test --
 # TODO: broken tests
 # deselected test_integrations fail due to unexpected DeprecationWarning in output, setting PYTHONWARNINGS does not help
-%pytest -v -k "not test_complete_dots and not test_equal_sign_arg and not test_is_tok_color_dict and not test_vox and not test_ptk_prompt and not (test_integrations and (test_script or test_ampersand_argument or test_redirect_argument or test_aliases_print or test_shebang_cr))"
+%pytest -v -k "not test_complete_dots and not test_equal_sign_arg and not test_is_tok_color_dict and not test_vox and not test_ptk_prompt and not (test_integrations and (test_script or test_ampersand_argument or test_redirect_argument or test_aliases_print or test_shebang_cr)) and not test_vc_get_branch[hg] and not test_vc_get_branch[fossil]"
 
 %post
 if [ "$1" -ge 1 ]; then

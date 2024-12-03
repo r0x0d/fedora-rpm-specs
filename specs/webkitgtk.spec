@@ -82,6 +82,7 @@ BuildRequires:  perl(bigint)
 BuildRequires:  python3
 BuildRequires:  ruby
 BuildRequires:  rubygems
+BuildRequires:  rubygem(getoptlong)
 BuildRequires:  rubygem-json
 BuildRequires:  unifdef
 BuildRequires:  xdg-dbus-proxy

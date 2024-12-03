@@ -1,21 +1,40 @@
 Name:           perl-CGI-Application-Plugin-TT
-Version:        1.05
-Release:        42%{?dist}
+Version:        1.06
+Release:        1%{?dist}
 Summary:        Add Template Toolkit support to CGI::Application
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 URL:            https://metacpan.org/release/CGI-Application-Plugin-TT
 Source0:        https://cpan.metacpan.org/authors/id/C/CE/CEESHEK/CGI-Application-Plugin-TT-%{version}.tar.gz
 
 BuildArch:      noarch
+# build requirements
+BuildRequires:  coreutils
+BuildRequires:  findutils
+BuildRequires:  make
 BuildRequires:  perl-generators
 BuildRequires:  perl(CGI::Application)
-BuildRequires:  perl(Module::Build)
+BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl(warnings)
+# runtime requirements
+BuildRequires:  perl(CGI::Application)
+BuildRequires:  perl(Carp)
+BuildRequires:  perl(Class::ISA)
+BuildRequires:  perl(Data::Dumper)
+BuildRequires:  perl(Exporter)
+BuildRequires:  perl(File::Find)
+BuildRequires:  perl(File::Spec)
+BuildRequires:  perl(Scalar::Util)
 BuildRequires:  perl(Template)
+BuildRequires:  perl(lib)
+BuildRequires:  perl(strict)
+BuildRequires:  perl(vars)
+# test requirements
+BuildRequires:  perl(CGI)
 BuildRequires:  perl(CGI::Application::Plugin::DevPopup)
+BuildRequires:  perl(File::Spec::Functions)
 BuildRequires:  perl(Test::More)
-BuildRequires:  perl(Test::Pod)
+BuildRequires:  perl(base)
 
 %{?perl_default_filter}
 
@@ -28,24 +47,29 @@ that allow you to process template files from within your runmodes.
 %setup -q -n CGI-Application-Plugin-TT-%{version}
 
 %build
-%{__perl} Build.PL installdirs=vendor
-./Build
+/usr/bin/perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-./Build install destdir=$RPM_BUILD_ROOT create_packlist=0
-find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
-
+%{make_install}
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 %check
-./Build test
+%{make_build} test
 
 %files
 %doc Changes README
-%{perl_vendorlib}/*
-%{_mandir}/man3/*
+%license LICENSE
+%{perl_vendorlib}/CGI*
+%{_mandir}/man3/CGI*
 
 %changelog
+* Sun Dec 01 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 1.06-1
+- Update to 1.06
+- Replace %%{__perl} with /usr/bin/perl
+- Switch build-system
+- Update dependencies
+
 * Mon Aug 05 2024 Miroslav Suchý <msuchy@redhat.com> - 1.05-42
 - convert license to SPDX
 

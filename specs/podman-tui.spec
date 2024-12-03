@@ -14,7 +14,7 @@
 
 # https://github.com/containers/podman-tui
 %global goipath github.com/containers/podman-tui
-Version: 1.2.3
+Version: 1.3.0
 %gometa
 
 %global goname podman-tui
@@ -63,7 +63,6 @@ BuildRequires: shadow-utils-subid-devel
 %if %{with bundled}
 %setup -q -T -D -a 1 -n %{name}-%{version}
 %endif
-%autopatch -p1
 
 %if %{without bundled}
 %generate_buildrequires

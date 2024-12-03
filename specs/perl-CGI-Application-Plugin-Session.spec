@@ -1,13 +1,11 @@
 Name:           perl-CGI-Application-Plugin-Session
-Version:        1.05
-Release:        31%{?dist}
+Version:        1.06
+Release:        1%{?dist}
 Summary:        Add CGI::Session support to CGI::Application
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 URL:            https://metacpan.org/release/CGI-Application-Plugin-Session
 Source0:        https://cpan.metacpan.org/authors/id/F/FR/FREW/CGI-Application-Plugin-Session-%{version}.tar.gz
-# Fix the failing test (CPAN RT#149959)
-Patch0:         CGI-Application-Plugin-Session-1.05-RT149959.patch
 
 BuildArch:      noarch
 buildrequires:  coreutils
@@ -45,7 +43,6 @@ accessible from anywhere in the application.
 
 %prep
 %setup -q -n CGI-Application-Plugin-Session-%{version}
-%patch -P0 -p1
 
 %build
 perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
@@ -64,6 +61,10 @@ make test
 %{_mandir}/man3/CGI::Application::Plugin::Session*
 
 %changelog
+* Sun Dec 01 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 1.06-1
+- Update to 1.06
+- Drop upstreamed patch
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.05-31
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

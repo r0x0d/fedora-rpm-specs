@@ -4,7 +4,7 @@
 %bcond tests 1
 
 Name:           python-pebble
-Version:        5.0.7
+Version:        5.1.0
 Release:        %autorelease
 Summary:        Threading and multiprocessing eye-candy for Python
 
@@ -14,7 +14,6 @@ Summary:        Threading and multiprocessing eye-candy for Python
 License:        LGPL-3.0-or-later
 URL:            %{forgeurl}
 Source:         %{forgesource}
-Patch:          %{forgeurl}/pull/130.patch
 
 BuildArch:      noarch
 

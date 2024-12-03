@@ -2,7 +2,7 @@ Name:           perl-CGI-Deurl-XS
 Version:        0.08
 Release:        31%{?dist}
 Summary:        Fast decoder for URL parameter strings
-License:        (GPL+ or Artistic) and ASL 2.0
+License:        (GPL-1.0-or-later OR Artistic-1.0-Perl) AND Apache-2.0
 URL:            https://metacpan.org/release/CGI-Deurl-XS
 Source0:        https://cpan.metacpan.org/modules/by-module/CGI/CGI-Deurl-XS-%{version}.tar.gz
 BuildRequires: make

@@ -3,7 +3,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 1.0.1
-Release: 13%{?dist}
+Release: 14%{?dist}
 Summary: HTTP/REST API client library
 License: MIT
 URL: https://lostisland.github.io/faraday
@@ -24,6 +24,12 @@ Patch1: faraday-1.0.1-net-http-persistent-3-error-kind.patch
 # https://github.com/lostisland/faraday/pull/1523
 # https://github.com/ruby/ruby/pull/6950
 Patch2: faraday-pr1523-testsuite-undefined-method-change.patch
+# ruby3.4 backtrace quoting change
+# https://github.com/lostisland/faraday/pull/1560
+Patch3: faraday-pr1560-ruby34-backtrace-change.patch
+# ruby3.4 Hash#inspect formatting change
+# https://github.com/lostisland/faraday/issues/1602
+Patch4: faraday-issue1602-ruby34-hash-inspect-formatting-change.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby >= 2.3
@@ -110,6 +116,9 @@ popd
 %{gem_instdir}/spec
 
 %changelog
+* Sun Dec 01 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.0.1-14
+- Support ruby3.4 backtrace / Hash inspect formatting change
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.1-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

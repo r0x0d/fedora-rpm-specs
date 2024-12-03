@@ -1,20 +1,11 @@
-# force out-of-tree build for spec compatibility with older releases
-%undefine __cmake_in_source_build
-
-%global forgeurl https://github.com/Brewtarget/brewtarget
-
-%global _description %{expand:
-Brewtarget is an open source beer recipe creation tool. It automatically
-calculates color, bitterness, and other parameters for you while you drag and
-drop ingredients into the recipe. Brewtarget also has many other tools such as
-priming sugar calculators, OG correction help, and a unique mash designing tool.
-It also can export and import recipes in BeerXML.}
-
 Name:           brewtarget
-Version:        3.0.11
+Version:        4.0.11
 Release:        %{autorelease}
 Summary:        An open source beer recipe creation tool 🍺
+
+%global forgeurl https://github.com/Brewtarget/brewtarget
 %forgemeta
+
 # BSD-2-Clause: cmake/modules/FindPhonon.cmake
 # WTFPL: images/flag* images/bubbles.svg images/convert.svg images/grain2glass.svg
 # CC-BY-SA-3.0 OR LGPL-3.0-only: images/edit-copy.png images/document-print-preview.png
@@ -23,25 +14,42 @@ Summary:        An open source beer recipe creation tool 🍺
 # LGPL-2.1-only: images/backup.png
 License:    GPL-3.0-or-later AND BSD-2-Clause AND WTFPL AND (CC-BY-SA-3.0 OR LGPL-3.0-only) AND LGPL-2.1-only
 URL:        %{forgeurl}
-Source0:    %{forgesource}
-Patch:      fix_boost_requirements.patch
+Source:     %{forgesource}
+# Downstream only patches
+Patch:      0001-Modify-boost-requirements-for-Fedora.patch
+Patch:      0002-Fix-name-of-lupdate-executable.patch
+Patch:      0003-Use-system-installed-valijson.patch
 
-BuildRequires:  gcc-c++
-BuildRequires:  qt5-qtbase-devel, qt5-qtwebkit-devel, qt5-qtsvg-devel
-BuildRequires:  qt5-qtmultimedia-devel, qt5-linguist
-BuildRequires:  boost-devel, xerces-c-devel, xalan-c-devel
+BuildRequires:  boost-devel
+BuildRequires:  cmake(qt6core)
+BuildRequires:  cmake(qt6linguisttools)
+BuildRequires:  cmake(qt6multimedia)
+BuildRequires:  cmake(qt6svg)
+BuildRequires:  cmake(valijson)
+BuildRequires:  cmake(xalanc)
 BuildRequires:  desktop-file-utils
-BuildRequires:  meson
+BuildRequires:  gcc-c++
 BuildRequires:  git-core
+BuildRequires:  meson
+BuildRequires:  pkgconfig(xerces-c)
 BuildRequires:  pandoc
 BuildRequires:  xorg-x11-server-Xvfb
+
 Requires:       sqlite
 
 # Stop building for i686
 # See: https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
 
+%global _description %{expand:
+Brewtarget is an open source beer recipe creation tool. It automatically
+calculates color, bitterness, and other parameters for you while you drag and
+drop ingredients into the recipe. Brewtarget also has many other tools such as
+priming sugar calculators, OG correction help, and a unique mash designing tool.
+It also can export and import recipes in BeerXML.}
+
 %description %_description
+
 
 %prep
 %autosetup -n %{name}-%{version} -S git
@@ -79,8 +87,8 @@ desktop-file-validate %buildroot%{_datadir}/applications/%{name}.desktop
 %{_mandir}/man1/brewtarget*
 %{_docdir}/%{name}/*.markdown
 %{_docdir}/%{name}/copyright
-%doc doc/manual-en.pdf
-%license COPYRIGHT COPYING.GPLv3 COPYING.WTFPL
+%doc CHANGES.markdown README.md doc/manual-en.pdf
+%license COPYRIGHT COPYING.GPLv3 LICENSE
 
 %changelog
 %autochangelog

@@ -1,6 +1,6 @@
 Summary:        Dynamic Kernel Module Support Framework
 Name:           dkms
-Version:        3.1.2
+Version:        3.1.3
 Release:        1%{?dist}
 License:        GPL-2.0-or-later
 URL:            http://linux.dell.com/dkms
@@ -64,7 +64,6 @@ sed -i -e 's/# modprobe_on_install="true"/modprobe_on_install="true"/g' %{buildr
 %files
 %license COPYING
 %doc README.md images
-%{_prefix}/lib/%{name}
 %{_prefix}/lib/kernel/install.d/40-%{name}.install
 %{_mandir}/man8/dkms.8*
 %{_sbindir}/%{name}
@@ -72,13 +71,15 @@ sed -i -e 's/# modprobe_on_install="true"/modprobe_on_install="true"/g' %{buildr
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/framework.conf
 %dir %{_sysconfdir}/%{name}/framework.conf.d
-%{_sysconfdir}/kernel/postinst.d/%{name}
-%{_sysconfdir}/kernel/prerm.d/%{name}
 %{_datadir}/bash-completion/completions/%{name}
 %{_datadir}/zsh/site-functions/_%{name}
 %{_unitdir}/%{name}.service
 
 %changelog
+* Fri Nov 29 2024 Simone Caronni <negativo17@gmail.com> - 3.1.3-1
+- Update to 3.1.3, fixes removal of leftover folders when uninstalling kernel.
+- Trim changelog.
+
 * Tue Nov 26 2024 Simone Caronni <negativo17@gmail.com> - 3.1.2-1
 - Update to 3.1.2.
 
@@ -125,33 +126,3 @@ sed -i -e 's/# modprobe_on_install="true"/modprobe_on_install="true"/g' %{buildr
 
 * Tue Jan 03 2023 Simone Caronni <negativo17@gmail.com> - 3.0.10-1
 - Update to 3.0.10.
-
-* Tue Dec 06 2022 Simone Caronni <negativo17@gmail.com> - 3.0.9-2
-- Fix modprobe_on_install variable.
-
-* Mon Dec 05 2022 Simone Caronni <negativo17@gmail.com> - 3.0.9-1
-- Update to 3.0.9.
-
-* Fri Oct 28 2022 Simone Caronni <negativo17@gmail.com> - 3.0.8-1
-- Update to 3.0.8.
-
-* Tue Sep 27 2022 Simone Caronni <negativo17@gmail.com> - 3.0.7-1
-- Update to 3.0.7.
-
-* Tue Aug 09 2022 Simone Caronni <negativo17@gmail.com> - 3.0.6-3
-- Adjust kernel devel subpackage requirements.
-
-* Thu Jul 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.6-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
-
-* Fri Jul 15 2022 Simone Caronni <negativo17@gmail.com> - 3.0.6-1
-- Update to 3.0.6.
-
-* Wed Jun 29 2022 Simone Caronni <negativo17@gmail.com> - 3.0.5-1
-- Update to 3.0.5.
-
-* Sat Jun 18 2022 Simone Caronni <negativo17@gmail.com> - 3.0.4-1
-- Update to 3.0.4.
-
-* Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.3-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild

@@ -2,21 +2,21 @@
 %bcond check 1
 %global debug_package %{nil}
 
-%global crate cxx-build
+%global crate derive-where
 
-Name:           rust-cxx-build
-Version:        1.0.133
+Name:           rust-derive-where
+Version:        1.2.7
 Release:        %autorelease
-Summary:        C++ code generator for integrating cxx crate into a Cargo build
+Summary:        Deriving with custom trait bounds
 
 License:        MIT OR Apache-2.0
-URL:            https://crates.io/crates/cxx-build
+URL:            https://crates.io/crates/derive-where
 Source:         %{crates_source}
 
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-C++ code generator for integrating `cxx` crate into a Cargo build.}
+Deriving with custom trait bounds.}
 
 %description %{_description}
 
@@ -32,6 +32,7 @@ use the "%{crate}" crate.
 %files          devel
 %license %{crate_instdir}/LICENSE-APACHE
 %license %{crate_instdir}/LICENSE-MIT
+%doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
 %package     -n %{name}+default-devel
@@ -46,33 +47,59 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+experimental-async-fn-devel
+%package     -n %{name}+nightly-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+experimental-async-fn-devel %{_description}
+%description -n %{name}+nightly-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "experimental-async-fn" feature of the "%{crate}" crate.
+use the "nightly" feature of the "%{crate}" crate.
 
-%files       -n %{name}+experimental-async-fn-devel
+%files       -n %{name}+nightly-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+parallel-devel
+%package     -n %{name}+safe-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+parallel-devel %{_description}
+%description -n %{name}+safe-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "parallel" feature of the "%{crate}" crate.
+use the "safe" feature of the "%{crate}" crate.
 
-%files       -n %{name}+parallel-devel
+%files       -n %{name}+safe-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+zeroize-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+zeroize-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "zeroize" feature of the "%{crate}" crate.
+
+%files       -n %{name}+zeroize-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+zeroize-on-drop-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+zeroize-on-drop-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "zeroize-on-drop" feature of the "%{crate}" crate.
+
+%files       -n %{name}+zeroize-on-drop-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
+# remove executable bits from source files
+find -type f -executable -print -exec chmod -x {} +
 
 %generate_buildrequires
 %cargo_generate_buildrequires

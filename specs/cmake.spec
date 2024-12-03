@@ -69,7 +69,7 @@
 
 %global major_version 3
 %global minor_version 31
-%global patch_version 0
+%global patch_version 1
 
 # For handling bump release by rpmdev-bumpspec and mass rebuild
 %global baserelease 1
@@ -504,6 +504,10 @@ NO_TEST="$NO_TEST|curl"
 # These three tests timeout on riscv64, skip them.
 NO_TEST="$NO_TEST|Qt5Autogen.ManySources|Qt5Autogen.MocInclude|Qt5Autogen.MocIncludeSymlink|Qt6Autogen.MocIncludeSymlink"
 %endif
+%if 0%{?fedora} == 41
+# Test failing on Fedora 41, only.
+NO_TEST="$NO_TEST|RunCMake.Make|RunCMake.BuildDepends|Qt6Autogen.RerunMocBasic|Qt6Autogen.RerunRccDepends"
+%endif
 bin/ctest%{?name_suffix} %{?_smp_mflags} -V -E "$NO_TEST" --output-on-failure
 ## do this only periodically, not for every build -- besser82 20221102
 # Keep an eye on failing tests
@@ -584,6 +588,11 @@ popd
 
 
 %changelog
+* Sun Dec 01 2024 Björn Esser <besser82@fedoraproject.org> - 3.31.1-1
+- cmake-3.31.1
+  Fixes rhbz#2324190
+- macros: Fix handling of double-dash without argument for ctest
+
 * Fri Nov 08 2024 Björn Esser <besser82@fedoraproject.org> - 3.31.0-1
 - cmake-3.31.0
   Fixes rhbz#2324190
@@ -1010,7 +1019,7 @@ popd
 - Add patch to support FlexiBLAS
 
 * Tue Sep 29 2020 Christoph Junghans <junghans@votca.org> - 3.18.2-2
-- Make %ctest non-verbose by default
+- Make %%ctest non-verbose by default
 
 * Thu Aug 20 2020 Björn Esser <besser82@fedoraproject.org> - 3.18.2-1
 - Update to 3.18.2

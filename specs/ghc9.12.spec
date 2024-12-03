@@ -6,6 +6,12 @@
 %bcond manual 1
 # End: prod settings
 
+# https://bugzilla.redhat.com/show_bug.cgi?id=2329744
+# https://gitlab.haskell.org/ghc/ghc/-/issues/25536
+%ifarch s390x
+%undefine with_haddock
+%endif
+
 # not for production builds
 %if %{without perfbuild}
 # disable profiling libraries (overriding macros.ghc-srpm)
@@ -862,6 +868,7 @@ make test
 * Sat Nov 30 2024 Jens Petersen <petersen@redhat.com> - 9.12.0.20241128-0.2
 - 9.12 rc1
 - https://downloads.haskell.org/ghc/9.2.1-rc1/docs/html/users_guide/9.2.1-notes.html
+- haddocks disabled on s390x (#2329744)
 
 * Sat Nov 30 2024 Jens Petersen <petersen@redhat.com> - 9.12.0.20241114-0.1
 - 9.12 alpha3

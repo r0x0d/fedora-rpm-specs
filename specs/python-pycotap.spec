@@ -3,7 +3,7 @@
 
 Name:           python-%{pypi_name}
 Version:        1.3.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A tiny test runner that outputs TAP results to standard output
 
 License:        MIT
@@ -50,6 +50,9 @@ find %{buildroot}/%{python3_sitelib} -name '*.py' | xargs sed -i '/^#!/d'
 %{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Fri Oct 11 2024 Takao Fujiwara <tfujiwar@redhat.com> 1.3.1-3
+- Rebuilt for CI
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

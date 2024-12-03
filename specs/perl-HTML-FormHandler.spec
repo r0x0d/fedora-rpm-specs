@@ -2,7 +2,7 @@ Name:           perl-HTML-FormHandler
 Version:        0.40068
 Release:        23%{?dist}
 Summary:        HTML forms using Moose
-License:        GPL+ or Artistic
+License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 URL:            https://metacpan.org/release/HTML-FormHandler
 Source0:        https://cpan.metacpan.org/authors/id/G/GS/GSHANK/HTML-FormHandler-%{version}.tar.gz

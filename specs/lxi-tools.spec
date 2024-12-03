@@ -1,12 +1,12 @@
 Summary:        Tools to manage network attached LXI compatible instruments
 Name:           lxi-tools
-Version:        2.7
-Release:        4%{?dist}
+Version:        2.8
+Release:        1%{?dist}
 # src/language-specs/lua-lxi-gui.lang is LGPL-2.1-or-later, rest is BSD-3-Clause
 License:        BSD-3-Clause AND LGPL-2.1-or-later
 URL:            https://lxi-tools.github.io/
-Source0:        https://github.com/lxi/lxi-tools/releases/download/v%{version}/%{name}-%{version}.tar.xz
-Source1:        https://github.com/lxi/lxi-tools/releases/download/v%{version}/%{name}-%{version}.tar.xz.asc
+Source0:        https://github.com/lxi-tools/lxi-tools/releases/download/v%{version}/%{name}-%{version}.tar.xz
+Source1:        https://github.com/lxi-tools/lxi-tools/releases/download/v%{version}/%{name}-%{version}.tar.xz.asc
 Source2:        https://keys.openpgp.org/vks/v1/by-fingerprint/101BAC1C15B216DBE07A3EEA2BDB4A0944FA00B1
 BuildRequires:  gnupg2
 BuildRequires:  gcc
@@ -41,7 +41,7 @@ SCPI message performance, and powerful scripting for test automation.
 
 %build
 %meson \
-%if 0%{?fedora} > 36 || 0%{?rhel} > 9
+%if 0%{?fedora} || 0%{?rhel} > 9
   -Dgui=true
 %else
   -Dgui=false
@@ -65,7 +65,7 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_metainfodir}/io.github.%
 %dir %{_datadir}/bash-completion/completions/
 %{_datadir}/bash-completion/completions/lxi*
 %{_mandir}/man1/lxi.1*
-%if 0%{?fedora} > 36 || 0%{?rhel} > 9
+%if 0%{?fedora} || 0%{?rhel} > 9
 %{_bindir}/lxi-gui
 %{_datadir}/applications/io.github.%{name}.lxi-gui.desktop
 %{_datadir}/glib-2.0/schemas/io.github.%{name}.lxi-gui.gschema.xml
@@ -74,6 +74,9 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_metainfodir}/io.github.%
 %endif
 
 %changelog
+* Sun Dec 01 2024 Robert Scheck <robert@fedoraproject.org> 2.8-1
+- Upgrade to 2.8 (#2329636)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.7-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

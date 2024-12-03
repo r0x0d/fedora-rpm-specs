@@ -592,15 +592,6 @@ tomcli set Cargo.toml str \
 tomcli set Cargo.toml str \
     workspace.dependencies.procfs.version '>=0.16,<0.18'
 
-# thiserror
-#   wanted: 2.0
-#   currently packaged: 1.0.69
-#   https://bugzilla.redhat.com/show_bug.cgi?id=2323087
-tomcli set Cargo.toml str \
-    workspace.dependencies.thiserror.version '>=1.0.69,<3.0'
-tomcli set crates/pubgrub/Cargo.toml str \
-    dependencies.thiserror '>=1.0.69,<3.0'
-
 # which
 #   wanted: 7.0.0
 #   currently packaged: 6.0.3

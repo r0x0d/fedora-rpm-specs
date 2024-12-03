@@ -2,7 +2,7 @@ Name:           perl-Text-Reflow
 Version:        1.17
 Release:        28%{?dist}
 Summary:        Perl module for reflowing text files using Knuth's paragraphing algorithm
-License:        GPLv3+ and (GPL+ or Artistic)
+License:        GPL-3.0-or-later AND (GPL-1.0-or-later OR Artistic-1.0-Perl)
 URL:            https://metacpan.org/release/Text-Reflow
 Source0:        https://cpan.metacpan.org/authors/id/M/MW/MWARD/Text-Reflow-%{version}.tar.gz
 # Build
