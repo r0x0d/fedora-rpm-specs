@@ -3,7 +3,7 @@
 
 Name:           sirikali
 Version:        1.7.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        GUI front end to encfs,cryfs,gocryptfs and securefs
 # generally GPLv2+, BSD for tasks and NetworkAccessManager folders
 License:        GPL-2.0-or-later AND BSD-2-Clause
@@ -78,6 +78,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/io.github.mhogomchung
 
 
 %changelog
+* Mon Dec 02 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.7.2-2
+- lxqt-wallet rebuild
+
 * Tue Nov 19 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.7.2-1
 - 1.7.2
 

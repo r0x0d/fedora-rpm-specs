@@ -12,13 +12,13 @@
 %define polyinstatiate n
 %define monolithic n
 
-%define POLICYVER 33
-%define POLICYCOREUTILSVER 3.4-1
-%define CHECKPOLICYVER 3.2
+%define POLICYVER 34
+%define POLICYCOREUTILSVER 3.8
+%define CHECKPOLICYVER 3.8
 Summary: SELinux policy configuration
 Name: selinux-policy
 Version: 41.26
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPL-2.0-or-later
 Source: %{giturl}/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
 Source1: Makefile.devel

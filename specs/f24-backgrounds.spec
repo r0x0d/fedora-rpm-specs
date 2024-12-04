@@ -7,7 +7,7 @@
 
 Name:           %{bgname}-backgrounds
 Version:        %{relnum}.1.2
-Release:        19%{?dist}
+Release:        20%{?dist}
 Summary:        Fedora %{relnum} default desktop background
 
 # Automatically converted from old format: CC-BY-SA - review is highly recommended.
@@ -17,8 +17,6 @@ Source0:        https://fedorahosted.org/released/design-team/%{name}-%{version}
 
 BuildArch:      noarch
 
-# for %%_kde4_* macros
-BuildRequires:  kde-filesystem
 BuildRequires: make
 
 Requires:       %{name}-gnome = %{version}-%{release}
@@ -147,7 +145,7 @@ make %{?_smp_mflags}
 %{_datadir}/backgrounds/%{bgname}/default/%{bgname}.xml
 
 %files kde
-%{_kde4_datadir}/wallpapers/%{Bg_Name}/
+%{_datadir}/wallpapers/%{Bg_Name}/
 
 %files gnome
 %{_datadir}/gnome-background-properties/%{bgname}.xml
@@ -169,7 +167,7 @@ make %{?_smp_mflags}
 %{_datadir}/gnome-background-properties/%{bgname}-extras.xml
 
 %files extras-kde
-%{_kde4_datadir}/wallpapers/%{Bg_Name}_*/
+%{_datadir}/wallpapers/%{Bg_Name}_*/
 
 %files extras-mate
 %{_datadir}/mate-background-properties/%{bgname}-extras.xml
@@ -180,6 +178,9 @@ make %{?_smp_mflags}
 %endif
 
 %changelog
+* Mon Dec 02 2024 David Auer <dreua@posteo.de> - 24.1.2-20
+- Fix build on f40+
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 24.1.2-19
 - convert license to SPDX
 

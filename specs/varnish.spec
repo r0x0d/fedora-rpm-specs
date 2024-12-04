@@ -36,7 +36,7 @@
 
 Summary: High-performance HTTP accelerator
 Name: varnish
-Version: 7.6.0
+Version: 7.6.1
 Release: 1%{?dist}
 License: BSD-2-Clause AND (BSD-2-Clause-FreeBSD AND BSD-3-Clause AND LicenseRef-Fedora-Public-Domain AND Zlib)
 URL: https://www.varnish-cache.org/
@@ -214,7 +214,7 @@ sed -i 's/file,2M/file,8M/' bin/varnishtest/tests/r04036.vtc
 rm bin/varnishtest/tests/t02014.vtc
 make -j2 check
 %else
-#make_build check
+%make_build check
 %endif
 
 %install
@@ -313,6 +313,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 
 
 %changelog
+* Mon Dec 02 2024 Ingvar Hagelund <ingvar@redpill-linpro.com> - 7.6.1-1
+- New upstream release
+
 * Mon Sep 16 2024 Ingvar Hagelund <ingvar@redpill-linpro.com> - 7.6.0-1
 - New upstream release
 - Updated checkout of pkg-varnish

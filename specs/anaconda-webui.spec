@@ -1,5 +1,5 @@
 Name:           anaconda-webui
-Version:        18
+Version:        19
 Release:        1%{?dist}
 Summary:        Anaconda installer Web interface
 License:        LGPL-2.1-or-later AND MIT
@@ -39,17 +39,17 @@ Requires: fedora-logos
 %endif
 BuildRequires: desktop-file-utils
 
-Provides: bundled(npm(@patternfly/patternfly)) = 5.4.1
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.1
+Provides: bundled(npm(@patternfly/patternfly)) = 5.4.2
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.10
 Provides: bundled(npm(@patternfly/react-icons)) = 5.4.2
 Provides: bundled(npm(@patternfly/react-log-viewer)) = 5.3.0
 Provides: bundled(npm(@patternfly/react-styles)) = 5.4.1
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.1
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.11
 Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.1
 Provides: bundled(npm(attr-accept)) = 2.2.5
 Provides: bundled(npm(dequal)) = 2.0.3
-Provides: bundled(npm(file-selector)) = 2.1.0
-Provides: bundled(npm(focus-trap)) = 7.5.4
+Provides: bundled(npm(file-selector)) = 2.1.2
+Provides: bundled(npm(focus-trap)) = 7.6.2
 Provides: bundled(npm(js-tokens)) = 4.0.0
 Provides: bundled(npm(lodash)) = 4.17.21
 Provides: bundled(npm(loose-envify)) = 1.4.0
@@ -119,6 +119,16 @@ exit 0
 
 # The changelog is automatically generated and merged
 %changelog
+* Mon Dec 02 2024 Packit <hello@packit.dev> - 19-1
+- Disable removal of extended partition for efi OS
+- Retheme to better match FedoraJarema (1):
+- firefox: disable builtin Password Manager / Password Generation
+- storage: when detecting usable partitions check all ancestors for the selected disks
+- storage: restrict access to the storage editor to the scenario selection step
+- storage: move disk unlocking to the installation method screen
+- storage: refresh existing systems after unlocking devices
+- review: show 'encrypted' instead of 'encrypt' for reused mount points
+
 * Fri Nov 08 2024 Packit <hello@packit.dev> - 18-1
 - reclaim: Make the list scroll instead of the modal body
 - reclaim: Adjust layout and alignment

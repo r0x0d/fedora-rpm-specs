@@ -1,0 +1,191 @@
+# For the generated library symbol suffix
+%if 0%{?__isa_bits} == 32
+%global libsymbolsuffix %{nil}
+%else
+%global libsymbolsuffix ()(%{__isa_bits}bit)
+%endif
+
+# For declaring rich dependency on libdecor
+%global libdecor_majver 0
+
+Name:           SDL3
+Version:        3.1.6
+Release:        1%{?dist}
+Summary:        Cross-platform multimedia library
+License:        Zlib AND MIT AND Apache-2.0 AND (Apache-2.0 OR MIT)
+URL:            http://www.libsdl.org/
+#Source0:        http://www.libsdl.org/release/%{name}-%{version}.tar.gz
+Source0:        https://github.com/libsdl-org/SDL/releases/download/preview-%{version}/%{name}-%{version}.tar.gz
+Source1:        SDL3_revision.h
+
+# Patches from upstream
+
+# Patches proposed upstream
+
+
+BuildRequires:  git-core
+BuildRequires:  cmake
+BuildRequires:  make
+BuildRequires:  gcc
+BuildRequires:  gcc-c++
+BuildRequires:  alsa-lib-devel
+BuildRequires:  mesa-libGL-devel
+BuildRequires:  mesa-libGLU-devel
+BuildRequires:  mesa-libEGL-devel
+BuildRequires:  mesa-libGLES-devel
+BuildRequires:  libXext-devel
+BuildRequires:  libX11-devel
+BuildRequires:  libXi-devel
+BuildRequires:  libXrandr-devel
+BuildRequires:  libXrender-devel
+# While SDL3 supports this, Xwayland does not expose XScrnSaver.
+# BuildRequires:  libXScrnSaver-devel
+BuildRequires:  libXinerama-devel
+BuildRequires:  libXcursor-devel
+BuildRequires:  systemd-devel
+BuildRequires:  pkgconfig(libusb-1.0)
+# PulseAudio
+BuildRequires:  pkgconfig(libpulse-simple)
+# Jack
+BuildRequires:  pkgconfig(jack)
+# PipeWire
+BuildRequires:  pkgconfig(libpipewire-0.3)
+# D-Bus
+BuildRequires:  pkgconfig(dbus-1)
+# IBus
+BuildRequires:  pkgconfig(ibus-1.0)
+# Wayland
+BuildRequires:  pkgconfig(libdecor-%{libdecor_majver})
+BuildRequires:  pkgconfig(wayland-client)
+BuildRequires:  pkgconfig(wayland-egl)
+BuildRequires:  pkgconfig(wayland-cursor)
+BuildRequires:  pkgconfig(wayland-protocols)
+BuildRequires:  pkgconfig(wayland-scanner)
+BuildRequires:  pkgconfig(xkbcommon)
+# Vulkan
+BuildRequires:  vulkan-devel
+# KMS
+BuildRequires:  mesa-libgbm-devel
+BuildRequires:  libdrm-devel
+
+# Ensure libdecor is pulled in when libwayland-client is (rhbz#1992804)
+Requires:       (libdecor-%{libdecor_majver}.so.%{libdecor_majver}%{libsymbolsuffix} if libwayland-client)
+
+# Long ago forked hidraw customized for SDL
+Provides:       bundled(hidraw)
+
+%description
+Simple DirectMedia Layer (SDL) is a cross-platform multimedia library designed
+to provide fast access to the graphics frame buffer and audio device.
+
+%package devel
+Summary:        Files needed to develop Simple DirectMedia Layer applications
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+# Add deps required to compile SDL apps
+## For SDL_opengl.h
+Requires:       pkgconfig(gl)
+Requires:       pkgconfig(glu)
+## For SDL_syswm.h
+Requires:       pkgconfig(x11)
+Requires:       pkgconfig(xproto)
+
+%description devel
+Simple DirectMedia Layer (SDL) is a cross-platform multimedia library designed
+to provide fast access to the graphics frame buffer and audio device. This
+package provides the libraries, include files, and other resources needed for
+developing SDL applications.
+
+%package static
+Summary:        Static libraries for SDL3
+# Needed to keep CMake happy
+Requires:       %{name}-devel%{?_isa} = %{version}-%{release}
+
+%description static
+Static libraries for SDL3.
+
+%package test
+Summary:        Testing libraries for SDL3
+# Needed to keep CMake happy
+Requires:       %{name}-devel%{?_isa} = %{version}-%{release}
+
+%description test
+Testing libraries for SDL3.
+
+
+%prep
+%autosetup -S git_am
+sed -e 's/\r//g' -i README.md WhatsNew.txt BUGS.txt LICENSE.txt CREDITS.md README-SDL.txt
+
+
+%build
+# Deal with new CMake policy around whitespace in LDFLAGS...
+export LDFLAGS="%{shrink:%{build_ldflags}}"
+
+%cmake \
+    -DSDL_DLOPEN=ON \
+    -DSDL_VIDEO_KMSDRM=ON \
+    -DSDL_ARTS=OFF \
+    -DSDL_ESD=OFF \
+    -DSDL_NAS=OFF \
+    -DSDL_PULSEAUDIO_SHARED=ON \
+    -DSDL_JACK_SHARED=ON \
+    -DSDL_PIPEWIRE_SHARED=ON \
+    -DSDL_ALSA=ON \
+    -DSDL_VIDEO_WAYLAND=ON \
+    -DSDL_LIBDECOR_SHARED=ON \
+    -DSDL_VIDEO_VULKAN=ON \
+    -DSDL_SSE3=OFF \
+    -DSDL_RPATH=OFF \
+    -DSDL_STATIC=ON \
+    -DSDL_STATIC_PIC=ON \
+%ifarch ppc64le
+    -DSDL_ALTIVEC=OFF \
+%endif
+
+%cmake_build
+
+
+%install
+%cmake_install
+
+# Rename SDL_revision.h to SDL_revision-<arch>.h to avoid file conflicts on
+# multilib systems and install SDL_revision.h wrapper
+# TODO: Figure out how in the hell the SDL_REVISION changes between architectures on the same SRPM.
+mv %{buildroot}%{_includedir}/SDL3/SDL_revision.h %{buildroot}%{_includedir}/SDL3/SDL_revision-%{_arch}.h
+install -p -m 644 %{SOURCE1} %{buildroot}%{_includedir}/SDL3/SDL_revision.h
+
+
+%files
+%license LICENSE.txt
+%doc BUGS.txt CREDITS.md README-SDL.txt
+%{_libdir}/libSDL3.so.0{,.*}
+
+%files devel
+%doc README.md WhatsNew.txt
+%{_libdir}/lib*.so
+%{_libdir}/pkgconfig/sdl3.pc
+%dir %{_libdir}/cmake/SDL3
+%{_libdir}/cmake/SDL3/SDL3Config*.cmake
+%{_libdir}/cmake/SDL3/SDL3headersTargets*.cmake
+%{_libdir}/cmake/SDL3/SDL3sharedTargets*.cmake
+%{_includedir}/SDL3
+
+%files static
+%license LICENSE.txt
+%{_libdir}/libSDL3.a
+%{_libdir}/cmake/SDL3/SDL3staticTargets*.cmake
+
+%files test
+%license LICENSE.txt
+%{_libdir}/libSDL3_test.a
+%{_libdir}/cmake/SDL3/SDL3testTargets*.cmake
+
+
+%changelog
+* Mon Dec 02 2024 Neal Gompa <ngompa@fedoraproject.org> - 3.1.6-1
+- Update to 3.1.6
+- Split testing library into subpackage
+
+* Fri Oct 04 2024 Neal Gompa <ngompa@fedoraproject.org> - 3.1.3-1
+- Initial package
+

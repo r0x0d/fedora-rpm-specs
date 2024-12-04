@@ -4,7 +4,7 @@
 
 Name: elfutils
 Version: 0.192
-%global baserelease 6
+%global baserelease 7
 Release: %{baserelease}%{?dist}
 URL: http://elfutils.org/
 %global source_url ftp://sourceware.org/pub/elfutils/%{version}/
@@ -111,6 +111,12 @@ Patch5: elfutils-0.192-fix-zsh-profile.patch
 
 # Fix testsuite failure caused by ld changes.
 Patch6: elfutils-0.192-strip-ignore-non-ET_REL.patch
+
+# In c23 ATOMIC_VAR_INIT has been removed
+Patch7: elfutils-0.192-ATOMIC_VAR_INIT.patch
+
+# New DWARF5 language constants
+Patch8: elfutils-0.192-more-dwarf5-lang.patch
 
 %description
 Elfutils is a collection of utilities, including stack (to show
@@ -532,6 +538,11 @@ exit 0
 %systemd_postun_with_restart debuginfod.service
 
 %changelog
+
+* Mon Dec 2 2024 Mark Wielaard <mjw@fedoraproject.org> - 0.192-7
+- Add elfutils-0.192-ATOMIC_VAR_INIT.patch
+- Add elfutils-0.192-more-dwarf5-lang.patch
+
 * Tue Nov 12 2024 Aaron Merey <amerey@fedoraproject.org> - 0.192-6
 - Add elfutils-0.192-strip-ignore-non-ET_REL.patch
 - Set debuginfod IMA cert path

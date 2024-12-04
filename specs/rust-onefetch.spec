@@ -16,6 +16,7 @@ Patch:          onefetch-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * Allow rstest 0.23 (see https://github.com/o2sh/onefetch/pull/1426)
 # * Allow image 0.25 (see https://github.com/o2sh/onefetch/pull/1396)
+# * Update askalono to 0.5 (see https://github.com/o2sh/onefetch/pull/1449)
 # * Patch out tests/repo.rs, which requires gix-testtools
 # * Update strum from 0.25.0 to 0.26.3:
 #   https://github.com/o2sh/onefetch/pull/1431

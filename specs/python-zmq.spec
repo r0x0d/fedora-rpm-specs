@@ -176,7 +176,7 @@ k="${k-}${k+ and }not test_green_device"
 k="${k-}${k+ and }not (Green and (test_raw or test_timeout or test_poll))"
 %endif
 
-%pytest --maxfail 2 -k "${k-}" -v -rs zmq/tests
+%pytest -k "${k-}" -v -rs zmq/tests
 
 
 %files -n python3-pyzmq -f %{pyproject_files}

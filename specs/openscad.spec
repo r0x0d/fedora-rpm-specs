@@ -33,7 +33,6 @@ ExcludeArch:    %{ix86}
 
 BuildRequires:  CGAL-devel >= 3.6
 BuildRequires:  ImageMagick
-BuildRequires:  Xvfb
 BuildRequires:  bison >= 2.4
 BuildRequires:  boost-devel >= 1.35
 BuildRequires:  cairo-devel
@@ -64,6 +63,10 @@ BuildRequires:  qt5-qtgamepad-devel
 BuildRequires:  qt5-qtmultimedia-devel
 BuildRequires:  qscintilla-qt5-devel
 BuildRequires:  pkgconfig(libzip)
+BuildRequires:  xwfb-run
+# Both weston and mutter appear to work. We pick mutter explicitly, here and in
+# the xwfb-run invocation, to accommodate different defaults in Fedora and EL.
+BuildRequires:  mutter
 Requires:       font(liberationmono)
 Requires:       font(liberationsans)
 Requires:       font(liberationserif)
@@ -204,7 +207,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 # tests
 cd tests
-ctest %{?_smp_mflags} || : # let the tests fail, as they probably won't work in Koji
+xwfb-run -c mutter -- ctest %{?_smp_mflags} || : # let the tests fail, as they probably won't work in Koji
 cd -
 
 %files -f %{name}.lang

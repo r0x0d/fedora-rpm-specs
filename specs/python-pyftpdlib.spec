@@ -1,7 +1,7 @@
 %global pypi_name pyftpdlib
 
 Name:           python-%{pypi_name}
-Version:        2.0.0
+Version:        2.0.1
 Release:        %autorelease
 Summary:        Very fast asynchronous FTP server library
 
@@ -21,9 +21,6 @@ BuildArch:      noarch
 
 BuildRequires:  help2man
 BuildRequires:  python3-devel
-BuildRequires:  python3dist(psutil)
-BuildRequires:  python3dist(pytest)
-BuildRequires:  python3dist(pytest-xdist)
 
 
 %global desc %{expand: \
@@ -87,7 +84,7 @@ sed -r \
 
 
 %generate_buildrequires
-%pyproject_buildrequires -x ssl
+%pyproject_buildrequires -x ssl,test
 
 
 %build

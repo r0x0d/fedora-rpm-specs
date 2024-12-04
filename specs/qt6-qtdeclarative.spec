@@ -15,8 +15,8 @@
 
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
-Version: 6.8.0
-Release: 3%{?dist}
+Version: 6.8.1
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -34,11 +34,6 @@ Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submod
 Source5: qv4global_p-multilib.h
 
 ## upstream patches
-Patch1:  qtdeclarative-revert-fix-delegates-not-being-created-in-certain-cases.patch
-Patch2:  qtdeclarative-fix-delegates-not-being-created-in-certain-cases-v2.patch
-Patch3:  qtdeclarative-qquickitem-map-to-from-item-account-for-not-having-window-yet.patch
-Patch4:  qtdeclarative-log-state-transition-for-gc.patch
-Patch5:  qtdeclarative-engine-mark-created-wrapped-objects-after.patch
 
 ## upstreamable patches
 
@@ -349,6 +344,7 @@ make check -k -C tests ||:
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/pkgconfig/*.pc
 %{_qt6_libdir}/libQt6*.prl
+%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{qt_version}.spdx
 
 %files static
 %{_qt6_libdir}/libQt6QmlAssetDownloader.a
@@ -367,6 +363,9 @@ make check -k -C tests ||:
 %endif
 
 %changelog
+* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+- 6.8.1
+
 * Thu Nov 14 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-3
 - Backport upstream fixes for QTBUG-130767
 

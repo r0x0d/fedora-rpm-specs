@@ -1,32 +1,4 @@
-%if 0%{?fedora} || 0%{?rhel} >= 8
-%bcond_without check
-%else
-# no cpputest in EL7
-%bcond_with check
-%endif
-
-%if 0%{?fedora} || 0%{?rhel} < 8
-%bcond_without docs
-%else
-# TODO: package rubygem-asciidoctor
-%bcond_with docs
-%endif
-
-%if 0%{?rhel} && 0%{?rhel} < 9
-%undefine __cmake_in_source_build
-%endif
 %global __provides_exclude_from ^%{_libdir}/weechat/plugins/.*$
-
-%if %{?_pkgdocdir:1}0
-%if 0%{?rhel}
-%global _doc %{name}-%{version}
-%else
-%global _doc %{name}
-%endif
-%else
-%global _doc %{name}-%{version}
-%global _pkgdocdir %{_docdir}/%{_doc}
-%endif
 
 Name:      weechat
 Version:   4.4.4
@@ -40,40 +12,32 @@ Source:    https://weechat.org/files/src/%{name}-%{version}.tar.xz
 Source1:   https://weechat.org/files/src/%{name}-%{version}.tar.xz.asc
 Source2:   https://keys.openpgp.org/vks/v1/by-fingerprint/A9AB5AB778FA5C3522FD0378F82F4B16DEC408F8
 
-BuildRequires: gcc
-%if %{with check}
-BuildRequires: cpputest-devel
-BuildRequires: glibc-langpack-en
-%endif
-%if %{with docs}
 BuildRequires: asciidoctor
-%endif
 BuildRequires: ca-certificates
 BuildRequires: cjson-devel
 BuildRequires: cmake
+BuildRequires: cpputest-devel
 BuildRequires: docbook-style-xsl
 BuildRequires: enchant-devel
+BuildRequires: gcc
 BuildRequires: gettext
+BuildRequires: glibc-langpack-en
 BuildRequires: gnupg2
 BuildRequires: gnutls-devel
-%if 0%{?fedora} >= 35 || 0%{?rhel} > 8
 BuildRequires: guile30-devel
-%else
-BuildRequires: guile-devel
-%endif
 BuildRequires: libcurl-devel
 BuildRequires: libgcrypt-devel
+BuildRequires: libzstd-devel
 BuildRequires: lua-devel
 BuildRequires: ncurses-devel
-BuildRequires: perl-ExtUtils-Embed
 BuildRequires: perl-devel
+BuildRequires: perl-ExtUtils-Embed
 BuildRequires: pkgconfig
 BuildRequires: python3-devel
 BuildRequires: ruby
 BuildRequires: ruby-devel
 BuildRequires: source-highlight
 BuildRequires: tcl-devel
-BuildRequires: libzstd-devel
 BuildRequires: zlib-devel
 
 Requires:      hicolor-icon-theme
@@ -99,29 +63,18 @@ This package contains include files and pc file for weechat.
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
 %autosetup -p1 -n %{name}-%{version}
-find doc/ -type f -name 'CMakeLists.txt' \
-    -exec sed -i -e 's#${PROJECT_NAME}#%{_doc}#g' '{}' \;
 
 
 %build
-%cmake3 \
+%cmake \
   -DPREFIX=%{_prefix} \
   -DLIBDIR=%{_libdir} \
   -DENABLE_ENCHANT=ON \
   -DENABLE_PHP=OFF \
-%if %{with check}
   -DENABLE_TESTS=ON \
-%else
-  -DENABLE_TESTS=OFF \
-%endif
-%if %{with docs}
   -DENABLE_DOC=ON \
   -DENABLE_DOC_INCOMPLETE=ON \
   -DENABLE_MAN=ON \
-%else
-  -DENABLE_DOC=OFF \
-  -DENABLE_MAN=OFF \
-%endif
   %{nil}
 %cmake_build
 
@@ -132,9 +85,8 @@ find doc/ -type f -name 'CMakeLists.txt' \
 %find_lang %name
 
 
-%if %{with check}
+%check
 %ctest --verbose
-%endif
 
 
 %files -f %{name}.lang
@@ -152,13 +104,11 @@ find doc/ -type f -name 'CMakeLists.txt' \
 %{_datadir}/icons/hicolor/256x256/apps/%{name}.png
 %{_datadir}/icons/hicolor/512x512/apps/%{name}.png
 %{_datadir}/icons/hicolor/64x64/apps/%{name}.png
-%if 0%{?fedora} || 0%{?rhel} < 8
 %{_pkgdocdir}/weechat_*.html
 %{_mandir}/man1/weechat.1*
 %{_mandir}/*/man1/weechat.1*
 %{_mandir}/man1/%{name}-headless.1*
 %{_mandir}/*/man1/%{name}-headless.1*
-%endif
 
 %files devel
 %dir %{_includedir}/%{name}

@@ -136,7 +136,7 @@
 
 # Matches edk2.spec ExclusiveArch
 %global have_edk2 0
-%ifarch %{ix86} x86_64 %{arm} aarch64 riscv64
+%ifarch %{ix86} x86_64 aarch64 riscv64
 %global have_edk2 1
 %endif
 
@@ -178,6 +178,13 @@
 %ifarch x86_64
 %define have_qatzip 1
 %endif
+
+%global have_libcbor 1
+%if 0%{?rhel}
+# libcbor missing on centos stream 9
+%global have_libcbor 0
+%endif
+
 
 # LTO still has issues with qemu on armv7hl and aarch64
 # https://bugzilla.redhat.com/show_bug.cgi?id=1952483
@@ -374,7 +381,7 @@ Obsoletes: sgabios-bin <= 1:0.20180715git-10.fc38
 %endif
 
 # To prevent rpmdev-bumpspec breakage
-%global baserelease 0.2
+%global baserelease 0.3
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
@@ -605,8 +612,10 @@ BuildRequires: python-tomli
 # --enable-qatzip
 BuildRequires: qatzip-devel
 %endif
+%if %{have_libcbor}
 # --enable-libcbor
 BuildRequires: libcbor-devel
+%endif
 
 %if %{user_static}
 BuildRequires: glibc-static
@@ -1278,9 +1287,8 @@ This package provides the QEMU system emulator for ARM systems.
 %package system-arm-core
 Summary: QEMU system emulator for ARM
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
-%if %{have_edk2}
-Requires: edk2-arm
-%endif
+# Drop the next line in Fedora >= 44.
+Obsoletes: edk2-arm <= 20241117-2.fc42
 %description system-arm-core
 This package provides the QEMU system emulator for ARM boards.
 
@@ -1770,7 +1778,9 @@ run_configure \
 %endif
   --enable-kvm \
   --enable-l2tpv3 \
+%if %{have_libcbor}
   --enable-libcbor \
+%endif
   --enable-libiscsi \
 %if %{have_pmem}
   --enable-libpmem \
@@ -3147,6 +3157,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Dec 02 2024 Richard W.M. Jones <rjones@redhat.com> - 9.2.0-0.3.rc1
+- Remove edk2 dependency on arm (32 bit) (RHBZ#2329331)
+
 * Fri Nov 29 2024 Daniel P. Berrangé <berrange@redhat.com> - 9.2.0-0.2.rc1
 - Fix crash querying virtio-balloon stats
 

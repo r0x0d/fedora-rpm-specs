@@ -4,12 +4,12 @@
 # Upstream source information.
 %global upstream_owner    AdaCore
 %global upstream_name     gprconfig_kb
-%global upstream_version  24.0.0
+%global upstream_version  25.0.0
 %global upstream_gittag   v%{upstream_version}
 
 Name:           gprconfig-kb
 Version:        %{upstream_version}
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        GNAT project configuration knowledge base
 BuildArch:      noarch
 
@@ -112,6 +112,9 @@ xmllint --nonet --noout --noent \
 ###############
 
 %changelog
+* Fri Nov 08 2024 Dennis van Raaij <dvraaij@fedoraproject.org> - 25.0.0-1
+- Updated to v25.0.0.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 24.0.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

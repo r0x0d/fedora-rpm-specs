@@ -57,7 +57,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 2.17.6
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPL-2.0-or-later
 URL: https://abrt.readthedocs.org/
 Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
@@ -249,7 +249,11 @@ log.
 Summary: %{name}'s vmcore addon
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
+# On riscv64, kexec-tools does not compile:
+# "configure: error: unsupported architecture riscv64"
+%ifnarch riscv64
 Requires: kexec-tools
+%endif
 %if %{with python3}
 Requires: python3-abrt
 Requires: python3-augeas
@@ -982,6 +986,9 @@ killall abrt-dbus >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Wed Nov 20 2024 David Abdurachmanov <davidlt@rivosinc.com> - 2.17.6-3
+- Disable Requires for kexec-tools on riscv64 (not supported)
+
 * Wed Sep 11 2024 Neal Gompa <ngompa@fedoraproject.org> - 2.17.6-2
 - Drop container handler (rhbz#2295150)
 

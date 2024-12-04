@@ -3,7 +3,7 @@
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 Name:           sysprof
-Version:        47.1
+Version:        47.2
 Release:        1%{?dist}
 Summary:        A system-wide Linux profiler
 
@@ -166,6 +166,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 
 
 %changelog
+* Mon Dec 02 2024 nmontero <nmontero@redhat.com> - 47.2-1
+- Update to 47.2
+
 * Tue Nov 05 2024 nmontero <nmontero@redhat.com> - 47.1-1
 - Update to 47.1
 

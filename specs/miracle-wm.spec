@@ -4,7 +4,7 @@
 
 Name:           miracle-wm
 Version:        0.3.7
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A tiling Wayland compositor based on Mir
 
 License:        GPL-3.0-or-later and MIT
@@ -76,6 +76,9 @@ those compositors, like swayfx.
 
 
 %changelog
+* Mon Dec 02 2024 Neal Gompa <ngompa@fedoraproject.org> - 0.3.7-3
+- Rebuild for Mir 2.19
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 0.3.7-2
 - Rebuild for yaml-cpp 0.8
 

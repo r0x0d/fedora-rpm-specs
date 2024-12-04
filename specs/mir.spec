@@ -11,14 +11,14 @@
 %bcond_with run_tests
 
 Name:           mir
-Version:        2.18.2
-Release:        2%{?dist}
-Summary:        Next generation display server
+Version:        2.19.0
+Release:        1%{?dist}
+Summary:        Next generation Wayland display server toolkit
 
 # mircommon is LGPL-2.1-only/LGPL-3.0-only, everything else is GPL-2.0-only/GPL-3.0-only
 License:        (GPL-2.0-only or GPL-3.0-only) and (LGPL-2.1-only or LGPL-3.0-only)
 URL:            https://mir-server.io/
-Source0:        https://github.com/MirServer/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.xz
+Source0:        https://github.com/canonical/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.xz
 
 BuildRequires:  git-core
 BuildRequires:  gcc-c++
@@ -82,7 +82,7 @@ BuildRequires:  valgrind
 
 
 %description
-Mir is a display server running on linux systems,
+Mir is a Wayland display server toolkit for Linux systems,
 with a focus on efficiency, robust operation,
 and a well-defined driver model.
 
@@ -280,6 +280,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/miral-shell.desktop
 
 
 %changelog
+* Mon Dec 02 2024 Neal Gompa <ngompa@fedoraproject.org> - 2.19.0-1
+- Update to 2.19.0
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 2.18.2-2
 - Rebuild for yaml-cpp 0.8
 

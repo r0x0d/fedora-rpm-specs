@@ -45,8 +45,8 @@ BuildRequires: pkgconfig(libsystemd)
 
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
-Version: 6.8.0
-Release: 4%{?dist}
+Version: 6.8.1
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
@@ -104,15 +104,11 @@ Patch58: qtbase-libglvnd.patch
 Patch100: qtbase-use-qgnomeplatform-as-default-platform-theme-on-gnome.patch
 %endif
 
-# TODO: still needed?
-# Revert for now until we figure out how to fix Zeal package
-# Patch110: qtbase-revert-consider-versioned-targets-when-checking-existens-in-qt-internal-walk-libs.patch
 
 ## upstream patches
-Patch200: qtbase-qabstractitemmodelprivate-add-resetting-member.patch
-Patch201: qtbase-mark-cups-optional-target.patch
-# https://codereview.qt-project.org/c/qt/qtbase/+/598549
-Patch202: qtbase-a11y-atspi-watch-for-enabled-status-change.patch
+Patch150: qtbase-extract-emoji-data-from-unicode-files.patch
+Patch151: qtbase-introduce-emoji-segmenter-to-3rdparty-code.patch
+Patch152: qtbase-use-emoji-segmenter-to-apply-emoji-fonts-automatically.patch
 
 # Do not check any files in %%{_qt6_plugindir}/platformthemes/ for requires.
 # Those themes are there for platform integration. If the required libraries are
@@ -143,6 +139,7 @@ BuildRequires: libb2-devel
 %else
 Provides:      bundled(libb2)
 %endif
+Provides:      bundled(emoji-segmenter)
 BuildRequires: libjpeg-devel
 BuildRequires: libmng-devel
 BuildRequires: libtiff-devel
@@ -382,6 +379,7 @@ export MAKEFLAGS="%{?_smp_mflags}"
  -DQT_FEATURE_sse2=%{?no_sse2:OFF}%{!?no_sse2:ON} \
  -DQT_FEATURE_icu=ON \
  -DQT_FEATURE_enable_new_dtags=ON \
+ -DQT_FEATURE_emojisegmenter=ON \
  -DQT_FEATURE_journald=%{?journald:ON}%{!?journald:OFF} \
  -DQT_FEATURE_openssl_linked=ON \
  -DQT_FEATURE_openssl_hash=ON \
@@ -444,7 +442,7 @@ translationdir=%{_qt6_translationdir}
 
 Name: Qt6
 Description: Qt6 Configuration
-Version: 6.8.0
+Version: 6.8.1
 EOF
 
 # rpm macros
@@ -624,6 +622,7 @@ make check -k ||:
 %{_qt6_libexecdir}/qt-internal-configure-examples
 %{_qt6_libexecdir}/qt-internal-configure-tests
 %{_qt6_libexecdir}/sanitizer-testrunner.py
+%{_qt6_libexecdir}/qt-android-runner.py
 %{_qt6_libexecdir}/syncqt
 %{_qt6_libexecdir}/moc
 %{_qt6_libexecdir}/tracegen
@@ -684,6 +683,8 @@ make check -k ||:
 %{_qt6_libdir}/libQt6EglFSDeviceIntegration.so
 %{_qt6_libdir}/libQt6EglFsKmsGbmSupport.prl
 %{_qt6_libdir}/libQt6EglFsKmsGbmSupport.so
+%{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/REUSE.toml
+%{_qt6_libdir}/cmake/Qt6/3rdparty/kwin/REUSE.toml
 %{_qt6_libdir}/cmake/Qt6/*.h.in
 %{_qt6_libdir}/cmake/Qt6/*.cmake
 %{_qt6_libdir}/cmake/Qt6/*.cmake.in
@@ -741,6 +742,7 @@ make check -k ||:
 %{_qt6_libdir}/qt6/metatypes/*.json
 %{_qt6_libdir}/qt6/objects-RelWithDebInfo/ExampleIconsPrivate_resources_1/.qt/rcc/qrc_example_icons_init.cpp.o
 %{_qt6_libdir}/pkgconfig/*.pc
+%{_qt6_libdir}/qt6/sbom/qtbase-%{qt_version}.spdx
 
 %if 0%{?egl}
 %{_qt6_libdir}/libQt6EglFsKmsSupport.prl
@@ -849,6 +851,9 @@ make check -k ||:
 
 
 %changelog
+* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+- 6.8.1
+
 * Mon Oct 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-4
 - Backport - a11y atspi: Watch for enabled status change
 

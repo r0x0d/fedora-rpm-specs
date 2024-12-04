@@ -7,15 +7,15 @@
 
 Name:           perl-MongoDB
 Version:        2.2.2
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        MongoDB driver for Perl
 ## Installed:
-# lib/MongoDB/_Link.pm:             ASL 2.0 and (GPL+ or Artistic)
-# Other files:                      ASL 2.0
+# lib/MongoDB/_Link.pm:             Apache-2.0 AND (GPL-1.0-or-later OR Artistic-1.0-Perl)
+# Other files:                      Apache-2.0
 ## Not used:
-# inc/CheckJiraInChanges.pm:        ASL 2.0
-# inc/ExtUtils/HasCompiler.pm:      GPL+ or Artistic
-License:        ASL 2.0 and (GPL+ or Artistic)
+# inc/CheckJiraInChanges.pm:        Apache-2.0
+# inc/ExtUtils/HasCompiler.pm:      GPL-1.0-or-later OR Artistic-1.0-Perl
+License:        Apache-2.0 AND (GPL-1.0-or-later OR Artistic-1.0-Perl)
 URL:            https://metacpan.org/release/MongoDB
 Source0:        https://cpan.metacpan.org/authors/id/M/MO/MONGODB/MongoDB-v%{version}.tar.gz
 # Revert "localhost is IPv4 only" <https://jira.mongodb.org/browse/PERL-715>
@@ -148,10 +148,7 @@ This is a Perl client for accessing MongoDB servers.
 Upstream claims it will drop support for this code on 2020-08-13.
 
 %prep
-%setup -q -n MongoDB-v%{version}
-%patch -P0 -p1
-%patch -P1 -p1
-%patch -P2 -p1
+%autosetup -p1 -n MongoDB-v%{version}
 # Remove bundled modules
 rm -r inc
 perl -i -ne 'print $_ unless m{^inc/}' MANIFEST
@@ -190,10 +187,15 @@ exit $test_rc
 %files
 %license LICENSE
 %doc Changes CONTRIBUTING.md README
-%{perl_vendorlib}/*
-%{_mandir}/man3/*
+%{perl_vendorlib}/MongoDB
+%{perl_vendorlib}/MongoDB.pm
+%{_mandir}/man3/MongoDB.*
+%{_mandir}/man3/MongoDB::*
 
 %changelog
+* Mon Dec 02 2024 Petr Pisar <ppisar@redhat.com> - 2.2.2-13
+- Modernize a spec file
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.2.2-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,17 +1,17 @@
 # Bundling request for bootstrap/patternfly: https://fedorahosted.org/fpc/ticket/483
 
-#%%global snapdate 20210601
-#%%global commit b68a5e30ad98fca7e058b292f8f2abe6fa1e9e42
-#%%global shortcommit %%(c=%%{commit}; echo ${c:0:7})
+%global snapdate 20241202
+%global commit 01109c17e79c95ddf338dd1a64d88b89a43c1847
+%global shortcommit %%(c=%%{commit}; echo ${c:0:7})
 
 # post-release format...
-#%%global snaprel %%{?snapdate:.git%%{snapdate}.%%{shortcommit}}
+%global snaprel %%{?snapdate:.git%%{snapdate}.%%{shortcommit}}
 
 # for rpmdev-bumpspec
-%global baserelease 18
+%global baserelease 0.1
 
 Name:       ipsilon
-Version:    3.0.4
+Version:    3.0.5
 Release:    %{baserelease}%{?snaprel}%{?dist}
 Summary:    An Identity Provider Server
 
@@ -23,28 +23,6 @@ Source0:    %{url}/archive/%{commit}/%{name}-%{commit}.tar.gz
 %else
 Source0:    https://pagure.io/%{name}/archive/v%{version}/ipsilon-%{version}.tar.gz
 %endif
-Patch:      https://pagure.io/ipsilon/c/f45e9df2b79780a493bfd19f9f7522f51ca622f9.patch
-Patch:      https://pagure.io/ipsilon/c/5d0b7d883dfd240248e86d4c06ba63186ecceb0c.patch
-Patch:      0001-Fix-SAML2-metadata-regeneration.patch
-Patch:      0002-remove-deprecated-autoescape-extension.patch
-# https://pagure.io/ipsilon/pull-request/400
-# enhancements to make life easier for Bodhi development environment
-Patch:      0001-openidc-provider-respect-secure-no.patch
-Patch:      0002-httpd-config-Listen-on-port-specified-in-hostname.patch
-Patch:      0003-httpd-config-include-ServerName-directive.patch
-Patch:      0004-openidcp-allow-setting-default-attribute-mapping-at-.patch
-Patch:      0005-testauth-add-a-mechanism-to-specify-groups-via-usern.patch
-# https://pagure.io/ipsilon/pull-request/405
-# Don't confuse ProviderException.code with ProviderException.statuscode
-Patch:      0001-Don-t-confuse-ProviderException.code-with-ProviderEx.patch
-Patch:      0002-Fix-a-syntax-error.patch
-# https://pagure.io/ipsilon/pull-request/406
-# add token_introspection_endpoint to config to fix waiverdb token auth
-# https://github.com/release-engineering/waiverdb/issues/219
-Patch:      0003-openidc-add-token_introspection_endpoint-to-well-kno.patch
-# https://pagure.io/ipsilon/pull-request/407
-# also add introspection_endpoint, which should *really* fix it
-Patch:      0001-openidc-also-set-introspection_endpoint.patch
 
 BuildArch:  noarch
 
@@ -52,11 +30,11 @@ BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-lasso
 BuildRequires:  python3-openid, python3-openid-cla, python3-openid-teams
-BuildRequires:  python3-m2crypto
 BuildRequires:  make
 
 Requires:       python3-setuptools
 Requires:       python3-requests
+Requires:       python3-filetype
 Requires:       %{name}-base = %{version}-%{release}
 
 %description
@@ -440,7 +418,6 @@ exit 0
 %{python3_sitelib}/ipsilon/providers/openidp.py*
 %{python3_sitelib}/ipsilon/providers/__pycache__/openidp.*
 %{python3_sitelib}/ipsilon/providers/openid/
-%{python3_sitelib}/ipsilon/providers/openid/__pycache__/
 %{_datadir}/ipsilon/templates/openid
 
 %files openidc
@@ -448,7 +425,6 @@ exit 0
 %{python3_sitelib}/ipsilon/providers/openidcp.py*
 %{python3_sitelib}/ipsilon/providers/__pycache__/openidcp.*
 %{python3_sitelib}/ipsilon/providers/openidc/
-%{python3_sitelib}/ipsilon/providers/openidc/__pycache__/
 %{_datadir}/ipsilon/templates/openidc
 
 %files authform
@@ -495,6 +471,10 @@ exit 0
 
 
 %changelog
+* Mon Dec 02 2024 Kevin Fenzi <kevin@scrye.com> - 3.0.5-0.1
+- Switch to a git snapshot.
+- Drop python-m2crypto, as it's no longer used.
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 3.0.4-18
 - convert license to SPDX
 

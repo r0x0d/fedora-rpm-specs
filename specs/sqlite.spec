@@ -4,9 +4,9 @@
 %bcond_with static
 %bcond_without check
 
-%define realver 3470000
-%define docver 3470000
-%define rpmver 3.47.0
+%define realver 3470100
+%define docver 3470100
+%define rpmver 3.47.1
 %define year 2024
 
 Summary: Library that implements an embeddable SQL database engine
@@ -206,7 +206,6 @@ export CFLAGS="$RPM_OPT_FLAGS $RPM_LD_FLAGS \
            --enable-threadsafe \
            --enable-threads-override-locks \
            --enable-load-extension \
-           %{?with_tcl:TCLLIBDIR=%{tcl_sitearch}/sqlite3}
 
 # rpath removal
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
@@ -236,7 +235,6 @@ export CFLAGS="$RPM_OPT_FLAGS $RPM_LD_FLAGS \
            --enable-threadsafe \
            --enable-threads-override-locks \
            --enable-load-extension \
-           %{?with_tcl:TCLLIBDIR=%{tcl_sitearch}/sqlite3}
 
 # rpath removal
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
@@ -266,6 +264,8 @@ install -D -m0755 sqlite3-debug $RPM_BUILD_ROOT/%{_bindir}/sqlite3-debug
 
 %if %{with tcl}
 # fix up permissions to enable dep extraction
+install -d $RPM_BUILD_ROOT%{tcl_sitearch}
+mv $RPM_BUILD_ROOT%{_datadir}/tcl%{tcl_version}/sqlite* $RPM_BUILD_ROOT%{tcl_sitearch}/
 chmod 0755 ${RPM_BUILD_ROOT}/%{tcl_sitearch}/sqlite%{rpmver}/*.so
 # Install sqlite3_analyzer
 install -D -m0755 sqlite3_analyzer $RPM_BUILD_ROOT/%{_bindir}/sqlite3_analyzer
@@ -340,6 +340,11 @@ make test
 %endif
 
 %changelog
+* Tue Nov 26 2024 Ales Nezbeda <anezbeda@redhat.com> - 3.47.1-1
+- Update to 3.47.1
+- https://www.sqlite.org/releaselog/3_47_1.html
+- Resolves: rhbz#2328654
+
 * Wed Oct 23 2024 Ales Nezbeda <anezbeda@redhat.com> - 3.47.0-1
 - Update to 3.47.0
 - https://www.sqlite.org/releaselog/3_47_0.html

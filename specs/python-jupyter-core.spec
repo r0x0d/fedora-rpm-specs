@@ -1,28 +1,20 @@
 # Unset -s on python shebang - ensure that extensions installed with pip
 # to user locations are seen and properly loaded
-%global py3_shebang_flags %(echo %py3_shebang_flags | sed s/s//)
+%undefine _py3_shebang_s
 
 Name:           python-jupyter-core
 Version:        5.7.2
 Release:        %autorelease
 Summary:        The base package for Jupyter projects
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            http://jupyter.org
-Source0:        %{pypi_source jupyter_core}
+Source:         %{pypi_source jupyter_core}
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
-BuildRequires:  python3-docs
-BuildRequires:  python3-sphinx
-BuildRequires:  python3-sphinx-autodoc-typehints
-BuildRequires:  python3-sphinxcontrib-github-alt
-BuildRequires:  python3-myst-parser
-BuildRequires:  python3-pydata-sphinx-theme
-BuildRequires:  pyproject-rpm-macros
 
-%bcond_without tests
+%bcond tests    1
 %if %{with tests}
 BuildRequires:  python3-pytest
 %endif
@@ -35,6 +27,7 @@ other projects.
 
 %package -n     python3-jupyter-core
 Summary:        The base package for Jupyter projects
+Obsoletes:      python-jupyter-core-doc < 5.7.2-4
 
 %description -n python3-jupyter-core
 Core common functionality of Jupyter projects.
@@ -42,45 +35,30 @@ Core common functionality of Jupyter projects.
 This package contains base application classes and configuration inherited by
 other projects.
 
-%package -n python-jupyter-core-doc
-Summary:        Documentation of the base package for Jupyter projects
-%description -n python-jupyter-core-doc
-Core common functionality of Jupyter projects.
-
-This package contains documentation for the base application classes and
-configuration inherited by other jupyter projects.
-
 %package -n python-jupyter-filesystem
 Summary:        Jupyter filesystem layout
+
 %description -n python-jupyter-filesystem
 This package provides directories required by other packages that add
 extensions to Jupyter.
 
+
 %prep
 %autosetup -p1 -n jupyter_core-%{version}
-
-# Use local objects.inv for intersphinx:
-sed -i "s|{'https://docs.python.org/3/': None}|{'https://docs.python.org/3/': '/usr/share/doc/python3-docs/html/objects.inv'}|" docs/conf.py
-
 %py3_shebang_fix jupyter_core/troubleshoot.py
 
 
 %generate_buildrequires
-%pyproject_buildrequires -r
+%pyproject_buildrequires
 
 
 %build
 %pyproject_wheel
 
-# generate html docs
-PYTHONPATH=. sphinx-build docs html
-# remove the sphinx-build leftovers
-rm -rf html/.{doctrees,buildinfo}
-
 
 %install
 %pyproject_install
-%pyproject_save_files jupyter jupyter_core
+%pyproject_save_files -l jupyter jupyter_core
 
 # Create directories for python-jupyter-filesystem package
 mkdir -p %{buildroot}%{_datadir}/jupyter
@@ -98,8 +76,9 @@ mkdir %{buildroot}%{_sysconfdir}/jupyter/nbconfig/terminal.d
 mkdir %{buildroot}%{_sysconfdir}/jupyter/nbconfig/tree.d
 
 
-%if %{with tests}
 %check
+%pyproject_check_import
+%if %{with tests}
 # deselected tests unset PATH env variables and can only run when installed
 # test_jupyter_path_(no)_user_site are deselected because we change
 # user install location path in Fedora, for reference see:
@@ -115,17 +94,11 @@ mkdir %{buildroot}%{_sysconfdir}/jupyter/nbconfig/tree.d
 %endif
 
 
-%global _docdir_fmt %{name}
-
 %files -n python3-jupyter-core -f %{pyproject_files}
-%license LICENSE
 %doc README.md
 %{_bindir}/jupyter
 %{_bindir}/jupyter-migrate
 %{_bindir}/jupyter-troubleshoot
-
-%files -n python-jupyter-core-doc
-%doc html
 
 %files -n python-jupyter-filesystem
 %{_datadir}/jupyter

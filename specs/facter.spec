@@ -21,6 +21,7 @@ Requires:       ruby(rubygems)
 BuildRequires:  (rubygem(hocon) >= 1.3 with rubygem(hocon) < 2)
 BuildRequires:  (rubygem(thor) >= 1.0.1 with rubygem(thor) < 1.3)
 BuildRequires:  rubygem(sys-filesystem)
+BuildRequires:  rubygem(base64)
 
 # Binaries that Facter can call for complete facts
 %ifarch %ix86 x86_64 ia64
@@ -32,6 +33,8 @@ Requires:       net-tools
 
 # Soft dependency for the mountpoints fact
 Requires:       rubygem(sys-filesystem)
+# dependency for facter/util/resolvers
+Requires:       rubygem(base64)
 
 Provides:       ruby-%{name} = %{version}
 Obsoletes:      ruby-%{name} < 4

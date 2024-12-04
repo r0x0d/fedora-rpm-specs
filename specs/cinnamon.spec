@@ -15,7 +15,7 @@
 %global __python %{__python3}
 
 Name:           cinnamon
-Version:        6.4.0
+Version:        6.4.1
 Release:        1%{?dist}
 Summary:        Window management and application launching for GNOME
 # Automatically converted from old format: GPLv2+ and LGPLv2+ - review is highly recommended.
@@ -34,7 +34,6 @@ Patch0:         set_wheel.patch
 #Patch1:         revert_25aef37.patch
 Patch2:         default_panal_launcher.patch
 Patch3:         remove_crap_from_menu.patch
-Patch4:         use_internal_polkitagent.patch
 
 ExcludeArch:    %{ix86}
 
@@ -346,6 +345,9 @@ EOF
 %endif
 
 %changelog
+* Mon Dec 02 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.1-1
+- Update t0 6.4.1
+
 * Thu Nov 28 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
 - Update to 6.4.0
 

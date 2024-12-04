@@ -55,12 +55,12 @@
 %global ghc_unregisterized_arches s390 %{mips}
 
 Name: %{ghc_name}
-Version: 9.8.3
+Version: 9.8.4
 # Since library subpackages are versioned:
 # - release can only be reset if *all* library versions get bumped simultaneously
 #   (sometimes after a major release)
 # - minor release numbers for a branch should be incremented monotonically
-Release: 11%{?dist}
+Release: 12%{?dist}
 Summary: Glasgow Haskell Compiler
 
 License: BSD-3-Clause AND HaskellReport
@@ -323,7 +323,7 @@ This provides the hadrian tool which can be used to build ghc.
 %ghc_lib_subpackage -d -l %BSDHaskellReport deepseq-1.5.1.0
 %ghc_lib_subpackage -d -l %BSDHaskellReport directory-1.3.8.5
 %ghc_lib_subpackage -d -l %BSDHaskellReport exceptions-0.10.7
-%ghc_lib_subpackage -d -l BSD-3-Clause filepath-1.4.200.1
+%ghc_lib_subpackage -d -l BSD-3-Clause filepath-1.4.301.0
 # in ghc not ghc-libraries:
 %ghc_lib_subpackage -d -x ghc-%{ghc_version_override}
 %ghc_lib_subpackage -d -x -l BSD-3-Clause ghc-bignum-%{ghc_bignum_ver}
@@ -348,7 +348,7 @@ This provides the hadrian tool which can be used to build ghc.
 %ghc_lib_subpackage -d -l BSD-3-Clause text-2.1.1
 %ghc_lib_subpackage -d -l BSD-3-Clause time-1.12.2
 %ghc_lib_subpackage -d -l BSD-3-Clause transformers-0.6.1.0
-%ghc_lib_subpackage -d -l BSD-3-Clause unix-2.8.4.0
+%ghc_lib_subpackage -d -l BSD-3-Clause unix-2.8.6.0
 %ghc_lib_subpackage -d -l BSD-3-Clause xhtml-%{xhtml_ver}
 %endif
 
@@ -843,6 +843,11 @@ make test
 
 
 %changelog
+* Mon Dec  2 2024 Jens Petersen <petersen@redhat.com> - 9.8.4-12
+- Update to 9.8.4
+- https://downloads.haskell.org/~ghc/9.8.4/docs/users_guide/9.8.4-notes.html
+- filepath-1.4.301 and unix-2.8.6
+
 * Mon Oct 21 2024 Jens Petersen <petersen@redhat.com> - 9.8.3-11
 - Update to 9.8.3
 - https://downloads.haskell.org/~ghc/9.8.3/docs/users_guide/9.8.3-notes.html

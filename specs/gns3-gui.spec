@@ -4,7 +4,7 @@
 %global git_tag %{version}
 
 Name:           gns3-gui
-Version:        2.2.51
+Version:        2.2.52
 Release:        1%{?dist}
 Summary:        GNS3 graphical user interface
 
@@ -45,7 +45,6 @@ sed -i -r 's/truststore.*//g' requirements.txt
 sed -i -r 's/psutil>=6.1.0/psutil>=5.8.0/' requirements.txt
 sed -i -r 's/distro>=1.9.*/distro>=1.5.0/' requirements.txt
 sed -i -r 's/jsonschema>=4.23,<4.24/jsonschema>=3.2.0/' requirements.txt
-sed -i -r 's/setuptools>=61.0/setuptools>=53.0/' setup.py
 
 # Disable update alerts
 sed -i 's/"check_for_update": True,/"check_for_update": False,/' gns3/settings.py
@@ -92,6 +91,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/gns3*.desktop
 %{_datadir}/appdata/%{name}.appdata.xml
 
 %changelog
+* Mon Dec  2 2024 Alexey Kurov <nucleo@fedoraproject.org> - 2.2.52-1
+- Update to 2.2.52
+
 * Thu Nov  7 2024 Alexey Kurov <nucleo@fedoraproject.org> - 2.2.51-1
 - Update to 2.2.51
 

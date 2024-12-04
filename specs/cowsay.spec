@@ -5,7 +5,7 @@
 %global sitecowsdir %{_datadir}/%{name}/site-cows
 
 Name:           cowsay
-Version:        3.8.3
+Version:        3.8.4
 Release:        1%{?dist}
 Summary:        Configurable speaking/thinking cow
 License:        GPL-2.0-or-later
@@ -80,6 +80,9 @@ install -p -m 0644 %{SOURCE1} $RPM_BUILD_ROOT%{compdir}/%{name}
 %{compdir}/%{name}
 
 %changelog
+* Mon Dec 02 2024 Gwyn Ciesla <gwync@protonmail.com> - 3.8.4-1
+- 3.8.4
+
 * Thu Aug 22 2024 Gwyn Ciesla <gwync@protonmail.com> - 3.8.3-1
 - 3.8.3
 

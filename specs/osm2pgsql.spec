@@ -5,7 +5,7 @@
 %global protozero_version 1.7.1
 
 Name:           osm2pgsql
-Version:        2.0.0
+Version:        2.0.1
 Release:        %autorelease
 Summary:        Import map data from OpenStreetMap to a PostgreSQL database
 
@@ -70,6 +70,8 @@ ln -sf /usr/include/catch2 contrib/catch2/include
 
 %check
 PGTESTS_LOCALE="C.UTF-8" %postgresql_tests_run
+echo "local all all trust" > datadir/pg_hba.conf
+psql -c "SELECT pg_reload_conf()" postgres
 mkdir tablespacetest
 psql -c "CREATE TABLESPACE tablespacetest LOCATION '$PWD/tablespacetest'" postgres
 LANG="C.UTF-8" %ctest -j1

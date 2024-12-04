@@ -50,42 +50,6 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+crypto_nossl-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+crypto_nossl-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "crypto_nossl" feature of the "%{crate}" crate.
-
-%files       -n %{name}+crypto_nossl-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+dangerous_hw_tests-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+dangerous_hw_tests-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "dangerous_hw_tests" feature of the "%{crate}" crate.
-
-%files       -n %{name}+dangerous_hw_tests-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+hw_tests-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+hw_tests-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "hw_tests" feature of the "%{crate}" crate.
-
-%files       -n %{name}+hw_tests-devel
-%ghost %{crate_instdir}/Cargo.toml
-
 %package     -n %{name}+openssl-devel
 Summary:        %{summary}
 BuildArch:      noarch

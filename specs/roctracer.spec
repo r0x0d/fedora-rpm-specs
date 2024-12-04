@@ -18,25 +18,37 @@
 
 Name:           roctracer
 Version:        %{rocm_version}
+%if 0%{?fedora}
 Release:        %autorelease
+%else
+Release:        100%{?dist}
+%endif
 Summary:        ROCm Tracer Callback/Activity Library for Performance tracing AMD GPUs
 
 Url:            https://github.com/ROCm/%{upstreamname}
 License:        MIT
-Source0:        %{url}/archive/refs/tags/rocm-%{rocm_version}.tar.gz#/%{upstreamname}-%{rocm_version}.tar.gz
+Source0:        %{url}/archive/rocm-%{rocm_version}.tar.gz#/%{upstreamname}-%{rocm_version}.tar.gz
 
 BuildRequires:  cmake
-BuildRequires:  clang-devel
-BuildRequires:  compiler-rt
-BuildRequires:  libatomic
-BuildRequires:  lld
-BuildRequires:  llvm-devel
+#BuildRequires:  clang-devel
+#BuildRequires:  compiler-rt
+
+#BuildRequires:  lld
+#BuildRequires:  llvm-devel
 BuildRequires:  python-cppheaderparser
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
+BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  rocm-hip-devel
 BuildRequires:  rocm-runtime-devel
 BuildRequires:  rocm-rpm-macros
+
+%if 0%{?suse_version}
+BuildRequires:  libatomic1
+%else
+BuildRequires:  libatomic
+%endif
+
 %if %{with doc}
 BuildRequires:  doxygen
 BuildRequires:  texlive-adjustbox
@@ -113,13 +125,15 @@ sed -i -e 's@add_subdirectory(test)@#add_subdirectory(test)@' CMakeLists.txt
 
 %build
 %cmake \
-       -DCMAKE_MODULE_PATH=%{_libdir}/cmake/hip \
-       -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
-       -DROCM_SYMLINK_LIBS=OFF \
-       -DHIP_PLATFORM=amd \
-       -DBUILD_SHARED_LIBS=ON \
-       -DAMDGPU_TARGETS=$ROCM_GPUS \
-       -DCMAKE_BUILD_TYPE=RelDebInfo
+    -DCMAKE_CXX_COMPILER=%rocmllvm_bindir/clang++ \
+    -DCMAKE_C_COMPILER=%rocmllvm_bindir/clang \
+    -DCMAKE_MODULE_PATH=%{_libdir}/cmake/hip \
+    -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
+    -DROCM_SYMLINK_LIBS=OFF \
+    -DHIP_PLATFORM=amd \
+    -DBUILD_SHARED_LIBS=ON \
+    -DAMDGPU_TARGETS=$ROCM_GPUS \
+    -DCMAKE_BUILD_TYPE=RelDebInfo
 
 %cmake_build
 
@@ -162,4 +176,6 @@ rm -rf rm %{buildroot}%{_datadir}/html
 %endif
 
 %changelog
+%if 0%{?fedora}
 %autochangelog
+%endif

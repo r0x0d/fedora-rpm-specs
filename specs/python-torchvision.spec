@@ -8,7 +8,7 @@
 %global date0 20240326 
 %global pypi_version 0.19.0a0
 %else
-%global pypi_version 0.19.0
+%global pypi_version 0.20.1
 %endif
 
 # check takes too long, make optional
@@ -37,7 +37,7 @@ Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/vision-v%{version}.
 %endif
 # Need at least -g debugging
 # Find where ffmpeg header and libs are
-Patch0:         0001-prepare-python-torchvision-setup-for-fedora.patch
+# Patch0:         0001-prepare-python-torchvision-setup-for-fedora.patch
 Patch1:         0001-A-better-cuda-version.patch
 
 # Limit to these because that is what torch is on
@@ -86,6 +86,12 @@ and common image transformations for computer vision.
 %else
 %autosetup -p1 -n vision-%{version}
 %endif
+
+# Need some debug info
+sed -i -e 's@extra_compile_args["cxx"].append("-g0")@extra_compile_args["cxx"].append("-g")@' setup.py
+# Find ffmpeg on fedora
+sed -i -e 's@ffmpeg_include_dir = os.path.join(ffmpeg_root, "include")@ffmpeg_include_dir = os.path.join(ffmpeg_root, "include/ffmpeg")@' setup.py
+sed -i -e 's@ffmpeg_library_dir = os.path.join(ffmpeg_root, "lib")@ffmpeg_library_dir = os.path.join(ffmpeg_root, "lib64")@'              setup.py
 
 %generate_buildrequires
 %pyproject_buildrequires

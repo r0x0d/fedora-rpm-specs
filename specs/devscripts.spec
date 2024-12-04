@@ -1,6 +1,6 @@
 Name:           devscripts
-Version:        2.24.3
-Release:        2%{?dist}
+Version:        2.24.5
+Release:        1%{?dist}
 Summary:        Scripts for Debian Package maintainers
 BuildArch:      noarch
 
@@ -152,6 +152,9 @@ rm -f %{buildroot}%{_datadir}/bash-completion/completions/bts
 
 
 %changelog
+* Mon Dec 02 2024 Sandro Mani <manisandro@gmail.com> - 2.24.5-1
+- Update to 2.24.5
+
 * Thu Nov 14 2024 Sérgio Basto <sergio@serjux.com> - 2.24.3-2
 - Change homepage URL to https://tracker.debian.org/pkg/devscripts
 

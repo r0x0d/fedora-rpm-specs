@@ -5,7 +5,7 @@
 Summary: Tool Command Language, pronounced tickle
 Name: tcl
 Version: %{vers}
-Release: 4%{?dist}
+Release: 5%{?dist}
 Epoch: 1
 License: TCL AND GPL-3.0-or-later WITH Bison-exception-2.2 AND BSD-3-Clause
 URL: http://tcl.sourceforge.net/
@@ -127,7 +127,8 @@ chmod u+w %{buildroot}%{_libdir}/lib%{name}%{majorver}.so
 %{_datadir}/%{name}%{majorver}
 %exclude %{_datadir}/%{name}%{majorver}/tclAppInit.c
 %{_datadir}/%{name}8
-%{_libdir}/lib%{name}%{majorver}.so
+# explicit mode to make the RW library read-only
+%attr(555, root, root) %{_libdir}/lib%{name}%{majorver}.so
 %{_mandir}/man1/*
 %if 0%{?flatpak}
 %{_usr}/bin/tclsh*
@@ -151,6 +152,10 @@ chmod u+w %{buildroot}%{_libdir}/lib%{name}%{majorver}.so
 %{_datadir}/%{name}%{majorver}/tclAppInit.c
 
 %changelog
+* Mon Dec  2 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 1:8.6.15-5
+- Installed the library as read-only after the debuginfo is extracted
+  Related: rhbz#2326296
+
 * Tue Nov 26 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 1:8.6.15-4
 - Workaround for FTBFS caused by read-only library
 

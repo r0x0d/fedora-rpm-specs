@@ -1,5 +1,5 @@
 Name: kexec-tools
-Version: 2.0.29
+Version: 2.0.30
 Release: 1%{?dist}
 URL: https://kernel.org/pub/linux/utils/kernel/kexec
 License: GPL-2.0-only
@@ -81,6 +81,10 @@ rm -f %{buildroot}/%{_libdir}/kexec-tools/kexec_test
 %doc TODO
 
 %changelog
+* Mon Dec 02 2024 Packit <hello@packit.dev> - 2.0.30-1
+- Update to version 2.0.30
+- Resolves: rhbz#2326470
+
 * Tue Aug 06 2024 Coiby Xu <coxu@redhat.com> - 2.0.29-1
 - Update to version 2.0.29
 - Resolves: 2297928

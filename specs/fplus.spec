@@ -9,10 +9,10 @@ Summary:        Functional Programming Library for C++
 Name:           fplus
 License:        BSL-1.0
 Version:        0.2.25
-Release:        %autorelease
+Release:        2%{?dist}
 
 URL:            https://github.com/Dobiasd/FunctionalPlus
-Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/FunctionalPlus-%{version}.tar.gz
+Source0:        %{url}/archive/v%{version}.tar.gz#/FunctionalPlus-%{version}.tar.gz
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -72,4 +72,7 @@ rm -rf api_search
 %_libdir/cmake/FunctionalPlus/
 
 %changelog
-%autochangelog
+* Mon Dec 2 2024 Tom Rix <Tom.Rix@amd.com> - 0.2.25-2
+- Build on TW
+- change to manual release and changelog
+

@@ -3,7 +3,7 @@
 
 
 Name:		xed
-Version:	3.6.7
+Version:	3.6.9
 Release:	1%{?dist}
 Summary:	X-Apps [Text] Editor (Cross-DE, backward-compatible, GTK3, traditional UI)
 
@@ -85,7 +85,7 @@ This package contains the documentation files for %{name}.
 %install
 %meson_install
 %{__sed} -i -e '/.*<project_group>.*/d'				\
-	%{buildroot}%{_metainfodir}/%{name}.appdata.xml
+	%{buildroot}%{_metainfodir}/org.x.editor.metainfo.xml
 
 %find_lang %{name} --with-gnome 
 
@@ -93,11 +93,11 @@ This package contains the documentation files for %{name}.
 %check
 # Validate desktop-files.
 %{_bindir}/desktop-file-validate				\
-	%{buildroot}%{_datadir}/applications/%{name}.desktop
+	%{buildroot}%{_datadir}/applications/org.x.editor.desktop
 
 # Validate AppData-files.
 %{_bindir}/appstream-util validate-relax --nonet		\
-	%{buildroot}%{_metainfodir}/%{name}.appdata.xml
+	%{buildroot}%{_metainfodir}/org.x.editor.metainfo.xml
 
 
 %files -f %{name}.lang
@@ -106,8 +106,8 @@ This package contains the documentation files for %{name}.
 %exclude %{_datadir}/%{name}/gir-1.0
 %exclude %{_datadir}/%{name}/gir-1.0/*
 %{_bindir}/%{name}
-%{_metainfodir}/%{name}.appdata.xml
-%{_datadir}/applications/%{name}.desktop
+%{_metainfodir}/org.x.editor.metainfo.xml
+%{_datadir}/applications/org.x.editor.desktop
 %{_datadir}/dbus-1/services/org.x.editor.*service
 %{_datadir}/glib-2.0/schemas/org.x.editor.*gschema.xml
 %{_datadir}/gtksourceview-4/styles/xed.xml
@@ -129,6 +129,9 @@ This package contains the documentation files for %{name}.
 
 
 %changelog
+* Mon Dec 02 2024 Leigh Scott <leigh123linux@gmail.com> - 3.6.9-1
+- Update to 3.6.9
+
 * Mon Nov 25 2024 Leigh Scott <leigh123linux@gmail.com> - 3.6.7-1
 - Update to 3.6.7
 

@@ -12,7 +12,7 @@
 
 Name:             tcsh
 Summary:          An enhanced version of csh, the C shell
-Version:          6.24.13
+Version:          6.24.14
 Release:          1%{?dist}
 License:          BSD-3-Clause
 
@@ -43,6 +43,7 @@ BuildRequires:    ncurses-devel
 
 # Upstream patches -- official upstream patches released by upstream since the
 # ----------------    last rebase that are necessary for any reason:
+Patch001: tcsh-6.24.14-Fix-defined-name-It-is-UTF16_STRINGS-not-UTF16_STRIN.patch
 
 
 # Downstream patches -- these should be always included when doing rebase:
@@ -177,6 +178,9 @@ fi
 # =============================================================================
 
 %changelog
+* Fri Nov 29 2024 Jan Macku <jamacku@redhat.com> - 6.24.14-1
+- Update to new version
+
 * Thu Aug 01 2024 Jan Macku <jamacku@redhat.com> - 6.24.13-1
 - Update to new version
 

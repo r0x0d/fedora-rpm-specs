@@ -10,7 +10,7 @@
 
 Name:		%{bgname}-backgrounds
 Version:	%{relnum}.2.2
-Release:	12%{?dist}
+Release:	13%{?dist}
 Summary:	Fedora %{relnum} default desktop background
 
 # Automatically converted from old format: CC-BY-SA - review is highly recommended.
@@ -20,8 +20,6 @@ Source0:	https://github.com/fedoradesign/backgrounds/releases/download/v%{versio
 
 BuildArch:	noarch
 
-# for %%_kde4_* macros
-BuildRequires:	kde-filesystem
 BuildRequires: make
 
 Requires:	%{name}-gnome = %{version}-%{release}
@@ -165,7 +163,7 @@ This package contains F%{relnum} supplemental wallpapers for XFCE
 %endif
 
 %files kde
-%{_kde4_datadir}/wallpapers/%{Bg_Name}/
+%{_datadir}/wallpapers/%{Bg_Name}/
 %dir %{_datadir}/plasma/
 %dir %{_datadir}/plasma/desktoptheme/
 %{_datadir}/plasma/desktoptheme/%{Bg_Name}/
@@ -202,7 +200,7 @@ This package contains F%{relnum} supplemental wallpapers for XFCE
 %{_datadir}/gnome-background-properties/%{bgname}-extras.xml
 
 %files extras-kde
-%{_kde4_datadir}/wallpapers/%{Bg_Name}_*/
+%{_datadir}/wallpapers/%{Bg_Name}_*/
 
 %files extras-mate
 %{_datadir}/mate-background-properties/%{bgname}-extras.xml
@@ -212,6 +210,9 @@ This package contains F%{relnum} supplemental wallpapers for XFCE
 %endif
 
 %changelog
+* Mon Dec 02 2024 David Auer <dreua@posteo.de> - 32.2.2-13
+- Fix build on f40+
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 32.2.2-12
 - convert license to SPDX
 

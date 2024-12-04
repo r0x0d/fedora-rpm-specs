@@ -3,7 +3,7 @@
 
 Name:           rpmlint
 Version:        2.5.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Tool for checking common errors in RPM packages
 License:        GPL-2.0-or-later
 URL:            https://github.com/rpm-software-management/rpmlint
@@ -103,6 +103,9 @@ cp -a %{SOURCE1} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{buildroot}%{_sysconfdir}/xdg
 %{_bindir}/rpmlint
 
 %changelog
+* Wed Nov 13 2024 Miro Hrončok <mhroncok@redhat.com> - 2.5.0-8
+- Filter out more common false positive spelling-errors
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.5.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

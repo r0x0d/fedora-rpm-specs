@@ -4,8 +4,8 @@
 %define utils_version 1.3
 
 Name:           cbmc
-Version:        5.95.1
-Release:        5%{?dist}
+Version:        6.4.1
+Release:        1%{?dist}
 Summary:        Bounded Model Checker for ANSI-C and C++ programs
 
 License:        BSD-4-Clause
@@ -14,22 +14,20 @@ URL:            https://www.cprover.org/cbmc
 Source0:        https://github.com/diffblue/%{name}/archive/%{name}-%{version}/%{name}-%{version}.tar.gz
 Source1:        https://github.com/aufover/%{name}-utils/archive/v%{utils_version}/%{name}-utils-%{utils_version}.tar.gz
 
-# Disable -Werror flag
-Patch0:         %{name}-disable-werror.patch
-
 # FIXME: Upstream these patches!
 # Adapt to recent versions of glpk
 Patch1:         %{name}-5.9-glpk.patch
 # Implements https://github.com/diffblue/cbmc/issues/5965
 Patch2:         %{name}-add-cmd-line-arg.patch
 # Fix compilation on F40
-Patch3:         %{name}-f40-fix-build.patch
+Patch3:         %{name}-f41-fix-build.patch
 
 BuildRequires:  bison
 BuildRequires:  cmake
 BuildRequires:  doxygen
 BuildRequires:  flex
 BuildRequires:  gcc-c++
+BuildRequires:  git
 BuildRequires:  glpk-devel
 BuildRequires:  minisat2-devel
 BuildRequires:  ninja-build
@@ -69,7 +67,9 @@ Output conversion utilities for CBMC (GCC like format).
 
 %prep
 %setup -T -q -b 1 -n %{name}-utils-%{utils_version}
-%autosetup -p1 -b 0 -n %{name}-%{name}-%{version}
+%autosetup -p1 -b 0 -S git -n %{name}-%{name}-%{version}
+
+sed -i 's/-Werror//g' CMakeLists.txt src/ansi-c/library_check.sh src/config.inc
 
 %build
 %cmake -GNinja -DWITH_JBMC:BOOL=OFF \
@@ -134,6 +134,9 @@ mv %{buildroot}{/usr/etc/bash_completion.d/cbmc,%{bash_completions_dir}}
 %{_bindir}/csexec-%{name}
 
 %changelog
+* Fri Nov 29 2024 Lukáš Zaoral <lzaoral@redhat.com> - 6.4.1-1
+- rebase to latest upstream version (rhbz#2292926)
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.95.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

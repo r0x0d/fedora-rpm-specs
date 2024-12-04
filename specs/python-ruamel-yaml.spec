@@ -14,6 +14,16 @@ URL:            https://sourceforge.net/projects/ruamel-yaml
 # The PyPI sdist does not contain tests, so we use a snapshot from SourceForge
 Source:         https://sourceforge.net/code-snapshots/hg/r/ru/ruamel-yaml/code/ruamel-yaml-code-%{commit}.zip
 
+# Adjust setup.py for the removal of deprecated ast classes
+# Fixes build with Python 3.14
+# https://sourceforge.net/p/ruamel-yaml/code/merge-requests/9/
+Patch:          9.patch
+
+# Do not specificity build-system.requires on wheel
+# Fixes the bootstrap build (see commit message for details)
+# https://sourceforge.net/p/ruamel-yaml/code/merge-requests/10/
+Patch:          10.patch
+
 BuildArch:      noarch
 
 %global _description %{expand:

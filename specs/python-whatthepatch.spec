@@ -1,7 +1,7 @@
 %global pypi_name whatthepatch
 
 Name:           python-%{pypi_name}
-Version:        1.0.6
+Version:        1.0.7
 Release:        %autorelease
 Summary:        A patch parsing and application library
 

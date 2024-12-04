@@ -4,7 +4,7 @@
 %global tag %{version}
 
 Name:          muffin
-Version:       6.4.0
+Version:       6.4.1
 Release:       1%{?dist}
 Summary:       Window and compositing manager based on Clutter
 
@@ -142,6 +142,9 @@ rm -rf %{buildroot}%{_datadir}/applications/
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Mon Dec 02 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.1-1
+- Update t0 6.4.1
+
 * Tue Nov 26 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
 - Update to 6.4.0
 

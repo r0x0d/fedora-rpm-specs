@@ -11,15 +11,19 @@ License:        MIT
 # Main license is MIT
 # BSD-2-Clause is only for cmake/HunterGate.cmake and that is not distributed
 Version:        0.15.30
-Release:        5%{?dist}
+Release:        6%{?dist}
 
 URL:            https://github.com/Dobiasd/frugally-deep
-Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        %{url}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 BuildRequires:  cmake
 BuildRequires:  eigen3-devel
 BuildRequires:  fplus-devel
+%if 0%{?suse_version}
+BuildRequires:  nlohmann_json-devel
+%else
 BuildRequires:  json-devel
+%endif
 BuildRequires:  gcc-c++
 
 %description
@@ -103,12 +107,18 @@ frugally-deep
 %cmake_install
 
 %files devel
+%dir %_includedir/fdeep
+%dir %_libdir/cmake/%{name}
 %license LICENSE
 %doc README.md
-%_includedir/fdeep
-%_libdir/cmake/%{name}/
+%_includedir/fdeep/*
+%_libdir/cmake/%{name}/*
 
 %changelog
+* Mon Dec 2 2024 Tom Rix <Tom.Rix@amd.com> - 0.15.30-6
+- Build on TW
+- Fix dir ownership
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.15.30-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -6,7 +6,7 @@
 %global cinnamon_desktop_version 6.4.0
 
 Name:           cinnamon-settings-daemon
-Version:        6.4.0
+Version:        6.4.1
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from CINNAMON to GTK+/KDE applications
 
@@ -150,6 +150,9 @@ rm -rf %{buildroot}%{_libdir}/cinnamon-settings-daemon/
 
 
 %changelog
+* Mon Dec 02 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.1-1
+- Update t0 6.4.1
+
 * Wed Nov 27 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.0-1
 - Update to 6.4.0
 

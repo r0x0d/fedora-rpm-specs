@@ -11,7 +11,6 @@ Source1: https://www.gnu.org/licenses/fdl-1.3.txt
 Source100: colorzgrep.csh
 Source101: colorzgrep.sh
 
-Patch1: gnulib.patch
 
 # Fixed in upstream code.
 # http://thread.gmane.org/gmane.comp.gnu.gzip.bugs/378
@@ -39,7 +38,6 @@ very commonly used data compression program.
 
 %prep
 %setup -q
-#%patch1 -p1 -b .gnulib
 cp %{SOURCE1} .
 autoreconf
 

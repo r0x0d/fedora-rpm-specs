@@ -77,10 +77,6 @@ use the "default" feature of the "%{crate}" crate.
 %autosetup -n %{crate}-%{version} -p1
 # remove unwanted features
 tomcli set Cargo.toml del features.vendored-openssl
-# builds with cargo-lock@10 but not yet available in Fedora
-tomcli set Cargo.toml str dependencies.cargo-lock.version 9
-# builds with toml@0.8, but cargo-lock@9 still uses toml@0.7
-tomcli set Cargo.toml str dependencies.toml.version 0.7
 %cargo_prep
 
 %generate_buildrequires

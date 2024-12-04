@@ -4,11 +4,10 @@
 %bcond_with mingw
 %endif
 
-%global data_version 1.19
-
+%global data_version 1.20
 Name:           proj
 # Also check whether there is a new proj-data release when upgrading!
-Version:        9.5.0
+Version:        9.5.1
 Release:        1%{?dist}
 Summary:        Cartographic projection software (PROJ)
 
@@ -83,6 +82,7 @@ Requires:       proj-data-eur
 Requires:       proj-data-fi
 Requires:       proj-data-fo
 Requires:       proj-data-fr
+Requires:       proj-data-hu
 Requires:       proj-data-is
 Requires:       proj-data-nl
 Requires:       proj-data-pl
@@ -183,6 +183,7 @@ Supplements:  proj\
 %data_subpkg -c fi -n Finland
 %data_subpkg -c fo -n %{quote:Faroe Island} -e FO -s 1
 %data_subpkg -c fr -n France
+%data_subpkg -c hu -n Hungary
 %data_subpkg -c is -n Island -e ISL
 %data_subpkg -c jp -n Japan
 %data_subpkg -c mx -n Mexico
@@ -345,6 +346,9 @@ rm -rf %{buildroot}%{mingw64_mandir}
 
 
 %changelog
+* Mon Dec 02 2024 Sandro Mani <manisandro@gmail.com> - 9.5.1-1
+- Update to 9.5.1
+
 * Mon Sep 16 2024 Sandro Mani <manisandro@gmail.com> - 9.5.0-1
 - Update to 9.5.0
 

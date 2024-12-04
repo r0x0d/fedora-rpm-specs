@@ -1,6 +1,6 @@
 Name: qtile
 Version: 0.29.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: A pure-Python tiling window manager
 Source: https://github.com/qtile/qtile/archive/v%{version}/qtile-%{version}.tar.gz
 
@@ -48,6 +48,7 @@ Recommends: python3-dbus-next
 Recommends: python3-xmltodict
 Recommends: python3-dateutil
 Recommends: python3-mpd2
+Recommends: python3-pulsectl
 
 Requires: python3-libqtile = %{version}-%{release}
 
@@ -146,6 +147,9 @@ desktop-file-install \
 
 
 %changelog
+* Mon Dec 02 2024 Jakub Kadlcik <frostyx@email.cz> - 0.29.0-2
+- Recommend python3-pulsectl for the PulseVolume widget
+
 * Wed Oct 30 2024 Jakub Kadlcik <frostyx@email.cz> - 0.29.0-1
 - New upstream version
 

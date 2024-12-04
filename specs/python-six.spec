@@ -15,6 +15,9 @@ Source0:        %{pypi_source six}
 # https://github.com/benjaminp/six/pull/377
 Patch:          tkinter.tix-was-removed-from-Python-3.13.patch
 
+# Python 3.14 removed the URLopener and FancyURLopener classes from urllib.request
+Patch:          https://github.com/benjaminp/six/pull/388.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python%{python3_pkgversion}-devel

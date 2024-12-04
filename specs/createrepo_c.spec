@@ -35,7 +35,7 @@
 Summary:        Creates a common metadata repository
 Name:           createrepo_c
 Version:        1.2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        GPL-2.0-or-later
 URL:            https://github.com/rpm-software-management/createrepo_c
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
@@ -207,6 +207,12 @@ ln -sr %{buildroot}%{_bindir}/modifyrepo_c %{buildroot}%{_bindir}/modifyrepo
 %{python3_sitearch}/%{name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Mon Dec 02 2024 Evan Goode <egoode@redhat.com> - 1.2.0-2
+- Fix missing changelog
+
+* Thu Nov 21 2024 Evan Goode <egoode@redhat.com> - 1.2.0-1
+- Update to 1.2.0
+
 * Mon Aug 19 2024 Petr Pisar <ppisar@redhat.com> - 1.1.4-2
 - Correct a changelog history (bug #2305347)
 

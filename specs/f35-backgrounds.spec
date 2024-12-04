@@ -7,7 +7,7 @@
 
 Name:           %{bgname}-backgrounds
 Version:        %{relnum}.0.1
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Fedora %{relnum} default desktop background
 
 # Automatically converted from old format: CC-BY-SA - review is highly recommended.
@@ -18,8 +18,6 @@ Source0:        https://github.com/fedoradesign/backgrounds/releases/download/v%
 
 BuildArch:      noarch
 
-# for %%_kde4_* macros
-BuildRequires:  kde4-filesystem
 BuildRequires:  make
 Requires:       %{name}-gnome = %{version}-%{release}
 Requires:       %{name}-kde = %{version}-%{release}
@@ -139,7 +137,7 @@ This package contains  supplemental wallpapers for XFCE
 %{_datadir}/backgrounds/%{bgname}/default/%{bgname}*.{png,xml}
 
 %files kde
-%{_kde4_datadir}/wallpapers/%{Bg_Name}/
+%{_datadir}/wallpapers/%{Bg_Name}/
 %dir %{_datadir}/plasma/
 %dir %{_datadir}/plasma/desktoptheme/
 %{_datadir}/plasma/desktoptheme/%{Bg_Name}/
@@ -166,7 +164,7 @@ This package contains  supplemental wallpapers for XFCE
 %{_datadir}/gnome-background-properties/%{bgname}-extras.xml
 
 %files extras-kde
-%{_kde4_datadir}/wallpapers/%{Bg_Name}_*/
+%{_datadir}/wallpapers/%{Bg_Name}_*/
 
 %files extras-mate
 %{_datadir}/mate-background-properties/%{bgname}-extras.xml
@@ -176,6 +174,9 @@ This package contains  supplemental wallpapers for XFCE
 %endif
 
 %changelog
+* Mon Dec 02 2024 David Auer <dreua@posteo.de> - 35.0.1-12
+- Fix build on f40+
+
 * Mon Nov 18 2024 David Auer <dreua@posteo.de> - 35.0.1-11
 - Fix buildrequires for f40+
 

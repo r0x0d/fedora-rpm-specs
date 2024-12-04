@@ -3,7 +3,7 @@
 
 Name: grubby
 Version: 8.40
-Release: 77%{?dist}
+Release: 78%{?dist}
 Summary: Command line tool for updating bootloader configs
 License: GPL-2.0-or-later
 Source1: grubby-bls
@@ -21,7 +21,7 @@ BuildRequires: pkgconfig
 BuildRequires: popt-devel
 BuildRequires: rpm-devel
 BuildRequires: sed
-%ifarch aarch64 x86_64 %{power64}
+%ifarch aarch64 x86_64 %{power64} riscv64
 BuildRequires: grub2-tools-minimal
 Requires: grub2-tools-minimal
 Requires: grub2-tools
@@ -74,6 +74,9 @@ fi
 %{_mandir}/man8/grubby.8*
 
 %changelog
+* Mon Dec 02 2024 David Abdurachmanov <davidlt@rivosinc.com> - 8.40-78
+- Add riscv64 support
+
 * Mon Nov 25 2024 Leo Sandoval <lsandova@redhat.com> - 8.40-77
 - On grub cfg updates, run grub2-mkconfig for Xen systems
 

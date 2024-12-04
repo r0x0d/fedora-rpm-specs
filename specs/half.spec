@@ -3,13 +3,15 @@
 
 Name:           half
 Version:        2.2.0
-Release:        4%{?dist}
+Release:        6%{?dist}
 Summary:        A C++ half-precision floating point type
 License:        MIT
 
 URL:            http://sourceforge.net/projects/half
 Source0:        %{url}/files/%{name}/%{version}/%{name}-%{version}.zip
 BuildArch:      noarch
+
+BuildRequires:  unzip
 
 %description
 This is a C++ header-only library to provide an IEEE-754 conformant
@@ -52,11 +54,18 @@ install -m 644 LICENSE.txt %{buildroot}%{_docdir}/%{name}/
 install -m 644 README.txt %{buildroot}%{_docdir}/%{name}/
 
 %files devel
+%dir %{_docdir}/%{name}
 %doc %{_docdir}/%{name}/README.txt
 %license %{_docdir}/%{name}/LICENSE.txt
 %{_includedir}/half.hpp
 
 %changelog
+* Mon Dec 2 2024 Tom Rix <Tom.Rix@amd.com> - 2.2.0-6
+- Fix docdir dir ownship
+
+* Mon Dec 2 2024 Tom Rix <Tom.Rix@amd.com> - 2.2.0-5
+- TW needs to explicitly BuildRequires unzip
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.2.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

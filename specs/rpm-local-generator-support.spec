@@ -1,7 +1,7 @@
 Summary: RPM local_generator support
 Name: rpm-local-generator-support
 Version: 1
-Release: 5%{?dist}
+Release: 6%{?dist}
 
 # It is not really clear if the one empty file shipped by this package is even
 # copyrightable. But let's go with GPLv2+ which is the license used by RPM,
@@ -29,7 +29,7 @@ files, which ships them.
 
 
 %install
-install %{SOURCE1} %{basename %{SOURCE1}}
+cp %{SOURCE1} .
 
 install -d %{buildroot}%{_fileattrsdir}
 touch %{buildroot}%{_fileattrsdir}/local_generator.attr
@@ -42,6 +42,9 @@ touch %{buildroot}%{_fileattrsdir}/local_generator.attr
 
 
 %changelog
+* Fri Sep 13 2024 Dridi Boukelmoune <dridi@fedoraproject.org> - 1-6
+- Tweak RPM spec for compatibility with EPEL 8
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1-5
 - convert license to SPDX
 
