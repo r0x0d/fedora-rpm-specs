@@ -10,8 +10,8 @@
 Name:           qbs
 # qbs was previously packaged as part of qt-creator, using the qt-creator version, hence the epoch bump
 Epoch:          1
-Version:        2.4.2
-Release:        2%{?dist}
+Version:        2.5.0
+Release:        1%{?dist}
 Summary:        Cross platform build tool
 # Fails to build on i686
 ExcludeArch:    i686
@@ -28,10 +28,8 @@ Source0:        https://code.qt.io/cgit/qbs/qbs.git/snapshot/qbs-%{commit}.tar.x
 Source0:        https://download.qt.io/official_releases/%{name}/%{version}/%{name}-src-%{version}.tar.gz
 %endif
 
-# Attempt to filter qbs debug output from stderr
-Patch1:         qbs_tst_blackbox_stderr.patch
 # Fix qmake detection
-Patch2:         qbs_qmake.patch
+Patch1:         qbs_qmake.patch
 
 
 BuildRequires:  cmake
@@ -137,7 +135,7 @@ rm %{buildroot}%{_bindir}/clang-format-test
 %doc README.md
 %{_bindir}/%{name}*
 %{_libdir}/%{name}/
-%{_libdir}/libqbs*.so.2.4*
+%{_libdir}/libqbs*.so.2.5*
 %{_libexecdir}/qbs/
 %{_datadir}/%{name}/
 %{_mandir}/man1/%{name}.1*
@@ -155,6 +153,9 @@ rm %{buildroot}%{_bindir}/clang-format-test
 
 
 %changelog
+* Tue Dec 03 2024 Sandro Mani <manisandro@gmail.com> - 1:2.5.0-1
+- Update to 2.5.0
+
 * Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 1:2.4.2-2
 - Rebuild (qt6)
 

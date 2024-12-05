@@ -1,6 +1,6 @@
 Summary:	Utilities for managing the XFS filesystem
 Name:		xfsprogs
-Version:	6.11.0
+Version:	6.12.0
 Release:	1%{?dist}
 License:	GPL-1.0-or-later AND LGPL-2.1-or-later
 URL:		https://xfs.wiki.kernel.org
@@ -11,6 +11,7 @@ Source3:	https://git.kernel.org/pub/scm/docs/kernel/pgpkeys.git/plain/keys/46A7E
 
 BuildRequires:	make
 BuildRequires:	gcc
+BuildRequires:	g++
 BuildRequires:	libtool, gettext, libattr-devel, libuuid-devel
 BuildRequires:	libedit-devel, libblkid-devel >= 2.17-0.1.git5e51568
 Buildrequires:	libicu-devel >= 4.6, systemd
@@ -140,6 +141,10 @@ rm -rf $RPM_BUILD_ROOT/%{_datadir}/doc/xfsprogs/
 %{_libdir}/*.so
 
 %changelog
+* Wed Dec 04 2024 Pavel Reichl <preichl@redhat.com> - 6.12.0-1
+- Rebase to upstream version 6.12.0
+- Related: rhbz#2330151
+
 * Mon Oct 21 2024 Pavel Reichl <preichl@redhat.com> - 6.11.0-1
 - Update to the latest upstream version
 - Related: rhbz#2319902

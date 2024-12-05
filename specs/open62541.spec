@@ -1,5 +1,7 @@
+%bcond_without docs
+
 Name:     open62541
-Version:  1.4.6
+Version:  1.4.8
 Release:  1%{?dist}
 Summary:  OPC UA implementation
 License:  MPL-2.0
@@ -13,8 +15,6 @@ BuildRequires: libbpf-devel
 BuildRequires: make
 BuildRequires: openssl-devel
 BuildRequires: python3
-BuildRequires: python3dist(sphinx)
-BuildRequires: python3dist(sphinx-rtd-theme)
 
 %description
 open62541 is a C-based library (linking with C++ projects is possible)
@@ -29,19 +29,21 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
+%if %{with docs}
 %package   doc
 Summary:   Documentation for %{name}
 BuildArch: noarch
+BuildRequires: python3dist(sphinx)
+BuildRequires: python3dist(sphinx-rtd-theme)
 
 %description doc
 The %{name}-doc package contains documentation for %{name}.
+%endif
 
 %prep
 %autosetup -n %{name}-%{version} -p1
 
 %build
-mkdir -p build
-cd build
 # The version is usually extracted from the git tag, which is not available in the tarball.
 # Therefore we need to set it manually.
 %cmake3 \
@@ -63,30 +65,25 @@ cd build
   -DUA_ENABLE_PUBSUB_MONITORING=ON \
   -DUA_ENABLE_SUBSCRIPTIONS=ON \
   -DUA_ENABLE_SUBSCRIPTIONS_EVENTS=ON \
-  ..
+  .
 
 #  -DUA_BUILD_EXAMPLES=ON \
 
 %cmake_build
+%if %{with docs}
 cd %{__cmake_builddir}
 %make_build doc
+%endif
 
 %install
-mkdir stage-docs
-cd build
 %cmake_install
 
+%if %{with docs}
+cd %{__cmake_builddir}
 # Remove build files not belonging to docs
 rm -rf doc/CMakeFiles doc/Makefile doc/*.cmake
-# stage docs
-cp -av %{__cmake_builddir}/doc/* ../stage-docs/
-
 cd -
-# Remove this from the examples installation
-rm examples/CMakeLists.txt
-rm -Rf %{buildroot}/usr/share/open62541/tools
-# fix permission
-chmod 0644 examples/nodeset/Opc.Ua.POWERLINK.NodeSet2.bsd
+%endif
 
 %ldconfig_scriptlets
 
@@ -108,11 +105,17 @@ chmod 0644 examples/nodeset/Opc.Ua.POWERLINK.NodeSet2.bsd
 %{_datadir}/%{name}/nodeset_compiler/
 %{_datadir}/%{name}/schema/
 
+%if %{with docs}
 %files doc
-%doc stage-docs/*
+%doc %{__cmake_builddir}/doc/*
 %doc examples/
+%endif
 
 %changelog
+* Tue Dec 03 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1.4.8-1
+- Update to 1.4.8
+- Minor build cleanups, add option to make docs optional
+
 * Mon Oct 07 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 1.4.6-1
 - Update to 1.4.6
 

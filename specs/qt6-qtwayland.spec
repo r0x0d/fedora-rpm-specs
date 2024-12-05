@@ -10,8 +10,8 @@
 
 Summary: Qt6 - Wayland platform support and QtCompositor module
 Name:    qt6-%{qt_module}
-Version: 6.8.0
-Release: 2%{?dist}
+Version: 6.8.1
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -26,7 +26,8 @@ Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submod
 
 # Upstream patches
 Patch0:  qtwayland-update-wayland-xml-to-version-1.23.0.patch
-Patch1:  qtwayland-client-update-cached-buffer-size-on-startup.patch
+Patch1:  qtwayland-client-redo-management-of-tablet-proxies.patch
+Patch2:  qtwayland-adwaita-improve-border-painting.patch
 
 # Upstreamable patches
 
@@ -197,7 +198,7 @@ popd
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/pkgconfig/*.pc
-
+%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{qt_version}.spdx
 
 %if 0%{?examples}
 %files examples
@@ -205,6 +206,12 @@ popd
 %endif
 
 %changelog
+* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+- 6.8.1
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-3
+- Backport upstream fix for crash when unplugging graphics tablets
+
 * Tue Oct 22 2024 Alessandro Astone <ales.astone@gmail.com> - 6.8.0-2
 - Backport fix for rhbz#2318535
 

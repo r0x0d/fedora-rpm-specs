@@ -86,12 +86,39 @@ mv ../editorconfig-core-test-%{tests_commit}/ tests/
 # The command-line tool would conflict with the one from the C version of
 # EditorConfig. It could be installed under a different name, if anyone ever
 # reports a need for it.
-rm -vf '%{buildroot}%{_bindir}/editorconfig'
+rm '%{buildroot}%{_bindir}/editorconfig'
 
 
 %check
+skips='^($.'
+
+# Many regular expression tests fail with CMake 3.31
+# https://github.com/editorconfig/editorconfig-core-py/issues/51
+skips="${skips}|meta_multiline"
+skips="${skips}|star_single_ML"
+skips="${skips}|star_zero_ML"
+skips="${skips}|star_multiple_ML"
+skips="${skips}|star_after_slash_ML"
+skips="${skips}|star_matches_dot_file_after_slash_ML"
+skips="${skips}|tab_width_default_ML"
+skips="${skips}|tab_width_default_indent_size_tab_ML"
+skips="${skips}|indent_size_default_ML"
+skips="${skips}|indent_size_default_with_tab_width_ML"
+skips="${skips}|lowercase_values1_ML"
+skips="${skips}|lowercase_values2_ML"
+skips="${skips}|repeat_sections_ML"
+skips="${skips}|basic_cascade_ML"
+skips="${skips}|blank_lines_between_properties_ML"
+skips="${skips}|spaces_before_middle_property_ML"
+skips="${skips}|comment_between_props_ML"
+skips="${skips}|octothorpe_comment_between_props_ML"
+skips="${skips}|parent_and_current_dir_ML"
+skips="${skips}|unset_indent_size_ML"
+
+skips="${skips})$"
+
 export %{py3_test_envvars}
-%ctest
+%ctest --exclude-regex "${skips}"
 
 
 %files -n python3-editorconfig -f %{pyproject_files}

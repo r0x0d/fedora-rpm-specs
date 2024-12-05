@@ -10,7 +10,7 @@
 
 Summary: Qt6 - Quick3D Libraries and utilities
 Name:    qt6-%{qt_module}
-Version: 6.8.0
+Version: 6.8.1
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -168,7 +168,6 @@ popd
 %{_qt6_includedir}/QtQuick3DHelpers
 %{_qt6_includedir}/QtQuick3DHelpersImpl
 %{_qt6_includedir}/QtQuick3DGlslParser
-%{_qt6_includedir}/QtOpenXR
 %{_qt6_includedir}/QtQuick3DXr
 %{_qt6_libdir}/cmake/Qt6/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6Quick3DIblBaker
@@ -188,8 +187,6 @@ popd
 %dir %{_qt6_libdir}/cmake/Qt6Quick3D/
 %{_qt6_libdir}/cmake/Qt6BundledOpenXR/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6BundledOpenXR/
-%{_qt6_libdir}/cmake/Qt6OpenXRPrivate//*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6OpenXRPrivate//
 %{_qt6_libdir}/cmake/Qt6Quick3DXr/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6Quick3DXr/
 %{_qt6_libdir}/cmake/Qt6Quick3D/*.cmake
@@ -246,7 +243,7 @@ popd
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_plugindir}/qmltooling/libqmldbg_quick3dprofiler.so
 %{_qt6_libdir}/pkgconfig/*.pc
-
+%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{qt_version}.spdx
 
 %if 0%{?examples}
 %files examples
@@ -254,6 +251,9 @@ popd
 %endif
 
 %changelog
+* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+- 6.8.1
+
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
 - 6.8.0
 

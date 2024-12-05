@@ -1,7 +1,7 @@
-%global commit0 8275634cf9ec31b6484c2e6be756237cb583999d
-%global date 20240412
+%global commit0 4ea6df132107e3b4b9407f903204b5522fdffcd6
+%global date 20241023
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global cl_hpp_ver 2024.05.08
+%global cl_hpp_ver 2024.10.24
 
 Name:           opencl-headers
 Version:        3.0

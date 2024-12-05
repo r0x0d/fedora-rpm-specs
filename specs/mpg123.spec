@@ -3,8 +3,8 @@
 %global syn syn123
 
 Name: mpg123
-Version: 1.31.3
-Release: 5%{?dist}
+Version: 1.32.9
+Release: 1%{?dist}
 
 Summary: Real time MPEG 1.0/2.0/2.5 audio player/decoder for layers 1, 2 and 3
 License: GPL-2.0-or-later
@@ -162,6 +162,9 @@ rm %{buildroot}%{_libdir}/*.la
 %{_libdir}/pkgconfig/lib%{syn}.pc
 
 %changelog
+* Tue Dec 03 2024 Phil Wyett <philip.wyett@kathenas.org> - 1.32.9-1
+- Update to 1.32.9
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.31.3-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

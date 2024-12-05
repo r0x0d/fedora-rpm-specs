@@ -1,10 +1,10 @@
 Name:           perl-Convert-PEM
-Version:        0.12
+Version:        0.13
 Release:        1%{?dist}
 Summary:        Read/write encrypted ASN.1 PEM files
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Convert-PEM
-Source0:        https://cpan.metacpan.org/modules/by-module/Convert/Convert-PEM-%{version}.tar.gz
+Source0:        https://www.cpan.org/modules/by-module/Convert/Convert-PEM-%{version}.tar.gz
 BuildArch:      noarch
 # Build
 BuildRequires:  coreutils
@@ -67,6 +67,12 @@ make test
 %{_mandir}/man3/Convert::PEM::CBC.3*
 
 %changelog
+* Tue Dec  3 2024 Paul Howarth <paul@city-fan.org> - 0.13-1
+- Update to 0.13 (rhbz#2330122)
+  - Fix recent issues in Crypt::DSA (CPAN RT#156495)
+  - Handle undefined values and redefined iv (GH#2)
+- Switch source URL from cpan.metacpan.org to www.cpan.org
+
 * Tue Oct 22 2024 Paul Howarth <paul@city-fan.org> - 0.12-1
 - Update to 0.12 (rhbz#2320853)
   - Add extra cipher support (GH#1)

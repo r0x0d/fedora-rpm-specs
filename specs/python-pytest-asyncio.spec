@@ -1,7 +1,7 @@
 %bcond_without  tests
 
 Name:           python-pytest-asyncio
-Version:        0.23.8
+Version:        0.24.0
 Release:        %autorelease
 Summary:        Pytest support for asyncio
 License:        Apache-2.0

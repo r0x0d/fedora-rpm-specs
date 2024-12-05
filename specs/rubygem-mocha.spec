@@ -1,14 +1,14 @@
 %global gem_name mocha
 
 Name: rubygem-%{gem_name}
-Version: 2.1.0
-Release: 3%{?dist}
+Version: 2.6.1
+Release: 1%{?dist}
 Summary: Mocking and stubbing library
 License: Ruby OR BSD-2-Clause OR MIT
 URL: https://mocha.jamesmead.org
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # git clone https://github.com/freerange/mocha.git && cd mocha
-# git archive -v -o mocha-2.1.0-test.tar.gz v2.1.0 test/
+# git archive -v -o mocha-2.6.1-test.tar.gz v2.6.1 test/
 Source1: %{gem_name}-%{version}-test.tar.gz
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
@@ -55,11 +55,12 @@ for kind in unit acceptance; do
   ruby -e "Dir.glob('./test/$kind/**/*_test.rb').each {|t| require t}"
 done
 
-MOCHA_RUN_INTEGRATION_TESTS=minitest ruby -rminitest -e "Dir.glob('./test/integration/**/mini_test_test.rb').each {|t| require t}"
+MOCHA_RUN_INTEGRATION_TESTS=minitest ruby -rminitest -e "Dir.glob('./test/integration/**/minitest_test.rb').each {|t| require t}"
 MOCHA_RUN_INTEGRATION_TESTS=test-unit ruby -rtest/unit -e "Dir.glob('./test/integration/**/test_unit_test.rb').each {|t| require t}"
 popd
 
 %files
+%dir %{gem_instdir}
 %exclude %{gem_instdir}/.*
 %license %{gem_instdir}/COPYING.md
 %license %{gem_instdir}/MIT-LICENSE.md
@@ -74,10 +75,14 @@ popd
 %doc %{gem_instdir}/README.md
 %doc %{gem_instdir}/RELEASE.md
 %{gem_instdir}/Rakefile
-%{gem_instdir}/mocha.gemspec
 %{gem_instdir}/gemfiles/
+%{gem_instdir}/mocha.gemspec
 
 %changelog
+* Tue Dec 03 2024 Vít Ondruch <vondruch@redhat.com> - 2.6.1-1
+- Update to Mocha 2.6.1.
+  Resolves: rhbz#2274314
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

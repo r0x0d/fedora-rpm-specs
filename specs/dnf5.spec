@@ -1,13 +1,13 @@
 %global project_version_prime 5
 %global project_version_major 2
-%global project_version_minor 7
+%global project_version_minor 8
 %global project_version_micro 0
 
 %bcond dnf5_obsoletes_dnf %[0%{?fedora} > 40 || 0%{?rhel} > 10]
 
 Name:           dnf5
 Version:        %{project_version_prime}.%{project_version_major}.%{project_version_minor}.%{project_version_micro}
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        Command-line package manager
 License:        GPL-2.0-or-later
 URL:            https://github.com/rpm-software-management/dnf5
@@ -242,6 +242,7 @@ BuildRequires:  perl(strict)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Test::Exception)
 BuildRequires:  perl(warnings)
+BuildRequires:  perl(FindBin)
 %endif
 %endif
 
@@ -895,6 +896,33 @@ popd
 %ldconfig_scriptlets
 
 %changelog
+* Mon Dec 02 2024 Packit <hello@packit.dev> - 5.2.8.0-1
+## What's Changed
+ * rpm: Reset RPM log callback upon RpmLogGuard destruction by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1870
+ * SWIG bindings for user_cb_data in repo::DownloadCallbacks, unit tests by @jrohel in https://github.com/rpm-software-management/dnf5/pull/1849
+ * I18N: Mark messages in "dnf search" output for a translation by @sunwire in https://github.com/rpm-software-management/dnf5/pull/1861
+ * Hint when an unknown option is available on different commands by @kontura in https://github.com/rpm-software-management/dnf5/pull/1858
+ * builddep: add support for remote arguments by @kontura in https://github.com/rpm-software-management/dnf5/pull/1874
+ * I18N: Mark "Total" message in MultiProgressBar() for a translation by @sunwire in https://github.com/rpm-software-management/dnf5/pull/1885
+ * Make `test_multi_progress_bar` test more resilient by @kontura in https://github.com/rpm-software-management/dnf5/pull/1882
+ * package_downloader: Ensure creation of intermediate directories by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1876
+ * I18N: Mark <unknown> message in dnf list --installed output for a translation by @sunwire in https://github.com/rpm-software-management/dnf5/pull/1883
+ * repo: Make Repo::download_metadata() method public by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1878
+ * repo: While cloning root metadata copy also metalink by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1880
+ * spec: toggle dnf5_obsoletes_dnf for RHEL 11 by @yselkowitz in https://github.com/rpm-software-management/dnf5/pull/1886
+ * rpm: New API to check PGP signature of RPM file by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1877
+ * repo: Add option to download all repository metadata by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1879
+ * Add packit job to run ABI check on testing farm by @kontura in https://github.com/rpm-software-management/dnf5/pull/1869
+ * Fix copr chroot specification: replace faulty regex with simpler split by @kontura in https://github.com/rpm-software-management/dnf5/pull/1863
+ * Download cmd: Require at leats one argument/package to download by @jrohel in https://github.com/rpm-software-management/dnf5/pull/1905
+ * Install defs.h for /usr/include/dnf5/context.hpp by @ppisar in https://github.com/rpm-software-management/dnf5/pull/1914
+ * doc: Use PGP instead of GPG by @ppisar in https://github.com/rpm-software-management/dnf5/pull/1917
+
+## New Contributors
+ * @sunwire made their first contribution in https://github.com/rpm-software-management/dnf5/pull/1861
+
+ **Full Changelog**: https://github.com/rpm-software-management/dnf5/compare/5.2.7.0...5.2.8.0
+
 * Thu Nov 21 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 5.2.7.0-2
 - Toggle dnf5_obsoletes_dnf for ELN
 

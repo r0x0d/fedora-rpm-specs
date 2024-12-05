@@ -8,6 +8,9 @@ License:    GPL-2.0-or-later
 Source:     https://mattdm.org/icebreaker/2.2.x/icebreaker-%{version}.tar.xz
 URL:        http://www.mattdm.org/icebreaker/
 
+# Submitted: https://github.com/mattdm/icebreaker/pull/17
+Patch:      icebreaker-2.2.2-rename-flock-to-pg_flock.patch
+
 BuildRequires:  gcc, make
 BuildRequires:  SDL-devel, SDL_mixer-devel
 BuildRequires:  gawk, sed, grep
@@ -24,7 +27,7 @@ Jezzball by Dima Pavlovsky.
 
 
 %prep
-%setup -q
+%autosetup -p1
 
 %build
 %set_build_flags

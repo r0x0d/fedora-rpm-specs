@@ -1,5 +1,5 @@
 Name:           scip
-Version:        9.1.1
+Version:        9.2.0
 Release:        %autorelease
 Summary:        Solving Constraint Integer Programs
 
@@ -124,9 +124,6 @@ sed -i 's/ on \$date//' doc/scipfooter.html
 # Use a fixed 'linux' value in OSTYPE for repeatable builds
 sed -i 's/OSTYPE=@.*@/OSTYPE=linux/' src/scipbuildflags.c.in
 
-# Look for python3 instead of python
-sed -i 's/PYTHON python/&3/' doc/CMakeLists.txt
-
 # Ensure we cannot use the bundled bliss, nauty, or tinycthreads
 rm -fr src/{bliss,nauty,tinycthread}
 
@@ -168,7 +165,7 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}
 %files -n libscip
 %doc CHANGELOG README.md
 %license LICENSE
-%{_libdir}/libscip.so.9.1*
+%{_libdir}/libscip.so.9.2*
 
 %files -n libscip-devel
 %{_includedir}/scip/

@@ -1,11 +1,11 @@
 Name:           d-spy
-Version:        1.8.0
-Release:        4%{?dist}
+Version:        47.0
+Release:        1%{?dist}
 Summary:        D-Bus explorer
 
 License:        GPL-3.0-or-later
 URL:            https://gitlab.gnome.org/GNOME/d-spy
-Source0:        https://download.gnome.org/sources/d-spy/1.8/d-spy-%{version}.tar.xz
+Source0:        https://download.gnome.org/sources/d-spy/47/d-spy-%{version}.tar.xz
 
 BuildRequires:  gcc
 BuildRequires:  gettext
@@ -83,6 +83,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.gnome.dspy.deskto
 
 
 %changelog
+* Tue Dec 03 2024 Nieves Montero <nmontero@redhat.com> - 47.0-1
+- Update to 47.0
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.8.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

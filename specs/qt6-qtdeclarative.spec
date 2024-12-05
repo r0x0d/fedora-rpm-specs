@@ -16,7 +16,7 @@
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -196,7 +196,6 @@ make check -k -C tests ||:
 %{_qt6_plugindir}/qmltooling/
 %{_qt6_plugindir}/qmllint/
 %{_qt6_plugindir}/qmlls/
-%{_qt6_archdatadir}/qml/Assets/Downloader/
 %{_qt6_archdatadir}/qml/Qt*
 %{_qt6_archdatadir}/qml/QmlTime
 %{_qt6_archdatadir}/qml/*.qmltypes
@@ -204,7 +203,6 @@ make check -k -C tests ||:
 
 %files devel
 %dir %{_qt6_libdir}/cmake/Qt6PacketProtocolPrivate
-%dir %{_qt6_libdir}/cmake/Qt6QmlAssetDownloader
 %dir %{_qt6_libdir}/cmake/Qt6Qml
 %dir %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins
 %dir %{_qt6_libdir}/cmake/Qt6QmlCompiler
@@ -304,7 +302,6 @@ make check -k -C tests ||:
 %{_qt6_libdir}/cmake/Qt6LabsSettings/*.cmake
 %{_qt6_libdir}/cmake/Qt6LabsSharedImage/*.cmake
 %{_qt6_libdir}/cmake/Qt6LabsWavefrontMesh/*.cmake
-%{_qt6_libdir}/cmake/Qt6QmlAssetDownloader/*.cmake
 %{_qt6_libdir}/cmake/Qt6QmlLSPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6QmlDomPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6QmlLocalStorage/*.cmake
@@ -347,7 +344,6 @@ make check -k -C tests ||:
 %{_qt6_libdir}/qt6/sbom/%{qt_module}-%{qt_version}.spdx
 
 %files static
-%{_qt6_libdir}/libQt6QmlAssetDownloader.a
 %{_qt6_libdir}/libQt6QmlDom.a
 %{_qt6_libdir}/libQt6QmlLS.a
 %{_qt6_libdir}/libQt6QmlTypeRegistrar.a
@@ -363,6 +359,9 @@ make check -k -C tests ||:
 %endif
 
 %changelog
+* Tue Dec 03 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-2
+- Drop QmlAssetDownloader
+
 * Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
 - 6.8.1
 

@@ -5,7 +5,7 @@
 Summary: Tool Command Language, pronounced tickle
 Name: tcl
 Version: %{vers}
-Release: 5%{?dist}
+Release: 6%{?dist}
 Epoch: 1
 License: TCL AND GPL-3.0-or-later WITH Bison-exception-2.2 AND BSD-3-Clause
 URL: http://tcl.sourceforge.net/
@@ -116,10 +116,6 @@ mkdir -p %{buildroot}%{_usr}/bin
 ln -s %{_bindir}/tclsh %{_bindir}/tclsh%{majorver} %{buildroot}%{_usr}/bin/
 %endif
 
-# workaround for FTBFS caused by read-only library:
-# https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/DH5N6XV2NJHBIMX226HPDFUMO5NODE2V/
-chmod u+w %{buildroot}%{_libdir}/lib%{name}%{majorver}.so
-
 %ldconfig_scriptlets
 
 %files
@@ -127,8 +123,7 @@ chmod u+w %{buildroot}%{_libdir}/lib%{name}%{majorver}.so
 %{_datadir}/%{name}%{majorver}
 %exclude %{_datadir}/%{name}%{majorver}/tclAppInit.c
 %{_datadir}/%{name}8
-# explicit mode to make the RW library read-only
-%attr(555, root, root) %{_libdir}/lib%{name}%{majorver}.so
+%{_libdir}/lib%{name}%{majorver}.so
 %{_mandir}/man1/*
 %if 0%{?flatpak}
 %{_usr}/bin/tclsh*
@@ -152,6 +147,9 @@ chmod u+w %{buildroot}%{_libdir}/lib%{name}%{majorver}.so
 %{_datadir}/%{name}%{majorver}/tclAppInit.c
 
 %changelog
+* Tue Dec  3 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 1:8.6.15-6
+- Dropped workaround for read-only library, problem was fixed in debugedit
+
 * Mon Dec  2 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 1:8.6.15-5
 - Installed the library as read-only after the debuginfo is extracted
   Related: rhbz#2326296

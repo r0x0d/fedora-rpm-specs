@@ -2,7 +2,7 @@ Name: pnm2ppa
 Summary: Drivers for printing to HP PPA printers
 Epoch: 1
 Version: 1.13
-Release: 4%{?dist}
+Release: 5%{?dist}
 URL: http://sourceforge.net/projects/pnm2ppa 
 Source: http://download.sourceforge.net/pnm2ppa/pnm2ppa-%{version}.tar.gz
 # Following sourcelink is dead currently.
@@ -17,6 +17,9 @@ Patch3: pnm2ppa-coverity-return-local.patch
 Patch4: pnm2ppa-gcc10.patch
 # add ldflags to Makefile
 Patch5: pnm2ppa-ldflags.patch
+# match NOPRINTER enum with its position in global printer table
+# fixes crash on aarch64
+Patch6: pnm2ppa-aarch-help-crash.patch
 # pbm2ppa, pnm2ppa - GPL-2.0-or-later
 # pdq/* - GPL-2.0, but not shipped, thus not mentioned in license tag
 License: GPL-2.0-or-later
@@ -51,6 +54,7 @@ Install pnm2ppa if you need to print to a PPA printer.
 %patch -P 3 -p1 -b .coverity-return-local
 %patch -P 4 -p1 -b .gcc10
 %patch -P 5 -p1 -b .ldflags
+%patch -P 6 -p1 -b .help-aarch-crash
 
 for file in docs/en/LICENSE pbm2ppa-0.8.6/LICENSE; do
  sed "s|\r||g" $file > $file.new && \
@@ -110,6 +114,9 @@ done
 %config(noreplace) %{_sysconfdir}/pbm2ppa.conf
 
 %changelog
+* Tue Dec 03 2024 Zdenek Dohnal <zdohnal@redhat.com> - 1:1.13-5
+- fix out of bound array access
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:1.13-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

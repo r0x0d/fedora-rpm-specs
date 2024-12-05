@@ -10,7 +10,7 @@
 
 Summary: Qt6 - Location Libraries
 Name:    qt6-%{qt_module}
-Version: 6.8.0
+Version: 6.8.1
 Release: 1%{?dist}
 
 # Rest of the licenses are for Qt code in src/location and src/plugins
@@ -116,6 +116,7 @@ popd
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/pkgconfig/*.pc
+%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{qt_version}.spdx
 
 %if 0%{?examples}
 %files examples
@@ -123,6 +124,9 @@ popd
 %endif
 
 %changelog
+* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+- 6.8.1
+
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
 - 6.8.0
 

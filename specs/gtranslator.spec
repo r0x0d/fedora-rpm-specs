@@ -1,5 +1,5 @@
 Name:		gtranslator
-Version:	47.0
+Version:	47.1
 Release:	1%{?dist}
 Summary:	Gettext po file editor for GNOME
 
@@ -62,6 +62,9 @@ replace functions, auto translation, and translation learning,
 %{_mandir}/man1/gtranslator.1*
 
 %changelog
+* Tue Dec 03 2024 nmontero <nmontero@redhat.com> - 47.1-1
+- Update to 47.1
+
 * Sat Oct 05 2024 Artem Polishchuk <ego.cordatus@gmail.com> - 47.0-1
 - Update to 47.0 (#2316636)
 

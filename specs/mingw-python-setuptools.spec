@@ -5,12 +5,15 @@
 Name:          mingw-python-%{pypi_name}
 Summary:       MinGW Windows Python %{pypi_name} library
 Version:       74.1.3
-Release:       1%{?dist}
+Release:       2%{?dist}
 BuildArch:     noarch
 
 License:       MIT
 URL:           https://pypi.python.org/pypi/%{pypi_name}
 Source0:       %{pypi_source %{pypi_name} %{version}}
+
+# Adapt is_mingw check to only check get_platform, as sys.platform will be 'linux' when cross-compiling
+Patch0:        mingw-python-setuptools_is_mingw.patch
 
 BuildRequires: mingw32-filesystem >= 95
 BuildRequires: mingw32-python3
@@ -92,6 +95,9 @@ find %{buildroot}%{mingw64_python3_sitearch}/ -name '*.exe' | xargs rm -f
 
 
 %changelog
+* Fri Nov 29 2024 Sandro Mani <manisandro@gmail.com> - 74.1.3-2
+- mingw-python-setuptools_is_mingw.patch
+
 * Sat Nov 09 2024 Sandro Mani <manisandro@gmail.com> - 74.1.3-1
 - Update to 74.1.3
 

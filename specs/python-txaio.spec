@@ -2,7 +2,7 @@
 
 Name:           python-%{pypi_name}
 Version:        23.1.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Compatibility API between asyncio/Twisted/Trollius
 
 License:        MIT
@@ -12,6 +12,7 @@ Source0:        https://files.pythonhosted.org/packages/source/t/txaio/txaio-%{v
 # and is undocumented intentionaly because it's private.
 # This is a hack that calls stop on the loop soon after calling run_forever().
 Patch2:         run_once.patch
+Patch3:         fix-build-sphinx8.patch
 BuildArch:      noarch
 
 %description
@@ -50,6 +51,7 @@ asyncio. Documentation in html format.
 %prep
 %setup -qn %{pypi_name}-%{version}
 %patch -P2 -p1
+%patch -P3 -p1
 # Remove upstream's egg-info
 rm -rf %{pypi_name}.egg-info
 # README is just a symlink to index.rst. Using this file as README
@@ -83,6 +85,9 @@ ln -s /usr/share/javascript/jquery/latest/jquery.min.js _build/html/_static/jque
 %doc docs/_build/html
 
 %changelog
+* Tue Dec 03 2024 Julien Enselme <jujens@jujens.eu> - 23.1.1-9
+- Correct build for sphinx 8
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 23.1.1-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

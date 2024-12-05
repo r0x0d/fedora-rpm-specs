@@ -46,7 +46,7 @@ BuildRequires: pkgconfig(libsystemd)
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
@@ -502,8 +502,15 @@ install -m 644 src/plugins/platforms/xcb/*.h %{buildroot}%{_qt6_headerdir}/QtXcb
 
 rm %{buildroot}/%{_qt6_libexecdir}/qt-cmake-private-install.cmake
 
+rm -r %{buildroot}%{_qt6_libdir}/cmake/Qt6ExamplesAssetDownloaderPrivate
+rm -r %{buildroot}%{_qt6_headerdir}/QtExamplesAssetDownloader
+rm %{buildroot}%{_qt6_libdir}/qt6/modules/ExamplesAssetDownloaderPrivate.json
+rm %{buildroot}%{_qt6_libdir}/libQt6ExamplesAssetDownloader.*
+rm %{buildroot}%{_qt6_libdir}/qt6/metatypes/qt6examplesassetdownloaderprivate_*_metatypes.json
+
 # Use better location for some new scripts in qtbase-6.0.1
 mv %{buildroot}/%{_qt6_libexecdir}/ensure_pro_file.cmake %{buildroot}/%{_qt6_libdir}/cmake/Qt6/ensure_pro_file.cmake
+
 
 %check
 # verify Qt6.pc
@@ -581,7 +588,6 @@ make check -k ||:
 %dir %{_qt6_libdir}/cmake/Qt6EglFSDeviceIntegrationPrivate
 %dir %{_qt6_libdir}/cmake/Qt6EglFsKmsGbmSupportPrivate
 %dir %{_qt6_libdir}/cmake/Qt6EglFsKmsSupportPrivate
-%dir %{_qt6_libdir}/cmake/Qt6ExamplesAssetDownloaderPrivate
 %dir %{_qt6_libdir}/cmake/Qt6ExampleIconsPrivate
 %dir %{_qt6_libdir}/cmake/Qt6FbSupportPrivate
 %dir %{_qt6_libdir}/cmake/Qt6Gui
@@ -638,7 +644,6 @@ make check -k ||:
 %{_qt6_headerdir}/QtDBus/
 %{_qt6_headerdir}/QtInputSupport
 %{_qt6_headerdir}/QtExampleIcons
-%{_qt6_headerdir}/QtExamplesAssetDownloader
 %{_qt6_headerdir}/QtGui/
 %{_qt6_headerdir}/QtNetwork/
 %{_qt6_headerdir}/QtOpenGL/
@@ -721,7 +726,6 @@ make check -k ||:
 %{_qt6_libdir}/cmake/Qt6EglFsKmsGbmSupportPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6EglFsKmsSupportPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6ExampleIconsPrivate/*.cmake
-%{_qt6_libdir}/cmake/Qt6ExamplesAssetDownloaderPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6FbSupportPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6Gui/*.cmake
 %{_qt6_libdir}/cmake/Qt6GuiTools/*.cmake
@@ -760,8 +764,6 @@ make check -k ||:
 %{_qt6_libdir}/libQt6DeviceDiscoverySupport.prl
 %{_qt6_libdir}/libQt6ExampleIcons.a
 %{_qt6_libdir}/libQt6ExampleIcons.prl
-%{_qt6_libdir}/libQt6ExamplesAssetDownloader.a
-%{_qt6_libdir}/libQt6ExamplesAssetDownloader.prl
 %{_qt6_headerdir}/QtFbSupport
 %{_qt6_libdir}/libQt6FbSupport.*a
 %{_qt6_libdir}/libQt6FbSupport.prl
@@ -851,6 +853,9 @@ make check -k ||:
 
 
 %changelog
+* Tue Dec 03 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-2
+- Do not install ExamplesAssetDownloader
+
 * Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
 - 6.8.1
 

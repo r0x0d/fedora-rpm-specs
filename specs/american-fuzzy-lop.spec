@@ -2,9 +2,9 @@
 # changes, since clang releases are not ABI compatible between major
 # versions. See also https://bugzilla.redhat.com/1544964.
 
-Version:       4.21c
+Version:       4.30c
 %global forgeurl https://github.com/AFLplusplus/AFLplusplus/
-%global tag    v4.21c
+%global tag    v4.30c
 %forgemeta
 
 Name:          american-fuzzy-lop
@@ -12,7 +12,7 @@ Summary:       Practical, instrumentation-driven fuzzer for binary formats
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:       Apache-2.0
 
-Release:       5%{?dist}
+Release:       1%{?dist}
 URL:           %{forgeurl}
 Source0:       %{forgesource}
 
@@ -22,16 +22,11 @@ Source1:       hello.c
 # Only specific architectures are supported by upstream.
 # On non-x86 only afl-clang-fast* are built.
 # i686 support was silently removed in AFL++ 4.10c
-# s390x support broken 2024-04-15, still broken 2024-06-21.
-#ExclusiveArch: x86_64 s390x
-ExclusiveArch: x86_64
+ExclusiveArch: x86_64 s390x
 
 BuildRequires: gcc
 BuildRequires: gcc-plugin-devel
 
-# Rawhide has llvm 18 at the moment, but AFL++ 4.20c complains:
-# GNUmakefile.llvm:70: you are using an in-development llvm version - this might break llvm_mode!
-# and LLVM mode is indeed broken.  So stick with LLVM 17 for now.
 BuildRequires: clang
 BuildRequires: llvm-devel
 %ifarch x86_64
@@ -174,16 +169,6 @@ mv $RPM_BUILD_ROOT%{_pkgdocdir} pkg-docs
 export PATH="$(%{llvm_config} --bindir)":$PATH
 
 ln -s %{SOURCE1} hello.cpp
-%ifarch x86_64
-./afl-gcc %{SOURCE1} -o hello
-./hello
-./afl-g++ hello.cpp -o hello
-./hello
-./afl-clang %{SOURCE1} -o hello
-./hello
-./afl-clang++ hello.cpp -o hello
-./hello
-%endif
 ./afl-clang-fast %{SOURCE1} -o hello
 ./hello
 ./afl-clang-fast++ hello.cpp -o hello
@@ -220,8 +205,6 @@ test -n '%{clang_major}'
 %{_bindir}/afl-tmin
 %{_bindir}/afl-whatsup
 %dir %{afl_helper_path}
-%{afl_helper_path}/afl-as
-%{afl_helper_path}/as
 %if 0%{?__isa_bits} == 32
 %{afl_helper_path}/afl-compiler-rt-32.o
 %else
@@ -239,7 +222,6 @@ test -n '%{clang_major}'
 %endif
 %{_mandir}/man8/afl-addseeds.8*
 %{_mandir}/man8/afl-analyze.8*
-%{_mandir}/man8/afl-as.8*
 %{_mandir}/man8/afl-cmin.8*
 %{_mandir}/man8/afl-cmin.bash.8*
 %{_mandir}/man8/afl-fuzz.8*
@@ -253,6 +235,8 @@ test -n '%{clang_major}'
 %{_mandir}/man8/afl-tmin.8*
 %{_mandir}/man8/afl-whatsup.8*
 
+%{_includedir}/afl/
+
 
 %files clang
 %license docs/COPYING
@@ -263,28 +247,22 @@ test -n '%{clang_major}'
 %endif
 %{_bindir}/afl-clang-fast
 %{_bindir}/afl-clang-fast++
-%ifarch x86_64
 %{_bindir}/afl-clang-lto
 %{_bindir}/afl-clang-lto++
 %{_bindir}/afl-ld-lto
 %{_bindir}/afl-lto
 %{_bindir}/afl-lto++
-%endif
 
 %{afl_helper_path}/afl-llvm-dict2file.so
-%ifarch x86_64
 %{afl_helper_path}/afl-llvm-lto-instrumentlist.so
-%endif
 %{afl_helper_path}/afl-llvm-pass.so
 
-%ifarch x86_64
 %if 0%{?__isa_bits} == 32
 %{afl_helper_path}/afl-llvm-rt-lto-32.o
 %else
 %{afl_helper_path}/afl-llvm-rt-lto-64.o
 %endif
 %{afl_helper_path}/afl-llvm-rt-lto.o
-%endif
 
 %{afl_helper_path}/cmplog-instructions-pass.so
 %{afl_helper_path}/cmplog-routines-pass.so
@@ -295,24 +273,26 @@ test -n '%{clang_major}'
 %{afl_helper_path}/libAFLQemuDriver.a
 %{afl_helper_path}/libdislocator.so
 %{afl_helper_path}/libtokencap.so
-%ifarch x86_64
 %{afl_helper_path}/SanitizerCoverageLTO.so
-%endif
 %{afl_helper_path}/SanitizerCoveragePCGUARD.so
 %{afl_helper_path}/split-compares-pass.so
 %{afl_helper_path}/split-switches-pass.so
 
 %{_mandir}/man8/afl-clang-fast.8*
 %{_mandir}/man8/afl-clang-fast++.8*
-%ifarch x86_64
 %{_mandir}/man8/afl-clang-lto.8.gz
 %{_mandir}/man8/afl-clang-lto++.8.gz
 %{_mandir}/man8/afl-lto.8.gz
 %{_mandir}/man8/afl-lto++.8.gz
-%endif
 
 
 %changelog
+* Tue Dec 03 2024 Richard W.M. Jones <rjones@redhat.com> - 4.30c-1
+- New version 4.30c (RHBZ#2330187)
+- Enable s390x again.
+- Start removing afl-gcc/afl-clang as they are obsolete.
+- Add header files.
+
 * Tue Aug 20 2024 Richard W.M. Jones <rjones@redhat.com> - 4.21c-5
 - Bump release and rebuild
 

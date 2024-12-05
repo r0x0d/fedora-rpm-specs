@@ -25,6 +25,9 @@ License:        BSD-3-Clause AND MIT AND CC-BY-4.0
 URL:            http://ipython.org/
 Source0:        %pypi_source
 
+# Compatibility with Sphinx 8
+Patch:          https://github.com/ipython/ipython/pull/14596.patch
+
 BuildArch:      noarch
 BuildRequires:  make
 BuildRequires:  python3-devel

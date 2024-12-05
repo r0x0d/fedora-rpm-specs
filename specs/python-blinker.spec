@@ -12,11 +12,6 @@ Source0:        %{url}/archive/%{version}/%{mod_name}-%{version}.tar.gz
 BuildArch:      noarch
 BuildRequires:  python3-devel
 
-# Tests
-BuildRequires:  python3dist(pytest)
-BuildRequires:  python3dist(tox)
-BuildRequires:  python3dist(tox-current-env)
-
 %global _description\
 Blinker provides a fast dispatching system that allows any number\
 of interested parties to subscribe to events, or "signals".
@@ -33,10 +28,11 @@ of interested parties to subscribe to events, or "signals".
 
 %prep
 %autosetup -n %{mod_name}-%{version}
+# requirements in tests.txt are way too tight
+mv requirements/tests.in requirements/tests.txt
 
 %generate_buildrequires
-# requirements in tests.txt are way too tight
-%pyproject_buildrequires requirements/tests.in
+%pyproject_buildrequires -t
 
 %build
 %pyproject_wheel

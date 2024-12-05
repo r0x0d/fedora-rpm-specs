@@ -4,7 +4,7 @@
 %bcond tests 1
 
 Name:           python-%{modname}
-Version:        4.66.5
+Version:        4.67.1
 Release:        %autorelease
 Summary:        Fast, Extensible Progress Meter
 
@@ -26,7 +26,7 @@ BuildRequires:  python3-setuptools_scm+toml
 # tox.ini contains coverage and unpackaged dependencies (nbval)
 # We will use pytest directly
 BuildRequires:  python3-pytest
-BuildRequires:  python3-pytest-asyncio >= 0.17
+BuildRequires:  python3-pytest-asyncio >= 0.24
 BuildRequires:  python3-pytest-timeout
 
 # optional test deps

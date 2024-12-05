@@ -1,7 +1,7 @@
 Summary: Command-line tools and library for transforming PDF files
 Name:    qpdf
 Version: 11.9.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 # MIT: e.g. libqpdf/sha2.c, but those are not compiled in (GNUTLS is used)
 # upstream uses ASL 2.0 now, but he allowed other to distribute qpdf under
 # old license (see README)
@@ -98,8 +98,7 @@ unzip %{SOURCE1}
 %cmake -DBUILD_STATIC_LIBS=0 \
        -DREQUIRE_CRYPTO_GNUTLS=1 \
        -DUSE_IMPLICIT_CRYPTO=0 \
-       -DSHOW_FAILED_TEST_OUTPUT=1 \
-       -DINSTALL_CMAKE_PACKAGE=0
+       -DSHOW_FAILED_TEST_OUTPUT=1
 
 %cmake_build
 
@@ -140,12 +139,16 @@ install -m 0644 completions/zsh/_qpdf %{buildroot}%{zsh_completions_dir}/_qpdf
 %{_includedir}/qpdf/
 %{_libdir}/libqpdf.so
 %{_libdir}/pkgconfig/libqpdf.pc
+%{_libdir}/cmake/qpdf/
 
 %files doc
 %{_pkgdocdir}
 
 
 %changelog
+* Mon Dec 02 2024 Nicolas Fella <nicolas.fella@gmx.de> - 11.9.1-3
+- Don't exclude CMake config files
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 11.9.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

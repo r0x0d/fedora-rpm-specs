@@ -463,11 +463,7 @@ export LANG=C.utf8
 %global ghc_debuginfo 1
 (
 cd hadrian
-%if 0%{?fedora} >= 38
 %ghc_bin_build -W
-%else
-%ghc_bin_build
-%endif
 )
 %global hadrian hadrian/dist/build/hadrian/hadrian
 %else

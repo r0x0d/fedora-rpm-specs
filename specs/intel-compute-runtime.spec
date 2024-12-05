@@ -1,6 +1,6 @@
 %global neo_major 24
 %global neo_minor 35
-%global neo_build 30872.24
+%global neo_build 30872.32
 
 Name: intel-compute-runtime
 Version: %{neo_major}.%{neo_minor}.%{neo_build}
@@ -17,6 +17,9 @@ Source0: %{url}/archive/%{version}/compute-runtime-%{version}.tar.gz
 # https://github.com/intel/compute-runtime/pull/761
 # CL/GL sharing fixups
 Patch01: 761.patch
+
+# Support opencl-headers-2024.10.24
+Patch02: 0001-CL-Headers-2024.10.24.patch
 
 # This is just for Intel GPUs
 ExclusiveArch:  x86_64
@@ -97,6 +100,10 @@ virtual functions, unified memory, and I/O capabilities..
 
 # remove sse2neon completely as we're building just for x86(_64)
 rm -rv third_party/sse2neon
+
+# bundled CL headers are leaking into the build
+rm -rv third_party/opencl_headers/CL
+ln -s /usr/include/CL/ third_party/opencl_headers/CL
 
 %build
 # -DNEO_DISABLE_LD_GOLD=1 for https://bugzilla.redhat.com/show_bug.cgi?id=2043178 and https://bugzilla.redhat.com/show_bug.cgi?id=2043758

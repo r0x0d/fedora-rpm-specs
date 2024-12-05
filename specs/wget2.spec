@@ -4,11 +4,11 @@
 %bcond as_wget 1
 %endif
 
-%global somajor 2
+%global somajor 3
 
 Name:           wget2
-Version:        2.1.0
-Release:        13%{?dist}
+Version:        2.2.0
+Release:        1%{?dist}
 Summary:        An advanced file and recursive website downloader
 
 # Documentation is GFDL
@@ -20,23 +20,11 @@ Source1:        https://ftp.gnu.org/gnu/wget/%{name}-%{version}.tar.gz.sig
 Source2:        tim.ruehsen-keyring.asc
 
 # Backports from upstream
-## Fix behavior for downloading to stdin (rhbz#2257700, gl#gnuwget/wget2#651)
-Patch0001:      0001-src-log.c-log_init-Redirect-INFO-logs-to-stderr-with.patch
-## Fix normalization of path part of URL (rhbz#2271362)
-Patch0002:      0002-normalize-path-in-url.patch
-# https://github.com/rockdaboot/wget2/pull/316
-# Allow option --no-tcp-fastopen to work on Linux kernels >= 4.11
-Patch0003:      0003-Allow-option-no-tcp-fastopen-to-work-on-Linux-kernel.patch
-# https://gitlab.com/gnuwget/wget2/-/issues/664
-# Disable explicit OCSP requests by default for privacy reasons.
-Patch0004:      0004-Disable-OCSP-by-default.patch
-# https://gitlab.com/gnuwget/wget2/-/issues/661
-# Accept --progress=dot:... for backwards compatibility
-Patch0005:      0005-Accept-progress-dot-.-for-backwards-compatibility.patch
-# https://gitlab.com/gnuwget/wget2/-/commit/7a945d31aeb34fc73cf86a494673ae97e069d84d
-# Disable TCP Fast Open by default
-# rhbz#2291017
-Patch0006:      0006-Disable-TCP-Fast-Open-by-default.patch
+# Patch0001 needed for proper build on other than x86 arches
+Patch0001:      0001-use-signed-char-ascii.patch
+# -O and -nc together truncate existing file and cause data loss
+# rhbz#2298879
+Patch0002:      0002-dont-truncate-no-clobber.patch
 
 # Buildsystem build requirements
 BuildRequires:  autoconf
@@ -136,7 +124,7 @@ the system provider of wget.
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup -p1
+%autosetup -p1 -S git
 
 
 %build
@@ -199,6 +187,13 @@ echo ".so man1/%{name}.1" > %{buildroot}%{_mandir}/man1/wget.1
 
 
 %changelog
+* Mon Dec 02 2024 Michal Ruprich <mruprich@redhat.com> - 2.2.0-1
+- New version 2.2.0
+- Resolves: rhbz#2298879 - Using options -nc and -O simultaneously causes existing files to be clobbered/truncated
+- Resolves: rhbz#2327788 - wget starts using non-working IPv6 addresses on dual stack
+- Resolves: rhbz#2327728 - Crash: "free(): double free detected in tcache 2" when using --load-cookies
+- Resolves: rhbz#2280151 - wget2 always re-downdloads when using custom output filename
+
 * Fri Aug 09 2024 Jonathan Wright <jonathan@almalinux.org> - 2.1.0-13
 - do not replace wget on el10
 

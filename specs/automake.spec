@@ -1,4 +1,4 @@
-%global api_version 1.16
+%global api_version 1.17
 
 # redhat-rpm-config sets CFLAGS, CXXFLAGS and LDFLAGS, but not
 # OBJCFLAGS. This means that Obj-C tests will be compiled without hardening
@@ -22,8 +22,8 @@
 Summary:    A GNU tool for automatically creating Makefiles
 Name:       automake
 # Any bump here requires libtool rebuild, rhbz#1813010
-Version:    %{api_version}.5
-Release:    19%{?dist}
+Version:    %{api_version}
+Release:    1%{?dist}
 
 # To help future rebase, the following licenses were seen in the following files/folders:
 # usr/bin/* - GPL-2.0-or-later
@@ -58,25 +58,11 @@ Source:     ftp://ftp.gnu.org/gnu/automake/automake-%{version}.tar.xz
 # The patch is only made necessary due to fedora specific changes
 # which lead to .package_note-automake-1.16.5-3.fc36.x86_64.ld
 # being inserted in build logs, breaking the original grep instruction
-Patch0: fort2.patch
+Patch: fort2.patch
 
-# From upstream: ed1368e8803e8934a8bbab52a38753484dba2a37
-Patch1: 0001-test-avoid-apostrophe-in-test-document.patch
-# From upstream: 2a9908da9dbc075ee6c4e853cf3be0365b15f202
-Patch2: 0001-tests-Fix-type-defaults-error-in-link_cond-due-to-ma.patch
-# Proposed upstream: https://debbugs.gnu.org/cgi/bugreport.cgi?bug=59993#23
-Patch3: v2-0002-tests-Fix-implicit-function-declaration-errors.patch
-# Proposed upstream: https://debbugs.gnu.org/cgi/bugreport.cgi?bug=60962#5
-Patch4: v3-0003-tests-Fix-implicit-function-declaration-in-ax-dep.patch
-# Proposed upstream: https://debbugs.gnu.org/cgi/bugreport.cgi?bug=59994#29
-Patch5: v2-0001-tests-Don-t-try-to-prevent-flex-to-include-unistd.patch
-
-# From upstream: 6d6fc91c472fd84bd71a1b012fa9ab77bd94efea
-# Reveals failures due to C99 porting that wouldn't be seen otherwise
-Patch6: 0001-tests-depcomp-ensure-make_ok-fails-when-run_make-fai.patch
-
-# From upstream: ab347652df9ff8f65ba1be6aaa357cf3c2b16dca
-Patch7: 0001-python-support-noinst_PYTHON-preceding-foo_PYTHON.patch
+# Patch submitted upstream:
+# https://lists.gnu.org/archive/html/automake-patches/2024-11/msg00000.html
+Patch: 0001-py-compile-Allow-user-to-disable-python.patch
 
 URL:        http://www.gnu.org/software/automake/
 Requires:   autoconf >= 2.65
@@ -180,6 +166,10 @@ make -k %{?_smp_mflags} check %{?TESTS_FLAGS: TESTS="%{TESTS_FLAGS}"} \
 
 
 %changelog
+* Thu Nov 21 2024 Frédéric Bérat <fberat@redhat.com> - 1.17-1
+- Rebase to upstream version 1.17.0
+- Add a patch to fix py-compile behavior
+
 * Tue Nov 19 2024 Frédéric Bérat <fberat@redhat.com> - 1.16.5-19
 - Fix pep3147_tweak regression (RHEL-59974)
 

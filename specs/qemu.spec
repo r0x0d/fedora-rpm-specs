@@ -381,7 +381,7 @@ Obsoletes: sgabios-bin <= 1:0.20180715git-10.fc38
 %endif
 
 # To prevent rpmdev-bumpspec breakage
-%global baserelease 0.3
+%global baserelease 0.4
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
@@ -2155,6 +2155,14 @@ rm -rf %{static_buildroot}
 # tests have been flakey in the past
 export MTESTARGS="--no-suite block"
 
+# Most architectures can use the default timeouts, but in some cases
+# the hardware that's currently available is too slow and we need to
+# allow tests to run for a little bit longer
+%define timeout_multiplier 1
+%ifarch riscv64
+%define timeout_multiplier 3
+%endif
+
 %if %{with check}
 %if !%{tools_only}
 
@@ -2169,7 +2177,7 @@ echo "Testing %{name}-build"
 # Decided to disable i686 tests entirely, en route to fully
 # removing i686 support in the future
 %ifnarch %{power64} %{ix86}
-%make_build check
+%make_build check TIMEOUT_MULTIPLIER=%{timeout_multiplier}
 %endif
 
 popd
@@ -3157,6 +3165,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Dec 03 2024 Andrea Bolognani <abologna@redhat.com> - 9.2.0-0.4.rc1
+- Increase test timeout on riscv64
+
 * Mon Dec 02 2024 Richard W.M. Jones <rjones@redhat.com> - 9.2.0-0.3.rc1
 - Remove edk2 dependency on arm (32 bit) (RHBZ#2329331)
 

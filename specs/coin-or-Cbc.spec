@@ -9,7 +9,7 @@
 Name:		coin-or-%{module}
 Summary:	Coin-or branch and cut
 Version:	2.10.12
-Release:	1%{?dist}
+Release:	2%{?dist}
 
 # The project as a whole is licensed EPL-2.0.  However, many source files still
 # claim to be licensed EPL-1.0.  This is probably an upstream oversight.
@@ -169,6 +169,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test
 %{_docdir}/%{name}/cbc_doxy.tag
 
 %changelog
+* Tue Dec  3 2024 Jerry James <loganjerry@gmail.com> - 2.10.12-2
+- Rebuild for asl 20241111
+
 * Mon Sep 23 2024 Jerry James <loganjerry@gmail.com> - 2.10.12-1
 - Version 2.10.12
 

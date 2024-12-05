@@ -10,9 +10,9 @@ License:        MIT
 URL:            https://github.com/executablebooks/sphinx-tabs
 Source0:        https://github.com/executablebooks/%{pypi_name}/archive/v%{version}/%{pypi_name}-%{version}.tar.gz
 
-# Make the tests pass with Sphinx 7.1+
-#Patch:          https://github.com/executablebooks/sphinx-tabs/pull/178.patch
-
+# Open PR for Python Sphinx 8.1 issues with tests
+# https://bugzilla.redhat.com/show_bug.cgi?id=2330154
+Patch0:         https://patch-diff.githubusercontent.com/raw/executablebooks/sphinx-tabs/pull/200.patch
 BuildArch:      noarch
 
 

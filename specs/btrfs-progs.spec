@@ -2,7 +2,7 @@
 %{!?version_no_tilde: %define version_no_tilde %{shrink:%(echo '%{version}' | tr '~' '-')}}
 
 Name:           btrfs-progs
-Version:        6.11
+Version:        6.12
 Release:        1%{?dist}
 Summary:        Userspace programs for btrfs
 
@@ -150,6 +150,10 @@ popd
 %{python3_sitearch}/btrfsutil-*.egg-info/
 
 %changelog
+* Fri Nov 29 2024 Packit <hello@packit.dev> - 6.12-1
+- Update to version 6.12
+- Resolves: rhbz#2329568
+
 * Tue Sep 17 2024 Neal Gompa <ngompa@fedoraproject.org> - 6.11-1
 - Update to 6.11
   Resolves: rhbz#2312879

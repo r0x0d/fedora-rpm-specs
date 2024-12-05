@@ -17,8 +17,8 @@ Summary: Machine learning in Python
 # sklearn/metrics/_scorer.py is BSD-2-Clause
 # sklearn/datasets/images/china.jpg  is CC-BY-2.0
 # sklearn/datasets/images/flower.jpg is CC-BY-2.0
-# sklearn/utils/_pprint.py is Python-2.0
-License: BSD-3-Clause AND CC-BY-2.0 AND MIT AND BSD-2-Clause AND Python-2.0
+# sklearn/utils/_pprint.py is PSF-2.0
+License: BSD-3-Clause AND CC-BY-2.0 AND MIT AND BSD-2-Clause AND PSF-2.0
 
 URL: http://scikit-learn.org/
 Source0: %{pypi_source scikit_learn}

@@ -1,16 +1,16 @@
 # ASL upstream has not tagged any releases, so we use a git checkout
-%global commit     2f5d9de248c53a3063bba23af2013cd3db768bf8
-%global date       20240201
+%global commit     97e10747f47fea0db03c55c9d6b8294f0b3393bf
+%global date       20241202
 %global forgeurl   https://github.com/ampl/asl
 
 Name:           asl
-Version:        20240106
+Version:        20241111
 Summary:        AMPL Solver Library
 
 %forgemeta
 
-# The top-level license file contains the BSD-3-Clause text.
-# All source files contain the SMLNJ license notice, however.
+# AMPL files are licensed with BSD-3-Clause.
+# NETLIB files are licensed with SMLNJ.
 License:        BSD-3-Clause AND SMLNJ
 Release:        %autorelease
 URL:            %{forgeurl}
@@ -20,16 +20,13 @@ Source:         %{forgesource}
 Patch:          %{name}-shared.patch
 # Do not override Fedora architecture flags
 Patch:          %{name}-arch-flags.patch
-# fedisableexcept has a prototype only if _GNU_SOURCE is defined
-# https://github.com/ampl/asl/pull/16
-Patch:          %{name}-fenv.patch
 # Declare functions as functions, not as variables
 Patch:          %{name}-prototype.patch
 
 BuildRequires:  cmake
+BuildRequires:  fdupes
 BuildRequires:  gcc-c++
 BuildRequires:  gcc-fortran
-BuildRequires:  hardlink
 
 %description
 The AMPL Solver Library is an interface used to access a variety of
@@ -46,6 +43,7 @@ Header files and library links for building projects that use
 %prep
 %forgeautosetup -p1
 
+%conf
 # Fix install location of ampl-asl-config
 sed -i 's,share/,lib/cmake/,' CMakeLists.txt
 
@@ -54,7 +52,6 @@ if [ "%{_lib}" != "lib" ]; then
   sed -i '/DESTINATION/s/lib/%{_lib}/g' CMakeLists.txt
 fi
 
-%build
 export CFLAGS="%{build_cflags} -DIGNORE_BOGUS_WARNINGS"
 export CXXFLAGS="%{build_cxxflags} -DIGNORE_BOGUS_WARNINGS"
 %cmake \
@@ -63,6 +60,8 @@ export CXXFLAGS="%{build_cxxflags} -DIGNORE_BOGUS_WARNINGS"
   -DBUILD_MT_LIBS:BOOL=ON \
   -DBUILD_SHARED_LIBS:BOOL=ON \
   -DGENERATE_ARITH:BOOL=ON
+
+%build
 %cmake_build
 
 %install
@@ -73,11 +72,11 @@ cp -p src/solvers/{dvalue.hd,fg_read.c} %{buildroot}%{_includedir}/asl
 cp -p src/solvers2/fg_read.c %{buildroot}%{_includedir}/asl2
 
 # Save space by not duplicating header files between asl and asl2
-hardlink -t %{buildroot}%{_includedir}
+%fdupes %{buildroot}%{_includedir}
 
 %files
 %doc README.md
-%license LICENSE
+%license LICENSE LICENSE.2
 %{_libdir}/libasl.so.0*
 %{_libdir}/libasl-mt.so.0*
 %{_libdir}/libasl2.so.0*

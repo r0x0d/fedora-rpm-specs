@@ -306,6 +306,10 @@ Optional xz tasks for %{name}.
 
 %package manual
 Summary:        Manual for %{name}
+# ant-manual contains file tutorial-tasks-filesets-properties.zip
+# which in turn contains src/Find.java and src/FindTest.java both
+# licensed under ASL 1.1. See rhbz#1055629
+License:        Apache-2.0 AND Apache-1.1
 
 %description manual
 Documentation for %{name}.

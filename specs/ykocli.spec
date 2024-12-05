@@ -1,9 +1,9 @@
 %global owner gbcox
-%global commit fdf373c63bcd3d77d1cb24e632ee9e8ede1db1cb
+%global commit a63b06415cfa9a7c258fa3b64f8afb25944d1329
 %global shortcommit %(c=%{commit}; echo ${c:0:12})
 
 Name:     ykocli
-Version:  1.3.3
+Version:  1.4.0
 Release:  %autorelease
 Summary:  Front-end script for ykman to obtain TOTP tokens
 

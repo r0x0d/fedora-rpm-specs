@@ -1,5 +1,5 @@
 Name:           python-venusian
-Version:        3.1.0
+Version:        3.1.1
 Release:        %autorelease
 Summary:        A library for deferring decorator actions
 
@@ -10,19 +10,6 @@ Summary:        A library for deferring decorator actions
 License:        BSD-3-Clause-Modification AND ZPL-2.1
 URL:            https://github.com/Pylons/venusian
 Source:         %{pypi_source venusian}
-
-# Accommodate FrameLocalsProxy introduction in Python 3.13
-# https://github.com/Pylons/venusian/pull/92
-#
-# Fixes:
-#
-# Test failure in FrameInfoTest::testCallInfo on Python 3.13
-# https://github.com/Pylons/venusian/issues/91
-#
-# python-venusian fails to build with Python 3.13: AssertionError:
-# self.assertTrue(f_locals is locals())
-# https://bugzilla.redhat.com/show_bug.cgi?id=2280554
-Patch:          %{url}/pull/92.patch
 
 BuildArch:      noarch
 

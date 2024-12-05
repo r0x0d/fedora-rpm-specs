@@ -7,10 +7,7 @@
 # Please, preserve the changelog entries
 #
 
-# For compatibility with SCL
-%undefine __brp_mangle_shebangs
-
-%global gh_commit    6ac38edd83856019e70d1c904a2450c8e042ad28
+%global gh_commit    68a4b8d27342a61611078abb23c292216937daea
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     theseer
 %global gh_project   Autoload
@@ -25,7 +22,7 @@
 %endif
 
 Name:           php-theseer-autoload
-Version:        1.29.2
+Version:        1.29.3
 Release:        1%{?dist}
 Summary:        A tool and library to generate autoload code
 
@@ -150,6 +147,9 @@ fi
 
 
 %changelog
+* Tue Dec  3 2024 Remi Collet <remi@remirepo.net> - 1.29.3-1
+- update to 1.29.3 (no change)
+
 * Mon Oct  7 2024 Remi Collet <remi@remirepo.net> - 1.29.2-1
 - update to 1.29.2
 

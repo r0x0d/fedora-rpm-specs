@@ -2,16 +2,12 @@
 %bcond heif     %{undefined rhel}
 %bcond jpegxl   %{undefined rhel}
 
-%if 0%{?rhel}
-%global bundled_rust_deps 1
-%else
-%global bundled_rust_deps 0
-%endif
+%bcond bundled_rust_deps %{defined:rhel}
 
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 Name:           glycin
-Version:        1.1.1
+Version:        1.1.2
 Release:        %autorelease
 Summary:        Sandboxed image rendering
 
@@ -39,6 +35,9 @@ Source0:        https://download.gnome.org/sources/glycin/1.1/glycin-%{tarball_v
 
 # fixup for issue that makes "cargo tree" fail to parse tests/Cargo.toml
 Patch:          0001-fix-invalid-crate-manifest-for-tests-workspace-membe.patch
+
+# relax jpegxl-rs dependency to allow building with versions 0.10.x where x >= 4
+Patch:          0002-loaders-relax-jpegxl-rs-dependency-from-0.10.3-to-0..patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
@@ -121,7 +120,7 @@ This package contains files for developing against libglycin-gtk4.
 %prep
 %autosetup -n glycin-%{tarball_version} -p1
 
-%if 0%{?bundled_rust_deps}
+%if %{with bundled_rust_deps}
 %cargo_prep -v vendor
 %else
 rm -rf vendor
@@ -129,7 +128,7 @@ rm -rf vendor
 %endif
 
 
-%if ! 0%{?bundled_rust_deps}
+%if %{without bundled_rust_deps}
 %generate_buildrequires
 %cargo_generate_buildrequires -a
 %endif
@@ -145,7 +144,7 @@ rm -rf vendor
 
 %{cargo_license_summary}
 %{cargo_license} > LICENSE.dependencies
-%if 0%{?bundled_rust_deps}
+%if %{with bundled_rust_deps}
 %cargo_vendor_manifest
 %endif
 
@@ -166,7 +165,7 @@ rm -rf vendor
 %license LICENSE-LGPL-2.1
 %license LICENSE-MPL-2.0
 %license LICENSE.dependencies
-%if 0%{?bundled_rust_deps}
+%if %{with bundled_rust_deps}
 %license cargo-vendor.txt
 %endif
 

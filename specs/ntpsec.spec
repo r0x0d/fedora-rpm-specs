@@ -1,6 +1,6 @@
 Name:           ntpsec
 Version:        1.2.3
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        NTP daemon and utilities
 
 License:        NTP AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND ISC AND Apache-2.0 AND Beerware
@@ -22,6 +22,10 @@ BuildRequires:  python3-devel
 BuildRequires:  rubygem-asciidoctor
 BuildRequires:  systemd
 BuildRequires:  waf
+
+# Use the bundled waf script instead of the system one until ntpsec supports
+# the newer version
+%global waf python3 waf
 
 Requires(pre):  shadow-utils
 %{?systemd_requires}
@@ -65,7 +69,7 @@ sed -i 's|/var/NTP|%{_localstatedir}/log/ntpstats|' \
 export CFLAGS="$RPM_OPT_FLAGS"
 export LDFLAGS="$RPM_LD_FLAGS"
 
-waf configure \
+%{waf} configure \
         --enable-debug \
         --disable-doc \
         --refclock=all \
@@ -83,10 +87,10 @@ waf configure \
         --mandir=%{_mandir} \
         ;
 
-waf build
+%{waf} build
 
 %install
-waf --destdir=%{buildroot} install
+%{waf} --destdir=%{buildroot} install
 
 install -p -m755 attic/ntpdate %{buildroot}%{_sbindir}/ntpdate
 mkdir -p %{buildroot}%{_sysconfdir}/logrotate.d
@@ -121,7 +125,7 @@ echo 'ntpd.service' > .%{_prefix}/lib/systemd/ntp-units.d/60-ntpd.list
 popd
 
 %check
-waf check
+%{waf} check
 
 %pre
 # UID/GID inherited from the ntp package
@@ -189,6 +193,9 @@ sed -i.bak -E '/^restrict/s/no(e?peer|trap)//g' %{_sysconfdir}/ntp.conf
 %{python3_sitearch}/ntp
 
 %changelog
+* Tue Dec 03 2024 Miroslav Lichvar <mlichvar@redhat.com> 1.2.3-8
+- switch to building with bundled waf (#2329938)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.3-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

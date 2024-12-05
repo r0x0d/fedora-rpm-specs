@@ -20,7 +20,7 @@
 
 Summary: Qt6 - Multimedia support
 Name:    qt6-%{qt_module}
-Version: 6.8.0
+Version: 6.8.1
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -159,6 +159,7 @@ popd
 
 %files devel
 %{_qt6_headerdir}/QtMultimedia/
+%{_qt6_headerdir}/QtMultimediaTestLib/
 %{_qt6_headerdir}/QtMultimediaQuick/
 %{_qt6_headerdir}/QtMultimediaWidgets/
 %{_qt6_headerdir}/QtSpatialAudio/
@@ -167,6 +168,8 @@ popd
 %{_qt6_libdir}/libQt6BundledResonanceAudio.a
 %{_qt6_libdir}/libQt6Multimedia.so
 %{_qt6_libdir}/libQt6Multimedia.prl
+%{_qt6_libdir}/libQt6MultimediaTestLib.a
+%{_qt6_libdir}/libQt6MultimediaTestLib.prl
 %{_qt6_libdir}/libQt6MultimediaQuick.so
 %{_qt6_libdir}/libQt6MultimediaQuick.prl
 %{_qt6_libdir}/libQt6MultimediaWidgets.so
@@ -181,6 +184,8 @@ popd
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6BundledResonanceAudio/
 %{_qt6_libdir}/cmake/Qt6BundledResonanceAudio/*.cmake
+%dir %{_qt6_libdir}/cmake/Qt6MultimediaTestLibPrivate/
+%{_qt6_libdir}/cmake/Qt6MultimediaTestLibPrivate/*.cmake
 %dir  %{_qt6_libdir}/cmake/Qt6MultimediaQuickPrivate
 %{_qt6_libdir}/cmake/Qt6MultimediaQuickPrivate/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6Multimedia
@@ -199,7 +204,7 @@ popd
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/pkgconfig/*.pc
-
+%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{qt_version}.spdx
 
 %if 0%{?examples}
 %files examples
@@ -208,6 +213,9 @@ popd
 
 
 %changelog
+* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+- 6.8.1
+
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
 - 6.8.0
 

@@ -3,7 +3,7 @@ Version:        0.1.0
 %global         checkout 20151211gitb2daf81
 Release:        24.%{checkout}%{?dist}
 Summary:        Firmware for some hardware supported by sigrok
-License:        GPLv2 and Redistributable, no modification permitted
+License:        GPL-2.0-only AND LicenseRef-Fedora-Firmware
 URL:            http://www.sigrok.org/
 # $ git clone git://sigrok.org/sigrok-firmware
 # $ cd sigrok-firmware

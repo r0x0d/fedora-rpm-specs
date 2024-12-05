@@ -6,6 +6,10 @@ Summary:        Sphinx extension to support docstrings in NumPy format
 License:        BSD-2-Clause
 URL:            https://pypi.python.org/pypi/numpydoc
 Source:         %pypi_source numpydoc
+
+# Compatibility with sphinx 8
+Patch:          https://github.com/numpy/numpydoc/commit/1338660.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel

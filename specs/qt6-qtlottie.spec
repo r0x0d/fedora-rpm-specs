@@ -8,7 +8,7 @@
 
 Summary: Qt6 - Lottie Animation
 Name:    qt6-%{qt_module}
-Version: 6.8.0
+Version: 6.8.1
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -74,9 +74,12 @@ Requires: qt6-qtbase-devel%{?_isa}
 %{_qt6_archdatadir}/mkspecs/modules/*
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
-
+%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{qt_version}.spdx
 
 %changelog
+* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+- 6.8.1
+
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
 - 6.8.0
 

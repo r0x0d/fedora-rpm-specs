@@ -2,9 +2,8 @@ Name: htop
 Version: 3.3.0
 Release: %autorelease
 Summary: Interactive process viewer
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
 License: GPL-2.0-or-later
-URL: http://hisham.hm/htop/
+URL: https://htop.dev/
 Source0: https://github.com/htop-dev/htop/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 BuildRequires: desktop-file-utils

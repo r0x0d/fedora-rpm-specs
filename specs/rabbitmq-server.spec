@@ -6,7 +6,7 @@
 
 
 Name: rabbitmq-server
-Version: 4.0.3
+Version: 4.0.4
 Release: 1%{?dist}
 # Automatically converted from old format: MPLv1.1 - review is highly recommended.
 License: LicenseRef-Callaway-MPLv1.1
@@ -188,6 +188,9 @@ done
 
 
 %changelog
+* Mon Dec 02 2024 Robert Scheck <robert@fedoraproject.org> - 4.0.4-1
+- Ver. 4.0.4
+
 * Sat Nov 09 2024 Robert Scheck <robert@fedoraproject.org> - 4.0.3-1
 - Ver. 4.0.3
 

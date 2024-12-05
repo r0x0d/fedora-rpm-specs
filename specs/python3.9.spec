@@ -13,7 +13,7 @@ URL: https://www.python.org/
 
 #  WARNING  When rebasing to a new Python version,
 #           remember to update the python3-docs package as well
-%global general_version %{pybasever}.20
+%global general_version %{pybasever}.21
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
@@ -1843,6 +1843,10 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Tue Dec 03 2024 Lumír Balhar <lbalhar@redhat.com> - 3.9.21-1
+- Update to 3.9.21
+- Fixes: rhbz#2321662
+
 * Mon Sep 09 2024 Tomáš Hrnčiar <thrnciar@redhat.com> - 3.9.20-1
 - Update to 3.9.20
 

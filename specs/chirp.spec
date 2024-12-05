@@ -13,7 +13,8 @@ Summary:	A tool for programming two-way radio equipment
 
 License:	GPL-3.0-or-later
 URL:		http://chirp.danplanet.com/
-Source0:	https://github.com/kk7ds/chirp/archive/%{git_commit}/%{name}-%{git_commit}.tar.gz
+#Source0:	https://github.com/kk7ds/chirp/archive/%%{git_commit}/%%{name}-%%{git_commit}.tar.gz
+Source0:	https://archive.chirpmyradio.com/chirp_next/next-%{version}/%{name}-%{version}.tar.gz
 Source1:	com.danplanet.CHIRP.metainfo.xml
 # reported upstream
 Patch0:		chirp-0.4.0-drop-future.patch
