@@ -4,7 +4,7 @@
 
 Name:           gscan2pdf
 Version:        2.13.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        GUI for producing a multipage PDF from a scan
 # icons/180_degree.svg: GPL-3.0-only
 # icons/scanner.svg:    GPL-2.0-only
@@ -160,6 +160,14 @@ Suggests:       cuneiform
 Recommends:     gocr
 # djvulibre for djvused program
 Recommends:     djvulibre
+%if 0%{?fedora} >= 41
+# Some operations like Threshold use PBM as an intermediate format and then
+# Glib::Object::Introspection warns "Caught error getting pixbuf:
+# Couldn’t recognize the image file format..." and gscan2pdf fails to load it.
+# That's because a support for the format was removed from
+# gdk-pixbuf2-modules-2.42.11 and later added as a separate package.
+Requires:       gdk-pixbuf2-modules-extra
+%endif
 # libtiff-tools for /usr/bin/tiffcp
 Requires:       libtiff-tools
 Requires:       perl(if)
@@ -344,6 +352,10 @@ fi
 %{_libexecdir}/%{name}
 
 %changelog
+* Wed Dec 04 2024 Petr Pisar <ppisar@redhat.com> - 2.13.4-2
+- Require gdk-pixbuf2-modules-extra by gscan2pdf for operations that use PBM
+  image format
+
 * Thu Aug 01 2024 Petr Pisar <ppisar@redhat.com> - 2.13.4-1
 - 2.13.4 bump
 

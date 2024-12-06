@@ -6,7 +6,7 @@
 Name:		coin-or-%{module}
 Summary:	An exact solver for nonconvex MINLPs
 Version:	0.5.8
-Release:	19%{?dist}
+Release:	20%{?dist}
 License:	EPL-1.0
 URL:		https://projects.coin-or.org/%{module}
 VCS:		git:https://github.com/coin-or/Couenne.git
@@ -160,6 +160,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir}:$LD_LIBRARY_PATH make test
 %{_pkgdocdir}/couenne_doxy.tag
 
 %changelog
+* Wed Dec  4 2024 Jerry James <loganjerry@gmail.com> - 0.5.8-20
+- Rebuild for asl 20241111
+
 * Mon Sep 23 2024 Jerry James <loganjerry@gmail.com> - 0.5.8-19
 - Rebuild for nauty 2.8.9
 

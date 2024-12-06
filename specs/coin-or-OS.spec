@@ -7,7 +7,7 @@
 Name:		coin-or-%{module}
 Summary:	Optimization Services
 Version:	2.10.3
-Release:	15%{?dist}
+Release:	16%{?dist}
 License:	EPL-1.0
 URL:		http://projects.coin-or.org/%{module}
 VCS:		git:%{giturl}.git
@@ -167,6 +167,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test
 %doc doxydoc/* OS/doc/*
 
 %changelog
+* Wed Dec  4 2024 Jerry James <loganjerry@gmail.com> - 2.10.3-16
+- Rebuild for asl 20241111
+
 * Mon Sep 23 2024 Jerry James <loganjerry@gmail.com> - 2.10.3-15
 - Rebuild for soplex 7.1.1
 

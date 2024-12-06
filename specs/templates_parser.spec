@@ -1,12 +1,12 @@
 # Upstream source information.
 %global upstream_owner    AdaCore
 %global upstream_name     templates-parser
-%global upstream_version  24.0.0
+%global upstream_version  25.0.0
 %global upstream_gittag   v%{upstream_version}
 
 Name:           templates_parser
 Version:        %{upstream_version}
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        An Ada library for parsing templates
 
 License:        GPL-3.0-or-later WITH GCC-exception-3.1 OR GPL-3.0-or-later WITH GNAT-exception
@@ -208,6 +208,9 @@ sed --regexp-extended --in-place \
 ###############
 
 %changelog
+* Sun Oct 27 2024 Dennis van Raaij <dvraaij@fedoraproject.org> - 25.0.0-1
+- Updated to v25.0.0.
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 24.0.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

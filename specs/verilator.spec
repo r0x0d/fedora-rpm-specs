@@ -2,7 +2,7 @@
 %bcond ccache 0
 %bcond mold 0
 %bcond longtests 0
-%bcond ccwarn 0
+%bcond ccwarn 1
 %bcond z3 1
 
 Name:           verilator
@@ -11,7 +11,7 @@ Release:        %autorelease
 Summary:        A fast simulator for synthesizable Verilog
 License:        LGPL-3.0-only OR Artistic-2.0
 URL:            https://veripool.org/verilator/
-Source0:        https://github.com/verilator/verilator/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
+Source:         https://github.com/verilator/verilator/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  autoconf
 BuildRequires:  bison
@@ -43,6 +43,7 @@ BuildRequires:  gperftools-libs
 BuildRequires:  gperftools-devel
 %endif
 %if %{with mold}
+Requires:       mold
 BuildRequires:  mold
 %endif
 %if %{with ccache}

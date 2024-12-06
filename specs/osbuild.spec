@@ -1,7 +1,7 @@
 %global         forgeurl https://github.com/osbuild/osbuild
 %global         selinuxtype targeted
 
-Version:        135
+Version:        136
 
 %forgemeta
 
@@ -316,6 +316,43 @@ fi
 %{pkgdir}/solver.json
 
 %changelog
+* Wed Dec 04 2024 Packit <hello@packit.dev> - 136-1
+Changes with 136
+----------------
+  * Bump RHEL 10 from beta to nightly (#1949)
+    * Author: Tomáš Koscielniak, Reviewers: Achilleas Koutsou, Jakub Rusz
+  * Expand the options available in containers.unit.create (#1950)
+    * Author: Pierre-Yves Chibon, Reviewers: Achilleas Koutsou, Michael Vogt
+  * Lint/autopep8: update to the latest upstream version v2.3.1 (#1938)
+    * Author: Tomáš Hozza, Reviewers: Michael Vogt, Simon de Vlieger
+  * Stages/dnf-automatic.config: don't fail on non-existent config file (#1934)
+    * Author: Tomáš Hozza, Reviewers: Michael Vogt, Simon de Vlieger
+  * Test/autotailor: fix Python 3.6 compatibility (#1937)
+    * Author: Tomáš Hozza, Reviewers: Gianluca Zuccarelli, Simon de Vlieger
+  * Update `osbuild-ci*` images and testing manifests to Fedora 41 (#1932)
+    * Author: Tomáš Hozza, Reviewers: Achilleas Koutsou, Michael Vogt
+  * Update pylint to the latest upstream version v3.3.1 and resolve new issues (#1939)
+    * Author: Tomáš Hozza, Reviewers: Michael Vogt, Simon de Vlieger
+  * github: prevent script injections via PR branch names (#1954)
+    * Author: Ondřej Budai, Reviewers: Achilleas Koutsou, Simon de Vlieger
+  * osbuild-depsolve-dnf: support generating SPDX SBOM with DNF5 (COMPOSER-2361) (#1925)
+    * Author: Tomáš Hozza, Reviewers: Achilleas Koutsou, Brian C. Lane, Simon de Vlieger
+  * osbuild-mpp: Fix error on python < 3.11 (#1929)
+    * Author: Alexander Larsson, Reviewers: Achilleas Koutsou, Florian Schüller, Simon de Vlieger
+  * sources: fix ostree_sources test to work without `/var/empty` (#1942)
+    * Author: Michael Vogt, Reviewers: Achilleas Koutsou, Tomáš Hozza
+  * stages: run useradd, usermod, and passwd with --root (#1945)
+    * Author: Achilleas Koutsou, Reviewers: Michael Vogt, Ondřej Budai, Tomáš Hozza
+  * test/data/manifests/fedora-coreos-container: fix CI (#1948)
+    * Author: Dusty Mabe, Reviewers: Achilleas Koutsou, Michael Vogt
+  * util/chroot: Add support for custom directory bind mounts (#1917)
+    * Author: Renata Ravanelli, Reviewers: Achilleas Koutsou, Dusty Mabe
+  * workflow: add smoke test that runs unit tests as user (#1943)
+    * Author: Michael Vogt, Reviewers: Achilleas Koutsou, Tomáš Hozza
+
+— Somewhere on the Internet, 2024-12-04
+
+
 * Fri Nov 22 2024 Packit <hello@packit.dev> - 135-1
 Changes with 135
 ----------------

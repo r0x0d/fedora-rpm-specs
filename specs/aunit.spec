@@ -4,13 +4,13 @@
 # Upstream source information.
 %global upstream_owner    AdaCore
 %global upstream_name     aunit
-%global upstream_version  24.0.0
+%global upstream_version  25.0.0
 %global upstream_gittag   v%{upstream_version}
 
 Name:           aunit
 Epoch:          2
 Version:        %{upstream_version}
-Release:        4%{?dist}
+Release:        1%{?dist}
 Summary:        A unit testing framework for Ada
 
 License:        GPL-3.0-or-later WITH GCC-exception-3.1
@@ -18,8 +18,6 @@ License:        GPL-3.0-or-later WITH GCC-exception-3.1
 URL:            https://github.com/%{upstream_owner}/%{upstream_name}
 Source:         %{url}/archive/%{upstream_gittag}/%{upstream_name}-%{upstream_version}.tar.gz
 
-# [Backport] Make documentation compatible with Sphinx 6.2.1 (commit: c51c420).
-Patch:          %{name}-fix-aunit-documentatiom.patch
 # [Fedora-specific] Build a relocatable library.
 Patch:          %{name}-disable-static.patch
 # Correct paths from which GPRinstall is supposed to copy the documentation.
@@ -27,7 +25,7 @@ Patch:          %{name}-disable-static.patch
 Patch:          %{name}-fix-doc-build-path.patch
 # Adjust pathnames in the manual, replacing the Adacore-specific pathnames with
 # the FHS-compliant pathnames where this package installs the examples:
-Patch:          aunit-cb-examples-dir.patch
+Patch:          %{name}-cb-examples-dir.patch
 
 BuildRequires:  gcc-gnat gprbuild make sed findutils dos2unix
 # A fedora-gnat-project-common that contains the new GPRinstall macro.
@@ -240,6 +238,9 @@ make -C test
 ###############
 
 %changelog
+* Sun Oct 27 2024 Dennis van Raaij <dvraaij@fedoraproject.org> - 2:25.0.0-1
+- Updated to v25.0.0.
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2:24.0.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

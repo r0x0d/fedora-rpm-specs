@@ -4,7 +4,7 @@
 
 Name:           python-%{modname}
 Version:        1.0.0
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Bindings for libssh C library
 
 License:        GPL-2.0-or-later
@@ -16,6 +16,11 @@ Patch0001:      0001-Set-master_doc-to-index-in-conf.py-for-sphinx.patch
 Patch0002:	0002-Versioneer_patches_for_Python_3.12.patch
 # Versioneer used is extremely old, force version, see above MR for suggestion
 Patch0003:      0003-Fix_version_due_to_old_versioneer.patch
+# Fix documentation build with Sphinx 8.x (backport due to above as well)
+# Upstream MR: https://github.com/ParallelSSH/ssh-python/pull/88
+Patch0004:      0004-Fix_Sphinx_8.patch
+# Skip a subpart of test as seems behaviour changed, TBC with upstream
+Patch0005:      0005-Skip_assertion_test.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc
@@ -95,6 +100,9 @@ Summary:        %{summary} documentation
 %doc examples/ _build/html/
 
 %changelog
+* Tue Dec 03 2024 Federico Pellegrin <fede@evolware.org> - 1.0.0-10
+- Fix build with Sphinx 8.x
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.0-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -6,8 +6,8 @@
 Name: perl-%{FullName}
 Summary: SVG support for Perl PDF::API2 and similar
 License: BSD-2-Clause
-Version: 0.088
-Release: 3%{?dist}
+Version: 0.089
+Release: %autorelease
 Source: %{metacpan}/%{FullName}-%{version}.tar.gz
 Url: https://metacpan.org/release/%{FullName}
 
@@ -76,21 +76,4 @@ make test VERBOSE=1
 %{_mandir}/man3/*
 
 %changelog
-* Thu Aug 29 2024 Johan Vromans <jvromans@squirrel.nl> - 0.088-3
-- Fix summary.
-
-* Wed Aug 28 2024 Johan Vromans <jvromans@squirrel.nl> - 0.088-2
-- Fix provides.
-
-* Tue Aug 27 2024 Johan Vromans <jvromans@squirrel.nl> - 0.088-1
-- Upgrade to upstream.
-- First official Fedora build.
-
-* Mon Jan 29 2024 Johan Vromans <jvromans@squirrel.nl> - 0.085-1
-- Upgrade to upstream.
-
-* Fri Jan 26 2024 Johan Vromans <jvromans@squirrel.nl> - 0.084-1
-- Upgrade to upstream.
-
-* Tue Dec 26 2023 Johan Vromans <jvromans@squirrel.nl> - 0.083-1
-- Initial Fedora package.
+%autochangelog

@@ -2,7 +2,7 @@
 
 Name:           python-%{pypi_name}
 Version:        1.1.0
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Print ASCII tables for terminals
 
 License:        MIT
@@ -30,7 +30,7 @@ Summary:        %{summary}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-wcwidth
-%{?python_provide:%python_provide python3-%{pypi_name}}
+BuildRequires:  python3-pytest
  
 %description -n python3-%{pypi_name}
 This package provides the BeautifulTable class for easily printing tabular data
@@ -46,28 +46,17 @@ Features included but not limited to:
   custom ones
 - Support for Unicode characters
 
-%package -n %{name}-doc
-Summary:        The %{name} documentation
-
-BuildRequires:  python3-sphinx
-
-%description -n %{name}-doc
-Documentation for %{name}.
-
 %prep
 %autosetup -n %{pypi_name}-%{version}
-rm -rf %{pypi_name}.egg-info
 
 %build
 %py3_build
-PYTHONPATH=${PWD} sphinx-build-3 docs html
-rm -rf html/.{doctrees,buildinfo}
 
 %install
 %py3_install
 
 %check
-PYTHONPATH=%{buildroot}%{python3_sitelib} %{__python3} test.py
+%{pytest} test.py
 
 %files -n python3-%{pypi_name}
 %doc README.rst
@@ -75,11 +64,11 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} %{__python3} test.py
 %{python3_sitelib}/%{pypi_name}
 %{python3_sitelib}/%{pypi_name}-%{version}-py*.egg-info/
 
-%files -n %{name}-doc
-%doc html
-%license LICENSE.txt
-
 %changelog
+* Thu Apr 23 2020 Fabian Affolter <mail@fabian-affolter.ch> - 1.1.0-9
+- Remove docs (closes rhbz#2329845)
+- Refactor
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.0-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -8,7 +8,7 @@
 
 Name:           qpid-proton
 Version:        0.40.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A high performance, lightweight messaging library
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
@@ -31,9 +31,12 @@ BuildRequires:  openssl-devel
 BuildRequires:  cyrus-sasl-devel
 BuildRequires:  cyrus-sasl-plain
 BuildRequires:  cyrus-sasl-md5
+BuildRequires:  doxygen
+BuildRequires:  jsoncpp-devel
 BuildRequires:  python3-devel
 BuildRequires:  python3-build
 BuildRequires:  python3-cffi
+BuildRequires:  python3-pip
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-sphinx
 BuildRequires:  python3-wheel
@@ -155,7 +158,7 @@ Obsoletes: qpid-proton-cpp-devel-docs
 
 %files cpp-docs
 %license %{proton_licensedir}/LICENSE.txt
-%{proton_datadir}/docs/api-cpp
+%doc %{proton_datadir}/docs/api-cpp
 %doc %{proton_datadir}/examples/cpp/*.cpp
 %doc %{proton_datadir}/examples/cpp/*.hpp
 %doc %{proton_datadir}/examples/cpp/README.dox
@@ -216,6 +219,7 @@ cd BLD
     -DCMAKE_SKIP_RPATH:BOOL=OFF \
    "-DCMAKE_C_FLAGS=$CFLAGS -Wno-deprecated-declarations" \
     -DENABLE_FUZZ_TESTING=NO \
+    -DENABLE_PYTHON_ISOLATED=NO \
     ..
 make all docs %{?_smp_mflags}
 
@@ -305,6 +309,9 @@ rm -f  %{buildroot}%{proton_datadir}/CMakeLists.txt
 %check
 
 %changelog
+* Wed Dec 04 2024 Hirotaka Wakabayashi <hiwkby@yahoo.com> - 0.40.0-2
+- Update licenses.xml
+
 * Fri Nov 29 2024 Hirotaka Wakabayashi <hiwkby@yahoo.com> - 0.40.0-1
 - Rebased to 0.40.0
 

@@ -1,5 +1,5 @@
 %global ver_maj 24
-%global ver_min 08
+%global ver_min 09
 %global ver_rel 0
 
 Name:           lzma-sdk
@@ -11,7 +11,7 @@ License:        LGPL-2.1-or-later
 URL:            https://www.7-zip.org/sdk.html
 Source0:        https://downloads.sourceforge.net/project/sevenzip/LZMA%20SDK/lzma%{ver_maj}%{ver_min}.7z
 Source1:        lzma-sdk-LICENSE.fedora
-Patch0:         lzma-sdk-24.08-sharedlib.patch
+Patch0:         lzma-sdk-sharedlib.patch
 
 BuildRequires:  dos2unix
 BuildRequires: make
@@ -107,6 +107,9 @@ rm -rv %{buildroot}/usr/include/lzma-sdk/CPP/Windows
 %{_libdir}/liblzmasdk.so
 
 %changelog
+* Wed Dec 04 2024 Dominik Mierzejewski <dominik@greysector.net> - 24.09-1
+- Update to 24.09 (resolves rhbz#2329624)
+
 * Thu Sep 05 2024 Zephyr Lykos <fedora@mochaa.ws> - 24.08-1
 - new version
 

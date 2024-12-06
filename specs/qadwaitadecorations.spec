@@ -6,7 +6,7 @@
 
 Name:           qadwaitadecorations
 Version:        0.1.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Qt decoration plugin implementing Adwaita-like client-side decorations
 
 License:        LGPL-2.1-or-later
@@ -98,6 +98,9 @@ Supplements:   (qt6-qtbase and gnome-shell)
 %endif
 
 %changelog
+* Wed Dec 04 2024 Jan Grulich <grulja@gmail.com> - 0.1.6-2
+- Rebuild (qt6)
+
 * Fri Nov 29 2024 Jan Grulich <grulja@gmail.com> - 0.1.6-1
 - 0.1.6
 

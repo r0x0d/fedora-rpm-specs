@@ -15,7 +15,7 @@
 
 Name:           openblas
 Version:        0.3.28
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An optimized BLAS library based on GotoBLAS2
 
 License:        BSD-3-Clause
@@ -383,6 +383,9 @@ TARGET="TARGET=ARMV8 DYNAMIC_ARCH=1 DYNAMIC_OLDER=1"
 %ifarch s390x
 TARGET="TARGET=ZARCH_GENERIC DYNAMIC_ARCH=1 DYNAMIC_OLDER=1"
 %endif
+%ifarch riscv64
+TARGET="TARGET=RISCV64_GENERIC DYNAMIC_ARCH=0"
+%endif
 
 %if 0%{?rhel} == 5
 # Gfortran too old to recognize -frecursive
@@ -444,6 +447,9 @@ suffix=""
 # but archs that don't have it do have one
 %ifarch armv7hl
 suffix="_armv7"
+%endif
+%ifarch riscv64
+suffix="_riscv64_generic"
 %endif
 slibname=`basename %{buildroot}%{_libdir}/libopenblas${suffix}-*.so .so`
 mv %{buildroot}%{_libdir}/${slibname}.a %{buildroot}%{_libdir}/lib%{name}.a
@@ -651,6 +657,9 @@ rm -rf %{buildroot}%{_libdir}/pkgconfig
 %endif
 
 %changelog
+* Wed Dec 04 2024 David Abdurachmanov <davidlt@rivosinc.com> - 0.3.28-2
+- Add support for riscv64
+
 * Wed Oct 02 2024 Pavel Simovec <psimovec@redhat.com> - 0.3.28-1
 - Update to 0.3.28
   Resolves: BZ#2273704

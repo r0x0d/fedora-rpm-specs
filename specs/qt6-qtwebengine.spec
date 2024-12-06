@@ -50,7 +50,7 @@
 
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
-Version: 6.8.0
+Version: 6.8.1
 Release: 1%{?dist}
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
@@ -619,6 +619,7 @@ done
 %{_qt6_libdir}/pkgconfig/Qt6WebEngineWidgets.pc
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_webengine*.pri
 %{_qt6_plugindir}/designer/libqwebengineview.so
+%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 
 %files devtools
 %{_qt6_datadir}/resources/qtwebengine_devtools_resources.pak
@@ -671,6 +672,9 @@ done
 %endif
 
 %changelog
+* Tue Dec 03 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+- 6.8.1
+
 * Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
 - 6.8.0
 

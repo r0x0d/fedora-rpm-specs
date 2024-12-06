@@ -279,8 +279,8 @@
 %endif
 
 Name:	chromium%{chromium_channel}
-Version: 131.0.6778.85
-Release: 2%{?dist}
+Version: 131.0.6778.108
+Release: 1%{?dist}
 Summary: A WebKit (Blink) powered web browser that Google doesn't want you to use
 Url: http://www.chromium.org/Home
 License: BSD-3-Clause AND LGPL-2.1-or-later AND Apache-2.0 AND IJG AND MIT AND GPL-2.0-or-later AND ISC AND OpenSSL AND (MPL-1.1 OR GPL-2.0-only OR LGPL-2.0-only)
@@ -329,8 +329,6 @@ Patch133: chromium-121-system-old-ffmpeg.patch
 patch134: chromium-125-disable-FFmpegAllowLists.patch
 # revert, it causes build error: use of undeclared identifier 'AVFMT_FLAG_NOH264PARSE'
 Patch135: chromium-129-disable-H.264-video-parser-during-demuxing.patch
-# workaround for build error on el8 (should be removed in next rebase)
-Patch136: chromium-131-el8-libavcodec-parser.patch
 
 # file conflict with old kernel on el8/el9
 Patch141: chromium-118-dma_buf_export_sync_file-conflict.patch
@@ -1045,10 +1043,6 @@ Qt6 UI for chromium.
 %patch -P133 -p1 -b .system-old-ffmpeg
 %patch -P134 -p1 -b .disable-FFmpegAllowLists
 %patch -P135 -p1 -b .disable-H.264-video-parser-during-demuxing
-%endif
-
-%if 0%{?rhel} == 8
-%patch -P136 -p1 -b .el8-libavcodec-parser
 %endif
 
 %if 0%{?rhel} == 8 || 0%{?rhel} == 9
@@ -1939,6 +1933,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Wed Dec 04 2024 Than Ngo <than@redhat.com> - 131.0.6778.108-1
+- Update to 131.0.6778.108
+  * High CVE-2024-12053: Type Confusion in V8
+
 * Sat Nov 23 2024 Than Ngo <than@redhat.com> - 131.0.6778.85-2
 - Enable qt-ui
 - Workaround for random crash

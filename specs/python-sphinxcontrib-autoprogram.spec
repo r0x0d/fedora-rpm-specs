@@ -1,15 +1,14 @@
 %global pypi_name sphinxcontrib-autoprogram
+%global pypi_shortname autoprogram
 
 Name:           python-%{pypi_name}
 Version:        0.1.9
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Sphinx extension for documenting CLI programs
 
-# Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
-URL:            https://bitbucket.org/birkenfeld/sphinx-contrib
-Source0:        https://files.pythonhosted.org/packages/source/s/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
-Source1:        https://bitbucket.org/birkenfeld/sphinx-contrib/raw/1621e337bb236e17d9e3fe4e98976365c06cc5fb/LICENSE
+URL:            https://sphinxcontrib-autoprogram.readthedocs.io/en/stable/
+Source0:        https://github.com/sphinx-contrib/%{pypi_shortname}/archive/refs/tags/%{version}.tar.gz
 Patch0:         python-sphinxcontrib-autoprogram-test.patch
 
 BuildArch:      noarch
@@ -19,7 +18,9 @@ BuildRequires:  python3-sphinx
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-devel
 BuildRequires:  python3-six
-BuildRequires:  python3-sphinx
+
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %description
 This extension provides an automated way to document CLI programs.
@@ -41,10 +42,9 @@ It scans ArgumentParser objects and then expands it into a set of
 program and option directives.
 
 %prep
-%autosetup -p 1 -n %{pypi_name}-%{version}
+%autosetup -p 1 -n %{pypi_shortname}-%{version}
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
-cp %SOURCE1 .
 
 %build
 %py3_build
@@ -56,7 +56,7 @@ cp %SOURCE1 .
 
 
 %check
-%{__python3} setup.py test
+%{py3_test_envvars} %{python3} -m unittest -v sphinxcontrib.autoprogram.suite
 
 %files -n python3-%{pypi_name}
 %doc README.rst
@@ -66,6 +66,11 @@ cp %SOURCE1 .
 %{python3_sitelib}/sphinxcontrib_autoprogram-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Wed Dec 04 2024 mh <mh+fedora@scrit.ch> <msuchy@redhat.com> - 0.1.9-5
+- Fix working with newer setuptools (bz#2319720)
+- Adapt to correct licens
+
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.1.9-4
 - convert license to SPDX
 

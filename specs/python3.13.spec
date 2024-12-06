@@ -13,7 +13,7 @@ URL: https://www.python.org/
 
 #  WARNING  When rebasing to a new Python version,
 #           remember to update the python3-docs package as well
-%global general_version %{pybasever}.0
+%global general_version %{pybasever}.1
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
@@ -57,7 +57,7 @@ License: Python-2.0.1
 # This needs to be manually updated when we update Python.
 # Explore the sources tarball (you need the version before %%prep is executed):
 #  $ tar -tf Python-%%{upstream_version}.tar.xz | grep whl
-%global pip_version 24.2
+%global pip_version 24.3.1
 %global setuptools_version 67.6.1
 %global wheel_version 0.43.0
 # All of those also include a list of indirect bundled libs:
@@ -65,8 +65,8 @@ License: Python-2.0.1
 #  $ %%{_rpmconfigdir}/pythonbundles.py <(unzip -p Lib/ensurepip/_bundled/pip-*.whl pip/_vendor/vendor.txt)
 %global pip_bundled_provides %{expand:
 Provides: bundled(python3dist(cachecontrol)) = 0.14
-Provides: bundled(python3dist(certifi)) = 2024.7.4
-Provides: bundled(python3dist(distlib)) = 0.3.8
+Provides: bundled(python3dist(certifi)) = 2024.8.30
+Provides: bundled(python3dist(distlib)) = 0.3.9
 Provides: bundled(python3dist(distro)) = 1.9
 Provides: bundled(python3dist(idna)) = 3.7
 Provides: bundled(python3dist(msgpack)) = 1.0.8
@@ -79,9 +79,9 @@ Provides: bundled(python3dist(resolvelib)) = 1.0.1
 Provides: bundled(python3dist(rich)) = 13.7.1
 Provides: bundled(python3dist(setuptools)) = 70.3
 Provides: bundled(python3dist(tomli)) = 2.0.1
-Provides: bundled(python3dist(truststore)) = 0.9.1
+Provides: bundled(python3dist(truststore)) = 0.10
 Provides: bundled(python3dist(typing-extensions)) = 4.12.2
-Provides: bundled(python3dist(urllib3)) = 1.26.18
+Provides: bundled(python3dist(urllib3)) = 1.26.20
 }
 # setuptools
 # vendor.txt files not in .whl
@@ -341,7 +341,7 @@ Source11: idle3.appdata.xml
 
 # (Patches taken from github.com/fedora-python/cpython)
 
-# 00251 # 60dd97be7bf3662ff65edd8471e948924b4175b2
+# 00251 # f5b56b9d4a79df04e9d90ceff7388554c5f818b6
 # Change user install location
 #
 # Set values of base and platbase in sysconfig from /usr
@@ -1699,6 +1699,11 @@ CheckPython freethreading
 # ======================================================
 
 %changelog
+* Tue Dec 03 2024 Charalampos Stratakis <cstratak@redhat.com> - 3.13.1-1
+- Update to 3.13.1
+- Security fix for CVE-2024-9287
+- Fixes: rhbz#2321657
+
 * Tue Oct 08 2024 Karolina Surma <ksurma@redhat.com> - 3.13.0-1
 - Update to Python 3.13.0
 

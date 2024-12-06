@@ -4,8 +4,8 @@
 %global		repoid			67096
 
 Name:		rubygem-%{gem_name}
-Version:	3.4.9
-Release:	4%{?dist}
+Version:	3.5.0
+Release:	1%{?dist}
 Summary:	RubyGem of Localization Library and Tools for Ruby
 
 # Ruby OR LGPL-3.0-or-later:	gemspec
@@ -156,6 +156,9 @@ popd
 %{gem_instdir}/samples/
 
 %changelog
+* Wed Dec 04 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.5.0-1
+- 3.5.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.4.9-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

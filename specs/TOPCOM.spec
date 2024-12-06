@@ -1,6 +1,6 @@
 Name:           TOPCOM
 Version:        1.1.2
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Triangulations Of Point Configurations and Oriented Matroids
 
 %global upver %(tr . _ <<< %{version})
@@ -27,7 +27,7 @@ BuildRequires:  pkgconfig(cddlib)
 BuildRequires:  pkgconfig(gmp)
 BuildRequires:  pkgconfig(mpfr)
 BuildRequires:  pkgconfig(tbb)
-BuildRequires:  pkgconfig(zlib)
+BuildRequires:  pkgconfig(zlib-ng)
 BuildRequires:  qsopt-ex-devel
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
@@ -153,6 +153,9 @@ LD_LIBRARY_PATH=$PWD src/check
 %doc examples
 
 %changelog
+* Wed Dec  4 2024 Jerry James <loganjerry@gmail.com> - 1.1.2-6
+- Link with libz-ng instead of libz
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

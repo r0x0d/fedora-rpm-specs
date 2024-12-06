@@ -5,8 +5,8 @@
 %bcond_with internet
 
 Name:           python-%{srcname}
-Version:        5.1.1
-Release:        2%{?dist}
+Version:        6.0.1
+Release:        1%{?dist}
 Summary:        Collection of utilities for interacting with PyPI
 
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
@@ -62,8 +62,6 @@ Currently it only supports registering projects and uploading distributions.
 
 %prep
 %autosetup -p1 -n %{srcname}-%{version}
-# the dependency is defined in two places, we are removing the upper bound
-sed -i '/\"pkginfo < 1.11\",/d' pyproject.toml
 
 %generate_buildrequires
 %pyproject_buildrequires -r
@@ -88,9 +86,7 @@ install -p -D -T -m 0644 docs/build/man/%{srcname}.1 %{buildroot}%{_mandir}/man1
 
 %if %{with tests}
 %check
-# test_pkginfo_returns_no_metadata upstream issue:
-# https://github.com/pypa/twine/issues/1116
-%pytest -v -k "not test_pkginfo_returns_no_metadata" \
+%pytest -v \
 %if %{without internet}
       --deselect tests/test_integration.py \
       --deselect tests/test_upload.py::test_check_status_code_for_wrong_repo_url \
@@ -109,6 +105,10 @@ install -p -D -T -m 0644 docs/build/man/%{srcname}.1 %{buildroot}%{_mandir}/man1
 %{_bindir}/twine
 
 %changelog
+* Wed Dec 04 2024 Charalampos Stratakis <cstratak@redhat.com> - 6.0.1-1
+- Update to 6.0.1
+Resolves: rhbz#2329634
+
 * Tue Oct 22 2024 Tomáš Hrnčiar <thrnciar@redhat.com> - 5.1.1-2
 - Unpin pkginfo, skip failing test
 

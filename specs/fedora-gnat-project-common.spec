@@ -1,6 +1,6 @@
 Name:           fedora-gnat-project-common
-Version:        3.21
-Release:        2%{?dist}
+Version:        3.22
+Release:        1%{?dist}
 Summary:        Files shared by Ada libraries
 Summary(sv):    Gemensamma filer för adabibliotek
 
@@ -59,6 +59,9 @@ cp -p macros.gnat %{buildroot}%{rpmmacrodir}/
 
 
 %changelog
+* Fri Nov 29 2024 Björn Persson <Bjorn@Rombobjörn.se> - 3.22-1
+- Fixed spurious backslashes in RPM macros.
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.21-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

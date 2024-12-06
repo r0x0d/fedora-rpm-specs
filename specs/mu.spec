@@ -87,6 +87,7 @@ sed -i -e 's/PyQt5==5.13.2"/PyQt5>=5.13.2",/' \
        -e '/platform_machine/d' \
        -e 's/jupyter-client>=4.1,<6.2/jupyter-client>=4.1/' \
        -e 's/ipykernel>=4.1,<6/ipykernel>=4.1/' \
+       -e '/ipython_genutils>=/d' \
        -e 's/qtconsole==4.7.7/qtconsole >= 4.7.7, < 6/' \
        -e 's/pyserial~=3.5/pyserial>=3.4/' \
        -e 's/click<=8.0.4/click/' \

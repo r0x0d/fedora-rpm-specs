@@ -62,18 +62,6 @@ use the "openssl" feature of the "%{crate}" crate.
 %files       -n %{name}+openssl-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+rdrand-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+rdrand-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "rdrand" feature of the "%{crate}" crate.
-
-%files       -n %{name}+rdrand-devel
-%ghost %{crate_instdir}/Cargo.toml
-
 %package     -n %{name}+sev-devel
 Summary:        %{summary}
 BuildArch:      noarch

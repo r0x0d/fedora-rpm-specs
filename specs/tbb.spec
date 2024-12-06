@@ -7,9 +7,9 @@
 Name:    tbb
 Summary: The Threading Building Blocks library abstracts low-level threading details
 Version: 2022.0.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Apache-2.0 AND BSD-3-Clause
-URL:     http://threadingbuildingblocks.org/
+URL:     https://uxlfoundation.github.io/oneTBB/
 VCS:     git:%{giturl}.git
 
 Source0: %{giturl}/archive/v%{version}/%{name}-%{version}.tar.gz
@@ -86,8 +86,8 @@ Python 3 TBB module.
 %autosetup -p1 -n oneTBB-%{version}
 
 %if %{with py3docs}
-# Use local objects.inv for intersphinx
-sed -e "s|\('https://docs\.python\.org/': \)None|\1'%{_docdir}/python3-docs/html/objects.inv'|" \
+# Fix intersphinx mapping for Sphinx 8.x
+sed -e "s|'\(https://docs\.python\.org\)/': None|'python': ('\1/3', None)|" \
     -i doc/GSG/conf.py doc/main/conf.py
 %endif
 
@@ -174,6 +174,9 @@ ctest --output-on-failure --force-new-ctest-process
 %{python3_sitearch}/__pycache__/TBB*
 
 %changelog
+* Wed Dec 04 2024 Jonathan Wakely <jwakely@redhat.com> - 2022.0.0-2
+- Fix intersphinx_mapping for Sphinx 8.x (#2329903)
+
 * Mon Nov 25 2024 Jerry James <loganjerry@gmail.com> - 2022.0.0-1
 - Version 2022.0.0
 - Drop unnecessary Werror patch

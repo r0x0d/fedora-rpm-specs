@@ -4,14 +4,14 @@
 %global withpython2 0
 
 Name:       cryptlib
-Version:    3.4.7  
-Release:    9%{?dist}
+Version:    3.4.8  
+Release:    1%{?dist}
 Summary:    Security library and toolkit for encryption and authentication services    
 
 License:    Sleepycat and OpenSSL     
 URL:        https://www.cs.auckland.ac.nz/~pgut001/cryptlib      
-Source0:    https://senderek.ie/fedora/cl347_fedora.zip      
-Source1:    https://senderek.ie/fedora/cl347_fedora.zip.sig
+Source0:    https://senderek.ie/fedora/cl348_fedora.zip      
+Source1:    https://senderek.ie/fedora/cl348_fedora.zip.sig
 # for security reasons a public signing key should always be stored in distgit
 # and never be used with a URL to make impersonation attacks harder
 # (verified: https://senderek.ie/keys/codesigningkey)
@@ -22,12 +22,9 @@ Source5:    https://senderek.ie/fedora/cryptlib-perlfiles.tar.gz
 Source6:    https://senderek.ie/fedora/cryptlib-tools.tar.gz
 Source7:    https://senderek.ie/fedora/claes
 Source8:    https://senderek.ie/fedora/claes.sig
-Source9:    cryptlibConverter.py3-final
 
 # soname is now libcl.so.3.4
 Patch0:     m64patch
-Patch1:     testpatch
-Patch2:     constantspatch
 
 ExclusiveArch: x86_64 aarch64 ppc64le
 
@@ -155,8 +152,6 @@ cd %{name}-%{version}
 /usr/bin/unzip -a %{SOURCE0}
 
 %patch 0 -p1
-%patch 1 -p1
-%patch 2 -p1
 
 # enable ADDFLAGS
 sed -i '97s/-I./-I. \$(ADDFLAGS)/' makefile
@@ -169,7 +164,6 @@ rm %{_builddir}/%{name}-%{version}/bindings/cryptlib.jar
 # adapt perl files in bindings
 cd %{_builddir}/%{name}-%{version}/bindings
 /usr/bin/tar xpzf %{SOURCE5}
-/usr/bin/cp %{SOURCE9} %{_builddir}/%{name}-%{version}/tools/cryptlibConverter.py3
 
 %build
 cd %{name}-%{version}
@@ -186,7 +180,7 @@ cp /etc/alternatives/java_sdk/include/linux/jni_md.h .
 
 make clean
 make shared  ADDFLAGS="%{optflags}"
-ln -s libcl.so.3.4.7 libcl.so
+ln -s libcl.so.3.4.8 libcl.so
 ln -s libcl.so libcl.so.3.4
 make stestlib  ADDFLAGS="%{optflags}"
 
@@ -208,9 +202,9 @@ javadoc cryptlib
 mkdir -p %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_datadir}/licenses/%{name}
 mkdir -p %{buildroot}%{_docdir}/%{name}
-cp %{_builddir}/%{name}-%{version}/libcl.so.3.4.7 %{buildroot}%{_libdir}
+cp %{_builddir}/%{name}-%{version}/libcl.so.3.4.8 %{buildroot}%{_libdir}
 cd %{buildroot}%{_libdir}
-ln -s libcl.so.3.4.7 libcl.so.3.4
+ln -s libcl.so.3.4.8 libcl.so.3.4
 ln -s libcl.so.3.4 libcl.so
 
 # install header files
@@ -299,7 +293,7 @@ cp /%{buildroot}%{cryptlibdir}/tools/man/clsmime.1 %{buildroot}%{_mandir}/man1
      echo "Running tests on the cryptlib library. This will take a few minutes."
      cp %{buildroot}%{cryptlibdir}/c/cryptlib-test.c .
      sed -i '41s/<cryptlib\/cryptlib.h>/\".\/cryptlib.h\"/' cryptlib-test.c
-     gcc  -o cryptlib-test cryptlib-test.c -L. libcl.so.3.4.7
+     gcc  -o cryptlib-test cryptlib-test.c -L. libcl.so.3.4.8
      ./cryptlib-test
 %endif
 
@@ -308,7 +302,7 @@ cp /%{buildroot}%{cryptlibdir}/tools/man/clsmime.1 %{buildroot}%{_mandir}/man1
 
 
 %files
-%{_libdir}/libcl.so.3.4.7
+%{_libdir}/libcl.so.3.4.8
 %{_libdir}/libcl.so.3.4
 %{_libdir}/libcl.so
 
@@ -360,6 +354,9 @@ cp /%{buildroot}%{cryptlibdir}/tools/man/clsmime.1 %{buildroot}%{_mandir}/man1
 
 
 %changelog
+* Wed Dec 4 2024 Ralf Senderek <innovation@senderek.ie>  3.4.8-1
+- update to version 3.4.8
+
 * Fri Nov 29 2024 Ralf Senderek <innovation@senderek.ie>  3.4.7-9
 - update MIN_TIME_VALUE in misc/consts.h
 

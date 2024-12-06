@@ -1,7 +1,7 @@
 %global srcname jenkins-job-builder
 
 Name:           python-%{srcname}
-Version:        6.4.1
+Version:        6.4.2
 Release:        %autorelease
 # Someone thought that 2.0.0.0b3 < 2.0.0
 Epoch:          1
@@ -9,13 +9,6 @@ Summary:        Manage Jenkins jobs with YAML
 License:        Apache-2.0
 URL:            https://jenkins-job-builder.readthedocs.io/en/latest/
 Source:         %{pypi_source}
-
-# Allow building against the `setuptools` version shipped by Fedora
-Patch:          0001-Fix-the-build-with-setuptools-71.patch
-
-# Fix compatibility with Python 3.13.
-# Upstream patch: https://review.opendev.org/c/jjb/jenkins-job-builder/+/930634
-Patch:          0002-Make-unit-tests-compatible-with-Python-3.13.patch
 
 BuildArch:      noarch
 

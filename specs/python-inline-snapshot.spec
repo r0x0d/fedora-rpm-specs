@@ -6,7 +6,7 @@
 %bcond pydantic_tests %{without bootstrap}
 
 Name:           python-inline-snapshot
-Version:        0.14.0
+Version:        0.14.1
 Release:        %autorelease
 Summary:        Golden master/snapshot/approval testing library
 
@@ -25,6 +25,8 @@ BuildRequires:  tomcli
 # Extra test dependencies:
 # For test_xdist, test_xdist_disabled, test_xdist_and_disable
 BuildRequires:  %{py3_dist pytest-xdist}
+# For test_black_formatting_error (mocker fixture)
+BuildRequires:  %{py3_dist pytest-mock}
 
 %global common_description %{expand:
 Golden master/snapshot/approval testing library which puts the values right

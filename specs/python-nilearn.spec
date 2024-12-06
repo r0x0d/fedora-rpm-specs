@@ -20,7 +20,7 @@ Detailed documentation is available at http://nilearn.github.io/.}
 %global forgeurl https://github.com/nilearn/nilearn
 
 Name:           python-nilearn
-Version:        0.10.4
+Version:        0.11.0
 Release:        %autorelease
 Summary:        Python module for fast and easy statistical learning on NeuroImaging data
 
@@ -31,9 +31,18 @@ Summary:        Python module for fast and easy statistical learning on NeuroIma
 License:        BSD-3-Clause
 URL:            %forgeurl
 # Use GitHub tar: pypi does not include all test data
-Source0:        %forgesource
+Source:         %forgesource
 
-# Since F40, python-scikit-learn is ExcludeArch: %%{ix86}
+# [FIX] Save gifti with datatype None
+# https://github.com/nilearn/nilearn/pull/4857
+#
+# Fixes:
+#
+# [BUG] Some new test failures on s390x (big-endian) in 0.11.0
+# https://github.com/nilearn/nilearn/issues/4855
+Patch:          %{forgeurl}/pull/4857.patch
+
+# python-scikit-learn is ExcludeArch: %%{ix86}
 ExcludeArch:    %{ix86}
 
 BuildRequires:  python3-devel
@@ -59,7 +68,7 @@ BuildArch:      noarch
 %{desc}
 
 %prep
-%forgesetup
+%forgeautosetup -p1
 export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 
 # Remove shebangs
@@ -70,6 +79,9 @@ find . -name "*pyc" -exec rm -f '{}' \;
 # Correct python command
 sed -i 's/python/python3/' nilearn/plotting/html_document.py
 #sed -i 's/python/python3/' nilearn/plotting/glass_brain_files/generate_json.sh
+
+# Remove pytest-reporter-html1 arguments
+sed -r -i 's/--template=[^[:blank:]"]+//' pyproject.toml
 
 %generate_buildrequires
 export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
@@ -83,24 +95,18 @@ export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 # generate it. We include the link to the documentation in the description.
 
 %install
-export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 %pyproject_install
 %pyproject_save_files -l nilearn
 
 %check
-
-%ifarch s390x %{power64} %{arm64}
-# https://github.com/nilearn/nilearn/issues/3232
-k="${k:-}${k:+ and} not test_load_confounds"
-
-k="${k:-}${k:+ and} not test_tfce_smoke"
+%ifarch x86_64
+# [BUG] test_canica_square_img fails on some x86_64 machines
+# https://github.com/nilearn/nilearn/issues/4876
+k="${k-}${k+ and }not test_canica_square_img"
 %endif
 
-# Fails with obscure error:
-# _flapack.error: (liwork>=max(1,10*n)||liwork==-1) failed for 10th keyword liwork: dsyevr:liwork=1
-k="${k:-}${k:+ and} not test_percentile_range"
 # Requires kaleido (not available in Fedora)
-k="${k:-}${k:+ and} not test_plot_surf[plotly]"
+k="${k-}${k+ and }not test_plot_surf[plotly]"
 %{pytest} -v -k "${k:-}" nilearn
 
 %files -n python3-nilearn -f %{pyproject_files}

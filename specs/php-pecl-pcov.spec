@@ -16,13 +16,11 @@
 
 Summary:        Code coverage driver
 Name:           php-pecl-%{pecl_name}
-Version:        1.0.11
-Release:        13%{?dist}
+Version:        1.0.12
+Release:        1%{?dist}
 License:        PHP-3.01
 URL:            https://pecl.php.net/package/%{pecl_name}
 Source0:        https://pecl.php.net/get/%{sources}.tgz
-
-Patch0:         %{pecl_name}-php84.patch
 
 ExcludeArch:    %{ix86}
 
@@ -53,8 +51,6 @@ sed -e 's/role="test"/role="src"/' \
     -i package.xml
 
 cd %{sources}
-%patch -P0 -p1
-
 # Sanity check, really often broken
 extver=$(sed -n '/#define PHP_PCOV_VERSION/{s/.* "//;s/".*$//;p}' php_pcov.h)
 if test "x${extver}" != "x%{version}%{?prever:-%{prever}}"; then
@@ -136,6 +132,10 @@ TEST_PHP_ARGS="-n -d extension=$PWD/modules/%{pecl_name}.so" \
 
 
 %changelog
+* Wed Dec  4 2024 Remi Collet <remi@remirepo.net> - 1.0.12-1
+- update to 1.0.12
+- drop patch merged upstream
+
 * Thu Oct 17 2024 Remi Collet <remi@fedoraproject.org> - 1.0.11-13
 - modernize the spec file
 

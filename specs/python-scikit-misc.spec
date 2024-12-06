@@ -53,10 +53,10 @@ sed -i -e 's/--cov=skmisc --cov-report=xml//' pyproject.toml
 sed -r -i 's/(numpy)>=2.0/\1/' pyproject.toml
 
 %generate_buildrequires
-%pyproject_buildrequires -w
+%pyproject_buildrequires -p
 
-# There is no build section since the wheel is already build as part of
-# %%pyproject_buildrequires
+%build
+%pyproject_wheel
 
 %install
 %pyproject_install

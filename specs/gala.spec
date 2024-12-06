@@ -1,7 +1,7 @@
 %global __provides_exclude_from ^%{_libdir}/gala/.*\\.so$
 
 Name:           gala
-Version:        8.0.1
+Version:        8.0.4
 Release:        %autorelease
 Summary:        Gala window manager
 License:        GPL-3.0-or-later AND LGPL-3.0-or-later
@@ -32,13 +32,6 @@ BuildRequires:  pkgconfig(mutter-clutter-14)
 BuildRequires:  pkgconfig(mutter-cogl-14)
 BuildRequires:  pkgconfig(mutter-cogl-pango-14)
 BuildRequires:  pkgconfig(mutter-mtk-14)
-%endif
-%if 0%{?fedora} == 39
-BuildRequires:  pkgconfig(libmutter-13)
-BuildRequires:  pkgconfig(mutter-clutter-13)
-BuildRequires:  pkgconfig(mutter-cogl-13)
-BuildRequires:  pkgconfig(mutter-cogl-pango-13)
-BuildRequires:  pkgconfig(mutter-mtk-13)
 %endif
 
 BuildRequires:  pkgconfig(atk-bridge-2.0)

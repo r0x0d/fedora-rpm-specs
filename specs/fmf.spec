@@ -1,17 +1,22 @@
-Name: fmf
-Version: 1.4.1
-Release: 3%{?dist}
+Name:          fmf
+Version:       1.5.0
+Release:       1%{?dist}
 
-Summary: Flexible Metadata Format
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
-License: GPL-2.0-or-later
-BuildArch: noarch
+Summary:       Flexible Metadata Format
+License:       GPL-2.0-or-later
+BuildArch:     noarch
 
-URL: https://github.com/psss/fmf
-Source0: https://github.com/psss/fmf/releases/download/%{version}/fmf-%{version}.tar.gz
+URL:           https://github.com/teemtee/fmf
+Source:        %{pypi_source fmf}
 
 # Main fmf package requires the Python module
-Requires: python%{python3_pkgversion}-%{name} == %{version}-%{release}
+BuildRequires: python3-devel
+BuildRequires: python3dist(docutils)
+BuildRequires: git-core
+Requires:      git-core
+
+Obsoletes:     python3-fmf < %{version}-%{release}
+%py_provides   python3-fmf
 
 %description
 The fmf Python module and command line tool implement a flexible
@@ -19,65 +24,45 @@ format for defining metadata in plain text files which can be
 stored close to the source code. Thanks to hierarchical structure
 with support for inheritance and elasticity it provides an
 efficient way to organize data into well-sized text documents.
-This package contains the command line tool.
-
-%?python_enable_dependency_generator
-
-
-%package -n     python%{python3_pkgversion}-%{name}
-Summary:        %{summary}
-BuildRequires: python%{python3_pkgversion}-devel
-BuildRequires: python%{python3_pkgversion}-setuptools
-BuildRequires: python%{python3_pkgversion}-pytest
-BuildRequires: python%{python3_pkgversion}-ruamel-yaml
-BuildRequires: python%{python3_pkgversion}-filelock
-BuildRequires: python%{python3_pkgversion}-jsonschema
-BuildRequires: git-core
-%{?python_provide:%python_provide python%{python3_pkgversion}-%{name}}
-Requires:       git-core
-
-%description -n python%{python3_pkgversion}-%{name}
-The fmf Python module and command line tool implement a flexible
-format for defining metadata in plain text files which can be
-stored close to the source code. Thanks to hierarchical structure
-with support for inheritance and elasticity it provides an
-efficient way to organize data into well-sized text documents.
-This package contains the Python 3 module.
 
 
 %prep
-%autosetup
+%autosetup -p1 -n fmf-%{version}
+
+
+%generate_buildrequires
+%pyproject_buildrequires -x tests %{?epel:-w}
 
 
 %build
-%py3_build
+%pyproject_wheel
+cp docs/header.txt man.rst
+tail -n+7 README.rst >> man.rst
+rst2man man.rst > fmf.1
 
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files fmf
+
 mkdir -p %{buildroot}%{_mandir}/man1
 install -pm 644 fmf.1* %{buildroot}%{_mandir}/man1
 
 
 %check
-%{__python3} -m pytest -vv -c tests/unit/pytest.ini -m 'not web'
+%pyproject_check_import
 
 
-%{!?_licensedir:%global license %%doc}
-
-%files
+%files -f %{pyproject_files}
 %{_mandir}/man1/*
 %{_bindir}/%{name}
 %doc README.rst examples
-%license LICENSE
-
-%files -n python%{python3_pkgversion}-%{name}
-%{python3_sitelib}/%{name}/
-%{python3_sitelib}/%{name}-*.egg-info
-%license LICENSE
 
 
 %changelog
+* Wed Dec 04 2024 Packit <hello@packit.dev> - 1.5.0-1
+- Update to version 1.5.0
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 1.4.1-3
 - convert license to SPDX
 

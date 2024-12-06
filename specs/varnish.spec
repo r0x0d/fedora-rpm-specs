@@ -12,8 +12,8 @@
 
 %global __provides_exclude_from ^%{_libdir}/varnish/vmods
 
-%global abi ed1243ca162a7b1d975bc0332f0d66d33f0bc78e
-%global vrt 20.0
+%global abi c3d5882003eb87e5e93dc09fb9513ca96db3ca3c
+%global vrt 20.1
 
 # Package scripts are now external
 # https://github.com/varnishcache/pkg-varnish-cache

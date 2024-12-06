@@ -10,7 +10,7 @@
 # Attempting to cheat by defining COIN_HAS_CBC while building this package
 # just leads to other compiler errors due to missing coin-or-Cbc headers.
 # As painful as it is, this really is the best approach.
-%bcond bootstrap 1
+%bcond bootstrap 0
 
 Name:		coin-or-%{module}
 Summary:	Coin-or linear programming

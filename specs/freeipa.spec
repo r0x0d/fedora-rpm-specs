@@ -200,7 +200,7 @@
 
 Name:           %{package_name}
 Version:        %{IPA_VERSION}
-Release:        6%{?rc_version:.%rc_version}%{?dist}
+Release:        7%{?rc_version:.%rc_version}%{?dist}
 Summary:        The Identity, Policy and Audit system
 
 License:        GPL-3.0-or-later
@@ -219,9 +219,9 @@ Source1:        https://releases.pagure.org/freeipa/freeipa-%{version}%{?rc_vers
 Source2:        gpgkey-0E63D716D76AC080A4A33513F40800B6298EB963.asc
 %endif
 
-Patch0001:      0001-freeipa-disable-nis.patch
-Patch0002:      freeipa-fix-ca-uninstall.patch
-Patch0003:      freeipa-samba-4.21-fix.patch
+Patch0001:      ipa-post-4.12.2-updates.patch
+Patch0004:      freeipa-fix-ldap-otp-bind.patch
+Patch0002:      0001-freeipa-disable-nis.patch
 
 # RHEL spec file only: START: Change branding to IPA and Identity Management
 # Moved branding logos and background to redhat-logos-ipa-80.4:
@@ -1496,6 +1496,7 @@ fi
 %{_sbindir}/ipa-pkinit-manage
 %{_sbindir}/ipa-crlgen-manage
 %{_sbindir}/ipa-cert-fix
+%{_sbindir}/ipa-idrange-fix
 %{_sbindir}/ipa-acme-manage
 %{_sbindir}/ipa-migrate
 %if 0%{?fedora} >= 38
@@ -1574,6 +1575,7 @@ fi
 %{_mandir}/man1/ipa-pkinit-manage.1*
 %{_mandir}/man1/ipa-crlgen-manage.1*
 %{_mandir}/man1/ipa-cert-fix.1*
+%{_mandir}/man1/ipa-idrange-fix.1*
 %{_mandir}/man1/ipa-acme-manage.1*
 %{_mandir}/man1/ipa-migrate.1*
 
@@ -1862,6 +1864,13 @@ fi
 %endif
 
 %changelog
+* Wed Dec 04 2024 Alexander Bokovoy <abokovoy@redhat.com> - 4.12.2-7
+- Apply upstream fixes since 4.12.2
+- Fix OTP LDAP bind regression
+- Resolves: rhbz#2321307
+- add ipa-idrange-fix tool
+- Support PyCA 44.0.0
+
 * Thu Nov 21 2024 Alexander Bokovoy <abokovoy@redhat.com> - 4.12.2-6
 - Adjust to Samba 4.21
 

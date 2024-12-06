@@ -24,13 +24,13 @@
 # Upstream source information.
 %global upstream_owner    AdaCore
 %global upstream_name     aws
-%global upstream_version  24.0.0
+%global upstream_version  25.0.0
 %global upstream_gittag   v%{upstream_version}
 
 Name:           aws
 Epoch:          2
 Version:        %{upstream_version}
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        The Ada Web Server
 
 License:        (GPL-3.0-or-later WITH GCC-exception-3.1 OR GPL-3.0-or-later WITH GNAT-exception) AND GPL-2.0-or-later WITH GNAT-exception
@@ -49,8 +49,6 @@ Source0:        %{url}/archive/%{upstream_gittag}/%{upstream_name}-%{upstream_ve
 # Man pages.
 Source1:        aws-manpages.tar.gz
 
-# [Backport] https://github.com/AdaCore/aws/commit/082a3930be6078a5f7e62b357933fa6d2d64f9fd
-Patch:          %{name}-fix-wrong-install-native-makefile-rule.patch
 # [Fedora-specific] Use external template parser.
 Patch:          %{name}-use-external-template-parser.patch
 # [Fedora-specific] Use external zlib library.
@@ -73,20 +71,24 @@ Patch:          %{name}-no-third-party-javascript-source-code.patch
 Patch:          %{name}-recommend-mailcap-for-mime-types.patch
 # Handle comments in mime.types:
 # https://github.com/AdaCore/aws/issues/379
-Patch:          aws-mime-types-comments.patch
-# Fix CVE-2024-41708 by using /dev/urandom; mostly backported from upstream
-# work on AWS and Gnatcoll:
-# https://docs.adacore.com/corp/security-advisories/SEC.AWS-0040-v2.pdf
-# https://github.com/AdaCore/aws/commit/7cd72613634d555ec23b221771665affb49423b7
-# https://github.com/AdaCore/gnatcoll-core/commit/e3823795b1c4f31f9cd204008b75023465793b67
-Patch:          aws-CVE-2024-41708.patch
+Patch:          %{name}-mime-types-comments.patch
+# [Fedora-specific] Use 'gnatcoll_core.gpr' instead of 'gnatcoll.gpr'.
+Patch:          %{name}-refine-dependencies-to-gnatcoll.patch
+# Backport from upstream commit 3e9df7f8712112d653884610c7518cace6c16e41:
+Patch:          aws-net-ssl__gnutls.adb-Properly-initialize-the-API.patch
+# Let GnuTLS rely on P11-kit's knowledge of what the system trust store is.
+# Don't use the Debian-oriented pathname of a file that would at best just add
+# the same set of certificates again:
+# https://github.com/AdaCore/aws/issues/386
+Patch:          aws-trust-the-system-trust-store.patch
 
 BuildRequires:  gcc-gnat gprbuild make sed findutils tar
 # A fedora-gnat-project-common that contains the new GPRinstall macro.
 BuildRequires:  fedora-gnat-project-common >= 3.21
 BuildRequires:  templates_parser-devel
 BuildRequires:  xmlada-devel
-BuildRequires:  gnatcoll-core-devel
+# A gnatcoll-core that contains gnatcoll_core.gpr is needed.
+BuildRequires:  gnatcoll-core-devel >= 25.0.0
 # A zlib-ada that contains the 'End_Of_Stream' function is needed.
 BuildRequires:  zlib-ada-devel >= 1.4-0.37.20210811gitca39312
 %if %{with ldap}
@@ -313,7 +315,7 @@ make install \
 
 # Add the missing libaws_ssl.so that the tools are linked to.
 cp --preserve=timestamps \
-   %{_builddir}/%{name}-%{version}/.build/*/release/relocatable/lib/ssl/lib%{name}_ssl.so* \
+   %{_builddir}/%{name}-%{version}/*/release/relocatable/lib/ssl/lib%{name}_ssl.so* \
    %{buildroot}%{_libdir}/
 # To do: Figure out libaws_ssl. If programs need it, why doesn't the makefile
 # install it? If programs don't need it, why are the tools linked to it? Why is
@@ -440,6 +442,10 @@ sed --regexp-extended --in-place \
 ###############
 
 %changelog
+* Sun Oct 27 2024 Dennis van Raaij <dvraaij@fedoraproject.org> - 2:25.0.0-1
+- Updated to v25.0.0.
+- This fixes CVE-2024-37015.
+
 * Thu Sep 26 2024 Björn Persson <Bjorn@Rombobjörn.se> - 2:24.0.0-3
 - Fixed to use /dev/urandom instead of a non-cryptographic PRNG.
   Resolves: CVE-2024-41708 (RHBZ#2314766)

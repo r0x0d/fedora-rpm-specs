@@ -23,8 +23,8 @@
 #global pre rc2
 
 Name:          mingw-%{pkgname}
-Version:       3.11.10
-Release:       2%{?dist}
+Version:       3.11.11
+Release:       1%{?dist}
 Summary:       MinGW Windows %{pkgname}
 
 BuildArch:     noarch
@@ -66,8 +66,6 @@ Patch11:       mingw-python3_win-modules.patch
 Patch12:       mingw-python3_module-socket.patch
 # MinGW fix for select module
 Patch13:       mingw-python3_module-select.patch
-# Backport fix for CVE-2024-9287
-Patch14:       https://github.com/python/cpython/commit/ae961ae94bf19c8f8c7fbea3d1c25cc55ce8ae97.patch
 
 BuildRequires: make
 BuildRequires: automake autoconf libtool
@@ -501,6 +499,9 @@ rm -rf %{buildroot}%{_prefix}/lib/python%{py_ver}/site-packages/pip*
 
 
 %changelog
+* Wed Dec 04 2024 Sandro Mani <manisandro@gmail.com> - 3.11.11-1
+- Update to 3.11.11
+
 * Mon Nov 18 2024 Sandro Mani <manisandro@gmail.com> - 3.11.10-2
 - Backport fix for CVE-2024-9287
 

@@ -1,19 +1,18 @@
 Name:		perl-IO-Socket-Socks
 Version:	0.74
-Release:	21%{?dist}
+Release:	22%{?dist}
 Summary:	Provides a way to create socks (4 or 5) client or server
 # See https://rt.cpan.org/Public/Bug/Display.html?id=44047 for license discussion
 License:	LGPL-2.0-or-later
 URL:		https://metacpan.org/release/IO-Socket-Socks
-Source0:	https://cpan.metacpan.org/modules/by-module/IO/IO-Socket-Socks-%{version}.tar.gz
+Source0:	https://www.cpan.org/modules/by-module/IO/IO-Socket-Socks-%{version}.tar.gz
 BuildArch:	noarch
 # Module Build
 BuildRequires:	coreutils
-BuildRequires:	findutils
 BuildRequires:	make
 BuildRequires:	perl-generators
 BuildRequires:	perl-interpreter
-BuildRequires:	perl(ExtUtils::MakeMaker) >= 6.52
+BuildRequires:	perl(ExtUtils::MakeMaker) >= 6.76
 BuildRequires:	sed
 # Module Runtime
 BuildRequires:	perl(Carp)
@@ -21,6 +20,7 @@ BuildRequires:	perl(constant) >= 1.03
 BuildRequires:	perl(Errno)
 BuildRequires:	perl(Exporter)
 BuildRequires:	perl(IO::Select)
+BuildRequires:	perl(IO::Socket::IP) >= 0.36
 BuildRequires:	perl(overload)
 BuildRequires:	perl(Socket) >= 1.94
 BuildRequires:	perl(strict)
@@ -31,19 +31,11 @@ BuildRequires:	perl(Cwd)
 BuildRequires:	perl(IO::Socket)
 BuildRequires:	perl(Test::More) >= 0.88
 BuildRequires:	perl(Time::HiRes)
-# Runtime
+# Dependencies
+# IPv6 support requires perl(IO::Socket::IP) ≥ 0.36
 Requires:	perl(constant) >= 1.03
-Requires:	perl(Socket) >= 1.94
-
-# IPv6 support requires perl(IO::Socket::IP) ≥ 0.36, which is not available in EL-7
-# so we have to fall back to IPv4-only IO::Socket::INET
-%if 0%{?el7}
-BuildRequires:	perl(IO::Socket::INET)
-Requires:	perl(IO::Socket::INET)
-%else
-BuildRequires:	perl(IO::Socket::IP) >= 0.36
 Requires:	perl(IO::Socket::IP) >= 0.36
-%endif
+Requires:	perl(Socket) >= 1.94
 
 %description
 IO::Socket::Socks connects to a SOCKS proxy and tells it to open a connection
@@ -62,16 +54,15 @@ chmod -c -x examples/*.pl
 sed -i -e 's|^#!/usr/bin/env perl|#!/usr/bin/perl|' examples/*.pl
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 %{_fixperms} -c %{buildroot}
 
 %check
-make test
+SOCKS_SLOW_TESTS=1 make test
 
 %files
 %doc Changes examples/ README
@@ -79,6 +70,12 @@ make test
 %{_mandir}/man3/IO::Socket::Socks.3*
 
 %changelog
+* Wed Dec  4 2024 Paul Howarth <paul@city-fan.org> - 0.74-22
+- Drop EL-7 support
+- Use %%{make_build} and %%{make_install}
+- Enable SOCKS_SLOW_TESTS
+- Switch source URL from cpan.metacpan.org to www.cpan.org
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.74-21
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

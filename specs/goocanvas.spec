@@ -1,34 +1,34 @@
 Name:           goocanvas
 Version:        1.0.0
-Release:        30%{?dist}
-Summary:        A new canvas widget for GTK+ that uses cairo for drawing
+Release:        27%{?dist}
+Summary:        A canvas widget for GTK+ that uses cairo for drawing
 
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.0-or-later
 URL:            https://wiki.gnome.org/Projects/GooCanvas
-Source0:        ftp://ftp.gnome.org/pub/GNOME/sources/%{name}/1.0.0/%{name}-%{version}.tar.bz2
+Source0:        https://download.gnome.org/sources/%{name}/1.0/%{name}-%{version}.tar.bz2
+Patch0:         %{name}-fix-gcc14-build.patch
 
 BuildRequires:  gcc
 BuildRequires:  pkgconfig, gettext, gtk2-devel
 BuildRequires:  cairo-devel >= 1.4.0
-BuildRequires: make
+BuildRequires:  make
 
 %description
-GooCanvas is a new canvas widget for GTK+ that uses the cairo 2D library for
+GooCanvas is a canvas widget for GTK+ that uses the cairo 2D library for
 drawing. It has a model/view split, and uses interfaces for canvas items and
 views, so you can easily turn any application object into canvas items.
 
 %prep
-%setup -q
+%autosetup -p1
 
 %build
+%set_build_flags
 %configure
-make %{?_smp_mflags}
+%make_build
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 
 # remove static libraries and libtool droppings
 rm -f $RPM_BUILD_ROOT/%{_libdir}/lib%{name}.{a,la}
@@ -38,7 +38,8 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/lib%{name}.{a,la}
 %ldconfig_scriptlets
 
 %files -f %{name}.lang
-%doc AUTHORS ChangeLog COPYING NEWS README TODO
+%license COPYING
+%doc AUTHORS ChangeLog NEWS README TODO
 %{_libdir}/lib%{name}.so\.*
 
 %package devel
@@ -60,17 +61,10 @@ These are the files used for development.
 
 
 %changelog
-* Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.0-30
-- convert license to SPDX
-
-* Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.0-29
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Wed Jan 24 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.0-28
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Sat Jan 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.0-27
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
+* Wed Nov 27 2024 Martin Gansser <martinkg@fedoraproject.org> - 1.0.0-27
+- Add %{name}-fix-gcc14-build.patch to fix bug (#2327765)
+- Migrate to SPDX license
+- Use macros in build and install section
 
 * Thu Jul 20 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.0-26
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild

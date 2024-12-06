@@ -1,11 +1,10 @@
 Summary:	Perl module for DSA signatures and key generation
 Name:		perl-Crypt-DSA
-Version:	1.17
-Release:	42%{?dist}
+Version:	1.19
+Release:	1%{?dist}
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
 Url:		https://metacpan.org/release/Crypt-DSA
-Source0:	https://cpan.metacpan.org/modules/by-module/Crypt/Crypt-DSA-%{version}.tar.gz
-Patch0:		remove-fallback.patch
+Source0:	https://www.cpan.org/modules/by-module/Crypt/Crypt-DSA-%{version}.tar.gz
 BuildArch:	noarch
 # Module Build
 BuildRequires:	coreutils
@@ -14,16 +13,17 @@ BuildRequires:	make
 BuildRequires:	perl-generators
 BuildRequires:	perl-interpreter
 BuildRequires:	perl(ExtUtils::MakeMaker) >= 6.76
-BuildRequires:	perl(inc::Module::Install)
-BuildRequires:	sed
+BuildRequires:	perl(warnings)
 # Module Runtime
+BuildRequires:	openssl
 BuildRequires:	perl(base)
 BuildRequires:	perl(Carp)
 BuildRequires:	perl(constant)
 BuildRequires:	perl(Convert::ASN1)
-BuildRequires:	perl(Convert::PEM)
+BuildRequires:	perl(Convert::PEM) >= 0.13
+BuildRequires:	perl(Crypt::URandom)
 BuildRequires:	perl(Data::Buffer) >= 0.01
-BuildRequires:	perl(Digest::SHA1)
+BuildRequires:	perl(Digest::SHA)
 BuildRequires:	perl(Exporter)
 BuildRequires:	perl(Fcntl)
 BuildRequires:	perl(File::Spec)
@@ -38,14 +38,8 @@ BuildRequires:	perl(Symbol)
 BuildRequires:	perl(vars)
 # Test Suite
 BuildRequires:	perl(Test::More) >= 0.42
-BuildRequires:	openssl
 # Optional Tests
 BuildRequires:	perl(Crypt::DES_EDE3)
-# Extra Tests
-BuildRequires:	perl(Perl::MinimumVersion) >= 1.27
-BuildRequires:	perl(Test::CPAN::Meta) >= 0.17
-BuildRequires:	perl(Test::MinimumVersion) >= 0.101080
-BuildRequires:	perl(Test::Pod) >= 1.44
 # Dependencies
 # Crypt::DSA::Keychain calls openssl for DSA parameter generation
 Requires:	openssl
@@ -59,16 +53,14 @@ Crypt::DSA is an implementation of the DSA (Digital Signature Algorithm)
 signature verification system. This package provides DSA signing, signature
 verification, and key generation.
 
+DSA (Digital Signature Algorithm) signatures are no longer considered to be
+adequate for security. This module should only be used for verifying old
+signatures and should not be used for new signatures. That being said, some
+technologies still require DSA signatures even now. Consider using other
+solutions or explicitly not using DSA signatures.
+
 %prep
 %setup -q -n Crypt-DSA-%{version}
-
-# Remove bundled dependencies
-rm -rv inc/
-sed -i -e '/^inc\// d' MANIFEST
-
-# Remove the ability to fall back to the cryptographically-insecure Data::Random
-# instead of using /dev/random (#743567, CPAN RT#71421, CVE-2011-3599)
-%patch -P0 -p1
 
 %build
 perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
@@ -79,7 +71,7 @@ perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
 %{_fixperms} -c %{buildroot}
 
 %check
-make test AUTOMATED_TESTING=1
+make test
 
 %files
 %license LICENSE
@@ -94,6 +86,15 @@ make test AUTOMATED_TESTING=1
 %{_mandir}/man3/Crypt::DSA::Util.3*
 
 %changelog
+* Wed Dec  4 2024 Paul Howarth <paul@city-fan.org> - 1.19-1
+- Update to 1.19
+  - New maintainer
+  - This release resolves CVE-2011-3599
+  - Added a statement to recommend against using DSA
+  - Fixed a few long standing bugs
+  - The build process is moved to Dist::Zilla
+- Switch source URL from cpan.metacpan.org to www.cpan.org
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.17-42
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

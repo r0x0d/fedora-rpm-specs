@@ -39,7 +39,7 @@
 # Either pass `--with=bootstrap` to mock(1) or change `bcond_with` to
 # `bcond_without`, then commit, build, revert to `bcond_with` and commit again.
 #
-%bcond_with bootstrap
+%bcond_without bootstrap
 
 # The test suite is normally run. It can be disabled with "--without=check".
 %bcond_without check
@@ -59,14 +59,14 @@
 # Upstream source information.
 %global upstream_owner         AdaCore
 %global upstream_name          gprbuild
-%global upstream_version       24.0.0
-%global upstream_release_date  20231009
+%global upstream_version       25.0.0
+%global upstream_release_date  20241007
 %global upstream_gittag        v%{upstream_version}
 
 Name:           gprbuild
 Epoch:          2
 Version:        %{upstream_version}
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        A multi-language extensible build tool
 
 License:        GPL-3.0-or-later WITH GCC-exception-3.1 AND Unicode-DFS-2016
@@ -121,7 +121,7 @@ BuildRequires:  libgnat-static
 BuildRequires:  fedora-gnat-project-common >= 3.21
 
 %if %{with bootstrap}
-BuildRequires:  gprconfig-kb >= %{version}
+BuildRequires:  gprconfig-kb >= 24.0.0
 BuildRequires:  xmlada-sources
 %else
 BuildRequires:  gprbuild
@@ -130,14 +130,17 @@ BuildRequires:  xmlada-devel
 # An XMLada build that accepts LIBRARY_TYPE=static-pic is needed.
 BuildRequires:  xmlada-static >= 2:23
 BuildRequires:  python3-sphinx
+BuildRequires:  python3-sphinx-latex
 BuildRequires:  texinfo
+BuildRequires:  latexmk
+BuildRequires:  tex(titleref.sty)
 %endif
 
 %if %{with check}
 # To verify if G++ and GFortran are detected by gprconfig.
 BuildRequires:  gcc-c++
 BuildRequires:  gcc-gfortran
-# Language packs for used for testing.
+# Language packs used for testing.
 # -- list derived from: https://gcc.gnu.org/git/?p=gcc.git;a=tree;f=gcc/po;hb=HEAD
 BuildRequires:  glibc-langpack-be
 BuildRequires:  glibc-langpack-da
@@ -165,7 +168,7 @@ BuildRequires:  tar
 # Build only on architectures where GPRbuild is available.
 ExclusiveArch:  %{GPRbuild_arches}
 
-Requires:       gprconfig-kb >= %{version}
+Requires:       gprconfig-kb >= 24.0.0
 Requires:       fedora-gnat-project-common
 Recommends:     %{name}-doc
 
@@ -200,8 +203,8 @@ License:        GFDL-1.3-no-invariants-or-later AND MIT AND BSD-2-Clause AND GPL
 
 %description doc %{common_description_en}
 
-This package contains the documentation in HTML, plain text and Info format, and
-some examples.
+This package contains the documentation in HTML, plain text, PDF, and Info
+format, and some examples.
 
 %if %{with_libgpr}
 
@@ -301,8 +304,7 @@ gprbuild -v -p %{GPRbuild_flags} \
 %endif
 
 # Make the documentation.
-# -- no PDF as `sphinxmulticell.sty` is not provided by any package.
-make -C doc html txt info
+make -C doc html txt pdf info
 
 %endif
 
@@ -440,8 +442,6 @@ make -C examples run
 %dir %{_libexecdir}/%{name}
 %{_libexecdir}/%{name}/gpr*
 %attr(444,-,-) %{_GNAT_project_dir}/_default.gpr
-# Exclude the installation script; it serves no purpose in this context.
-%exclude %{_prefix}/doinstall
 
 %if %{without bootstrap}
 
@@ -449,6 +449,7 @@ make -C examples run
 %{_infodir}/*
 %dir %{_pkgdocdir}
 %{_pkgdocdir}/html
+%{_pkgdocdir}/pdf
 %{_pkgdocdir}/txt
 %{_pkgdocdir}/examples
 # Remove Sphinx-generated files that aren't needed in the package.
@@ -476,6 +477,10 @@ make -C examples run
 ###############
 
 %changelog
+* Sun Oct 27 2024 Dennis van Raaij <dvraaij@fedoraproject.org> - 2:25.0.0-1
+- Updated to v25.0.0.
+- The user's guide is now available in PDF format.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2:24.0.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

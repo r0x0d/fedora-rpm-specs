@@ -1,5 +1,5 @@
 Name:       ncid
-Version:    1.16
+Version:    1.17
 Release:    3%{?dist}
 Summary:    Network Caller ID server, client and gateways
 Requires:   logrotate
@@ -15,6 +15,8 @@ BuildRequires: perl-generators, perl-podlators
 %{?systemd_requires}
 BuildRequires: systemd
 
+# Disable debuginfo, a stripped upstream binary is packaged.
+%global debug_package %{nil}
 
 %description
 NCID is Caller ID (CID) distributed over a network to a variety of
@@ -110,12 +112,14 @@ make %{?_smp_mflags} EXTRA_CFLAGS="$RPM_OPT_FLAGS" libdir libcdir
 make %{?_smp_mflags} EXTRA_CFLAGS="$RPM_OPT_FLAGS" \
      LOCKFILE=/var/lock/lockdev/LCK.. \
      TTYPORT=/dev/ttyACM0 \
-     STRIP= prefix=%{_prefix} prefix2= package systemddir
+     STRIP= prefix=%{_prefix} prefix2= prefix3= package systemddir
 
 %install
-make install-all install-fedora prefix=%{buildroot}/%{_prefix} \
+make install-fedora prefix=%{buildroot}/%{_prefix} \
                             prefix2=%{buildroot} \
                             prefix3=%{buildroot}
+# uncomment if building a debuginfo package
+# rm -f %{buildroot}/etc/ncid/*.conf.new
 
 %check
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/ncid.metainfo.xml
@@ -473,6 +477,9 @@ touch --no-create %{_datadir}/icons/hicolor &>/dev/null
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %changelog
+* Tue Dec 3 2024 <jlc@users.sourceforge.net> 1.17-1
+- updated for new upstream release
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 1.16-3
 - convert license to SPDX
 

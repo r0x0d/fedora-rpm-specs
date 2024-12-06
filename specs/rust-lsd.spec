@@ -51,6 +51,9 @@ License:        Apache-2.0 AND BSD-3-Clause AND GPL-2.0-only WITH GCC-exception-
 %license LICENSE.dependencies
 %doc README.md
 %{_bindir}/lsd
+%{bash_completions_dir}/lsd.bash
+%{fish_completions_dir}/lsd.fish
+%{zsh_completions_dir}/_lsd
 
 %prep
 %autosetup -n %{crate}-%{version} -p1
@@ -60,12 +63,17 @@ License:        Apache-2.0 AND BSD-3-Clause AND GPL-2.0-only WITH GCC-exception-
 %cargo_generate_buildrequires
 
 %build
+mkdir completions
+export SHELL_COMPLETIONS_DIR=completions
 %cargo_build
 %{cargo_license_summary}
 %{cargo_license} > LICENSE.dependencies
 
 %install
 %cargo_install
+install -Dpm 0644 completions/lsd.bash -t %{buildroot}/%{bash_completions_dir}
+install -Dpm 0644 completions/lsd.fish -t %{buildroot}/%{fish_completions_dir}
+install -Dpm 0644 completions/_lsd -t %{buildroot}/%{zsh_completions_dir}
 
 %if %{with check}
 %check

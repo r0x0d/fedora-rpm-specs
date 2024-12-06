@@ -17,7 +17,7 @@
 
 Name: openldap
 Version: 2.6.8
-Release: 5%{?dist}
+Release: 6%{?dist}
 Summary: LDAP support libraries
 License: OLDAP-2.8
 URL: http://www.openldap.org/
@@ -49,6 +49,7 @@ Patch6: openldap-switch-to-lt_dlopenadvise-to-get-RTLD_GLOBAL-set.patch
 # System-wide default for CA certs
 Patch7: openldap-openssl-manpage-defaultCA.patch
 Patch8: openldap-add-export-symbols-LDAP_CONNECTIONLESS.patch
+Patch9: openldap-libldap-avoid-SSL-context-cleanup-during-library-des.patch
 
 # check-password module specific patches
 Patch90: check-password-makefile.patch
@@ -170,6 +171,7 @@ pushd openldap-%{version}
 %patch -P6 -p1
 %patch -P7 -p1
 %patch -P8 -p1
+%patch -P9 -p1
 
 # build smbk5pwd with other overlays
 ln -s ../../../contrib/slapd-modules/smbk5pwd/smbk5pwd.c servers/slapd/overlays
@@ -550,6 +552,9 @@ exit 0
 %endif
 
 %changelog
+* Tue Dec 3 2024 Simon Pichugin <spichugi@redhat.com> - 2.6.8-6
+- Avoid SSL context cleanup during library destruction
+
 * Tue Jul 23 2024 Simon Pichugin <spichugi@redhat.com> - 2.6.8-5
 - Clean up spec file so it's aligned with c10s
 - Remove UPGRADE_INSTRUCTIONS for openldap-server upgrade (rhbz#2133526)

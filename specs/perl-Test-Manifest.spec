@@ -1,18 +1,17 @@
 Summary:        Test case module for Perl
 Name:           perl-Test-Manifest
 Version:        2.024
-Release:        4%{?dist}
+Release:        5%{?dist}
 License:        Artistic-2.0
 URL:            https://metacpan.org/release/Test-Manifest
-Source0:        https://cpan.metacpan.org/modules/by-module/Test/Test-Manifest-%{version}.tar.gz
+Source0:        https://www.cpan.org/modules/by-module/Test/Test-Manifest-%{version}.tar.gz
 BuildArch:      noarch
 # Module Build
 BuildRequires:  coreutils
-BuildRequires:  findutils
 BuildRequires:  make
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
-BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.64
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 # Module Runtime
 BuildRequires:  perl(base)
 BuildRequires:  perl(Carp)
@@ -37,7 +36,7 @@ Requires:       perl(Test::Harness)
 
 %description
 MakeMaker assumes that you want to run all of the .t files in the t/ directory
-in ascii-betical order during make test unless you say otherwise. This leads to
+in ASCII-betical order during make test unless you say otherwise. This leads to
 some interesting naming schemes for test files to get them in the desired
 order.
 
@@ -52,12 +51,11 @@ right value for MakeMaker to do the right thing.
 %setup -q -n Test-Manifest-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 %{_fixperms} -c %{buildroot}
 
 %check
@@ -70,6 +68,10 @@ make test
 %{_mandir}/man3/Test::Manifest.3*
 
 %changelog
+* Wed Dec  4 2024 Paul Howarth <paul@city-fan.org> - 2.024-5
+- Switch source URL from cpan.metacpan.org to www.cpan.org
+- Use %%{make_build} and %%{make_install}
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.024-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

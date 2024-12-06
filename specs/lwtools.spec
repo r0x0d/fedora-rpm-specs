@@ -1,6 +1,6 @@
 Name:           lwtools
-Version:        4.22
-Release:        3%{?dist}
+Version:        4.23
+Release:        1%{?dist}
 Summary:        Cross-development tool chain for Motorola 6809 and Hitachi 6309
 
 # Automatically converted from old format: GPLv3 - review is highly recommended.
@@ -55,6 +55,9 @@ cp -a 00README.txt %{buildroot}%{_docdir}/%{name}
 
 
 %changelog
+* Wed Dec 04 2024 John W. Linville <linville@tuxdriver.com> 4.23-1
+- Update for version 4.23 from upstream
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 4.22-3
 - convert license to SPDX
 

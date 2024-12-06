@@ -34,8 +34,7 @@ Summary:        %{summary}
 
 
 %generate_buildrequires
-# The -w flag is required for EPEL 9's older hatchling
-%pyproject_buildrequires %{?el9:-w}
+%pyproject_buildrequires
 
 
 %build

@@ -162,13 +162,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.13.0
 %define specversion 6.13.0
 %define patchversion 6.13
-%define pkgrelease 0.rc1.20241203gitcdd30ebb1b9f.16
+%define pkgrelease 0.rc1.20241204gitfeffde684ac2.17
 %define kversion 6
-%define tarfile_release 6.13-rc1-2-gcdd30ebb1b9f
+%define tarfile_release 6.13-rc1-25-gfeffde684ac2
 # This is needed to do merge window version magic
 %define patchlevel 13
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc1.20241203gitcdd30ebb1b9f.16%{?buildid}%{?dist}
+%define specrelease 0.rc1.20241204gitfeffde684ac2.17%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.13.0
 
@@ -4164,11 +4164,12 @@ fi\
 #
 #
 %changelog
-* Tue Dec 03 2024 Justin M. Forbes <jforbes@fedoraproject.org> [6.13.0-0.rc1.20241203gitcdd30ebb1b9f.16]
+* Wed Dec 04 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc1.feffde684ac2.17]
 - x86/insn_decoder_test: allow longer symbol-names (David Rheinsberg)
-
-* Tue Dec 03 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc1.cdd30ebb1b9f.16]
 - kernel.spec: update license field (Scott Weaver)
+
+* Wed Dec 04 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc1.feffde684ac2.16]
+- Linux v6.13.0-0.rc1.feffde684ac2
 
 * Tue Dec 03 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc1.cdd30ebb1b9f.15]
 - redhat/configs: default to PREEMPT_LAZY on x86, riscv (Michal Schmidt)

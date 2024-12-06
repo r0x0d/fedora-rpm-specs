@@ -1,10 +1,10 @@
 Summary:	High speed arbitrary size integer math
 Name:		perl-Math-GMP
 Version:	2.25
-Release:	10%{?dist}
+Release:	11%{?dist}
 License:	LGPL-2.0-or-later
 URL:		https://metacpan.org/release/Math-GMP
-Source0:	https://cpan.metacpan.org/modules/by-module/Math/Math-GMP-%{version}.tar.gz
+Source0:	https://www.cpan.org/modules/by-module/Math/Math-GMP-%{version}.tar.gz
 Patch0:		Math-GMP-2.18-no-Alien::GMP.patch
 # Module Build
 BuildRequires:	coreutils
@@ -14,8 +14,9 @@ BuildRequires:	gmp-devel
 BuildRequires:	make
 BuildRequires:	perl-devel
 BuildRequires:	perl-generators
-BuildRequires:	perl-interpreter >= 4:5.10.0
-BuildRequires:	perl(ExtUtils::MakeMaker)
+BuildRequires:	perl-interpreter
+BuildRequires:	perl(:VERSION) >= 5.10.0
+BuildRequires:	perl(ExtUtils::MakeMaker) >= 6.76
 # Module Runtime
 BuildRequires:	perl(AutoLoader)
 BuildRequires:	perl(Carp)
@@ -54,12 +55,15 @@ This can result in speed improvements.
 %patch -P 0
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor OPTIMIZE="%{optflags}"
-make %{?_smp_mflags}
+perl Makefile.PL \
+	INSTALLDIRS=vendor \
+	NO_PACKLIST=1 \
+	NO_PERLLOCAL=1 \
+	OPTIMIZE="%{optflags}"
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 find %{buildroot} -type f -name '*.bs' -empty -delete
 %{_fixperms} -c %{buildroot}
 
@@ -74,6 +78,10 @@ make test
 %{_mandir}/man3/Math::GMP.3*
 
 %changelog
+* Wed Dec  4 2024 Paul Howarth <paul@city-fan.org> - 2.25-11
+- Switch source URL from cpan.metacpan.org to www.cpan.org
+- Use %%{make_build} and %%{make_install}
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.25-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

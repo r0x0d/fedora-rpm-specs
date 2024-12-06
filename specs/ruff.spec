@@ -5,10 +5,10 @@
 
 # replacements for git snapshot dependencies
 %global lsp_types_commit    3512a9f33eadc5402cfab1b8f7340824c8ca1439
-%global salsa_commit        f608ff8b24f07706492027199f51132244034f29
+%global salsa_commit        b14be5c0392f4c55eca60b92e457a35549372382
 
 Name:           ruff
-Version:        0.6.7
+Version:        0.7.0
 Release:        %autorelease
 Summary:        Extremely fast Python linter and code formatter
 
@@ -28,8 +28,8 @@ SourceLicense:  MIT AND Apache-2.0 AND (Apache-2.0 OR MIT)
 # CC0-1.0
 # ISC
 # MIT
+# MIT AND (MIT AND PSF-2.0)
 # MIT AND BSD-3-Clause
-# MIT AND PSF-2.0
 # MIT OR Apache-2.0
 # MIT OR Apache-2.0 OR Zlib
 # MIT OR BSD-3-Clause
@@ -44,7 +44,7 @@ Source:         %{url}/archive/%{version}/ruff-%{version}.tar.gz
 
 Source1:        https://github.com/astral-sh/lsp-types/archive/%{lsp_types_commit}/lsp-types-%{lsp_types_commit}.tar.gz
 Source2:        https://github.com/salsa-rs/salsa/archive/%{salsa_commit}/salsa-%{salsa_commit}.tar.gz
-Source3:        0007-avoid-duplicate-workspace-definitions.patch
+Source3:        0009-avoid-duplicate-workspace-definitions.patch
 
 # * drop non-Linux dependencies (non-upstreamable), generated with:
 #   "for i in $(find -name Cargo.toml) ; do rust2rpm-helper strip-foreign $i -o $i ; done"
@@ -62,6 +62,10 @@ Patch:          0004-do-not-strip-debuginfo-from-built-binary-executable.patch
 Patch:          0005-bump-pyproject-toml-dependency-from-0.9-to-0.11.patch
 # * drop unavailable compile-time diagnostics feature for UUIDs (non-upstreamable)
 Patch:          0006-drop-unavailable-features-from-uuid-dependency.patch
+# * backport compatibility fix for insta 1.41
+Patch:          0007-Update-Rust-crate-insta-to-v1.41.0-13956.patch
+# * bump rstest dev-dependency from 0.22 to 0.23 (removed again upstream)
+Patch:          0008-bump-rstest-dependency-from-0.22-to-0.23.patch
 
 ExcludeArch:	%{ix86}
 
@@ -77,7 +81,7 @@ Provides:       bundled(typeshed)
 Provides:       bundled(crate(lsp-types)) = 0.95.1
 
 # git snapshot of unreleased upstream at some point after v0.18.0:
-# https://github.com/salsa-rs/salsa/commit/f608ff8
+# https://github.com/salsa-rs/salsa/commit/b14be5c
 Provides:       bundled(crate(salsa)) = 0.18.0
 Provides:       bundled(crate(salsa-macros)) = 0.18.0
 Provides:       bundled(crate(salsa-macro-rules)) = 0.1.0
@@ -112,7 +116,7 @@ popd
 cp -pav crates/lsp-types/LICENSE LICENSE.lsp-types
 cp -pav crates/salsa/LICENSE-APACHE LICENSE-APACHE.salsa
 cp -pav crates/salsa/LICENSE-MIT LICENSE-MIT.salsa
-cp -pav crates/ruff_vendored/vendor/typeshed/LICENSE LICENSE.typeshed
+cp -pav crates/red_knot_vendored/vendor/typeshed/LICENSE LICENSE.typeshed
 
 # drop unused subprojects
 rm -rv crates/red_knot_wasm

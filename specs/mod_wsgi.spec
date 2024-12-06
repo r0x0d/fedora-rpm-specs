@@ -9,19 +9,15 @@
 %endif
 
 Name:           mod_wsgi
-Version:        5.0.0
-Release:        6%{?dist}
+Version:        5.0.2
+Release:        1%{?dist}
 Summary:        A WSGI interface for Python web applications in Apache
 License:        Apache-2.0 AND CC-BY-3.0
 URL:            https://modwsgi.readthedocs.io/
 Source0:        https://github.com/GrahamDumpleton/mod_wsgi/archive/%{version}.tar.gz#/mod_wsgi-%{version}.tar.gz
 Source1:        wsgi.conf
 Source2:        wsgi-python3.conf
-Patch0:         mod_wsgi-5.0.0-ldflags.patch
 Patch1:         mod_wsgi-4.5.20-exports.patch
-
-# Add support for Python 3.13
-Patch2:         https://github.com/GrahamDumpleton/mod_wsgi/pull/883.patch
 
 BuildRequires:  httpd-devel
 BuildRequires:  gcc
@@ -157,6 +153,9 @@ ln -s %{_bindir}/mod_wsgi-express-2 $RPM_BUILD_ROOT%{_bindir}/mod_wsgi-express
 %endif
 
 %changelog
+* Wed Dec  4 2024 Joe Orton <jorton@redhat.com> - 5.0.2-1
+- update to 5.0.2 (#2250905)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

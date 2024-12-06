@@ -6,7 +6,7 @@
 # Upstream source information.
 %global upstream_owner    AdaCore
 %global upstream_name     xmlada
-%global upstream_version  24.0.0
+%global upstream_version  25.0.0
 %global upstream_gittag   v%{upstream_version}
 
 Name:           xmlada
@@ -277,6 +277,12 @@ find %{buildroot}%{_includedir}/%{name}/sources -type d -empty -delete
 ###############
 
 %changelog
+* Wed Dec 04 2024 Pavel Zhukov <landgraf@fedoraproject.org> - 2:25.0.0-2
+- Disable bootstrap
+
+* Sun Oct 27 2024 Dennis van Raaij <dvraaij@fedoraproject.org> - 2:25.0.0-1
+- Updated to v25.0.0.
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2:24.0.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

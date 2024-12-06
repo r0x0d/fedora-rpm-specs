@@ -1,10 +1,10 @@
 Name:		perl-Crypt-Curve25519
 Version:	0.07
-Release:	8%{?dist}
+Release:	9%{?dist}
 Summary:	Generate shared secret using elliptic-curve Diffie-Hellman function
 License:	(GPL-1.0-or-later OR Artistic-1.0-Perl) AND BSD-3-Clause
 URL:		https://metacpan.org/release/Crypt-Curve25519
-Source0:	https://cpan.metacpan.org/modules/by-module/Crypt/Crypt-Curve25519-%{version}.tar.gz
+Source0:	https://www.cpan.org/modules/by-module/Crypt/Crypt-Curve25519-%{version}.tar.gz
 # Build
 BuildRequires:	coreutils
 BuildRequires:	findutils
@@ -14,7 +14,7 @@ BuildRequires:	perl-devel
 BuildRequires:	perl-generators
 BuildRequires:	perl-interpreter
 BuildRequires:	perl(Config)
-BuildRequires:	perl(ExtUtils::MakeMaker)
+BuildRequires:	perl(ExtUtils::MakeMaker) >= 6.76
 # Module
 BuildRequires:	perl(Carp)
 BuildRequires:	perl(Exporter)
@@ -23,7 +23,8 @@ BuildRequires:	perl(warnings)
 BuildRequires:	perl(XSLoader)
 # Test Suite
 BuildRequires:	perl(Test::More) >= 0.88
-# Runtime
+# Dependencies
+# (none)
 
 %description
 Curve25519 is a Diffie-Hellman function suitable for a wide variety of
@@ -39,12 +40,15 @@ users.
 %setup -q -n Crypt-Curve25519-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor OPTIMIZE="%{optflags}"
-make %{?_smp_mflags}
+perl Makefile.PL \
+	INSTALLDIRS=vendor \
+	NO_PACKLIST=1 \
+	NO_PERLLOCAL=1 \
+	OPTIMIZE="%{optflags}"
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 find %{buildroot} -type f -name '*.bs' -empty -delete
 %{_fixperms} -c %{buildroot}
 
@@ -59,6 +63,10 @@ make test
 %{_mandir}/man3/Crypt::Curve25519.3*
 
 %changelog
+* Wed Dec  4 2024 Paul Howarth <paul@city-fan.org> - 0.07-9
+- Use %%{make_build} and %%{make_install}
+- Switch source URL from cpan.metacpan.org to www.cpan.org
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.07-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -34,14 +34,11 @@ Version:        4.24.0
 Release:        %autorelease
 Summary:        Translated man pages from the Linux Documentation Project and other software projects
 
-# original man pages are under various licenses, translations are GPLv3+
+# original man pages are under various licenses, translations are GPL-3.0-or-later
 # generated from upstream/fedora-rawhide/packages.txt with:
-#   dnf --disablerepo=* --enablerepo=rawhide repoquery --queryformat "%%{license}" $(<upstream/fedora-rawhide/packages.txt) |\
-#   sed 's/) and (/)\n(/g;s/) and /)\n/g;s/ and (/\n(/g' |\
-#   sed '/^(/!s/\(.* or .*\)/(\1)/' |\
-#   sed '/^(/!s/ and /\n/g' |\
-#   (echo GPLv3+ && cat) |\
-#   sort -u
+#   dnf --disablerepo=* --enablerepo=rawhide repoquery --queryformat "%%{license}\n" $(<upstream/fedora-rawhide/packages.txt) |\
+#   (echo GPL-3.0-or-later && cat) |\
+#   sort -u | sed -z 's/\n/ AND /g'
 License:        Artistic Licence 2.0 and BSD and BSD with advertising and Copyright only and GFDL and GPL+ and GPLv2 and GPLv2+ and (GPLv2+ or Artistic) and GPLv2 with exceptions and GPLv2+ with exceptions and GPLv3+ and (GPLv3+ and BSD) and (GPLv3+ or BSD) and IJG and ISC and LGPLv2+ and LGPLv3+ and (LGPLv3+ or BSD) and MIT and psutils and Public Domain and Sendmail and Verbatim
 
 URL:            https://manpages-l10n-team.pages.debian.net/manpages-l10n/

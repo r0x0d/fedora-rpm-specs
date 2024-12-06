@@ -34,7 +34,7 @@
 %global sum_zh  FastAPI 框架
 
 Name:           python-fastapi
-Version:        0.115.5
+Version:        0.115.6
 Release:        %autorelease
 Summary:        %{sum_en}
 
@@ -48,9 +48,6 @@ BuildArch:      noarch
 # Downstream-only: run test_fastapi_cli without coverage
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 Patch:          0001-Downstream-only-run-test_fastapi_cli-without-coverag.patch
-# ♻️ Update tests and internals for compatibility with Pydantic >=2.10
-# https://github.com/fastapi/fastapi/pull/12971
-Patch:          %{url}/pull/12971.patch
 
 BuildRequires:  python3-devel
 
@@ -743,25 +740,21 @@ warningsfilter="${warningsfilter-} -W ignore::DeprecationWarning"
 # (https://github.com/python-trio/trio/issues/2211)
 warningsfilter="${warningsfilter-} -W ignore::trio.TrioDeprecationWarning"
 
-%if v"0%{?python3_version}" >= v"3.13"
-# Python 3.13.0b2: test_gzip_ignored_for_responses_with_encoding_set[trio]
-# fails with a ValueError: I/O operation on closed file
-# https://github.com/encode/starlette/issues/2615
+# Various tests give:
+#
+# E ResourceWarning: unclosed database in <sqlite3.Connection object at 0x[…]>
+#
+# …resulting in:
+#
+# /usr/lib/python3.13/site-packages/_pytest/unraisableexception.py:85:
+# PytestUnraisableExceptionWarning
+#
+# We would like to report these upstream (i.e., create a “discussion” since
+# upstream uses those to gatekeep creating actual issues), but we cannot
+# reproduce them in a virtualenv since running the tests the way upstream
+# recommends results in hundreds of "TypeError: ('parser', <class 'module'>)"
+# errors. Let’s wait and see what happens.
 warningsfilter="${warningsfilter-} -W ignore::pytest.PytestUnraisableExceptionWarning"
-
-# TODO: Report these upstream (i.e., create a “discussion” since upstreame uses
-# those to gatekeep creating actual issues) once dependencies support Python
-# 3.13 and we can reproduce them in a virtualenv.
-
-# _______________ ERROR collecting tests/test_callable_endpoint.py _______________
-# […]
-# fastapi/routing.py:451: in __init__
-#     self.name = get_name(endpoint) if name is None else name
-# /usr/lib/python3.13/site-packages/starlette/routing.py:103: in get_name
-#     return endpoint.__name__
-# E   AttributeError: 'functools.partial' object has no attribute '__name__'. Did you mean: '__ne__'?
-ignore="${ignore-} --ignore=tests/test_callable_endpoint.py"
-%endif
 
 %pytest ${warningsfilter-} -k "${k-}" ${ignore-}
 

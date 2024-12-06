@@ -174,14 +174,14 @@ find . -name "*.cc" -exec chmod 644 {} \;
 rm -fr %{buildroot}%{_docdir}/%{yname}
 
 # Install add-on on Blender directory
-mkdir -p %{buildroot}%{blender_addons}/%{yname}
+mkdir -p %{buildroot}%{blender_extensions}/%{yname}
 
 %if %{snapshot}
 cp -pR %{name}-Blender-%{commit1}/* \
-  %{buildroot}%{blender_addons}/%{yname}
+  %{buildroot}%{blender_extensions}/%{yname}
 %else
 cp -pR %{name}-Blender-%{version}/* \
-  %{buildroot}%{blender_addons}/%{yname}
+  %{buildroot}%{blender_extensions}/%{yname}
 %endif
 
 
@@ -209,7 +209,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{yname}-blend
 %files blender
 %license LICENSES
 %{_metainfodir}/%{yname}-blender.metainfo.xml
-%{blender_addons}/%{yname}/*
+%{blender_extensions}/%{yname}/*
 
 %files -n python3-%{name}
 %{python3_sitearch}/*.{py,so}

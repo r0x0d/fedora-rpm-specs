@@ -1,11 +1,11 @@
 Name:           lowdown
-Version:        1.1.2
+Version:        1.3.0
 Release:        %autorelease
 Summary:        Simple markdown translator
 
 License:        ISC AND BSD-3-Clause AND MIT
 URL:            https://kristaps.bsd.lv/lowdown/
-%global github_version_tag %(c=%{version}; echo VERSION_$c | tr '.' '_')
+%global github_version_tag %(tr '.' '_' <<<VERSION_%{version})
 
 Source:         https://github.com/kristapsdz/lowdown/archive/%{github_version_tag}/%{name}-%{version_no_tilde}.tar.gz
 Patch:          0001-Makefile-link-lowdown-dynamically-and-lowdown-diff-s.patch
@@ -86,6 +86,7 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} \
 %dir %_datadir/lowdown
 %dir %_datadir/lowdown/odt
 %_datadir/lowdown/odt/styles.xml
+%_datadir/lowdown/html/default.html
 
 %files libs
 %_mandir/man3/lowdown.3*
