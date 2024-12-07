@@ -1,6 +1,5 @@
 %if %{defined rhel}
 %bcond_with mpich
-%bcond_with openmpi
 %else
 # TODO check later if we can enable mpich on s390x
 %ifarch s390 s390x
@@ -8,11 +7,11 @@
 %else
 %bcond_without mpich
 %endif
+%endif
 %ifarch s390 s390x %{ix86}
 %bcond_with openmpi
 %else
 %bcond_without openmpi
-%endif
 %endif
 %if %{with mpich}
 %global mpi_list %{?mpi_list} mpich
@@ -23,7 +22,7 @@
 
 Name:           fftw
 Version:        3.3.10
-Release:        13%{?dist}
+Release:        14%{?dist}
 Summary:        A Fast Fourier Transform library
 # Generally, the code is under GPL but some headers are also under MIT or BSD:
 License:        GPL-2.0-or-later AND MIT AND BSD-2-Clause
@@ -546,6 +545,9 @@ done
 %endif
 
 %changelog
+* Mon Dec 02 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 3.3.10-14
+- Enable openmpi for RHEL
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.3.10-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

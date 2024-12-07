@@ -7,7 +7,7 @@
 # for fastapi-cli-slim belong to an optional extra.
 
 Name:           fastapi-cli
-Version:        0.0.5
+Version:        0.0.6
 Release:        %autorelease
 Summary:        Run and manage FastAPI apps from the command line with FastAPI CLI
 

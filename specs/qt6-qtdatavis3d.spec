@@ -11,7 +11,7 @@
 Summary: Qt6 - Qt Data Visualization component
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -70,6 +70,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 %files
 %license LICENSES/GPL*
+%{_qt6_archdatadir}/sbom/qtdatavisualization-%{qt_version}.spdx
 %{_qt6_libdir}/libQt6DataVisualization.so.6*
 %{_qt6_libdir}/libQt6DataVisualizationQml.so.6*
 %{_qt6_qmldir}/QtDataVisualization/
@@ -91,7 +92,6 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/pkgconfig/*.pc
-%{_qt6_libdir}/qt6/sbom/qtdatavisualization-%{qt_version}.spdx
 
 %if 0%{?examples}
 %files examples
@@ -100,7 +100,10 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 
 %changelog
-* Mon Dec 02 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Mon Dec 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
 - 6.8.1
 
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1

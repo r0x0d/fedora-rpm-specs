@@ -1,5 +1,5 @@
 Name:           python-tox-uv
-Version:        1.15.0
+Version:        1.16.1
 Release:        %autorelease
 Summary:        Integration of uv with tox
 
@@ -7,7 +7,7 @@ License:        MIT
 URL:            https://github.com/tox-dev/tox-uv
 Source:         %{pypi_source tox_uv}
 
-# as with python-tox, those tests run ont he CI only, as they need internet access
+# as with python-tox, those tests run on the CI only, as they need internet access
 %bcond ci_tests 0
 
 BuildArch:      noarch
@@ -33,15 +33,15 @@ Summary:        %{summary}
 %prep
 %autosetup -p1 -n tox_uv-%{version}
 # Remove unpackaged (devpi-process) and coverage test dependencies
-sed -Ei '/"(devpi-process|covdefaults|pytest-cov)/d' pyproject.toml
+sed -Ei '/"(devpi-process|covdefaults|diff-cover|pytest-cov)/d' pyproject.toml
 # Relax some build/test dependencies
-sed -Ei 's/"(hatchling|pytest(-mock)?|diff-cover)>=[^"]+"/"\1"/' pyproject.toml
+sed -Ei 's/"(hatchling|pytest(-mock)?)>=[^"]+"/"\1"/' pyproject.toml
 # And a runtime dependency, where we must be more careful
 sed -i 's/"packaging>=24.1"/"packaging>=23.1"/' pyproject.toml
 
 
 %generate_buildrequires
-%pyproject_buildrequires -x testing
+%pyproject_buildrequires -g test
 
 
 %build

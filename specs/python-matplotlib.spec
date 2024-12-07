@@ -32,13 +32,13 @@
 %global _docdir_fmt %{name}
 
 # Updated test images for new FreeType.
-%global mpl_images_version 3.9.1
+%global mpl_images_version 3.9.3
 
 # The version of FreeType in this Fedora branch.
 %global ftver 2.13.1
 
 Name:           python-matplotlib
-Version:        3.9.1
+Version:        3.9.3
 %global Version %{version_no_tilde %{quote:%nil}}
 Release:        %autorelease
 Summary:        Python 2D plotting library
@@ -309,7 +309,7 @@ gzip -dc %SOURCE1000 | tar xf - --transform='s~^mpl-images-%{mpl_images_version}
 
 
 %generate_buildrequires
-%pyproject_buildrequires -w %build_backend_args
+%pyproject_buildrequires -p
 
 
 %build
@@ -371,6 +371,8 @@ k="${k-}${k+ and }not test_form_widget_get_with_datetime_and_date_fields"
 k="${k-}${k+ and }not test_cross_Qt_imports"
 %endif
 
+# This fixes GTK4 which is missing a dependency for its current default renderer.
+GSK_RENDERER=cairo \
 MPLCONFIGDIR=$PWD \
 %ifnarch %{ix86}
      xvfb-run -a -s "-screen 0 640x480x24" \

@@ -928,10 +928,8 @@ cp -a libstdc++-v3/config/cpu/i{4,3}86/atomicity.h
 
 LC_ALL=C sed -i -e 's/\xa0/ /' gcc/doc/options.texi
 
-sed -i -e '/ldp_fusion/s/Init(1)/Init(0)/' gcc/config/aarch64/aarch64.opt
-
 sed -i -e 's/Common Driver Var(flag_report_bug)/& Init(1)/' gcc/common.opt
-sed -i -e 's/context->report_bug = false;/context->report_bug = true;/' gcc/diagnostic.cc
+sed -i -e 's/m_report_bug = false;/m_report_bug = true;/' gcc/diagnostic.cc
 
 %ifarch ppc
 if [ -d libstdc++-v3/config/abi/post/powerpc64-linux-gnu ]; then
@@ -3620,6 +3618,10 @@ end
 %endif
 
 %changelog
+- fix up -freport-bug default (#2330362)
+- revert -mearly-ldp-fusion and -mlate-ldp-fusion default to enabled on
+  aarch64 to match upstream
+
 * Mon Nov  4 2024 Jakub Jelinek <jakub@redhat.com> 14.2.1-6
 - update from releases/gcc-14 branch
   - PRs fortran/79685, jit/117275, libstdc++/117321, libstdc++/117406,

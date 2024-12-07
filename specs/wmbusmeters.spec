@@ -4,7 +4,7 @@ Name:                  wmbusmeters
 %global forgeurl       https://github.com/weetmuts/%{name}
 
 %if %{with_tag}
-%global tag            1.17.1
+%global tag            1.18.0
 Version:               %{tag}
 %else
 %global date           20210813
@@ -14,7 +14,7 @@ Version:               1.4.0
 
 %forgemeta
 
-Release:               2%{?dist}
+Release:               1%{?dist}
 Summary:               Read the wireless mbus protocol to acquire utility meter readings
 License:               GPL-3.0-or-later
 Url:                   %{forgeurl}
@@ -102,6 +102,9 @@ install -p -m 0644 %{SOURCE2} %{buildroot}%{_unitdir}/%{name}.service
 
 
 %changelog
+* Thu Dec 05 2024 Damian Wrobel <dwrobel@ertelnet.rybnik.pl> - 1.18.0-1
+- Update to 1.18.0 (rhbz#2329228)
+
 * Mon Oct 07 2024 Damian Wrobel <dwrobel@ertelnet.rybnik.pl> - 1.17.1-2
 - Rebuilt for updated license tag
 

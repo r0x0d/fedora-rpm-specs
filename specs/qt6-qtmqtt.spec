@@ -4,7 +4,7 @@
 
 Name:           qt6-%{qt_module}
 Version:        6.8.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Qt6 - Mqtt module
 
 License:        GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -54,6 +54,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 %files
 %license LICENSES/*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{version}.spdx
 %{_qt6_libdir}/libQt6Mqtt.so.6*
 
 %files devel
@@ -68,13 +69,15 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %dir %{_qt6_libdir}/cmake/Qt6Mqtt/
 %dir %{_qt6_headerdir}/QtMqtt
-%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 
 %files examples
 %{_qt6_examplesdir}
 
 %changelog
-* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
 - 6.8.1
 
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1

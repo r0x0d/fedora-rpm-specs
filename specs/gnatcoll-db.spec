@@ -1,13 +1,13 @@
 # Upstream source information.
 %global upstream_owner    AdaCore
 %global upstream_name     gnatcoll-db
-%global upstream_version  24.0.0
+%global upstream_version  25.0.0
 %global upstream_gittag   v%{upstream_version}
 
 Name:           gnatcoll-db
 Epoch:          2
 Version:        %{upstream_version}
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        The GNAT Components Collection – database packages
 Summary(sv):    GNAT Components Collection – databaspaket
 
@@ -19,13 +19,16 @@ Source:         %{url}/archive/%{upstream_gittag}/%{upstream_name}-%{upstream_ve
 
 # This patch makes gnatcoll_db2ada run dborm.py in python3, and also corrects
 # the location of dborm.py:
-Patch:          gnatcoll-db-dborm_python3.patch
+Patch:          %{name}-dborm_python3.patch
+# [Backport] Refine dependencies on GNATColl (be1a7c6).
+Patch:          %{name}-refine-dependencies-to-gnatcoll.patch
 
 BuildRequires:  gcc-gnat gprbuild sed make
 # A fedora-gnat-project-common that contains GPRbuild_flags is needed.
 BuildRequires:  fedora-gnat-project-common >= 3.17
-BuildRequires:  gnatcoll-core-devel  = %{epoch}:%{version}
-BuildRequires:  gnatcoll-iconv-devel = %{epoch}:%{version}
+BuildRequires:  gnatcoll-core-devel     = %{epoch}:%{version}
+BuildRequires:  gnatcoll-projects-devel = %{epoch}:%{version}
+BuildRequires:  gnatcoll-iconv-devel    = %{epoch}:%{version}
 # Although upstream doesn't explicitly say so, I guess it's best to keep all
 # the parts of Gnatcoll on the same version number.
 BuildRequires:  sqlite-devel libpq-devel
@@ -281,7 +284,7 @@ databaskomponenter och Xref.
 #############
 
 %prep
-%autosetup -p0
+%autosetup -p1
 
 # Delete the bundled SQLite to be extra sure that the packaged version is used.
 rm --recursive sqlite/amalgamation
@@ -346,9 +349,10 @@ make -C docs html latexpdf
 #############
 
 %install
-# The libraries have already been staged, so just move them to the "buildroot"
+# The libraries have already been staged, so just copy them to the "buildroot"
 # staging directory.
-mv stage/* --target-directory=%{buildroot}
+# Avoid mv because find-debuginfo will want to collect some files under stage.
+cp --archive stage/* --target-directory=%{buildroot}
 
 # Stage the executable files.
 mkdir --parents %{buildroot}%{_bindir} %{buildroot}%{_libexecdir}/gnatcoll
@@ -485,6 +489,9 @@ cp --preserve=timestamps COPYING3 COPYING.RUNTIME \
 ###############
 
 %changelog
+* Sun Oct 27 2024 Dennis van Raaij <dvraaij@fedoraproject.org> - 2:25.0.0-1
+- Updated to v25.0.0.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2:24.0.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

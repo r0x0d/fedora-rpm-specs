@@ -9,7 +9,7 @@
 Summary: Qt6 - QtImageFormats component
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -71,6 +71,7 @@ rm -rv src/3rdparty
 %files
 %license LICENSES/GPL*
 %license LICENSES/LGPL*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_plugindir}/imageformats/libqmng.so
 %{_qt6_plugindir}/imageformats/libqtga.so
 %{_qt6_plugindir}/imageformats/libqtiff.so
@@ -80,10 +81,12 @@ rm -rv src/3rdparty
 %{_qt6_plugindir}/imageformats/libqwebp.so
 %{_qt6_libdir}/cmake/Qt6/*.cmake
 %{_qt6_libdir}/cmake/Qt6Gui/*.cmake
-%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{qt_version}.spdx
 
 %changelog
-* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
 - 6.8.1
 
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1

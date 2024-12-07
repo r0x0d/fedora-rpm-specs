@@ -1,14 +1,14 @@
 %global	gem_name	http-cookie
 
 Name:		rubygem-%{gem_name}
-Version:	1.0.7
-Release:	2%{?dist}
+Version:	1.0.8
+Release:	1%{?dist}
 
 Summary:	Ruby library to handle HTTP Cookies based on RFC 6265
 License:	MIT
 URL:		https://github.com/sparklemotion/http-cookie
-#Source0:	https://rubygems.org/gems/%{gem_name}-%{version}.gem
-Source0:	https://github.com/sparklemotion/%{gem_name}/archive/v%{version}.tar.gz/#/%{gem_name}-%{version}.tar.gz
+Source0:	https://rubygems.org/gems/%{gem_name}-%{version}.gem
+%dnl Source0:	https://github.com/sparklemotion/%{gem_name}/archive/v%{version}.tar.gz/#/%{gem_name}-%{version}.tar.gz
 
 Requires:	ruby(release)
 BuildRequires:	ruby(release)
@@ -40,7 +40,7 @@ Documentation for %{name}
 
 %prep
 %setup -q -n %{gem_name}-%{version}
-%if 0
+%if 1
 mv ../%{gem_name}-%{version}.gemspec .
 %else
 find . -type f | sort | sed -e 's|\./||' > ../ls-files
@@ -90,6 +90,9 @@ popd
 %doc	%{gem_instdir}/CHANGELOG.md
 
 %changelog
+* Fri Dec 06 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.0.8-1
+- 1.0.8
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.7-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -2,7 +2,7 @@
 
 Name:          qt6-qtgraphs
 Version:       6.8.1
-Release:       1%{?dist}
+Release:       2%{?dist}
 
 %global examples 1
 
@@ -81,6 +81,7 @@ popd
 
 %files
 %license LICENSES/BSD-3-Clause.txt LICENSES/GFDL*.txt LICENSES/GPL-*.txt
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_libdir}/libQt6Graphs.so.6*
 %{_qt6_libdir}/libQt6GraphsWidgets.so.6*
 %{_qt6_libdir}/qt6/metatypes/qt6graphs_relwithdebinfo_metatypes.json
@@ -104,7 +105,6 @@ popd
 %{_qt6_libdir}/qt6/mkspecs/modules/qt_lib_graphs*.pri
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
-%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{qt_version}.spdx
 
 %if 0%{?examples}
 %files examples
@@ -112,7 +112,10 @@ popd
 %endif
 
 %changelog
-* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
 - 6.8.1
 
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1

@@ -3,7 +3,7 @@
 
 Name:           python-%{pypi_name}
 Version:        0.1.9
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Sphinx extension for documenting CLI programs
 
 License:        LicenseRef-Callaway-BSD
@@ -34,8 +34,6 @@ Summary:        %{summary}
 
 Requires:       python3-sphinx >= 1.2
 Requires:       python3-six
-# https://bugzilla.redhat.com/show_bug.cgi?id=2220964
-Requires:       python3-zombie-imp
 %description -n python3-%{pypi_name}
 This extension provides an automated way to document CLI programs.
 It scans ArgumentParser objects and then expands it into a set of
@@ -66,6 +64,9 @@ rm -rf %{pypi_name}.egg-info
 %{python3_sitelib}/sphinxcontrib_autoprogram-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Thu Dec 05 2024 Romain Geissler <romain.geissler@amadeus.com> - 0.1.9-6
+- Remove python3-zombie-imp dependency as upstream no longer uses it
+
 * Wed Dec 04 2024 mh <mh+fedora@scrit.ch> <msuchy@redhat.com> - 0.1.9-5
 - Fix working with newer setuptools (bz#2319720)
 - Adapt to correct licens

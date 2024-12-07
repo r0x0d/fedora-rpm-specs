@@ -710,7 +710,7 @@ cp TSRM/LICENSE TSRM_LICENSE
 cp Zend/asm/LICENSE BOOST_LICENSE
 cp sapi/fpm/LICENSE fpm_LICENSE
 cp ext/mbstring/libmbfl/LICENSE libmbfl_LICENSE
-# cp ext/fileinfo/libmagic/LICENSE libmagic_LICENSE
+cp ext/fileinfo/libmagic/LICENSE libmagic_LICENSE
 cp ext/bcmath/libbcmath/LICENSE libbcmath_LICENSE
 cp ext/date/lib/LICENSE.rst timelib_LICENSE
 
@@ -1368,7 +1368,7 @@ systemctl try-restart php-fpm.service >/dev/null 2>&1 || :
 %files common -f files.common
 %doc EXTENSIONS NEWS UPGRADING* README.REDIST.BINS *md docs
 %license LICENSE TSRM_LICENSE ZEND_LICENSE BOOST_LICENSE
-#license libmagic_LICENSE
+%license libmagic_LICENSE
 %license timelib_LICENSE
 %doc php.ini-*
 %config(noreplace) %{_sysconfdir}/php.ini

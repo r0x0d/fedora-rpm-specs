@@ -1,6 +1,6 @@
 
 Name:		console-setup
-Version:	1.232
+Version:	1.233
 Release:	1%{?dist}
 Summary:	Tools for configuring the console using X Window System key maps
 
@@ -8,8 +8,6 @@ Summary:	Tools for configuring the console using X Window System key maps
 License:	GPL-2.0-or-later AND MIT AND LicenseRef-Fedora-Public-Domain
 URL:		http://packages.debian.org/cs/sid/console-setup
 Source0:	http://ftp.de.debian.org/debian/pool/main/c/%{name}/%{name}_%{version}.tar.xz
-# Doubled bdf fonts taken from console-setup-1.231
-Source1:	doubled-fonts.tar.gz
 
 # Fixes installing paths to Fedora style
 Patch0:		console-setup-1.76-paths.patch
@@ -17,9 +15,6 @@ Patch0:		console-setup-1.76-paths.patch
 Patch1:		console-setup-1.76-fsf-address.patch
 # Removes Caps_Lock to CtrlL_Lock substitution
 Patch2:		console-setup-1.84-ctrll-lock.patch
-# Changes path to DejaVu fonts on Fedora, disables creation of
-# doubled bdf fonts, we don't have bdfresize in Fedora (see source1)
-Patch3:		console-setup-1.232-dejavu-font-path.patch
 
 Requires:	kbd
 # require 'xkeyboard-config' to have X Window keyboard descriptions?
@@ -27,7 +22,6 @@ Requires:	kbd
 BuildRequires:	perl-generators
 BuildRequires:	perl(encoding) perl(open)
 BuildRequires:	make
-BuildRequires:	unifont dejavu-sans-mono-fonts otf2bdf
 BuildArch:	noarch
 
 %description
@@ -52,18 +46,13 @@ not wasted but used for another symbol.
 
 
 %prep
-%setup -q -n %{name}
+%setup -q -n %{name}-%{version}
 %autopatch -p1
 
 cp -a --remove-destination debian/copyright COPYRIGHT
 cp -a --remove-destination debian/changelog CHANGES
 
-tar xzf %{SOURCE1} -C Fonts/bdf --strip-components=1
-
 %build
-# create bdf fonts
-make bdf
-
 make build-linux
 
 
@@ -105,6 +94,10 @@ cp -a Fonts/fontsets Fonts/*.equivalents Fonts/*.set \
 
 
 %changelog
+* Thu Dec 05 2024 Vitezslav Crhonek <vcrhonek@redhat.com> - 1.233-1
+- Update to latest upstream version
+  Resolves: #2329591
+
 * Wed Nov 27 2024 Vitezslav Crhonek <vcrhonek@redhat.com> - 1.232-1
 - Update to latest upstream version
 - Add doubled bdf fonts from previous release to sources

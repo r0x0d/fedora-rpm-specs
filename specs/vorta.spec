@@ -1,5 +1,5 @@
 Name:           vorta
-Version:        0.10.1
+Version:        0.10.2
 Release:        1%{?dist}
 Summary:        A GUI for Borg Backup
 License:        GPL-3.0-only AND BSD-2-Clause AND OFL-1.1
@@ -67,6 +67,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 
 
 %changelog
+* Thu Dec 05 2024 jonathanspw <jonathan@almalinux.org> - 0.10.2-1
+- update to 0.10.2 rhbz#2330620
+
 * Mon Nov 11 2024 jonathanspw <jonathan@almalinux.org> - 0.10.1-1
 - update to 0.10.1 rhbz#2319881
 

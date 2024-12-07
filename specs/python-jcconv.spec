@@ -1,67 +1,66 @@
-%if 0%{?fedora} || 0%{?rhel} >= 8
-%global py2pkg_suffix 2
-%endif # 0#{?fedora} || 0#{?rhel} >= 8
-
 %global pypi_name jcconv
-%global common_desc				\
-%{summary} - inter-convert hiragana, katakana,	\
-half-width kana.
 
+Name:          python-%{pypi_name}
+Version:       0.3.0
+Release:       1%{?dist}
+Summary:       JapaneseCharacterCONVerter
 
-Name:		python-%{pypi_name}
-Version:	0.2.4
-Release:	29%{?dist}
-Summary:	JapaneseCharacterCONVerter
+License:       MIT
+URL:           https://pypi.python.org/pypi/%{pypi_name}
+Source0:       https://github.com/besser82/jcconv/archive/v%{version}.tar.gz#/%{pypi_name}-%{version}.tar.gz
 
-License:	MIT
-URL:		https://pypi.python.org/pypi/%{pypi_name}
-Source0:	https://github.com/besser82/jcconv/archive/v%{version}.tar.gz#/%{pypi_name}-%{version}.tar.gz
-
-BuildArch:	noarch
+BuildArch:     noarch
+BuildRequires: python3-devel
 
 %description
-%{common_desc}
+inter-convert hiragana, katakana, and half-width kana
 
 
 %package -n python3-%{pypi_name}
-Summary:%{summary}
-
-BuildRequires:	python3-devel
-BuildRequires:	python3-setuptools
-BuildRequires:	python3-six
-
-Requires:	python3-six
-
-%{?python_provide:%python_provide python3-%{pypi_name}}
+Summary:       %{summary}
 
 %description -n python3-%{pypi_name}
-%{common_desc}
+inter-convert hiragana, katakana, and half-width kana
 
 
 %prep
-%autosetup -n %{pypi_name}-%{version}
+%autosetup -p1 -n %{pypi_name}-%{version}
+
+
+%generate_buildrequires
+%pyproject_buildrequires
 
 
 %build
-%py3_build
+%pyproject_wheel
 
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l %{pypi_name}
 
 
 %check
-%{__python3} setup.py test -vv
+%py3_test_envvars
+%pyproject_check_import
+%{python3} -m unittest -v
 
 
-%files -n python3-%{pypi_name}
-%license LICENSE.txt
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %doc %{pypi_name}.egg-info/PKG-INFO README.rst
-%{python3_sitelib}/%{pypi_name}
-%{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
 
 
 %changelog
+* Thu Dec 05 2024 Björn Esser <besser82@fedoraproject.org> - 0.3.0-1
+- New release
+- Run unittest in verbose mode
+
+* Thu Dec 05 2024 Björn Esser <besser82@fedoraproject.org> - 0.2.4-30
+- Run unittests directly
+  Fixes: rhbz#2319667
+- Modernize spec-file
+- Add patch to fix setuptool warnings
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.4-29
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

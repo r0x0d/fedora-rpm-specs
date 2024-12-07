@@ -2,7 +2,7 @@
 
 Summary:	Persistent connections using Net::HTTP plus a speed fix
 Name:		rubygem-%{gem_name}
-Version:	4.0.4
+Version:	4.0.5
 Release:	1%{?dist}
 # SPDX confirmed
 License:	MIT
@@ -78,6 +78,9 @@ popd
 %{gem_docdir}/
 
 %changelog
+* Thu Dec 05 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 4.0.5-1
+- 4.0.5
+
 * Tue Sep 10 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 4.0.4-1
 - 4.0.4
 

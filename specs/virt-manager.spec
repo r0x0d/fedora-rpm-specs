@@ -7,21 +7,16 @@
 # End local config
 
 Name: virt-manager
-Version: 4.1.0
-Release: 9%{?dist}
+Version: 5.0.0
+Release: 1%{?dist}
 %global verrel %{version}-%{release}
 
 Summary: Desktop tool for managing virtual machines via libvirt
 License: GPL-2.0-or-later
 BuildArch: noarch
 URL: https://virt-manager.org/
-Source0: https://virt-manager.org/download/sources/%{name}/%{name}-%{version}.tar.gz
+Source0: https://releases.pagure.org/%{name}/%{name}-%{version}.tar.xz
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=2294201
-Patch1: 0001-Fix-pylint-pycodestyle-warnings-with-latest-versions.patch
-
-# https://fedoraproject.org/wiki/Changes/ConfidentialVirtHostAMDSEVSNP
-Patch2: 0001-virtinst-add-properties-for-AMD-SEV-SNP.patch
 
 Requires: virt-manager-common = %{verrel}
 Requires: python3-gobject >= 3.31.3
@@ -31,9 +26,6 @@ Requires: gtk-vnc2
 %if 0%{?fedora}
 Requires: spice-gtk3
 %endif
-
-# We can work with gtksourceview 3 or gtksourceview4, pick the latest one
-Requires: gtksourceview4
 
 # virt-manager is one of those apps that people will often install onto
 # a headless machine for use over SSH. This means the virt-manager dep
@@ -54,6 +46,10 @@ Requires: dconf
 # no ambiguity.
 Requires: vte291
 
+# We can use GtkTextView, gtksourceview 3 or gtksourceview4, recommend
+# the latest one but don't make it a hard requirement
+Recommends: gtksourceview4
+
 # Weak dependencies for the common virt-manager usecase
 Recommends: (libvirt-daemon-kvm or libvirt-daemon-qemu)
 Recommends: libvirt-daemon-config-network
@@ -64,7 +60,7 @@ Suggests: python3-libguestfs
 BuildRequires: gettext
 BuildRequires: python3-devel
 BuildRequires: python3-docutils
-BuildRequires: python3-setuptools
+BuildRequires: meson
 
 
 %description
@@ -115,24 +111,16 @@ machine).
 
 
 %build
-%if %{default_hvs}
-%global _default_hvs --default-hvs %{default_hvs}
-%endif
-
-%if 0%{?rhel}
-%global _default_graphics --default-graphics=vnc
-%endif
-
-./setup.py configure \
-    --prefix=%{_prefix} \
-    %{?_default_hvs} \
-    %{?_default_graphics}
-
+%meson \
+    -Ddefault-hvs=%{default_hvs} \
+    -Dupdate-icon-cache=false \
+    -Dcompile-schemas=false \
+    -Dtests=disabled
+%meson_build
 
 %install
-./setup.py \
-    --no-update-icon-cache --no-compile-schemas \
-    install -O1 --root=%{buildroot} --prefix=%{_prefix}
+%meson_install
+
 %find_lang %{name}
 
 %if 0%{?py_byte_compile:1}
@@ -181,6 +169,9 @@ machine).
 
 
 %changelog
+* Mon Dec 02 2024 Pavel Hrdina <phrdina@redhat.com> - 5.0.0-1
+- Update to version 5.0.0
+
 * Tue Sep 10 2024 Cole Robinson <crobinso@redhat.com> - 4.1.0-9
 - Add sev-snp changes for feature ConfidentialVirtHostAMDSEVSNP
 

@@ -93,7 +93,7 @@ export VERILATOR_ROOT=%{_datadir}
 autoconf
 %configure \
     --disable-partial-static \
-    --enable-defenv \
+    --disable-defenv \
 %if %{with ccwarn}
     --enable-ccwarn \
 %else 
@@ -130,6 +130,13 @@ mv %{buildroot}%{_datadir}/pkgconfig/verilator.pc %{buildroot}%{_libdir}/pkgconf
 # some tests and examples are CC0 and cannot be packaged into Fedora
 rm -rf %{buildroot}%{_datadir}/verilator/examples
 rm -rf %{buildroot}%{_datadir}/verilator/tests
+
+
+
+# The "tests" are all integration tests.
+# They also define their own build flags,
+# and fail if they are set to anything else.
+%undefine _auto_set_build_flags
 
 %check
 make test

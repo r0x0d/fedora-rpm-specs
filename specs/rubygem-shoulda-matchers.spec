@@ -3,7 +3,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 5.1.0
-Release: 7%{?dist}
+Release: 8%{?dist}
 Summary: Simple one-liner tests for common Rails functionality
 License: MIT
 URL: https://matchers.shoulda.io/
@@ -43,6 +43,11 @@ Patch9: rubygem-shoulda-matchers-pr1506-action_text_rich_texts.patch
 # https://github.com/thoughtbot/shoulda-matchers/pull/1506/commits/a4b25f8702e054b160a876af3dc1cb378c5a8670
 Patch10: rubygem-shoulda-matchers-pr1506-psych-load.patch
 
+# Fix Ruby 3.4 compatibility due to backticks and Hash#inspect changes.
+# https://github.com/thoughtbot/shoulda-matchers/pull/1657
+Patch11: rubygem-shoulda-matchers-6.4.0-Add-Ruby-3.4-support.patch
+Patch12: rubygem-shoulda-matchers-6.4.0-Add-Ruby-3.4-support-spec.patch
+
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
@@ -77,6 +82,7 @@ Documentation for %{name}.
 
 %patch 4 -p1
 %patch 8 -p1
+%patch 11 -p1
 
 pushd %{_builddir}
 %patch 0 -p1
@@ -88,6 +94,7 @@ pushd %{_builddir}
 %patch 7 -p1
 %patch 9 -p1
 %patch 10 -p1
+%patch 12 -p1
 popd
 
 %build
@@ -163,6 +170,15 @@ sed -i "/updating_bundle do |bundle|/a \\
 sed -i "/updating_bundle do |bundle|/a \\
         bundle.remove_gem 'debug'" spec/support/acceptance/helpers/step_helpers.rb
 
+# Drop version such as `ruby "3.4.0"` from Gemfile. This might be problematic
+# with Ruby prerelease versions, failing tests with messages such as:
+# `Your Ruby version is 3.4.0.dev, but your Gemfile specified 3.4.0 (Bundler::RubyVersionMismatch)`
+# BTW the Ruby version was (temporarily 🤷) dropped from Rails template:
+# https://github.com/rails/rails/pull/50914
+sed -i "/updating_bundle do |bundle|/a \\
+        bundle.updating { fs.comment_lines_matching('Gemfile', /^ *ruby (\"|')#{RUBY_VERSION}\\\1/) }" \
+  spec/support/acceptance/helpers/step_helpers.rb
+
 bundle exec rspec spec/acceptance
 
 popd
@@ -181,6 +197,9 @@ popd
 %{gem_instdir}/shoulda-matchers.gemspec
 
 %changelog
+* Thu Dec 05 2024 Vít Ondruch <vondruch@redhat.com> - 5.1.0-8
+- Fix Ruby 3.4 compatibility due to backticks and Hash#inspect changes.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.1.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,6 +1,6 @@
 %global srcname b4
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?el10}
 %bcond_without attest
 %else
 # some attestation dependencies not in EPEL

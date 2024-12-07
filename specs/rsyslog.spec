@@ -36,8 +36,8 @@
 
 Summary: Enhanced system logging and kernel message trapping daemon
 Name: rsyslog
-Version: 8.2408.0
-Release: 2%{?dist}
+Version: 8.2412.0
+Release: 1%{?dist}
 License: GPL-3.0-or-later AND Apache-2.0
 URL: http://www.rsyslog.com/
 Source0: http://www.rsyslog.com/files/download/rsyslog/%{name}-%{version}.tar.gz
@@ -68,6 +68,8 @@ BuildRequires: systemd-devel >= 204-8
 BuildRequires: systemd-rpm-macros
 BuildRequires: zlib-devel
 BuildRequires: libcap-ng-devel
+
+Patch0: disable-openssl-engine.patch
 
 Recommends: logrotate
 Obsoletes: rsyslog-logrotate < 8.2310.0-2
@@ -162,7 +164,6 @@ Group: System Environment/Daemons
 Requires: %name = %version-%release
 Requires: openssl-libs
 BuildRequires: openssl-devel
-BuildRequires: openssl-devel-engine
 %endif
 
 %if %{with snmp}
@@ -380,6 +381,7 @@ rm -r LICENSE README.md source build/objects.inv
 mv build doc
 # set up rsyslog sources
 %setup -q -D
+%patch -P 0 -p1
 
 %if %{with omamqp1}
 # Unpack qpid-proton
@@ -760,6 +762,12 @@ done
 
 
 %changelog
+* Thu Dec 05 2024 Attila Lakatos <alakatos@redhat.com> - 8.2412.0-1
+- Rebase to 8.2412.0
+- Harden rsyslog service unit
+- Disable openssl engines support
+  Resolves: rhbz#2320050
+
 * Fri Oct 04 2024 Attila Lakatos <alakatos@redhat.com> - 8.2408.0-2
 - Rebuild package
   Resolves: rhzb#2316361

@@ -1,15 +1,11 @@
 Name:           wlopm
-Version:        0.1.0
+Version:        1.0.0
 Release:        %autorelease
 Summary:        wlr-output-power-management-v1 client
 
-# Automatically converted from old format: GPLv3 - review is highly recommended.
 License:        GPL-3.0-only
 URL:            https://sr.ht/~leon_plickat/wlopm/
 Source0:        https://git.sr.ht/~leon_plickat/wlopm/archive/v%{version}.tar.gz#/%{name}-v%{version}.tar.gz
-# Fix exec bit on the man file
-# https://lists.sr.ht/~leon_plickat/public-inbox/patches/34406
-Patch:          wlopm-0.1.0-Install-man-file-with-correct-permissions.patch
 
 BuildRequires:  gcc
 BuildRequires:  make
@@ -30,6 +26,7 @@ Simple client implementing zwlr-output-power-management-v1.
 
 
 %install
+install -d %{buildroot}%{bash_completions_dir}
 %make_install PREFIX=%{_prefix}
 
 
@@ -38,6 +35,7 @@ Simple client implementing zwlr-output-power-management-v1.
 %doc README
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
+%{bash_completions_dir}/%{name}
 
 
 %changelog

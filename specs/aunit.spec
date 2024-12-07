@@ -156,7 +156,7 @@ find %{buildroot}%{_pkgdocdir}/pdf/ -type f -not -name 'aunit_cb.pdf' -delete
 # of the hardcoded paths in `directories.gpr`.
 %if %{with check}
 %global checkroot %{_builddir}/%{name}-%{version}/checkroot
-mkdir %{checkroot}
+mkdir %{checkroot}  # without --parents to not clobber any upstream directory
 cp --recursive %{buildroot}/* %{checkroot}/
 %endif
 

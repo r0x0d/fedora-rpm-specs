@@ -11,7 +11,7 @@
 Summary: Qt6 - Connectivity components
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # See LICENSE.GPL3, respectively, for exception details
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -90,6 +90,7 @@ popd
 
 %files
 %license LICENSES/GPL* LICENSES/LGPL*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_libexecdir}/sdpscanner
 %{_qt6_libdir}/libQt6Bluetooth.so.6*
 %{_qt6_libdir}/libQt6Nfc.so.6*
@@ -113,7 +114,6 @@ popd
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/pkgconfig/*.pc
-%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{qt_version}.spdx
 
 %if 0%{?examples}
 %files examples
@@ -121,7 +121,10 @@ popd
 %endif
 
 %changelog
-* Mon Dec 02 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Mon Dec 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
 - 6.8.1
 
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1

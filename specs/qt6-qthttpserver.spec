@@ -5,7 +5,7 @@
 
 Name:       qt6-qthttpserver
 Version:    6.8.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Library to facilitate the creation of an http server with Qt
 
 License:    BSD-3-Clause AND GFDL-1.3-no-invariants-only AND GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -68,6 +68,7 @@ to the usage of %{name}.
 
 %files
 %license LICENSES/*.txt
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_libdir}/libQt6HttpServer.so.6{,.*}
 
 %files devel
@@ -83,7 +84,6 @@ to the usage of %{name}.
 %{_qt6_libdir}/qt6/mkspecs/modules/qt_lib_httpserver.pri
 %{_qt6_libdir}/qt6/mkspecs/modules/qt_lib_httpserver_private.pri
 %{_qt6_libdir}/qt6/modules/HttpServer.json
-%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{qt_version}.spdx
 
 %if 0%{?examples}
 %files examples
@@ -91,7 +91,10 @@ to the usage of %{name}.
 %endif
 
 %changelog
-* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
 - 6.8.1
 
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1

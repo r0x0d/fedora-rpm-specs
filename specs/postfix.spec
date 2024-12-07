@@ -56,8 +56,8 @@
 
 Name: postfix
 Summary: Postfix Mail Transport Agent
-Version: 3.9.0
-Release: 8%{?dist}
+Version: 3.9.1
+Release: 1%{?dist}
 Epoch: 2
 URL: http://www.postfix.org
 License: (IPL-1.0 OR EPL-2.0) AND GPL-2.0-or-later AND BSD-4-Clause-UC
@@ -849,6 +849,10 @@ fi
 %endif
 
 %changelog
+* Thu Dec  5 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 2:3.9.1-1
+- New version
+  Resolves: rhbz#2330454
+
 * Thu Jul 25 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 2:3.9.0-8
 - Fixed postlog RPM verification
 

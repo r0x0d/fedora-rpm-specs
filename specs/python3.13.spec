@@ -341,7 +341,7 @@ Source11: idle3.appdata.xml
 
 # (Patches taken from github.com/fedora-python/cpython)
 
-# 00251 # f5b56b9d4a79df04e9d90ceff7388554c5f818b6
+# 00251 # 5ac6e7781923cbb3e4606e3bca381a1167d322e5
 # Change user install location
 #
 # Set values of base and platbase in sysconfig from /usr

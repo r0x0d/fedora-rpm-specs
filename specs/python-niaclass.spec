@@ -13,7 +13,7 @@ framework, which is a popular Python collection of nature-inspired algorithms.
 The NiaClass classifier support numerical and categorical features.}
 
 Name:           python-niaclass
-Version:        0.2.1
+Version:        0.2.2
 Release:        %autorelease
 Summary:        Python framework for building classifiers using nature-inspired algorithms
 

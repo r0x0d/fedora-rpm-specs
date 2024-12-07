@@ -122,7 +122,7 @@ gprbuild %{GPRbuild_flags} %{tp_options} -P templates_parser.gpr
 gprbuild %{GPRbuild_flags} %{tp_options} -P tools/tools.gpr -cargs -fPIE
 
 # Make the documentation. Additional makefile variables are required
-# by the GPRbuild project of the examples that need to be build before
+# by the GPRbuild project of the examples that need to be built before
 # the documentation can be compiled. Compiler switch "-fPIE" is
 # required as hardened builds are enabled for this package.
 make -C docs html latexpdf \

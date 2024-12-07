@@ -1,13 +1,13 @@
 # Upstream source information.
 %global upstream_owner    AdaCore
 %global upstream_name     gnatcoll-bindings
-%global upstream_version  24.0.0
+%global upstream_version  25.0.0
 %global upstream_gittag   v%{upstream_version}
 
 Name:           gnatcoll-bindings
 Epoch:          2
 Version:        %{upstream_version}
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        The GNAT Components Collection – bindings
 Summary(sv):    GNAT Components Collection – bindningar
 
@@ -17,10 +17,7 @@ License:        GPL-3.0-or-later WITH GCC-exception-3.1 AND GPL-3.0-or-later AND
 URL:            https://github.com/%{upstream_owner}/%{upstream_name}
 Source:         %{url}/archive/%{upstream_gittag}/%{upstream_name}-%{upstream_version}.tar.gz
 
-# [Backport] Support for Python 3.11 (commit: cd650de).
-Patch:          %{name}-add-minimal-support-for-python-3.11.patch
-
-BuildRequires:  gcc-gnat gprbuild sed dos2unix
+BuildRequires:  gcc-gnat gcc-c++ gprbuild sed dos2unix
 # A fedora-gnat-project-common that contains the new GPRinstall macro.
 BuildRequires:  fedora-gnat-project-common >= 3.21
 
@@ -79,6 +76,38 @@ in de programmeringspaketen som förut ingick i gnatcoll-bindings-devel.
 
 Ange inte det här paketet i några konfigurationer eller beroenden. Ange paketen
 du faktiskt behöver.
+
+
+%package -n gnatcoll-cpp
+Summary:        The GNAT Components Collection – C++ binding
+Summary(sv):    GNAT Components Collection – C++-bindning
+License:        GPL-3.0-or-later WITH GCC-exception-3.1
+
+%description -n gnatcoll-cpp
+This is the C++ component of the GNAT Components Collection. It is an interface
+to the C++ ISO/IEC 14882:1998(E) string class.
+
+%description -n gnatcoll-cpp -l sv
+Detta är C++-komponenten i GNAT Components Collection. Den är ett gränssnitt
+till C++-strängklassen i ISO/IEC 14882:1998(E).
+
+
+%package -n gnatcoll-cpp-devel
+Summary:        Development files for the GNAT Components Collection – C++ binding
+Summary(sv):    Filer för programmering med GNAT Components Collection – C++-bindning
+License:        GPL-3.0-or-later WITH GCC-exception-3.1
+Requires:       gnatcoll-cpp%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       fedora-gnat-project-common gnatcoll-core-devel
+
+%description -n gnatcoll-cpp-devel
+This package contains source code and linking information for developing
+applications that use the C++ component of the GNAT Components Collection.
+It is an interface to the C++ ISO/IEC 14882:1998(E) string class.
+
+%description -n gnatcoll-cpp-devel -l sv
+Detta paket innehåller källkod och länkningsinformation som behövs för att
+utveckla program som använder C++-komponenten i GNAT Components Collection.
+Den är ett gränssnitt till C++-strängklassen i ISO/IEC 14882:1998(E).
 
 
 %package -n gnatcoll-gmp
@@ -381,7 +410,7 @@ dos2unix --keepdate gmp/examples/gmp_examples.gpr
 %build
 %set_env
 
-for component in gmp iconv lzma omp syslog zlib ; do
+for component in cpp gmp iconv lzma omp syslog zlib ; do
     gprbuild %{GPRbuild_flags} -P ${component}/gnatcoll_${component}.gpr
 done
 
@@ -403,7 +432,7 @@ gprbuild %{GPRbuild_flags} \
 %set_env
 
 # Install each component.
-for component in gmp iconv lzma omp readline syslog zlib ; do
+for component in cpp gmp iconv lzma omp readline syslog zlib ; do
     %{GPRinstall -s gnatcoll-${component} -a gnatcoll-${component}} \
                  --no-build-var -P ${component}/gnatcoll_${component}.gpr
 done
@@ -415,7 +444,7 @@ done
              --no-build-var -P python3/gnatcoll_python.gpr
 
 # Fix up some things that GPRinstall does wrong.
-for component in gmp iconv lzma omp python3 readline syslog zlib ; do
+for component in cpp gmp iconv lzma omp python3 readline syslog zlib ; do
     ln --symbolic --force libgnatcoll_${component}.so.%{version} \
        %{buildroot}%{_libdir}/libgnatcoll_${component}.so
 done
@@ -441,7 +470,7 @@ cp --preserve=timestamps COPYING3 COPYING.RUNTIME \
    --target-directory=%{buildroot}%{_licensedir}/%{name}
 
 # Make the generated usage project files architecture-independent.
-for component in gmp iconv lzma omp python readline syslog zlib ; do
+for component in cpp gmp iconv lzma omp python readline syslog zlib ; do
     sed --regexp-extended --in-place \
         '--expression=1i with "directories";' \
         '--expression=/^--  This project has been generated/d' \
@@ -475,6 +504,21 @@ done
 %files devel
 # Empty metapackage.
 
+%files -n gnatcoll-cpp
+%dir %{_licensedir}/%{name}
+%license %{_licensedir}/%{name}/COPYING3
+%{_libdir}/libgnatcoll_cpp.so.%{version}
+
+%files -n gnatcoll-cpp-devel
+%{_GNAT_project_dir}/gnatcoll_cpp.gpr
+%dir %{_includedir}/gnatcoll-cpp
+# Exclude a file that doesn't belong under /usr/include:
+%exclude %{_includedir}/gnatcoll-cpp/cpp_string_support.cpp
+# Include only Ada files so it will be an error if more junk appears:
+%{_includedir}/gnatcoll-cpp/*.ad[sb]
+%dir %{_libdir}/gnatcoll-cpp
+%attr(444,-,-) %{_libdir}/gnatcoll-cpp/*.ali
+%{_libdir}/libgnatcoll_cpp.so
 
 %files -n gnatcoll-gmp
 %dir %{_licensedir}/%{name}
@@ -483,7 +527,11 @@ done
 
 %files -n gnatcoll-gmp-devel
 %{_GNAT_project_dir}/gnatcoll_gmp.gpr
-%{_includedir}/gnatcoll-gmp
+%dir %{_includedir}/gnatcoll-gmp
+# Exclude some junk that doesn't belong under /usr/include:
+%exclude %{_includedir}/gnatcoll-gmp/*.c
+# Include only Ada files so it will be an error if more junk appears:
+%{_includedir}/gnatcoll-gmp/*.ad[sb]
 %dir %{_libdir}/gnatcoll-gmp
 %attr(444,-,-) %{_libdir}/gnatcoll-gmp/*.ali
 %{_libdir}/libgnatcoll_gmp.so
@@ -497,7 +545,11 @@ done
 
 %files -n gnatcoll-iconv-devel
 %{_GNAT_project_dir}/gnatcoll_iconv.gpr
-%{_includedir}/gnatcoll-iconv
+%dir %{_includedir}/gnatcoll-iconv
+# Exclude a file that doesn't belong under /usr/include:
+%exclude %{_includedir}/gnatcoll-iconv/iconv_support.c
+# Include only Ada files so it will be an error if more junk appears:
+%{_includedir}/gnatcoll-iconv/*.ad[sb]
 %dir %{_libdir}/gnatcoll-iconv
 %attr(444,-,-) %{_libdir}/gnatcoll-iconv/*.ali
 %{_libdir}/libgnatcoll_iconv.so
@@ -523,7 +575,11 @@ done
 
 %files -n gnatcoll-omp-devel
 %{_GNAT_project_dir}/gnatcoll_omp.gpr
-%{_includedir}/gnatcoll-omp
+%dir %{_includedir}/gnatcoll-omp
+# Exclude a file that doesn't belong under /usr/include:
+%exclude %{_includedir}/gnatcoll-omp/sort_omp.c
+# Include only Ada files so it will be an error if more junk appears:
+%{_includedir}/gnatcoll-omp/*.ad[sb]
 %dir %{_libdir}/gnatcoll-omp
 %attr(444,-,-) %{_libdir}/gnatcoll-omp/*.ali
 %{_libdir}/libgnatcoll_omp.so
@@ -538,7 +594,11 @@ done
 
 %files -n gnatcoll-python3-devel
 %{_GNAT_project_dir}/gnatcoll_python.gpr
-%{_includedir}/gnatcoll-python
+%dir %{_includedir}/gnatcoll-python
+# Exclude a file that doesn't belong under /usr/include:
+%exclude %{_includedir}/gnatcoll-python/python_support.c
+# Include only Ada files so it will be an error if more junk appears:
+%{_includedir}/gnatcoll-python/*.ad[sb]
 %dir %{_libdir}/gnatcoll-python
 %attr(444,-,-) %{_libdir}/gnatcoll-python/*.ali
 %{_libdir}/libgnatcoll_python3.so
@@ -567,7 +627,11 @@ done
 
 %files -n gnatcoll-syslog-devel
 %{_GNAT_project_dir}/gnatcoll_syslog.gpr
-%{_includedir}/gnatcoll-syslog
+%dir %{_includedir}/gnatcoll-syslog
+# Exclude a file that doesn't belong under /usr/include:
+%exclude %{_includedir}/gnatcoll-syslog/syslog_support.c
+# Include only Ada files so it will be an error if more junk appears:
+%{_includedir}/gnatcoll-syslog/*.ad[sb]
 %dir %{_libdir}/gnatcoll-syslog
 %attr(444,-,-) %{_libdir}/gnatcoll-syslog/*.ali
 %{_libdir}/libgnatcoll_syslog.so
@@ -592,6 +656,10 @@ done
 ###############
 
 %changelog
+* Sun Oct 27 2024 Dennis van Raaij <dvraaij@fedoraproject.org> - 2:25.0.0-1
+- Updated to v25.0.0.
+- New subpackage for bindings to the C++ ISO/IEC 14882:1998(E) string class.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2:24.0.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

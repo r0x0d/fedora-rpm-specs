@@ -2,11 +2,14 @@
 
 Name: rubygem-%{gem_name}
 Version: 4.2.1
-Release: 3%{?dist}
+Release: 4%{?dist}
 Summary: Ensure your Puppet manifests conform with the Puppetlabs style guide
 License: MIT
 URL: https://github.com/puppetlabs/puppet-lint/
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
+# https://github.com/puppetlabs/puppet-lint/issues/225
+# Handle ruby3.4 backtrace formatting change
+Patch0:  puppet-lint-issue225-ruby34-backtrace-formatting-change.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby >= 2.7
@@ -28,6 +31,7 @@ Documentation for %{name}
 
 %prep
 %setup -q -n %{gem_name}-%{version}
+%patch -P0 -p1
 
 %build
 gem build ../%{gem_name}-%{version}.gemspec
@@ -67,6 +71,9 @@ popd
 %{gem_instdir}/spec
 
 %changelog
+* Thu Dec 05 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 4.2.1-4
+- Support ruby34 backtrace formatting change
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.2.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

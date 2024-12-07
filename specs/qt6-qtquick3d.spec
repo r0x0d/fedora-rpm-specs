@@ -11,7 +11,7 @@
 Summary: Qt6 - Quick3D Libraries and utilities
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -124,6 +124,7 @@ popd
 
 %files
 %license LICENSES/GPL*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_libdir}/libQt6Quick3D.so.6*
 %{_qt6_libdir}/libQt6Quick3DAssetImport.so.6*
 %{_qt6_libdir}/libQt6Quick3DRuntimeRender.so.6*
@@ -243,7 +244,6 @@ popd
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_plugindir}/qmltooling/libqmldbg_quick3dprofiler.so
 %{_qt6_libdir}/pkgconfig/*.pc
-%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{qt_version}.spdx
 
 %if 0%{?examples}
 %files examples
@@ -251,7 +251,10 @@ popd
 %endif
 
 %changelog
-* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
 - 6.8.1
 
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1

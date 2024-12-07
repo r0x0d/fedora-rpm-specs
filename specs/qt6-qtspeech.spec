@@ -7,7 +7,7 @@
 Summary: Qt6 - Speech component
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # Code can be either LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only
 # See e.g. src/plugins/speechdispatcher or src/tts
@@ -106,6 +106,7 @@ popd
 
 %files
 %license LICENSES/GPL* LICENSES/LGPL* LICENSES/BSD*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{version}.spdx
 %{_qt6_libdir}/libQt6TextToSpeech.so.6{,.*}
 %dir %{_qt6_plugindir}/texttospeech
 %{_qt6_plugindir}/texttospeech/libqtexttospeech_mock.so
@@ -138,7 +139,6 @@ popd
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_texttospeech*.pri
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/qt6/metatypes/*.json
-%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 
 %if 0%{?examples}
 %files examples
@@ -146,7 +146,10 @@ popd
 %endif
 
 %changelog
-* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
 - 6.8.1
 
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1

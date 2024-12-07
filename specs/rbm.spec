@@ -1,9 +1,9 @@
-%global commit0 10c6b24e90e3dc9c2578290a7d82a87b7f4eb9a3
+%global commit0 c6a40950607fa73861f81185764dff2bab150010
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:       rbm
-Version:    0.4^20240215git%{shortcommit0}
-Release:    3%{?dist}
+Version:    0.4^20241205git%{shortcommit0}
+Release:    1%{?dist}
 Summary:    Reproducible Build Manager
 License:    CC0-1.0
 # A bug tracker is at <https://gitlab.torproject.org/tpo/applications/rbm/>.
@@ -16,10 +16,7 @@ Source0:    %{name}-%{shortcommit0}.tar.gz
 # <https://github.com/boklm/rbm/pull/8>.
 Patch0:     rbm-c485326-Install-container-script-as-rmbcontainer.patch
 # Remove tests which require the Internet, not suitable for an upstream.
-Patch1:     rbm-37c204c-Remove-mozmill-automation-tests.patch
-# Install RBM::CaptureExec module, in upstream after 10c6b24 commit,
-# <https://gitlab.torproject.org/tpo/applications/rbm/-/merge_requests/59>
-Patch2:     rbm-10c6b24-Install-RBM-CaptureExec.patch
+Patch1:     rbm-c6a4095-Remove-on-line-tests.patch
 BuildArch:  noarch
 BuildRequires:  asciidoc
 BuildRequires:  coreutils
@@ -51,7 +48,7 @@ BuildRequires:  perl(String::ShellQuote)
 BuildRequires:  perl(Template)
 BuildRequires:  perl(warnings)
 BuildRequires:  perl(YAML::XS)
-# redhat-lsb-core and other tools are not used at tests
+# redhat-lsb and other tools are not used at tests
 # Tests:
 BuildRequires:  perl(lib)
 BuildRequires:  perl(Test::More)
@@ -72,8 +69,8 @@ Requires:       hostname
 Requires:       man-db
 Requires:       mercurial
 Requires:       perl(Exporter)
-# redhat-lsb-core for lsb_release
-Requires:       redhat-lsb-core
+# redhat-lsb for lsb_release
+Requires:       redhat-lsb
 # rpm in default configuration
 Requires:       rpm
 # rpm-build for rpmbuild defined in default configuration
@@ -153,6 +150,12 @@ chmod +x %{buildroot}%{_libexecdir}/%{name}/test
 %{_libexecdir}/%{name}
 
 %changelog
+* Thu Dec 05 2024 Petr Pisar <ppisar@redhat.com> - 0.4^20241205gitc6a4095-1
+- Rebase to a git snapshot taken on 2024-12-05
+
+* Thu Dec 05 2024 Petr Pisar <ppisar@redhat.com> - 0.4^20240215git10c6b24-4
+- Depend on redhat-lsb instead of removed redhat-lsb-core
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.4^20240215git10c6b24-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,8 +1,8 @@
 # SPDX-License-Identifqier: MIT
 %global forgeurl https://github.com/mitradranirban/fonts-mukti
 
-Version:   3.1.0
-Release:   2%{?dist}
+Version:   3.4.3
+Release:   1%{?dist}
 
 %forgemeta
 
@@ -20,10 +20,10 @@ URL: %{forgeurl}
 BuildRequires: fontforge 
 
 %global fontdescription  %{expand:
-This is a one of the earliest Open Source OpenType Bengali / Bangla font It was made
-by using good quality glyphs of GPLed font bng2-n from Cyberscape Multimedia
+This is a one of the earliest Open Source OpenType Bengali / Bangla font 
+made for Mukta Bangla Font project. It was  made by using good quality glyphs
+ of GPLed font bng2-n from Cyberscape Multimedia
 <https://web.archive.org/web/20021113130716/http://www.akruti.com/freedom/>.
-It was made for Mukta Bangla Font project.
 }
 
 Source0: %{forgesource}
@@ -48,8 +48,13 @@ chmod 755 generate.pe
 %fontfiles
 
 %changelog
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.1.0-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+* Thu Dec 05 2024 Dr Anirban Mitra <mitra_anirban@yahoo.co.in> - 3.4.3-1
+- minor bugfix - correction of typo in conjunct lookup 
+
+* Tue Nov 26 2024 Dr Anirban Mitra <mitra_anirban@yahoo.co.in> - 3.4.2-1
+- Added Missing .notdef glyf
+- Added stylistic alternate of i-matra and ii-matra
+- reinstated vertical fraction lookup mistakenly deleted from previous version
 
 * Sun Jul 07 2024 13:01:00 +0530 Dr Anirban Mitra <mitra_anirban@yahoo.co.in> - 3.1.0-1
 - new upstream release 3.1.0

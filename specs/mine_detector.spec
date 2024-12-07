@@ -2,7 +2,7 @@ Name:           mine_detector
 Version:        6.0^20160527
 # The version numbering upstream is inconsistent and useless. Here the date of
 # the newest source file in the zip file is used to identify the version
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Mine Detector, a mine-finding game
 Summary(sv):    Mine Detector, ett minröjningsspel
 
@@ -77,6 +77,9 @@ cp -p %{SOURCE8} %{buildroot}%{_mandir}/sv/man1/mine_detector.1
 
 
 %changelog
+* Thu Dec 05 2024 Björn Persson <Bjorn@Rombobjörn.se> - 6.0^20160527-3
+- Rebuilt with GTKada 25.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.0^20160527-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

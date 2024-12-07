@@ -1,13 +1,13 @@
 # Upstream source information.
 %global upstream_owner    AdaCore
 %global upstream_name     gtkada
-%global upstream_version  24.0.0
+%global upstream_version  25.0.0
 %global upstream_gittag   v%{upstream_version}
 
 Name:           GtkAda3
 Epoch:          2
 Version:        %{upstream_version}
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        GTKada, an Ada binding to GTK+ 3
 Summary(sv):    GTKada, en adabindning till GTK+ 3
 
@@ -83,8 +83,10 @@ Denna versionen av GTKada binder till GTK+ 3.x.
 %package devel
 Summary:        Development files for GTKada for GTK+ 3
 Summary(sv):    Filer för programmering med GTKada för GTK+ 3
-Requires:       fedora-gnat-project-common
 Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       fedora-gnat-project-common
+Requires:       pkgconfig(gtk+-3.0)
+Requires:       pkgconfig(glib-2.0)
 Recommends:     %{name}-doc
 Conflicts:      GtkAda-devel < 3
 
@@ -262,8 +264,9 @@ ln --symbolic --force libgtkada.so.%{version} stage%{_libdir}/libgtkada.so
 %global inst install --mode=u=rw,go=r,a-s --preserve-timestamps
 
 # The library, gtkada-dialog and the documention have already been staged, so
-# just move them to the "buildroot" staging directory.
-mv stage/* --target-directory=%{buildroot}
+# just copy them to the "buildroot" staging directory. Do not move (mv) because
+# find-debuginfo will want to collect some files under stage.
+cp --archive stage/* --target-directory=%{buildroot}
 
 # Install the examples (testgtk plus related).
 gprinstall --create-missing-dirs --no-manifest --no-build-var \
@@ -352,6 +355,11 @@ mkdir --parents %{buildroot}%{_licensedir}/%{name}
 ###############
 
 %changelog
+* Sun Oct 27 2024 Dennis van Raaij <dvraaij@fedoraproject.org> - 2:25.0.0-1
+- Updated to v25.0.0.
+- Subpackage GtkAda3-devel now requires the GTK+-3.0 and GLib 2.0 development
+  files.
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2:24.0.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

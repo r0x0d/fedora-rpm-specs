@@ -39,7 +39,7 @@
 # Either pass `--with=bootstrap` to mock(1) or change `bcond_with` to
 # `bcond_without`, then commit, build, revert to `bcond_with` and commit again.
 #
-%bcond_without bootstrap
+%bcond_with bootstrap
 
 # The test suite is normally run. It can be disabled with "--without=check".
 %bcond_without check
@@ -224,6 +224,8 @@ Summary:        Development files for the GNAT project manager library
 License:        GPL-3.0-or-later WITH GCC-exception-3.1
 Requires:       libgpr%{?_isa} = %{epoch}:%{version}-%{release}
 Requires:       fedora-gnat-project-common
+# gpr.gpr imports XMLada project files, so require xmlada-devel.
+Requires:       xmlada-devel
 Provides:       libgnatprj-devel
 
 %description -n libgpr-devel
@@ -442,6 +444,8 @@ make -C examples run
 %dir %{_libexecdir}/%{name}
 %{_libexecdir}/%{name}/gpr*
 %attr(444,-,-) %{_GNAT_project_dir}/_default.gpr
+# Exclude the installation script; it serves no purpose in this context.
+%exclude %{_prefix}/doinstall
 
 %if %{without bootstrap}
 
@@ -463,7 +467,11 @@ make -C examples run
 
 %files -n libgpr-devel
 %{_GNAT_project_dir}/gpr.gpr
-%{_includedir}/libgpr
+%dir %{_includedir}/libgpr
+# Exclude a file that doesn't belong under /usr/include:
+%exclude %{_includedir}/libgpr/gpr_imports.c
+# Include only Ada files so it will be an error if more junk appears:
+%{_includedir}/libgpr/*.ad[sb]
 %dir %{_libdir}/libgpr
 %attr(444,-,-) %{_libdir}/libgpr/*.ali
 %{_libdir}/libgnatprj.so

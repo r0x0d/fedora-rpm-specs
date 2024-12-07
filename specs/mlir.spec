@@ -1,7 +1,7 @@
 %global toolchain clang
 %global maj_ver 19
 %global min_ver 1
-%global patch_ver 4
+%global patch_ver 5
 #global rc_ver 4
 %global mlir_version %{maj_ver}.%{min_ver}.%{patch_ver}
 %global mlir_srcdir mlir-%{mlir_version}%{?rc_ver:-rc%{rc_ver}}.src
@@ -286,6 +286,9 @@ export PYTHONPATH=%{buildroot}/%{python3_sitearch}
 %{python3_sitearch}/mlir/
 
 %changelog
+* Fri Nov 22 2024 Timm Bäder <tbaeder@redhat.com> - 19.1.5-1
+- Update to 19.1.5
+
 * Fri Nov 22 2024 Timm Bäder <tbaeder@redhat.com> - 19.1.4-1
 - Update to 19.1.4
 

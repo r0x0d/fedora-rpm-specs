@@ -26,7 +26,7 @@ and designed by Jeremy Mickel / MCKL for the new Red Hat identity.
 
 Name:           %{fontname}-fonts
 Version:        4.0.3
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        Red Hat Typeface fonts
 # Only the metainfo files are CC-BY-SA
 License:        OFL-1.1-RFN AND CC-BY-SA-4.0
@@ -111,6 +111,8 @@ This package provides the variable font version of the Monospace fonts variant.
 install -m 0755 -d %{buildroot}%{_fontdir}
 install -m 0644 -p fonts/*/static/otf/*.otf %{buildroot}%{_fontdir}
 rm -f fonts/*/*VF*.ttf fonts/mono/RedHatMono.ttf fonts/mono/RedHatMono-Italic.ttf
+# workaround to address crash issue/unexpected italic rendering with variable fonts
+rm -f fonts/*/*-Italic*.ttf
 install -m 0755 -d %{buildroot}%{_fontdir}-vf
 install -m 0644 -p fonts/*/*.ttf %{buildroot}%{_fontdir}-vf
 
@@ -184,6 +186,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.metainf
 
 
 %changelog
+* Thu Nov 21 2024 Akira TAGOH <tagoh@redhat.com> - 4.0.3-13
+- Remove Italic variable fonts to workaround a crash issue
+  and unexpected italic rendering.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.0.3-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

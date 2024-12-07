@@ -4,7 +4,7 @@
 
 Name:           cairo
 Version:        1.18.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A 2D graphics library
 
 License:        LGPL-2.1-only OR MPL-1.1
@@ -12,6 +12,11 @@ URL:            https://cairographics.org
 Source:         https://cairographics.org/releases/%{name}-%{version}.tar.xz
 
 Patch:          cairo-multilib.patch
+# Fix printing PDFs
+# https://bugzilla.redhat.com/show_bug.cgi?id=2330100
+# Backported from upstream
+# https://gitlab.freedesktop.org/cairo/cairo/-/merge_requests/595
+Patch:          595.patch
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
@@ -155,6 +160,9 @@ This package contains tools for working with the cairo graphics library.
 %{_libdir}/cairo/
 
 %changelog
+* Thu Dec 05 2024 Kalev Lember <klember@redhat.com> - 1.18.2-2
+- Backport an upstream patch to fix printing PDFs (rhbz#2330100)
+
 * Tue Nov 26 2024 Nieves Montero <nmontero@redhat.com> - 1.18.2-1
 - Update to 1.18.2
 

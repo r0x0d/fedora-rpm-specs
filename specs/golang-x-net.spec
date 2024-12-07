@@ -5,7 +5,7 @@
 # https://github.com/golang/net
 %global goipath         golang.org/x/net
 %global forgeurl        https://github.com/golang/net
-Version:                0.31.0
+Version:                0.32.0
 
 %gometa
 

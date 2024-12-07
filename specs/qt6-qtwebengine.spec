@@ -51,7 +51,7 @@
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
 # See also http://qt-project.org/doc/qt-5.0/qtdoc/licensing.html
@@ -506,6 +506,7 @@ done
 
 %files
 %license LICENSE.*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{version}.spdx
 %{_qt6_libdir}/libQt6WebEngineCore.so.*
 %{_qt6_libdir}/libQt6WebEngineQuick.so.*
 %{_qt6_libdir}/libQt6WebEngineQuickDelegatesQml.so.*
@@ -619,7 +620,6 @@ done
 %{_qt6_libdir}/pkgconfig/Qt6WebEngineWidgets.pc
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_webengine*.pri
 %{_qt6_plugindir}/designer/libqwebengineview.so
-%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 
 %files devtools
 %{_qt6_datadir}/resources/qtwebengine_devtools_resources.pak
@@ -672,7 +672,10 @@ done
 %endif
 
 %changelog
-* Tue Dec 03 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Tue Dec 03 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
 - 6.8.1
 
 * Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1

@@ -88,8 +88,8 @@ BuildRequires:	python3-lit
 # For gpg source verification
 BuildRequires:	gnupg2
 
-Requires(post): %{_sbindir}/update-alternatives
-Requires(preun): %{_sbindir}/update-alternatives
+Requires(post): /usr/sbin/update-alternatives
+Requires(preun): /usr/sbin/update-alternatives
 
 Requires: %{name}-libs = %{version}-%{release}
 Provides: lld(major) = %{maj_ver}
@@ -137,7 +137,7 @@ Shared libraries for LLD.
 	-DLLVM_VERSION_SUFFIX="%{llvm_snapshot_version_suffix}" \
 %endif
 	-DLLVM_INCLUDE_TESTS=ON \
-	-DLLVM_EXTERNAL_LIT=%{_bindir}/lit \
+	-DLLVM_EXTERNAL_LIT=$(which lit) \
 	-DLLVM_LIT_ARGS="-sv \
 	--path %{_libdir}/llvm" \
 %if %{with compat_build}
@@ -177,11 +177,11 @@ install -D -m 644 -t  %{buildroot}%{_mandir}/man1/ docs/ld.lld.1
 
 
 %post
-%{_sbindir}/update-alternatives --install %{_bindir}/ld ld %{_bindir}/ld.lld 1
+/usr/sbin/update-alternatives --install %{_bindir}/ld ld %{_bindir}/ld.lld 1
 
 %postun
 if [ $1 -eq 0 ] ; then
-  %{_sbindir}/update-alternatives --remove ld %{_bindir}/ld.lld
+  /usr/sbin/update-alternatives --remove ld %{_bindir}/ld.lld
 fi
 %endif
 

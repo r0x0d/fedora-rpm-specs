@@ -10,7 +10,7 @@
 Summary: Qt6 - Quick3D Physics Libraries and utilities
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -76,13 +76,13 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 %files
 %license LICENSES/*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_libdir}/libQt6Quick3DPhysics.so.*
 %{_qt6_libdir}/libQt6Quick3DPhysicsHelpers.so.*
 %{_qt6_qmldir}//QtQuick3D/
 
 %files devel
 %{_qt6_bindir}/cooker
-
 %dir %{_qt6_headerdir}/QtQuick3DPhysics
 %{_qt6_headerdir}/QtQuick3DPhysics/*
 %dir %{_qt6_headerdir}/QtQuick3DPhysicsHelpers
@@ -105,7 +105,6 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/pkgconfig/*.pc
-%{_qt6_libdir}/qt6/sbom/%{qt_module}-%{qt_version}.spdx
 
 %if 0%{?examples}
 %files examples
@@ -113,7 +112,10 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %changelog
-* Thu Nov 28 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
 - 6.8.1
 
 * Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1

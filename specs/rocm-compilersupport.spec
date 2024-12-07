@@ -343,7 +343,7 @@ sed -i 's/lib\(\/clang\)/%{_lib}\1/' amd/comgr/src/comgr-compiler.cpp
 # CMake's find_package Config mode doesn't work if we use older llvm packages:
 sed -i 's/find_package(Clang REQUIRED CONFIG)/find_package(Clang REQUIRED)/' amd/comgr/CMakeLists.txt
 sed -i 's/find_package(LLD REQUIRED CONFIG)/find_package(LLD REQUIRED)/' amd/comgr/CMakeLists.txt
-sed -i 's@${CLANG_CMAKE_DIR}/../../../@/usr/lib/clang/%{llvm_maj_ver}/@' amd/comgr/cmake/opencl_pch.cmake
+sed -i 's@${CLANG_CMAKE_DIR}/../../../@%{_prefix}/lib/clang/%{llvm_maj_ver}/@' amd/comgr/cmake/opencl_pch.cmake
 
 # Fixup finding /opt/llvm
 sed -i -e 's@sys::path::append(LLVMPath, "llvm");@//sys::path::append(LLVMPath, "llvm");@' amd/comgr/src/comgr-env.cpp

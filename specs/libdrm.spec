@@ -44,9 +44,11 @@ end}
 %bcond_without install_test_programs
 %bcond_without udev
 
+%global lib_version 124
+
 Name:           libdrm
 Summary:        Direct Rendering Manager runtime library
-Version:        2.4.123
+Version:        2.4.%{lib_version}
 Release:        1%{?dist}
 License:        MIT
 
@@ -144,24 +146,24 @@ cp %{SOURCE1} %{buildroot}%{_docdir}/libdrm
 %files
 %doc README.rst
 %{_libdir}/libdrm.so.2
-%{_libdir}/libdrm.so.2.123.0
+%{_libdir}/libdrm.so.2.%{lib_version}.0
 %dir %{_datadir}/libdrm
 %if %{with intel}
 %{_libdir}/libdrm_intel.so.1
-%{_libdir}/libdrm_intel.so.1.123.0
+%{_libdir}/libdrm_intel.so.1.%{lib_version}.0
 %endif
 %if %{with radeon}
 %{_libdir}/libdrm_radeon.so.1
-%{_libdir}/libdrm_radeon.so.1.123.0
+%{_libdir}/libdrm_radeon.so.1.%{lib_version}.0
 %endif
 %if %{with amdgpu}
 %{_libdir}/libdrm_amdgpu.so.1
-%{_libdir}/libdrm_amdgpu.so.1.123.0
+%{_libdir}/libdrm_amdgpu.so.1.%{lib_version}.0
 %{_datadir}/libdrm/amdgpu.ids
 %endif
 %if %{with nouveau}
 %{_libdir}/libdrm_nouveau.so.2
-%{_libdir}/libdrm_nouveau.so.2.123.0
+%{_libdir}/libdrm_nouveau.so.2.%{lib_version}.0
 %endif
 %if %{with omap}
 %{_libdir}/libdrm_omap.so.1
@@ -173,15 +175,15 @@ cp %{SOURCE1} %{buildroot}%{_docdir}/libdrm
 %endif
 %if %{with freedreno}
 %{_libdir}/libdrm_freedreno.so.1
-%{_libdir}/libdrm_freedreno.so.1.123.0
+%{_libdir}/libdrm_freedreno.so.1.%{lib_version}.0
 %endif
 %if %{with tegra}
 %{_libdir}/libdrm_tegra.so.0
-%{_libdir}/libdrm_tegra.so.0.123.0
+%{_libdir}/libdrm_tegra.so.0.%{lib_version}.0
 %endif
 %if %{with etnaviv}
 %{_libdir}/libdrm_etnaviv.so.1
-%{_libdir}/libdrm_etnaviv.so.1.123.0
+%{_libdir}/libdrm_etnaviv.so.1.%{lib_version}.0
 %endif
 %if %{with udev}
 %{_udevrulesdir}/91-drm-modeset.rules
@@ -278,6 +280,9 @@ cp %{SOURCE1} %{buildroot}%{_docdir}/libdrm
 %endif
 
 %changelog
+* Thu Dec 05 2024 José Expósito <jexposit@redhat.com> - 2.4.124-1
+- Update to 2.4.124
+
 * Tue Aug 27 2024 José Expósito <jexposit@redhat.com> - 2.4.123-1
 - Update to 2.4.123
 

@@ -8,7 +8,7 @@
 
 %if 0%{?use_gitbare} < 1
 # force
-%global         use_release  0
+%global         use_release  1
 %endif
 
 %global		git_version	%{nil}
@@ -18,11 +18,11 @@
 %global         main_version	1.3.2
 
 %if 0%{?use_gitbare}
-%global		gittardate		20241110
-%global		gittartime		1605
+%global		gittardate		20241206
+%global		gittartime		1042
 
-%global		gitbaredate	20241107
-%global		git_rev		d9935ec1d06f335c1a97fc0128c89a6af92a6d63
+%global		gitbaredate	20241203
+%global		git_rev		cea660713e9ca9aa71fddcd818c6c4899ca7cc34
 %global		git_short		%(echo %{git_rev} | cut -c-8)
 %global		git_version	%{gitbaredate}git%{git_short}
 
@@ -491,6 +491,9 @@ fi
 %endif
 
 %changelog
+* Fri Dec 06 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.3.2^20241203gitcea66071-1
+- Update to the latest git
+
 * Sun Nov 10 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.3.2^20241107gitd9935ec1-1
 - Update to the latest git
 

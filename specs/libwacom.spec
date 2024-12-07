@@ -1,5 +1,5 @@
 Name:           libwacom
-Version:        2.13.0
+Version:        2.14.0
 Release:        1%{?dist}
 Summary:        Tablet Information Client Library
 Requires:       %{name}-data
@@ -94,6 +94,9 @@ install -d ${RPM_BUILD_ROOT}/%{_udevrulesdir}
 %{_mandir}/man1/libwacom-show-stylus.1*
 
 %changelog
+* Thu Dec 05 2024 Peter Hutterer <peter.hutterer@redhat.com> - 2.14.0-1
+- libwacom 2.14.0
+
 * Mon Sep 02 2024 Peter Hutterer <peter.hutterer@redhat.com> - 2.13.0-1
 - libwacom 2.13.0
 

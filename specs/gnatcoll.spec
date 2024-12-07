@@ -1,13 +1,13 @@
 # Upstream source information.
 %global upstream_owner    AdaCore
 %global upstream_name     gnatcoll-core
-%global upstream_version  24.0.0
+%global upstream_version  25.0.0
 %global upstream_gittag   v%{upstream_version}
 
 Name:           gnatcoll
 Epoch:          2
 Version:        %{upstream_version}
-Release:        4%{?dist}
+Release:        1%{?dist}
 Summary:        The GNAT Components Collection
 Summary(sv):    GNAT Components Collection
 
@@ -19,10 +19,18 @@ URL:            https://github.com/%{upstream_owner}/%{upstream_name}
 Source:         %{url}/archive/%{upstream_gittag}/%{upstream_name}-%{upstream_version}.tar.gz
 
 # [Fedora-specific] Remove unnecessary redirection.
-Patch:          %{name}-fix-html-dir-indirection.patch
+Patch:          %{name}-core-fix-html-dir-indirection.patch
+# Correct location from where the documentation and examples must be installed.
+# https://github.com/AdaCore/gnatcoll-core/issues/87
+Patch:          %{name}-core-fix-doc-install.patch
 # Adjust a pathname in the manual, replacing the Adacore-specific pathname with
 # the FHS-compliant pathname where this package installs the examples:
-Patch:          gnatcoll-core-doc-examples-dir.patch
+Patch:          %{name}-core-doc-examples-dir.patch
+# Use 'gnatcoll_core.gpr' and 'gnatcoll_projects.gpr' instead of 'gnatcoll.gpr'
+# in the examples.
+Patch:          %{name}-core-refine-dependencies-gnatcoll.patch
+# [GCC 14.2.1] Fix unsupported use of the Access attribute.
+Patch:          %{name}-core-fix-base64-coder-example.patch
 
 BuildRequires:  gcc-gnat gprbuild make sed
 # A fedora-gnat-project-common that contains the new GPRinstall macro.
@@ -30,6 +38,9 @@ BuildRequires:  fedora-gnat-project-common >= 3.21
 
 BuildRequires:  libgpr-devel
 BuildRequires:  xmlada-devel
+
+BuildRequires:  python3-devel
+BuildRequires:  python-unversioned-command
 
 BuildRequires:  python3-sphinx
 BuildRequires:  python3-sphinx_rtd_theme
@@ -110,6 +121,9 @@ du faktiskt behöver.
 %package core
 Summary:        The GNAT Components Collection – core packages
 Summary(sv):    GNAT Components Collection – centrala paket
+Obsoletes:      gnatcoll-core < 2:25.0.0
+# Self-obsoleting is necessary to pull in gnatcoll-projects on upgrade.
+# This Obsoletes tag shall be kept at least in Fedora 42 and 43.
 
 %description core %{common_description_en}
 
@@ -126,11 +140,14 @@ Collection.
 Summary:        Development files for the GNAT Components Collection – core packages
 Summary(sv):    Filer för programmering med GNAT Components Collection – centrala paket
 Requires:       gnatcoll-core%{?_isa} = %{epoch}:%{version}-%{release}
-Requires:       fedora-gnat-project-common libgpr-devel xmlada-devel
+Requires:       fedora-gnat-project-common
 Recommends:     gnatcoll-core-doc
 Suggests:       gnatcoll-bindings-devel gnatcoll-db-devel
 # FIXME: We hope to remove the metapackages some day. What shall be done with
 # this Suggests tag then?
+Obsoletes:      gnatcoll-core-devel < 2:25.0.0
+# Self-obsoleting is necessary to pull in gnatcoll-projects-devel on upgrade.
+# This Obsoletes tag shall be kept at least in Fedora 42 and 43.
 
 %description core-devel %{common_description_en}
 
@@ -142,6 +159,53 @@ developing applications that use the GNAT Components Collection core packages.
 Paketet gnatcoll-core-devel innehåller källkod och länkningsinformation som
 behövs för att utveckla program som använder GNAT Components Collections
 centrala paket.
+
+
+%package -n gnatcoll-projects
+Summary:        The GNAT Components Collection – GNAT project handling
+Summary(sv):    GNAT Components Collection – GNATprojekthantering
+Obsoletes:      gnatcoll-core < 2:25.0.0
+# This subpackage was split out in version 25 and shall be pulled in on upgrade
+# from earlier versions. It shall not be pulled in again on further upgrades.
+# This Obsoletes tag shall be kept at least in Fedora 42 and 43.
+
+%description -n gnatcoll-projects
+This is the GNAT project component of the GNAT Components Collection. It
+provides a high-level API to manipulate GNAT project files.
+
+%description -n gnatcoll-projects -l sv
+Detta är GNATprojektkomponenten i GNAT Components Collection. Den
+tillhandahåller ett högnivågränssnitt för att hantera GNATprojektfiler.
+
+
+%package -n gnatcoll-projects-devel
+Summary:        Development files for the GNAT Components Collection – GNAT project handling
+Summary(sv):    Filer för programmering med GNAT Components Collection – GNATprojekthantering
+Requires:       gnatcoll-projects%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       gnatcoll-core-devel%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       fedora-gnat-project-common
+Requires:       libgpr-devel xmlada-devel
+# Documentation and examples for gnatcoll-projects are included in gnatcoll-core-doc.
+Recommends:     gnatcoll-core-doc
+Obsoletes:      gnatcoll-core-devel < 2:25.0.0
+# This subpackage was split out in version 25 and shall be pulled in on upgrade
+# from earlier versions. It shall not be pulled in again on further upgrades.
+# This Obsoletes tag shall be kept at least in Fedora 42 and 43.
+
+%description -n gnatcoll-projects-devel
+This package contains source code and linking information for developing
+applications that use the GNAT project component of the GNAT Components
+Collection. It provides a high-level API to manipulate GNAT project files.
+
+This package also contains the backward-compatible project file gnatcoll.gpr.
+
+%description -n gnatcoll-projects-devel -l sv
+Detta paket innehåller källkod och länkningsinformation som behövs för att
+utveckla program som använder GNATprojektkomponenten i GNAT Components
+Collection. Den tillhandahåller ett högnivågränssnitt för att hantera
+GNATprojektfiler.
+
+Detta paket innehåller också den bakåtkompatibla projektfilen gnatcoll.gpr.
 
 
 %package core-doc
@@ -161,13 +225,13 @@ Obsoletes: gnatcoll-doc < 2:24.0.0-2
 
 %description core-doc %{common_description_en}
 
-The gnatcoll-core-doc package contains the documentation for the GNAT Components
-Collection.
+The gnatcoll-core-doc package contains the documentation for the core components
+of the GNAT Components Collection.
 
 %description core-doc -l sv %{common_description_sv}
 
 Paketet gnatcoll-core-doc innehåller dokumentationen till GNAT Components
-Collection.
+Collections centrala komponenter.
 
 
 #############
@@ -177,15 +241,18 @@ Collection.
 %prep
 %autosetup -n %{upstream_name}-%{upstream_version} -p1
 
-# Options (project variables) for GNATcoll.
-%global gnatcoll_options -XGNATCOLL_MMAP=yes \\\
-                         -XGNATCOLL_MADVISE=yes \\\
-                         -XGNATCOLL_VERSION=%{version} \\\
-                         -XGNATCOLL_OS=unix \\\
-                         -XBUILD=PROD \\\
-                         -XLIBRARY_TYPE=relocatable \\\
-                         -XXMLADA_BUILD=relocatable \\\
-                         -XGPR_BUILD=relocatable
+# The information in the VERSION files is read by the Python-based
+# configuration scripts. File `core/VERSION` is also read by
+# `docs/conf.py`.
+for component in minimal core projects ; do
+    echo '%{version}' > ./${component}/VERSION
+done
+
+# Scenario variables.
+%global scn_vars -XLIBRARY_TYPE=relocatable \\\
+                 -XXMLADA_BUILD=relocatable \\\
+                 -XGPR_BUILD=relocatable
+
 
 ###########
 ## Build ##
@@ -193,11 +260,24 @@ Collection.
 
 %build
 
-# Version information in this file is used by `docs/conf.py`.
-echo '%{version}' > ./version_information
+# Configure the projects but don't build them.
+for component in minimal core projects ; do
+    ./${component}/gnatcoll_${component}.gpr.py \
+        build --configure-only --enable-constant-update
+done
 
-# Build the library.
-gprbuild %{GPRbuild_flags} %{gnatcoll_options} -P gnatcoll.gpr
+# Extend the GNAT project search path as `gnatcoll_projects` depends on
+# `gnatcoll_core` and `gnatcoll_core` depends on `gnatcoll_minimal`.
+for component in minimal core projects ; do
+    GPR_PROJECT_PATH=${PWD}/${component}/:$GPR_PROJECT_PATH
+done
+export GPR_PROJECT_PATH
+
+# Build the libraries
+for component in minimal core projects ; do
+    gprbuild %{GPRbuild_flags} %{scn_vars} \
+             -P ${component}/gnatcoll_${component}.gpr
+done
 
 # Make the documentation.
 make -C docs html latexpdf
@@ -209,11 +289,38 @@ make -C docs html latexpdf
 
 %install
 
-# Install the library.
-%{GPRinstall} --no-build-var %{gnatcoll_options} -P gnatcoll.gpr
+# Extend the GNAT project search path as `gnatcoll_projects` depends on
+# `gnatcoll_core` and `gnatcoll_core` depends on `gnatcoll_minimal`.
+for component in minimal core projects ; do
+    GPR_PROJECT_PATH=${PWD}/${component}/:$GPR_PROJECT_PATH
+done
+export GPR_PROJECT_PATH
+
+# Install the libraries.
+for component in minimal core projects ; do
+    %{GPRinstall -s gnatcoll-${component} -a gnatcoll-${component}} \
+                 --no-build-var %{scn_vars} \
+                 -P ${component}/gnatcoll_${component}.gpr
+done
 
 # Fix up some things that GPRinstall does wrong.
-ln --symbolic --force libgnatcoll.so.%{version} %{buildroot}%{_libdir}/libgnatcoll.so
+for component in minimal core projects ; do
+    ln --symbolic --force libgnatcoll_${component}.so.%{version} \
+       %{buildroot}%{_libdir}/libgnatcoll_${component}.so
+done
+
+# Install `gnatcoll.gpr` for backward compatibility: the high-level
+# API for manipulating GNAT project files has been split off from the
+# set of core components, and the name of the GNAT project file of the
+# remaining core components has been changed to `gnatcoll_core.gpr`.
+# This (abstract) project file references both `gnatcoll_core.gpr` and
+# `gnatcoll_projects.gpr`.
+%{GPRinstall} -P gnatcoll.gpr
+
+# Delete a comment that mentions the architecture.
+sed --in-place \
+    --expression='/^--  This project has been generated/d' \
+    %{buildroot}%{_GNAT_project_dir}/gnatcoll.gpr
 
 # Move the examples to the _pkgdocdir and remove the remaining empty directory.
 mv --no-target-directory \
@@ -222,23 +329,29 @@ mv --no-target-directory \
 
 rmdir %{buildroot}%{_datadir}/examples
 
-# Make the generated usage project file architecture-independent.
-sed --regexp-extended --in-place \
-    '--expression=1i with "directories";' \
-    '--expression=/^--  This project has been generated/d' \
-    '--expression=s|^( *for +Source_Dirs +use +).*;$|\1(Directories.Includedir \& "/%{name}");|i' \
-    '--expression=s|^( *for +Library_Dir +use +).*;$|\1Directories.Libdir;|i' \
-    '--expression=s|^( *for +Library_ALI_Dir +use +).*;$|\1Directories.Libdir \& "/%{name}";|i' \
-    %{buildroot}%{_GNAT_project_dir}/*.gpr
-# The Sed commands are:
-# 1: Insert a with clause before the first line to import the directories
-#    project.
-# 2: Delete a comment that mentions the architecture.
-# 3: Replace the value of Source_Dirs with a pathname based on
-#    Directories.Includedir.
-# 4: Replace the value of Library_Dir with Directories.Libdir.
-# 5: Replace the value of Library_ALI_Dir with a pathname based on
-#    Directories.Libdir.
+# Make the generated usage project files architecture-independent.
+for component in minimal core projects ; do
+    sed --regexp-extended --in-place \
+        '--expression=1i with "directories";' \
+        '--expression=/^--  This project has been generated/d' \
+        '--expression=/package Linker is/,/end Linker/d' \
+        '--expression=s|^( *for +Source_Dirs +use +).*;$|\1(Directories.Includedir \& "/'gnatcoll-${component}'");|i' \
+        '--expression=s|^( *for +Library_Dir +use +).*;$|\1Directories.Libdir;|i' \
+        '--expression=s|^( *for +Library_ALI_Dir +use +).*;$|\1Directories.Libdir \& "/'gnatcoll-${component}'";|i' \
+        %{buildroot}%{_GNAT_project_dir}/gnatcoll_${component}.gpr
+    # The Sed commands are:
+    # 1: Insert a with clause before the first line to import the directories
+    #    project.
+    # 2: Delete a comment that mentions the architecture.
+    # 3: Delete the package Linker, which contains linker parameters that a
+    #    shared library normally doesn't need, and can contain architecture-
+    #    specific pathnames.
+    # 4: Replace the value of Source_Dirs with a pathname based on
+    #    Directories.Includedir.
+    # 5: Replace the value of Library_Dir with Directories.Libdir.
+    # 6: Replace the value of Library_ALI_Dir with a pathname based on
+    #    Directories.Libdir.
+done
 
 
 ###########
@@ -251,16 +364,48 @@ sed --regexp-extended --in-place \
 %files devel
 # empty metapackage
 
+
 %files core
 %license COPYING3 COPYING.RUNTIME
-%{_libdir}/lib%{name}*.so.%{version}
+%{_libdir}/lib%{name}_minimal.so.%{version}
+%{_libdir}/lib%{name}_core.so.%{version}
+
+
+%files projects
+%{_libdir}/lib%{name}_projects.so.%{version}
+
 
 %files core-devel
-%{_GNAT_project_dir}/%{name}*.gpr
-%{_includedir}/%{name}
-%dir %{_libdir}/%{name}
-%attr(444,-,-) %{_libdir}/%{name}/*.ali
-%{_libdir}/lib%{name}*.so
+%{_GNAT_project_dir}/%{name}_minimal.gpr
+%dir %{_includedir}/%{name}-minimal
+# Exclude some junk that doesn't belong under /usr/include:
+%exclude %{_includedir}/%{name}-minimal/*.c
+# Include only Ada files so it will be an error if more junk appears:
+%{_includedir}/%{name}-minimal/*.ad[sb]
+%dir %{_libdir}/%{name}-minimal
+%attr(444,-,-) %{_libdir}/%{name}-minimal/*.ali
+%{_libdir}/lib%{name}_minimal.so
+
+%{_GNAT_project_dir}/%{name}_core.gpr
+%dir %{_includedir}/%{name}-core
+# Exclude some junk that doesn't belong under /usr/include:
+%exclude %{_includedir}/%{name}-core/*.[chS]
+# Include only Ada files so it will be an error if more junk appears:
+%{_includedir}/%{name}-core/*.ad[sb]
+%dir %{_libdir}/%{name}-core
+%attr(444,-,-) %{_libdir}/%{name}-core/*.ali
+%{_libdir}/lib%{name}_core.so
+
+
+%files projects-devel
+%{_GNAT_project_dir}/%{name}_projects.gpr
+%{_includedir}/%{name}-projects
+%dir %{_libdir}/%{name}-projects
+%attr(444,-,-) %{_libdir}/%{name}-projects/*.ali
+%{_libdir}/lib%{name}_projects.so
+# GNAT project `gnatcoll.gpr`. Added for backward-compatibility.
+%{_GNAT_project_dir}/%{name}.gpr
+
 
 %files core-doc
 %dir %{_pkgdocdir}
@@ -277,6 +422,15 @@ sed --regexp-extended --in-place \
 ###############
 
 %changelog
+* Sun Oct 27 2024 Dennis van Raaij <dvraaij@fedoraproject.org> - 2:25.0.0-1
+- Updated to v25.0.0.
+- The high-level API for manipulating GNAT project files has been split off from
+  the set of core components. It is now part of a new subpackage,
+  gnatcoll-projects.
+- Project file gnatcoll.gpr is superseded by two new project files:
+  gnatcoll_core.gpr and gnatcoll_projects.gpr. The old project file,
+  gnatcoll.gpr, is still available from gnatcoll-projects-devel.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2:24.0.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

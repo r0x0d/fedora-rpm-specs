@@ -21,7 +21,7 @@
 %bcond bootstrap 0
 
 Name:           gap
-Version:        4.13.1
+Version:        4.14.0
 Release:        %autorelease
 Summary:        Computational discrete algebra
 
@@ -52,6 +52,8 @@ Patch:          %{name}-zlib-ng.patch
 # See https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
 
+BuildRequires:  autoconf
+BuildRequires:  automake
 BuildRequires:  desktop-file-utils
 BuildRequires:  gcc-c++
 BuildRequires:  ghostscript
@@ -193,11 +195,12 @@ Library containing core GAP logic
 %prep
 %autosetup -p0
 
+%conf
 # Get the README
 cp -p %{SOURCE1} README.fedora
 
-# Avoid unnecessary rpaths
-sed -i '/LINK/s/ -Wl,-rpath,\$(libdir)//' Makefile.rules
+# Regenerate the configure script
+autoreconf -fi .
 
 %build
 # -Wl,-z,now breaks use of RTLD_LAZY
@@ -209,7 +212,7 @@ export STRIP=%{_bindir}/true
 
 # Rebuild the manuals from source
 export GAP_DIR=$PWD
-make manuals
+make doc
 
 # Build gapmacrodoc.pdf
 cd doc

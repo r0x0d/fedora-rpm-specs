@@ -2,7 +2,7 @@
 Name: qt6
 # This version MUST remain in sync with Qt6 versions!
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 3%{?dist}
 Summary: Qt6 meta package
 License: GPL-3.0-only
 URL:     https://getfedora.org/
@@ -197,7 +197,13 @@ echo "- Qt6 devel meta package" > %{buildroot}%{_docdir}/qt6-devel/README
 
 
 %changelog
-* Mon Dec 02 2024 Jan Grulich <grulja@gmail.com> - 6.8.1-1
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-3
+- Fix qt6_metatypesdir macro
+
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Add qt6_metatypesdir and qt6_descriptionsdir macros
+
+* Mon Dec 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
 - 6.8.1
 
 * Wed Oct 09 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1

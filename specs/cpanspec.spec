@@ -1,6 +1,6 @@
 Name:           cpanspec
 Version:        1.78
-Release:        52%{?dist}
+Release:        53%{?dist}
 Summary:        RPM spec file generation utility
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            http://cpanspec.sourceforge.net/
@@ -11,6 +11,7 @@ Patch2:         %{name}-1.78-Escape-slashes-in-filters.patch
 Patch3:         %{name}-1.78-Prefer-dnf-over-repoquery.patch
 Patch4:         %{name}-1.78-Fix-build-arguments-for-Build.PL-spec-conformance.patch
 Patch5:         %{name}-1.78-Update-licenses-to-SPDX-form.patch
+Patch6:         %{name}-1.78-Update_to_actual_fedora_rules.patch
 BuildArch:      noarch
 BuildRequires:  findutils
 BuildRequires:  perl-interpreter
@@ -36,6 +37,7 @@ contained in the spec file is correct.
 %patch -P3 -p1
 %patch -P4 -p1
 %patch -P5 -p1
+%patch -P6 -p1
 
 %build
 perl Build.PL installdirs=vendor
@@ -54,6 +56,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{_mandir}/man1/*
 
 %changelog
+* Thu Dec 05 2024 Michal Josef Špaček <mspacek@redhat.com> - 1.78-53
+- Update to actual Fedora rules
+
 * Fri Nov 08 2024 Michal Josef Špaček <mspacek@redhat.com> - 1.78-52
 - Update licenses to SPDX form
 

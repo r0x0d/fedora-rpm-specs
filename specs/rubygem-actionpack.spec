@@ -7,7 +7,7 @@
 Name: rubygem-%{gem_name}
 Epoch: 1
 Version: 7.0.8
-Release: 6%{?dist}
+Release: 7%{?dist}
 Summary: Web-flow and rendering framework putting the VC in MVC (part of Rails)
 License: MIT
 URL: http://rubyonrails.org
@@ -40,6 +40,12 @@ Patch4: rubygem-actionpack-7.2.0-Update-test-suite-for-compatibility-with-Ruby-3
 # Drop mutex_m dependency to ease Ruby 3.4 compatibility.
 # https://github.com/rails/rails/pull/49674
 Patch5: rubygem-actionpack-7.2.0-Drop-dependency-on-mutex-m.patch
+# Mitigate `URI::RFC3986_PARSER.escape is obsolete. Use
+# URI::RFC2396_PARSER.escape explicitly.` warnings, which might be quite
+# extensive.
+# https://github.com/rails/rails/pull/53164
+Patch6: rubygem-actionpack-7.1.5-7-1-Fix-URI-DEFAULT-PARSER-warnings.patch
+Patch7: rubygem-actionpack-7.1.5-7-1-Fix-URI-DEFAULT-PARSER-warnings-test.patch
 
 
 # Let's keep Requires and BuildRequires sorted alphabeticaly
@@ -84,9 +90,11 @@ pushd %{_builddir}
 %patch 2 -p2
 %patch 3 -p2
 %patch 4 -p2
+%patch 7 -p2
 popd
 
 %patch 5 -p2
+%patch 6 -p2
 
 %build
 gem build ../%{gem_name}-%{version}%{?prerelease}.gemspec
@@ -132,6 +140,9 @@ popd
 %doc %{gem_instdir}/README.rdoc
 
 %changelog
+* Wed Dec 04 2024 Vít Ondruch <vondruch@redhat.com> - 1:7.0.8-7
+- Mitigate extensive `URI::RFC3986_PARSER.escape is obsolete.` warnings.
+
 * Wed Nov 20 2024 Vít Ondruch <vondruch@redhat.com> - 1:7.0.8-6
 - Ruby 3.4 compatibility fixes.
 

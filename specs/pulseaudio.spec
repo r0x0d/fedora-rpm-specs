@@ -9,6 +9,7 @@
 %global with_webrtc 1
 
 %if 0%{?fedora}
+%global enable_daemon 1
 %global enable_lirc 1
 %global enable_jack 1
 %endif
@@ -33,9 +34,8 @@
 Name:           pulseaudio
 Summary:        Improved Linux Sound Server
 Version:        %{pa_major}%{?pa_minor:.%{pa_minor}}
-Release:        3%{?snap:.%{snap}git%{shortcommit}}%{?dist}
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+Release:        4%{?snap:.%{snap}git%{shortcommit}}%{?dist}
+License:        LGPL-2.1-or-later
 URL:            http://www.freedesktop.org/wiki/Software/PulseAudio
 %if 0%{?gitrel}
 # git clone git://anongit.freedesktop.org/pulseaudio/pulseaudio
@@ -70,15 +70,27 @@ BuildRequires:  g++
 BuildRequires:  pkgconfig(bash-completion)
 %global bash_completionsdir %(pkg-config --variable=completionsdir bash-completion 2>/dev/null || echo '/etc/bash_completion.d')
 BuildRequires:  m4
-BuildRequires:  libtool-ltdl-devel
-BuildRequires:  intltool
 BuildRequires:  pkgconfig
 BuildRequires:  doxygen
 BuildRequires:  xmltoman
-BuildRequires:  libsndfile-devel
+BuildRequires:  pkgconfig(dbus-1)
+BuildRequires:  pkgconfig(glib-2.0)
+BuildRequires:  pkgconfig(sndfile)
+%if 0%{?systemd}
+BuildRequires:  pkgconfig(libsystemd)
+%endif
+BuildRequires:  pkgconfig(x11-xcb)
+BuildRequires:  pkgconfig(fftw3f)
+BuildRequires:  pkgconfig(libasyncns) >= 0.1
+BuildRequires:  pkgconfig(gtk+-3.0)
+%if 0%{?tests}
+BuildRequires:  pkgconfig(check)
+%endif
+
+%if 0%{?enable_daemon}
+
+BuildRequires:  libtool-ltdl-devel
 BuildRequires:  alsa-lib-devel
-BuildRequires:  glib2-devel
-BuildRequires:  gtk3-devel
 BuildRequires:  avahi-devel
 BuildRequires:  libatomic_ops-static, libatomic_ops-devel
 BuildRequires:  pkgconfig(bluez) >= 5.0
@@ -104,14 +116,9 @@ BuildRequires:  systemd-devel >= 184
 BuildRequires:  systemd
 %{?systemd_requires}
 %endif
-BuildRequires:  dbus-devel
 BuildRequires:  libcap-devel
-BuildRequires:  pkgconfig(fftw3f)
 %if 0%{?with_webrtc}
 BuildRequires:  pkgconfig(webrtc-audio-processing-1) >= 1.0
-%endif
-%if 0%{?tests}
-BuildRequires:  pkgconfig(check)
 %endif
 BuildRequires:  pkgconfig(gstreamer-1.0) >= 1.16.0
 BuildRequires:  pkgconfig(gstreamer-app-1.0) >= 1.16.0
@@ -131,10 +138,14 @@ Conflicts:      pulseaudio-daemon
 Obsoletes:      pulseaudio-esound-compat < 15.0
 Obsoletes:      pulseaudio-module-gconf < 15.0
 
+%endif
+
 %description
 PulseAudio is a sound server for Linux and other Unix like operating
 systems. It is intended to be an improved drop-in replacement for the
 Enlightened Sound Daemon (ESOUND).
+
+%if 0%{?enable_daemon}
 
 %package qpaeq
 Summary:	Pulseaudio equalizer interface
@@ -192,10 +203,11 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %description module-gsettings
 GSettings configuration backend for the PulseAudio sound server.
 
+%endif
+
 %package libs
 Summary:        Libraries for PulseAudio clients
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.1-or-later
 Obsoletes:      pulseaudio-libs-zeroconf < 1.1
 
 %description libs
@@ -204,8 +216,7 @@ to interface with a PulseAudio sound server.
 
 %package libs-glib2
 Summary:        GLIB 2.x bindings for PulseAudio clients
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.1-or-later
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
 %description libs-glib2
@@ -214,8 +225,7 @@ a GLIB 2.x based application.
 
 %package libs-devel
 Summary:        Headers and libraries for PulseAudio client development
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.1-or-later
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 Requires:       %{name}-libs-glib2%{?_isa} = %{version}-%{release}
 %description libs-devel
@@ -224,8 +234,7 @@ a PulseAudio sound server.
 
 %package utils
 Summary:        PulseAudio sound server utilities
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.1-or-later
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 # when made non-multilib'd, https://bugzilla.redhat.com/891425
 Obsoletes:      pulseaudio-utils < 3.0-3
@@ -236,8 +245,7 @@ This package contains command line utilities for the PulseAudio sound server.
 %if 0%{?gdm_hooks}
 %package gdm-hooks
 Summary:        PulseAudio GDM integration
-# Automatically converted from old format: LGPLv2+ - review is highly recommended.
-License:        LicenseRef-Callaway-LGPLv2+
+License:        LGPL-2.1-or-later
 Requires:       gdm >= 1:2.22.0
 # for the gdm user
 Requires(pre):  gdm
@@ -273,10 +281,16 @@ sed -i.PACKAGE_VERSION -e "s|^PACKAGE_VERSION=.*|PACKAGE_VERSION=\'%{version}\'|
 
 %build
 %meson \
+  -D client=true \
+  -D valgrind=disabled \
+  -D systemd=%{?systemd:enabled}%{!?systemd:disabled} \
+  -D oss-output=enabled \
+  -D gtk=disabled \
+%if 0%{?enable_daemon}
+  -D daemon=true \
   -D system_user=pulse \
   -D system_group=pulse \
   -D access_group=pulse-access \
-  -D oss-output=enabled \
   -D jack=%{?enable_jack:enabled}%{!?enable_jack:disabled} \
   -D lirc=%{?enable_lirc:enabled}%{!?enable_lirc:disabled} \
   -D tcpwrap=disabled \
@@ -285,12 +299,12 @@ sed -i.PACKAGE_VERSION -e "s|^PACKAGE_VERSION=.*|PACKAGE_VERSION=\'%{version}\'|
   -D bluez5-gstreamer=enabled \
   -D gsettings=enabled \
   -D elogind=disabled \
-  -D valgrind=disabled \
-  -D gtk=disabled \
   -D soxr=%{?fedora:enabled}%{!?fedora:disabled} \
   -D webrtc-aec=%{?with_webrtc:enabled}%{!?with_webrtc:disabled} \
-  -D systemd=%{?systemd:enabled}%{!?systemd:disabled} \
   -D consolekit=disabled \
+%else
+  -D daemon=false \
+%endif
   -D tests=%{?tests:true}%{!?tests:false}
 
 # we really should preopen here --preopen-mods=module-udev-detect.la, --force-preopen
@@ -316,23 +330,25 @@ sed -i -e "s|%{_libdir}/pulseaudio/libpulsedsp.so|/usr/lib/pulseaudio/libpulseds
 popd
 %endif
 
+%if 0%{?enable_daemon}
 # upstream should use udev.pc
 mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/udev/rules.d
 mv -fv $RPM_BUILD_ROOT/lib/udev/rules.d/90-pulseaudio.rules $RPM_BUILD_ROOT%{_prefix}/lib/udev/rules.d
+%endif
 
 %if 0%{?gdm_hooks}
 install -p -m644 -D %{SOURCE5} $RPM_BUILD_ROOT%{_localstatedir}/lib/gdm/.pulse/default.pa
 %endif
 
 ## unpackaged files
-# extraneous libtool crud
-rm -fv $RPM_BUILD_ROOT%{_libdir}/lib*.la
-rm -fv $RPM_BUILD_ROOT%{_libdir}/pulseaudio/lib*.la
-rm -fv $RPM_BUILD_ROOT%{_libdir}/pulseaudio/modules/*.la
 # PA_MODULE_DEPRECATED("Please use module-udev-detect instead of module-detect!");
 rm -fv $RPM_BUILD_ROOT%{_libdir}/pulseaudio/modules/module-detect.so
 rm -fv $RPM_BUILD_ROOT%{_libdir}/pulseaudio/modules/liboss-util.so
 rm -fv $RPM_BUILD_ROOT%{_libdir}/pulseaudio/modules/module-oss.so
+%if !0%{?enable_daemon}
+# only partially usable with pipewire-pulseaudio
+rm -fv $RPM_BUILD_ROOT%{_bindir}/pa-info
+%endif
 
 %find_lang %{name}
 
@@ -355,6 +371,8 @@ cat src/test-suite.log
 fi
 %endif
 
+
+%if 0%{?enable_daemon}
 
 %pre
 getent group pulse-access >/dev/null || groupadd -r pulse-access
@@ -404,6 +422,10 @@ exit 0
 # Remove before F33.
 systemctl --no-reload preset --global pulseaudio.socket >/dev/null 2>&1 || :
 %endif
+
+%endif
+
+%if 0%{?enable_daemon}
 
 %files
 %doc README
@@ -501,7 +523,6 @@ systemctl --no-reload preset --global pulseaudio.socket >/dev/null 2>&1 || :
 %{_mandir}/man1/pulseaudio.1*
 %{_mandir}/man5/default.pa.5*
 %{_mandir}/man5/pulse-cli-syntax.5*
-%{_mandir}/man5/pulse-client.conf.5*
 %{_mandir}/man5/pulse-daemon.conf.5*
 %{_prefix}/lib/udev/rules.d/90-pulseaudio.rules
 %dir %{_libexecdir}/pulse
@@ -558,6 +579,8 @@ systemctl --no-reload preset --global pulseaudio.socket >/dev/null 2>&1 || :
 %{_datadir}/GConf/gsettings/pulseaudio.convert
 %{_datadir}/glib-2.0/schemas/org.freedesktop.pulseaudio.gschema.xml
 
+%endif
+
 %ldconfig_scriptlets libs
 
 %files libs -f %{name}.lang
@@ -598,7 +621,6 @@ systemctl --no-reload preset --global pulseaudio.socket >/dev/null 2>&1 || :
 
 %files utils
 %{_bindir}/pacat
-%{_bindir}/pacmd
 %{_bindir}/pactl
 %{_bindir}/paplay
 %{_bindir}/parec
@@ -609,25 +631,34 @@ systemctl --no-reload preset --global pulseaudio.socket >/dev/null 2>&1 || :
 %ifarch %{multilib_archs}
 %{_bindir}/padsp-32
 %endif
+%if 0%{?enable_daemon}
+%{_bindir}/pacmd
 %{_bindir}/pasuspender
+%endif
 %{_mandir}/man1/pacat.1*
-%{_mandir}/man1/pacmd.1*
 %{_mandir}/man1/pactl.1*
 %{_mandir}/man1/padsp.1*
 %{_mandir}/man1/pamon.1*
 %{_mandir}/man1/paplay.1*
 %{_mandir}/man1/parec.1*
 %{_mandir}/man1/parecord.1*
-%{_mandir}/man1/pasuspender.1*
 %{_mandir}/man1/pax11publish.1*
+%if 0%{?enable_daemon}
+%{_mandir}/man1/pacmd.1*
+%{_mandir}/man1/pasuspender.1*
+%endif
+%{_mandir}/man5/pulse-client.conf.5*
 %{bash_completionsdir}/pacat
-%{bash_completionsdir}/pacmd
 %{bash_completionsdir}/pactl
 %{bash_completionsdir}/padsp
 %{bash_completionsdir}/paplay
 %{bash_completionsdir}/parec
 %{bash_completionsdir}/parecord
+%if 0%{?enable_daemon}
+%{bash_completionsdir}/pacmd
 %{bash_completionsdir}/pasuspender
+%endif
+%{_datadir}/zsh/site-functions/_pulseaudio
 
 %if 0%{?gdm_hooks}
 %files gdm-hooks
@@ -637,6 +668,9 @@ systemctl --no-reload preset --global pulseaudio.socket >/dev/null 2>&1 || :
 
 
 %changelog
+* Tue Nov 19 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 17.0-4
+- Do not build daemon on RHEL
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 17.0-3
 - convert license to SPDX
 

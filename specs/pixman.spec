@@ -2,8 +2,8 @@
 %define gitrev 8ff7213f39edc1b2b8b60d6b0cc5d5f14ca1928d
 
 Name:           pixman
-Version:        0.44.0
-Release:        0%{?dist}
+Version:        0.44.2
+Release:        1%{?dist}
 Summary:        Pixel manipulation library
 
 # SPDX
@@ -60,6 +60,9 @@ Pixel manipulation library for X and Cairo development package.
 %{_libdir}/pkgconfig/pixman-1.pc
 
 %changelog
+* Thu Dec 05 2024 José Expósito <jexposit@redhat.com> - 0.44.2-1
+- Update to 0.44.2
+
 * Thu Nov 07 2024 José Expósito <jexposit@redhat.com> - 0.44.0-1
 - Update to 0.44.0
 

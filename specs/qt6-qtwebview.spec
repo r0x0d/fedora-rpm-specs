@@ -4,8 +4,8 @@
 
 Summary: Qt6 - WebView component
 Name:    qt6-%{qt_module}
-Version: 6.8.0
-Release: 1%{?dist}
+Version: 6.8.1
+Release: 2%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -65,6 +65,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 %files
 %license LICENSES/GPL* LICENSES/LGPL*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{version}.spdx
 %{_qt6_libdir}/libQt6WebView.so.6{,.*}
 %{_qt6_libdir}/libQt6WebViewQuick.so.6{,.*}
 %{_qt6_qmldir}/QtWebView/
@@ -99,6 +100,12 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 
 %changelog
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Install Software Bill of Materials
+
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
+- 6.8.1
+
 * Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
 - 6.8.0
 

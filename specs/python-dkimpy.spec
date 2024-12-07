@@ -1,7 +1,7 @@
 %bcond_without tests
 
 Name:           python-dkimpy
-Version:        1.0.6
+Version:        1.1.8
 Release:        %autorelease
 Summary:        DKIM, ARC, and TLSRPT email signing and verification
 
@@ -11,6 +11,9 @@ Source:         %{pypi_source dkimpy}
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
+%if %{with tests}
+BuildRequires:  openssl
+%endif
 
 %global _description %{expand:
 dkimpy is a library that implements DKIM (DomainKeys Identified Mail)

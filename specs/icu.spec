@@ -8,13 +8,13 @@
 %define version_underscore %{gsub %{version} %. _}
 
 Name:      icu
-Version:   74.2
-Release:   2%{?dist}
+Version:   76.1
+Release:   1%{?dist}
 Summary:   International Components for Unicode
 
 License:   Unicode-DFS-2016 AND BSD-2-Clause AND BSD-3-Clause AND NAIST-2003 AND LicenseRef-Fedora-Public-Domain
 URL:       http://site.icu-project.org/
-Source0:   https://github.com/unicode-org/icu/releases/download/release-%{version_dash}/icu4c-%{version_underscore}-src-FIXED.tgz
+Source0:   https://github.com/unicode-org/icu/releases/download/release-%{version_dash}/icu4c-%{version_underscore}-src.tgz
 %if 0%{?use_tzdata_update}
 Source1:   https://github.com/unicode-org/icu/releases/download/release-%{version_dash}/icu4c-%{version_underscore}-data.zip
 Source2:   https://raw.githubusercontent.com/unicode-org/icu-data/main/tzdata/icunew/2022b/44/metaZones.txt
@@ -32,8 +32,6 @@ Requires: lib%{name}%{?_isa} = %{version}-%{release}
 
 Patch4: gennorm2-man.patch
 Patch5: icuinfo-man.patch
-# https://github.com/unicode-org/icu/pull/3046
-Patch6: python313-unittest.patch
 
 %description
 Tools and utilities for developing with icu.
@@ -73,7 +71,7 @@ BuildArch: noarch
 
 
 %prep
-%autosetup -p1 -n %{name}
+%autosetup -p1 -n icu
 %if 0%{?use_tzdata_update}
 pushd source
 unzip -o %{SOURCE1}
@@ -118,7 +116,7 @@ sed -i -r 's|(PKGDATA_OPTS = )|\1-v |' data/Makefile
 
 
 %install
-rm -rf $RPM_BUILD_ROOT source/__docs
+rm -rf source/__docs
 %make_install %{?_smp_mflags} -C source
 make %{?_smp_mflags} -C source install-doc docdir=__docs
 chmod +x $RPM_BUILD_ROOT%{_libdir}/*.so.*
@@ -196,6 +194,9 @@ LD_LIBRARY_PATH=lib:stubdata:tools/ctestfw:$LD_LIBRARY_PATH bin/uconv -l
 
 
 %changelog
+* Fri Nov 22 2024 Pete Walter <pwalter@fedoraproject.org> - 76.1-1
+- Update to 76.1
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 74.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

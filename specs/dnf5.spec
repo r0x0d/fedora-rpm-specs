@@ -1,7 +1,7 @@
 %global project_version_prime 5
 %global project_version_major 2
 %global project_version_minor 8
-%global project_version_micro 0
+%global project_version_micro 1
 
 %bcond dnf5_obsoletes_dnf %[0%{?fedora} > 40 || 0%{?rhel} > 10]
 
@@ -722,25 +722,29 @@ Provides:       dnf5-command(config-manager)
 Provides:       dnf5-command(copr)
 Provides:       dnf5-command(needs-restarting)
 Provides:       dnf5-command(repoclosure)
+Provides:       dnf5-command(reposync)
 
 %description -n dnf5-plugins
 Core DNF5 plugins that enhance dnf5 with builddep, changelog,
-config-manager, copr, and repoclosure commands.
+config-manager, copr, repoclosure, and reposync commands.
 
-%files -n dnf5-plugins -f dnf5-plugin-builddep.lang -f dnf5-plugin-changelog.lang -f dnf5-plugin-config-manager.lang -f dnf5-plugin-copr.lang -f dnf5-plugin-needs-restarting.lang -f dnf5-plugin-repoclosure.lang
+%files -n dnf5-plugins -f dnf5-plugin-builddep.lang -f dnf5-plugin-changelog.lang -f dnf5-plugin-config-manager.lang -f dnf5-plugin-copr.lang -f dnf5-plugin-needs-restarting.lang -f dnf5-plugin-repoclosure.lang -f dnf5-plugin-reposync.lang
 %{_libdir}/dnf5/plugins/builddep_cmd_plugin.so
 %{_libdir}/dnf5/plugins/changelog_cmd_plugin.so
 %{_libdir}/dnf5/plugins/config-manager_cmd_plugin.so
 %{_libdir}/dnf5/plugins/copr_cmd_plugin.so
 %{_libdir}/dnf5/plugins/needs_restarting_cmd_plugin.so
 %{_libdir}/dnf5/plugins/repoclosure_cmd_plugin.so
+%{_libdir}/dnf5/plugins/reposync_cmd_plugin.so
 %{_mandir}/man8/dnf*-builddep.8.*
 %{_mandir}/man8/dnf*-changelog.8.*
 %{_mandir}/man8/dnf*-config-manager.8.*
 %{_mandir}/man8/dnf*-copr.8.*
 %{_mandir}/man8/dnf*-needs-restarting.8.*
 %{_mandir}/man8/dnf*-repoclosure.8.*
+%{_mandir}/man8/dnf*-reposync.8.*
 %{_datadir}/dnf5/aliases.d/compatibility-plugins.conf
+%{_datadir}/dnf5/aliases.d/compatibility-reposync.conf
 
 
 # ========== dnf5-automatic plugin ==========
@@ -886,6 +890,7 @@ popd
 %find_lang dnf5-plugin-copr
 %find_lang dnf5-plugin-needs-restarting
 %find_lang dnf5-plugin-repoclosure
+%find_lang dnf5-plugin-reposync
 %find_lang dnf5daemon-client
 %find_lang dnf5daemon-server
 %find_lang libdnf5
@@ -896,6 +901,20 @@ popd
 %ldconfig_scriptlets
 
 %changelog
+* Thu Dec 05 2024 Packit <hello@packit.dev> - 5.2.8.1-1
+## What's Changed
+ * Fix libdnf5 actions plugin sign conversion compilation err by @jrohel in https://github.com/rpm-software-management/dnf5/pull/1921
+ * builddep: Add support for --spec and --srpm options by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1907
+ * Implement reposync plugin by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1903
+ * `MultiProgressBar` fixes and tests by @kontura in https://github.com/rpm-software-management/dnf5/pull/1925
+ * changes_from_dnf4: fix formatting of indented `list` points by @kontura in https://github.com/rpm-software-management/dnf5/pull/1930
+ * Python API: Method `DownloadCallbacks.add_new_download` can return `None` by @jrohel in https://github.com/rpm-software-management/dnf5/pull/1929
+ * doc: Use OpenPGP instead of PGP by @ppisar in https://github.com/rpm-software-management/dnf5/pull/1931
+ * Release 5.2.8.1 by @github-actions in https://github.com/rpm-software-management/dnf5/pull/1934
+
+
+ **Full Changelog**: https://github.com/rpm-software-management/dnf5/compare/5.2.8.0...5.2.8.1
+
 * Mon Dec 02 2024 Packit <hello@packit.dev> - 5.2.8.0-1
 ## What's Changed
  * rpm: Reset RPM log callback upon RpmLogGuard destruction by @m-blaha in https://github.com/rpm-software-management/dnf5/pull/1870

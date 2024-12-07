@@ -18,11 +18,11 @@
 %global		git_builddir	%{nil}
 
 %if 0%{?use_gitbare} >= 1
-%global		tarballdate	20241123
-%global		tarballtime	1608
+%global		tarballdate	20241206
+%global		tarballtime	1101
 
-%global		githeaddate	20241103
-%global		git_rev		1312f60320ea3e8dde9777838c42af897ea08548
+%global		githeaddate	20241203
+%global		git_rev		836c77c821525a3317491128012d7dd38979d9d8
 %global		git_short		%(echo %{git_rev} | cut -c-8)
 %global		git_version	%{githeaddate}git%{git_short}
 %endif
@@ -238,6 +238,9 @@ cd ..
 %{_includedir}/pcmanfm-modules.h
 
 %changelog
+* Fri Dec 06 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.3.2^20241203git836c77c8-1
+- Update to the latest git
+
 * Sat Nov 23 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.3.2^20241103git1312f603-1
 - Update to the latest git
 
