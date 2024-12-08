@@ -2,7 +2,7 @@
 
 Name:          enchant2
 Version:       2.8.2
-Release:       2%{?dist}
+Release:       4%{?dist}
 Summary:       An Enchanting Spell Checking Library
 
 License:       LGPL-2.0-or-later
@@ -241,6 +241,12 @@ find %{buildroot} -name '*.la' -delete
 
 
 %changelog
+* Fri Dec 06 2024 Sandro Mani <manisandro@gmail.com> - 2.8.2-4
+- Rebuild (mingw-icu)
+
+* Fri Dec 06 2024 Sandro Mani <manisandro@gmail.com> - 2.8.2-3
+- Rebuild (mingw-icu)
+
 * Wed Oct 16 2024 Peter Oliver <rpm@mavit.org.uk> - 2.8.2-2
 - Restore enchant2-aspell subpackage
 

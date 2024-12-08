@@ -9,10 +9,10 @@ ExcludeArch: %{ix86}
 # environment variables in multiple sections of the spec file.
 %global commit fd44edf79b5ffbced27540fd222e37aa05daeeba
 %global commitdatestring 2024-10-09 22:47:25 +0200
-%global cosmic_minver 1.0.0~alpha.3
+%global cosmic_minver 1.0.0~alpha.4
 
 Name:           cosmic-bg
-Version:        1.0.0~alpha.3
+Version:        1.0.0~alpha.4
 Release:        %autorelease
 Summary:        Background manager for the COSMIC Desktop Environment
 
@@ -80,7 +80,7 @@ just rootdir=%{buildroot} prefix=%{_prefix} install
 sed -e 's|source: Path(".*"),|source: Path("/usr/share/backgrounds/default-dark.png"),|' -i %{buildroot}%{_datadir}/cosmic/com.system76.CosmicBackground/v1/all
 
 # Set default setting for backgrounds on all displays
-echo "true" > %{buildroot}%{_datadir}/cosmic/com.system76.CosmicBackground/v1/same-on-all
+echo "true" > %{buildroot}%{_datadir}/cosmic/com.system76.CosmicBackground/v1/same-on-all 
 
 # COSMIC is not a valid category pre-fedora 41
 %if %{defined fedora} && 0%{?fedora} < 41

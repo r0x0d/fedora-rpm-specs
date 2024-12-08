@@ -2,7 +2,7 @@
 %global giturl  https://github.com/gap-packages/utils
 
 Name:           gap-pkg-%{pkgname}
-Version:        0.86
+Version:        0.87
 Release:        %autorelease
 Summary:        Utility functions for GAP
 
@@ -48,7 +48,6 @@ This package contains documentation for gap-pkg-%{pkgname}.
 %autosetup -n %{pkgname}-%{version} -p1
 
 %build
-export LC_ALL=C.UTF-8
 gap -l "$PWD/..;" makedoc.g
 
 %install
@@ -57,19 +56,19 @@ cp -a *.g lib tst %{buildroot}%{gap_libdir}/pkg/%{pkgname}
 %gap_copy_docs
 
 %check
-export LC_ALL=C.UTF-8
-
 # The download test cannot be run on the koji builders, which provide no
 # network access during a package build.
 rm %{buildroot}%{gap_libdir}/pkg/%{pkgname}/tst/download.tst
-gap -l "%{buildroot}%{gap_libdir};" tst/testall.g
+gap -l '%{buildroot}%{gap_libdir};' tst/testall.g
 cp -p tst/download.tst %{buildroot}%{gap_libdir}/pkg/%{pkgname}/tst
 
 %files
 %doc CHANGES.md README.md
 %license LICENSE.txt
-%{gap_libdir}/pkg/%{pkgname}/
-%exclude %{gap_libdir}/pkg/%{pkgname}/doc/
+%dir %{gap_libdir}/pkg/%{pkgname}/
+%{gap_libdir}/pkg/%{pkgname}/*.g
+%{gap_libdir}/pkg/%{pkgname}/lib/
+%{gap_libdir}/pkg/%{pkgname}/tst/
 
 %files doc
 %docdir %{gap_libdir}/pkg/%{pkgname}/doc/

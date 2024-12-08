@@ -1,7 +1,7 @@
 %{?mingw_package_header}
 
 Name:           mingw-pixman
-Version:        0.44.0
+Version:        0.44.2
 Release:        1%{?dist}
 Summary:        MinGW Windows Pixman library
 
@@ -102,6 +102,9 @@ Static version of the cross compiled Pixman library.
 
 
 %changelog
+* Fri Dec 06 2024 Sandro Mani <manisandro@gmail.com> - 0.44.2-1
+- Update to 0.44.2
+
 * Sat Nov 09 2024 Sandro Mani <manisandro@gmail.com> - 0.44.0-1
 - Update to 0.44.0
 

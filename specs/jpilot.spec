@@ -1,7 +1,7 @@
 Summary: pilot desktop software
 Name: jpilot
 Version: 1.8.2
-Release: 30%{?dist}
+Release: 31%{?dist}
 License: GPL-2.0-only
 URL: https://www.jpilot.org/
 Source0: https://www.jpilot.org/tarballs/jpilot-%{version}.tar.gz
@@ -22,6 +22,8 @@ BuildRequires: desktop-file-utils
 BuildRequires: libappstream-glib
 
 Requires: hicolor-icon-theme
+# for XMP icons support
+Requires: gdk-pixbuf2-modules-extra
 
 ExcludeArch: s390, s390x
 
@@ -124,6 +126,9 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_metainfodir}/%{name}.app
 %{_metainfodir}/%{name}.appdata.xml
 
 %changelog
+* Fri Dec 06 2024 Nikola Forró <nforro@redhat.com> - 1.8.2-31
+- Require gdk-pixbuf2-modules-extra to enable loading XMP icons (#2330774)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.8.2-30
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -7,12 +7,12 @@ ExcludeArch: %{ix86}
 # While our version corresponds to an upstream tag, we still need to define
 # these macros in order to set the VERGEN_GIT_SHA and VERGEN_GIT_COMMIT_DATE
 # environment variables in multiple sections of the spec file.
-%global commit 11faa567f32e255444682b011d3196b15addeb8d
-%global commitdatestring 2024-10-21 11:25:03 -0400
-%global cosmic_minver 1.0.0~alpha.3
+%global commit 104a608cf1d55b5b8696ada431e77b96602242aa
+%global commitdatestring 2024-12-04 16:52:49 +0100
+%global cosmic_minver 1.0.0~alpha.4
 
 Name:           cosmic-applets
-Version:        1.0.0~alpha.3
+Version:        1.0.0~alpha.4
 Release:        %autorelease
 Summary:        Applets for the COSMIC Desktop Environment
 
@@ -98,6 +98,13 @@ desktop-file-install \
 --delete-original \
 --dir %{buildroot}%{_datadir}/applications \
 %{buildroot}%{_datadir}/applications/com.system76.CosmicAppList.desktop
+
+desktop-file-install \
+--remove-category COSMIC \
+--add-category X-COSMIC \
+--delete-original \
+--dir %{buildroot}%{_datadir}/applications \
+%{buildroot}%{_datadir}/applications/com.system76.CosmicAppletA11y.desktop
 
 desktop-file-install \
 --remove-category COSMIC \
@@ -208,6 +215,7 @@ desktop-file-install \
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/com.system76.CosmicAppList.desktop
+desktop-file-validate %{buildroot}%{_datadir}/applications/com.system76.CosmicAppletA11y.desktop
 desktop-file-validate %{buildroot}%{_datadir}/applications/com.system76.CosmicAppletAudio.desktop
 desktop-file-validate %{buildroot}%{_datadir}/applications/com.system76.CosmicAppletBattery.desktop
 desktop-file-validate %{buildroot}%{_datadir}/applications/com.system76.CosmicAppletBluetooth.desktop
@@ -237,6 +245,7 @@ export VERGEN_GIT_SHA="%{commit}"
 %{_bindir}/cosmic-applets
 %{_bindir}/cosmic-panel-button
 %{_bindir}/cosmic-app-list
+%{_bindir}/cosmic-applet-a11y
 %{_bindir}/cosmic-applet-audio
 %{_bindir}/cosmic-applet-battery
 %{_bindir}/cosmic-applet-bluetooth
@@ -250,6 +259,7 @@ export VERGEN_GIT_SHA="%{commit}"
 %{_bindir}/cosmic-applet-time
 %{_bindir}/cosmic-applet-workspaces
 %{_datadir}/applications/com.system76.CosmicAppList.desktop
+%{_datadir}/applications/com.system76.CosmicAppletA11y.desktop
 %{_datadir}/applications/com.system76.CosmicAppletAudio.desktop
 %{_datadir}/applications/com.system76.CosmicAppletBattery.desktop
 %{_datadir}/applications/com.system76.CosmicAppletBluetooth.desktop

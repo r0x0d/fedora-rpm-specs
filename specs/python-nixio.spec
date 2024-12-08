@@ -1,22 +1,31 @@
 %global forgeurl    https://github.com/G-node/nixpy
 
 Name:       python-nixio
-Version:    1.5.3
+Version:    1.5.4
 Release:    %autorelease
 Summary:    Python bindings for NIX
 
 %global     tag     %version
 %forgemeta
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:    LicenseRef-Callaway-BSD
+License:    BSD-3-Clause
 URL:        %forgeurl
-Source0:    %forgesource
+# We need to upload a filtered version of the source archive because
+# docs/source/examples/lenna.png has several issues, including the lack of a
+# license. We have asked upstream to deal with this in
+#   Please consider replacing lenna.png
+#   https://github.com/G-Node/nixpy/issues/545
+# but for now, we must obtain the filtered archive by running the script in
+# Source2:
+#   ./get_source ${VERSION}
+%dnl Source0:    %forgesource
+Source0:    nixpy-%{version}-filtered.tar.gz
 # The tagged snapshot on GitHub still says "dev" but the manually uploaded
 # release does not, so use the info.json from there
 # https://github.com/G-Node/nixpy/issues/528
 Source1:    info.json
-
+# * Script used to obtain Source0: ./get_source %%{version}
+Source2:    get_source
 
 BuildArch:      noarch
 # No need for nix, they're uncoupling it from the C++
@@ -36,7 +45,6 @@ a storage backend.
 %package -n python3-nixio
 Summary:        %{summary}
 BuildRequires:  python3-devel
-BuildRequires:  gcc
 # use tests_require which is deprecated
 BuildRequires:  %{py3_dist pytest}
 BuildRequires:  %{py3_dist pytest-runner}
@@ -48,7 +56,7 @@ BuildRequires:  %{py3_dist matplotlib}
 %{description}
 
 %prep
-%forgesetup
+%autosetup -n nixpy-%{version}
 
 # it sets examples_path based on the name of the cwd
 sed -i "s/nixpy/nixpy-%{version}/" nixio/test/test_doc_examples.py
@@ -56,7 +64,7 @@ sed -i "s/nixpy/nixpy-%{version}/" nixio/test/test_doc_examples.py
 cp %{SOURCE1} nixio/info.json -v -p
 
 %generate_buildrequires
-%pyproject_buildrequires -r
+%pyproject_buildrequires
 
 %build
 %pyproject_wheel
@@ -66,7 +74,13 @@ cp %{SOURCE1} nixio/info.json -v -p
 %pyproject_save_files nixio
 
 %check
-%{pytest}
+# These require the removed lenna.png sample file:
+k="${k-}${k+ and }not (TestDocumentationExamples and test_image_data)"
+k="${k-}${k+ and }not (TestDocumentationExamples and test_image_with_metadata)"
+k="${k-}${k+ and }not (TestDocumentationExamples and test_multiple_rois)"
+k="${k-}${k+ and }not (TestDocumentationExamples and test_single_roi)"
+
+%pytest -k "${k-}"
 
 %files -n python3-nixio -f %{pyproject_files}
 %{_bindir}/nixio

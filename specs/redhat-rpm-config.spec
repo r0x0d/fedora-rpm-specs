@@ -4,7 +4,7 @@
 # 2) When making changes, increment the version (in baserelease) by 1.
 #    rpmdev-bumpspec and other tools update the macro below, which is used
 #    in Version: to get the desired effect.
-%global baserelease 299
+%global baserelease 300
 
 Summary: Red Hat-family-specific rpm configuration files
 Name: redhat-rpm-config
@@ -257,6 +257,9 @@ install -p -m 644 -t %{buildroot}%{_rpmluadir}/fedora common.lua
 %doc buildflags.md
 
 %changelog
+* Thu Dec 05 2024 Michal Domonkos <mdomonko@redhat.com> - 300-1
+- Fix automatic soname requires on non-versioned symlink targets
+
 * Thu Dec 05 2024 Denys Vlasenko <dvlasenk@redhat.com> - 299-1
 - find-provides: fix filtering for find-provides.ksyms
 

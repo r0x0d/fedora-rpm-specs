@@ -11,7 +11,7 @@
 %global build_tests 1
 
 Name:       libindi
-Version:    2.1.0
+Version:    2.1.1
 Release:    %autorelease
 Summary:    Instrument Neutral Distributed Interface
 
@@ -81,6 +81,19 @@ Provides: bundled(hidapi)
 Provides: bundled(httplib) = 0.12.4
 Provides: bundled(json) = 3.10.5
 %endif
+
+# These drivers have been migrated here from 3rdparty
+Obsoletes:  indi-3rdparty-astrolink4 <= 2.1.0
+Provides:   indi-3rdparty-astrolink4 = %{version}
+
+Obsoletes:  indi-3rdparty-astromechfoc <= 2.1.0
+Provides:   indi-3rdparty-astromechfoc = %{version}
+
+Obsoletes:  indi-3rdparty-dreamfocuser <= 2.1.0
+Provides:   indi-3rdparty-dreamfocuser = %{version}
+
+Obsoletes:  indi-3rdparty-spectracyber <= 2.1.0
+Provides:   indi-3rdparty-spectracyber = %{version}
 
 %description
 INDI is a distributed control protocol designed to operate

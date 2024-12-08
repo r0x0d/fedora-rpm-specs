@@ -7,12 +7,12 @@ ExcludeArch: %{ix86}
 # While our version corresponds to an upstream tag, we still need to define
 # these macros in order to set the VERGEN_GIT_SHA and VERGEN_GIT_COMMIT_DATE
 # environment variables in multiple sections of the spec file.
-%global commit 980b9621332502af4754c837f54e514282581c2f
-%global commitdatestring 2024-10-24 17:51:15 -0400
-%global cosmic_minver 1.0.0~alpha.3
+%global commit d4d5f429337004c1721e0072ad1c25509229586f
+%global commitdatestring 2024-11-26 14:46:23 -0500
+%global cosmic_minver 1.0.0~alpha.4
 
 Name:           cosmic-notifications
-Version:        1.0.0~alpha.3
+Version:        1.0.0~alpha.4
 Release:        %autorelease
 Summary:        Notifications daemon for the COSMIC Desktop Environment
 

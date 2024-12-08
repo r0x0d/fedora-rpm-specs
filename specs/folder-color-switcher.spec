@@ -1,5 +1,5 @@
 Name:           folder-color-switcher
-Version:        1.6.5
+Version:        1.6.6
 Release:        1%{?dist}
 Summary:        Change a folder colour
 
@@ -63,6 +63,9 @@ done
 %{_datadir}/caja-python/extensions/*
 
 %changelog
+* Fri Dec 06 2024 Leigh Scott <leigh123linux@gmail.com> - 1.6.6-1
+- Update to 1.6.6
+
 * Mon Nov 25 2024 Leigh Scott <leigh123linux@gmail.com> - 1.6.5-1
 - Update to 1.6.5
 

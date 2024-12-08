@@ -9,8 +9,8 @@
 #
 
 
-%global gh_commit    de6abf3b6f8dd955fac3caad3af7a9504e8c2ffa
-%global gh_date      2024-09-19
+%global gh_commit    f80235cb4d3caa59ae09be3adf1ded27521d1a9c
+%global gh_date      2024-12-05
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     sebastianbergmann
 %global gh_project   phpunit
@@ -23,7 +23,7 @@
 %global ver_major    9
 %global ver_minor    6
 
-%global upstream_version 9.6.21
+%global upstream_version 9.6.22
 #global upstream_prever  dev
 
 Name:           %{pk_project}%{ver_major}
@@ -42,7 +42,7 @@ Patch0:         %{name}-rpm.patch
 BuildArch:      noarch
 BuildRequires:  php(language) >= 7.3
 BuildRequires:  (php-composer(doctrine/instantiator) >= 1.5.0         with php-composer(doctrine/instantiator) <  3)
-BuildRequires:  (php-composer(myclabs/deep-copy) >= 1.12.0            with php-composer(myclabs/deep-copy) <  2)
+BuildRequires:  (php-composer(myclabs/deep-copy) >= 1.12.1            with php-composer(myclabs/deep-copy) <  2)
 BuildRequires:  (php-composer(phar-io/manifest) >= 2.0.4              with php-composer(phar-io/manifest) < 3)
 BuildRequires:  (php-composer(phar-io/version) >= 3.2.1               with php-composer(phar-io/version) <  4)
 BuildRequires:  (php-composer(phpspec/prophecy) >= 1.12.1             with php-composer(phpspec/prophecy) <  2)
@@ -80,7 +80,7 @@ BuildRequires:  php-fedora-autoloader-devel >= 1.0.0
 #        "ext-xml": "*",
 #        "ext-xmlwriter": "*",
 #        "doctrine/instantiator": "^1.5.0 || ^2",
-#        "myclabs/deep-copy": "^1.12.0",
+#        "myclabs/deep-copy": "^1.12.1",
 #        "phar-io/manifest": "^2.0.4",
 #        "phar-io/version": "^3.2.1",
 #        "phpunit/php-code-coverage": "^9.2.31",
@@ -108,7 +108,7 @@ Requires:       php-mbstring
 Requires:       php-xml
 Requires:       php-xmlwriter
 Requires:       (php-composer(doctrine/instantiator) >= 1.5.0         with php-composer(doctrine/instantiator) <  3)
-Requires:       (php-composer(myclabs/deep-copy) >= 1.12.0            with php-composer(myclabs/deep-copy) <  2)
+Requires:       (php-composer(myclabs/deep-copy) >= 1.12.1            with php-composer(myclabs/deep-copy) <  2)
 Requires:       (php-composer(phar-io/manifest) >= 2.0.4              with php-composer(phar-io/manifest) < 3)
 Requires:       (php-composer(phar-io/version) >= 3.2.1               with php-composer(phar-io/version) < 4)
 Requires:       (php-composer(phpspec/prophecy) >= 1.12.1             with php-composer(phpspec/prophecy) <  2)
@@ -262,6 +262,10 @@ exit $ret
 
 
 %changelog
+* Thu Dec  5 2024 Remi Collet <remi@remirepo.net> - 9.6.22-1
+- update to 9.6.22 (no change)
+- raise dependency on myclabs/deep-copy 1.12.1
+
 * Thu Sep 19 2024 Remi Collet <remi@remirepo.net> - 9.6.21-1
 - update to 9.6.21
 

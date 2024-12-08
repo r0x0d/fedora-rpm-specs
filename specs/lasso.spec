@@ -97,6 +97,8 @@ Patch5: 625bf7d9c11ec366c45514d5ec12ab1cdd8ce094.patch
 Patch6: 3e6f9076e19368b29a932373955a5dccd2f3cc46.patch
 # https://dev.entrouvert.org/issues/92106
 Patch7: lasso-2.8.2-python_313.patch
+# fix build with automake-1.17
+Patch8: automake-version.patch
 
 BuildRequires: autoconf
 BuildRequires: automake
@@ -239,6 +241,7 @@ library.
 %patch -P 5 -p1
 %patch -P 6 -p1
 %patch -P 7 -p1
+%patch -P 8 -p1
 
 # Remove any python script shebang lines (unless they refer to python3)
 sed -i -E -e '/^#![[:blank:]]*(\/usr\/bin\/env[[:blank:]]+python[^3]?\>)|(\/usr\/bin\/python[^3]?\>)/d' \

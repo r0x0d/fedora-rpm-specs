@@ -9,7 +9,7 @@
 
 Name:           frr
 Version:        10.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Routing daemon
 License:        GPL-2.0-or-later AND ISC AND LGPL-2.0-or-later AND BSD-2-Clause AND BSD-3-Clause AND (GPL-2.0-or-later  OR ISC) AND MIT
 URL:            http://www.frrouting.org
@@ -26,6 +26,7 @@ Patch0002:      0002-enable-openssl.patch
 Patch0003:      0003-disable-eigrp-crypto.patch
 Patch0004:      0004-fips-mode.patch
 Patch0005:      0005-remove-grpc-test.patch
+Patch0006:      0006-autorp-segfault.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -118,7 +119,7 @@ autoreconf -ivf
     --sysconfdir=%{_sysconfdir}/frr \
     --libdir=%{_libdir}/frr \
     --libexecdir=%{_libexecdir}/frr \
-    --localstatedir=/run/frr \
+    --localstatedir=/var \
     --enable-multipath=64 \
     --enable-vtysh=yes \
     --disable-ospfclient \
@@ -278,6 +279,9 @@ rm tests/lib/*grpc*
 %endif
 
 %changelog
+* Thu Dec 05 2024 Michal Ruprich <mruprich@redhat.com> - 10.2-2
+- Resolves: rhbz#2329643 - upgrading frr to 10.2 causes pimd crashes
+
 * Fri Nov 22 2024 Michal Ruprich <mruprich@redhat.com> - 10.2-1
 - New version 10.2
 

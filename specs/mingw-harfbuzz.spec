@@ -2,7 +2,7 @@
 
 Name:           mingw-harfbuzz
 Version:        10.1.0
-Release:        1%{?dist}
+Release:        3%{?dist}
 Summary:        MinGW Windows Harfbuzz library
 
 License:        MIT
@@ -158,6 +158,12 @@ export MINGW_BUILDDIR_SUFFIX=shared
 
 
 %changelog
+* Fri Dec 06 2024 Sandro Mani <manisandro@gmail.com> - 10.1.0-3
+- Rebuild (mingw-icu)
+
+* Fri Dec 06 2024 Sandro Mani <manisandro@gmail.com> - 10.1.0-2
+- Rebuild (mingw-icu)
+
 * Sat Nov 09 2024 Sandro Mani <manisandro@gmail.com> - 10.1.0-1
 - Update to 10.1.0
 

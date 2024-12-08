@@ -1,51 +1,54 @@
 Name:           python-minimock
-Version:        1.2.8
-Release:        38%{?dist}
+Version:        1.3.0
+Release:        1%{?dist}
 Summary:        The simplest possible mock library
 
 License:        MIT
-URL:            http://pypi.python.org/pypi/MiniMock
-Source0:        http://pypi.python.org/packages/source/M/MiniMock/MiniMock-%{version}.tar.gz
+URL:            https://github.com/lowks/minimock/
+Source0:        %{url}/archive/v%{version}/minimock-%{version}.tar.gz
 
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
 
 %description
 minimock is a simple library for doing Mock objects with doctest.
 
 %package -n python3-minimock
 Summary:        The simplest possible mock library
-%{?python_provide:%python_provide python3-minimock}
 %description -n python3-minimock
 minimock is a simple library for doing Mock objects with doctest.
 
 
 %prep
-%setup -q -n MiniMock-%{version}
+%setup -qn minimock-%{version}
+
+
+%generate_buildrequires
+%pyproject_buildrequires
 
 
 %build
-%py3_build
+%pyproject_wheel
 
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files 'minimock*'
 
 
 %check
 %{__python3} minimock.py -v
 
 
-%files -n python3-minimock
-%doc docs/*
-%{python3_sitelib}/MiniMock-%{version}-py%{python3_version}.egg-info
-%{python3_sitelib}/minimock*
-%{python3_sitelib}/__pycache__/minimock*
+%files -n python3-minimock -f %{pyproject_files}
+%doc README.rst
 
 
 %changelog
+* Fri Dec 06 2024 Gwyn Ciesla <gwync@protonmail.com> - 1.3.0-1
+- 1.3.0
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.8-38
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

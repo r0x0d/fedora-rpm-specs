@@ -5,42 +5,55 @@
 %bcond  qt6     1
 %bcond  ninja   1
 
-%global llvm_compat 18
+%dnl %global llvm_compat 19
 
 Name:           openshadinglanguage
-Version:        1.13.11.0
+Version:        1.13.12.0
 Release:        %autorelease %{?prerelease: -p -e %{prerelease}}
 Summary:        Advanced shading language for production GI renderers
 
-# The entire source is BSD-3-Clause, except:
+# The primary overall license is BSD-3-Clause, but from THIRD-PARTY.md
+#   Many bits of code flow back and forth between OIIO and OSL, especially
+#   parts of the CMake build system.
+# Anything with SPDX-License-Identifier: BSD-3-Clause in its header comment
+# must therefore be presumed to be *possibly* (BSD-3-Clause AND Apache-2.0).
 #
+# The entire source is therefore BSD-3-Clause AND Apache-2.0, except:
+#
+# BSD-3-Clause (only):
+#   - Some files surely lack Apache-2.0 content, but it is not possible to
+#     ascertain which they are.
 # BSD-3-Clause AND LicenseRef-Fedora-Public-Domain (see THIRD-PARTY.md):
-#   src/include/OSL/oslnoise.h
+#   - src/include/OSL/oslnoise.h
+# CC-BY-4.0 (in general, all documentation; only some are installed):
+#   - INSTALL.md
+#   - GOVERNANCE.md
+#   - CONTRIBUTING.md
+#   - CHANGES.md
+#   - ASWF/meetings/template.md
+#   - ASWF/meetings/2020-04-02.md
+#   - doc/build_install/windows/Readme.md
+#   - doc/build_install/README.md
+#   - doc/app_integration/OptiX-Inlining-Options.md
+#   - doc/RELEASING.md
+#   - src/doc/, everything except:
+#     BSD-3-Clause:
+#       * src/doc/CMakeLists.txt
+#       * src/doc/Makefile
+#     BSD-3-Clause AND CC-BY-4.0:
+#       * src/doc/intro.md
+#       * src/doc/languagespec.tex
 #
 # Additionally, the following are under other acceptable licenses but are
 # removed in %%prep and not packaged in any binary RPM:
 #
 # Pixar (https://github.com/spdx/license-list-XML/issues/2225):
-#   doc/build_install/windows/build_osl.py
-# CC-BY-4.0:
-#   ASWF/meetings/2020-04-02.md
-#   ASWF/meetings/template.md
-#   CHANGES.md
-#   CONTRIBUTING.md
-#   GOVERNANCE.md
-#   INSTALL.md
-#   doc/RELEASING.md
-#   doc/build_install/README.md
-#   doc/build_install/windows/Readme.md
-#   src/doc/languagespec.tex
-#   src/doc/osltoy.md.html
-#   src/doc/techref.sty
-#   src/doc/testshade.md.html
+#   - doc/build_install/windows/build_osl.py
 # BSD-2-Clause
-#  src/doc/markdeep.min.js
+#  - src/doc/markdeep.min.js
 # BSD-2-Clause OR LicenseRef-Fedora-Public-Domain:
-#   src/doc/docs.css
-License:        BSD-3-Clause AND LicenseRef-Fedora-Public-Domain
+#   - src/doc/docs.css
+License:        BSD-3-Clause AND Apache-2.0 AND LicenseRef-Fedora-Public-Domain AND CC-BY-4.0
 URL:            https://github.com/AcademySoftwareFoundation/OpenShadingLanguage
 Source:         %{url}/archive/v%{version}/OpenShadingLanguage-%{version}%{?prerelease}.tar.gz
 
@@ -89,9 +102,10 @@ materials, lights, displacement, and pattern generation.}
 %package example-shaders-source
 Summary:        OSL shader examples
 
-# This subpackage doesn’t contain API headers or compiled libraries or executables;
-# therefore, nothing in it is derived from src/include/OSL/oslnoise.h.
-License:        BSD-3-Clause
+# See the comment above the base package’s License field. This subpackage
+# doesn’t contain and isn’t derived from anything enumerated there as falling
+# outside the “overall” license.
+License:        BSD-3-Clause AND Apache-2.0
 
 BuildArch:      noarch
 
@@ -104,7 +118,14 @@ This package contains some OSL example shaders.
 
 %package common-headers
 Summary:        OSL standard library and auxiliary headers
+
+# See the comment above the base package’s License field. This subpackage
+# doesn’t contain and isn’t derived from anything enumerated there as falling
+# outside the “overall” license.
+License:        BSD-3-Clause AND Apache-2.0
+
 BuildArch:      noarch
+
 Requires:       %{name} = %{version}-%{release}
 
 %description common-headers %{common_description}
@@ -114,6 +135,12 @@ as some additional headers useful for writing shaders.
 
 %package -n OpenImageIO-plugin-osl
 Summary:        OpenImageIO input plugin
+
+# See the comment above the base package’s License field. This subpackage
+# doesn’t contain and isn’t derived from anything enumerated there as falling
+# outside the “overall” license. Headers are only from shaders/, and don’t
+# include src/include/OSL/oslnoise.h.
+License:        BSD-3-Clause AND Apache-2.0
 
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
@@ -126,9 +153,13 @@ Summary:        OpenShadingLanguage's libraries
 
 %description    libs %{common_description}
 
-
 %package        devel
 Summary:        Development files for %{name}
+
+# See the comment above the base package’s License field. This subpackage
+# doesn’t contain documentation, so nothing is CC-BY-4.0.
+License:        BSD-3-Clause AND Apache-2.0 AND LicenseRef-Fedora-Public-Domain
+
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
 %description    devel %{common_description}
@@ -138,6 +169,11 @@ developing applications that use %{name}.
 
 %package        -n python3-%{name}
 Summary:        %{summary}
+
+# See the comment above the base package’s License field. This subpackage
+# doesn’t contain documentation, so nothing is CC-BY-4.0.
+License:        BSD-3-Clause AND Apache-2.0 AND LicenseRef-Fedora-Public-Domain
+
 BuildRequires:  cmake(pybind11)
 BuildRequires:  pkgconfig(python3)
 BuildRequires:  python3dist(numpy)
@@ -161,21 +197,6 @@ sed -i -e "s|COMMAND python|COMMAND python3|" $(find . -iname CMakeLists.txt)
 #
 # Pixar (https://github.com/spdx/license-list-XML/issues/2225):
 rm -v doc/build_install/windows/build_osl.py
-# CC-BY-4.0 (documentation):
-rm -v \
-    ASWF/meetings/2020-04-02.md \
-    ASWF/meetings/template.md \
-    CHANGES.md \
-    CONTRIBUTING.md \
-    GOVERNANCE.md \
-    INSTALL.md \
-    doc/RELEASING.md \
-    doc/build_install/README.md \
-    doc/build_install/windows/Readme.md \
-    src/doc/languagespec.tex \
-    src/doc/osltoy.md.html \
-    src/doc/techref.sty \
-    src/doc/testshade.md.html
 # BSD-2-Clause
 rm -v src/doc/markdeep.min.js
 # BSD-2-Clause OR LicenseRef-Fedora-Public-Domain:
@@ -238,8 +259,7 @@ rm -fr %{buildroot}%{_prefix}/build-scripts
 rm -fr %{buildroot}%{_prefix}/cmake/llvm_macros.cmake
 
 %files
-%license LICENSE.md
-%doc README.md
+%doc CHANGES.md README.md
 %{_bindir}/oslc
 %{_bindir}/oslinfo
 %if %{with qt5} || %{with qt6}
@@ -273,7 +293,8 @@ rm -fr %{buildroot}%{_prefix}/cmake/llvm_macros.cmake
 %{_libdir}/OpenImageIO-%{oiio_major_minor_ver}/osl.imageio.so
    
 %files libs
-%license LICENSE.md
+%license LICENSE.md THIRD-PARTY.md
+%doc CHANGES.md README.md
 %{_libdir}/libosl*.so.1*
 %{_libdir}/libtestshade.so.1*
 

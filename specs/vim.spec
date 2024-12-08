@@ -10,7 +10,7 @@
 %bcond_with libsodium_crypt
 %endif
 
-%define patchlevel 895
+%define patchlevel 906
 
 %if %{?WITH_SELINUX:0}%{!?WITH_SELINUX:1}
 %define WITH_SELINUX 1
@@ -740,30 +740,6 @@ rm %{buildroot}/%{_datadir}/icons/{hicolor,locolor}/*/apps/gvim.png
     ln -sf menu_ja_jp.ujis.vim menu_ja_jp.eucjp.vim )
 )
 
-pushd %{buildroot}/%{_datadir}/%{name}/%{vimdir}/tutor
-mkdir conv
-   iconv -f CP1252 -t UTF8 tutor.ca > conv/tutor.ca
-   iconv -f CP1252 -t UTF8 tutor.it > conv/tutor.it
-   #iconv -f CP1253 -t UTF8 tutor.gr > conv/tutor.gr
-   iconv -f CP1252 -t UTF8 tutor.fr > conv/tutor.fr
-   iconv -f CP1252 -t UTF8 tutor.es > conv/tutor.es
-   iconv -f CP1252 -t UTF8 tutor.de > conv/tutor.de
-   #iconv -f CP737 -t UTF8 tutor.gr.cp737 > conv/tutor.gr.cp737
-   #iconv -f EUC-JP -t UTF8 tutor.ja.euc > conv/tutor.ja.euc
-   #iconv -f SJIS -t UTF8 tutor.ja.sjis > conv/tutor.ja.sjis
-   iconv -f UTF8 -t UTF8 tutor.ja.utf-8 > conv/tutor.ja.utf-8
-   iconv -f UTF8 -t UTF8 tutor.ko.utf-8 > conv/tutor.ko.utf-8
-   iconv -f CP1252 -t UTF8 tutor.no > conv/tutor.no
-   iconv -f ISO-8859-2 -t UTF8 tutor.pl > conv/tutor.pl
-   iconv -f ISO-8859-2 -t UTF8 tutor.sk > conv/tutor.sk
-   iconv -f KOI8R -t UTF8 tutor.ru > conv/tutor.ru
-   iconv -f CP1252 -t UTF8 tutor.sv > conv/tutor.sv
-   mv -f tutor.ja.euc tutor.ja.sjis tutor.ko.euc tutor.pl.cp1250 tutor.zh.big5 tutor.ru.cp1251 tutor.zh.euc tutor.sr.cp1250 tutor.sr.utf-8 conv/
-   rm -f tutor.ca tutor.de tutor.es tutor.fr tutor.gr tutor.it tutor.ja.utf-8 tutor.ko.utf-8 tutor.no tutor.pl tutor.sk tutor.ru tutor.sv
-mv -f conv/* .
-rmdir conv
-popd
-
 # Dependency cleanups
 chmod 644 %{buildroot}/%{_datadir}/%{name}/%{vimdir}/doc/vim2html.pl \
  %{buildroot}/%{_datadir}/%{name}/%{vimdir}/tools/*.pl \
@@ -1073,6 +1049,9 @@ touch %{buildroot}/%{_datadir}/%{name}/vimfiles/doc/tags
 
 
 %changelog
+* Fri Dec 06 2024 Zdenek Dohnal <zdohnal@redhat.com> - 2:9.1.906-1
+- patchlevel 906
+
 * Fri Nov 29 2024 Zdenek Dohnal <zdohnal@redhat.com> - 2:9.1.895-1
 - patchlevel 895
 

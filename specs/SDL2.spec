@@ -9,8 +9,8 @@
 %global libdecor_majver 0
 
 Name:           SDL2
-Version:        2.30.3
-Release:        2%{?dist}
+Version:        2.30.9
+Release:        1%{?dist}
 Summary:        Cross-platform multimedia library
 License:        Zlib AND MIT AND Apache-2.0 AND (Apache-2.0 OR MIT)
 URL:            http://www.libsdl.org/
@@ -172,6 +172,9 @@ install -p -m 644 %{SOURCE2} %{buildroot}%{_includedir}/SDL2/SDL_revision.h
 %{_libdir}/cmake/SDL2/SDL2staticTargets*.cmake
 
 %changelog
+* Thu Nov 21 2024 Jeremy Newton <mystro256@fedoraproject.org> - 2.30.9-1
+- update to 2.30.9
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.30.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -141,7 +141,7 @@ make -C docs html latexpdf \
 %{GPRinstall} %{tp_options} --no-build-var -P templates_parser.gpr
 %{GPRinstall} %{tp_options} --mode=usage -P tools/tools.gpr
 
-# Fix up some things that GPRinstall does wrong.
+# Fix up the symlink.
 ln --symbolic --force lib%{name}-%{version}.so %{buildroot}%{_libdir}/lib%{name}.so
 
 # Install the man pages.

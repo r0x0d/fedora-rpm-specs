@@ -2,11 +2,11 @@
 
 %global underscore_version %(echo %{version} | sed 's/\\./_/g')
 %global dash_version %(echo %{version} | sed 's/\\./-/g')
-%global lib_version 74
+%global lib_version 76
 
 Name:           mingw-icu
-Version:        74.2
-Release:        2%{?dist}
+Version:        76.1
+Release:        1%{?dist}
 Summary:        MinGW compilation of International Components for Unicode Tools
 
 License:        Unicode-DFS-2016 AND BSD-2-Clause AND BSD-3-Clause AND LicenseRef-Fedora-Public-Domain
@@ -20,7 +20,7 @@ Patch0:         icu4c_mingwbuild.patch
 # Set standard to gnu++11 instead of c++11
 # Fixes: /usr/i686-w64-mingw32/sys-root/mingw/include/c++/limits:2100:30: error: unable to find numeric literal operator 'operator""Q'
 # (Numeric literals are a gcc extension)
-Patch1:         icu-stdgnu11.patch
+#Patch1:         icu-stdgnu11.patch
 
 BuildArch:      noarch
 
@@ -203,6 +203,9 @@ rm %{buildroot}%{mingw64_libdir}/icu/pkgdata.inc
 
 
 %changelog
+* Fri Dec 06 2024 Sandro Mani <manisandro@gmail.com> - 76.1-1
+- Update to 76.1
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 74.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

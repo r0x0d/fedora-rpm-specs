@@ -3,7 +3,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 5.2.2
-Release: 9%{?dist}
+Release: 10%{?dist}
 Summary: An elegant, structured (X)HTML/XML templating engine
 License: MIT and WTFPL
 URL: http://haml.info/
@@ -13,6 +13,11 @@ Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 Source1: %{gem_name}-%{version}-tests.txz
 # Explicitly include ostruct due to json 2.7.2 change
 Patch0:  rubygem-haml-5.2.2-explicit-ostruct-dep.patch
+# Support ruby3.4 Hash#inspect format change
+# Note that haml 6.0 changes codebase a lot and
+# the file modified in the patch no longer exists:
+# https://github.com/haml/haml/commit/11bb81149f4b048fe9282ed9be0dd10bfbc710b2
+Patch1:  rubygem-haml-5.2.2-ruby34-hash-inspect-formatting-change.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
@@ -44,6 +49,7 @@ Documentation for %{name}.
 (
 cd %{_builddir}
 %patch 0 -p1
+%patch 1 -p1
 )
 
 %build
@@ -110,6 +116,9 @@ popd
 %exclude %{gem_instdir}/yard/default/.gitignore
 
 %changelog
+* Fri Dec 06 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 5.2.2-10
+- Support ruby34 Hash inspect formatting change for testsuite
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.2.2-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

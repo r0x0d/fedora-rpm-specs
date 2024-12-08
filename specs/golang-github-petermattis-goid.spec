@@ -19,7 +19,7 @@ Release:        0.22%{?dist}
 Summary:        Programatically retrieve the current goroutine's ID
 
 # Upstream license specification: Apache-2.0
-License:        ASL 2.0
+License:        Apache-2.0
 URL:            %{gourl}
 Source0:        %{gosource}
 

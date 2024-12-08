@@ -8,7 +8,7 @@
 %global date0 20240318
 %global pypi_version 2.3.0
 %else
-%global pypi_version 2.4.1
+%global pypi_version 2.5.1
 %endif
 
 %global desc %{expand: \
@@ -31,7 +31,7 @@ makes it easy to use and feel like a natural extension. }
 # Which families gpu build for
 %global rocm_gpu_list gfx9
 %global rocm_default_gpu default
-%bcond_without rocm_loop
+%bcond_with rocm_loop
 
 # torch toolchain
 %global toolchain gcc
@@ -212,10 +212,9 @@ done
 %{python3_sitearch}/torio
 %{python3_sitearch}/%{pypi_name}-*.egg-info/
 
-%if %{with rocm}
+%if %{with rocm_loop}
 %files -n python3-%{pypi_name}-rocm-gfx9
 %{_libdir}/rocm/gfx9/lib64/*
-
 %endif
 
 %changelog

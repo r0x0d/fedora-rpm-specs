@@ -2,7 +2,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 2.6.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Mocking and stubbing library
 License: Ruby OR BSD-2-Clause OR MIT
 URL: https://mocha.jamesmead.org
@@ -10,6 +10,9 @@ Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # git clone https://github.com/freerange/mocha.git && cd mocha
 # git archive -v -o mocha-2.6.1-test.tar.gz v2.6.1 test/
 Source1: %{gem_name}-%{version}-test.tar.gz
+# Use single quote instead of backtick for Ruby 3.4 compatibility
+# https://github.com/freerange/mocha/pull/688
+Patch0: rubygem-mocha-2.6.1-Support-single-quote-instead-of-backtick-for-Ruby-3.4.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
@@ -35,6 +38,10 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version} -b 1
+
+pushd %{builddir}
+%patch 0 -p1
+popd
 
 %build
 gem build ../%{gem_name}-%{version}.gemspec
@@ -79,6 +86,9 @@ popd
 %{gem_instdir}/mocha.gemspec
 
 %changelog
+* Fri Dec 06 2024 Vít Ondruch <vondruch@redhat.com> - 2.6.1-2
+- Use single quote instead of backtick for Ruby 3.4 compatibility
+
 * Tue Dec 03 2024 Vít Ondruch <vondruch@redhat.com> - 2.6.1-1
 - Update to Mocha 2.6.1.
   Resolves: rhbz#2274314

@@ -5,7 +5,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 7.0.8
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: Job framework with pluggable queues
 License: MIT
 URL: http://rubyonrails.org
@@ -20,6 +20,15 @@ Source1: %{gem_name}-%{version}%{?prerelease}-tests.txz
 # git clone http://github.com/rails/rails.git --no-checkout
 # cd rails && git archive -v -o rails-7.0.8-tools.txz v7.0.8 tools/
 Source2: rails-%{version}%{?prerelease}-tools.txz
+
+# Fix compatibility with Ruby 3.4 `Hash#inspect`.
+# https://github.com/rails/rails/pull/53202/commits/926cb7e78c3b43c6a5d2900065b04fe32ce70912
+Patch0: rubygem-activejob-8.0.0-Update-Active-Job-test-suite-for-Ruby-3-4-Hash-inspect.patch
+# https://github.com/rails/rails/pull/53203
+Patch1: rubygem-activejob-8.0.0-Update-Active-Job-test-suite-for-Ruby-3-4-Hash-inspect-2.patch
+# Fix backtick to single quote for Ruby 3.4.
+# https://github.com/rails/rails/pull/51101
+Patch2: rubygem-activejob-7.2.0-Update-test-suite-for-compatibility-with-Ruby-3-4-dev.patch
 
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
@@ -44,6 +53,12 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version}%{?prerelease} -b1 -b2
+
+pushd %{builddir}
+%patch 0 -p2
+%patch 1 -p2
+%patch 2 -p2
+popd
 
 %build
 gem build ../%{gem_name}-%{version}%{?prerelease}.gemspec
@@ -92,6 +107,9 @@ popd
 %doc %{gem_instdir}/README.md
 
 %changelog
+* Mon Nov 04 2024 Vít Ondruch <vondruch@redhat.com> - 7.0.8-5
+- Fix compatibility with Ruby 3.4.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.8-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

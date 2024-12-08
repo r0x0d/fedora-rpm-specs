@@ -1,7 +1,7 @@
 %global srcname rasterio
 
 Name:           python-%{srcname}
-Version:        1.4.2
+Version:        1.4.3
 Release:        %autorelease
 Summary:        Fast and direct raster I/O for use with Numpy and SciPy
 

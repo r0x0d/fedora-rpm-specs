@@ -162,13 +162,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.13.0
 %define specversion 6.13.0
 %define patchversion 6.13
-%define pkgrelease 0.rc1.20241204gitfeffde684ac2.17
+%define pkgrelease 0.rc1.20241206gitb8f52214c61a.19
 %define kversion 6
-%define tarfile_release 6.13-rc1-25-gfeffde684ac2
+%define tarfile_release 6.13-rc1-182-gb8f52214c61a
 # This is needed to do merge window version magic
 %define patchlevel 13
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc1.20241204gitfeffde684ac2.17%{?buildid}%{?dist}
+%define specrelease 0.rc1.20241206gitb8f52214c61a.19%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.13.0
 
@@ -3048,6 +3048,13 @@ chmod +x tools/perf/check-headers.sh
 %global tools_make \
   CFLAGS="${RPM_OPT_FLAGS}" LDFLAGS="%{__global_ldflags}" EXTRA_CFLAGS="${RPM_OPT_FLAGS}" %{make} %{?make_opts}
 
+%ifarch %{cpupowerarchs}
+    # link against in-tree libcpupower for idle state support
+    %global rtla_make %{tools_make} LDFLAGS="%{__global_ldflags} -L../../power/cpupower" INCLUDES="-I../../power/cpupower/lib"
+%else
+    %global rtla_make %{tools_make}
+%endif
+
 %if %{with_tools}
 %ifarch %{cpupowerarchs}
 # cpupower
@@ -3107,7 +3114,7 @@ pushd tools/verification/rv/
 popd
 pushd tools/tracing/rtla
 %{log_msg "build rtla"}
-%{tools_make}
+%{rtla_make}
 popd
 %endif
 
@@ -3145,7 +3152,7 @@ pushd tools/testing/selftests
 %endif
 
 %{log_msg "main selftests compile"}
-%{make} %{?_smp_mflags} ARCH=$Arch V=1 TARGETS="bpf cgroup mm net net/forwarding net/mptcp netfilter tc-testing memfd drivers/net/bonding iommu cachestat" SKIP_TARGETS="" $force_targets INSTALL_PATH=%{buildroot}%{_libexecdir}/kselftests VMLINUX_H="${RPM_VMLINUX_H}" install
+%{make} %{?_smp_mflags} ARCH=$Arch V=1 TARGETS="bpf cgroup mm net net/forwarding net/mptcp net/netfilter tc-testing memfd drivers/net/bonding iommu cachestat" SKIP_TARGETS="" $force_targets INSTALL_PATH=%{buildroot}%{_libexecdir}/kselftests VMLINUX_H="${RPM_VMLINUX_H}" install
 
 %ifarch %{klptestarches}
 	# kernel livepatching selftest test_modules will build against
@@ -3498,11 +3505,11 @@ find -type d -exec install -d %{buildroot}%{_libexecdir}/kselftests/livepatch/{}
 find -type f -executable -exec install -D -m755 {} %{buildroot}%{_libexecdir}/kselftests/livepatch/{} \;
 find -type f ! -executable -exec install -D -m644 {} %{buildroot}%{_libexecdir}/kselftests/livepatch/{} \;
 popd
-# install netfilter selftests
-pushd tools/testing/selftests/netfilter
-find -type d -exec install -d %{buildroot}%{_libexecdir}/kselftests/netfilter/{} \;
-find -type f -executable -exec install -D -m755 {} %{buildroot}%{_libexecdir}/kselftests/netfilter/{} \;
-find -type f ! -executable -exec install -D -m644 {} %{buildroot}%{_libexecdir}/kselftests/netfilter/{} \;
+# install net/netfilter selftests
+pushd tools/testing/selftests/net/netfilter
+find -type d -exec install -d %{buildroot}%{_libexecdir}/kselftests/net/netfilter/{} \;
+find -type f -executable -exec install -D -m755 {} %{buildroot}%{_libexecdir}/kselftests/net/netfilter/{} \;
+find -type f ! -executable -exec install -D -m644 {} %{buildroot}%{_libexecdir}/kselftests/net/netfilter/{} \;
 popd
 
 # install memfd selftests
@@ -4164,9 +4171,19 @@ fi\
 #
 #
 %changelog
-* Wed Dec 04 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc1.feffde684ac2.17]
+* Fri Dec 06 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc1.b8f52214c61a.19]
 - x86/insn_decoder_test: allow longer symbol-names (David Rheinsberg)
 - kernel.spec: update license field (Scott Weaver)
+
+* Fri Dec 06 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc1.b8f52214c61a.18]
+- redhat/kernel.spec.template: Link rtla against in-tree libcpupower (Tomas Glozar)
+- Linux v6.13.0-0.rc1.b8f52214c61a
+
+* Thu Dec 05 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc1.feffde684ac2.17]
+- redhat: configs: enable INTEL_PLR_TPMI for RHEL (David Arcari)
+- configs: Enable CONFIG_NETKIT for RHEL (Toke Høiland-Jørgensen)
+- redhat: fix build/install targets in netfilter kselftest (Davide Caratti)
+- RHEL: disable the btt driver (Jeff Moyer)
 
 * Wed Dec 04 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc1.feffde684ac2.16]
 - Linux v6.13.0-0.rc1.feffde684ac2

@@ -19,8 +19,8 @@
 %define release_version %(echo %{version} | awk -F. '{print $1"."$2}')
 
 Name:           mingw-qt6-qtbase
-Version:        6.8.0
-Release:        1%{?dist}
+Version:        6.8.1
+Release:        2%{?dist}
 Summary:        Qt6 for Windows - QtBase component
 # Can't make package noarch as it could lead to -DQT_HOST_PATH_CMAKE_DIR=%%{_libdir}/cmake ponting to the wrong libdir
 
@@ -44,8 +44,6 @@ Patch2:         qtbase-include-toolchain.patch
 Patch3:         qtbase-qmakeconf.patch
 # Fix mingw build
 Patch4:         qtbase-mingw.patch
-# Fix mismatching ucalTimeZoneDisplayName signature in definition
-Patch5:         qtbase-ucalTimeZoneDisplayName.patch
 
 
 BuildRequires:  cmake
@@ -343,6 +341,8 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 %{mingw32_libdir}/qt6/plugins/tls/qcertonlybackend.dll
 %{mingw32_libdir}/qt6/plugins/tls/qopensslbackend.dll
 %{mingw32_libdir}/qt6/plugins/tls/qschannelbackend.dll
+%dir %{mingw32_libdir}/qt6/sbom
+%{mingw32_libdir}/qt6/sbom/qtbase-6.8.1.spdx
 %{mingw32_libdir}/cmake/Qt6/
 %{mingw32_libdir}/cmake/Qt6BuildInternals/
 %{mingw32_libdir}/cmake/Qt6Concurrent/
@@ -506,6 +506,8 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 %{mingw64_libdir}/qt6/plugins/tls/qcertonlybackend.dll
 %{mingw64_libdir}/qt6/plugins/tls/qopensslbackend.dll
 %{mingw64_libdir}/qt6/plugins/tls/qschannelbackend.dll
+%dir %{mingw32_libdir}/qt6/sbom/
+%{mingw32_libdir}/qt6/sbom/qtbase-6.8.1.spdx
 %{mingw64_libdir}/cmake/Qt6/
 %{mingw64_libdir}/cmake/Qt6BuildInternals/
 %{mingw64_libdir}/cmake/Qt6Concurrent/
@@ -554,6 +556,15 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 
 
 %changelog
+* Fri Dec 06 2024 Sandro Mani <manisandro@gmail.com> - 6.8.1-2
+- Rebuild (mingw-icu)
+
+* Fri Dec 06 2024 Sandro Mani <manisandro@gmail.com> - 6.8.1-1
+- Update to 6.8.1
+
+* Fri Dec 06 2024 Sandro Mani <manisandro@gmail.com> - 6.8.0-2
+- Rebuild (mingw-icu)
+
 * Wed Oct 16 2024 Sandro Mani <manisandro@gmail.com> - 6.8.0-1
 - Update to 6.8.0
 

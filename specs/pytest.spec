@@ -1,5 +1,5 @@
 Name:           pytest
-%global base_version 8.3.3
+%global base_version 8.3.4
 #global prerelease ...
 Version:        %{base_version}%{?prerelease:~%{prerelease}}
 Release:        %autorelease
@@ -8,10 +8,6 @@ Summary:        Simple powerful testing with Python
 License:        MIT
 URL:            https://pytest.org
 Source:         %{pypi_source pytest %{base_version}%{?prerelease}}
-
-# Fixes failing tests with Python 3.13
-# test_pdb_used_in_generate_tests test_pdb_used_outside_test
-Patch:          https://github.com/pytest-dev/pytest/commit/52135b0.patch
 
 # Remove -s from Python shebang,
 # ensure that packages installed with pip to user locations are testable

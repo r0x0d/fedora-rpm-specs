@@ -4,7 +4,7 @@ Release:        21%{?dist}
 URL:            http://www.paratype.com/public/
 
 %global foundry         paratype
-%global fontlicense     OFL
+%global fontlicense     OFL-1.1-RFN
 %global fontlicenses    PTSSM_OFL.txt
 
 %global fontfamily      PT Mono

@@ -1,6 +1,6 @@
 Name:           libtpms
 Version:        0.10.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library providing Trusted Platform Module (TPM) functionality
 License:        BSD-3-Clause AND LicenseRef-TCGL
 
@@ -11,6 +11,7 @@ Source1:        %{url}/releases/download/v%{version}/v%{version}.tar.gz.asc#/%{n
 Source2:        gpgkey-B818B9CADF9089C2D5CEC66B75AD65802A0B4211.asc
 
 Patch0001:      0001-tpm2-Add-padding-to-OBJECT-for-32bit-targets.patch
+Patch0002:      0001-tpm2-Add-asserts-to-silence-compiler-warning-due-to-.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -65,6 +66,9 @@ make check
 %{_mandir}/man3/TPM*
 
 %changelog
+* Fri Dec 06 2024 Stefan Berger <stefanb@linux.ibm.com> - 0.10.0-2
+- Apply patch to get rid of build warnings/errors (BZ2330759)
+
 * Fri Nov 15 2024 Stefan Berger <stefanb@linux.ibm.com> - 0.10.0-1
 - Build of libtpms 0.10.0
 

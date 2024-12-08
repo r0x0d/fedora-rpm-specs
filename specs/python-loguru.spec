@@ -1,7 +1,7 @@
 %bcond tests 1
 
 Name:           python-loguru
-Version:        0.7.2
+Version:        0.7.3
 Release:        %autorelease
 Summary:        Python logging made (stupidly) simple
 
@@ -10,17 +10,9 @@ URL:            https://github.com/Delgan/loguru
 # The GitHub archive contains CHANGELOG.rst, which the PyPI sdist lacks.
 Source:         %{url}/archive/%{version}/loguru-%{version}.tar.gz
 
-# Test against Python 3.12 (non-dev) and 3.13 (dev) (#1079)
-# https://github.com/Delgan/loguru/commit/9311c763bb3528f87c3c5a13a25ec7387f2cc545
-#
-# Fixes Python 3.13 compatibility.
-Patch:          %{url}/commit/9311c763bb3528f87c3c5a13a25ec7387f2cc545.patch
-
-# Fix tests for Python 3.14 dev
-# https://github.com/Delgan/loguru/commit/3a901de465b0dbb398f455dc3393d976fd0affbe
-#
-# Fixes Python 3.14 compatibility.
-Patch:          %{url}/commit/3a901de465b0dbb398f455dc3393d976fd0affbe.patch
+# Downstream patch: do not depend on pytest-mypy-plugins
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
+Patch:          0001-Downstream-patch-do-not-depend-on-pytest-mypy-plugin.patch
 
 BuildArch:      noarch
 
@@ -65,7 +57,7 @@ Summary:        %{summary}
 
 %install
 %pyproject_install
-%pyproject_save_files -l loguru
+%pyproject_save_files -L loguru
 
 
 %check
@@ -80,8 +72,9 @@ ignore="${ignore-} --ignore=tests/typesafety/test_logger.yml"
 
 
 %files -n python3-loguru -f %{pyproject_files}
+%license LICENSE
 %doc CHANGELOG.rst
-%doc README.rst
+%doc README.md
 
 
 %changelog

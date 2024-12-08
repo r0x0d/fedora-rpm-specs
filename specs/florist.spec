@@ -90,7 +90,7 @@ gprinstall %{GPRinstall_flags} --no-manifest --no-build-var \
            -XLIBRARY_TYPE=relocatable \
            florist.gpr
 
-# Fix up some things that GPRinstall does wrong.
+# Fix up the symlink.
 ln --symbolic --force lib%{name}.so.1 %{buildroot}%{_libdir}/lib%{name}.so
 
 # Make the generated usage project file architecture-independent.
@@ -124,7 +124,11 @@ sed --regexp-extended --in-place \
 
 %files devel
 %{_GNAT_project_dir}/%{name}.gpr
-%{_includedir}/%{name}
+%dir %{_includedir}/%{name}
+# Exclude some junk that doesn't belong under /usr/include:
+%exclude %{_includedir}/%{name}/*.[ch]
+# Include only Ada files so it will be an error if more junk appears:
+%{_includedir}/%{name}/*.ad[sb]
 %dir %{_libdir}/%{name}
 %attr(444,-,-) %{_libdir}/%{name}/*.ali
 %{_libdir}/lib%{name}.so

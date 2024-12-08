@@ -2,14 +2,11 @@
 %global ahpxc_pkg indi-3rdparty-ahp-xc
 %global aok_pkg indi-3rdparty-aok
 %global apogee_pkg indi-3rdparty-apogee
-%global astrolink4_pkg indi-3rdparty-astrolink4
-%global astromechfoc_pkg indi-3rdparty-astromechfoc
 %global avalon_pkg indi-3rdparty-avalon
 %global avalonud_pkg indi-3rdparty-avalonud
 %global beefocus_pkg indi-3rdparty-beefocus
 %global bresser_pkg indi-3rdparty-bresserexos2
 %global caux_pkg indi-3rdparty-celestronaux
-%global dreamfocuser_pkg indi-3rdparty-dreamfocuser
 %global eqmod_pkg indi-3rdparty-eqmod
 %global fli_pkg indi-3rdparty-fli
 %global gphoto_pkg indi-3rdparty-gphoto
@@ -25,7 +22,6 @@
 %global rolloffino_pkg indi-3rdparty-rolloffino
 %global rtklib_pkg indi-3rdparty-rtklib
 %global shelyak_pkg indi-3rdparty-shelyak
-%global spectracyber_pkg indi-3rdparty-spectracyber
 %global starbook_pkg indi-3rdparty-starbook
 %global starbookten_pkg indi-3rdparty-starbook-ten
 %global sx_pkg indi-3rdparty-sx
@@ -33,7 +29,7 @@
 %global webcam_pkg indi-3rdparty-webcam
 %global weewx_pkg indi-3rdparty-weewx-json
 
-%global indi_version 2.1.0
+%global indi_version 2.1.1
 
 # Define boolean to quickly set option and dependencies for
 # unit tests
@@ -105,14 +101,11 @@ Recommends:     %{aagcloudwatcher_ng_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{ahpxc_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{aok_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{apogee_pkg}%{?_isa} = %{version}-%{release}
-Recommends:     %{astrolink4_pkg}%{?_isa} = %{version}-%{release}
-Recommends:     %{astromechfoc_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{avalon_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{avalonud_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{beefocus_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{bresser_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{caux_pkg}%{?_isa} = %{version}-%{release}
-Recommends:     %{dreamfocuser_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{eqmod_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{fli_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{gphoto_pkg}%{?_isa} = %{version}-%{release}
@@ -128,7 +121,6 @@ Recommends:     %{orion_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{rolloffino_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{rtklib_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{shelyak_pkg}%{?_isa} = %{version}-%{release}
-Recommends:     %{spectracyber_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{starbook_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{starbookten_pkg}%{?_isa} = %{version}-%{release}
 Recommends:     %{sx_pkg}%{?_isa} = %{version}-%{release}
@@ -147,14 +139,11 @@ We currently ship the following drivers:
 - %{ahpxc_pkg}
 - %{aok_pkg}
 - %{apogee_pkg}
-- %{astrolink4_pkg}
-- %{astromechfoc_pkg}
 - %{avalon_pkg}
 - %{avalonud_pkg}
 - %{beefocus_pkg}
 - %{bresser_pkg}
 - %{caux_pkg}
-- %{dreamfocuser_pkg}
 - %{eqmod_pkg}
 - %{fli_pkg}
 - %{gphoto_pkg}
@@ -170,7 +159,6 @@ We currently ship the following drivers:
 - %{rolloffino_pkg}
 - %{rtklib_pkg}
 - %{shelyak_pkg}
-- %{spectracyber_pkg}
 - %{starbook_pkg}
 - %{starbookten_pkg}
 - %{sx_pkg}
@@ -235,27 +223,6 @@ The INDI (Instrument Neutral Distributed Interface) driver for Apogee
 Alta (U & E) line of CCDs.
 
 
-%package -n %{astrolink4_pkg}
-License:        GPL-3.0-or-later
-Summary:        The INDI driver for Astrolink 4.0 mini devices
-
-Requires:       libindi = %{indi_version}
-
-%description -n %{astrolink4_pkg}
-The INDI (Instrument Neutral Distributed Interface) driver for Astrolink
-4.0 mini devices.
-
-
-%package -n %{astromechfoc_pkg}
-License:        GPL-3.0-or-later
-Summary:        The INDI driver for Astromechanics Lens Controller
-
-Requires:       libindi = %{indi_version}
-
-%description -n %{astromechfoc_pkg}
-The INDI driver INDI driver for Astromechanics Lens Controller.
-
-
 %package -n %{avalon_pkg}
 License:        LGPL-2.1-or-later
 Summary:        INDI driver for Avalon Instruments mounts
@@ -315,16 +282,6 @@ Requires:       libindi = %{indi_version}
 
 %description -n %{caux_pkg}
 INDI driver for Celestron AUX protocol.
-
-
-%package -n %{dreamfocuser_pkg}
-License:        LGPL-2.1-or-later
-Summary:        INDI driver for Dreamfocuser
-
-Requires:       libindi = %{indi_version}
-
-%description -n %{dreamfocuser_pkg}
-INDI driver for Dreamfocuser.
 
 
 %package -n %{eqmod_pkg}
@@ -517,17 +474,6 @@ Requires:       libindi = %{indi_version}
 INDI driver for Vixen Starbook Ten telescope controllers.
 
 
-%package -n %{spectracyber_pkg}
-License:        LGPL-2.1-or-later
-Summary:        INDI driver for SpectraCyber spectrograph
-
-Requires:       libindi = %{indi_version}
-
-%description -n %{spectracyber_pkg}
-INDI driver providing support for Radio Astronomy Supplies' SpectraCyber
-hydrogen line spectrometer.
-
-
 %package -n %{sx_pkg}
 License:        GPL-2.0-or-later AND ICU
 Summary:        INDI driver providing support for Starlight Xpress devices
@@ -653,20 +599,6 @@ find . -mindepth 2 -name CMakeLists.txt \
 %{_datadir}/indi/indi_apogee.xml
 
 
-%files -n %{astrolink4_pkg}
-%license indi-astrolink4/COPYING.LIB
-%doc indi-astrolink4/AUTHORS indi-astrolink4/README.md
-%{_bindir}/indi_astrolink4
-%{_datadir}/indi/indi_astrolink4.xml
-
-
-%files -n %{astromechfoc_pkg}
-%license indi-astromechfoc/LICENSE
-%doc indi-astromechfoc/README
-%{_bindir}/indi_astromechfoc
-%{_datadir}/indi/indi_astromechfoc.xml
-
-
 %files -n %{avalon_pkg}
 %license LICENSE
 %doc indi-avalon/README
@@ -705,13 +637,6 @@ find . -mindepth 2 -name CMakeLists.txt \
 %doc indi-celestronaux/README.md
 %{_bindir}/indi_celestron_aux
 %{_datadir}/indi/indi_celestronaux.xml
-
-
-%files -n %{dreamfocuser_pkg}
-%license LICENSE
-%doc indi-dreamfocuser/AUTHORS indi-dreamfocuser/README
-%{_bindir}/indi_dreamfocuser_focus
-%{_datadir}/indi/indi_dreamfocuser_focus.xml
 
 
 %files -n %{eqmod_pkg}
@@ -830,14 +755,6 @@ find . -mindepth 2 -name CMakeLists.txt \
 %{_bindir}/indi_shelyakeshel_spectrograph
 %{_bindir}/indi_shelyakspox_spectrograph
 %{_datadir}/indi/indi_shelyak.xml
-
-
-%files -n %{spectracyber_pkg}
-%license LICENSE
-%doc indi-spectracyber/Authors indi-spectracyber/Readme
-%{_bindir}/indi_spectracyber
-%{_datadir}/indi/indi_spectracyber.xml
-%{_datadir}/indi/indi_spectracyber_sk.xml
 
 
 %files -n %{starbook_pkg}

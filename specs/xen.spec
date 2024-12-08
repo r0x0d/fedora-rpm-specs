@@ -54,8 +54,8 @@
 
 Summary: Xen is a virtual machine monitor
 Name:    xen
-Version: 4.19.0
-Release: 4%{?dist}
+Version: 4.19.1
+Release: 1%{?dist}
 # Automatically converted from old format: GPLv2+ and LGPLv2+ and BSD - review is highly recommended.
 License: GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-BSD
 URL:     http://xen.org/
@@ -110,14 +110,7 @@ Patch41: xen.gcc9.fixes.patch
 Patch43: xen.gcc11.fixes.patch
 Patch45: xen.gcc12.fixes.patch
 Patch46: xen.efi.build.patch
-Patch47: xen.gcc13.fixes.patch
 Patch49: xen.python3.12.patch
-Patch50: xen.ocaml5.fixes.patch
-Patch52: xen.gcc14.fixes.patch
-Patch53: newlib.gcc14.fixes.patch
-Patch54: xsa460.patch
-Patch55: xsa461.patch
-Patch56: xsa462.patch
 
 
 %if %build_qemutrad
@@ -325,16 +318,7 @@ manage Xen virtual machines.
 %patch 43 -p1
 %patch 45 -p1
 %patch 46 -p1
-%patch 47 -p1
 %patch 49 -p1
-%if "%dist" != ".fc38"
-%patch 50 -p1
-%endif
-%patch 52 -p1
-%patch 53 -p1
-%patch 54 -p1
-%patch 55 -p1
-%patch 56 -p1
 
 # qemu-xen-traditional patches
 pushd tools/qemu-xen-traditional
@@ -942,6 +926,15 @@ fi
 %endif
 
 %changelog
+* Thu Dec 05 2024 Michael Young <m.a.young@durham.ac.uk> - 4.19.1-1
+- update to xen-4.19.1
+  remove patches now included or superceded upstream
+
+* Tue Nov 12 2024 Michael Young <m.a.young@durham.ac.uk> - 4.19.0-5
+- Deadlock in x86 HVM standard VGA handling [XSA-463, CVE-2024-45818]
+- libxl leaks data to PVH guests via ACPI tables [XSA-464, CVE-2024-45819]
+- additional patches so above applies cleanly
+
 * Tue Sep 24 2024 Michael Young <m.a.young@durham.ac.uk> - 4.19.0-4
 - x86: Deadlock in vlapic_error() [XSA-462, CVE-2024-45817] (#2314782)
 

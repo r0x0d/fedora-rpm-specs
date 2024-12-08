@@ -238,6 +238,7 @@ popd
 
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_bindir}/qdbus-qt6
 %{_qt6_bindir}/qdbus
 %{_qt6_bindir}/qdbus-qt6
@@ -245,7 +246,6 @@ popd
 
 %files common
 %license LICENSES/LGPL*
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 
 %files  libs-designer
 %{_qt6_libdir}/libQt6Designer.so.6*

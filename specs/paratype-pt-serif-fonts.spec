@@ -24,8 +24,7 @@ Version:        20141121
 Release:        21%{?dist}
 Summary:        A pan-Cyrillic typeface
 
-# Automatically converted from old format: OFL - review is highly recommended.
-License:        LicenseRef-Callaway-OFL
+License:        OFL-1.1-RFN
 URL:            http://www.paratype.com/public/
 Source0:        http://www.fontstock.com/public/PTSerifOFL.zip
 Source10:       %{name}-fontconfig.conf

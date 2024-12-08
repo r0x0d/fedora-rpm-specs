@@ -3,7 +3,7 @@
 
 Name:    kdepim-addons
 Version: 24.11.90
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Additional plugins for KDE PIM applications
 # Cargo license summary:
 # MIT
@@ -20,6 +20,7 @@ Source0: https://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%
 ## upstream patches
 
 ## upstream patches (master)
+Patch0: 0001-use-adblock-0.9.patch
 
 # handled by qt6-srpm-macros, which defines %%qt6_qtwebengine_arches
 # libphonenumber is not build for i686 anymore (i686 is not in
@@ -190,6 +191,9 @@ popd
 
 
 %changelog
+* Fri Dec 06 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-2
+- Backport upstream change to use adblock 0.9
+
 * Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
 - 24.11.90
 

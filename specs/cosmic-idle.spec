@@ -9,12 +9,12 @@ ExcludeArch: %{ix86}
 # While our version corresponds to an upstream tag, we still need to define
 # these macros in order to set the VERGEN_GIT_SHA and VERGEN_GIT_COMMIT_DATE
 # environment variables in multiple sections of the spec file.
-%global commit 08c1cf318e91831b6cbfd2c94d2fafbedb90919f
-%global commitdatestring 2024-10-30 13:07:15 -0700
-%global cosmic_minver 1.0.0~alpha.3
+%global commit eaa09a6fef304ddc236709c111bb7b0c16883f7d
+%global commitdatestring 2024-11-15 15:42:57 -0800
+%global cosmic_minver 1.0.0~alpha.4
 
 Name:           cosmic-idle
-Version:        1.0.0~alpha.3
+Version:        1.0.0~alpha.4
 Release:        %autorelease
 Summary:        Idle notify manager for COSMIC
 

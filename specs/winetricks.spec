@@ -3,8 +3,8 @@
 %global commit0  43314ed7895396bfd625824d88b5e19c25f46cac
 
 Name:           winetricks
-Version:        20230212
-Release:        5%{?dist}
+Version:        20240105
+Release:        1%{?dist}
 
 Summary:        Work around common problems in Wine
 
@@ -74,6 +74,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Fri Dec 06 2024 Vojtech Trefny <vtrefny@redhat.com> - 20240105-1
+- Update to 20240105 (#2257082)
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 20230212-5
 - convert license to SPDX
 

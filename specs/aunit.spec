@@ -136,7 +136,7 @@ make -C doc html-all pdf-all
 # Install the library.
 %{GPRinstall} --no-build-var -XVERSION=%{version} -P lib/gnat/aunit.gpr
 
-# Fix up some things that GPRinstall does wrong.
+# Fix up the symlink.
 ln --symbolic --force lib%{name}.so.%{version} %{buildroot}%{_libdir}/lib%{name}.so
 
 # Move the examples to the _pkgdocdir and remove the remaining empty directory.

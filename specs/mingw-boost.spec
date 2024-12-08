@@ -3,7 +3,7 @@
 %global name1 boost
 Name:           mingw-%{name1}
 Version:        1.78.0
-Release:        12%{?dist}
+Release:        14%{?dist}
 Summary:        MinGW Windows port of Boost C++ Libraries
 
 # Replace each . with _ in %%{version}
@@ -685,6 +685,12 @@ mv $RPM_BUILD_ROOT%{mingw64_libdir}/*.dll $RPM_BUILD_ROOT%{mingw64_bindir}
 %{mingw64_libdir}/libboost_test_exec_monitor-mt-x64.a
 
 %changelog
+* Fri Dec 06 2024 Sandro Mani <manisandro@gmail.com> - 1.78.0-14
+- Rebuild (mingw-icu)
+
+* Fri Dec 06 2024 Sandro Mani <manisandro@gmail.com> - 1.78.0-13
+- Rebuild (mingw-icu)
+
 * Tue Aug 27 2024 Neal Gompa <ngompa@fedoraproject.org> - 1.78.0-12
 - Ship the cmake modules from Boost
 

@@ -31,7 +31,7 @@
 
 # Change this to the gpu family you are testing on
 %bcond_with check
-%global gpu_test gfx1100
+%global gpu_test default
 %if %{with test}
 %if %{with check}
 # Do not build everything to do the test on one thing
@@ -44,7 +44,7 @@
 
 Name:           miopen
 Version:        %{rocm_version}
-Release:        %autorelease
+Release:        5%{?dist}
 Summary:        AMD's Machine Intelligence Library
 Url:            https://github.com/ROCm/%{upstreamname}
 License:        MIT AND BSD-2-Clause AND Apache-2.0 AND LicenseRef-Fedora-Public-Domain
@@ -63,7 +63,6 @@ Source0:        %{url}/archive/rocm-%{version}.tar.gz#/%{upstreamname}-%{version
 # So we do not thrash memory
 Patch2:         0001-add-link-and-compile-pools-for-miopen.patch
 
-BuildRequires:  pkgconfig(bzip2)
 BuildRequires:  boost-devel
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(eigen3)
@@ -82,6 +81,13 @@ BuildRequires:  rocm-rpm-macros-modules
 BuildRequires:  roctracer-devel
 BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  zlib-devel
+
+%if 0%{?suse_version}
+BuildRequires:  libbz2-devel
+BuildRequires:  libboost_filesystem-devel
+%else
+BuildRequires:  pkgconfig(bzip2)
+%endif
 
 %if %{with test}
 BuildRequires:  gmock-devel
@@ -180,23 +186,26 @@ for gpu in %{rocm_gpu_list}
 do
     module load rocm/$gpu
     %cmake -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
+	   -DCMAKE_CXX_COMPILER=hipcc \
+	   -DCMAKE_C_COMPILER=hipcc \
 	   -DROCM_SYMLINK_LIBS=OFF \
 	   -DHIP_PLATFORM=amd \
 	   -DAMDGPU_TARGETS=$ROCM_GPUS \
 	   -DCMAKE_INSTALL_LIBDIR=$ROCM_LIB \
 	   -DCMAKE_INSTALL_BINDIR=$ROCM_BIN \
-          -DBUILD_TESTING=%{build_test} \
-          -DCMAKE_BUILD_TYPE=%{build_type} \
-	  -DCMAKE_SKIP_RPATH=ON \
-          -DBoost_USE_STATIC_LIBS=OFF \
-          -DMIOPEN_PARALLEL_COMPILE_JOBS=$COMPILE_JOBS \
-          -DMIOPEN_PARALLEL_LINK_JOBS=$LINK_JOBS \
-          -DMIOPEN_BACKEND=HIP \
-          -DMIOPEN_BUILD_DRIVER=OFF \
-	  -DMIOPEN_ENABLE_AI_IMMED_MODE_FALLBACK=OFF \
-	  -DMIOPEN_ENABLE_AI_KERNEL_TUNING=OFF \
-          -DMIOPEN_USE_MLIR=OFF \
-          -DMIOPEN_USE_COMPOSABLEKERNEL=OFF
+           -DBUILD_TESTING=%{build_test} \
+           -DCMAKE_BUILD_TYPE=%{build_type} \
+	   -DCMAKE_SKIP_RPATH=ON \
+           -DBoost_USE_STATIC_LIBS=OFF \
+           -DMIOPEN_PARALLEL_COMPILE_JOBS=$COMPILE_JOBS \
+           -DMIOPEN_PARALLEL_LINK_JOBS=$LINK_JOBS \
+           -DMIOPEN_BACKEND=HIP \
+           -DMIOPEN_BUILD_DRIVER=OFF \
+	   -DMIOPEN_ENABLE_AI_IMMED_MODE_FALLBACK=OFF \
+	   -DMIOPEN_ENABLE_AI_KERNEL_TUNING=OFF \
+	   -DMIOPEN_TEST_ALL=%{build_test} \
+           -DMIOPEN_USE_MLIR=OFF \
+           -DMIOPEN_USE_COMPOSABLEKERNEL=OFF
 
     %cmake_build
 
@@ -206,6 +215,16 @@ do
 
     module purge
 done
+
+%if %{with test}
+%if %{with check}
+%check
+gpu=%{gpu_test}
+module load rocm/$gpu
+%cmake_build -t test
+module purge
+%endif
+%endif
 
 %install
 for gpu in %{rocm_gpu_list}
@@ -220,29 +239,29 @@ find %{buildroot}%{_libdir} -name '*.so'         | sed -f br.sed >  %{name}.deve
 find %{buildroot}%{_libdir} -name '*.cmake'      | sed -f br.sed >> %{name}.devel
 find %{buildroot}           -name 'test_*'       | sed -f br.sed >  %{name}.test
 
-%if %{with test}
-%if %{with check}
-%check
-gpu=%{gpu_test}
-module load rocm/$gpu
-%cmake_build -t test
-module purge
-%endif
-%endif
+if [ -f %{buildroot}%{_prefix}/share/doc/miopen-hip/LICENSE.txt ]; then
+    rm %{buildroot}%{_prefix}/share/doc/miopen-hip/LICENSE.txt
+fi
 
 %files -f %{name}.files
 %license LICENSE.txt
-%exclude %{_docdir}/%{name}-hip/LICENSE.txt
 
 %files devel -f %{name}.devel
+%dir %_datadir/%{name}
+%dir %_datadir/%{name}/db
+%dir %_includedir/%{name}
+%dir %_libdir/cmake/%{name}
 %doc README.md
-%_datadir/%{name}/
-%_includedir/%{name}/
+%_datadir/%{name}/*
+%_includedir/%{name}/*
 
 %if %{with test}
 %files test -f %{name}.test
 %endif
 
 %changelog
-%autochangelog
+* Mon Dec 2 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-5
+- Build on TW
+- Use manual release and changelog
+
 

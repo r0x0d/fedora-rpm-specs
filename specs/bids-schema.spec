@@ -1,10 +1,9 @@
 # Missing dependencies in EPEL10:
 #   - python3dist(markdown-it-py)
-#   - python3dist(tabulate)
 %bcond render %{undefined el10}
 
 Name:           bids-schema
-Version:        0.11.3^post3
+Version:        1.0.0
 Release:        %autorelease
 Summary:        BIDS schema description
 

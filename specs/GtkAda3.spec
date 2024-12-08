@@ -318,7 +318,11 @@ mkdir --parents %{buildroot}%{_licensedir}/%{name}
 
 
 %files devel
-%{_includedir}/gtkada
+%dir %{_includedir}/gtkada
+# Exclude some junk that doesn't belong under /usr/include:
+%exclude %{_includedir}/gtkada/*.[ch]
+# Include only Ada files so it will be an error if more junk appears:
+%{_includedir}/gtkada/*.ad[sb]
 %dir %{_libdir}/gtkada
 %attr(444,-,-) %{_libdir}/gtkada/*.ali
 %{_GNAT_project_dir}/*

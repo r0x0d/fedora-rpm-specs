@@ -374,14 +374,14 @@ Obsoletes: %{name}-system-unicore32-core <= %{epoch}:%{version}-%{release} \
 Obsoletes: sgabios-bin <= 1:0.20180715git-10.fc38
 
 # Release candidate version tracking
-%global rcver rc1
+%global rcver rc3
 %if 0%{?rcver:1}
 %global rcrel .%{rcver}
 %global rcstr -%{rcver}
 %endif
 
 # To prevent rpmdev-bumpspec breakage
-%global baserelease 0.4
+%global baserelease 0.5
 
 Summary: QEMU is a FAST! processor emulator
 Name: qemu
@@ -436,8 +436,6 @@ Source36: README.tests
 Patch: 0001-Disable-9p-local-tests-that-fail-on-copr-aarch64.patch
 # Fix compat with new glibc (not upstream yet)
 Patch: schedattr.patch
-# Crash with virtio-balloon stats
-Patch: 0001-hw-virtio-fix-crash-in-processing-balloon-stats.patch
 
 BuildRequires: gnupg2
 BuildRequires: meson >= %{meson_version}
@@ -3165,6 +3163,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Dec  6 2024 Daniel P. Berrangé <berrange@redhat.com> - 9.2.0-0.5.rc3
+- Rebase to qemu 9.2.0-rc3
+
 * Tue Dec 03 2024 Andrea Bolognani <abologna@redhat.com> - 9.2.0-0.4.rc1
 - Increase test timeout on riscv64
 

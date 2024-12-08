@@ -1,6 +1,6 @@
 Name:		vkd3d
-Version:	1.12
-Release:	2%{?dist}
+Version:	1.14
+Release:	1%{?dist}
 Summary:	D3D12 to Vulkan translation library
 
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
@@ -250,6 +250,9 @@ find %{buildroot} -regextype egrep -regex '.*\.a$|.*\.la$' ! -iname '*.dll.a' -d
 
 
 %changelog
+* Fri Dec 06 2024 - Michael Cronenworth <mike@cchtml.com> - 1.14-1
+- version update
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.12-2
 - convert license to SPDX
 

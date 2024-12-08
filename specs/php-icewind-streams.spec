@@ -1,13 +1,13 @@
 # remirepo/fedora spec file for php-icewind-streams
 #
-# Copyright (c) 2015-2023 Remi Collet
+# Copyright (c) 2015-2024 Remi Collet
 # License: CC-BY-SA-4.0
 # http://creativecommons.org/licenses/by-sa/4.0/
 #
 # Please, preserve the changelog entries
 #
 # Github information
-%global gh_commit    64200fd7cfcc7f550c3c695c48d8fd8bba97fecb
+%global gh_commit    cb2bd3ed41b516efb97e06e8da35a12ef58ba48b
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     icewind1991
 %global gh_project   Streams
@@ -19,11 +19,12 @@
 %global ns_name      Streams
 
 Name:           php-%{pk_vendor}-%{pk_name}
-Version:        0.7.7
-Release:        5%{?dist}
+Version:        0.7.8
+Release:        1%{?dist}
 Summary:        A set of generic stream wrappers
 
-License:        MIT
+# See SPDX-License-Identifier in src tree
+License:        MIT AND AGPL-3.0-or-later
 URL:            https://github.com/%{gh_owner}/%{gh_project}
 Source0:        %{url}/archive/%{gh_commit}/%{name}-%{version}-%{gh_short}.tar.gz
 
@@ -90,8 +91,8 @@ exit $ret
 
 
 %files
-%{!?_licensedir:%global license %%doc}
-%license LICENCE
+%license LICENSE.txt
+%license LICENSES/*txt
 %doc composer.json
 %doc *.md
 %dir %{_datadir}/php/%{ns_vendor}
@@ -99,6 +100,9 @@ exit $ret
 
 
 %changelog
+* Fri Dec  6 2024 Remi Collet <remi@remirepo.net> - 0.7.8-1
+- update to 0.7.8
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.7.7-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

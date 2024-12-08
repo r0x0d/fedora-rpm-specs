@@ -3,7 +3,7 @@ Release: %autorelease
 URL:     https://software.sil.org/lateef/
 
 %global foundry           SIL
-%global fontlicense       OFL
+%global fontlicense       OFL-1.1-RFN
 
 %global fontlicenses      OFL.txt
 %global fontdocs          *.txt

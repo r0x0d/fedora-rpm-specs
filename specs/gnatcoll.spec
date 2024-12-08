@@ -303,7 +303,7 @@ for component in minimal core projects ; do
                  -P ${component}/gnatcoll_${component}.gpr
 done
 
-# Fix up some things that GPRinstall does wrong.
+# Fix up the symlinks.
 for component in minimal core projects ; do
     ln --symbolic --force libgnatcoll_${component}.so.%{version} \
        %{buildroot}%{_libdir}/libgnatcoll_${component}.so

@@ -3,7 +3,7 @@
 %global versnum 0.4
 
 Name:		xfce4-pulseaudio-plugin
-Version:	0.4.8
+Version:	0.4.9
 Release:	%autorelease
 Summary:	Pulseaudio plugin for Xfce4
 

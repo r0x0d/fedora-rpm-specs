@@ -443,7 +443,7 @@ done
 %{GPRinstall -s gnatcoll-python -a gnatcoll-python} \
              --no-build-var -P python3/gnatcoll_python.gpr
 
-# Fix up some things that GPRinstall does wrong.
+# Fix up the symlinks.
 for component in cpp gmp iconv lzma omp python3 readline syslog zlib ; do
     ln --symbolic --force libgnatcoll_${component}.so.%{version} \
        %{buildroot}%{_libdir}/libgnatcoll_${component}.so

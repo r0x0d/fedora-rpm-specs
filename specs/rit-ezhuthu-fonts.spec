@@ -4,7 +4,7 @@ Release:    1%{?dist}
 URL:        https://gitlab.com/rit-fonts/%{fontfamily}
 
 %global foundry         RIT
-%global fontlicense     OFL
+%global fontlicense     OFL-1.1-RFN
 %global fontlicenses    fonts/LICENSE.txt
 %global fontdocs        fonts/README.md fonts/Ezhuthu-character-set.pdf
 

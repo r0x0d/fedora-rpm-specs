@@ -1,6 +1,6 @@
 Name:           lsb_release
 Version:        3.3
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Linux Standard Base Release Tool using os-release(5)
 
 License:        GPL-2.0-or-later
@@ -22,8 +22,12 @@ Requires:       /usr/bin/tr
 # In case people use the debian name for this package...
 Provides:       lsb-release = %{version}-%{release}
 
-# This is intended to be an alternative to the "full" redhat-lsb version
-Conflicts:      redhat-lsb-core
+# This is intended to be an alternative to the "full" redhat-lsb version, and
+# contains a conflicting /usr/bin/lsb_release file.  Originally this file was
+# in redhat-lsb-core, but it was later moved to redhat-lsb.
+# https://src.fedoraproject.org/rpms/redhat-lsb/c/af8e1f64209356057412fa13e686ea93180a610a
+Conflicts:      redhat-lsb-core < 5.0-0.7.20231006git8d00acdc
+Conflicts:      redhat-lsb >= 5.0-0.7.20231006git8d00acdc
 
 BuildArch:      noarch
 
@@ -52,6 +56,9 @@ make install INSTALL_ROOT=%{buildroot}%{_prefix}
 
 
 %changelog
+* Mon Dec 02 2024 Carl George <carlwgeorge@fedoraproject.org> - 3.3-5
+- Conflict with redhat-lsb
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.3-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,6 +1,6 @@
 Name:           davfs2
-Version:        1.7.0
-Release:        7%{?dist}
+Version:        1.7.1
+Release:        1%{?dist}
 Summary:        A filesystem driver for WebDAV
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
@@ -13,9 +13,7 @@ Source1:        https://download.savannah.gnu.org/releases/davfs2/%{name}-%{vers
 # no not like the query string.
 Source2:        davfs2-memberlist-gpgkeys.asc
 
-# fix for https://savannah.nongnu.org/bugs/?65247
-Patch0:         0000-configure-add-neon-version-0.33.patch
-Patch1:         0001-configure.ac-add-neon-version-0.33.patch
+Patch0:         davfs2-neon-34.patch
 
 Conflicts:      filesystem < 3
 BuildRequires:  automake
@@ -71,7 +69,7 @@ exit 0
 
 %files -f %{name}.lang
 # Docs
-%doc AUTHORS BUGS ChangeLog FAQ INSTALL NEWS README README.translators THANKS TODO
+%doc AUTHORS BUGS ChangeLog FAQ INSTALL NEWS README.md README.translators THANKS TODO
 %license COPYING
 %{_mandir}/man5/*.gz
 %{_mandir}/man8/*.gz
@@ -98,6 +96,9 @@ exit 0
 %ghost %dir %attr(01775,root,%{groupname}) %{piddir}
 
 %changelog
+* Fri Dec 06 2024 Felix Schwarz <fschwarz@fedoraproject.org> - 1.7.1-1
+- update to 1.7.1
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 1.7.0-7
 - convert license to SPDX
 

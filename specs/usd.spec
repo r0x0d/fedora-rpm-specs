@@ -153,6 +153,10 @@ Patch:          0005-Downstream-only-use-the-system-libdeflate.patch
 # Downstream-only: use the system libavif library
 Patch:          0006-Downstream-only-use-the-system-libavif.patch
 
+# work: account for task_group_base interface change in oneTBB 2022.0.0
+# https://github.com/PixarAnimationStudios/OpenUSD/pull/3392
+Patch:          %{forgeurl}/pull/3392.patch
+
 # Base
 BuildRequires:  gcc-c++
 
