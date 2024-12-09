@@ -7,7 +7,7 @@
 
 Name:    kamoso
 Summary: Application for taking pictures and videos from a webcam
-Version: 24.11.90
+Version: 24.12.0
 Release: 1%{?dist}
 
 License: GFDL-1.2-or-later AND GPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later
@@ -105,6 +105,9 @@ xvfb-run -a bash -c "%ctest"
 
 
 %changelog
+* Sat Dec 07 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.12.0-1
+- 24.12.0
+
 * Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
 - 24.11.90
 

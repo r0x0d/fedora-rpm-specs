@@ -1,7 +1,7 @@
 
 Name:    libkmahjongg
 Summary: Common code, backgrounds and tile sets for games using Mahjongg tiles
-Version: 24.11.90
+Version: 24.12.0
 Release: 1%{?dist}
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -76,6 +76,9 @@ BuildArch: noarch
 
 
 %changelog
+* Sat Dec 07 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.12.0-1
+- 24.12.0
+
 * Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
 - 24.11.90
 

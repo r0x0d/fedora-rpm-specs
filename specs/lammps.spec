@@ -25,7 +25,7 @@ Version:        20241119
                   m=${v:4:2};
                   y=${v:0:4};
                   echo $([[ -z $patch ]] && echo patch || echo stable)_${d#0}${months[${m#0}]}${y}$([[ -n $patch ]] && echo _update${patch}))
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Molecular Dynamics Simulator
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License:        GPL-2.0-only
@@ -39,6 +39,11 @@ Source1:        https://github.com/google/googletest/archive/release-1.12.1.tar.
 Source2:        https://pyyaml.org/download/libyaml/yaml-0.2.5.tar.gz
 Source3:        https://download.lammps.org/thirdparty/opencl-loader-2024.05.09.tar.gz
 Source4:        https://github.com/spglib/spglib/archive/refs/tags/v1.11.2.1.tar.gz#/spglib-1.11.2.1.tar.gz
+
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+# mpi is broken on s390x see, bug #2322073
+ExcludeArch: %{ix86} s390x
+
 BuildRequires:  fftw-devel
 BuildRequires:  gcc-c++
 BuildRequires:  gcc-fortran
@@ -46,10 +51,12 @@ BuildRequires:  libpng-devel
 BuildRequires:  libjpeg-devel
 %ifnarch %ix86
 BuildRequires:  openmpi-devel
+BuildRequires:  heffte-openmpi-devel
 BuildRequires:  python%{python3_pkgversion}-mpi4py-openmpi
 BuildRequires:  python%{python3_pkgversion}-mpi4py-mpich
 %endif
 BuildRequires:  mpich-devel
+BuildRequires:  heffte-mpich-devel
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-numpy
 BuildRequires:  fftw3-devel
@@ -249,7 +256,7 @@ for mpi in '' mpich %{?with_openmpi:openmpi} %{?el7:openmpi3} ; do
   -DPKG_INTEL=OFF \
 %endif
     -DCMAKE_INSTALL_BINDIR=${MPI_BIN:-%{_bindir}} -DCMAKE_INSTALL_LIBDIR=${MPI_LIB:-%{_libdir}} -DLAMMPS_MACHINE="${MPI_SUFFIX#_}" -DLAMMPS_LIB_SUFFIX="${MPI_SUFFIX#_}" -DCMAKE_INSTALL_MANDIR=${MPI_MAN:-%{_mandir}} \
-    ${mpi:+-DBUILD_MPI=ON -DCMAKE_EXE_LINKER_FLAGS="%{__global_ldflags} -Wl,-rpath -Wl,${MPI_LIB} -Wl,--enable-new-dtags" -DCMAKE_SHARED_LINKER_FLAGS="%{__global_ldflags} -Wl,-rpath -Wl,${MPI_LIB} -Wl,--enable-new-dtags" $(test "$mpi" != openmpi || echo "-DMPIEXEC_PREFLAGS=--oversubscribe") } \
+    ${mpi:+-DBUILD_MPI=ON -DFFT_USE_HEFFTE=ON -DCMAKE_EXE_LINKER_FLAGS="%{__global_ldflags} -Wl,-rpath -Wl,${MPI_LIB} -Wl,--enable-new-dtags" -DCMAKE_SHARED_LINKER_FLAGS="%{__global_ldflags} -Wl,-rpath -Wl,${MPI_LIB} -Wl,--enable-new-dtags" $(test "$mpi" != openmpi || echo "-DMPIEXEC_PREFLAGS=--oversubscribe") } \
     $(test -z "${mpi}" && echo -DBUILD_MPI=OFF -DBUILD_LAMMPS_SHELL=ON -DBUILD_TOOLS=ON)
   %cmake_build
   test -n "${mpi}" && module unload mpi/${mpi}-%{_arch}
@@ -368,6 +375,9 @@ done
 %config %{_sysconfdir}/profile.d/lammps.*
 
 %changelog
+* Tue Dec 03 2024 Christoph Junghans <junghans@votca.org> - 20241119-2
+- Enable heffte support
+
 * Sat Nov 30 2024 Richard Berger <richard.berger@outlook.com> - 20241119-1
 - Version bump to 20241119
 - First release that makes use of Kokkos 4.4.01

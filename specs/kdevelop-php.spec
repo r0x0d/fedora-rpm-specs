@@ -1,6 +1,6 @@
 Name:           kdevelop-php
 Summary:        Php language and documentation plugins for KDevelop
-Version:        24.11.90
+Version:        24.12.0
 Release:        1%{?dist}
 
 # Most files LGPLv2+/GPLv2+
@@ -64,6 +64,9 @@ BuildRequires:  kdevelop-devel = 9:%{version}
 
 
 %changelog
+* Sat Dec 07 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.12.0-1
+- 24.12.0
+
 * Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
 - 24.11.90
 

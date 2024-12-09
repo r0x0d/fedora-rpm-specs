@@ -12,7 +12,7 @@
 %global release_version %(echo %{version} | awk -F. '{print $1"."$2}')
 
 Name:           mingw-qt6-%{qt_module}
-Version:        6.8.0
+Version:        6.8.1
 Release:        %autorelease
 Summary:        Qt6 for Windows - QtScxml component
 
@@ -110,6 +110,7 @@ export MINGW64_CXXFLAGS="${mingw64_cflags} -msse2"
 %{mingw32_libdir}/qt6/modules/*.json
 %{mingw32_libdir}/qt6/qml
 %{mingw32_libdir}/qt6/mkspecs
+%{mingw32_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 %{mingw32_libdir}/cmake/Qt6Scxml/
 %{mingw32_libdir}/cmake/Qt6StateMachine/
 %{mingw32_libdir}/cmake/Qt6StateMachineQml/
@@ -141,6 +142,7 @@ export MINGW64_CXXFLAGS="${mingw64_cflags} -msse2"
 %{mingw64_libdir}/qt6/modules/*.json
 %{mingw64_libdir}/qt6/qml
 %{mingw64_libdir}/qt6/mkspecs
+%{mingw64_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 %{mingw64_libdir}/cmake/Qt6Scxml/
 %{mingw64_libdir}/cmake/Qt6StateMachine/
 %{mingw64_libdir}/cmake/Qt6StateMachineQml/

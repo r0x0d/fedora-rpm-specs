@@ -342,7 +342,7 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 %{mingw32_libdir}/qt6/plugins/tls/qopensslbackend.dll
 %{mingw32_libdir}/qt6/plugins/tls/qschannelbackend.dll
 %dir %{mingw32_libdir}/qt6/sbom
-%{mingw32_libdir}/qt6/sbom/qtbase-6.8.1.spdx
+%{mingw32_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 %{mingw32_libdir}/cmake/Qt6/
 %{mingw32_libdir}/cmake/Qt6BuildInternals/
 %{mingw32_libdir}/cmake/Qt6Concurrent/
@@ -506,8 +506,8 @@ rm -rf %{buildroot}/%{mingw64_libdir}/objects-RelWithDebInfo/
 %{mingw64_libdir}/qt6/plugins/tls/qcertonlybackend.dll
 %{mingw64_libdir}/qt6/plugins/tls/qopensslbackend.dll
 %{mingw64_libdir}/qt6/plugins/tls/qschannelbackend.dll
-%dir %{mingw32_libdir}/qt6/sbom/
-%{mingw32_libdir}/qt6/sbom/qtbase-6.8.1.spdx
+%dir %{mingw64_libdir}/qt6/sbom/
+%{mingw64_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 %{mingw64_libdir}/cmake/Qt6/
 %{mingw64_libdir}/cmake/Qt6BuildInternals/
 %{mingw64_libdir}/cmake/Qt6Concurrent/

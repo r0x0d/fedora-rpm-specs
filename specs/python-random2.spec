@@ -11,11 +11,6 @@ Patch0:         IndentationError.patch
 BuildArch:      noarch
 
 BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  %{py3_dist pip}
-BuildRequires:  %{py3_dist setuptools}
-BuildRequires:  %{py3_dist tox}
-BuildRequires:  %{py3_dist tox-current-env}
-BuildRequires:  %{py3_dist wheel}
 
 %global common_desc %{expand:
 This package provides a Python 3 ported version of Python 2.7's random
@@ -42,6 +37,9 @@ Summary:        Python 2 compatible random module for Python 3
 
 # Remove a test that is invalid as of python 3.9
 sed -i '/self\.gen\.getrandbits, 0/d' src/tests.py
+
+%generate_buildrequires
+%pyproject_buildrequires -t
 
 %build
 %pyproject_wheel

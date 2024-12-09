@@ -1,31 +1,30 @@
 Name:           dtk6gui
-Version:        6.0.19
+Version:        6.0.24
 Release:        %autorelease
 Summary:        Deepin Toolkit, gui module for DDE look and feel
 License:        LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dtk6gui
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
-# https://github.com/linuxdeepin/dtkgui/pull/259
-Patch0:         dtk6gui-add-qt6.8-support.patch
-
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
 BuildRequires:  ninja-build
 
+BuildRequires:  cmake(Qt6Core)
+BuildRequires:  cmake(Qt6Widgets)
+BuildRequires:  cmake(Qt6WaylandClient)
 BuildRequires:  cmake(Qt6Gui)
 BuildRequires:  cmake(Qt6DBus)
 BuildRequires:  cmake(Qt6Network)
 BuildRequires:  cmake(Qt6ToolsTools)
 BuildRequires:  cmake(Qt6Svg)
-BuildRequires:  cmake(Qt6Widgets)
 BuildRequires:  qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
 
 BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  cmake(DtkBuildHelper)
 BuildRequires:  pkgconfig(librsvg-2.0)
-BuildRequires:  freeimage-devel
+BuildRequires:  wayland-devel
 BuildRequires:  pkgconfig(libraw)
 
 %description

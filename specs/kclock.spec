@@ -2,7 +2,7 @@
 %global orig_name org.kde.kclock
 
 Name:           kclock
-Version:        24.11.90
+Version:        24.12.0
 Release:        1%{?dist}
 License:        GPLv2+ and LGPLv2.1+ and CC-BY and GPLv3+
 Summary:        Clock app for Plasma Mobile
@@ -103,6 +103,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.kde.%{name}.deskt
 %{_qt6_plugindir}/plasma/applets/org.kde.plasma.%{name}_1x2.so
 
 %changelog
+* Sat Dec 07 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.12.0-1
+- 24.12.0
+
 * Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
 - 24.11.90
 

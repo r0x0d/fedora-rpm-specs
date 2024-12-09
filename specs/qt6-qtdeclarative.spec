@@ -16,7 +16,7 @@
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -74,6 +74,10 @@ Requires:  %{name}%{?_isa} = %{version}-%{release}
 Requires:  qt6-qtbase-devel%{?_isa}
 Obsoletes: qt6-qtquickcontrols2-devel < 6.2.0~beta3-1
 Provides:  qt6-qtquickcontrols2-devel = %{version}-%{release}
+# rhbz#2330219
+# Require qt6-qtbase-private-devel until this is fixed upstream or a better
+# workaround is found.
+Requires: (qt6-qtbase-private-devel if cmake >= 3.31.0)
 %description devel
 %{summary}.
 
@@ -524,6 +528,9 @@ make check -k -C tests ||:
 %{_qt6_libdir}/pkgconfig/Qt6QuickTest.pc
 %{_qt6_libdir}/pkgconfig/Qt6QuickVectorImage.pc
 %{_qt6_libdir}/pkgconfig/Qt6QuickWidgets.pc
+# FIXME:
+# This (slit to -private-devel) didn't work out because of rhbz#2330219
+# Might be something to consider in the future.
 # Private stuff
 # {_qt6_headerdir}/*/{qt_version}
 %dir %{_qt6_libdir}/cmake/Qt6QuickEffectsPrivate
@@ -602,15 +609,16 @@ make check -k -C tests ||:
 %{_qt6_metatypesdir}/qt6qmltyperegistrarprivate_*_metatypes.json
 %{_qt6_metatypesdir}/qt6quickcontrolstestutilsprivate_*_metatypes.json
 %{_qt6_metatypesdir}/qt6quicktestutilsprivate_*_metatypes.json
-%{_qt6_mkspecsdir}/modules/qt_lib_labs*_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_packetprotocol_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_qmldebug_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_qmldom_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_qmlls_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_qmltoolingsettings_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_qmltyperegistrar_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_quickcontrolstestutilsprivate_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_quicktestutilsprivate_private.pri
+# FIXME:
+# Same to qtbase, we probably cannot have mkspecs separate from -devel
+#{_qt6_mkspecsdir}/modules/qt_lib_packetprotocol_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_qmldebug_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_qmldom_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_qmlls_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_qmltoolingsettings_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_qmltyperegistrar_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_quickcontrolstestutilsprivate_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_quicktestutilsprivate_private.pri
 %{_qt6_archdatadir}/objects-*/QmlTypeRegistrarPrivate_resources_1/
 
 %if 0%{?examples}
@@ -619,6 +627,10 @@ make check -k -C tests ||:
 %endif
 
 %changelog
+* Sat Dec 07 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-5
+- Make -devel subpkg to require qtbase-private-devel for cmake >= 3.31.0
+  Workaround for rhbz#2330219
+
 * Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-4
 - Revert 'introduce -private-devel subpkg'
 

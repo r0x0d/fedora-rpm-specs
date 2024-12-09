@@ -16,7 +16,7 @@
 %define release_version %(echo %{version} | awk -F. '{print $1"."$2}')
 
 Name:           mingw-qt6-%{qt_module}
-Version:        6.8.0
+Version:        6.8.1
 Release:        1%{?dist}
 Summary:        Qt6 for Windows - QtImageFormats component
 
@@ -113,6 +113,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_libdir}/qt6/plugins/imageformats/qtiff.dll
 %{mingw32_libdir}/qt6/plugins/imageformats/qwbmp.dll
 %{mingw32_libdir}/qt6/plugins/imageformats/qwebp.dll
+%{mingw32_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 %{mingw32_libdir}/cmake/Qt6/FindLibmng.cmake
 %{mingw32_libdir}/cmake/Qt6/FindWrapJasper.cmake
 %{mingw32_libdir}/cmake/Qt6/FindWrapWebP.cmake
@@ -135,6 +136,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_libdir}/qt6/plugins/imageformats/qtiff.dll
 %{mingw64_libdir}/qt6/plugins/imageformats/qwbmp.dll
 %{mingw64_libdir}/qt6/plugins/imageformats/qwebp.dll
+%{mingw64_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 %{mingw64_libdir}/cmake/Qt6/FindLibmng.cmake
 %{mingw64_libdir}/cmake/Qt6/FindWrapJasper.cmake
 %{mingw64_libdir}/cmake/Qt6/FindWrapWebP.cmake
@@ -148,6 +150,9 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 
 
 %changelog
+* Sat Dec 07 2024 Sandro Mani <manisandro@gmail.com> - 6.8.1-1
+- Update to 6.8.1
+
 * Sat Oct 19 2024 Sandro Mani <manisandro@gmail.com> - 6.8.0-1
 - Update to 6.8.0
 

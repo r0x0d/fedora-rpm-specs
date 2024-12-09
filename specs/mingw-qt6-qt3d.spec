@@ -16,7 +16,7 @@
 %define release_version %(echo %{version} | awk -F. '{print $1"."$2}')
 
 Name:           mingw-qt6-%{qt_module}
-Version:        6.8.0
+Version:        6.8.1
 Release:        1%{?dist}
 Summary:        Qt6 for Windows - Qt3d component
 
@@ -112,18 +112,29 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_bindir}/Qt63DQuickInput.dll
 %{mingw32_bindir}/Qt63DQuickRender.dll
 %{mingw32_bindir}/Qt63DQuickScene2D.dll
-%{mingw32_includedir}/qt6/Qt3DQuick/
+%{mingw32_bindir}/Qt63DQuickScene3D.dll
+%{mingw32_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DAdditionalTargetInfo.cmake
+%{mingw32_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DConfig.cmake
+%{mingw32_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DConfigVersion.cmake
+%{mingw32_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DConfigVersionImpl.cmake
+%{mingw32_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DDependencies.cmake
+%{mingw32_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DTargets-relwithdebinfo.cmake
+%{mingw32_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DTargets.cmake
+%{mingw32_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DVersionlessAliasTargets.cmake
+%{mingw32_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DVersionlessTargets.cmake
 %{mingw32_includedir}/qt6/Qt3DAnimation/
 %{mingw32_includedir}/qt6/Qt3DCore/
 %{mingw32_includedir}/qt6/Qt3DExtras/
 %{mingw32_includedir}/qt6/Qt3DInput/
 %{mingw32_includedir}/qt6/Qt3DLogic/
+%{mingw32_includedir}/qt6/Qt3DQuick/
 %{mingw32_includedir}/qt6/Qt3DRender/
 %{mingw32_includedir}/qt6/Qt3DQuickAnimation/
 %{mingw32_includedir}/qt6/Qt3DQuickExtras/
 %{mingw32_includedir}/qt6/Qt3DQuickInput
 %{mingw32_includedir}/qt6/Qt3DQuickRender/
 %{mingw32_includedir}/qt6/Qt3DQuickScene2D/
+%{mingw32_includedir}/qt6/Qt3DQuickScene3D/
 %{mingw32_libdir}/cmake/Qt63DAnimation/
 %{mingw32_libdir}/cmake/Qt63DCore/
 %{mingw32_libdir}/cmake/Qt63DExtras/
@@ -136,6 +147,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_libdir}/cmake/Qt63DQuickInput/
 %{mingw32_libdir}/cmake/Qt63DQuickRender/
 %{mingw32_libdir}/cmake/Qt63DQuickScene2D/
+%{mingw32_libdir}/cmake/Qt63DQuickScene3D/
 %{mingw32_libdir}/cmake/Qt6BuildInternals/StandaloneTests/Qt3DTestsConfig.cmake
 %{mingw32_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6qtquickscene2dplugin*
 %{mingw32_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6qtquickscene3dplugi*
@@ -158,6 +170,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_libdir}/pkgconfig/Qt63DQuickInput.pc
 %{mingw32_libdir}/pkgconfig/Qt63DQuickRender.pc
 %{mingw32_libdir}/pkgconfig/Qt63DQuickScene2D.pc
+%{mingw32_libdir}/pkgconfig/Qt63DQuickScene3D.pc
 %{mingw32_libdir}/libQt63DAnimation.dll.a
 %{mingw32_libdir}/libQt63DCore.dll.a
 %{mingw32_libdir}/libQt63DExtras.dll.a
@@ -170,6 +183,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_libdir}/libQt63DQuickInput.dll.a
 %{mingw32_libdir}/libQt63DQuickRender.dll.a
 %{mingw32_libdir}/libQt63DQuickScene2D.dll.a
+%{mingw32_libdir}/libQt63DQuickScene3D.dll.a
 %{mingw32_libdir}/Qt63DAnimation.prl
 %{mingw32_libdir}/Qt63DCore.prl
 %{mingw32_libdir}/Qt63DExtras.prl
@@ -182,6 +196,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_libdir}/Qt63DQuickInput.prl
 %{mingw32_libdir}/Qt63DQuickRender.prl
 %{mingw32_libdir}/Qt63DQuickScene2D.prl
+%{mingw32_libdir}/Qt63DQuickScene3D.prl
 %{mingw32_libdir}/qt6/metatypes/qt63danimation_relwithdebinfo_metatypes.json
 %{mingw32_libdir}/qt6/metatypes/qt63dcore_relwithdebinfo_metatypes.json
 %{mingw32_libdir}/qt6/metatypes/qt63dextras_relwithdebinfo_metatypes.json
@@ -194,6 +209,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_libdir}/qt6/metatypes/qt63dquickinput_relwithdebinfo_metatypes.json
 %{mingw32_libdir}/qt6/metatypes/qt63dquickrender_relwithdebinfo_metatypes.json
 %{mingw32_libdir}/qt6/metatypes/qt63dquickscene2d_relwithdebinfo_metatypes.json
+%{mingw32_libdir}/qt6/metatypes/qt63dquickscene3d_relwithdebinfo_metatypes.json
 %{mingw32_libdir}/qt6/mkspecs/modules/qt_lib_3dquick.pri
 %{mingw32_libdir}/qt6/mkspecs/modules/qt_lib_3danimation.pri
 %{mingw32_libdir}/qt6/mkspecs/modules/qt_lib_3danimation_private.pri
@@ -218,6 +234,8 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_libdir}/qt6/mkspecs/modules/qt_lib_3dquickrender_private.pri
 %{mingw32_libdir}/qt6/mkspecs/modules/qt_lib_3dquickscene2d.pri
 %{mingw32_libdir}/qt6/mkspecs/modules/qt_lib_3dquickscene2d_private.pri
+%{mingw32_libdir}/qt6/mkspecs/modules/qt_lib_3dquickscene3d.pri
+%{mingw32_libdir}/qt6/mkspecs/modules/qt_lib_3dquickscene3d_private.pri
 %dir %{mingw32_libdir}/qt6/plugins/geometryloaders/
 %{mingw32_libdir}/qt6/plugins/geometryloaders/defaultgeometryloader.dll
 %{mingw32_libdir}/qt6/plugins/geometryloaders/gltfgeometryloader.dll
@@ -245,6 +263,8 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_libdir}/qt6/modules/3DQuickInput.json
 %{mingw32_libdir}/qt6/modules/3DQuickRender.json
 %{mingw32_libdir}/qt6/modules/3DQuickScene2D.json
+%{mingw32_libdir}/qt6/modules/3DQuickScene3D.json
+%{mingw32_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 
 
 # Win64
@@ -262,18 +282,29 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_bindir}/Qt63DQuickInput.dll
 %{mingw64_bindir}/Qt63DQuickRender.dll
 %{mingw64_bindir}/Qt63DQuickScene2D.dll
-%{mingw64_includedir}/qt6/Qt3DQuick/
+%{mingw64_bindir}/Qt63DQuickScene3D.dll
+%{mingw64_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DAdditionalTargetInfo.cmake
+%{mingw64_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DConfig.cmake
+%{mingw64_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DConfigVersion.cmake
+%{mingw64_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DConfigVersionImpl.cmake
+%{mingw64_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DDependencies.cmake
+%{mingw64_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DTargets-relwithdebinfo.cmake
+%{mingw64_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DTargets.cmake
+%{mingw64_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DVersionlessAliasTargets.cmake
+%{mingw64_libdir}/cmake/Qt63DQuickScene3D/Qt63DQuickScene3DVersionlessTargets.cmake
 %{mingw64_includedir}/qt6/Qt3DAnimation/
 %{mingw64_includedir}/qt6/Qt3DCore/
 %{mingw64_includedir}/qt6/Qt3DExtras/
 %{mingw64_includedir}/qt6/Qt3DInput/
 %{mingw64_includedir}/qt6/Qt3DLogic/
+%{mingw64_includedir}/qt6/Qt3DQuick/
 %{mingw64_includedir}/qt6/Qt3DRender/
 %{mingw64_includedir}/qt6/Qt3DQuickAnimation/
 %{mingw64_includedir}/qt6/Qt3DQuickExtras/
 %{mingw64_includedir}/qt6/Qt3DQuickInput
 %{mingw64_includedir}/qt6/Qt3DQuickRender/
 %{mingw64_includedir}/qt6/Qt3DQuickScene2D/
+%{mingw64_includedir}/qt6/Qt3DQuickScene3D/
 %{mingw64_libdir}/cmake/Qt63DAnimation/
 %{mingw64_libdir}/cmake/Qt63DCore/
 %{mingw64_libdir}/cmake/Qt63DExtras/
@@ -286,6 +317,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_libdir}/cmake/Qt63DQuickInput/
 %{mingw64_libdir}/cmake/Qt63DQuickRender/
 %{mingw64_libdir}/cmake/Qt63DQuickScene2D/
+%{mingw64_libdir}/cmake/Qt63DQuickScene3D/
 %{mingw64_libdir}/cmake/Qt6BuildInternals/StandaloneTests/Qt3DTestsConfig.cmake
 %{mingw64_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6qtquickscene2dplugin*
 %{mingw64_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6qtquickscene3dplugi*
@@ -308,6 +340,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_libdir}/pkgconfig/Qt63DQuickInput.pc
 %{mingw64_libdir}/pkgconfig/Qt63DQuickRender.pc
 %{mingw64_libdir}/pkgconfig/Qt63DQuickScene2D.pc
+%{mingw64_libdir}/pkgconfig/Qt63DQuickScene3D.pc
 %{mingw64_libdir}/libQt63DAnimation.dll.a
 %{mingw64_libdir}/libQt63DCore.dll.a
 %{mingw64_libdir}/libQt63DExtras.dll.a
@@ -320,6 +353,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_libdir}/libQt63DQuickInput.dll.a
 %{mingw64_libdir}/libQt63DQuickRender.dll.a
 %{mingw64_libdir}/libQt63DQuickScene2D.dll.a
+%{mingw64_libdir}/libQt63DQuickScene3D.dll.a
 %{mingw64_libdir}/Qt63DAnimation.prl
 %{mingw64_libdir}/Qt63DCore.prl
 %{mingw64_libdir}/Qt63DExtras.prl
@@ -332,6 +366,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_libdir}/Qt63DQuickInput.prl
 %{mingw64_libdir}/Qt63DQuickRender.prl
 %{mingw64_libdir}/Qt63DQuickScene2D.prl
+%{mingw64_libdir}/Qt63DQuickScene3D.prl
 %{mingw64_libdir}/qt6/metatypes/qt63danimation_relwithdebinfo_metatypes.json
 %{mingw64_libdir}/qt6/metatypes/qt63dcore_relwithdebinfo_metatypes.json
 %{mingw64_libdir}/qt6/metatypes/qt63dextras_relwithdebinfo_metatypes.json
@@ -344,6 +379,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_libdir}/qt6/metatypes/qt63dquickinput_relwithdebinfo_metatypes.json
 %{mingw64_libdir}/qt6/metatypes/qt63dquickrender_relwithdebinfo_metatypes.json
 %{mingw64_libdir}/qt6/metatypes/qt63dquickscene2d_relwithdebinfo_metatypes.json
+%{mingw64_libdir}/qt6/metatypes/qt63dquickscene3d_relwithdebinfo_metatypes.json
 %{mingw64_libdir}/qt6/mkspecs/modules/qt_lib_3dquick.pri
 %{mingw64_libdir}/qt6/mkspecs/modules/qt_lib_3danimation.pri
 %{mingw64_libdir}/qt6/mkspecs/modules/qt_lib_3danimation_private.pri
@@ -368,6 +404,8 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_libdir}/qt6/mkspecs/modules/qt_lib_3dquickrender_private.pri
 %{mingw64_libdir}/qt6/mkspecs/modules/qt_lib_3dquickscene2d.pri
 %{mingw64_libdir}/qt6/mkspecs/modules/qt_lib_3dquickscene2d_private.pri
+%{mingw64_libdir}/qt6/mkspecs/modules/qt_lib_3dquickscene3d.pri
+%{mingw64_libdir}/qt6/mkspecs/modules/qt_lib_3dquickscene3d_private.pri
 %dir %{mingw64_libdir}/qt6/plugins/geometryloaders/
 %{mingw64_libdir}/qt6/plugins/geometryloaders/defaultgeometryloader.dll
 %{mingw64_libdir}/qt6/plugins/geometryloaders/gltfgeometryloader.dll
@@ -395,9 +433,14 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_libdir}/qt6/modules/3DQuickInput.json
 %{mingw64_libdir}/qt6/modules/3DQuickRender.json
 %{mingw64_libdir}/qt6/modules/3DQuickScene2D.json
+%{mingw64_libdir}/qt6/modules/3DQuickScene3D.json
+%{mingw64_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 
 
 %changelog
+* Sat Dec 07 2024 Sandro Mani <manisandro@gmail.com> - 6.8.1-1
+- Update to 6.8.1
+
 * Tue Oct 22 2024 Sandro Mani <manisandro@gmail.com> - 6.8.0-1
 - Update to 6.8.0
 

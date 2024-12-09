@@ -4,7 +4,7 @@ any program as if it were a function.  sh is not a collection of system
 commands implemented in Python.}
 
 Name:           python-sh
-Version:        2.0.6
+Version:        2.1.0
 Release:        %autorelease
 Summary:        Python subprocess replacement
 License:        MIT
@@ -40,7 +40,7 @@ Summary:        %{summary}
 
 %install
 %pyproject_install
-%pyproject_save_files sh
+%pyproject_save_files -L sh
 
 
 %check
@@ -63,7 +63,7 @@ SH_TESTS_USE_SELECT=1 %{python3} sh_test.py
 
 
 %files -n python3-sh -f %{pyproject_files}
-%license LICENSE.txt
+%license %{python3_sitelib}/sh-%{version}.dist-info/LICENSE.txt
 %doc README.rst CHANGELOG.md MIGRATION.md
 
 

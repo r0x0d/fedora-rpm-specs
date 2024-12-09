@@ -15,7 +15,7 @@
 
 Name:          scotch
 Summary:       Graph, mesh and hypergraph partitioning library
-Version:       7.0.5
+Version:       7.0.6
 Release:       1%{?dist}
 
 License:       CeCILL-C
@@ -281,7 +281,6 @@ rm -rf %{buildroot}%{_mandir}/*
 %license doc/CeCILL-C_V1-en.txt
 %{_libdir}/libscotch.so.7*
 %{_libdir}/libesmumps.so.7*
-%{_libdir}/libptesmumps.so.7*
 %{_libdir}/libscotcherr.so.7*
 %{_libdir}/libscotcherrexit.so.7*
 %if %{with metis}
@@ -295,7 +294,6 @@ rm -rf %{buildroot}%{_mandir}/*
 %{_includedir}/scotch/scotchf.h
 %{_includedir}/scotch/esmumps.h
 %{_libdir}/libesmumps.so
-%{_libdir}/libptesmumps.so
 %{_libdir}/libscotch.so
 %{_libdir}/libscotcherr.so
 %{_libdir}/libscotcherrexit.so
@@ -304,7 +302,6 @@ rm -rf %{buildroot}%{_mandir}/*
 %{_libdir}/libscotchmetisv5.so
 %endif
 %dir %{_libdir}/cmake/scotch/
-%{_libdir}/cmake/scotch/ptesmumpsTargets*
 %{_libdir}/cmake/scotch/esmumpsTargets*
 %{_libdir}/cmake/scotch/SCOTCH*
 %{_libdir}/cmake/scotch/scotchTargets*
@@ -454,6 +451,9 @@ rm -rf %{buildroot}%{_mandir}/*
 
 
 %changelog
+* Sat Dec 07 2024 Sandro Mani <manisandro@gmail.com> - 7.0.6-1
+- Update to 7.0.6
+
 * Wed Aug 14 2024 Sandro Mani <manisandro@gmail.com> - 7.0.5-1
 - Update to 7.0.5
 

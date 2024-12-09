@@ -1,6 +1,6 @@
 Name:    libksane
 Summary: SANE Library interface for KDE
-Version: 24.11.90
+Version: 24.12.0
 Release: 1%{?dist}
 
 License: CC0-1.0 AND LGPL-2.1-only AND LGPL-3.0-only
@@ -79,6 +79,9 @@ Provides internationalization files.
 %{_libdir}/cmake/KSaneWidgets6/
 
 %changelog
+* Sat Dec 07 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.12.0-1
+- 24.12.0
+
 * Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
 - 24.11.90
 

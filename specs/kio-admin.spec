@@ -1,5 +1,5 @@
 Name:           kio-admin
-Version:        24.11.90
+Version:        24.12.0
 Release:        1%{?dist}
 Summary:        Manage files as administrator using the admin:// KIO protocol
 License:        (GPL-2.0-only or GPL-3.0-only) and BSD-3-Clause and CC0-1.0 and FSFAP
@@ -59,6 +59,9 @@ operations in root-scope.
 %{_kf6_datadir}/polkit-1/actions/org.kde.kio.admin.policy
 
 %changelog
+* Sat Dec 07 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.12.0-1
+- 24.12.0
+
 * Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
 - 24.11.90
 

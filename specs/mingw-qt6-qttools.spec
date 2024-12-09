@@ -19,7 +19,7 @@
 %define release_version %(echo %{version} | awk -F. '{print $1"."$2}')
 
 Name:           mingw-qt6-%{qt_module}
-Version:        6.8.0
+Version:        6.8.1
 Release:        1%{?dist}
 Summary:        Qt6 for Windows - QtTools component
 
@@ -189,6 +189,7 @@ ln -s %{_libdir}/cmake/Qt6LinguistTools %{buildroot}%{mingw64_libdir}/cmake/Qt6L
 %{mingw32_libdir}/qt6/modules/Tools.json
 %{mingw32_libdir}/qt6/modules/UiPlugin.json
 %{mingw32_libdir}/qt6/modules/UiTools.json
+%{mingw32_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 %{mingw32_datadir}/qt6/phrasebooks/
 
 
@@ -266,10 +267,14 @@ ln -s %{_libdir}/cmake/Qt6LinguistTools %{buildroot}%{mingw64_libdir}/cmake/Qt6L
 %{mingw64_libdir}/qt6/modules/Tools.json
 %{mingw64_libdir}/qt6/modules/UiPlugin.json
 %{mingw64_libdir}/qt6/modules/UiTools.json
+%{mingw64_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 %{mingw64_datadir}/qt6/phrasebooks/
 
 
 %changelog
+* Sat Dec 07 2024 Sandro Mani <manisandro@gmail.com> - 6.8.1-1
+- Update to 6.8.1
+
 * Wed Oct 23 2024 Sandro Mani <manisandro@gmail.com> - 6.8.0-1
 - Update to 6.8.0
 

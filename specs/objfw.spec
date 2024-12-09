@@ -3,7 +3,7 @@
 %global _lto_cflags %nil
 
 Name:          objfw
-Version:       1.2.1
+Version:       1.2.2
 Release:       1%{?dist}
 Summary:       Portable, lightweight framework for the Objective-C language
 
@@ -16,15 +16,11 @@ Source2:       gpgkey-%{name}.gpg
 
 Patch0:        utils-pie.patch
 
-BuildRequires: autoconf
-BuildRequires: automake
 BuildRequires: clang
 BuildRequires: make
 BuildRequires: pkgconfig(gnutls)
 BuildRequires: gnupg2
 BuildRequires: doxygen
-BuildRequires: autoconf
-BuildRequires: automake
 BuildRequires: lksctp-tools-devel
 Requires:      libobjfw%{_isa} = %{version}-%{release}
 Requires:      libobjfw-devel%{_isa} = %{version}-%{release}
@@ -158,7 +154,6 @@ Documentation for ObjFW.
 %autosetup -p0
 
 %build
-./autogen.sh
 %configure OBJC=clang             \
            OBJCFLAGS="$CFLAGS"    \
            --with-tls=gnutls      \

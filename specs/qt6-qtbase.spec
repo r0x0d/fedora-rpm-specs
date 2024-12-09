@@ -46,7 +46,7 @@ BuildRequires: pkgconfig(libsystemd)
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
 Version: 6.8.1
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
@@ -735,7 +735,6 @@ make check -k ||:
 %{_qt6_metatypesdir}/qt6xml_*_metatypes.json
 %{_qt6_libdir}/pkgconfig/*.pc
 %{_qt6_mkspecsdir}/*
-%exclude %{_qt6_mkspecsdir}/modules/qt_lib_*_private.pri
 ## private-devel globs
 %exclude %{_qt6_headerdir}/*/%{qt_version}/
 
@@ -766,7 +765,6 @@ make check -k ||:
 %{_qt6_metatypesdir}/qt6eglfskmsgbmsupportprivate_*_metatypes.json
 %{_qt6_metatypesdir}/qt6eglfskmssupportprivate_*_metatypes.json
 %{_qt6_metatypesdir}/qt6xcbqpaprivate_*_metatypes.json
-%{_qt6_mkspecsdir}/modules/qt_lib_*_private.pri
 %{_qt6_headerdir}/*/%{qt_version}/
 
 %files static
@@ -888,6 +886,9 @@ make check -k ||:
 
 
 %changelog
+* Sat Dec 07 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-4
+- Move all mkspecs to -devel
+
 * Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-3
 - Move more stuff into -private-devel
 

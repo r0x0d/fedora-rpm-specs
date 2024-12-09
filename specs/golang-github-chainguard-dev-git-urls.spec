@@ -7,9 +7,9 @@
 %global __requires_exclude %{?__requires_exclude:%{__requires_exclude}|}^golang\\(.*\\)$
 %endif
 
-# https://github.com/whilp/git-urls
-%global goipath         github.com/whilp/git-urls
-Version:                1.0.0
+# https://github.com/chainguard-dev/git-urls
+%global goipath         github.com/chainguard-dev/git-urls
+Version:                1.0.2
 
 %gometa -L -f
 
@@ -19,13 +19,17 @@ Git-urls parses git URLs.}
 %global golicenses      LICENSE
 %global godocs          README.md
 
-Name:           golang-github-whilp-git-urls
+Name:           golang-github-chainguard-dev-git-urls
 Release:        %autorelease
 Summary:        Git-urls parses git URLs
 
 License:        MIT
 URL:            %{gourl}
 Source:         %{gosource}
+
+%global godevelheader %{expand:
+Obsoletes: golang-github-whilp-git-urls-devel <= 1.0.1
+}
 
 %description %{common_description}
 

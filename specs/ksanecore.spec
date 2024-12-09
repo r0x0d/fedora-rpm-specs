@@ -1,6 +1,6 @@
 Name:    ksanecore
 Summary: Library providing logic to interface scanners
-Version: 24.11.90
+Version: 24.12.0
 Release: 1%{?dist}
 
 License: BSD and LGPLv2.1-only and LGPLv3.0-only
@@ -72,6 +72,9 @@ Provides internationalization files.
 
 
 %changelog
+* Sat Dec 07 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.12.0-1
+- 24.12.0
+
 * Fri Nov 29 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-1
 - 24.11.90
 

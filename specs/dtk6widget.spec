@@ -1,12 +1,10 @@
 Name:           dtk6widget
-Version:        6.0.19
+Version:        6.0.24
 Release:        %autorelease
 Summary:        Deepin base graphical widgets library
 License:        LGPL-3.0-or-later
 URL:            https://github.com/linuxdeepin/dtk6widget
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
-
-Patch0:         dtk6widget-add-qt6.8-support.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake

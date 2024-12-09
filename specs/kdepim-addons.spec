@@ -2,8 +2,8 @@
 %bcond adblock 1
 
 Name:    kdepim-addons
-Version: 24.11.90
-Release: 2%{?dist}
+Version: 24.12.0
+Release: 1%{?dist}
 Summary: Additional plugins for KDE PIM applications
 # Cargo license summary:
 # MIT
@@ -191,6 +191,9 @@ popd
 
 
 %changelog
+* Sat Dec 07 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.12.0-1
+- 24.12.0
+
 * Fri Dec 06 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.11.90-2
 - Backport upstream change to use adblock 0.9
 

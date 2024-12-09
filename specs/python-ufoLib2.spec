@@ -1,22 +1,21 @@
-%global srcname ufoLib2
+# python-cattrs is too old in Fedora 40:
+%bcond cattrs %{undefined fc40}
 
-Name:           python-%{srcname}
-Version:        0.16.0
-Release:        6%{?dist}
+Name:           python-ufoLib2
+Version:        0.17.0
+Release:        1%{?dist}
 Summary:        A library to deal with UFO font sources
 
 License:        Apache-2.0
-URL:            https://pypi.org/project/ufoLib2
-Source0:        %{pypi_source %{srcname} %{version}}
+URL:            https://github.com/fonttools/ufoLib2
+Source:         %{pypi_source ufolib2 %{version}}
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
 
 # Required for running tests
 BuildRequires:  python3dist(pytest)
-BuildRequires:  python3dist(cattrs)
-BuildRequires:  python3dist(msgpack)
-BuildRequires:  python3dist(orjson)
 
 %global _description %{expand:
 ufoLib2 is meant to be a thin representation of the Unified Font Object (UFO)
@@ -25,34 +24,39 @@ processing of UFOs.}
 
 %description %_description
 
-%package -n python3-%{srcname}
+%package -n python3-ufoLib2
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{srcname}}
 
-%description -n python3-%{srcname} %_description
+%description -n python3-ufoLib2 %_description
+
+%pyproject_extras_subpkg -n python3-ufoLib2 lxml%{?with_cattrs: converters json msgpack}
 
 %prep
-%autosetup -n %{srcname}-%{version}
+%autosetup -n ufolib2-%{version}
 
 %generate_buildrequires
-%pyproject_buildrequires
+%pyproject_buildrequires -x lxml%{?with_cattrs:,converters,json,msgpack}
 
 %build
 %pyproject_wheel
 
 %install
 %pyproject_install
-%pyproject_save_files %{srcname}
+%pyproject_save_files -l ufoLib2
 
 %check
-%pyproject_check_import
-PYTHONPATH=%{buildroot}%{python3_sitelib} %{python3} -m pytest -v
+%pyproject_check_import %{?!with_cattrs:-e ufoLib2.converters -e ufoLib2.serde.json -e ufoLib2.serde.msgpack}
+%pytest -v
 
-%files -n python3-%{srcname} -f %{pyproject_files}
-%license LICENSE
+%files -n python3-ufoLib2 -f %{pyproject_files}
 %doc README.md
 
 %changelog
+* Fri Dec 06 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 0.17.0-1
+- Update to 0.17.0 (close RHBZ#2322970)
+- Don’t package a duplicate LICENSE file; assert one is found and handled
+- Add missing extras metpackages
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.16.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

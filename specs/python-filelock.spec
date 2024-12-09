@@ -2,11 +2,10 @@
 
 %if 0%{?fedora}
 %bcond_without docs
-%bcond_without tests
 %else
 %bcond_with docs
-%bcond_with tests
 %endif
+%bcond_without tests
 
 Name:           python-%{srcname}
 Version:        3.15.4

@@ -1,5 +1,5 @@
-%global rocm_release 6.2
-%global rocm_patch 1
+%global rocm_release 6.3
+%global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 %global upstreamname amdsmi
 
@@ -7,18 +7,19 @@
 # Testing also depends on having AMD hardware cpu and/or gpu installed.
 # Not suitable for a general %check
 #
-# Non root result for gfx1100 and this kernel 6.11.0-0.rc2.23.fc41.x86_64
+# Non root result for gfx1100 and this kernel 6.13.0-0.rc0.20241126git7eef7e306d3c.10.fc42.x86_64
 # 25 pass, 5 fail
 # No oops
 %bcond_with test
+%if %{with test}
+%global build_test ON
+%else
+%global build_test OFF
+%endif
 
 Name:       amdsmi
 Version:    %{rocm_version}
-%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:    1%{?dist}
-%else
-Release:    %autorelease
-%endif
 Summary:    AMD System Management Interface
 
 License:    NCSA AND MIT AND BSD-3-Clause
@@ -80,12 +81,14 @@ chmod a-x README.md
 #   bdf_regex = "(?:[0-6]?[0-9a-fA-F]{1,4}:)?[0-2]?[0-9a-fA-F]{1,2}:[0-9a-fA-F]{1,2}\.[0-7]"
 sed -i -e 's@bdf_regex = "@bdf_regex = r"@' amdsmi_cli/BDF.py
 
+# Install local gtests in same dir as tests
+sed -i -e 's@${CPACK_PACKAGING_INSTALL_PREFIX}/lib@${SHARE_INSTALL_PREFIX}/tests@' tests/amd_smi_test/CMakeLists.txt
+
 %build
 %cmake \
     -DBUILD_KERNEL_ASM_DIR=/usr/include/asm \
-%if %{with test}
-    -DBUILD_TESTS=ON \
-%endif
+    -DCMAKE_SKIP_INSTALL_RPATH=TRUE \
+    -DBUILD_TESTS=%build_test
 
 %cmake_build
 
@@ -94,7 +97,6 @@ sed -i -e 's@bdf_regex = "@bdf_regex = r"@' amdsmi_cli/BDF.py
 
 mkdir -p %{buildroot}/%{python3_sitelib}
 mv %{buildroot}/usr/share/amdsmi %{buildroot}/%{python3_sitelib}
-mv %{buildroot}/usr/share/setup.cfg %{buildroot}/%{python3_sitelib}/amdsmi/
 mv %{buildroot}/usr/share/pyproject.toml %{buildroot}/%{python3_sitelib}/amdsmi/
 
 # Remove some things
@@ -113,6 +115,9 @@ fi
 if [ -f %{buildroot}%{_datadir}/_version.py ]; then
     rm %{buildroot}%{_datadir}/_version.py
 fi
+if [ -f %{buildroot}%{_datadir}/setup.py ]; then
+    rm %{buildroot}%{_datadir}/setup.py
+fi
 
 # W: unstripped-binary-or-object /usr/lib/python3.13/site-packages/amdsmi/libamd_smi.so
 # Does an explict open, so can not just rm it
@@ -126,18 +131,22 @@ rm %{buildroot}%{_libdir}/cmake/amd_smi/amd_smi-config.cmake
 
 %files
 %doc README.md
-%license License.txt
 %license LICENSE
 %license esmi_ib_library_License.txt 
 %{_libdir}/libamd_smi.so.*
+%{_libdir}/libgoamdsmi_shim64.so.*
 %{_bindir}/amd-smi
 %{_libexecdir}/amdsmi_cli
 %{python3_sitelib}/amdsmi
 
 %files devel
-%{_includedir}/amd_smi
+%dir %{_includedir}/amd_smi
+%dir %{_libdir}/cmake/amd_smi
+%{_includedir}/amd_smi/*.h
+%{_includedir}/*.h
 %{_libdir}/libamd_smi.so
-%{_libdir}/cmake/amd_smi
+%{_libdir}/libgoamdsmi_shim64.so
+%{_libdir}/cmake/amd_smi/*.cmake
 
 %if %{with test}
 %files test
@@ -145,11 +154,10 @@ rm %{buildroot}%{_libdir}/cmake/amd_smi/amd_smi-config.cmake
 %endif
 
 %changelog
-%if 0%{?suse_version}
+* Sat Dec 7 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+
 * Sun Nov 3 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 
-%else
-%autochangelog
-%endif
 

@@ -24,25 +24,12 @@ An IPython-like terminal frontend for Jupyter kernels in any language.
 
 %package -n     python3-%{srcname}
 Summary:        %{summary}
+Obsoletes:      python-%{srcname}-doc < 6.6.3-9
 
 BuildRequires:  python3dist(pillow)
 
 %description -n python3-%{srcname}
 An IPython-like terminal frontend for Jupyter kernels in any language.
-
-
-%package -n python-%{srcname}-doc
-Summary:        jupyter-console documentation
-
-BuildArch: noarch
-
-BuildRequires:  make
-BuildRequires:  python3dist(sphinx)
-BuildRequires:  python3dist(sphinx-rtd-theme)
-BuildRequires:  python3dist(sphinxcontrib-github-alt)
-
-%description -n python-%{srcname}-doc
-Documentation for jupyter-console
 
 
 %prep
@@ -53,12 +40,6 @@ Documentation for jupyter-console
 
 %build
 %pyproject_wheel
-
-# generate html docs
-%make_build -C docs html PYTHONPATH=$PWD
-mv docs/_build/html .
-# remove the sphinx-build leftovers
-rm -rf html/.{doctrees,buildinfo}
 
 %install
 %pyproject_install
@@ -75,10 +56,6 @@ echo 'exit()' | jupyter-console --simple-prompt
 %files -n python3-%{srcname} -f %{pyproject_files}
 %doc README.md
 %{_bindir}/%{srcname}
-
-%files -n python-%{srcname}-doc
-%doc html
-%license LICENSE
 
 
 %changelog

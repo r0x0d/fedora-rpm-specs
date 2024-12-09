@@ -18,7 +18,7 @@ continue to support the LSB project and software that uses it
 Summary: Implementation of Linux Standard Base specification
 Name: redhat-lsb
 Version: 5.0
-Release: 0.13%{gver}%{?dist}
+Release: 0.14%{gver}%{?dist}
 URL: https://wiki.linuxfoundation.org/lsb/start
 # https://github.com/LinuxStandardBase/lsb-samples/
 Source0: redhat-lsb-%{snapshot}.tar.gz
@@ -28,7 +28,6 @@ BuildRequires: make
 BuildRequires: help2man
 
 Provides: lsb = %{version}-%{release}
-Provides: lsb-%{archname} = %{version}-%{release}
 Provides: lsb-noarch = %{version}-%{release}
 Obsoletes: redhat-lsb-trialuse < 5
 Obsoletes: redhat-lsb-submod-multimedia < 5
@@ -85,6 +84,9 @@ cp -p lsb_release/src/README README.lsb_release
 
 
 %changelog
+* Sat Dec 07 2024 Sérgio Basto <sergio@serjux.com> - 5.0-0.14.20231006git8d00acdc
+- (#2330590) Fix Unexpadned macro
+
 * Thu Nov 28 2024 Sérgio Basto <sergio@serjux.com> - 5.0-0.13.20231006git8d00acdc
 - Remove sub-pacakges: redhat-lsb-core, redhat-lsb-cxx, redhat-lsb-desktop,
   redhat-lsb-languages and redhat-lsb-printing aren't useful for a long time

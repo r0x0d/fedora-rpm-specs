@@ -19,7 +19,7 @@
 %define release_version %(echo %{version} | awk -F. '{print $1"."$2}')
 
 Name:           mingw-qt6-%{qt_module}
-Version:        6.8.0
+Version:        6.8.1
 Release:        1%{?dist}
 Summary:        Qt6 for Windows - QtDeclarative component
 
@@ -600,6 +600,7 @@ rm -rf %{buildroot}%{mingw64_libdir}/objects-RelWithDebInfo/QmlTypeRegistrarPriv
 %{mingw32_libdir}/qt6/plugins/qmllint/
 %{mingw32_libdir}/qt6/plugins/qmltooling/
 %{mingw32_libdir}/qt6/qml/
+%{mingw32_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 
 
 # Win64
@@ -1084,9 +1085,13 @@ rm -rf %{buildroot}%{mingw64_libdir}/objects-RelWithDebInfo/QmlTypeRegistrarPriv
 %{mingw64_libdir}/qt6/plugins/qmllint/
 %{mingw64_libdir}/qt6/plugins/qmltooling/
 %{mingw64_libdir}/qt6/qml/
+%{mingw64_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 
 
 %changelog
+* Sat Dec 07 2024 Sandro Mani <manisandro@gmail.com> - 6.8.1-1
+- Update to 6.8.1
+
 * Fri Oct 18 2024 Sandro Mani <manisandro@gmail.com> - 6.8.0-1
 - Update to 6.8.0
 

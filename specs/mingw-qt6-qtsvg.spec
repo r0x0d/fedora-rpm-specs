@@ -16,7 +16,7 @@
 %global release_version %(echo %{version} | awk -F. '{print $1"."$2}')
 
 Name:           mingw-qt6-%{qt_module}
-Version:        6.8.0
+Version:        6.8.1
 Release:        1%{?dist}
 Summary:        Qt6 for Windows - QtSvg component
 
@@ -122,6 +122,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_libdir}/qt6/plugins/imageformats/qsvg.dll
 %{mingw32_libdir}/qt6/modules/Svg.json
 %{mingw32_libdir}/qt6/modules/SvgWidgets.json
+%{mingw32_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 
 # Win64
 %files -n mingw64-qt6-%{qt_module}
@@ -152,9 +153,13 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_libdir}/qt6/plugins/imageformats/qsvg.dll
 %{mingw64_libdir}/qt6/modules/Svg.json
 %{mingw64_libdir}/qt6/modules/SvgWidgets.json
+%{mingw64_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 
 
 %changelog
+* Sat Dec 07 2024 Sandro Mani <manisandro@gmail.com> - 6.8.1-1
+- Update to 6.8.1
+
 * Sat Oct 19 2024 Sandro Mani <manisandro@gmail.com> - 6.8.0-1
 - Update to 6.8.0
 

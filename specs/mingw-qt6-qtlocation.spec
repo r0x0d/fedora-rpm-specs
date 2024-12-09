@@ -16,7 +16,7 @@
 %define release_version %(echo %{version} | awk -F. '{print $1"."$2}')
 
 Name:           mingw-qt6-%{qt_module}
-Version:        6.8.0
+Version:        6.8.1
 Release:        1%{?dist}
 Summary:        Qt6 for Windows - QtLocation component
 
@@ -120,6 +120,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %dir %{mingw32_libdir}/qt6/plugins/geoservices/
 %{mingw32_libdir}/qt6/plugins/geoservices/qtgeoservices_itemsoverlay.dll
 %{mingw32_libdir}/qt6/plugins/geoservices/qtgeoservices_osm.dll
+%{mingw32_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 %{mingw32_libdir}/Qt6Location.prl
 %{mingw32_includedir}/qt6/QtLocation/
 
@@ -145,11 +146,15 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %dir %{mingw64_libdir}/qt6/plugins/geoservices/
 %{mingw64_libdir}/qt6/plugins/geoservices/qtgeoservices_itemsoverlay.dll
 %{mingw64_libdir}/qt6/plugins/geoservices/qtgeoservices_osm.dll
+%{mingw64_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 %{mingw64_libdir}/Qt6Location.prl
 %{mingw64_includedir}/qt6/QtLocation/
 
 
 %changelog
+* Sat Dec 07 2024 Sandro Mani <manisandro@gmail.com> - 6.8.1-1
+- Update to 6.8.1
+
 * Wed Oct 23 2024 Sandro Mani <manisandro@gmail.com> - 6.8.0-1
 - Update to 6.8.0
 

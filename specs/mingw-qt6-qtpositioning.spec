@@ -16,7 +16,7 @@
 %global release_version %(echo %{version} | awk -F. '{print $1"."$2}')
 
 Name:           mingw-qt6-%{qt_module}
-Version:        6.8.0
+Version:        6.8.1
 Release:        1%{?dist}
 Summary:        Qt6 for Windows - Qt Positioning component
 
@@ -140,6 +140,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_libdir}/qt6/modules/Positioning.json
 %{mingw32_libdir}/qt6/modules/PositioningQuick.json
 %{mingw32_libdir}/qt6/qml/QtPositioning/
+%{mingw32_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 
 # Win64
 %files -n mingw64-qt6-%{qt_module}
@@ -171,9 +172,13 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_libdir}/qt6/modules/Positioning.json
 %{mingw64_libdir}/qt6/modules/PositioningQuick.json
 %{mingw64_libdir}/qt6/qml/QtPositioning/
+%{mingw64_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 
 
 %changelog
+* Sat Dec 07 2024 Sandro Mani <manisandro@gmail.com> - 6.8.1-1
+- Update to 6.8.1
+
 * Tue Oct 22 2024 Sandro Mani <manisandro@gmail.com> - 6.8.0-1
 - Update to 6.8.0
 

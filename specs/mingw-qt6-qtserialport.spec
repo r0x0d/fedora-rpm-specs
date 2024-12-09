@@ -16,7 +16,7 @@
 %define release_version %(echo %{version} | awk -F. '{print $1"."$2}')
 
 Name:           mingw-qt6-%{qt_module}
-Version:        6.8.0
+Version:        6.8.1
 Release:        1%{?dist}
 Summary:        Qt6 for Windows - Qt Serial Port component
 
@@ -105,6 +105,7 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw32_libdir}/qt6/metatypes/qt6serialport_relwithdebinfo_metatypes.json
 %{mingw32_libdir}/qt6/mkspecs/modules/qt_lib_serialport.pri
 %{mingw32_libdir}/qt6/mkspecs/modules/qt_lib_serialport_private.pri
+%{mingw32_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 %{mingw32_libdir}/Qt6SerialPort.prl
 %{mingw32_libdir}/qt6/modules/SerialPort.json
 
@@ -121,11 +122,15 @@ export MINGW64_CXXFLAGS="%{mingw64_cflags} -msse2"
 %{mingw64_libdir}/qt6/metatypes/qt6serialport_relwithdebinfo_metatypes.json
 %{mingw64_libdir}/qt6/mkspecs/modules/qt_lib_serialport.pri
 %{mingw64_libdir}/qt6/mkspecs/modules/qt_lib_serialport_private.pri
+%{mingw64_libdir}/qt6/sbom/%{qt_module}-%{version}.spdx
 %{mingw64_libdir}/Qt6SerialPort.prl
 %{mingw64_libdir}/qt6/modules/SerialPort.json
 
 
 %changelog
+* Sat Dec 07 2024 Sandro Mani <manisandro@gmail.com> - 6.8.1-1
+- Update to 6.8.1
+
 * Sat Oct 19 2024 Sandro Mani <manisandro@gmail.com> - 6.8.0-1
 - Update to 6.8.0
 
