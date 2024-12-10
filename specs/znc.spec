@@ -13,7 +13,7 @@
 
 Name:           znc
 Version:        1.9.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        An advanced IRC bouncer
 
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
@@ -229,6 +229,9 @@ getent passwd znc >/dev/null || \
 
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 1.9.1-5
+- Rebuild for ICU 76
+
 * Sun Aug 25 2024 Neil Hanlon <neil@shrug.pw> - 1.9.1-4
 - switch to pure cmake (1.9.0 turned configure into a wrapper which dropped options)
 - resolve ftbfs, fti, new version (#226393 #2301380 #2292226)

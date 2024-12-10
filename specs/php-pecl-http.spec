@@ -26,7 +26,7 @@
 
 Name:           php-pecl-http
 Version:        %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Extended HTTP support
 
 License:        BSD-2-Clause
@@ -207,6 +207,9 @@ TEST_PHP_ARGS="-n $modules -d extension=$PWD/modules/%{pecl_name}.so" \
 
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 4.2.6-2
+- Rebuild for ICU 76
+
 * Wed Nov  6 2024 Remi Collet <remi@fedoraproject.org> - 4.2.6-1
 - update to 4.2.6
 

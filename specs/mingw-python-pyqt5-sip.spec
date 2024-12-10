@@ -5,8 +5,8 @@
 
 Name:           mingw-python-%{mod_name}
 Summary:        MinGW Python %{pypi_name} library
-Version:        12.15.0
-Release:        2%{?dist}
+Version:        12.16.0
+Release:        1%{?dist}
 BuildArch:      noarch
 
 License:        GPL-2.0-only OR GPL-3.0-only
@@ -78,6 +78,9 @@ MinGW Python 3 %{pypi_name} library.
 
 
 %changelog
+* Sun Dec 08 2024 Sandro Mani <manisandro@gmail.com> - 12.16.0-1
+- Update to 12.16.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 12.15.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

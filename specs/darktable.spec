@@ -7,7 +7,7 @@
 
 Name: darktable
 Version: 4.8.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 Summary: Utility to organize and develop raw images
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -241,6 +241,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/org.darkt
 %{_libexecdir}/darktable/tools/subr.sh
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 4.8.1-3
+- Rebuild for ICU 76
+
 * Thu Sep 26 2024 Germano Massullo <germano.massullo@gmail.com> - 4.8.1-2
 - Added 17257.patch 
 

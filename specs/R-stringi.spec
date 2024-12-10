@@ -4,7 +4,7 @@
 
 Name:             R-%{packname}
 Version:          %{packver}
-Release:          3%{?dist}
+Release:          4%{?dist}
 Summary:          Character String Processing Facilities
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -89,6 +89,9 @@ rm -f %{buildroot}%{rlibdir}/R.css
 
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 1.8.3-4
+- Rebuild for ICU 76
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.8.3-3
 - convert license to SPDX
 

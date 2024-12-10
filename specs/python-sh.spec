@@ -15,6 +15,11 @@ BuildRequires:  python3-devel
 # Several tests run the python command.
 BuildRequires:  python-unversioned-command
 
+# Python 3.14 test fix.
+# https://github.com/amoffat/sh/issues/741
+# https://github.com/amoffat/sh/pull/742
+Patch:          0001-Avoid-manual-async-loop-management.patch
+
 
 %description %{common_description}
 

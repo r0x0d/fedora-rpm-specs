@@ -3,7 +3,7 @@
 
 Name:           widelands
 Version:        1.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Open source realtime-strategy game
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -199,6 +199,9 @@ popd
 
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 1.2-2
+- Rebuild for ICU 76
+
 * Sun Aug 25 2024 Peter Hanecak <hany@hany.sk> - 1.2-1
 - New upstream release 1.2 (rhbz#2271240)
 

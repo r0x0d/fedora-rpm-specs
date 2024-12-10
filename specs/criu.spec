@@ -12,7 +12,7 @@
 
 Name: criu
 Version: 4.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: Tool for Checkpoint/Restore in User-space
 License: GPL-2.0-only AND LGPL-2.1-only AND MIT
 URL: http://criu.org/
@@ -24,6 +24,7 @@ Source0: https://github.com/checkpoint-restore/criu/archive/v%{version}/criu-%{v
 Patch99: criu.pc.patch
 
 Patch100: Makefile.config-set-CR_PLUGIN_DEFAULT-variable.patch
+Patch101: vdso-handle-vvar_vclock-vma-s.patch
 
 Source5: criu-tmpfiles.conf
 
@@ -119,6 +120,7 @@ This script can help to workaround the so called "PID mismatch" problem.
 %patch -P 99 -p1
 
 %patch -P 100 -p1
+%patch -P 101 -p1
 
 %build
 # This package calls LD directly without specifying the LTO plugins.  Until
@@ -190,6 +192,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libcriu.a
 %tmpfiles_create %{name}.conf
 
 %changelog
+* Sun Dec 08 2024 Radostin Stoyanov <rstoyanov@fedoraproject.org> - 4.0-3
+- Apply patch to handle vvar_vclock vma-s in rawhide
+
 * Thu Oct 17 2024 Adrian Reber <adrian@lisas.de> - 4.0-2
 - Recommends: iptables
 

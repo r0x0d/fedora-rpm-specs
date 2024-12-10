@@ -4,7 +4,7 @@
 
 Name:           tracker
 Version:        3.7.3
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Desktop-neutral metadata database and search tool
 
 License:        GPL-2.0-or-later
@@ -176,6 +176,9 @@ The %{name}-devel package contains the documentation for %{name}.
 
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 3.7.3-4
+- Rebuild for ICU 76
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.7.3-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

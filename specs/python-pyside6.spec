@@ -10,7 +10,7 @@
 
 Name:           python-%{pypi_name}
 Version:        6.8.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Python bindings for the Qt 6 cross-platform application and UI framework
 
 License:        LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -317,6 +317,9 @@ export LD_LIBRARY_PATH="%{buildroot}%{_libdir}"
 
 
 %changelog
+* Sun Dec 08 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-2
+- Rebuild (qt6.8.1)
+
 * Tue Oct 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
 - 6.8.0
 

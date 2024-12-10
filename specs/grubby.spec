@@ -3,7 +3,7 @@
 
 Name: grubby
 Version: 8.40
-Release: 78%{?dist}
+Release: 80%{?dist}
 Summary: Command line tool for updating bootloader configs
 License: GPL-2.0-or-later
 Source1: grubby-bls
@@ -74,6 +74,12 @@ fi
 %{_mandir}/man8/grubby.8*
 
 %changelog
+* Fri Dec 06 2024 Leo Sandoval <lsandova@redhat.com> - 8.40-80
+- grubby-bls: on PPC systems, remove petiboot's version checks
+
+* Fri Dec 06 2024 Leo Sandoval <lsandova@redhat.com> - 8.40-79
+- grubby-bls: in s390* systems, run zipl on grub cfg update event
+
 * Mon Dec 02 2024 David Abdurachmanov <davidlt@rivosinc.com> - 8.40-78
 - Add riscv64 support
 

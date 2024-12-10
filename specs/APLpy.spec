@@ -5,6 +5,7 @@ Version:        2.0.3
 Release:        %autorelease
 Summary:        The Astronomical Plotting Library in Python
 
+# SPDX license is MIT
 License:        MIT
 URL:            http://aplpy.github.com
 Source0:        %{pypi_source}

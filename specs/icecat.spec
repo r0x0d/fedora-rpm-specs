@@ -2,13 +2,8 @@
 # Set to true if it's going to be submitted as update
 %global release_build 1
 
-# Set new source-code build version
-# This tag indicates a new rebuild for Fedora
-%global redhat_ver rh1
-
-# Build is failing because of
-# include/mozilla/FloatingPoint.h:212:31: error: inlining failed in call to ‘always_inline’ ‘bool mozilla::IsNegativeZero(T) [with T = double]’: indirect function call with a yet undetermined callee
-#ExcludeArch: s390x
+# Set new source-code build version for Fedora and, not necessarily, for upstream too
+%global redhat_ver rh2
 
 ExcludeArch: %{ix86} %{arm}
 

@@ -3,7 +3,7 @@
 
 Name:           gspell
 Version:        1.14.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Spell-checking library for GTK+
 
 License:        LGPL-2.1-or-later
@@ -97,6 +97,9 @@ This package contains the full API documentation for %{name}.
 
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 1.14.0-2
+- Rebuild for ICU 76
+
 * Mon Sep 16 2024 nmontero <nmontero@redhat.com> - 1.14.0-1
 - Update to 1.14.0
 

@@ -1,6 +1,6 @@
 Name:           harfbuzz
 Version:        10.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Text shaping library
 
 License:        MIT-Modern-Variant
@@ -111,6 +111,9 @@ This package contains Harfbuzz Cairo support library.
 %{_libdir}/libharfbuzz-cairo.so.*
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 10.1.0-2
+- Rebuild for ICU 76
+
 * Wed Nov 06 2024 Parag Nemade <pnemade AT redhat DOT com> - 10.1.0-1
 - Update to 10.1.0 version (#2324060)
 

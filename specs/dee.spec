@@ -1,7 +1,7 @@
 Summary:	Model to synchronize multiple instances over DBus
 Name:		dee
 Version:	1.2.7
-Release:	55%{?dist}
+Release:	56%{?dist}
 # GPLv3-licensed tests and examples are in the tarball, but not installed
 # Automatically converted from old format: LGPLv3 - review is highly recommended.
 License:	LGPL-3.0-only
@@ -81,6 +81,9 @@ find %{buildroot} -regex ".*\.la$" | xargs rm -f --
 %{_datadir}/vala/vapi/*.deps
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 1.2.7-56
+- Rebuild for ICU 76
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.2.7-55
 - convert license to SPDX
 

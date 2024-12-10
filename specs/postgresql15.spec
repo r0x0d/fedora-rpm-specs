@@ -49,7 +49,7 @@
 Summary: PostgreSQL client programs
 Name: %{majorname}%{majorversion}
 Version: %{majorversion}.8
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # The PostgreSQL license is very similar to other MIT licenses, but the OSI
 # recognizes it as an independent license, so we do as well.
@@ -1357,6 +1357,9 @@ make -C postgresql-setup-%{setup_version} check
 
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 15.8-2
+- Rebuild for ICU 76
+
 * Tue Sep 10 2024 Ales Nezbeda <anezbeda@redhat.com> - 15.8-1
 - Update to 15.8
 - Update upgrade server to 14.13

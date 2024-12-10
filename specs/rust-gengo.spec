@@ -2,21 +2,22 @@
 %bcond check 1
 %global debug_package %{nil}
 
-%global crate anyhow
+%global crate gengo
 
-Name:           rust-anyhow
-Version:        1.0.94
+Name:           rust-gengo
+Version:        0.11.5
 Release:        %autorelease
-Summary:        Flexible concrete Error type built on std::error::Error
+Summary:        Get the language distribution stats of your repository
 
 License:        MIT OR Apache-2.0
-URL:            https://crates.io/crates/anyhow
+URL:            https://crates.io/crates/gengo
 Source:         %{crates_source}
 
 BuildRequires:  cargo-rpm-macros >= 24
+BuildRequires:  tomcli
 
 %global _description %{expand:
-Flexible concrete Error type built on std::error::Error.}
+Get the language distribution stats of your repository.}
 
 %description %{_description}
 
@@ -32,7 +33,7 @@ use the "%{crate}" crate.
 %files          devel
 %license %{crate_instdir}/LICENSE-APACHE
 %license %{crate_instdir}/LICENSE-MIT
-%doc %{crate_instdir}/README.md
+%doc %{crate_instdir}/crates-io.md
 %{crate_instdir}/
 
 %package     -n %{name}+default-devel
@@ -47,33 +48,47 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+backtrace-devel
+%package     -n %{name}+max-performance-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+backtrace-devel %{_description}
+%description -n %{name}+max-performance-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "backtrace" feature of the "%{crate}" crate.
+use the "max-performance" feature of the "%{crate}" crate.
 
-%files       -n %{name}+backtrace-devel
+%files       -n %{name}+max-performance-devel
 %ghost %{crate_instdir}/Cargo.toml
 
-%package     -n %{name}+std-devel
+%package     -n %{name}+max-performance-safe-devel
 Summary:        %{summary}
 BuildArch:      noarch
 
-%description -n %{name}+std-devel %{_description}
+%description -n %{name}+max-performance-safe-devel %{_description}
 
 This package contains library source intended for building other packages which
-use the "std" feature of the "%{crate}" crate.
+use the "max-performance-safe" feature of the "%{crate}" crate.
 
-%files       -n %{name}+std-devel
+%files       -n %{name}+max-performance-safe-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+owo-colors-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+owo-colors-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "owo-colors" feature of the "%{crate}" crate.
+
+%files       -n %{name}+owo-colors-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
+# Do not depend on criterion; it is needed only for benchmarks.
+tomcli set Cargo.toml del dev-dependencies.criterion
 
 %generate_buildrequires
 %cargo_generate_buildrequires
@@ -86,7 +101,10 @@ use the "std" feature of the "%{crate}" crate.
 
 %if %{with check}
 %check
-%cargo_test
+# * The test test_git_javascript only works in a git checkout, using the
+#   test/javascript branch. See .github/workflows/ci.yml in git for an idea of
+#   how this is supposed to work.
+%cargo_test -- -- --exact --skip test_git_javascript
 %endif
 
 %changelog

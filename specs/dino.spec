@@ -1,6 +1,6 @@
 Name:       dino
 Version:    0.4.4
-Release:    2%{?dist}
+Release:    3%{?dist}
 
 # Automatically converted from old format: GPLv3 - review is highly recommended.
 License:    GPL-3.0-only
@@ -135,6 +135,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/im.dino.Dino.desktop
 
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 0.4.4-3
+- Rebuild for ICU 76
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 0.4.4-2
 - convert license to SPDX
 

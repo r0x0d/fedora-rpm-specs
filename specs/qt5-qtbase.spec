@@ -57,7 +57,7 @@
 Name:    qt5-qtbase
 Summary: Qt5 - QtBase components
 Version: 5.15.15
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, for exception details
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -1167,6 +1167,9 @@ fi
 
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 5.15.15-2
+- Rebuild for ICU 76
+
 * Wed Sep 04 2024 Jan Grulich <jgrulich@redhat.com> - 5.15.15-1
 - 5.15.15
 

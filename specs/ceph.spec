@@ -185,7 +185,7 @@
 #################################################################################
 Name:		ceph
 Version:	19.2.0
-Release:	6%{?dist}
+Release:	7%{?dist}
 %if 0%{?fedora} || 0%{?rhel}
 Epoch:		2
 %endif
@@ -2716,6 +2716,9 @@ exit 0
 %{python3_sitelib}/ceph_node_proxy-*
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 2:19.2.0-7
+- Rebuild for ICU 76
+
 * Tue Nov 26 2024 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 2:19.2.0-6
 - build in f42-build-side-100844 again
 

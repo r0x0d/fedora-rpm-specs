@@ -25,7 +25,7 @@
 %endif
 
 Name:           mozjs%{major}
-Version:        128.3.0
+Version:        128.5.1
 Release:        %autorelease
 Summary:        SpiderMonkey JavaScript library
 
@@ -123,6 +123,11 @@ rm -rf js/src/ctypes/libffi/
 
 # Fixups executable permmissions
 chmod -x third_party/rust/bumpalo/src/lib.rs
+
+# icu >= 76 link fix
+%if 0%{?fedora} >= 42
+sed -i 's/icu-i18n/icu-uc &/' js/moz.configure
+%endif
 
 %build
 # Use bundled autoconf

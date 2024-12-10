@@ -1,5 +1,5 @@
 Name:           mold
-Version:        2.34.1
+Version:        2.35.0
 Release:        %autorelease
 Summary:        A Modern Linker
 
@@ -99,7 +99,6 @@ fi
 
 %files
 %license %{_docdir}/mold/LICENSE
-%license %{_docdir}/mold/LICENSE.third-party
 %ghost %{_bindir}/ld
 %{_bindir}/mold
 %{_bindir}/ld.mold

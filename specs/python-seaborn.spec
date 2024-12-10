@@ -3,10 +3,9 @@
 
 Name: python-%{srcname}
 Version: 0.13.2
-Release: 5%{?dist}
+Release: 6%{?dist}
 Summary: Statistical data visualization in Python
-# Automatically converted from old format: BSD - review is highly recommended.
-License: LicenseRef-Callaway-BSD
+License: BSD-3-Clause
 
 URL: http://seaborn.pydata.org/
 Source0: %{pypi_source}
@@ -70,6 +69,9 @@ rm -rf seaborn/external/docscrape.py
 %doc README.md
 
 %changelog
+* Sun Dec 08 2024 Sergio Pascual <sergiopr@fedoraproject.com> - 0.13.2-6
+- Update SPDX indentifier
+
 * Wed Nov 20 2024 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 0.13.2-5
 - Enable full testing
 

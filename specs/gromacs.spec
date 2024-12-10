@@ -30,7 +30,7 @@ ExcludeArch:    i686 armv7hl s390x
 %endif
 
 Name:		gromacs
-Version:	2024.3
+Version:	2024.4
 Release:	1%{?dist}
 Summary:	Fast, Free and Flexible Molecular Dynamics
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -185,6 +185,7 @@ Recommends:	gromacs-opencl = %{version}-%{release}
 %endif
 Obsoletes:	gromacs-openmpi-libs < 2016-0.1.20160318gitbec9c87
 BuildRequires:	openmpi-devel
+BuildRequires:	heffte-openmpi-devel
 
 %description openmpi
 GROMACS is a versatile and extremely well optimized package to perform
@@ -206,6 +207,7 @@ Recommends:	gromacs-opencl = %{version}-%{release}
 %endif
 Obsoletes:	gromacs-mpich-libs < 2016-0.1.20160318gitbec9c87
 BuildRequires:	mpich-devel
+BuildRequires:	heffte-mpich-devel
 
 %description mpich
 GROMACS is a versatile and extremely well optimized package to perform
@@ -254,7 +256,7 @@ sed -i 's/set(_timeout [0-9]*)/set(_timeout 9000)/' src/testutils/TestMacros.cma
 %global single -DGMX_GPU=OpenCL
 %endif
 %global double -DGMX_DOUBLE:BOOL=ON
-%global mpi -DGMX_MPI:BOOL=ON -DGMX_THREAD_MPI:BOOL=OFF -DGMX_DEFAULT_SUFFIX:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=OFF
+%global mpi -DGMX_MPI:BOOL=ON -DGMX_THREAD_MPI:BOOL=OFF -DGMX_DEFAULT_SUFFIX:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=OFF -DGMX_USE_HEFFTE=ON
 %global _vpath_srcdir ..
 
 . /etc/profile.d/modules.sh
@@ -372,6 +374,10 @@ done
 %{_libdir}/mpich/bin/gmx_mpich*
 
 %changelog
+* Fri Nov 01 2024 Christoph Junghans <junghans@votca.org> - 2024.4-1
+- Version bump to v2024.4 (bug #2322950)
+- Enable HeFFTE support
+
 * Tue Sep 03 2024 Christoph Junghans <junghans@votca.org> - 2024.3-1
 - Version bump to v2024.3 (bug #2309068)
 

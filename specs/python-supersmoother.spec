@@ -3,12 +3,11 @@
 
 Name:           python-%{srcname}
 Version:        0.4
-Release:        28%{?dist}
+Release:        29%{?dist}
 Summary:        %{sum}
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
-URL:            http://pypi.python.org/pypi/%{srcname}
+License:        BSD-2-Clause
+URL:            https://github.com/jakevdp/supersmoother
 Source0:        https://files.pythonhosted.org/packages/source/s/%{srcname}/%{srcname}-%{version}.tar.gz
 
 BuildArch:      noarch
@@ -49,6 +48,9 @@ nosetests-%{python3_version} supersmoother
 %{python3_sitelib}/*
 
 %changelog
+* Sun Dec 08 2024 Sergio Pascual <sergiopr@fis.ucm.es> - 0.4-29
+- Update SPDX identifier
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.4-28
 - convert license to SPDX
 

@@ -14,7 +14,7 @@ URL:            https://crates.io/crates/pyo3
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
 # * drop MSVC- and MinGW-only features
-# * allow chrono-tz 0.9
+# * relax chrono-tz dependency to allow building with 0.6..=0.10
 Patch:          pyo3-fix-metadata.diff
 
 # backport support for Python 3.13: https://github.com/PyO3/pyo3/pull/4184

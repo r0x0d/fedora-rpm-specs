@@ -25,7 +25,7 @@
 
 Name: %{shortname}-base
 Version: %{source_date}
-Release: 86%{?dist}
+Release: 87%{?dist}
 Epoch: 11
 Summary: TeX formatting system
 # The only files in the base package are directories, cache, and license texts
@@ -11105,6 +11105,9 @@ yes | %{_bindir}/updmap-sys --quiet --syncwithtrees >/dev/null 2>&1 || :
 %doc %{_texdir}/texmf-dist/doc/latex/yplan/
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 11:20230311-87
+- Rebuild for ICU 76
+
 * Thu Aug 01 2024 Than Ngo <than@redhat.com> - 20230311-86
 - fix license tag
 

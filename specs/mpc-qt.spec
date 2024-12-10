@@ -19,6 +19,7 @@ BuildRequires:  pkgconfig(mpv)
 BuildRequires:  qt6-qtbase-devel
 BuildRequires:  qt6-qtbase-private-devel
 BuildRequires:  qt6-qt5compat-devel
+BuildRequires:  qt6-qtsvg-devel
 BuildRequires:  qt6-linguist
 
 Requires:       hicolor-icon-theme

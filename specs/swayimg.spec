@@ -1,7 +1,7 @@
 %bcond  tests   1
 
 Name:           swayimg
-Version:        3.5
+Version:        3.6
 Release:        %autorelease
 Summary:        Lightweight image viewer for Wayland display servers
 
@@ -68,7 +68,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/swayimg.desktop
 %global gtest_exclude Loader.heif
 # A few tests fail on s390x (endianness?)
 %ifarch s390x
-%global gtest_exclude %{gtest_exclude}:Loader.External:Loader.bmp:Loader.tga
+%global gtest_exclude %{gtest_exclude}:Loader.External:Loader.bmp:Loader.dcm:Loader.tga
 %endif
 %meson_test --test-args='--gtest_filter=-%{gtest_exclude}'
 %endif

@@ -2,14 +2,13 @@
 
 Name: python-%{srcname}
 Version: 1.2.1
-Release: 12%{?dist}
+Release: 13%{?dist}
 Summary: Astronomical source extraction and photometry in Python
 
 # Code from photutils is BSD (src/overlap.h)
-# Code from sextractor is LGPLv3+
+# Code from sextractor is LGPLv3
 # Python wrapper is MIT (sex.pyx)
-# Automatically converted from old format: MIT and LGPLv3+ and BSD - review is highly recommended.
-License: LicenseRef-Callaway-MIT AND LGPL-3.0-or-later AND LicenseRef-Callaway-BSD
+License: MIT AND LGPL-3.0-only AND BSD-3-Clause
 
 URL: http://sep.readthedocs.org/
 Source0: %{pypi_source}
@@ -56,6 +55,9 @@ functions and classes. These operate directly on in-memory numpy arrays
 %{python3_sitearch}/sep*.so
 
 %changelog
+* Sun Dec 08 2024 Sergio Pascual <sergiopr@fis.ucm.es> - 1.2.1-13
+- Add review of spdx identifiers
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.2.1-12
 - convert license to SPDX
 

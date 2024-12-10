@@ -2,10 +2,9 @@
 
 Name: python-%{srcname}
 Version: 0.2.12
-Release: 34.post1%{?dist}
+Release: 35.post1%{?dist}
 Summary: Allows using distutils2-like setup.cfg files with setup.py
-# Automatically converted from old format: BSD - review is highly recommended.
-License: LicenseRef-Callaway-BSD
+License: BSD-3-Clause
 
 URL: http://pypi.python.org/pypi/d2to1
 #Source0: http://pypi.python.org/packages/source/d/d2to1/%{srcname}-%{version}.tar.gz
@@ -52,6 +51,9 @@ find . -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
 
 
 %changelog
+* Sun Dec 09 2024 Sergio Pascual <sergiopr@fedoraproject.org> - 0.2.12-35.post1
+- Add reviewed license identifier
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.2.12-34.post1
 - convert license to SPDX
 

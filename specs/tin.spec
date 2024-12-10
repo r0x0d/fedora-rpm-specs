@@ -1,6 +1,6 @@
 Name: tin
 Version: 2.6.3
-Release: 5%{?dist}
+Release: 6%{?dist}
 Summary: Basic Internet news reader
 # all sources built into binaries are BSD-3-Clause except
 # src/parsdate.{c,y} which are Public Domain
@@ -15,6 +15,7 @@ BuildRequires: gcc-c++
 BuildRequires: gettext
 BuildRequires: gnupg1
 BuildRequires: gnupg2
+BuildRequires: libcanlock-devel
 BuildRequires: make
 BuildRequires: ncurses-devel
 BuildRequires: openssl-devel
@@ -23,6 +24,7 @@ BuildRequires: perl-generators
 BuildRequires: libgsasl-devel
 BuildRequires: libicu-devel
 BuildRequires: libidn-devel
+BuildRequires: zlib-devel
 
 %description
 Tin is a basic, easy to use Internet news reader.  Tin can read news
@@ -38,11 +40,13 @@ gpg1 --homedir=${workdir} --pgp2 --yes --output="${workring}" --dearmor %{S:2}
 gpg1 --homedir=${workdir} --pgp2 --verify --keyring="${workring}" %{S:1} %{S:0}
 rm -r ${workdir}
 %autosetup -p1
+rm -rv libcanlock
 
 %build
 %configure \
 	--with-libdir=/var/lib/news \
 	--with-spooldir=/var/spool/news/articles \
+	--enable-cancel-locks \
 	--enable-long-article-numbers \
 	--enable-nntp \
 	--enable-prototypes \
@@ -53,6 +57,7 @@ rm -r ${workdir}
 	--with-mime-default-charset=UTF-8 \
 	--with-nntps=openssl \
 	--with-pcre2-config=/usr/bin/pcre2-config \
+	--with-zlib \
 
 sed -i -e 's/@\$(INSTALL) -s/@\$(INSTALL)/g' -e 's/@\$(CC)/\$(CC)/g' -e  's/@\$(CPP)/\$(CPP)/g' src/Makefile
 
@@ -91,6 +96,10 @@ install -Dpm644 -t %{buildroot}%{_mandir}/man3 doc/wildmat.3
 %{_mandir}/man5/tin.5*
 
 %changelog
+* Sun Dec 08 2024 Dominik Mierzejewski <dominik@greysector.net> 2.6.3-6
+- enable Cancel-Locks support
+- enable zlib compression support
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.6.3-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

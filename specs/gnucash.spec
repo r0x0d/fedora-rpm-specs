@@ -6,7 +6,7 @@ Name: gnucash
 Summary: Finance management application
 Version: 5.9
 URL: https://gnucash.org/
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPL-2.0-or-later
 Source: https://downloads.sourceforge.net/sourceforge/gnucash/gnucash-%{version}.tar.bz2
 
@@ -126,6 +126,9 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/metainfo/gnucas
 %config(noreplace) %{_sysconfdir}/gnucash/*
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 5.9-4
+- Rebuild for ICU 76
+
 * Mon Nov 04 2024 Gwyn Ciesla <gwync@protonmail.com> - 5.9-3
 - Patch for Python accounting file bug
 

@@ -5,7 +5,7 @@
 
 Name:           lib%{libname}
 Version:        0
-Release:        33.20161213git%{shortcommit}%{?dist}
+Release:        34.20161213git%{shortcommit}%{?dist}
 Summary:        Fast C parser using Ragel to generate the state machine.
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -60,6 +60,9 @@ CFLAGS="$CFLAGS -D__STDC_WANT_LIB_EXT2__"
 %{_libdir}/%{name}.so
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 0-34.20161213git03e8a3a
+- Rebuild for ICU 76
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 0-33.20161213git03e8a3a
 - convert license to SPDX
 

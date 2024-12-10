@@ -1,6 +1,6 @@
 Summary: test VT100-type terminal
 
-%define AppPatched 20241031
+%define AppPatched 20241204
 
 Name: vttest
 Version: 2.7.%{AppPatched}
@@ -41,6 +41,9 @@ can run all menu-items (for a given level) by entering an asterisk, i.e,
 %license COPYING
 
 %changelog
+* Sun Dec 08 2024 Thomas E. Dickey <dickey@his.com> - 2.7.20241204-1
+- update to 2.7.20241204 (RHBZ #2321688)
+
 * Thu Oct 31 2024 Thomas E. Dickey <dickey@his.com> - 2.7.20241031-1
 - update to 2.7.20241031 (RHBZ #2321688)
 

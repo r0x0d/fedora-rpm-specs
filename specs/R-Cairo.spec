@@ -4,7 +4,7 @@
 
 Name:             R-%{packname}
 Version:          1.6.0
-Release:          12%{?dist}
+Release:          13%{?dist}
 Summary:          Use Cairo for high-quality bitmap, vector, and display output
 
 # Automatically converted from old format: GPLv2 - review is highly recommended.
@@ -73,6 +73,9 @@ rm -f %{buildroot}%{rlibdir}/R.css
 
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 1.6.0-13
+- Rebuild for ICU 76
+
 * Mon Jul  29 2024 Miroslav Suchý <msuchy@redhat.com> - 1.6.0-12
 - convert license to SPDX
 

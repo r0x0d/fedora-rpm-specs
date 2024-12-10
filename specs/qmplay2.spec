@@ -3,7 +3,7 @@
 %undefine _strict_symbol_defs_build
 
 Name:           qmplay2
-Version:        24.06.16
+Version:        24.12.06
 Release:        %autorelease
 Summary:        A Qt based media player, streamer and downloader
 # LGPL-3.0-or-later: QMPlay2
@@ -12,10 +12,6 @@ Summary:        A Qt based media player, streamer and downloader
 License:        LGPL-3.0-or-later AND MIT AND LicenseRef-Fedora-Public-Domain
 URL:            https://github.com/zaps166/QMPlay2
 Source:         %{url}/releases/download/%{version}/%{pname}-src-%{version}.tar.xz
-# build with system vulkan-headers
-Patch:          0001-system-vulkan-headers.patch
-# upstream: make sure that Qt will load the Vulkan library
-Patch:          %{url}/commit/74ee99ccb5b75e92c4bf46de66a26ab00e8e4b84.patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}

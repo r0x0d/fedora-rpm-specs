@@ -20,7 +20,7 @@ BuildRequires: systemd
 
 Name: tarantool
 Version: 2.4.2.68
-Release: 19%{?dist}
+Release: 20%{?dist}
 Summary: In-Memory Database
 # Automatically converted from old format: BSD - review is highly recommended.
 License: LicenseRef-Callaway-BSD
@@ -146,6 +146,9 @@ rm -rf %{buildroot}%{_datarootdir}/doc/tarantool/
 %{_includedir}/tarantool/module.h
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 2.4.2.68-20
+- Rebuild for ICU 76
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.4.2.68-19
 - convert license to SPDX
 

@@ -5,8 +5,8 @@
 
 Name:           mingw-python-%{pkg_name}
 Summary:        MinGW Python %{pkg_name}
-Version:        1.16.4
-Release:        2%{?dist}
+Version:        1.17.0
+Release:        1%{?dist}
 BuildArch:      noarch
 
 License:        BSD-2-Clause
@@ -83,6 +83,9 @@ rm -rf pyqtbuild/bundle/dlls/
 
 
 %changelog
+* Sun Dec 08 2024 Sandro Mani <manisandro@gmail.com> - 1.17.0-1
+- Update to 1.17.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.16.4-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

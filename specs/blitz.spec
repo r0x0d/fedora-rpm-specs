@@ -1,15 +1,14 @@
 Name: blitz
 Version: 1.0.2
-Release: 18%{?dist}
+Release: 19%{?dist}
 Summary: C++ class library for matrix scientific computing
 
-# Automatically converted from old format: LGPLv3+ or BSD or Artistic 2.0 - review is highly recommended.
-License: LGPL-3.0-or-later OR LicenseRef-Callaway-BSD OR Artistic-2.0
+License: LGPL-3.0-only OR BSD-3-Clause OR Artistic-2.0
 
 URL: https://github.com/blitzpp/blitz
 Source0: https://github.com/blitzpp/blitz/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
 # Modifications of the Fedora package are listed here:
-# * Arch dependent hader moved to lib/blitz/include
+# * Arch dependent header moved to lib/blitz/include
 #   https://sourceforge.net/tracker/?func=detail&aid=3534421&group_id=63961&atid=505791
 Source1: README.fedora
 Patch0: blitz-cmake-path.patch
@@ -89,6 +88,9 @@ ctest -V %{?_smp_mflags}
 %license COPYING COPYING.LESSER LICENSE
 
 %changelog
+* Sun Dec 08 2024 Sergio Pascual <sergiopr at fedoraproject.org> - 1.0.2-19
+- SPDX license review
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.2-18
 - convert license to SPDX
 

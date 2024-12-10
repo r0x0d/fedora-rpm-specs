@@ -1,11 +1,10 @@
 Name: cloudy
 Version: 17.03
-Release: 8%{?dist}
+Release: 10%{?dist}
 Summary: Spectral synthesis code to simulate conditions in interstellar matter
 
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License: LicenseRef-Callaway-BSD
+License: Zlib
 URL: http://www.nublado.org/
 Source0: http://data.nublado.org/cloudy_releases/c17/c%{version}.tar.gz
 Patch0: cloudy-make.patch
@@ -79,6 +78,10 @@ export CLOUDY_DATA_PATH="%{buildroot}/%{_datadir}/%{name}/data/"
 %doc docs/* 
 
 %changelog
+* Sun Dec 08 2024 Sergio Pascual <sergiopr@fedoraproject.org> - 17.03-10
+- Modify license after review, brom BSD to Zlib
+- Fix incorrect changlog entry
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 17.03-8
 - convert license to SPDX
 

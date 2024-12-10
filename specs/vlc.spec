@@ -59,6 +59,8 @@ Patch:		libidn2.patch
 Patch:		lua-math.patch
 # update to freerdp2 api; backport from master
 Patch:		freerdp2.patch
+# fix build with live555-2024.11.28
+Patch:		live555.patch
 
 %{load:%{S:1}}
 %global __provides_exclude_from ^%{vlc_plugindir}/.*$

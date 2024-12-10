@@ -102,7 +102,7 @@
 
 Name:             %{majorname}%{majorversion}
 Version:          %{package_version}
-Release:          1%{?with_debug:.debug}%{?dist}
+Release:          2%{?with_debug:.debug}%{?dist}
 Summary:          MySQL client programs and shared libraries
 URL:              http://www.mysql.com
 
@@ -1105,6 +1105,9 @@ fi
 %endif
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 8.0.40-2
+- Rebuild for ICU 76
+
 * Mon Oct 21 2024 Lars Tangvald <lars.tangvald@oracle.com> - 8.0.40-1
 - Update to MySQL 8.0.40
 - Use auto* macros to simplify patch mgt

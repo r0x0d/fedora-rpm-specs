@@ -48,7 +48,7 @@
 Summary: PostgreSQL client programs
 Name: %{majorname}%{majorversion}
 Version: %{majorversion}.3
-Release: 6%{?dist}
+Release: 7%{?dist}
 
 # The PostgreSQL license is very similar to other MIT licenses, but the OSI
 # recognizes it as an independent license, so we do as well.
@@ -1331,6 +1331,9 @@ make -C postgresql-setup-%{setup_version} check
 
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 16.3-7
+- Rebuild for ICU 76
+
 * Mon Sep 16 2024 Filip Janus <fjanus@redhat.com> - 16.3-6
 - Fix typos in provides
 

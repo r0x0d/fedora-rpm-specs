@@ -3,15 +3,15 @@
 
 Name:           python-%{srcname}
 Version:        0.3
-Release:        31%{?dist}
+Release:        32%{?dist}
 Summary:        %{sum}
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
-URL:            http://www.astroml.org/gatspy/
-Source0:        http://pypi.python.org/packages/source/g/%{srcname}/%{srcname}-%{version}.tar.gz
+License:        BSD-2-Clause
+URL:            https://www.astroml.org/gatspy/
+Source0:        https://pypi.python.org/packages/source/g/%{srcname}/%{srcname}-%{version}.tar.gz
 
 BuildArch:      noarch
+BuildRequires:  python3-setuptools
 BuildRequires:  python3-astroML
 BuildRequires:  python3-devel
 BuildRequires:  python3-supersmoother
@@ -52,6 +52,9 @@ periodogram, the Supersmoother method, and others.
 %{python3_sitelib}/*
 
 %changelog
+* Sun Dec 08 2024 Sergio Pascual <sergiopr@fedoraproject.org> - 0.3-32
+- Update license identifier
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.3-31
 - convert license to SPDX
 

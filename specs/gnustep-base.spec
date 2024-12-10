@@ -10,7 +10,7 @@
 
 Name: gnustep-base
 Version: 1.30.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPL-3.0-or-later and LGPL-2.0-or-later
 Summary: GNUstep Base library package
 URL: http://www.gnustep.org/
@@ -171,6 +171,9 @@ export GNUSTEP_CONFIG_FILE=$(pwd)/GNUstep.conf
 %{_datadir}/GNUstep/Documentation/*
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 1.30.0-5
+- Rebuild for ICU 76
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.30.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

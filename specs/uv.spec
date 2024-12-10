@@ -33,7 +33,7 @@
 %constrain_build -m 4096
 
 Name:           uv
-Version:        0.5.6
+Version:        0.5.7
 Release:        %autorelease
 Summary:        An extremely fast Python package installer and resolver, written in Rust
 
@@ -96,6 +96,7 @@ Summary:        An extremely fast Python package installer and resolver, written
 #   - tl, Source400, is MIT.
 #
 # (Apache-2.0 OR MIT) AND BSD-3-Clause
+# (MIT OR Apache-2.0) AND Unicode-3.0
 # (MIT OR Apache-2.0) AND Unicode-DFS-2016
 # 0BSD
 # 0BSD OR MIT OR Apache-2.0
@@ -142,6 +143,7 @@ License:        %{shrink:
                 (MIT OR Unlicense) AND
                 MPL-2.0 AND
                 OpenSSL AND
+                Unicode-3.0 AND
                 Unicode-DFS-2016 AND
                 Zlib
                 }
@@ -209,12 +211,6 @@ Patch:          0001-Downstream-only-do-not-override-the-default-allocato.patch
 #   Should uv.find_uv_bin() be able to find /usr/bin/uv?
 #   https://github.com/astral-sh/uv/issues/4451
 Patch:          0001-Downstream-patch-always-find-the-system-wide-uv-exec.patch
-
-# Downstream-only: Use zlib-ng instead of zlib-rs
-#
-# We must package the libz-rs-sys crate in order to unhide the zlib-rs
-# feature of flate2.
-Patch:          0001-Downstream-only-Use-zlib-ng-instead-of-zlib-rs.patch
 
 # These patches are for the forked, bundled async_zip crate.
 #

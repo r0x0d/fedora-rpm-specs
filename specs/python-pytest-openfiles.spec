@@ -4,15 +4,14 @@
 
 Name:           python-%{srcname}
 Version:        0.6.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        %{sum}
 
 # Note, this package is not actively developed
 # Retirement roadmap:
 # https://pypi.org/project/pytest-openfiles/#description
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            https://pypi.python.org/pypi/%{srcname}
 Source0:        https://files.pythonhosted.org/packages/source/p/%{srcname}/%{upname}-%{version}.tar.gz
 
@@ -63,6 +62,9 @@ rm -fr %{buildroot}%{python3_sitelib}/tests
 %{python3_sitelib}/*
 
 %changelog
+* Sun Dec 08 2024 Sergio Pascual <sergiopr@fedoraproyect.org> - 0.6.0-4
+- Add reviewed license identifier
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.6.0-3
 - convert license to SPDX
 

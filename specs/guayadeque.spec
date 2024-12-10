@@ -12,10 +12,10 @@
 Name:           guayadeque
 %if 0%{?usesnapshot}
 Version:        0.6.1
-Release:        0.1.%{gitdate}git%{shortcommit0}%{?dist}
+Release:        0.2.%{gitdate}git%{shortcommit0}%{?dist}
 %else
 Version:        0.6.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 %endif
 Summary:        Music player
 # The entire source code is GPL-3.0-or-later except hmac/ which is BSD-3-Clause
@@ -177,6 +177,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.metainf
 %{_datadir}/metainfo/%{metadata_name}.metainfo.xml
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 0.6.1-2
+- Rebuild for ICU 76
+
 * Wed Nov 13 2024 Martin Gansser <martinkg@fedoraproject.org> - 0.6.1-1
 - Correct license type
 - Update to 0.6.1

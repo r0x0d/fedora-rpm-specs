@@ -2,7 +2,7 @@
 
 Name:           unar
 Version:        1.10.8
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Multi-format extractor
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-LGPLv2+
@@ -65,6 +65,9 @@ popd
 %{_datadir}/bash-completion/completions/*
 
 %changelog
+* Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 1.10.8-9
+- Rebuild for ICU 76
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.10.8-8
 - convert license to SPDX
 
