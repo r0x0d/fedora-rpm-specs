@@ -2,65 +2,97 @@
 
 Name:           perl-%{cpan_name}
 Version:        1.7
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Perl coding without worries
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/%{cpan_name}
 Source0:        https://cpan.metacpan.org/authors/id/L/LC/LCONS/%{cpan_name}-%{version}.tar.gz
 BuildArch:      noarch
+BuildRequires:  coreutils
 BuildRequires:  make
-BuildRequires:  perl-interpreter
 BuildRequires:  perl-generators
+BuildRequires:  perl-interpreter
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
+BuildRequires:  perl(strict)
+BuildRequires:  perl(warnings)
+# Run-time:
 BuildRequires:  perl(Carp)
 BuildRequires:  perl(Config)
+BuildRequires:  perl(constant)
 BuildRequires:  perl(Encode)
-BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  perl(Fcntl)
-BuildRequires:  perl(File::Temp)
-BuildRequires:  perl(Getopt::Long)
 BuildRequires:  perl(HTTP::Date)
 BuildRequires:  perl(IO::Handle)
 BuildRequires:  perl(IO::Select)
-BuildRequires:  perl(POSIX)
 BuildRequires:  perl(Params::Validate)
+BuildRequires:  perl(POSIX)
 BuildRequires:  perl(Sys::Hostname)
 BuildRequires:  perl(Sys::Syslog)
-BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Time::HiRes)
 BuildRequires:  perl(URI::Escape)
-# and for better testing...
-BuildRequires:  perl(Pod::Coverage)
-BuildRequires:  perl(Test::Pod)
-BuildRequires:  perl(Test::Pod::Coverage)
+# Tests:
+BuildRequires:  perl(File::Temp)
+BuildRequires:  perl(Getopt::Long)
+BuildRequires:  perl(Test::More)
+# Optional tests:
+BuildRequires:  perl(Pod::Coverage) >= 0.18
+BuildRequires:  perl(Test::Pod) >= 1.22
+BuildRequires:  perl(Test::Pod::Coverage) >= 1.08
 
 %description
 This module and its sub-modules ease coding by providing consistent convenient
 functions to perform frequently used programming tasks.
 
+%package tests
+Summary:        Tests for %{name}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       perl-Test-Harness
+
+%description tests
+Tests from %{name}. Execute them
+with "%{_libexecdir}/%{name}/test".
+
 %prep
 %setup -q -n %{cpan_name}-%{version}
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
-
-%check
-make test
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-rm -fr $RPM_BUILD_ROOT
-make pure_install DESTDIR=$RPM_BUILD_ROOT
-find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
-find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
-%{_fixperms} $RPM_BUILD_ROOT/*
+%{make_install}
+%{_fixperms} %{buildroot}/*
+# Install tests
+mkdir -p %{buildroot}%{_libexecdir}/%{name}
+cp -a t %{buildroot}%{_libexecdir}/%{name}
+rm %{buildroot}%{_libexecdir}/%{name}/t/{3pod,4podcov}.t
+cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
+#!/bin/sh
+cd %{_libexecdir}/%{name} && exec prove -I . -j "$(getconf _NPROCESSORS_ONLN)"
+EOF
+chmod +x %{buildroot}%{_libexecdir}/%{name}/test
+
+%check
+unset NO_WORRIES
+export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print $1} else {print 1}' -- '%{?_smp_mflags}')
+make test
 
 %files
 %doc Changes README
-%{perl_vendorlib}/*
-%{_mandir}/man3/*
+%dir %{perl_vendorlib}/No
+%{perl_vendorlib}/No/Worries
+%{perl_vendorlib}/No/Worries.pm
+%{_mandir}/man3/No::Worries.*
+%{_mandir}/man3/No::Worries::*
+
+%files tests
+%{_libexecdir}/%{name}
 
 %changelog
+* Mon Dec 09 2024 Petr Pisar <ppisar@redhat.com> - 1.7-11
+- Modernize a spec file
+- Package the tests
+
 * Tue Aug 06 2024 Miroslav Suchý <msuchy@redhat.com> - 1.7-10
 - convert license to SPDX
 

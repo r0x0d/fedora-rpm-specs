@@ -1,7 +1,6 @@
 # needed for test content
 %{?perl_default_filter}
 %global __provides_exclude_from %{?_provides_exclude_from:%_provides_exclude_from|}%{_datadir}/fedora-review/
-%global __requires_exclude_from %{?_requires_exclude_from:%_requires_exclude_from|}%{_datadir}/fedora-review/test/
 
 #invoke with "--with tests" to enable tests
 %bcond_with tests
@@ -14,7 +13,7 @@
 
 Name:       fedora-review
 Version:    0.10.0
-Release:    11%{?build_nr}%{?git_tag}%{?dist}
+Release:    12%{?build_nr}%{?git_tag}%{?dist}
 Summary:    Review tool for fedora rpm packages
 
 License:    GPL-2.0-or-later
@@ -71,6 +70,7 @@ Provides:       FedoraReview = %{version}-%{release}
 
 Provides:       %{name}-php-phpci = %{version}-%{release}
 Obsoletes:      %{name}-php-phpci < %{version}-%{release}
+Obsoletes:      %{name}-tests < 0.10.0-12
 
 
 %description
@@ -99,15 +99,6 @@ Requires: %{name} = %{version}-%{release}
 fedora-review ruby-specific tests, not installed by default.
 
 
-%package tests
-Summary: Test and test data files for fedora-review
-Requires: %{name} = %{version}-%{release}
-Requires: python3-nose
-
-%description tests
-Tests are packaged separately due to space concerns.
-
-
 %prep
 %autosetup -p1
 
@@ -121,12 +112,10 @@ Tests are packaged separately due to space concerns.
 pkg_dir="%{buildroot}/%{python3_sitelib}/FedoraReview"
 ln -s %{_datadir}/%{name}/scripts $pkg_dir/scripts
 ln -s %{_datadir}/%{name}/plugins $pkg_dir/plugins
-cd test
-bash < restore-links.sh
-rm restore-links.sh remember-links
-cd ..
-cp -ar test "%{buildroot}%{_datadir}/%{name}"
 cp -a pycodestyle.conf pylint.conf "%{buildroot}%{_datadir}/%{name}"
+
+# Delete test files
+rm -rf %{buildroot}%{_datadir}/%{name}/test
 
 
 %check
@@ -160,12 +149,10 @@ mock --quiet -r fedora-38-x86_64 --uniqueext=hugo --init
 %files plugin-ruby
 %{_datadir}/%{name}/plugins/ruby.py
 
-%files tests
-%doc test/README.test
-%{_datadir}/%{name}/test
-
-
 %changelog
+* Mon Dec 09 2024 Miro Hrončok <mhroncok@redhat.com> - 0.10.0-12
+- Drop the fedora-review-tests package, it does not work and depends on deprecated nose
+
 * Tue Aug 06 2024 Jakub Kadlcik <frostyx@email.cz> - 0.10.0-11
 - Apply https://pagure.io/FedoraReview/pull-request/522
 

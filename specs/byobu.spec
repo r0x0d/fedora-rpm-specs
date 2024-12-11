@@ -6,7 +6,7 @@
 
 Name:		byobu
 Version:	6.12
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	Light-weight, configurable window manager built upon GNU screen
 
 # Automatically converted from old format: GPLv3 - review is highly recommended.
@@ -18,7 +18,9 @@ Source1:	fedoracommon
 
 # prefer dnf when installed
 # sent upstream: https://code.launchpad.net/~sanjay-ankur/byobu/byobu/+merge/415959
-Patch0:		byobu-use-dnf.patch
+Patch:		byobu-use-dnf.patch
+# for F41+ where we have dnf5
+Patch:		byobu-use-dnf5.patch
 
 BuildArch:	noarch
 BuildRequires:  automake
@@ -41,7 +43,12 @@ and configuration utilities for the GNU screen window manager,
 such as toggle-able system status notifications.
 
 %prep
-%autosetup -p0
+%autosetup -N
+%if 0%{?fedora} >= 41
+%autopatch -p0 1
+%else
+%autopatch -p0 0
+%endif
 
 # remove swap file
 if [ -e "usr/bin/.byobu-status-print.swp" ]; then rm usr/bin/.byobu-status-print.swp
@@ -128,6 +135,9 @@ cp -p usr/share/byobu/pixmaps/byobu.svg %{buildroot}%{_iconsscaldir}
 %config(noreplace) %{_sysconfdir}/%{name}/*
 
 %changelog
+* Tue Nov 26 2024 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 6.12-4
+- Update patch for dnf5
+
 * Mon Jul 29 2024 Miroslav Suchý <msuchy@redhat.com> - 6.12-3
 - convert license to SPDX
 

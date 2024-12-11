@@ -7,9 +7,17 @@
 %if 0%{?rhel}
 %global bundled_rust_deps 1
 %global build_testing 0
+%global build_tracing 1
 %else
 %global bundled_rust_deps 0
 %global build_testing 1
+%endif
+
+# Fedora 42 never shipped a kernel 6.12 so no need for our tracing sources
+%if 0%{?fedora} >= 42
+%global build_tracing "false"
+%else
+%global build_tracing "true"
 %endif
 
 # Upstream uses 1.0.0-20240417 but rpm won't let us use the dash, so let's use a dot instead.
@@ -118,7 +126,8 @@ export RUSTFLAGS="%build_rustflags"
 
 %meson -Dudevdir=%{udevdir} \
        -Dbpfs=%{bpf_set} \
-       -Dtests=disabled
+       -Dbpf-tracing=%{build_tracing} \
+       -Dtests=disabled \
 %meson_build
 %{cargo_license_summary}
 %{cargo_license} > LICENSE.dependencies

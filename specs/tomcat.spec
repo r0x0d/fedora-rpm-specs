@@ -31,7 +31,7 @@
 %global jspspec 2.3
 %global major_version 9
 %global minor_version 0
-%global micro_version 97
+%global micro_version 98
 %global packdname apache-tomcat-%{version}-src
 %global servletspec 4.0
 %global elspec 3.0
@@ -551,6 +551,10 @@ fi
 %{appdir}/ROOT
 
 %changelog
+* Mon Dec 09 2024 Packit <hello@packit.dev> - 1:9.0.98-1
+- Update to version 9.0.98
+- Resolves: rhbz#2331168
+
 * Mon Dec 02 2024 Dimitris Soumis <dsoumis@redhat.com> - 1:9.0.97-1
 - Update to version 9.0.97
 - Resolves: rhbz#2327090 

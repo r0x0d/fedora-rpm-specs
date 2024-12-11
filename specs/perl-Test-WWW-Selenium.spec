@@ -7,7 +7,7 @@ Name:           perl-Test-WWW-Selenium
 Version:        1.36
 Release:        31%{?dist}
 Summary:        Perl Client for the Selenium Remote Control test tool
-License:        (GPL+ or Artistic) and ASL 2.0
+License:        (GPL-1.0-or-later OR Artistic-1.0-Perl) AND Apache-2.0
 URL:            https://metacpan.org/release/Test-WWW-Selenium
 Source0:        https://cpan.metacpan.org/authors/id/M/MA/MATTP/Test-WWW-Selenium-%{version}.tar.gz
 BuildArch:      noarch

@@ -7,17 +7,19 @@
 
 Name:           ColPack
 Version:        1.0.10
-Release:        24%{?dist}
+Release:        25%{?dist}
 Summary:        Algorithms for specialized vertex coloring problems
 
 License:        LGPL-3.0-or-later
 URL:            http://cscapes.cs.purdue.edu
 Source0:        %{giturl}/archive/v1.0.10.tar.gz#/%{name}-%{version}.tar.gz
 
+Patch0:         ColPack-CVE-2024-55566.patch
+
 BuildRequires:  chrpath
 BuildRequires:  gcc-c++
 BuildRequires:  libtool
-BuildRequires: make
+BuildRequires:  make
 
 Provides:       %{lc_name}               = %{version}-%{release}
 Provides:       %{lc_name}%{?_isa}       = %{version}-%{release}
@@ -135,6 +137,10 @@ cp -pr AUTHORS ChangeLog README.md examples %{buildroot}%{_pkgdocdir}
 
 
 %changelog
+* Mon Dec 09 2024 Björn Esser <besser82@fedoraproject.org> - 1.0.10-25
+- Fix CVE-2024-55566
+  Fixes: rhbz#2331064
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.10-24
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

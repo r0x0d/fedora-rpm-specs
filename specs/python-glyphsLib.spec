@@ -1,68 +1,127 @@
-%global srcname glyphsLib
-%global with_check 0
+# Requires https://pypi.org/project/ufonormalizer/, not packaged
+%bcond ufo_normalization 0
 
-Name:           python-%{srcname}
-Version:        5.1.11
-Release:        15%{?dist}
+# If https://pypi.org/project/xmldiff/ were packaged, we could run more tests
+%bcond xmldiff 0
+
+%bcond check 1
+
+Name:           python-glyphsLib
+Version:        5.3.2
+Release:        1%{?dist}
 Summary:        A bridge from Glyphs source files to UFOs
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
-License:        Apache-2.0
-URL:            https://pypi.org/project/%{srcname}
-Source0:        %pypi_source %srcname %version zip
+# The entire package is Apache-2.0, except:
+#   MIT:
+#   - Lib/glyphsLib/data/ (Lib/glyphsLib/data/GlyphData_LICENSE)
+#
+# Furthermore, a few test files appear in the source RPM but do not contribute
+# to the licenses of the binary RPMs:
+#   - tests/data/CustomParameterVFO.glyphs: OFL-1.1
+#   - tests/data/MontserratStrippedDown.glyphs: OFL-1.1
+License:        Apache-2.0 AND MIT
+URL:            https://github.com/googlefonts/glyphsLib
+Source:         %{pypi_source glyphsLib %{version} zip}
 
 BuildArch:      noarch
 
-%description
-This library provides a bridge from Glyphs source files (.glyphs) to UFOs
-(Unified Font Object).
-
-%package -n python3-%{srcname}
-Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{srcname}}
-
 BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-setuptools_scm
-BuildRequires:  python3-wheel
+BuildRequires:  help2man
 
-%if 0%{with_check}
-# missing (xmldiff, ufoNormalizer)
-BuildRequires:  python3-pytest
-BuildRequires:  python3-pytest-runner
-BuildRequires:  python3-fonttools
-BuildRequires:  python3-defcon
-%endif
-
-%description -n python3-%{srcname}
+%global common_description %{expand:
 This library provides a bridge from Glyphs source files (.glyphs) to UFOs
-(Unified Font Object).
+(Unified Font Object).}
+
+%description %{common_description}
+
+%package -n python3-glyphsLib
+Summary:        %{summary}
+
+%description -n python3-glyphsLib %{common_description}
+
+%if %{with ufo_normalization}
+%pyproject_extras_subpkg -n python3-glyphsLib ufo_normalization
+%endif
+%pyproject_extras_subpkg -n python3-glyphsLib defcon
 
 %prep
-%autosetup -n %{srcname}-%{version} -p1
+%autosetup -n glyphsLib-%{version} -p1
+# - Do not generate linting/coverage dependencies:
+#   https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
+sed -r \
+%if %{without ufo_normalization}
+    -e 's/^(ufo[Nn]ormalizer)\b/# &/' \
+%endif
+%if %{without xmldiff}
+    -e 's/^(xmldiff)\b/# &/' \
+%endif
+    -e 's/^(coverage)\b/# &/' \
+    requirements-dev.in |
+  tee requirements-dev-filtered.txt
+
+%generate_buildrequires
+%{pyproject_buildrequires \
+    %{?with_ufo_normalization:-x ufo_normalization} \
+    -x defcon \
+    %{?with_check:requirements-dev-filtered.txt}}
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l glyphsLib
 
-# Skipping check for now due to missing dependencies
-%if 0%{?with_check}
+install -d '%{buildroot}%{_mandir}/man1'
+for bin in glyphs2ufo ufo2glyphs
+do
+  # We do this in %%install rather than in %%build because we need to use the
+  # script entry point that was generated during installation.
+  env PYTHONPATH='%{buildroot}%{python3_sitelib}' \
+      PYTHONDONTWRITEBYTECODE=1 \
+      help2man \
+          --no-info \
+          --name '%{summary}' \
+          --output="%{buildroot}%{_mandir}/man1/${bin}.1" \
+          "%{buildroot}%{_bindir}/${bin}"
+done
+
 %check
-%{__python3} setup.py test
+%pyproject_check_import
+%if %{with check}
+%if %{without ufo_normalization}
+ignore="${ignore-} --ignore=tests/builder/builder_test.py"
+ignore="${ignore-} --ignore=tests/builder/instances_test.py"
+ignore="${ignore-} --ignore=tests/builder/roundtrip_test.py"
+ignore="${ignore-} --ignore=tests/test_helpers.py"
+ignore="${ignore-} --ignore=tests/writer_test.py"
+%endif
+%if %{without xmldiff}
+ignore="${ignore-} --ignore=tests/builder/designspace_gen_test.py"
+ignore="${ignore-} --ignore=tests/builder/interpolation_test.py"
+%endif
+%pytest -v -rs ${ignore-}
 %endif
 
-%files -n python3-%{srcname}
+%files -n python3-glyphsLib -f %{pyproject_files}
 %license LICENSE
+%license Lib/glyphsLib/data/GlyphData_LICENSE
 %doc README.rst CONTRIBUTING.md
-%dir %{python3_sitelib}/%{srcname}
-%{python3_sitelib}/%{srcname}-*.egg-info
-%{python3_sitelib}/%{srcname}/*
 %{_bindir}/glyphs2ufo
 %{_bindir}/ufo2glyphs
+%{_mandir}/man1/glyphs2ufo.1*
+%{_mandir}/man1/ufo2glyphs.1*
 
 %changelog
+* Fri Dec 06 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 5.3.2-1
+- Update to 5.3.2 (the last 5.x release)
+- Add generated man pages
+
+* Fri Dec 06 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 5.1.11-16
+- Update SPDX license expression and document license breakdown; package
+  GlyphData_LICENSE as an additional license file
+- Port to pyproject-rpm-macros and run most of the tests
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 5.1.11-15
 - convert license to SPDX
 

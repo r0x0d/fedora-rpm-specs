@@ -1,7 +1,7 @@
 Summary: A wiki engine
 Name: mediawiki
 Version: 1.41.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPL-2.0-or-later
 URL: https://www.mediawiki.org/
 Source0: https://releases.wikimedia.org/mediawiki/1.41/%{name}-%{version}.tar.gz
@@ -260,6 +260,9 @@ cd tests/phpunit
 
 
 %changelog
+* Mon Dec 09 2024 Orion Poplawski <orion@nwra.com> - 1.41.1-3
+- Use run.php for maintenance scripts (rhbz#2330978)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.41.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

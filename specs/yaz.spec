@@ -1,6 +1,6 @@
 Name:           yaz
 Version:        5.34.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Z39.50/SRW/SRU toolkit
 # SPDX confirmed
 License:        BSD-3-Clause
@@ -10,6 +10,9 @@ Source0:        http://ftp.indexdata.com/pub/yaz/yaz-%{version}.tar.gz
 BuildRequires:  gcc
 BuildRequires:  bison
 BuildRequires:  make
+
+BuildRequires:  autoconf
+BuildRequires:  automake
 
 BuildRequires:  pkgconfig(libexslt)
 BuildRequires:  pkgconfig(gnutls)
@@ -65,6 +68,11 @@ server and client.
 
 %prep
 %setup -q
+
+# https://github.com/indexdata/yaz/issues/131
+sed -i m4/ac_check_icu.m4 \
+	-e 's|icu-i18n|icu-i18n icu-uc|'
+autoreconf
 
 %build
 sed -i.rpath configure \
@@ -144,6 +152,9 @@ make check
 %{_pkgdocdir}
 
 %changelog
+* Mon Dec 09 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 5.34.2-2
+- Explicitly add icu-uc pkgconf deps for yaz-icu
+
 * Fri Sep 20 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 5.34.2-1
 - 5.34.2
 

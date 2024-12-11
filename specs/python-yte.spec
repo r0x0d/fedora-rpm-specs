@@ -1,5 +1,5 @@
 Name:           python-yte
-Version:        1.5.4
+Version:        1.5.5
 Release:        %autorelease
 Summary:        YAML template engine with Python expressions
 
@@ -11,13 +11,17 @@ Source0:        %{url}/archive/v%{version}/yte-%{version}.tar.gz
 # Man page written for Fedora in groff_man(7) format based on --help output
 Source1:        yte.1
 
+BuildSystem:            pyproject
+BuildOption(install):   yte
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
 
 # For tests, from [tool.poetry.dev-dependencies] in pyproject.toml, with
 # coverage/linters/etc. removed and version upper bounds removed:
-BuildRequires:  python3dist(pytest) >= 7.0
+BuildRequires:  %{py3_dist pytest} >= 7.0
+BuildRequires:  %{py3_dist numpy} >= 1.0
 
 %global common_description %{expand:
 YTE is a template engine for YAML format that utilizes the YAML structure in
@@ -42,26 +46,12 @@ Summary:        %{summary}
 %description -n python3-yte %{common_description}
 
 
-%prep
-%autosetup -n yte-%{version}
-
-
-%generate_buildrequires
-%pyproject_buildrequires
-
-
-%build
-%pyproject_wheel
-
-
-%install
-%pyproject_install
-%pyproject_save_files yte
+%install -a
 install -t '%{buildroot}%{_mandir}/man1' -m 0644 -p -D '%{SOURCE1}'
 
 
-%check
-%pytest tests.py
+%check -a
+%pytest -v tests.py
 
 
 %files -n python3-yte -f %{pyproject_files}

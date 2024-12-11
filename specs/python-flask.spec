@@ -1,6 +1,8 @@
 %global modname flask
 %global srcname flask
 
+%bcond doc %{undefined el10}
+
 Name:           python-%{modname}
 Version:        3.1.0
 Release:        %autorelease
@@ -34,16 +36,18 @@ BuildRequires:  python3-devel
 
 Python 3 version.
 
+%if %{with doc}
 %package doc
 Summary:        Documentation for %{name}
 
 %description doc
 Documentation and examples for %{name}.
+%endif
 
 %pyproject_extras_subpkg -n python3-%{modname} async
 %generate_buildrequires
 # -t picks test.txt by default which contains too tight pins
-%pyproject_buildrequires -x async requirements/tests.in requirements/docs.in
+%pyproject_buildrequires -x async requirements/tests.in %{?with_doc:requirements/docs.in}
 
 %prep
 %autosetup -n %{srcname}-%{version}
@@ -61,11 +65,13 @@ mv %{buildroot}%{_bindir}/%{modname}{,-%{python3_version}}
 ln -s %{modname}-%{python3_version} %{buildroot}%{_bindir}/%{modname}-3
 ln -sf %{modname}-3 %{buildroot}%{_bindir}/%{modname}
 
+%if %{with doc}
 pushd docs
 # PYTHONPATH to prevent "'Flask' must be installed to build the documentation."
 make PYTHONPATH=%{buildroot}/%{python3_sitelib} SPHINXBUILD=sphinx-build-3 html
 rm -v _build/html/.buildinfo
 popd
+%endif
 
 %check
 %pytest -Wdefault
@@ -77,9 +83,11 @@ popd
 %{_bindir}/%{modname}-3
 %{_bindir}/%{modname}-%{python3_version}
 
+%if %{with doc}
 %files doc
 %license LICENSE.txt
 %doc docs/_build/html examples
+%endif
 
 %changelog
 %autochangelog

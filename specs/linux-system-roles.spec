@@ -23,7 +23,7 @@ Name: linux-system-roles
 %endif
 Url: https://github.com/linux-system-roles
 Summary: Set of interfaces for unified system management
-Version: 1.91.0
+Version: 1.92.1
 Release: 1%{?dist}
 
 # Automatically converted from old format: GPLv3+ and MIT and BSD and Python - review is highly recommended.
@@ -142,7 +142,7 @@ Source: %{url}/auto-maintenance/archive/%{mainid}/auto-maintenance-%{mainid}.tar
 %deftag 16 1.5.1
 
 %global rolename17 ha_cluster
-%deftag 17 1.20.0
+%deftag 17 1.21.1
 
 %global rolename18 vpn
 %deftag 18 1.6.8
@@ -169,7 +169,7 @@ Source: %{url}/auto-maintenance/archive/%{mainid}/auto-maintenance-%{mainid}.tar
 %deftag 25 1.3.9
 
 %global rolename26 systemd
-%deftag 26 1.3.0
+%deftag 26 1.3.1
 
 %global rolename27 keylime_server
 %deftag 27 1.1.6
@@ -703,6 +703,12 @@ find %{buildroot}%{ansible_roles_dir} -mindepth 1 -maxdepth 1 | \
 %endif
 
 %changelog
+* Mon Dec  9 2024 Packit <hello@packit.dev> - 1.92.1-1
+- Update to upstream version 1.92.1
+
+* Mon Dec  9 2024 Packit <hello@packit.dev> - 1.92.0-1
+- Update to upstream version 1.92.0
+
 * Wed Dec  4 2024 Packit <hello@packit.dev> - 1.91.0-1
 - Update to upstream version 1.91.0
 

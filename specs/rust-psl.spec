@@ -5,7 +5,7 @@
 %global crate psl
 
 Name:           rust-psl
-Version:        2.1.62
+Version:        2.1.66
 Release:        %autorelease
 Summary:        Extract root domain and suffix from a domain name
 

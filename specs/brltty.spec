@@ -37,7 +37,7 @@
 
 Name: brltty
 Version: 6.7
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: LGPL-2.0-or-later AND LGPL-2.1-or-later AND GPL-2.0-or-later
 URL: http://brltty.app/
 Source0: http://brltty.app/archive/%{name}-%{version}.tar.xz
@@ -48,6 +48,8 @@ Source4: brltty.sysusers
 Patch1: brltty-6.3-loadLibrary.patch
 # libspeechd.h moved in latest speech-dispatch (NOT sent upstream)
 Patch2: brltty-6.3-libspeechd.patch
+# sent to upstream mailing list
+Patch3: brltty-6.6-path-separator-fix.patch
 Summary: Braille display driver for Linux/Unix
 BuildRequires: byacc
 BuildRequires: glibc-kernheaders
@@ -256,6 +258,7 @@ mv %{name}-%{version} python2
 pushd python2
 %patch -P 1 -p1 -b .loadLibrary
 %patch -P 2 -p1 -b .libspeechd
+%patch -P 3 -p1 -b .path-separator-fix
 
 # remove packaged binary file
 rm -f Programs/brltty-ktb
@@ -673,6 +676,9 @@ fi
 %config(noreplace) %verify(not size md5 mtime) %{_sysconfdir}/brltty/Initramfs/cmdline
 
 %changelog
+* Mon Dec  9 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 6.7-2
+- Resolves: rhbz#2328699
+
 * Tue Oct 15 2024 Gwyn Ciesla <gwync@protonmail.com> - 6.7-1
 - 6.7
 

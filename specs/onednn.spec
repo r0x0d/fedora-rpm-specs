@@ -1,5 +1,5 @@
 Name:           onednn
-Version:        3.6.1
+Version:        3.6.2
 Release:        %autorelease
 Summary:        oneAPI Deep Neural Network Library
 

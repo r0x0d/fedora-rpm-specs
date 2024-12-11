@@ -5,7 +5,7 @@
 %global crate pyo3
 
 Name:           rust-pyo3
-Version:        0.22.6
+Version:        0.23.3
 Release:        %autorelease
 Summary:        Bindings to Python interpreter
 
@@ -263,18 +263,6 @@ This package contains library source intended for building other packages which
 use the "full" feature of the "%{crate}" crate.
 
 %files       -n %{name}+full-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+gil-refs-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+gil-refs-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "gil-refs" feature of the "%{crate}" crate.
-
-%files       -n %{name}+gil-refs-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+hashbrown-devel

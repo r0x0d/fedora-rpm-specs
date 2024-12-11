@@ -3,7 +3,7 @@ Summary:        Lazarus Component Library and IDE for Free Pascal
 
 Version:        3.6
 
-%global baserelease 1
+%global baserelease 2
 Release:        %{baserelease}%{?dist}
 
 # The qt5pas version is taken from lcl/interfaces/qt5/cbindings/Qt5Pas.pro
@@ -38,6 +38,13 @@ Patch0:         0000-Makefile_patch.diff
 # Taken from Debian:
 # https://sources.debian.org/data/main/l/lazarus/3.0%2Bdfsg1-6/debian/patches/Fixed-crash-when-trying-to-recompile-packages.patch
 Patch1:         0001-crash-when-trying-to-recompile-packages.patch
+
+# Fix SIGSEGV on startup in programs built using the Qt5 widgetset
+# rhbz: https://bugzilla.redhat.com/show_bug.cgi?id=2323227
+#
+# Backport of upstream commit:
+# https://gitlab.com/freepascal.org/lazarus/lazarus/-/commit/7ae720285564f69e85216a0889b3ae4308661860
+Patch2:         0002-qt5-segfault.patch
 
 # -- Build-time dependencies
 
@@ -557,6 +564,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{name}.appdat
 
 
 %changelog
+* Mon Dec 09 2024 Artur Frenszek-Iwicki <fedora@svgames.pl> - 3.6-2
+- Add a patch to fix SIGSEGV in programs built using Qt5 widgetset
+
 * Mon Sep 30 2024 Artur Frenszek-Iwicki <fedora@svgames.pl> - 3.6-1
 - Update to v3.6
 

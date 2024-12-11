@@ -335,7 +335,7 @@ pushd nspr_build
 %ifarch i686 x86_64
 sed -i '/^PR_MD_ASFILES/d' config/autoconf.mk
 %endif
-make
+%{make_build}
 
 date +"%e %B %Y" | tr -d '\n' > date.xml
 echo -n %{nspr_version} > version.xml
@@ -420,8 +420,8 @@ export POLICY_FILE="nss.config"
 export POLICY_PATH="/etc/crypto-policies/back-ends"
 
 
-%{__make} -C ./nss all
-%{__make} -C ./nss latest
+%{make_build} -C ./nss all
+%{make_build} -C ./nss latest
 
 # build the man pages clean
 pushd ./nss

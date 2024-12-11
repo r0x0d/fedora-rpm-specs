@@ -1,13 +1,10 @@
 Name:           perl-Test-Smoke
-Version:        1.82
-Release:        2%{?dist}
+Version:        1.83
+Release:        1%{?dist}
 Summary:        Perl core test smoke suite
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/Test-Smoke
-Source0:        https://cpan.metacpan.org/authors/id/A/AB/ABELTJE/Test-Smoke-%{version}.tar.gz
-# reporter.t fails due to different value of MHz
-# got - AuthenticAMD 3598MHz, expected - AuthenticAMD 3593MHz
-Patch0:         Test-Smoke-1.80-Prevent-false-negatives-MHz.patch
+Source0:        https://cpan.metacpan.org/authors/id/C/CO/CONTRA/Test-Smoke-%{version}.tar.gz
 BuildArch:      noarch
 BuildRequires:  coreutils
 BuildRequires:  findutils
@@ -99,7 +96,6 @@ with "%{_libexecdir}/%{name}/test".
 
 %prep
 %setup -q -n Test-Smoke-%{version}
-%patch -P0 -p1
 
 # Ignore output files from find-debuginfo.sh to fix the test 00-manifest.t
 echo '.+\.list' >> MANIFEST.SKIP
@@ -151,7 +147,7 @@ chmod +x %{buildroot}%{_libexecdir}/%{name}/test
 make test
 
 %files
-%doc Changes README.pod README2.md ReleaseNotes
+%doc Changes HOWTO.md README.pod
 %{_bindir}/chkbcfg.pl
 #%%{_bindir}/patchtree.pl
 %{_bindir}/smokestatus.pl
@@ -178,6 +174,9 @@ make test
 %{_libexecdir}/%{name}
 
 %changelog
+* Mon Dec 09 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1.83-1
+- 1.83 bump (rhbz#2330959)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.82-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

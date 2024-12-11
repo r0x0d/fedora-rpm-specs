@@ -2,16 +2,12 @@
 %global gem_name websocket
 
 Name: rubygem-%{gem_name}
-Version: 1.2.9
-Release: 10%{?dist}
+Version: 1.2.11
+Release: 1%{?dist}
 Summary: Universal Ruby library to handle WebSocket protocol
 License: MIT
 URL: http://github.com/imanel/websocket-ruby
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
-# URI in newer ruby has default ports for websocket protocol.
-# This patch accounts for that change.
-# https://github.com/imanel/websocket-ruby/pull/48
-Patch0: websocket-1.2.9-ensure-correct-port-is-always-specified.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby 
@@ -33,8 +29,6 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version}
-
-%patch 0 -p1
 
 %build
 # Create the gem as gem install only works on a gem file
@@ -73,6 +67,10 @@ popd
 %{gem_instdir}/websocket.gemspec
 
 %changelog
+* Mon Dec 09 2024 Vít Ondruch <vondruch@redhat.com> - 1.2.11-1
+- Update to WebSocket Ruby 1.2.11.
+  Resolves: rhbz#2239602
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.9-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

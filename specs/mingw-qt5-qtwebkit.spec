@@ -52,8 +52,9 @@ Patch7:         qtwebkit_gcc13.patch
 Patch8:         qtwebkit_libxml.patch
 # Fix gcc14 build
 Patch9:         qtwebkit-fix-build-gcc14.patch
-# Switch to -std=c++14 (fixes build with recent icu)
-Patch10:        qtwebkit-c++14.patch
+# Switch to -std=c++17 (fixes build with recent icu)
+# Drop backported c++14 stl features om StdLibExtras.h
+Patch10:        qtwebkit-c++17.patch
 
 BuildArch:      noarch
 

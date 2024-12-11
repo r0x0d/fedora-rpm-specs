@@ -2,40 +2,48 @@
 %global uuid org.gabmus.%{newname}
 
 Name: gnome-feeds
-Version: 0.16.2
+Version: 2.2.0
 Release: %autorelease
 Summary: RSS/Atom feed reader for GNOME
+
 BuildArch: noarch
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License: GPL-3.0-or-later
 URL: https://gabmus.gitlab.io/gnome-feeds
 Source0: https://gitlab.com/gabmus/%{name}/-/archive/%{version}/%{name}-%{version}.tar.gz
+Patch0: blueprint-compiler08.patch
 
+BuildRequires: blueprint-compiler >= 0.8
 BuildRequires: desktop-file-utils
 BuildRequires: intltool
 BuildRequires: libappstream-glib
-BuildRequires: meson >= 0.50.0
+BuildRequires: meson >= 0.58.0
 BuildRequires: python3-devel
 BuildRequires: pkgconfig(glib-2.0)
 BuildRequires: pkgconfig(gobject-introspection-1.0)
-BuildRequires: pkgconfig(gtk+-3.0)
+BuildRequires: pkgconfig(gtk4)
+BuildRequires: pkgconfig(libadwaita-1)
+BuildRequires: pkgconfig(webkitgtk-6.0)
 
 Requires: dbus-common
 Requires: glib2
+Requires: gtk4
 Requires: hicolor-icon-theme
-Requires: libhandy1
+Requires: libadwaita
 Requires: python3-beautifulsoup4
-Requires: python3-brotli
-Requires: python3-feedparser
-Requires: python3-html5lib
-Requires: python3-listparser
+Requires: python3-dateutil
+Requires: python3-humanize
 Requires: python3-lxml
+# not compatible with python3-file-magic from file
+Requires: python3dist(python-magic)
 Requires: python3-pillow
 Requires: python3-pygments
 Requires: python3-pytz
 Requires: python3-readability-lxml
 Requires: python3-requests
+Requires: python3-syndom
+Requires: webkitgtk6.0
 
 %description
 GNOME Feeds is a minimal RSS/Atom feed reader built with speed and simplicity

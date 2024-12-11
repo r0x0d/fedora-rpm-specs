@@ -13,8 +13,8 @@
 %endif
 
 Name:           openjpeg
-Version:        2.5.2
-Release:        4%{?dist}
+Version:        2.5.3
+Release:        1%{?dist}
 Summary:        C-Library for JPEG 2000
 
 # windirent.h is MIT, the rest is BSD
@@ -25,10 +25,6 @@ Source0:        https://github.com/uclouvain/openjpeg/archive/v%{version}/%{name
 # git clone git@github.com:uclouvain/openjpeg-data.git
 Source1:        data.tar.xz
 %endif
-
-# Backport patch for CVE-2023-39327
-# https://github.com/uclouvain/openjpeg/commit/822562d689f491ae5d012627ba00ac235d399b9e
-Patch1:         CVE-2023-39327.patch
 
 BuildRequires:  cmake
 BuildRequires:  doxygen
@@ -453,6 +449,9 @@ rm -rf %{buildroot}%{mingw64_datadir}/doc
 
 
 %changelog
+* Mon Dec 09 2024 Sandro Mani <manisandro@gmail.com> - 2.5.3-1
+- Update to 2.5.3
+
 * Fri Sep 06 2024 Sandro Mani <manisandro@gmail.com> - 2.5.2-4
 - Backport patch for CVE-2023-39327
 

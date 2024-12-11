@@ -1,6 +1,6 @@
 Name:		python-ipyparallel
 Version:	9.0.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Interactive Parallel Computing with IPython
 
 License:	BSD-3-Clause
@@ -78,6 +78,7 @@ mv %{buildroot}%{_prefix}%{_sysconfdir} %{buildroot}%{_sysconfdir}
 # The version of jupyter-client in Fedora 39/40 calls datetime.utcnow()
 # Ignore DeprecationWarning from Python 3.12 due to this
 %pytest -v --color=no \
+    -k 'not TestMongoBackend' \
     -W "ignore:datetime.datetime.utcnow() is deprecated:DeprecationWarning"
 
 %files -n python3-ipyparallel
@@ -109,6 +110,9 @@ mv %{buildroot}%{_prefix}%{_sysconfdir} %{buildroot}%{_sysconfdir}
 %{python3_sitelib}/ipyparallel/tests
 
 %changelog
+* Mon Dec 09 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 9.0.0-2
+- Disable MongoDB tests
+
 * Thu Nov 07 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 9.0.0-1
 - Update to 9.0.0
 

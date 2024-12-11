@@ -3,20 +3,27 @@
 %bcond_without tests
 
 Name: rubygem-%{gem_name}
-Version: 1.14.1
-Release: 6%{?dist}
+Version: 1.14.6
+Release: 1%{?dist}
 Summary: New wave Internationalization support for Ruby
 # `BSD or Ruby` due to header of lib/i18n/gettext/po_parser.rb
 License: MIT AND (BSD-2-Clause OR Ruby)
 URL: https://github.com/ruby-i18n/i18n
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
-# Since 1.8.2 tests are not shipped with the gem, but can be checked like
-# git clone --no-checkout https://github.com/ruby-i18n/i18n
-# cd i18n && git archive -v -o i18n-1.14.1-tests.txz v1.14.1 test
-Source1: %{gem_name}-%{version}-tests.txz
-BuildRequires: ruby
+# git clone --no-checkout https://github.com/ruby-i18n/i18n && cd i18n
+# git archive -v -o i18n-1.14.6-tests.tar.xz v1.14.6 test
+Source1: %{gem_name}-%{version}-tests.tar.xz
+# Fix `NameError: uninitialized constant I18nLoadPathTest::Pathname` test
+# errors.
+# https://github.com/ruby-i18n/i18n/pull/708
+Patch0: rubygem-i18n-1.14.6-Explicitly-require-pathname.patch
+# Fix Ruby 3.4 `Hash#inspect` compatibility.
+# https://github.com/ruby-i18n/i18n/pull/709
+Patch1: rubygem-i18n-1.14.6-Ruby-3.4-Hash-inspect-compatibility.patch
+Patch2: rubygem-i18n-1.14.6-Ruby-3.4-Hash-inspect-compatibility-test.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
+BuildRequires: ruby
 %if %{with tests}
 BuildRequires: rubygem(minitest)
 BuildRequires: rubygem(mocha)
@@ -28,7 +35,7 @@ BuildREquires: rubygem(racc)
 BuildArch: noarch
 
 %description
-Ruby Internationalization and localization solution.
+Ruby internationalization and localization solution.
 
 
 %package doc
@@ -42,6 +49,13 @@ Documentation for %{name}.
 %prep
 %setup -q -n %{gem_name}-%{version} -b1
 
+%patch 1 -p1
+
+pushd %{builddir}
+%patch 0 -p1
+%patch 2 -p1
+popd
+
 %build
 gem build ../%{gem_name}-%{version}.gemspec
 %gem_install
@@ -54,19 +68,12 @@ cp -a .%{gem_dir}/* \
 %if %{with tests}
 %check
 pushd .%{gem_instdir}
-ln -s %{_builddir}/test .
+ln -s %{builddir}/test .
 
 # Bundler just complicates everything in our case, remove it.
 sed -i -e "/require 'bundler\/setup'/ s/^/#/" test/test_helper.rb
 
-# Mocha needs to be required differently
-# TODO: PR @ https://github.com/ruby-i18n/i18n/edit/master/test/test_helper.rb#L16
-sed -i 's/\(require .mocha\/\)setup/\1minitest/' test/test_helper.rb
-
-# Tests are failing without LANG environment is set.
-# https://github.com/svenfuchs/i18n/issues/115
 find ./test/ -type f -name '*_test.rb' | \
-  LANG=C.utf8 \
   xargs -n 1 ruby -Ilib:test
 popd
 %endif
@@ -83,6 +90,10 @@ popd
 %doc %{gem_instdir}/README.md
 
 %changelog
+* Mon Dec 09 2024 Vít Ondruch <vondruch@redhat.com> - 1.14.6-1
+- Update to i18n 1.14.6.
+  Resolves: rhbz#2268010
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.14.1-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

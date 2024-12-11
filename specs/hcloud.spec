@@ -3,7 +3,7 @@
 
 # https://github.com/hetznercloud/cli
 %global goipath         github.com/hetznercloud/cli
-Version:                1.48.0
+Version:                1.49.0
 
 %gometa
 
@@ -21,7 +21,7 @@ License:        MIT
 URL:            %{gourl}
 Source0:        %{gosource}
 
-ExcludeArch:    %{ix86}
+ExcludeArch:    %{ix86} ppc64le s390x
 
 %description
 %{common_description}

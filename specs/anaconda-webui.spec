@@ -1,5 +1,5 @@
 Name:           anaconda-webui
-Version:        19
+Version:        20
 Release:        1%{?dist}
 Summary:        Anaconda installer Web interface
 License:        LGPL-2.1-or-later AND MIT
@@ -40,11 +40,11 @@ Requires: fedora-logos
 BuildRequires: desktop-file-utils
 
 Provides: bundled(npm(@patternfly/patternfly)) = 5.4.2
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.10
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.11
 Provides: bundled(npm(@patternfly/react-icons)) = 5.4.2
 Provides: bundled(npm(@patternfly/react-log-viewer)) = 5.3.0
 Provides: bundled(npm(@patternfly/react-styles)) = 5.4.1
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.11
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.12
 Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.1
 Provides: bundled(npm(attr-accept)) = 2.2.5
 Provides: bundled(npm(dequal)) = 2.0.3
@@ -119,6 +119,11 @@ exit 0
 
 # The changelog is automatically generated and merged
 %changelog
+* Mon Dec 09 2024 Packit <hello@packit.dev> - 20-1
+- firefox theme: fix Firefox parsing of user.js
+- firefox theme: change CSS that hides UI when there's only 1 tab (rhbz#2330377)
+- storage: home reuse: add check for unexpected existing mount points
+
 * Mon Dec 02 2024 Packit <hello@packit.dev> - 19-1
 - Disable removal of extended partition for efi OS
 - Retheme to better match FedoraJarema (1):

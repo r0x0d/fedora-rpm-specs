@@ -1,7 +1,7 @@
 
 Name:    annobin
 Summary: Annotate and examine compiled binary files
-Version: 12.77
+Version: 12.78
 Release: 1%{?dist}
 License: GPL-3.0-or-later AND LGPL-2.0-or-later AND (GPL-2.0-or-later WITH GCC-exception-2.0) AND (LGPL-2.0-or-later WITH GCC-exception-2.0) AND GFDL-1.3-or-later
 URL: https://sourceware.org/annobin/
@@ -532,6 +532,9 @@ make check
 #---------------------------------------------------------------------------------
 
 %changelog
+* Mon Dec 09 2024 Nick Clifton  <nickc@redhat.com> - 12.78-1
+- GCC Plugin: Fix building with gcc 15.
+
 * Fri Nov 15 2024 Nick Clifton  <nickc@redhat.com> - 12.77-1
 - Annocheck: Fix overly long debug messages.
 

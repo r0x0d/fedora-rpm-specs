@@ -2,7 +2,7 @@
 
 # https://github.com/vultr/vultr-cli
 %global goipath         github.com/vultr/vultr-cli
-Version:                3.3.1
+Version:                3.4.0
 
 %gometa
 
@@ -21,6 +21,8 @@ URL:            %{gourl}
 Source0:        %{gosource}
 
 BuildRequires:  go-rpm-macros
+
+ExcludeArch:    ppc64le s390x
 
 %description
 %{common_description}

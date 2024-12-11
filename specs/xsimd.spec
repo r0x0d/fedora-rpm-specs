@@ -1,5 +1,5 @@
 Name:           xsimd
-Version:        13.0.0
+Version:        13.1.0
 Release:        %autorelease
 Summary:        C++ wrappers for SIMD intrinsics
 License:        BSD-3-Clause
@@ -32,6 +32,7 @@ of common mathematical functions operating on batches. \
 Summary:        %{summary}
 Provides:       %{name} = %{version}-%{release}
 Provides:       %{name}-static = %{version}-%{release}
+BuildArch:      noarch
 
 %description devel %_description
 
@@ -55,8 +56,8 @@ Provides:       %{name}-static = %{version}-%{release}
 %doc README.md
 %license LICENSE
 %{_includedir}/%{name}/
-%{_libdir}/cmake/%{name}/
-%{_libdir}/pkgconfig/%{name}.pc
+%{_datadir}/cmake/%{name}/
+%{_datadir}/pkgconfig/%{name}.pc
 
 %changelog
 %autochangelog

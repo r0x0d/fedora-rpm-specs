@@ -1,7 +1,7 @@
 %global libname libaime
 
 Name:            aime
-Version:         8.20241103
+Version:         8.20241124
 Release:         %autorelease
 Summary:         An application embeddable programming language interpreter
 # Automatically converted from old format: GPLv3+ - review is highly recommended.

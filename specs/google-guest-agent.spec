@@ -9,7 +9,7 @@
 
 # https://github.com/GoogleCloudPlatform/guest-agent
 %global goipath         github.com/GoogleCloudPlatform/guest-agent
-Version:                20241025.00
+Version:                20241122.02
 %global tag             %{version}
 
 %gometa -f

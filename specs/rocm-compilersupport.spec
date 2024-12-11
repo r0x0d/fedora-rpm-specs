@@ -5,8 +5,8 @@
 # mock, suse
 %global comgr_full_api_ver %{comgr_maj_api_ver}.8.0
 # Upstream tags are based on rocm releases:
-%global rocm_release 6.2
-%global rocm_patch 4
+%global rocm_release 6.3
+%global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 # What LLVM is upstream using (use LLVM_VERSION_MAJOR from llvm/CMakeLists.txt):
 %global llvm_maj_ver 18
@@ -17,11 +17,7 @@
 # until this issue is resolved.
 %bcond_with mlir
 
-%if 0%{?fedora}
-%bcond_with bundled_llvm
-%else
 %bcond_without bundled_llvm
-%endif
 
 %if %{with bundled_llvm}
 %global toolchain gcc
@@ -57,7 +53,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        25.rocm%{rocm_version}%{?dist}
+Release:        26.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -68,14 +64,16 @@ Source1:        rocm-compilersupport.prep.in
 
 # This requires a patch that's only landed in llvm 19+:
 # https://github.com/ROCm/llvm-project/commit/669db884972e769450470020c06a6f132a8a065b
-Patch0:         0001-Revert-ockl-Don-t-use-wave32-ballot-builtin.patch
+#Patch0:         0001-Revert-ockl-Don-t-use-wave32-ballot-builtin.patch
 # Upstream LLVM 18 doesn't have GFX1152 yet
-Patch1:         0001-Revert-GFX11-Add-a-new-target-gfx1152.patch
+#Patch1:         0001-Revert-GFX11-Add-a-new-target-gfx1152.patch
 # -mlink-builtin-bitcode-postopt is not supported
-Patch2:         0001-remove-mlink.patch
+#Patch2:         0001-remove-mlink.patch
 
 Patch3:         0001-Remove-err_drv_duplicate_config-check.patch
 Patch4:         0001-Replace-use-of-mktemp-with-mkstemp.patch
+# https://github.com/llvm/llvm-project/issues/106521
+Patch5:         0001-Fix-build-with-GCC-14-on-ARM-78704.patch
 
 BuildRequires:  cmake
 BuildRequires:  perl
@@ -919,9 +917,8 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/llvm_libc_wrappers/*
 %{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/openmp_wrappers/*
 %{bundle_prefix}/lib/clang/%{llvm_maj_ver}/include/ppc_wrappers/*
-%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/lib/linux/clang_rt.crtbegin-x86_64.o
-%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/lib/linux/clang_rt.crtend-x86_64.o
-%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/lib/linux/libclang_rt.builtins-x86_64.a
+%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/lib/linux/clang_rt.*
+%{bundle_prefix}/lib/clang/%{llvm_maj_ver}/lib/linux/libclang_rt.*
 
 %files -n rocm-clang
 %license clang/LICENSE.TXT
@@ -996,6 +993,10 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %endif
 
 %changelog
+* Fri Dec 6 2024 Tom Rix <Tom.Rix@amd.com> - 18-26.rocm6.3.0
+- Update to 6.3
+- default bundled llvm on fedora
+
 * Wed Nov 20 2024 Tom Rix <Tom.Rix@amd.com> - 18-25.rocm6.2.4
 - Disable bundled mlir
 

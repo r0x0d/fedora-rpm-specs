@@ -4,7 +4,7 @@
 
 # https://github.com/vultr/govultr
 %global goipath         github.com/vultr/govultr/v3
-Version:                3.9.0
+Version:                3.11.2
 
 %gometa -f
 
@@ -22,6 +22,8 @@ Summary:        Vultr Go API client
 License:        MIT
 URL:            %{gourl}
 Source:         %{gosource}
+
+ExcludeArch:    ppc64le s390x
 
 %description %{common_description}
 

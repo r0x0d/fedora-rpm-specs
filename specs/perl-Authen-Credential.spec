@@ -2,19 +2,17 @@
 
 Name:           perl-%{cpan_name}
 Version:        1.2
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Abstraction of a credential
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/%{cpan_name}
 Source0:        https://cpan.metacpan.org/authors/id/L/LC/LCONS/%{cpan_name}-%{version}.tar.gz
 BuildArch:      noarch
 BuildRequires:  coreutils
-BuildRequires:  findutils
 BuildRequires:  make
-BuildRequires:  perl-interpreter
 BuildRequires:  perl-generators
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl-interpreter
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 BuildRequires:  perl(strict)
 BuildRequires:  perl(warnings)
 # Run-time:
@@ -43,29 +41,57 @@ be stored in structured configuration files or using JSON) and
 "preparators" that can transform credentials into ready-to-use data for
 well known targets.
 
+%package tests
+Summary:        Tests for %{name}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       perl-Test-Harness
+
+%description tests
+Tests from %{name}. Execute them
+with "%{_libexecdir}/%{name}/test".
+
 %prep
 %setup -q -n %{cpan_name}-%{version}
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %check
+unset X509_CERT_DIR X509_CERT_FILE X509_USER_CERT X509_USER_KEY
+export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print $1} else {print 1}' -- '%{?_smp_mflags}')
 make test
 
 %install
-rm -fr $RPM_BUILD_ROOT
-make pure_install DESTDIR=$RPM_BUILD_ROOT
-find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
-find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
+%{make_install}
 %{_fixperms} $RPM_BUILD_ROOT/*
+# Install tests
+mkdir -p %{buildroot}%{_libexecdir}/%{name}
+cp -a t %{buildroot}%{_libexecdir}/%{name}
+rm %{buildroot}%{_libexecdir}/%{name}/t/{3pod,4podcov}.t
+cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
+#!/bin/sh
+unset X509_CERT_DIR X509_CERT_FILE X509_USER_CERT X509_USER_KEY
+cd %{_libexecdir}/%{name} && exec prove -I . -j "$(getconf _NPROCESSORS_ONLN)"
+EOF
+chmod +x %{buildroot}%{_libexecdir}/%{name}/test
 
 %files
 %doc Changes README
-%{perl_vendorlib}/*
-%{_mandir}/man3/*
+%dir %{perl_vendorlib}/Authen
+%{perl_vendorlib}/Authen/Credential
+%{perl_vendorlib}/Authen/Credential.pm
+%{_mandir}/man3/Authen::Credential.*
+%{_mandir}/man3/Authen::Credential::*
+
+%files tests
+%{_libexecdir}/%{name}
 
 %changelog
+* Mon Dec 09 2024 Petr Pisar <ppisar@redhat.com> - 1.2-11
+- Modernize a spec file
+- Package the tests
+
 * Mon Aug 05 2024 Miroslav Suchý <msuchy@redhat.com> - 1.2-10
 - convert license to SPDX
 

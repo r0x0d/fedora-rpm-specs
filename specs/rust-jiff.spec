@@ -16,6 +16,8 @@ Source:         %{crates_source}
 Patch:          jiff-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * Drop dev-dependency hifitime: not packaged, and only for doctests
+# * Relax chrono-tz dependency to allow building with 0.9 and 0.10:
+#   https://github.com/BurntSushi/jiff/pull/167
 Patch:          jiff-fix-metadata.diff
 # * Downstream-only: Omit doctests that require hifitime. It is not worth
 #   packaging it solely for a couple of tiny examples.

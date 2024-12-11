@@ -9,7 +9,7 @@
 
 Name: koji
 Version: 1.35.1
-Release: 4%{?dist}
+Release: 5%{?dist}
 # the included arch lib from yum's rpmUtils is GPLv2+
 # Automatically converted from old format: LGPLv2 and GPLv2+ - review is highly recommended.
 License: LicenseRef-Callaway-LGPLv2 AND GPL-2.0-or-later
@@ -139,7 +139,6 @@ Requires: squashfs-tools
 Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
-Requires: /usr/bin/cvs
 Requires: /usr/bin/svn
 Requires: /usr/bin/git
 Requires: createrepo_c >= 0.10.0
@@ -368,6 +367,9 @@ done
 %systemd_postun kojira.service
 
 %changelog
+* Tue Nov 26 2024 Romain Geissler <romain.geissler@amadeus.com> - 1.35.1-5
+- Drop the cvs requirement.
+
 * Tue Nov 19 2024 Igor Raits <ignatenkobrain@fedoraproject.org> - 1.35.1-4
 - Fix symlink_if_latest() logic
 

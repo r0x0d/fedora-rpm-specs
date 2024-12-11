@@ -17,7 +17,7 @@
 
 Name:           cramjam-cli
 Version:        0.1.1
-Release:        %autorelease
+Release:        %autorelease -b 8
 Summary:        Simple CLI to a variety of compression algorithms
 
 # 0BSD OR MIT OR Apache-2.0

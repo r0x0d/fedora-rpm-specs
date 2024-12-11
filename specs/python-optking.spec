@@ -1,3 +1,6 @@
+# This package has a dependency loop with psi4 which has to be broken to bootstrap new Python in Fedora
+%bcond tests 1
+
 Name:           python-optking
 Version:        0.3.0
 Release:        4%{?dist}
@@ -8,9 +11,11 @@ Source0:        https://github.com/psi-rking/optking/archive/%{version}/%{name}-
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
+%if %{with tests}
 BuildRequires:  python3-pytest
 BuildRequires:  python3-pint
 BuildRequires:  psi4
+%endif
 
 %description
 optking (also known as pyoptking) is a rewrite of the c++ optking
@@ -49,15 +54,16 @@ rm -rf optking.*-info
 
 %install
 %pyproject_install
+%pyproject_save_files optking -l
 
 %check
-pytest -m "not long" optking
+%pyproject_check_import -e *.tests.*
+%if %{with tests}
+%pytest -m "not long" optking
+%endif
 
-%files -n python3-optking
-%license LICENSE
+%files -n python3-optking -f %{pyproject_files}
 %doc README.rst
-%{python3_sitelib}/optking
-%{python3_sitelib}/OptKing*.dist-info
 
 %changelog
 * Wed Sep 04 2024 Susi Lehtola <jussilehtola@fedoraproject.org> - 0.3.0-4

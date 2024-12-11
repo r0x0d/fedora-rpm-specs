@@ -3,7 +3,7 @@
 
 # https://github.com/hetznercloud/hcloud-go
 %global goipath         github.com/hetznercloud/hcloud-go
-Version:                2.16.0
+Version:                2.17.0
 
 %gometa
 
@@ -25,6 +25,8 @@ URL:            %{gourl}
 Source0:        %{gosource}
 
 BuildRequires:  go-rpm-macros
+
+ExcludeArch:    ppc64le s390x
 
 %if %{with check}
 # Tests

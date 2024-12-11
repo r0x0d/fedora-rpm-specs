@@ -1,6 +1,6 @@
 Name:           rpkg
 Version:        1.67
-Release:        4%{?dist}
+Release:        5%{?dist}
 
 Summary:        Python library for interacting with rpm+git
 # Automatically converted from old format: GPLv2+ and LGPLv2 - review is highly recommended.
@@ -47,6 +47,9 @@ Patch3:         0003-Remove-Environment-Markers-syntax.patch
 %endif
 Patch4:         0004-Fix-package-in-Pypi.patch
 Patch5:         0005-Fixing-encoding-of-the-url-when-checking-lookaside.patch
+Patch6:         0006-Add-draft-builds-support.patch
+Patch7:         0007-Fix-regular-expression-for-parsing-Source-lines.patch
+Patch8:         0008-chain-build-correct-the-info-message.patch
 
 
 %description
@@ -278,6 +281,11 @@ example_cli_dir=$RPM_BUILD_ROOT%{_datadir}/%{name}/examples/cli
 
 
 %changelog
+* Tue Dec 10 2024 Ondřej Nosek <onosek@redhat.com> - 1.67-5
+- Patch: `chain-build`: correct the info message
+- Patch: Fix regular expression for parsing Source lines
+- Patch: Add draft builds support
+
 * Mon Sep 16 2024 Ondřej Nosek <onosek@redhat.com> - 1.67-4
 - Patch: Fixing encoding of the url when checking lookaside
 - Patch: Fix package in Pypi

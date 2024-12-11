@@ -1,5 +1,5 @@
 Name:           python-fastjsonschema
-Version:        2.20.0
+Version:        2.21.1
 Release:        1%{?dist}
 Summary:        Fastest Python implementation of JSON schema
 
@@ -45,6 +45,10 @@ Summary:        %{summary}
 %doc README.rst
 
 %changelog
+* Mon Dec 02 2024 Packit <hello@packit.dev> - 2.21.1-1
+- Update to 2.21.1
+- Resolves rhbz#2329260
+
 * Tue Sep 03 2024 Tomáš Hrnčiar <thrnciar@redhat.com> - 2.20.0-1
 - Update to 2.20.0
 - Fixes rhbz#2292496

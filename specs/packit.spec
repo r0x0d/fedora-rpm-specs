@@ -6,7 +6,7 @@
 %endif
 
 Name:           packit
-Version:        0.104.1
+Version:        0.105.0
 Release:        1%{?dist}
 Summary:        A tool for integrating upstream projects with Fedora operating system
 
@@ -78,6 +78,10 @@ cp files/bash-completion/packit %{buildroot}%{bash_completions_dir}/packit
 %doc README.md
 
 %changelog
+* Fri Dec 06 2024 Packit <hello@packit.dev> - 0.105.0-1
+- There is a new action/hook, `post-modifications`, that is executed after all modifications to the spec file are done and in case of syncing release after all remote sources are downloaded and before uploading to lookaside cache. You can use it for example to construct an additional source that depends on the primary source (that may not yet be available in other actions). (#2474)
+- Resolves: rhbz#2330760
+
 * Mon Nov 25 2024 Packit <hello@packit.dev> - 0.104.1-1
 - Packit now uses the fedora-distro-aliases library to expand Fedora aliases. This is Packit's original code being improved and properly maintained by the Copr team. For further suggestions about aliases, use github.com/rpm-software-management/fedora-distro-aliases.
 - Resolves: rhbz#2328698

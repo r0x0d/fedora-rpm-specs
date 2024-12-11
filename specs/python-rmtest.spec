@@ -8,7 +8,7 @@
 
 Name:    python-%{srcname}
 Version: 1.0.1
-Release: 18%{?dist}
+Release: 19%{?dist}
 Summary: %{summary}
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -76,7 +76,7 @@ cp %{S:1} %{S:2} .
 %if !%{disable_python2}
 PYTHONPATH=%{buildroot}/%{python2_sitelib}/rmtest %{__python2} setup.py test
 %endif
-PYTHONPATH=%{buildroot}/%{python3_sitelib}/rmtest %{__python3} setup.py test
+PYTHONPATH=%{buildroot}/%{python3_sitelib}/rmtest %{__python3} test.py
 
 %if !%{disable_python2}
 %files -n python2-%{srcname}
@@ -91,6 +91,9 @@ PYTHONPATH=%{buildroot}/%{python3_sitelib}/rmtest %{__python3} setup.py test
 %{python3_sitelib}/*
 
 %changelog
+* Sat Dec 07 2024 Jan Kuřík <jkurik@redhat.com> - 1.0.1-19
+- Adaptation to Setuptools 74
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.1-18
 - convert license to SPDX
 

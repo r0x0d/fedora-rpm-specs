@@ -1,7 +1,7 @@
 %global pypi_name PyQt6_WebEngine
 
 Name:          python-pyqt6-webengine
-Version:       6.7.0
+Version:       6.8.0
 Release:       %autorelease
 Summary:       Python bindings for Qt6WebEngine
 License:       GPL-3.0-only
@@ -11,6 +11,7 @@ Source0:       %pypi_source
 ExclusiveArch: %{qt6_qtwebengine_arches}
 
 ## downstream patches
+Patch0:        pyqt6-webengine-fix-build.patch
 
 BuildRequires: gcc-c++
 BuildRequires: make
@@ -45,6 +46,7 @@ Requires: python3-pyqt6-devel
 %prep
 %setup -q -n PyQt6_WebEngine-%{version}
 
+%patch -P0 -p1 -b .fix-build
 
 %build
 sip-build \

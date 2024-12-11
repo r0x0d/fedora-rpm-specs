@@ -1,5 +1,5 @@
 Name:           python-py-tes
-Version:        0.4.2
+Version:        1.1.0
 Release:        %autorelease
 Summary:        Python SDK for the GA4GH Task Execution API
 
@@ -10,13 +10,9 @@ URL:            https://github.com/ohsu-comp-bio/py-tes
 # GitHub source archive.
 Source:         %{url}/archive/%{version}/py-tes-%{version}.tar.gz
 
-# Remove unused future dependency
-# https://github.com/ohsu-comp-bio/py-tes/pull/61
-#   Fixes:
-# [HEADS UP] python-py-tes buildrequires python3-future which won't work with
-# Python 3.13 (Fedora 41+)
-# https://bugzilla.redhat.com/show_bug.cgi?id=2276617
-Patch:          %{url}/pull/61.patch
+# Remove unused future dependency (again)
+# https://github.com/ohsu-comp-bio/py-tes/pull/72
+Patch:          %{url}/pull/72.patch
 
 BuildArch:      noarch
 
@@ -64,7 +60,10 @@ Summary:        %{summary}
 
 
 %check
-%pytest -v
+# Integration tests require a running server
+ignore="${ignore-} --ignore=tests/integration"
+
+%pytest ${ignore-} -v
 
 
 %files -n python3-py-tes -f %{pyproject_files}

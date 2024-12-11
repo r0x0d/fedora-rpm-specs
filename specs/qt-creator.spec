@@ -6,7 +6,7 @@
 
 Name:           qt-creator
 Version:        15.0.0
-Release:        1%{?prerelease:.%prerelease}%{?dist}
+Release:        2%{?prerelease:.%prerelease}%{?dist}
 Summary:        Cross-platform IDE for Qt
 
 License:        GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -209,6 +209,9 @@ diff -u %{SOURCE1} $outfile
 
 
 %changelog
+* Mon Dec 09 2024 Jan Grulich <jgrulich@redhat.com> - 15.0.0-2
+- Rebuild (qt6.8.1)
+
 * Mon Dec 02 2024 Sandro Mani <manisandro@gmail.com> - 15.0.0-1
 - Update to 15.0.0
 

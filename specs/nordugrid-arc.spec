@@ -38,7 +38,7 @@
 
 Name:		nordugrid-arc
 Version:	6.21.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Advanced Resource Connector Middleware
 #		Apache-2.0: most files
 #		CPL-1.0: src/services/acix/core/hashes.py
@@ -90,6 +90,7 @@ BuildRequires:	python2-devel
 %endif
 %if %{with_python3}
 BuildRequires:	python%{python3_pkgversion}-devel
+BuildRequires:	python%{python3_pkgversion}-setuptools
 %endif
 %if %{with_pylint}
 BuildRequires:	pylint
@@ -1715,6 +1716,9 @@ fi
 %attr(4755,root,root) %{_bindir}/arc-job-cgroup
 
 %changelog
+* Mon Dec 09 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 6.21.0-2
+- Add BuildRequires python3-setuptools
+
 * Sun Nov 10 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 6.21.0-1
 - Update to version 6.21.0
 

@@ -1,5 +1,5 @@
 Name:           dgit
-Version:        11.11
+Version:        12.0
 Release:        %autorelease
 Summary:        Integration between git and Debian-style archives
 # Automatically converted from old format: GPLv3+ - review is highly recommended.

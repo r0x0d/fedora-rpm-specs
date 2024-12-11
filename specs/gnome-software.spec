@@ -26,12 +26,14 @@
 
 Name:      gnome-software
 Version:   47.2
-Release:   2%{?dist}
+Release:   3%{?dist}
 Summary:   A software center for GNOME
 
 License:   GPL-2.0-or-later
 URL:       https://apps.gnome.org/Software
 Source0:   https://download.gnome.org/sources/gnome-software/47/%{name}-%{tarball_version}.tar.xz
+
+Patch01:   0001-crash-under-gs_appstream_gather_merge_data.patch
 
 # ostree and flatpak not on i686 for Fedora and RHEL 10
 # https://github.com/containers/composefs/pull/229#issuecomment-1838735764
@@ -288,6 +290,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 %{_datadir}/gtk-doc/html/gnome-software/
 
 %changelog
+* Mon Dec 09 2024 Milan Crha <mcrha@redhat.com> - 47.2-3
+- Resolves: #2272232 (Crash under gs_appstream_gather_merge_data())
+
 * Thu Dec 05 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 47.2-2
 - Rebuild for fwupd 2.0
 

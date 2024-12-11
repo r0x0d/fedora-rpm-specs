@@ -14,6 +14,10 @@ URL:            https://github.com/snakemake/snakemake-executor-plugin-tes
 # the tests.
 Source:         %{url}/archive/v%{version}/snakemake-executor-plugin-tes-%{version}.tar.gz
 
+# Update to py-tes 1.x
+# https://github.com/snakemake/snakemake-executor-plugin-tes/pull/16
+Patch:          %{url}/pull/16.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel

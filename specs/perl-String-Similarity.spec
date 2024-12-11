@@ -1,16 +1,25 @@
 Name:           perl-String-Similarity
 Version:        1.04
-Release:        44%{?dist}
-Summary:        Calculates the similarity of two strings
-# Automatically converted from old format: GPLv2+ - review is highly recommended.
+Release:        45%{?dist}
+Summary:        Calculate the similarity of two strings
 License:        GPL-2.0-or-later
 URL:            https://metacpan.org/release/String-Similarity
 Source0:        https://cpan.metacpan.org/authors/id/M/ML/MLEHMANN/String-Similarity-%{version}.tar.gz
-BuildRequires: make
+BuildRequires:  coreutils
+BuildRequires:  findutils
 BuildRequires:  gcc
+BuildRequires:  make
 BuildRequires:  perl-devel
 BuildRequires:  perl-generators
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl-interpreter
+BuildRequires:  perl(:VERSION) >= 5.8
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
+# Run-time:
+BuildRequires:  perl(DynaLoader)
+BuildRequires:  perl(Exporter)
+# Tests:
+BuildRequires:  perl(Encode)
+BuildRequires:  perl(utf8)
 
 %{?perl_default_filter}
 
@@ -20,32 +29,57 @@ A value of 0 means that the strings are entirely different. A value of 1
 means that the strings are identical. Everything else lies between 0 and 1 
 and describes the amount of similarity between the strings.
 
+%package tests
+Summary:        Tests for %{name}
+BuildArch:      noarch
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       perl-Test-Harness
+
+%description tests
+Tests from %{name}. Execute them
+with "%{_libexecdir}/%{name}/test".
+
 %prep
 %setup -q -n String-Similarity-%{version}
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS=vendor OPTIMIZE="$RPM_OPT_FLAGS"
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1 OPTIMIZE="$RPM_OPT_FLAGS"
+%{make_build}
 
 %install
-make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
-
-find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
-find $RPM_BUILD_ROOT -type f -name '*.bs' -size 0 -exec rm -f {} \;
-find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
-
-%{_fixperms} $RPM_BUILD_ROOT/*
+%{make_install}
+find %{buildroot} -type f -name '*.bs' -size 0 -delete
+%{_fixperms} %{buildroot}/*
+# Install tests
+mkdir -p %{buildroot}%{_libexecdir}/%{name}
+cp -a t %{buildroot}%{_libexecdir}/%{name}
+cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
+#!/bin/sh
+cd %{_libexecdir}/%{name} && exec prove -I . -j "$(getconf _NPROCESSORS_ONLN)"
+EOF
+chmod +x %{buildroot}%{_libexecdir}/%{name}/test
 
 %check
+export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print $1} else {print 1}' -- '%{?_smp_mflags}')
 make test
 
 %files
-%doc Changes COPYING README
-%{perl_vendorarch}/auto/*
-%{perl_vendorarch}/String*
-%{_mandir}/man3/*
+%license COPYING
+%doc Changes README
+%dir %{perl_vendorarch}/auto/String
+%{perl_vendorarch}/auto/String/Similarity
+%dir %{perl_vendorarch}/String
+%{perl_vendorarch}/String/Similarity.pm
+%{_mandir}/man3/String::Similarity.*
+
+%files tests
+%{_libexecdir}/%{name}
 
 %changelog
+* Mon Dec 09 2024 Petr Pisar <ppisar@redhat.com> - 1.04-45
+- Modernize a spec file
+- Package the tests
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.04-44
 - convert license to SPDX
 

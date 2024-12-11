@@ -1,7 +1,7 @@
 %global app_id  io.github.mpc_qt.Mpc-Qt
 
 Name:           mpc-qt
-Version:        24.06
+Version:        24.12
 Release:        %autorelease
 Summary:        A clone of Media Player Classic reimplemented in Qt
 # MainWindow::on_actionHelpAbout_triggered states "or later"

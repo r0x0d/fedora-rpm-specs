@@ -7,7 +7,7 @@
 %global reshade_shortcommit %(c=%{reshade_commit}; echo ${c:0:7})
 
 Name:           gamescope
-Version:        3.15.14
+Version:        3.15.15
 Release:        %autorelease
 Summary:        Micro-compositor for video games on Wayland
 

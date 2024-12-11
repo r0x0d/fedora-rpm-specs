@@ -14,11 +14,16 @@
 Name:		xrootd
 Epoch:		1
 Version:	5.7.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Extended ROOT file server
 License:	LGPL-3.0-or-later AND BSD-2-Clause AND BSD-3-Clause AND curl AND MIT AND Zlib
 URL:		https://xrootd.web.cern.ch
 Source0:	%{url}/download/v%{version}/%{name}-%{version}.tar.gz
+#		Fix errors in format strings
+#		https://github.com/xrootd/xrootd/pull/2380
+Patch0:		0001-Use-correct-format-for-size_t.patch
+Patch1:		0002-Mark-the-client-library-logging-routines-with-__attr.patch
+Patch2:		0003-Fix-format-errors-found-by-the-compiler.patch
 
 BuildRequires:	cmake
 BuildRequires:	gcc-c++
@@ -255,6 +260,9 @@ This package contains the API documentation of the xrootd libraries.
 
 %prep
 %setup -q
+%patch -P0 -p1
+%patch -P1 -p1
+%patch -P2 -p1
 
 %build
 %cmake \
@@ -390,7 +398,8 @@ XrdCl::ThreadingTest|\
 XrdCl::WorkflowTest.CheckpointTest|\
 XrdCl::WorkflowTest.XAttrWorkflowTest|\
 XrdEc::|\
-XRootD::cluster::test"
+XRootD::cluster::test|\
+XRootD::http::test"
     %ctest -- -E $exclude
 fi
 rm testfile
@@ -645,6 +654,9 @@ fi
 %doc %{_pkgdocdir}
 
 %changelog
+* Sun Dec 08 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 1:5.7.2-2
+- Fix errors in format strings
+
 * Fri Nov 29 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 1:5.7.2-1
 - Update to version 5.7.2
 - Drop patches accepted upstream

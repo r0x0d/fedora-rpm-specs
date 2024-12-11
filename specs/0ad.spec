@@ -27,7 +27,7 @@
 
 Name:		0ad
 Version:	0.0.26
-Release:	24%{?dist}
+Release:	25%{?dist}
 # BSD License:
 #	build/premake/*
 #	libraries/source/miniupnpc/*		(not built/used)
@@ -146,6 +146,8 @@ Patch6:		0ad-gcc-14.patch
 Patch7:		0001-Fix-build-with-libxml2-v2.12.1.patch
 # https://gitea.wildfiregames.com/0ad/0ad/commit/38e3f5cec04f29f747515248ca3f002bd1cc52a8
 Patch8:     %{name}-miniupnp228.patch
+# https://gitea.wildfiregames.com/0ad/0ad/commit/5643e90b19ea443d69b3d83dab5b79bd2c7ca8db
+Patch9:		0ad-icu76.patch
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
@@ -180,6 +182,7 @@ sed -e 's|__SOURCE3__|%{SOURCE3}|' \
 %patch -P6 -p1
 %patch -P7 -p1
 %patch -P8 -p1
+%patch -P9 -p1
 
 %if %{with system_nvtt}
 rm -fr libraries/source/nvtt
@@ -287,6 +290,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/0ad.desktop
 %{_mandir}/man6/*.6*
 
 %changelog
+* Mon Dec 09 2024 Pete Walter <pwalter@fedoraproject.org> - 0.0.26-25
+- Rebuild for ICU 76
+
 * Tue Oct 08 2024 Simone Caronni <negativo17@gmail.com> - 0.0.26-24
 - Rebuild for updated miniupnpc.
 

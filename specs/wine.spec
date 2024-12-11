@@ -41,7 +41,7 @@
 
 Name:           wine
 Version:        10.0
-Release:        0.1rc1%{?dist}
+Release:        0.2rc1%{?dist}
 Summary:        A compatibility layer for windows applications
 
 License:        LGPL-2.1-or-later
@@ -1012,6 +1012,7 @@ fi
 
 %posttrans core
 # handle upgrades for a few package updates
+rm -f %{_libdir}/wine/d3d8.dll
 %{_sbindir}/alternatives --remove 'wine-dxgi%{?_isa}' %{_libdir}/wine/wine-dxgi.dll 2>/dev/null
 %{_sbindir}/alternatives --remove 'wine-d3d8%{?_isa}' %{_libdir}/wine/wine-d3d8.dll 2>/dev/null
 %{_sbindir}/alternatives --remove 'wine-d3d9%{?_isa}' %{_libdir}/wine/wine-d3d9.dll 2>/dev/null
@@ -2870,6 +2871,9 @@ fi
 %endif
 
 %changelog
+* Sun Dec 08 2024 Michael Cronenworth <mike@cchtml.com> - 10.0-0.2rc1
+- Handle upgrades to convert d3d8.dll to alternatives
+
 * Fri Dec 06 2024 Michael Cronenworth <mike@cchtml.com> - 10.0-0.1rc1
 - version update
 

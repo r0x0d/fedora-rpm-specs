@@ -23,6 +23,7 @@ BuildRequires:  qt6-qtbase-private-devel
 
 BuildRequires:  cmake(Dtk6Core)
 BuildRequires:  cmake(DtkBuildHelper)
+BuildRequires:  cmake(TreelandProtocols)
 BuildRequires:  pkgconfig(librsvg-2.0)
 BuildRequires:  wayland-devel
 BuildRequires:  pkgconfig(libraw)

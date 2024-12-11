@@ -16,7 +16,7 @@
 Name:           %{pkg_name}
 Version:        2.6.4.3
 # can only be reset when all subpkgs bumped
-Release:        50%{?dist}
+Release:        51%{?dist}
 Summary:        A dependently typed functional programming language and proof assistant
 
 License:        MIT AND BSD-3-Clause
@@ -330,6 +330,9 @@ rm -r %{buildroot}%{_datadir}/%{pkgver}/emacs-mode
 
 
 %changelog
+* Mon Dec 09 2024 Pete Walter <pwalter@fedoraproject.org> - 2.6.4.3-51
+- Rebuild for ICU 76
+
 * Sun Jul 21 2024 Jens Petersen <petersen@redhat.com> - 2.6.4.3-50
 - update vector-hashtables to 0.1.2.0
 

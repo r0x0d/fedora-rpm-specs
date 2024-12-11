@@ -1,15 +1,15 @@
 # remirepo/fedora spec file for php-doctrine-deprecations
 #
-# Copyright (c) 2021-2024 Remi Collet
-# License: CC-BY-SA-4.0
-# http://creativecommons.org/licenses/by-sa/4.0/
+# SPDX-FileCopyrightText:  Copyright 2021-2024 Remi Collet
+# SPDX-License-Identifier: CECILL-2.1
+# http://www.cecill.info/licences/Licence_CeCILL_V2-en.txt
 #
 # Please, preserve the changelog entries
 #
 
 %bcond_without       tests
 
-%global gh_commit    dfbaa3c2d2e9a9df1118213f3b8b0c597bb99fab
+%global gh_commit    31610dbb31faa98e6b5447b62340826f54fbc4e9
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     doctrine
 %global gh_project   deprecations
@@ -21,8 +21,8 @@
 %global ns_project   Deprecations
 
 Name:           php-%{pk_vendor}-%{pk_project}
-Version:        1.1.3
-Release:        2%{?dist}
+Version:        1.1.4
+Release:        1%{?dist}
 Summary:        A small layer on top of triggeFr_error or PSR-3 logging
 
 License:        MIT
@@ -36,13 +36,11 @@ BuildRequires:  php-fedora-autoloader-devel
 %if %{with tests}
 # From composer.json
 #    "require-dev": {
-#        "doctrine/coding-standard": "^9",
-#        "phpstan/phpstan": "1.4.10 || 1.10.15",
-#        "phpstan/phpstan-phpunit": "^1.0",
+#        "doctrine/coding-standard": "^9 || ^12",
+#        "phpstan/phpstan": "1.4.10 || 2.0.3",
+#        "phpstan/phpstan-phpunit": "^1.0 || ^2",
 #        "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
-#        "psalm/plugin-phpunit": "0.18.4",
-#        "psr/log": "^1 || ^2 || ^3",
-#        "vimeo/psalm": "4.30.0 || 5.12.0"
+#        "psr/log": "^1 || ^2 || ^3"
 BuildRequires: (php-composer(psr/log) >= 1.0   with php-composer(psr/log) < 4)
 BuildRequires:  phpunit9 >= 9.5
 %endif
@@ -88,11 +86,11 @@ Autoloader: %{_datadir}/php/%{ns_vendor}/%{ns_project}/autoload.php
 %build
 : Generate a simple autoloader
 %{_bindir}/phpab \
-    --output lib/%{ns_vendor}/%{ns_project}/autoload.php \
+    --output src/autoload.php \
     --template fedora \
-    lib/%{ns_vendor}
+    src
 
-cat << 'EOF' | tee -a lib/%{ns_vendor}/%{ns_project}/autoload.php
+cat << 'EOF' | tee -a src/autoload.php
 
 \Fedora\Autoloader\Dependencies::required([
     [
@@ -105,8 +103,8 @@ EOF
 
 
 %install
-mkdir -p                              %{buildroot}%{_datadir}/php/%{ns_vendor}
-cp -pr lib/%{ns_vendor}/%{ns_project} %{buildroot}%{_datadir}/php/%{ns_vendor}/%{ns_project}
+mkdir -p   %{buildroot}%{_datadir}/php/%{ns_vendor}
+cp -pr src %{buildroot}%{_datadir}/php/%{ns_vendor}/%{ns_project}
 
 
 %check
@@ -126,7 +124,7 @@ cat << 'EOF' | tee -a vendor/autoload.php
 EOF
 
 ret=0
-for cmd in php php81 php82 php83; do
+for cmd in php php81 php82 php83 php84; do
   if which $cmd; then
     $cmd  -d auto_prepend_file=vendor/autoload.php \
       %{_bindir}/phpunit9 \
@@ -149,6 +147,10 @@ exit $ret
 
 
 %changelog
+* Mon Dec  9 2024 Remi Collet <remi@remirepo.net> - 1.1.4-1
+- update to 1.1.4
+- re-license spec file to CECILL-2.1
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

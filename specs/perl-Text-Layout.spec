@@ -5,7 +5,7 @@
 
 Name: perl-%{FullName}
 Summary: Pango style text formatting
-License: (GPL+ or Artistic) and Artistic 2.0
+License: (GPL-1.0-or-later OR Artistic-1.0-Perl) AND Artistic-2.0
 Version: 0.038
 Release: 1%{?dist}
 Source: %{metacpan}/%{FullName}-%{version}.tar.gz
