@@ -100,7 +100,15 @@ ExclusiveArch:  x86_64
 %else
 #Only the following architectures are useful for ROCm packages:
 ExclusiveArch:  x86_64 aarch64 ppc64le
-%global targets_to_build "X86;AMDGPU;PowerPC;AArch64"
+%ifarch x86_64
+%global targets_to_build "X86;AMDGPU"
+%endif
+%ifarch aarch64
+%global targets_to_build "AArch64;AMDGPU"
+%endif
+%ifarch ppc64le
+%global targets_to_build "PowerPC;AMDGPU"
+%endif
 %endif
 
 %description

@@ -1,7 +1,7 @@
 %global pypi_name acres
 
 Name:           python-%{pypi_name}
-Version:        0.1.0
+Version:        0.2.0
 Release:        %{autorelease}
 Summary:        Access resources on your terms
 
@@ -35,10 +35,14 @@ Summary:        %{summary}
 
 
 %generate_buildrequires
+# Allow PDM backend to determine version
+export PDM_BUILD_SCM_VERSION="%{version}"
 %pyproject_buildrequires
 
 
 %build
+# Allow PDM backend to determine version
+export PDM_BUILD_SCM_VERSION="%{version}"
 %pyproject_wheel
 
 
@@ -54,7 +58,7 @@ Summary:        %{summary}
 
 
 %files -n python3-%{pypi_name} -f %{pyproject_files}
-%doc README.md
+%doc CHANGELOG.md README.md
 %license LICENSE
 
 

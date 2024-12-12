@@ -5,7 +5,7 @@
 %endif
 
 Name:             kvirc
-Version:          5.2.4
+Version:          5.2.6
 Release:          1%{?dist}
 Summary:          Free portable IRC client
 # Automatically converted from old format: GPLv2+ with exceptions - review is highly recommended.
@@ -144,6 +144,9 @@ rm %{buildroot}%{_libdir}/libkvilib.so
 %lang(uk) %{_mandir}/uk/man1/%{name}.1.gz
 
 %changelog
+* Tue Dec 10 2024 Alexey Kurov <nucleo@fedoraproject.org> - 5.2.6-1
+- KVIrc 5.2.6
+
 * Mon Sep 16 2024 Alexey Kurov <nucleo@fedoraproject.org> - 5.2.4-1
 - KVIrc 5.2.4
 

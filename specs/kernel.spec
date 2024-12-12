@@ -162,13 +162,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.13.0
 %define specversion 6.13.0
 %define patchversion 6.13
-%define pkgrelease 0.rc2.22
+%define pkgrelease 0.rc2.20241210git7cb1b4663150.23
 %define kversion 6
-%define tarfile_release 6.13-rc2
+%define tarfile_release 6.13-rc2-18-g7cb1b4663150
 # This is needed to do merge window version magic
 %define patchlevel 13
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc2.22%{?buildid}%{?dist}
+%define specrelease 0.rc2.20241210git7cb1b4663150.23%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.13.0
 
@@ -4171,9 +4171,15 @@ fi\
 #
 #
 %changelog
-* Mon Dec 09 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.22]
+* Tue Dec 10 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.7cb1b4663150.23]
 - x86/insn_decoder_test: allow longer symbol-names (David Rheinsberg)
 - kernel.spec: update license field (Scott Weaver)
+
+* Tue Dec 10 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.7cb1b4663150.22]
+- gitlab-ci: disable clang CI pipelines (Scott Weaver)
+- redhat/configs: Remove obsolete arch64/64k/CONFIG_FORCE_MAX_ZONEORDER (Waiman Long)
+- Fix up QCOM_EMAC config for Fedora (Justin M. Forbes)
+- Linux v6.13.0-0.rc2.7cb1b4663150
 
 * Mon Dec 09 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.21]
 - redhat/configs: automotive: disable CONFIG_IO_URING (Ian Mullins)

@@ -9,12 +9,11 @@
 
 Summary: Library providing support for "XML Signature" and "XML Encryption" standards
 Name: xmlsec1
-Version: 1.2.39
-%global uversion %%(echo %{version} | tr '.' '_')
-Release: 5%{?dist}%{?extra_release}
+Version: 1.2.41
+Release: 1%{?dist}%{?extra_release}
 Epoch: 1
 License: MIT
-Source0: https://github.com/lsh123/xmlsec/releases/download/xmlsec-%{uversion}/xmlsec1-%{version}.tar.gz
+Source0: https://github.com/lsh123/xmlsec/releases/download/%{version}/xmlsec1-%{version}.tar.gz
 URL: http://www.aleksey.com/xmlsec/
 
 Patch0: 0001-Conditional-include-for-openssl-engines.patch
@@ -213,6 +212,9 @@ mv %{buildroot}%{_docdir}/xmlsec1/* __tmp_doc
 %endif
 
 %changelog
+* Tue Dec 10 2024 Tomas Halman <thalman@redhat.com> - 1:1.2.41-1
+- Rebase to 1.2.41
+
 * Thu Nov 7 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 1:1.2.39-5
 - Conditionalize the backends
 - Remove openssl-devel-engine dependency

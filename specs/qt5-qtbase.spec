@@ -57,7 +57,7 @@
 Name:    qt5-qtbase
 Summary: Qt5 - QtBase components
 Version: 5.15.15
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, for exception details
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -427,6 +427,10 @@ Recommends: qt5-qttranslations
 %endif
 Obsoletes: qt5-qtbase-x11 < 5.2.0
 Provides:  qt5-qtbase-x11 = %{version}-%{release}
+Obsoletes: adwaita-qt5 <= 1.4.2
+Obsoletes: libadwaita-qt5 <= 1.4.2
+Obsoletes: qgnomeplatform-qt5 <= 0.9.2
+Provides:  qgnomeplatform-qt5 = %{version}-%{release}
 # for Source6: 10-qt5-check-opengl2.sh:
 # glxinfo
 Requires: glx-utils
@@ -1167,6 +1171,9 @@ fi
 
 
 %changelog
+* Tue Dec 10 2024 Jan Grulich <jgrulich@redhat.com> - 5.15.15-3
+- Obsolete QGnomePlatform and AdwaitaQt
+
 * Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 5.15.15-2
 - Rebuild for ICU 76
 

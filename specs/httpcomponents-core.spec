@@ -43,6 +43,9 @@ HTTP connections in a resource efficient manner.
 %prep
 %autosetup -p1 -C
 
+# Tests failing without networking
+sed -i '/testHttpsCreateConnection/i@org.junit.Ignore' httpcore/src/test/java/org/apache/http/impl/pool/TestBasicConnPool.java
+
 # Tests failing with Java 17
 sed -i '/testAwaitInputInBuffer\|testAwaitInputInSocket\|testNotStaleWhenHasData\|testWriteSmallFragmentBuffering\|testWriteSmallFragmentNoBuffering/i@org.junit.Ignore' httpcore/src/test/java/org/apache/http/impl/{TestBHttpConnectionBase,io/TestSessionInOutBuffers}.java
 

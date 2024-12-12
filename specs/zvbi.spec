@@ -2,7 +2,7 @@
 %define             catalogue %{_sysconfdir}/X11/fontpath.d
 
 Name:               zvbi
-Version:            0.2.42
+Version:            0.2.43
 Release:            1%{?dist}
 Summary:            Raw VBI, Teletext and Closed Caption decoding library
 License:            GPL-2.0-or-later AND LGPL-2.0-or-later AND LGPL-2.1-or-later AND BSD-2-Clause AND MIT
@@ -10,8 +10,6 @@ URL:                https://github.com/zapping-vbi/zvbi
 Source0:            https://github.com/zapping-vbi/zvbi/archive/v%{version}/%{name}-%{version}.tar.gz
 Patch0:             %{name}-0.2.24-tvfonts.patch
 Patch1:             %{name}-0.2.25-openfix.patch
-# slightly adapted from https://github.com/zapping-vbi/zvbi/commit/ae74ae513714f81b9b8abdb12e1b235d16fad74e.patch
-Patch2:             zvbi-0.2.42-fix_sincos_declaration.patch
 
 BuildRequires:      autoconf
 BuildRequires:      automake
@@ -61,7 +59,6 @@ Fonts from zvbi converted for use with X11
 %setup -q
 %patch -P 0 -p1
 %patch -P 1 -p1
-%patch -P 2 -p1
 
 # systemd service file
 cat >zvbid.service <<EOF
@@ -169,6 +166,9 @@ make check
 
 
 %changelog
+* Tue Dec 10 2024 Xavier Bachelot <xavier@bachelot.org> - 0.2.43-1
+- Update to 0.2.43 (RHBZ#2330170)
+
 * Fri Sep 13 2024 Xavier Bachelot <xavier@bachelot.org> - 0.2.42-1
 - Update to 0.2.42
 

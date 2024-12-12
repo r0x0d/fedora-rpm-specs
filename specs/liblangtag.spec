@@ -47,7 +47,7 @@ Features:
 
 %package data
 Summary: %{name} data files
-License: Unicode
+License: Unicode-DFS-2015
 BuildArch: noarch
 
 %description data

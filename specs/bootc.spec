@@ -1,4 +1,5 @@
 %bcond_without check
+%bcond_without ostree_ext
 
 Name:           bootc
 Version:        1.1.3~rc0
@@ -44,6 +45,11 @@ Requires: podman
 # For bootloader updates
 Recommends: bootupd
 
+# A made up provides so that rpm-ostree can depend on it
+%if %{with ostree_ext}
+Provides: ostree-cli(ostree-container)
+%endif
+
 %description
 %{summary}
 
@@ -59,6 +65,9 @@ Recommends: bootupd
 
 %install
 %make_install INSTALL="install -p -c"
+%if %{with ostree_ext}
+make install-ostree-hooks DESTDIR=%{?buildroot}
+%endif
 
 %if %{with check}
 %check
@@ -74,6 +83,9 @@ Recommends: bootupd
 %{_bindir}/bootc
 %{_prefix}/lib/bootc/
 %{_prefix}/lib/systemd/system-generators/*
+%if %{with ostree_ext}
+%{_prefix}/libexec/libostree/ext/*
+%endif
 %{_unitdir}/*
 %{_mandir}/man*/bootc*
 

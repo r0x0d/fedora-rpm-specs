@@ -3,6 +3,9 @@
 %bcond_without doh
 # Simple test requiring online connection
 %bcond_with online
+# http-parser upstream is dead. Use bundled part of it until replaced.
+# TODO: propose uri-parser or ada-url to upstream as a replacement
+%bcond_with http_parser
 
 Name:		flamethrower
 Version:	0.11.0
@@ -35,16 +38,27 @@ BuildRequires:	libuv-devel
 BuildRequires:	ldns-devel
 BuildRequires:	gnutls-devel
 BuildRequires:	pandoc
-BuildRequires:	http-parser-devel
 BuildRequires:	json-devel
 BuildRequires:  docopt-cpp-devel
 BuildRequires:  uvw-devel
 %if %{with doh}
 BuildRequires:	libnghttp2-devel
 %endif
+# Not used again, http-parser is missing dependencies
+%if %{with http_parser}
+BuildRequires:	http-parser-devel
+%endif
+
 # 3rd/base64url from https://renenyffenegger.ch/notes/development/Base64/Encoding-and-decoding-base-64-with-cpp/index
 # also https://github.com/ReneNyffenegger/cpp-base64
 Provides: bundled(cpp-base64)
+
+%if %{without http_parser}
+# 3rd/url-parser is a part of http-parser
+# https://github.com/nodejs/http-parser
+Provides: bundled(http-parser) = 2.9.1
+Provides: bundled(url-parser) = 2.9.1
+%endif
 
 %description
 Flamethrower is a small, fast, configurable tool for
@@ -60,7 +74,9 @@ of the command line options are compatible.
 
 %build
 %cmake -DCMAKE_SKIP_BUILD_RPATH=TRUE \
+%if %{with http_parser}
 	-DUSE_HTTP_PARSER=ON \
+%endif
 %if %{with doh}
 -DDOH_ENABLE=ON \
 %endif

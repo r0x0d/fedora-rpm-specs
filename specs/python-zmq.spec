@@ -1,5 +1,5 @@
 Name:           python-zmq
-Version:        25.1.2
+Version:        26.2.0
 Release:        %autorelease
 Summary:        Python bindings for zeromq
 
@@ -11,11 +11,7 @@ Summary:        Python bindings for zeromq
 #   under MPLv2 or BSD. This backend has been completely replaced in pyzmq 26,
 #   and the new implementation is fully licensed under BSD-3-Clause, so pyzmq
 #   is now under a single license.
-# Since this package is currently at 25.1.2, the entire source is BSD-3-Clause
-# (LICENSE.BSD), except:
-#   - Some core files (the low-level Cython bindings) are LGPL-3.0-or-later
-#     (LICENSE.LESSER); based on comments in file headers, this is just
-#     zmq/backend/cython/_device.pyx.
+# Nevertheless:
 #   - zmq/ssh/forward.py, which is derived from a Paramiko demo, is
 #     LGPL-2.1-or-later
 #   - zmq/eventloop/zmqstream.py is Apache-2.0
@@ -33,23 +29,40 @@ Summary:        Python bindings for zeromq
 #     https://gitlab.com/fedora/legal/fedora-license-data/-/merge_requests/716
 License:        %{shrink:
                 BSD-3-Clause AND
-                LGPL-3.0-or-later AND
                 LGPL-2.1-or-later AND
                 Apache-2.0
                 }
 URL:            https://zeromq.org/languages/python/
 %global forgeurl https://github.com/zeromq/pyzmq
-Source0:        %{forgeurl}/archive/v%{version}/pyzmq-%{version}.tar.gz
+Source:         %{forgeurl}/archive/v%{version}/pyzmq-%{version}.tar.gz
+
+# fix handling of tornado Apache license
+# https://github.com/zeromq/pyzmq/pull/2049
+#
+# Fixes:
+#
 # BUG: A file is licensed Apache-2.0, but the license text is not distributed
 # https://github.com/zeromq/pyzmq/issues/2048
-Source1:        https://www.apache.org/licenses/LICENSE-2.0.txt#/LICENSE.Apache-2.0
-
-# Python 3.13 compatibility
-Patch:          %{forgeurl}/pull/1961.patch
+Patch:          %{forgeurl}/pull/2049.patch
 
 BuildRequires:  gcc
+# This package contains no C++ code, but the scikit-build-core backend checks
+# for a C++ compiler.
+BuildRequires:  gcc-c++
 BuildRequires:  pkgconfig(libzmq)
 BuildRequires:  python3-devel
+
+# Add some manual test dependencies that aren’t in test-requirements.txt, but
+# which enable additional tests.
+#
+# Tests in zmq/tests/mypy.py require mypy, but see:
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
+#
+# Some tests in zmq/tests/test_context.py and zmq/tests/test_socket.py require
+# pyczmq, which is not packaged and has not been updated in a decade.
+#
+# Enable more tests in zmq/tests/test_message.py:
+BuildRequires:  %{py3_dist numpy}
 
 %global common_description %{expand:
 This package contains Python bindings for ZeroMQ. ØMQ is a lightweight and fast
@@ -72,64 +85,23 @@ Summary:        %{summary}
 # removed after Fedora 44 end-of-life.
 Obsoletes:      python3-zmq < 25.1.1-29
 Conflicts:      python3-zmq < 25.1.1-29
-
-%description -n python3-pyzmq %{common_description}
-
-
-%package -n python3-pyzmq-tests
-Summary:        Test suite for Python bindings for zeromq
-# This subpackage does not contain any of the files that are under other
-# licenses; see the comment above the main License tag.
-License:        BSD-3-Clause
-
-Requires:       python3-pyzmq%{?_isa} = %{version}-%{release}
-
-# See notes about binary package renaming in the python3-pyzmq subpackage.
-%py_provides    python3-zmq-tests
 Obsoletes:      python3-zmq-tests < 25.1.1-29
 Conflicts:      python3-zmq-tests < 25.1.1-29
+# Beginning with Fedora 42 and python-zmq 26, the tests are moved out of the
+# zmq package, so we no longer package them. The Obsoletes/Conflicts provide a
+# clean upgrade path, and can be removed after Fedora 44 end-of-life.
+Obsoletes:      python3-pyzmq-tests < 26.2.0-1
+Conflicts:      python3-pyzmq-tests < 26.2.0-1
 
-# Based on test-requirements.txt; see test-requirements-filtered.txt, as
-# generated in %%prep. The BR’s duplicate the generated ones, which is
-# unfortunate, but necessary to make sure that we don’t have unsatisfied
-# runtime/install-time dependencies. It would be better if we didn’t have to
-# ship the tests at all – maybe we don’t?
-BuildRequires:  %{py3_dist cython}
-Requires:       %{py3_dist cython}
-BuildRequires:  %{py3_dist pymongo}
-Requires:       %{py3_dist pymongo}
-BuildRequires:  %{py3_dist pytest}
-Requires:       %{py3_dist pytest}
-BuildRequires:  %{py3_dist pytest-asyncio}
-Requires:       %{py3_dist pytest-asyncio}
-BuildRequires:  %{py3_dist setuptools}
-Requires:       %{py3_dist setuptools}
-BuildRequires:  %{py3_dist tornado}
-Requires:       %{py3_dist tornado}
-
-# Add some manual test dependencies that aren’t in test-requirements.txt, but
-# which enable additional tests.
-#
-# Tests in zmq/tests/mypy.py require mypy, but see:
-# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
-#
-# Some tests in zmq/tests/test_context.py and zmq/tests/test_socket.py require
-# pyczmq, which is not packaged and has not been updated in a decade.
-#
-# Enable more tests in zmq/tests/test_message.py:
-BuildRequires:  %{py3_dist numpy}
-Recommends:     %{py3_dist numpy}
-
-%description -n python3-pyzmq-tests %{common_description}
-
-This package contains the test suite for the Python bindings.
+%description -n python3-pyzmq %{common_description}
 
 
 %prep
 %autosetup -p1 -n pyzmq-%{version}
 
 # Remove any Cython-generated .c files in order to regenerate them:
-find zmq -name '*.c' -print -delete
+find . -type f -exec grep -FrinIl 'Generated by Cython' '{}' '+' |
+  xargs -r -t rm -v
 
 # Remove shebangs from non-script sources. The find-then-modify pattern
 # preserves mtimes on sources that did not need to be modified.
@@ -137,13 +109,11 @@ find 'src' -type f -name '*.py' \
     -exec gawk '/^#!/ { print FILENAME }; { nextfile }' '{}' '+' |
   xargs -r sed -r -i '1{/^#!/d}'
 
-# BUG: A file is licensed Apache-2.0, but the license text is not distributed
-# https://github.com/zeromq/pyzmq/issues/2048
-cp -p '%{SOURCE1}' .
-
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
+# - pymongo is used only in examples/mongodb/, and we don’t run examples
 sed -r \
     -e 's/^(black|codecov|coverage|flake8|mypy|pytest-cov)\b/# &/' \
+    -e 's/^(pymongo)\b/# &/' \
     test-requirements.txt | tee test-requirements-filtered.txt
 
 
@@ -152,40 +122,33 @@ sed -r \
 
 
 %build
-%pyproject_wheel
+# https://scikit-build-core.readthedocs.io/en/latest/configuration.html
+%{pyproject_wheel \
+    -Ccmake.define.PYZMQ_LIBZMQ_RPATH:BOOL=OFF \
+    -Ccmake.define.PYZMQ_LIBZMQ_NO_BUNDLE=ON \
+    -Clogging.level=INFO \
+    -Ccmake.verbose=true \
+    -Ccmake.build-type="RelWithDebInfo" \
+    -Cinstall.strip=false}
 
 
 %install
 %pyproject_install
-%pyproject_save_files -l zmq
+%pyproject_save_files -L zmq
 
 
 %check
 # to avoid partially initialized zmq module from cwd
 mkdir -p _empty
 cd _empty
-ln -s %{buildroot}%{python3_sitearch}/zmq/ ../pytest.ini ./
+ln -s ../tests/ ../pytest.ini ./
 
-# test_draft seems to get incorrectly run:
-# https://github.com/zeromq/pyzmq/issues/1853
-k="${k-}${k+ and }not test_draft"
-
-%ifarch ppc64le
-# These crash on Python 3.12; TODO: investigate
-k="${k-}${k+ and }not test_green_device"
-k="${k-}${k+ and }not (Green and (test_raw or test_timeout or test_poll))"
-%endif
-
-%pytest -k "${k-}" -v -rs zmq/tests
+%pytest -v -rs tests/
 
 
 %files -n python3-pyzmq -f %{pyproject_files}
+%license LICENSE.md licenses/
 %doc README.md
-%exclude %{python3_sitearch}/zmq/tests/
-
-
-%files -n python3-pyzmq-tests
-%{python3_sitearch}/zmq/tests/
 
 
 %changelog

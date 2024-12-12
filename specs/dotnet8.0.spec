@@ -54,7 +54,7 @@
 
 Name:           dotnet%{dotnetver}
 Version:        %{sdk_rpm_version}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        .NET Runtime and SDK
 License:        0BSD AND Apache-2.0 AND (Apache-2.0 WITH LLVM-exception) AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND bzip2-1.0.6 AND CC0-1.0 AND CC-BY-3.0 AND CC-BY-4.0 AND CC-PDDC AND CNRI-Python AND EPL-1.0 AND GPL-2.0-only AND (GPL-2.0-only WITH GCC-exception-2.0) AND GPL-2.0-or-later AND GPL-3.0-only AND ICU AND ISC AND LGPL-2.1-only AND LGPL-2.1-or-later AND LicenseRef-Fedora-Public-Domain AND LicenseRef-ISO-8879 AND MIT AND MIT-Wu AND MS-PL AND MS-RL AND NCSA AND OFL-1.1 AND OpenSSL AND Unicode-DFS-2015 AND Unicode-DFS-2016 AND W3C-19980720 AND X11 AND Zlib
 
@@ -530,6 +530,14 @@ CXXFLAGS=$(echo $CXXFLAGS | sed -e 's/ -march=z13//')
 CXXFLAGS=$(echo $CXXFLAGS | sed -e 's/ -mtune=z14//')
 %endif
 
+%if 0%{rhel} >= 10
+# Workaround for https://github.com/dotnet/runtime/issues/109611
+# FIXME: Remove this, and replace with upstream fix
+CFLAGS=$(echo $CFLAGS | sed -e 's/-march=x86-64-v3 //')
+CXXFLAGS=$(echo $CXXFLAGS | sed -e 's/-march=x86-64-v3 //')
+LDFLAGS=$(echo $LDFLAGS | sed -e 's/-march=x86-64-v3 //')
+%endif
+
 export EXTRA_CFLAGS="$CFLAGS"
 export EXTRA_CXXFLAGS="$CXXFLAGS"
 export EXTRA_LDFLAGS="$LDFLAGS"
@@ -724,6 +732,10 @@ export COMPlus_LTTng=0
 
 
 %changelog
+* Tue Dec 10 2024 Omair Majid <omajid@redhat.com> - 8.0.111-2
+- Fix ELN build
+- Resolves: RHBZ#2321109
+
 * Mon Nov 18 2024 Omair Majid <omajid@redhat.com> - 8.0.111-1
 - Update to .NET SDK 8.0.111 and Runtime 8.0.11
 

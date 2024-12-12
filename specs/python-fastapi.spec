@@ -49,6 +49,12 @@ BuildArch:      noarch
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 Patch:          0001-Downstream-only-run-test_fastapi_cli-without-coverag.patch
 
+# 📝 Update docs for fastapi-cli (#13031)
+# https://github.com/fastapi/fastapi/commit/4881d1e225445faa196f2de58c4ce02dd32f5837
+#
+# Fixes test_fastapi_cli for fastapi-cli 0.0.6
+Patch:          %{url}/commit/4881d1e225445faa196f2de58c4ce02dd32f5837.patch
+
 BuildRequires:  python3-devel
 
 # Since requirements-tests.txt and requirements-docs-tests.txt contain

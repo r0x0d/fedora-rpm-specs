@@ -1,5 +1,5 @@
 Name:		nanovna-saver
-Version:	0.6.5
+Version:	0.6.8
 Release:	1%{?dist}
 Summary:	Tool for reading, displaying and saving data from the NanoVNA
 # Automatically converted from old format: GPLv3 - review is highly recommended.
@@ -62,6 +62,7 @@ install -Dpm 0644 icon_48x48.png %{buildroot}%{_datadir}/icons/hicolor/48x48/app
 %license LICENSE.txt
 %doc README.rst docs/CODE_OF_CONDUCT.md docs/CONTRIBUTING.md AUTHORS.rst
 %{_bindir}/NanoVNASaver
+%{_bindir}/NanoVNASaver-gui
 %{python3_sitelib}/NanoVNASaver
 %{python3_sitelib}/NanoVNASaver-%{version}-py*.egg-info
 %{_mandir}/man1/NanoVNASaver.1*
@@ -69,6 +70,10 @@ install -Dpm 0644 icon_48x48.png %{buildroot}%{_datadir}/icons/hicolor/48x48/app
 %{_datadir}/applications/NanoVNASaver.desktop
 
 %changelog
+* Tue Dec 10 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 0.6.8-1
+- New version
+  Resolves: rhbz#2331262
+
 * Tue Nov  5 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 0.6.5-1
 - New version
   Resolves: rhbz#2322066

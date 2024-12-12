@@ -7,7 +7,7 @@
 %bcond_without man
 
 Name:           python-%{pypi_name}
-Version:        0.13.0
+Version:        0.13.1
 Release:        %{autorelease}
 Summary:        Scales package for graphics
 

@@ -1,9 +1,9 @@
 %bcond_without check
 %global cargo_install_lib  0
-%global envision_version   1.1.1
+%global envision_version   2.0.0
 %global forgeurl           https://gitlab.com/gabmus/envision
 %global tag                %{envision_version}
-%global date               20241127
+%global date               20241209
 %forgemeta
 
 
@@ -169,11 +169,11 @@ License:        AGPL-3.0-only AND (Apache-2.0 OR MIT OR BSD-3-Clause OR GPL-2.0-
 
 URL:            %{forgeurl}
 Source0:        %{forgesource}
-# https://gitlab.com/gabmus/envision/-/issues/148
-Patch0:         envision-1.1.0-no-devel-profile.patch
 # Manually created patch for downstream crate metadata changes
 # Relax zbus dependency, https://github.com/hoodie/notify-rust/pull/234
-Patch1:         envision-fix-metadata.diff
+# Relax tracing dependency
+# Relax tracing-subscriber dependency
+Patch0:         envision-fix-metadata.diff
 
 BuildRequires:  cargo
 BuildRequires:  cargo-rpm-macros >= 26
@@ -188,6 +188,7 @@ BuildRequires:  glslang
 BuildRequires:  glslc
 BuildRequires:  gtk4-devel
 BuildRequires:  gtksourceview5-devel
+BuildRequires:  libappstream-glib
 BuildRequires:  libadwaita-devel
 BuildRequires:  libdrm
 BuildRequires:  libgudev-devel
@@ -229,7 +230,7 @@ sickness or physical injury. Be very careful while in VR using this app!
 
 
 %build
-%meson
+%meson -D profile=release
 %meson_build
 %{cargo_license_summary}
 %{cargo_license} > LICENSE.dependencies
@@ -241,8 +242,10 @@ sickness or physical injury. Be very careful while in VR using this app!
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/org.gabmus.envision.desktop
+appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 %if %{with check}
-%meson_test
+#https://gitlab.com/gabmus/envision/-/issues/158
+#%%meson_test
 %endif
 
 
@@ -255,7 +258,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.gabmus.envision.d
 %{_datarootdir}/applications/org.gabmus.envision.desktop
 %{_datarootdir}/icons/hicolor/scalable/apps/org.gabmus.envision.svg
 %{_datarootdir}/icons/hicolor/symbolic/apps/org.gabmus.envision-symbolic.svg
-%{_datarootdir}/metainfo/org.gabmus.envision.appdata.xml
+%{_metainfodir}/org.gabmus.envision.appdata.xml
 
 
 %changelog

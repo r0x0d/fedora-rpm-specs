@@ -6,11 +6,11 @@
 %global fromgit 0
 
 Name: nrpe
-Version: 4.1.0
+Version: 4.1.2
 %if 0%{?fromgit}
-Release: 8%{?fromgit:.%{commdate}git%{shortcommit}}%{?dist}
+Release: 2%{?dist}
 %else
-Release: 9%{?dist}
+Release: 2%{?dist}
 %endif
 Summary: Host/service/network monitoring agent for Nagios
 
@@ -37,9 +37,12 @@ Patch6: nrpe-configure-c99.patch
 BuildRequires: make
 BuildRequires: autoconf, automake, libtool
 BuildRequires: gcc
-BuildRequires: openssl, openssl-devel-engine
 BuildRequires: checkpolicy, selinux-policy-devel
 BuildRequires: systemd-units
+BuildRequires: openssl, openssl-devel
+%if 0%{?fedora} >= 40
+BuildRequires: openssl-devel-engine
+%endif
 
 %if 0%{?fedora} < 28 && 0%{?rhel} < 8
 BuildRequires: tcp_wrappers-devel
@@ -209,6 +212,12 @@ fi
 %endif
 
 %changelog
+* Tue Dec 10 2024 Ján ONDREJ (SAL) <ondrejj(at)salstar.sk> - 4.1.2-2
+- Use openssl-devel-engine only on Fedora
+
+* Tue Dec 10 2024 Ján ONDREJ (SAL) <ondrejj(at)salstar.sk> - 4.1.2-1
+- Update to upstream
+
 * Mon Jul  29 2024 Miroslav Suchý <msuchy@redhat.com> - 4.1.0-9
 - convert license to SPDX
 

@@ -46,7 +46,7 @@ BuildRequires: pkgconfig(libsystemd)
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
 Version: 6.8.1
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
@@ -212,6 +212,8 @@ handling.
 %package common
 Summary: Common files for Qt6
 Requires: %{name} = %{version}-%{release}
+Obsoletes: qgnomeplatform-common <= 0.9.2
+Provides:  qgnomeplatform-common = %{version}-%{release}
 BuildArch: noarch
 %description common
 %{summary}.
@@ -311,6 +313,10 @@ Recommends: mesa-dri-drivers%{?_isa}
 Recommends: qt6-qtwayland%{?_isa}
 # Required for some locales: https://pagure.io/fedora-kde/SIG/issue/311
 Recommends: qt6-qttranslations
+Obsoletes: adwaita-qt6 <= 1.4.2
+Obsoletes: libadwaita-qt6 <= 1.4.2
+Obsoletes: qgnomeplatform-qt6 <= 0.9.2
+Provides:  qgnomeplatform-qt6 = %{version}-%{release}
 # for Source6: 10-qt6-check-opengl2.sh:
 # glxinfo
 Requires: glx-utils
@@ -886,6 +892,9 @@ make check -k ||:
 
 
 %changelog
+* Tue Dec 10 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-5
+- Obsolete QGnomePlatform and AdwaitaQt
+
 * Sat Dec 07 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-4
 - Move all mkspecs to -devel
 

@@ -7,7 +7,7 @@
 
 Name:           cinnamon-settings-daemon
 Version:        6.4.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from CINNAMON to GTK+/KDE applications
 
 # Automatically converted from old format: GPLv2+ and LGPLv2+ - review is highly recommended.
@@ -23,6 +23,7 @@ ExcludeArch:   %{ix86}
 
 # add hard cinnamon-desktop required version due logind schema
 Requires:       cinnamon-desktop%{?_isa} >= %{cinnamon_desktop_version}
+Requires:       colord%{?_isa}
 Requires:       iio-sensor-proxy%{?_isa}
 
 BuildRequires:  desktop-file-utils
@@ -150,6 +151,9 @@ rm -rf %{buildroot}%{_libdir}/cinnamon-settings-daemon/
 
 
 %changelog
+* Tue Dec 10 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.1-2
+- Add requires colord, it is needed for nightlight
+
 * Mon Dec 02 2024 Leigh Scott <leigh123linux@gmail.com> - 6.4.1-1
 - Update t0 6.4.1
 

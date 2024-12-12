@@ -1,4 +1,4 @@
-Version:        0.41.0
+Version:        0.42.0
 Name:           lfortran
 Release:        1%{?dist}
 Summary:        A modern Fortran compiler
@@ -170,6 +170,9 @@ This package contains the jupyter kernel for %{name}.
 %endif
 
 %changelog
+* Tue Dec 10 2024 Benson Muite <benson_muite@emailplus.org> - 0.42.0-1
+- Version bump v0.42.0 (bug #2326295)
+
 * Mon Oct 14 2024 Christoph Junghans <junghans@votca.org> - 0.41.0-1
 - Version bump v0.41.0 (bug #2304184)
 

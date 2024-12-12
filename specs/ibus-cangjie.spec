@@ -10,8 +10,9 @@ Release:          %autorelease
 %forgemeta
 
 License:          GPL-3.0-or-later
-URL:              http://cangjians.github.io/projects/%{name}
-Source0:          https://gitlab.freedesktop.org./cangjie/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.xz
+URL:              https://cangjie.pages.freedesktop.org/projects/%{name}
+Source0:          https://gitlab.freedesktop.org/cangjie/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.xz
+Patch0:           0001-tests-no-coverage.patch
 
 BuildArch:        noarch
 
@@ -28,7 +29,6 @@ BuildRequires:    gtk3
 BuildRequires:    gsound
 BuildRequires:    libcangjie-data
 BuildRequires:    python3-cangjie >= 1.5
-BuildRequires:    python3-coverage
 BuildRequires:    python3-gobject
 
 Requires:         gobject-introspection
@@ -69,10 +69,10 @@ However, it should work for others as well (e.g to input Simplified Chinese).
 
 
 %prep
-%autosetup -n %{name}-%{version}
+%autosetup -n %{name}-%{version} -p1
 
 %build
-%meson -Db_coverage=true
+%meson
 %meson_build
 
 %install
@@ -82,7 +82,7 @@ However, it should work for others as well (e.g to input Simplified Chinese).
 
 %check
 export CANGJIE_DB=/usr/share/libcangjie/cangjie.db
-%meson_test
+%meson_test --suite unittest
 
 %files -f %{name}.lang
 %doc AUTHORS README.md

@@ -1,5 +1,5 @@
 Name:		uncrustify
-Version:	0.78.1
+Version:	0.80.1
 Release:	%autorelease
 Summary:	Reformat Source
 
@@ -14,7 +14,7 @@ BuildRequires:  cmake
 Source Code Beautifier for C, C++, C#, D, Java, and Pawn
 
 %prep
-%autosetup
+%autosetup -n uncrustify-uncrustify-%{version}
 
 %build
 %cmake

@@ -3,7 +3,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 2.18.0
-Release: 6%{?dist}
+Release: 7%{?dist}
 Summary: Guard keeps an eye on your file modifications
 License: MIT
 URL: http://guardgem.org
@@ -20,6 +20,13 @@ Source1: %{gem_name}-%{version}-spec.tar.gz
 # significantly differs.
 # https://github.com/guard/guard/pull/986
 Patch0: rubygem-guard-2.18.0-Fix-RSpec-3.12-kwargs-compatibility.patch
+# With ruby 3.4, #hook."accepts extra arguments" causes abort with "stub me: ENV[COLUMNS]"
+# backtrace shows this is happening on PP.width_for in pp module.
+# So stub and allow this.
+Patch1: rubygem-guard-2.18.0-rspec-mock-env.patch
+# https://github.com/guard/guard/issues/997
+# ruby3.4 changes backtrace formatting, accept this
+Patch2: rubygem-guard-issue997-ruby34-backtrace-formatting.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby >= 1.9.3
@@ -52,9 +59,11 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version} -b 1 
+%patch -P2 -p1
 
 pushd %{_builddir}
 %patch -P0 -p1
+%patch -P1 -p1
 popd
 
 # Kill Shebang
@@ -124,6 +133,10 @@ popd
 %doc %{gem_instdir}/man/guard.1.html
 
 %changelog
+* Tue Dec 10 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.18.0-7
+- Allow accepting ENV value in rspec with ruby3.4
+- Patch for ruby3.4 backtrace formatting change
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.18.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

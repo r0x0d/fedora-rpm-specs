@@ -9,7 +9,7 @@ Name:           rust-libcramjam0.3
 # libcramjam/libcramjam-devel subpackages.
 %global soversion 0.3
 Version:        0.3.0
-Release:        %autorelease
+Release:        %autorelease -b 11
 Summary:        Compression library combining a plethora of algorithms
 
 License:        MIT

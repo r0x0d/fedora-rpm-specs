@@ -87,7 +87,7 @@ License:  MPL-2.0 AND ISC AND MIT AND BSD-3-Clause AND BSD-2-Clause
 # Before rebasing bind, ensure bind-dyndb-ldap is ready to be rebuild and use side-tag with it.
 # Updating just bind will cause freeipa-dns-server package to be uninstallable.
 Version:  9.18.31
-Release:  1%{?dist}
+Release:  2%{?dist}
 Epoch:    32
 Url:      https://www.isc.org/downloads/bind/
 #
@@ -128,6 +128,15 @@ Patch26: bind-9.18-unittest-netmgr-unstable.patch
 # Correct support for building without openssl/engine.h header
 # https://gitlab.isc.org/isc-projects/bind9/-/merge_requests/9593
 Patch27: bind-9.20-openssl-no-engine.patch
+# Downstream backport from 9.20
+# https://issues.redhat.com/browse/FREEIPA-11706
+# https://gitlab.isc.org/isc-projects/bind9/-/merge_requests/6751
+# https://gitlab.isc.org/isc-projects/bind9/-/merge_requests/6752
+Patch28: bind-9.20-nsupdate-tls.patch
+# Man change for patch28 nsupdate
+Patch29: bind-9.20-nsupdate-tls-doc.patch
+# Test suport for patch28 nsupdate
+Patch30: bind-9.20-nsupdate-tls-test.patch
 
 %{?systemd_ordering}
 Requires:       coreutils
@@ -982,6 +991,10 @@ fi;
 %endif
 
 %changelog
+* Wed Dec 04 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.31-2
+- Add nsupdate TLS support (FREEIPA-11706)
+- Include a test for nsupdate changes
+
 * Thu Nov 14 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.31-1
 - Update to 9.18.31 (#2319214)
 

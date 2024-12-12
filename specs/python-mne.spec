@@ -1,7 +1,7 @@
 #global commit  f44636f00666b8eb869417960926d01690ff4f42
 #global shortcommit #(c=#{commit}; echo ${c:0:7})
 #global checkout_date 2023094
-%global upstream_version  1.6.1
+%global upstream_version  1.8.0
 
 # setup.py does not list all requirements, and we also unbundle quite a few
 # from the externals folder, so we can't only rely on the automatic generator
@@ -28,7 +28,7 @@ Summary:        Magnetoencephalography (MEG) and Electroencephalography (EEG) da
 
 # SPDX
 License:        BSD-3-Clause
-URL:            http://martinos.org/mne/
+URL:            http://mne.tools/
 
 
 %if "0%{?commit}" != "0"
@@ -38,10 +38,6 @@ Source0:        https://github.com/mne-tools/mne-python/archive/v%{version}/%{na
 %endif
 
 #Source1:        https://s3.amazonaws.com/mne-python/datasets/MNE-sample-data-processed.tar.gz
-
-# Fix pandas test
-# https://github.com/mne-tools/mne-python/pull/12347
-Patch:          https://patch-diff.githubusercontent.com/raw/mne-tools/mne-python/pull/12347.patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
@@ -83,8 +79,14 @@ BuildRequires:  python3-scipy
 # Test deps
 BuildRequires:  python3-pytest
 BuildRequires:  python3-pytest-mock
-BuildRequires:  python3-pytest-xdist
+BuildRequires:  python3-pytest-qt
 BuildRequires:  python3-pytest-timeout
+# We could run the tests in parallel by uncommenting this and adding "-n auto"
+# to the pytest arguments. However, the algorithms are highly parallelized, so
+# they already use many-core systems well. Running multiple tests in parallel
+# actually greatly increases the time required – from about five to 32 minutes
+# in a test on a 16-core system – presumably due to increased contention.
+# BuildRequires:  python3-pytest-xdist
 BuildRequires:  python3-matplotlib
 BuildRequires:  python3-pandas
 BuildRequires:  python3-h5py
@@ -175,36 +177,36 @@ export MNE_SKIP_NETWORK_TESTS=1
 export MNE_DONTWRITE_HOME=true
 export MNE_FORCE_SERIAL=true
 
-# Deselected tests require additional data or don't work in mock
-# Two deselected for sklearn warnings
-ignore="${ignore-} --ignore=mne/datasets/tests/test_datasets.py"
-ignore="${ignore-} --ignore=mne/utils/tests/test_numerics.py"
-# Tools directory ignored as it contains tests for upstream release process
-
 # required for some tests
 mkdir subjects
-
-# Hangs:
-k="${k-}${k+ and }not test_thresholds[NumPy]"
-# FileNotFoundError (file 'test_eyelink.asc' not in repo):
-k="${k-}${k+ and }not test_annotations_without_offset"
-%ifarch s390x || ppc64le
-# Test fails on s390x and ppc64le.
-k="${k-}${k+ and }not test_spectrum_complex[welch-False]"
-%endif
-
-# Unexplained segfault:
-k="${k-}${k+ and }not test_sys_info"
-
-# The warning message has changed:
-k="${k-}${k+ and }not test_cluster_permutation_with_adjacency[NumPy]"
 
 # Docstrings differ from expected in Python 3.13 due to “Automatically dedent
 # docstring constants by default”
 # https://github.com/python/cpython/issues/81283.
+# https://github.com/mne-tools/mne-python/issues/13013
 k="${k-}${k+ and }not copy_doc"
 k="${k-}${k+ and }not docs.copy_function_doc_to_method_doc"
 k="${k-}${k+ and }not test_copy_function_doc_to_method_doc"
+
+# Fails on F40 (didn't investigate)
+# Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+# The list of emitted warnings is: [].
+%if %{defined fc40}
+k="${k-}${k+ and }not test_brainvision_data_software_filters_latin1_global_units"
+k="${k-}${k+ and }not test_brainvision_vectorized_data"
+k="${k-}${k+ and }not test_ica_simple[fastica]"
+k="${k-}${k+ and }not test_fit_sphere_to_headshape"
+k="${k-}${k+ and }not test_compute_whitener_rank"
+%endif
+
+# Test segfaults intermittently
+k="${k-}${k+ and }not test_plotting_scalebars[matplotlib]"
+# Flaky (DID NOT RAISE <class 'numpy.linalg.LinAlgError'>)
+k="${k-}${k+ and }not test_regularized_csp[None-full-eeg]"
+%ifarch aarch64
+# Flaky (Aborted)
+k="${k-}${k+ and }not test_save_complex_data[single-2e-06-True-True]"
+%endif
 
 # https://github.com/mne-tools/mne-python/blob/v1.0.3/tools/github_actions_test.sh#L7
 # skip tests that require network

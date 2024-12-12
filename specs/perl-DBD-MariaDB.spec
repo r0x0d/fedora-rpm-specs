@@ -9,7 +9,7 @@
 
 Name:           perl-DBD-MariaDB
 Version:        1.23
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        MariaDB and MySQL driver for the Perl5 Database Interface (DBI)
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/DBD-MariaDB/
@@ -17,7 +17,7 @@ Source0:        https://cpan.metacpan.org/authors/id/P/PA/PALI/DBD-MariaDB-%{ver
 Source1:        test-setup.t
 Source2:        test-clean.t
 Source3:        test-env.sh
-Patch0:         DBD-MariaDB-1.21-Run-test-setup-and-clean.patch
+Patch0:         DBD-MariaDB-1.23-Run-test-setup-and-clean.patch
 BuildRequires:  findutils
 BuildRequires:  gcc
 BuildRequires:  make
@@ -40,6 +40,7 @@ BuildRequires:  perl(Getopt::Long)
 BuildRequires:  perl(strict)
 BuildRequires:  perl(utf8)
 BuildRequires:  perl(warnings)
+BuildRequires:  sscg
 # Tests
 BuildRequires:  hostname
 BuildRequires:  mariadb
@@ -106,6 +107,11 @@ with "%{_libexecdir}/%{name}/test".
 %setup -q -n DBD-MariaDB-%{version}
 %patch -P0 -p1
 cp %{SOURCE1} %{SOURCE2} t/
+mkdir t/certs
+
+# Create certificates for tests
+sscg --hostname=localhost --ca-mode=0644 --ca-key-mode=0640 --cert-key-mode=0640 --no-dhparams-file
+mv ca.crt service-key.pem service.pem t/certs
 
 # Help file to recognise the Perl scripts and normalize shebangs
 for F in t/*.t t/*.pl; do
@@ -136,20 +142,31 @@ perl Makefile.PL INSTALLDIRS=vendor OPTIMIZE="$RPM_OPT_FLAGS" NO_PACKLIST=1 NO_P
 %install
 %{make_install}
 find %{buildroot} -type f -name '*.bs' -size 0 -delete
+%{_fixperms} %{buildroot}/*
 
 # Install tests
 mkdir -p %{buildroot}%{_libexecdir}/%{name}
 cp -a t %{buildroot}%{_libexecdir}/%{name}
 cp %{SOURCE3} %{buildroot}%{_libexecdir}/%{name}
-cat > %{buildroot}%{_libexecdir}/%{name}/test << EOF
-#!/bin/sh
+cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
+#!/usr/bin/bash
+set -e
 unset RELEASE_TESTING
-. %{_libexecdir}/%{name}/$(basename %{SOURCE3})
-cd %{_libexecdir}/%{name} && exec prove -I .
+
+# The tests write to temporary database which is placed in $DIR/t/testdb
+DIR=$(mktemp -d)
+pushd "$DIR"
+cp -a %{_libexecdir}/%{name}/* ./
+
+# Load the variables
+. $DIR/$(basename %{SOURCE3})
+
+# Run tests
+prove -I . -j "$(getconf _NPROCESSORS_ONLN)"
+popd
+rm -rf "$DIR"
 EOF
 chmod +x %{buildroot}%{_libexecdir}/%{name}/test
-
-%{_fixperms} %{buildroot}/*
 
 %check
 # Set MariaDB and DBD::MariaDB test environment
@@ -169,6 +186,9 @@ make test %{?with_perl_DBD_MariaDB_enables_leak_test:EXTENDED_TESTING=1}
 %{_libexecdir}/%{name}
 
 %changelog
+* Tue Dec 10 2024 Jitka Plesnikova <jplesnik@redhat.com> - 1.23-7
+- Generate SSL needed for tests since mariadb-connector-c 3.4.x
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.23-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

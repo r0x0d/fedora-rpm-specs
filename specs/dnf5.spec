@@ -7,11 +7,13 @@
 
 Name:           dnf5
 Version:        %{project_version_prime}.%{project_version_major}.%{project_version_minor}.%{project_version_micro}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Command-line package manager
 License:        GPL-2.0-or-later
 URL:            https://github.com/rpm-software-management/dnf5
 Source0:        %{url}/archive/%{version}/dnf5-%{version}.tar.gz
+Patch0:         0001-python3-libdnf5-Remove-superfluous-provides-for-pyth.patch
+Patch1:         0002-Remove-redundant-python_provide-statements.patch
 
 Requires:       libdnf5%{?_isa} = %{version}-%{release}
 Requires:       libdnf5-cli%{?_isa} = %{version}-%{release}
@@ -511,8 +513,7 @@ Perl 5 bindings for the libdnf5-cli library.
 
 %if %{with python3}
 %package -n python3-libdnf5
-%{?python_provide:%python_provide python3-libdnf}
-Summary:        Python 3 bindings for the libdnf library
+Summary:        Python 3 bindings for the libdnf5 library
 License:        LGPL-2.1-or-later
 Requires:       libdnf5%{?_isa} = %{version}-%{release}
 
@@ -531,7 +532,6 @@ Python 3 bindings for the libdnf library.
 
 %if %{with python3} && %{with libdnf_cli}
 %package -n python3-libdnf5-cli
-%{?python_provide:%python_provide python3-libdnf5-cli}
 Summary:        Python 3 bindings for the libdnf5-cli library
 License:        LGPL-2.1-or-later
 Requires:       libdnf5-cli%{?_isa} = %{version}-%{release}
@@ -901,6 +901,9 @@ popd
 %ldconfig_scriptlets
 
 %changelog
+* Fri Dec 06 2024 Miro Hrončok <mhroncok@redhat.com> - 5.2.8.1-2
+- python3-libdnf5: Remove superfluous provides for python-libdnf
+
 * Thu Dec 05 2024 Packit <hello@packit.dev> - 5.2.8.1-1
 ## What's Changed
  * Fix libdnf5 actions plugin sign conversion compilation err by @jrohel in https://github.com/rpm-software-management/dnf5/pull/1921

@@ -1,6 +1,6 @@
 Name:		python-ipyparallel
 Version:	9.0.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	Interactive Parallel Computing with IPython
 
 License:	BSD-3-Clause
@@ -26,7 +26,6 @@ BuildRequires:	python3dist(tqdm)
 #		For testing:
 BuildRequires:	python3dist(pytest)
 BuildRequires:	python3dist(pytest-asyncio)
-BuildRequires:	python3-zmq-tests
 
 %description
 IPython Parallel (ipyparallel) is a Python package and collection of
@@ -50,7 +49,6 @@ Summary:	Tests for python3-ipyparallel
 %py_provides	python3-ipyparallel-tests
 Obsoletes:	python3-ipyparallel-tests < 8.4.1-3
 Requires:	python3-ipyparallel = %{version}-%{release}
-Requires:	python3-zmq-tests
 
 %description -n python3-ipyparallel+test
 This package contains the tests of python3-ipyparallel.
@@ -110,6 +108,9 @@ mv %{buildroot}%{_prefix}%{_sysconfdir} %{buildroot}%{_sysconfdir}
 %{python3_sitelib}/ipyparallel/tests
 
 %changelog
+* Tue Dec 10 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 9.0.0-3
+- Drop spurious dependency on python3-zmq-tests
+
 * Mon Dec 09 2024 Mattias Ellert <mattias.ellert@physics.uu.se> - 9.0.0-2
 - Disable MongoDB tests
 

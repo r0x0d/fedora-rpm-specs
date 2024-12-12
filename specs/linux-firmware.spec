@@ -4,7 +4,7 @@
 %define _binaries_in_noarch_packages_terminate_build 0
 
 Name:		linux-firmware
-Version:	20241110
+Version:	20241210
 Release:	1%{?dist}
 Summary:	Firmware files used by the Linux kernel
 # Automatically converted from old format: GPL+ and GPLv2+ and MIT and Redistributable, no modification permitted - review is highly recommended.
@@ -374,6 +374,7 @@ sed -i -e 's:^./::' linux-firmware.{files,dirs}
 sed \
 	-i -e '/^a300_p/d' \
 	-i -e '/^amdgpu/d' \
+	-i -e '/^amdnpu/d' \
 	-i -e '/^amd/d' \
 	-i -e '/^amdtee/d' \
 	-i -e '/^amd-ucode/d' \
@@ -444,8 +445,9 @@ sed -e 's/^/%%dir /' linux-firmware.dirs >> linux-firmware.files
 
 # GPU firmwares
 %files -n amd-gpu-firmware
-%license LICENSE.radeon LICENSE.amdgpu
+%license LICENSE.radeon LICENSE.amdgpu LICENSE.amdnpu
 %{_firmwarepath}/amdgpu/
+%{_firmwarepath}/amdnpu/
 %{_firmwarepath}/radeon/
 
 %files -n intel-gpu-firmware
@@ -633,6 +635,32 @@ sed -e 's/^/%%dir /' linux-firmware.dirs >> linux-firmware.files
 %{_firmwarepath}/v4l-cx2*
 
 %changelog
+* Tue Dec 10 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 20241210-1
+- Update to upstream 20241210
+- Update firmware file for Intel BlazarU core
+- amdgpu: numerous firmware updates
+- upstream amdnpu firmware
+- QCA: Add Bluetooth nvm files for WCN785x
+- i915: Update Xe2LPD DMC to v2.24
+- cirrus: cs35l56: Add firmware for Cirrus CS35L56 for various Dell laptops
+- iwlwifi: add Bz-gf FW for core89-91 release
+- QCA: Update Bluetooth WCN785x firmware to 2.0.0-00515-2
+- ice: update ice DDP wireless_edge package to 1.3.20.0
+- ice: update ice DDP comms package to 1.3.52.0
+- ice: update ice DDP package to ice-1.3.41.0
+- amdgpu: update DMCUB to v9.0.10.0 for DCN314/DCN351
+- Update AMD cpu microcode
+- xe: Update GUC to v70.36.0 for BMG, LNL
+- i915: Update GUC to v70.36.0 for ADL-P, DG1, DG2, MTL, TGL
+- iwlwifi: add Bz-gf FW for core91-69 release
+- qcom: venus-5.4: add venus firmware file for qcs615
+- qcom: update venus firmware file for SC7280
+- QCA: Add 22 bluetooth firmware nvm files for QCA2066
+- mediatek MT7921/MT7922: update bluetooth firmware
+- update for MT7921/MT7922 WiFi device
+- qcom: Add QDU100 firmware image files.
+- qcom: Update aic100 firmware files
+
 * Mon Nov 11 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 20241110-1
 - Update to upstream 20241110
 - rtl_bt: Update RTL8852BT/RTL8852BE-VT BT USB FW to 0x04D7_63F7

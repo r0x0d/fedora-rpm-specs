@@ -56,11 +56,15 @@
 
 Name:           libdnf
 Version:        %{libdnf_major_version}.%{libdnf_minor_version}.%{libdnf_micro_version}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library providing simplified C and Python API to libsolv
 License:        LGPL-2.1-or-later
 URL:            https://github.com/rpm-software-management/libdnf
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+
+# Fix a segfault in iterator of a ConfigParser section
+# Fixes https://bugzilla.redhat.com/2330562
+Patch:          https://github.com/rpm-software-management/libdnf/pull/1682.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc
@@ -304,6 +308,11 @@ popd
 %endif
 
 %changelog
+* Tue Dec 10 2024 Miro Hrončok <mhroncok@redhat.com> - 0.73.4-2
+- Fix a segfault in iterator of a ConfigParser section
+- Fixes: rhbz#2330562
+
+
 * Tue Nov 12 2024 Evan Goode <egoode@redhat.com> - 0.73.4-1
 - Set POOL_FLAG_ADDFILEPROVIDESFILTERED only when not loading filelists
 

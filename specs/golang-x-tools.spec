@@ -33,7 +33,7 @@ Single Assignment form (SSA) representation for Go programs.}
 %global godocs          CONTRIBUTING.md README.md
 
 %global auth_commands authtest cookieauth gitauth netrcauth
-%global commands benchcmp bisect bundle callgraph compilebench digraph eg file2fuzz fiximports go-contrib-init godex godoc goimports gomvpkg gonew gorename gotype goyacc html2article present present2md splitdwarf ssadump stress stringer toolstash
+%global commands benchcmp bisect bundle callgraph compilebench digraph eg file2fuzz fiximports go-contrib-init godex godoc goimports gomvpkg gonew gotype goyacc html2article present present2md splitdwarf ssadump stress stringer toolstash
 %global signature_fuzzer fuzz-driver fuzz-runner
 
 Name:           %{goname}
@@ -112,13 +112,6 @@ Summary:        Tool for queries over unlabelled directed graphs in text form
 %description    digraph
 The digraph command performs queries over unlabelled directed graphs
 represented in text form.
-
-%package        gorename
-Summary:        Tool for precise type-safe renaming of identifiers in Go code
-
-%description    gorename
-The gorename command performs precise type-safe renaming of identifiers in Go
-source code.
 
 %package        stringer
 Summary:        Tool to automate creating methods satisfying the fmt.Stringer interface
@@ -360,11 +353,6 @@ mv %{buildroot}%{_bindir}/bundle %{buildroot}%{_bindir}/gobundle
 %doc %{godocs}
 %license %{golicenses}
 %{_bindir}/digraph
-
-%files    gorename
-%doc %{godocs}
-%license %{golicenses}
-%{_bindir}/gorename
 
 %files    stringer
 %doc %{godocs}

@@ -4,28 +4,22 @@
 %global srcname zuluCrypt
 
 Name:           zulucrypt
-Version:        7.0.0
-Release:        2%{?dist}
+Version:        7.1.0
+Release:        1%{?dist}
 Summary:        Qt GUI front end to cryptsetup
 
 # More details available in the copyright file in the source tarball.
 # Major license is GPLv2+ (but GPLv3+ for some files)
 # BSD for zuluwallet and dependencies lxqt_wallet and tcplay (at least tcplay is always bundled)
 # CRC32 for a file in tcplay
-# Still waiting on https://gitlab.com/fedora/legal/fedora-license-data/-/issues/561 to get an SPDX ID for another part of tcplay
-License:        GPL-3.0-or-later AND GPL-2.0-or-later AND BSD-2-clause AND BSD-3-clause AND LicenseRef-CRC32
+# generic-xts for a part of tcplay
+License:        GPL-3.0-or-later AND GPL-2.0-or-later AND BSD-2-clause AND BSD-3-clause AND generic-xts AND LicenseRef-Fedora-UltraPermissive
 URL:            https://mhogomchungu.github.io/zuluCrypt
 Source0:        https://github.com/mhogomchungu/zuluCrypt/archive/%{version}/%{name}-%{version}.tar.gz
 
 # polkit policy stolen from Debian, https://github.com/marciosouza20/zulucrypt
 Source10:      zulucrypt-gui.policy
 Source11:      zulumount-gui.policy
-
-# Fix targets for QT6 builds (https://github.com/mhogomchungu/zuluCrypt/pull/218)
-Patch0: qt6_cmake.patch
-
-# Fix include file naming for lxqt 4.0 (https://github.com/mhogomchungu/zuluCrypt/pull/219)
-Patch1: lxqt_header.patch
 
 BuildRequires:  gcc gcc-c++
 
@@ -224,6 +218,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/zulu*.desktop
 %doc docs/README docs/*.jpg
 
 %changelog
+* Tue Dec 10 2024 Ian McInerney <ian.s.mcinerney@ieee.org> - 7.1.0-1
+- Update to upstream 7.1.0 (fixes rhbz#2330000, rhbz#2331292)
+- Update license string with final SPDX expression
 
 * Wed Nov 06 2024 Ian McInerney <ian.s.mcinerney@ieee.org> - 7.0.0-2
 - Switch to QT6 for new lxqt-wallet version 4.0.0 update

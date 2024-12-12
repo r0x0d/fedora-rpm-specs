@@ -47,7 +47,7 @@ Name:           systemd
 Url:            https://systemd.io
 # Allow users to specify the version and release when building the rpm by 
 # setting the %%version_override and %%release_override macros.
-Version:        %{?version_override}%{!?version_override:257~rc3}
+Version:        %{?version_override}%{!?version_override:257}
 Release:        %autorelease
 
 %global stable %(c="%version"; [ "$c" = "${c#*.*}" ]; echo $?)
@@ -727,6 +727,7 @@ VMLINUX_H_PATH=$(%python3 -c '%find_vmlinux_h')
 
 CONFIGURE_OPTS=(
         -Dmode=%[%{with upstream}?"developer":"release"]
+        -Dslow-tests=true
         -Dsysvinit-path=/etc/rc.d/init.d
         -Drc-local=/etc/rc.d/rc.local
         -Dntp-servers='0.%{ntpvendor}.pool.ntp.org 1.%{ntpvendor}.pool.ntp.org 2.%{ntpvendor}.pool.ntp.org 3.%{ntpvendor}.pool.ntp.org'

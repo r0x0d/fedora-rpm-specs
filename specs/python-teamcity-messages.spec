@@ -1,8 +1,8 @@
 %global pypi_name         teamcity-messages
 
 Name:           python-%{pypi_name}
-Version:        1.32
-Release:        8%{?dist}
+Version:        1.33
+Release:        1%{?dist}
 Summary:        Send test results to TeamCity continuous integration servers
 
 License:        Apache-2.0 

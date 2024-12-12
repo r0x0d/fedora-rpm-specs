@@ -1,6 +1,6 @@
 Name:           calcurse
 Version:        4.8.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Text-based personal organizer
 
 License:        BSD-2-Clause
@@ -9,7 +9,8 @@ Source0:        https://calcurse.org/files/%{name}-%{version}.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  gettext-devel ncurses-devel autoconf automake asciidoc
-BuildRequires: make
+BuildRequires:  make
+Requires:       python3-httplib2
 
 %description
 Calcurse is a text-based calendar and scheduling application. It helps 
@@ -41,6 +42,9 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/doc/%{name}
 
 
 %changelog
+* Tue Dec 10 2024 Gwyn Ciesla <gwync@protonmail.com> - 4.8.1-6
+- Require python3-httplib2 for calcav
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.8.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

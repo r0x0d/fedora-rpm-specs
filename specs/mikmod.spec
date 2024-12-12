@@ -1,17 +1,19 @@
 Name:           mikmod
 Version:        3.2.8
-Release:        19%{?dist}
+Release:        20%{?dist}
 Summary:        Console music module player
 
 # Automatically converted from old format: GPLv2 and LGPLv2+ - review is highly recommended.
 License:        GPL-2.0-only AND LicenseRef-Callaway-LGPLv2+
 URL:            http://mikmod.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/mikmod/%{name}-%{version}.tar.gz
+Patch0001:      0001-mikmod-fix-startup-crash-on-_FORTIFY_SOURCE-3-system.patch
 
-BuildRequires: make
+BuildRequires:  make
 BuildRequires:  gcc
 BuildRequires:  ncurses-devel
 BuildRequires:  libmikmod-devel
+BuildRequires:  git-core
 
 %description
 MikMod is one of the best and most well known MOD music file players
@@ -26,7 +28,7 @@ loading/saving of playlists.
 Install the mikmod package if you need a MOD music file player.
 
 %prep
-%autosetup
+%autosetup -p2 -Sgit
 
 %build
 %configure
@@ -43,6 +45,10 @@ Install the mikmod package if you need a MOD music file player.
 %{_mandir}/man1/%{name}.1*
 
 %changelog
+* Thu Dec 05 2024 Lon Hohberger <lon@redhat.com> - 3.2.8-20
+- Use git to apply patches
+- Fix crash on startup due to buffer overrun
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 3.2.8-19
 - convert license to SPDX
 

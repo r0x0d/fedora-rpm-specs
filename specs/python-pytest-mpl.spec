@@ -2,7 +2,7 @@
 
 Name:           python-%{srcname}
 Version:        0.13
-Release:        13%{?dist}
+Release:        14%{?dist}
 Summary:        Pytest plugin for testing figure output from Matplotlib
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -15,10 +15,11 @@ Patch0001:      0001-Increase-tolerance-for-new-FreeType.patch
 BuildArch:      noarch
 
 %global _description \
-This is a plugin to facilitate image comparison for Matplotlib figures in \
-pytest. Matplotlib includes a number of test utilities and decorators, but \
-these are geared towards the nose testing framework. Pytest-mpl makes it easy \
-to compare figures produced by tests to reference images when using pytest.
+This is a plugin to facilitate image comparison for Matplotlib figures. \
+For each figure to test, an image is generated and then subtracted from an \
+existing reference image. If the RMS of the residual is larger than \
+a user-specified tolerance, the test will fail. Alternatively, the generated \
+image can be hashed and compared to an expected value.
 
 %description %{_description}
 
@@ -28,7 +29,6 @@ Summary:        %{summary}
 
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(matplotlib)
-BuildRequires:  python3dist(nose)
 BuildRequires:  python3dist(pillow)
 BuildRequires:  python3dist(pytest)
 BuildRequires:  python3dist(setuptools)
@@ -65,6 +65,10 @@ MPLBACKEND=Agg %{pytest} tests -k 'not test_succeeds_remote and not test_succeed
 
 
 %changelog
+* Mon Dec 09 2024 Miro Hrončok <mhroncok@redhat.com> - 0.13-14
+- Remove redundant BuildRequires on python3-nose
+- Update outdated description not to mention nose
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.13-13
 - convert license to SPDX
 

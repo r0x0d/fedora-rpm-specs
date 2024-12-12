@@ -1,6 +1,6 @@
 %global         srcname         extruct
 %global         forgeurl        https://github.com/scrapinghub/extruct
-Version:        0.17.0
+Version:        0.18.0
 %global         tag             %{version}
 %forgemeta
 
@@ -63,5 +63,8 @@ Summary:        %{summary}
 %{_bindir}/extruct
 
 %changelog
+* Tue Dec 10 2024 Benson Muite <benson_muite@emailplus.org> - 0.18.0-1
+- Update to 0.18.0
+
 * Fri Oct 18 2024 Benson Muite <benson_muite@emailplus.org> - 0.17.0-1
 - Initial packaging

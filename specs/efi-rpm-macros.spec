@@ -1,20 +1,14 @@
 Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
-Version: 5
-Release: 13%{?dist}
+Version: 6
+Release: 1%{?dist}
 License: GPL-3.0-or-later
 URL: https://github.com/rhboot/%{name}/
 BuildRequires: git sed
 BuildRequires: make
 BuildArch: noarch
 
-Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-5.tar.bz2
-
-Patch0001: 0001-Don-t-have-arm-as-an-alt-arch-of-aarch64.patch
-Patch0002: 0002-Makefile-fix-permission-on-boot-efi-EFI.patch
-# Not upstream, but trivial and posted upstream as a PR:
-# https://github.com/rhboot/efi-rpm-macros/pull/3
-Patch0003: 0003-add-riscv64-support.patch
+Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-6.tar.bz2
 
 %global debug_package %{nil}
 %global _efi_vendor_ %(eval echo $(sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release))
@@ -40,7 +34,7 @@ The efi-filesystem package contains the basic directory layout for EFI
 machine bootloaders and tools.
 
 %prep
-%autosetup -S git_am -n %{name}-5
+%autosetup -S git_am -n %{name}-6
 git config --local --add efi.vendor "%{_efi_vendor_}"
 git config --local --add efi.esp-root /boot/efi
 git config --local --add efi.arches "x86_64 aarch64 %{arm} %{ix86} riscv64"
@@ -72,6 +66,9 @@ git config --local --add efi.arches "x86_64 aarch64 %{arm} %{ix86} riscv64"
 %dir /boot/efi/EFI/%{_efi_vendor_}
 
 %changelog
+* Tue Dec 10 2024 Nicolas Frayer <nfrayer@redhat.com> - 6-1
+- Update to efi-rpm-macros version 6
+
 * Fri Jul 19 2024 David Abdurachmanov <davidlt@rivosinc.com> - 5-13
 - Add riscv64
 

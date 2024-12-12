@@ -1,7 +1,7 @@
 %global modname dbusmock
 
 Name:             python-%{modname}
-Version:          0.32.2
+Version:          0.33.0
 Release:          1%{?dist}
 Summary:          Mock D-Bus objects
 
@@ -52,6 +52,11 @@ rm -rf python-%{modname}.egg-info
 %{python3_sitelib}/*%{modname}*
 
 %changelog
+* Wed Dec 11 2024 Packit <hello@packit.dev> - 0.33.0-1
+- templates: Add gsd-rfkill (thanks Guido Günther)
+- Allow adding objects derived from DBusMockObject (thanks Sebastian Wick)
+- Drop Python <= 3.7 support (thanks Tomasz Kłoczko)
+
 * Thu Oct 03 2024 Packit <hello@packit.dev> - 0.32.2-1
 - all templates: Drop wrong variant wrapping from all properties
 - tests: Skip TestNetworkManager::test_one_wifi_with_accesspoints with NM ≥ 1.49.3

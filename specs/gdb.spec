@@ -45,7 +45,7 @@ Version: 15.2
 
 # The release always contains a leading reserved number, start it at 1.
 # `upstream' is not a part of `name' to stay fully rpm dependencies compatible for the testing.
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPL-3.0-or-later AND BSD-3-Clause AND FSFAP AND LGPL-2.1-or-later AND GPL-2.0-or-later AND LGPL-2.0-or-later AND LicenseRef-Fedora-Public-Domain AND GFDL-1.3-or-later AND LGPL-2.0-or-later WITH GCC-exception-2.0 AND GPL-3.0-or-later WITH GCC-exception-3.1 AND GPL-2.0-or-later WITH GNU-compiler-exception
 # Do not provide URL for snapshots as the file lasts there only for 2 days.
@@ -928,6 +928,26 @@ fi
 # endif scl
 
 %changelog
+* Tue Dec 10 2024 Andrew Burgess <aburgess@redhat.com>
+- Remove
+  gdb-6.6-buildid-locate-misleading-warning-missing-debuginfo-rhbz981154.patch,
+  gdb-6.6-buildid-locate.patch,
+  gdb-6.6-buildid-locate-solib-missing-ids.patch, and
+  gdb-remove-use-of-py-isascii.  Add new patches
+  gdb-add-deprecated-settings-py-script.patch,
+  gdb-backport-buildid-related-changes.patch,
+  gdb-remove-qnx-neutrino-support.patch, and
+  gdb-6.6-buildid-locate-tests.patch.  Update
+  gdb-add-rpm-suggestion-script.patch and
+  gdb-rhbz1156192-recursive-dlopen-test.patch.  All of the RPM
+  suggestion feature is now provided via a Python extension.  I
+  believe that the existing functionality should be covered by the new
+  implementation, but with no real tests for the existing code, we
+  cannot be certain.  There are new GDB commands added as part of this
+  change related to controlling the RPM suggestion feature.  These are
+  documented within the gdb-add-rpm-suggestion-script.patch patch by
+  changes to the GDB manual.
+
 * Thu Nov 14 2024 Kevin Buettner <kevinb@redhat.com>
 - Remove gdb-6.5-bz243845-stale-testing-zombie-test.patch.  This was a
   test for a fix to a function that was named linux_test_for_tracefork,

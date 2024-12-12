@@ -2,7 +2,7 @@
 
 Name:           mirrormanager2
 Version:        1.0.0
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Mirror management application
 
 # Most MirrorManager files are licensed under the MIT license. Some
@@ -15,6 +15,8 @@ Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
 # Fedora has patched the original flask-xml-rpc instead of packaging the -re version.
 Patch0:         mirrormanager2-flask-xml-rpc.patch
+# Fedora's mirrormanager instance has a new URL and the XML-RPC requests are POST, which don't follow redirects.
+Patch1:         mirrormanager2-url.patch
 
 BuildArch:      noarch
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
@@ -306,6 +308,9 @@ MM2_SKIP_NETWORK_TESTS=1 %{pytest} tests
 
 
 %changelog
+* Tue Dec 10 2024 Aurelien Bompard <abompard@fedoraproject.org> - 1.0.0-9
+- Patch the configuration file for the report-mirror client to update the server URL.
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.0-8
 - convert license to SPDX
 

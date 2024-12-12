@@ -47,7 +47,6 @@ BuildRequires:  python3-devel
 
 
 %files -n python3-%{srcname} -f %{pyproject_files}
-%license LICENSE
 %doc README.md CHANGES examples
 %{_bindir}/tmuxp
 

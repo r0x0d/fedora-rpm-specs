@@ -150,6 +150,9 @@ export RUSTFLAGS='%{build_rustflags}'
 # tests/test_variants.py:55: DecompressionError
 k="${k-}${k+ and }not test_variants_different_dtypes[blosc2]"
 %endif
+# Some tests in test_variants.py may produce segmentation faults
+# https://github.com/milesgranger/cramjam/issues/190
+k="${k-}${k+ and }not (test_variants and [blosc2)"
 
 %pytest -k "${k-}" -v -n auto
 %endif
