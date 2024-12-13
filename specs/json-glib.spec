@@ -1,8 +1,8 @@
 %define glib2_version 2.72.0
 
 Name:		json-glib
-Version:	1.10.0
-Release:	2%{?dist}
+Version:	1.10.6
+Release:	1%{?dist}
 Summary:	Library for JavaScript Object Notation format
 
 License:	LGPL-2.1-or-later
@@ -84,6 +84,9 @@ the functionality of the installed json-glib package.
 
 
 %changelog
+* Wed Dec 11 2024 nmontero <nmontero@redhat.com> - 1.10.6-1
+- Update to 1.10.6
+
 * Fri Sep 13 2024 Timothée Ravier <tim@siosm.fr> - 1.10.0-2
 - Point to license file and not symlink (fedora#2297094)
 

@@ -1,5 +1,5 @@
 Name:           cockpit-composer
-Version:        52
+Version:        53
 Release:        1%{?dist}
 Summary:        Composer GUI for use with Cockpit
 
@@ -42,6 +42,10 @@ cp -a public/org.image-builder.cockpit-composer.metainfo.xml %{buildroot}/%{_dat
 %{_datadir}/metainfo/*
 
 %changelog
+* Wed Dec 11 2024 Packit <hello@packit.dev> - 53-1
+- bump testlib
+- translations update
+
 * Thu Aug 22 2024 Packit <hello@packit.dev> - 52-1
 Incorrect RHEL 10 repository overrides broke downstream tests.
 

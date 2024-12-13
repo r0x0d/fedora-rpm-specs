@@ -14,13 +14,18 @@ Summary:        Recompression utilities for .png, .mng, .zip and .gz files
 #   of the sources that would be covered by the “unRAR license restriction” or
 #   the BSD-3-Clause license for LZFSE are present in this fork.
 #
-#   Certain build-system files, which do not contribute to the license of the
-#   binary RPM, are under other permissible licenses.
-#
 # However, in version 1.17, the COPYING file was updated to GPLv3, with a
 # changelog message (in HISTORY and elsewhere) of “Changes to GPL3.” We
 # interpret this as an overall license of GPL-3.0-only.
 License:        GPL-3.0-only AND GPL-2.0-or-later AND LGPL-2.1-or-later
+# Additionally, the following bundled libraries are removed in %%prep and do
+# not contribute to the licenses of the binary RPMs:
+#
+# Apache-2.0:
+#   - zopfli/
+# MIT:
+#   - libdeflate/
+SourceLicense:  %{license} AND Apache-2.0 AND MIT
 URL:            https://www.advancemame.it/
 %global forgeurl https://github.com/amadvance/advancecomp
 Source:         %{forgeurl}/archive/v%{version}/advancecomp-%{version}.tar.gz

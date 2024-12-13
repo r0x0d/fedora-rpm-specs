@@ -16,7 +16,7 @@ Summary:        Collection of useful one-file C/C++ headers
 #
 # The BSL-1.0 source appears only in the
 # cr-marcstevens-snippets-progress_display-devel subpackage.
-#
+License:        MIT AND BSL-1.0
 # Additionally, the following are removed in %%prep and do not contribute to
 # the binary RPMs:
 #
@@ -28,7 +28,12 @@ Summary:        Collection of useful one-file C/C++ headers
 #     autoconf/ax_pthread.m4
 # • GPL-2.0-or-later WITH Autoconf-exception-generic:
 #     autoconf/ax_cuda.m4
-License:        MIT AND BSL-1.0
+SourceLicense:  %{shrink:
+                %{license} AND
+                FSFAP AND
+                GPL-3.0-or-later WITH Autoconf-exception-macro AND
+                GPL-2.0-or-later WITH Autoconf-exception-generic
+                }
 URL:            https://github.com/cr-marcstevens/snippets
 Source0:        %{url}/archive/%{commit}/snippets-%{commit}.tar.gz
 # License URL referenced in cxxheaderonly/progress_display.hpp, converted from

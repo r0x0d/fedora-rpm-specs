@@ -45,7 +45,7 @@ Version: 15.2
 
 # The release always contains a leading reserved number, start it at 1.
 # `upstream' is not a part of `name' to stay fully rpm dependencies compatible for the testing.
-Release: 4%{?dist}
+Release: 6%{?dist}
 
 License: GPL-3.0-or-later AND BSD-3-Clause AND FSFAP AND LGPL-2.1-or-later AND GPL-2.0-or-later AND LGPL-2.0-or-later AND LicenseRef-Fedora-Public-Domain AND GFDL-1.3-or-later AND LGPL-2.0-or-later WITH GCC-exception-2.0 AND GPL-3.0-or-later WITH GCC-exception-3.1 AND GPL-2.0-or-later WITH GNU-compiler-exception
 # Do not provide URL for snapshots as the file lasts there only for 2 days.
@@ -928,6 +928,26 @@ fi
 # endif scl
 
 %changelog
+* Wed Dec 11 2024 Andrew Burgess <aburgess@redhat.com>
+- Remove gdb-6.6-buildid-locate-tests.patch patch, merge the tests
+  from this patch into gdb-add-rpm-suggestion-script.patch.  The tests
+  from the removed patch all relate to RPM suggestion, and so should
+  live with the rpm suggestion script.
+
+* Wed Dec 11 2024 Andrew Burgess <aburgess@redhat.com>
+- This REMOVES the 'set/show build-id-verbose' command.  Users should
+  instead use 'set/show rpm-suggestion enabled'.  The old
+  build-id-verbose setting took an integer, but only 0 or 1 had
+  meaning.  The new setting is a boolean, and takes 'on' or 'off'.
+  The old setting was undocumented, while the new setting has a manual
+  entry.
+
+* Wed Dec 11 2024 Andrew Burgess <aburgess@redhat.com>
+- Remove gdb-add-deprecated-settings-py-script.patch.  This REMOVES
+  the 'set/show build-id-core-load' setting from GDB.  This setting
+  has had no effect on GDB since commit a5d2c85367e544d446 back in
+  2020.  Lets finally drop this setting.
+
 * Tue Dec 10 2024 Andrew Burgess <aburgess@redhat.com>
 - Remove
   gdb-6.6-buildid-locate-misleading-warning-missing-debuginfo-rhbz981154.patch,

@@ -82,9 +82,7 @@ Summary(pt):    Criar animações tradicionais feitas a mão (desenhos animados)
 # The following sources are “heavily influenced by” QAquarelle, which is
 # GPL-2.0-or-later, and bear its copyright/license notice.
 #   - core_lib/src/tool/strokeinterpolator.cpp
-#
-# -----
-#
+License:        GPL-2.0-only AND BSD-3-Clause AND GPL-2.0-or-later
 # Additionally, the following are under other allowed licenses but, for one
 # reason or another, do not contribute to the licenses of the binary RPMs.
 #
@@ -105,10 +103,16 @@ Summary(pt):    Criar animações tradicionais feitas a mão (desenhos animados)
 #
 # The following source is part of support for Windows Installer, which is not
 # used in this package; furthermore, it is OK to distribute in the source RPM
-# because it is content (for which CC0-1.0 is allowed) rrather than code (for
+# because it is content (for which CC0-1.0 is allowed) rather than code (for
 # which it is not-allowed).
 #   - util/installer/cog.svg
-License:        GPL-2.0-only AND BSD-3-Clause AND GPL-2.0-or-later
+SourceLicense:  %{shrink:
+                %{license} AND
+                BSL-1.0 AND
+                CC0-1.0 AND
+                MIT AND
+                Unlicense
+                }
 URL:            https://github.com/pencil2d/pencil
 Source:         %{url}/archive/v%{srcversion}/pencil-%{srcversion}.tar.gz
 

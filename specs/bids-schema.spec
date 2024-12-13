@@ -23,6 +23,8 @@ Summary:        BIDS schema description
 # The Python library in tools/schemacode/, packaged as python3-bidsschematools,
 # is MIT.
 License:        CC-BY-4.0
+# CC0-1.0 comes from the filtered test datasets, Source2 and Source3
+SourceLicense:  CC0-1.0 AND CC-BY-4.0 AND MIT
 URL:            https://github.com/bids-standard/bids-specification
 # The PyPI sdist corresponds to the tools/schemacode directory in git.
 Source0:        %{url}/archive/schema-%{srcversion}/bids-specification-schema-%{srcversion}.tar.gz

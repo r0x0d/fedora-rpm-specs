@@ -6,8 +6,8 @@
 
 Summary: A utility for getting files from remote servers (FTP, HTTP, and others)
 Name: curl
-Version: 8.11.0
-Release: 2%{?dist}
+Version: 8.11.1
+Release: 1%{?dist}
 License: curl
 Source0: https://curl.se/download/%{name}-%{version}.tar.xz
 Source1: https://curl.se/download/%{name}-%{version}.tar.xz.asc
@@ -24,6 +24,9 @@ Patch102: 0102-curl-7.84.0-test3026.patch
 
 # do not fail on warnings in the upstream test driver
 Patch104: 0104-curl-7.88.0-tests-warnings.patch
+
+# test616: disable valgrind
+Patch105: 0105-curl-8.11.1-test616.patch
 
 Provides: curl-full = %{version}-%{release}
 # do not fail when trying to install curl-minimal after drop
@@ -407,6 +410,10 @@ rm -f ${RPM_BUILD_ROOT}%{_libdir}/libcurl.la
 %{_libdir}/libcurl.so.4.[0-9].[0-9].minimal
 
 %changelog
+* Wed Dec 11 2024 Jan Macku <jamacku@redhat.com> - 8.11.1-1
+- new upstream release, which fixes the following vulnerabilities
+    CVE-2024-11053 - netrc and redirect credential leak
+
 * Wed Nov 06 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 8.11.0-2
 - Disable engine support on RHEL 10+
 

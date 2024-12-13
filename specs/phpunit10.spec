@@ -1,9 +1,8 @@
 # remirepo/fedora spec file for phpunit10
 #
-# Copyright (c) 2010-2024 Remi Collet
-#
-# License: CC-BY-SA-4.0
-# http://creativecommons.org/licenses/by-sa/4.0/
+# SPDX-FileCopyrightText:  Copyright 2010-2024 Remi Collet
+# SPDX-License-Identifier: CECILL-2.1
+# http://www.cecill.info/licences/Licence_CeCILL_V2-en.txt
 #
 # Please, preserve the changelog entries
 #
@@ -17,8 +16,8 @@
 %bcond_with          defcmd
 %endif
 
-%global gh_commit    a86773b9e887a67bc53efa9da9ad6e3f2498c132
-%global gh_date      2024-10-28
+%global gh_commit    4e89eff200b801db58f3d580ad7426431949eaa9
+%global gh_date      2024-12-11
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     sebastianbergmann
 %global gh_project   phpunit
@@ -31,7 +30,7 @@
 %global ver_major    10
 %global ver_minor    5
 
-%global upstream_version 10.5.38
+%global upstream_version 10.5.39
 #global upstream_prever  dev
 
 Name:           %{pk_project}%{ver_major}
@@ -50,7 +49,7 @@ Patch0:         %{name}-rpm.patch
 
 BuildArch:      noarch
 BuildRequires:  php(language) >= 8.1
-BuildRequires:  (php-composer(myclabs/deep-copy) >= 1.12.0            with php-composer(myclabs/deep-copy) <  2)
+BuildRequires:  (php-composer(myclabs/deep-copy) >= 1.12.1            with php-composer(myclabs/deep-copy) <  2)
 BuildRequires:  (php-composer(phar-io/manifest) >= 2.0.4              with php-composer(phar-io/manifest) < 3)
 BuildRequires:  (php-composer(phar-io/version) >= 3.2.1               with php-composer(phar-io/version) <  4)
 BuildRequires:  (php-composer(phpunit/php-code-coverage) >= 10.1.15   with php-composer(phpunit/php-code-coverage) < 11)
@@ -86,7 +85,7 @@ BuildRequires:  php-fedora-autoloader-devel >= 1.0.0
 #        "ext-mbstring": "*",
 #        "ext-xml": "*",
 #        "ext-xmlwriter": "*",
-#        "myclabs/deep-copy": "^1.12.0",
+#        "myclabs/deep-copy": "^1.12.1",
 #        "phar-io/manifest": "^2.0.4",
 #        "phar-io/version": "^3.2.1",
 #        "phpunit/php-code-coverage": "^10.1.15",
@@ -113,7 +112,7 @@ Requires:       php-libxml
 Requires:       php-mbstring
 Requires:       php-xml
 Requires:       php-xmlwriter
-Requires:       (php-composer(myclabs/deep-copy) >= 1.12.0            with php-composer(myclabs/deep-copy) <  2)
+Requires:       (php-composer(myclabs/deep-copy) >= 1.12.1            with php-composer(myclabs/deep-copy) <  2)
 Requires:       (php-composer(phar-io/manifest) >= 2.0.4              with php-composer(phar-io/manifest) < 3)
 Requires:       (php-composer(phar-io/version) >= 3.2.1               with php-composer(phar-io/version) < 4)
 Requires:       (php-composer(phpunit/php-code-coverage) >= 10.1.15   with php-composer(phpunit/php-code-coverage) < 11)
@@ -271,6 +270,11 @@ exit $ret
 
 
 %changelog
+* Wed Dec 11 2024 Remi Collet <remi@remirepo.net> - 10.5.39-1
+- update to 10.5.39
+- raise dependency on myclabs/deep-copy 1.12.1
+- re-license spec file to CECILL-2.1
+
 * Mon Oct 28 2024 Remi Collet <remi@remirepo.net> - 10.5.38-1
 - update to 10.5.38
 

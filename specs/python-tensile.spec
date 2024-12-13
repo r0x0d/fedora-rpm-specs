@@ -1,7 +1,7 @@
 %global upstreamname Tensile
 
-%global rocm_release 6.2
-%global rocm_patch 4
+%global rocm_release 6.3
+%global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 # This doesn't work quite yet:
@@ -14,20 +14,17 @@
 
 Name:           python-tensile
 Version:        %{rocm_version}
-%if 0%{?fedora}
-Release:        %autorelease
-%else
-Release:        100%{?dist}
-%endif
+Release:        1%{?dist}
 Summary:        Tool for creating benchmark-driven backend libraries for GEMMs
 
 Url:            https://github.com/ROCmSoftwarePlatform/Tensile
 License:        MIT
 Source0:        %{url}/archive/refs/tags/rocm-%{version}.tar.gz#/%{upstreamname}-%{version}.tar.gz
 
-Patch1:         0001-More-gfx1151.patch
-Patch2:         0001-Add-gfx1103.patch
-Patch3:         0001-Add-gfx1035.patch
+Patch1:         0001-Adding-gfx1151-to-6.2-2026.patch
+Patch2:         0002-More-gfx1151.patch
+Patch3:         0003-Add-gfx1103.patch
+Patch4:         0004-Add-gfx1035.patch
 
 #Patch0:         0001-enable-gfx1103-for-Tensile.patch
 # In 6.1, work around  this error
@@ -163,6 +160,7 @@ cp %{buildroot}%{_datadir}/cmake/Tensile/*.cmake %{buildroot}%{python3_sitelib}/
 %dir %{python3_sitelib}/%{upstreamname}/Configs
 %dir %{python3_sitelib}/%{upstreamname}/CustomKernels
 %dir %{python3_sitelib}/%{upstreamname}/Source
+%dir %{python3_sitelib}/%{upstreamname}/TensileCreateLib
 %dir %{python3_sitelib}/%{upstreamname}/Perf
 %dir %{python3_sitelib}/%{upstreamname}/Utilities
 %dir %{python3_sitelib}/%{upstreamname}*.egg-info
@@ -179,11 +177,12 @@ cp %{buildroot}%{_datadir}/cmake/Tensile/*.cmake %{buildroot}%{python3_sitelib}/
 %{python3_sitelib}/%{upstreamname}/CustomKernels/*
 %{python3_sitelib}/%{upstreamname}/Perf/*
 %{python3_sitelib}/%{upstreamname}/Source/*
+%{python3_sitelib}/%{upstreamname}/TensileCreateLib/*
 %{python3_sitelib}/%{upstreamname}/Utilities/*
 %{python3_sitelib}/%{upstreamname}*.egg-info/*
 
 %changelog
-%if 0%{?fedora}
-%autochangelog
-%endif
+* Fri Dec 6 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3.0
+
 

@@ -1,7 +1,7 @@
 Summary: A file compression and packaging utility compatible with PKZIP
 Name: zip
 Version: 3.0
-Release: 41%{?dist}
+Release: 42%{?dist}
 License: Info-ZIP
 Source: http://downloads.sourceforge.net/infozip/zip30.tar.gz
 URL: http://www.info-zip.org/Zip.html
@@ -18,6 +18,7 @@ Patch5: zip-3.0-format-security.patch
 Patch6: zipnote.patch
 Patch7: zip-gnu89-build.patch
 Patch8: buffer_overflow.patch
+Patch9: zip-3.0-man-strip-extra.patch
 BuildRequires: make
 BuildRequires: bzip2-devel, gcc
 Requires: unzip
@@ -41,6 +42,7 @@ program.
 %patch -P6 -p1 -b .zipnote
 %patch -P7 -p1 -b .gnu89-build
 %patch -P8 -p1
+%patch -P9 -p1
 
 %build
 %{make_build} -f unix/Makefile prefix=%{_prefix} "CFLAGS_NOOPT=-I. -DUNIX $RPM_OPT_FLAGS" generic_gcc
@@ -66,6 +68,9 @@ mkdir -p $RPM_BULD_ROOT%{_mandir}/man1
 %{_mandir}/man1/zipsplit.1*
 
 %changelog
+* Wed Dec 11 2024 Jakub Martisko <jamartis@redhat.com> - 3.0-42
+- Fix teh manpage: --no-extra option is actually called --strip-extra
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.0-41
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

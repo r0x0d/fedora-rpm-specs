@@ -1,17 +1,16 @@
 Name:           ensmallen
-Version:        2.19.0
-Release:        8%{?dist}
+Version:        2.22.1
+Release:        1%{?dist}
 Summary:        Header-only C++ library for efficient mathematical optimization
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            https://www.ensmallen.org
 Source0:        https://www.ensmallen.org/files/%{name}-%{version}.tar.gz
 
 BuildRequires:  cmake >= 2.8.5
 BuildRequires:	gcc-c++
-BuildRequires:	armadillo-devel >= 9.800.0
-Requires:       armadillo-devel >= 9.800.0
+BuildRequires:	armadillo-devel >= 10.8.2
+Requires:       armadillo-devel >= 10.8.2
 
 # ensmallen is header-only, and the build just builds the tests, so there's no
 # use for a debuginfo package.
@@ -81,6 +80,9 @@ gradient-free optimizers, and constrained optimization.
 %{_libdir}/cmake/ensmallen/ensmallen-targets.cmake
 
 %changelog
+* Wed Dec 11 2024 Ryan Curtin <ryan@ratml.org> - 2.22.1
+- Update to latest stable version, fix license.
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 2.19.0-8
 - convert license to SPDX
 

@@ -1,10 +1,10 @@
 %global glib2_version 2.66.0
 %global gobject_introspection_version 1.66.0
-%global mozjs128_version 128.1
+%global mozjs128_version 128.5.1
 
 Name:           gjs
 Version:        1.82.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Javascript Bindings for GNOME
 
 # The following files contain code from Mozilla which
@@ -99,6 +99,9 @@ the functionality of the installed gjs package.
 %{_datadir}/installed-tests/
 
 %changelog
+* Wed Dec 11 2024 Frantisek Zatloukal <fzatlouk@redhat.com> - 1.82.1-3
+- Rebuild against mozjs128-128.5.1-1
+
 * Thu Oct 31 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 1.82.1-2
 - Replace Xvfb dependency with xwayland-run
 

@@ -2,7 +2,7 @@
 
 Name:           python-%{srcname}
 Version:        6.1.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Python wrapper around the MediaInfo library
 
 License:        MIT
@@ -21,7 +21,6 @@ Summary:        Python3 wrapper around the MediaInfo library
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-pytest
-BuildRequires:  python3-pytest-runner
 BuildRequires:  python3-setuptools_scm
 Requires:       libmediainfo
 %{?python_provide:%python_provide python3-%{srcname}}
@@ -44,7 +43,7 @@ This small package is a Python3 wrapper around the MediaInfo library.
 
 %check
 export LC_ALL=C.UTF-8
-PYTEST_ADDOPTS='-k "not test_parse_url"' %{__python3} setup.py test
+%pytest -k "not test_parse_url"
 
 
 %files -n python3-%{srcname}
@@ -54,6 +53,9 @@ PYTEST_ADDOPTS='-k "not test_parse_url"' %{__python3} setup.py test
 
 
 %changelog
+* Wed Dec 11 2024 Vasiliy Glazov <vascom2@gmail.com> - 6.1.0-6
+- Fix FTBFS
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.1.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

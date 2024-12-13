@@ -3,7 +3,7 @@
 Name:           dummy-test-package-gloster
 
 Version:        0
-Release:        17272%{?dist}
+Release:        17291%{?dist}
 Summary:        Dummy Test Package called Gloster
 # Automatically converted from old format: CC0 - review is highly recommended.
 License:        CC0-1.0
@@ -33,6 +33,63 @@ cp -p uuid %{buildroot}%{_datadir}/%{name}
 %{_datadir}/%{name}
 
 %changelog
+* Thu Dec 12 2024 packagerbot <admin@fedoraproject.org> - 0-17291
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17290
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17289
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17288
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17287
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17286
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17285
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17284
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17283
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17282
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17281
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17280
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17279
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17278
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17277
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17276
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17275
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17274
+- rebuilt
+
+* Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17273
+- rebuilt
+
 * Wed Dec 11 2024 packagerbot <admin@fedoraproject.org> - 0-17272
 - rebuilt
 

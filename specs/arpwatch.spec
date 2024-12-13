@@ -8,14 +8,20 @@ Summary:        Network monitoring tools for tracking IP addresses on a network
 
 # SPDX matching with BSD-3-Clause confirmed at
 # https://gitlab.com/fedora/legal/fedora-license-data/-/issues/49
-#
+License:        BSD-3-Clause
 # Any files under different licenses are part of the build system and do not
 # contribute to the license of the binary RPM:
 #   - config.guess and config.sub are GPL-3.0-or-later
-#   - configure is FSFULL
+#   - configure is FSFUL
 #   - install-sh is X11
-#   - mkdep is ??? (NTP-like)
-License:        BSD-3-Clause
+#   - mkdep is BSD-4.3RENO
+SourceLicense:  %{shrink:
+                %{license} AND
+                BSD-4.3RENO AND
+                FSFUL AND
+                GPL-3.0-or-later AND
+                X11
+                }
 URL:            https://ee.lbl.gov/
 
 Requires(pre):  shadow-utils
@@ -44,7 +50,7 @@ Source0:        https://ee.lbl.gov/downloads/arpwatch/arpwatch-%{version}.tar.gz
 # updated), we store the file directly in the repository with the spec file;
 # see the update-oui-csv script.
 #
-# File oui.csv last fetched 2024-11-26T06:45:19+00:00.
+# File oui.csv last fetched 2024-12-11T19:41:24+00:00.
 Source1:        oui.csv
 Source2:        arpwatch.service
 Source3:        arpwatch.sysconfig

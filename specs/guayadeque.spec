@@ -1,21 +1,18 @@
 %global usesnapshot 0
-%global commit0 6da765d239de2527ba60b2a8823ad70d6cd8cd55
+%global commit0 5f80bc4c5d0cb532f1a5ad9679d56bd16db89414
 %if 0%{?usesnapshot}
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global gitdate 20241112
+%global gitdate 20241205
 %endif
 %global metadata_name org.guayadeque.guayadeque
 
-# wx-config
-%global wxversion %(wx-config-3.2 --release)
-
 Name:           guayadeque
 %if 0%{?usesnapshot}
-Version:        0.6.1
-Release:        0.2.%{gitdate}git%{shortcommit0}%{?dist}
+Version:        0.6.2
+Release:        0.1.beta6.git%{shortcommit0}%{dist}
 %else
-Version:        0.6.1
-Release:        2%{?dist}
+Version:        0.6.2
+Release:        1%{?dist}
 %endif
 Summary:        Music player
 # The entire source code is GPL-3.0-or-later except hmac/ which is BSD-3-Clause
@@ -138,16 +135,15 @@ Supplements:    (%{name} = %{version}-%{release} and langpacks-%{1})\
 
 %prep
 %if 0%{?usesnapshot}
-%setup -q -n %{name}-%{commit0}
+%autosetup -p1 -n %{name}-%{commit0}
 %else
-%setup -q -n %{name}-%{version}
+%autosetup -p1 -n %{name}-%{version}
 %endif
 cp -p %{SOURCE1} PACKAGE-LICENSING
 
 %build
 %cmake .                                                       \
  -DCMAKE_BUILD_TYPE='Release'                                  \
- -DCMAKE_EXE_LINKER_FLAGS:STRING=-lwx_gtk3u_aui-%{wxversion}   \
  -DCMAKE_CXX_FLAGS="%{optflags}"                               \
  -D_GUREVISION_:STRING="%{release}"
 %cmake_build
@@ -177,6 +173,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.metainf
 %{_datadir}/metainfo/%{metadata_name}.metainfo.xml
 
 %changelog
+* Wed Dec 11 2024 Martin Gansser <martinkg@fedoraproject.org> - 0.6.2-1
+- Update to 0.6.2
+
 * Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 0.6.1-2
 - Rebuild for ICU 76
 

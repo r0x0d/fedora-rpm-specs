@@ -1,17 +1,13 @@
 # there is no debug package - this is just cmake modules
 %global debug_package %{nil}
 
-%global rocm_release 6.2
+%global rocm_release 6.3
 %global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 Name:     rocm-cmake
 Version:  %{rocm_version}
-%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
-Release:    1%{?dist}
-%else
-Release:  %autorelease
-%endif
+Release:  1%{?dist}
 Summary:  CMake modules for common build and dev tasks within the ROCm project
 License:  MIT
 URL:      https://github.com/ROCm/rocm-cmake
@@ -56,11 +52,11 @@ fi
 %{_datadir}/rocmcmakebuildtools/*
 
 %changelog
-%if 0%{?suse_version}
+* Sun Dec 8 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+
 * Sat Nov 9 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 
-%else
-%autochangelog
-%endif
+
 

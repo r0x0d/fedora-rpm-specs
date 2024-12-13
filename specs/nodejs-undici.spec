@@ -8,13 +8,13 @@
 # Adjust as needed.
 %bcond      wasm_opt %[0%{?fedora} > 39]
 
-%global     llhttp_version_major    8
-%global     llhttp_version_minor    1
+%global     llhttp_version_major    9
+%global     llhttp_version_minor    2
 %global     llhttp_version_patch    0
 
 Name:       nodejs-%{npm_name}
 Summary:    An HTTP/1.1 client, written from scratch for Node.js
-Version:    6.19.7
+Version:    7.1.0
 Release:    %autorelease
 
 License:    MIT
@@ -26,7 +26,6 @@ Source2:    %{npm_name}-%{version}-nm-dev.tgz
 Source3:    %{npm_name}-%{version}-bundled-licenses.txt
 Source4:    %{npm_name}-sources.sh
 
-Patch:      0001-use-system-wasm-opt-if-available.patch
 
 # Binary artifacts in this package are aimed at the wasm32-wasi "architecture".
 %global     _binaries_in_noarch_packages_terminate_build 0

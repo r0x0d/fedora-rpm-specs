@@ -15,9 +15,9 @@ Release:        %autorelease
 URL:            https://github.com/biojppm/c4core
 # The entire source is MIT, except:
 #
-# Boost:
+# BSL-1.0:
 #   - src/c4/ext/sg14/inplace_function.h
-#
+SourceLicense:  MIT AND BSL-1.0
 # Additionally, the following dependencies contribute to the License of the
 # binary RPMs because they are header-only and are therefore treated as static
 # libraries:

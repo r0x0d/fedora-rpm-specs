@@ -1,6 +1,6 @@
 Name:           gmime30
-Version:        3.2.14
-Release:        4%{?dist}
+Version:        3.2.15
+Release:        1%{?dist}
 Summary:        Library for creating and parsing MIME messages
 
 # The library is LGPL-2.1-or-later; various files (which we don't package)
@@ -10,14 +10,14 @@ URL:            https://github.com/jstedfast/gmime
 Source0:        https://github.com/jstedfast/gmime/releases/download/%{version}/gmime-%{version}.tar.xz
 
 BuildRequires:  gettext
-BuildRequires:  glib2-devel
 BuildRequires:  gobject-introspection-devel
-BuildRequires:  gpgme-devel
 BuildRequires:  gtk-doc
-BuildRequires:  libgpg-error-devel
 BuildRequires:  make
+BuildRequires:  pkgconfig(gio-2.0)
+BuildRequires:  pkgconfig(gpgme)
+BuildRequires:  pkgconfig(gpg-error)
+BuildRequires:  pkgconfig(zlib)
 BuildRequires:  vala
-BuildRequires:  zlib-devel
 
 %description
 The GMime suite provides a core library and set of utilities which may be
@@ -62,6 +62,9 @@ find $RPM_BUILD_ROOT -type f -name "*.la" -delete
 %{_datadir}/vala/
 
 %changelog
+* Wed Dec 11 2024 David King <amigadave@amigadave.com> - 3.2.15-1
+- Update to 3.2.15 (#2293536)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.14-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

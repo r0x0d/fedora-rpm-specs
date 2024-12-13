@@ -12,7 +12,7 @@
 
 %global goipath         github.com/osbuild/osbuild-composer
 
-Version:        126
+Version:        127
 
 %gometa
 
@@ -228,7 +228,7 @@ Provides: bundled(golang(github.com/opencontainers/runtime-spec)) = 1.2.0
 Provides: bundled(golang(github.com/opencontainers/selinux)) = 1.11.0
 Provides: bundled(golang(github.com/openshift-online/ocm-sdk-go)) = 0.1.438
 Provides: bundled(golang(github.com/oracle/oci-go-sdk/v54)) = 54.0.0
-Provides: bundled(golang(github.com/osbuild/images)) = 0.99.0
+Provides: bundled(golang(github.com/osbuild/images)) = 0.105.0
 Provides: bundled(golang(github.com/osbuild/osbuild-composer/pkg/splunk_logger)) = 0239db5
 Provides: bundled(golang(github.com/osbuild/pulp-client)) = 0.1.0
 Provides: bundled(golang(github.com/ostreedev/ostree-go)) = 719684c
@@ -698,6 +698,43 @@ Integration tests to be run on a pristine-dedicated system to test the osbuild-c
 %endif
 
 %changelog
+* Wed Dec 11 2024 Packit <hello@packit.dev> - 127-1
+Changes with 127
+----------------
+  * CI: remove jrusz from notifications (#4505)
+    * Author: Jakub Rusz, Reviewers: Ondřej Budai
+  * Clean up orphaned instances and security groups (HMS-3632) (#4513)
+    * Author: Florian Schüller, Reviewers: Sanne Raymaekers
+  * Update osbuild/images to v0.105.0 (COMPOSER-2357, COMPOSER-2400) (#4519)
+    * Author: Tomáš Hozza, Reviewers: Ondřej Budai
+  * Update snapshots to 20241203 (#4512)
+    * Author: SchutzBot, Reviewers: Tomáš Hozza
+  * Verify hyperv gen (HMS-5090) (#4497)
+    * Author: Sanne Raymaekers, Reviewers: Ondřej Budai
+  * build(deps): bump codecov/codecov-action from 4 to 5 (#4476)
+    * Author: dependabot[bot], Reviewers: Tomáš Hozza
+  * cloud/awscloud: exclude really old instance types (#4496)
+    * Author: Sanne Raymaekers, Reviewers: Ondřej Budai
+  * cloud/awscloud: give secure instances a name (#4504)
+    * Author: Sanne Raymaekers, Reviewers: Lukáš Zapletal, Ondřej Budai
+  * cloud/awscloud: use any instance create fleet returns (#4507)
+    * Author: Sanne Raymaekers, Reviewers: Florian Schüller
+  * cloudapi: carry ostree MTLS secret over (#4508)
+    * Author: Lukáš Zapletal, Reviewers: Sanne Raymaekers
+  * cmd: extra env logging for osbuild worker (#4495)
+    * Author: Lukáš Zapletal, Reviewers: Michael Vogt
+  * deps: update images to 0.102 (#4499)
+    * Author: Lukáš Zapletal, Reviewers: Tomáš Hozza
+  * github: prevent script injections via PR branch names (#4511)
+    * Author: Ondřej Budai, Reviewers: Achilleas Koutsou
+  * tests: Bump RHEL 10 from beta to nightly and update osbuild deps SHA (#4501)
+    * Author: Tomáš Koscielniak, Reviewers: Sanne Raymaekers
+  * tools/tests: Update rhel10 compose url (#4518)
+    * Author: Tomáš Koscielniak, Reviewers: Tomáš Hozza
+
+— Somewhere on the Internet, 2024-12-11
+
+
 * Wed Nov 27 2024 Packit <hello@packit.dev> - 126-1
 Changes with 126
 ----------------

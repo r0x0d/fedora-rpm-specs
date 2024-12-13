@@ -1,5 +1,7 @@
 # Requires https://pypi.org/project/ufonormalizer/, not packaged
 %bcond ufo_normalization 0
+# Requires https://pypi.org/project/skia-pathops/, not packaged
+%bcond colr 0
 
 # If https://pypi.org/project/xmldiff/ were packaged, we could run more tests
 %bcond xmldiff 0
@@ -7,7 +9,7 @@
 %bcond check 1
 
 Name:           python-glyphsLib
-Version:        5.3.2
+Version:        6.9.5
 Release:        1%{?dist}
 Summary:        A bridge from Glyphs source files to UFOs
 
@@ -15,13 +17,12 @@ Summary:        A bridge from Glyphs source files to UFOs
 #   MIT:
 #   - Lib/glyphsLib/data/ (Lib/glyphsLib/data/GlyphData_LICENSE)
 #
-# Furthermore, a few test files appear in the source RPM but do not contribute
-# to the licenses of the binary RPMs:
-#   - tests/data/CustomParameterVFO.glyphs: OFL-1.1
-#   - tests/data/MontserratStrippedDown.glyphs: OFL-1.1
+# Additionally, many files in tests/data/ are OFL-1.1; these appear in the
+# source RPM but do not contribute to the licenses of the binary RPMs. Note
+# that these are not fonts per se, but font *sources*.
 License:        Apache-2.0 AND MIT
 URL:            https://github.com/googlefonts/glyphsLib
-Source:         %{pypi_source glyphsLib %{version} zip}
+Source:         %{pypi_source glyphslib}
 
 BuildArch:      noarch
 
@@ -43,19 +44,25 @@ Summary:        %{summary}
 %pyproject_extras_subpkg -n python3-glyphsLib ufo_normalization
 %endif
 %pyproject_extras_subpkg -n python3-glyphsLib defcon
+%if %{with ufo_normalization}
+%pyproject_extras_subpkg -n python3-glyphsLib colr
+%endif
 
 %prep
-%autosetup -n glyphsLib-%{version} -p1
+%autosetup -n glyphslib-%{version} -p1
 # - Do not generate linting/coverage dependencies:
 #   https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
 sed -r \
 %if %{without ufo_normalization}
     -e 's/^(ufo[Nn]ormalizer)\b/# &/' \
 %endif
+%if %{without colr}
+    -e 's/^(skia-pathops)\b/# &/' \
+%endif
 %if %{without xmldiff}
     -e 's/^(xmldiff)\b/# &/' \
 %endif
-    -e 's/^(coverage)\b/# &/' \
+    -e 's/^(coverage|flake8.*|black)\b/# &/' \
     requirements-dev.in |
   tee requirements-dev-filtered.txt
 
@@ -63,6 +70,7 @@ sed -r \
 %{pyproject_buildrequires \
     %{?with_ufo_normalization:-x ufo_normalization} \
     -x defcon \
+    %{?with_colr:-x colr} \
     %{?with_check:requirements-dev-filtered.txt}}
 
 %build
@@ -106,13 +114,16 @@ ignore="${ignore-} --ignore=tests/builder/interpolation_test.py"
 %files -n python3-glyphsLib -f %{pyproject_files}
 %license LICENSE
 %license Lib/glyphsLib/data/GlyphData_LICENSE
-%doc README.rst CONTRIBUTING.md
+%doc README.rst README.builder.md
 %{_bindir}/glyphs2ufo
 %{_bindir}/ufo2glyphs
 %{_mandir}/man1/glyphs2ufo.1*
 %{_mandir}/man1/ufo2glyphs.1*
 
 %changelog
+* Fri Dec 06 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 6.9.5-1
+- Update to 6.9.5 (close RHBZ#1881116)
+
 * Fri Dec 06 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 5.3.2-1
 - Update to 5.3.2 (the last 5.x release)
 - Add generated man pages

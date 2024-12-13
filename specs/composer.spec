@@ -1,8 +1,8 @@
 # remirepo/fedora spec file for composer
 #
-# Copyright (c) 2015-2024 Remi Collet
-# License: CC-BY-SA-4.0
-# http://creativecommons.org/licenses/by-sa/4.0/
+# SPDX-FileCopyrightText:  Copyright 2024 Remi Collet
+# SPDX-License-Identifier: CECILL-2.1
+# http://www.cecill.info/licences/Licence_CeCILL_V2-en.txt
 #
 # Please, preserve the changelog entries
 #
@@ -10,7 +10,7 @@
 
 %bcond_with          generators
 
-%global gh_commit    2a7c71266b2545a3bed9f4860734081963f6e688
+%global gh_commit    112e37d1dca22b3fdb81cf3524ab4994f47fdb8c
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_branch    2.0-dev
 %global gh_owner     composer
@@ -18,7 +18,7 @@
 %global api_version  2.6.0
 %global run_version  2.2.2
 
-%global upstream_version 2.8.3
+%global upstream_version 2.8.4
 #global upstream_prever  RC1
 #global upstream_lower   rc1
 
@@ -114,8 +114,8 @@ Requires:       php-zlib
 # Bundled libraries
 %if %{without generators}
 # License MIT
-Provides:       bundled(php-composer(composer/ca-bundle)) = 1.5.3
-Provides:       bundled(php-composer(composer/class-map-generator)) = 1.4.0
+Provides:       bundled(php-composer(composer/ca-bundle)) = 1.5.4
+Provides:       bundled(php-composer(composer/class-map-generator)) = 1.5.0
 Provides:       bundled(php-composer(composer/metadata-minifier)) = 1.0.0
 Provides:       bundled(php-composer(composer/pcre)) = 2.3.2
 Provides:       bundled(php-composer(composer/semver)) = 3.4.3
@@ -129,7 +129,7 @@ Provides:       bundled(php-composer(seld/jsonlint)) = 1.11.0
 Provides:       bundled(php-composer(seld/phar-utils)) = 1.2.1
 Provides:       bundled(php-composer(seld/signal-handler)) = 2.0.2
 Provides:       bundled(php-composer(symfony/console)) = v5.4.47
-Provides:       bundled(php-composer(symfony/deprecation-contracts)) = v2.5.3
+Provides:       bundled(php-composer(symfony/deprecation-contracts)) = v2.5.4
 Provides:       bundled(php-composer(symfony/filesystem)) = v5.4.45
 Provides:       bundled(php-composer(symfony/finder)) = v5.4.45
 Provides:       bundled(php-composer(symfony/polyfill-ctype)) = v1.31.0
@@ -140,7 +140,7 @@ Provides:       bundled(php-composer(symfony/polyfill-php73)) = v1.31.0
 Provides:       bundled(php-composer(symfony/polyfill-php80)) = v1.31.0
 Provides:       bundled(php-composer(symfony/polyfill-php81)) = v1.31.0
 Provides:       bundled(php-composer(symfony/process)) = v5.4.47
-Provides:       bundled(php-composer(symfony/service-contracts)) = v2.5.3
+Provides:       bundled(php-composer(symfony/service-contracts)) = v2.5.4
 Provides:       bundled(php-composer(symfony/string)) = v5.4.47
 # Composer library
 Provides:       php-composer(composer/composer) = %{version}
@@ -265,6 +265,10 @@ php -r '
 
 
 %changelog
+* Wed Dec 11 2024 Remi Collet <remi@remirepo.net> - 2.8.4-1
+- update to 2.8.4
+- re-license spec file to CECILL-2.1
+
 * Mon Nov 18 2024 Remi Collet <remi@remirepo.net> - 2.8.3-1
 - update to 2.8.3
 

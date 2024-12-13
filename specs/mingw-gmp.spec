@@ -1,15 +1,14 @@
 %{?mingw_package_header}
 
 Name:       mingw-gmp
-Version:    6.1.2
-Release:    20%{?dist}
+Version:    6.3.0
+Release:    1%{?dist}
 
 Summary:    Cross-compiled GNU arbitrary precision library
 # Automatically converted from old format: LGPLv3+ or GPLv2+ - review is highly recommended.
 License:    LGPL-3.0-or-later OR GPL-2.0-or-later
 URL:        http://gmplib.org/
 Source0:    ftp://ftp.gnu.org/pub/gnu/gmp/gmp-%{version}.tar.xz
-Source1:    ftp://ftp.gnu.org/pub/gnu/gmp/gmp-%{version}.tar.xz.sig
 
 BuildArch:      noarch
 
@@ -112,6 +111,8 @@ rm -r $RPM_BUILD_ROOT/%{mingw64_prefix}/share
 %{mingw32_bindir}/libgmpxx-4.dll
 %{mingw32_libdir}/libgmp.dll.a
 %{mingw32_libdir}/libgmpxx.dll.a
+%{mingw32_libdir}/pkgconfig/gmp.pc
+%{mingw32_libdir}/pkgconfig/gmpxx.pc
 %{mingw32_includedir}/gmp.h
 %{mingw32_includedir}/gmpxx.h
 
@@ -124,11 +125,16 @@ rm -r $RPM_BUILD_ROOT/%{mingw64_prefix}/share
 %{mingw64_bindir}/libgmpxx-4.dll
 %{mingw64_libdir}/libgmp.dll.a
 %{mingw64_libdir}/libgmpxx.dll.a
+%{mingw64_libdir}/pkgconfig/gmp.pc
+%{mingw64_libdir}/pkgconfig/gmpxx.pc
 %{mingw64_includedir}/gmp.h
 %{mingw64_includedir}/gmpxx.h
 
 
 %changelog
+* Wed Dec 11 2024 Daniel P. Berrangé <berrange@redhat.com> - 6.3.0-1
+- Rebase to 6.3.0, adding pkg-config files
+
 * Wed Aug 07 2024 Miroslav Suchý <msuchy@redhat.com> - 6.1.2-20
 - convert license to SPDX
 

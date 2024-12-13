@@ -9,12 +9,12 @@ Release:        %autorelease
 #     incorporated in the executable as a “resource”
 #   - data/com.github.dahenson.agenda.appdata.xml.in is CC0-1.0, which is
 #     allowed for content only
-#
+License:        GPL-3.0-or-later AND GPL-2.0-or-later AND CC0-1.0
 # Additionally, the following do not affect the License because they are not
 # part of the binary RPM:
 #
 #   - test/TestCase.vala is LGPL-2.0-or-later
-License:        GPL-3.0-or-later AND GPL-2.0-or-later AND CC0-1.0
+SourceLicense:  %{license} AND LGPL-2.0-or-later
 
 URL:            https://github.com/dahenson/agenda
 Source:         %{url}/archive/%{version}/agenda-%{version}.tar.gz

@@ -18,7 +18,7 @@
 Name:       python-%{library}
 Epoch:      1
 Version:    31.0.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Python client for the kubernetes API.
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:    Apache-2.0
@@ -55,11 +55,6 @@ Python client for the kubernetes API.
 %package -n %{py3}-%{library}-tests
 Summary:    Tests python-kubernetes library
 
-Requires:  %{py3}-py
-%if 0%{?fedora}
-Requires:  %{py3}-mock
-Requires:  %{py3}-nose
-%endif
 Requires:  %{py3}-%{library} = 1:%{version}-%{release}
 
 %description -n %{py3}-%{library}-tests
@@ -89,10 +84,9 @@ Python client for the kubernetes API.
 sed -i 's/1.24.2/1.23/g' requirements.txt
 %endif
 
-%if 0%{?rhel} >= 9
 sed -i 's/^mock.*//g' test-requirements.txt
 sed -i 's/^nose.*//g' test-requirements.txt
-%endif
+sed -i 's/^py>.*//g' test-requirements.txt
 
 #BZ1758141 - python autorequires do not handles asterisks properly.
 #Fedora is using 0.56.0+ since at least Fedora 31 so this works aorund
@@ -147,6 +141,11 @@ cp -pr kubernetes/e2e_test %{buildroot}%{python3_sitelib}/%{library}/
 %{python3_sitelib}/%{library}/e2e_test
 
 %changelog
+* Wed Dec 11 2024 Miro Hrončok <mhroncok@redhat.com> - 1:31.0.0-2
+- Remove unused tests Requires
+- https://fedoraproject.org/wiki/Changes/DeprecateNose
+- https://fedoraproject.org/wiki/Changes/DeprecatePythonMock
+
 * Tue Nov 05 2024 Jason Montleon <jmontleo@redhat.com 1:31.0.0-1
 - - Update to 31.0.0 (#2313897)
 

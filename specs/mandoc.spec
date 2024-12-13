@@ -1,6 +1,6 @@
 Name:             mandoc
 Version:          1.14.6
-Release:          9%{?dist}
+Release:          10%{?dist}
 Summary:          A suite of tools for compiling mdoc and man
 
 License:          ISC AND BSD-2-Clause AND BSD-3-Clause
@@ -15,9 +15,9 @@ BuildRequires:    zlib-devel
 BuildRequires:    perl-interpreter
 BuildRequires:    perl(IPC::Open3)
 
-Requires(post):   %{_sbindir}/update-alternatives
-Requires(postun): %{_sbindir}/update-alternatives
-Requires(preun):  %{_sbindir}/update-alternatives
+Requires(post):   /usr/sbin/update-alternatives
+Requires(postun): /usr/sbin/update-alternatives
+Requires(preun):  /usr/sbin/update-alternatives
 
 # The shared library package has been removed per discussion with the
 # upstream maintainer.  If using the library, the static library is
@@ -113,50 +113,62 @@ touch %{buildroot}%{_mandir}/man8/makewhatis.8
 %check
 env LD_LIBRARY_PATH="$PWD" %make_build regress
 
+%pre
+# remove alternativized files if they are not symlinks
+for f in man apropos whatis soelim; do
+    [ -L %{_bindir}/$f ] || %{__rm} -f %{_bindir}/$f || :
+    [ -L %{_mandir}/man1/$f.1.gz ] || %{__rm} -f %{_mandir}/man1/$f.1.gz || :
+done
+for f in man roff eqn tbl; do
+    [ -L %{_mandir}/man7/$f.7.gz ] || %{__rm} -f %{_mandir}/man7/$f.7.gz || :
+done
+[ -L %{_sbindir}/makewhatis ] || %{__rm} -f %{_sbindir}/makewhatis || :
+[ -L %{_mandir}/man8/makewhatis.8.gz ] || %{__rm} -f %{_mandir}/man8/makewhatis.8.gz || :
+
 %postun
 if [ $1 -ge 1 ]; then
-    if [ "$(readlink %{_sysconfdir}/alternatives/man)" = "%{_bindir}/man.mandoc" ]; then
-        %{_sbindir}/alternatives --set man %{_bindir}/man.mandoc
+    if [ "$(readlink /etc/alternatives/man)" = "%{_bindir}/man.mandoc" ]; then
+        /usr/sbin/alternatives --set man %{_bindir}/man.mandoc || :
     fi
 
-    if [ "$(readlink %{_sysconfdir}/alternatives/soelim)" = "%{_bindir}/soelim.mandoc" ]; then
-        %{_sbindir}/alternatives --set soelim %{_bindir}/soelim.mandoc
+    if [ "$(readlink /etc/alternatives/soelim)" = "%{_bindir}/soelim.mandoc" ]; then
+        /usr/sbin/alternatives --set soelim %{_bindir}/soelim.mandoc || :
     fi
 
-    if [ "$(readlink %{_sysconfdir}/alternatives/roff.7.gz)" = "%{_mandir}/man7/roff.mandoc.7.gz" ]; then
-        %{_sbindir}/alternatives --set roff.7.gz %{_mandir}/man7/roff.mandoc.7.gz
+    if [ "$(readlink /etc/alternatives/roff.7.gz)" = "%{_mandir}/man7/roff.mandoc.7.gz" ]; then
+        /usr/sbin/alternatives --set roff.7.gz %{_mandir}/man7/roff.mandoc.7.gz || :
     fi
 
-    if [ "$(readlink %{_sysconfdir}/alternatives/man.7.gz)" = "%{_mandir}/man7/man.mandoc.7.gz" ]; then
-        %{_sbindir}/alternatives --set man.7.gz %{_mandir}/man7/man.mandoc.7.gz
+    if [ "$(readlink /etc/alternatives/man.7.gz)" = "%{_mandir}/man7/man.mandoc.7.gz" ]; then
+        /usr/sbin/alternatives --set man.7.gz %{_mandir}/man7/man.mandoc.7.gz || :
     fi
 fi
 
 %post
-%{_sbindir}/update-alternatives --install %{_bindir}/man man %{_bindir}/man.mandoc 200 \
+/usr/sbin/update-alternatives --install %{_bindir}/man man %{_bindir}/man.mandoc 200 \
     --slave %{_bindir}/apropos apropos %{_bindir}/apropos.mandoc \
     --slave %{_bindir}/whatis whatis %{_bindir}/whatis.mandoc \
     --slave %{_sbindir}/makewhatis makewhatis %{_sbindir}/makewhatis.mandoc \
     --slave %{_mandir}/man1/apropos.1.gz apropos.1.gz %{_mandir}/man1/apropos.mandoc.1.gz \
     --slave %{_mandir}/man1/man.1.gz man.1.gz %{_mandir}/man1/man.mandoc.1.gz \
     --slave %{_mandir}/man1/whatis.1.gz whatis.1.gz %{_mandir}/man1/whatis.mandoc.1.gz \
-    --slave %{_mandir}/man8/makewhatis.8.gz makewhatis.8.gz %{_mandir}/man8/makewhatis.mandoc.8.gz
+    --slave %{_mandir}/man8/makewhatis.8.gz makewhatis.8.gz %{_mandir}/man8/makewhatis.mandoc.8.gz || :
 
-%{_sbindir}/update-alternatives --install %{_bindir}/soelim soelim %{_bindir}/soelim.mandoc 200 \
-    --slave %{_mandir}/man1/soelim.1.gz soelim.1.gz %{_mandir}/man1/soelim.mandoc.1.gz
+/usr/sbin/update-alternatives --install %{_bindir}/soelim soelim %{_bindir}/soelim.mandoc 200 \
+    --slave %{_mandir}/man1/soelim.1.gz soelim.1.gz %{_mandir}/man1/soelim.mandoc.1.gz || :
 
-%{_sbindir}/update-alternatives --install %{_mandir}/man7/roff.7.gz roff.7.gz %{_mandir}/man7/roff.mandoc.7.gz 200 \
+/usr/sbin/update-alternatives --install %{_mandir}/man7/roff.7.gz roff.7.gz %{_mandir}/man7/roff.mandoc.7.gz 200 \
     --slave %{_mandir}/man7/eqn.7.gz eqn.7.gz %{_mandir}/man7/eqn.mandoc.7.gz \
-    --slave %{_mandir}/man7/tbl.7.gz tbl.7.gz %{_mandir}/man7/tbl.mandoc.7.gz
+    --slave %{_mandir}/man7/tbl.7.gz tbl.7.gz %{_mandir}/man7/tbl.mandoc.7.gz || :
 
-%{_sbindir}/update-alternatives --install %{_mandir}/man7/man.7.gz man.7.gz %{_mandir}/man7/man.mandoc.7.gz 200
+/usr/sbin/update-alternatives --install %{_mandir}/man7/man.7.gz man.7.gz %{_mandir}/man7/man.mandoc.7.gz 200 || :
 
 %preun
 if [ $1 -eq 0 ]; then
-    %{_sbindir}/update-alternatives --remove man %{_bindir}/man.mandoc
-    %{_sbindir}/update-alternatives --remove soelim %{_bindir}/soelim.mandoc
-    %{_sbindir}/update-alternatives --remove roff.7.gz %{_mandir}/man7/roff.mandoc.7.gz
-    %{_sbindir}/update-alternatives --remove man.7.gz %{_mandir}/man7/man.mandoc.7.gz
+    /usr/sbin/update-alternatives --remove man %{_bindir}/man.mandoc || :
+    /usr/sbin/update-alternatives --remove soelim %{_bindir}/soelim.mandoc || :
+    /usr/sbin/update-alternatives --remove roff.7.gz %{_mandir}/man7/roff.mandoc.7.gz || :
+    /usr/sbin/update-alternatives --remove man.7.gz %{_mandir}/man7/man.mandoc.7.gz || :
 fi
 
 %files
@@ -217,6 +229,9 @@ fi
 %{_mandir}/man3/tbl.3*
 
 %changelog
+* Wed Dec 11 2024 Nikola Forró <nforro@redhat.com> - 1.14.6-10
+- Fix upgrades from non-alternativized versions
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.14.6-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,6 +1,6 @@
 Name:           coturn
-Version:        4.6.2
-Release:        8%{?dist}
+Version:        4.6.3
+Release:        1%{?dist}
 Summary:        TURN/STUN & ICE Server
 # MIT (src/{apps/relay/acme.c,server/ns_turn_khash.h} and BSD-3-Clause (the rest)
 License:        BSD-3-Clause AND MIT
@@ -19,7 +19,6 @@ BuildRequires:  openssl-devel
 BuildRequires:  sqlite-devel
 BuildRequires:  systemd-devel
 BuildRequires:  systemd-rpm-macros
-%if 0%{?fedora} || 0%{?rhel} >= 8
 BuildRequires:  libpq-devel
 BuildRequires:  mariadb-connector-c-devel
 Recommends:     perl-interpreter
@@ -28,16 +27,6 @@ Recommends:     perl(HTTP::Request::Common)
 Recommends:     perl(strict)
 Recommends:     perl(warnings)
 Recommends:     telnet
-%else
-BuildRequires:  postgresql-devel
-BuildRequires:  mariadb-devel
-Requires:       perl-interpreter
-Requires:       perl(DBI)
-Requires:       perl(HTTP::Request::Common)
-Requires:       perl(strict)
-Requires:       perl(warnings)
-Requires:       telnet
-%endif
 Provides:       turnserver = %{version}
 %{?systemd_requires}
 %{?sysusers_requires_compat}
@@ -115,23 +104,13 @@ This package contains the TURN client development headers.
 %prep
 %setup -q
 
-# Upstream does not care about RHEL/CentOS 7
-%if 0%{?rhel} == 7
-sed -i \
-    -e 's|^\(testpkg_db() {\)|\1\n    [ "$@" = "libpq" ] \&\& { DBLIBS="${DBLIBS} -lpq"; return 0; }|' \
-    configure
-%endif
-
 # NOTE: Use Fedora Default Ciphers
-%if 0%{?fedora} || 0%{?rhel} >= 8
 sed -i \
     -e 's|#define DEFAULT_CIPHER_LIST "DEFAULT"|#define DEFAULT_CIPHER_LIST "PROFILE=SYSTEM"|g' \
-    -e 's|/* "ALL:eNULL:aNULL:NULL" */|/* Fedora Defaults */|g' \
     src/apps/relay/mainrelay.h
 sed -i \
     -e 's|*csuite = "ALL"; //"AES256-SHA" "DH"|*csuite = "PROFILE=SYSTEM"; // Fedora Defaults|g' \
     src/apps/uclient/mainuclient.c
-%endif
 
 
 %build
@@ -173,11 +152,7 @@ make test
 
 # Check if turnserver is really linked against MariaDB, PostgreSQL and systemd,
 # because ./configure unfortunately has no proper failure mechanism...
-%if 0%{?fedora} || 0%{?rhel} >= 8
 ldd %{buildroot}%{_bindir}/turnserver | grep -q libmariadb.so
-%else
-ldd %{buildroot}%{_bindir}/turnserver | grep -q libmysqlclient.so
-%endif
 ldd %{buildroot}%{_bindir}/turnserver | grep -q libpq.so
 ldd %{buildroot}%{_bindir}/turnserver | grep -q libsystemd.so
 
@@ -267,6 +242,9 @@ ldd %{buildroot}%{_bindir}/turnserver | grep -q libsystemd.so
 
 
 %changelog
+* Wed Dec 11 2024 Robert Scheck <robert@fedoraproject.org> - 4.6.3-1
+- Upgrade to 4.6.3 (#2331737)
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.6.2-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

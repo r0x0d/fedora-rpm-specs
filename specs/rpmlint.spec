@@ -3,7 +3,7 @@
 
 Name:           rpmlint
 Version:        2.5.0
-Release:        8%{?dist}
+Release:        10%{?dist}
 Summary:        Tool for checking common errors in RPM packages
 License:        GPL-2.0-or-later
 URL:            https://github.com/rpm-software-management/rpmlint
@@ -103,6 +103,12 @@ cp -a %{SOURCE1} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{buildroot}%{_sysconfdir}/xdg
 %{_bindir}/rpmlint
 
 %changelog
+* Wed Dec 11 2024 Miro Hrončok <mhroncok@redhat.com> - 2.5.0-10
+- Fixup a bad regex in the spelling errors filter
+
+* Wed Dec 11 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.5.0-9
+- Add more jargon to the filtered-out spelling errors
+
 * Wed Nov 13 2024 Miro Hrončok <mhroncok@redhat.com> - 2.5.0-8
 - Filter out more common false positive spelling-errors
 

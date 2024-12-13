@@ -20,6 +20,7 @@ Version:        0.1.1
 Release:        %autorelease -b 8
 Summary:        Simple CLI to a variety of compression algorithms
 
+SourceLicense:  MIT
 # 0BSD OR MIT OR Apache-2.0
 # Apache-2.0
 # Apache-2.0 OR MIT

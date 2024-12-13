@@ -18,6 +18,9 @@ Patch:          default-terminal.patch
 # https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4406
 Patch:          0001-glib-gbytes-Be-more-careful-when-saving-a-GBytes-of-.patch
 
+# https://gitlab.gnome.org/GNOME/glib/-/issues/3526
+Patch: 0001-gutf8-Drop-ifunc-code-and-always-call-strlen-when-va.patch
+
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  gettext

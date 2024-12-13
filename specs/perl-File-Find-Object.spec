@@ -1,10 +1,10 @@
 Name:           perl-File-Find-Object
-Version:        0.3.8
-Release:        4%{?dist}
+Version:        0.3.9
+Release:        1%{?dist}
 Summary:        Object oriented File::Find replacement
 License:        GPL-2.0-or-later OR Artistic-2.0
 URL:            https://metacpan.org/release/File-Find-Object
-Source0:        https://cpan.metacpan.org/modules/by-module/File/File-Find-Object-%{version}.tar.gz
+Source0:        https://www.cpan.org/modules/by-module/File/File-Find-Object-%{version}.tar.gz
 BuildArch:      noarch
 # Module Build
 BuildRequires:  coreutils
@@ -66,6 +66,12 @@ make test
 %{_mandir}/man3/File::Find::Object::Result.3*
 
 %changelog
+* Wed Dec 11 2024 Paul Howarth <paul@city-fan.org> - 0.3.9-1
+- Update to 0.3.9 (rhbz#2331637)
+  - Avoid implicit symbol imports
+    https://perl-begin.org/tutorials/bad-elements/#non_explicitly_imported_symbols
+- Switch source URL from cpan.metacpan.org to www.cpan.org
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.3.8-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

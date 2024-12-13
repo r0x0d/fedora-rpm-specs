@@ -12,7 +12,8 @@ Release:       1.%{gitshort}%{?dist}
 Summary:       Firmware for the Broadcom bcm283x/bcm271x used in the Raspberry Pi
 # see LICENSE.broadcom
 # DT Overlays covered under Linux Kernel GPLv2
-License:       Redistributable, no modification permitted
+SourceLicense: GPL-2.0-only WITH Linux-syscall-note AND LicenseRef-Fedora-Firmware
+License:       LicenseRef-Fedora-Firmware
 URL:           https://github.com/raspberrypi/
 
 ExclusiveArch: aarch64
@@ -41,7 +42,7 @@ shipped in the Raspberry Pi series of devices.
 
 %package     -n bcm283x-overlays
 Summary:     HAT Overlays for the Raspberry Pi
-License:     GPLv2
+License:     GPL-2.0-only WITH Linux-syscall-note
 
 %description -n bcm283x-overlays
 Hardware Attached Ontop (HATs) overlays for the Raspberry Pi series of devices.

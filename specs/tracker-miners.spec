@@ -36,8 +36,8 @@
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 Name:           tracker-miners
-Version:        3.7.3
-Release:        4%{?dist}
+Version:        3.7.4
+Release:        1%{?dist}
 Summary:        Tracker miners and metadata extractors
 
 # libtracker-extract and libtracker-miner libraries are LGPLv2+; the miners are a mix of GPLv2+ and LGPLv2+ code
@@ -188,6 +188,9 @@ install -D -m 0755 %{SOURCE1} %{buildroot}%{_bindir}/%{name}-flatpak-fixup.sh
 
 
 %changelog
+* Wed Dec 11 2024 nmontero <nmontero@redhat.com> - 3.7.4-1
+- Update to 3.7.4
+
 * Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 3.7.3-4
 - Rebuild for ICU 76
 

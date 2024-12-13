@@ -1,6 +1,6 @@
 # Disable to avoid all the test suites
 
-%bcond_with tests
+%bcond_without tests
 
 # Disable automatic .la file removal
 %global __brp_remove_la_files %nil
@@ -59,7 +59,7 @@
 
 Summary: A Modern Concurrent Version Control System
 Name: subversion
-Version: 1.14.4
+Version: 1.14.5
 Release: 1%{?dist}
 License: Apache-2.0
 URL: https://subversion.apache.org/
@@ -235,15 +235,7 @@ Requires: subversion-libs%{?_isa} = %{version}-%{release}
 This package includes supplementary tools for use with Subversion.
 
 %prep
-%setup -q
-%patch -P1 -p1 -b .linking
-%patch -P2 -p1 -b .testwarn
-%patch -P3 -p1 -b .soversion
-%patch -P4 -p1 -b .rubybind
-%patch -P5 -p1 -b .swigplWall
-%patch -P6 -p1 -b .testnomagic
-%patch -P7 -p1 -b .modsyms
-%patch -P8 -p1 -b .zlib
+%autosetup -p1 -S gendiff
 
 :
 : === Building:
@@ -589,6 +581,11 @@ make check-javahl
 %endif
 
 %changelog
+* Wed Dec 11 2024 Joe Orton <jorton@redhat.com> - 1.14.5-1
+- update to 1.14.5 (#2331047)
+- use %%autosetup
+- enable tests by default again
+
 * Fri Nov 01 2024 Tomas Korbar <tkorbar@redhat.com> - 1.14.4-1
 - Rebase to version 1.14.4
 - Resolves: rhbz#2317222

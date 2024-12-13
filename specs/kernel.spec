@@ -162,13 +162,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.13.0
 %define specversion 6.13.0
 %define patchversion 6.13
-%define pkgrelease 0.rc2.20241210git7cb1b4663150.23
+%define pkgrelease 0.rc2.20241211gitf92f4749861b.24
 %define kversion 6
-%define tarfile_release 6.13-rc2-18-g7cb1b4663150
+%define tarfile_release 6.13-rc2-31-gf92f4749861b
 # This is needed to do merge window version magic
 %define patchlevel 13
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc2.20241210git7cb1b4663150.23%{?buildid}%{?dist}
+%define specrelease 0.rc2.20241211gitf92f4749861b.24%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.13.0
 
@@ -4171,9 +4171,14 @@ fi\
 #
 #
 %changelog
-* Tue Dec 10 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.7cb1b4663150.23]
+* Wed Dec 11 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.f92f4749861b.24]
 - x86/insn_decoder_test: allow longer symbol-names (David Rheinsberg)
 - kernel.spec: update license field (Scott Weaver)
+
+* Wed Dec 11 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.f92f4749861b.23]
+- crypto: rng - Fix extrng EFAULT handling (Herbert Xu)
+- redhat: configs: rhel: aarch64: Support NV Jetson MIPI camera (Kate Hsuan)
+- Linux v6.13.0-0.rc2.f92f4749861b
 
 * Tue Dec 10 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.7cb1b4663150.22]
 - gitlab-ci: disable clang CI pipelines (Scott Weaver)

@@ -1,6 +1,6 @@
 Name:           cfn-lint
 Summary:        CloudFormation Linter
-Version:        1.20.2
+Version:        1.22.0
 Release:        %autorelease
 
 # The entire source is MIT-0, except that some sources are derived from
@@ -18,11 +18,12 @@ Release:        %autorelease
 #   - src/cfnlint/schema/resolver/_exceptions.py
 #   - src/cfnlint/schema/resolver/_resolver.py
 #   - src/cfnlint/schema/resolver/_utils.py
+License:        MIT-0 AND MIT
 # Additionally, two test files are Apache-2.0, but these are not included in
 # the binary RPMs:
 #   - test/fixtures/templates/quickstart/openshift.yaml
 #   - test/fixtures/templates/quickstart/openshift_master.yaml
-License:        MIT-0 AND MIT
+SourceLicense:  %{license} AND Apache-2.0
 URL:            https://github.com/aws-cloudformation/cfn-lint
 # While the PyPI sdist contains the tests since 0.76.0, we still need data and
 # documentation files that are only available in the GitHub archive.

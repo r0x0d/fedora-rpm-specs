@@ -45,14 +45,14 @@
 Name: ovn
 Summary: Open Virtual Network support
 URL: http://www.openvswitch.org/
-Version: 24.09.0
-Release: 33%{?commit0:.%{date}git%{shortcommit0}}%{?dist}
+Version: 24.09.1
+Release: 10%{?commit0:.%{date}git%{shortcommit0}}%{?dist}
 Obsoletes: openvswitch-ovn-common < %{?epoch_ovs:%{epoch_ovs}:}2.11.0-8
 Provides: openvswitch-ovn-common = %{?epoch:%{epoch}:}%{version}-%{release}
 
 License: Apache-2.0 AND LGPL-2.1-only AND SISSL
 
-%define ovncommit 6c74ef66a877010a7cc43da61bc90c123d2b8b9d
+%define ovncommit 972bedec0125478e2f39fb7e2d0752132f944879
 
 # Always pull an upstream release, since this is what we rebase to.
 Source: https://github.com/ovn-org/ovn/archive/%{ovncommit}.tar.gz#/ovn-%{version}.tar.gz
@@ -437,6 +437,10 @@ fi
 %{_unitdir}/ovn-controller-vtep.service
 
 %changelog
+* Wed Dec 11 2024 Dumitru Ceara <dceara@redhat.com - 24.09.1-10
+- Sync to upstream ovn 24.09 branch commit e090b4ee942b
+  which includes 24.09.1.
+
 * Tue Sep 17 2024 Numan Siddique <numans@ovn.org>  - 24.09.0-33
 - Updated the OVN sources to upstream release 24.09.0.
 

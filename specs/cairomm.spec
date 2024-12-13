@@ -24,6 +24,33 @@ Release:        %autorelease
 
 URL:            https://www.cairographics.org
 License:        LGPL-2.0-or-later
+# The following files under other allowable licenses belong to the build system
+# and do not contribute to the licenses of the binary RPMs.
+#
+# FSFAP:
+#   build/ax_boost_base.m4
+#   build/ax_boost_test_exec_monitor.m4
+#   build/ax_boost_unit_test_framework.m4
+# GPL-2.0-or-later:
+#   MSVC_NMake/gendef/gendef.cc
+#   untracked/docs/tagfile-to-devhelp2.xsl
+# LGPL-2.1-or-later:
+#   Makefile.am
+#   cairomm/Makefile.am
+#   configure.ac
+#   docs/Makefile.am
+# MIT:
+#   untracked/docs/reference/html/dynsections.js
+#   untracked/docs/reference/html/jquery.js
+#   untracked/docs/reference/html/menu.js
+#   untracked/docs/reference/html/menudata.js
+SourceLicense:  %{shrink:
+                %{license} AND
+                FSFAP AND
+                GPL-2.0-or-later AND
+                LGPL-2.1-or-later AND
+                MIT
+                }
 
 %global src_base https://www.cairographics.org/releases
 Source0:        %{src_base}/cairomm-%{version}.tar.xz

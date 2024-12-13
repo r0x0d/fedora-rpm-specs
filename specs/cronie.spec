@@ -123,9 +123,9 @@ install -m 644 contrib/cronie.systemd $RPM_BUILD_ROOT/lib/systemd/system/crond.s
 %systemd_post crond.service
 
 %post anacron
-[ -e /var/spool/anacron/cron.daily ] || touch /var/spool/anacron/cron.daily 2>/dev/null || :
-[ -e /var/spool/anacron/cron.weekly ] || touch /var/spool/anacron/cron.weekly 2>/dev/null || :
-[ -e /var/spool/anacron/cron.monthly ] || touch /var/spool/anacron/cron.monthly 2>/dev/null || :
+[ -e /var/spool/anacron/cron.daily ] || install -m 0600 -D /dev/null /var/spool/anacron/cron.daily 2>/dev/null || :
+[ -e /var/spool/anacron/cron.weekly ] || install -m 0600 -D /dev/null /var/spool/anacron/cron.weekly 2>/dev/null || :
+[ -e /var/spool/anacron/cron.monthly ] || install -m 0600 -D /dev/null /var/spool/anacron/cron.monthly 2>/dev/null || :
 
 %preun
 # run before a package is removed

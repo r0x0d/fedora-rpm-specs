@@ -10,7 +10,9 @@ Summary:        C doubly linked list implementation
 License:        MIT
 URL:            https://github.com/clibs/list
 Source:         %{url}/archive/%{version}/list-%{version}.tar.gz
-Patch0: clibs-list-c99.patch
+# test: Fix type of User_equal
+# https://github.com/clibs/list/pull/47
+Patch:          %{url}/pull/47.patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}

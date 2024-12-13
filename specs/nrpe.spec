@@ -6,11 +6,11 @@
 %global fromgit 0
 
 Name: nrpe
-Version: 4.1.2
+Version: 4.1.3
 %if 0%{?fromgit}
-Release: 2%{?dist}
+Release: 1%{?dist}
 %else
-Release: 2%{?dist}
+Release: 1%{?dist}
 %endif
 Summary: Host/service/network monitoring agent for Nagios
 
@@ -212,6 +212,9 @@ fi
 %endif
 
 %changelog
+* Wed Dec 11 2024 Ján ONDREJ (SAL) <ondrejj(at)salstar.sk> - 4.1.3-1
+- Update to upstream.
+
 * Tue Dec 10 2024 Ján ONDREJ (SAL) <ondrejj(at)salstar.sk> - 4.1.2-2
 - Use openssl-devel-engine only on Fedora
 
