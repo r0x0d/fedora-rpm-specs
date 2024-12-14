@@ -1,12 +1,12 @@
 Name:		nanovna-saver
 Version:	0.6.8
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Tool for reading, displaying and saving data from the NanoVNA
 # Automatically converted from old format: GPLv3 - review is highly recommended.
 License:	GPL-3.0-only
 URL:		https://github.com/NanoVNA-Saver/%{name}
 
-Source0:	%{URL}/archive/v%{version}/%{name}-%{version}.tar.gz
+Source:		%{URL}/archive/v%{version}/%{name}-%{version}.tar.gz
 BuildArch:	noarch
 BuildRequires:	coreutils
 BuildRequires:	python3-setuptools
@@ -21,8 +21,8 @@ BuildRequires:	desktop-file-utils
 BuildRequires:	sed
 Requires:	hicolor-icon-theme
 # OS/distro specific
-Patch0:		nanovna-saver-0.6.2-fedora-icon.patch
-Patch1:		nanovna-saver-0.6.2-relax-deps.patch
+Patch:		nanovna-saver-0.6.2-fedora-icon.patch
+Patch:		nanovna-saver-0.6.8-relax-deps.patch
 
 %description
 A multiplatform tool to save Touchstone files from the NanoVNA, sweep
@@ -70,6 +70,10 @@ install -Dpm 0644 icon_48x48.png %{buildroot}%{_datadir}/icons/hicolor/48x48/app
 %{_datadir}/applications/NanoVNASaver.desktop
 
 %changelog
+* Thu Dec 12 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 0.6.8-2
+- Relaxed dependencies
+  Resolves: rhbz#2332015
+
 * Tue Dec 10 2024 Jaroslav Škarvada <jskarvad@redhat.com> - 0.6.8-1
 - New version
   Resolves: rhbz#2331262

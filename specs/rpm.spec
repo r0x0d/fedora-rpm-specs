@@ -20,8 +20,6 @@
 %bcond_without sqlite
 # build with bdb_ro support?
 %bcond_without bdb_ro
-# build with sequoia crypto?
-%bcond_without sequoia
 
 # https://fedoraproject.org/wiki/Changes/Unify_bin_and_sbin
 %bcond merged_sbin 0
@@ -30,7 +28,7 @@
 
 %global rpmver 4.20.0
 #global snapver rc1
-%global baserelease 1
+%global baserelease 3
 %global sover 10
 
 %global srcver %{rpmver}%{?snapver:-%{snapver}}
@@ -45,9 +43,6 @@ License: GPL-2.0-or-later
 Source0: http://ftp.rpm.org/releases/%{srcdir}/rpm-%{srcver}.tar.bz2
 
 Source10: rpmdb-rebuild.service
-
-Source20: rpmdb-migrate.service
-Source21: rpmdb_migrate
 
 Requires: coreutils
 Requires: popt%{_isa} >= 1.10.2.1
@@ -102,14 +97,7 @@ BuildRequires: pandoc
 BuildRequires: doxygen
 %endif
 
-
-%if %{with sequoia}
-%global crypto sequoia
 BuildRequires: rpm-sequoia-devel >= 1.4.0
-%else
-%global crypto openssl
-BuildRequires: openssl-devel
-%endif
 
 # Couple of patches change makefiles so, require for now...
 BuildRequires: automake libtool
@@ -127,11 +115,6 @@ BuildRequires: ima-evm-utils-devel >= 1.0
 %if %{with fsverity}
 BuildRequires: fsverity-utils-devel
 %endif
-
-# For the rpmdb migration scriptlet (#2055033)
-Requires(pre): coreutils
-Requires(pre): findutils
-Requires(pre): sed
 
 %patchlist
 # Set rpmdb path to /usr/lib/sysimage/rpm
@@ -151,6 +134,11 @@ rpm-4.19.91-weak-user-group.patch
 0001-Revert-Add-a-deprecation-warning-for-clamp_mtime_to_.patch
 
 # Patches already upstream:
+# Silence extra output on rpmspeq query on Buildsystem specs
+# https://github.com/rpm-software-management/rpm/pull/3414
+# Fixes: Regression: addtional output in rpmspec with -q
+# https://github.com/rpm-software-management/rpm/issues/3413
+0001-Silence-extra-output-on-rpmspec-query-on-Buildsystem.patch
 
 # These are not yet upstream
 rpm-4.7.1-geode-i686.patch
@@ -171,12 +159,10 @@ the package like its version, a description, etc.
 Summary:  Libraries for manipulating RPM packages
 License:  GPL-2.0-or-later OR LGPL-2.1-or-later
 Requires(meta): %{name} = %{version}-%{release}
-%if %{with sequoia}
 # >= 1.4.0 required for pgpVerifySignature2() and pgpPrtParams2()
 Requires: rpm-sequoia%{_isa} >= 1.4.0
 # Most systems should have a central package operations log
 Recommends: rpm-plugin-audit
-%endif
 
 %description libs
 This package contains the RPM shared libraries.
@@ -391,8 +377,6 @@ cmake \
       %{?with_libimaevm:-DWITH_IMAEVM=ON} \
       %{!?with_libarchive:-DWITH_ARCHIVE=OFF} \
       %{!?with_check:-DENABLE_TESTSUITE=OFF} \
-      %{!?with_sequoia:-DWITH_INTERNAL_OPENPGP=ON} \
-      %{!?with_sequoia:-DWITH_OPENSSL=ON } \
       -DRPM_VENDOR=redhat \
   ..
 
@@ -410,10 +394,8 @@ cd ..
 
 mkdir -p $RPM_BUILD_ROOT%{_unitdir}
 install -m 644 %{SOURCE10} $RPM_BUILD_ROOT/%{_unitdir}
-install -m 644 %{SOURCE20} $RPM_BUILD_ROOT/%{_unitdir}
 
 mkdir -p $RPM_BUILD_ROOT%{rpmhome}
-install -m 755 %{SOURCE21} $RPM_BUILD_ROOT/%{rpmhome}
 
 # Built-in replacement for systemd-sysusers(8)
 install -m 755 scripts/sysusers.sh $RPM_BUILD_ROOT/%{rpmhome}
@@ -459,21 +441,6 @@ if [ -d /var/lib/rpm ]; then
     done
 fi
 
-%triggerun -- rpm < 4.17.0-7
-# Handle rpmdb migrate service on erasure of old to avoid ordering issues
-if [ -x /usr/bin/systemctl ]; then
-    systemctl --no-reload preset rpmdb-migrate ||:
-fi
-
-%posttrans
-if [ -d /var/lib/rpm ]; then
-    touch /var/lib/rpm/.migratedb
-fi
-if [ ! -d /var/lib/rpm ] && [ -d /usr/lib/sysimage/rpm ] && [ ! -f /usr/lib/sysimage/rpm/.rpmdbdirsymlink_created ]; then
-    ln -sfr /usr/lib/sysimage/rpm /var/lib/rpm
-    touch /usr/lib/sysimage/rpm/.rpmdbdirsymlink_created
-fi
-
 %files -f _build/rpm.lang
 %license COPYING
 %doc CREDITS docs/manual/[a-z]*
@@ -483,7 +450,6 @@ fi
 %doc %{_defaultdocdir}/rpm/README
 
 %{_unitdir}/rpmdb-rebuild.service
-%{_unitdir}/rpmdb-migrate.service
 
 %dir %{_sysconfdir}/rpm
 
@@ -639,7 +605,7 @@ fi
 %artifact %{python3_sitearch}/rpm/__pycache__/
 
 # Python examples
-%{_defaultdocdir}/rpm/examples/*.py
+%{_defaultdocdir}/rpm/examples/
 
 %files devel
 %{_mandir}/man8/rpmgraph.8*
@@ -658,6 +624,14 @@ fi
 %doc %{_defaultdocdir}/rpm/API/
 
 %changelog
+* Thu Dec 12 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 4.20.0-3
+- Fix unwanted rpmspec output when there are dynamic sections
+
+* Tue Dec 10 2024 Michal Domonkos <mdomonko@redhat.com> - 4.20.0-2
+- Drop build option for legacy OpenPGP parser (#2239780)
+- Fix Python examples directory ownership (#2279750)
+- Drop rpmdb migration scripts (#2274332)
+
 * Mon Oct 07 2024 Michal Domonkos <mdomonko@redhat.com> - 4.20.0-1
 - Rebase to 4.20.0
 

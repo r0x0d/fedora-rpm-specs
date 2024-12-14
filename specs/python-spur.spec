@@ -5,7 +5,7 @@
 
 Name:           python-%{srcname}
 Version:        0.3.23
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        %{sum}
 
 License:        BSD-2-Clause
@@ -20,9 +20,7 @@ BuildArch:      noarch
 Summary:        %{sum}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-%if 0%{?rhel} < 9
-BuildRequires:  python3-nose
-%endif
+BuildRequires:  python3-pytest
 BuildRequires:  python3dist(paramiko) >= 1.13.1
 %{?python_provide:%python_provide python3-%{srcname}}
 
@@ -43,12 +41,9 @@ sed -i -e "s/’/'/g" README.rst
 %py3_install
 
 
-# skip tests on EL9 due to deprecated python-nose
-%if 0%{?rhel} && 0%{?rhel} < 9
 %check
 # Exclude tests which require SSH server
-nosetests-%{python3_version} -v -e testing -e ssh_tests
-%endif
+%pytest --ignore tests/ssh_tests.py
 
 
 %files -n python3-%{srcname}
@@ -58,6 +53,10 @@ nosetests-%{python3_version} -v -e testing -e ssh_tests
 
 
 %changelog
+* Wed Dec 11 2024 Miro Hrončok <mhroncok@redhat.com> - 0.3.23-8
+- Use pytest instead of deprecated nose
+- https://fedoraproject.org/wiki/Changes/DeprecateNose
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.3.23-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

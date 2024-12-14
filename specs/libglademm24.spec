@@ -34,12 +34,13 @@ Summary:        C++ wrapper for libglade
 #       - configure
 #   • The following are (clearly only) FSFULLR:
 #       - aclocal.m4
-#   • The following are GPL-2.0-or-later:
+#   • The following are GPL-2.0-or-later WITH Autoconf-exception-generic:
 #       - scripts/config.guess
 #       - scripts/config.sub
 #       - scripts/depcomp
 #       - scripts/ltmain.sh
 #       - scripts/missing
+#   • The following are GPL-2.0-or-later:
 #       - MSVC_Net2005/gendef/gendef.cc
 #   • The following are GPL-2.0-only:
 #       - examples/derived/deriveddialog.cc
@@ -51,6 +52,15 @@ Summary:        C++ wrapper for libglade
 #   • The following are X11:
 #       - scripts/install-sh
 License:        LGPL-2.0-or-later
+SourceLicense:  %{shrink:
+                %{license} AND
+                FSFUL AND
+                FSFULLR AND
+                GPL-2.0-only AND
+                GPL-2.0-or-later AND
+                GPL-2.0-or-later WITH Autoconf-exception-generic AND
+                X11
+                }
 URL:            https://www.gtkmm.org/
 Source:         https://ftp.gnome.org/pub/GNOME/sources/libglademm/2.6/libglademm-%{version}.tar.bz2
 

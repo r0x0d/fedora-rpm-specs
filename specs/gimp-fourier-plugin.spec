@@ -1,19 +1,13 @@
-# For GIMP version 3 compatibility, we must package a snapshot from the
-# gimp-2.99 branch:
-#
-# https://github.com/rpeyron/plugin-gimp-fourier/tree/gimp2.99
-%global commit 29697b2d24e7398e86ea5053c545677f85886acf
-%global snapdate 20241109
-
 Name:           gimp-fourier-plugin
-Version:        0.4.5^%{snapdate}git%{sub %{commit} 1 7}
+Version:        0.4.5+gimp3rc1
+%global srcversion %{gsub %{version} + -}
 Release:        %autorelease
 Summary:        Do direct and reverse Fourier Transforms on your image
 
 License:        GPL-3.0-or-later
 URL:            https://www.lprp.fr/gimp_plugin_en/
 %global forgeurl https://github.com/rpeyron/plugin-gimp-fourier
-Source:         %{forgeurl}/archive/%{commit}/plugin-gimp-fourier-%{commit}.tar.gz
+Source:         %{forgeurl}/archive/v%{version}/plugin-gimp-fourier-%{srcversion}.tar.gz
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 # The gimp package dropped s390x support in
@@ -45,7 +39,8 @@ regular banding noise.
 
 
 %prep
-%autosetup -n plugin-gimp-fourier-%{commit} -p1
+%autosetup -n plugin-gimp-fourier-%{srcversion} -p1
+dos2unix --keepdate README.md
 
 
 %conf
@@ -66,6 +61,7 @@ autoreconf --force --install --verbose
 
 
 %files -f gimp30-fourier.lang
+%license LICENSE
 %doc README.md
 %doc README.Moire
 

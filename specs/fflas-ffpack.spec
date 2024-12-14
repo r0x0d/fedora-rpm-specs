@@ -18,18 +18,27 @@ Summary:        Finite field linear algebra subroutines
 
 # The entire source is LGPL-2.1-or-later, except:
 #   - fflas-ffpack/fflas-ffpack-config.h is LGPL-2.0-or-later
-#
+License:        LGPL-2.1-or-later AND LGPL-2.0-or-later
 # Certain build system files that do not contribute to the license of the
 # binary RPMs are also distributed under other licenses:
 #   - INSTALL and macros/ax_cxx_compile_stdcxx_11.m4 are FSFAP
 #   - aclocal.m4 and macros/libtool.m4 are (FSFULLR AND GPL-2.0-or-later)
-#   - configure is FSFUL, or, more likely (FSFUL AND LGPL-2.1-or-later)
+#   - configure is FSFUL AND GPL-2.0-or-later WITH Autoconf-exception-generic
+#     (and also derived from configure.ac, so presumably also LGPL-2.1-or-later)
 #   - build-aux/compile, build-aux/depcomp, build-aux/ltmain.sh,
 #     build-aux/missing, and build-aux/test-driver are GPL-2.0-or-later
 #   - macros/instr_set.m4 is CECILL-B
 #   - macros/ltoptions.m4, macros/ltsugar.m4, macros/ltversion.m4, and
 #     macros/lt~obsolete.m4 are FSFULLR
-License:        LGPL-2.1-or-later AND LGPL-2.0-or-later
+SourceLicense:  %{shrink:
+                %{license} AND
+                CECILL-B AND
+                FSFAP AND
+                FSFUL AND
+                FSFULLR AND
+                GPL-2.0-or-later AND
+                GPL-2.0-or-later WITH Autoconf-exception-generic
+                }
 URL:            https://linbox-team.github.io/fflas-ffpack/
 %global forgeurl https://github.com/linbox-team/fflas-ffpack
 Source0:        %{forgeurl}/releases/download/v%{version}/fflas_ffpack-%{version}.tar.bz2

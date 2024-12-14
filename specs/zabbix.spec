@@ -16,7 +16,7 @@
 
 Name:           zabbix
 Epoch:          1
-Version:        7.0.6
+Version:        7.2.0
 Release:        1%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
@@ -43,7 +43,7 @@ Summary:        Open-source monitoring solution for your IT infrastructure
 # ui/vendor/paragonie/constant_time_encoding/src/*.php: MIT License
 License:        AGPL-3.0-only AND MIT AND GPL-2.0-or-later AND Zlib AND BSD-3-Clause AND BSD-2-Clause AND ISC
 URL:            https://www.zabbix.com
-Source0:        https://cdn.zabbix.com/zabbix/sources/stable/7.0/zabbix-%{version}.tar.gz
+Source0:        https://cdn.zabbix.com/zabbix/sources/stable/7.2/zabbix-%{version}.tar.gz
 Source1:        %{srcname}-web.conf
 Source2:        %{srcname}-php-fpm.conf
 Source5:        %{srcname}-logrotate.in
@@ -838,6 +838,9 @@ fi
 %files web-pgsql
 
 %changelog
+* Thu Dec 12 2024 Orion Poplawski <orion@nwra.com> - 1:7.2.0-1
+- Update to 7.2.0
+
 * Sat Nov 30 2024 Orion Poplawski <orion@nwra.com> - 1:7.0.6-1
 - Update to 7.0.6
 

@@ -7,7 +7,7 @@
 # https://github.com/golang/crypto
 %global goipath  golang.org/x/crypto
 %global forgeurl https://github.com/golang/crypto
-Version:         0.30.0
+Version:         0.31.0
 
 %global godevelheader %{expand:
 Provides: golang(golang.org/x/crypto/ssh/testdata) =  %{version}-%{release}
@@ -47,7 +47,12 @@ Source0:        %{gosource}
 %if %{with check}
 %check
 # internal/wycheproof: depends on Go modules
-%gocheck -d internal/wycheproof
+%gocheck -d internal/wycheproof \
+%ifarch s390x
+  -d sha3 \
+%endif
+   %{nil}
+
 %endif
 
 %gopkgfiles

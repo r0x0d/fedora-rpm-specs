@@ -17,15 +17,59 @@ Summary:        Lattice algorithms using floating-point arithmetic
 #     fplll/io/thread_pool.hpp
 #   - json-static is is MIT AND CC0-1.0 (the latter because it includes
 #     Hedley); it replaces fplll/io/json.hpp
-#
+License:        LGPL-2.1-or-later AND MIT AND CC0-1.0
 # Additionally, a number of autoconf build system sources, which do not
 # contribute to the binary RPM license because they are neither installed nor
 # linked into any installed file, are under various other permissible licenses:
 #
-#   - INSTALL, {,fplll/,tests/}Makefile.in, aclocal.m4, compile, config.guess,
-#     config.sub, configure, depcomp, install-sh, ltmain.sh, missing,
-#     test-driver, */Makefile.in, m4/*.m4
-License:        LGPL-2.1-or-later AND MIT AND CC0-1.0
+# FSFAP-no-warranty-disclaimer:
+#   - INSTALL
+#   - m4/ax_atomic.m4
+#   - m4/ax_cxx_compile_stdcxx.m4
+# FSFUL AND GPL-2.0-or-later WITH Libtool-exception AND LGPL-2.1-or-later:
+# (The LGPL-2.1-or-later comes from the corresponding Makefile.am files.)
+#   - configure
+# FSFUL AND FSFULLR AND GPL-2.0-or-later WITH Libtool-exception:
+#   - m4/libtool.m4
+# FSFULLR:
+#   - m4/ltoptions.m4
+#   - m4/ltsugar.m4
+#   - m4/ltversion.m4
+#   - m4/lt~obsolete.m4
+# FSFULLR AND GPL-2.0-or-later WITH Autoconf-exception-generic:
+#   - aclocal.m4
+# FSFULLR AND LGPL-2.1-or-later:
+# (The LGPL-2.1-or-later comes from the corresponding Makefile.am files.)
+#   - Makefile.in
+#   - fplll/Makefile.in
+#   - tests/Makefile.in
+# GPL-2.0-or-later WITH Autoconf-exception-generic:
+#   - compile
+#   - depcomp
+#   - missing
+#   - test-driver
+# GPL-2.0-or-later WITH Libtool-exception AND GPL-3.0-or-later AND
+# GPL-3.0-or-later WITH Libtool-exception:
+#   - ltmain.sh
+# GPL-3.0-or-later WITH Autoconf-exception-generic:
+#   - config.guess
+#   - config.sub
+# GPL-3.0-or-later WITH Autoconf-exception-macro
+#   - m4/ax_pthread.m4
+# X11:
+#   - install-sh
+SourceLicense:  %{shrink:
+                %{license} AND
+                FSFAP-no-warranty-disclaimer AND
+                FSFUL AND
+                FSFULLR AND
+                GPL-2.0-or-later WITH Libtool-exception AND
+                GPL-2.0-or-later WITH Autoconf-exception-generic AND
+                GPL-3.0-or-later AND
+                GPL-3.0-or-later WITH Autoconf-exception-generic AND
+                GPL-3.0-or-later WITH Autoconf-exception-macro AND
+                X11
+                }
 URL:            https://fplll.github.io/fplll/
 Source0:        https://github.com/fplll/fplll/releases/download/%{version}/fplll-%{version}.tar.gz
 # Man pages hand-written for Fedora in groff_man(7) format based on --help

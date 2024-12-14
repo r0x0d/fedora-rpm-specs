@@ -27,13 +27,10 @@
 # Disable support for AAD WebView popup since it uses webkit2gtk-4.0
 #global _with_webview 1
 
-# FIXME: GCC 14.x says there's lots of incompatible pointer casts going on...
-%global build_type_safety_c 2
-
 Name:           freerdp
 Epoch:          2
-Version:        3.9.0
-Release:        2%{?dist}
+Version:        3.10.0
+Release:        1%{?dist}
 Summary:        Free implementation of the Remote Desktop Protocol (RDP)
 
 # The effective license is Apache-2.0 but:
@@ -181,7 +178,8 @@ find . -name "*.h" -exec chmod 664 {} \;
 find . -name "*.c" -exec chmod 664 {} \;
 
 %build
-%cmake %{?_cmake_skip_rpath} \
+%cmake \
+    -DBUILD_TESTING=ON \
     -DCMAKE_INSTALL_LIBDIR:PATH=%{_lib} \
     -DWITH_ALSA=ON \
     -DWITH_AAD=ON \
@@ -257,6 +255,9 @@ find . -name "*.c" -exec chmod 664 {} \;
     %{nil}
 
 %cmake_build
+
+%check
+%cmake_build --target test
 
 %install
 %cmake_install
@@ -366,6 +367,9 @@ find %{buildroot} -name "*.a" -delete
 %{_libdir}/pkgconfig/winpr-tools3.pc
 
 %changelog
+* Thu Dec 12 2024 Ondrej Holy <oholy@redhat.com> - 2:3.10.0-1
+- Update to 3.10.0
+
 * Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 2:3.9.0-2
 - Rebuild for ICU 76
 

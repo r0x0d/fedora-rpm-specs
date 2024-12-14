@@ -1,13 +1,6 @@
-# EPEL will not have python-spec/python-nose, so skip the spec-based tests on EPEL 9.
-%if 0%{?el9} || 0%{?centos} >= 9
-%bcond_with    tests
-%else
-%bcond_without tests
-%endif
-
 Name:		python-fluidity-sm
 Version:	0.2.0
-Release:	34%{?dist}
+Release:	35%{?dist}
 Summary:	State machine implementation for Python objects
 License:	MIT
 URL:		https://github.com/nsi-iff/fluidity
@@ -15,13 +8,8 @@ Source0:	https://github.com/nsi-iff/fluidity/archive/%{version}/fluidity-%{versi
 BuildArch:	noarch
 BuildRequires:	python3-devel
 BuildRequires:	python3-setuptools
-
-%if %{with tests}
 # For test suite
-BuildRequires:	python3-nose
 BuildRequires:	python3-should_dsl
-BuildRequires:	python3-spec
-%endif
 
 %description
 State machine implementation for Python objects.
@@ -42,10 +30,8 @@ State machine implementation for Python objects.
 %install
 %py3_install
 
-%if %{with tests}
 %check
-nosetests-3 -i spec --with-specplugin
-%endif
+%{py3_test_envvars} %{python3} -m unittest spec/*.py
 
 %files -n python3-fluidity-sm
 %license LICENSE
@@ -54,6 +40,10 @@ nosetests-3 -i spec --with-specplugin
 %{python3_sitelib}/fluidity_sm-%{version}-*.egg-info/
 
 %changelog
+* Wed Dec 11 2024 Miro Hrončok <mhroncok@redhat.com> - 0.2.0-35
+- Drop unneeded BuildRequires for python3-spec and python3-nose, use unittest
+- https://fedoraproject.org/wiki/Changes/DeprecateNose
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.0-34
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

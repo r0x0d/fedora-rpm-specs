@@ -1,5 +1,5 @@
 Name:           perl-Authen-WebAuthn
-Version:        0.004
+Version:        0.005
 Release:        1%{?dist}
 Summary:        Library to add Web Authentication support to server applications
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -70,6 +70,9 @@ make test
 
 
 %changelog
+* Thu Dec 12 2024 Xavier Bachelot <xavier@bachelot.org> - 0.005-1
+- Update to 0.005 (RHBZ#2332110)
+
 * Mon Jul 29 2024 Xavier Bachelot <xavier@bachelot.org> - 0.004-1
 - Update to 0.004 (RHBZ#2300031)
 

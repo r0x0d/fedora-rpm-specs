@@ -2,7 +2,7 @@
 %bcond_without ostree_ext
 
 Name:           bootc
-Version:        1.1.3~rc0
+Version:        1.1.3
 Release:        %{autorelease}
 Summary:        Bootable container system
 
@@ -16,9 +16,8 @@ Summary:        Bootable container system
 # Unlicense OR MIT
 License:        Apache-2.0 AND BSD-3-Clause AND MIT AND (Apache-2.0 OR BSL-1.0) AND (Apache-2.0 OR MIT) AND (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND (Unlicense OR MIT)
 URL:            https://github.com/containers/bootc
-# TODO add code like systemd.spec which substitutes ~
-Source0:        %{url}/releases/download/v1.1.3-rc.0/bootc-1.1.3.rc.0.tar.zstd
-Source1:        %{url}/releases/download/v1.1.3-rc.0/bootc-1.1.3.rc.0-vendor.tar.zstd
+Source0:        %{url}/releases/download/v%{version}/bootc-%{version}.tar.zstd
+Source1:        %{url}/releases/download/v%{version}/bootc-%{version}-vendor.tar.zstd
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
@@ -54,7 +53,7 @@ Provides: ostree-cli(ostree-container)
 %{summary}
 
 %prep
-%autosetup -n bootc-1.1.3.rc.0 -p1 -a1
+%autosetup -p1 -a1
 %cargo_prep -v vendor
 
 %build

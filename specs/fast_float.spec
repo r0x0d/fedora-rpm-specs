@@ -21,9 +21,10 @@ URL:            https://github.com/fastfloat/fast_float
 # README.md:
 #   Licensed under either of Apache License, Version 2.0 or MIT license or
 #   BOOST license.
+License:        Apache-2.0 OR MIT OR BSL-1.0
 # Supplemental test files (Source1) are Apache-2.0 only (no MIT option); they
 # do not contribute to the binary RPMs.
-License:        Apache-2.0 OR MIT OR BSL-1.0
+SourceLicense:  (%{license}) AND Apache-2.0
 
 Source0:        %{url}/archive/v%{version}/fast_float-%{version}.tar.gz
 Source1:        %{stf_url}/archive/%{stf_commit}/supplemental_test_files-%{stf_commit}.tar.gz

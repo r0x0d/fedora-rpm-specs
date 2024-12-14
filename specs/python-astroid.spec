@@ -49,15 +49,7 @@ rm -rf %{buildroot}%{python3_sitelib}/tests
 
 
 %check
-# deselected tests fail with Python 3.13
-# https://github.com/pylint-dev/astroid/issues/2349
-%{python3} -m pytest -v \
-  --deselect "tests/test_inference.py::InferenceTest::test_getitem_of_class_raised_type_error"  \
-  --deselect "tests/test_inference.py::test_dataclasses_subscript_inference_recursion_error_39" \
-  --deselect "tests/brain/test_brain.py::TypingBrain::test_typing_annotated_subscriptable" \
-  --deselect "tests/brain/test_pathlib.py::test_inference_parents" \
-  --deselect "tests/brain/test_pathlib.py::test_inference_parents_subscript_index"
-
+%{pytest} -v
 
 %files -n python3-%{srcname}
 %license LICENSE

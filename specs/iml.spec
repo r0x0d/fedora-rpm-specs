@@ -17,19 +17,51 @@ Summary:        Finds solutions to systems of linear equations over integers
 # > Our intention was to go with a BSD-style license, the one in the source
 # > code files.
 # > […]
-#
+License:        BSD-3-Clause
 # The following files with other licenses belong to the build system and do not
 # affect the license of the binary RPMs:
-#   - aclocal.m4, config/ltoptions.m4, config/ltsugar.m4, config/ltversion.m4,
-#     and config/lt~obsolete.m4 are FSFULLR
-#   - bootstrap, compile, depcomp, ltmain.sh, missing, config/compile,
-#     config/config.guess, config/config.sub, config/depcomp, config/ltmain.sh
-#     and config/missing are GPL-2.0-or-later
-#   - config.guess and config.sub are GPL-3.0-or-later
-#   - configure is FSFUL, or, more likely, (FSFUL AND BSD-3-Clause)
-#   - install-sh and config/install-sh are X11
-#   - config/libtool.m4 is (FSFULLR AND GPL-2.0-or-later)
-License:        BSD-3-Clause
+#
+# FSFUL AND BSD-3-Clause:
+# (BSD-3-Clause because it is derived from configure.ac)
+#   - configure
+# FSFUL AND FSFULLR AND GPL-2.0-or-later WITH Libtool-exception:
+#   - config/libtool.m4
+# FSFULLR:
+#   - aclocal.m4
+#   - config/ltoptions.m4
+#   - config/ltsugar.m4
+#   - config/ltversion.m4,
+#   - config/lt~obsolete.m4
+# GPL-2.0-or-later:
+#   - bootstrap
+# GPL-2.0-or-later WITH Autoconf-exception-generic:
+#   - compile
+#   - depcomp
+#   - missing
+#   - config/compile,
+#   - config/depcomp
+#   - config/missing
+# GPL-2.0-or-later WITH Libtool-exception:
+#   - ltmain.sh
+#   - config/ltmain.sh
+# GPL-3.0-or-later WITH Autoconf-exception-generic:
+#   - config.guess
+#   - config.sub
+#   - config/config.guess
+#   - config/config.sub
+# X11:
+#   - install-sh
+#   - config/install-sh
+SourceLicense:  %{shrink:
+                %{license} AND
+		FSFUL AND
+		FSFULLR AND
+		GPL-2.0-or-later AND
+		GPL-2.0-or-later WITH Autoconf-exception-generic AND
+		GPL-2.0-or-later WITH Libtool-exception AND
+		GPL-3.0-or-later WITH Autoconf-exception-generic AND
+		X11
+		}
 URL:            https://cs.uwaterloo.ca/~astorjoh/iml.html
 Source0:        https://cs.uwaterloo.ca/~astorjoh/iml-%{version}.tar.bz2
 Source1:        iml-license-clarification.eml

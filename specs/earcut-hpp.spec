@@ -5,17 +5,15 @@ Release:        %autorelease
 
 # SPDX
 License:        ISC
+# Additionally, a copy of libtess2 (https://github.com/memononen/libtess2) is
+# bundled with the tests as a reference implementation
+# (test/comparison/libtess2/); its license is SGI-B-2.0. We do not treat it as
+# a bundled system library (no virtual Provides, for example) because it is
+# provably used only in the tests, and does not contribute to anything
+# installed in the binary RPM. All of this is just as well, as libtess2 is
+# unmaintained and we would rather not have to package it separately.
+SourceLicense:  %{license} AND SGI-B-2.0
 URL:            https://github.com/mapbox/earcut.hpp
-# A copy of libtess2 (https://github.com/memononen/libtess2) is bundled with
-# the tests as a reference implementation (test/comparison/libtess2/).
-#
-# We do not treat it as a bundled system library (no virtual Provides, for
-# example) because it is provably used only in the tests, and does not
-# contribute to anything installed in the binary RPM. This means that its
-# SGI-B-2.0 license also does not need to appear in the License tag.
-#
-# All of this is just as well, as libtess2 is unmaintained and we would rather
-# not have to package it separately.
 
 Source:         %{url}/archive/v%{version}/earcut.hpp-%{version}.tar.gz
 

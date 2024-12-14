@@ -5,7 +5,7 @@
 
 Name:          tpm2-tss
 Version:       4.1.3
-Release:       3%{?candidate:.%{candidate}}%{?dist}
+Release:       4%{?candidate:.%{candidate}}%{?dist}
 Summary:       TPM2.0 Software Stack
 
 # The entire source code is under BSD except implementation.h and tpmb.h which
@@ -16,6 +16,8 @@ Source0:       https://github.com/tpm2-software/tpm2-tss/releases/download/%{ver
 Source1:       tpm2-tss-systemd-sysusers.conf
 # doxygen crash
 Patch0:        tpm2-tss-3.0.0-doxygen.patch
+# Do not use <openssl/engine.h> (fixed upstream for 4.2)
+Patch1:        tpm2-tss-4.1.3-openssl-no-engine.patch
 
 %global udevrules_prefix 60-
 
@@ -33,7 +35,6 @@ BuildRequires: json-c-devel
 BuildRequires: libcurl-devel
 BuildRequires: libgcrypt-devel
 BuildRequires: openssl-devel
-BuildRequires: openssl-devel-engine
 BuildRequires: pkgconfig
 BuildRequires: systemd
 BuildRequires: systemd-rpm-macros
@@ -154,6 +155,9 @@ use tpm2-tss.
 %{_mandir}/man7/tss2*.7.gz
 
 %changelog
+* Thu Dec 12 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 4.1.3-4
+- Remove openssl-devel-engine build dependency
+
 * Tue Jul 23 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 4.1.3-3
 - Add openssl-devel-engine build dep
 

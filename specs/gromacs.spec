@@ -31,10 +31,10 @@ ExcludeArch:    i686 armv7hl s390x
 
 Name:		gromacs
 Version:	2024.4
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Fast, Free and Flexible Molecular Dynamics
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
-License:	GPL-2.0-or-later
+License:	LGPL-2.1-or-later
 URL:		http://www.gromacs.org
 
 Source0:	https://ftp.gromacs.org/gromacs/gromacs-%{version}%{?_rc}.tar.gz
@@ -42,13 +42,12 @@ Source1:	https://ftp.gromacs.org/manual/manual-%{version}%{?_rc}.pdf
 Source2:	https://ftp.gromacs.org/regressiontests/regressiontests-%{version}%{?_rc}.tar.gz
 Source3:	gromacs-README.fedora
 BuildRequires:	gcc-c++
-BuildRequires:  cmake3 >= 3.4.3
+BuildRequires:  cmake3 >= 3.18.4
 BuildRequires:	%{blaslib}-devel
 BuildRequires:	fftw-devel
 BuildRequires:	gsl-devel
 BuildRequires:	hwloc
 BuildRequires:	hwloc-devel
-BuildRequires:	libX11-devel
 BuildRequires:	lmfit-devel >= 6.0
 BuildRequires:	muParser-devel
 %if %{with_opencl}
@@ -227,7 +226,10 @@ install -Dpm644 %{SOURCE1} ./serial/docs/manual/gromacs.pdf
 # Delete bundled stuff so that it doesn't get used accidentally
 # Don't remove tinyxml2 as gromacs needs an old version to build
 # test, see: https://redmine.gromacs.org/issues/2389
-rm -r src/external/{fftpack,tng_io,lmfit,muparser}
+# googletest has modifications not in the packaged version
+# clfft is not packaged
+# Changes needed to CMakeLists to use packaged Boost stl_interfaces
+rm -r src/external/{build-fftw,fftpack,lmfit,muparser,tng_io}
 
 # increase timeout of tests
 sed -i 's/set(_timeout [0-9]*)/set(_timeout 9000)/' src/testutils/TestMacros.cmake
@@ -247,7 +249,6 @@ sed -i 's/set(_timeout [0-9]*)/set(_timeout 9000)/' src/testutils/TestMacros.cma
  -DGMX_LAPACK_USER=%{blaslib} \\\
  -DGMX_USE_RDTSCP=OFF \\\
  -DGMX_INSTALL_LEGACY_API=ON \\\
- -DGMX_DSSP_PROGRAM_PATH=/usr/bin/dssp \\\
  -DGMX_VERSION_STRING_OF_FORK='Fedora%{fedora}' \\\
  -DGMX_SIMD=%{simd}
 
@@ -267,7 +268,7 @@ for p in '' _d ; do
     pushd ${mpi:-serial}${p}
     test -z "${mpi}" && cp -al ../regressiontests* tests/ # use with -DREGRESSIONTEST_PATH=${PWD}/tests below
     %{cmake3} %{defopts} \
-      $(test -n "${mpi}" && echo %{mpi} -DGMX_BINARY_SUFFIX=${MPI_SUFFIX}${p} -DGMX_LIBS_SUFFIX=${MPI_SUFFIX}${p} -DCMAKE_INSTALL_BINDIR=${MPI_BIN} -DCMAKE_INSTALL_LIBDIR=${MPI_LIB} || echo -DGMX_X11=ON) \
+      $(test -n "${mpi}" && echo %{mpi} -DGMX_BINARY_SUFFIX=${MPI_SUFFIX}${p} -DGMX_LIBS_SUFFIX=${MPI_SUFFIX}${p} -DCMAKE_INSTALL_BINDIR=${MPI_BIN} -DCMAKE_INSTALL_LIBDIR=${MPI_LIB}) \
       $(test -z "${mpi}" && echo "-DREGRESSIONTEST_PATH=${PWD}/tests") \
       $(test -n "$p" && echo %{double} || echo %{?single})
     %cmake_build
@@ -321,9 +322,9 @@ for p in '' _d ; do
   for mpi in '' mpich openmpi ; do
     test -n "${mpi}" && module load mpi/${mpi}-%{_arch}
     pushd ${mpi:-serial}${p}
-    [[ ${mpi} = openmpi ]] && export OMPI_MCA_rmaps_base_oversubscribe=1
-    %cmake_build --target check
-    [[ ${mpi} = openmpi ]] && unset OMPI_MCA_rmaps_base_oversubscribe
+    [[ ${mpi} = openmpi ]] && export OMPI_MCA_rmaps_base_oversubscribe=1 PRTE_MCA_rmaps_default_mapping_policy=:oversubscribe
+    %cmake_build --target check -v
+    [[ ${mpi} = openmpi ]] && unset OMPI_MCA_rmaps_base_oversubscribe PRTE_MCA_rmaps_default_mapping_policy
     popd
     test -n "${mpi}" && module unload mpi/${mpi}-%{_arch}
   done
@@ -374,6 +375,13 @@ done
 %{_libdir}/mpich/bin/gmx_mpich*
 
 %changelog
+* Thu Dec 12 2024 Andrey Alekseenko <al42and@gmail.com> - 2024.4-2
+- Correct SPDX license ID
+- Update build-time CMake dependency and remove X11 dependency
+- Remove unused CMake argument
+- Remove unused bundled code
+- Add overscribe environment variable for openmpi 5+
+
 * Fri Nov 01 2024 Christoph Junghans <junghans@votca.org> - 2024.4-1
 - Version bump to v2024.4 (bug #2322950)
 - Enable HeFFTE support

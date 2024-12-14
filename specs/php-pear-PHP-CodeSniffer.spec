@@ -13,9 +13,9 @@
 
 %bcond_without       tests
 
-%global gh_commit    19473c30efe4f7b3cd42522d0b2e6e7f243c6f87
+%global gh_commit    1368f4a58c3c52114b86b1abe8f4098869cb0079
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
-%global gh_date      2024-11-16
+%global gh_date      2024-12-11
 %global gh_owner     PHPCSStandards
 %global gh_project   PHP_CodeSniffer
 # keep in old PEAR tree
@@ -23,7 +23,7 @@
 
 
 Name:           php-pear-PHP-CodeSniffer
-Version:        3.11.1
+Version:        3.11.2
 Release:        1%{?dist}
 Summary:        PHP coding standards enforcement tool
 
@@ -45,6 +45,7 @@ BuildRequires:  php-dom
 BuildRequires:  php-iconv
 BuildRequires:  php-intl
 %if %{with tests}
+BuildRequires:  php-bcmath
 # to run test suite, from composer.json "require-dev"
 #        "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.3.4"
 %global phpunit %{_bindir}/phpunit9
@@ -111,12 +112,14 @@ YEAR=$(date +%Y)
 sed -e "/@copyright/s/2021/${YEAR}/" \
     -i src/Standards/Squiz/Tests/Commenting/FileCommentUnitTest.1.*.fixed
 
-# Version 3.9.0: Tests: 2276, Assertions: 10969, Warnings: 4, Skipped: 12.
+# Version 3.11.2: Tests: 3174, Assertions: 18639, Warnings: 3, Skipped: 19.
+# testBrokenRulesetMultiError failing reported as https://github.com/PHPCSStandards/PHP_CodeSniffer/issues/767
 ret=0
 for cmdarg in "php %{phpunit}" php81 php82 php83 php84; do
   if which $cmdarg; then
     set $cmdarg
     $1 -d memory_limit=-1 ${2:-%{_bindir}/phpunit9} \
+       --filter '^((?!(testBrokenRulesetMultiError)).)*$' \
        || ret=1
   fi
 done
@@ -141,6 +144,9 @@ fi
 
 
 %changelog
+* Thu Dec 12 2024 Remi Collet <remi@remirepo.net> - 3.11.2-1
+- update to 3.11.2
+
 * Mon Nov 18 2024 Remi Collet <remi@remirepo.net> - 3.11.1-1
 - update to 3.11.1
 

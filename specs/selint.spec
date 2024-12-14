@@ -9,10 +9,20 @@
 Summary: Static code analysis tool for SELinux policy source files
 Name: selint
 Version: 1.5.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 URL: https://github.com/SELinuxProject/selint
 License: Apache-2.0
 Source: %{url}/releases/download/v%{version}/%{name}-%{version}.tar.gz
+Patch0001: 0001-Add-check-for-fcontext-lines-containing-only-spaces.patch
+# Patch0002: 0002-Run-CI-whitespace-check-only-on-changes-introduced-i.patch
+Patch0003: 0003-Drop-useless-self-assignment.patch
+Patch0004: 0004-Support-CIDR-address-notation-in-nodecon-statement.patch
+# Patch0005: 0005-ci-bump-to-LLVM-19.patch
+Patch0006: 0006-Support-m4-quoted-strings-in-interface-call-argument.patch
+Patch0007: 0007-Call-bison-with-Wno-other.patch
+Patch0008: 0008-Markdownify-README.patch
+Patch0009: 0009-Add-parse-check-for-new-netlink-xperm-support.patch
+Patch0010: 0010-Allow-in-quoted-string-token.patch
 
 BuildRequires: autoconf
 BuildRequires: autoconf-archive
@@ -59,13 +69,16 @@ autoreconf -fiv -Wall -Wno-portability
 
 %files
 %license LICENSE NOTICE
-%doc CHANGELOG README
+%doc CHANGELOG README.md
 %{_bindir}/selint
 %config(noreplace) %{_sysconfdir}/selint.conf
 %{_mandir}/man1/selint.1*
 
 
 %changelog
+* Thu Dec 12 2024 Petr Lautrbach <lautrbach@redhat.com> - 1.5.0-3
+- Update to latest upstream sources
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

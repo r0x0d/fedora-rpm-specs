@@ -1,7 +1,7 @@
 Summary:        A simple, lightweight interface to Amazon Web Services
 Name:           python-boto
 Version:        2.49.0
-Release:        23%{?dist}
+Release:        24%{?dist}
 License:        MIT
 URL:            https://github.com/boto/boto
 Source0:        https://pypi.io/packages/source/b/boto/boto-%{version}.tar.gz
@@ -55,12 +55,13 @@ Patch11:        remove-python-mock.patch
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-six
-BuildRequires:  python3-httpretty
-BuildRequires:  python3-mock
-BuildRequires:  python3-nose
-BuildRequires:  python3-requests
 # boto/plugin.py and boto/pyami/launch_ami.py uses imp
 BuildRequires:  (python3-zombie-imp if python3 >= 3.12)
+# test requires, but tests are commented out
+# BuildRequires:  python3-httpretty
+# BuildRequires:  python3-mock
+# BuildRequires:  python3-nose
+# BuildRequires:  python3-requests
 
 BuildArch:      noarch
 
@@ -111,8 +112,9 @@ cp -p %{SOURCE1} .
 rm -f $RPM_BUILD_ROOT/%{_bindir}/*
 
 
-#%check
+%check
 #%{__python3} tests/test.py default
+%py3_check_import boto
 
 
 %files -n python3-boto
@@ -121,6 +123,11 @@ rm -f $RPM_BUILD_ROOT/%{_bindir}/*
 
 
 %changelog
+* Wed Dec 11 2024 Miro Hrončok <mhroncok@redhat.com> - 2.49.0-24
+- Remove unused test BuildRequires
+- https://fedoraproject.org/wiki/Changes/DeprecateNose
+- Run a very basic import check during the build
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.49.0-23
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

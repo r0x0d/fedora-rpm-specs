@@ -17,13 +17,13 @@
 %undefine _strict_symbol_defs_build
 
 #global prever rc4
-%global baserelease 9
+%global baserelease 1
 %global mod_proxy_version 0.9.4
 %global mod_vroot_version 0.9.11
 
 Summary:		Flexible, stable and highly-configurable FTP server
 Name:			proftpd
-Version:		1.3.8b
+Version:		1.3.8c
 Release:		%{?prever:0.}%{baserelease}%{?prever:.%{prever}}%{?dist}
 License:		GPL-2.0-or-later
 URL:			http://www.proftpd.org/
@@ -42,13 +42,11 @@ Source11:		http://github.com/Castaglia/proftpd-mod_proxy/archive/v%{mod_proxy_ve
 
 Patch1:			proftpd-1.3.8-shellbang.patch
 Patch3:			proftpd-1.3.4rc1-mod_vroot-test.patch
-Patch5:			proftpd-1.3.8b-issue1840.patch
 Patch7:			proftpd-1.3.8-configure-c99.patch
-Patch8:			proftpd-configure-c99-2.patch
 Patch9:			https://patch-diff.githubusercontent.com/raw/proftpd/proftpd/pull/1677.patch
 Patch10:		mod_proxy-certificate.patch
 Patch11:		mod_proxy-old-openssl.patch
-Patch12:		proftpd-1.3.8b-no-engine.patch
+Patch12:		proftpd-1.3.8c-no-engine.patch
 Patch13:		proftpd-1.3.8b-format-overflow.patch
 
 BuildRequires:		coreutils
@@ -229,15 +227,6 @@ mv contrib/README contrib/README.contrib
 
 # Port configure script to C99: https://github.com/proftpd/proftpd/pull/1665
 %patch -P 7 -p1 -b .c99
-
-# C compatibility port part 2: https://github.com/proftpd/proftpd/pull/1754
-%patch -P 8 -p1 -b .c99-2
-
-# Fix RADIUS Message-Authenticator verification in mod_radius
-# https://github.com/proftpd/proftpd/issues/1840
-# https://bugzilla.redhat.com/show_bug.cgi?id=2325448
-%patch -P 5 -p1
-
 
 # Update fsio.c - if mkdir fails with EEXIST, also clear the cache
 # https://github.com/proftpd/proftpd/pull/1677
@@ -495,6 +484,20 @@ fi
 %{_mandir}/man1/ftpwho.1*
 
 %changelog
+* Thu Dec 12 2024 Paul Howarth <paul@city-fan.org> - 1.3.8c-1
+- Update to 1.3.8c
+  - Using FTPS after upgrading from 1.3.8a to 1.3.8b lead to crash (GH#1770)
+  - Bad handling of lack of extended attributes lead to SFTP out of memory
+    error (GH#1785)
+  - mod_sftp_sql logged "header value too long" due to unexpected key header
+    text (GH#1529)
+  - SSH ECDSA host key algorithms were not used as expected despite configuring
+    appropriate key (GH#1839)
+  - RADIUS Message-Authenticator verification failed with ProFTPD mod_radius
+    (GH#1840)
+  - Supplemental group inheritance granted unintended access to GID 0 due to
+    lack of supplemental groups from mod_sql (GH#1830)
+
 * Tue Nov 19 2024 Paul Howarth <paul@city-fan.org> - 1.3.8b-9
 - Fix RADIUS Message-Authenticator verification in mod_radius
   - https://github.com/proftpd/proftpd/issues/1840

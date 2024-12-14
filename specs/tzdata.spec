@@ -1,9 +1,9 @@
 Summary: Timezone data
 Name: tzdata
-Version: 2024a
-%define tzdata_version 2024a
-%define tzcode_version 2024a
-Release: 9%{?dist}
+Version: 2024b
+%define tzdata_version 2024b
+%define tzcode_version 2024b
+Release: 1%{?dist}
 License: LicenseRef-Fedora-Public-Domain AND (GPL-2.0-only WITH ClassPath-exception-2.0)
 URL: https://www.iana.org/time-zones
 Source0: ftp://ftp.iana.org/tz/releases/tzdata%{tzdata_version}.tar.gz
@@ -11,8 +11,11 @@ Source1: ftp://ftp.iana.org/tz/releases/tzcode%{tzcode_version}.tar.gz
 
 Patch002: 0002-Fix-have-snprintf-error.patch
 Patch003: 0003-continue-to-ship-posixrules.patch
+Patch004: 0004-Fix-Apr-vs-April-2024b.patch
+Patch005: 0005-Improve-style-checks-for-months-2024b.patch
 
 BuildRequires: make
+BuildRequires: gcc
 BuildRequires: gawk, glibc, perl-interpreter
 BuildRequires: java-devel
 BuildRequires: glibc-common >= 2.5.90-7
@@ -30,7 +33,9 @@ the world.
 %package java
 Summary: Timezone data for Java
 Source3: javazic-1.8-37392f2f5d59.tar.xz
+Source4: ZoneTest.java
 Patch100: 8051641.patch
+Patch101: javazic-harden-links.patch
 
 %description java
 This package contains timezone information for use by Java runtimes.
@@ -39,6 +44,8 @@ This package contains timezone information for use by Java runtimes.
 %setup -q -c -a 1
 
 %patch -p1 -P 2
+%patch -p1 -P 4
+%patch -p1 -P 5
 %if 0%{?rhel}
 %patch -p1 -P 3
 %endif
@@ -63,6 +70,7 @@ tar zxf rearguard/tzdata%{version}-rearguard.tar.gz
 
 tar xf %{SOURCE3}
 %patch -P 100
+%patch -p1 -P 101
 
 echo "%{name}%{tzdata_version}" >> VERSION
 
@@ -111,6 +119,25 @@ install -p -m 644 zone.tab zone1970.tab iso3166.tab leap-seconds.list leapsecond
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/javazi-1.8
 install -p -m 644 tzdb.dat $RPM_BUILD_ROOT%{_datadir}/javazi-1.8/
 
+%check
+echo ============TESTING===============
+/usr/bin/env LANG=C make -k VALIDATE=':' check && true
+
+# Create a custom JAVA_HOME, where we can replace tzdb.dat with the
+# one just built, for testing.
+system_java_home=$(dirname $(readlink -f $(which java)))/..
+mkdir -p java_home
+cp -Lr $system_java_home/* java_home/.
+for tzdb in $(find java_home -name tzdb.dat) ; do
+    rm $tzdb
+    cp $RPM_BUILD_ROOT%{_datadir}/javazi-1.8/tzdb.dat $tzdb
+done
+# Compile the smoke test and run it.
+cp %{SOURCE4} .
+javac ZoneTest.java
+java_home/bin/java ZoneTest
+echo ============END TESTING===========
+
 %files
 %{_datadir}/zoneinfo
 %license LICENSE
@@ -123,6 +150,18 @@ install -p -m 644 tzdb.dat $RPM_BUILD_ROOT%{_datadir}/javazi-1.8/
 %{_datadir}/javazi-1.8
 
 %changelog
+* Thu Dec 12 2024 Patsy Griffin <patsy@redhat.com> - 2024b-1
+- Update to tzdata-2024b (#2310315)
+  - Improve historical data for Mexico, Mongolia, and Portugal.
+  - System V names are now obsolescent.
+  - The main data form now uses %z.
+  - The code now conforms to RFC 8536 for early timestamps.
+  - Support POSIX.1-2024, which removes asctime_r and ctime_r.
+  - Assume POSIX.2-1992 or later for shell scripts.
+  - SUPPORT_C89 now defaults to 1.
+  - Include two upstream patches for month names as in April vs Apr.
+- Harden against links to removed zones
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2024a-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

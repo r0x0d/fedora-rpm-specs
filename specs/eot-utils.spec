@@ -6,14 +6,20 @@ Release:        %autorelease
 Summary:        Create or examine EOT font format files
 
 # SPDX
-#
+License:        W3C
 # The entire source is W3C, except for certain build system files, the licenses
 # of which do not contribute to the license of the binary RPM:
 #   - aclocal.m4 is FSFULLR
 #   - configure is FSFUL, or more likely (W3C AND FSFUL)
 #   - depcomp and missing are GPL-2.0-or-later
 #   - install-sh is X11
-License:        W3C
+SourceLicense:  %{shrink:
+                %{license} AND
+                FSFUL AND
+                FSFULLR AND
+                GPL-2.0-or-later AND
+                X11
+                }
 URL:            https://www.w3.org/Tools/eot-utils/
 Source:         %{url}/eot-utilities-%{version}.tar.gz
 

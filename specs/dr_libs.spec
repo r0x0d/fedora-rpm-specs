@@ -17,8 +17,10 @@ URL:            https://github.com/mackron/dr_libs
 License:        Unlicense OR MIT-0
 # Additionally, the following are under different terms, but are not used; to
 # make certain, they are removed in %%prep.
+#   - old/*.h are Unlicense (only)
 #
-# - old/*.h are Unlicense (only)
+# The test file sintel_trailer-audio.flac, Source125, is CC-BY-3.0.
+SourceLicense:  (%{license}) AND Unlicense AND CC-BY-3.0
 
 %global dr_flac_version 0.12.42
 %global dr_mp3_version 0.6.39
@@ -49,10 +51,10 @@ Source1:        Makefile
 # Note that none of the FLAC files used for testing are installed, so their
 # licenses do not affect the License field.
 
-# From short film “Elephant’s Dream”, CC-BY:
+# From short film “Elephant’s Dream”, CC-BY-2.5:
 #   https://media.xiph.org/ED/readme.txt
 #   https://media.xiph.org/ED/ED-CM-readme.txt
-# Having the README in the SRPM ensures we satisfy CC-BY.
+# Having the README in the SRPM ensures we satisfy CC-BY-2.5.
 #Source100:      https://media.xiph.org/ED/EC-CM-readme.txt
 #Source101:      https://media.xiph.org/ED/ED-CM-5.1-DVD-C.flac
 #Source102:      https://media.xiph.org/ED/ED-CM-5.1-DVD-L.flac
@@ -63,20 +65,20 @@ Source1:        Makefile
 #Source107:      https://media.xiph.org/ED/ED-CM-5.1-DVD.flac
 #Source108:      https://media.xiph.org/ED/ED-CM-St-16bit.flac
 
-# From short film “Big Buck Bunny”, CC-BY:
+# From short film “Big Buck Bunny”, CC-BY-3.0:
 #   https://peach.blender.org/about/
 #   https://media.xiph.org/BBB/bbb3d/README.txt
-# Having the README in the SRPM ensures we satisfy CC-BY.
+# Having the README in the SRPM ensures we satisfy CC-BY-3.0.
 #Source110:      https://media.xiph.org/BBB/bbb3d/README.txt#/BBB-README.txt
 #Source111:      https://media.xiph.org/BBB/BigBuckBunny-DVDMaster-5_1-FLAC.zip
 #Source112:      https://media.xiph.org/BBB/BigBuckBunny-stereo.flac
 #Source113:      https://media.xiph.org/BBB/BigBuckBunny-surround.flac
 #Source114:      https://media.xiph.org/BBB/bbb3d/audio/bbb3d_sunflower_soundtrack_surround.flac
 
-# From short film “Sintel”, CC-BY:
+# From short film “Sintel”, CC-BY-3.0:
 #   https://durian.blender.org/about/
 #   https://media.xiph.org/sintel/README.txt
-# Having the README in the SRPM ensures we satisfy CC-BY.
+# Having the README in the SRPM ensures we satisfy CC-BY-3.0.
 Source120:      https://media.xiph.org/sintel/README.txt#/sintel-README.txt
 #Source121:      https://media.xiph.org/sintel/Jan_Morgenstern-Sintel-FLAC.zip
 #Source122:      https://media.xiph.org/sintel/sintel-master-51-flac.zip
@@ -84,16 +86,16 @@ Source120:      https://media.xiph.org/sintel/README.txt#/sintel-README.txt
 #Source124:      https://media.xiph.org/sintel/sintel-master-st.flac
 Source125:      https://media.xiph.org/sintel/sintel_trailer-audio.flac
 
-# From short film “Tears of Steel”, CC-BY:
+# From short film “Tears of Steel”, CC-BY-3.0:
 #   https://media.xiph.org/tearsofsteel/README.txt
-# Having the README in the SRPM ensures we satisfy CC-BY.
+# Having the README in the SRPM ensures we satisfy CC-BY-3.0.
 #Source130:      https://media.xiph.org/tearsofsteel/README.txt#/tearsofsteel-README.txt
 #Source131:      https://media.xiph.org/tearsofsteel/tearsofsteel-stereo.flac
 #Source132:      https://media.xiph.org/tearsofsteel/tearsofsteel-surround.flac
 
-# From short film “Cosmos Laundromat”, CC-BY-SA:
+# From short film “Cosmos Laundromat”, CC-BY-SA-4.0:
 #   https://media.xiph.org/cosmoslaundromat/README.txt
-# Having the README in the SRPM ensures we satisfy CC-BY-SA.
+# Having the README in the SRPM ensures we satisfy CC-BY-SA-4.0.
 #Source140:      https://media.xiph.org/cosmoslaundromat/README.txt#/cosmoslaundromat-README.txt
 #Source141:      https://media.xiph.org/cosmoslaundromat/Cosmos_Laundromat_1.flac
 

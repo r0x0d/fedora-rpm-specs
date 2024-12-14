@@ -4,13 +4,20 @@ Version:        0.18
 Release:        %autorelease
 Summary:        Userspace helper for kernel EDAC drivers
 
-# The entire source is GPL-2.0-or-later.
-#
+# Everything that contributes to the licenses of the binary RPMs is
+# GPL-2.0-or-later.
+License:        GPL-2.0-or-later
 # Any files under different licenses are part of the build system and do not
 # contribute to the license of the binary RPM:
-#   - configure is FSFUL or more likely (FSFUL AND GPL-2.0-or-later)
+#   - configure is FSFUL AND GPL-2.0-or-later WITH Autoconf-exception-macro; we
+#     should probably also consider it AND GPL-2.0-or-later, since it is
+#     partially derived from configure.ac, which is GPL-2.0-or-later.
 #   - install-sh is X11
-License:        GPL-2.0-or-later
+SourceLicense:  %{shrink:
+                %{license} AND
+		FSFUL AND
+		GPL-2.0-or-later WITH Autoconf-exception-macro AND
+		X11}
 URL:            https://github.com/grondo/edac-utils
 Source0:        %{url}/archive/%{version}/edac-utils-%{version}.tar.gz
 Source1:        edac.service

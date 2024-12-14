@@ -1,7 +1,7 @@
 %bcond_without tests
 
 Name:           conda
-Version:        24.11.0
+Version:        24.11.1
 Release:        %autorelease
 Summary:        Cross-platform, Python-agnostic binary package manager
 
@@ -174,6 +174,7 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} conda info
 # test_ProgressiveFetchExtract_prefers_conda_v2_format, test_subdir_data_prefers_conda_to_tar_bz2,
 # test_use_only_tar_bz2 fail in F31 koji, but not with mock --enablerepo=local. Let's disable
 # them for now.
+# tests/cli/test_all_commands.py::test_denylist_channels - conda.exceptions.EnvironmentLocationNotFound: Not a conda environment: /usr
 # tests/cli/test_conda_argparse.py::test_list_through_python_api does not recognize /usr as a conda environment
 # tests/cli/test_main_{clean,info,install,list,list_reverse,rename}.py tests require network access
 # tests/cli/test_main_notices.py::test_notices_appear_once_when_running_decorated_commands needs a conda_build fixture that we remove
@@ -238,6 +239,7 @@ py.test-%{python3_version} -vv -m "not integration" \
     --deselect=tests/test_install.py::test_install_mkdir \
     --deselect=tests/test_misc.py::test_explicit_missing_cache_entries \
     --ignore=tests/env/specs/test_binstar.py \
+    --deselect=tests/cli/test_all_commands.py::test_denylist_channels \
     --deselect='tests/cli/test_common.py::test_is_active_prefix[active_prefix-True]' \
     --deselect=tests/cli/test_config.py::test_conda_config_describe \
     --deselect=tests/cli/test_config.py::test_conda_config_validate \

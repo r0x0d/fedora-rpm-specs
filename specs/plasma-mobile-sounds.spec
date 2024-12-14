@@ -2,20 +2,21 @@
 
 Name:           plasma-mobile-sounds
 Version:        0.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 # Automatically converted from old format: CC-BY-SA and CC0 and CC-BY - review is highly recommended.
 License:        LicenseRef-Callaway-CC-BY-SA AND CC0-1.0 AND LicenseRef-Callaway-CC-BY
 Summary:        Plasma Mobile Sound Theme
 Url:            https://invent.kde.org/plasma-mobile/plasma-mobile-sounds
 Source:         https://download.kde.org/stable/plasma-mobile-sounds/0.1/plasma-mobile-sounds-0.1.tar.xz
 
+# Use cmake datadir
+# https://invent.kde.org/plasma-mobile/plasma-mobile-sounds/-/merge_requests/2
+Patch1:         0001-Use-cmake-datadir.patch
+
 BuildArch: noarch
 
 BuildRequires: cmake
-BuildRequires: extra-cmake-modules
-BuildRequires: kf5-rpm-macros
-
-BuildRequires: pkgconfig(Qt5Core)
+BuildRequires: kf6-rpm-macros
 
 %description
 %{summary}.
@@ -24,16 +25,19 @@ BuildRequires: pkgconfig(Qt5Core)
 %autosetup
 
 %build
-%cmake_kf5
+%cmake_kf6
 %cmake_build
 
 %install
 %cmake_install
 
 %files
-%{_kf5_datadir}/sounds/plasma-mobile
+%{_datadir}/sounds/plasma-mobile
 
 %changelog
+* Wed Dec 11 2024 Troy Dawson <tdawson@redhat.com> - 0.1-9
+- Use cmake datadir
+
 * Wed Sep 4 2024 Miroslav Suchý <msuchy@redhat.com> - 0.1-8
 - convert license to SPDX
 

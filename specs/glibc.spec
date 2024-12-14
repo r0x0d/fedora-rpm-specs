@@ -152,7 +152,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 21
+%global baserelease 22
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -458,6 +458,15 @@ BuildRequires: libidn2
 BuildRequires: perl-interpreter
 %endif
 %endif
+
+# The compressed character maps and info files both require gzip for
+# building.
+#
+# We support using gzip (gzip) or bzip (bzip2) at runtime to decompress
+# the character maps, but we don't require them with Requires: to be
+# able to use the 'locale' program with the installed compressed maps
+# since this is a rare activity for most deployments.
+BuildRequires: gzip
 
 # Filter out all GLIBC_PRIVATE symbols since they are internal to
 # the package and should not be examined by any other tool.
@@ -2358,6 +2367,9 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Thu Dec 12 2024 Carlos O'Donell <carlos@redhat.com> - 2.40.9000-22
+- Add BuildRequires for gzip to support compressing installed files.
+
 * Fri Nov 29 2024 Florian Weimer <fweimer@redhat.com> - 2.40.9000-21
 - Drop glibc-rh2327564-1.patch, glibc-rh2327564-2.patch.  Fixed upstream.
   (#2327564)

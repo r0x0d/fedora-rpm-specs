@@ -8,7 +8,7 @@
 
 Name:           python-%{real_name}
 Version:        1.4.3
-Release:        20%{?dist}
+Release:        21%{?dist}
 Summary:        A jQuery-like library for python
 # Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
@@ -25,6 +25,9 @@ Patch:          0001-backport-3.12-OrderedDict.__repr__-to-run-doctest-on.patch
 # https://github.com/gawel/pyquery/issues/248
 # https://github.com/gawel/pyquery/pull/250
 Patch:          0002-test-allow-libxml2-behavior-change.patch
+# Use pytest
+# https://github.com/gawel/pyquery/commit/e5b884a366114053def4d7f271040c9a210492f5
+Patch:          0003-use-pytest.patch
 
 BuildArch:      noarch
 
@@ -46,7 +49,7 @@ BuildRequires:  python3-cssselect
 BuildRequires:  python3-lxml >= 2.1
 BuildRequires:  python3-requests
 %if %{with tests}
-BuildRequires:  python3-nose
+BuildRequires:  python3-pytest
 BuildRequires:  python3-webob
 BuildRequires:  python3-webtest
 %endif
@@ -74,7 +77,7 @@ XML and HTML manipulation.
 
 %check
 %if %{with tests}
-nosetests-%{python3_version}
+%pytest
 
 %endif
 
@@ -84,6 +87,10 @@ nosetests-%{python3_version}
 %{python3_sitelib}/pyquery*.egg-info/
 
 %changelog
+* Wed Dec 11 2024 Miro Hrončok <mhroncok@redhat.com> - 1.4.3-21
+- Use pytest instead of nose
+- https://fedoraproject.org/wiki/Changes/DeprecateNose
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.4.3-20
 - convert license to SPDX
 

@@ -1,5 +1,5 @@
 Name:           trelby
-Version:        2.4.10
+Version:        2.4.11
 Release:        1%{?dist}
 Summary:        The free, multiplatform, feature-rich screenwriting program
 
@@ -8,17 +8,9 @@ URL:            https://github.com/trelby/trelby
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 BuildRequires:  desktop-file-utils
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-wxpython4
-BuildRequires:  python3-lxml
-BuildRequires:  python3-reportlab
 BuildRequires:  docbook-style-xsl
 BuildRequires:  make
-BuildRequires:  python3-pytest > 7
-Requires:       python3-wxpython4
-Requires:       python3-lxml
-Requires:       python3-reportlab
+BuildRequires:  python3dist(pytest)
 Requires:       hicolor-icon-theme
 
 %description
@@ -28,38 +20,45 @@ screenwriting simple. It is infinitely configurable.
 %prep
 %setup -q
 
-sed -i "s|src|%{python3_sitelib}/trelby/src|g" bin/trelby
+%generate_buildrequires
+%pyproject_buildrequires
 
 %build
-make dist
-%{__python3} setup.py build
+make
+%pyproject_wheel
 rm -rf doc/.gitignore
 
 %install
-%{__python3} setup.py install --prefix=%{_prefix} \
-    --install-lib=%{python3_sitelib}/trelby \
-    --install-data=%{_datadir} \
-    --skip-build \
-    --root $RPM_BUILD_ROOT
+%pyproject_install
 
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/trelby/resources
-ln -s %{python3_sitelib}/trelby/resources/icon256.png $RPM_BUILD_ROOT%{_datadir}/trelby/resources/icon256.png
+mkdir -p %{buildroot}%{_datadir}/pixmaps
+cp %{buildroot}%{python3_sitelib}/trelby/resources/icon256.png %{buildroot}%{_datadir}/pixmaps/trelby256.png
+
+desktop-file-install \
+  --dir $RPM_BUILD_ROOT%{_datadir}/applications trelby/resources/trelby.desktop
 
 desktop-file-validate %{buildroot}/%{_datadir}/applications/trelby.desktop
 
+mkdir -p %{buildroot}%{_mandir}/man1/
+install -m644 trelby/trelby.1.gz %{buildroot}%{_mandir}/man1/
+
 %check
-make test
+%pytest
 
 %files
 %license LICENSE
-%doc fileformat.txt README.md manual.html
+%doc README.md
 %{_bindir}/*
-%{_datadir}/trelby/resources
 %{_datadir}/applications/trelby.desktop
 %{python3_sitelib}/trelby*
 %{_mandir}/man1/trelby.1.gz
+%{_datadir}/pixmaps/trelby256.png
+%exclude %{python3_sitelib}/tests/
 
 %changelog
+* Thu Dec 12 2024 Gwyn Ciesla <gwync@protonmail.com> - 2.4.11-1
+- 2.4.11
+
 * Mon Sep 09 2024 Gwyn Ciesla <gwync@protonmail.com> - 2.4.10-1
 - 2.4.10
 

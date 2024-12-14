@@ -8,7 +8,7 @@
 
 Name:           libclc
 Version:        %{libclc_version}%{?rc_ver:~rc%{rc_ver}}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An open source implementation of the OpenCL 1.1 library requirements
 
 License:        Apache-2.0 WITH LLVM-exception OR BSD OR MIT
@@ -27,6 +27,8 @@ BuildRequires:  spirv-llvm-translator-tools
 
 # For signature verification
 BuildRequires:  gnupg2
+
+Requires:       %{name}-spirv%{?_isa} = %{version}-%{release}
 
 %description
 libclc is an open source, BSD licensed implementation of the library
@@ -54,6 +56,13 @@ functions.
 libclc currently only supports the PTX target, but support for more
 targets is welcome.
 
+
+%package        spirv
+Summary:        Spirv subset of %{name}
+
+%description    spirv
+The %{name}-spirv package contains the spirv*-mesa3d-.spv files only,
+which are the subset required for upstream Mesa OpenCL support with RustiCL.
 
 %package        devel
 Summary:        Development files for %{name}
@@ -84,8 +93,12 @@ export CFLAGS="%{build_cflags} -D__extern_always_inline=inline"
 %files
 %license LICENSE.TXT
 %doc README.TXT CREDITS.TXT
-%dir %{_libdir}/%{shortname}
 %{_libdir}/%{shortname}/*.bc
+
+%files spirv
+%license LICENSE.TXT
+%doc README.TXT CREDITS.TXT
+%dir %{_libdir}/%{shortname}
 %{_libdir}/%{shortname}/spirv-mesa3d-.spv
 %{_libdir}/%{shortname}/spirv64-mesa3d-.spv
 
@@ -94,6 +107,9 @@ export CFLAGS="%{build_cflags} -D__extern_always_inline=inline"
 %{_includedir}/%{shortname}
 
 %changelog
+* Mon Dec 09 2024 Asahi Lina <lina@asahilina.net> - 19.1.5-2
+- Split off spirv files into a subpackage
+
 * Thu Dec 05 2024 Timm Bäder <tbaeder@redhat.com> - 19.1.5-1
 - Update to 19.1.5
 

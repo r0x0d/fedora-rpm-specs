@@ -2,16 +2,16 @@
 
 Name:           python-%{srcname}
 Version:        0.2.0
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        IPython vestigial utilities
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-3-Clause
 URL:            https://github.com/ipython/%{srcname}
 Source0:        https://pypi.python.org/packages/source/i/%{srcname}/%{srcname}-%{version}.tar.gz
 
-# Don't use deprecated unittest aliases trough nose, they are removed in Python 3.11
-Patch1:         %{url}/pull/19.patch
+# nose is deprecated, use pytest instead
+# originally from OpenSUSE
+Patch:          Replace-nose-with-pytest.patch
 
 BuildArch:      noarch
 
@@ -29,8 +29,7 @@ IPython/Jupyter should depend on it.
 Summary:        IPython vestigial utilities
 BuildRequires:  python%{python3_pkgversion}-devel
 # For tests
-BuildRequires:  python%{python3_pkgversion}-nose
-%{?python_provide:%python_provide python%{python3_pkgversion}-%{srcname}}
+BuildRequires:  python%{python3_pkgversion}-pytest
 
 %description -n python%{python3_pkgversion}-%{srcname}
 This package is a stop-gap that contains some common utilities shared by
@@ -46,26 +45,35 @@ IPython/Jupyter should depend on it.
 %autosetup -p1 -n %{srcname}-%{version}
 
 
+%generate_buildrequires
+%pyproject_buildrequires
+
+
 %build
-%py3_build
+%pyproject_wheel
 
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l %{srcname}
 
 
 %check
-export LANG=C.UTF-8
-nosetests-%{python3_version} -v
+%pyproject_check_import
+
+%pytest -v
 
  
-%files -n python%{python3_pkgversion}-%{srcname}
+%files -n python%{python3_pkgversion}-%{srcname} -f %{pyproject_files}
 %doc README.md
-%license COPYING.md
-%{python3_sitelib}/*
 
 
 %changelog
+* Tue Dec 03 2024 Miro Hrončok <mhroncok@redhat.com> - 0.2.0-13
+- Use pytest instead of nose
+- https://fedoraproject.org/wiki/Changes/DeprecateNose
+- Use a proper SPDX License tag
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.2.0-12
 - convert license to SPDX
 

@@ -1,5 +1,5 @@
 Name:           tmt
-Version:        1.39.0
+Version:        1.40.0
 Release:        %autorelease
 Summary:        Test Management Tool
 
@@ -169,6 +169,9 @@ install -pm 644 %{name}/steps/provision/mrack/mrack* %{buildroot}/etc/%{name}/
 %files -n tmt+all -f %{_pyproject_ghost_distinfo}
 
 %changelog
+* Thu Dec 12 2024 Packit <hello@packit.dev> - 1.40.0-1
+- Update to version 1.40.0
+
 * Fri Nov 22 2024 Packit <hello@packit.dev> - 1.39.0-1
 - Update to version 1.39.0
 

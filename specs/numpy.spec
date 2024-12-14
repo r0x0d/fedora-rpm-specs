@@ -2,7 +2,7 @@
 #%%global relc rc1
 
 # Simple way to disable tests
-%if 0%{?flatpak} || 0%{?rhel}
+%if 0%{?flatpak} || 0%{?rhel} || 0%{?fedora}
 %bcond_with tests
 %else
 %bcond_without tests
@@ -19,8 +19,8 @@
 %global modname numpy
 
 Name:           numpy
-Version:        1.26.4
-Release:        8%{?dist}
+Version:        2.2.0
+Release:        1%{?dist}
 Epoch:          1
 Summary:        A fast multidimensional array facility for Python
 
@@ -34,15 +34,6 @@ License:        BSD-3-Clause AND MIT AND Apache-2.0 AND (Zlib OR BSL-1.0)
 URL:            http://www.numpy.org/
 Source0:        https://github.com/%{name}/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 Source1:        https://numpy.org/doc/%(echo %{version} | cut -d. -f1-2)/numpy-html.zip
-Patch0:         f2py_test.patch
-# Python 3.13: Replace deprecated ctypes.ARRAY(item_type, size) with item_type * size
-# Upstream PR: https://github.com/numpy/numpy/pull/25198
-Patch4:         replace-deprecated-ctypes.ARRAY.patch
-# BLD: In 1.26.x, do not upper-bound the meson-python version
-# Upstream PR: https://github.com/numpy/numpy/pull/26301
-Patch5:         https://github.com/numpy/numpy/pull/26301.patch
-# Python 3.13
-Patch6: d7ebf00065357b537a8ae2673f7d161de3837197.patch
 
 %description
 NumPy is a general-purpose array-processing package designed to
@@ -125,10 +116,6 @@ This package provides the complete documentation for NumPy.
 %prep
 %autosetup -n %{name}-%{version} -p1
 
-# Enable build with Python 3.13
-# See: https://github.com/numpy/numpy/commit/82d7657ce39c97fcfd86e1a5acee8b5d00682169
-sed -i 's/requires-python = ">=3.9,<3.13"/requires-python = ">=3.9"/' pyproject.toml
-
 # openblas is provided by flexiblas by default; otherwise,
 # Use openblas pthreads as recommended by upstream (see comment in site.cfg.example)
 cat >> site.cfg <<EOF
@@ -140,7 +127,7 @@ EOF
 %if 0%{?fedora}
 # Unbundle libdivide
 sed -i 's,"numpy/libdivide/libdivide.h",<libdivide.h>,' \
-    numpy/core/src/umath/loops.c.src
+    numpy/_core/src/umath/loops.c.src
 %endif
 
 %generate_buildrequires
@@ -152,13 +139,13 @@ sed -i 's,"numpy/libdivide/libdivide.h",<libdivide.h>,' \
 %ifarch x86_64
 %if 0%{?rhel} > 9
 # x86_64-v3
-sed -i '/libdivide\.h/i#define LIBDIVIDE_AVX2' numpy/core/src/umath/loops.c.src
+sed -i '/libdivide\.h/i#define LIBDIVIDE_AVX2' numpy/_core/src/umath/loops.c.src
 %else
 # x86_64-v1 or x86_64-v2
-sed -i '/libdivide\.h/i#define LIBDIVIDE_SSE2' numpy/core/src/umath/loops.c.src
+sed -i '/libdivide\.h/i#define LIBDIVIDE_SSE2' numpy/_core/src/umath/loops.c.src
 %endif
 %elifarch aarch64
-sed -i '/libdivide\.h/i#define LIBDIVIDE_NEON' numpy/core/src/umath/loops.c.src
+sed -i '/libdivide\.h/i#define LIBDIVIDE_NEON' numpy/_core/src/umath/loops.c.src
 %endif
 
 %pyproject_wheel -Csetup-args=-Dblas=flexiblas -Csetup-args=-Dlapack=lapack
@@ -181,7 +168,7 @@ mkdir -p %{buildroot}%{_includedir}
 ln -s %{python3_sitearch}/%{name}/core/include/numpy/ %{buildroot}%{_includedir}/numpy
 
 %if 0%{?fedora}
-rm %{buildroot}%{python3_sitearch}/numpy/core/include/numpy/random/libdivide.h
+rm %{buildroot}%{python3_sitearch}/numpy/_core/include/numpy/random/libdivide.h
 %endif
 
 %check
@@ -215,10 +202,12 @@ python3 runtests.py --no-build -- -ra -k 'not test_ppc64_ibm_double_double128 %{
 
 %files -n python3-numpy
 %license LICENSE.txt
-%doc THANKS.txt site.cfg.example
+%doc THANKS.txt
 %{python3_sitearch}/%{name}/__pycache__
+%{_bindir}/numpy-config
 %dir %{python3_sitearch}/%{name}
 %{python3_sitearch}/%{name}/*.py*
+%{python3_sitearch}/%{name}/char
 %{python3_sitearch}/%{name}/core
 %{python3_sitearch}/%{name}/doc
 %{python3_sitearch}/%{name}/fft
@@ -226,6 +215,8 @@ python3 runtests.py --no-build -- -ra -k 'not test_ppc64_ibm_double_double128 %{
 %{python3_sitearch}/%{name}/linalg
 %{python3_sitearch}/%{name}/ma
 %{python3_sitearch}/%{name}/random
+%{python3_sitearch}/%{name}/rec
+%{python3_sitearch}/%{name}/strings
 %{python3_sitearch}/%{name}/testing
 %{python3_sitearch}/%{name}/tests
 %{python3_sitearch}/%{name}/compat
@@ -237,7 +228,6 @@ python3 runtests.py --no-build -- -ra -k 'not test_ppc64_ibm_double_double128 %{
 %{python3_sitearch}/%{name}/__init__.cython-30.pxd
 %{python3_sitearch}/%{name}/py.typed
 %{python3_sitearch}/%{name}/typing/
-%{python3_sitearch}/%{name}/array_api/
 %{python3_sitearch}/%{name}/_core/
 %{python3_sitearch}/%{name}/_pyinstaller/
 %{python3_sitearch}/%{name}/_typing/
@@ -255,6 +245,9 @@ python3 runtests.py --no-build -- -ra -k 'not test_ppc64_ibm_double_double128 %{
 
 
 %changelog
+* Sun Dec 08 2024 Gwyn Ciesla <gwync@protonmail.com> - 1:2.2.0-1
+- 2.2.0
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:1.26.4-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

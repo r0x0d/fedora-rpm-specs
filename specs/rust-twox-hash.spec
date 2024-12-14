@@ -5,7 +5,7 @@
 %global crate twox-hash
 
 Name:           rust-twox-hash
-Version:        2.0.1
+Version:        2.1.0
 Release:        %autorelease
 Summary:        Rust implementation of the XXHash and XXH3 algorithms
 
@@ -105,6 +105,18 @@ This package contains library source intended for building other packages which
 use the "xxhash32" feature of the "%{crate}" crate.
 
 %files       -n %{name}+xxhash32-devel
+%ghost %{crate_instdir}/Cargo.toml
+
+%package     -n %{name}+xxhash3_128-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+xxhash3_128-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "xxhash3_128" feature of the "%{crate}" crate.
+
+%files       -n %{name}+xxhash3_128-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %package     -n %{name}+xxhash3_64-devel

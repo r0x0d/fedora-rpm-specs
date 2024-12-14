@@ -1,17 +1,17 @@
 %global commit0 c616565cb830a23ac69ddd3c78251711646a11a2
 %global date 20241120
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-#global tag %{version}
+%global tag %{version}
 
 Name:           egl-x11
 Version:        1.0.0%{!?tag:^%{date}git%{shortcommit0}}
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        NVIDIA XLib and XCB EGL Platform Library
 License:        Apache-2.0
 URL:            https://github.com/NVIDIA/egl-x11
 
 %if 0%{?tag:1}
-Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 %else
 Source0:        %{url}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 %endif
@@ -67,6 +67,9 @@ rm -fv %{buildroot}%{_libdir}/*.so
 %{_datadir}/egl/egl_external_platform.d/20_nvidia_xlib.json
 
 %changelog
+* Thu Dec 12 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0-4
+- Update to final 1.0.0 (no change).
+
 * Mon Nov 25 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0^20241120gitc616565-3
 - Update to latest snapshot.
 

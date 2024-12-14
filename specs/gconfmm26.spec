@@ -19,9 +19,67 @@ Version:        2.28.3
 Release:        %autorelease
 Summary:        C++ wrapper for GConf2
 
+License:        LGPL-2.1-or-later
 # Source files under other licenses belong to the build system or to unpackaged
 # tools, and do not contribute to the license of the binary RPMs.
-License:        LGPL-2.1-or-later
+#
+# FSFAP:
+#   - INSTALL
+#
+# FSFAP AND GPL-2.0-or-later WITH Autoconf-exception-generic AND LGPL-2.1-or-later
+#   - configure (LGPL-2.1-or-later is since it is based on configure.ac)
+#
+# FSFULLR AND LGPL-2.1-or-later:
+#   (LGPL-2.1-or-later comes from the corresponding Makefile.am)
+#   - Makefile.in
+#   - docs/Makefile.in
+#   - tools/Makefile.in
+#   - gconf/gconfmm/Makefile.in
+#   - gconf/src/Makefile.in
+#
+# FSFULLR AND GPL-2.0-or-later WITH Autoconf-exception-generic:
+#   - aclocal.m4
+#   - build/ltoptions.m4
+#   - build/ltsugar.m4
+#   - build/ltversion.m4
+#   - build/lt~obsolete.m4
+#
+# FSFUL AND FSFULLR AND GPL-2.0-or-later WITH Libtool-exception:
+#   - build/libtool.m4
+#
+# GPL-2.0-or-later:
+#   - build/compile-binding.am
+#   - build/doc-reference.am
+#   - docs/doc-install.pl
+#   - docs/doc-postprocess.pl
+#   - docs/tagfile-to-devhelp2.xsl
+#   - tools/extra_defs_gen/generate_defs_gconf.cc
+#   - tools/m4/, possibly
+#
+# GPL-2.0-or-later WITH Autoconf-exception-generic:
+#   - build/config.guess
+#   - build/config.sub
+#   - build/depcomp
+#   - build/missing
+#
+# GPL-2.0-or-later WITH Libtool-exception:
+#   - build/ltmain.sh
+#
+# X11:
+#   - build/install-sh
+#
+# The autotools build system is complicated and pulls bits of scripts from many
+# places, so don’t be surprised if some small detail is missing from this
+# license analysis.
+SourceLicense:  %{shrink:
+                %{license} AND
+                FSFAP AND
+                FSFULLR AND
+                GPL-2.0-or-later AND
+                GPL-2.0-or-later WITH Autoconf-exception-generic AND
+                GPL-2.0-or-later WITH Libtool-exception AND
+                X11
+                }
 URL:            https://gtkmm.org/
 %global majmin %(echo %{version} | cut -d . -f -2)
 Source:         https://download.gnome.org/sources/gconfmm/%{majmin}/gconfmm-%{version}.tar.xz

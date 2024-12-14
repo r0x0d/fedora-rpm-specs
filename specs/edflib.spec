@@ -18,6 +18,7 @@ Summary:        C/C++ library to read/write EDF+ and BDF+ files
 #     link these sources are for testing only and are not installed; therefore
 #     these sources do not contribute to the license of the binary RPMs.
 License:        BSD-3-Clause
+SourceLicense:  %{license} AND BSD-2-Clause AND GPL-3.0-or-later
 URL:            https://www.teuniz.net/edflib
 # As of 1.26, we have switched to packaging from the automatic GitLab source
 # archive instead; for 1.26, the release archive at:

@@ -11,6 +11,50 @@ Summary:        C++ library for arithmetic and algebraic computations
 # which is LGPL-3.0-or-later, and various Autotools build-system files, which
 # do not contribute to the licenses of the binary RPMs.
 License:        CECILL-B AND LGPL-3.0-or-later
+# FSFAP-no-warranty-disclaimer:
+#   - macros/ax_cxx_compile_stdcxx_11.m4
+# FSFUL AND FSFULLR AND GPL-2.0-or-later WITH Libtool-exception:
+#   - macros/libtool.m4
+# FSFUL AND GPL-2.0-or-later WITH Libtool-exception AND CECILL-B:
+#   (CECILL-B from configure.ac)
+#   - configure
+# FSFULLR:
+#   - aclocal.m4
+#   - macros/ltoptions.m4
+#   - macros/ltsugar.m4
+#   - macros/ltversion.m4
+#   - macros/lt~obsolete.m4
+# FSFULLR AND CECILL-B:
+#   (CECILL-B from each corresponding Makefile.am)
+#   - macros/Makefile.in
+#   - examples/FiniteField/Makefile.in
+#   - examples/Integer/Makefile.in
+#   - examples/Matrix/Makefile.in
+#   - examples/Polynomial/Makefile.in
+#   - examples/Rational/Makefile.in
+#   - examples/RecInt/Makefile.in
+# GPL-2.0-or-later WITH Autoconf-exception-generic:
+#   - build-aux/ar-lib
+#   - build-aux/compile
+#   - build-aux/depcomp
+#   - build-aux/missing
+#   - build-aux/test-driver
+# GPL-2.0-or-later WITH Libtool-exception:
+#   - build-aux/ltmain.sh
+# GPL-3.0-or-later WITH Autoconf-exception-generic:
+#   - build-aux/config.guess
+#   - build-aux/config.sub
+# X11:
+#   - build-aux/install-sh
+SourceLicense:  %{shrink:
+                %{license} AND
+                FSFAP-no-warranty-disclaimer AND
+                FSFUL AND
+                FSFULLR AND
+                GPL-2.0-or-later WITH Autoconf-exception-generic AND
+                GPL-2.0-or-later WITH Libtool-exception AND
+                X11
+                }
 URL:            https://casys.gricad-pages.univ-grenoble-alpes.fr/givaro/
 %global forgeurl https://github.com/linbox-team/givaro
 Source:         %{forgeurl}/releases/download/v%{version}/givaro-%{version}.tar.gz

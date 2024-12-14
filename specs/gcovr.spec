@@ -74,11 +74,11 @@ pushd .
 cd doc
 
 # Manpage
-sphinx-build -M man source build -W
+sphinx-build -M man source build %{?fedora:-W}
 install -D -p -m 0644 build/man/%{name}.1 %{buildroot}%{_mandir}/man1/%{name}.1
 
 # html doc
-sphinx-build -M html source build -W
+sphinx-build -M html source build %{?fedora:-W}
 rm build/html/.buildinfo
 
 popd

@@ -26,6 +26,7 @@ Summary:        Compile fonts from sources (UFO, Glyphs) to binary (OpenType, Tr
 # OFL-1.1:
 #   - tests/data/AutohintingTest/Padyakke.glyphs
 License:        Apache-2.0
+SourceLicense:  %{license} AND MIT AND OFL-1.1
 URL:            https://github.com/googlefonts/fontmake
 Source:         %{pypi_source fontmake %{version} zip}
 
@@ -88,13 +89,11 @@ fonts.
 # We do this in %%install rather than in %%build because we need to use the
 # script entry point that was generated during installation.
 install -d '%{buildroot}%{_mandir}/man1'
-env PYTHONPATH='%{buildroot}%{python3_sitelib}' \
-    PYTHONDONTWRITEBYTECODE=1 \
-    help2man \
-        --no-info \
-        --name '%{summary}' \
-        --output='%{buildroot}%{_mandir}/man1/fontmake.1' \
-        %{buildroot}%{_bindir}/fontmake
+%{py3_test_envvars} help2man \
+    --no-info \
+    --name '%{summary}' \
+    --output='%{buildroot}%{_mandir}/man1/fontmake.1' \
+    %{buildroot}%{_bindir}/fontmake
 
 
 %check

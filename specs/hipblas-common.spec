@@ -21,6 +21,9 @@ BuildArch: noarch
 # Only x86_64 works right now:
 ExclusiveArch:  x86_64
 
+# Problem on SUSE, nothing really to compile so turn jobs off
+%global _smp_mflags %{nil}
+
 %description
 %summary
 

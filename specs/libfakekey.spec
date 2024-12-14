@@ -1,10 +1,3 @@
-# Doxygen HTML help is not suitable for packaging due to a minified JavaScript
-# bundle inserted by Doxygen itself. See discussion at
-# https://bugzilla.redhat.com/show_bug.cgi?id=2006555.
-#
-# We can enable the Doxygen PDF documentation as a substitute.
-%bcond doc 1
-
 Name:           libfakekey
 Version:        0.3
 %global so_version 0
@@ -25,10 +18,9 @@ BuildRequires:  libtool
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xtst)
 
-%if %{with doc}
-BuildRequires:  doxygen
-BuildRequires:  doxygen-latex
-%endif
+# We stopped building PDF documentation in Fedora 42; we can remove this after
+# Fedora 44 reaches end-of-life.
+Obsoletes:      libfakekey-doc < 0.3-22
 
 %description
 libfakekey is a simple library for converting UTF-8 characters into 'fake' X
@@ -46,32 +38,8 @@ The libfakekey-devel package contains libraries and header files for developing
 applications that use libfakekey.
 
 
-%if %{with doc}
-%package doc
-Summary:        Documentation for the libfakekey library
-
-BuildArch:      noarch
-
-%description doc
-Documentation for the libfakekey library.
-%endif
-
-
 %prep
 %autosetup
-
-%if %{with doc}
-# We enable the Doxygen PDF documentation as a substitute. We must enable
-# GENERATE_LATEX and LATEX_BATCHMODE; the rest are precautionary and should
-# already be set as we like them. We also disable GENERATE_HTML, since we will
-# not use it.
-sed -r -i \
-    -e "s/^([[:blank:]]*(GENERATE_LATEX|LATEX_BATCHMODE|USE_PDFLATEX|\
-PDF_HYPERLINKS)[[:blank:]]*=[[:blank:]]*)NO[[:blank:]]*/\1YES/" \
-    -e "s/^([[:blank:]]*(LATEX_TIMESTAMP|GENERATE_HTML)\
-[[:blank:]]*=[[:blank:]]*)YES[[:blank:]]*/\1NO/" \
-    doc/Doxyfile.in
-%endif
 
 
 %conf
@@ -79,14 +47,11 @@ PDF_HYPERLINKS)[[:blank:]]*=[[:blank:]]*)NO[[:blank:]]*/\1YES/" \
 # mandatory. See autogen.sh (which, however, we do not use because we need to
 # use the %%configure macro).
 autoreconf -f -i -v
-%configure --disable-static %{?with_doc:--enable-doxygen-docs}
+%configure --disable-static
 
 
 %build
 %make_build
-%if %{with doc}
-%make_build -C doc/latex
-%endif
 
 
 %install
@@ -106,13 +71,6 @@ rm -vf '%{buildroot}%{_libdir}/libfakekey.la'
 %{_includedir}/fakekey/
 %{_libdir}/libfakekey.so
 %{_libdir}/pkgconfig/libfakekey.pc
-
-
-%if %{with doc}
-%files doc
-%license COPYING
-%doc doc/latex/refman.pdf
-%endif
 
 
 %changelog

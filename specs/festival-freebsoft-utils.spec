@@ -5,9 +5,10 @@ Summary:        Utilities that enhance Festival with some useful features
 
 BuildArch:      noarch
 
-# Note that the documentation is dual-licensed; see the License field for the
-# -doc subpackage.
 License:        GPL-2.0-or-later
+# The documentation is dual-licensed.
+%global doc_license GPL-2.0-or-later OR GFDL-1.2-no-invariants-or-later
+SourceLicense:  %{license} AND %{doc_license}
 URL:            https://www.freebsoft.org/festival-freebsoft-utils
 Source:         https://freebsoft.org/pub/projects/%{name}/%{name}-%{version}.tar.gz
 
@@ -58,8 +59,7 @@ Key festival-freebsoft-utils features are:
 
 %package doc
 Summary:        Documentation for festival-freebsoft-utils
-
-License:        GPL-2.0-or-later OR GFDL-1.2-no-invariants-or-later
+License:        %{doc_license}
 
 BuildRequires:  make
 BuildRequires:  texinfo-tex

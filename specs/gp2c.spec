@@ -10,13 +10,18 @@ Summary:        PARI/GP script to C program translator
 # The entire source is GPL-2.0-or-later (see README), except:
 #   - src/parse.h and src/parse.c are (GPL-3.0-or-later WITH
 #     Bison-exception-2.2)
-#
+License:        GPL-2.0-or-later AND GPL-3.0-or-later WITH Bison-exception-2.2
 # Additionally, some files that belong to the build system and therefore do not
 # contribute to the license of the binary RPMs have other licenses:
-#   - aclocal.m4 is FSFULLR
-#   - configure is FSFUL, or more likely, (FSFUL AND GPL-2.0-or-later)
-#   - config/install-sh is X11
-License:        GPL-2.0-or-later AND GPL-3.0-or-later WITH Bison-exception-2.2
+#
+# FSFULLR:
+#   - aclocal.m4
+# FSFUL AND GPL-2.0-or-later
+# (GPL-2.0-or-later is because it is derived from configure.ac)
+#   - configure
+# X11:
+#   - config/install-sh
+SourceLicense:  %{license} AND FSFUL AND FSFULLR AND X11
 URL:            https://pari.math.u-bordeaux.fr/
 Source0:        %{url}pub/pari/GP2C/gp2c-%{upver}.tar.gz
 Source1:        %{url}pub/pari/GP2C/gp2c-%{upver}.tar.gz.asc

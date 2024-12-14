@@ -32,6 +32,7 @@ Summary:        A pitch-correcting LADSPA plugin
 # case, the CC-BY-ND-* licenses are approved for content but not for
 # documentation.
 License:        GPL-2.0-or-later AND BSD-3-Clause
+SourceLicense:  %{license} AND LGPL-2.1-or-later
 URL:            http://tombaran.info/autotalent.html
 Source:         http://tombaran.info/autotalent-%{version}.tar.gz
 

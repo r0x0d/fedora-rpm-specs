@@ -42,6 +42,7 @@ Summary:        Meta-build system that generates build files for Ninja
 # not installed; you may verify this with:
 #   gdb -ex 'set pagination off' -ex 'info sources' gn | grep -F gn_test.cc
 License:        BSD-3-Clause AND Unicode-DFS-2016 AND ICU
+SourceLicense:  %{license} AND Apache-2.0
 URL:            https://gn.googlesource.com/gn
 Source0:        %{url}/+archive/%{commit}.tar.gz#/gn-%{shortcommit}.tar.gz
 # Generated using script update-version:

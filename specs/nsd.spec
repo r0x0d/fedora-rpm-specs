@@ -1,10 +1,9 @@
 %global _hardened_build 1
 Summary: Fast and lean authoritative DNS Name Server
 Name: nsd
-Version: 4.10.1
+Version: 4.11.0
 Release: %autorelease
-# Automatically converted from old format: BSD - review is highly recommended.
-License: LicenseRef-Callaway-BSD
+License: BSD-3-Clause
 Url: http://www.nlnetlabs.nl/nsd/
 Source0: http://www.nlnetlabs.nl/downloads/%{name}/%{name}-%{version}%{?prever}.tar.gz
 Source1: nsd.conf

@@ -32,6 +32,10 @@
 %global llvm_triple %{_target_platform}
 %global amd_device_libs_prefix lib64/rocm/llvm/lib/clang/%{llvm_maj_ver}
 
+#Exclude provides/requires from bundled llvm
+%global __provides_exclude_from ^(%{bundle_prefix}/lib/.*\\.so.*)$
+%global __requires_exclude ^lib(.*\\.so\\.%{llvm_maj_ver}git|LLVM-18git\\.so).*$
+
 # Compression type and level for source/binary package payloads.
 #  "w7T0.xzdio"	xz level 7 using %%{getncpus} threads
 %define _source_payload	w7T0.xzdio
@@ -148,6 +152,11 @@ libraries in the form of bit code. Specifically:
 Summary:        AMD ROCm LLVM Code Object Manager
 Provides:       comgr(major) = %{comgr_maj_api_ver}
 Provides:       rocm-comgr = %{comgr_full_api_ver}-%{release}
+%if %{with bundled_llvm}
+Requires:      rocm-llvm-libs%{?_isa} = %{version}-%{release}
+Requires:      rocm-clang-libs%{?_isa} = %{version}-%{release}
+Requires:      rocm-lld-libs%{?_isa} = %{version}-%{release}
+%endif
 
 %description -n rocm-comgr
 The AMD Code Object Manager (Comgr) is a shared library which provides
@@ -247,22 +256,23 @@ Requires:      rocm-llvm-devel%{?_isa} = %{version}-%{release}
 
 # ROCM CLANG
 %package -n rocm-clang-libs
-Summary:	The ROCm compiler libs
+Summary:       The ROCm compiler libs
+Requires:      rocm-llvm-libs%{?_isa} = %{version}-%{release}
 
 %description -n rocm-clang-libs
 %{summary}
 
 %package -n rocm-clang-runtime-devel
-Summary:	The ROCm compiler runtime
+Summary:       The ROCm compiler runtime
 
 %description -n rocm-clang-runtime-devel
 %{summary}
 
 %package -n rocm-clang
-Summary:        The ROCm compiler
-Requires:       rocm-clang-libs%{?_isa} = %{version}-%{release}
-Requires:       rocm-clang-runtime-devel%{?_isa} = %{version}-%{release}
-Requires:       gcc-c++
+Summary:       The ROCm compiler
+Requires:      rocm-clang-libs%{?_isa} = %{version}-%{release}
+Requires:      rocm-clang-runtime-devel%{?_isa} = %{version}-%{release}
+Requires:      gcc-c++
 
 %description -n rocm-clang
 %{summary}
@@ -277,6 +287,7 @@ Requires:      rocm-clang%{?_isa} = %{version}-%{release}
 # ROCM LLD
 %package -n rocm-lld-libs
 Summary:        The ROCm Linker libs
+Requires:      rocm-llvm-libs%{?_isa} = %{version}-%{release}
 
 %description -n rocm-lld-libs
 %{summary}
@@ -800,7 +811,7 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %{_libdir}/cmake/AMDDeviceLibs/*.cmake
 %{_prefix}/%{amd_device_libs_prefix}/amdgcn
 %if 0%{?rhel} || 0%{?fedora}
-%{_docdir}/ROCm-Device-Libs
+%exclude %{_docdir}/ROCm-Device-Libs
 %endif
 
 
@@ -810,7 +821,7 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %doc amd/comgr/README.md
 %{_libdir}/libamd_comgr.so.*
 %if 0%{?rhel} || 0%{?fedora}
-%{_docdir}/amd_comgr
+%exclude %{_docdir}/amd_comgr
 %endif
 
 %files -n rocm-comgr-devel
@@ -827,7 +838,7 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %{_bindir}/hipconfig{,.pl,.bin}
 %{perl_vendorlib}/hip*.pm
 %if 0%{?rhel} || 0%{?fedora}
-%{_docdir}/hipcc
+%exclude %{_docdir}/hipcc
 %endif
 
 %if %{without bundled_llvm}

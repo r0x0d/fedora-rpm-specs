@@ -1,4 +1,4 @@
-%global	mainver		1.16.8
+%global	mainver		1.17.2
 #%%global	prever		.rc4
 
 %global	baserelease		1
@@ -29,9 +29,6 @@ Source1:	rubygem-%{gem_name}-%{version}%{?prever}-full.tar.gz
 Source2:	nokogiri-create-full-tarball.sh
 # Shut down libxml2 version unmatching warning
 Patch0:	%{name}-1.11.0.rc4-shutdown-libxml2-warning.patch
-# https://github.com/sparklemotion/nokogiri/pull/3177
-# Make rubygem-minizip dependency optional
-Patch1:	%{name}-pr3177-rubyzip-dep-optional.patch
 BuildRequires:	ruby(release)
 BuildRequires:	ruby(rubygems)
 ##
@@ -88,7 +85,6 @@ mv ../%{gem_name}-%{version}.gemspec .
 
 # patches
 %patch -P0 -p1
-%patch -P1 -p1
 
 # remove bundled external libraries
 sed -i \
@@ -109,7 +105,7 @@ sed -i -e '\@mini_portile@d' %{gem_name}-%{version}.gemspec
 sed -i \
 	ext/nokogiri/extconf.rb \
 	-e "s@^\(def process_recipe.*\)\$@\1 ; return true@" \
-	-e "s@^\(append_cppflags\).*gumbo.*\$@\1(\"-I$(pwd)/gumbo-parser/src\")@" \
+	-e "s@^\([ \t]*append_cppflags\).*gumbo.*\$@\1(\"-I$(pwd)/gumbo-parser/src\")@" \
 	-e "\@libs.*gumbo@s@File\.join.*@\"$(pwd)/gumbo-parser/src/libgumbo.a\"@" \
 	-e "\@LIBPATH.*gumbo@s|^\(.*\)\$|# \1|" \
 	%{nil}
@@ -280,6 +276,15 @@ popd
 %doc	%{gem_dir}/doc/%{gem_name}-%{mainver}%{?prever}/
 
 %changelog
+* Fri Dec 13 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.17.2-1
+- 1.17.2
+
+* Wed Dec 11 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.17.1-1
+- 1.17.1
+
+* Mon Dec 09 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.17.0-1
+- 1.17.0
+
 * Thu Dec 05 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.16.8-1
 - 1.16.8
 

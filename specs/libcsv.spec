@@ -14,34 +14,60 @@ Version:        3.0.3^%{snapdate}git%{sub %{commit} 1 7}
 Release:        %autorelease
 Summary:        Fast and flexible CSV library written in pure ANSI C
 
+# The “or any later version…” language that makes this LGPLv2+ rather than
+# strictly LGPLv2 is not in the README or COPYING files, but in the comments in
+# the source file headers.
+License:        LGPL-2.1-or-later
 # Upstream says in README:
 #
 #   The example programs are not covered under a license and can be used
 #   without restriction.
 #
 # This resembles, but isn’t unambiguously, a public domain dedication. See also
-# the “Freely redistributable without restrictions” License identifier
-# described in the pre-SPDX licensing guidelines, which seems to be a close
-# match for this language.
+# LicenseRef-Fedora-UltraPermissive, which corresponds to the “Freely
+# redistributable without restrictions” License identifier described in the
+# pre-SPDX licensing guidelines, which seems to be a close match for this
+# language. We assume this is the case until
+# https://gitlab.com/fedora/legal/fedora-license-data/-/issues/618 is resolved.
 #
-# We believe we can safely distribute these in the source RPM, but we choose
-# not to package them as documentation in order to avoid dealing with their
-# lack of a clear license.
-#
-# The “or any later version…” language that makes this LGPLv2+ rather than
-# strictly LGPLv2 is not in the README or COPYING files, but in the comments in
-# the source file headers.
+# Examples are currently not packaged in the binary RPMs.
 #
 # The following files under other licenses belong to the build system and
 # therefore do not contribute to the license of the binary RPMs:
-#   - aclocal.m4, m4/libtool.m4, m4/ltoptions.m4, m4/ltsugar.m4,
-#     m4/ltversion.m4, and m4/lt~obsolete.m4 are FSFULLR
-#   - compile, depcomp, ltmain.sh, missing, and test-driver are
-#     GPL-2.0-or-later
-#   - config.guess and config.sub are GPL-3.0-or-later
-#   - configure is FSFUL, or, more likely, (FSFUL and LGPL-2.1-or-later)
-#   - install-sh is X11
-License:        LGPL-2.1-or-later
+#
+# FSFUL AND GPL-2.0-or-later WITH Libtool-exception AND LGPL-2.1-or-later:
+# (The LGPL-2.1-or-later is due to content from configure.ac.)
+#   - configure
+# FSFUL AND FSFULLR AND GPL-2.0-or-later WITH Libtool-exception:
+#   - m4/libtool.m4
+# FSFULLR:
+#   - aclocal.m4
+#   - m4/ltoptions.m4
+#   - m4/ltsugar.m4
+#   - m4/ltversion.m4
+#   - m4/lt~obsolete.m4
+# GPL-2.0-or-later WITH Autoconf-exception-generic:
+#   - compile
+#   - depcomp
+#   - missing
+#   - test-driver
+# GPL-2.0-or-later WITH Libtool-exception:
+#   - ltmain.sh
+# GPL-3.0-or-later WITH Autoconf-exception-generic:
+#   - config.guess
+#   - config.sub
+# X11:
+#   - install-sh
+SourceLicense:  %{shrink:
+                %{license} AND
+                FSFUL AND
+                FSFULLR AND
+                GPL-2.0-or-later WITH Autoconf-exception-generic AND
+                GPL-2.0-or-later WITH Libtool-exception AND
+                GPL-3.0-or-later WITH Autoconf-exception-generic AND
+                LicenseRef-Fedora-UltraPermissive AND
+                X11
+                }
 URL:            https://github.com/rgamble/libcsv
 Source:         %{url}/archive/%{commit}/libcsv-%{commit}.tar.gz
 

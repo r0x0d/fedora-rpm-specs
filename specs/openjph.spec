@@ -1,7 +1,7 @@
 %global real_name OpenJPH
 
 Name:           openjph
-Version:        0.18.0
+Version:        0.18.2
 Release:        1%{?dist}
 Summary:        Open-source implementation of JPEG2000 Part-15 (or JPH or HTJ2K)
 License:        BSD-2-Clause
@@ -62,6 +62,9 @@ standard Part 15.
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Thu Dec 12 2024 Simone Caronni <negativo17@gmail.com> - 0.18.2-1
+- Update to 0.18.2.
+
 * Mon Nov 11 2024 Simone Caronni <negativo17@gmail.com> - 0.18.0-1
 - Update to 0.18.0.
 

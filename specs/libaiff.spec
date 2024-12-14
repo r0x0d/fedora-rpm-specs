@@ -6,6 +6,15 @@ Summary:        Open-source implementation of the AIFF format
 
 # SPDX
 License:        MIT
+# The following build-system files do not contribute to the licenses of the
+# binary RPMs:
+#
+# FSFAP-no-warranty-disclaimer:
+#   - m4/ax_append_compile_flags.m4
+#   - m4/ax_append_flag.m4
+#   - m4/ax_check_compile_flag.m4
+#   - m4/ax_require_defined.m4
+SourceLicense:  %{license} AND FSFAP-no-warranty-disclaimer
 URL:            http://aifftools.sourceforge.net/libaiff/
 # While the latest SourceForge release linked from the above URL is 5.0,
 # development by the original author, Marco Trillo, has continued at:

@@ -7,7 +7,7 @@
 
 Name: libvirt-glib
 Version: 5.0.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: libvirt glib integration for events
 License: LGPL-2.1-or-later
 URL: https://libvirt.org/
@@ -43,6 +43,8 @@ Summary: libvirt object APIs for processing object configuration
 
 %package -n libvirt-gobject
 Summary: libvirt object APIs for managing virtualization hosts
+Requires: %{name} = %{version}-%{release}
+Requires: libvirt-gconfig = %{version}-%{release}
 
 %package -n libvirt-gconfig-devel
 Summary: libvirt object APIs for processing object configuration development files
@@ -53,7 +55,6 @@ Summary: libvirt object APIs for managing virtualization hosts development files
 Requires: %{name}-devel = %{version}-%{release}
 Requires: libvirt-gconfig-devel = %{version}-%{release}
 Requires: libvirt-gobject = %{version}-%{release}
-Requires: libvirt-devel
 
 %description
 This package provides integration between libvirt and the glib
@@ -294,6 +295,10 @@ MinGW Windows libvirt-gobject virtualization library.
 %endif
 
 %changelog
+* Thu Dec 12 2024 Daniel P. Berrangé <berrange@redhat.com> - 5.0.0-2
+- Drop redundant libvirt-devel dep
+- Add versioned libvirt-gconfig/glib deps to libvirt-gobject
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

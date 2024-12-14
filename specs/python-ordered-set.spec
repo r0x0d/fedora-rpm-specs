@@ -14,7 +14,6 @@ BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 #tests
-BuildRequires:  python3-nose
 BuildRequires:  python3-pytest
 
 %global _description\
