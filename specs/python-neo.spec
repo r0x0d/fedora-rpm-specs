@@ -92,6 +92,13 @@ git config --global user.name "Your Name"
 pushd ~ && %{__tar} -xvf %{SOURCE1} && popd
 %endif
 
+# Drop upper bound from numpy and quantities.
+# Allow building with NumPy 2.x.
+sed -r \
+    -e 's/(numpy.*),<.*/\1",/' \
+    -e 's/(quantities.*),<.*/\1",/' \
+    -i pyproject.toml
+
 
 %generate_buildrequires
 %pyproject_buildrequires

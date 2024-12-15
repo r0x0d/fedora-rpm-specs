@@ -2,18 +2,19 @@
 %global gem_name net-ssh
 
 Name: rubygem-%{gem_name}
-Version: 7.1.0
-Release: 4%{?dist}
+Version: 7.3.0
+Release: 1%{?dist}
 Summary: Net::SSH: a pure-Ruby implementation of the SSH2 client protocol
 License: MIT
 URL: https://github.com/net-ssh/net-ssh
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # git clone https://github.com/net-ssh/net-ssh.git --no-checkout
-# cd net-ssh && git archive -v --format=tar.gz -o net-ssh-7.1.0-tests.tar.gz v7.1.0 test/
+# cd net-ssh && git archive -v --format=tar.gz -o net-ssh-7.3.0-tests.tar.gz v7.3.0 test/
 Source1: %{gem_name}-%{version}-tests.tar.gz
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
+BuildRequires: rubygem(base64)
 BuildRequires: rubygem(minitest)
 BuildRequires: rubygem(mocha)
 # rubygem-ed25519 support
@@ -54,18 +55,19 @@ cp -a .%{gem_dir}/* \
 pushd .%{gem_instdir}
 ln -s %{_builddir}/test test
 
-# Match the number of failed tests, net-ssh tests
-# ciphers that are deprecated in OpenSSL 3.0,
-# and would require a special OpenSSL configuration
-# to allow their usage without errors.
-# There is a plan to remove such ciphers, see "To remove":
-# https://github.com/net-ssh/net-ssh/issues/705
-
 # This requires rubygem-x25519 which is not yet in Fedora.
 mv test/transport/kex/test_curve25519_sha256.rb{,.disable}
 
-ruby -Ilib:test test/test_all.rb 2>&1 | tee test.out
-grep "0 failures, 275 errors" test.out
+# Fedora switched from zlib to zlib-ng -> causes tests with compression to fail
+# (compressed data is not same byte-to-byte) -> disable tests with compression
+# https://github.com/net-ssh/net-ssh/issues/965
+sed -i 's;\[false, :standard\].each do |compress|;[false].each do |compress|;g' test/transport/test_packet_stream.rb
+
+# Use custom upstream OpenSSL config to enable all tested ciphers. There is
+# a plan to remove outdated ciphers (see "To remove") which might make this
+# unnecessary.
+# https://github.com/net-ssh/net-ssh/issues/705
+OPENSSL_CONF="$PWD/test/openssl3.conf" ruby -Ilib:test test/test_all.rb
 popd
 
 %files
@@ -89,11 +91,21 @@ popd
 %{gem_instdir}/Rakefile
 %{gem_instdir}/support
 %doc %{gem_instdir}/SECURITY.md
+%doc %{gem_instdir}/DEVELOPMENT.md
 # Required to run tests
 %{gem_instdir}/net-ssh.gemspec
 %exclude %{gem_instdir}/net-ssh-public_cert.pem
 
 %changelog
+* Wed Nov 06 2024 Zdenek Zambersky <zzambers@redhat.com> - 7.3.0-1
+- Update to net-ssh 7.3.0
+  Resolves: rhbz#2227501
+
+* Wed Nov 06 2024 Zdenek Zambersky <zzambers@redhat.com> - 7.1.0-5
+- Enable whole test suite to fix FTBFS
+  Resolves: rhbz#2301254
+  Resolves: rhbz#2311882
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.1.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

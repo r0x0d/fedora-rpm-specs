@@ -7,32 +7,43 @@ Version:        0.8.14
 Release:        %autorelease
 
 # The entire source is LGPL-2.0-or-later, except:
-#   • The following are GPL-3.0-or-later:
-#       - texinfo.tex
-#       - libIDL2.info
-#       - libIDL2.texi
-#     The generated HTML documentation is also derived from texinfo.tex, and is
-#     therefore also GPL-3.0-or-later. These files comprise the entire contents
-#     of the -doc subpackage.
 #
+# GPL-3.0-or-later:
+#   - texinfo.tex
+#   - libIDL2.info
+#   - libIDL2.texi
+#   The generated HTML documentation is also derived from texinfo.tex, and is
+#   therefore also GPL-3.0-or-later. These files comprise the entire contents
+#   of the -doc subpackage.
+%global doc_license GPL-3.0-or-later
+License:        LGPL-2.0-or-later
 # Additionally, the following files do not contribute to the license of the
 # binary RPMs because they belong to the build system or are otherwise not
 # compiled and/or installed.
-#   • The following are FSFULLR, or since they are derived from the corresponding
-#     Makefile.am files, perhaps more properly (LGPL-2.0-or-later AND FSFULLR):
-#       - Makefile.in and */Makefile.in
-#   • The following are FSFUL, or since they are derived from the corresponding
-#     configure.in file, perhaps more properly (LGPL-2.0-or-later AND FSFUL):
-#       - configure
-#   • The following are (clearly only) FSFULLR:
-#       - aclocal.m4
-#   • The following are GPL-2.0-or-later:
-#       - config.guess
-#       - config.sub
-#       - depcomp
-#       - ltmain.sh
-#       - missing
-License:        LGPL-2.0-or-later
+#
+# FSFUL AND GPL-2.0-or-later WITH Libtool-exception AND LGPL-2.0-or-later:
+# (LGPL-2.0-or-later is from the corresponding configure.in file.)
+#   - configure
+# FSFULLR:
+#   - aclocal.m4
+# FSFULLR AND LGPL-2.0-or-later:
+# (LGPL-2.0-or-later is from the corresponding Makefile.am files.)
+#   - Makefile.in
+#   - */Makefile.in
+# GPL-2.0-or-later WITH Autoconf-exception-generic:
+#   - config.guess
+#   - config.sub
+#   - depcomp
+#   - missing
+# GPL-2.0-or-later WITH Libtool-exception:
+#   - ltmain.sh
+SourceLicense:  %{shrink:
+                %{license} AND %{doc_license} AND
+                FSFUL AND
+                FSFULLR AND
+                GPL-2.0-or-later WITH Autoconf-exception-generic
+                GPL-2.0-or-later WITH Libtool-exception
+                }
 %global minorversion %(echo '%{version}' | cut -d . -f 1-2)
 URL:            https://download.gnome.org/sources/libIDL/%{minorversion}/
 Source0:        %{url}/libIDL-%{version}.tar.bz2
@@ -112,7 +123,7 @@ programs that use libIDL.
 
 %package doc
 Summary:        Documentation for libIDL
-License:        GPL-3.0-or-later
+License:        %{doc_license}
 
 BuildArch:      noarch
 

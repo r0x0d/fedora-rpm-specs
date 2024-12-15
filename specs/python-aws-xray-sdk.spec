@@ -42,7 +42,9 @@ Release:        %autorelease
 
 # The entire source is Apache-2.0, except that sample-apps/ (packaged in the
 # -doc subpackage) is MIT-0.
+%global sample_apps_license MIT-0
 License:        Apache-2.0
+SourceLicense:  %{license} AND %{sample_apps_license}
 URL:            https://github.com/aws/aws-xray-sdk-python
 # We use the GitHub tarball instead of the PyPI sdist to get documentation
 # and tests.
@@ -80,7 +82,7 @@ Summary:        %{summary}
 
 %package        doc
 Summary:        Documentation and examples for aws-xray-sdk
-License:        Apache-2.0 AND MIT-0
+License:        %{license} AND %{sample_apps_license}
 
 %description doc %{common_description}
 

@@ -1,7 +1,7 @@
 
 Name:    annobin
 Summary: Annotate and examine compiled binary files
-Version: 12.79
+Version: 12.80
 Release: 1%{?dist}
 License: GPL-3.0-or-later AND LGPL-2.0-or-later AND (GPL-2.0-or-later WITH GCC-exception-2.0) AND (LGPL-2.0-or-later WITH GCC-exception-2.0) AND GFDL-1.3-or-later
 URL: https://sourceware.org/annobin/
@@ -532,6 +532,9 @@ make check
 #---------------------------------------------------------------------------------
 
 %changelog
+* Fri Dec 13 2024 Nick Clifton  <nickc@redhat.com> - 12.80-1
+- Annocheck: Add support for sys-root'ed glibc packages.  (RHEL-71296)
+
 * Tue Dec 10 2024 Nick Clifton  <nickc@redhat.com> - 12.79-1
 - GCC Plugin: Tidy up use of gcc's diagnoatic headers.  (#32429)
 - Testsuite: Use configured compiler when running tests.

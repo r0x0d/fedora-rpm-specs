@@ -11,7 +11,7 @@
 
 Summary: Roles and playbooks to deploy FreeIPA servers, replicas and clients
 Name: ansible-freeipa
-Version: 1.14.1
+Version: 1.14.2
 Release: 1%{?dist}
 URL: https://github.com/freeipa/ansible-freeipa
 License: GPL-3.0-or-later
@@ -157,6 +157,16 @@ cp %{buildroot}/%{ansible_collections_dir}/%{collection_namespace}/%{collection_
 %{ansible_collections_dir}/%{collection_namespace}/%{collection_name}
 
 %changelog
+* Fri Dec 13 2024 Thomas Woerner <twoerner@redhat.com> - 1.14.1-2
+- Update to version 1.14.2
+  https://github.com/freeipa/ansible-freeipa/releases/tag/v1.14.2
+  - ipareplica: Pass ipareplica_ip_addresses to client deployment part
+  - ipagroup: Correctly handle externalmember in member actions
+  - ipasudorule: Evaluate all members related to hosts and users
+  - ipacert: Correctly handle removFromCRL revocation
+  - Collection: No more role module duplication
+  - Enabled CentOS 10 Stream tests
+
 * Wed Nov 27 2024 Thomas Woerner <twoerner@redhat.com> - 1.14.1-1
 - Update to version 1.14.1
   https://github.com/freeipa/ansible-freeipa/releases/tag/v1.14.1

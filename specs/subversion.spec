@@ -60,7 +60,7 @@
 Summary: A Modern Concurrent Version Control System
 Name: subversion
 Version: 1.14.5
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Apache-2.0
 URL: https://subversion.apache.org/
 Source0: https://downloads.apache.org/subversion/subversion-%{version}.tar.bz2
@@ -80,6 +80,7 @@ Patch6: subversion-1.14.1-testnomagic.patch
 Patch7: subversion-1.14.2-modsyms.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=2255746
 Patch8: subversion-1.14.3-zlib-ng.patch
+Patch9: subversion-1.14.5-progenv.patch
 BuildRequires: make
 BuildRequires: autoconf, libtool, texinfo, which, gcc, gcc-c++
 BuildRequires: swig >= 1.3.24, gettext
@@ -454,6 +455,7 @@ export PYTHON=%{svn_python}
 if ! make check CLEANUP=yes; then
    : Test suite failure.
    cat fails.log
+   cat tests.log
    exit 1
 fi
 if ! make check-swig-pl check-swig-rb; then
@@ -581,6 +583,9 @@ make check-javahl
 %endif
 
 %changelog
+* Fri Dec 13 2024 Joe Orton <jorton@redhat.com> - 1.14.5-2
+- fix ELN build failure
+
 * Wed Dec 11 2024 Joe Orton <jorton@redhat.com> - 1.14.5-1
 - update to 1.14.5 (#2331047)
 - use %%autosetup

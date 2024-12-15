@@ -1,7 +1,7 @@
 %global pypi_name sip
 
 Name:           sip6
-Version:        6.9.0
+Version:        6.9.1
 Release:        1%{?dist}
 Summary:        SIP - Python/C++ Bindings Generator
 %py_provides    python3-sip6
@@ -40,8 +40,8 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %install
 %pyproject_install
 
-#check
-#{py3_test_envvars} {python3} -m unittest discover -v -s test
+%check
+%{py3_test_envvars} %{python3} -m unittest discover -v -s test
 
 
 %files
@@ -52,6 +52,9 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %{python3_sitelib}/sipbuild/
 
 %changelog
+* Sat Dec 14 2024 Scott Talbert <swt@techie.net> - 6.9.1-1
+- Update to new upstream release 6.9.1 (#2332001)
+
 * Fri Dec 06 2024 Jan Grulich <jgrulich@redhat.com> - 6.9.0-1
 - 6.9.0
 

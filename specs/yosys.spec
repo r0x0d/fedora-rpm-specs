@@ -1,11 +1,11 @@
-%global commit0 f20f913223c42fce6ecc4382b281cf67952e0a72
+%global commit0 e91e95f501bef4799b1e07df67de8032d92bad07
 %global shortcommit0 %%(c=%%{commit0}; echo ${c:0:7})
 
-%global snapdate 20241110
+%global snapdate 20241211
 
 Name:           yosys
-Version:        0.47
-Release:        1.%{snapdate}git%{shortcommit0}%{?dist}
+Version:        0.48
+Release:        0.%{snapdate}git%{shortcommit0}%{?dist}
 Summary:        Yosys Open SYnthesis Suite, including Verilog synthesizer
 License:        ISC and MIT
 URL:            http://www.clifford.at/yosys/
@@ -30,25 +30,12 @@ Patch1:         0001-fedora-yosys-cfginc-patch.patch
 Patch2:         0002-fedora-yosys-mancfginc-patch.patch
 
 # Fedora-specific patch:
-# When building docs, remove components designed to be pulled down from
-# the internet during build (that break the self-contained nature of the
-# sources)
-Patch3:         0003-fedora-yosys-doc-offline-patch.patch
-
-# Fedora-specific patch:
 # Use relative path (instead of assuming a bundled submodule) when
 # referencing the cxxopts.hpp include file.
-Patch4:         0004-fedora-yosys-cxxopts-patch.patch
+Patch3:         0003-fedora-yosys-cxxopts-patch.patch
 
 # https://github.com/YosysHQ/yosys/pull/4683
-Patch5:         0005-Respect-SOURCE_DATE_EPOCH-in-generate_bram_types_sim.patch
-
-# Fedora-specific patch:
-# Only link in furo-ys for building docs when the target is something
-# other than latexpdf (where it's not needed), to avoid failing due
-# to an unpackaged dependency.
-# see also: https://github.com/YosysHQ/yosys/issues/4725
-Patch6:         0006-fedora-yosys-furo-patch.patch
+Patch4:         0004-Respect-SOURCE_DATE_EPOCH-in-generate_bram_types_sim.patch
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -136,7 +123,7 @@ done
 make config-gcc
 %make_build PREFIX="%{_prefix}" ABCEXTERNAL=%{_bindir}/abc PRETTY=0 all
 #manual
-make ABCEXTERNAL=%{_bindir}/abc DOC_TARGET=latexpdf docs
+make ABCEXTERNAL=%{_bindir}/abc DOC_TARGET=latexpdf SPHINXOPTS='' docs
 
 date=$(stat -c %y debian/man/yosys-smtbmc.txt | cut -d' ' -f1)
 txt2man -d $date -t YOSYS-SMTBMC debian/man/yosys-smtbmc.txt >yosys-smtbmc.1
@@ -189,6 +176,10 @@ make test ABCEXTERNAL=%{_bindir}/abc SEED=314159265359
 
 
 %changelog
+* Wed Dec 11 2024 Gabriel Somlo <gsomlo@gmail.com> - 0.48.0.20241211gite91e95f
+- remove doc-offline patch (solved by setting SPHINXOPTS='' instead)
+- update to 0.48 snapshot
+
 * Sun Nov 10 2024 Gabriel Somlo <gsomlo@gmail.com> - 0.47.1.20241110gitf20f913
 - switch primary source & patches to autosetup
 - update to 0.47 snapshot

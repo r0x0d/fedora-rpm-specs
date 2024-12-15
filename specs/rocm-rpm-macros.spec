@@ -1,10 +1,6 @@
 Name:           rocm-rpm-macros
-Version:        6.2.2
-%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
-Release:    1%{?dist}
-%else
-Release:        %autorelease
-%endif
+Version:        6.3.0
+Release:        1%{?dist}
 Summary:        ROCm RPM macros
 License:        GPL-2.0-or-later
 
@@ -114,11 +110,10 @@ done
 %endif
 
 %changelog
-%if 0%{?suse_version}
+* Sun Dec 8 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+
 * Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 
-%else
-%autochangelog
-%endif
 

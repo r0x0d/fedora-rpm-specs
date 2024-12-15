@@ -23,7 +23,7 @@ URL:            http://www.swamiproject.org/
 #         Public domain use as you please
 #   Texts were added to public-domain-text.txt in fedora-license-data:
 #   https://gitlab.com/fedora/legal/fedora-license-data/-/merge_requests/228
-#
+License:        LGPL-2.1-only AND LicenseRef-Fedora-Public-Domain
 # Additionally, the following unused files are removed in %%prep:
 # • The following are GPL-2.0-only:
 #     - utils/ipatch_convert.c
@@ -33,7 +33,7 @@ URL:            http://www.swamiproject.org/
 # • The following are LicenseRef-Fedora-Public-Domain:
 #     - tests/*.py
 #         License: Public Domain
-License:        LGPL-2.1-only AND LicenseRef-Fedora-Public-Domain
+SourceLicense:  %{license} AND GPL-2.0-only
 
 %global forgeurl https://github.com/swami/libinstpatch
 Source:         %{forgeurl}/archive/v%{version}/libinstpatch-%{version}.tar.gz

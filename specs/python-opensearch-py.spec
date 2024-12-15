@@ -1,13 +1,13 @@
 %global pypi_name opensearch-py
 
 Name:           python-%{pypi_name}
-Version:        2.4.2
+Version:        2.8.0
 Release:        %autorelease
 Summary:        Python low-level client for OpenSearch
 
 License:        Apache-2.0
 URL:            https://github.com/opensearch-project/%{pypi_name}
-Source0:        %{pypi_source}
+Source0:        %{pypi_source opensearch_py}
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
@@ -28,7 +28,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -n %{pypi_name}-%{version}
+%autosetup -n opensearch_py-%{version}
 
 %generate_buildrequires
 %pyproject_buildrequires -x async -x kerberos

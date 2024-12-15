@@ -16,9 +16,11 @@ Summary:        HelpDev – Extracts information about the Python environment ea
 
 # The entire source is (SPDX) MIT, except for “Images,” which are CC-BY-4.0 (an
 # allowed license for content). The images in question seem to be only the
-# contents of docs/images/, which are not incorporated in the helpdev.pdf file
-# in the -doc subpackage (but are not present in any other subpackages).
+# contents of docs/images/, which are incorporated in the helpdev.pdf file in
+# the -doc subpackage (but are not present in any other subpackages).
+%global images_license CC-BY-4.0
 License:        MIT
+SourceLicense:  %{license} AND %{images_license}
 URL:            %{forgeurl}
 Source:         %{forgesource}
 
@@ -26,9 +28,11 @@ Source:         %{forgesource}
 # https://gitlab.com/dpizetta/helpdev/-/merge_requests/4
 Patch:          %{forgeurl}/-/merge_requests/4.patch
 
+BuildSystem:            pyproject
+BuildOption(install):   -l helpdev
+BuildOption(generate_buildrequires): -x memory_info
+
 BuildArch:      noarch
- 
-BuildRequires:  python3-devel
 
 # Selected test dependencies from req-test.txt; most entries in that file are
 # for linters, code coverage, etc. Note that we use pytest directly because tox
@@ -76,23 +80,13 @@ Summary:        Documentation and examples for HelpDev
 # The entire source is (SPDX) MIT, except for images incorporated in
 # helpdev.pdf, which are CC-BY-4.0; see also the more verbose comment above the
 # base package License field.
-License:        MIT AND CC-BY-4.0
+License:        %{license} AND %{images_license}
 
 %description doc
 This package includes documentation and examples for HelpDev.
 
 
-%prep
-%autosetup -p1 %{forgesetupargs}
-
-
-%generate_buildrequires
-%pyproject_buildrequires -x memory_info
-
-
-%build
-%pyproject_wheel
-
+%build -a
 %if %{with doc_pdf}
 PYTHONPATH="${PWD}" %make_build -C docs latex \
     SPHINXOPTS='-j%{?_smp_build_ncpus}'
@@ -100,10 +94,7 @@ PYTHONPATH="${PWD}" %make_build -C docs latex \
 %endif
 
 
-%install
-%pyproject_install
-%pyproject_save_files -l helpdev
-
+%install -a
 # Generating the man page in %%install allows us to use the installed entry
 # point; horrible hacks would be required to do this in %%build.
 install -d '%{buildroot}%{_mandir}/man1'
@@ -112,7 +103,7 @@ PYTHONPATH='%{buildroot}%{python3_sitelib}' help2man \
     '%{buildroot}%{_bindir}/helpdev'
 
 
-%check
+%check -a
 %pytest -v
 
 

@@ -1,14 +1,10 @@
-%global rocm_release 6.2
-%global rocm_patch 1
+%global rocm_release 6.3
+%global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 Name:       rocminfo
 Version:    %{rocm_version}
-%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:    1%{?dist}
-%else
-Release:    %autorelease
-%endif
 Summary:    ROCm system info utility
 
 License:    NCSA
@@ -57,11 +53,11 @@ chmod 755 %{buildroot}%{_bindir}/*
 %exclude %{_docdir}/*/License.txt
 
 %changelog
-%if 0%{?suse_version}
-* Sat Nov9 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
+* Sat Dec 7 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3.0
+
+* Sat Nov 9 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 
-%else
-%autochangelog
-%endif
+
 

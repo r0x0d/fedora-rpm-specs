@@ -30,7 +30,7 @@ Summary:        Python package to create/manipulate DXF drawings
 #   source is also under an (MIT) license, so this does not affect the License
 #   tag.
 #     * ezdxf/addons/binpacking.py
-#
+License:        MIT AND ISC AND AGPL-3.0-only
 # Various fonts directly in the fonts/ directory are each under one of:
 #   - Apache-2.0
 #   - Bitstream-Vera AND LicenseRef-Fedora-Public-Domain
@@ -49,7 +49,16 @@ Summary:        Python package to create/manipulate DXF drawings
 # Fedora, but they are used only for testing and do not contribute to the
 # licenses of the binary RPMs. We double-check for incorrectly-installed font
 # files in %%check.
-License:        MIT AND ISC AND AGPL-3.0-only
+SourceLicense:  %{shrink:
+                %{license} AND
+                Apache-2.0 AND
+                Bitstream-Vera AND
+                GPL-2.0-only AND
+                LicenseRef-Fedora-Public-Domain AND
+                LicenseRef-Liberation AND
+                LicenseRef-Fedora-UltraPermissive AND
+                OFL-1.0
+                }
 URL:            https://ezdxf.mozman.at/
 %global forgeurl https://github.com/mozman/ezdxf
 Source0:        %{forgeurl}/archive/v%{version}/ezdxf-%{version}.tar.gz

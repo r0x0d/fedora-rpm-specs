@@ -11,9 +11,9 @@
 #################################################
 # Make sure these are changed for every release!
 #################################################
-%global swift_version 6.0.2-RELEASE
-%global package_version 6.0.2
-%global fedora_release 2
+%global swift_version 6.0.3-RELEASE
+%global package_version 6.0.3
+%global fedora_release 1
 
 %global swift_source_location swift-source
 
@@ -232,11 +232,6 @@ mv zlib-%{zlib_version} zlib
 # Enable LZMA
 %patch -P3 -p0
 
-# https://github.com/swiftlang/swift/pull/74814
-pushd swift
-%patch -P4 -p1
-popd
-
 # Weird (hopefully temp) situation of strlcpy and strncat
 # not being found at the system level
 # This does not work for EPEL9, so we need to make sure
@@ -316,6 +311,9 @@ export QA_SKIP_RPATHS=1
 
 
 %changelog
+* Thu Dec 12 2024 Ron Olson <tachoknight@gmail.com> - 6.0.3-1
+- Updated to Swift 6.0.3-RELEASE
+  Resolves: rhbz#2332031
 * Tue Dec 10 2024 Zephyr Lykos <fedora@mochaa.ws> - 6.0.2-2
 - fix libdir symlink installation
 * Thu Nov 14 2024 Ron Olson <tachoknight@gmail.com> - 6.0.2-1

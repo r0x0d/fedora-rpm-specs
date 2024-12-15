@@ -12,6 +12,7 @@ License:        %{shrink:
                 GPL-2.0-only WITH libpri-OpenH323-exception AND
                 GPL-2.0-only WITH Asterisk-exception
                 }
+SourceLicense:  %{license} AND GPL-2.0-or-later
 URL:            https://www.asterisk.org/
 %global src_base https://downloads.asterisk.org/pub/telephony/libpri/releases
 Source0:        %{src_base}/libpri-%{version}.tar.gz

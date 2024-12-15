@@ -1,7 +1,7 @@
 Name:    ksanecore
 Summary: Library providing logic to interface scanners
 Version: 24.12.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: BSD and LGPLv2.1-only and LGPLv3.0-only
 URL:     https://invent.kde.org/libraries/ksanecore
@@ -19,28 +19,24 @@ BuildRequires: qt6-qtbase-private-devel
 
 BuildRequires: pkgconfig(sane-backends)
 
+Conflicts: %{name} < 24.01
+Obsoletes: %{name}-common < 24.12.0
+Obsoletes: %{name}-qt5 < 24.12.0
+Obsoletes: %{name}-qt6 < 24.12.0
+
 %description
 %{summary}.
 
-%package qt6
-Summary: Qt6 library providing logic to interface scanners
-Requires: %{name}-common = %{version}-%{release}
-%description qt6
-%{summary}.
 
-%package qt6-devel
-Summary:  Development files for %{name}-qt6
-Requires: %{name}-qt6%{?_isa} = %{version}-%{release}
+%package devel
+Summary:  Development files for %{name}
+Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: cmake(Qt6Gui)
-%description qt6-devel
-%{summary}.
+Obsoletes: %{name}-qt5-devel < 24.12.0
+Obsoletes: %{name}-qt6-devel < 24.12.0
 
-%package common
-Summary: Files shared between the Qt5 and Qt6 versions of the library
-Conflicts: %{name} < 24.01
-%description common
+%description devel
 %{summary}.
-Provides internationalization files.
 
 
 %prep
@@ -58,20 +54,21 @@ Provides internationalization files.
 
 %find_lang %{name} --all-name --with-html
 
-%files common -f %{name}.lang
+%files -f %{name}.lang
 %doc README.md
 %license LICENSES/*
-
-%files qt6
 %{_libdir}/libKSaneCore6.so.{1,%{maj_ver_kf6}.*}
 
-%files qt6-devel
+%files devel
 %{_includedir}/KSaneCore6/
 %{_libdir}/cmake/KSaneCore6/
 %{_libdir}/libKSaneCore6.so
 
 
 %changelog
+* Thu Dec 12 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.12.0-2
+- Unify into one package and add proper obsoletes
+
 * Sat Dec 07 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.12.0-1
 - 24.12.0
 

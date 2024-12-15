@@ -38,8 +38,7 @@ This package provides a Python 3 API for performing the checks.
 %autosetup -n rpmdeplint-%{version}
 
 %generate_buildrequires
-# The -w flag is required for EPEL 9's older hatchling
-%pyproject_buildrequires %{?el9:-w} -x docs -x tests
+%pyproject_buildrequires -x docs -x tests
 
 %build
 %pyproject_wheel

@@ -3,7 +3,7 @@
 
 Name:           python-musicbrainzngs
 Version:        0.7.1
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        Python bindings for MusicBrainz NGS webservice
 
 # Automatically converted from old format: BSD and ISC - review is highly recommended.
@@ -24,7 +24,8 @@ For more information on the MusicBrainz webservice see:
 Summary:        Python %{python3_pkgversion} bindings for MusicBrainz NGS webservice
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{module_name}}
 BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-nose
+BuildRequires:  python%{python3_pkgversion}-setuptools
+BuildRequires:  python%{python3_pkgversion}-pytest
 
 %description -n python%{python3_pkgversion}-%{module_name}
 This library implements Python %{python3_pkgversion} webservice bindings for the
@@ -49,7 +50,7 @@ sed -i '1{\@^#!/usr/bin/env python@d}' examples/*.py
 
 %check
 rm -rf musicbrainzngs
-PYTHONPATH=%{buildroot}%{python3_sitelib} nosetests-%{python3_version}
+%pytest
 
  
 %files -n python%{python3_pkgversion}-%{module_name}
@@ -59,6 +60,10 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} nosetests-%{python3_version}
 
 
 %changelog
+* Fri Dec 13 2024 Miro Hrončok <mhroncok@redhat.com> - 0.7.1-13
+- Use pytest instead of deprecated nose
+- https://fedoraproject.org/wiki/Changes/DeprecateNose
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.7.1-12
 - convert license to SPDX
 

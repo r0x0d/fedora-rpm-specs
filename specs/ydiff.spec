@@ -1,5 +1,5 @@
 Name:       ydiff
-Version:    1.4.1
+Version:    1.4.2
 Release:    1%{?dist}
 Summary:    View colored, incremental diff
 URL:        https://github.com/ymattw/ydiff
@@ -43,6 +43,9 @@ Python library that implements API used by ydiff tool.
 %{python3_sitelib}/%{name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Fri Dec 13 2024 Alois Mahdal <n9042e84@vornet.cz> 1.4.2-1
+- Updated to 1.4.2 (RHBZ#2326989)
+
 * Thu Nov 14 2024 Alois Mahdal <n9042e84@vornet.cz> 1.4.1-1
 - Updated to 1.4.1 (RHBZ#2326169)
 

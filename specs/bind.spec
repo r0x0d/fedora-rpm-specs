@@ -10,7 +10,7 @@
 %bcond_without JSON
 %if ! 0%{?rhel}
 # FIXME: Not ready. Should it be worked on?
-%bcond_without DLZ
+%bcond_with    DLZ
 %endif
 # New MaxMind GeoLite support
 %bcond_without GEOIP2
@@ -24,11 +24,9 @@
 # Because of issues with PDF rebuild, include only HTML pages
 # Current error: unable top find isc-logo.pdf
 %if 0%{?fedora}
-# xindy fails on s390x now. Not sure why.
-%ifnarch s390x
 # RHEL and ELN do not have all required packages
-%bcond_without DOCPDF
-%endif
+# xindy fails on s390x now. Not sure why. rhbz#2332076
+%bcond_with    DOCPDF
 %endif
 %bcond_with    TSAN
 # Add experimental extra verbose logging of query processing
@@ -89,8 +87,8 @@ License:  MPL-2.0 AND ISC AND MIT AND BSD-3-Clause AND BSD-2-Clause
 #
 # Before rebasing bind, ensure bind-dyndb-ldap is ready to be rebuild and use side-tag with it.
 # Updating just bind will cause freeipa-dns-server package to be uninstallable.
-Version:  9.18.31
-Release:  3%{?dist}
+Version:  9.18.32
+Release:  1%{?dist}
 Epoch:    32
 Url:      https://www.isc.org/downloads/bind/
 #
@@ -127,10 +125,6 @@ Patch10: bind-9.5-PIE.patch
 Patch16: bind-9.16-redhat_doc.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=2122010
 Patch26: bind-9.18-unittest-netmgr-unstable.patch
-# https://fedoraproject.org/wiki/Changes/OpensslDeprecateEngine
-# Correct support for building without openssl/engine.h header
-# https://gitlab.isc.org/isc-projects/bind9/-/merge_requests/9593
-Patch27: bind-9.20-openssl-no-engine.patch
 # Downstream backport from 9.20
 # https://issues.redhat.com/browse/FREEIPA-11706
 # https://gitlab.isc.org/isc-projects/bind9/-/merge_requests/6751
@@ -827,7 +821,7 @@ fi;
 %{_mandir}/man8/rndc-confgen.8*
 %{_mandir}/man1/named-journalprint.1*
 %{_mandir}/man8/filter-*.8.gz
-%doc CHANGES README.md named.conf.default
+%doc README.md named.conf.default
 %doc sample/
 
 # Hide configuration
@@ -994,8 +988,14 @@ fi;
 %endif
 
 %changelog
+* Thu Dec 12 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.32-1
+- Update to 9.18.32 (#2331675)
+- Remove CHANGES file from package
+- Disable DLZ plugins, they are not shipped with bind anymore
+- Add new root key 38696 into package files too
+
 * Thu Dec 12 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.31-3
-- Disable temporarily PDF generation on s390x
+- Disable temporarily PDF generation on all platforms
 
 * Wed Dec 04 2024 Petr Menšík <pemensik@redhat.com> - 32:9.18.31-2
 - Add nsupdate TLS support (FREEIPA-11706)

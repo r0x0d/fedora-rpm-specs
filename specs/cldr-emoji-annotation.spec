@@ -1,10 +1,10 @@
-%global tag_version release-%%(echo "%version" | tr '~' '-')
+%global tag_version release-%%(echo "%version" | tr '~' '-' | tr '.' '-')
 #%%global is_official 0%%(echo %%{tag_version} | grep -qE 'alpha|beta|final'; echo $?)
 #%%global is_official 0
 %global is_official 0
 
 Name:       cldr-emoji-annotation
-Version:    46
+Version:    46.1~beta2
 Release:    %autorelease
 %if 0%{?fedora:1}%{?rhel:0}
 Epoch:      1

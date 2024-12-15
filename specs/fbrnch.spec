@@ -3,38 +3,30 @@
 
 %{?haskell_setup}
 
-%global bodhi bodhi-0.1.0
 %global coprapi copr-api-0.2.0
-%global fedorareleases fedora-releases-0.1.0
-%global pagure pagure-0.2.1
 %global say say-0.1.0.1
-%global selectrpms select-rpms-0.1.0
 
-%global subpkgs %{bodhi} %{coprapi} %{fedorareleases} %{pagure} %{say} %{selectrpms}
+%global subpkgs %{coprapi} %{say}
 
 %if %{defined el9}
 %bcond_without ghc_prof
 %endif
 
 Name:           fbrnch
-Version:        1.5
+Version:        1.6
 # can only be reset when all subpkgs bumped
-Release:        22%{?dist}
+Release:        23%{?dist}
 Summary:        Fedora packager tool to build package branches
 
-# bodhi-hs, select-rpms: MIT
-# copr-api, fedora-releases: GPLv3+
-# fbrnch, pagure-hs: GPLv2+
-License:        GPL-2.0-or-later AND MIT AND GPL-3.0-or-later AND BSD-3-Clause
+# copr-api: GPLv3+
+# fbrnch: GPLv2+
+# fixme: this is really SourceLicense
+License:        GPL-2.0-or-later AND GPL-3.0-or-later
 Url:            https://hackage.haskell.org/package/fbrnch
 # Begin cabal-rpm sources:
 Source0:        https://hackage.haskell.org/package/%{name}-%{version}/%{name}-%{version}.tar.gz
-Source1:        https://hackage.haskell.org/package/%{bodhi}/%{bodhi}.tar.gz
-Source2:        https://hackage.haskell.org/package/%{coprapi}/%{coprapi}.tar.gz
-Source3:        https://hackage.haskell.org/package/%{fedorareleases}/%{fedorareleases}.tar.gz
-Source4:        https://hackage.haskell.org/package/%{pagure}/%{pagure}.tar.gz
-Source5:        https://hackage.haskell.org/package/%{say}/%{say}.tar.gz
-Source6:        https://hackage.haskell.org/package/%{selectrpms}/%{selectrpms}.tar.gz
+Source1:        https://hackage.haskell.org/package/%{coprapi}/%{coprapi}.tar.gz
+Source2:        https://hackage.haskell.org/package/%{say}/%{say}.tar.gz
 # End cabal-rpm sources
 
 # Begin cabal-rpm deps:
@@ -43,7 +35,7 @@ BuildRequires:  ghc-rpm-macros-extra
 BuildRequires:  ghc-aeson-devel
 BuildRequires:  ghc-async-devel
 BuildRequires:  ghc-base-devel
-#BuildRequires:  ghc-bodhi-devel
+BuildRequires:  ghc-bodhi-devel
 BuildRequires:  ghc-bugzilla-redhat-devel
 BuildRequires:  ghc-bytestring-devel
 BuildRequires:  ghc-config-ini-devel
@@ -52,20 +44,21 @@ BuildRequires:  ghc-directory-devel
 BuildRequires:  ghc-either-devel
 BuildRequires:  ghc-email-validate-devel
 BuildRequires:  ghc-extra-devel
-#BuildRequires:  ghc-fedora-releases-devel
+BuildRequires:  ghc-fedora-releases-devel
 BuildRequires:  ghc-filepath-devel
 BuildRequires:  ghc-http-conduit-devel
 BuildRequires:  ghc-http-directory-devel
 BuildRequires:  ghc-http-query-devel
 BuildRequires:  ghc-koji-devel
 BuildRequires:  ghc-network-uri-devel
-#BuildRequires:  ghc-pagure-devel
+BuildRequires:  ghc-pagure-devel
 BuildRequires:  ghc-pretty-terminal-devel
 BuildRequires:  ghc-process-devel
 BuildRequires:  ghc-rpm-nvr-devel
 BuildRequires:  ghc-rpmbuild-order-devel
+BuildRequires:  ghc-safe-devel
 #BuildRequires:  ghc-say-devel
-#BuildRequires:  ghc-select-rpms-devel
+BuildRequires:  ghc-select-rpms-devel
 BuildRequires:  ghc-simple-cmd-devel
 BuildRequires:  ghc-simple-cmd-args-devel
 BuildRequires:  ghc-simple-prompt-devel
@@ -79,7 +72,7 @@ BuildRequires:  ghc-xdg-basedir-devel
 BuildRequires:  ghc-aeson-prof
 BuildRequires:  ghc-async-prof
 BuildRequires:  ghc-base-prof
-#BuildRequires:  ghc-bodhi-prof
+BuildRequires:  ghc-bodhi-prof
 BuildRequires:  ghc-bugzilla-redhat-prof
 BuildRequires:  ghc-bytestring-prof
 BuildRequires:  ghc-config-ini-prof
@@ -88,20 +81,21 @@ BuildRequires:  ghc-directory-prof
 BuildRequires:  ghc-either-prof
 BuildRequires:  ghc-email-validate-prof
 BuildRequires:  ghc-extra-prof
-#BuildRequires:  ghc-fedora-releases-prof
+BuildRequires:  ghc-fedora-releases-prof
 BuildRequires:  ghc-filepath-prof
 BuildRequires:  ghc-http-conduit-prof
 BuildRequires:  ghc-http-directory-prof
 BuildRequires:  ghc-http-query-prof
 BuildRequires:  ghc-koji-prof
 BuildRequires:  ghc-network-uri-prof
-#BuildRequires:  ghc-pagure-prof
+BuildRequires:  ghc-pagure-prof
 BuildRequires:  ghc-pretty-terminal-prof
 BuildRequires:  ghc-process-prof
 BuildRequires:  ghc-rpm-nvr-prof
 BuildRequires:  ghc-rpmbuild-order-prof
+BuildRequires:  ghc-safe-prof
 #BuildRequires:  ghc-say-prof
-#BuildRequires:  ghc-select-rpms-prof
+BuildRequires:  ghc-select-rpms-prof
 BuildRequires:  ghc-simple-cmd-prof
 BuildRequires:  ghc-simple-cmd-args-prof
 BuildRequires:  ghc-simple-prompt-prof
@@ -118,22 +112,10 @@ BuildRequires:  ghc-unordered-containers-devel
 %if %{with ghc_prof}
 BuildRequires:  ghc-unordered-containers-prof
 %endif
-# for missing dep 'fedora-releases':
-BuildRequires:  ghc-cached-json-file-devel
-%if %{with ghc_prof}
-BuildRequires:  ghc-cached-json-file-prof
-%endif
 # for missing dep 'say':
 BuildRequires:  ghc-transformers-devel
 %if %{with ghc_prof}
 BuildRequires:  ghc-transformers-prof
-%endif
-# for missing dep 'select-rpms':
-BuildRequires:  ghc-Glob-devel
-BuildRequires:  ghc-safe-devel
-%if %{with ghc_prof}
-BuildRequires:  ghc-Glob-prof
-BuildRequires:  ghc-safe-prof
 %endif
 # End cabal-rpm deps
 # manpage
@@ -171,12 +153,8 @@ and many more commands.
 %global main_version %{version}
 
 %if %{defined ghclibdir}
-%ghc_lib_subpackage -l MIT %{bodhi}
 %ghc_lib_subpackage -l GPL-3.0-or-later %{coprapi}
-%ghc_lib_subpackage -l GPL-3.0-or-later %{fedorareleases}
-%ghc_lib_subpackage -l GPL-2.0-or-later %{pagure}
 %ghc_lib_subpackage -l MIT %{say}
-%ghc_lib_subpackage -l MIT %{selectrpms}
 %endif
 
 %global version %{main_version}
@@ -184,7 +162,7 @@ and many more commands.
 
 %prep
 # Begin cabal-rpm setup:
-%setup -q -a1 -a2 -a3 -a4 -a5 -a6
+%setup -q -a1 -a2
 # End cabal-rpm setup
 
 
@@ -220,6 +198,37 @@ help2man --no-info %{buildroot}%{_bindir}/%{name} > %{buildroot}%{_mandir}/man1/
 
 
 %changelog
+* Fri Dec 13 2024 Jens Petersen <petersen@redhat.com> - 1.6-23
+- https://hackage.haskell.org/package/fbrnch-1.6/changelog
+- supports new wait-repo-request koji workflow
+- fedora-releases and select-rpms now packaged in fedora
+- Release Highlights:
+- update to fedora-releases-0.2.0 (supports epel10.0)
+- kojiWaitRepo: uses request-repo to trigger newrepo
+- 'build': use --notes to set Bodhi update notes text (#59)
+- 'clone' now uses fedpkg for better compatibility (#62)
+- 'copr' refactoring and fix existingChrootBuilds to prevent rebuilds
+- 'create-review': include FAS id if can be determined (#42)
+- 'create-review': --force to create a new "duplicate" review (#53)
+- 'import': prompt whether to build or only push (#47)
+- 'install': add --existing-only, --skip-existing, --no-reinstall options from select-rpms-0.2 (ported from koji-tool --install)
+- 'parallel': koji-tool tail of failed build.log if < 3 packages in layer
+- 'request-repo': now offers to import the new repo immediately
+- 'request-repo': only post comment if prompt input
+- 'review-package': allow --interactive also for local review
+- 'review-package': summarizes long rpmlint error output
+- 'reviews --created': now uses REL_PREP state
+- 'scratch-x86_64','scratch-aarch64': --exclude-arch no longer fast fails
+- 'sidetag': add --create
+- 'update': remove autorelease -b bump when updating version
+- RpmBuild buildRequires: improve dyn BRs handling
+- fix merging from new unfetched branch
+- sentence-case commit and changelog messages (#38)
+- targetMaybeSidetag: now maps "rawhide" to its dist_tag
+
+* Thu Aug 22 2024 Jens Petersen <petersen@redhat.com>
+- bodhi and pagure libraries now packaged in Fedora
+
 * Sun Aug 18 2024 Jens Petersen <petersen@redhat.com> - 1.5-22
 - https://hackage.haskell.org/package/fbrnch-1.5/changelog
 - highlights:

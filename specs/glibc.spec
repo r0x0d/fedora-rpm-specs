@@ -1,4 +1,4 @@
-%global glibcsrcdir glibc-2.40.9000-399-ge2436d6f5a
+%global glibcsrcdir glibc-2.40.9000-458-g97b74cbbb0
 %global glibcversion 2.40.9000
 # Pre-release tarballs are pulled in from git using a command that is
 # effectively:
@@ -152,7 +152,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 22
+%global baserelease 23
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -2367,6 +2367,69 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Fri Dec 13 2024 Arjun Shankar <arjun@redhat.com> - 2.40.9000-23
+- Auto-sync with upstream branch master,
+  commit 97b74cbbb0724c26fbbd5037a6ab9f81ac0a10a1:
+- s390: Simplify elf_machine_{load_address, dynamic} [BZ #31799]
+- or1k: Update libm-test-ulps
+- nptl: Add <thread_pointer.h> for or1k
+- Implement C23 atan2pi
+- Clear CXX and TEST_CXX if C++ link test fails
+- math: Remove __XXX math functions from installed math.h [BZ #32418]
+- Optimize bsearch() implementation for performance
+- benchtests: Add benchmark test for bsearch
+- Implement C23 atanpi
+- powerpc64: Fix dl-trampoline.S big-endian / non-ROP build failure
+- powerpc: Use correct procedure call standard for getrandom vDSO call (bug 32440)
+- Add TEST_CC and TEST_CXX support
+- ﻿powerpc64le: ROP changes for the dl-trampoline functions
+- malloc: Add tcache path for calloc
+- Implement C23 asinpi
+- malloc: add indirection for malloc(-like) functions in tests [BZ #32366]
+- Implement C23 acospi
+- ﻿powerpc64le: ROP changes for the *context and setjmp functions
+- nptl: Add <thread_pointer.h> for m68k
+- nptl: Add <thread_pointer.h> for RISC-V
+- nptl: add RSEQ_SIG for RISC-V
+- AArch64: Improve codegen in users of ADVSIMD expm1 helper
+- AArch64: Improve codegen in users of ADVSIMD log1p helper
+- AArch64: Improve codegen in AdvSIMD logs
+- AArch64: Improve codegen in AdvSIMD pow
+- s390x: Regenerated ULPs.
+- htl: move pthread_condattr_setpshared into libc.
+- htl: move pthread_condattr_setclock into libc.
+- htl: move pthread_condattr_init into libc.
+- htl: move pthread_condattr_getpshared into libc.
+- htl: move pthread_condattr_getclock into libc.
+- htl: move __pthread_default_condattr into libc.
+- htl: move pthread_condattr_destroy into libc.
+- math: Add sinpi,cospi,tanpi sparc64 ulps
+- math: Add tanpi aarch64 ulps
+- math: Exclude internal math symbols for tests [BZ #32414]
+- Remove AC_SUBST(libc_cv_mtls_descriptor)
+- Implement C23 tanpi
+- Fix typo in elf/Makefile:postclean-generated
+- math: xfail some sinpi tests for ibm128-libgcc
+- math: xfail some cospi tests for ibm128-libgcc
+- powerpc: Update ulps
+- AArch64: Update libm-test-ulps
+- i686: Update libm-test-ulps
+- x86-64: Update libm-test-ulps
+- Use M_LIT in place of M_MLIT for literals
+- Add further test of TLS
+- hurd: Protect against servers returning bogus read/write lengths
+- Fix and sort variables in Makefiles
+- Implement C23 sinpi
+- Implement C23 cospi
+- malloc: Optimize small memory clearing for calloc
+- Use Linux 6.12 in build-many-glibcs.py
+- locale: More strictly implement ISO 8601 for Esperanto locale
+- elf: Consolidate stackinfo.h
+- manual: Describe struct link_map, support link maps with dlinfo
+- Add threaded test of sem_trywait
+- Add test of ELF hash collisions
+- nptl: Add new test for pthread_spin_trylock
+
 * Thu Dec 12 2024 Carlos O'Donell <carlos@redhat.com> - 2.40.9000-22
 - Add BuildRequires for gzip to support compressing installed files.
 

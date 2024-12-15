@@ -11,7 +11,9 @@ Summary:        Verifies the integrity of PNG, JNG and MNG files
 #   https://github.com/spdx/license-list-XML/issues/1725
 # The new utilities licensed under GPL-2.0-or-later are compiled from the gpl/
 # subdirectory and packaged in the extras subpackage.
+%global extras_license GPL-2.0-or-later
 License:        HPND
+SourceLicense:  %{license} AND %{extras_license}
 URL:            http://www.libpng.org/pub/png/apps/pngcheck.html
 Source:         http://www.libpng.org/pub/png/src/pngcheck-%{version}.tar.gz
 
@@ -39,7 +41,7 @@ of the images in Chris Nokleberg's brokensuite-20061204.
 
 %package extras
 Summary:        Helper utilities distributed with pngcheck
-License:        GPL-2.0-or-later
+License:        %{extras_license}
 
 %description extras
 Included with pngcheck (since version 2.1.0) are two helper utilities:

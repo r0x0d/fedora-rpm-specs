@@ -41,10 +41,10 @@
 ## can be incremented to build packages reliably considered "newer"
 ## than previously built packages with the same pcmkversion)
 %global pcmkversion 3.0.0
-%global specversion 1.rc1
+%global specversion 2.rc2
 
 ## Upstream commit (full commit ID, abbreviated commit ID, or tag) to build
-%global commit 394d77ec985ff289f0661f996a45052b7fbf0f2c
+%global commit 4ae3a303e589ed47634890aab5dd955186b5ec02
 
 ## Since git v2.11, the extent of abbreviation is autoscaled by default
 ## (used to be constant of 7), so we need to convey it for non-tags, too.
@@ -74,7 +74,7 @@
 %if 0%{?rhel}
 %bcond_with doc
 %else
-%bcond_without doc
+%bcond_with doc
 %endif
 
 ## Add option to default to start-up synchronization with SBD.
@@ -770,6 +770,13 @@ exit 0
 %{_datadir}/pkgconfig/pacemaker-schemas.pc
 
 %changelog
+* Fri Dec 13 2024 Klaus Wenninger <kwenning@redhat.com> - 3.0.0-0.2.rc2
+- Update for new upstream release tarball: Pacemaker-3.0.0-rc2,
+  for full details, see included ChangeLog.md file or
+  https://github.com/ClusterLabs/pacemaker/releases/tag/Pacemaker-3.0.0-rc2
+- disable docs for now as koji build shows issues with python requirements
+  for inkscape
+
 * Tue Nov 19 2024 Klaus Wenninger <kwenning@redhat.com> - 3.0.0-0.1.rc1
 - Update for new upstream release tarball: Pacemaker-3.0.0-rc1,
   for full details, see included ChangeLog.md file or

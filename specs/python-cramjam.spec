@@ -1,7 +1,7 @@
 %bcond tests 1
 
 Name:           python-cramjam
-Version:        2.9.0
+Version:        2.9.1
 Release:        %autorelease
 Summary:        Thin Python bindings to de/compression algorithms in Rust
 

@@ -15,6 +15,7 @@ Summary:        Xalan XSLT processor for C/C++
 # libtiff, but is a build-system file that does not contribute to the licenses
 # of the binary RPMs.
 License:        Apache-2.0
+SourceLicense:  %{license} AND libtiff
 URL:            https://apache.github.io/xalan-c/
 %global tag Xalan-C_%{gsub %{version} . _}
 %global tar_name xalan_c-%(echo %{version} | cut -d . -f -2)
@@ -25,6 +26,19 @@ Source1:        %{releaseurl}/%{tar_name}.tar.gz.asc
 Source2:        %{releaseurl}/KEYS
 # Man page hand-written for Fedora in groff_man(7) format based on Xalan -?
 Source3:        Xalan.1
+
+# ICU 75 needs C++17
+# https://bugs.gentoo.org/934471
+#
+# Fixes:
+#
+# [FTBFS] with icu-76.1
+# https://bugzilla.redhat.com/show_bug.cgi?id=2332317
+#
+# Note that this patch is too trivial for there to be any need to associate a
+# license with it; the patch merely adjusts the value of CMAKE_CXX_STANDARD
+# from 14 to 17.
+Patch:          https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-libs/xalan-c/files/xalan-c-1.12-icu-75.patch
 
 BuildRequires:  gnupg2
 BuildRequires:  cmake

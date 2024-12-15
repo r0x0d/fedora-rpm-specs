@@ -33,7 +33,7 @@
 #global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           obs-studio
-Version:        31.0.0~rc1
+Version:        31.0.0
 Release:        1%{?dist}
 Summary:        Open Broadcaster Software Studio
 
@@ -359,6 +359,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.metainf
 
 
 %changelog
+* Fri Dec 13 2024 Neal Gompa <ngompa@fedoraproject.org> - 31.0.0-1
+- Update to 31.0.0 final
+
 * Sun Nov 24 2024 Neal Gompa <ngompa@fedoraproject.org> - 31.0.0~rc1-1
 - Update to 31.0.0~rc1
 

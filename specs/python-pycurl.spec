@@ -8,8 +8,8 @@
 %global modname pycurl
 
 Name:           python-%{modname}
-Version:        7.45.3
-Release:        4%{?dist}
+Version:        7.45.4
+Release:        1%{?dist}
 Summary:        A Python interface to libcurl
 
 License:        curl OR LGPL-2.1-or-later
@@ -18,10 +18,6 @@ Source0:        %{pypi_source pycurl}
 
 # drop link-time vs. run-time TLS backend check (#1446850)
 Patch1:         0001-python-pycurl-7.45.1-tls-backend.patch
-
-# Stopgap measure for Python 3.13 testing: Minimal port of tests from bottle to flask
-# bottle is not working with Python 3.13: https://github.com/bottlepy/bottle/issues/1403
-Patch2:         https://github.com/pycurl/pycurl/pull/838.patch
 
 BuildRequires:  gcc
 BuildRequires:  libcurl-devel
@@ -100,6 +96,9 @@ export PYTEST_ADDOPTS="--ignore examples -m 'not online' -k 'not (test_http_vers
 %{python3_sitearch}/%{modname}-%{version}-*.egg-info
 
 %changelog
+* Fri Dec 13 2024 Lukáš Zaoral <lzaoral@redhat.com> - 7.45.4-1
+- Update to 7.45.4 (#2332217)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 7.45.3-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

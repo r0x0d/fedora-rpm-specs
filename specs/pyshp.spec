@@ -5,6 +5,8 @@ Summary:        Pure Python read/write support for ESRI Shapefile format
 
 # SPDX
 License:        MIT
+# See Source10-Source24.
+SourceLicense:  %{license} AND LicenseRef-Fedora-Public-Domain
 URL:            https://github.com/GeospatialPython/pyshp
 Source0:        %{url}/archive/%{version}/pyshp-%{version}.tar.gz
 

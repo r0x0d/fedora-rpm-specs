@@ -1,6 +1,9 @@
+# Major version
+%define major 1
+
 Name:           libserf
 Version:        1.3.10
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        High-Performance Asynchronous HTTP Client Library
 License:        Apache-2.0
 URL:            http://serf.apache.org/
@@ -54,7 +57,8 @@ popd
 %cmake_install
 
 mkdir -p  %{buildroot}%{_libdir}/pkgconfig
-mv %{buildroot}%{_datadir}/pkgconfig/serf.pc %{buildroot}%{_libdir}/pkgconfig/serf.pc
+mv %{buildroot}%{_datadir}/pkgconfig/serf.pc %{buildroot}%{_libdir}/pkgconfig/serf-%{major}.pc
+ln -s serf-%{major}.pc %{buildroot}%{_libdir}/pkgconfig/serf.pc
 rm -rf %{buildroot}%{_datadir}
 
 %check
@@ -63,6 +67,7 @@ rm -rf %{buildroot}%{_datadir}
 %else
 true
 %endif
+grep '^Version: %{version}' %{buildroot}%{_libdir}/pkgconfig/serf.pc
 
 %ldconfig_scriptlets
 
@@ -72,11 +77,15 @@ true
 
 %files devel
 %doc CHANGES README design-guide.txt
-%{_includedir}/serf-1/
+%{_includedir}/serf-%{major}/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/serf*.pc
 
 %changelog
+* Fri Dec 13 2024 Joe Orton <jorton@redhat.com> - 1.3.10-7
+- fix version in libserf.pc
+- provide both libserf-1.pc and libserf.pc pkg-config files
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.10-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -6,8 +6,8 @@
 Name:           pgadmin4
 # NOTE: Also regenerate requires as indicated below when updating!
 # Verify Patch4 on next update
-Version:        8.13
-Release:        2%{?dist}
+Version:        8.14
+Release:        1%{?dist}
 Summary:        Administration tool for PostgreSQL
 
 # i686, armv7hl: The webpack terser plugin aborts with JS heap memory exhaustion on these arches
@@ -88,7 +88,7 @@ Requires: python3dist(psycopg) >= 3.2.1
 Requires: (python3dist(python-dateutil) >= 2 with python3dist(python-dateutil) < 3)
 Requires: (python3dist(sqlalchemy) >= 2 with python3dist(sqlalchemy) < 3)
 Requires: python3dist(bcrypt) >= 4.1
-Requires: (python3dist(cryptography) >= 43 with python3dist(cryptography) < 43.1)
+Requires: python3dist(cryptography) >= 43
 Requires: (python3dist(sshtunnel) >= 0 with python3dist(sshtunnel) < 1)
 Requires: (python3dist(ldap3) >= 2 with python3dist(ldap3) < 3)
 Requires: python3dist(gssapi) >= 1.7
@@ -108,7 +108,8 @@ Requires: (python3dist(keyring) >= 25 with python3dist(keyring) < 26)
 Requires: (python3dist(werkzeug) >= 3.1 with python3dist(werkzeug) < 3.2)
 Requires: python3dist(typer-slim)
 Requires: python3dist(setuptools) >= 74
-Requires: (python3dist(jsonformatter) >= 0.3.2 with python3dist(jsonformatter) < 0.4)
+Requires: (python3dist(jsonformatter) >= 0.3.4 with python3dist(jsonformatter) < 0.4)
+Requires: (python3dist(libgravatar) >= 1 with python3dist(libgravatar) < 1.1)
 
 
 # Undeclared dependencies
@@ -169,7 +170,6 @@ Supplements:   (%{name} = %{version}-%{release} and langpacks-%{1})\
 %lang_subpkg ko Korean
 %lang_subpkg pl Polish
 %lang_subpkg ru Russian
-%lang_subpkg zh Chinese
 
 
 %generate_buildrequires
@@ -265,6 +265,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Fri Dec 13 2024 Sandro Mani <manisandro@gmail.com> - 8.14-1
+- Update to 8.14
+
 * Sun Nov 24 2024 Sandro Mani <manisandro@gmail.com> - 8.13-2
 - Relax flask requires
 

@@ -1,5 +1,5 @@
 Name:           python-aiosignal
-Version:        1.3.1
+Version:        1.3.2
 Release:        %autorelease
 Summary:        List of registered asynchronous callbacks
 

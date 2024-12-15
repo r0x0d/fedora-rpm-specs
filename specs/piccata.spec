@@ -1,10 +1,10 @@
 Name:          piccata
-Version:       2.0.1
-Release:       8%{?dist}
+Version:       2.0.2
+Release:       %autorelease
 Summary:       A simple Python based CoAP (RFC7252) toolkit
 License:       MIT
 URL:           https://github.com/NordicSemiconductor/piccata
-Source0:       https://github.com/NordicSemiconductor/piccata/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:       %{url}/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 BuildArch: noarch
 BuildRequires: python3-devel
@@ -32,40 +32,21 @@ communication over different link types. Transport for a UDP socket is provided.
 %prep
 %autosetup -p1
 
+%generate_buildrequires
+%pyproject_buildrequires
+
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files piccata transport
 
-%files -n python3-piccata
+rm -rf %{buildroot}/%{python3_sitelib}/tests/
+
+%files -n python3-piccata -f %{pyproject_files}
 %license LICENSE
 %doc README.md
-%{python3_sitelib}/piccata/
-%{python3_sitelib}/transport/
-%{python3_sitelib}/piccata-%{version}-py*.egg-info/
 
 %changelog
-* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.1-8
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Fri Jun 07 2024 Python Maint <python-maint@redhat.com> - 2.0.1-7
-- Rebuilt for Python 3.13
-
-* Thu Jan 25 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.1-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Sun Jan 21 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.1-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Fri Jul 21 2023 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.1-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Tue Jun 13 2023 Python Maint <python-maint@redhat.com> - 2.0.1-3
-- Rebuilt for Python 3.12
-
-* Fri Jan 20 2023 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.1-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
-
-* Tue Oct 18 2022 Peter Robinson <pbrobinson@fedoraproject.org> - 2.0.1-1
-- Initial Package
+%autochangelog

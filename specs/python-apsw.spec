@@ -1,14 +1,14 @@
 
 # Deprecated RHEL/Fedora support dropped, no need to track package versioning there
 
-%if 0%{?fedora} >= 41
-%global sqlite_version 3.46.1
+%if 0%{?fedora} >= 42
+%global sqlite_version 3.47.2
 %global uprel 0
 %global pkg_version %{sqlite_version}.%{uprel}
 %endif
 
-%if 0%{?fedora} == 40
-%global sqlite_version 3.45.1
+%if 0%{?fedora} == 41
+%global sqlite_version 3.46.1
 %global uprel 0
 %global pkg_version %{sqlite_version}.%{uprel}
 %endif
@@ -23,9 +23,9 @@
 
 Name:               python-apsw
 Version:            %{real_version}
-Release:            3%{?dist}
+Release:            1%{?dist}
 Summary:            Another Python SQLite Wrapper
-License:            zlib
+License:            any-OSI
 URL:                https://github.com/rogerbinns/apsw
 Source:             https://github.com/rogerbinns/apsw/releases/download/%{pkg_version}/apsw-%{pkg_version}.zip
 
@@ -67,12 +67,17 @@ rm -f doc/.buildinfo
 PYTHONPATH=%{buildroot}%{python3_sitearch} %{__python3} setup.py test
 
 %files -n python%{python3_pkgversion}-apsw
+%license LICENSE
 %doc doc/*
+%{_bindir}/apsw
 %{python3_sitearch}/apsw
 %{python3_sitearch}/apsw*.egg-info
 
-
 %changelog
+* Fri Dec 13 2024 Denis Fateyev <denis@fateyev.com> - 3.47.2.0-1
+- Bump upstream version to 3.47.2.0
+- Migrated to SPDX license
+
 * Wed Aug 21 2024 Denis Fateyev <denis@fateyev.com> - 3.46.1.0-1
 - Bump upstream version to 3.46.1.0
 

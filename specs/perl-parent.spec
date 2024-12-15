@@ -1,6 +1,6 @@
 Name:		perl-parent
 Epoch:		1
-Version:	0.243
+Version:	0.244
 Release:	1%{?dist}
 Summary:	Establish an ISA relationship with base classes at compile time
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
@@ -55,6 +55,10 @@ make test
 %{_mandir}/man3/parent.3*
 
 %changelog
+* Fri Dec 13 2024 Paul Howarth <paul@city-fan.org> - 1:0.244-1
+- Update to 0.244
+  - Update (commented) comparison with $] to use quotes
+
 * Fri Nov 29 2024 Paul Howarth <paul@city-fan.org> - 1:0.243-1
 - Update to 0.243
   - Reinstate test for apostrophe as package separator, as that package

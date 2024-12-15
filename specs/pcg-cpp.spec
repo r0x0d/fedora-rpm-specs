@@ -15,6 +15,7 @@ Release:        %autorelease
 #
 # See: LICENSE.spdx
 License:        MIT OR Apache-2.0
+SourceLicense:  (%{license}) AND CC0-1.0
 URL:            https://github.com/imneme/pcg-cpp
 Source:         %{url}/archive/%{commit}/pcg-cpp-%{commit}.tar.gz
 

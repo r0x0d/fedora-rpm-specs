@@ -42,6 +42,9 @@ Summary:        %{summary}
 %prep
 %forgeautosetup -p1
 
+# Drop upper bound on numpy. Allow building with NumPy 2.x.
+sed -r -i 's/^numpy.*/numpy = ">=1.21"/' pyproject.toml
+
 
 %generate_buildrequires
 %pyproject_buildrequires -x neo

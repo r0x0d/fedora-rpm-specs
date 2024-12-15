@@ -1,6 +1,6 @@
 Name:		libnfs
-Version:	5.0.3
-Release:	2%{?dist}
+Version:	6.0.1
+Release:	1%{?dist}
 Summary:	Client library for accessing NFS shares over a network
 # The library is licensed as LGPL-2.1-or-later
 # The protocol definition is BSD-2-Clause
@@ -9,8 +9,10 @@ License:	LGPL-2.1-or-later AND BSD-2-Clause AND GPL-3.0-or-later
 URL:		https://github.com/sahlberg/libnfs
 Source0:	%{url}/archive/%{name}-%{version}/%{name}-%{version}.tar.gz
 
-BuildRequires:	gcc
 BuildRequires:	automake
+BuildRequires:	gcc
+BuildRequires:	gnutls-devel
+BuildRequires:	krb5-devel
 BuildRequires:	libtool
 BuildRequires:	make
 
@@ -65,7 +67,7 @@ rm -f %{buildroot}%{_libdir}/*.la
 %ldconfig_scriptlets
 
 %files
-%{_libdir}/libnfs.so.14*
+%{_libdir}/libnfs.so.16*
 %doc README
 %license COPYING
 %license LICENCE-*.txt
@@ -81,6 +83,9 @@ rm -f %{buildroot}%{_libdir}/*.la
 %{_mandir}/man1/nfs-*.1*
 
 %changelog
+* Fri Dec 13 2024 Xavier Bachelot <xavier@bachelot.org> - 6.0.1-1
+- Update to 6.0.1 (RHBZ#2331668)
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

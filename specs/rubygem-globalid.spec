@@ -4,23 +4,25 @@
 %bcond_with bootstrap
 
 Name: rubygem-%{gem_name}
-Version: 1.1.0
-Release: 5%{?dist}
+Version: 1.2.1
+Release: 1%{?dist}
 Summary: Refer to any model with a URI: gid://app/class/id
 License: MIT
 URL: http://www.rubyonrails.org
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # git clone https://github.com/rails/globalid.git && cd globalid
-# git checkout v1.1.0
-# tar czvf globalid-1.1.0-tests.tar.gz test/
+# git archive -v -o globalid-1.2.1-tests.tar.gz v1.2.1 test
 Source1: %{gem_name}-%{version}-tests.tar.gz
+# Fix Ruby 3.4 compatibility.
+# https://github.com/rails/globalid/pull/192
+Patch0: rubygem-globalid-1.2.1-Keep-using-URI-RFC2396-parser.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
-BuildRequires: ruby >= 1.9.3
+BuildRequires: ruby >= 2.5.0
 %if %{without bootstrap}
-BuildRequires: rubygem(activesupport) >= 4.1
-BuildRequires: rubygem(activemodel) >= 4.1
-BuildRequires: rubygem(railties) >= 4.1
+BuildRequires: rubygem(activesupport)
+BuildRequires: rubygem(activemodel)
+BuildRequires: rubygem(railties)
 %endif
 BuildArch: noarch
 
@@ -38,6 +40,8 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version} -b 1
+
+%patch 0 -p1
 
 %build
 gem build ../%{gem_name}-%{version}.gemspec
@@ -57,7 +61,7 @@ ln -s %{_builddir}/test test
 # Avoid Bundler dependency.
 sed -i "/bundler\/setup/ s/^/#/" ./test/helper.rb
 
-ruby -Ilib:test -rforwardable -e "Dir.glob './test/cases/*test.rb', &method(:require)"
+ruby -Ilib:test -e "Dir.glob './test/cases/*test.rb', &method(:require)"
 popd
 %endif
 
@@ -74,6 +78,10 @@ popd
 %doc %{gem_instdir}/README.md
 
 %changelog
+* Tue Dec 10 2024 Vít Ondruch <vondruch@redhat.com> - 1.2.1-1
+- Update to globalid 1.2.1.
+  Resolves: rhbz#2236912
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -18,17 +18,14 @@ Summary:        Fast and flexible CSV library written in pure ANSI C
 # strictly LGPLv2 is not in the README or COPYING files, but in the comments in
 # the source file headers.
 License:        LGPL-2.1-or-later
-# Upstream says in README:
+# The contents of examples/ are LicenseRef-Fedora-UltraPermissive:
+# https://gitlab.com/fedora/legal/fedora-license-data/-/issues/618
+# https://gitlab.com/fedora/legal/fedora-license-data/-/merge_requests/719
+#
+# From the README file:
 #
 #   The example programs are not covered under a license and can be used
 #   without restriction.
-#
-# This resembles, but isn’t unambiguously, a public domain dedication. See also
-# LicenseRef-Fedora-UltraPermissive, which corresponds to the “Freely
-# redistributable without restrictions” License identifier described in the
-# pre-SPDX licensing guidelines, which seems to be a close match for this
-# language. We assume this is the case until
-# https://gitlab.com/fedora/legal/fedora-license-data/-/issues/618 is resolved.
 #
 # Examples are currently not packaged in the binary RPMs.
 #

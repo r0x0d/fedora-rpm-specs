@@ -3,7 +3,10 @@ Version:        5.1.0
 Release:        %autorelease
 Summary:        High-level FTP client library (virtual file system and more)
 
-# The entire source is BSD-3-Clause, except ftputil/lrucache.py, which is (BSD-3-Clause OR AFL-2.1)
+# The entire source is BSD-3-Clause, except:
+#
+# BSD-3-Clause OR AFL-2.1:
+#   - ftputil/lrucache.py
 License:        BSD-3-Clause AND (BSD-3-Clause OR AFL-2.1)
 URL:            https://ftputil.sschwarzer.net/
 # Bug tracker: https://todo.sr.ht/~sschwarzer/ftputil

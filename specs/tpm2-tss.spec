@@ -5,14 +5,14 @@
 
 Name:          tpm2-tss
 Version:       4.1.3
-Release:       4%{?candidate:.%{candidate}}%{?dist}
+Release:       5%{?candidate:.%{candidate}}%{?dist}
 Summary:       TPM2.0 Software Stack
 
 # The entire source code is under BSD except implementation.h and tpmb.h which
 # is under TCGL(Trusted Computing Group License).
 License:       BSD-2-Clause
 URL:           https://github.com/tpm2-software/tpm2-tss
-Source0:       https://github.com/tpm2-software/tpm2-tss/releases/download/%{version}/%{name}-%{version}%{?candidate:-%{candidate}}.tar.gz
+Source0:       %{url}/releases/download/%{version}/%{name}-%{version}%{?candidate:-%{candidate}}.tar.gz
 Source1:       tpm2-tss-systemd-sysusers.conf
 # doxygen crash
 Patch0:        tpm2-tss-3.0.0-doxygen.patch
@@ -34,6 +34,7 @@ BuildRequires: gcc-c++
 BuildRequires: json-c-devel
 BuildRequires: libcurl-devel
 BuildRequires: libgcrypt-devel
+BuildRequires: libusb1-devel
 BuildRequires: openssl-devel
 BuildRequires: pkgconfig
 BuildRequires: systemd
@@ -101,6 +102,7 @@ exit 0
 %{_libdir}/libtss2-tcti-i2c-helper.so.0*
 %{_libdir}/libtss2-tcti-spidev.so.0*
 %{_libdir}/libtss2-tcti-spi-helper.so.0*
+%{_libdir}/libtss2-tcti-spi-ltt2go.so.0*
 %{_libdir}/libtss2-tcti-swtpm.so.0*
 %{_sysusersdir}/tpm2-tss.conf
 %{_udevrulesdir}/%{udevrules_prefix}tpm-udev.rules
@@ -134,6 +136,7 @@ use tpm2-tss.
 %{_libdir}/libtss2-tcti-i2c-helper.so
 %{_libdir}/libtss2-tcti-spidev.so
 %{_libdir}/libtss2-tcti-spi-helper.so
+%{_libdir}/libtss2-tcti-spi-ltt2go.so
 %{_libdir}/libtss2-tcti-swtpm.so
 %{_libdir}/pkgconfig/tss2-mu.pc
 %{_libdir}/pkgconfig/tss2-sys.pc
@@ -149,12 +152,16 @@ use tpm2-tss.
 %{_libdir}/pkgconfig/tss2-tcti-i2c-helper.pc
 %{_libdir}/pkgconfig/tss2-tcti-spidev.pc
 %{_libdir}/pkgconfig/tss2-tcti-spi-helper.pc
+%{_libdir}/pkgconfig/tss2-tcti-spi-ltt2go.pc
 %{_libdir}/pkgconfig/tss2-tcti-swtpm.pc
 %{_mandir}/man3/*.3.gz
 %{_mandir}/man5/*.5.gz
 %{_mandir}/man7/tss2*.7.gz
 
 %changelog
+* Fri Dec 13 2024 Peter Robinson <pbrobinson@fedoraproject.org> - 4.1.3-5
+- Enable LetsTrustTPM2Go TPM module (rhbz 2332185)
+
 * Thu Dec 12 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 4.1.3-4
 - Remove openssl-devel-engine build dependency
 
