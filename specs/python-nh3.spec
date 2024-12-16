@@ -1,10 +1,13 @@
 Name:           python-nh3
-Version:        0.2.18
+Version:        0.2.19
 Release:        %autorelease
 Summary:        Python binding to Ammonia HTML sanitizer Rust crate
 License:        MIT
 URL:            https://github.com/messense/nh3
 Source:         %{pypi_source nh3}
+
+# This disable pyo3 feature requirement specific for windows
+Patch:          do_not_require_win_only_pyo3_extension.patch
 
 BuildRequires:  cargo-rpm-macros
 BuildRequires:  python3-devel

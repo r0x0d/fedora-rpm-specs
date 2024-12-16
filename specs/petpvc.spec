@@ -1,11 +1,15 @@
 Name:           petpvc
-Version:        1.2.11
+Version:        1.2.12
 Release:        %autorelease
 Summary:        Tools for partial volume correction (PVC) in positron emission tomography (PET)
 
+%global forgeurl https://github.com/UCL/PETPVC
+%global tag v%{version}
+%forgemeta
+
 License:        Apache-2.0
-URL:            https://github.com/UCL/PETPVC
-Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
+URL:            %forgeurl
+Source:         %forgesource
 
 # Drop i686
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
@@ -33,7 +37,7 @@ BuildRequires: libXext-devel
 %{summary}.
 
 %prep
-%autosetup -n PETPVC-%{version}
+%forgeautosetup
 # Do not install examples
 sed -i -e "/parc/d" CMakeLists.txt
 # correct wrong file end of line encoding

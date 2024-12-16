@@ -16,6 +16,7 @@ Summary:        Python bindings for V-HACD
 # effectively a static library and its BSD-3-Clause license still contributes
 # to the license of the binary RPMs even when the system copy is used.
 License:        MIT AND BSD-3-Clause
+SourceLicense:  MIT
 URL:            https://github.com/trimesh/vhacdx
 Source:         %{pypi_source vhacdx}
 

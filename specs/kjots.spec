@@ -1,7 +1,7 @@
 Name:           kjots
 Summary:        KDE Notes application
 Version:        6.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 # Automatically converted from old format: GPLv2 - review is highly recommended.
 License:        GPL-2.0-only
 URL:            https://userbase.kde.org/KJots
@@ -83,6 +83,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_kf6_metainfodir}/org.kde.k
 
 
 %changelog
+* Sat Dec 14 2024 Alessandro Astone <ales.astone@gmail.com> - 6.0.0-2
+- Rebuild (kmime)
+
 * Fri Aug 30 2024 Steve Cossette <farchord@gmail.com> - 6.0.0-1
 - 6.0.0
 

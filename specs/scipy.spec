@@ -60,7 +60,7 @@ Release:    1%{?dist}
 # Qhull -- scipy/spatial/qhull_src
 # LicenseRef-Fedora-Public-Domain -- scipy/odr/__odrpack.c
 License:    BSD-3-Clause AND BSD-2-Clause AND MIT AND BSL-1.0 AND Boehm-GC AND Qhull AND LicenseRef-Fedora-Public-Domain
-Url:        http://www.scipy.org/scipylib/index.html
+Url:        https://scipy.org/
 Source0:    https://github.com/scipy/scipy/releases/download/v%{version}/scipy-%{version}.tar.gz
 
 BuildRequires: %{blaslib}-devel

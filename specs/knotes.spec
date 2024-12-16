@@ -1,7 +1,7 @@
 Name:    knotes
 Summary: Popup notes
 Version: 24.05.2
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 # Automatically converted from old format: GPLv2 and GFDL - review is highly recommended.
 License: GPL-2.0-only AND LicenseRef-Callaway-GFDL
@@ -127,6 +127,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.%{
 
 
 %changelog
+* Sat Dec 14 2024 Alessandro Astone <ales.astone@gmail.com> - 24.05.2-5
+- Rebuild (kmime)
+
 * Thu Oct 24 2024 Alessandro Astone <ales.astone@gmail.com> - 24.05.2-4
 - Rebuild (kmime)
 - Add patch to find renamed headers

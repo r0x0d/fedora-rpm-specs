@@ -5,8 +5,8 @@
 # https://github.com/ROCm-Developer-Tools/ROCclr/blob/develop/device/comgrctx.cpp#L62
 
 %global rocm_major 6
-%global rocm_minor 2
-%global rocm_patch 1
+%global rocm_minor 3
+%global rocm_patch 0
 %global rocm_release %{rocm_major}.%{rocm_minor}
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
@@ -42,20 +42,11 @@
 %global build_ocl OFF
 %endif
 
-%if 0%{?fedora}
-%bcond_without docs
-%else
 %bcond_with docs
-%endif
-
 
 Name:           rocclr
 Version:        %{rocm_version}
-%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:        1%{?dist}
-%else
-Release:        %autorelease
-%endif
 Summary:        ROCm Compute Language Runtime
 Url:            https://github.com/ROCm-Developer-Tools/clr
 License:        MIT
@@ -65,7 +56,7 @@ Source1:        https://github.com/ROCm-Developer-Tools/HIP/archive/refs/tags/ro
 
 # Revert patch: this causes some issues with upstream LLVM 16 (RHBZ#2207599)
 #https://github.com/ROCm-Developer-Tools/ROCclr/commit/041c00465b7adcee78085dc42253d42d1bb1f250
-Patch4:         0001-Revert-SWDEV-325538-Enable-code-object-v5-by-default.patch
+# Patch4:         0001-Revert-SWDEV-325538-Enable-code-object-v5-by-default.patch
 
 # a fix for building blender
 Patch8:         0001-add-long-variants-for-__ffsll.patch
@@ -77,7 +68,7 @@ Patch9:         0001-Check-p2p_agents_list_-before-deleting.patch
 patch10:        https://github.com/ROCm/clr/pull/97/commits/909fa3dcb644f7ca422ed1a980a54ac426d831b1.patch
 
 # https://github.com/ROCm/clr/issues/99
-patch11:        0001-handle-v1-of-compressed-fatbins.patch
+# patch11:        0001-handle-v1-of-compressed-fatbins.patch
 
 BuildRequires:  cmake
 %if %{with docs}
@@ -335,9 +326,8 @@ fi
 %endif
 
 %changelog
-%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
+* Sun Dec 8 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+
 * Tue Sep 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.0-1
 - A placeholder for rhel 9
-%else
-%autochangelog
-%endif

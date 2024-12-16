@@ -1,9 +1,8 @@
-%global srcname mopidy
 %global homedir %{_sharedstatedir}/%{name}
 
 Name:           mopidy
 Version:        4.0.0~a2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An extensible music server written in Python
 
 License:        Apache-2.0
@@ -26,8 +25,10 @@ BuildRequires:  python3-tox-current-env
 BuildRequires:  python3-responses
 BuildRequires:  python3-gstreamer1
 BuildRequires:  gstreamer1-plugins-good
+BuildRequires:  libsoup3
 BuildRequires:  systemd-rpm-macros
 Requires:       python3-gstreamer1
+Requires:       libsoup3
 Requires:       gstreamer1-plugins-good
 Requires:       python3-tornado
 Requires:       python3-Pykka >= 4.0.0
@@ -81,7 +82,6 @@ install -p -D -m 0644 extra/systemd/mopidy.service %{buildroot}%{_unitdir}/%{nam
 install -p -D -m 0644 %{SOURCE1} %{buildroot}%{_datadir}/%{name}/conf.d/mopidy.conf
 
 %check
-rm tests/stream/test_playback.py  # TODO: previously skipped, these tests all fail right now (https://mopidy.zulipchat.com/#narrow/channel/207265-mopidy-dev/topic/various.20test.20failures.20with.203.2E4.2E2.20and.20pytest)
 %tox
 
 %pre
@@ -123,6 +123,9 @@ exit 0
 
 
 %changelog
+* Sat Dec 14 2024 Tobias Girstmair <t-fedora@girst.at> - 4.0.0~a2-2
+- Fix test failures
+
 * Fri Dec 06 2024 Tobias Girstmair <t-fedora@girst.at> - 4.0.0~a2-1
 - Update to 4.0.0a2 (RHBZ#2330474) for Python 3.14 compatibility (RHBZ#2328700)
 

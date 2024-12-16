@@ -14,7 +14,7 @@
 
 # https://github.com/containers/prometheus-podman-exporter
 %global goipath         github.com/containers/prometheus-podman-exporter
-Version:                1.13.3
+Version:                1.14.0
 
 %gometa -f
 
@@ -65,7 +65,6 @@ BuildRequires: shadow-utils-subid-devel
 %if %{with bundled}
 %setup -q -T -D -a 1 -n %{name}-%{version}
 %endif
-%autopatch -p1
 
 %if %{without bundled}
 %generate_buildrequires

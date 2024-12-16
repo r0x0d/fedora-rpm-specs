@@ -26,6 +26,8 @@ Summary:        Object-oriented pure Python B-Spline and NURBS library
 #
 # SPDX
 License:        MIT
+%global doc_license CC-BY-4.0
+SourceLicense:  %{license} AND %{doc_license}
 URL:            https://onurraufbingol.com/NURBS-Python/
 # The GitHub tarball has documentation; the PyPI one does not.
 %global forgeurl https://github.com/orbingol/NURBS-Python
@@ -101,7 +103,7 @@ Suggests:       python3-geomdl-doc = %{version}-%{release}
 %package        doc
 Summary:        Documentation for geomdl
 # See the comment above the base package License field.
-License:        CC-BY-4.0
+License:        %{doc_license}
 
 BuildArch:      noarch
 

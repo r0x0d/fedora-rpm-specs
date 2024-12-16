@@ -1,5 +1,5 @@
 Name:           python-folium
-Version:        0.19.0
+Version:        0.19.2
 Release:        %autorelease
 Summary:        Python library for visualizing data on a Leaflet map
 

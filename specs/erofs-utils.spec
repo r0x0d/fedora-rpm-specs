@@ -9,22 +9,21 @@
 %bcond zstd     1
 
 Name:           erofs-utils
-Version:        1.8.2
-Release:        2%{?dist}
+Version:        1.8.3
+Release:        1%{?dist}
 
 Summary:        Utilities for working with EROFS
 License:        GPL-2.0-only AND GPL-2.0-or-later AND (GPL-2.0-only OR Apache-2.0) AND (GPL-2.0-or-later OR Apache-2.0) AND (GPL-2.0-only OR BSD-2-Clause) AND (GPL-2.0-or-later OR BSD-2-Clause) AND Unlicense
 URL:            https://erofs.docs.kernel.org/
 
 Source:         https://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs-utils.git/snapshot/%{name}-%{version}.tar.gz
-Patch:          https://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs-utils.git/patch/?id=882ad1c3157f7544bd4d004e3b6d744f0cbe3ffc#/%{name}-1.8.2-fix-all-fragments.patch
 
 BuildRequires:  %[ "%{toolchain}" == "clang" ? "clang compiler-rt" : "gcc" ]
 BuildRequires:  libtool
 BuildRequires:  make
 %{?with_deflate:BuildRequires:  pkgconfig(libdeflate)}
 %{?with_fuse:BuildRequires:  pkgconfig(fuse3) >= 3.2}
-%{?with_lz4:BuildRequires:  lz4-devel >= 1.9.3}
+%{?with_lz4:BuildRequires:  pkgconfig(liblz4) >= 1.9.3}
 %{?with_lzma:BuildRequires:  pkgconfig(liblzma) >= 5.4}
 %{?with_qpl:BuildRequires:  pkgconfig(qpl) >= 1.5.0}
 %{?with_selinux:BuildRequires:  pkgconfig(libselinux)}
@@ -54,7 +53,7 @@ This package includes erofsfuse to mount EROFS images.
 
 
 %prep
-%autosetup -p1
+%autosetup
 autoreconf -fi
 
 %build
@@ -95,6 +94,9 @@ autoreconf -fi
 
 
 %changelog
+* Sat Dec 14 2024 David Michael <fedora.dm0@gmail.com> - 1.8.3-1
+- Update to the 1.8.3 release.
+
 * Sat Oct 12 2024 David Michael <fedora.dm0@gmail.com> - 1.8.2-2
 - Backport a fix for multithreaded -Eall-fragments crashes.
 

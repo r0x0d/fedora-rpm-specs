@@ -1,8 +1,8 @@
 Summary: NFS utilities and supporting clients and daemons for the kernel NFS server
 Name: nfs-utils
 URL: http://linux-nfs.org/
-Version: 2.8.1
-Release: 1.rc2%{?dist}
+Version: 2.8.2
+Release: 0%{?dist}
 Epoch: 1
 
 # group all 32bit related archs
@@ -13,8 +13,6 @@ Source1: id_resolver.conf
 Source2: lockd.conf
 Source3: 24-nfs-server.conf
 Source4: 10-nfsv4.conf
-
-Patch001: nfs-utils.2.8.2-rc2.patch
 
 Patch100: nfs-utils-1.2.1-statdpath-man.patch
 Patch102: nfs-utils-1.2.5-idmap-errmsg.patch
@@ -46,7 +44,6 @@ Provides: start-statd = %{epoch}:%{version}-%{release}
 Requires: filesystem(unmerged-sbin-symlinks)
 Provides: /sbin/mount.nfs
 Provides: /sbin/mount.nfs4
-Provides: /sbin/nfsdcltrack
 Provides: /sbin/rpc.statd
 Provides: /usr/sbin/rpc.mountd
 Provides: /usr/sbin/rpc.nfsd
@@ -309,7 +306,6 @@ rm -rf /etc/systemd/system/rpc-*.requires
 %doc linux-nfs/ChangeLog linux-nfs/KNOWNBUGS linux-nfs/NEW linux-nfs/README
 %doc linux-nfs/THANKS linux-nfs/TODO
 %{_sbindir}/rpc.statd
-%{_sbindir}/nfsdcltrack
 %{_sbindir}/exportfs
 %{_sbindir}/nfsstat
 %{_sbindir}/rpcdebug
@@ -441,6 +437,9 @@ rm -rf /etc/systemd/system/rpc-*.requires
 %{_mandir}/*/nfsiostat.8.gz
 
 %changelog
+* Sat Dec 14 2024 Steve Dickson <steved@redhat.com> 2.8.2-0
+- Updated to the latest release: nfs-utils-2-8-2 (bz 2331418)
+
 * Thu Nov 21 2024 Steve Dickson <steved@redhat.com> 2.8.1-1.rc2
 - Updated to the latest RC release: nfs-utils-2-8-2-rc2
 

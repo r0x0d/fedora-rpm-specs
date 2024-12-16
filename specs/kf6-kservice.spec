@@ -2,7 +2,7 @@
 
 Name:    kf6-%{framework}
 Summary: KDE Frameworks 6 Tier 3 solution for advanced plugin and service introspection
-Version: 6.8.0
+Version: 6.9.0
 Release: 1%{?dist}
 
 # The following licenses are in the LICENSES folder but go unused: GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, LicenseRef-KDE-Accepted-GPL
@@ -81,6 +81,9 @@ mkdir -p %{buildroot}%{_kf6_datadir}/kservicetypes6
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Sat Dec 14 2024 Steve Cossette <farchord@gmail.com> - 6.9.0-1
+- 6.9.0
+
 * Sat Nov 02 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.8.0-1
 - 6.8.0
 

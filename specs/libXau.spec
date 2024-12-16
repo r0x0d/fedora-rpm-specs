@@ -1,13 +1,11 @@
 Summary: Sample Authorization Protocol for X
 Name: libXau
-Version: 1.0.11
-Release: 7%{?dist}
+Version: 1.0.12
+Release: 1%{?dist}
 License: MIT-open-group
 URL: http://www.x.org
 
 Source0: https://www.x.org/pub/individual/lib/%{name}-%{version}.tar.xz
-
-#Patch0: xau-1.0.4-local.patch
 
 BuildRequires: make
 BuildRequires: xorg-x11-util-macros
@@ -68,6 +66,9 @@ make check
 %{_mandir}/man3/*.3*
 
 %changelog
+* Sat Dec 14 2024 Dr. Tilmann Bubeck <bubeck@fedoraproject.org> - 1.0.12-1
+- update to 1.0.12
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.11-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

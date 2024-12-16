@@ -3,7 +3,7 @@
 Name:           dummy-test-package-gloster
 
 Version:        0
-Release:        17328%{?dist}
+Release:        17348%{?dist}
 Summary:        Dummy Test Package called Gloster
 # Automatically converted from old format: CC0 - review is highly recommended.
 License:        CC0-1.0
@@ -33,6 +33,66 @@ cp -p uuid %{buildroot}%{_datadir}/%{name}
 %{_datadir}/%{name}
 
 %changelog
+* Sun Dec 15 2024 packagerbot <admin@fedoraproject.org> - 0-17348
+- rebuilt
+
+* Sun Dec 15 2024 packagerbot <admin@fedoraproject.org> - 0-17347
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17346
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17345
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17344
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17343
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17342
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17341
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17340
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17339
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17338
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17337
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17336
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17335
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17334
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17333
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17332
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17331
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17330
+- rebuilt
+
+* Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17329
+- rebuilt
+
 * Sat Dec 14 2024 packagerbot <admin@fedoraproject.org> - 0-17328
 - rebuilt
 

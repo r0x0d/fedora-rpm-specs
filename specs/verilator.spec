@@ -1,9 +1,19 @@
-%bcond tcmalloc 1
-%bcond ccache 0
-%bcond mold 0
+# Universal build flags
 %bcond longtests 0
 %bcond ccwarn 1
+
+# tcmalloc and z3 are not available on EL
+%if 0%{?rhel}%{?centos}
+%bcond tcmalloc 0
+%bcond z3 0
+%else
+%bcond tcmalloc 1
 %bcond z3 1
+%endif
+
+# These are offered by the build, but there's no real demand to include them.
+%bcond ccache 0
+%bcond mold 0
 
 Name:           verilator
 Version:        5.030
@@ -105,7 +115,7 @@ autoconf
     --disable-longtests
 %endif
 
-# We cannot run autoreconf because upstream uses unqualifed stdlib identifiers
+# We cannot run autoreconf because upstream uses unqualified stdlib identifiers
 # that are included by autoconf-generated header files.
 find -name Makefile_obj -exec sed -i \
     -e 's|^\(COPT = .*\)|\1 %{optflags}|' \

@@ -38,7 +38,7 @@
 %global ftver 2.13.1
 
 Name:           python-matplotlib
-Version:        3.9.3
+Version:        3.9.4
 %global Version %{version_no_tilde %{quote:%nil}}
 Release:        %autorelease
 Summary:        Python 2D plotting library
@@ -58,9 +58,11 @@ Patch1001:      0001-matplotlibrc-path-search-fix.patch
 Patch1002:      0002-Unpin-NumPy-build-requirement.patch
 # Increase tolerances for new FreeType everywhere:
 Patch1003:      0003-Set-FreeType-version-to-%{ftver}-and-update-tolerances.patch
+# We don't need to use older meson-python.
+Patch1004:      0004-Unpin-meson-python-build-requirement.patch
 
 # https://github.com/matplotlib/matplotlib/pull/21190#issuecomment-1223271888
-Patch0001:      0004-Use-old-stride_windows-implementation-on-32-bit-x86.patch
+Patch0001:      0005-Use-old-stride_windows-implementation-on-32-bit-x86.patch
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
@@ -158,7 +160,7 @@ Obsoletes:      python-matplotlib-data < 3
 Summary:        Fonts used by python-matplotlib
 # Carlogo, STIX and Computer Modern is OFL
 # DejaVu is Bitstream Vera and Public Domain
-License:        OFL-1.1 and Bitstream-Vera and LicenseRef-Fedora-Public-Domain
+License:        OFL-1.1 AND Bitstream-Vera AND LicenseRef-Fedora-Public-Domain
 BuildArch:      noarch
 Requires:       python3-matplotlib-data = %{version}-%{release}
 Obsoletes:      python-matplotlib-data-fonts < 3

@@ -2,11 +2,10 @@
 
 Name:           python-%{srcname}
 Version:        5.0.0
-Release:        21%{?dist}
+Release:        22%{?dist}
 Summary:        Container class boilerplate killer
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-2-Clause
 URL:            https://github.com/ionelmc/%{name}
 Source0:        https://github.com/ionelmc/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
@@ -41,10 +40,7 @@ BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-pytest
 BuildRequires:  python%{python3_pkgversion}-pytest-benchmark
-
-%if !0%{?rhel} || 0%{?rhel} >= 8
 Recommends:     %{name}-doc = %{version}-%{release}
-%endif # rhel
 
 %description -n python%{python3_pkgversion}-%{srcname}
 Container class boilerplate killer.
@@ -86,6 +82,11 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} py.test-%{python3_version} \
 %{python3_sitelib}/%{srcname}-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Fri Dec 13 2024 Scott K Logan <logans@cottsay.net> - 5.0.0-22
+- Update SPDX license identifier
+- Drop spec file support for EPEL 7
+- Drop unused rpmlintrc filter
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 5.0.0-21
 - convert license to SPDX
 

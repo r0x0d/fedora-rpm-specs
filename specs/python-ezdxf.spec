@@ -1,9 +1,4 @@
 %bcond pyside6 1
-# Sphinx-generated HTML documentation is not suitable for packaging; see
-# https://bugzilla.redhat.com/show_bug.cgi?id=2006555 for discussion.
-#
-# We can generate PDF documentation as a substitute.
-%bcond doc_pdf 1
 
 Name:           python-ezdxf
 Version:        1.3.4
@@ -34,7 +29,7 @@ License:        MIT AND ISC AND AGPL-3.0-only
 # Various fonts directly in the fonts/ directory are each under one of:
 #   - Apache-2.0
 #   - Bitstream-Vera AND LicenseRef-Fedora-Public-Domain
-#   - OFL-1.0
+#   - OFL-1.1
 #   - LicenseRef-Liberation
 #   - LicenseRef-Fedora-UltraPermissive
 #
@@ -57,7 +52,7 @@ SourceLicense:  %{shrink:
                 LicenseRef-Fedora-Public-Domain AND
                 LicenseRef-Liberation AND
                 LicenseRef-Fedora-UltraPermissive AND
-                OFL-1.0
+                OFL-1.1
                 }
 URL:            https://ezdxf.mozman.at/
 %global forgeurl https://github.com/mozman/ezdxf
@@ -94,15 +89,6 @@ BuildRequires:  font(liberationserif)
 # This is used in tests/test_08_addons/test_814_text2path.py. (The test is
 # simply skipped if the font is not present.)
 BuildRequires:  font(notosanssc)
-
-%if %{with doc_pdf}
-BuildRequires:  make
-BuildRequires:  python3-sphinx-latex
-BuildRequires:  latexmk
-BuildRequires:  /usr/bin/xindy
-BuildRequires:  tex-xetex-bin
-BuildRequires:  /usr/bin/rsvg-convert
-%endif
 
 %global common_description %{expand:
 This Python package is designed to facilitate the creation and manipulation of
@@ -151,7 +137,7 @@ Provides:       bundled(python3dist(py3dbp))
 
 
 %package        doc
-Summary:        Documentation for ezdxf
+Summary:        Documentation and examples for ezdxf
 
 BuildArch:      noarch
 
@@ -162,10 +148,6 @@ BuildArch:      noarch
 %autosetup -n ezdxf-%{version} -p1
 # Note that C++ sources in the GitHub tarball are *not* Cython-generated, and
 # we must not remove them.
-
-# Since pdflatex cannot handle Unicode inputs in general:
-echo "latex_engine = 'xelatex'" >> docs/source/conf.py
-rm docs/graphics/dimtad-dimjust.pdf
 
 # Fix a Python source file with CRLF newlines. Upstream doesn’t want to worry
 # about standardizing this. Don’t modify dxf files even though they are a
@@ -200,24 +182,6 @@ find . -type f -name '.gitignore' -print -delete
 
 %build
 %pyproject_wheel
-
-%if %{with doc_pdf}
-# Cannot use SVG images when building PDF documentation; convert to PDFs
-find docs -type f -name '*.svg' |
-  while read -r fn
-  do
-    rsvg-convert --format=pdf "${fn}" \
-        --output="$(dirname "${fn}")/$(basename "${fn}" .svg).pdf"
-  done
-find docs/source -type f -exec \
-    gawk '/\.svg/ { print FILENAME; nextfile }' '{}' '+' |
-  xargs -r -t sed -r -i 's/\.svg/\.pdf/g'
-
-BLIB="${PWD}/build/lib.%{python3_platform}-cpython-%{python3_version_nodots}"
-PYTHONPATH="${BLIB}" %make_build -C docs -f Makefile.linux latex \
-    SPHINXOPTS='-j%{?_smp_build_ncpus}'
-%make_build -C docs/build/latex LATEXMKOPTS='-quiet'
-%endif
 
 
 %install
@@ -274,10 +238,6 @@ fi
 %doc examples_dxf/
 %doc examples_hpgl2/
 %doc exploration/
-
-%if %{with doc_pdf}
-%doc docs/build/latex/ezdxf.pdf
-%endif
 
 
 %changelog

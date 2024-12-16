@@ -2,7 +2,7 @@
 %global modname rpds_py
 
 Name:           python-rpds-py
-Version:        0.21.0
+Version:        0.22.3
 Release:        %autorelease
 Summary:        Python bindings to the Rust rpds crate
 # Full license breakdown in LICENSES.dependencies
@@ -36,6 +36,8 @@ dos2unix README* LICENSE* *.pyi
 
 # Fix for bad requirements dependency
 sed -r -i 's/^file:/# &/' tests/requirements.in
+# Remove test dependency not available and unused in Fedora
+sed -i -e /pytest-run-parallel/d tests/requirements.in
 
 %cargo_prep
 

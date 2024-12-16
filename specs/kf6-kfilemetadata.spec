@@ -2,7 +2,7 @@
 
 Name:           kf6-%{framework}
 Summary:        A Tier 2 KDE Framework for extracting file metadata
-Version:        6.8.0
+Version:        6.9.0
 Release:        1%{?dist}
 
 License:        BSD-3-Clause AND CC0-1.0 AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND (LGPL-2.1-only OR LGPL-3.0-only)
@@ -82,6 +82,9 @@ mkdir -p %{buildroot}%{_kf6_plugindir}/kfilemetadata/writers/
 %{_qt6_docdir}/*.qch
 
 %changelog
+* Sat Dec 14 2024 Steve Cossette <farchord@gmail.com> - 6.9.0-1
+- 6.9.0
+
 * Sat Nov 02 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.8.0-1
 - 6.8.0
 

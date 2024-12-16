@@ -2,7 +2,7 @@
 
 Name:		kf6-%{framework}
 Summary:	A QtQuick module providing high-performance charts
-Version:	6.8.0
+Version:	6.9.0
 Release:	1%{?dist}
 
 License:	BSD-2-Clause AND CC0-1.0 AND LGPL-2.1-only AND LGPL-3.0-only AND MIT
@@ -61,6 +61,9 @@ developing applications that use %{name}.
 %{_libdir}/libQuickChartsControls.so
 
 %changelog
+* Sat Dec 14 2024 Steve Cossette <farchord@gmail.com> - 6.9.0-1
+- 6.9.0
+
 * Sat Nov 02 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 6.8.0-1
 - 6.8.0
 

@@ -3,7 +3,7 @@
 %define py_setup_args --with-cython
 
 Name:           python-%{srcname}
-Version:        1.0.0
+Version:        1.0.1
 Release:        1%{?dist}
 Summary:        Cython implementation of the toolz package
 
@@ -93,6 +93,9 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} PYTHONDONTWRITEBYTECODE=1 py.test-%{p
 
 
 %changelog
+* Sat Dec 14 2024 Orion Poplawski <orion@nwra.com> - 1.0.1-1
+- Update to 1.0.1
+
 * Sun Oct 06 2024 Orion Poplawski <orion@nwra.com> - 1.0.0-1
 - Update to 1.0.0
 

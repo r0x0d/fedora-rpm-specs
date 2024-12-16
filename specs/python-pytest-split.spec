@@ -12,6 +12,11 @@ URL:             https://github.com/jerry-git/pytest-split
 Source:          %{url}/archive/refs/tags/%{version}/%{srcname}-%{version}.tar.gz
 BuildArch:       noarch
 
+# The upstream patch for Python 3.14 test issue #2325447
+# https://github.com/jerry-git/pytest-split/pulls/107
+# It can be removed in the next upstream release
+Patch0:          107.patch
+
 BuildRequires:   python3-devel
 BuildRequires:   help2man
 BuildRequires:   python3dist(poetry-core)
@@ -31,7 +36,7 @@ Summary:        %{summary}
 %description -n python3-%{srcname} %_description
 
 %prep
-%autosetup -n %{srcname}-%{version}
+%autosetup -p1 -n %{srcname}-%{version}
 
 %generate_buildrequires
 %pyproject_buildrequires

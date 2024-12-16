@@ -1,6 +1,6 @@
 Name:           calamares
-Version:        3.3.5
-Release:        5%{?dist}
+Version:        3.3.12
+Release:        2%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPL-3.0-or-later
@@ -24,7 +24,7 @@ Source5:        calamares-auto_it.ts
 
 # Fedora-specific changes
 ## adjust some default settings (default shipped .conf files)
-Patch1001:       calamares-3.3.5-default-settings.patch
+Patch1001:       calamares-3.3.12-default-settings.patch
 ## use kdesu instead of pkexec (works around #1171779)
 Patch1002:       calamares-3.3.3-kdesu.patch
 
@@ -328,6 +328,13 @@ EOF
 
 
 %changelog
+* Sat Dec 14 2024 Neal Gompa <ngompa@fedoraproject.org> - 3.3.12-2
+- Adjust unpackfs config to use /run/rootfsbase
+
+* Sat Dec 14 2024 Neal Gompa <ngompa@fedoraproject.org> - 3.3.12-1
+- Update to 3.3.12
+- Update default settings to be compatible with current lorax and kiwi LiveOS setup
+
 * Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 3.3.5-5
 - Rebuild for ICU 76
 

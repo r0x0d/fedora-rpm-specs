@@ -10,7 +10,6 @@
 %bcond_without SUDO
 %bcond_without GSSTSIG
 %bcond_without JSON
-%bcond_without DLZ
 # New MaxMind GeoLite support
 %bcond_without GEOIP2
 # Disabled temporarily until kyua is fixed on rawhide, bug #1926779
@@ -56,7 +55,7 @@ Summary:  The Berkeley Internet Name Domain (BIND) DNS (Domain Name System) serv
 Name:     bind9-next
 License:  MPL-2.0 AND ISC AND BSD-3-clause AND Expat AND BSD-2-clause
 #
-Version:  9.21.2
+Version:  9.21.3
 Release:  %autorelease
 Epoch:    32
 Url:      https://www.isc.org/downloads/bind/
@@ -92,8 +91,6 @@ Source49: named-chroot.files
 # Common patches
 # Red Hat specific documentation is not relevant to upstream
 Patch1: bind-9.16-redhat_doc.patch
-# https://gitlab.isc.org/isc-projects/bind9/-/merge_requests/9753
-Patch2: bind-9.21-unittest-isc-time-32b.patch
 # Downstream only. TODO: find a cause and remove this workaround
 Patch3: bind-9.21-unittest-isc_rwlock-s390x.patch
 
@@ -117,6 +114,8 @@ BuildRequires:  selinux-policy
 BuildRequires:  findutils sed
 BuildRequires:  libnghttp2-devel
 BuildRequires:  userspace-rcu-devel
+# Compress the changelog
+BuildRequires:  gzip
 %if 0%{?fedora}
 BuildRequires:  jemalloc-devel
 BuildRequires:  gnupg2
@@ -124,9 +123,6 @@ BuildRequires:  gnupg2
 BuildRequires:  libuv-devel
 %if %{with OPENSSL_ENGINE}
 BuildRequires:  openssl-devel-engine
-%endif
-%if %{with DLZ}
-BuildRequires:  openldap-devel, sqlite-devel, mariadb-connector-c-devel
 %endif
 %if %{with UNITTEST}
 # make unit dependencies
@@ -277,39 +273,6 @@ chroot(2) jail for the named(8) program from the BIND package.
 Based on the code from Jan "Yenya" Kasprzak <kas@fi.muni.cz>
 
 
-%if %{with DLZ}
-%package dlz-filesystem
-Summary: BIND server filesystem DLZ module
-Requires: %{name}%{?_isa} = %{epoch}:%{version}-%{release}
-
-%description dlz-filesystem
-Dynamic Loadable Zones filesystem module for BIND server.
-
-%package dlz-ldap
-Summary: BIND server ldap DLZ module
-Requires: %{name}%{?_isa} = %{epoch}:%{version}-%{release}
-
-%description dlz-ldap
-Dynamic Loadable Zones LDAP module for BIND server.
-
-%package dlz-mysql
-Summary: BIND server mysql and mysqldyn DLZ modules
-Requires: %{name}%{?_isa} = %{epoch}:%{version}-%{release}
-Provides: %{name}-dlz-mysqldyn = %{epoch}:%{version}-%{release}
-Obsoletes: %{name}-dlz-mysqldyn < 32:9.16.6-3
-
-%description dlz-mysql
-Dynamic Loadable Zones MySQL module for BIND server.
-Contains also mysqldyn module with dynamic DNS updates (DDNS) support.
-
-%package dlz-sqlite3
-Summary: BIND server sqlite3 DLZ module
-Requires: %{name}%{?_isa} = %{epoch}:%{version}-%{release}
-
-%description dlz-sqlite3
-Dynamic Loadable Zones sqlite3 module for BIND server.
-%endif
-
 %if %{with DOC}
 %package doc
 Summary:   BIND 9 Administrator Reference Manual
@@ -389,12 +352,6 @@ autoreconf --force --install
 
 mkdir build
 
-%if %{with DLZ}
-# DLZ modules do not support oot builds. Copy files into build
-mkdir -p build/contrib/dlz
-cp -frp contrib/dlz/modules build/contrib/dlz/modules
-%endif
-
 pushd build
 LIBDIR_SUFFIX=
 export LIBDIR_SUFFIX
@@ -438,14 +395,10 @@ export LIBDIR_SUFFIX
   %make_build doc SPHINX_W=''
 %endif
 
-%if %{with DLZ}
-  pushd contrib/dlz/modules
-  for DIR in filesystem ldap mysql mysqldyn sqlite3; do
-    %make_build -C $DIR CFLAGS="-fPIC -I../include $CFLAGS $LDFLAGS -DPTHREADS=1" LDFLAGS="$LDFLAGS"
-  done
-  popd
-%endif
 popd # build
+
+# Compress changelog by default
+gzip doc/changelog/changelog-*.rst
 
 %unit_prepare_build build
 %systemtest_prepare_build build
@@ -578,23 +531,6 @@ install -pm 644 %{SOURCE49} ${RPM_BUILD_ROOT}%{_sysconfdir}/named-chroot.files
 
 %if "%{_sbindir}" != "%{_bindir}"
   ln -s ../bin/{named-checkconf,named-checkzone,named-compilezone} %{buildroot}%{_sbindir}/
-%endif
-
-%if %{with DLZ}
-  pushd build
-  pushd contrib/dlz/modules
-  for DIR in filesystem ldap mysql mysqldyn sqlite3; do
-    %make_install -C $DIR libdir=%{_libdir}/bind
-  done
-  pushd ${RPM_BUILD_ROOT}/%{_libdir}/named
-    cp -s ../bind/dlz_*.so .
-  popd
-  mkdir -p doc/{mysql,mysqldyn}
-  cp -p mysqldyn/testing/README doc/mysqldyn/README.testing
-  cp -p mysqldyn/testing/* doc/mysqldyn
-  cp -p mysql/testing/* doc/mysql
-  popd
-  popd
 %endif
 
 # Remove libtool .la files:
@@ -799,7 +735,8 @@ fi;
 %{_mandir}/man8/rndc-confgen.8*
 %{_mandir}/man1/named-journalprint.1*
 %{_mandir}/man8/filter-*.8.gz
-%doc CHANGES README.md named.conf.default
+%doc README.md named.conf.default
+%doc doc/changelog/changelog-9.*.rst*
 %doc sample/
 
 # Hide configuration
@@ -933,32 +870,14 @@ fi;
 %dir %{chroot_prefix}/run/named
 %{chroot_prefix}%{_localstatedir}/run
 
-%if %{with DLZ}
-%files dlz-filesystem
-%{_libdir}/{named,bind}/dlz_filesystem_dynamic.so
-
-%files dlz-mysql
-%{_libdir}/{named,bind}/dlz_mysql_dynamic.so
-%doc build/contrib/dlz/modules/doc/mysql
-%{_libdir}/{named,bind}/dlz_mysqldyn_mod.so
-%doc build/contrib/dlz/modules/doc/mysqldyn
-
-%files dlz-ldap
-%{_libdir}/{named,bind}/dlz_ldap_dynamic.so
-%doc contrib/dlz/modules/ldap/testing/*
-
-%files dlz-sqlite3
-%{_libdir}/{named,bind}/dlz_sqlite3_dynamic.so
-%doc contrib/dlz/modules/sqlite3/testing/*
-
-%endif
-
 %if %{with DOC}
 %files doc
 %dir %{_pkgdocdir}
 %doc %{_pkgdocdir}/html
 %doc %{_pkgdocdir}/Bv9ARM.html
 %doc %{_pkgdocdir}/Bv9ARM.epub
+%doc doc/changelog/changelog-history.rst*
+%doc doc/notes/notes-*.rst*
 %endif
 
 %changelog

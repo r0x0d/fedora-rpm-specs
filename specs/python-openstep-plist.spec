@@ -7,6 +7,7 @@ Summary:        ASCII plist parser written in Cython
 # BSD-3-Clause, but which is removed in %%prep and does not contribute to the
 # licenses of the binary RPMs.
 License:        MIT
+SourceLicense:  %{license} AND BSD-3-Clause
 URL:            https://github.com/fonttools/openstep-plist
 Source:         %{pypi_source openstep_plist}
 

@@ -1,5 +1,5 @@
 Name:           dtkgui
-Version:        5.6.34
+Version:        5.7.4
 Release:        %autorelease
 Summary:        Deepin dtkgui
 License:        LGPL-3.0-or-later
@@ -8,6 +8,7 @@ Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
+BuildRequires:  extra-cmake-modules
 BuildRequires:  ninja-build
 
 BuildRequires:  cmake(Qt5Gui)
@@ -17,17 +18,20 @@ BuildRequires:  cmake(Qt5Help)
 BuildRequires:  cmake(Qt5Svg)
 BuildRequires:  cmake(Qt5Widgets)
 BuildRequires:  cmake(Qt5X11Extras)
+BuildRequires:  cmake(Qt5WaylandClient)
+BuildRequires:  qt5-qtbase-static
 BuildRequires:  qt5-qtbase-private-devel
 %{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
 
 BuildRequires:  cmake(DtkCore)
 BuildRequires:  cmake(DtkBuildHelper)
+BuildRequires:  cmake(TreelandProtocols)
 
 BuildRequires:  pkgconfig(librsvg-2.0)
-BuildRequires:  freeimage-devel
 BuildRequires:  pkgconfig(libraw)
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xcb)
+BuildRequires:  pkgconfig(wayland-client)
 
 BuildRequires:  doxygen
 

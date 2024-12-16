@@ -1,6 +1,6 @@
 Name:    kf5
 Version: 5.116.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: Filesystem and RPM macros for KDE Frameworks 5
 License: BSD-3-Clause
 URL:     http://www.kde.org
@@ -18,6 +18,10 @@ Requires: kde-filesystem >= 5
 %endif
 # noarch -> arch transition
 Obsoletes: kf5-filesystem < 5.10.0-2
+# Retired KDE5 packages without other transitions
+Obsoletes: kf5-libkgeomap < 20.09~
+Obsoletes: kf5-libkgeomap-devel < 20.09~
+
 %{?_qt5_version:Requires: qt5-qtbase%{?_isa} >= %{_qt5_version}}
 %description filesystem
 Filesystem for KDE Frameworks 5.
@@ -100,6 +104,11 @@ sed -i \
 
 
 %changelog
+* Sat Dec 14 2024 Alessandro Astone <ales.astone@gmail.com> - 5.116.0-3
+- Obsolete kf5-libkgeomap
+- We'd like to use kf5-filesystem as an equivalent of fedora-obsolete-packages
+  managed by the KDE sig.
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.116.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

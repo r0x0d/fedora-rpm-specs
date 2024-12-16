@@ -2,7 +2,7 @@
 
 Name:           python-%{srcname}
 Version:        1.8.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Python bindings for the remote Jenkins API
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -27,7 +27,6 @@ BuildRequires:  python%{python3_pkgversion}-kerberos
 BuildRequires:  python%{python3_pkgversion}-mock
 BuildRequires:  python%{python3_pkgversion}-multi_key_dict
 BuildRequires:  python%{python3_pkgversion}-multiprocess
-BuildRequires:  python%{python3_pkgversion}-nose
 BuildRequires:  python%{python3_pkgversion}-pbr >= 0.8.2
 BuildRequires:  python%{python3_pkgversion}-requests
 BuildRequires:  python%{python3_pkgversion}-requests-mock
@@ -93,6 +92,10 @@ install -D -m0644 -p doc/build/man/pythonjenkins.1 %{buildroot}%{_mandir}/man1/p
 
 
 %changelog
+* Fri Dec 13 2024 Miro Hrončok <mhroncok@redhat.com> - 1.8.2-5
+- Drop unused test dependency on deprecated python3-nose
+- https://fedoraproject.org/wiki/Changes/DeprecateNose
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.8.2-4
 - convert license to SPDX
 

@@ -1,6 +1,6 @@
 Name:    kitinerary
 Version: 24.12.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: A library containing itinerary data model and itinerary extraction code
 
 License: BSD-2-Clause AND BSD-3-Clause AND CC0-1.0 AND LGPL-2.0-or-later AND ODbL-1.0
@@ -94,6 +94,9 @@ Developer Documentation files for %{name} for use with KDevelop or QtCreator.
 
 
 %changelog
+* Sat Dec 14 2024 Adam Williamson <awilliam@redhat.com> - 24.12.0-2
+- Rebuild for new libphonenumber
+
 * Sat Dec 07 2024 Marc Deop i Argemí <marcdeop@fedoraproject.org> - 24.12.0-1
 - 24.12.0
 

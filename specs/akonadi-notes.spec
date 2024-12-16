@@ -1,6 +1,6 @@
 Name:    akonadi-notes
 Version: 24.08.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: The Akonadi Notes Library
 
 License: BSD-3-Clause AND CC0-1.0 AND LGPL-2.0-or-later
@@ -68,6 +68,9 @@ find ./po -type f -name akonadinotes5.po -execdir mv {} akonadinotes6.po \;
 
 
 %changelog
+* Sat Dec 14 2024 Alessandro Astone <ales.astone@gmail.com> - 24.08.3-2
+- Rebuild (kmime)
+
 * Wed Nov 06 2024 Steve Cossette <farchord@gmail.com> - 24.08.3-1
 - 24.08.3
 

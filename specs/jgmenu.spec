@@ -1,12 +1,11 @@
 Name:		jgmenu
-Version:	4.4.1
-Release:	8%{?dist}
+Version:	4.5.0
+Release:	1%{?dist}
 Summary:	Simple X11 application menu
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:	GPL-2.0-or-later
 URL:		https://jgmenu.github.io
 Source0:	https://github.com/johanmalm/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:		jgmenu-c99.patch
 Requires:	hicolor-icon-theme
 BuildRequires:	gcc, desktop-file-utils
 # libXrandr-devel
@@ -70,7 +69,7 @@ Xfce4 plugin for %{name} package.
 
 
 %prep
-%autosetup -p1
+%autosetup
 
 
 %build
@@ -115,6 +114,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %{_datadir}/xfce4/panel/plugins/%{name}-applet.desktop
 
 %changelog
+* Sat Dec 14 2024 TI_Eugene <ti.eugene@gmail.com> - 4.5.0-1
+- Version bump (close #2331624)
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 4.4.1-8
 - convert license to SPDX
 

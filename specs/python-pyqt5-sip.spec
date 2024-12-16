@@ -1,12 +1,11 @@
-%global pkg_name pyqt5-sip
-%global pypi_name PyQt5_sip
+%global pypi_name pyqt5_sip
 %global _sip_api_major 12
-%global _sip_api_minor 15
+%global _sip_api_minor 16
 %global _sip_api %{_sip_api_major}.%{_sip_api_minor}
 
-Name:           python-%{pkg_name}
-Version:        12.15.0
-Release:        3%{?dist}
+Name:           python-pyqt5-sip
+Version:        12.16.1
+Release:        1%{?dist}
 Summary:        The sip module support for PyQt5
 
 License:        BSD-2-Clause
@@ -22,13 +21,12 @@ The sip extension module provides support for the PyQt5 package.
 
 %description %_description
 
-%package -n     python3-%{pkg_name}
+%package -n     python3-pyqt5-sip
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{pkg_name}}
 Provides: python3-pyqt5-sip-api(%{_sip_api_major}) = %{_sip_api}
 Provides: python3-pyqt5-sip-api(%{_sip_api_major})%{?_isa} = %{_sip_api}
 
-%description -n python3-%{pkg_name} %_description
+%description -n python3-pyqt5-sip %_description
 
 %prep
 %autosetup -n %{pypi_name}-%{version}
@@ -45,12 +43,15 @@ Provides: python3-pyqt5-sip-api(%{_sip_api_major})%{?_isa} = %{_sip_api}
 %check
 %py3_check_import PyQt5.sip
 
-%files -n python3-%{pkg_name}
+%files -n python3-pyqt5-sip
 %doc README
 %{python3_sitearch}/PyQt5_sip*
 %{python3_sitearch}/PyQt5/
 
 %changelog
+* Sat Dec 14 2024 Scott Talbert <swt@techie.net> - 12.16.1-1
+- Update to new upstream release 12.16.1 (#2330773)
+
 * Thu Aug 01 2024 Scott Talbert <swt@techie.net> - 12.15.0-3
 - Update License tag to use SPDX identifiers
 

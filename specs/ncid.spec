@@ -1,6 +1,6 @@
 Name:       ncid
 Version:    1.17
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    Network Caller ID server, client and gateways
 Requires:   logrotate
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -477,6 +477,9 @@ touch --no-create %{_datadir}/icons/hicolor &>/dev/null
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %changelog
+* Sat Dec 14 2024 Adam Williamson <awilliam@redhat.com> - 1.17-4
+- Rebuild for new libphonenumber
+
 * Tue Dec 3 2024 <jlc@users.sourceforge.net> 1.17-1
 - updated for new upstream release
 

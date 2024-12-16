@@ -57,7 +57,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        26.rocm%{rocm_version}%{?dist}
+Release:        27.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -1012,6 +1012,9 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %endif
 
 %changelog
+* Thu Dec 12 2024 Jeremy Newton <alexjnewt at hotmail dot com> - 18-27.rocm6.2.0
+- Excludes filtering
+
 * Fri Dec 6 2024 Tom Rix <Tom.Rix@amd.com> - 18-26.rocm6.3.0
 - Update to 6.3
 - default bundled llvm on fedora

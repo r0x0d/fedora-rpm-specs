@@ -7,7 +7,7 @@ ExcludeArch:    %{ix86}
 
 
 Name:           astrometry
-Version:        0.96
+Version:        0.97
 Release:        %autorelease
 Summary:        Blind astrometric calibration of arbitrary astronomical images
 
@@ -57,12 +57,13 @@ Source4:        astrometry-data-5205.tar.zst
 Source5:        astrometry-get-data.sh
 
 # Patches from Ole Streicher <olebole@debian.org> used on Debian
-Patch:          %{name}-0.89_Add-SONAME-to-libastrometry.so.patch
-Patch:          %{name}-0.89_Dynamically-link-to-libastrometry.so-when-possible.patch
-Patch:          %{name}-0.89_Fix-issues-when-using-Debian-libs-instead-of-convienience.patch
-Patch:          %{name}-0.91_Fix-shared-lib-flags-so-that-the-package-can-be-built-on-.patch
-Patch:          %{name}-0.89_Don-t-copy-demo-files-to-examples.patch
-Patch:          %{name}-0.89_Remove-errornous-generation-of-net-client.py.patch
+Patch:          Add-SONAME-to-libastrometry.so.patch
+Patch:          Dynamically-link-to-libastrometry.so-when-possible.patch
+Patch:          Fix-issues-when-using-Debian-libs-instead-of-convienience.patch
+Patch:          Fix-shared-lib-flags-so-that-the-package-can-be-built-on-s390x.patch
+Patch:          Don-t-copy-demo-files-to-examples.patch
+Patch:          Remove-errornous-generation-of-net-client.py.patch
+Patch:          Remove-horizons.py-from-Python-package.patch
 
 BuildRequires:  gcc
 BuildRequires:  make
@@ -90,7 +91,6 @@ Requires:       netpbm-progs
 Requires:       python3-%{name} = %{version}-%{release}
 
 Recommends:     cfitsio-utils
-Recommends:     fitsverify
 # User could use own set of index files or another set from upstream.
 # Therefore we recommend and not require index-files from Fedora repos.
 Recommends:     %{name}-data-4107-4119 = %{version}-%{release}
@@ -225,17 +225,6 @@ for exec in imarith imstat listhead liststruc modhead tabmerge tablist; do
 done
 popd
 
-#TODO These will be provided by cfitsio-utils
-# Rename them for the moment to avoid conflicts
-pushd %{buildroot}%{_bindir}
-for exec in fitscopy imcopy; do
-        mv $exec astrometry-$exec
-done
-popd
-
-#TODO fitsverify is provided by its own package
-rm -f %{buildroot}%{_bindir}/fitsverify
-
 # Fix python shebangs
 %py3_shebang_fix %{buildroot}%{_bindir}/degtohms \
                  %{buildroot}%{_bindir}/hmstodeg \
@@ -252,9 +241,6 @@ rm -f %{buildroot}%{_docdir}/%{name}/report.txt
 # We don't ship static libraries so we remove them
 rm -f %{buildroot}%{_libdir}/*.a
 
-# LICENSE file is managed by %%license scriptlet
-rm -f %{buildroot}%{_docdir}/%{name}/LICENSE
-
 # Remove symlink in bin to python script
 rm -f %{buildroot}%{_bindir}/plotann.py
 
@@ -269,14 +255,12 @@ make test ARCH_FLAGS="%{optflags}"
 
 %files
 %doc CREDITS README.md
-%license LICENSE
+%license %{_docdir}/%{name}/LICENSE
 %{_mandir}/man1/*
 %{_bindir}/an-fitstopnm
 %{_bindir}/an-pnmtofits
 %{_bindir}/astrometry-engine
-%{_bindir}/astrometry-fitscopy
 %{_bindir}/astrometry-imarith
-%{_bindir}/astrometry-imcopy
 %{_bindir}/astrometry-imstat
 %{_bindir}/astrometry-listhead
 %{_bindir}/astrometry-liststruc
