@@ -1,6 +1,6 @@
 Name:           libqtxdg
 Summary:        QtXdg, a Qt5 implementation of XDG standards
-Version:        4.0.1
+Version:        4.1.0
 
 Release:        1%{?dist}
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
@@ -67,6 +67,9 @@ Files used for developing and building software that uses qtxdg.
 %{_qt6_archdatadir}/plugins/iconengines/libQt6XdgIconPlugin.so
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 4.1.0-1
+- 4.1.0
+
 * Thu Oct 17 2024 Steve Cossette <farchord@gmail.com> - 4.0.1-1
 - 4.0.1
 

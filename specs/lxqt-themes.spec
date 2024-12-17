@@ -1,6 +1,6 @@
 Name:           lxqt-themes
-Version:        2.0.0
-Release:        2%{?dist}
+Version:        2.1.0
+Release:        1%{?dist}
 Summary:        LXQt standard themes
 
 License:        LGPL-2.0-or-later
@@ -85,6 +85,9 @@ Requires: fedora-logos
 #%%{_sysconfdir}/xdg/openbox/lxqt-rc.xml
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 2.1.0-1
+- 2.1.0
+
 * Sat Apr 20 2024 Steve Cossette <farchord@gmail.com> - 2.0.0-2
 - Temporarily disabling custom options (As a test)
 

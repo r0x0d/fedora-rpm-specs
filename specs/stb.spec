@@ -33,8 +33,11 @@ License:        MIT OR Unlicense
 # make certain, they are removed in %%prep.
 #
 # - deprecated/rrsprintf.h, tests/caveview/stb_gl.h, and
-#   tests/caveview/win32/SDL_windows_main.c are Public Domain
+#   tests/caveview/win32/SDL_windows_main.c are
+#   LicenseRef-Fedora-Public-Domain:
+#   https://gitlab.com/fedora/legal/fedora-license-data/-/issues/620
 # - tests/caveview/glext.h is MIT (only)
+SourceLicense:  (%{license}) AND LicenseRef-Fedora-Public-Domain AND MIT
 URL:            https://github.com/nothings/stb
 Source:         %{url}/archive/%{commit}/stb-%{commit}.tar.gz
 

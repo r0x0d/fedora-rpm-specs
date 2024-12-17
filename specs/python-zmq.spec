@@ -15,6 +15,11 @@ Summary:        Python bindings for zeromq
 #   - zmq/ssh/forward.py, which is derived from a Paramiko demo, is
 #     LGPL-2.1-or-later
 #   - zmq/eventloop/zmqstream.py is Apache-2.0
+License:        %{shrink:
+                BSD-3-Clause AND
+                LGPL-2.1-or-later AND
+                Apache-2.0
+                }
 # Additionally, the following do not affect the license of the binary RPMs:
 #   - tools/run_with_env.cmd is CC0-1.0; for distribution in the source RPM, it
 #     is covered by “Existing uses of CC0-1.0 on code files in Fedora packages
@@ -27,10 +32,10 @@ Summary:        Python bindings for zeromq
 #     python-zmq examples dedicated to the public domain,”
 #     https://gitlab.com/fedora/legal/fedora-license-data/-/issues/616; see
 #     https://gitlab.com/fedora/legal/fedora-license-data/-/merge_requests/716
-License:        %{shrink:
-                BSD-3-Clause AND
-                LGPL-2.1-or-later AND
-                Apache-2.0
+SourceLicense:  %{shrink:
+                %{license} AND
+                CC0-1.0 AND
+                LicenseRef-Fedora-Public-Domain
                 }
 URL:            https://zeromq.org/languages/python/
 %global forgeurl https://github.com/zeromq/pyzmq

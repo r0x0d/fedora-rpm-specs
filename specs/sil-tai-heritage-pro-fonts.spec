@@ -4,7 +4,7 @@ Version: 2.600
 Release: 17%{?dist}
 
 %global foundry           SIL
-%global fontlicense       OFL
+%global fontlicense       OFL-1.1-RFN
 %global fontlicenses      OFL.txt
 %global fontdocs          *.txt
 %global fontdocsex        %{fontlicenses}

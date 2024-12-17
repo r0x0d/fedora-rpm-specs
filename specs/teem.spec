@@ -17,6 +17,12 @@ License:        LGPL-2.1-or-later
 #   python/ctypes/pullDemo.py
 #   python/ctypes/teem-gen.py
 #   python/ctypes/teem.py
+SourceLicense:  %{shrink:
+                %{license} AND
+                BSD-3-Clause AND
+                MIT AND
+                Zlib
+                }
 URL:            https://teem.sourceforge.net
 Source0:        https://downloads.sourceforge.net/project/teem/teem/%{version}/%{name}-%{version}-src.tar.gz
 

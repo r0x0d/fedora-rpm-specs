@@ -1,6 +1,6 @@
 Name:          lxqt-notificationd
 Summary:       Notification daemon for LXQt desktop suite
-Version:       2.0.1
+Version:       2.1.0
 Release:       1%{?dist}
 License:       LGPL-2.1-only
 URL:           https://lxqt-project.org/
@@ -63,6 +63,9 @@ install -m644 %{SOURCE1} %{buildroot}%{_sysconfdir}/lxqt/
 %{_datadir}/lxqt/translations/lxqt-config-notificationd/lxqt-config-notificationd_ast.qm
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 2.1.0-1
+- 2.1.0
+
 * Tue Jul 16 2024 Steve Cossette <farchord@gmail.com> - 2.0.1-1
 - 2.0.1
 

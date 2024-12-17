@@ -1,7 +1,7 @@
 Name:          lxqt-openssh-askpass
 Summary:       Askpass openssh transition dialog for LXQt desktop suite
-Version:       2.0.1
-Release:       2%{?dist}
+Version:       2.1.0
+Release:       1%{?dist}
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License:       LicenseRef-Callaway-LGPLv2+
 URL:           https://lxqt-project.org/
@@ -56,6 +56,9 @@ install -p -m0644 %SOURCE1 %SOURCE2 %{buildroot}%{_sysconfdir}/profile.d/
 %dir %{_datadir}/lxqt/translations/lxqt-openssh-askpass
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 2.1.0-1
+- 2.1.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 2.0.1-2
 - convert license to SPDX
 

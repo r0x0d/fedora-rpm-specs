@@ -4,8 +4,8 @@
 %endif
 
 Name:		liblxqt
-Version:	2.0.0
-Release:	2%{?dist}
+Version:	2.1.0
+Release:	1%{?dist}
 # Automatically converted from old format: LGPLv2 - review is highly recommended.
 License:	LicenseRef-Callaway-LGPLv2
 Summary:	Core shared library for LXQt desktop suite
@@ -100,6 +100,9 @@ touch -r %{SOURCE1} %{buildroot}%{rpm_macros_dir}/macros.lxqt
 %dir %{_datadir}/lxqt/translations/%{name}
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 2.1.0-1
+- 2.1.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 2.0.0-2
 - convert license to SPDX
 

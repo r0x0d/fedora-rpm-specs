@@ -3,9 +3,8 @@
 
 Name:           perl-CGI-Compile
 Summary:        Compile .cgi scripts to a code reference like ModPerl::Registry
-Version:        0.26
-Release:        5%{?dist}
-# Automatically converted from old format: GPL+ or Artistic - review is highly recommended.
+Version:        0.27
+Release:        1%{?dist}
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 
 Source0:        https://cpan.metacpan.org/authors/id/R/RK/RKITOVER/CGI-Compile-%{version}.tar.gz 
@@ -83,6 +82,9 @@ unset AUTHOR_TESTING AUTOMATED_TESTING
 %{_mandir}/man3/*.3*
 
 %changelog
+* Sun Dec 15 2024 Emmanuel Seyman <emmanuel@seyman.fr> - 0.27-1
+- Update to 0.27
+
 * Mon Aug 05 2024 Miroslav Suchý <msuchy@redhat.com> - 0.26-5
 - convert license to SPDX
 

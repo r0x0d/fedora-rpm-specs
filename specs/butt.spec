@@ -11,6 +11,9 @@ License:        GPL-2.0-or-later AND BSD-2-Clause AND MIT
 URL:            https://danielnoethen.de/butt/
 Source:         %{url}/release/%{version}/butt-%{version}.tar.gz
 
+# Minimal fixes to build with FLTK 1.4. Please send upstream.
+Patch0:         butt-headers.patch
+
 BuildRequires:  gcc-c++
 BuildRequires:  autoconf
 BuildRequires:  gettext

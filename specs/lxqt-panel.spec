@@ -1,6 +1,6 @@
 Name:          lxqt-panel
 Summary:       Main panel bar for LXQt desktop suite
-Version:       2.0.1
+Version:       2.1.2
 Release:       1%{?dist}
 License:       LGPL-2.1-or-later
 URL:           https://lxqt-project.org/
@@ -42,6 +42,9 @@ BuildRequires: pkgconfig(xtst)
 BuildRequires: xcb-util-image-devel
 BuildRequires: lxqt-menu-data
 BuildRequires: perl
+BuildRequires: cmake(Qt6WaylandClient)
+BuildRequires: wayland-devel
+BuildRequires: qt6-qtbase-private-devel
 Requires: lxqt-menu-data
 
 Requires: xscreensaver-base
@@ -78,6 +81,7 @@ for desktop in %{buildroot}/%{_datadir}/lxqt/lxqt-panel/*.desktop; do
     # Exclude category as been Service 
     desktop-file-edit --remove-category=LXQt --remove-only-show-in=LXQt --add-only-show-in=X-LXQt ${desktop}
 done
+desktop-file-validate %{buildroot}/%{_datadir}/applications/lxqt-panel.desktop ||:
 
 %find_lang lxqt-panel --with-qt
 %find_lang cpuload --with-qt
@@ -99,10 +103,11 @@ done
 %files
 %{_bindir}/lxqt-panel
 %dir %{_libdir}/lxqt-panel
-%{_libdir}/lxqt-panel/*.so
+%{_libdir}/lxqt-panel/
 %{_datadir}/lxqt
 %{_mandir}/man1/lxqt-panel*
 %{_sysconfdir}/xdg/autostart/lxqt-panel.desktop
+%{_datadir}/applications/lxqt-panel.desktop
 
 %files devel
 %dir %{_includedir}/lxqt
@@ -114,6 +119,12 @@ done
 %dir %{_datadir}/lxqt/translations/lxqt-panel
 
 %changelog
+* Sun Nov 24 2024 Steve Cossette <farchord@gmail.com> - 2.1.2-1
+- 2.1.2
+
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 2.1.1-1
+- 2.1.1
+
 * Tue Jul 16 2024 Steve Cossette <farchord@gmail.com> - 2.0.1-1
 - 2.0.1
 

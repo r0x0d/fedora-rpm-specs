@@ -1,11 +1,11 @@
 %global upstreamname rocFFT
 
-%global rocm_release 6.2
-%global rocm_patch 4
+%global rocm_release 6.3
+%global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 # rocFFT has a version seperate from the ROCm version that it is released with
-%global rocfft_version 1.0.30
+%global rocfft_version 1.0.31
 
 %global toolchain rocm
 
@@ -37,11 +37,7 @@
 
 Name:           rocfft
 Version:        %{rocm_version}
-%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:        1%{?dist}
-%else
-Release:        %autorelease
-%endif
 Summary:        ROCm Fast Fourier Transforms (FFT) library
 
 Url:            https://github.com/ROCm/%{upstreamname}
@@ -180,12 +176,11 @@ fi
 %endif
 
 %changelog
-%if 0%{?suse_version}
+* Sun Dec 8 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+
 * Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 
-%else
-%autochangelog
-%endif
 
 

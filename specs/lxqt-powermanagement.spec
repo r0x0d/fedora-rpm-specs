@@ -1,6 +1,6 @@
 Name:          lxqt-powermanagement
 Summary:       Powermanagement daemon for LXQt desktop suite
-Version:       2.0.0
+Version:       2.1.0
 Release:       1%{?dist}
 License:       LGPL-2.1-only
 URL:           https://lxqt-project.org/
@@ -61,6 +61,9 @@ desktop-file-edit --remove-category=LXQt --add-category=X-LXQt \
 %dir %{_datadir}/lxqt/translations/lxqt-config-powermanagement
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 2.1.0-1
+- 2.1.0
+
 * Fri Apr 19 2024 Steve Cossette <farchord@gmail.com> - 2.0.0-1
 - 2.0.0
 

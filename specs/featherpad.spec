@@ -1,7 +1,7 @@
 %global github_name FeatherPad
 
 Name:           featherpad
-Version:        1.5.1
+Version:        1.5.2
 Release:        1%{?dist}
 Summary:        Lightweight Qt Plain-Text Editor
 
@@ -72,6 +72,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 %{_datadir}/metainfo/featherpad.metainfo.xml
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 1.5.2-1
+- 1.5.2
+
 * Mon Jul 29 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 1.5.1-1
 - Update to 1.5.1
 

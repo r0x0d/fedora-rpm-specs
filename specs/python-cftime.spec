@@ -2,7 +2,7 @@
 
 Name:           python-%{srcname}
 Version:        1.6.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Time-handling functionality from netcdf4-python
 
 # calendar calculation routines in _cftime.pyx derived from calcalcs.c by David
@@ -54,6 +54,9 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} py.test-%{python3_version} -v
 %{python3_sitearch}/%{srcname}/
 
 %changelog
+* Sun Dec 15 2024 Orion Poplawski <orion@nwra.com> - 1.6.4-3
+- Rebuild against numpy 2.0 (rhbz@2332484)
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.6.4-2
 - convert license to SPDX
 

@@ -32,7 +32,7 @@ Documentation is available at http://nipy.org/nitime/documentation.html
 
 Name:           python-%{srcname}
 Version:        0.8.1
-Release:        20%{?dist}
+Release:        21%{?dist}
 Summary:        Timeseries analysis for neuroscience data
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -47,7 +47,6 @@ BuildRequires:  %{py3_dist cython}
 BuildRequires:  %{py3_dist matplotlib}
 BuildRequires:  %{py3_dist networkx}
 BuildRequires:  %{py3_dist nibabel}
-BuildRequires:  %{py3_dist nose}
 BuildRequires:  %{py3_dist pytest}
 BuildRequires:  %{py3_dist scipy}
 BuildRequires:  %{py3_dist setuptools}
@@ -122,8 +121,7 @@ popd
 
 %check
 %if %{with tests}
-# From https://github.com/neurodebian/nitime/blob/3ca5a131ba1ea839e047a7a2e008b754be9fe4bb/debian/rules#L47
-PYTHONPATH=$RPM_BUILD_ROOT/%{python3_sitearch} nosetests-3 '--exclude=test_(coherence_linear_dependence|lazy_reload)' nitime
+%pytest --pyargs %{srcname}
 %endif
 
 %files -n python3-%{srcname}
@@ -139,6 +137,11 @@ PYTHONPATH=$RPM_BUILD_ROOT/%{python3_sitearch} nosetests-3 '--exclude=test_(cohe
 %endif
 
 %changelog
+* Sat Dec 14 2024 Miro Hrončok <mhroncok@redhat.com> - 0.8.1-21
+- Drop unused test dependency on deprecated python3-nose
+- Use pytest instead when built with tests
+- The tests still fail (numpy incompatibility, using the imp module, ...)
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.8.1-20
 - convert license to SPDX
 

@@ -1,5 +1,5 @@
 Name:		libsysstat
-Version:	1.0.0
+Version:	1.1.0
 Release:	1%{?dist}
 License:	GPL-2.0-or-later AND LGPL-2.0-or-later
 Summary:	Library used to query system info and statistics
@@ -47,6 +47,9 @@ Sysstat libraries for development.
 
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 1.1.0-1
+- 1.1.0
+
 * Wed Apr 17 2024 Steve Cossette <farchord@gmail.com> - 1.0.0-1
 - 1.0.0
 

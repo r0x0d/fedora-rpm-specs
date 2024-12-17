@@ -7,7 +7,7 @@
 Summary: A utility for getting files from remote servers (FTP, HTTP, and others)
 Name: curl
 Version: 8.11.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: curl
 Source0: https://curl.se/download/%{name}-%{version}.tar.xz
 Source1: https://curl.se/download/%{name}-%{version}.tar.xz.asc
@@ -15,6 +15,12 @@ Source1: https://curl.se/download/%{name}-%{version}.tar.xz.asc
 # to Daniel's address page https://daniel.haxx.se/address.html for the GPG Key,
 # which points to the GPG key as of April 7th 2016 of https://daniel.haxx.se/mykey.asc
 Source2: mykey.asc
+
+# Fix crash with Unexpected error 9 on netlink descriptor 10
+# https://bugzilla.redhat.com/show_bug.cgi?id=2332350
+# https://github.com/curl/curl/issues/15725
+# https://github.com/curl/curl/pull/15727
+Patch1: 0001-curl-8.11.1-eventfd.patch
 
 # patch making libcurl multilib ready
 Patch101: 0101-curl-7.32.0-multilib.patch
@@ -410,6 +416,11 @@ rm -f ${RPM_BUILD_ROOT}%{_libdir}/libcurl.la
 %{_libdir}/libcurl.so.4.[0-9].[0-9].minimal
 
 %changelog
+* Sun Dec 15 2024 Paul Howarth <paul@city-fan.org> - 8.11.1-2
+- Fix crash with Unexpected error 9 on netlink descriptor 10 (rhbz#2332350)
+  - https://github.com/curl/curl/issues/15725
+  - https://github.com/curl/curl/pull/15727
+
 * Wed Dec 11 2024 Jan Macku <jamacku@redhat.com> - 8.11.1-1
 - new upstream release, which fixes the following vulnerabilities
     CVE-2024-11053 - netrc and redirect credential leak
@@ -431,7 +442,7 @@ rm -f ${RPM_BUILD_ROOT}%{_libdir}/libcurl.la
 - new upstream release
 
 * Wed Aug 21 2024 Jacek Migacz <jmigacz@redhat.com> - 8.9.1-3
-- Retire depricated ntlm-wb configure option
+- Retire deprecated ntlm-wb configure option
 
 * Mon Aug 5 2024 voidanix <voidanix@keyedlimepie.org> - 8.9.1-2
 - Apply SIGPIPE-related patch due to upstream regression

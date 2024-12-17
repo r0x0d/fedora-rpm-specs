@@ -1,5 +1,5 @@
 Name:           latexmk
-Version:        4.85
+Version:        4.86
 Release:        %autorelease
 Summary:        A make-like utility for LaTeX files
 

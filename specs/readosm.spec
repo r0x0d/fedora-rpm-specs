@@ -7,18 +7,42 @@ Release:        %autorelease
 Summary:        Library to extract valid data from within an Open Street Map input file
 
 # The entire source is (MPL-1.1 OR GPL-2.0-or-later OR LGPL-2.1-or-later) (the
-# “MPL-tri-license”), except for certain build-system files that do not affect
-# the license of the binary RPMs:
-# • FSFULLR: aclocal.m4, m4/ltoptions.m4, m4/ltsugar.m4, m4/ltversion.m4,
-#            m4/lt~obsolete.m4
-# • FSFULLR AND GPL-2.0-or-later WITH Libtool-exception: m4/libtool.m4
-# • GPL-2.0-or-later: compile, config.guess, config.sub, depcomp, ltmain.sh,
-#                     missing, test-driver
-# • FSFUL (or possibly (FSFUL AND (MPL-1.1 OR GPL-2.0-or-later OR
-#   LGPL-2.1-or-later)), considering it is generated from configure.ac):
-#   configure
-# • X11: install-sh
+# “MPL-tri-license”),
 License:        MPL-1.1 OR GPL-2.0-or-later OR LGPL-2.1-or-later
+# … except for certain build-system files that do not affect the license of the
+# binary RPMs:
+#
+# FSFULLR:
+#   - aclocal.m4
+#   - m4/ltoptions.m4
+#   - m4/ltsugar.m4
+#   - m4/ltversion.m4
+#   - m4/lt~obsolete.m4
+# FSFUL AND FSFULLR AND GPL-2.0-or-later WITH Libtool-exception:
+#   - m4/libtool.m4
+# GPL-2.0-or-later WITH Libtool-exception:
+#   - ltmain.sh
+# GPL-2.0-or-later WITH Autoconf-exception-generic:
+#   - compile
+#   - config.guess
+#   - config.sub
+#   - depcomp
+#   - missing
+#   - test-driver
+# FSFUL AND GPL-2.0-or-later WITH Libtool-exception AND (MPL-1.1 OR
+# GPL-2.0-or-later OR LGPL-2.1-or-later):
+# (The tri-license is because it is derived from configure.ac.)
+#   - configure
+# X11:
+#   - install-sh
+SourceLicense:  %{shrink:
+                (%{license}) AND
+                FSFUL AND
+                FSFULLR AND
+                GPL-2.0-or-later WITH Libtool-exception AND
+                GPL-2.0-or-later WITH Autoconf-exception-generic AND
+                X11
+                }
 Source:         https://www.gaia-gis.it/gaia-sins/readosm-sources/readosm-%{version}.tar.gz
 URL:            https://www.gaia-gis.it/fossil/readosm
 

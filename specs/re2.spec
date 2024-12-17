@@ -10,6 +10,7 @@ Summary:        C++ fast alternative to backtracking RE engines
 #   - lib/git/commit-msg.hook is Apache-2.0, but is not used in the build and
 #     is removed in %%prep
 License:        BSD-3-Clause
+SourceLicense:  %{license} AND Apache-2.0
 URL:            https://github.com/google/re2
 Source:         %{url}/archive/%{tag}/re2-%{tag}.tar.gz
 
@@ -127,10 +128,16 @@ cd python
 %check
 %ctest
 
+# Python tests now segfault on i686, but we cannot drop support under
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval because re2
+# is not yet a leaf package on that architecutre. Instead, we skip the Python
+# tests on i686.
+%ifnarch %{ix86}
 # Run the tests from the top-level directory to make sure we don’t accidentally
 # import the “un-built” package instead of the one in the buildroot.
 ln -s python/re2_test.py
 LD_LIBRARY_PATH='%{buildroot}%{_libdir}' %pytest re2_test.py
+%endif
 
 
 %files

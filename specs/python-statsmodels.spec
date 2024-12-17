@@ -4,8 +4,8 @@
 %global srcname statsmodels
 
 Name: python-%{srcname}
-Version: 0.14.1
-Release: 7%{?dist}
+Version: 0.14.4
+Release: 1%{?dist}
 Summary: Statistics in Python
 
 # Package is licensed under BSD (3 clauses)
@@ -118,6 +118,11 @@ popd
 ## %doc build/sphinx/html
 
 %changelog
+* Mon Oct 28 2024 Sandro <devel@penguinpee.nl> - 0.14.4-1
+- Update to 0.14.4 (RHBZ#2275442)
+- Add support for NumPy 2.x
+- Close RHBZ#2332200
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.14.1-7
 - convert license to SPDX
 

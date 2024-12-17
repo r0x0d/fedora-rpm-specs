@@ -1,5 +1,5 @@
 Name:		qtermwidget
-Version:	2.0.1
+Version:	2.1.0
 Release:	1%{?dist}
 License:	GPL-2.0-or-later
 Summary:	Qt6 terminal widget
@@ -83,6 +83,9 @@ EOF
 %dir %{_datadir}/qtermwidget6/translations
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 2.1.0-1
+- 2.1.0
+
 * Tue Jul 16 2024 Steve Cossette <farchord@gmail.com> - 2.0.1-1
 - 2.0.1
 

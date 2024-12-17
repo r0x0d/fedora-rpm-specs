@@ -1,6 +1,6 @@
 %global upstreamname rocBLAS
-%global rocm_release 6.2
-%global rocm_patch 4
+%global rocm_release 6.3
+%global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 %global toolchain rocm
@@ -51,11 +51,7 @@
 
 Name:           rocblas
 Version:        %{rocm_version}
-%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:        1%{?dist}
-%else
-Release:        %autorelease
-%endif
 Summary:        BLAS implementation for ROCm
 Url:            https://github.com/ROCmSoftwarePlatform/%{upstreamname}
 License:        MIT AND BSD-3-Clause
@@ -163,6 +159,8 @@ do
 	   -DBUILD_FORTRAN_CLIENTS=OFF \
 	   -DBLAS_LIBRARY=cblas \
 	   -DBUILD_OFFLOAD_COMPRESS=%{build_compress} \
+	   -DBUILD_WITH_HIPBLASLT=OFF \
+	   -DTensile_COMPILER=hipcc \
 	   -DBUILD_WITH_TENSILE=%{build_tensile} \
 	   -DBUILD_WITH_PIP=OFF
 
@@ -206,11 +204,10 @@ fi
 %endif
 
 %changelog
-%if 0%{?suse_version}
+* Fri Dec 6 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+
 * Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 
-%else
-%autochangelog
-%endif
 

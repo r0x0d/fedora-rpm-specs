@@ -4,7 +4,7 @@ Release: 16%{?dist}
 URL:     https://scripts.sil.org/Mondulkiri
 
 %global foundry           SIL
-%global fontlicense       OFL
+%global fontlicense       OFL-1.1-RFN
 %global fontlicenses      OFL.txt
 %global fontdocs          *.txt
 %global fontdocsex        %{fontlicenses}

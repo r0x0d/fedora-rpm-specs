@@ -23,8 +23,9 @@ BuildRequires:  qt5-qtbase-static
 BuildRequires:  qt5-qtbase-private-devel
 %{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
 
-BuildRequires:  cmake(DtkCore)
-BuildRequires:  cmake(DtkBuildHelper)
+BuildRequires:  cmake(DtkCore) >= %{version}
+#BuildRequires:  cmake(DtkBuildHelper) >= %{version}
+BuildRequires:  dtkcommon-devel >= %{version}
 BuildRequires:  cmake(TreelandProtocols)
 
 BuildRequires:  pkgconfig(librsvg-2.0)

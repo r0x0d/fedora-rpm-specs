@@ -1,6 +1,6 @@
 Name:          libdbusmenu-lxqt
 Summary:       Library providing a way to implement DBusMenu protocol for LXQt
-Version:       0.1.0
+Version:       0.2.0
 Release:       1%{?dist}
 License:       LGPL-2.0-or-later
 URL:           https://lxqt-project.org/
@@ -43,5 +43,8 @@ Files used for developing and building software that uses %{name}.
 %{_libdir}/pkgconfig/dbusmenu-lxqt.pc
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 0.2.0-1
+- 0.2.0
+
 * Thu Apr 18 2024 Steve Cossette <farchord@gmail.com> - 0.1.0-1
 - 0.1.0

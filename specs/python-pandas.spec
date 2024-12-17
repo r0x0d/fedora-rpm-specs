@@ -12,8 +12,8 @@
 %bcond_without single_tests
 
 Name:           python-pandas
-Version:        2.2.1
-Release:        8%{?dist}
+Version:        2.2.3
+Release:        1%{?dist}
 Summary:        Python library providing high-performance data analysis tools
 
 # Drop support for i686 in preparation for `libarrow`
@@ -89,10 +89,6 @@ Patch:          0003-TST-Fix-IntervalIndex-constructor-tests-on-big-endia.patch
 Patch:          0004-TST-Fix-test_str_encode-on-big-endian-machines.patch
 # https://github.com/pandas-dev/pandas/pull/57397
 Patch:          0005-TST-Add-missing-skips-for-unavailable-pyarrow.patch
-# https://github.com/pandas-dev/pandas/pull/57548
-Patch:          0006-Fix-accidental-loss-of-precision-for-to_datetime-str.patch
-# Python 3.13 support https://github.com/pandas-dev/pandas/pull/59065
-Patch:          0007-Fix-Python-3.13-test-failures.patch
 
 %global _description %{expand:
 pandas is an open source, BSD-licensed library providing
@@ -703,6 +699,10 @@ export PYTHONHASHSEED="$(
 
 
 %changelog
+* Sat Dec 15 2024 Orion Poplawski <orion@nwra.com> - 2.2.3-1
+- Update to 2.2.3
+- Build with numpy 2.0
+
 * Wed Nov 27 2024 Richard W.M. Jones <rjones@redhat.com> - 2.2.1-8
 - Rebuild for libarrow 18
 

@@ -3,7 +3,7 @@ BuildArch: noarch
 
 Version: 5.300
 Release: 16%{?dist}
-License: OFL
+License: OFL-1.1-RFN
 URL:     https://scripts.sil.org/Mondulkiri
 
 %global source_name       sil-mondulkiri-extra-fonts

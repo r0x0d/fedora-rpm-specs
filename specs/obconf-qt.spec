@@ -1,8 +1,6 @@
-%define __cmake_in_source_build 1
-
 Name:           obconf-qt
-Version:        0.16.4
-Release:        4%{?dist}
+Version:        0.16.5
+Release:        1%{?dist}
 Summary:        A configuration editor for the OpenBox window manager
 
 License:        GPL-2.0-only
@@ -12,16 +10,15 @@ Source0:        %{url}/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  desktop-file-utils
-BuildRequires:  kf5-kwindowsystem-devel
-BuildRequires:  qt5-linguist
-BuildRequires:  pkgconfig(lxqt)
+BuildRequires:  cmake(Qt6LinguistTools)
+BuildRequires:  cmake(Qt6Widgets)
+BuildRequires:  cmake(lxqt2-build-tools)
+BuildRequires:  glib2-devel
 BuildRequires:  pkgconfig(obrender-3.5)
 BuildRequires:  pkgconfig(obt-3.5)
-BuildRequires:  pkgconfig(Qt5Core)
-BuildRequires:  pkgconfig(Qt5Gui)
-BuildRequires:  pkgconfig(Qt5Widgets)
-BuildRequires:  pkgconfig(Qt5X11Extras)
-BuildRequires:  pkgconfig(sm)
+BuildRequires:  perl
+BuildRequires:  libSM-devel
+BuildRequires:  libICE-devel
 
 Requires:       hicolor-icon-theme
 Requires:       openbox
@@ -41,7 +38,7 @@ This package provides translations for the obconf-qt package.
 %autosetup
 
 %build
-%cmake_lxqt -DPULL_TRANSLATIONS=NO
+%cmake -DPULL_TRANSLATIONS=NO
 %cmake_build
 
 %install
@@ -50,7 +47,7 @@ This package provides translations for the obconf-qt package.
 desktop-file-install \
     --dir=%{buildroot}%{_datadir}/applications \
     %{buildroot}/%{_datadir}/applications/%{name}.desktop
-%find_lang obconf-qt --with-qt
+%find_lang %{name} --with-qt
 
 %files
 %license COPYING
@@ -58,14 +55,15 @@ desktop-file-install \
 %{_bindir}/%{name}
 %{_datadir}/applications/*.desktop
 %{_datadir}/icons/hicolor/*/*/*
-%{_datadir}/%{name}
 
-%files l10n -f obconf-qt.lang
+%files l10n -f %{name}.lang
 %license COPYING
 %doc AUTHORS README.md
-%dir %{_datadir}/obconf-qt/translations
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 0.16.5-1
+- 0.16.5
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.16.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

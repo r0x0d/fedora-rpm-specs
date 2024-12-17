@@ -1,6 +1,6 @@
 Name:           lxqt-admin
 Summary:        LXQt system administration tool
-Version:        2.0.0
+Version:        2.1.0
 Release:        1%{?dist}
 License:        LGPL-2.1-only
 URL:            https://lxqt-project.org/
@@ -68,6 +68,9 @@ done
 %{_datadir}/lxqt/translations/lxqt-admin-time/lxqt-admin-time_ast.qm
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 2.1.0-1
+- 2.1.0
+
 * Thu Apr 18 2024 Steve Cossette <farchord@gmail.com> - 2.0.0-1
 - 2.0.0
 

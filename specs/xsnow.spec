@@ -1,9 +1,8 @@
 Name:           xsnow
-Version:        3.7.9
-Release:        3%{?dist}
+Version:        3.8.1
+Release:        1%{?dist}
 Summary:        Let it snow on your desktop
 
-# Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
 URL:            https://sourceforge.net/projects/xsnow/
 Source0:        https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -69,6 +68,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 
 
 %changelog
+* Sat Dec 14 2024 Andrea Musuruane <musuruan@gmail.com> - 3.8.1-1
+- Updated to new upstream release
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 3.7.9-3
 - convert license to SPDX
 

@@ -1,6 +1,6 @@
 %global upstreamname hipFFT
-%global rocm_release 6.2
-%global rocm_patch 4
+%global rocm_release 6.3
+%global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 %global toolchain rocm
@@ -27,11 +27,7 @@
 
 Name:           hipfft
 Version:        %{rocm_version}
-%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:        1%{?dist}
-%else
-Release:        %autorelease
-%endif
 Summary:        ROCm FFT marshalling library
 Url:            https://github.com/ROCm/%{upstreamname}
 License:        MIT
@@ -151,12 +147,10 @@ fi
 %endif
 
 %changelog
-%if 0%{?suse_version}
+* Tue Dec 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+
 * Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
-
-%else
-%autochangelog
-%endif
 
 

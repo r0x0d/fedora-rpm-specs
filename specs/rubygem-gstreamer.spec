@@ -11,7 +11,7 @@
 
 Summary:	Ruby binding of GStreamer
 Name:		rubygem-%{gem_name}
-Version:	4.2.4
+Version:	4.2.5
 Release:	1%{?dist}
 # SPDX confirmed
 # LGPL-2.1-or-later: gemspec
@@ -65,7 +65,7 @@ rubygem-%{gem_name}
 mv ../%{gem_name}-%{version}.gemspec .
 
 # Allow ruby-gnome2 no less than ones
-sed -i -e 's|= 4\.2\.4|>= 4.2.4|' %{gem_name}-%{version}.gemspec
+sed -i -e 's|= 4\.2\.5|>= 4.2.5|' %{gem_name}-%{version}.gemspec
 
 # Fix wrong shebang
 #grep -rl /usr/local/bin sample | \
@@ -152,6 +152,9 @@ popd
 %exclude	%{gem_instdir}/test/
 
 %changelog
+* Sun Dec 15 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 4.2.5-1
+- 4.2.5
+
 * Wed Sep 25 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 4.2.4-1
 - 4.2.4
 

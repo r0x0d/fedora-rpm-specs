@@ -20,7 +20,7 @@
 
 %define	radicale_major	3
 
-%define	radicale_version	3.3.1
+%define	radicale_version	3.3.2
 %define	radicale_release	1
 #define gitcommit 8e9fdf391acb79d3fb1cb6e6b8f882f8999192cf
 
@@ -241,8 +241,11 @@ sed -i 's|^#!/usr/bin/env python3$|#!/usr/bin/python3|' %{buildroot}%{_datadir}/
 mkdir -p %{buildroot}%{_sysconfdir}/httpd/conf.d/
 install -p -m 644 contrib/apache/radicale.conf %{buildroot}%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
-# Create folder where the calendar will be stored (and radicale's home directory)
-install -d -p  %{buildroot}%{_sharedstatedir}/%{name}/
+# Create folder where the collection-root will be stored (and radicale's home directory)
+install -d -p  %{buildroot}%{_sharedstatedir}/%{name}
+
+# Create folder where the collection-cache can be stored optional
+install -d -p  %{buildroot}%{_localstatedir}/cache/%{name}
 
 install -D -p -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
 
@@ -394,7 +397,8 @@ fi
 %config(noreplace) %attr(0640, root, %{name}) %{_sysconfdir}/%{name}/users
 %{_unitdir}/%{name}.service
 %{_tmpfilesdir}/%{name}.conf
-%dir %attr(750, %{name}, %{name}) %{_sharedstatedir}/%{name}/
+%dir %attr(750, %{name}, %{name}) %{_sharedstatedir}/%{name}
+%dir %attr(750, %{name}, %{name}) %{_localstatedir}/cache/%{name}
 %dir %{_datadir}/%{name}
 %dir %attr(755, %{name}, %{name}) %{_rundir}/%{name}
 
@@ -418,6 +422,10 @@ fi
 
 
 %changelog
+* Sun Dec 15 2024 Peter Bieringer <pb@bieringer.de> - 3.3.2-1
+- Update to 3.3.2
+- Package /var/cache/radicale for optional storage of cache files
+
 * Sun Nov 24 2024 Peter Bieringer <pb@bieringer.de> - 3.3.1-1
 - Add sebool for hook (supports RHBZ#1928899)
 - Update to 3.3.1

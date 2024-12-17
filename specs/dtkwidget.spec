@@ -25,8 +25,8 @@ BuildRequires:  cmake(Qt5Svg)
 BuildRequires:  qt5-qtbase-private-devel
 %{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
 
-BuildRequires:  cmake(DtkCore)
-BuildRequires:  cmake(DtkGui)
+BuildRequires:  cmake(DtkCore) >= %{version}
+BuildRequires:  cmake(DtkGui) >= %{version}
 
 BuildRequires:  pkgconfig(gsettings-qt)
 BuildRequires:  pkgconfig(xcb-util)

@@ -18,6 +18,7 @@ Summary:        Create WOFF files with Zopfli compression
 # Note that all bundled Zopfli code is removed in %%prep, so only the
 # MPL/GPL/LGPL portions remain.
 License:        MPL-1.0 OR GPL-2.0-or-later OR LGPL-2.0-or-later
+SourceLicense:  (%{license}) AND Apache-2.0
 URL:            https://github.com/bramstein/sfnt2woff-zopfli
 Source:         %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 

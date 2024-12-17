@@ -3,7 +3,7 @@ Version: 5.000
 Release: 14%{?dist}
 
 %global foundry           SIL
-%global fontlicense       OFL
+%global fontlicense       OFL-1.1-RFN
 %global fontlicenses      OFL.txt
 %global fontdocs          *.txt documentation/*.txt documentation/*.odt
 %global fontdocsex        %{fontlicenses}

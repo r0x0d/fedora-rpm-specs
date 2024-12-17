@@ -5,7 +5,7 @@
 %bcond tests 0
 
 Name:           python-%{pypi_name}
-Version:        0.6.7
+Version:        0.7.0
 Release:        %{autorelease}
 Summary:        Missing widgets and components for PyQt/PySide
 %forgemeta
@@ -16,8 +16,6 @@ Source:         %forgesource
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
-# For setuptools_scm
-BuildRequires:  git-core
 
 %global _description %{expand:
 This package aims to provide high-quality community-contributed Qt
@@ -44,22 +42,19 @@ Summary:        %{summary}
 
 
 %prep
-%forgeautosetup -p1 -S git
+%forgeautosetup -p1
 
 # Unpin pyqt6
 sed -r -i 's/(pyqt6)<.*"/\1"/' pyproject.toml
 
-# Make sure this is the last step in prep
-git add --all
-git commit -m '[Packaging]: Downstream changes for %{version}'
-git tag v%{version}
-
 
 %generate_buildrequires
+export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %pyproject_buildrequires -x test,pyqt6
 
 
 %build
+export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %pyproject_wheel
 
 

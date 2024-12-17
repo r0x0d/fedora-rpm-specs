@@ -1,6 +1,6 @@
 Name:          lxqt-session
 Summary:       Main session for LXQt desktop suite
-Version:       2.0.0
+Version:       2.1.0
 Release:       1%{?dist}
 License:       LGPL-2.1-only
 URL:           https://lxqt-project.org/
@@ -83,6 +83,7 @@ sed -i 's/cursor_theme=whiteglass/cursor_theme=breeze_cursors/g;/General/a windo
 %{_mandir}/man1/lxqt-config-session*
 %{_mandir}/man1/lxqt-leave*
 %{_mandir}/man1/lxqt-session*
+%{_datadir}/lxqt/waylandwindowmanagers.conf
 
 %files l10n -f lxqt-session.lang -f lxqt-leave.lang -f lxqt-config-session.lang
 %license LICENSE
@@ -99,6 +100,9 @@ sed -i 's/cursor_theme=whiteglass/cursor_theme=breeze_cursors/g;/General/a windo
 %{_datadir}/lxqt/translations/lxqt-session/lxqt-session_arn.qm
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 2.1.0-1
+- 2.1.0
+
 * Thu Apr 18 2024 Steve Cossette <farchord@gmail.com> - 2.0.0-1
 - 2.0.0
 

@@ -1,5 +1,6 @@
 %bcond tests 1
 %bcond python 1
+%bcond rebuild_yaml_data 0
 
 # Upstream defaults to C++11, but gtest 1.13.0 requires C++14 or later.
 %global cxx_std 14
@@ -19,10 +20,16 @@ Source0:        %{url}/archive/v%{version}/rapidyaml-%{version}.tar.gz
 # Read this from the unpatched original test/CMakeLists.txt:
 #   c4_download_remote_proj(yaml-test-suite … GIT_TAG <USE THIS>)
 %global yamltest_url https://github.com/yaml/yaml-test-suite
-%global yamltest_tag data-2022-01-17
+%global yamltest_date 2022-01-17
 # Data for testing the correctness of YAML processors. This is used only for
-# testing; it is not bundled in the binary RPMs.
-Source1:        %{yamltest_url}/archive/%{yamltest_tag}/yaml-test-suite-%{yamltest_tag}.tar.gz
+# testing; it is not bundled in the binary RPMs. This is “are available in 2
+# forms. Files in the src directory encode all the data for YAML using YAML.
+# The data from these tests is also available in a form where each test has its
+# own directory.” We use the latter form, but the former is the original source
+# and contains the (MIT) LICENSE file.
+# Data for testing the correctness of YAML processors. This is used only for
+Source1:        %{yamltest_url}/archive/data-%{yamltest_date}/yaml-test-suite-data-%{yamltest_date}.tar.gz
+Source2:        %{yamltest_url}/archive/v%{yamltest_date}/yaml-test-suite-%{yamltest_date}.tar.gz
 # Helper script to patch out unconditional download of dependencies in CMake
 Source10:       patch-no-download
 
@@ -48,6 +55,13 @@ BuildRequires:  python3-devel
 BuildRequires:  tomcli
 BuildRequires:  swig
 BuildRequires:  python3dist(pytest)
+%endif
+
+%if %{with rebuild_yaml_data}
+# See bin/suite-to-data in Source1.
+BuildRequires:  bash >= 4.4
+BuildRequires:  perl >= 5.28
+BuildRequires:  perl(YAML::PP) >= 0.030
 %endif
 
 %global common_description %{expand: \
@@ -120,9 +134,14 @@ sed -r -i '/INCORPORATE c4core/d' 'CMakeLists.txt'
 sed -r -i \
     's@([[:blank:]]*)set\(tsdir.*\).*@&\nset\(suite_dir test/extern/yaml-test-suite\)\1@' \
     'test/CMakeLists.txt'
-%setup -q -T -D -b 1 -n rapidyaml-%{version}
 mkdir -p 'test/extern/'
-mv '../yaml-test-suite-%{yamltest_tag}' 'test/extern/yaml-test-suite'
+
+# Original sources (including LICENSE)
+%setup -q -T -D -b 1 -n rapidyaml-%{version}
+
+# Data in the form rapidyaml needs it
+%setup -q -T -D -b 2 -n rapidyaml-%{version}
+mv '../yaml-test-suite-data-%{yamltest_date}' 'test/extern/yaml-test-suite'
 
 %if %{with python}
 
@@ -150,6 +169,19 @@ export SETUPTOOLS_SCM_PRETEND_VERSION='%{version}'
 
 
 %conf
+%if %{with rebuild_yaml_data}
+# We need to rebuild the test data before running CMake configuration, since it
+# checks to be sure it is present.
+pushd ../yaml-test-suite-%{yamltest_date}
+mkdir -p data
+perl bin/suite-to-data.pl src/*.yaml
+popd
+# Remove the pre-generated data from Source2 and replace it with the data we
+# rebuilt from Source1.
+rm -rv test/extern/yaml-test-suite
+mv ../yaml-test-suite-%{yamltest_date}/data test/extern/yaml-test-suite
+%endif
+
 # Disable RYML_TEST_FUZZ so that we do not have to include the contents of
 # https://github.com/biojppm/rapidyaml-data (and document the licenses of the
 # contents). We *could* do so, and add an additional source similar to the one

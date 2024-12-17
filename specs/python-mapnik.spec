@@ -39,7 +39,6 @@ BuildRequires:  gcc-c++
 BuildRequires:  sqlite-devel
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-BuildRequires:  python3-nose
 BuildRequires:  python3-PyPDF2
 BuildRequires:  python3-pybind11 pybind11-devel
 BuildRequires:  python3-pytest

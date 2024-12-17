@@ -1,5 +1,5 @@
 Name:           devscripts
-Version:        2.24.5
+Version:        2.24.7
 Release:        1%{?dist}
 Summary:        Scripts for Debian Package maintainers
 BuildArch:      noarch
@@ -136,6 +136,7 @@ rm -f %{buildroot}%{_datadir}/bash-completion/completions/bts
 %{python3_sitelib}/%{name}*.egg-info/
 %{_datadir}/%{name}/
 %{_mandir}/man1/*
+%{_mandir}/man7/*
 %{perl_vendorlib}/Devscripts
 %exclude %{_bindir}/checkbashisms
 %exclude %{_mandir}/man1/checkbashisms.1*
@@ -152,6 +153,9 @@ rm -f %{buildroot}%{_datadir}/bash-completion/completions/bts
 
 
 %changelog
+* Sun Dec 15 2024 Sandro Mani <manisandro@gmail.com> - 2.24.7-1
+- Update to 2.24.7
+
 * Mon Dec 02 2024 Sandro Mani <manisandro@gmail.com> - 2.24.5-1
 - Update to 2.24.5
 

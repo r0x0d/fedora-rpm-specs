@@ -1,7 +1,7 @@
 %global upstreamname rocThrust
 
-%global rocm_release 6.2
-%global rocm_patch 1
+%global rocm_release 6.3
+%global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 # Compiler is hipcc, which is clang based:
@@ -21,11 +21,7 @@
 
 Name:           rocthrust
 Version:        %{rocm_version}
-%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:        1%{?dist}
-%else
-Release:        %autorelease
-%endif
 Summary:        ROCm Thrust libary
 
 Url:            https://github.com/ROCm
@@ -116,11 +112,10 @@ rm %{buildroot}%{_bindir}/*
 %{_libdir}/cmake/%{name}
 
 %changelog
-%if 0%{?suse_version}
+* Tue Dec 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+
 * Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 
-%else
-%autochangelog
-%endif
 

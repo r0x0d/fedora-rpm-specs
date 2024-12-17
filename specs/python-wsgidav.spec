@@ -6,6 +6,7 @@ Summary:        Generic and extendable WebDAV server based on WSGI
 # The entire source is (SPDX) MIT, except tests/davclient.py, which is
 # Apache-2.0 (but does not contribute to the licenses of the binary RPMs).
 License:        MIT
+SourceLicense:  %{license} AND Apache-2.0
 URL:            https://github.com/mar10/wsgidav
 # The GitHub source includes a few ancillary files that the PyPI sdist lacks;
 # for example, it contains tox.ini, which defines the test dependencies.

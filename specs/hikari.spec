@@ -3,8 +3,7 @@ Version:        2.3.3
 Release:        %autorelease
 Summary:        Stacking Wayland compositor with tiling capabilities
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-2-Clause
 URL:            https://hikari.acmelabs.space/
 Source0:        %{url}/releases/%{name}-%{version}.tar.gz
 
@@ -33,6 +32,8 @@ views, groups, sheets and the workspace.
 
 %build
 %set_build_flags
+export CFLAGS_EXTRA="$CFLAGS"
+export LDFLAGS_EXTRA="$LDFLAGS"
 bmake WITH_POSIX_C_SOURCE=YES \
       WITH_XWAYLAND=YES \
       WITH_SCREENCOPY=YES \
@@ -47,16 +48,19 @@ bmake DESTDIR=%{buildroot} \
       WITHOUT_SUID=YES \
       install
 
+# FIXME: fix this in install/bmake process.
+for binary in %{buildroot}/usr/bin/hikari %{buildroot}/usr/bin/hikari-unlocker; do
+      chmod 0755 "${binary:?}"
+done
+
 %files
 %license LICENSE
 %doc README.md
 %config %{_sysconfdir}/pam.d/%{name}-unlocker
-%config %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %attr(0755, root, root) %{_bindir}/%{name}
 %attr(0755, root, root) %{_bindir}/%{name}-unlocker
 %{_mandir}/man1/hikari.1*
-%{_datadir}/backgrounds/%{name}/
 %{_datadir}/backgrounds/%{name}/hikari_wallpaper.png
 %{_datadir}/wayland-sessions/%{name}.desktop
 

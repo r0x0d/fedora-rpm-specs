@@ -1,5 +1,5 @@
 Name:           dtk6log
-Version:        0.0.1
+Version:        0.0.2
 Release:        %autorelease
 Summary:        Simple, convenient and thread safe logger for Qt-based C++ apps
 License:        LGPL-2.1-or-later

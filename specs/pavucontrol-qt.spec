@@ -1,5 +1,5 @@
 Name:           pavucontrol-qt
-Version:        2.0.0
+Version:        2.1.0
 Release:        1%{?dist}
 License:        GPL-2.0-or-later
 URL:            https://lxqt-project.org/
@@ -52,6 +52,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 %dir %{_datadir}/%{name}/translations
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 2.1.0-1
+- 2.1.0
+
 * Thu Apr 18 2024 Steve Cossette <farchord@gmail.com> - 2.0.0-1
 - 2.0.0
 

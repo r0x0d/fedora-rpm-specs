@@ -39,7 +39,7 @@ Summary:        Wayland Conformance Test Suite
 #   and these sources are combined with GPLv3 code, the LGPLv3 option is used
 #   in this package. However, we encode both options in the SPDX expression.
 #
-# GPLv2+:
+# GPL-2.0-or-later
 #   - debian/*
 # > Not used in this package
 #
@@ -74,6 +74,13 @@ Summary:        Wayland Conformance Test Suite
 #   C source files and headers, and are not directly included in the binary
 #   RPMs.
 License:        GPL-3.0-only AND (LGPL-2.0-only OR LGPL-3.0-only)
+SourceLicense:  %{shrink:
+                %{license} AND
+                (GPL-2.0-only OR GPL-3.0-only) AND
+                GPL-2.0-or-later AND
+                HPND-sell-variant AND
+                MIT
+                }
 URL:            https://github.com/MirServer/wlcs
 Source:         %{url}/archive/v%{version}/wlcs-%{version}.tar.gz
 

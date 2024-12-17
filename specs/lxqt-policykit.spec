@@ -1,7 +1,7 @@
 Name:          lxqt-policykit
 Summary:       PolicyKit agent for LXQt desktop suite
-Version:       2.0.0
-Release:       2%{?dist}
+Version:       2.1.0
+Release:       1%{?dist}
 License:       LGPL-2.1-only
 URL:           https://lxqt-project.org/
 Source0:       https://github.com/lxqt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
@@ -57,6 +57,9 @@ install -d %{buildroot}/%{_sysconfdir}/xdg/autostart
 %dir %{_datadir}/lxqt/translations/lxqt-policykit-agent
 
 %changelog
+* Sun Nov 10 2024 Steve Cossette <farchord@gmail.com> - 2.1.0-1
+- 2.1.0
+
 * Thu Sep 12 2024 Aleksei Bavshin <alebastr@fedoraproject.org> - 2.0.0-2
 - Move agent binary back to libexec
 - Restore Provides: PolicyKit-authentication-agent

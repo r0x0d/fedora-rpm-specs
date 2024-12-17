@@ -4,7 +4,7 @@
 Summary:        A Python interface to the HDF5 library
 Name:           h5py
 Version:        3.12.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 # Automatically converted from old format: BSD - review is highly recommended.
 License:        LicenseRef-Callaway-BSD
 URL:            http://www.h5py.org/
@@ -229,6 +229,9 @@ mpirun %{__python3} -m pytest -rxXs --with-mpi ${PYTHONPATH} || exit $fail
 
 
 %changelog
+* Sun Dec 15 2024 Terje Rosten <terjeros@gmail.com> - 3.12.1-4
+- Rebuild for numpy bump
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 3.12.1-3
 - Rebuild for hdf5 1.14.5
 
