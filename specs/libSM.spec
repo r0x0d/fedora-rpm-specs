@@ -1,7 +1,7 @@
 Summary: X.Org X11 SM runtime library
 Name: libSM
-Version: 1.2.4
-Release: 4%{?dist}
+Version: 1.2.5
+Release: 1%{?dist}
 License: MIT AND MIT-open-group
 URL: http://www.x.org
 
@@ -63,6 +63,9 @@ rm -rf $RPM_BUILD_ROOT%{_docdir}
 %{_libdir}/pkgconfig/sm.pc
 
 %changelog
+* Mon Dec 16 2024 José Expósito <jexposit@redhat.com> - 1.2.5-1
+- libSM 1.2.5
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

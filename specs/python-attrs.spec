@@ -9,7 +9,7 @@
 %endif
 
 Name:           python-attrs
-Version:        24.2.0
+Version:        24.3.0
 Release:        %autorelease
 Summary:        Python attributes without boilerplate
 
@@ -43,6 +43,9 @@ sed -i '/"pympler",/d' pyproject.toml
 # Remove tests-mypy extra from tests-no-zope extra
 sed -i "/attrs\[tests-mypy\]/d" pyproject.toml
 
+# Compatibility with older hatchling < 1.26
+sed -i "s/license-files/license-files.paths/" pyproject.toml
+
 %generate_buildrequires
 %pyproject_buildrequires %{?with_tests:-x tests}
 
@@ -51,7 +54,7 @@ sed -i "/attrs\[tests-mypy\]/d" pyproject.toml
 
 %install
 %pyproject_install
-%pyproject_save_files attr attrs
+%pyproject_save_files -l attr attrs
 
 %check
 %pyproject_check_import
@@ -60,7 +63,6 @@ sed -i "/attrs\[tests-mypy\]/d" pyproject.toml
 %endif
 
 %files -n python%{python3_pkgversion}-%{modname} -f %{pyproject_files}
-%license LICENSE
 %doc README.md
 
 %changelog

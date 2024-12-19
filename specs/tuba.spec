@@ -1,7 +1,7 @@
 %global rdnn        dev.geopjr.Tuba
 
 Name:           tuba
-Version:        0.8.4
+Version:        0.9.0
 Release:        %autorelease
 Summary:        Browse the Fediverse
 License:        GPL-3.0-only
@@ -24,6 +24,7 @@ BuildRequires:  pkgconfig(libadwaita-1)
 # optional for features
 BuildRequires:  pkgconfig(libspelling-1)
 BuildRequires:  pkgconfig(libwebp)
+BuildRequires:  pkgconfig(gstreamer-1.0)
 
 # for desktop-file-validate command
 BuildRequires:  desktop-file-utils

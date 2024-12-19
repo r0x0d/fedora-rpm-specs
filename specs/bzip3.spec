@@ -1,12 +1,13 @@
 Name:           bzip3
-Version:        1.4.0
-Release:        4%{?dist}
+Version:        1.5.1
+Release:        1%{?dist}
 Summary:        Tools for compressing and decompressing bzip3 files
+# 3rdparty/libsais-LICENSE: Apache-2.0 text
 # bz3grep:                  BSD-2-Clause
 # include/common.h:         LGPL-3.0-or-later
 # include/libsais.h:        Apache-2.0
 # include/libbz3.h:         LGPL-3.0-or-later
-# libsais-LICENSE:          Apache-2.0 text
+# include/yarg.h:           (unspecified, defaults to global LGPL-3.0-or-later)
 # LICENSE:                  LGPL-3.0 text
 # src/libbz3.c:             LGPL-3.0-or-later
 # src/main.c:               LGPL-3.0-or-later
@@ -24,22 +25,20 @@ Summary:        Tools for compressing and decompressing bzip3 files
 # build-aux/libtool.m4:     FSFULLR AND GPL-2.0-or-later WITH Libtool-exception
 #                           AND FSFUL
 # build-aux/ltmain.sh:      GPL-2.0-or-later WITH Libtool-exception AND
-#                           GPL-3.0-or-later
+#                           (GPL-2.0-or-later OR MIT)
 # build-aux/lt~obsolete.m4  FSFULLR
 # build-aux/ltoptions.m4:   FSFULLR
 # build-aux/ltsugar.m4:     FSFULLR
 # build-aux/missing:        GPL-2.0-or-later WITH Autoconf-exception-generic
 # configure:                FSFUL AND GPL-2.0-or-later WITH Libtool-exception
 # Makefile.in:              FSFULLR
-## Not used
-# include/getopt-shim.h:    MIT
 License:        LGPL-3.0-or-later AND BSD-2-Clause
-SourceLicense:  GPL-3.0-or-later AND GPL-3.0-or-later WITH Autoconf-exception-macro AND GPL-3.0-or-later WITH Autoconf-exception-generic-3.0 AND GPL-2.0-or-later WITH Autoconf-exception-generic AND GPL-2.0-or-later WITH Libtool-exception AND LGPL-3.0-or-later AND BSD-2-Clause AND Apache-2.0 AND MIT AND X11 AND FSFULLR AND FSFUL AND FSFAP
+SourceLicense:  GPL-3.0-or-later AND GPL-3.0-or-later WITH Autoconf-exception-macro AND GPL-3.0-or-later WITH Autoconf-exception-generic-3.0 AND GPL-2.0-or-later WITH Autoconf-exception-generic AND GPL-2.0-or-later WITH Libtool-exception AND (GPL-2.0-or-later OR MIT) AND LGPL-3.0-or-later AND BSD-2-Clause AND Apache-2.0 AND X11 AND FSFULLR AND FSFUL AND FSFAP
 URL:            https://github.com/kspalaiologos/%{name} 
 Source0:        %{url}/releases/download/%{version}/%{name}-%{version}.tar.xz 
 # Do not use /usr/bin/env in shell bangs, not suitable for upstream,
 # <https://github.com/kspalaiologos/bzip3/pull/75>.
-Patch0:         bzip3-1.2.2-Do-not-use-usr-bin-env-in-shell-bangs.patch
+Patch0:         bzip3-1.5.0-Do-not-use-usr-bin-env-in-shell-bangs.patch
 BuildRequires:  autoconf
 BuildRequires:  autoconf-archive
 BuildRequires:  automake
@@ -119,8 +118,6 @@ find build-aux -type f \! \( \
     \) -delete
 # Execute git-version-gen from a system location
 ln -s %{_datadir}/gnulib/build-aux/git-version-gen build-aux/git-version-gen
-# Remove unused code
-echo > include/getopt-shim.h
 
 %build
 autoreconf -vfi
@@ -151,9 +148,9 @@ fi
 %{_mandir}/man1/%{programs}.1*
 
 %files libs
-%license libsais-LICENSE LICENSE
+%license 3rdparty/libsais-LICENSE LICENSE
 %doc NEWS README.md
-%{_libdir}/libbzip3.so.0{,.*}
+%{_libdir}/libbzip3.so.1{,.*}
 
 %files devel
 %{_includedir}/libbz3.h
@@ -161,6 +158,12 @@ fi
 %{_libdir}/pkgconfig/bzip3.pc
 
 %changelog
+* Mon Dec 16 2024 Petr Pisar <ppisar@redhat.com> - 1.5.1-1
+- 1.5.1 bump
+
+* Mon Dec 16 2024 Petr Pisar <ppisar@redhat.com> - 1.5.0-1
+- 1.5.0 bump
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

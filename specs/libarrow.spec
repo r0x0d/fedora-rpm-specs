@@ -31,7 +31,7 @@
 
 Name:		libarrow
 Version:	18.0.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	A toolbox for accelerated data interchange and in-memory processing
 License:	Apache-2.0
 URL:		https://arrow.apache.org/
@@ -823,6 +823,9 @@ export LD_LIBRARY_PATH='%{buildroot}%{_libdir}'
 #--------------------------------------------------------------------
 
 %changelog
+* Tue Dec 17 2024 Orion Poplawski <orion@nwra.com> - 18.0.0-3
+- Rebuild with numpy 2.0
+
 * Fri Nov 22 2024  Kaleb S. KEITHLEY <kkeithle [at] redhat.com> - 16.0.0-1
 - Arrow 18.0.0 GA
 

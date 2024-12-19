@@ -46,7 +46,7 @@ URL: https://easyrpg.org
 License: GPL-3.0-or-later AND CC-BY-SA-4.0 AND BSD-3-Clause AND (Unlicense OR MIT-0) AND Unlicense AND Baekmuk AND LicenseRef-Fedora-Public-Domain AND MIT AND GPL-2.0-or-later WITH Font-exception-2.0
 
 Version: 0.8
-Release: 9%{?dist}
+Release: 10%{?dist}
 
 %global repo_owner EasyRPG
 %global repo_name Player
@@ -70,7 +70,9 @@ BuildRequires: libappstream-glib
 BuildRequires: rubygem-asciidoctor
 
 # This library doesn't have pkgconfig info
-BuildRequires: dr_wav-devel
+# Version 0.13.17 fixes a possible crash when reading from MS-ADPCM encoded
+# files; we want this fix since such crashes may represent security issues.
+BuildRequires: dr_wav-devel >= 0.13.17
 
 BuildRequires: pkgconfig(fluidsynth)
 BuildRequires: pkgconfig(fmt)
@@ -145,6 +147,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{name}.metain
 
 
 %changelog
+* Tue Dec 17 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 0.8-10
+- Rebuilt with dr_wav 0.13.17
+
 * Fri Aug 09 2024 Marcin Radomski <marcin@mradomski.pl> - 0.8-9
 - rhbz#2300634: Fix fedpkg build "missing libz.a" error
 

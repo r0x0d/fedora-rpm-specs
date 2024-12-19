@@ -102,15 +102,19 @@ BuildRequires:  expat-devel
 BuildRequires:  gcc-c++
 BuildRequires:  gmp-devel
 BuildRequires:  gtk3-devel
-BuildRequires:  python3-cairo-devel
 BuildRequires:  python3-devel
 BuildRequires:  %{py3_dist scipy}
-BuildRequires:  %{py3_dist matplotlib}
 BuildRequires:  %{py3_dist numpy}
+BuildRequires:  %{py3_dist pycairo}
+BuildRequires:  python3-cairo-devel
+BuildRequires:  %{py3_dist matplotlib}
 BuildRequires:  sparsehash-devel
 # BR -static package of header-only libraries for tracking per guidelines
 BuildRequires:  pcg-cpp-devel
 BuildRequires:  pcg-cpp-static
+
+Recommends:     %{py3_dist pycairo}
+Recommends:     %{py3_dist matplotlib}
 
 Provides:       graph-tool%{?_isa} = %{version}-%{release}
 
@@ -181,6 +185,8 @@ cat > %{graph_tool_distinfo}/METADATA << EOF
 Metadata-Version: 2.1
 Name: graph-tool
 Version: %{version}
+Requires-dist: numpy
+Requires-dist: scipy
 EOF
 echo rpm > %{graph_tool_distinfo}/INSTALLER
 

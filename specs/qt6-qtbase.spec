@@ -46,7 +46,7 @@ BuildRequires: pkgconfig(libsystemd)
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
 Version: 6.8.1
-Release: 5%{?dist}
+Release: 7%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
@@ -99,6 +99,9 @@ Patch58: qtbase-libglvnd.patch
 Patch150: qtbase-extract-emoji-data-from-unicode-files.patch
 Patch151: qtbase-introduce-emoji-segmenter-to-3rdparty-code.patch
 Patch152: qtbase-use-emoji-segmenter-to-apply-emoji-fonts-automatically.patch
+Patch153: qtbase-dont-support-subpixel-positioning-for-color-fonts.patch
+Patch154: qtbase-fix-regression-when-looking-up-fallback-fonts.patch
+Patch155: qtbase-skip-ad-hoc-handling-of-variation-selector-in-font-merging.patch
 
 # Do not check any files in %%{_qt6_plugindir}/platformthemes/ for requires.
 # Those themes are there for platform integration. If the required libraries are
@@ -212,7 +215,7 @@ handling.
 %package common
 Summary: Common files for Qt6
 Requires: %{name} = %{version}-%{release}
-Obsoletes: qgnomeplatform-common <= 0.9.2
+Obsoletes: qgnomeplatform-common <= 0.9.3
 Provides:  qgnomeplatform-common = %{version}-%{release}
 BuildArch: noarch
 %description common
@@ -315,7 +318,7 @@ Recommends: qt6-qtwayland%{?_isa}
 Recommends: qt6-qttranslations
 Obsoletes: adwaita-qt6 <= 1.4.2
 Obsoletes: libadwaita-qt6 <= 1.4.2
-Obsoletes: qgnomeplatform-qt6 <= 0.9.2
+Obsoletes: qgnomeplatform-qt6 <= 0.9.3
 Provides:  qgnomeplatform-qt6 = %{version}-%{release}
 # for Source6: 10-qt6-check-opengl2.sh:
 # glxinfo
@@ -560,7 +563,6 @@ make check -k ||:
 %dir %{_qt6_plugindir}/styles/
 %{_qt6_plugindir}/networkinformation/libqglib.so
 %{_qt6_plugindir}/networkinformation/libqnetworkmanager.so
-%{_qt6_plugindir}/printsupport/libcupsprintersupport.so
 %{_qt6_plugindir}/sqldrivers/libqsqlite.so
 %{_qt6_plugindir}/tls/libqcertonlybackend.so
 %{_qt6_plugindir}/tls/libqopensslbackend.so
@@ -886,12 +888,19 @@ make check -k ||:
 %{_qt6_plugindir}/platforms/libqvnc.so
 %{_qt6_plugindir}/platforms/libqvkkhrdisplay.so
 %{_qt6_plugindir}/xcbglintegrations/libqxcb-glx-integration.so
+%{_qt6_plugindir}/printsupport/libcupsprintersupport.so
 # Platformthemes
 %{_qt6_plugindir}/platformthemes/libqxdgdesktopportal.so
 %{_qt6_plugindir}/platformthemes/libqgtk3.so
 
 
 %changelog
+* Tue Dec 17 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-7
+- Fix QGnomePlatform obsolets
+
+* Mon Dec 16 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-6
+- Backport additional fixes for emoji support
+
 * Tue Dec 10 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-5
 - Obsolete QGnomePlatform and AdwaitaQt
 

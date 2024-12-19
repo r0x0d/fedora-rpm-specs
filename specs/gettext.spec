@@ -1,11 +1,10 @@
 %bcond_with jar
 %bcond_with java
-%bcond libtextstyle %[0%{?fedora} >= 40]
 
 Summary: GNU tools and libraries for localized translated messages
 Name: gettext
-Version: 0.22.5
-Release: 6%{?dist}
+Version: 0.23
+Release: 1%{?dist}
 
 # The following are licensed under LGPLv2+:
 # - libintl and its headers
@@ -27,8 +26,7 @@ Source2: msghack.py
 Source3: msghack.1
 
 Patch1: gettext-0.21.1-covscan.patch
-Patch2: gettext-0.22-disable-libtextstyle.patch
-
+Patch2: gettext-0.23-libxml2.patch
 # for bootstrapping
 # BuildRequires: autoconf >= 2.62
 BuildRequires: automake
@@ -74,9 +72,7 @@ BuildRequires: glibc-langpack-zh
 BuildRequires: make
 Provides: bundled(gnulib)
 Requires: %{name}-runtime = %{version}-%{release}
-%if %{with libtextstyle}
 Requires: libtextstyle%{?_isa} = %{version}-%{release}
-%endif
 
 %description
 The GNU gettext package provides a set of tools and documentation for
@@ -129,9 +125,6 @@ Requires: xz
 Requires: diffutils
 Obsoletes: gettext-autopoint < 0.18.1.1-3
 Provides: gettext-autopoint = %{version}-%{release}
-%if %{without libtextstyle}
-Obsoletes: libtextstyle-devel < %{version}-%{release}
-%endif
 
 %description devel
 This package contains all development related files necessary for
@@ -145,17 +138,11 @@ Summary: Libraries for %{name}
 # libasprintf is LGPLv2+
 # libgettextpo is GPLv3+
 License: LGPL-2.0-or-later AND GPL-3.0-or-later
-%if %{with libtextstyle}
 Requires: libtextstyle%{?_isa} = %{version}-%{release}
-%endif
-%if %{without libtextstyle}
-Obsoletes: libtextstyle < %{version}-%{release}
-%endif
 
 %description libs
 This package contains libraries used internationalization support.
 
-%if %{with libtextstyle}
 %package -n libtextstyle
 Summary: Text styling library
 License: GPL-3.0-or-later
@@ -173,7 +160,6 @@ Requires: libtextstyle%{?_isa} = %{version}-%{release}
 This package contains all development related files necessary for
 developing or compiling applications/libraries that needs text
 styling.
-%endif
 
 %package -n emacs-%{name}
 Summary: Support for editing po files within GNU Emacs
@@ -207,9 +193,7 @@ Substitutes the values of environment variables.
 %prep
 %setup -q
 %patch 1 -p1 -b .orig~
-%if %{without libtextstyle}
 %patch 2 -p1 -b .orig~
-%endif
 autoreconf
 
 # Defeat libtextstyle attempt to bundle libxml2.  The comments
@@ -330,7 +314,7 @@ make check LIBUNISTRING=-lunistring
 
 %files -f %{name}-tools.lang
 %doc AUTHORS NEWS README THANKS
-%doc gettext-tools/misc/DISCLAIM
+%doc gettext-tools/misc/disclaim-translations.txt
 %doc gettext-tools/man/msg*.1.html
 %doc gettext-tools/man/recode*.1.html
 %doc gettext-tools/man/xgettext.1.html
@@ -369,8 +353,18 @@ make check LIBUNISTRING=-lunistring
 %{_datadir}/%{name}/ABOUT-NLS
 %{_datadir}/%{name}/po
 %{_datadir}/%{name}/styles
+%{_datadir}/%{name}/disclaim-translations.txt
 %dir %{_datadir}/%{name}-%{version}
 %{_datadir}/%{name}-%{version}/its
+%dir %{_datadir}/%{name}/schema
+%{_datadir}/%{name}/schema/its*.xsd*
+%{_datadir}/%{name}/schema/locating-rules.xsd*
+%dir %{_libexecdir}/%{name}
+%{_libexecdir}/%{name}/cldr-plurals
+%{_libexecdir}/%{name}/hostname
+%{_libexecdir}/%{name}/project-id
+%{_libexecdir}/%{name}/urlget
+%{_libexecdir}/%{name}/user-email
 
 %files runtime -f %{name}-runtime.lang
 %license COPYING
@@ -433,7 +427,6 @@ make check LIBUNISTRING=-lunistring
 %{_datadir}/%{name}/libintl.jar
 %endif
 
-%if %{with libtextstyle}
 %files -n libtextstyle
 %{_libdir}/libtextstyle.so.0*
 
@@ -443,7 +436,6 @@ make check LIBUNISTRING=-lunistring
 %{_includedir}/textstyle.h
 %{_infodir}/libtextstyle*
 %{_libdir}/libtextstyle.so
-%endif
 
 %files -n emacs-%{name}
 %dir %{_emacs_sitelispdir}/%{name}
@@ -457,6 +449,12 @@ make check LIBUNISTRING=-lunistring
 %{_mandir}/man1/msghack.1*
 
 %changelog
+* Wed Dec 11 2024 Manish Tiwari <matiwari@redhat.com> - 0.23-1
+- update to 0.23 release
+- https://savannah.gnu.org/news/?id=10699
+- Add patch to fix compilation error with libxml2 >= 2.12.0 and gcc >= 14.
+- Remove gettext-0.22-disable-libtextstyle patch
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.22.5-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

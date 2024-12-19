@@ -84,7 +84,7 @@ export PYCURL_VSFTPD_PATH=vsftpd
 
 # disable test_http_version_3 since curl in Fedora does not support it (#2175216)
 # disable tests incompatible with curl 8.4.0 and newer
-export PYTEST_ADDOPTS="--ignore examples -m 'not online' -k 'not (test_http_version_3 or test_multi_socket_action or test_multi_socket_select or test_easy_pause_unpause)'"
+export PYTEST_ADDOPTS="--ignore examples -m 'not online'"
 %py3_test_envvars make test PYTHON='%{python3}' PYTEST="%{__pytest}" PYFLAKES=true
 %endif
 

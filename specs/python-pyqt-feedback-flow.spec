@@ -9,8 +9,8 @@ can be customized according to users' wishes, which offers a wide
 variety of possibilities for providing flowing feedback.}
 
 Name:           python-%{pypi_name}
-Version:        0.3.4
-Release:        2%{?dist}
+Version:        0.3.5
+Release:        1%{?dist}
 Summary:        Show feedback in toast-like notifications
 
 License:        MIT
@@ -31,6 +31,7 @@ BuildRequires:  python3-pyqt6
 
 BuildRequires:  %{py3_dist toml-adapt}
 BuildRequires:  %{py3_dist pytest}
+BuildRequires:  %{py3_dist pytest-qt}
 
 %description %_description
 
@@ -38,7 +39,7 @@ BuildRequires:  %{py3_dist pytest}
 Summary:        %{summary}
 
 # See the comment on the corresponding BuildRequires.
-Requires:       python3-pyqt6
+Requires:       python3-pyqt5
 
 %description -n python3-%{pypi_name} %_description
 
@@ -48,7 +49,7 @@ rm -rf %{pypi_name}.egg-info
 
 toml-adapt -path pyproject.toml -a change -dep python -ver X
 toml-adapt -path pyproject.toml -a change -dep emoji -ver X
-toml-adapt -path pyproject.toml -a change -dep PyQt5 -ver X
+toml-adapt -path pyproject.toml -a change -dep PyQt6 -ver X
 
 %generate_buildrequires
 %pyproject_buildrequires -r
@@ -62,10 +63,7 @@ toml-adapt -path pyproject.toml -a change -dep PyQt5 -ver X
 %pyproject_save_files pyqt_feedback_flow
 
 %check
-%if %{with tests}
-# use smoke test
-%pyproject_check_import
-%endif
+%pytest -v
 
 %files -n python3-%{pypi_name} -f %{pyproject_files}
 %license LICENSE
@@ -73,6 +71,9 @@ toml-adapt -path pyproject.toml -a change -dep PyQt5 -ver X
 %doc CITATION.cff
 
 %changelog
+* Tue Dec 17 2024 Iztok Fister Jr. <iztokf AT fedoraproject DOT org> - 0.3.5-1
+- Update to the latest release
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.3.4-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,6 +1,6 @@
 %global upstreamname MIOpen
-%global rocm_release 6.2
-%global rocm_patch 1
+%global rocm_release 6.3
+%global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 %global toolchain rocm
@@ -44,7 +44,7 @@
 
 Name:           miopen
 Version:        %{rocm_version}
-Release:        5%{?dist}
+Release:        1%{?dist}
 Summary:        AMD's Machine Intelligence Library
 Url:            https://github.com/ROCm/%{upstreamname}
 License:        MIT AND BSD-2-Clause AND Apache-2.0 AND LicenseRef-Fedora-Public-Domain
@@ -71,6 +71,7 @@ BuildRequires:  frugally-deep-devel
 BuildRequires:  half-devel
 BuildRequires:  pkgconfig(libzstd)
 BuildRequires:  pkgconfig(nlohmann_json)
+BuildRequires:  hipblas-devel
 BuildRequires:  rocblas-devel
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
@@ -78,6 +79,7 @@ BuildRequires:  rocm-hip-devel
 BuildRequires:  rocm-runtime-devel
 BuildRequires:  rocm-rpm-macros
 BuildRequires:  rocm-rpm-macros-modules
+BuildRequires:  rocrand-devel
 BuildRequires:  roctracer-devel
 BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  zlib-devel
@@ -92,7 +94,6 @@ BuildRequires:  pkgconfig(bzip2)
 %if %{with test}
 BuildRequires:  gmock-devel
 BuildRequires:  gtest-devel
-BuildRequires:  rocrand-devel
 %endif
 
 Requires:       rocm-rpm-macros-modules
@@ -204,6 +205,7 @@ do
 	   -DMIOPEN_ENABLE_AI_IMMED_MODE_FALLBACK=OFF \
 	   -DMIOPEN_ENABLE_AI_KERNEL_TUNING=OFF \
 	   -DMIOPEN_TEST_ALL=%{build_test} \
+	   -DMIOPEN_USE_HIPBLASLT=OFF \
            -DMIOPEN_USE_MLIR=OFF \
            -DMIOPEN_USE_COMPOSABLEKERNEL=OFF
 
@@ -260,6 +262,9 @@ fi
 %endif
 
 %changelog
+* Wed Dec 11 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+
 * Mon Dec 2 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-5
 - Build on TW
 - Use manual release and changelog

@@ -1,7 +1,7 @@
 %bcond_without mingw
 
 Name:          libdeflate
-Version:       1.22
+Version:       1.23
 Release:       %autorelease
 Summary:       Fast implementation of DEFLATE, gzip, and zlib
 

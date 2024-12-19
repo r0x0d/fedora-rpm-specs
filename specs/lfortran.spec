@@ -1,6 +1,6 @@
 Version:        0.42.0
 Name:           lfortran
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A modern Fortran compiler
 
 # Main code is BSD-3-Clause
@@ -32,7 +32,7 @@ BuildRequires: libffi-devel
 BuildRequires: libunwind-devel
 BuildRequires: libuuid-devel
 %if 0%{?fedora} > 38
-BuildRequires: llvm18-devel
+BuildRequires: llvm-devel
 %else
 BuildRequires: llvm-devel
 %endif
@@ -118,17 +118,18 @@ This package contains the jupyter kernel for %{name}.
 # WITH_ZSD is just used to fix static linking of llvm
 # not needed on Fedora
 # WASM=OFF due to lfortran/lfortran#3899
-%cmake -DCMAKE_PREFIX_PATH=%{_libdir}/llvm18/ \
+# WITH_STACKTRACE=OFF due to lfortran/lfortran#5072
+%cmake -DCMAKE_PREFIX_PATH=%{_libdir}/llvm19/ \
        -DWITH_LLVM=ON \
+       -DWITH_ZSTD=OFF \
        -DWITH_RUNTIME_LIBRARY=ON \
        -DWITH_FMT=ON \
        -DWITH_JSON=ON \
        -DWITH_KOKKOS=ON \
-       -DWITH_STACKTRACE=ON \
+       -DWITH_STACKTRACE=OFF \
        -DWITH_TARGET_WASM=OFF \
        -DWITH_UNWIND=ON \
        -DWITH_WHEREAMI=ON \
-       -DWITH_ZSTD=OFF \
        -DWITH_XEUS=%{with_jupyter} \
        -DWITH_ZLIB=ON
 %cmake_build
@@ -170,6 +171,9 @@ This package contains the jupyter kernel for %{name}.
 %endif
 
 %changelog
+* Mon Dec 16 2024 Christoph Junghans <junghans@votca.org> - 0.42.0-3
+- Build with llvm-19
+
 * Sat Dec 14 2024 Christoph Junghans <junghans@votca.org> - 0.42.0-2
 - Build with llvm18
 

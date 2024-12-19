@@ -1,6 +1,6 @@
 %global upstreamname RCCL
-%global rocm_release 6.2
-%global rocm_patch 1
+%global rocm_release 6.3
+%global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 %global toolchain rocm
@@ -40,11 +40,7 @@
 
 Name:           rccl
 Version:        %{rocm_version}
-%if 0%{?fedora}
-Release:        %autorelease
-%else
-Release:        100%{?dist}
-%endif
+Release:        1%{?dist}
 Summary:        ROCm Communication Collectives Library
 
 Url:            https://github.com/ROCm/rccl
@@ -61,6 +57,7 @@ BuildRequires:  cmake
 BuildRequires:  hipify
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
+BuildRequires:  rocm-core-devel
 BuildRequires:  rocm-hip-devel
 BuildRequires:  rocm-runtime-devel
 BuildRequires:  rocm-rpm-macros
@@ -124,13 +121,17 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 sed -i -e '/AMD GPU targets to compile for/d' CMakeLists.txt
 
 # No parallel-jobs flag
-sed -i -e '/parallel-jobs/d' CMakeLists.txt
+# sed -i -e '/parallel-jobs/d' CMakeLists.txt
 
 # No /opt/rocm/.info/version
 sed -i -e 's@cat ${ROCM_PATH}/.info/version@echo %{rocm_version}@' CMakeLists.txt
 
+# wrong path
+sed -i -e 's@rocm-core/rocm_version.h@rocm_version.h@' src/include/hip_rocm_version_info.h
+
 %build
 %cmake \
+    -DBUILD_TESTS=%{build_test} \
     -DCMAKE_CXX_COMPILER=/usr/bin/hipcc \
     -DCMAKE_C_COMPILER=/usr/bin/hipcc \
     -DCMAKE_BUILD_TYPE=%{build_type} \
@@ -139,8 +140,9 @@ sed -i -e 's@cat ${ROCM_PATH}/.info/version@echo %{rocm_version}@' CMakeLists.tx
     -DCMAKE_INSTALL_LIBDIR=%{_libdir} \
     -DROCM_SYMLINK_LIBS=OFF \
     -DAMDGPU_TARGETS=%{rccl_gpu_list} \
-    -DBUILD_TESTS=%{build_test} \
-    -DHIP_PLATFORM=amd
+    -DHIP_PLATFORM=amd \
+    -DRCCL_ROCPROFILER_REGISTER=OFF
+
 
 %cmake_build
 
@@ -181,7 +183,7 @@ fi
 %endif
 
 %changelog
-%if 0%{?fedora}
-%autochangelog
-%endif
+* Tue Dec 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+
 

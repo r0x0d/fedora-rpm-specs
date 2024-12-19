@@ -6,8 +6,8 @@
 %endif
 
 Name:           perl-XML-Twig
-Version:        3.52
-Release:        26%{?dist}
+Version:        3.53
+Release:        1%{?dist}
 Summary:        Perl module for processing huge XML documents in tree mode
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/XML-Twig
@@ -79,6 +79,9 @@ Requires:       perl(XML::Parser) >= 2.23
 # Filter under-specified dependencies
 %global __requires_exclude %{?__requires_exclude:%{__requires_exclude}|}^perl\\(XML::Parser\\)$
 
+# Filter modules bundled for tests
+%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\(tools\\)
+
 %description
 This module provides a way to process XML documents. It is build on
 top of XML::Parser.  XML::Twig offers a tree interface to the
@@ -88,10 +91,26 @@ usage by building the tree only for the parts of the documents that
 need actual processing, through the use of the twig_roots and
 twig_print_outside_roots options.
 
+%package tests
+Summary:        Tests for %{name}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       perl-Test-Harness
+Requires:       perl(XML::XPathEngine)
+
+%description tests
+Tests from %{name}. Execute them
+with "%{_libexecdir}/%{name}/test".
+
 %prep
 %setup -q -n XML-Twig-%{version}
 iconv -f iso88591 -t utf8 < Changes > Changes.utf8 && \
     mv -f Changes.utf8 Changes
+
+# Help generators to recognize Perl scripts
+for F in t/*.t; do
+    perl -i -MConfig -ple 'print $Config{startperl} if $. == 1 && !s{\A#!.*perl\b}{$Config{startperl}}' "$F"
+    chmod +x "$F"
+done
 
 %build
 perl Makefile.PL -y INSTALLDIRS=perl NO_PACKLIST=1 NO_PERLLOCAL=1
@@ -101,17 +120,49 @@ perl Makefile.PL -y INSTALLDIRS=perl NO_PACKLIST=1 NO_PERLLOCAL=1
 %{make_install}
 %{_fixperms} %{buildroot}/*
 
+mkdir -p %{buildroot}%{_libexecdir}/%{name}
+cp -a t %{buildroot}%{_libexecdir}/%{name}
+rm %{buildroot}%{_libexecdir}/%{name}/t/pod*
+mkdir -p %{buildroot}%{_libexecdir}/%{name}/tools
+for F in `ls tools`; do
+    mkdir -p %{buildroot}%{_libexecdir}/%{name}/tools/$F
+    ln -s %{_bindir}/$F %{buildroot}%{_libexecdir}/%{name}/tools/$F
+done
+cat > %{buildroot}%{_libexecdir}/%{name}/test << 'EOF'
+#!/bin/bash
+unset TEST_AUTHOR
+set -e
+# Some tests write into temporary files/directories. The easiest solution
+# is to copy the tests into a writable directory and execute them from there.
+DIR=$(mktemp -d)
+pushd "$DIR"
+cp -a %{_libexecdir}/%{name}/* ./
+prove -I . -j "$(getconf _NPROCESSORS_ONLN)"
+popd
+rm -rf "$DIR"
+EOF
+chmod +x %{buildroot}%{_libexecdir}/%{name}/test
+
 %check
+export HARNESS_OPTIONS=j$(perl -e 'if ($ARGV[0] =~ /.*-j([0-9][0-9]*).*/) {print $1} else {print 1}' -- '%{?_smp_mflags}')
 make test
 
 %files
 %doc Changes README 
-%{perl_privlib}/*
-%{_bindir}/*
-%{_mandir}/man1/*
-%{_mandir}/man3/*
+%dir %{perl_privlib}/XML
+%{perl_privlib}/XML/Twig*
+%{_bindir}/xml_*
+%{_mandir}/man1/xml_*
+%{_mandir}/man3/XML::Twig*
+
+%files tests
+%{_libexecdir}/%{name}
 
 %changelog
+* Mon Dec 16 2024 Jitka Plesnikova <jplesnik@redhat.com> - 3.53-1
+- 3.53 bump (rhbz#2332315)
+- Package tests
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.52-26
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

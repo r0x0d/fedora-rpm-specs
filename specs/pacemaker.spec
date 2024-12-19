@@ -41,7 +41,7 @@
 ## can be incremented to build packages reliably considered "newer"
 ## than previously built packages with the same pcmkversion)
 %global pcmkversion 3.0.0
-%global specversion 2.rc2
+%global specversion 3.rc2
 
 ## Upstream commit (full commit ID, abbreviated commit ID, or tag) to build
 %global commit 4ae3a303e589ed47634890aab5dd955186b5ec02
@@ -74,7 +74,7 @@
 %if 0%{?rhel}
 %bcond_with doc
 %else
-%bcond_with doc
+%bcond_without doc
 %endif
 
 ## Add option to default to start-up synchronization with SBD.
@@ -770,6 +770,9 @@ exit 0
 %{_datadir}/pkgconfig/pacemaker-schemas.pc
 
 %changelog
+* Tue Dec 17 2024 Klaus Wenninger <kwenning@redhat.com> - 3.0.0-0.3.rc2
+- re-enable docs as inkscape dependencies seem to be fixed in rawhide
+
 * Fri Dec 13 2024 Klaus Wenninger <kwenning@redhat.com> - 3.0.0-0.2.rc2
 - Update for new upstream release tarball: Pacemaker-3.0.0-rc2,
   for full details, see included ChangeLog.md file or

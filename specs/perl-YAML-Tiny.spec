@@ -6,20 +6,19 @@
 %endif
 
 Name:           perl-YAML-Tiny
-Version:        1.74
-Release:        5%{?dist}
+Version:        1.76
+Release:        1%{?dist}
 Summary:        Read/Write YAML files with as little code as possible
 License:        GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:            https://metacpan.org/release/YAML-Tiny
-Source0:        https://cpan.metacpan.org/modules/by-module/YAML/YAML-Tiny-%{version}.tar.gz
+Source0:        https://www.cpan.org/modules/by-module/YAML/YAML-Tiny-%{version}.tar.gz
 BuildArch:      noarch
 # Module Build
 BuildRequires:  coreutils
-BuildRequires:  findutils
 BuildRequires:  make
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 # Module Runtime
 BuildRequires:  perl(B)
 BuildRequires:  perl(Carp)
@@ -50,7 +49,7 @@ BuildRequires:  perl(CPAN::Meta) >= 2.120900
 %if %{with perl_YAML_Tiny_enables_JSON_MaybeX_test}
 BuildRequires:  perl(JSON::MaybeXS) >= 1.001000
 %endif
-# Runtime
+# Dependencies
 Requires:       perl(Carp)
 Requires:       perl(Config)
 Requires:       perl(Fcntl)
@@ -64,12 +63,11 @@ memory overhead.
 %setup -q -n YAML-Tiny-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 %{_fixperms} -c %{buildroot}
 
 %check
@@ -82,6 +80,17 @@ make test
 %{_mandir}/man3/YAML::Tiny.3*
 
 %changelog
+* Mon Dec 16 2024 Paul Howarth <paul@city-fan.org> - 1.76-1
+- Update to 1.76 (rhbz#2332646)
+  - Revert change from GH#60: "yes", "y", etc. are not actually booleans (GH#66)
+
+* Mon Dec 16 2024 Paul Howarth <paul@city-fan.org> - 1.75-1
+- Update to 1.75 (rhbz#2332503)
+  - Fixed regression in %%QUOTE (GH#60)
+  - Fix version comparison logic for forward compatibility (GH#63)
+- Switch source URL from cpan.metacpan.org to www.cpan.org
+- Use %%{make_build} and %%{make_install}
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.74-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

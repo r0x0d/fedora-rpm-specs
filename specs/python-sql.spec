@@ -9,6 +9,7 @@ Summary:        %{sum}
 
 License:        BSD-3-Clause
 URL:            https://pypi.python.org/pypi/%{name}
+VCS:            hg:https://foss.heptapod.net/tryton/python-sql
 Source0:        %{pypi_source %{srcname}}
 
 BuildArch:      noarch

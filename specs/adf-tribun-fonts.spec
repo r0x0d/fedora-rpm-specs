@@ -4,7 +4,7 @@ Release: 17%{?dist}
 URL:     http://arkandis.tuxfamily.org/adffonts.html
 
 %global foundry           ADF
-%global fontlicense       GPLv2+ with exceptions
+%global fontlicense       GPL-2.0-only WITH Font-exception-2.0
 %global fontlicenses      OTF/COPYING
 %global fontdocs          *.txt
 

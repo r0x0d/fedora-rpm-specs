@@ -1,12 +1,15 @@
 %global srcname docstring-parser
 
 Name:           python-%{srcname}
-Version:        0.15
-Release:        7%{?dist}
+Version:        0.16
+Release:        1%{?dist}
 Summary:        Parse Python docstrings
 License:        MIT
 URL:            https://github.com/rr-/docstring_parser
 Source:         %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+# Fix removal of ast.Str, ast.NameConstant and ast.Num in Python 3.14
+# Upstream discussion https://github.com/rr-/docstring_parser/pull/91
+Patch0001:      0001-Fix_3.14_Ast_changes.patch
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
@@ -49,11 +52,14 @@ Summary:        %{summary}
 
 
 %files -n python3-%{srcname} -f %{pyproject_files}
-%doc README.md CHANGELOG.md
+%doc README.md
 %license LICENSE.md
 
 
 %changelog
+* Wed Dec 04 2024 Federico Pellegrin <fede@evolware.org> - 0.16-1
+- Bump to 0.16, fix build for Python 3.14(pre)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.15-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

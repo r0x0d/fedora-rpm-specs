@@ -1,5 +1,5 @@
-%global commit da35f9d6c7374a95353fd1df1d394d44ab66cf01
-%global snapdate 20240226
+%global commit 660795b2834aebb2217c9849d668b6e4bd4ef810
+%global snapdate 20241216
 
 Name:           dr_libs
 # While the individual header-only libraries are versioned, the overall
@@ -22,9 +22,9 @@ License:        Unlicense OR MIT-0
 # The test file sintel_trailer-audio.flac, Source125, is CC-BY-3.0.
 SourceLicense:  (%{license}) AND Unlicense AND CC-BY-3.0
 
-%global dr_flac_version 0.12.42
-%global dr_mp3_version 0.6.39
-%global dr_wav_version 0.13.16
+%global dr_flac_version 0.12.43
+%global dr_mp3_version 0.6.40
+%global dr_wav_version 0.13.17
 
 Source0:        %{url}/archive/%{commit}/dr_libs-%{commit}.tar.gz
 # Upstream does not provide a build system for the tests. We have written a

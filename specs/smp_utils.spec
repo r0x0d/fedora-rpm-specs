@@ -1,9 +1,8 @@
 Summary:        Utilities for SAS management protocol (SMP)
 Name:           smp_utils
 Version:        0.99
-Release:        11%{?dist}
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+Release:        12%{?dist}
+License:        BSD-3-Clause
 URL:            http://sg.danny.cz/sg/smp_utils.html
 Source0:        http://sg.danny.cz/sg/p/%{name}-%{version}.tgz
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
@@ -77,6 +76,9 @@ rm -rf %{buildroot}%{_libdir}/*.la
 
 
 %changelog
+* Sun Dec 15 2024 Stephane Thiell <sthiell@stanford.edu> - 0.99-12
+- use SPDX license BSD-3-Clause
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.99-11
 - convert license to SPDX
 

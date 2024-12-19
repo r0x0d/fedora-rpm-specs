@@ -1,6 +1,6 @@
 Summary: Graphical system installer
 Name:    anaconda
-Version: 42.18
+Version: 42.20
 Release: 1%{?dist}
 ExcludeArch: %{ix86}
 License: GPL-2.0-or-later
@@ -43,7 +43,7 @@ Source0: https://github.com/rhinstaller/%{name}/releases/download/%{name}-%{vers
 %define pythonblivetver 1:3.9.0-1
 %define rpmver 4.15.0
 %define simplelinever 1.9.0-1
-%define subscriptionmanagerver 1.26
+%define subscriptionmanagerver 1.29.31
 %define utillinuxver 2.15.1
 %define rpmostreever 2023.2
 %define s390utilscorever 2.31.0
@@ -490,6 +490,13 @@ rm -rf \
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Tue Dec 17 2024 Packit <hello@packit.dev> - 42.20-1
+- Subscription code updates - adjust unit tests (mkolman)
+- Subscription code updates - GTK GUI (mkolman)
+- Subscription code updates - backend (mkolman)
+- Bump minimal subscription manager versions (mkolman)
+- network: improve logging of writing configuration (rvykydal)
+
 * Tue Dec 03 2024 Packit <hello@packit.dev> - 42.18-1
 - efi: Update __all__ dictionary (abologna)
 - docs: fix test container update doc (rvykydal)

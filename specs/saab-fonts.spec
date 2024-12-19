@@ -2,7 +2,7 @@ Version: 0.91
 Release: 31%{?dist}
 URL:     http://guca.sourceforge.net/typography/fonts/saab/
 
-%global fontlicense       GPLv2+ with exceptions
+%global fontlicense       GPL-2.0-or-later WITH Font-exception-2.0
 %global fontlicenses      License_font_exception.txt
 
 %global fontfamily        Saab

@@ -8,7 +8,7 @@ designed for on-screen reading. The fonts were originally designed
 by Dave Crossland.}
 
 %global	foundry		abattis
-%global	fontlicense	OFL
+%global	fontlicense	OFL-1.1
 %global	fontlicenses	COPYING
 %global	fontdocs	NEWS README.md
 %global	fontdocsex	%{fontlicenses}

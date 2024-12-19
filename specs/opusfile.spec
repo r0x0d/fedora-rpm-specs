@@ -1,18 +1,24 @@
 Name:          opusfile
 Version:       0.12
-Release:       14%{?dist}
+%global soname_version 0
+Release:       15%{?dist}
 Summary:       A high-level API for decoding and seeking within .opus files
-# Automatically converted from old format: BSD - review is highly recommended.
-License:       LicenseRef-Callaway-BSD
+License:       BSD-3-Clause
 URL:           https://www.opus-codec.org/
 Source0:       https://downloads.xiph.org/releases/opus/%{name}-%{version}.tar.gz
-Patch1:        CVE-2022-47021.patch
+# Propagate allocation failure from ogg_sync_buffer.
+# https://github.com/xiph/opusfile/commit/0a4cd796df5b030cb866f3f4a5e41a4b92caddf5
+#
+# Fixes CVE-2022-47021.
+# A potential bug of NPD
+# https://github.com/xiph/opusfile/issues/36
+Patch1:        https://github.com/xiph/opusfile/commit/0a4cd796df5b030cb866f3f4a5e41a4b92caddf5.patch#/CVE-2022-47021.patch
 
 BuildRequires: make
 BuildRequires: gcc
-BuildRequires: libogg-devel
-BuildRequires: openssl-devel
-BuildRequires: opus-devel
+BuildRequires: pkgconfig(ogg)
+BuildRequires: pkgconfig(openssl)
+BuildRequires: pkgconfig(opus)
 
 %description
 libopusfile provides a high-level API for decoding and seeking 
@@ -29,7 +35,8 @@ decoded with a single output format, even if the channel count changes).
 %package devel
 Summary: Development package for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
-Requires: pkgconfig
+# The public API headers include ogg/ogg.h.
+Requires: pkgconfig(ogg)
 
 %description devel
 Files for development with %{name}.
@@ -48,13 +55,11 @@ Files for development with %{name}.
 #Remove libtool archives.
 find %{buildroot} -type f -name "*.la" -delete
 
-%ldconfig_scriptlets
-
 %files
 %license COPYING
 %doc AUTHORS
-%{_libdir}/libopusfile.so.*
-%{_libdir}/libopusurl.so.*
+%{_libdir}/libopusfile.so.%{soname_version}{,.*}
+%{_libdir}/libopusurl.so.%{soname_version}{,.*}
 
 %files devel
 %doc %{_docdir}/%{name}
@@ -65,6 +70,10 @@ find %{buildroot} -type f -name "*.la" -delete
 %{_libdir}/libopusurl.so
 
 %changelog
+* Sat Sep 21 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 0.12-15
+- Identify the license as BSD-3-Clause
+- Make opusfile-devel depend on libogg-devel
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 0.12-14
 - convert license to SPDX
 

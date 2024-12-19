@@ -7,6 +7,11 @@ URL: https://nheko.im/nheko-reborn/%{name}
 Summary: Simple async wrapper around CURL for C++
 Source0: %{url}/-/archive/v%{version}/%{name}-v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+%if 0%{?fedora} && 0%{?fedora} >= 42
+ExcludeArch: %{ix86}
+%endif
+
 BuildRequires: fmt-devel
 BuildRequires: libcurl-devel
 BuildRequires: libevent-devel

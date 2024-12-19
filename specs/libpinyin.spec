@@ -1,7 +1,7 @@
 %global snapshot 0
 
 Name:           libpinyin
-Version:        2.9.92
+Version:        2.9.93
 Release:        1%{?dist}
 Summary:        Library to deal with pinyin
 
@@ -9,7 +9,7 @@ License:        GPL-3.0-or-later
 URL:            https://github.com/libpinyin/libpinyin
 Source0:        http://downloads.sourceforge.net/libpinyin/libpinyin/%{name}-%{version}.tar.gz
 %if %snapshot
-Patch0:         libpinyin-2.8.x-head.patch
+Patch0:         libpinyin-2.10.x-head.patch
 %endif
 
 BuildRequires:  gcc-c++
@@ -108,6 +108,10 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 %{_libdir}/libzhuyin*.so.*
 
 %changelog
+* Tue Dec 17 2024 Peng Wu <pwu@redhat.com> - 2.9.93-1
+- Update to 2.9.93
+- bug fixes
+
 * Mon Oct 21 2024 Peng Wu <pwu@redhat.com> - 2.9.92-1
 - Update to 2.9.92
 - support punctuation candidate

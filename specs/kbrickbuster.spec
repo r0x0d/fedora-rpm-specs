@@ -1,7 +1,7 @@
 Name:    kbrickbuster
 Summary: Destroy bricks with a ball
-Version: 24.08.0
-Release: 2%{?dist}
+Version: 24.12.0
+Release: 1%{?dist}
 
 # Automatically converted from old format: GPLv2+ and GFDL - review is highly recommended.
 License: GPL-2.0-or-later AND LicenseRef-Callaway-GFDL
@@ -74,6 +74,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_kf6_datadir}/metainfo/org.k
 
 
 %changelog
+* Mon Dec 16 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 24.12.0-1
+- 24.12.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 24.08.0-2
 - convert license to SPDX
 

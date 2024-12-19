@@ -1,4 +1,4 @@
-%global glibcsrcdir glibc-2.40.9000-458-g97b74cbbb0
+%global glibcsrcdir glibc-2.40.9000-481-gdd413a4d2f
 %global glibcversion 2.40.9000
 # Pre-release tarballs are pulled in from git using a command that is
 # effectively:
@@ -152,7 +152,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 23
+%global baserelease 24
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -2367,6 +2367,33 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Mon Dec 16 2024 DJ Delorie <dj@redhat.com> - 2.40.9000-24
+- Auto-sync with upstream branch master,
+  commit dd413a4d2f320d5c3bc43e0788919724c89b3dab.
+- Fix sysdeps/x86/fpu/Makefile: Split and sort tests
+- sysdeps/x86/fpu/Makefile: Split and sort tests
+- Use empty initializer to silence GCC 4.9 or older
+- Linux: Check for 0 return value from vDSO getrandom probe
+- hppa: Update libm-test-ulps
+- Revert "Add braces in initializers for GCC 4.9 or older"
+- tst-difftime.c: Use "main (void)"
+- or1k: Update libm-test-ulps
+- htl: move pthread_sigmask into libc.
+- htl: move __pthread_sigstate into libc.
+- htl: move __pthread_sigstate_destroy into libc.
+- Return EXIT_UNSUPPORTED if __builtin_add_overflow unavailable
+- ifuncmain9.c: Return EXIT_UNSUPPORTED for GCC 5.4 or older
+- include/bits/sigstksz.h: Avoid #elif IS_IN (libsupport)
+- regex.h: Avoid #elif __STDC_VERSION__
+- tst-assert-c++.cc: Return EXIT_UNSUPPORTED for GCC 4.9 or older
+- Add braces in initializers for GCC 4.9 or older
+- Return EXIT_UNSUPPORTED if __builtin_mul_overflow unavailable
+- tst-minsigstksz-1.c: Return EXIT_UNSUPPORTED for GCC 4.9 or older
+- tester.c: Use -Wmemset-transposed-args for GCC 5 or newer
+- Makefile.in: Add test to check xcheck rule
+- Don't use TEST_CXX as CXX for build
+- AArch64: Update libm-test-ulps
+
 * Fri Dec 13 2024 Arjun Shankar <arjun@redhat.com> - 2.40.9000-23
 - Auto-sync with upstream branch master,
   commit 97b74cbbb0724c26fbbd5037a6ab9f81ac0a10a1:

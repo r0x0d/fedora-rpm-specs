@@ -3,7 +3,7 @@
 
 # https://github.com/containerd/containerd
 %global goipath         github.com/containerd/containerd
-Version:                2.0.0
+Version:                2.0.1
 
 %gometa -L -f
 
@@ -29,10 +29,6 @@ Source2:        go-vendor-tools.toml
 Source3:        containerd.toml
 
 Patch:          0001-Makefile-adjust-GO_LDFLAGS-quoting.patch
-# The patch below extracted from https://github.com/containerd/containerd/pull/10981
-# Once the PR is merged and released upstream this patch can be removed.
-# The patch resolves failing tests on s390x
-Patch:          0001-fsverity.IsEnabled-big-endian-fix.patch
 
 BuildRequires:  /usr/bin/go-md2man
 BuildRequires:  btrfs-progs-devel

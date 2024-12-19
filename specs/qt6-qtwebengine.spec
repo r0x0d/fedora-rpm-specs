@@ -51,7 +51,7 @@
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
 Version: 6.8.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
 # See also http://qt-project.org/doc/qt-5.0/qtdoc/licensing.html
@@ -111,6 +111,7 @@ BuildRequires: qt6-qtsvg-devel
 BuildRequires: qt6-qttools-static
 BuildRequires: qt6-qtquickcontrols2-devel
 BuildRequires: qt6-qtwebchannel-devel
+BuildRequires: qt6-qtwebsockets-devel
 # for examples?
 BuildRequires: ninja-build
 BuildRequires: cmake
@@ -198,6 +199,7 @@ BuildRequires: pkgconfig(libavcodec)
 BuildRequires: pkgconfig(libavformat)
 BuildRequires: pkgconfig(libavutil)
 BuildRequires: pkgconfig(openh264)
+BuildRequires: pkgconfig(libva)
 
 %if 0%{?fedora} && 0%{?fedora} >= 39
 BuildRequires: python3-zombie-imp
@@ -672,6 +674,9 @@ done
 %endif
 
 %changelog
+* Sun Dec 15 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-3
+- Add optional deps
+
 * Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
 - Move Software Bill of Materials from -devel
 

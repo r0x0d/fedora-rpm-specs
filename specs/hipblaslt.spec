@@ -1,5 +1,5 @@
 %global upstreamname hipBLASLt
-%global rocm_release 6.2
+%global rocm_release 6.3
 %global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
@@ -26,9 +26,13 @@
 # The problem with the fork has been raised here.
 # https://github.com/ROCm/hipBLASLt/issues/908
 
+# hipblaslt does not support our default set
+# These are the ones it does, gfx942 building still has problems
+%global amdgpu_targets "gfx90a:xnack+;gfx90a:xnack-;gfx1100;gfx1101"
+
 Name:           hipblaslt
 Version:        %{rocm_version}
-Release:        %autorelease
+Release:        1%{?dist}
 Summary:        ROCm general matrix operations beyond BLAS
 Url:            https://github.com/ROCmSoftwarePlatform/%{upstreamname}
 License:        MIT
@@ -101,6 +105,8 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 sed -i -e 's@rocm_path=/opt/rocm@rocm_path=/usr@'                              tensilelite/Tensile/Ops/gen_assembly.sh
 # No llvm/bin/clang, use clang++-17 or similar
 sed -i -e 's@toolchain=${rocm_path}/llvm/bin/clang++@toolchain=%{rocmllvm_bindir}/clang++@'    tensilelite/Tensile/Ops/gen_assembly.sh
+sed -i -e 's@clang_path="${rocm_path}/bin/amdclang++"@clang_path="%{rocmllvm_bindir}/clang++"@' library/src/amd_detail/rocblaslt/src/kernels/compile_code_object.sh
+
 # Remove venv
 sed -i -e 's@. ${venv}/bin/activate@@'                                         tensilelite/Tensile/Ops/gen_assembly.sh
 sed -i -e 's@deactivate@@'                                                     tensilelite/Tensile/Ops/gen_assembly.sh
@@ -143,8 +149,12 @@ TL=$PWD
 cd ..
 
 # Should not have to do this
-RESOURCE_DIR=`%{rocmllvm_bindir}/clang -print-resource-dir`
+CLANG_PATH=`hipconfig --hipclangpath`
+ROCM_CLANG=${CLANG_PATH}/clang
+RESOURCE_DIR=`${ROCM_CLANG} -print-resource-dir`
 export DEVICE_LIB_PATH=${RESOURCE_DIR}/amdgcn/bitcode
+export TENSILE_ROCM_ASSEMBLER_PATH=${CLANG_PATH}/clang++
+export TENSILE_ROCM_OFFLOAD_BUNDLER_PATH=${CLANG_PATH}/clang-offload-bundler
 
 # Look for the just built tensilelite
 export PATH=${TL}/%{_bindir}:$PATH
@@ -157,9 +167,10 @@ export Tensile_DIR=${TL}%{python3_sitelib}/Tensile
 # gfx942 has some unknown to llvm17 asm directives
 # Use ld.lld to work around a problem with ld
 %cmake \
-       -DAMDGPU_TARGETS="gfx90a:xnack+;gfx90a:xnack-" \
+       -DAMDGPU_TARGETS=%{amdgpu_targets} \
        -DBUILD_CLIENTS_TESTS=%{build_test} \
        -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF \
+       -DBUILD_VERBOSE=ON \
        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
        -DCMAKE_INSTALL_LIBDIR=%{_lib} \
        -DCMAKE_C_COMPILER=hipcc \
@@ -168,7 +179,9 @@ export Tensile_DIR=${TL}%{python3_sitelib}/Tensile
        -DHIP_PLATFORM=amd \
        -DROCM_SYMLINK_LIBS=OFF \
        -DBUILD_WITH_TENSILE=ON \
-       -DTensile_LIBRARY_FORMAT=msgpack
+       -DTensile_COMPILER=hipcc \
+       -DTensile_LIBRARY_FORMAT=msgpack \
+       -DVIRTUALENV_BIN_DIR=%{_bindir} 
 
 %cmake_build
 
@@ -196,4 +209,6 @@ export Tensile_DIR=${TL}%{python3_sitelib}/Tensile
 %endif
 
 %changelog
-%autochangelog
+* Wed Dec 11 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+

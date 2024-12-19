@@ -3,7 +3,7 @@ Release:        4%{?dist}
 URL:            https://github.com/adobe-fonts/source-sans-pro/
 
 %global foundry adobe
-%global fontlicense OFL
+%global fontlicense OFL-1.1
 %global fontlicenses LICENSE.md
 %global fontdocs README.md
 %global fontdocsex %{fontlicenses}

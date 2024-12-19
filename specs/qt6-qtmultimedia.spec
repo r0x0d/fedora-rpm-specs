@@ -21,7 +21,7 @@
 Summary: Qt6 - Multimedia support
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -72,6 +72,7 @@ BuildRequires: libavformat-free-devel
 BuildRequires: libswscale-free-devel
 BuildRequires: libswresample-free-devel
 BuildRequires: pkgconfig(libva) pkgconfig(libva-drm)
+BuildRequires: pkgconfig(libpipewire-0.3)
 %endif
 BuildRequires: pkgconfig(xrandr)
 BuildRequires: pkgconfig(xv)
@@ -213,6 +214,9 @@ popd
 
 
 %changelog
+* Sun Dec 15 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-3
+- Add optional libpipewire
+
 * Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
 - Move Software Bill of Materials from -devel
 

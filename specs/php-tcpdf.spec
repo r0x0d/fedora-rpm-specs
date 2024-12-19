@@ -1,23 +1,22 @@
 # remirepo/Fedora spec file for php-tcpdf
 #
-# Copyright (c) 2013-2024 Remi Collet
-# Copyright (c) 2013      Remi Collet, Johan Cwiklinski
-# License: CC-BY-SA
-# http://creativecommons.org/licenses/by-sa/4.0/
+# SPDX-FileCopyrightText:  Copyright 2013-2024 Remi Collet
+# SPDX-License-Identifier: CECILL-2.1
+# http://www.cecill.info/licences/Licence_CeCILL_V2-en.txt
 #
 # Please, preserve the changelog entries
 #
 # see https://github.com/tecnickcom/TCPDF/releases
-%global gh_commit    cfbc0028cc23f057f2baf9e73bdc238153c22086
+%global gh_commit    7956f5e37863c6a569d5ccfae826f353a12a2493
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     tecnickcom
-%global gh_date      2024-10-26
+%global gh_date      2024-12-13
 %global gh_project   TCPDF
 %global real_name    tcpdf
 
 Name:           php-tcpdf
 Summary:        PHP class for generating PDF documents and barcodes
-Version:        6.7.7
+Version:        6.7.8
 Release:        1%{?dist}
 
 URL:            http://www.tcpdf.org
@@ -192,8 +191,8 @@ This package allow to use system GNU FreeFont serif font faces in TCPDF.
 %prep
 %setup -q -n %{gh_project}-%{gh_commit}
 
-: Fix version
-sed -e '/tcpdf_version/s/6.6.0/%{version}/' -i include/tcpdf_static.php
+#: Fix version
+#sed -e '/tcpdf_version/s/6.6.0/%{version}/' -i include/tcpdf_static.php
 
 : Check version
 grep tcpdf_version include/tcpdf_static.php | grep %{version}
@@ -314,6 +313,10 @@ php -r 'require "%{buildroot}%{_datadir}/php/%{real_name}/autoload.php";
 
 
 %changelog
+* Mon Dec 16 2024 Remi Collet <remi@remirepo.net> - 6.7.8-1
+- update to 6.7.8
+- re-license spec file to CECILL-2.1
+
 * Mon Oct 28 2024 Remi Collet <remi@remirepo.net> - 6.7.7-1
 - update to 6.7.7
 

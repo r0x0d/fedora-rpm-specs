@@ -4,8 +4,8 @@
 %global kbd_datadir %{_exec_prefix}/lib/kbd
 
 Name:           kbd
-Version:        2.6.4
-Release:        5%{?dist}
+Version:        2.7
+Release:        1%{?dist}
 Summary:        Tools for configuring the console (keyboard, virtual terminals, etc.)
 License:        GPL-2.0-or-later
 URL:            http://www.kbd-project.org/
@@ -172,7 +172,7 @@ make check
 
 %files -f %{name}.lang
 %license COPYING
-%doc ChangeLog AUTHORS README docs/doc/kbd.FAQ*.html docs/doc/font-formats/*.html docs/doc/utf/utf* docs/doc/dvorak/*
+%doc ChangeLog AUTHORS README docs/doc/font-formats/*.html docs/doc/dvorak/*
 %{_bindir}/*
 %{_mandir}/*/*
 %config(noreplace) %{_sysconfdir}/pam.d/vlock
@@ -185,6 +185,10 @@ make check
 %{kbd_datadir}/keymaps/legacy
 
 %changelog
+* Tue Dec 17 2024 Vitezslav Crhonek <vcrhonek@redhat.com> - 2.7-1
+- Update to kbd-2.7
+  Resolves: #2331264
+
 * Tue Sep 10 2024 Vitezslav Crhonek <vcrhonek@redhat.com> - 2.6.4-5
 - Add vlock option to issue prompt before invokation of pam stack
 

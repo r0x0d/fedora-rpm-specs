@@ -4,8 +4,8 @@
 
 Summary: X.Org X11 libXv runtime library
 Name:    libXv
-Version: 1.0.12
-Release: 4%{?gitdate:.%{gitdate}git%{gitversion}}%{?dist}
+Version: 1.0.13
+Release: 1%{?gitdate:.%{gitdate}git%{gitversion}}%{?dist}
 License: SMLNJ AND HPND-sell-variant
 URL: http://www.x.org
 
@@ -68,6 +68,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 %{_mandir}/man3/*.3*
 
 %changelog
+* Mon Dec 16 2024 José Expósito <jexposit@redhat.com> - 1.0.13-1
+- libXv 1.0.13
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.12-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

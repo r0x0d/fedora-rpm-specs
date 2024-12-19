@@ -7,7 +7,7 @@ Main focus is on modifying existing spec files, any change should result
 in a minimal diff.}
 
 
-%global base_version 0.32.6
+%global base_version 0.33.0
 #global prerelease   rc1
 
 %global package_version %{base_version}%{?prerelease:~%{prerelease}}
@@ -77,6 +77,18 @@ sed -i 's/setuptools_scm\[toml\]>=7/setuptools_scm[toml]/' pyproject.toml
 
 
 %changelog
+* Mon Dec 16 2024 Packit <hello@packit.dev> - 0.33.0-1
+- There is a new convenience method `Sections.get_or_create()` that allows you to manipulate a section
+  without checking if it exists first. If a section doesn't exist, it will be appended to the end. (#441)
+  For example, this will work properly even on spec files without `%%changelog`:
+
+  ```
+  with spec.sections() as sections:
+      changelog = sections.get_or_create("changelog")
+      changelog[:] = ["%%autochangelog"]
+  ```
+- Resolves: rhbz#2332288
+
 * Wed Nov 13 2024 Packit <hello@packit.dev> - 0.32.6-1
 - New minor release for testing in CBS Koji
 

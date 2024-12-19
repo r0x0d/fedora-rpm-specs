@@ -1,5 +1,5 @@
 %global upstreamname hipSPARSE
-%global rocm_release 6.2
+%global rocm_release 6.3
 %global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
@@ -34,11 +34,7 @@
 
 Name:           hipsparse
 Version:        %{rocm_version}
-%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:        1%{?dist}
-%else
-Release:        %autorelease
-%endif
 Summary:        ROCm SPARSE marshalling library
 Url:            https://github.com/ROCmSoftwarePlatform/%{upstreamname}
 License:        MIT
@@ -46,9 +42,7 @@ License:        MIT
 # Only x86_64 works right now:
 ExclusiveArch:  x86_64
 
-Source0:        %{url}/archive/refs/tags/rocm-%{rocm_version}.tar.gz#/%{upstreamname}-%{rocm_version}.tar.gz
-# Really turn the samples off
-Patch0:         0001-prepare-hipsparse-cmake-for-fedora.patch
+Source0:        %{url}/archive/rocm-%{rocm_version}.tar.gz#/%{upstreamname}-%{rocm_version}.tar.gz
 
 BuildRequires:  cmake
 %if 0%{?suse_version}
@@ -127,6 +121,7 @@ do
 	   -DCMAKE_INSTALL_LIBDIR=$ROCM_LIB \
 	   -DCMAKE_INSTALL_BINDIR=$ROCM_BIN \
 	   -DBUILD_CLIENTS_BENCHMARKS=%{build_test} \
+	   -DBUILD_CLIENTS_SAMPLES=OFF \
 	   -DBUILD_CLIENTS_TESTS=%{build_test} \
 	   -DBUILD_CLIENTS_TESTS_OPENMP=OFF \
 	   -DBUILD_FORTRAN_CLIENTS=OFF
@@ -176,10 +171,9 @@ fi
 %endif
 
 %changelog
-%if 0%{?suse_version}
+* Tue Dec 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+
 * Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
 
-%else
-%autochangelog
-%endif

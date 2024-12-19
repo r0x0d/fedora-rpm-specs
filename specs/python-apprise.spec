@@ -39,27 +39,26 @@ Apprise is a Python package for simplifying access to all of the different
 notification services that are out there. Apprise opens the door and makes
 it easy to access:
 
-Africas Talking, Apprise API, APRS, AWS SES, AWS SNS, Bark, Boxcar, Burst SMS,
+Africas Talking, Apprise API, APRS, AWS SES, AWS SNS, Bark, Burst SMS,
 BulkSMS, BulkVS, Chantify, ClickSend, DAPNET, DingTalk, Discord, E-Mail, Emby,
 FCM, Feishu, Flock, Free Mobile, Google Chat, Gotify, Growl, Guilded, Home
 Assistant, httpSMS, IFTTT, Join, Kavenegar, KODI, Kumulos, LaMetric, Line,
 LunaSea, MacOSX, Mailgun, Mastodon, Mattermost,Matrix, MessageBird, Microsoft
 Windows, Microsoft Teams, Misskey, MQTT, MSG91, MyAndroid, Nexmo, Nextcloud,
 NextcloudTalk, Notica, Notifiarr, Notifico, ntfy, Office365, OneSignal,
-Opsgenie, PagerDuty, PagerTree, ParsePlatform, PopcornNotify, Prowl, Pushalot,
-PushBullet, Pushjet, PushMe, Pushover, PushSafer, Pushy, PushDeer, Revolt,
-Reddit, Rocket.Chat, RSyslog, SendGrid, ServerChan, SFR, Signal, SimplePush,
-Sinch, Slack, SMSEagle, SMS Manager, SMTP2Go, SparkPost, Splunk, Super Toasty,
-Streamlabs, Stride, Synology Chat, Syslog, Techulus Push, Telegram, Threema
-Gateway, Twilio, Twitter, Twist, VictorOps, Voipms, Vonage, WeCom Bot,
-WhatsApp, Webex Teams, Workflows, XBMC}
+Opsgenie, PagerDuty, PagerTree, ParsePlatform, Plivo, PopcornNotify, Prowl,
+Pushalot, PushBullet, Pushjet, PushMe, Pushover, PushSafer, Pushy, PushDeer,
+Revolt, Reddit, Rocket.Chat, RSyslog, SendGrid, ServerChan, Seven, SFR, Signal,
+SimplePush, Sinch, Slack, SMSEagle, SMS Manager, SMTP2Go, SparkPost, Splunk,
+Super Toasty, Streamlabs, Stride, Synology Chat, Syslog, Techulus Push,
+Telegram, Threema Gateway, Twilio, Twitter, Twist, VictorOps, Voipms, Vonage,
+WeCom Bot, WhatsApp, Webex Teams, Workflows, WxPusher, XBMC}
 
 Name:           python-%{pypi_name}
-Version:        1.8.1
-Release:        2%{?dist}
+Version:        1.9.1
+Release:        1%{?dist}
 Summary:        A simple wrapper to many popular notification services used today
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD
 URL:            https://github.com/caronc/%{pypi_name}
 Source0:        %{url}/archive/v%{version}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
@@ -106,7 +105,6 @@ BuildRequires: python%{python3_pkgversion}-pytest
 BuildRequires: python%{python3_pkgversion}-pytest-mock
 BuildRequires: python%{python3_pkgversion}-pytest-runner
 BuildRequires: python%{python3_pkgversion}-pytest-cov
-BuildRequires: python%{python3_pkgversion}-pytest-xdist
 %endif
 
 %description -n python%{python3_pkgversion}-%{pypi_name} %{common_description}
@@ -151,8 +149,11 @@ LANG=C.UTF-8 PYTHONPATH=%{buildroot}%{python3_sitelib} py.test-%{python3_version
 %{python3_sitelib}/%{pypi_name}/cli.*
 
 %changelog
-* Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.8.1-2
-- convert license to SPDX
+* Tue Dec 17 2024 Chris Caron <lead2gold@gmail.com> - 1.9.1
+- Updated to v1.9.1
+
+* Mon Sep  2 2024 Chris Caron <lead2gold@gmail.com> - 1.9.0
+- Updated to v1.9.0
 
 * Thu Jul 25 2024 Chris Caron <lead2gold@gmail.com> - 1.8.1
 - Updated to v1.8.1

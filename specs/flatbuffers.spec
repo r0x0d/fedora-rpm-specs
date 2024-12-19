@@ -38,6 +38,10 @@ Source1:        flatc.1
 # https://github.com/google/flatbuffers/pull/8365
 Patch0:         flatbuffers_mingw-lib.patch
 
+# NumPy 2.x fix
+# https://github.com/google/flatbuffers/issues/8332
+Patch1:         https://github.com/google/flatbuffers/pull/8346.patch
+
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
 

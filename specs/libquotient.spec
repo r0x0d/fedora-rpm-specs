@@ -7,7 +7,7 @@ the backbone of Quaternion, Spectral and other projects. Versions 0.5.x and
 older use the previous name - libQMatrixClient.}
 
 Name: libquotient
-Version: 0.9.0
+Version: 0.9.1
 Release: 1%{?dist}
 
 License: BSD-3-Clause AND LGPL-2.1-or-later
@@ -82,6 +82,9 @@ rm -rf %{buildroot}%{_datadir}/ndk-modules
 %{_libdir}/pkgconfig/%{appname}Qt6.pc
 
 %changelog
+* Mon Dec 16 2024 Steve Cossette <farchord@gmail.com> - 0.9.1-1
+- 0.9.1
+
 * Mon Nov 18 2024 Steve Cossette <farchord@gmail.com> - 0.9.0-1
 - 0.9.0
 

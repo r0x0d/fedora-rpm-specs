@@ -1,20 +1,14 @@
+# https://invent.kde.org/network/kaidan/-/issues/479
+%bcond check 0
+
 Name:           kaidan
-Version:        0.9.2
+Version:        0.10.1
 Release:        %autorelease
 Summary:        A XMPP client based on KDE Framework
 
-# https://invent.kde.org/network/kaidan/-/raw/master/LICENSE
-# src/qml/elements/IconTopButton.qml files is under LGPL-2.0-or-later license for 0.9.1 release,
-# which will be relicensed to GPL-3.0-or-later when new release is published.
-# see: https://invent.kde.org/network/kaidan/-/commit/14c712eb72e7094d22f9faeec8a8a86effe72ade?page=2#c88f477dc2798d0fbde587cea39b54208314e23b
-# https://bugzilla.redhat.com/show_bug.cgi?id=2216600#c16
 License:        GPL-3.0-or-later AND MIT AND Apache-2.0 AND CC-BY-SA-4.0 AND LGPL-2.0-or-later
 URL:            https://invent.kde.org/network/kaidan
 Source0:        %{url}/-/archive/v%{version}/%{name}-v%{version}.tar.gz
-
-# kquickimageeditor is actually a runtime dep, not used during the build,
-# and the qt5 and qt6 builds use the same cmake package name.
-Patch0:         kquickimageeditor-devel.patch
 
 %if 0%{?fedora} || 0%{?epel} > 7
 # handled by qt5-srpm-macros, which defines %%qt5_qtwebengine_arches
@@ -46,13 +40,13 @@ BuildRequires:  cmake(Qt5LinguistTools)
 BuildRequires:  cmake(KF5KIO)
 BuildRequires:  cmake(KF5CoreAddons)
 BuildRequires:  cmake(KF5Kirigami2)
-#BuildRequires:  cmake(KQuickImageEditor)
 BuildRequires:  cmake(KF5KirigamiAddons)
 BuildRequires:  cmake(KF5Notifications)
 BuildRequires:  kf5-rpm-macros
+
 BuildRequires:  cmake(ZXing)
 BuildRequires:  cmake(QXmpp)
-# optional dependencies
+BuildRequires:  libicu-devel
 BuildRequires:  cmake(KF5QQC2DesktopStyle)
 
 BuildRequires:  desktop-file-utils
@@ -89,7 +83,9 @@ and the Qt-based XMPP library QXmpp.
 %cmake_kf5 \
     -GNinja \
     -DUSE_KNOTIFICATIONS=ON \
+%if %{with check}
     -DBUILD_TESTING=ON \
+%endif
     -DBUILD_TESTS=ON \
 
 %cmake_build
@@ -100,25 +96,23 @@ and the Qt-based XMPP library QXmpp.
 %find_lang %{name} --with-qt
 
 %check
-# https://koji.fedoraproject.org/koji/taskinfo?taskID=102424233
-# https://kojipkgs.fedoraproject.org/work/tasks/4248/102424248/build.log
+%if %{with check}
 %ctest -E 'PublicGroupChatTest'
+%endif
 
-desktop-file-validate %{buildroot}%{_datadir}/applications/im.kaidan.kaidan.desktop
-appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/im.kaidan.kaidan.appdata.xml
+desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
+appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 
 %files -f %{name}.lang
-%license LICENSE
+%license LICENSES/*
 %doc README.md
 %{_bindir}/%{name}
-%dir %{_datadir}/%{name}
 %{_datadir}/applications/im.kaidan.kaidan.desktop
 %{_metainfodir}/im.kaidan.kaidan.appdata.xml
 %{_datadir}/icons/hicolor/128x128/apps/kaidan.png
 %{_datadir}/icons/hicolor/scalable/apps/kaidan.svg
 %{_datadir}/knotifications5/kaidan.notifyrc
-%{_datadir}/%{name}/images
-%{_datadir}/%{name}/providers.json
+%{_datadir}/%{name}/
 
 %changelog
 %autochangelog

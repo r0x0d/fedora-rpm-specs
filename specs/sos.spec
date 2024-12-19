@@ -1,6 +1,6 @@
 Summary: A set of tools to gather troubleshooting information from a system
 Name: sos
-Version: 4.8.1
+Version: 4.8.2
 Release: %autorelease
 Source0: https://github.com/sosreport/sos/archive/%{version}.tar.gz
 License: GPL-2.0-only
@@ -14,7 +14,7 @@ Requires: python3-setuptools
 %else
 Requires: python3-packaging
 %endif
-Recommends: python3-magic
+Recommends: python3-file-magic
 # Mandatory just for uploading to a SFTP server:
 Recommends: python3-requests
 Recommends: python3-pyyaml
@@ -23,6 +23,10 @@ Obsoletes: sos-collector <= 1.9
 BuildRequires: systemd
 # Mandatory just for uploading to an S3 bucket:
 Recommends: python3-boto3
+%if 0%{?fedora}
+# Address duplicate man pages
+BuildRequires:  fdupes
+%endif
 
 %description
 Sos is a set of tools that gathers information about system
@@ -49,6 +53,8 @@ support technicians and developers.
 %if 0%{?fedora} >= 39
 %pyproject_install
 %pyproject_save_files sos
+# files-duplicate: duplicate man pages detected
+%fdupes %{buildroot}%{_mandir}
 %else
 %py3_install '--install-scripts=%{_sbindir}'
 %endif

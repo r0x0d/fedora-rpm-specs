@@ -1,6 +1,6 @@
 Name:           scrot
-Version:        1.8.1
-Release:        5%{?dist}
+Version:        1.11.1
+Release:        1%{?dist}
 Summary:        Command line screen capture utility
 
 License:        MIT
@@ -33,7 +33,7 @@ autoreconf -if
 
 
 %files
-%doc AUTHORS ChangeLog README.md scrot.png FAQ CONTRIBUTING.md TODO.md
+%doc AUTHORS ChangeLog README.md scrot.png FAQ.md CONTRIBUTING.md TODO.md
 %license COPYING
 %{_bindir}/*
 %{_mandir}/man1/*
@@ -41,6 +41,9 @@ autoreconf -if
 
 
 %changelog
+* Mon Dec 16 2024 Vojtech Trefny <vtrefny@redhat.com> - 1.11.1-1
+- Update to 1.11.1
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.8.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

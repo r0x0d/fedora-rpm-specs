@@ -1,5 +1,5 @@
-Version: 0.4.12
-Release: 10%{?dist}
+Version: 0.4.13
+Release: 1%{?dist}
 
 # Define the directory where the OpenSSL engines are installed
 %global enginesdir %{_libdir}/engines-3
@@ -11,16 +11,6 @@ Summary:        A PKCS#11 engine for use with OpenSSL
 License:        LGPL-2.1-or-later AND BSD-2-Clause AND OpenSSL
 URL:            https://github.com/OpenSC/libp11
 Source0:        https://github.com/OpenSC/libp11/releases/download/libp11-%{version}/libp11-%{version}.tar.gz
-
-# Downstream only for now to make RSA operations working in FIPS mode
-Patch4:         openssl-pkcs11-0.4.10-set-rsa-fips-method-flag.patch
-# unbreak operation when some other engine is present in openssl.cnf
-# https://github.com/OpenSC/libp11/pull/460
-# https://github.com/OpenSC/libp11/commit/feb22a66
-# 580c12b78b63d88010a6178d7c4c58186938c479
-# 74497e0fa5b69b15790d6697e1ebce13af842d4c
-Patch5:         openssl-pkcs11-ossl3.patch
-Patch6:         openssl-pkcs11-ec-copy.patch
 
 BuildRequires: make
 BuildRequires:  autoconf automake libtool
@@ -114,17 +104,24 @@ make check %{?_smp_mflags} || if [ $? -ne 0 ]; then cat tests/*.log; exit 1; fi;
 %license COPYING
 %doc NEWS
 %{_libdir}/libp11.so.*
+%{_libdir}/libpkcs11.so.*
 %{enginesdir}/*.so
 
 %if 0%{?fedora}
 %files -n libp11-devel
 %doc examples/ doc/api.out/html/
 %{_libdir}/libp11.so
+%{_libdir}/libpkcs11.so
 %{_libdir}/pkgconfig/libp11.pc
 %{_includedir}/*.h
 %endif
 
 %changelog
+* Mon Dec 16 2024 Jakub Jelen <jjelen@redhat.com> - 0.4.13-1
+- New upstream release (#2332340)
+- Droping FIPS workaround
+- New libpkcs11.so libraries
+
 * Tue Jul 30 2024 Jakub Jelen <jjelen@redhat.com> - 0.4.12-10
 - Add separate dependency on OpenSSL Engines API (#2301017)
 

@@ -1,18 +1,22 @@
-%global forgeurl https://github.com/jonathf/numpoly
-
 Name:       python-numpoly
-Version:    1.2.14
+Version:    1.3.4
 Release:    %autorelease
 Summary:    Polynomials as a numpy datatype
+
+%global forgeurl https://github.com/jonathf/numpoly
+%global tag v%{version}
 %forgemeta
+
 # SPDX
 License:    BSD-2-Clause
 URL:        %forgeurl
 Source:     %forgesource
 
-BuildArch:      noarch
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+ExcludeArch:    %{ix86}
+
+BuildRequires:  gcc
 BuildRequires:  python3-devel
-BuildRequires:  python3dist(setuptools)
 BuildRequires:  python3dist(pytest)
 BuildRequires:  python3dist(sympy)
 
@@ -68,7 +72,7 @@ sed -r -i '/error::DeprecationWarning/d' pyproject.toml
 %pyproject_save_files -l numpoly
 
 %check
-%pytest -v
+%pytest -v --import-mode=importlib
 
 %files -n python3-numpoly -f %{pyproject_files}
 %doc README.rst

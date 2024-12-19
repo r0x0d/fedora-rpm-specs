@@ -173,7 +173,7 @@
 Summary: An interpreter of object-oriented scripting language
 Name: ruby
 Version: %{ruby_version}%{?development_release}
-Release: 17%{?dist}
+Release: 18%{?dist}
 # Licenses, which are likely not included in binary RPMs:
 # Apache-2.0:
 #   benchmark/gc/redblack.rb
@@ -282,6 +282,10 @@ Patch9: ruby-3.3.0-Disable-syntax-suggest-test-case.patch
 # Make sure hardeding flags are correctly applied.
 # https://bugs.ruby-lang.org/issues/20520
 Patch12: ruby-3.4.0-Extract-hardening-CFLAGS-to-a-special-hardenflags-variable.patch
+# Fix Ruby OpenSSL to respect crypto-policies TLS minimal version.
+# https://github.com/ruby/openssl/pull/710
+# https://github.com/ruby/ruby/commit/6213ab1a51387fd9cdcb5e87908722f3bbdf78cb
+Patch13: ruby-3.4.0-openssl-respect-crypto-policies-tls-min.patch
 
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 %{?with_rubypick:Suggests: rubypick}
@@ -761,6 +765,7 @@ analysis result in RBS format, a standard type description format for Ruby
 %patch 6 -p1
 %patch 9 -p1
 %patch 12 -p1
+%patch 13 -p1
 
 # Provide an example of usage of the tapset:
 cp -a %{SOURCE3} .
@@ -1756,6 +1761,9 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 
 
 %changelog
+* Mon Dec 16 2024 Jun Aruga <jaruga@redhat.com> - 3.3.6-18
+- Fix Ruby OpenSSL to respect crypto-policies TLS minimal version.
+
 * Wed Nov 20 2024 David Abdurachmanov <davidlt@rivosinc.com> - 3.3.6-17
 - Add riscv64 information for checksec
 

@@ -1,20 +1,16 @@
-%global srcname lib-zfcp-hbaapi
-
 Name:           libzfcphbaapi
 Summary:        HBA API for the zFCP device driver
-Version:        2.2.0
-Release:        23%{?dist}
-License:        CPL-1.0
-URL:            http://www.ibm.com/developerworks/linux/linux390/zfcp-hbaapi.html
-# http://www.ibm.com/developerworks/linux/linux390/zfcp-hbaapi-%%{hbaapiver}.html
-Source0:        http://download.boulder.ibm.com/ibmdl/pub/software/dw/linux390/ht_src/%{srcname}-%{version}.tar.gz
-Patch1:         %{srcname}-2.1.1-fedora.patch
-Patch2: libzfcphbaapi-c99.patch
+Version:        3.0.2
+Release:        1%{?dist}
+License:        EPL-1.0
+URL:            https://github.com/ibm-s390-linux/libzfcphbaapi
+Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
+Patch1:         %{name}-3.0.2-fedora.patch
 
 ExclusiveArch:  s390 s390x
 
 BuildRequires:  gcc
-BuildRequires:  automake
+BuildRequires:  automake autoconf libtool
 BuildRequires:  doxygen
 BuildRequires:  sg3_utils-devel
 BuildRequires:  make
@@ -42,18 +38,14 @@ Documentation in HTML format for the zFCP HBA API Library.
 
 
 %prep
-%setup -q -n %{srcname}-%{version}
-
-%patch 1 -p1 -b .fedora
-%patch 2 -p1
+%autosetup
 
 
 %build
+autoreconf -vif
+
 %configure --disable-static
-# manually disable rpath
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-make EXTRA_CFLAGS="-fno-strict-aliasing"
+%make_build EXTRA_CFLAGS="-fno-strict-aliasing"
 
 
 %install
@@ -72,7 +64,8 @@ fi
 
 
 %files
-%doc README COPYING ChangeLog AUTHORS LICENSE
+%license LICENSE
+%doc README COPYING ChangeLog AUTHORS
 %{_bindir}/zfcp_ping
 %{_bindir}/zfcp_show
 %{_libdir}/%{name}.so.*
@@ -85,7 +78,6 @@ fi
 %files devel
 %{_mandir}/man3/hbaapi.h.3*
 %{_libdir}/%{name}.so
-%exclude %{_libdir}/%{name}.la
 %{_includedir}/hbaapi.h
 
 %files docs
@@ -93,6 +85,9 @@ fi
 
 
 %changelog
+* Fri Dec 13 2024 Dan Horák <dan[at]danny.cz> - 3.0.2-1
+- updated to 3.0.2 from github
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.2.0-23
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

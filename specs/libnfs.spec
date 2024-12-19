@@ -1,5 +1,5 @@
 Name:		libnfs
-Version:	6.0.1
+Version:	6.0.2
 Release:	1%{?dist}
 Summary:	Client library for accessing NFS shares over a network
 # The library is licensed as LGPL-2.1-or-later
@@ -83,6 +83,9 @@ rm -f %{buildroot}%{_libdir}/*.la
 %{_mandir}/man1/nfs-*.1*
 
 %changelog
+* Mon Dec 16 2024 Xavier Bachelot <xavier@bachelot.org> - 6.0.2-1
+- Update to 6.0.2 (RHBZ#2331668)
+
 * Fri Dec 13 2024 Xavier Bachelot <xavier@bachelot.org> - 6.0.1-1
 - Update to 6.0.1 (RHBZ#2331668)
 

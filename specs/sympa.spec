@@ -31,13 +31,13 @@
 # Not available for EL
 %global unbundle_html5shiv         0
 # Not available for EL7
-%global unbundle_jquery            0%{?fedora}%{?el8}%{?el9}
+%global unbundle_jquery            0%{?fedora}%{?el8}%{?el9}%{?el10}
 # Available version is too old
 %global unbundle_jquery_migrate    0
 # Not available
 %global unbundle_jquery_minicolors 0
 #
-%global unbundle_jquery_ui         0%{?fedora}%{?el8}%{?el9}
+%global unbundle_jquery_ui         0%{?fedora}%{?el8}%{?el9}%{?el10}
 # Only available for Fedora
 %global unbundle_jqplot            0
 #
@@ -82,8 +82,8 @@
 #global pre_rel b.2
 
 Name:        sympa
-Version:     6.2.72
-Release:     %{?pre_rel:0.}5%{?pre_rel:.%pre_rel}%{?dist}
+Version:     6.2.74
+Release:     %{?pre_rel:0.}1%{?pre_rel:.%pre_rel}%{?dist}
 Summary:     Powerful multilingual List Manager
 Summary(fr): Gestionnaire de listes électroniques
 Summary(ja): 高機能で多言語対応のメーリングリスト管理ソフトウェア
@@ -307,10 +307,10 @@ Provides:      bundled(js-jquery-minicolors) = 2.3.6
 %endif
 # jquery-ui
 %if %{unbundle_jquery_ui}
-BuildRequires: js-jquery-ui >= 1.12.1
-Requires:      js-jquery-ui >= 1.12.1
+BuildRequires: js-jquery-ui >= 1.13.2
+Requires:      js-jquery-ui >= 1.13.2
 %else
-Provides:      bundled(js-jquery-ui) = 1.12.1
+Provides:      bundled(js-jquery-ui) = 1.13.2
 %endif
 # jqplot
 %if %{unbundle_jqplot}
@@ -589,7 +589,7 @@ install -m 0644 %{SOURCE107} %{buildroot}%{_sysconfdir}/logrotate.d/sympa
 
 # Create configuration override structure
 for conffile in \
-    auth.conf charset.conf crawlers_detection.conf create_list.conf \
+    auth.conf charset.conf create_list.conf \
     edit_list.conf nrcpt_by_domain.conf topics.conf \
     mime.types sympa.wsdl ;
     do cp -a %{buildroot}%{_datadir}/%{name}/default/$conffile \
@@ -760,7 +760,6 @@ fi
 %config(noreplace) %attr(0640,sympa,sympa) %{_sysconfdir}/sympa/sympa.conf
 %config(noreplace,missingok) %attr(-,sympa,sympa) %{_sysconfdir}/sympa/auth.conf
 %config(noreplace,missingok) %attr(-,sympa,sympa) %{_sysconfdir}/sympa/charset.conf
-%config(noreplace,missingok) %attr(-,sympa,sympa) %{_sysconfdir}/sympa/crawlers_detection.conf
 %config(noreplace,missingok) %attr(-,sympa,sympa) %{_sysconfdir}/sympa/create_list.conf
 %config(noreplace,missingok) %attr(-,sympa,sympa) %{_sysconfdir}/sympa/edit_list.conf
 %config(noreplace,missingok) %attr(-,sympa,sympa) %{_sysconfdir}/sympa/nrcpt_by_domain.conf
@@ -846,6 +845,10 @@ fi
 
 
 %changelog
+* Mon Dec 16 2024 Xavier Bachelot <xavier@bachelot.org> - 6.2.74-1
+- Update to 6.2.74, fix for CVE-2024-55919
+  - Full changelog: https://github.com/sympa-community/sympa/releases/tag/6.2.74
+
 * Thu Aug 22 2024 Xavier Bachelot <xavier@bachelot.org> 6.2.72-5
 - Drop EL7 support
 - Fix filter ordering

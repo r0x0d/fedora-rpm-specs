@@ -1,6 +1,6 @@
-%global         commit          7e13b1b747ef01b240cf8c8581c48a87518370fe
+%global         commit          13ebc1e957573fea2c3360f676b0f1680fad395d
 %global         shortcommit     %(c=%{commit}; echo ${c:0:8})
-%global         commitdate      20241008
+%global         commitdate      20241202
 %global         reponame        extensions
 %global         srcname         inkex
 %global         forgeurl        https://gitlab.com/inkscape/extensions
@@ -9,7 +9,7 @@ Version:        1.4.0
 %forgemeta
 
 Name:           python-%{srcname}
-Release:        1%{?dist}
+Release:        2.%{commitdate}git%{shortcommit}%{?dist}
 Summary:        Python extensions for Inkscape core
 
 License:        GPL-2.0-or-later
@@ -122,6 +122,9 @@ sed -i /env\ python/d %{buildroot}%{python3_sitelib}/inkex/tester/inx.py
 %license LICENSE.txt
  
 %changelog
+* Mon Dec 16 2024 Orion Poplawski <orion@nwra.com> - 1.4.0-2
+- Update to latest git for numpy 2.0 support
+
 * Sat Nov 30 2024 Benson Muite <benson_muite@emailplus.org> - 1.4.0-1
 - Update to commit corresponding to Inkscape 1.4
 

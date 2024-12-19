@@ -122,7 +122,7 @@ Requires: openSUSE-release
 #%%global dev rc6
 
 Name:		nfs-ganesha
-Version:	6.3
+Version:	6.4
 Release:	1%{?dev:%{dev}}%{?dist}
 Summary:	NFS-Ganesha is a NFS Server running in user space
 License:	LGPL-3.0-or-later
@@ -967,6 +967,9 @@ exit 0
 %endif
 
 %changelog
+* Mon Dec 16 2024 Kaleb S. KEITHLEY <kkeithle at redhat.com> - 6.4-1
+- NFS-Ganesha 6.4 GA
+
 * Mon Nov 25 2024 Kaleb S. KEITHLEY <kkeithle at redhat.com> - 6.3-1
 - NFS-Ganesha 6.3 GA
 

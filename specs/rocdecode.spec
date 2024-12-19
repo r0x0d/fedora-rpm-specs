@@ -1,7 +1,7 @@
 %global upstreamname rocDecode
 
-%global rocm_release 6.2
-%global rocm_patch 2
+%global rocm_release 6.3
+%global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 %global toolchain rocm
@@ -14,14 +14,14 @@
 
 Name:           rocdecode
 Version:        %{rocm_version}
-Release:        %autorelease
+Release:        1%{?dist}
 Summary:        High-performance video decode SDK for AMD GPUs
 
 Url:            https://github.com/ROCm/rocDecode
 # Note: MIT with a clause clarifying that AMD will not pay for codec royalties
 # The clause has little weight on the licensing, it is just a clarification
 License:        MIT
-Source0:        %{url}/archive/refs/tags/rocm-%{version}.tar.gz#/%{upstreamname}-%{version}.tar.gz
+Source0:        %{url}/archive/rocm-%{version}.tar.gz#/%{upstreamname}-%{version}.tar.gz
 
 BuildRequires:  cmake
 BuildRequires:  libva-devel
@@ -63,6 +63,10 @@ sed -i "s|\(llvm/bin/clang++\)|\1 CACHE STRING \"ROCm Compiler path\"|" \
 	CMakeLists.txt \
 	samples/*/CMakeLists.txt
 
+# Problems finding va.h
+# https://github.com/ROCm/rocDecode/issues/477
+sed -i "s|/opt/amdgpu/include NO_DEFAULT_PATH|/usr/include|" cmake/FindLibva.cmake
+
 %build
 %cmake \
     -DCMAKE_CXX_COMPILER=hipcc \
@@ -90,4 +94,6 @@ sed -i "s|\(llvm/bin/clang++\)|\1 CACHE STRING \"ROCm Compiler path\"|" \
 %exclude %{_datadir}/%{name}/samples
 
 %changelog
-%autochangelog
+* Tue Dec 17 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+

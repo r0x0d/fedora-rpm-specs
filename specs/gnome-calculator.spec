@@ -4,7 +4,7 @@
 %global tarball_version %%(echo %{version} | tr '~' '.')
 
 Name:           gnome-calculator
-Version:        47.0
+Version:        47.1
 Release:        1%{?dist}
 Summary:        A desktop calculator
 
@@ -105,6 +105,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/org.gnome.Calculator
 
 
 %changelog
+* Tue Dec 17 2024 nmontero <nmontero@redhat.com> - 47.1-1
+- Update to 47.1
+
 * Mon Sep 16 2024 nmontero <nmontero@redhat.com> - 47.0-1
 - Update to 47.0
 

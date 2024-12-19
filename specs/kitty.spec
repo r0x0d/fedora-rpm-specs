@@ -10,7 +10,7 @@
 %global goipath kitty
 
 Name:           kitty
-Version:        0.37.0
+Version:        0.38.0
 Release:        %autorelease
 Summary:        Cross-platform, fast, feature full, GPU based terminal emulator
 
@@ -63,7 +63,7 @@ Source5:        https://calibre-ebook.com/signatures/kovid.gpg
 # * https://github.com/kovidgoyal/kitty/pull/2088
 Source1:        https://raw.githubusercontent.com/kovidgoyal/kitty/46c0951751444e4f4994008f0d2dcb41e49389f4/kitty/data/%{name}.appdata.xml
 
-Source2:        https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/NerdFontsSymbolsOnly.tar.xz
+Source2:        https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/NerdFontsSymbolsOnly.tar.xz
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}
@@ -130,8 +130,8 @@ Recommends:     ripgrep
 # "kittens" functions install separately
 Suggests:       ImageMagick%{?_isa}
 
-Provides:       bundled(font(SymbolsNerdFontMono)) = 3.2.1
-Provides:       bundled(font(SymbolsNerdFont)) = 3.2.1
+Provides:       bundled(font(SymbolsNerdFontMono)) = 3.3.0
+Provides:       bundled(font(SymbolsNerdFont)) = 3.3.0
 
 Provides:       bundled(Verstable) = 2.1.1
 # modified version of https://github.com/dhess/c-ringbuf

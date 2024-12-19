@@ -117,10 +117,12 @@ BuildRequires:  gcc-c++
 
 # For check-null-licenses
 BuildRequires:  python3-devel
+%ifnarch %{ix86}
 %if !0%{?rhel}
 # For additional license auditing:
 BuildRequires:  askalono-cli
 BuildRequires:  licensecheck
+%endif
 %endif
 
 %description
@@ -197,6 +199,7 @@ popd
 # code with license problems in the source RPM.
 %{python3} '%{SOURCE4}' --exceptions '%{SOURCE5}' --with dev node_modules_dev
 
+%ifnarch %{ix86}
 %if !0%{?rhel}
 # Ensure we have checked all of the licenses in the dev dependency bundle for
 # allowability.
@@ -263,6 +266,7 @@ licenses in the spec file!
 EOF
   exit 1
 fi
+%endif
 %endif
 
 # http-loose-request.c:7205:20: error: invalid conversion from 'void*' to

@@ -4,14 +4,14 @@
 %global	plugin_least_ver	3.5.99
 
 %global	use_git	1
-%global	gitdate	20241207
-%global	githash	ea4bd9735da0e6fa199c9b99e58b76e296c6448c
+%global	gitdate	20241216
+%global	githash	4f36d13797c2ca508376c15d462cf644e71f69fb
 %global	shorthash	%(c=%{githash} ; echo ${c:0:7})
 
 %global	tarballver	%{mainver}%{?use_git:-%{gitdate}git%{shorthash}}
 
 %global	baserelease	1
-%global	alphatag		.beta5
+%global	alphatag		.beta6
 
 %undefine _ld_strict_symbol_defs
 %undefine __brp_mangle_shebangs
@@ -68,10 +68,10 @@ BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(gthread-2.0)
 BuildRequires:	pkgconfig(gtk-layer-shell-0)
 BuildRequires:	pkgconfig(gtk+-3.0)
+BuildRequires:	pkgconfig(json-c)
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(librsvg-2.0)
 BuildRequires:	pkgconfig(libxml-2.0)
-BuildRequires:	pkgconfig(nlohmann_json)
 BuildRequires:	pkgconfig(systemd)
 BuildRequires:	pkgconfig(wayland-client)
 BuildRequires:	pkgconfig(x11)
@@ -256,6 +256,9 @@ popd
 %{_libdir}/pkgconfig/gldi.pc
 
 %changelog
+* Mon Dec 16 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.5.99^20241216git4f36d13-1.beta6
+- Update to the latest git (20241216git4f36d13)
+
 * Sun Dec 08 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.5.99^20241207gitea4bd97-1.beta5
 - Update to the latest git (20241207gitea4bd97)
 

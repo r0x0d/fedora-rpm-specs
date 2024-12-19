@@ -1,7 +1,7 @@
 %global pypi_name crick
 
 Name:           python-%{pypi_name}
-Version:        0.0.6
+Version:        0.0.7
 Release:        %{autorelease}
 Summary:        High performance approximate and streaming algorithms
 
@@ -60,11 +60,13 @@ sed -r \
 
 
 %check
-# Fix layout to allow loading modules from installed location using
-# `--import-mode=importlib`. With upstream's layout the imports fail,
-# no matter what mode is paased to `import-mode`.
-mv -v crick/tests/ .
-%pytest --import-mode=importlib
+# Ugly hack to make the tests work.
+# Upstream uses an editable build, which drops the .so files in the tree.
+# The usual remedies like using `--import-mode=importlib` do not work.
+pushd crick
+ln -s %{buildroot}%{python3_sitearch}/crick/*.so .
+popd
+%pytest -v
 
 
 %files -n python3-%{pypi_name} -f %{pyproject_files}

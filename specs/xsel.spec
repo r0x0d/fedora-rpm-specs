@@ -2,7 +2,7 @@ Name:           xsel
 Version:        1.2.1
 Release:        %autorelease
 Summary:        Command line clipboard and X selection tool
-License:        MIT
+License:        HPND-sell-variant
 URL:            https://www.vergenet.net/~conrad/software/xsel/
 Source0:        https://github.com/kfish/xsel/archive/refs/tags/%{version}.tar.gz#/xsel-%{version}.tar.gz
 

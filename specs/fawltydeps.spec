@@ -3,7 +3,7 @@
 %bcond tests 1
 
 Name:           fawltydeps
-Version:        0.17.0
+Version:        0.18.0
 Release:        %{autorelease}
 Summary:        Find undeclared and unused 3rd-party dependencies in your Python project
 %forgemeta

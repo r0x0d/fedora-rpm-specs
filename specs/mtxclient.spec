@@ -10,6 +10,11 @@ Source0: %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 # https://github.com/Nheko-Reborn/mtxclient/pull/108
 Patch100: %{name}-0.12.0-fmt11-fix.patch
 
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+%if 0%{?fedora} && 0%{?fedora} >= 42
+ExcludeArch: %{ix86}
+%endif
+
 BuildRequires: cmake(fmt) >= 9.1.0
 BuildRequires: cmake(mpark_variant)
 BuildRequires: cmake(nlohmann_json) >= 3.11.0

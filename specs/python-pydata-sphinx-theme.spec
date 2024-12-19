@@ -6,7 +6,7 @@
 %global giturl  https://github.com/pydata/pydata-sphinx-theme
 
 Name:           python-pydata-sphinx-theme
-Version:        0.16.0
+Version:        0.16.1
 Release:        %autorelease
 Summary:        Bootstrap-based Sphinx theme from the PyData community
 
@@ -29,6 +29,7 @@ Source3:        pydata-gallery.tar.xz
 # Fedora-only patch: unbundle the fontawesome fonts
 Patch:          %{name}-fontawesome.patch
 
+BuildRequires:  babel
 BuildRequires:  fontawesome-fonts-all
 BuildRequires:  fontawesome-fonts-web
 BuildRequires:  gcc-c++
@@ -134,8 +135,7 @@ cd -
 %endif
 
 %check
-# Translation does not work correctly in an uninstalled tree
-%pytest -v -k 'not test_translations'
+%pytest -v
 
 %files -n python3-pydata-sphinx-theme -f %{pyproject_files}
 %doc README.md

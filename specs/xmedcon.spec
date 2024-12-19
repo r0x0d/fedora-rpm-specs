@@ -1,5 +1,5 @@
 Name:           xmedcon
-Version:        0.24.0
+Version:        0.24.1
 Release:        %autorelease
 Summary:        A medical image conversion utility and library
 

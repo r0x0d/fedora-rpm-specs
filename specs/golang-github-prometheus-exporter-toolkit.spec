@@ -9,7 +9,7 @@
 
 # https://github.com/prometheus/exporter-toolkit
 %global goipath         github.com/prometheus/exporter-toolkit
-Version:                0.13.1
+Version:                0.13.2
 
 %gometa -L -f
 

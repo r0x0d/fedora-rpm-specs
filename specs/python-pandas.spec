@@ -699,7 +699,7 @@ export PYTHONHASHSEED="$(
 
 
 %changelog
-* Sat Dec 15 2024 Orion Poplawski <orion@nwra.com> - 2.2.3-1
+* Sun Dec 15 2024 Orion Poplawski <orion@nwra.com> - 2.2.3-1
 - Update to 2.2.3
 - Build with numpy 2.0
 

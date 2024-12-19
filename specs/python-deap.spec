@@ -23,7 +23,6 @@ BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-pypandoc
 BuildRequires:  python3-pytest
-BuildRequires:  python3-nose
 BuildRequires:  python3-numpy
 
 # documentation
@@ -45,7 +44,6 @@ behind a common interface.}
 
 %package -n     python3-deap
 Requires:       python3-numpy
-BuildRequires:  python3-nose
 Summary:        %{summary}
 %{?python_provide:%python_provide python3-deap}
 

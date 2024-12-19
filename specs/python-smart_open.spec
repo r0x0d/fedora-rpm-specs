@@ -14,7 +14,7 @@ possible), plus lots of nifty extra stuff on top.}
 
 
 Name:           python-smart_open
-Version:        7.0.5
+Version:        7.1.0
 Release:        %autorelease
 Summary:        Utils for streaming large files (S3, HDFS, gzip, bz2, and more)
 

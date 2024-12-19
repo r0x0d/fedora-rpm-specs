@@ -162,13 +162,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.13.0
 %define specversion 6.13.0
 %define patchversion 6.13
-%define pkgrelease 0.rc2.20241211gitf92f4749861b.24
+%define pkgrelease 0.rc3.20241217gitf44d154d6e3d.30
 %define kversion 6
-%define tarfile_release 6.13-rc2-31-gf92f4749861b
+%define tarfile_release 6.13-rc3-17-gf44d154d6e3d
 # This is needed to do merge window version magic
 %define patchlevel 13
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc2.20241211gitf92f4749861b.24%{?buildid}%{?dist}
+%define specrelease 0.rc3.20241217gitf44d154d6e3d.30%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.13.0
 
@@ -4171,9 +4171,36 @@ fi\
 #
 #
 %changelog
-* Wed Dec 11 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.f92f4749861b.24]
+* Tue Dec 17 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc3.f44d154d6e3d.30]
 - x86/insn_decoder_test: allow longer symbol-names (David Rheinsberg)
 - kernel.spec: update license field (Scott Weaver)
+
+* Tue Dec 17 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc3.f44d154d6e3d.29]
+- redhat/configs: Re-enable CONFIG_INFINIBAND_VMWARE_PVRDMA (Vitaly Kuznetsov)
+- redhat/configs: PREEMPT_NOTIFIERS does not need to be explicitly listed (Michal Schmidt)
+- redhat/configs: delete all CONFIG_PREEMPT_*BEHAVIOUR (Michal Schmidt)
+- Linux v6.13.0-0.rc3.f44d154d6e3d
+
+* Mon Dec 16 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc3.28]
+- redhat/configs: automotive: disable CONFIG_NET_DROP_MONITOR (Davide Caratti)
+- Linux v6.13.0-0.rc3
+
+* Sun Dec 15 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.2d8308bf5b67.27]
+- Linux v6.13.0-0.rc2.2d8308bf5b67
+
+* Sat Dec 14 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.a446e965a188.26]
+- Linux v6.13.0-0.rc2.a446e965a188
+
+* Fri Dec 13 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.f932fb9b4074.25]
+- redhat/configs: Enable the CS42L84 driver on Fedora (Neal Gompa)
+- Linux v6.13.0-0.rc2.f932fb9b4074
+
+* Thu Dec 12 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.231825b2e1ff.24]
+- generic: Remove and cleanups from staging 6.13 (Peter Robinson)
+- redhat: configs: Clean up DVB settings in RHEL (Kate Hsuan)
+- Move CONFIG_ARCH_TEGRA_241_SOC config/common so that it is enabled for RHEL as well as Fedora. Get rid of uneeded CONFIG_TEGRA241_CMDQV in configs/fedora while we're at it. (Mark Salter)
+- fedora: arm64: Enable the rockchip HDMI QP support (Peter Robinson)
+- Linux v6.13.0-0.rc2.231825b2e1ff
 
 * Wed Dec 11 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc2.f92f4749861b.23]
 - crypto: rng - Fix extrng EFAULT handling (Herbert Xu)

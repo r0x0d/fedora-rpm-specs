@@ -52,6 +52,7 @@ BuildRequires:  pkgconfig(gstreamer-video-1.0)
 BuildRequires:  pkgconfig(Qt5Quick)
 
 %if 0%{?tests}
+BuildRequires: mesa-libGL
 BuildRequires: time
 BuildRequires: xorg-x11-server-Xvfb
 %endif

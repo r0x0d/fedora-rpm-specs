@@ -1,5 +1,5 @@
 %global upstreamname hipBLAS
-%global rocm_release 6.2
+%global rocm_release 6.3
 %global rocm_patch 0
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
@@ -32,11 +32,7 @@
 
 Name:           hipblas
 Version:        %{rocm_version}
-%if 0%{?suse_version} || 0%{?rhel} && 0%{?rhel} < 10
 Release:        1%{?dist}
-%else
-Release:        %autorelease
-%endif
 Summary:        ROCm BLAS marshalling library
 Url:            https://github.com/ROCmSoftwarePlatform/%{upstreamname}
 License:        MIT
@@ -49,6 +45,7 @@ BuildRequires:  gcc-fortran
 %else
 BuildRequires:  gcc-gfortran
 %endif
+BuildRequires:  hipblas-common-devel
 BuildRequires:  rocblas-devel
 BuildRequires:  rocm-cmake
 BuildRequires:  rocm-comgr-devel
@@ -89,6 +86,7 @@ hipBLAS supports rocBLAS and cuBLAS as backends.
 %package devel
 Summary:        Libraries and headers for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       hipblas-common-devel
 
 %description devel
 %{summary}
@@ -170,11 +168,9 @@ fi
 %endif
 
 %changelog
-%if 0%{?suse_version}
+* Tue Dec 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
+- Update to 6.3
+
 * Sun Nov 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.2.1-1
 - Stub for tumbleweed
-
-%else
-%autochangelog
-%endif
 

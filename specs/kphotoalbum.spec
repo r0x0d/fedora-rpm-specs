@@ -5,8 +5,8 @@
 
 Summary: KDE Photo Album 
 Name:	 kphotoalbum
-Version: 5.12.0
-Release: 6%{?dist}
+Version: 6.0.0
+Release: 1%{?dist}
 
 # KDE e.V. may determine that future GPL versions are accepted
 # Automatically converted from old format: (GPLv2 or GPLv3) and GFDL - review is highly recommended.
@@ -25,33 +25,32 @@ BuildRequires: libappstream-glib
 BuildRequires: libjpeg-devel
 BuildRequires: pkgconfig(exiv2)
 
-BuildRequires: cmake(Qt5Network)
-BuildRequires: cmake(Qt5Sql)
-BuildRequires: cmake(Qt5Widgets)
-BuildRequires: cmake(Qt5Xml)
+BuildRequires: cmake(Qt6Core)
+BuildRequires: cmake(Qt6Sql)
+BuildRequires: cmake(Qt6Widgets)
+BuildRequires: cmake(Qt6Xml)
+BuildRequires: cmake(Qt6Test)
 
-BuildRequires: pkgconfig(phonon4qt5)
+BuildRequires: cmake(Phonon4Qt6)
 
 BuildRequires: extra-cmake-modules
-BuildRequires: kf5-rpm-macros
-BuildRequires: cmake(KF5Archive)
-BuildRequires: cmake(KF5Completion)
-BuildRequires: cmake(KF5Config)
-BuildRequires: cmake(KF5CoreAddons)
-BuildRequires: cmake(KF5DocTools)
-BuildRequires: cmake(KF5I18n)
-BuildRequires: cmake(KF5IconThemes)
-BuildRequires: cmake(KF5JobWidgets)
-BuildRequires: cmake(KF5KIO)
-BuildRequires: cmake(KF5TextWidgets)
-BuildRequires: cmake(KF5XmlGui)
-BuildRequires: cmake(KF5WidgetsAddons)
+BuildRequires: kf6-rpm-macros
+BuildRequires: cmake(KF6Archive)
+BuildRequires: cmake(KF6Completion)
+BuildRequires: cmake(KF6Config)
+BuildRequires: cmake(KF6CoreAddons)
+BuildRequires: cmake(KF6DocTools)
+BuildRequires: cmake(KF6I18n)
+BuildRequires: cmake(KF6IconThemes)
+BuildRequires: cmake(KF6JobWidgets)
+BuildRequires: cmake(KF6KIO)
+BuildRequires: cmake(KF6TextWidgets)
+BuildRequires: cmake(KF6XmlGui)
+BuildRequires: cmake(KF6WidgetsAddons)
 
-BuildRequires: cmake(KF5Kipi)
-BuildRequires: cmake(KF5KDcraw)
-## turns out this is not enabled by default (without ENABLE_PLAYGROUND=ON)
-#BuildRequires: cmake(KF5KFace)
-BuildRequires: cmake(KF5KGeoMap)
+BuildRequires: cmake(KF6Purpose)
+BuildRequires: cmake(KDcrawQt6)
+BuildRequires: cmake(Marble) >= 24.11.70
 
 %description
 A photo album tool. Focuses on three key points:
@@ -65,7 +64,7 @@ A photo album tool. Focuses on three key points:
 
 
 %build
-%cmake_kf5
+%cmake_kf6
 
 %cmake_build
 
@@ -77,31 +76,34 @@ A photo album tool. Focuses on three key points:
 
 
 %check
-appstream-util validate-relax --nonet %{buildroot}%{_kf5_metainfodir}/org.kde.kphotoalbum.*.xml
-desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.kphotoalbum.desktop
-desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.kphotoalbum-import.desktop
-desktop-file-validate %{buildroot}%{_kf5_datadir}/applications/org.kde.kphotoalbum.open-raw.desktop
+appstream-util validate-relax --nonet %{buildroot}%{_kf6_metainfodir}/org.kde.kphotoalbum.*.xml
+desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.kphotoalbum.desktop
+desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.kphotoalbum-import.desktop
+desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/org.kde.kphotoalbum.open-raw.desktop
 
 
 %files -f %{name}.lang
 %license LICENSES/*
-%config(noreplace) %{_kf5_sysconfdir}/xdg/kphotoalbumrc
-%{_kf5_bindir}/kpa-backup.sh
-%{_kf5_bindir}/kphotoalbum
-%{_kf5_bindir}/open-raw.pl
-%{_kf5_bindir}/kpa-thumbnailtool
-%{_kf5_libdir}/libkpabase.so
-%{_kf5_libdir}/libkpathumbnails.so
-%{_kf5_libdir}/libkpaexif.so
-%{_kf5_datadir}/kphotoalbum/
-%{_kf5_metainfodir}/org.kde.kphotoalbum.*.xml
-%{_kf5_datadir}/applications/org.kde.kphotoalbum.desktop
-%{_kf5_datadir}/applications/org.kde.kphotoalbum-import.desktop
-%{_kf5_datadir}/applications/org.kde.kphotoalbum.open-raw.desktop
-%{_kf5_datadir}/icons/hicolor/*/*/*
+%config(noreplace) %{_kf6_sysconfdir}/xdg/kphotoalbumrc
+%{_kf6_bindir}/kpa-backup.sh
+%{_kf6_bindir}/kphotoalbum
+%{_kf6_bindir}/open-raw.pl
+%{_kf6_bindir}/kpa-thumbnailtool
+%{_kf6_libdir}/libkpabase.so
+%{_kf6_libdir}/libkpathumbnails.so
+%{_kf6_libdir}/libkpaexif.so
+%{_kf6_datadir}/kphotoalbum/
+%{_kf6_metainfodir}/org.kde.kphotoalbum.*.xml
+%{_kf6_datadir}/applications/org.kde.kphotoalbum.desktop
+%{_kf6_datadir}/applications/org.kde.kphotoalbum-import.desktop
+%{_kf6_datadir}/applications/org.kde.kphotoalbum.open-raw.desktop
+%{_kf6_datadir}/icons/hicolor/*/*/*
 
 
 %changelog
+* Tue Dec 17 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 6.0.0-1
+- 6.0.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 5.12.0-6
 - convert license to SPDX
 

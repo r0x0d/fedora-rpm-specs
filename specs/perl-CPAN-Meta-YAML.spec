@@ -13,20 +13,19 @@
 %endif
 
 Name:		perl-CPAN-Meta-YAML
-Version:	0.018
-Release:	512%{?dist}
+Version:	0.020
+Release:	1%{?dist}
 Summary:	Read and write a subset of YAML for CPAN Meta files
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:		https://metacpan.org/release/CPAN-Meta-YAML
-Source0:	https://cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/CPAN-Meta-YAML-%{version}.tar.gz
+Source0:	https://www.cpan.org/modules/by-module/CPAN/CPAN-Meta-YAML-%{version}.tar.gz
 BuildArch:	noarch
 # Build:
 BuildRequires:	coreutils
-BuildRequires:	findutils
 BuildRequires:	make
 BuildRequires:	perl-generators
 BuildRequires:	perl-interpreter
-BuildRequires:	perl(ExtUtils::MakeMaker) >= 6.17
+BuildRequires:	perl(ExtUtils::MakeMaker) >= 6.76
 # Module Runtime:
 BuildRequires:	perl(B)
 BuildRequires:	perl(Carp)
@@ -50,6 +49,7 @@ BuildRequires:	perl(File::Temp) >= 0.19
 BuildRequires:	perl(IO::Dir)
 BuildRequires:	perl(JSON::PP)
 BuildRequires:	perl(lib)
+BuildRequires:	perl(open)
 BuildRequires:	perl(Test::More) >= 0.96
 BuildRequires:	perl(utf8)
 BuildRequires:	perl(vars)
@@ -73,12 +73,11 @@ used for any other general YAML parsing or generation task.
 %setup -q -n CPAN-Meta-YAML-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor UNINST=0
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1 UNINST=0
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 %{_fixperms} -c %{buildroot}
 
 %check
@@ -94,6 +93,16 @@ make test TEST_FILES="xt/*/*.t"
 %{_mandir}/man3/CPAN::Meta::YAML.3*
 
 %changelog
+* Tue Dec 17 2024 Paul Howarth <paul@city-fan.org> - 0.020-1
+- Update to 0.20
+  - Generated from ETHER/YAML-Tiny-1.76.tar.gz
+
+* Mon Dec 16 2024 Paul Howarth <paul@city-fan.org> - 0.019-1
+- Update to 0.19
+  - Generated from ETHER/YAML-Tiny-1.75.tar.gz
+- Use author-independent source URL
+- Use %%{make_build} and %%{make_install}
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.018-512
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

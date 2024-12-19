@@ -2,7 +2,7 @@
 
 Name:		python-%{upname}
 Version:	1.3.7
-Release:	8%{?dist}
+Release:	9%{?dist}
 Summary:	Collection of fast NumPy array functions written in Cython
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -103,6 +103,9 @@ rm -rf %{buildroot}%{python3_sitearch}/.pytest_cache
 
 
 %changelog
+* Tue Dec 17 2024 Orion Poplawski <orion@nwra.com> - 1.3.7-9
+- Rebuild with numpy 2.0
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.3.7-8
 - convert license to SPDX
 

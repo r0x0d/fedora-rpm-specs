@@ -8,14 +8,10 @@
 
 %global subpkgs %{coprapi} %{say}
 
-%if %{defined el9}
-%bcond_without ghc_prof
-%endif
-
 Name:           fbrnch
-Version:        1.6
+Version:        1.6.1
 # can only be reset when all subpkgs bumped
-Release:        23%{?dist}
+Release:        24%{?dist}
 Summary:        Fedora packager tool to build package branches
 
 # copr-api: GPLv3+
@@ -198,6 +194,13 @@ help2man --no-info %{buildroot}%{_bindir}/%{name} > %{buildroot}%{_mandir}/man1/
 
 
 %changelog
+* Tue Dec 17 2024 Jens Petersen <petersen@redhat.com> - 1.6.1-24
+- https://hackage.haskell.org/package/fbrnch-1.6.1/changelog
+- 'build','parallel': waitrepo now just uses "koji wait-repo --request"
+- 'build': now respects --waitrepo
+- 'local','install': new --jobs option for _smp_ncpus_max
+- waitrepo is now timed again
+
 * Fri Dec 13 2024 Jens Petersen <petersen@redhat.com> - 1.6-23
 - https://hackage.haskell.org/package/fbrnch-1.6/changelog
 - supports new wait-repo-request koji workflow

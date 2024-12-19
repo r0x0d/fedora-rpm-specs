@@ -1,6 +1,6 @@
 Name:		imsettings
-Version:	1.8.9
-Release:	2%{?dist}
+Version:	1.8.10
+Release:	1%{?dist}
 License:	LGPL-2.0-or-later
 URL:		https://gitlab.com/tagoh/%{name}/
 BuildRequires:	desktop-file-utils
@@ -338,6 +338,13 @@ fi
 %endif
 
 %changelog
+* Tue Dec 17 2024 Akira TAGOH <tagoh@redhat.com> - 1.8.10-1
+- New upstream release.
+- Reflect correct environment variables to input method process.
+  Resolves: rhbz#2324342
+- Correct DBus service filename
+  Resolves: rhbz#2322097
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.8.9-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

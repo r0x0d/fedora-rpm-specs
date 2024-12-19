@@ -1,18 +1,10 @@
 Summary:        Fast numerical array expression evaluator for Python and NumPy
 Name:           python-numexpr
-Version:        2.8.5
+Version:        2.10.2
 Release:        %autorelease
 URL:            https://github.com/pydata/numexpr
 License:        MIT
 Source:         https://github.com/pydata/numexpr/archive/v%{version}/numexpr-%{version}.tar.gz
-Patch:          0002-Revert-Make-more-difficult-sanitize-of-the-expressio.patch
-Patch:          0003-Revert-Add-in-protections-against-call-to-eval-expre.patch
-Patch:          0004-Revert-Adding-tests-for-validate-and-noticed-that-re.patch
-Patch:          0005-Revert-Add-in-docstring-intro-for-validate.patch
-Patch:          0006-Revert-Add-a-validate-.-function-that-can-be-used-to.patch
-Patch:          0007-Use-r-to-avoid-warning-about-unknown-escapes.patch
-# https://github.com/pydata/numexpr/pull/489
-Patch:          0008-Fix-necompiler.getArguments-on-Python-3.13.0b1.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  python%{python3_pkgversion}-devel
@@ -38,10 +30,6 @@ Requires:       python%{python3_pkgversion}-numpy >= 1.6
 
 %prep
 %autosetup -n numexpr-%{version} -p1
-
-# Python 3.13+ has removed unittest.makeSuite()
-# Reported upstream: https://github.com/pydata/numexpr/issues/486
-sed -i 's/unittest.makeSuite/unittest.defaultTestLoader.loadTestsFromTestCase/g' $(grep -rl makeSuite)
 
 %build
 %py3_build

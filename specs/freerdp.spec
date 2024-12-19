@@ -29,7 +29,7 @@
 
 Name:           freerdp
 Epoch:          2
-Version:        3.10.0
+Version:        3.10.3
 Release:        1%{?dist}
 Summary:        Free implementation of the Remote Desktop Protocol (RDP)
 
@@ -257,6 +257,7 @@ find . -name "*.c" -exec chmod 664 {} \;
 %cmake_build
 
 %check
+export CTEST_OUTPUT_ON_FAILURE=1
 %cmake_build --target test
 
 %install
@@ -367,6 +368,9 @@ find %{buildroot} -name "*.a" -delete
 %{_libdir}/pkgconfig/winpr-tools3.pc
 
 %changelog
+* Tue Dec 17 2024 Ondrej Holy <oholy@redhat.com> - 2:3.10.3-1
+- Update to 3.10.3
+
 * Thu Dec 12 2024 Ondrej Holy <oholy@redhat.com> - 2:3.10.0-1
 - Update to 3.10.0
 

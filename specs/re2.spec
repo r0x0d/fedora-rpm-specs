@@ -130,8 +130,38 @@ cd python
 
 # Python tests now segfault on i686, but we cannot drop support under
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval because re2
-# is not yet a leaf package on that architecutre. Instead, we skip the Python
+# is not yet a leaf package on that architecture. Instead, we skip the Python
 # tests on i686.
+#
+# The following directly-dependent packages are already ExcludeArch: %%{ix86}
+# - bloaty
+# - ceph
+# - credentials-fetcher
+# - dnsdist
+# - libarrow
+# - mtxclient
+# - nheko
+# - onnxruntime
+# - parlaylib
+# - python-torchtext (orphaned)
+#
+# The following are not (yet):
+# - CuraEngine_grpc_definitions:
+#   https://src.fedoraproject.org/rpms/CuraEngine_grpc_definitions/pull-request/1
+# - grpc:
+#     Blocked by:
+#       (TBD)
+# - libphonenumber:
+#   Not blocked by: chatty, plasma-dialer, spacebar
+#   Blocked by:
+#   - kf5-kitinerary
+#   - kitinerary
+#   - mmsd-tng: https://src.fedoraproject.org/rpms/mmsd-tng/pull-request/1
+#   - ncid: https://src.fedoraproject.org/rpms/ncid/pull-request/2
+# - perl-re-engine-RE2:
+#   https://src.fedoraproject.org/rpms/perl-re-engine-RE2/pull-request/2
+#   Blocked by:
+#   - https://src.fedoraproject.org/rpms/copr-rpmbuild/pull-request/1
 %ifnarch %{ix86}
 # Run the tests from the top-level directory to make sure we don’t accidentally
 # import the “un-built” package instead of the one in the buildroot.

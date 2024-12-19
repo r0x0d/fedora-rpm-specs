@@ -1,5 +1,5 @@
 Name:           mold
-Version:        2.35.0
+Version:        2.35.1
 Release:        %autorelease
 Summary:        A Modern Linker
 
@@ -31,7 +31,7 @@ BuildRequires:  tbb-devel >= 2021.9
 %else
 # API-incompatible with older tbb 2020.3 shipped by Fedora < 40:
 # https://bugzilla.redhat.com/show_bug.cgi?id=2036372
-Provides:       bundled(tbb) = 2021.13
+Provides:       bundled(tbb) = 2022.0
 # Required by bundled oneTBB
 BuildRequires:  hwloc-devel
 %endif

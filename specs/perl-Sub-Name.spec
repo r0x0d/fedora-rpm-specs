@@ -3,12 +3,12 @@
 %bcond_without perl_Sub_Name_enables_optional_test
 
 Name:		perl-Sub-Name
-Version:	0.27
-Release:	7%{?dist}
+Version:	0.28
+Release:	1%{?dist}
 Summary:	Name - or rename - a sub
 License:	GPL-1.0-or-later OR Artistic-1.0-Perl
 URL:		https://metacpan.org/release/Sub-Name
-Source0:	https://cpan.metacpan.org/modules/by-module/Sub/Sub-Name-%{version}.tar.gz
+Source0:	https://www.cpan.org/modules/by-module/Sub/Sub-Name-%{version}.tar.gz
 # Module Build
 BuildRequires:	coreutils
 BuildRequires:	findutils
@@ -17,7 +17,7 @@ BuildRequires:	make
 BuildRequires:	perl-devel
 BuildRequires:	perl-generators
 BuildRequires:	perl-interpreter
-BuildRequires:	perl(ExtUtils::MakeMaker)
+BuildRequires:	perl(ExtUtils::MakeMaker) >= 6.76
 # Module Runtime
 BuildRequires:	perl(Exporter)
 BuildRequires:	perl(strict)
@@ -53,12 +53,15 @@ by the new name (without some deep magic).
 %setup -q -n Sub-Name-%{version}
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor optimize="%{optflags}"
-make %{?_smp_mflags}
+perl Makefile.PL \
+	INSTALLDIRS=vendor \
+	NO_PACKLIST=1 \
+	NO_PERLLOCAL=1 \
+	optimize="%{optflags}"
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 find %{buildroot} -type f -name '*.bs' -empty -delete
 %{_fixperms} -c %{buildroot}
 
@@ -73,6 +76,12 @@ make test
 %{_mandir}/man3/Sub::Name.3*
 
 %changelog
+* Mon Dec 16 2024 Paul Howarth <paul@city-fan.org> - 0.28-1
+- Update to 0.28
+  - Fix version comparison logic for forward compatibility
+- Switch source URL from cpan.metacpan.org to www.cpan.org
+- Use %%{make_build} and %%{make_install}
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.27-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

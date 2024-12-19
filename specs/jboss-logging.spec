@@ -36,7 +36,8 @@ This package contains the JBoss Logging Framework.
 %pom_set_parent org.apache.logging:logging-parent
 
 %build
-%mvn_build -j
+# 1.8 is not valid (8 is the accepted form), but @Deprecated requires >= 9
+%mvn_build -j -- -Dmaven.compiler.release=11
 
 %install
 %mvn_install

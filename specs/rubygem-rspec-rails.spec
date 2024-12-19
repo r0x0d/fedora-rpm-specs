@@ -5,18 +5,18 @@
 %bcond_with bootstrap
 
 Name: rubygem-%{gem_name}
-Version: 6.0.3
-Release: 4%{?dist}
+Version: 7.1.0
+Release: 1%{?dist}
 Summary: RSpec for Rails
 License: MIT
 URL: https://github.com/rspec/rspec-rails
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 # git clone https://github.com/rspec/rspec-rails.git && cd rspec-rails
-# git archive -v -o rspec-rails-6.0.3-tests.tar.gz v6.0.3 features/ spec/
+# git archive -v -o rspec-rails-7.1.0-tests.tar.gz v7.1.0 features/ spec/
 Source1: %{gem_name}-%{version}-tests.tar.gz
-# From https://github.com/rspec/rspec-rails/pull/2755
-# Remove OpenStruct usage due to json 2.7.2 change
-Patch0:  rubygem-rspec-rails-pr2755-replace-openstruct-with-struct.patch
+# Fix Ruby 3.4 test errors
+# https://github.com/rspec/rspec-rails/pull/2821
+Patch0: rubygem-rspec-rails-7.1.0-Fixes-for-Ruby-3.4-new-Hash-inspect-syntax.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
@@ -37,7 +37,7 @@ BuildRequires: rubygem(selenium-webdriver)
 BuildArch: noarch
 
 %description
-rspec-rails is a testing framework for Rails 5+.
+rspec-rails integrates the Rails testing helpers into RSpec.
 
 
 %package doc
@@ -50,8 +50,9 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version} -b 1
+
 (
-cd %{_builddir}
+cd %{builddir}
 %patch 0 -p1
 )
 
@@ -108,6 +109,11 @@ popd
 %doc %{gem_instdir}/README.md
 
 %changelog
+* Mon Dec 16 2024 Vít Ondruch <vondruch@redhat.com> - 7.1.0-1
+- Update to rspec-rails 7.1.0.
+  Resolves: rhbz#2250833
+- Fix Ruby 3.4 test errors.
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.0.3-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

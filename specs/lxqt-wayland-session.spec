@@ -1,6 +1,9 @@
+# niri isn't packaged in Fedora
+%bcond niri_session 0
+
 Name:           lxqt-wayland-session
 Version:        0.1.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Wayland session files for LXQt
 # See "LICENSE" for a breakdown of license usage
 License:        LGPL-2.1-only AND GPL-3.0-only AND MIT AND GPL-2.0-only AND BSD-3-Clause
@@ -26,6 +29,19 @@ Files needed for the LXQt Wayland Session: Wayland session start script,
 its desktop entry for display managers and default configurations for
 actually supported compositors.
 
+%files
+%doc README.md
+%license COPYING.LESSER LICENSE
+%dir %{_datadir}/lxqt
+%dir %{_datadir}/lxqt/wayland
+%dir %{_datadir}/lxqt/wayland/firstrun
+%{_bindir}/startlxqtwayland
+%{_datadir}/wayland-sessions/lxqt-wayland.desktop
+%{_datadir}/lxqt/wayland/firstrun/autostart
+%{_datadir}/lxqt/wallpapers/origami-dark-labwc.png
+
+%dnl ------------------------------------------------------------------
+
 %package -n     lxqt-hyprland-session
 Summary:        Session files for LXQt-Hyprland
 License:        BSD-3-Clause
@@ -37,6 +53,13 @@ Supplements:    (%{name} and hyprland)
 This package contains the files necessary to use Hyprland as the Wayland
 compositor with LXQt.
 
+%files -n lxqt-hyprland-session
+%license LICENSE.BSD
+%{_datadir}/lxqt/wayland/lxqt-hyprland.conf
+
+%dnl ------------------------------------------------------------------
+
+%if %{with niri_session}
 %package -n     lxqt-niri-session
 Summary:        Session files for LXQT-niri
 License:        GPL-3.0-or-later
@@ -47,6 +70,13 @@ Supplements:    (%{name} and niri)
 %description -n lxqt-niri-session
 This package contains the files necessary to use niri as the Wayland compositor
 for LXQt.
+
+%files -n lxqt-niri-session
+%license COPYING
+%{_datadir}/lxqt/wayland/lxqt-niri.kdl
+%endif
+
+%dnl ------------------------------------------------------------------
 
 %package -n     lxqt-river-session
 Summary:        Session files for LXQt-river
@@ -59,6 +89,12 @@ Supplements:    (%{name} and river)
 This package contains the files necessary to use river as the Wayland
 compositor with LXQt.
 
+%files -n lxqt-river-session
+%license COPYING
+%{_datadir}/lxqt/wayland/lxqt-river-init
+
+%dnl ------------------------------------------------------------------
+
 %package -n     lxqt-sway-session
 Summary:        Session files for LXQt-Sway
 License:        MIT
@@ -68,7 +104,13 @@ Supplements:    (%{name} and sway)
 
 %description -n lxqt-sway-session
 This package contains the files necessary to use Sway as the Wayland compositor
-with LXQt
+with LXQt.
+
+%files -n lxqt-sway-session
+%license LICENSE.MIT
+%{_datadir}/lxqt/wayland/lxqt-sway.config
+
+%dnl ------------------------------------------------------------------
 
 %package -n     lxqt-wayfire-session
 Summary:        Session files for LXQt-wayfire
@@ -79,10 +121,16 @@ Supplements:    (%{name} and wayfire)
 
 %description -n lxqt-wayfire-session
 This package contains the files necessary to use wayfire as the Wayland
-compositor with LXQt
+compositor with LXQt.
+
+%files -n lxqt-wayfire-session
+%license LICENSE.MIT
+%{_datadir}/lxqt/wayland/lxqt-wayfire.ini
+
+%dnl ------------------------------------------------------------------
 
 %package -n     lxqt-labwc-session
-Summary:        Session files and theme for labwc
+Summary:        Session files and theme for LXQt-labwc
 License:        CC-BY-SA-4.0 AND GPL-2.0-or-later
 Requires:       %{name} = %{version}-%{release}
 Requires:       labwc >= 0.7.2
@@ -92,48 +140,8 @@ Requires:       swaylock
 Supplements:    (%{name} and labwc)
 
 %description -n lxqt-labwc-session
-This package contains the openbox themes and other files for labwc.
-
-%prep
-%autosetup -n %{name}-%{version}
-
-%build
-%cmake
-%cmake_build
-
-%install
-%cmake_install
-
-%files
-%doc README.md
-%license COPYING.LESSER LICENSE
-%dir %{_datadir}/lxqt
-%dir %{_datadir}/lxqt/wayland
-%dir %{_datadir}/lxqt/wayland/firstrun
-%{_bindir}/startlxqtwayland
-%{_datadir}/wayland-sessions/lxqt-wayland.desktop
-%{_datadir}/lxqt/wayland/firstrun/autostart
-%{_datadir}/lxqt/wallpapers/origami-dark-labwc.png
-
-%files -n lxqt-hyprland-session
-%license LICENSE.BSD
-%{_datadir}/lxqt/wayland/lxqt-hyprland.conf
-
-%files -n lxqt-niri-session
-%license COPYING
-%{_datadir}/lxqt/wayland/lxqt-niri.kdl
-
-%files -n lxqt-river-session
-%license COPYING
-%{_datadir}/lxqt/wayland/lxqt-river-init
-
-%files -n lxqt-sway-session
-%license LICENSE.MIT
-%{_datadir}/lxqt/wayland/lxqt-sway.config
-
-%files -n lxqt-wayfire-session
-%license LICENSE.MIT
-%{_datadir}/lxqt/wayland/lxqt-wayfire.ini
+This package contains the openbox themes and other files necessary to use
+labwc as the Wayland compositor with LXQt.
 
 %files -n lxqt-labwc-session
 %license LICENSE.GPLv2
@@ -152,6 +160,27 @@ This package contains the openbox themes and other files for labwc.
 %{_datadir}/lxqt/wayland/labwc/themerc-override
 %{_datadir}/lxqt/graphics/lxqt-labwc.png
 
+%dnl ------------------------------------------------------------------
+
+%prep
+%autosetup -n %{name}-%{version}
+
+%build
+%cmake
+%cmake_build
+
+%install
+%cmake_install
+
+%if ! %{with niri_session}
+# Drop niri session files
+rm -v %{buildroot}%{_datadir}/lxqt/wayland/lxqt-niri.kdl
+%endif
+
+
 %changelog
+* Tue Dec 17 2024 Neal Gompa <ngompa@fedoraproject.org> - 0.1.1-2
+- Disable niri session subpackage until niri is packaged (rhbz#2332801)
+
 * Sun Dec 15 2024 Steve Cossette <farchord@gmail.com> - 0.1.1-1
 - Initial

@@ -14,7 +14,7 @@
 %global python_wheel_name %{pypi_name}-%{version}-py3-none-any.whl
 
 Name:           python-%{pypi_name}
-Version:        0.44.0
+Version:        0.45.1
 Release:        %autorelease
 Epoch:          1
 Summary:        Built-package format for Python

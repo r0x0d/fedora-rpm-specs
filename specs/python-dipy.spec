@@ -14,27 +14,19 @@ https://dipy.org/}
 # There are a lot of tests and they take a while to complete.
 %bcond tests 1
 
-%global forgeurl https://github.com/nipy/dipy/
-
 Name:           python-dipy
-Version:        1.9.0
+Version:        1.10.0
 Release:        %autorelease
 Summary:        Diffusion MRI Imaging in Python
 
+%global forgeurl https://github.com/nipy/dipy/
 %global tag %{version}
 %forgemeta
 
 # SPDX
 License:        BSD-3-Clause
 URL:            https://dipy.org/
-Source0:        %forgesource
-# Replace deprecated alias for Python 3.13
-# https://github.com/dipy/dipy/pull/3210
-Patch:          https://github.com/dipy/dipy/pull/3210.patch
-# BF: Fix attempting to delete frame local symbol table variable
-# https://github.com/dipy/dipy/pull/3293
-# Backported to 1.9.0.
-Patch:          dipy-1.9.0-pr-3293.patch
+Source:         %forgesource
 
 BuildRequires:      python3-devel
 BuildRequires:      gcc-c++
@@ -70,9 +62,9 @@ Documentation for %{name}.
 %forgeautosetup -p1
 
 # Correct interpreter for these---used in building docs and so on
-sed -i 's/#!\/usr\/bin\/env python/#!\/usr\/bin\/python3/' doc/tools/docgen_cmd.py
-sed -i 's/#!\/usr\/bin\/env python/#!\/usr\/bin\/python3/' doc/tools/build_modref_templates.py
-find tools/ -name "*.py" -exec sed -i 's/#!\/usr\/bin\/env python/#!\/usr\/bin\/python3/' '{}' \;
+sed -i 's/#!\/usr\/bin\/env python[0-9]?/#!\/usr\/bin\/python3/' doc/tools/docgen_cmd.py
+sed -i 's/#!\/usr\/bin\/env python[0-9]?/#!\/usr\/bin\/python3/' doc/tools/build_modref_templates.py
+find tools/ -name "*.py" -exec sed -i 's/#!\/usr\/bin\/env python[0-9]?/#!\/usr\/bin\/python3/' '{}' \;
 
 # Other shebangs and permission fixes
 for f in "dipy/stats/resampling.py" "dipy/reconst/dki.py" "dipy/reconst/dti.py"  "dipy/workflows/mask.py" "dipy/workflows/tracking.py" "dipy/reconst/dki_micro.py" "dipy/reconst/msdki.py" "dipy/workflows/tests/test_stats.py"
@@ -157,15 +149,21 @@ ln -s ../pyproject.toml .
 %{_bindir}/dipy_buan_lmm
 %{_bindir}/dipy_buan_profiles
 %{_bindir}/dipy_buan_shapes
+%{_bindir}/dipy_bundlewarp
+%{_bindir}/dipy_concatenate_tractograms
+%{_bindir}/dipy_convert_tensors
+%{_bindir}/dipy_convert_tractogram
 %{_bindir}/dipy_correct_motion
 %{_bindir}/dipy_denoise_lpca
 %{_bindir}/dipy_denoise_mppca
 %{_bindir}/dipy_denoise_nlmeans
 %{_bindir}/dipy_denoise_patch2self
+%{_bindir}/dipy_evac_plus
 %{_bindir}/dipy_fetch
 %{_bindir}/dipy_fit_csa
 %{_bindir}/dipy_fit_csd
 %{_bindir}/dipy_fit_dki
+%{_bindir}/dipy_fit_dsi
 %{_bindir}/dipy_fit_dti
 %{_bindir}/dipy_fit_ivim
 %{_bindir}/dipy_fit_mapmri
@@ -175,20 +173,17 @@ ln -s ../pyproject.toml .
 %{_bindir}/dipy_labelsbundles
 %{_bindir}/dipy_mask
 %{_bindir}/dipy_median_otsu
+%{_bindir}/dipy_nifti2pam
+%{_bindir}/dipy_pam2nifti
 %{_bindir}/dipy_recobundles
 %{_bindir}/dipy_reslice
+%{_bindir}/dipy_sh_convert_mrtrix
 %{_bindir}/dipy_slr
 %{_bindir}/dipy_snr_in_cc
+%{_bindir}/dipy_split
+%{_bindir}/dipy_tensor2pam
 %{_bindir}/dipy_track
 %{_bindir}/dipy_track_pft
-%{_bindir}/dipy_split
-%{_bindir}/dipy_bundlewarp
-%{_bindir}/dipy_evac_plus
-%{_bindir}/dipy_concatenate_tractograms
-%{_bindir}/dipy_convert_tensors
-%{_bindir}/dipy_convert_tractogram
-%{_bindir}/dipy_fit_dsi
-%{_bindir}/dipy_sh_convert_mrtrix
 
 %files doc
 %license LICENSE

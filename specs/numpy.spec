@@ -20,7 +20,7 @@
 
 Name:           numpy
 Version:        2.2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Epoch:          1
 Summary:        A fast multidimensional array facility for Python
 
@@ -148,6 +148,11 @@ sed -i '/libdivide\.h/i#define LIBDIVIDE_SSE2' numpy/_core/src/umath/loops.c.src
 sed -i '/libdivide\.h/i#define LIBDIVIDE_NEON' numpy/_core/src/umath/loops.c.src
 %endif
 
+#fix flags for ELN ppc64le
+%ifarch ppc64le && 0%{?eln}
+find . -type f -print0 | xargs -0 sed -i s/mcpu=power8/mcpu=power9/
+%endif
+
 %pyproject_wheel -Csetup-args=-Dblas=flexiblas -Csetup-args=-Dlapack=lapack
 
 %install
@@ -245,6 +250,9 @@ python3 runtests.py --no-build -- -ra -k 'not test_ppc64_ibm_double_double128 %{
 
 
 %changelog
+* Tue Dec 17 2024 Gwyn Ciesla <gwync@protonmail.com> - 1:2.2.0-2
+- Tweak flags to fix build on ELN ppc64le.
+
 * Sun Dec 08 2024 Gwyn Ciesla <gwync@protonmail.com> - 1:2.2.0-1
 - 2.2.0
 

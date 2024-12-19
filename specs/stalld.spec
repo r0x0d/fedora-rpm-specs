@@ -7,6 +7,9 @@ License:	GPL-2.0-or-later AND GPL-2.0-only
 URL:		https://gitlab.com/rt-linux-tools/%{name}/%{name}.git
 Source0:	https://gitlab.com/rt-linux-tools/%{name}/-/archive/v%{version}/%{name}-%{version}.tar.bz2
 
+# Fix build with glibc 2.41 (development), uses GLIBC_HAS_SCHED_ATTR
+Patch0:         glibc241.patch
+
 BuildRequires:	glibc-devel
 BuildRequires:	gcc
 BuildRequires:	make
@@ -34,9 +37,13 @@ boost using the SCHED_DEADLINE policy. The default is to
 allow 10 microseconds of runtime for 1 second of clock time.
 
 %prep
-%autosetup
+%autosetup -p1
 
 %build
+%if 0%{?fedora} > 41 || 0%{?rhel} > 10
+# For patch 101; this can be removed once glibc 2.41 is released
+export CPPFLAGS="$CPPFLAGS -DGLIBC_HAS_SCHED_ATTR"
+%endif
 %make_build RPMCFLAGS="%{optflags} %{build_cflags} -DVERSION="\\\"%{version}\\\"""  RPMLDFLAGS="%{build_ldflags}"
 
 %install

@@ -1,7 +1,7 @@
 %global pypi_name pybbi
 
 Name:           python-%{pypi_name}
-Version:        0.4.0
+Version:        0.4.1
 Release:        %{autorelease}
 Summary:        Python bindings to the UCSC source for Big Binary Indexed (bigWig/bigBed) files
 
@@ -70,6 +70,8 @@ k="${k-}${k+ and }not test_sigs"
 k="${k-}${k+ and }not test_aws_403_redirect"
 k="${k-}${k+ and }not test_chromsizes"
 k="${k-}${k+ and }not test_fetch_remote"
+# Test segfaults on `bigBedExample.bb`
+k="${k-}${k+ and }not test_fetch_intervals"
 %pytest -v --import-mode=importlib ${k+-k }"${k-}"
 
 

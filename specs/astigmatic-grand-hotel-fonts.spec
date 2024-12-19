@@ -3,7 +3,7 @@ Release:        %autorelease
 URL:            http://www.astigmatic.com/
 
 %global foundry           Astigmatic
-%global fontlicense       OFL
+%global fontlicense       OFL-1.1
 %global fontlicenses      "SIL Open Font License.txt"
 
 %global fontfamily        Grand Hotel

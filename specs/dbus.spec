@@ -9,8 +9,6 @@
 %global fedora_release_version  30-0.2
 %global generic_release_version 30-0.1
 
-%global dbus_common_config_opts --enable-libaudit --enable-selinux=yes --with-system-socket=/run/dbus/system_bus_socket --with-dbus-user=dbus --libexecdir=/%{_libexecdir}/dbus-1 --runstatedir=/run --enable-user-session --docdir=%{_pkgdocdir} --enable-installed-tests
-
 # Allow extra dependencies required for some tests to be disabled.
 %bcond_without tests
 # Disabled in June 2014: http://lists.freedesktop.org/archives/dbus/2014-June/016223.html
@@ -20,8 +18,8 @@
 
 Name:    dbus
 Epoch:   1
-Version: 1.14.10
-Release: 4%{?dist}
+Version: 1.16.0
+Release: 1%{?dist}
 Summary: D-BUS message bus
 
 # The effective license of the majority of the package, including the shared
@@ -30,9 +28,9 @@ License: (AFL-2.1 OR GPL-2.0-or-later) AND GPL-2.0-or-later
 URL:     https://www.freedesktop.org/wiki/Software/dbus/
 Source0: https://dbus.freedesktop.org/releases/%{name}/%{name}-%{version}.tar.xz
 Source1: https://dbus.freedesktop.org/releases/%{name}/%{name}-%{version}.tar.xz.asc
-# gpg --keyserver keyring.debian.org --recv-keys 36EC5A6448A4F5EF79BEFE98E05AE1478F814C4F
-# gpg --export --export-options export-minimal > gpgkey-36EC5A6448A4F5EF79BEFE98E05AE1478F814C4F.gpg
-Source2: gpgkey-36EC5A6448A4F5EF79BEFE98E05AE1478F814C4F.gpg
+# gpg --keyserver keyring.debian.org --recv-keys DA98F25C0871C49A59EAFF2C4DE8FF2A63C7CC90
+# gpg --export --export-options export-minimal > gpgkey-DA98F25C0871C49A59EAFF2C4DE8FF2A63C7CC90.gpg
+Source2: gpgkey-DA98F25C0871C49A59EAFF2C4DE8FF2A63C7CC90.gpg
 Source3: 00-start-message-bus.sh
 Source4: dbus.socket
 Source5: dbus-daemon.service
@@ -41,8 +39,8 @@ Source7: dbus-daemon.user.service
 Source8: dbus-systemd-sysusers.conf
 Patch0: 0001-tools-Use-Python3-for-GetAllMatchRules.patch
 
-BuildRequires: autoconf-archive
-BuildRequires: libtool
+BuildRequires: gcc
+BuildRequires: meson
 BuildRequires: audit-libs-devel >= 0.9
 BuildRequires: gnupg2
 BuildRequires: libX11-devel
@@ -76,7 +74,6 @@ BuildRequires: python3-gobject
 %if %{with check}
 BuildRequires: /usr/bin/Xvfb
 %endif
-BuildRequires: make
 
 # Since F30 the default implementation is dbus-broker over dbus-daemon
 Requires: dbus-broker >= 16-4
@@ -168,42 +165,42 @@ in this separate package so server systems need not install X.
 
 
 %build
-# Avoid rpath.
-if test -f autogen.sh; then env NOCONFIGURE=1 ./autogen.sh; else autoreconf --verbose --force --install; fi
+CONFIG_OPTIONS=(
+  -Dlibaudit=enabled
+  -Dselinux=enabled
+  -Dsystem_socket=/run/dbus/system_bus_socket
+  -Ddbus_user=dbus
+  -Duser_session=true
+  -Dinstalled_tests=true
+  --libexecdir=%{_libexecdir}/dbus-1
+)
 
-# Call configure here (before the extra directories for the multiple builds
-# have been created) to ensure that the hardening flag hack is applied to
-# ltmain.sh
-%configure %{dbus_common_config_opts} --enable-doxygen-docs --enable-ducktype-docs --enable-xml-docs --disable-asserts
-make distclean
-
-mkdir build
-pushd build
-# See /usr/lib/rpm/macros
-%global _configure ../configure
-%configure %{dbus_common_config_opts} --enable-doxygen-docs --enable-ducktype-docs --enable-xml-docs --disable-asserts
-%make_build
-popd
+%global _vpath_builddir build
+%meson \
+  "${CONFIG_OPTIONS[@]}" \
+  -Ddoxygen_docs=enabled \
+  -Dducktype_docs=enabled \
+  -Dxml_docs=enabled \
+  -Dasserts=false \
+  -Dqt_help=disabled \
+  -Dapparmor=disabled \
+  -Dkqueue=disabled \
+  -Dlaunchd=disabled
+%meson_build
 
 %if %{with check}
-mkdir build-check
-pushd build-check
-%configure %{dbus_common_config_opts} --enable-asserts --enable-verbose-mode --enable-tests
-%make_build
-popd
+%global _vpath_builddir build-check
+%meson "${CONFIG_OPTIONS[@]}" -Dasserts=true -Dverbose_mode=true
+%meson_build
 %endif
 
 
 %install
-pushd build
-%make_install
-popd
+%global _vpath_builddir build
+%meson_install
 
 # Delete python2 code
 rm -f %{buildroot}/%{_pkgdocdir}/examples/GetAllMatchRules.py
-
-find %{buildroot} -name '*.a' -type f -delete
-find %{buildroot} -name '*.la' -type f -delete
 
 %if ! %{with cmake}
 rm -rf %{buildroot}%{_libdir}/cmake
@@ -291,12 +288,7 @@ pushd build-check
 export DISPLAY=42
 { Xvfb :${DISPLAY} -nolisten tcp -auth /dev/null >/dev/null 2>&1 &
   trap "kill -15 $! || true" 0 HUP INT QUIT TRAP TERM; };
-if ! env DBUS_TEST_SLOW=1 make check; then
-    echo "Tests failed, finding all Automake logs..." 1>&2;
-    find . -type f -name '*.trs' | while read trs; do cat ${trs}; cat ${trs%%.trs}.log; done
-    echo  "Exiting abnormally due to make check failure above" 1>&2;
-    exit 1;
-fi
+%meson_test
 popd
 %endif
 
@@ -441,6 +433,9 @@ fi
 
 
 %changelog
+* Tue Dec 17 2024 David King <amigadave@amigadave.com> - 1:1.16.0-1
+- Update to 1.16.0 and use meson
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1:1.14.10-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

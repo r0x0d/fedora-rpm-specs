@@ -18,6 +18,7 @@ Source:         %{crates_source}
 Patch:          sequoia-octopus-librnp-fix-metadata-auto.diff
 # Manually created patch for downstream crate metadata changes
 # * bump sequoia-gpg-agent dependency from 0.4 to 0.5
+# * bump sequoia-net dependency from 0.28 to 0.29
 # * bump sequoia-policy-config dependency from 0.6 to 0.7
 # * bump sequoia-wot dependency from 0.12 to 0.13
 # * switch crypto backend from Nettle to OpenSSL

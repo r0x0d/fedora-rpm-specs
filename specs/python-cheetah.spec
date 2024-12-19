@@ -1,14 +1,11 @@
 Name:           python-cheetah
-Version:        3.3.3.post1
+Version:        3.4.0
 Release:        %autorelease
 Summary:        Template engine and code generator
 
 License:        MIT
 URL:            https://cheetahtemplate.org/
 Source:         https://github.com/CheetahTemplate3/cheetah3/archive/%{version}/cheetah3-%{version}.tar.gz
-# https://github.com/CheetahTemplate3/cheetah3/issues/60
-Patch:          0001-Merge-branch-next-Python-3.13.patch
-
 BuildRequires:  gcc
 BuildRequires:  python3-devel
 
@@ -57,7 +54,7 @@ sed -e 's|{envsitepackagesdir}|%{buildroot}%{python3_sitearch}|' -i tox.ini
 
 
 %files -n python3-cheetah -f %{pyproject_files}
-%doc ANNOUNCE.rst README.rst TODO BUGS
+%doc ANNOUNCE.rst README.rst LATEST-CHANGES.rst BUGS
 %{_bindir}/cheetah*
 
 

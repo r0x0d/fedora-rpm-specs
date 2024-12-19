@@ -3,7 +3,7 @@
 Name:           dummy-test-package-gloster
 
 Version:        0
-Release:        17367%{?dist}
+Release:        17405%{?dist}
 Summary:        Dummy Test Package called Gloster
 # Automatically converted from old format: CC0 - review is highly recommended.
 License:        CC0-1.0
@@ -33,6 +33,120 @@ cp -p uuid %{buildroot}%{_datadir}/%{name}
 %{_datadir}/%{name}
 
 %changelog
+* Wed Dec 18 2024 packagerbot <admin@fedoraproject.org> - 0-17405
+- rebuilt
+
+* Wed Dec 18 2024 packagerbot <admin@fedoraproject.org> - 0-17404
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17403
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17402
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17401
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17400
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17399
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17398
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17397
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17396
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17395
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17394
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17393
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17392
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17391
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17390
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17389
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17388
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17387
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17386
+- rebuilt
+
+* Tue Dec 17 2024 packagerbot <admin@fedoraproject.org> - 0-17385
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17384
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17383
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17382
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17381
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17380
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17379
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17378
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17377
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17376
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17375
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17374
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17373
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17372
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17371
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17370
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17369
+- rebuilt
+
+* Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17368
+- rebuilt
+
 * Mon Dec 16 2024 packagerbot <admin@fedoraproject.org> - 0-17367
 - rebuilt
 

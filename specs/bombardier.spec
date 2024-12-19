@@ -1,11 +1,11 @@
 Name: bombardier
 Version: 0.8.3
-Release: 26%{?dist}
+Release: 27%{?dist}
 Summary: The GNU Bombing utility
 
 License: GPL-2.0-or-later        
 URL: http://packages.debian.org/stable/source/bombardier
-Source0: http://http.debian.net/debian/pool/main/b/bombardier/bombardier_0.8.3+nmu3.tar.xz
+Source0: http://http.debian.net/debian/pool/main/b/bombardier/bombardier_0.8.3+nmu4.tar.xz
 Source1: bombardier.desktop
 Source2: bombardier-logo.png
 Patch0: bombardier-height.patch
@@ -22,7 +22,7 @@ Fly an ncurses plane over an ncurses city, and try to level the buildings.
 %prep
 
 
-%setup -qn bombardier-0.8.3+nmu3
+%setup -qn bombardier
 
 %patch -P0 -p0
 %patch -P1 -p0
@@ -56,6 +56,9 @@ install -p -m 644 %{SOURCE2} \
 
 
 %changelog
+* Tue Dec 17 2024 Gwyn Ciesla <gwync@protonmail.com> - 0.8.3-27
+- nmu4
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.3-26
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

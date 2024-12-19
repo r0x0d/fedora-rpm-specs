@@ -8,7 +8,7 @@ Release: 11%{?dist}
 URL:     %{forgeurl}
 
 %global foundry           SorkinType
-%global fontlicense       OFL
+%global fontlicense       OFL-1.1
 %global fontlicenses      OFL.txt
 %global fontdocs          *txt *md
 %global fontdocsex        %{fontlicenses}

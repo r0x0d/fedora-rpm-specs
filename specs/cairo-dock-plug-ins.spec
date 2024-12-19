@@ -4,12 +4,14 @@
 %global	core_least_ver	3.5.99
 
 %global	use_git	1
-%global	gitdate	20241207
-%global	githash	ce518e9ed0f8a54be850e0a8fe55e274885b014e
+%global	gitdate	20241217
+%global	githash	f8ad97e8ec67b25e07a6dedae8a57634e04b5da6
 %global	shorthash	%(c=%{githash} ; echo ${c:0:7})
 
 %global	tarballver	%{mainver}%{?use_git:-%{gitdate}git%{shorthash}}
+
 %global	baserelease	1
+%global	alphatag		.beta6
 
 
 %global	ruby_vendorlib	%(ruby -rrbconfig -e "puts RbConfig::CONFIG['vendorlibdir']")
@@ -29,7 +31,7 @@
 
 Name:			cairo-dock-plug-ins
 Version:		%{mainver}%{?use_git:^%{gitdate}git%{shorthash}}
-Release:		%{baserelease}%{?dist}%{flagrel}
+Release:		%{baserelease}%{?alphatag}%{?dist}%{flagrel}
 Summary:		Plug-ins files for Cairo-Dock
 
 # SPDX confirmed
@@ -417,6 +419,12 @@ popd
 %{_datadir}/cairo-dock/plug-ins/Dbus/CDApplet.h
 
 %changelog
+* Tue Dec 17 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.5.99^20241217gitf8ad97e-1.beta6
+- Update to the latest git (20241217gitf8ad97e)
+
+* Mon Dec 16 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.5.99^20241216gitce0764f-1.beta6
+- Update to the latest git (20241216gitce0764f)
+
 * Sun Dec 08 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.5.99^20241207gitce518e9-1
 - Update to the latest git (20241207gitce518e9)
 

@@ -1,11 +1,14 @@
+%global forgeurl https://github.com/inyutin/aiohttp_retry
+Version:        2.9.1
+%forgemeta
+
 Name:           python-aiohttp-retry
-Version:        2.8.3
 Release:        %autorelease
 Summary:        Simple retry client for aiohttp
 
 License:        MIT
-URL:            https://github.com/inyutin/aiohttp_retry
-Source:         %{url}/archive/v%{version}/aiohttp_retry-%{version}.tar.gz
+URL:            %{forgeurl}
+Source0:        %{forgesource}
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -27,9 +30,6 @@ Summary:        %{summary}
 
 %prep
 %autosetup -p1 -n aiohttp_retry-%{version}
-# The package looks unmaintained, so no issue was filled
-sed -i "s/from tests.app import/from app import/g" tests/test_client.py
-
 
 %generate_buildrequires
 %pyproject_buildrequires

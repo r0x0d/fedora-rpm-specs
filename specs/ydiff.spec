@@ -6,7 +6,9 @@ URL:        https://github.com/ymattw/ydiff
 # Automatically converted from old format: BSD - review is highly recommended.
 License:    LicenseRef-Callaway-BSD
 Source0:    https://github.com/ymattw/ydiff/archive/%{version}/%{name}-%{version}.tar.gz
-BuildRequires: python3-devel python3-setuptools
+BuildRequires: python3-devel
+BuildRequires: python3-setuptools
+BuildRequires: less
 BuildArch: noarch
 
 Requires: less
@@ -28,6 +30,11 @@ Python library that implements API used by ydiff tool.
 
 %build
 %py3_build
+
+%check
+tests/regression.sh
+# upstream pipeline uses `make test` which also has coverage
+# and linters but we don't do those here
 
 %install
 %py3_install

@@ -9,7 +9,7 @@
 
 Name:           hipify
 Version:        %{rocm_version}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Convert CUDA to HIP
 
 Url:            https://github.com/ROCm
@@ -17,11 +17,9 @@ License:        MIT
 Source0:        %{url}/%{upstreamname}/archive/rocm-%{version}.tar.gz#/%{upstreamname}-%{version}.tar.gz
 Patch0:         0001-prepare-hipify-cmake-for-fedora.patch
 
+BuildRequires:  clang-devel
+BuildRequires:  llvm-devel
 BuildRequires:  cmake
-# Hipify doesn't need hipcc, but this is the easiest way to pull in the same
-# llvm/lld/clang/compiler-rt version as hipcc:
-BuildRequires:  hipcc
-BuildRequires:  rocm-compilersupport-macros
 BuildRequires:  perl
 BuildRequires:  zlib-devel
 
@@ -39,10 +37,7 @@ HIP C++ automatically.
 
 %build
 
-export CC=%{rocmllvm_bindir}/clang
-export CXX=%{rocmllvm_bindir}/clang
-
-%cmake -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/..
+%cmake 
 %cmake_build
 
 %check
@@ -75,5 +70,8 @@ fi
 %{_libexecdir}/%{name}
 
 %changelog
+* Tue Dec 17 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-2
+- Build with system clang
+
 * Tue Dec 10 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
 - Update to 6.3

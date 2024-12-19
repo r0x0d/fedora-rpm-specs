@@ -9,6 +9,11 @@ Summary: Jdenticon Qt5 plugin
 URL: https://github.com/Nheko-Reborn/%{name}
 Source0: %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+%if 0%{?fedora} && 0%{?fedora} >= 42
+ExcludeArch: %{ix86}
+%endif
+
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: qt6-qtbase-devel
