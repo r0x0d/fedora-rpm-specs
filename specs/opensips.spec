@@ -1,11 +1,11 @@
-%global git_commit ca13ea94a04011ab12ef4c6cd4b4489db9f66c6b
+%global git_commit 051e1c4ccdec8041c508452253701fb7c07f9be5
 %global _hardened_build 1
 
 %global EXCLUDE_MODULES cachedb_cassandra %{!?_with_oracle:db_oracle} launch_darkly osp python sngtc tls_wolfssl
 
 Summary:  Open Source SIP Server
 Name:     opensips
-Version:  3.5.2
+Version:  3.5.3
 Release:  %autorelease
 License:  GPL-2.0-or-later
 Source0:  https://github.com/%{name}/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
@@ -16,11 +16,10 @@ Patch002: opensips-0002-Cleanup-Oracle-s-makefiles.patch
 Patch003: opensips-0003-db_ora-null-terminating-string-is-more-safely-most-m.patch
 Patch004: opensips-0004-Return-actual-payload-ID-in-case-of-a-dynamic-payloa.patch
 Patch005: opensips-0005-Add-support-for-upcoming-json-c-0.14.0.patch
-Patch006: opensips-0006-tm-clone-message-in-async-mode-only-in-request-route.patch
-Patch007: opensips-0007-libcouchbase-API-v3.patch
-Patch008: opensips-0008-Guard-VERSIONTYPE.patch
-Patch009: opensips-0009-A-new-string-transformation.patch
-Patch010: opensips-0010-Fix-pointer-type.patch
+Patch006: opensips-0006-libcouchbase-API-v3.patch
+Patch007: opensips-0007-Guard-VERSIONTYPE.patch
+Patch008: opensips-0008-A-new-string-transformation.patch
+Patch009: opensips-0009-Fix-pointer-type.patch
 
 URL:      https://opensips.org
 

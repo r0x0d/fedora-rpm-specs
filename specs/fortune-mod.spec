@@ -9,8 +9,8 @@
 %undefine __cmake_in_source_build
 
 Name:		fortune-mod
-Version:	3.22.0
-Release:	4%{?dist}
+Version:	3.24.0
+Release:	1%{?dist}
 Summary:	A program which will display a fortune
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -134,6 +134,9 @@ chrpath -d %{buildroot}%{_bindir}/fortune
 %{_mandir}/man*/*
 
 %changelog
+* Wed Dec 18 2024 Shlomi Fish <shlomif@shlomifish.org> 3.24.0-1
+- New upstream version
+
 * Wed Oct 09 2024 Shlomi Fish <shlomif@shlomifish.org> 3.22.0-4
 - Restore running the tests-suite. Update the build-deps ( valgrind, IO::All)
 

@@ -49,7 +49,7 @@ Summary:        Web Console for Linux servers
 License:        LGPL-2.1-or-later
 URL:            https://cockpit-project.org/
 
-Version:        330
+Version:        331
 Release:        1%{?dist}
 Source0:        https://github.com/cockpit-project/cockpit/releases/download/%{version}/cockpit-%{version}.tar.xz
 
@@ -162,7 +162,6 @@ export NO_QUNIT=1
 
 %install
 %make_install
-make install-tests DESTDIR=%{buildroot}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/pam.d
 install -p -m 644 tools/cockpit.pam $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/cockpit
 rm -f %{buildroot}/%{_libdir}/cockpit/*.so
@@ -208,9 +207,6 @@ find %{buildroot}%{_datadir}/cockpit/apps -type f >> packagekit.list
 
 echo '%dir %{_datadir}/cockpit/selinux' > selinux.list
 find %{buildroot}%{_datadir}/cockpit/selinux -type f >> selinux.list
-
-echo '%dir %{_datadir}/cockpit/playground' > tests.list
-find %{buildroot}%{_datadir}/cockpit/playground -type f >> tests.list
 
 echo '%dir %{_datadir}/cockpit/static' > static.list
 echo '%dir %{_datadir}/cockpit/static/fonts' >> static.list
@@ -260,14 +256,6 @@ troubleshooting, interactive command-line sessions, and more.
 %package bridge
 Summary: Cockpit bridge server-side component
 Requires: glib-networking
-# 233 dropped jquery.js, pages started to bundle it (commit 049e8b8dce)
-Conflicts: cockpit-dashboard < 233
-Conflicts: cockpit-networkmanager < 233
-Conflicts: cockpit-storaged < 233
-Conflicts: cockpit-system < 233
-Conflicts: cockpit-tests < 233
-Conflicts: cockpit-docker < 233
-Obsoletes: cockpit-pcp < 326
 
 %description bridge
 The Cockpit bridge component installed server side and runs commands on the
@@ -308,7 +296,6 @@ Provides: cockpit-shell = %{version}-%{release}
 Provides: cockpit-systemd = %{version}-%{release}
 Provides: cockpit-tuned = %{version}-%{release}
 Provides: cockpit-users = %{version}-%{release}
-Obsoletes: cockpit-dashboard < %{version}-%{release}
 %if 0%{?rhel}
 Requires: NetworkManager >= 1.6
 Requires: sos
@@ -328,10 +315,10 @@ Recommends: (reportd if abrt)
 %endif
 
 Provides: bundled(npm(@patternfly/patternfly)) = 5.4.2
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.10
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.11
 Provides: bundled(npm(@patternfly/react-icons)) = 5.4.2
 Provides: bundled(npm(@patternfly/react-styles)) = 5.4.1
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.11
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.12
 Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.1
 Provides: bundled(npm(@xterm/addon-canvas)) = 0.7.0
 Provides: bundled(npm(@xterm/xterm)) = 5.5.0
@@ -374,12 +361,12 @@ Requires: openssl
 Requires: glib2 >= 2.50.0
 Requires: (selinux-policy >= %{_selinux_policy_version} if selinux-policy-%{selinuxtype})
 Requires(post): (policycoreutils if selinux-policy-%{selinuxtype})
-Conflicts: firewalld < 0.6.0-1
 Recommends: sscg >= 2.3
 Recommends: system-logos
 Suggests: sssd-dbus >= 2.6.2
 # for cockpit-desktop
 Suggests: python3
+Obsoletes: cockpit-tests < 331
 
 # prevent hard python3 dependency for cockpit-desktop, it falls back to other browsers
 %global __requires_exclude_from ^%{_libexecdir}/cockpit-client$
@@ -403,11 +390,11 @@ authentication via sssd/FreeIPA.
 %ghost %{_sysconfdir}/issue.d/cockpit.issue
 %ghost %{_sysconfdir}/motd.d/cockpit
 %ghost %attr(0644, root, root) %{_sysconfdir}/cockpit/disallowed-users
-%dir %{_datadir}/cockpit/motd
-%{_datadir}/cockpit/motd/update-motd
-%{_datadir}/cockpit/motd/inactive.motd
+%dir %{_datadir}/cockpit/issue
+%{_datadir}/cockpit/issue/update-issue
+%{_datadir}/cockpit/issue/inactive.issue
 %{_unitdir}/cockpit.service
-%{_unitdir}/cockpit-motd.service
+%{_unitdir}/cockpit-issue.service
 %{_unitdir}/cockpit.socket
 %{_unitdir}/cockpit-session-socket-user.service
 %{_unitdir}/cockpit-session.socket
@@ -453,11 +440,21 @@ fi
 # disable root login on first-time install; so existing installations aren't changed
 if [ "$1" = 1 ]; then
     mkdir -p /etc/motd.d /etc/issue.d
-    ln -s ../../run/cockpit/motd /etc/motd.d/cockpit
-    ln -s ../../run/cockpit/motd /etc/issue.d/cockpit.issue
+    ln -s ../../run/cockpit/issue /etc/motd.d/cockpit
+    ln -s ../../run/cockpit/issue /etc/issue.d/cockpit.issue
     printf "# List of users which are not allowed to login to Cockpit\n" > /etc/cockpit/disallowed-users
     printf "root\n" >> /etc/cockpit/disallowed-users
     chmod 644 /etc/cockpit/disallowed-users
+fi
+
+# on upgrades, adjust motd/issue links to changed target if they still exist (changed in 331)
+if [ "$1" = 2 ]; then
+    if [ "$(readlink /etc/motd.d/cockpit 2>/dev/null)" = "../../run/cockpit/motd" ]; then
+        ln -sfn ../../run/cockpit/issue /etc/motd.d/cockpit
+    fi
+    if [ "$(readlink /etc/issue.d/cockpit.issue 2>/dev/null)" = "../../run/cockpit/motd" ]; then
+        ln -sfn ../../run/cockpit/issue /etc/issue.d/cockpit.issue
+    fi
 fi
 
 %tmpfiles_create cockpit-ws.conf
@@ -581,20 +578,6 @@ The Cockpit component for managing storage.  This package uses udisks.
 %files -n cockpit-storaged -f storaged.list
 %{_datadir}/metainfo/org.cockpit_project.cockpit_storaged.metainfo.xml
 
-%package -n cockpit-tests
-Summary: Tests for Cockpit
-Requires: cockpit-bridge >= %{required_base}
-Requires: cockpit-system >= %{required_base}
-Requires: openssh-clients
-Provides: cockpit-test-assets = %{version}-%{release}
-
-%description -n cockpit-tests
-This package contains tests and files used while testing Cockpit.
-These files are not required for running Cockpit.
-
-%files -n cockpit-tests -f tests.list
-%{pamdir}/mock-pam-conv-mod.so
-
 %package -n cockpit-packagekit
 Summary: Cockpit user interface for packages
 BuildArch: noarch
@@ -612,6 +595,10 @@ via PackageKit.
 
 # The changelog is automatically generated and merged
 %changelog
+* Wed Dec 18 2024 Packit <hello@packit.dev> - 331-1
+- ws: Prevent search engine indexing with robots.txt
+- container/ws: Support using an external SSH agent
+
 * Wed Dec 04 2024 Packit <hello@packit.dev> - 330-1
 - Web server: Increased sandboxing, setuid removal, bootc support
 - Development: New install mode using systemd-sysext

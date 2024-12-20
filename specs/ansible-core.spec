@@ -12,70 +12,76 @@
 # disable the python -s shbang flag as we want to be able to find non system modules
 %undefine _py3_shebang_s
 
-Name: ansible-core
-Summary: A radically simple IT automation system
-Version: 2.18.0
+Name:           ansible-core
+Version:        2.18.1
 %global uversion %{version_no_tilde %{quote:%nil}}
-Release: 1%{?dist}
+Release:        1%{?dist}
+Summary:        A radically simple IT automation system
+
 # The main license is GPLv3+. Many of the files in lib/ansible/module_utils
 # are BSD licensed. There are various files scattered throughout the codebase
 # containing code under different licenses.
-License: GPL-3.0-or-later AND BSD-2-Clause AND PSF-2.0 AND MIT AND Apache-2.0
+License:        GPL-3.0-or-later AND BSD-2-Clause AND PSF-2.0 AND MIT AND Apache-2.0
+URL:            https://ansible.com
 
-Source0: https://github.com/ansible/ansible/archive/v%{uversion}/%{name}-%{uversion}.tar.gz
-Source1: https://github.com/ansible/ansible-documentation/archive/v%{uversion}/ansible-documentation-%{uversion}.tar.gz
+Source0:        https://github.com/ansible/ansible/archive/v%{uversion}/%{name}-%{uversion}.tar.gz
+Source1:        https://github.com/ansible/ansible-documentation/archive/v%{uversion}/ansible-documentation-%{uversion}.tar.gz
 
-Url: https://ansible.com
-BuildArch: noarch
+# dnf5,apt: add auto_install_module_deps option (#84292)
+# https://github.com/ansible/ansible/pull/84292.patch
+# https://bugzilla.redhat.com/2322751
+Patch:          0001-dnf5-apt-add-auto_install_module_deps-option-84292.patch
+
+BuildArch:      noarch
 
 # Virtual provides for bundled libraries
 # Search for `_BUNDLED_METADATA` to find them
 
 # lib/ansible/module_utils/distro/*
 # SPDX-License-Identifier: Apache-2.0
-Provides: bundled(python3dist(distro)) = 1.9.0
+Provides:       bundled(python3dist(distro)) = 1.9.0
 
 # lib/ansible/module_utils/six/*
 # SPDX-License-Identifier: MIT
-Provides: bundled(python3dist(six)) = 1.16.0
+Provides:       bundled(python3dist(six)) = 1.16.0
 
-Conflicts: ansible <= 2.9.99
+Conflicts:      ansible <= 2.9.99
 #
 # obsoletes/provides for ansible-base
 #
-Provides: ansible-base = %{version}-%{release}
-Obsoletes: ansible-base < 2.10.6-1
+Provides:       ansible-base = %{version}-%{release}
+Obsoletes:      ansible-base < 2.10.6-1
 
-BuildRequires: make
-BuildRequires: python%{python3_pkgversion}-devel
+BuildRequires:  make
+BuildRequires:  python%{python3_pkgversion}-devel
 # This is only used in %%prep to relax the required setuptools version,
 # which is not necessary in RHEL 10+.
 # Not using it in RHEL avoids unwanted dependencies.
 %if %{undefined rhel}
-BuildRequires: tomcli >= 0.3.0
+BuildRequires:  tomcli >= 0.3.0
 %endif
 # Needed to build manpages from source.
-BuildRequires: python%{python3_pkgversion}-docutils
+BuildRequires:  python%{python3_pkgversion}-docutils
 
 %if %{with tests}
-BuildRequires: git-core
-BuildRequires: glibc-all-langpacks
-BuildRequires: python%{python3_pkgversion}-systemd
+BuildRequires:  git-core
+BuildRequires:  glibc-all-langpacks
+BuildRequires:  python%{python3_pkgversion}-systemd
 
 %if v"0%{?python3_version}" >= v"3.13"
 # Use crypt_r on Python 3.13+
 # https://github.com/ansible/ansible/issues/82758
 # Upstream has removed the dependency on crypt from ansible 2.17+
-BuildRequires: python%{python3_pkgversion}-crypt-r
+BuildRequires:  python%{python3_pkgversion}-crypt-r
 %endif
 %endif
 
 %if %{with argcomplete}
-Requires: python%{python3_pkgversion}-argcomplete
+Requires:       python%{python3_pkgversion}-argcomplete
 %endif
 %if 0%{?fedora} >= 39
-BuildRequires: python3-libdnf5
-Recommends: python3-libdnf5
+BuildRequires:  python3-libdnf5
+Recommends:     python3-libdnf5
 %endif
 
 
@@ -91,9 +97,9 @@ are transferred to managed machines automatically.}
 This is the base part of ansible (the engine).
 
 %package doc
-Summary: Documentation for Ansible Core
-Provides: ansible-base-doc = %{version}-%{release}
-Obsoletes: ansible-base-doc < 2.10.6-1
+Summary:        Documentation for Ansible Core
+Provides:       ansible-base-doc = %{version}-%{release}
+Obsoletes:      ansible-base-doc < 2.10.6-1
 
 %description doc %_description
 
@@ -262,6 +268,10 @@ install -Dpm 0644 licenses/* -t %{buildroot}%{_pkglicensedir}
 
 
 %changelog
+* Wed Dec 04 2024 Maxwell G <maxwell@gtmx.me> - 2.18.1-1
+- Update to 2.18.1. Fixes rhbz#2330005.
+- dnf5 - backport support for automatically installing python3-libdnf5 (rhbz#2322751).
+
 * Tue Nov 26 2024 Maxwell G <maxwell@gtmx.me> - 2.18.0-1
 - Update to 2.18.0. Fixes rhbz#2282011.
 

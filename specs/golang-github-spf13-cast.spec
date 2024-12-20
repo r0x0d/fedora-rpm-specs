@@ -9,7 +9,7 @@
 
 # https://github.com/spf13/cast
 %global goipath         github.com/spf13/cast
-Version:                1.7.0
+Version:                1.7.1
 
 %gometa -L
 

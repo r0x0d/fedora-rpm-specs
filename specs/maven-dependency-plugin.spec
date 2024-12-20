@@ -12,6 +12,7 @@ ExclusiveArch:  %{java_arches} noarch
 Source0:        https://repo1.maven.org/maven2/org/apache/maven/plugins/%{name}/%{version}/%{name}-%{version}-source-release.zip
 
 Patch:          0001-Port-tests-to-maven-model-3.6.X.patch
+Patch:          0002-MDEP-952-Cut-another-dependency-on-commons-lang3-479.patch
 
 %if %{with bootstrap}
 BuildRequires:  javapackages-bootstrap

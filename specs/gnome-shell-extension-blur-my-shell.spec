@@ -2,7 +2,7 @@
 %global uuid        %{extension}@aunetx
 
 Name:           gnome-shell-extension-%{extension}
-Version:        66
+Version:        67
 Release:        %autorelease
 Summary:        Adds a blur look to different parts of the GNOME Shell
 License:        GPL-3.0-or-later
@@ -12,6 +12,8 @@ BuildArch:      noarch
 Source:         %{url}/archive/v%{version}/%{extension}-%{version}.tar.gz
 # https://github.com/aunetx/blur-my-shell/pull/626
 Patch:          0001-Use-meson-build-system.patch
+# https://github.com/aunetx/blur-my-shell/commit/b39c53630ef16384dfb567894bffd50afd76d469
+Patch:          0002-Fix-incompatibility-with-just-perfection.patch
 
 BuildRequires:  meson
 BuildRequires:  glib2

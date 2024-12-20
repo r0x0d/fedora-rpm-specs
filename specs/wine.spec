@@ -683,7 +683,7 @@ This package adds the opencl driver for wine.
 %endif
 
 %prep
-%setup -qn wine-%{version}-rc1
+%setup -qn wine-%{version}-rc2
 %patch -P 511 -p1 -b.cjk
 
 %if 0%{?wine_staging}

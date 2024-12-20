@@ -1,11 +1,11 @@
 Summary: SELinux Translation Daemon
 Name: mcstrans
 Version: 3.8
-Release: 0.rc1.1%{?dist}
+Release: 0.rc3.1%{?dist}
 License: GPL-2.0-or-later
 Url: https://github.com/SELinuxProject/selinux/wiki
-Source0: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/mcstrans-%{version}-rc1.tar.gz
-Source1: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/mcstrans-%{version}-rc1.tar.gz.asc
+Source0: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc3/mcstrans-%{version}-rc3.tar.gz
+Source1: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc3/mcstrans-%{version}-rc3.tar.gz.asc
 Source2: https://github.com/bachradsusi.gpg
 Source3: secolor.conf.8
 # fedora-selinux/selinux: git format-patch -N 3.8 -- mcstrans
@@ -39,7 +39,7 @@ from internal representations to user defined representation.
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup -p 2 -n mcstrans-%{version}-rc1
+%autosetup -p 2 -n mcstrans-%{version}-rc3
 
 %build
 %set_build_flags

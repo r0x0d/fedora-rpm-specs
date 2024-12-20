@@ -9,7 +9,7 @@ BuildArch:      noarch
 BuildRequires:  make
 BuildRequires:  python3-devel
 BuildRequires:  systemd-rpm-macros
-%if (%{defined fedora} || %{defined epel})
+%if (%{defined fedora} || (%{defined epel} && 0%{?epel} <= 9))
 BuildRequires:  pylint
 BuildRequires:  python3-dbus
 BuildRequires:  python3-flake8
@@ -64,7 +64,7 @@ allowing dynamically assign interfaces to Foomuuri zones via NetworkManager.
 make install DESTDIR=%{buildroot}
 
 
-%if (%{defined fedora} || %{defined epel})
+%if (%{defined fedora} || (%{defined epel} && 0%{?epel} <= 9))
 %check
 make test
 %endif

@@ -2,20 +2,14 @@
 %global __brp_check_rpaths %{nil}
 
 Name:          cantera
-Version:       3.0.1
+Version:       3.1.0
 Release:       %{?autorelease}
 Summary:       Chemical kinetics, thermodynamics, and transport tool suite
 # Automatically converted from old format: BSD - review is highly recommended.
 License:       LicenseRef-Callaway-BSD
 URL:           https://github.com/Cantera/%{name}/
 Source0:       %{url}archive/refs/tags/v%{version}.tar.gz
-
-# add fmt-11.0 support (upstream commit 05e05f9, to be included in v3.1)
-Patch0:         fmt-11_0.patch
-
-# https://github.com/Cantera/cantera/pull/1804
-Patch1:         0001-SCons-Fix-nondeterminism-in-source-generation.patch
-Patch2:         0002-Python-Avoid-nondeterminism-in-error-message.patch
+Source1:       https://github.com/Cantera/cantera-example-data/archive/refs/heads/main.tar.gz
 
 BuildRequires:  boost-devel
 BuildRequires:  eigen3-devel
@@ -111,19 +105,19 @@ interfaces of Cantera.
 
 
 %prep
-%autosetup -n %{name}-%{version} -p1
+%autosetup -n %{name}-%{version} -p1 0
+gzip -dc %{S:1} | tar -xvvf - --strip-components=1 -C data/example_data
 
 %build
 %set_build_flags
 
-# for 3.1, add     example_data=n \
 %scons build \
     extra_inc_dirs=%{_includedir}/eigen3:%{_includedir}/highfive \
     f90_interface=y \
     hdf_support=y \
     libdirname=%{_lib} \
     prefix=%{_prefix} \
-    python_package=full \
+    python_package=y \
     python_prefix=%{_prefix} \
     renamed_shared_libraries=n \
     system_eigen=y \
@@ -159,6 +153,7 @@ interfaces of Cantera.
 %{_bindir}/ck2yaml
 %{_bindir}/cti2yaml
 %{_bindir}/ctml2yaml
+%{_bindir}/lxcat2yaml
 %{_bindir}/yaml2ck
 
 %{_datadir}/%{name}

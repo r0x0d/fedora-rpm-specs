@@ -1,13 +1,13 @@
-%define libsepolver 3.8-0
-%define libselinuxver 3.8-0
+%define libsepolver 3.8-0.rc3
+%define libselinuxver 3.8-0.rc3
 
 Summary: SELinux binary policy manipulation library
 Name: libsemanage
 Version: 3.8
-Release: 0.rc1.1%{?dist}
+Release: 0.rc3.1%{?dist}
 License: LGPL-2.1-or-later
-Source0: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/libsemanage-%{version}-rc1.tar.gz
-Source1: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/libsemanage-%{version}-rc1.tar.gz.asc
+Source0: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc3/libsemanage-%{version}-rc3.tar.gz
+Source1: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc3/libsemanage-%{version}-rc3.tar.gz.asc
 Source2: https://github.com/bachradsusi.gpg
 # git format-patch -N 3.8 -- libsemanage
 # i=1; for j in 00*patch; do printf "Patch%04d: %s\n" $i $j; i=$((i+1));done
@@ -79,7 +79,7 @@ SELinux management applications.
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup -p 2 -n libsemanage-%{version}-rc1
+%autosetup -p 2 -n libsemanage-%{version}-rc3
 
 
 %build

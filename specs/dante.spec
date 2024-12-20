@@ -1,5 +1,5 @@
 Name:           dante
-Version:        1.4.3
+Version:        1.4.4
 Release:        %autorelease
 Summary:        A free SOCKS v4/v5 client implementation
 License:        BSD-Inferno-Nettverk
@@ -7,8 +7,6 @@ URL:            https://www.inet.no/%{name}
 Source0:        https://www.inet.no/%{name}/files/%{name}-%{version}.tar.gz
 Source1:        sockd.service
 Patch0:         dante-1.4.3-HAVE_SENDBUF_IOCTL.patch
-Patch1:         dante-1.4.3-SETGROUPS.patch
-Patch2:         dante-miniupnp228.patch
 BuildRequires:  autoconf
 BuildRequires:  bison
 BuildRequires:  cyrus-sasl-devel

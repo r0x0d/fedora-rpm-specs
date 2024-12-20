@@ -5,7 +5,8 @@
 %global pkgver %{pkg_name}-%{version}
 %{?haskell_setup}
 
-%bcond_without tests
+# testsuite hangs on epel9
+%bcond tests %{undefined el9}
 
 Name:           %{pkg_name}
 Version:        0.10.0

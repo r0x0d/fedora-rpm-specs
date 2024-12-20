@@ -5,7 +5,7 @@
 
 Name:           gtkd
 Version:        3.10.0
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        D binding and OO wrapper of GTK+
 
 License:        LGPL-3.0-or-later
@@ -129,6 +129,9 @@ make %{?_smp_mflags} DC=ldc2 libdir=%{?_lib} DCFLAGS="%{_d_optflags}" LDFLAGS=""
 %{_datadir}/geany/tags/gtkd.d.tags
 
 %changelog
+* Wed Dec 18 2024 Kalev Lember <klember@redhat.com> - 3.10.0-13
+- Rebuilt for ldc 1.40
+
 * Tue Aug 06 2024 Kalev Lember <klember@redhat.com> - 3.10.0-12
 - Rebuilt for ldc 1.39
 

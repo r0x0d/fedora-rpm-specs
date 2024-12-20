@@ -1,6 +1,6 @@
 Name:           gir-to-d
 Version:        0.23.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Tool to create D bindings from GObject introspection files
 
 License:        LGPL-3.0-or-later
@@ -43,6 +43,9 @@ export LDFLAGS="-Wl,-z,relro"
 
 
 %changelog
+* Wed Dec 18 2024 Kalev Lember <klember@redhat.com> - 0.23.2-4
+- Rebuilt for ldc 1.40
+
 * Tue Aug 06 2024 Kalev Lember <klember@redhat.com> - 0.23.2-3
 - Rebuilt for ldc 1.39
 

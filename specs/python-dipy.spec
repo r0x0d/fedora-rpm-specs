@@ -77,6 +77,10 @@ done
 # Remove executable bit from examples
 chmod a-x doc/examples/*.py
 
+# Allow building with NumPy 1.x
+# Current stable branches won't be updated to 2.x.
+sed -r -i 's/(numpy)[>=].*;/\1;/' pyproject.toml
+
 %generate_buildrequires
 %pyproject_buildrequires -p
 

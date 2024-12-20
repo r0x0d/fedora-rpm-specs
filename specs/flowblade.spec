@@ -12,8 +12,8 @@ Name:           flowblade
 Version:        2.14.0.2
 Release:        2%{?dist}
 %else
-Version:        2.16.3
-Release:        3%{?dist}
+Version:        2.18
+Release:        1%{?dist}
 %endif
 License:        GPL-3.0-only
 Summary:        Multitrack non-linear video editor for Linux
@@ -24,7 +24,6 @@ Source0:        %{url}/archive/%{commit0}/%{name}-%{version}-%{shortcommit0}.tar
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 %endif
 Patch0:         %{name}_sys_path.patch
-Patch1:         %{name}-invalid-escape-sequence.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  libappstream-glib
@@ -119,6 +118,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.appdata
 %{python3_sitelib}/%{name}*
 
 %changelog
+* Wed Dec 18 2024 Martin Gansser <martinkg@fedoraproject.org> - 2.18-1
+- Update to 2.18
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.16.3-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

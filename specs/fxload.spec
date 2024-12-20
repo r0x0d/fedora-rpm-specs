@@ -1,6 +1,6 @@
 Name: fxload
 Version: 2008_10_13
-Release: 28%{?dist}
+Release: 29%{?dist}
 Summary: A helper program to download firmware into FX and FX2 EZ-USB devices
 
 License: GPL-2.0-or-later
@@ -36,18 +36,21 @@ appears on the bus.
 %{make_build} CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="$RPM_LD_FLAGS -pie"
 
 %install
-mkdir -p -m 755 %{buildroot}/sbin
-install -m 755 fxload %{buildroot}/sbin
+mkdir -p -m 755 %{buildroot}/usr/sbin
+install -m 755 fxload %{buildroot}/usr/sbin
 mkdir -p -m 755 %{buildroot}/%{_mandir}/man8/
 install -m 644 fxload.8 %{buildroot}/%{_mandir}/man8/
 
 %files
 %doc COPYING
 %doc README.txt
-%attr(0755, root, root) /sbin/fxload
+%attr(0755, root, root) /usr/sbin/fxload
 %{_mandir}/*/*
 
 %changelog
+* Wed Dec 18 2024 Jaroslav Kysela <perex@perex.cz> - 2008_10_13-29
+- use /usr/sbin directory
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2008_10_13-28
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

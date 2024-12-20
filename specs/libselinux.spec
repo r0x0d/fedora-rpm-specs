@@ -1,14 +1,14 @@
 %define ruby_inc %(pkg-config --cflags ruby)
-%define libsepolver 3.8-0
+%define libsepolver 3.8-0.rc3
 
 Summary: SELinux library and simple utilities
 Name: libselinux
 Version: 3.8
-Release: 0.rc1.2%{?dist}
+Release: 0.rc3.1%{?dist}
 License: LicenseRef-Fedora-Public-Domain
 # https://github.com/SELinuxProject/selinux/wiki/Releases
-Source0: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/libselinux-%{version}-rc1.tar.gz
-Source1: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/libselinux-%{version}-rc1.tar.gz.asc
+Source0: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc3/libselinux-%{version}-rc3.tar.gz
+Source1: https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc3/libselinux-%{version}-rc3.tar.gz.asc
 Source2: https://github.com/bachradsusi.gpg
 Source3: selinuxconlist.8
 Source4: selinuxdefcon.8
@@ -20,7 +20,6 @@ Url: https://github.com/SELinuxProject/selinux/wiki
 # $ i=1; for j in 00*patch; do printf "Patch%04d: %s\n" $i $j; i=$((i+1));done
 # Patch list start
 Patch0001: 0001-Use-SHA-2-instead-of-SHA-1.patch
-Patch0002: 0002-libselinux-utils-drop-reachable-assert-in-sefcontext.patch
 # Patch list end
 BuildRequires: gcc make
 BuildRequires: ruby-devel ruby libsepol-static >= %{libsepolver} swig pcre2-devel
@@ -93,7 +92,7 @@ needed for developing SELinux applications.
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup -p 2 -n libselinux-%{version}-rc1
+%autosetup -p 2 -n libselinux-%{version}-rc3
 
 %build
 export DISABLE_RPM="y"

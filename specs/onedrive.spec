@@ -3,7 +3,7 @@
 
 Name:           onedrive
 Version:        2.5.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        OneDrive Free Client written in D
 # Automatically converted from old format: GPLv3 - review is highly recommended.
 License:        GPL-3.0-only
@@ -62,6 +62,9 @@ chmod a-x %{buildroot}/%{_mandir}/man1/%{name}*
 %config %{_sysconfdir}/logrotate.d/onedrive
 
 %changelog
+* Wed Dec 18 2024 Kalev Lember <klember@redhat.com> - 2.5.3-3
+- Rebuilt for ldc 1.40
+
 * Fri Nov 22 2024 Zamir SUN <sztsian@gmail.com> - 2.5.3-2
 - Fix unable to parse SSL version
 

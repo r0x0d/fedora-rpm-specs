@@ -10,7 +10,7 @@
 
 Name:           tilix
 Version:        1.9.6
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Tiling terminal emulator
 
 # The tilix source code is MPL-2.0,
@@ -141,6 +141,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/com.gexperts.Tilix
 
 
 %changelog
+* Wed Dec 18 2024 Kalev Lember <klember@redhat.com> - 1.9.6-7
+- Rebuilt for ldc 1.40
+
 * Sat Oct 26 2024 Otto Liljalaakso <otto.liljalaakso@iki.fi> - 1.9.6-6
 - Add --allinst compiler flag to fix FTBFS
 

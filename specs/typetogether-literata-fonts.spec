@@ -9,7 +9,7 @@ Release: 11%{?dist}
 URL:     %{forgeurl}
 
 %global foundry           TypeTogether
-%global fontlicense       OFL
+%global fontlicense       OFL-1.1
 %global fontlicenses      OFL.txt
 %global fontdocs          *txt *html *md
 %global fontdocsex        %{fontlicenses}

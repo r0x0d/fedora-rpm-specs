@@ -1,6 +1,6 @@
 Name:           glibd
 Version:        2.4.3
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        D bindings for the GLib C Utility Library
 
 License:        LGPL-3.0-or-later
@@ -67,6 +67,9 @@ export DFLAGS="%{_d_optflags}"
 
 
 %changelog
+* Wed Dec 18 2024 Kalev Lember <klember@redhat.com> - 2.4.3-4
+- Rebuilt for ldc 1.40
+
 * Tue Aug 06 2024 Kalev Lember <klember@redhat.com> - 2.4.3-3
 - Rebuilt for ldc 1.39
 

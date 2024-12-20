@@ -20,7 +20,7 @@
 
 Name:           numpy
 Version:        2.2.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Epoch:          1
 Summary:        A fast multidimensional array facility for Python
 
@@ -73,6 +73,10 @@ BuildRequires:  python3-typing-extensions
 %endif
 BuildRequires: %{blaslib}-devel
 BuildRequires: chrpath
+# Upstream does not support splitting out f2py
+#  https://github.com/numpy/numpy/issues/28016
+#  https://bugzilla.redhat.com/show_bug.cgi?id=2332307
+Requires:       python3-numpy-f2py%{?_isa} = %{epoch}:%{version}-%{release}
 
 %if !0%{?fedora}
 Provides:       bundled(libdivide) = 3.0
@@ -149,7 +153,7 @@ sed -i '/libdivide\.h/i#define LIBDIVIDE_NEON' numpy/_core/src/umath/loops.c.src
 %endif
 
 #fix flags for ELN ppc64le
-%ifarch ppc64le && 0%{?eln}
+%ifarch ppc64le && 0%{?rhel} >= 10
 find . -type f -print0 | xargs -0 sed -i s/mcpu=power8/mcpu=power9/
 %endif
 
@@ -250,6 +254,9 @@ python3 runtests.py --no-build -- -ra -k 'not test_ppc64_ibm_double_double128 %{
 
 
 %changelog
+* Wed Dec 18 2024 Orion Poplawski <orion@nwra.com> - 1:2.2.0-3
+- Make main package require f2py (rhbz#2332307)
+
 * Tue Dec 17 2024 Gwyn Ciesla <gwync@protonmail.com> - 1:2.2.0-2
 - Tweak flags to fix build on ELN ppc64le.
 

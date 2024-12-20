@@ -1,12 +1,13 @@
 %{?mingw_package_header}
 
 Name:           mingw-dbus
-Version:        1.14.10
-Release:        5%{?dist}
+Version:        1.16.0
+Release:        1%{?dist}
 Summary:        MinGW Windows port of D-Bus
 
-# Automatically converted from old format: GPLv2+ or AFL - review is highly recommended.
-License:        GPL-2.0-or-later OR LicenseRef-Callaway-AFL
+# The effective license of the majority of the package, including the shared
+# library, is "GPL-2+ or AFL-2.1". Certain utilities are "GPL-2+" only.
+License: (AFL-2.1 OR GPL-2.0-or-later) AND GPL-2.0-or-later
 URL:            http://www.freedesktop.org/wiki/Software/dbus
 Source0:        http://dbus.freedesktop.org/releases/dbus/dbus-%{version}.tar.xz
 
@@ -155,6 +156,9 @@ rm -rf %{buildroot}%{mingw64_datadir}/xml
 
 
 %changelog
+* Wed Dec 18 2024 Sandro Mani <manisandro@gmail.com> - 1.16.0-1
+- Update to 1.16.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 1.14.10-5
 - convert license to SPDX
 

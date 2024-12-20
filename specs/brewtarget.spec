@@ -73,7 +73,7 @@ cat > mesontest.sh << EOF
 #!/bin/sh
 mkdir %{_builddir}/%{name}-%{version}/brewtarget-test
 export TMPDIR="%{_builddir}/%{name}-%{version}/brewtarget-test"
-%meson_test --verbose
+%meson_test --verbose --timeout-multiplier 2
 EOF
 chmod a+x ./mesontest.sh
 xvfb-run ./mesontest.sh

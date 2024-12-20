@@ -48,6 +48,7 @@ Source0:        https://github.com/bpfman/bpfman/archive/refs/tags/v%{version}.t
 # References to code related to the p434 curve have been removed from the vendored sources in Source1
 # In order to generate the vendored file run "cargo vendor --versioned dirs"
 # remove "fiat-crypto-0.2.9/src/p434.rs" and references to it
+# removed forbidden Unicode code points (RTLO 0x202E) from idna-0.5.0 IdnaTestV2.txt
 # compress with "tar -Jcvf"
 Source1:        bpfman-%{version}-vendor.tar.xz
 

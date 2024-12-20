@@ -8,7 +8,7 @@ Release: 15%{?dist}
 URL:     %{forgeurl}
 
 %global foundry           TypeSETit
-%global fontlicense       OFL
+%global fontlicense       OFL-1.1
 %global fontlicenses      OFL.txt
 %global fontdocs          *.txt *.md
 %global fontdocsex        %{fontlicenses}

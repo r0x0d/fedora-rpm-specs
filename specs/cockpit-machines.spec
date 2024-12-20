@@ -16,7 +16,7 @@
 #
 
 Name:           cockpit-machines
-Version:        325
+Version:        326
 Release:        1%{?dist}
 Summary:        Cockpit user interface for virtual machines
 License:        LGPL-2.1-or-later AND MIT
@@ -72,10 +72,10 @@ Provides: bundled(npm(@novnc/novnc)) = 1.4.0
 Provides: bundled(npm(@novnc/novnc)) = 1.5.0
 Provides: bundled(npm(@patternfly/patternfly)) = 5.4.2
 Provides: bundled(npm(@patternfly/react-console)) = 5.1.0
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.10
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.11
 Provides: bundled(npm(@patternfly/react-icons)) = 5.4.2
 Provides: bundled(npm(@patternfly/react-styles)) = 5.4.1
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.11
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.12
 Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.1
 Provides: bundled(npm(@spice-project/spice-html5)) = 0.2.1
 Provides: bundled(npm(@xterm/addon-canvas)) = 0.7.0
@@ -126,6 +126,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 
 # The changelog is automatically generated and merged
 %changelog
+* Wed Dec 18 2024 Packit <hello@packit.dev> - 326-1
+- Download and install unsupported and older operating systems
+
 * Wed Dec 04 2024 Packit <hello@packit.dev> - 325-1
 - Improve rendering of VM descriptions
 - Translation updates

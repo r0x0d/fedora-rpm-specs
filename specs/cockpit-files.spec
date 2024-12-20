@@ -1,5 +1,5 @@
 Name: cockpit-files
-Version: 13
+Version: 14
 Release: 1%{?dist}
 Summary: A filesystem browser for Cockpit
 License: LGPL-2.1-or-later
@@ -20,10 +20,10 @@ BuildRequires: gettext
 Requires: cockpit-bridge >= 318
 
 Provides: bundled(npm(@patternfly/patternfly)) = 5.4.2
-Provides: bundled(npm(@patternfly/react-core)) = 5.4.10
+Provides: bundled(npm(@patternfly/react-core)) = 5.4.11
 Provides: bundled(npm(@patternfly/react-icons)) = 5.4.2
 Provides: bundled(npm(@patternfly/react-styles)) = 5.4.1
-Provides: bundled(npm(@patternfly/react-table)) = 5.4.11
+Provides: bundled(npm(@patternfly/react-table)) = 5.4.12
 Provides: bundled(npm(@patternfly/react-tokens)) = 5.4.1
 Provides: bundled(npm(attr-accept)) = 2.2.5
 Provides: bundled(npm(dequal)) = 2.0.3
@@ -71,6 +71,11 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 %{_datadir}/metainfo/*
 
 %changelog
+* Wed Dec 18 2024 Packit <hello@packit.dev> - 14-1
+- Allow editing multiple file permissions
+- Support uploading files with administrator privileges
+- Add drag 'n drop support
+
 * Wed Dec 4 2024 Packit <hello@packit.dev> - 13-1
 - Translation updates
 

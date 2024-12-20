@@ -30,7 +30,7 @@
 Name:           freerdp
 Epoch:          2
 Version:        3.10.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Free implementation of the Remote Desktop Protocol (RDP)
 
 # The effective license is Apache-2.0 but:
@@ -180,6 +180,7 @@ find . -name "*.c" -exec chmod 664 {} \;
 %build
 %cmake \
     -DBUILD_TESTING=ON \
+    -DCMAKE_SKIP_INSTALL_RPATH=ON \
     -DCMAKE_INSTALL_LIBDIR:PATH=%{_lib} \
     -DWITH_ALSA=ON \
     -DWITH_AAD=ON \

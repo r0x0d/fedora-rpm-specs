@@ -1,14 +1,14 @@
-%global upname Bottleneck
+%global upname bottleneck
 
-Name:		python-%{upname}
-Version:	1.3.7
-Release:	9%{?dist}
+Name:		python-Bottleneck
+Version:	1.4.2
+Release:	1%{?dist}
 Summary:	Collection of fast NumPy array functions written in Cython
 
 # Automatically converted from old format: BSD - review is highly recommended.
 License:	LicenseRef-Callaway-BSD
 URL:		https://pypi.org/project/Bottleneck/
-Source0:	https://files.pythonhosted.org/packages/source/B/%{upname}/%{upname}-%{version}.tar.gz
+Source0:	https://files.pythonhosted.org/packages/source/b/%{upname}/%{upname}-%{version}.tar.gz
 # https://github.com/pydata/bottleneck/pull/432
 Patch0001:	0001-Fix-doc-build-with-Sphinx-6.patch
 
@@ -28,7 +28,7 @@ BuildArch:	noarch
 This package contains the HTML-docs for %{name}.
 
 
-%package -n python3-%{upname}
+%package -n python3-Bottleneck
 Summary:	Collection of fast NumPy array functions written in Cython
 
 BuildRequires:	python3-devel
@@ -42,10 +42,8 @@ BuildRequires:	python3-sphinx
 Requires:	python3-numpy%{?_isa}
 Requires:	python3-scipy%{?_isa}
 
-%{?python_provide:%python_provide python3-%{upname}}
-
-%description -n python3-%{upname}
-python3-%{upname} is a collection of fast NumPy array functions
+%description -n python3-Bottleneck
+python3-Bottleneck is a collection of fast NumPy array functions
 written in Cython.
 
 
@@ -95,14 +93,17 @@ rm -rf %{buildroot}%{python3_sitearch}/.pytest_cache
 %doc README* RELEASE* doc/html
 
 
-%files -n python3-%{upname}
+%files -n python3-Bottleneck
 %license LICENSE
 %doc README* RELEASE*
 %{python3_sitearch}/bottleneck
-%{python3_sitearch}/%{upname}-%{version}-py%{python3_version}.egg-info
+%{python3_sitearch}/Bottleneck-%{version}-py%{python3_version}.egg-info
 
 
 %changelog
+* Tue Dec 17 2024 Orion Poplawski <orion@nwra.com> - 1.4.2-1
+- Update to 1.4.2
+
 * Tue Dec 17 2024 Orion Poplawski <orion@nwra.com> - 1.3.7-9
 - Rebuild with numpy 2.0
 

@@ -162,13 +162,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.13.0
 %define specversion 6.13.0
 %define patchversion 6.13
-%define pkgrelease 0.rc3.20241217gitf44d154d6e3d.30
+%define pkgrelease 0.rc3.20241218gitaef25be35d23.31
 %define kversion 6
-%define tarfile_release 6.13-rc3-17-gf44d154d6e3d
+%define tarfile_release 6.13-rc3-44-gaef25be35d23
 # This is needed to do merge window version magic
 %define patchlevel 13
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc3.20241217gitf44d154d6e3d.30%{?buildid}%{?dist}
+%define specrelease 0.rc3.20241218gitaef25be35d23.31%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.13.0
 
@@ -4171,9 +4171,12 @@ fi\
 #
 #
 %changelog
-* Tue Dec 17 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc3.f44d154d6e3d.30]
+* Wed Dec 18 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc3.aef25be35d23.31]
 - x86/insn_decoder_test: allow longer symbol-names (David Rheinsberg)
 - kernel.spec: update license field (Scott Weaver)
+
+* Wed Dec 18 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc3.aef25be35d23.30]
+- Linux v6.13.0-0.rc3.aef25be35d23
 
 * Tue Dec 17 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc3.f44d154d6e3d.29]
 - redhat/configs: Re-enable CONFIG_INFINIBAND_VMWARE_PVRDMA (Vitaly Kuznetsov)

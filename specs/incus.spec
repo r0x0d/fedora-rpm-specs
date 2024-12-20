@@ -10,7 +10,7 @@
 
 # https://github.com/lxc/incus
 %global goipath github.com/lxc/incus
-Version:        6.2
+Version:        6.8
 
 %gometa
 
@@ -18,7 +18,7 @@ Version:        6.2
 %global golicenses COPYING
 
 Name:           incus
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        Powerful system container and virtual machine manager
 License:        Apache-2.0
 URL:            https://linuxcontainers.org/incus
@@ -55,8 +55,6 @@ Source202:      %{swaggerui_source_baseurl}/swagger-ui-standalone-preset.js#/swa
 Source203:      %{swaggerui_source_baseurl}/swagger-ui.css#/swagger-ui-%{swaggerui_version}.css
 
 # Patches upstream or proposed upstream
-## Fix build for 32-bit arches
-Patch0001:      https://github.com/lxc/incus/commit/f11c0b04f2e90a19e900ca077e21edf02c589db2.patch
 
 # Downstream only patches
 ## Allow offline builds
@@ -93,6 +91,12 @@ Requires:       tar
 Requires:       xdelta
 Requires:       xz
 %{?systemd_requires}
+
+%ifnarch %{ix86} %{arm32}
+Requires:       skopeo
+# Not yet packaged in Fedora
+#Requires:       umoci
+%endif
 
 %if %{with check}
 BuildRequires:  btrfs-progs
@@ -459,6 +463,10 @@ export CGO_LDFLAGS_ALLOW="(-Wl,-wrap,pthread_create)|(-Wl,-z,now)"
 %endif
 
 %changelog
+* Wed Dec 18 2024 Neal Gompa <ngompa@fedoraproject.org> - 6.8-1
+- Update to 6.8
+- Another fix for incus socket
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

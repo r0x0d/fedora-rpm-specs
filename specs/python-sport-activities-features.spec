@@ -19,7 +19,7 @@ ratio (total distance of identified hills vs. total distance), average ascent
 of hills, total ascent, total descent and many others.}
 
 Name:           python-%{pypi_name}
-Version:        0.4.2
+Version:        0.5.0
 Release:        %autorelease
 Summary:        A minimalistic toolbox for extracting features from sports activity files
 

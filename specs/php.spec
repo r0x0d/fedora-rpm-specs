@@ -61,12 +61,12 @@
 %bcond_without   lmdb
 
 %global upver        8.4.2
-%global rcver        RC1
+#global rcver        RC1
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php
 Version: %{upver}%{?rcver:~%{rcver}}
-Release: 2%{?dist}
+Release: 1%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
 # TSRM is licensed under BSD
@@ -1497,6 +1497,9 @@ systemctl try-restart php-fpm.service >/dev/null 2>&1 || :
 
 
 %changelog
+* Wed Dec 18 2024 Remi Collet <remi@remirepo.net> - 8.4.2-1
+- Update to 8.4.2 - http://www.php.net/releases/8_4_2.php
+
 * Sun Dec 08 2024 Pete Walter <pwalter@fedoraproject.org> - 8.4.2~RC1-2
 - Rebuild for ICU 76
 

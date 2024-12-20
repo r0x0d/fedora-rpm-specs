@@ -1,6 +1,6 @@
 Name:           upx
 Version:        4.2.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Ultimate Packer for eXecutables
 
 License:        GPL-2.0-or-later AND LicenseRef-Fedora-Public-Domain
@@ -13,6 +13,7 @@ BuildRequires:  cmake
 BuildRequires:  ucl-devel >= 1.01
 BuildRequires:  zlib-devel
 BuildRequires:  perl-podlators
+Provides:       bundled(lzma-sdk) = 4.43
 
 %description
 UPX is a free, portable, extendable, high-performance executable
@@ -43,6 +44,9 @@ rm -f %{buildroot}%{_datadir}/doc/upx/*
 
 
 %changelog
+* Wed Dec 18 2024 Gwyn Ciesla <gwync@protonmail.com> - 4.2.4-3
+- Provide bundled lzma-sdk
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.2.4-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

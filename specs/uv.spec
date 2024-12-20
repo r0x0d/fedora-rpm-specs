@@ -212,6 +212,10 @@ Patch:          0001-Downstream-only-do-not-override-the-default-allocato.patch
 #   https://github.com/astral-sh/uv/issues/4451
 Patch:          0001-Downstream-patch-always-find-the-system-wide-uv-exec.patch
 
+# Make the backoff crate dependency Windows-only
+# https://github.com/astral-sh/uv/pull/10002
+Patch:          %{url}/pull/10002.patch
+
 # These patches are for the forked, bundled async_zip crate.
 #
 # Revert "Update zip requirement from 0.6.3 to 2.1.5"

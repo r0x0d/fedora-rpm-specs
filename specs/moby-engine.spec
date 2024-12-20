@@ -10,11 +10,16 @@
 # https://github.com/moby/moby
 %global goipath         github.com/docker/docker
 %global forgeurl        https://github.com/moby/moby
-%global version0        27.3.1
+# For rc, beta, alpha releases substitute tilde (~) for dash (-)
+# in version0. tag0 reverses the substitution
+# e.g.  global version0        27.4.0~rc.4
+%global version0        27.4.1
+%global tag0            v%{gsub %{version0} ~ -}
 
 # https://github.com/docker/cli
 %global goipath1        github.com/docker/cli
 %global version1        %{version0}
+%global tag1            %{tag0}
 
 %gometa -L -a -f
 %global engine_dir ../%{topdir0}

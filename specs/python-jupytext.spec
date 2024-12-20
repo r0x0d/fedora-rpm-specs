@@ -5,7 +5,7 @@
 #global vsuffix d
 
 Name:           python-jupytext
-Version:        1.16.4
+Version:        1.16.6
 Release:        %autorelease
 Summary:        Save Jupyter notebooks as text documents or scripts
 
@@ -18,9 +18,6 @@ Source0:        %{giturl}/archive/v%{version}/jupytext-%{version}%{?vsuffix}.tar
 Source1:        jupytext-%{version}-vendor.tar.xz
 Source2:        jupytext-%{version}-vendor-licenses.txt
 Source3:        prepare_vendor.sh
-# Adapt to python 3.13 change in PosixPath.cwd
-# See https://github.com/mwouts/jupytext/issues/1242
-Patch:          %{name}-chdir.patch
 
 # s390x builds fail due to a bug in jupyterlab
 # https://bugzilla.redhat.com/show_bug.cgi?id=2278011
@@ -129,7 +126,6 @@ export HATCH_BUILD_HOOKS_ENABLE=true
 %pyproject_buildrequires -x docs,test,test-functional,test-integration
 
 %build
-export LC_ALL=C.UTF-8
 export HATCH_BUILD_HOOKS_ENABLE=true
 export YARN_CACHE_FOLDER="$PWD/jupyterlab/.package-cache"
 export npm_config_nodedir=%{_includedir}/node

@@ -50,6 +50,9 @@ sed -i 's/\r$//' neuroml/examples/test_files/tmp2.swc
 # remove unneeded dev reqs
 sed -i -e '/generateds/ d' -e '/flake8$/ d'  -e '/black$/ d' setup.cfg
 
+# Drop upper bound from numpy. Allow building with NumPy 2.x.
+sed -r -i 's/(numpy).*$/\1/' setup.cfg
+
 %generate_buildrequires
 %pyproject_buildrequires -x dev
 

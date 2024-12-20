@@ -1,14 +1,14 @@
-%global libsepolver 3.8-0
+%global libsepolver 3.8-0.rc3
 
 Name:           secilc
 Version:        3.8
-Release:        0.rc1.1%{?dist}
+Release:        0.rc3.1%{?dist}
 Summary:        The SELinux CIL Compiler
 
 License:        BSD-2-Clause
 URL:            https://github.com/SELinuxProject/selinux/wiki
-Source0:        https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/secilc-%{version}-rc1.tar.gz
-Source1:        https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc1/secilc-%{version}-rc1.tar.gz.asc
+Source0:        https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc3/secilc-%{version}-rc3.tar.gz
+Source1:        https://github.com/SELinuxProject/selinux/releases/download/%{version}-rc3/secilc-%{version}-rc3.tar.gz.asc
 Source2:        https://github.com/bachradsusi.gpg
 # fedora-selinux/selinux: git format-patch -N 3.8 -- secilc
 # i=1; for j in 00*patch; do printf "Patch%04d: %s\n" $i $j; i=$((i+1));done
@@ -40,7 +40,7 @@ for more information about the goals and features on the CIL language.
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup -p 2 -n secilc-%{version}-rc1
+%autosetup -p 2 -n secilc-%{version}-rc3
 
 
 %build

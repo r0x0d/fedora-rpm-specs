@@ -3,7 +3,7 @@ Release: 30%{?dist}
 URL: http://www.campivisivi.net/titillium/
 
 %global foundry           Campivisivi
-%global fontlicense       OFL
+%global fontlicense       OFL-1.1
 %global fontlicenses      OFL-titillium.txt
 %global fontdocs          OFL-FAQ.txt
 %global fontdocsex        %{fontlicenses}

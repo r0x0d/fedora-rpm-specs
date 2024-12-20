@@ -25,7 +25,7 @@
 Summary:        Specialist tools for ALSA
 Name:           alsa-tools
 Version:        1.2.11
-Release:        3%{?dist}
+Release:        4%{?dist}
 
 # Checked at least one source file from all the sub-projects contained in
 # the source tarball and they are consistent GPLv2+ - TJ 2007-11-15
@@ -110,7 +110,7 @@ for i in %{?builddirstools:%builddirstools} %{?builddirsfirmw:%builddirsfirmw}
 do
   case $i in
     usx2yloader)
-      (cd $i ; %make_install hotplugdir=/lib/udev) || exit 1
+      (cd $i ; %make_install hotplugdir=/usr/lib/udev) || exit 1
       ;;
     *)
       (cd $i ; %make_install) || exit 1
@@ -140,9 +140,9 @@ do
 done
 
 # convert hotplug stuff to udev
-rm -f %{buildroot}/lib/udev/tascam_fw.usermap
-mkdir -p %{buildroot}/lib/udev/rules.d
-install -m 644 %{SOURCE1} %{buildroot}/lib/udev/rules.d
+rm -f %{buildroot}/usr/lib/udev/tascam_fw.usermap
+mkdir -p %{buildroot}/usr/lib/udev/rules.d
+install -m 644 %{SOURCE1} %{buildroot}/usr/lib/udev/rules.d
 
 %if 0%{!?_without_tools:1}
 %files
@@ -191,9 +191,9 @@ install -m 644 %{SOURCE1} %{buildroot}/lib/udev/rules.d
 %doc %{_pkgdocdir}/mixartloader
 %doc %{_pkgdocdir}/usx2yloader
 %doc %{_pkgdocdir}/vxloader
-/lib/udev/rules.d/*.rules
-/lib/udev/tascam_fpga
-/lib/udev/tascam_fw
+/usr/lib/udev/rules.d/*.rules
+/usr/lib/udev/tascam_fpga
+/usr/lib/udev/tascam_fw
 %{_bindir}/hdsploader
 %{_bindir}/mixartloader
 %{_bindir}/usx2yloader
@@ -201,6 +201,9 @@ install -m 644 %{SOURCE1} %{buildroot}/lib/udev/rules.d
 %endif
 
 %changelog
+* Wed Dec 18 2024 Jaroslav Kysela <perex@perex.cz> - 1.2.11-4
+- Move remaining files to /usr tree
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.11-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

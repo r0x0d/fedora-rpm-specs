@@ -44,41 +44,21 @@ Libraries and header files for developing applications that use
 %{name}.
 
 
-%package -n python3-%{name}
-Summary:        %{summary} (Python bindings)
-
-%description -n python3-%{name}
-%{desc}
-
-This subpackage is for the Python language.
-
-
 %prep
 %forgeautosetup
 
 
-%generate_buildrequires
-%pyproject_buildrequires
-
-
 %build
 %make_build all PARSER_URL=%{url}
-
-%pyproject_wheel
 
 
 %install
 %make_install PREFIX=%{_prefix} INCLUDEDIR=%{_includedir} LIBDIR=%{_libdir}
 find $RPM_BUILD_ROOT -name '*.a' -delete
 
-%pyproject_install
-%pyproject_save_files %{lua: print(({string.gsub(rpm.expand('%name'), '-', '_')})[1])}
-
 
 %check
 %{__make} test
-
-%pyproject_check_import
 
 
 %{?ldconfig_scriptlets}
@@ -93,8 +73,6 @@ find $RPM_BUILD_ROOT -name '*.a' -delete
 %{_includedir}/tree_sitter/%{name}.h
 %{_libdir}/%{libname}.so
 %{_libdir}/pkgconfig/%{name}.pc
-
-%files -n python3-%{name} -f %{pyproject_files}
 
 
 %changelog

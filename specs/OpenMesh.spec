@@ -2,7 +2,7 @@ Name:           OpenMesh
 Version:        6.3
 Release:        20%{?dist}
 Summary:        A generic and efficient polygon mesh data structure
-License:        LGPLv3+ with exceptions
+License:        BSD-3-Clause
 URL:            http://www.openmesh.org/
 Source0:        https://www.graphics.rwth-aachen.de/media/openmesh_static/Releases/%{version}/OpenMesh-%{version}.tar.bz2
 Source1:        README.Fedora

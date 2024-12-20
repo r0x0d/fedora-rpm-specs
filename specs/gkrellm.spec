@@ -2,7 +2,7 @@
 
 Name:           gkrellm
 Version:        2.3.11
-Release:        17%{?dist}
+Release:        18%{?dist}
 Summary:        Multiple stacked system monitors in one process
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
@@ -150,6 +150,9 @@ useradd -r -g gkrellmd -M -d / -s /sbin/nologin -c "GNU Krell daemon" gkrellmd
 
 
 %changelog
+* Wed Dec 18 2024 Kevin Fenzi <kevin@scrye.com> - 2.3.11-18
+- Rebuild for new libntlm soname bump.
+
 * Fri Jul 26 2024 Benjamin Gilbert <bgilbert@backtick.net> - 2.3.11-17
 - Require gdk-pixbuf2-modules-extra on F41+ to fix crash (rhbz#2276464)
 

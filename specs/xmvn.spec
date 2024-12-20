@@ -61,12 +61,16 @@ creating RPM packages containing Maven artifacts.
 Summary:        Dependency-reduced version of XMvn
 Requires:       %{name}-core = %{version}-%{release}
 Requires:       apache-commons-cli
-Requires:       apache-commons-lang3
-Requires:       atinject
+Requires:       apache-commons-codec
 Requires:       google-guice
 Requires:       guava
+Requires:       jakarta-annotations
+Requires:       jakarta-inject1.0
+Requires:       jansi
+Requires:       jcl-over-slf4j
 Requires:       maven-resolver
 Requires:       maven-wagon
+Requires:       maven-shared-utils
 Requires:       plexus-cipher
 Requires:       plexus-classworlds
 Requires:       plexus-containers-component-annotations

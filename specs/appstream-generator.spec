@@ -6,7 +6,7 @@
 
 Name:           appstream-generator
 Version:        0.9.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Fast AppStream metadata generator
 
 License:        LGPL-3.0-or-later AND MIT
@@ -117,6 +117,9 @@ install contrib/setup/node_modules/jquery-flot/jquery.flot*.js -t %{buildroot}%{
 %{_datadir}/metainfo/org.freedesktop.appstream.generator.metainfo.xml
 
 %changelog
+* Wed Dec 18 2024 Kalev Lember <klember@redhat.com> - 0.9.1-6
+- Rebuilt for ldc 1.40
+
 * Tue Aug 06 2024 Kalev Lember <klember@redhat.com> - 0.9.1-5
 - Rebuilt for ldc 1.39
 

@@ -21,7 +21,7 @@
 %define	radicale_major	3
 
 %define	radicale_version	3.3.2
-%define	radicale_release	1
+%define	radicale_release	2
 #define gitcommit 8e9fdf391acb79d3fb1cb6e6b8f882f8999192cf
 
 %define	radicale_name	radicale
@@ -422,6 +422,9 @@ fi
 
 
 %changelog
+* Wed Dec 18 2024 Peter Bieringer <pb@bieringer.de> - 3.3.2-2
+- systemd unit file: add /var/cache/radicale to ReadWritePaths
+
 * Sun Dec 15 2024 Peter Bieringer <pb@bieringer.de> - 3.3.2-1
 - Update to 3.3.2
 - Package /var/cache/radicale for optional storage of cache files

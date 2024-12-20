@@ -13,15 +13,21 @@ Patch:          %{forgeurl}/pull/7486.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
+BuildRequires:  sed
 
 %description
 This package provides a powerful documentation framework on top of MkDocs.
 
+%pyproject_extras_subpkg -n %{name} imaging
+
 %prep
 %autosetup -p1
 
+# Relax version pins
+sed -i 's/~=/>=/g' pyproject.toml
+
 %generate_buildrequires
-%pyproject_buildrequires
+%pyproject_buildrequires -x imaging
 
 %build
 %pyproject_wheel

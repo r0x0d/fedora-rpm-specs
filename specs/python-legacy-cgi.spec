@@ -1,14 +1,13 @@
-%global commit 5e157372a314c998e57ac00b6fd24321942b34ba
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global date 20240614
+%global forgeurl https://github.com/jackrosenthal/python-cgi
+Version:        2.6.1
+%forgemeta
 
 Name:           python-legacy-cgi
-Version:        2.6^%{date}.%{shortcommit}
 Release:        %autorelease
 Summary:        Fork of the standard library cgi and cgitb modules
 License:        Python-2.0.1
-URL:            https://github.com/jackrosenthal/python-cgi
-Source:         %{url}/archive/%{commit}/python-cgi-%{commit}.tar.gz
+URL:            %{forgeurl}
+Source:         %{forgesource}
 
 BuildArch:      noarch
 
@@ -32,7 +31,7 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -p1 -n python-cgi-%{commit}
+%autosetup -p1 -n legacy-cgi-%{version}
 
 %py3_shebang_fix cgi.py
 
