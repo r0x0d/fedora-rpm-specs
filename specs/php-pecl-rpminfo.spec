@@ -3,9 +3,9 @@
 #
 # remirepo spec file for php-pecl-rpminfo
 #
-# Copyright (c) 2018-2024 Remi Collet
-# License: CC-BY-SA-4.0
-# http://creativecommons.org/licenses/by-sa/4.0/
+# SPDX-FileCopyrightText:  Copyright 2024 Remi Collet
+# SPDX-License-Identifier: CECILL-2.1
+# http://www.cecill.info/licences/Licence_CeCILL_V2-en.txt
 #
 # Please, preserve the changelog entries
 #
@@ -13,12 +13,11 @@
 %global pecl_name  rpminfo
 %global ini_name   40-%{pecl_name}.ini
 %global sources    %{pecl_name}-%{version}
-%global _configure ../%{sources}/configure
 
 Summary:        RPM information
 Name:           php-pecl-%{pecl_name}
-Version:        1.1.1
-Release:        2%{?dist}
+Version:        1.2.0
+Release:        1%{?dist}
 License:        PHP-3.01
 URL:            https://pecl.php.net/package/%{pecl_name}
 Source0:        https://pecl.php.net/get/%{sources}.tgz
@@ -27,7 +26,7 @@ ExcludeArch:    %{ix86}
 
 BuildRequires:  make
 BuildRequires:  gcc
-BuildRequires:  pkgconfig(rpm) >= 4.3
+BuildRequires:  pkgconfig(rpm) >= 4.13
 BuildRequires:  php-devel >= 8.0
 BuildRequires:  php-pear
 
@@ -38,6 +37,7 @@ Provides:       php-%{pecl_name}               = %{version}
 Provides:       php-%{pecl_name}%{?_isa}       = %{version}
 Provides:       php-pecl(%{pecl_name})         = %{version}
 Provides:       php-pecl(%{pecl_name})%{?_isa} = %{version}
+Provides:       php-pie(remi/%{pecl_name})     = %{version}
 
 
 %description
@@ -74,26 +74,29 @@ EOF
 %build
 cd %{sources}
 %{__phpize}
+sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
 %configure \
     --enable-rpminfo \
     --with-libdir=%{_lib} \
     --with-php-config=%{__phpconfig}
-make %{?_smp_mflags}
+
+%make_build
 
 
 %install
-make -C %{sources} install INSTALL_ROOT=%{buildroot}
+cd %{sources}
+%make_install
 
 # install config file
-install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
+install -D -m 644 ../%{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
 # Install XML package description
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+install -D -m 644 ../package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
 
 # Documentation
-for i in $(grep 'role="doc"' package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 %{sources}/$i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
+for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
+do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
 done
 
 
@@ -103,12 +106,11 @@ cd %{sources}
 # Minimal load test for NTS extension
 %{__php} --no-php-ini \
     --define extension=%{buildroot}/%{php_extdir}/%{pecl_name}.so \
-    --modules | grep %{pecl_name}
+    --modules | grep '^%{pecl_name}$'
 
 # Upstream test suite  for NTS extension
-TEST_PHP_EXECUTABLE=%{__php} \
 TEST_PHP_ARGS="-n -d extension=%{buildroot}/%{php_extdir}/%{pecl_name}.so" \
-%{__php} -n run-tests.php -q --show-diff
+%{__php} -n run-tests.php -q --show-diff %{?_smp_mflags}
 
 
 %files
@@ -121,6 +123,9 @@ TEST_PHP_ARGS="-n -d extension=%{buildroot}/%{php_extdir}/%{pecl_name}.so" \
 
 
 %changelog
+* Thu Dec 19 2024 Remi Collet <remi@remirepo.net> - 1.2.0-1
+- update to 1.2.0
+
 * Mon Oct 14 2024 Remi Collet <remi@fedoraproject.org> - 1.1.1-2
 - rebuild for https://fedoraproject.org/wiki/Changes/php84
 

@@ -13,6 +13,9 @@ Source0:        %{url}/archive/v%{version}/%{pypi_name}-%{version}.tar.gz
 # Fix the expected test output
 Patch:          https://github.com/executablebooks/MyST-Parser/pull/973.patch
 
+# Patch for compatibility with Sphinx 8
+Patch:          https://github.com/executablebooks/MyST-Parser/pull/993.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel

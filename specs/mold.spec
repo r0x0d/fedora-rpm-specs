@@ -13,6 +13,10 @@ Patch0:         0001-Use-system-compatible-include-path-for-xxhash.h.patch
 # Possibly https://sourceware.org/bugzilla/show_bug.cgi?id=29655
 Patch1:         0002-ELF-S390X-Skip-another-test-that-fails-with-GCC-14.patch
 
+# Fix linking against shared `libmimalloc`:
+# https://github.com/rui314/mold/pull/1380
+Patch2:         0003-Add-missing-include-common.h.patch
+
 BuildRequires:  blake3-devel
 BuildRequires:  cmake
 %if 0%{?el8}

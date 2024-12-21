@@ -279,7 +279,7 @@
 %endif
 
 Name:	chromium%{chromium_channel}
-Version: 131.0.6778.139
+Version: 131.0.6778.204
 Release: 1%{?dist}
 Summary: A WebKit (Blink) powered web browser that Google doesn't want you to use
 Url: http://www.chromium.org/Home
@@ -1933,6 +1933,13 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Thu Dec 19 2024 Than Ngo <than@redhat.com> - 131.0.6778.204-1
+- Update to 131.0.6778.204
+  * High CVE-2024-12692: Type Confusion in V8
+  * High CVE-2024-12693: Out of bounds memory access in V8
+  * High CVE-2024-12694: Use after free in Compositing
+  * High CVE-2024-12695: Out of bounds write in V8
+
 * Wed Dec 11 2024 Than Ngo <than@redhat.com> - 131.0.6778.139-1
 - Update to 131.0.6778.139
   * High CVE-2024-12381: Type Confusion in V8

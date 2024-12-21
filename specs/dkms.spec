@@ -1,6 +1,6 @@
 Summary:        Dynamic Kernel Module Support Framework
 Name:           dkms
-Version:        3.1.3
+Version:        3.1.4
 Release:        1%{?dist}
 License:        GPL-2.0-or-later
 URL:            http://linux.dell.com/dkms
@@ -64,6 +64,7 @@ sed -i -e 's/# modprobe_on_install="true"/modprobe_on_install="true"/g' %{buildr
 %files
 %license COPYING
 %doc README.md images
+%{_prefix}/lib/%{name}
 %{_prefix}/lib/kernel/install.d/40-%{name}.install
 %{_mandir}/man8/dkms.8*
 %{_sbindir}/%{name}
@@ -76,6 +77,9 @@ sed -i -e 's/# modprobe_on_install="true"/modprobe_on_install="true"/g' %{buildr
 %{_unitdir}/%{name}.service
 
 %changelog
+* Thu Dec 19 2024 Simone Caronni <negativo17@gmail.com> - 3.1.4-1
+- Update to 3.1.4.
+
 * Fri Nov 29 2024 Simone Caronni <negativo17@gmail.com> - 3.1.3-1
 - Update to 3.1.3, fixes removal of leftover folders when uninstalling kernel.
 - Trim changelog.

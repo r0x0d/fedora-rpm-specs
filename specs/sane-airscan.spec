@@ -4,8 +4,8 @@
 %global _hardened_build 1
 
 Name:           sane-airscan
-Version:        0.99.29
-Release:        2%{?dist}
+Version:        0.99.30
+Release:        1%{?dist}
 Summary:        SANE backend for AirScan (eSCL) and WSD document scanners
 # SANE related source and header files - GPL 2.0+ with SANE exception
 # http_parser.c/.h - MIT
@@ -98,6 +98,9 @@ rm -f %{buildroot}%{_libdir}/sane/libsane-airscan.so
 
 
 %changelog
+* Thu Dec 19 2024 Zdenek Dohnal <zdohnal@redhat.com> - 0.99.30-1
+- 0.99.30 (fedora#2327285)
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.99.29-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

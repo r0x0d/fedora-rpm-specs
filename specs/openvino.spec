@@ -46,6 +46,8 @@ Source3:	dependencies.cmake
 Source4:	pyproject.toml
 
 Patch0:		openvino-fedora.patch
+# Support numpy 2.2.0
+Patch1:         https://github.com/openvinotoolkit/openvino/pull/28039.patch
 
 ExclusiveArch:	x86_64
 

@@ -4,7 +4,7 @@ Release:        %autorelease
 URL:            https://pcaro.es/p/hermit
 
 %global foundry		pcaro	
-%global	fontlicense	OFL
+%global	fontlicense	OFL-1.1-RFN
 
 %global	fontfamily	Hermit
 %global	fontsummary	Hermit monospace fonts

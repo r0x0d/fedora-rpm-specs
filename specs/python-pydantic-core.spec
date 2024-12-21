@@ -11,7 +11,7 @@
 %bcond inline_snapshot_tests %{undefined fc40}
 
 Name:           python-pydantic-core
-Version:        2.27.1
+Version:        2.27.2
 Release:        1%{?dist}
 Summary:        Core validation logic for pydantic written in rust
 
@@ -132,6 +132,9 @@ ignore="${ignore-} --ignore=tests/validators/test_allow_partial.py"
 
 
 %changelog
+* Wed Dec 18 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.27.2-1
+- Update to 2.27.2
+
 * Sat Nov 23 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.27.1-1
 - Update to 2.27.1
 

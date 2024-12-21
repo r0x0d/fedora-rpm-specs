@@ -9,8 +9,8 @@
 
 Name: cups-browsed
 Epoch: 1
-Version: 2.0.1
-Release: 4%{?dist}
+Version: 2.1.0
+Release: 1%{?dist}
 Summary: Daemon for local auto-installation of remote printers
 # the CUPS exception text is the same as LLVM exception, so using that name with
 # agreement from legal team
@@ -21,11 +21,6 @@ Source0: %{URL}/releases/download/%{version}/%{name}-%{version}.tar.gz
 
 
 # Patches
-# https://github.com/OpenPrinting/cups-browsed/pull/44
-Patch001: 0001-Do-not-generate-PPD-for-remote-raw-queues-44.patch
-# remove CUPS browsing completely to fix the "open UDP port 631" CVE
-# https://github.com/OpenPrinting/cups-browsed/commit/1d1072a0de573b7
-Patch002: 0001-Removed-support-for-legacy-CUPS-browsing-and-for-LDA.patch
 
 
 # remove once CentOS Stream 10 is released, cups-browsed
@@ -216,6 +211,9 @@ fi
 
 
 %changelog
+* Thu Dec 19 2024 Zdenek Dohnal <zdohnal@redhat.com> - 1:2.1.0-1
+- 2.1.0 (fedora#2319904)
+
 * Tue Oct 15 2024 Zdenek Dohnal <zdohnal@redhat.com> - 1:2.0.1-4
 - do not create PPDs for remote raw queues
 - remove the whole CUPS Browsing and LDAP support

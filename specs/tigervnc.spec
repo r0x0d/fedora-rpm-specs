@@ -6,7 +6,7 @@
 
 Name:           tigervnc
 Version:        1.14.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A TigerVNC remote display system
 
 %global _hardened_build 1
@@ -87,8 +87,6 @@ BuildRequires:  pkgconfig(libavcodec)
 BuildRequires:  pkgconfig(libavutil)
 BuildRequires:  pkgconfig(libswscale)
 
-
-
 # SELinux
 BuildRequires:  libselinux-devel, selinux-policy-devel, systemd
 %endif
@@ -99,6 +97,7 @@ Requires(postun):coreutils
 Requires:       hicolor-icon-theme
 Requires:       tigervnc-license
 Requires:       tigervnc-icons
+Requires:       which
 
 %description
 Virtual Network Computing (VNC) is a remote display system which
@@ -393,6 +392,9 @@ fi
 %{_datadir}/icons/hicolor/*/apps/*
 
 %changelog
+* Thu Dec 19 2024 Jan Grulich <jgrulich@redhat.com> - 1.14.1-3
+- Add runtime dependency on which
+
 * Wed Oct 30 2024 Jan Grulich <jgrulich@redhat.com> - 1.14.1-2
 - Rebuild (xorg-x11-server)
   Fixes CVE-2024-9632

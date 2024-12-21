@@ -1,6 +1,6 @@
 %global srcname           3270font
 %global foundry           rbanffy
-%global fontlicense       BSD and OFL
+%global fontlicense       BSD-3-Clause AND OFL-1.1-no-RFN
 %global fontlicenses      LICENSE.txt
 %global fontdocs          README.md CHANGELOG.md
 

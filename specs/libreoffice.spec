@@ -1,5 +1,5 @@
 # download path contains version without the last (fourth) digit
-%global libo_version 24.8.3
+%global libo_version 24.8.4
 # Should contain .alphaX / .betaX, if this is pre-release (actually
 # pre-RC) version. The pre-release string is part of tarball file names,
 # so we need a way to define it easily at one place.

@@ -3,7 +3,7 @@ Python bindings for the AWS Common Runtime}
 
 
 Name:           python-awscrt
-Version:        0.22.4
+Version:        0.23.6
 Release:        %autorelease
 
 Summary:        Python bindings for the AWS Common Runtime
@@ -18,6 +18,8 @@ Source0:        %{pypi_source awscrt}
 
 # one test requires internet connection, skip it
 Patch0:         skip-test-requiring-network.patch
+# skip SHA1 in test_crypto
+Patch1:         skip-SHA1-in-test_crypto.patch
 
 BuildRequires:  python%{python3_pkgversion}-devel
 
@@ -25,7 +27,6 @@ BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
 BuildRequires:  openssl-devel
-BuildRequires:  openssl-devel-engine
 
 BuildRequires:  python%{python3_pkgversion}-websockets
 
@@ -69,7 +70,7 @@ export AWS_CRT_BUILD_USE_SYSTEM_LIBCRYPTO=1
 
 
 %check
-PYTHONPATH="%{buildroot}%{python3_sitearch}:%{buildroot}%{python3_sitelib}" %{python3} -m unittest
+%{py3_test_envvars} %{python3} -m unittest
 
 
 %files -n python%{python3_pkgversion}-awscrt -f %{pyproject_files}

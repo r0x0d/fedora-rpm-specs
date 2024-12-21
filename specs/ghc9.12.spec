@@ -1,16 +1,17 @@
 # Start: prod settings
 # all *bcond_without* for production builds:
 # - performance build (disable for quick build)
+%ifarch s390x
+# https://bugzilla.redhat.com/show_bug.cgi?id=2329744
+# https://gitlab.haskell.org/ghc/ghc/-/issues/25536
+# https://gitlab.haskell.org/ghc/ghc/-/issues/25541
+%bcond perfbuild 0
+%else
 %bcond perfbuild 1
+%endif
 %bcond build_hadrian 1
 %bcond manual 1
 # End: prod settings
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=2329744
-# https://gitlab.haskell.org/ghc/ghc/-/issues/25536
-%ifarch s390x
-%undefine with_haddock
-%endif
 
 # not for production builds
 %if %{without perfbuild}
@@ -20,14 +21,21 @@
 %undefine with_haddock
 %endif
 
+%ifarch s390x
+%undefine with_ghc_prof
+%global with_haddock 1
+%endif
+
 %global ghc_major 9.12
 %global ghc_name ghc%{ghc_major}
 
 %global base_ver 4.21.0.0
-%global Cabal_ver 3.14.0.0
+%global Cabal_ver 3.14.1.0
+%global directory_ver 1.3.9.0
+%global file_io_ver 0.1.5
 %global ghc_bignum_ver 1.3
 %global ghc_compact_ver 0.1.0.0
-%global ghc_experimental_ver 9.1200.0
+%global ghc_experimental_ver 9.1201.0
 %global ghc_platform_ver 0.1.0.0
 %global ghc_toolchain_ver 0.1.0.0
 %global haddock_api_ver 2.30.0
@@ -51,25 +59,25 @@
 # use system default ld.bfd
 %bcond ld_gold 0
 
-# 9.8 needs llvm 11-15
+# 9.12 needs llvm 13-19
 # rhel9 binutils too old for llvm13:
 # https://bugzilla.redhat.com/show_bug.cgi?id=2141054
 # https://gitlab.haskell.org/ghc/ghc/-/issues/22427
 %if 0%{?rhel} == 9
 %global llvm_major 12
 %else
-%global llvm_major 15
+%global llvm_major 17
 %endif
 %global ghc_llvm_archs s390x riscv64
 %global ghc_unregisterized_arches s390 %{mips}
 
 Name: %{ghc_name}
-Version: 9.12.0.20241128
+Version: 9.12.1
 # Since library subpackages are versioned:
 # - release can only be reset if *all* library versions get bumped simultaneously
 #   (sometimes after a major release)
 # - minor release numbers for a branch should be incremented monotonically
-Release: 0.2%{?dist}
+Release: 1%{?dist}
 Summary: Glasgow Haskell Compiler
 
 License: BSD-3-Clause AND HaskellReport
@@ -121,7 +129,7 @@ BuildRequires: %{ghcboot}-compiler
 %if %{with abicheck}
 BuildRequires: %{name}
 %endif
-BuildRequires: ghc-rpm-macros-extra >= 2.7.4
+BuildRequires: ghc-rpm-macros-extra >= 2.7.5
 BuildRequires: %{ghcboot}-array-devel
 BuildRequires: %{ghcboot}-binary-devel
 BuildRequires: %{ghcboot}-bytestring-devel
@@ -332,12 +340,12 @@ This provides the hadrian tool which can be used to build ghc.
 %ghc_lib_subpackage -d -l %BSDHaskellReport array-0.5.8.0
 %ghc_lib_subpackage -d -l %BSDHaskellReport -c gmp-devel%{?_isa},libffi-devel%{?_isa} base-%{base_ver}
 %ghc_lib_subpackage -d -l BSD-3-Clause binary-0.8.9.2
-%ghc_lib_subpackage -d -l BSD-3-Clause bytestring-0.12.1.0
+%ghc_lib_subpackage -d -l BSD-3-Clause bytestring-0.12.2.0
 %ghc_lib_subpackage -d -l %BSDHaskellReport containers-0.7
 %ghc_lib_subpackage -d -l %BSDHaskellReport deepseq-1.5.1.0
-%ghc_lib_subpackage -d -l %BSDHaskellReport directory-1.3.9.0
+%ghc_lib_subpackage -d -l %BSDHaskellReport directory-%{directory_ver}
 %ghc_lib_subpackage -d -l %BSDHaskellReport exceptions-0.10.9
-%ghc_lib_subpackage -d -l BSD-3-Clause file-io-0.1.5
+%ghc_lib_subpackage -d -l BSD-3-Clause file-io-%{file_io_ver}
 %ghc_lib_subpackage -d -l BSD-3-Clause filepath-1.5.4.0
 # in ghc not ghc-libraries:
 %ghc_lib_subpackage -d -x ghc-%{ghc_version_override}
@@ -347,7 +355,7 @@ This provides the hadrian tool which can be used to build ghc.
 %ghc_lib_subpackage -d -x -l BSD-3-Clause ghc-compact-%{ghc_compact_ver}
 %ghc_lib_subpackage -d -x -l BSD-3-Clause ghc-experimental-%{ghc_experimental_ver}
 %ghc_lib_subpackage -d -x -l BSD-3-Clause ghc-heap-%{ghc_version_override}
-%ghc_lib_subpackage -d -l BSD-3-Clause ghc-internal-9.1200.0
+%ghc_lib_subpackage -d -l BSD-3-Clause ghc-internal-9.1201.0
 # see below for ghc-prim
 %ghc_lib_subpackage -d -x -l BSD-3-Clause ghc-platform-%{ghc_platform_ver}
 %ghc_lib_subpackage -d -x -l BSD-3-Clause ghc-toolchain-%{ghc_toolchain_ver}
@@ -479,35 +487,33 @@ export LANG=C.utf8
 %global ghc_debuginfo 1
 (
 cd hadrian
+ln -s ../libraries/file-io file-io-%{file_io_ver}
+ln -s ../libraries/directory directory-%{directory_ver}
 ln -s ../libraries/ghc-platform ghc-platform-%{ghc_platform_ver}
 ln -s ../utils/ghc-toolchain ghc-toolchain-%{ghc_toolchain_ver}
 ln -s ../libraries/Cabal/Cabal-syntax Cabal-syntax-%{Cabal_ver}
 ln -s ../libraries/Cabal/Cabal Cabal-%{Cabal_ver}
-%ghc_libs_build -P -W ghc-platform-%{ghc_platform_ver} ghc-toolchain-%{ghc_toolchain_ver} Cabal-syntax-%{Cabal_ver} Cabal-%{Cabal_ver}
-%if 0%{?fedora} >= 38
+%ghc_libs_build -P -W file-io-%{file_io_ver} directory-%{directory_ver} ghc-platform-%{ghc_platform_ver} ghc-toolchain-%{ghc_toolchain_ver} Cabal-syntax-%{Cabal_ver} Cabal-%{Cabal_ver}
 %ghc_bin_build -W
-%else
-%ghc_bin_build
-%endif
 )
 %global hadrian hadrian/dist/build/hadrian/hadrian
 %else
 %global hadrian %{_bindir}/hadrian-%{ghc_major}
 %endif
 
+%global hadrian_flavour %[%{?with_perfbuild} ? "perf" : "quick"]
 %ifarch %{ghc_llvm_archs}
-%global hadrian_llvm +llvm
+%define hadrian_llvm +llvm
 %endif
 %define hadrian_docs %{!?with_haddock:--docs=no-haddocks} --docs=%[%{?with_manual} ? "no-sphinx-pdfs" : "no-sphinx"]
-# + hadrian/dist/build/hadrian/hadrian -j224 --flavour=perf --docs=no-sphinx-pdfs binary-dist-dir --hash-unit-ids
-# # cabal-read (for OracleQ (PackageDataKey (Package {pkgType = Library, pkgName = "rts", pkgPath = "rts"})))
-# rts/include/rts/Messages.h: withFile: resource exhausted (Too many open files)
-# https://koji.fedoraproject.org/koji/taskinfo?taskID=111327221
-# s390x failed once for -j3 https://gitlab.haskell.org/ghc/ghc/-/issues/25153
+## to turn on debug build
+#%%define hadrian_debug +debug_ghc+debug_info+lint+assertions "*.*.ghc.hs.opts += -dtag-inference-checks"
+
+# -j224 caused rts "resource exhausted (Too many open files)"
 %global _smp_ncpus_max 64
 # quickest does not build shared libs
 # try release instead of perf
-%{hadrian} %{?_smp_mflags} --flavour=%[%{?with_perfbuild} ? "perf" : "quick"]%{!?with_ghc_prof:+no_profiled_libs}%{?hadrian_llvm} %{hadrian_docs} binary-dist-dir --hash-unit-ids
+%{hadrian} %{?_smp_mflags} --flavour=%{hadrian_flavour}%{!?with_ghc_prof:+no_profiled_libs}%{?hadrian_llvm}%{?hadrian_debug} %{hadrian_docs} binary-dist-dir --hash-unit-ids
 
 
 %install
@@ -669,11 +675,11 @@ export LANG=C.utf8
 # stolen from ghc6/debian/rules:
 export LD_LIBRARY_PATH=%{buildroot}%{ghclibplatform}:
 GHC=%{buildroot}%{ghclibdir}/bin/ghc
-# Do some very simple tests that the compiler actually works
+# simple sanity checks that the compiler actually works
 rm -rf testghc
 mkdir testghc
 echo 'main = putStrLn "Foo"' > testghc/foo.hs
-$GHC testghc/foo.hs -o testghc/foo
+$GHC -debug testghc/foo.hs -o testghc/foo
 [ "$(testghc/foo)" = "Foo" ]
 rm testghc/*
 echo 'main = putStrLn "Foo"' > testghc/foo.hs
@@ -865,9 +871,13 @@ make test
 
 
 %changelog
+* Wed Dec 18 2024 Jens Petersen <petersen@redhat.com> - 9.12.1-0.3
+- Update to 9.12.1
+- https://downloads.haskell.org/ghc/9.12.1/docs/users_guide/9.12.1-notes.html
+
 * Sat Nov 30 2024 Jens Petersen <petersen@redhat.com> - 9.12.0.20241128-0.2
 - 9.12 rc1
-- https://downloads.haskell.org/ghc/9.2.1-rc1/docs/html/users_guide/9.2.1-notes.html
+- https://downloads.haskell.org/ghc/9.12.1-rc1/docs/users_guide/9.12.1-notes.html
 - haddocks disabled on s390x (#2329744)
 
 * Sat Nov 30 2024 Jens Petersen <petersen@redhat.com> - 9.12.0.20241114-0.1

@@ -51,6 +51,9 @@ Recommends:     python3dist(pybbi)
 # Remove linter from `dev` extra
 sed -i '/"ruff"/ d' pyproject.toml
 
+# Allow building with NumPy 2.x
+sed -r -i 's/(numpy.*), ?<2/\1/' pyproject.toml
+
 
 %generate_buildrequires
 %pyproject_buildrequires %{?with_tests:-x dev}

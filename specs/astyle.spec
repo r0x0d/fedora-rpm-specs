@@ -1,5 +1,5 @@
 Name:           astyle
-Version:        3.6.3
+Version:        3.6.6
 Release:        1%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
@@ -71,6 +71,9 @@ popd
 
 
 %changelog
+* Wed Dec 18 2024 Fedora Release Monitoring <release-monitoring@fedoraproject.org> - 3.6.6-1
+- Update to 3.6.6 (rhbz#2323142)
+
 * Mon Sep 30 2024 Fedora Release Monitoring <release-monitoring@fedoraproject.org> - 3.6.3-1
 - Update to 3.6.3 (rhbz#2311785)
 

@@ -1,21 +1,27 @@
 Name:           SDL2_sound
 Version:        2.0.2
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        An abstract soundfile decoder library
 # Automatically converted from old format: zlib and LGPLv2+ - review is highly recommended.
 License:        Zlib AND LicenseRef-Callaway-LGPLv2+
 URL:            http://www.icculus.org/SDL_sound
 Source0:        https://github.com/icculus/SDL_sound/archive/v%{version}/%{name}-%{version}.tar.gz
+# Remove references to the bundled dr_flac and dr_mp3 headers from the build
+# system, since we will remove these and use the system copies of these
+# header-only libraries instead.
+Patch0:         SDL2_sound-2.0.2-unbundle-dr_libs.patch
 BuildRequires:  cmake
 BuildRequires:  doxygen
 BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  SDL2-devel
-# SDL_sound includes dr_flac and dr_mp3 from https://github.com/mackron/dr_libs
-Provides:       bundled(dr_flac) = 0.12.39
-Provides:       bundled(dr_mp3) = 0.6.34
+# Header-only libraries (thus the -static)
+# Version 0.12.43 fixes a possible buffer overflow during decoding.
+BuildRequires:  dr_flac-static >= 0.12.43
+BuildRequires:  dr_mp3-static
 # https://github.com/icculus/SDL_sound/issues/42
 Provides:       bundled(libmodplug) = 0.8.9.1
+# This has been forked; see "#ifdef __SDL_SOUND_INTERNAL__"
 Provides:       bundled(stb_vorbis) = 1.22
 # SDL_mixer fork, stripped further, see https://github.com/icculus/SDL_sound/tree/main/src/timidity/CHANGES
 Provides:       bundled(timidity) = 0.2i
@@ -47,7 +53,9 @@ Conflicts:      SDL_sound-devel
 This package contains the headers and libraries for SDL_sound development.
 
 %prep
-%setup -q -n SDL_sound-%{version}
+%autosetup -n SDL_sound-%{version} -p1
+# Unbundle dr_flac and dr_mp3, from dr_libs.
+rm src/dr_flac.h src/dr_mp3.h
 
 %build
 %cmake \
@@ -101,6 +109,9 @@ mv man3 %{buildroot}/%{_mandir}
 
 
 %changelog
+* Tue Dec 17 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 2.0.2-6
+- Unbundle dr_flac and dr_mp3
+
 * Wed Sep 4 2024 Miroslav Suchý <msuchy@redhat.com> - 2.0.2-5
 - convert license to SPDX
 

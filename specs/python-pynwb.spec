@@ -23,7 +23,7 @@
 %bcond test_validation_module 0
 
 Name:           python-pynwb
-Version:        2.7.0
+Version:        2.8.3
 Release:        %autorelease
 Summary:        Package for working with Neurodata stored in the NWB format
 
@@ -37,9 +37,6 @@ License:        BSD-3-Clause-LBNL AND Unlicense
 URL:            https://github.com/NeurodataWithoutBorders/pynwb
 # Use the pypi tar because GitHub tar does not include the required git-submodules
 Source:         %{pypi_source pynwb}
-# Exclude artifacts from wheel (and sdist)
-# https://github.com/NeurodataWithoutBorders/pynwb/pull/1902
-Patch:          %{url}/pull/1902.patch
 
 BuildArch:      noarch
 
@@ -133,6 +130,10 @@ done
     --validation-module \
 %endif
     --verbose
+
+# Clean up testing artefacts
+rm -v %{buildroot}%{python3_sitelib}/pynwb/.core_typemap_version \
+      %{buildroot}%{python3_sitelib}/pynwb/core_typemap.pkl
 
 %files -n python3-pynwb -f %{pyproject_files}
 %license license.txt

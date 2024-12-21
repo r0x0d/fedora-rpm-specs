@@ -1,6 +1,6 @@
 Name:           shairport-sync
-Version:        4.3.3
-Release:        2%{?dist}
+Version:        4.3.5
+Release:        0%{?dist}
 Summary:        AirTunes emulator. Multi-Room with Audio Synchronisation
 # MIT licensed except for tinysvcmdns under BSD, 
 # FFTConvolver/ under GPLv3+ and audio_sndio.c 
@@ -78,6 +78,9 @@ getent passwd %{name} > /dev/null || useradd --system -c "%{name} User" \
 %attr(-, %{name}, %{name}) %{_sharedstatedir}/%{name}
 
 %changelog
+* Thu Dec 19 2024 Bill Peck <bpeck@redhat.com> - 4.3.5-0
+- New Upstream release
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 4.3.3-2
 - convert license to SPDX
 

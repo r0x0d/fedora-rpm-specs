@@ -50,6 +50,10 @@ URL:            https://github.com/aws/aws-xray-sdk-python
 # and tests.
 Source:         %{url}/archive/%{version}/aws-xray-sdk-python-%{version}.tar.gz
 
+# Adjust intersphinx_mapping for Sphinx 8 compatibility
+# https://github.com/aws/aws-xray-sdk-python/pull/449
+Patch:          %{url}/pull/449.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel

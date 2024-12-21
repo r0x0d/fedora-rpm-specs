@@ -1,5 +1,5 @@
 Name:           lowdown
-Version:        1.3.0
+Version:        1.3.2
 Release:        %autorelease
 Summary:        Simple markdown translator
 

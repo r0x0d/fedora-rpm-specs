@@ -2,24 +2,19 @@
 %global gem_name fog-libvirt
 
 Name: rubygem-%{gem_name}
-Version: 0.9.0
-Release: 7%{?dist}
+Version: 0.13.1
+Release: 1%{?dist}
 Summary: Module for the 'fog' gem to support libvirt
 License: MIT
 URL: http://github.com/fog/fog-libvirt
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
-# Fix compatibility with Minitest 5+. This is speficially required for
-# Minitest 5.19+, which hides the `MiniTest` test behind environment
-# variable.
-# https://github.com/fog/fog-libvirt/pull/130
-Patch0: rubygem-fog-libvirt-0.11.0-Fix-compatibility-with-Minitest-5.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
 BuildRequires: %{_bindir}/shindo
 BuildRequires: rubygem(ruby-libvirt)
 BuildRequires: rubygem(minitest)
-BuildRequires: rubygem(mocha) => 1.1.0
+BuildRequires: rubygem(mocha)
 BuildRequires: rubygem(fog-core)
 BuildRequires: rubygem(fog-xml)
 BuildRequires: rubygem(fog-json)
@@ -40,8 +35,6 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version}
-
-%patch 0 -p1
 
 %build
 gem build ../%{gem_name}-%{version}.gemspec
@@ -77,6 +70,10 @@ popd
 %{gem_instdir}/minitests
 
 %changelog
+* Tue Dec 17 2024 Jarek Prokop <jprokop@redhat.com> - 0.13.1-1
+- Upgrade to fog-libvirt 0.13.1.
+  Resolves: rhbz#2150026
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

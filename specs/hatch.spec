@@ -1,13 +1,7 @@
 %bcond tests 1
-# These tests are really for python-hatchling; they are more likely than other
-# tests to fail when the version of hatchling is compatible but does not
-# exactly match the version of hatchling that existed in the shared git
-# repository at the time of this Hatch release. Furthermore, it may be
-# redundant to run these here if we run them in the python-hatchling build.
-%bcond backend_tests 1
 
 Name:           hatch
-Version:        1.13.0
+Version:        1.14.0
 Release:        %autorelease
 Summary:        A modern project, package, and virtual env manager
 
@@ -93,10 +87,6 @@ BuildRequires:  %{py3_dist pytest-rerunfailures}
 BuildRequires:  %{py3_dist pytest-xdist[psutil]}
 # For extracting the list of test “extra-dependencies” from hatch.toml:
 BuildRequires:  tomcli
-%if %{with backend_tests}
-# A number of tests in TestBuildBootstrap require cargo.
-BuildRequires:  cargo
-%endif
 %endif
 
 BuildRequires:  git-core
@@ -172,12 +162,10 @@ install -t '%{buildroot}%{_mandir}/man1' -D -p -m 0644 \
 
 %check
 %if %{with tests}
-%if %{with backend_tests}
-# Without this, we end up with several test failures related to zip timestamps.
-unset SOURCE_DATE_EPOCH
-%else
+# These tests are actually for hatchling, and may fail due to small differences
+# between the state of hatchling in the hatch release tag and in the latest
+# actual hatchling release.
 ignore="${ignore-} --ignore=tests/backend/"
-%endif
 
 # FAILED tests/cli/test/test_test.py::TestCustomScripts::test_single -
 #   AssertionError: assert [call('test hatch-test.py3.12', shell=True)] ==
@@ -205,16 +193,6 @@ done
 # Also, for ppc64le and s390x:
 k="${k-}${k+ and }not (TestDistributionPaths and test_pypy_custom)"
 k="${k-}${k+ and }not (TestDistributionVersions and test_pypy_custom)"
-
-# Tests requiring network access are automatically disabled via
-# pytest.mark.requires_internet when network access is not available.
-#
-# Note that if built locally with --enable-network, some of these tests may
-# fail due to issues like missing dependencies for building packages that are
-# to be test-installed (e.g. because Rawhide’s system Python is a pre-release
-# for which these packages have not released prebuilt wheels); this is another
-# consequence of running tests on the system Python rather than via “hatch
-# test.” We don’t bother tracking these failures.
 
 %pytest -k "${k-}" ${ignore-} -vv
 %else

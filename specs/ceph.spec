@@ -223,6 +223,7 @@ Patch0043:	0043_src_common_crc32c_ppc_asm.S.patch
 Patch0044:	0044_src_cpp_redis_CMakeLists.txt.patch
 Patch0045:	0045_src-commom-crc32c_ppc_fast_zero_asm.S.patch
 Patch0046:	0046-src-s3select-include-s3select_parquet_intrf.h.patch
+Patch0047:	0047-openssl-no-engine.patch
 
 # ceph 14.0.1 does not support 32-bit architectures, bugs #1727788, #1727787
 ExcludeArch:	i686 armv7hl
@@ -458,7 +459,6 @@ BuildRequires:	librdmacm-devel
 BuildRequires:	openldap-devel
 #BuildRequires:	krb5-devel
 BuildRequires:	openssl-devel
-BuildRequires:	openssl-devel-engine
 BuildRequires:	CUnit-devel
 BuildRequires:	python%{python3_pkgversion}-devel
 BuildRequires:	python%{python3_pkgversion}-prettytable

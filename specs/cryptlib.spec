@@ -5,7 +5,7 @@
 
 Name:       cryptlib
 Version:    3.4.8  
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Security library and toolkit for encryption and authentication services    
 
 License:    Sleepycat and OpenSSL     
@@ -26,7 +26,7 @@ Source8:    https://senderek.ie/fedora/claes.sig
 # soname is now libcl.so.3.4
 Patch0:     m64patch
 
-ExclusiveArch: x86_64 aarch64 ppc64le
+ExclusiveArch: x86_64 aarch64 ppc64le riscv64
 
 BuildRequires: gcc 
 BuildRequires: libbsd-devel   
@@ -269,7 +269,8 @@ cd %{buildroot}%{cryptlibdir}
 tar xpzf %{SOURCE4} 
 
 # install cryptlib tools 
-cd %{buildroot}%{cryptlibdir}
+mkdir -p %{buildroot}%{cryptlibdir}/tools
+cd %{buildroot}%{cryptlibdir}/tools
 tar xpzf %{SOURCE6} 
 mkdir -p %{buildroot}%{_mandir}/man1
 mkdir -p %{buildroot}%{_bindir}
@@ -354,6 +355,9 @@ cp /%{buildroot}%{cryptlibdir}/tools/man/clsmime.1 %{buildroot}%{_mandir}/man1
 
 
 %changelog
+* Thu Dec 19 2024 Ralf Senderek <innovation@senderek.ie>  3.4.8-2
+- add test programs for claes, clkeys and clsmime and riscv64 support
+
 * Wed Dec 4 2024 Ralf Senderek <innovation@senderek.ie>  3.4.8-1
 - update to version 3.4.8
 

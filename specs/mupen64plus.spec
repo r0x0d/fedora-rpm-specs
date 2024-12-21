@@ -2,16 +2,14 @@
 %global debug_package %{nil}
 
 Name:		mupen64plus
-Version:	2.5
-Release:	24%{?dist}
+Version:	2.6.0
+Release:	1%{?dist}
 
 Summary:	Nintendo 64 Emulator
 # Automatically converted from old format: GPLv2+ and CC-BY-SA - review is highly recommended.
 License:	GPL-2.0-or-later AND LicenseRef-Callaway-CC-BY-SA
 URL:		http://www.mupen64plus.org/
-Source:		https://github.com/mupen64plus/mupen64plus-core/releases/download/2.5/mupen64plus-bundle-src-2.5.tar.gz
-Patch1:		mupen64plus-multiple-definitions.patch
-Patch2:		mupen64plus-make-archs.patch
+Source:		https://github.com/mupen64plus/mupen64plus-core/releases/download/%{version}/mupen64plus-bundle-src-%{version}.tar.gz
 
 
 BuildRequires:	pkgconfig(SDL_ttf)
@@ -22,11 +20,12 @@ BuildRequires:	pkgconfig(samplerate)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(sdl2)
 BuildRequires:	pkgconfig(freetype2)
-BuildRequires:	boost-devel
+BuildRequires:	pkgconfig(vulkan)
 BuildRequires:	gzip
 BuildRequires:	pkgconfig(glew)
 BuildRequires:	binutils
 BuildRequires:	gcc-c++
+BuildRequires:	nasm
 
 Requires:	hicolor-icon-theme
 
@@ -48,8 +47,6 @@ Development files for mupen64plus
 
 %prep
 %setup -q -n %{name}-bundle-src-%{version}
-%patch -P1 -p1 -b.multipledefinitions
-%patch -P2 -p1 -b.makearchs
 
 # Need to avoid filename conflicts so they can be included in the package
 cp -a source/mupen64plus-rsp-hle/LICENSES LICENSE-rsp-hle
@@ -112,6 +109,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/mupen64plus.desktop
 %{_libdir}/libmupen64plus.so
 
 %changelog
+* Sun Nov 24 2024 David Auer <dreua@posteo.de> - 2.6.0-1
+- Updated to 2.6.0
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 2.5-24
 - convert license to SPDX
 

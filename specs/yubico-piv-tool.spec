@@ -1,7 +1,7 @@
 %global __cmake_in_source_build 1
 
 Name:		yubico-piv-tool
-Version:	2.6.1
+Version:	2.7.0
 Release:	1%{?dist}
 Summary:	Tool for interacting with the PIV applet on a YubiKey
 
@@ -10,6 +10,9 @@ URL:		https://developers.yubico.com/yubico-piv-tool/
 Source0:	https://developers.yubico.com/yubico-piv-tool/Releases/yubico-piv-tool-%{version}.tar.gz
 Source1:	https://developers.yubico.com/yubico-piv-tool/Releases/yubico-piv-tool-%{version}.tar.gz.sig
 Source2:	gpgkey-9588EA0F.gpg
+# https://github.com/Yubico/yubico-piv-tool/issues/522
+# https://github.com/Yubico/yubico-piv-tool/pull/523
+Patch0:		yubico-piv-tool-s390x.patch
 
 BuildRequires:  make
 BuildRequires:	pcsc-lite-devel
@@ -43,13 +46,14 @@ This package includes development files.
 %prep
 gpgv2 --quiet --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %setup -q
+%patch -P 0 -p1
 
 %build
 %cmake3 .
 %make_build VERBOSE=1
 
 %check
-make test
+%ctest --output-on-failure
 
 %install
 %make_install
@@ -84,6 +88,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libykcs11.{la,a}
 
 
 %changelog
+* Thu Dec 19 2024 Jakub Jelen <jjelen@redhat.com> - 2.7.0-1
+- New upstream release (#2333288)
+
 * Thu Sep 12 2024 Jakub Jelen <jjelen@redhat.com> - 2.6.1-1
 - New upstream release (#2311937)
 

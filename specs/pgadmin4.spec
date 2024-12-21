@@ -7,7 +7,7 @@ Name:           pgadmin4
 # NOTE: Also regenerate requires as indicated below when updating!
 # Verify Patch4 on next update
 Version:        8.14
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Administration tool for PostgreSQL
 
 # i686, armv7hl: The webpack terser plugin aborts with JS heap memory exhaustion on these arches
@@ -78,7 +78,7 @@ Requires: (python3dist(flask-compress) >= 1 with python3dist(flask-compress) < 2
 Requires: (python3dist(flask-paranoid) >= 0 with python3dist(flask-paranoid) < 1)
 Requires: (python3dist(flask-babel) >= 4 with python3dist(flask-babel) < 4.1)
 Requires: python3dist(flask-security-too) >= 5.4
-Requires: (python3dist(flask-socketio) >= 5.4 with python3dist(flask-socketio) < 5.5)
+Requires: python3dist(flask-socketio) >= 5.4
 Requires: python3dist(wtforms) >= 3
 Requires: (python3dist(passlib) >= 1 with python3dist(passlib) < 2)
 Requires: (python3dist(pytz) >= 2024 with python3dist(pytz) < 2025)
@@ -265,6 +265,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Thu Dec 19 2024 Sandro Mani <manisandro@gmail.com> - 8.14-2
+- Relax flask-socketio requires
+
 * Fri Dec 13 2024 Sandro Mani <manisandro@gmail.com> - 8.14-1
 - Update to 8.14
 

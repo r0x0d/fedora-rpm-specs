@@ -1,5 +1,5 @@
 Name:           fastfetch
-Version:        2.31.0
+Version:        2.32.1
 Release:        1%{?dist}
 Summary:        Like neofetch, but much faster because written in c
 
@@ -22,7 +22,10 @@ BuildRequires:  ImageMagick-devel
 BuildRequires:  zlib-devel
 BuildRequires:  libglvnd-devel
 BuildRequires:  mesa-libOSMesa-devel
+# conditionalize xfconf until it is built for epel10
+%if 0%{?rhel} != 10
 BuildRequires:  xfconf-devel
+%endif
 BuildRequires:  glib2-devel
 BuildRequires:  ocl-icd-devel
 BuildRequires:  rpm-devel
@@ -60,6 +63,18 @@ Recommends:     libdrm
 Recommends:     pulseaudio-libs
 Recommends:     elfutils-libelf
 
+# The shell completion files were previously provided as separate subpackages
+# which depended on their respective shell.  That was necessary to avoid the
+# parent directories of the completion files from being unowned.  However, the
+# filesystem package now owns those directories, so the separate subpackages
+# are no longer necessary.
+Provides:       fastfetch-bash-completion = %{version}%{release}
+Provides:       fastfetch-zsh-completion = %{version}%{release}
+Provides:       fastfetch-fish-completion = %{version}%{release}
+Obsoletes:      fastfetch-bash-completion < 2.31.0-2
+Obsoletes:      fastfetch-zsh-completion < 2.31.0-2
+Obsoletes:      fastfetch-fish-completion < 2.31.0-2
+
 ExcludeArch:    %{ix86}
 
 %description
@@ -67,39 +82,6 @@ fastfetch is a neofetch-like tool for fetching system information and
 displaying them in a pretty way. It is written in c to achieve much better
 performance, in return only Linux and Android are supported. It also uses
 mechanisms like multithreading and caching to finish as fast as possible.
-
-
-%package bash-completion
-Summary: Bash completion files for %{name}
-Requires: bash-completion
-Requires: %{name} = %{version}-%{release}
-BuildArch: noarch
-
-
-%description bash-completion
-%{summary}
-
-
-%package zsh-completion
-Summary: ZSH completion files for %{name}
-Requires: zsh
-Requires: %{name} = %{version}-%{release}
-BuildArch: noarch
-
-
-%description zsh-completion
-%{summary}
-
-
-%package fish-completion
-Summary: Fish completion files for %{name}
-Requires: fish
-Requires: %{name} = %{version}-%{release}
-BuildArch: noarch
-
-
-%description fish-completion
-%{summary}
 
 
 %prep
@@ -126,17 +108,17 @@ BuildArch: noarch
 %{_bindir}/flashfetch
 %{_datadir}/%{name}/
 %{_mandir}/man1/fastfetch.1*
-
-%files bash-completion
 %{_datadir}/bash-completion/completions/%{name}
-
-%files fish-completion
 %{_datadir}/fish/vendor_completions.d/%{name}.fish
-
-%files zsh-completion
 %{_datadir}/zsh/site-functions/_%{name}
 
 %changelog
+* Thu Dec 19 2024 Jonathan Wright <jonathan@almalinux.org> - 2.32.1-1
+- update to 2.32.1 rhbz#2332949
+
+* Thu Dec 19 2024 Carl George <carlwgeorge@fedoraproject.org> - 2.31.0-2
+- Remove shell completion subpackages
+
 * Sun Dec 15 2024 Jonathan Wright <jonathan@almalinux.org> - 2.31.0-1
 - update to 2.31.0 rhbz#2326886
 

@@ -1,11 +1,10 @@
-%global forgeurl https://github.com/bottlesdevs/Bottles
-
 Name:       bottles
 Epoch:      1
-Version:    51.15
+Version:    51.17
 Release:    %autorelease
 Summary:    Run Windows in a Bottle
 
+%global forgeurl https://github.com/bottlesdevs/Bottles
 %global tag %{version}
 %forgemeta
 
@@ -28,6 +27,10 @@ Patch:      0003-Catch-AttributeError-when-window-is-closed.patch
 # Attempt to prevent segfaults when picking files
 # https://bugzilla.redhat.com/show_bug.cgi?id=2296214
 Patch:      0004-Use-FileDialog-for-all-file-path-pickers.patch
+# Downstream only patches counteracting upstream's enforcement of Flatpak
+Patch:      1001-Revert-meson-Add-check-for-Flatpak.patch
+Patch:      1002-Change-issue-URL-to-Bugzilla.patch
+Patch:      1003-Display-warning-regarding-issue-tracker.patch
 
 BuildArch:      noarch
 
@@ -109,6 +112,9 @@ Features:
 
 %prep
 %forgeautosetup -p1
+
+# F40 only has meson 1.4.1. Lower requirement.
+sed -r -i 's/(meson_version.*)1\.[0-9]\.[0-9]/\11.4.1/' meson.build
 
 
 %build

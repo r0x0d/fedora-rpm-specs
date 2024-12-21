@@ -57,7 +57,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        27.rocm%{rocm_version}%{?dist}
+Release:        28.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -135,7 +135,7 @@ Requires:       llvm-devel(major) = %{llvm_maj_ver}
 %else
 Requires:       rocm-clang-devel
 Requires:       rocm-llvm-static
-Requires:       rocm-lld-devel
+Requires:       rocm-lld
 %endif
 
 %description -n rocm-device-libs
@@ -153,9 +153,6 @@ Summary:        AMD ROCm LLVM Code Object Manager
 Provides:       comgr(major) = %{comgr_maj_api_ver}
 Provides:       rocm-comgr = %{comgr_full_api_ver}-%{release}
 %if %{with bundled_llvm}
-Requires:      rocm-llvm-libs%{?_isa} = %{version}-%{release}
-Requires:      rocm-clang-libs%{?_isa} = %{version}-%{release}
-Requires:      rocm-lld-libs%{?_isa} = %{version}-%{release}
 %endif
 
 %description -n rocm-comgr
@@ -285,25 +282,10 @@ Requires:      rocm-clang%{?_isa} = %{version}-%{release}
 %{summary}
 
 # ROCM LLD
-%package -n rocm-lld-libs
-Summary:        The ROCm Linker libs
-Requires:      rocm-llvm-libs%{?_isa} = %{version}-%{release}
-
-%description -n rocm-lld-libs
-%{summary}
-
 %package -n rocm-lld
 Summary:        The ROCm Linker
-Requires:       rocm-lld-libs%{?_isa} = %{version}-%{release}
 
 %description -n rocm-lld
-%{summary}
-
-%package -n rocm-lld-devel
-Summary:       Libraries and header files for ROCm LLD
-Requires:      rocm-lld%{?_isa} = %{version}-%{release}
-
-%description -n rocm-lld-devel
 %{summary}
 
 %if %{with mlir}
@@ -485,9 +467,15 @@ fi
 %global build_cflags %(echo %{optflags} | sed -e 's/-mtls-dialect=gnu2//')
 %global build_cxxflags %(echo %{optflags} | sed -e 's/-mtls-dialect=gnu2//')
 
+%if %{with mlir}
+%global llvm_projects "llvm;clang;lld;mlir"
+%else
+%global llvm_projects "llvm;clang;lld"
+%endif
+
 p=$PWD
 
-%global llvmrocm_cmake_config \\\
+%global llvmrocm_staticlibs_config \\\
  -DBUILD_SHARED_LIBS=OFF \\\
  -DBUILD_TESTING=OFF \\\
  -DCLANG_DEFAULT_LINKER=lld \\\
@@ -497,12 +485,8 @@ p=$PWD
  -DCMAKE_INSTALL_DO_STRIP=ON \\\
  -DCMAKE_INSTALL_PREFIX=%{bundle_prefix} \\\
  -DENABLE_LINKER_BUILD_ID=ON \\\
- -DLLVM_BUILD_LLVM_DYLIB=ON \\\
- -DLLVM_LINK_LLVM_DYLIB=ON \\\
  -DLLVM_BINUTILS_INCDIR=%{_includedir} \\\
  -DLLVM_BUILD_RUNTIME=ON \\\
- -DLLVM_BUILD_TOOLS=ON \\\
- -DLLVM_BUILD_UTILS=ON \\\
  -DLLVM_DEFAULT_TARGET_TRIPLE=%{llvm_triple} \\\
  -DLLVM_ENABLE_EH=ON \\\
  -DLLVM_ENABLE_FFI=ON \\\
@@ -515,12 +499,46 @@ p=$PWD
  -DLLVM_INCLUDE_TESTS=OFF \\\
  -DLLVM_TARGETS_TO_BUILD=%{targets_to_build} \\\
  -DMLIR_INSTALL_AGGREGATE_OBJECTS=OFF \\\
- -DMLIR_BUILD_MLIR_C_DYLIB=ON \\\
- -DROCM_DIR=%{_prefix}
+
+#
+# STATIC LLVM
+#
+# Build only. Just the static libraries so comgr will not link with any rocm-llvm
+# shared libraries and solve the problem of mixing up comgr's llvm with any system
+# llvm.
+pushd .
+%if 0%{?suse_version}
+%define __sourcedir llvm
+%define __builddir static-llvm
+%else
+%define _vpath_srcdir llvm
+%define _vpath_builddir static-llvm
+%endif
+
+%cmake %{llvmrocm_staticlibs_config} \
+       -DCMAKE_CXX_COMPILER=g++ \
+       -DCMAKE_C_COMPILER=gcc \
+       -DCMAKE_INSTALL_PREFIX=%{bundle_prefix} \
+       -DCMAKE_INSTALL_LIBDIR=lib \
+       -DLLVM_ENABLE_PROJECTS=%{llvm_projects}
+
+%cmake_build -j ${JOBS}
+
+# find static-llvm -name 'lib*'
+
+popd
 
 #
 # BASE LLVM
 #
+%global llvmrocm_cmake_config \\\
+ %{llvmrocm_staticlibs_config} \\\
+ -DLLVM_BUILD_LLVM_DYLIB=ON \\\
+ -DLLVM_LINK_LLVM_DYLIB=ON \\\
+ -DLLVM_BUILD_TOOLS=ON \\\
+ -DLLVM_BUILD_UTILS=ON \\\
+ -DMLIR_BUILD_MLIR_C_DYLIB=ON
+
 pushd .
 %if 0%{?suse_version}
 %define __sourcedir llvm
@@ -531,12 +549,6 @@ pushd .
 %endif
 
 export LD_LIBRARY_PATH=$PWD/build-llvm/lib
-
-%if %{with mlir}
-%global llvm_projects "llvm;clang;lld;mlir"
-%else
-%global llvm_projects "llvm;clang;lld"
-%endif
 
 %cmake %{llvmrocm_cmake_config} \
        -DCMAKE_CXX_COMPILER=g++ \
@@ -549,6 +561,7 @@ export LD_LIBRARY_PATH=$PWD/build-llvm/lib
 
 popd
 
+build_stage0=$p/static-llvm
 build_stage1=$p/build-llvm
 
 %global llvmrocm_tools_config \\\
@@ -557,9 +570,9 @@ build_stage1=$p/build-llvm
     -DCMAKE_CXX_COMPILER=$build_stage1/bin/clang++ \\\
     -DCMAKE_LINKER=$build_stage1/bin/ld.lld \\\
     -DCMAKE_RANLIB=$build_stage1/bin/llvm-ranlib \\\
-    -DLLVM_ROOT=$build_stage1 \\\
-    -DClang_DIR=$build_stage1/lib/cmake/clang \\\
-    -DLLD_DIR=$build_stage1/lib/cmake/lld
+    -DLLVM_DIR=$build_stage0/lib/cmake/llvm \\\
+    -DClang_DIR=$build_stage0/lib/cmake/clang \\\
+    -DLLD_DIR=$build_stage0/lib/cmake/lld
 #
 # COMPILER-RT
 #
@@ -600,7 +613,7 @@ pushd .
 %define _vpath_builddir build-devicelibs
 %endif
 
-%cmake %{llvmrocm_cmake_config} \
+%cmake %{llvmrocm_staticlibs_config} \
        %{llvmrocm_tools_config} \
        -DCMAKE_INSTALL_PREFIX=%{_prefix} \
        -DCMAKE_INSTALL_LIBDIR=%{_lib} \
@@ -626,7 +639,7 @@ pushd .
 %define _vpath_builddir build-comgr
 %endif
 
-%cmake %{llvmrocm_cmake_config} \
+%cmake %{llvmrocm_staticlibs_config} \
        %{llvmrocm_tools_config} \
        %{llvmrocm_devicelibs_config} \
        -DCMAKE_INSTALL_RPATH=%{bundle_prefix}/lib \
@@ -635,6 +648,10 @@ pushd .
        -DCMAKE_INSTALL_LIBDIR=%{_lib}
 
 %cmake_build -j ${JOBS}
+
+# Check that static linking happened
+# ldd build-comgr/libamd_comgr.so
+
 popd
 
 #
@@ -649,7 +666,7 @@ pushd .
 %define _vpath_builddir build-hipcc
 %endif
 
-%cmake %{llvmrocm_cmake_config} \
+%cmake %{llvmrocm_staticlibs_config} \
        %{llvmrocm_tools_config} \
        %{llvmrocm_devicelibs_config} \
        -DCMAKE_INSTALL_RPATH=%{bundle_prefix}/lib \
@@ -788,6 +805,11 @@ fi
 find %{buildroot}%{bundle_prefix}/bin -type f -executable -exec strip {} \;
 find %{buildroot}%{bundle_prefix}/lib -type f -name '*.so*' -exec strip {} \;
 %endif
+
+# Remove lld's libs
+rm -rf %{buildroot}%{bundle_prefix}/include/lld
+rm -rf %{buildroot}%{bundle_prefix}/lib/cmake/lld
+rm -rf %{buildroot}%{bundle_prefix}/lib/liblld*
 
 %endif
 
@@ -962,9 +984,6 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %{bundle_prefix}/lib/libclang*.so
 
 # ROCM LLD
-%files -n rocm-lld-libs
-%{bundle_prefix}/lib/liblld*.so.*
-
 %files -n rocm-lld
 %license lld/LICENSE.TXT
 %{bundle_prefix}/bin/ld.lld
@@ -972,14 +991,6 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %{bundle_prefix}/bin/lld
 %{bundle_prefix}/bin/lld-link
 %{bundle_prefix}/bin/wasm-ld
-
-%files -n rocm-lld-devel
-%license lld/LICENSE.TXT
-%dir %{bundle_prefix}/include/lld
-%dir %{bundle_prefix}/lib/cmake/lld
-%{bundle_prefix}/lib/liblld*.so
-%{bundle_prefix}/include/lld/*
-%{bundle_prefix}/lib/cmake/lld/*
 
 %if %{with mlir}
 # ROCM MLIR
@@ -1012,7 +1023,11 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %endif
 
 %changelog
-* Thu Dec 12 2024 Jeremy Newton <alexjnewt at hotmail dot com> - 18-27.rocm6.2.0
+* Wed Dec 18 2024 Tom Rix <Tom.Rix@amd.com> - 18-28.rocm6.3.0
+- Statically link comgr
+- Remove lld-devel
+
+* Thu Dec 12 2024 Jeremy Newton <alexjnewt at hotmail dot com> - 18-27.rocm6.3.0
 - Excludes filtering
 
 * Fri Dec 6 2024 Tom Rix <Tom.Rix@amd.com> - 18-26.rocm6.3.0

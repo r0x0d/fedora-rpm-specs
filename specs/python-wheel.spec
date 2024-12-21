@@ -59,10 +59,9 @@ as defined in PEP 427. It contains the following functionality:
 %description %{_description}
 
 # Virtual provides for the packages bundled by wheel.
-# Actual version can be found in git history:
-# https://github.com/pypa/wheel/commits/master/src/wheel/vendored/packaging/tags.py
+# %%{_rpmconfigdir}/pythonbundles.py src/wheel/vendored/vendor.txt --namespace 'python%%{python3_pkgversion}dist'
 %global bundled %{expand:
-Provides:       bundled(python3dist(packaging)) = 24
+Provides: bundled(python%{python3_pkgversion}dist(packaging)) = 24
 }
 
 
@@ -124,6 +123,8 @@ install -p %{_pyproject_wheeldir}/%{python_wheel_name} -t %{buildroot}%{python_w
 
 
 %check
+%{_rpmconfigdir}/pythonbundles.py src/wheel/vendored/vendor.txt --namespace 'python%{python3_pkgversion}dist' --compare-with '%{bundled}'
+
 # Smoke test
 %{py3_test_envvars} wheel-%{python3_version} version
 %py3_check_import wheel

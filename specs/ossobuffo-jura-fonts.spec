@@ -8,7 +8,7 @@ Release: 13%{?dist}
 URL:     %{forgeurl}
 
 %global foundry           ossobuffo
-%global fontlicense       OFL
+%global fontlicense       OFL-1.1
 %global fontlicenses      OFL.txt
 %global fontdocs          *txt *html *md
 %global fontdocsex        %{fontlicenses}

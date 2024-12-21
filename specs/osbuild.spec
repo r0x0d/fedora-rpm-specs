@@ -1,7 +1,7 @@
 %global         forgeurl https://github.com/osbuild/osbuild
 %global         selinuxtype targeted
 
-Version:        136
+Version:        137
 
 %forgemeta
 
@@ -308,6 +308,7 @@ fi
 %selinux_relabel_post -s %{selinuxtype}
 
 %files tools
+%{_bindir}/osbuild-image-info
 %{_bindir}/osbuild-mpp
 %{?fedora:%{_bindir}/osbuild-dev}
 
@@ -316,6 +317,33 @@ fi
 %{pkgdir}/solver.json
 
 %changelog
+* Wed Dec 18 2024 Packit <hello@packit.dev> - 137-1
+Changes with 137
+----------------
+  * Add `org.osbuild.dnf5.sbom.spdx` stage (COMPOSER-2361) (#1961)
+    * Author: Tomáš Hozza, Reviewers: Brian C. Lane, Simon de Vlieger
+  * CODEOWNERS: Assign ownership for CoreOS-related files (#1918)
+    * Author: Renata Ravanelli, Reviewers: Achilleas Koutsou, Dusty Mabe, Simon de Vlieger
+  * Move `image-info` from manifest-db to osbuild as `osbuild-image-info` (HMS-5210) (#1963)
+    * Author: Tomáš Hozza, Reviewers: Gianluca Zuccarelli, Simon de Vlieger
+  * Update snapshots to 20241210 (#1958)
+    * Author: SchutzBot, Reviewers: Achilleas Koutsou, Simon de Vlieger
+  * github/actions: Enable /jira-epic slash commands (HMS-5161) (#1959)
+    * Author: Simon Steinbeiß, Reviewers: Achilleas Koutsou, Michael Vogt
+  * org.osbuild.grub2.iso.legacy: Add grub2 setup for booting BIOS ISO (#1955)
+    * Author: Brian C. Lane, Reviewers: Michael Vogt, Tomáš Hozza
+  * osbuild/remoteloop: add more loop device options (#1944)
+    * Author: Dusty Mabe, Reviewers: Achilleas Koutsou, Simon de Vlieger
+  * stages: add `coreos.live-artifacts.mono` stage (#1947)
+    * Author: Dusty Mabe, Reviewers: Nobody
+  * typo: Fix incorrect 'tar archive' descriptions in stage metadata (#1957)
+    * Author: Brian C. Lane, Reviewers: Achilleas Koutsou, Michael Vogt
+  * util/osrelease.py:  improve quote stripping (#1927)
+    * Author: Renata Ravanelli, Reviewers: Dusty Mabe, Simon de Vlieger
+
+— Somewhere on the Internet, 2024-12-18
+
+
 * Wed Dec 04 2024 Packit <hello@packit.dev> - 136-1
 Changes with 136
 ----------------

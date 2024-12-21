@@ -1,5 +1,5 @@
 Name:           tuxpaint
-Version:        0.9.33
+Version:        0.9.34
 Release:        1%{?dist}
 
 Epoch:          1
@@ -119,6 +119,9 @@ rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
 %{_includedir}/tuxpaint/
 
 %changelog
+* Thu Dec 19 2024 Gwyn Ciesla <gwync@protonmail.com> - 1:0.9.34-1
+- 0.9.34
+
 * Tue Jul 30 2024 Gwyn Ciesla <gwync@protonmail.com> - 1:0.9.33-1
 - 0.9.33
 

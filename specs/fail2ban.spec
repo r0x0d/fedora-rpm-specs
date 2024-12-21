@@ -14,11 +14,11 @@
 
 Name: fail2ban
 Version: 1.1.0
-Release: 5%{?dist}
+Release: 6%{?dist}
 Summary: Daemon to ban hosts that cause multiple authentication errors
 
 License: GPL-2.0-or-later
-URL: https://fail2ban.sourceforge.net
+URL: https://www.fail2ban.org
 Source0: https://github.com/%{name}/%{name}/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Source1: https://github.com/%{name}/%{name}/releases/download/%{version}/%{name}-%{version}.tar.gz.asc
 # Releases are signed by Serg G. Brester (sebres) <info AT sebres.de>.  The
@@ -50,6 +50,9 @@ Patch2: https://github.com/fail2ban/fail2ban/commit/ab9d41e5309b417a3c7a84fa8f03
 Patch3: https://patch-diff.githubusercontent.com/raw/fail2ban/fail2ban/pull/3782.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=2295265
 Patch4: https://patch-diff.githubusercontent.com/raw/fail2ban/fail2ban/pull/3728.patch
+# Upstream fix to also catch sshd-session logs
+# https://bugzilla.redhat.com/show_bug.cgi?id=2332945
+Patch5: https://github.com/fail2ban/fail2ban/commit/54c0effceb998b73545073ac59c479d9d9bf19a4.patch
 
 
 BuildArch: noarch
@@ -472,6 +475,9 @@ fi
 
 
 %changelog
+* Thu Dec 19 2024 Orion Poplawski <orion@nwra.com> - 1.1.0-6
+- Add upstream fix for sshd filter (rhbz#2332945)
+
 * Wed Oct 16 2024 Richard Shaw <hobbes1069@gmail.com> - 1.1.0-5
 - Add upstream patch for python distutils removal.
 

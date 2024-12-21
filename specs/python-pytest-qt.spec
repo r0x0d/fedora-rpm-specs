@@ -17,8 +17,6 @@ Patch:          fix_test_failing_with_PySide-6.8.0.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
-# For setuptools-scm
-BuildRequires:  git-core
 
 %global _description %{expand:
 pytest-qt is a pytest plugin that allows programmers to write tests for
@@ -35,22 +33,25 @@ code change.}
 
 %package -n python3-%{pypi_name}
 Summary:        %{summary}
+# Without a DISPLAY `pytest-qt` will immediately crash. Upstream
+# recommends using `pytest-xvfb`, which will take care of it.
+# https://pytest-qt.readthedocs.io/en/stable/troubleshooting.html
+Requires:     %{py3_dist pytest-xvfb}
 
 %description -n python3-%{pypi_name} %_description
 
 
 %prep
-%forgeautosetup -p1 -S git
-
-# Make sure this is the last step in prep
-git tag %{version}
+%forgeautosetup -p1
 
 
 %generate_buildrequires
+export SETUPTOOLS_SCM_PRETEND_VERSION="%{version}"
 %pyproject_buildrequires -e %{toxenv}-pyqt6,%{toxenv}-pyside6
 
 
 %build
+export SETUPTOOLS_SCM_PRETEND_VERSION="%{version}"
 %pyproject_wheel
 
 
@@ -66,7 +67,7 @@ k="${k-}${k+ and }not test_basic_logging"
 k="${k-}${k+ and }not test_qtlog_fixture"
 k="${k-}${k+ and }not test_logging_fails_tests"
 
-%tox -- -- ${k+-k }"${k-}"
+%tox -- -- "${k+-k $k}"
 
 
 %files -n python3-%{pypi_name} -f %{pyproject_files}

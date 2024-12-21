@@ -1,6 +1,6 @@
 Name:           electron-cash
-Version:        4.4.1
-Release:        3%{?dist}
+Version:        4.4.2
+Release:        1%{?dist}
 Summary:        A lightweight Bitcoin Cash client
 
 License:        MIT
@@ -10,8 +10,6 @@ Source1:        https://github.com/Electron-Cash/keys-n-hashes/raw/master/sigs-a
 #Sun 15 Dec 2019, exported the upstream gpg key using the command:
 #gpg2 --armor --export --export-options export-minimal D56C110F4555F371AEEFCB254FD06489EFF1DDE1 D465135F97D0047E18E99DC321810A542031C02C > gpgkey-electron-cash.gpg
 Source2:        gpgkey-electron-cash.gpg
-
-Patch0:         relax-protobuf-version.patch
 
 BuildArch:      noarch
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
@@ -96,7 +94,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/org.elect
 %license LICENCE
 %{_bindir}/%{name}
 %{_datadir}/icons/hicolor/256x256/apps/%{name}.png
-%{_datadir}/icons/hicolor/scaleable/apps/%{name}.svg
+%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 %{_datadir}/pixmaps/%{name}.png
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/metainfo/org.electroncash.ElectronCash.appdata.xml
@@ -106,6 +104,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/org.elect
 %{python3_sitelib}/Electron_Cash-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Thu Dec 19 2024 Jonny Heggheim <hegjon@gmail.com> - 4.4.2-1
+- Updated to version 4.4.2
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.4.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

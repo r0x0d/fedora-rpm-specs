@@ -68,7 +68,7 @@ sed -r -i 's/==/>=/' docs/requirements.txt
 # Drop intersphinx mappings, since we can’t download remote inventories and
 # can’t easily produce working hyperlinks from inventories in local
 # documentation packages.
-echo 'intersphinx_mapping.clear()' >> docs/conf.py
+echo 'intersphinx_mapping.clear()' >> docs/source/conf.py
 
 
 %generate_buildrequires

@@ -3,7 +3,7 @@
 
 Name: rubygem-%{gem_name}
 Version: 3.7.4
-Release: 10%{?dist}
+Release: 11%{?dist}
 Summary: A powerful but elegant CSS compiler that makes CSS fun again
 License: MIT
 URL: http://sass-lang.com/
@@ -17,6 +17,12 @@ Source1: %{gem_name}-%{version}-tests.tgz
 # sass-listen is a fork from original listen v3.0 branch to support Ruby <= 2.1.
 # https://github.com/sass/ruby-sass/pull/65
 Patch0: rubygem-sass-3.5.6-use-listen.patch
+# Note that patches below are not going to be submitted upstream
+# because rubygem-sass is obsoleted by the upstream
+# Remove warnings for literal string being frozen in ruby3.4
+Patch1: rubygem-sass-3.7.4-Remove-warnings-for-literal-string-being-frozen-in-r.patch
+# Support caller format change in ruby3.4
+Patch2: rubygem-sass-3.7.4-Support-caller-format-change-in-ruby3.4.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: rubygem(listen)
@@ -39,11 +45,13 @@ BuildArch: noarch
 Documentation for %{name}.
 
 %prep
-%setup -q -n %{gem_name}-%{version}
+%setup -q -n %{gem_name}-%{version} -a 1
 
 %gemspec_remove_dep -g sass-listen -s ../%{gem_name}-%{version}.gemspec
 %gemspec_add_dep -g listen -s ../%{gem_name}-%{version}.gemspec
 %patch 0 -p1
+%patch 1 -p2
+%patch 2 -p2
 
 %build
 gem build ../%{gem_name}-%{version}.gemspec
@@ -66,9 +74,8 @@ find %{buildroot}%{gem_instdir}/bin -type f | \
   xargs sed -i 's|^#!/usr/bin/env ruby|#!/usr/bin/ruby|'
 
 %check
+cp -a test/ Rakefile .%{gem_instdir}
 pushd .%{gem_instdir}
-
-tar xaf %{SOURCE1}
 
 # Fix Minitest 5.19+ compatibility.
 # The fix is not proposed upstream, because this package is deprecated.
@@ -104,6 +111,10 @@ popd
 %doc %{gem_instdir}/README.md
 
 %changelog
+* Thu Dec 19 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.7.4-11
+- Support ruby3.4 string literal being chilled
+- Support ruby3.4 backtrace formatting change
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.7.4-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

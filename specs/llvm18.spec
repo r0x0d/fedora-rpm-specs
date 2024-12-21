@@ -402,8 +402,8 @@ for f in %{buildroot}/%{install_bindir}/*; do
 done
 
 # Create ld.so.conf.d entry
-mkdir -p %{buildroot}/etc/ld.so.conf.d
-cat >> %{buildroot}/etc/ld.so.conf.d/%{name}-%{_arch}.conf << EOF
+mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
+cat >> %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf << EOF
 %{install_libdir}
 EOF
 
@@ -533,7 +533,7 @@ fi
 %{install_libdir}/libLTO.so*
 %{install_libdir}/libRemarks.so*
 %if %{with compat_build}
-%config(noreplace) /etc/ld.so.conf.d/%{name}-%{_arch}.conf
+%config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-%{_arch}.conf
 %endif
 
 %files devel

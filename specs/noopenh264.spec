@@ -1,22 +1,14 @@
-%global openh264_version 2.4.1
-%global openh264_soversion 7
+%global soversion 7
 
 Name:           noopenh264
-# 0.1.0 is the project version from meson.build.
-# Additionally, we also include the openh264 version as part of the
-# version tag. As "openh264" ends with a digit, _ is used as a separator
-# between "openh264" and the openh264 version number.
-Version:        0.1.0~openh264_%{openh264_version}
+Version:        2.5.0
 Release:        %autorelease
 Summary:        Fake implementation of the OpenH264 library
 
 License:        BSD-2-Clause and LGPL-2.1-or-later
 URL:            https://gitlab.com/freedesktop-sdk/noopenh264
-%global tag v%{openh264_version}
+%global tag v%{version}
 Source:         %{url}/-/archive/%{tag}/noopenh264-%{tag}.tar.bz2
-
-# https://gitlab.com/freedesktop-sdk/noopenh264/-/merge_requests/6
-Patch:          0001-Fix-the-build.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  meson
@@ -61,8 +53,8 @@ rm $RPM_BUILD_ROOT%{_libdir}/*.a
 %files
 %license COPYING*
 %doc README
-%{_libdir}/libopenh264.so.%{openh264_soversion}
-%{_libdir}/libopenh264.so.%{openh264_version}
+%{_libdir}/libopenh264.so.%{soversion}
+%{_libdir}/libopenh264.so.%{version}
 
 %files devel
 %{_includedir}/wels/
