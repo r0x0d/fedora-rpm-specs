@@ -4,7 +4,7 @@ Release: 16%{?dist}
 URL:     https://fonts.google.com/specimen/Patrick+Hand
 
 %global foundry           Wagesreiter
-%global fontlicense       OFL
+%global fontlicense       OFL-1.1
 %global fontlicenses      OFL.txt
 %global fontdocs          *.pb *.html
 

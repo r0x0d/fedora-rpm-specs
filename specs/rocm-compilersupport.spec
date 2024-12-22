@@ -66,18 +66,12 @@ License:        NCSA and MIT
 Source0:        https://github.com/ROCm/%{upstreamname}/archive/refs/tags/rocm-%{rocm_version}.tar.gz#/%{name}-%{rocm_version}.tar.gz
 Source1:        rocm-compilersupport.prep.in
 
-# This requires a patch that's only landed in llvm 19+:
-# https://github.com/ROCm/llvm-project/commit/669db884972e769450470020c06a6f132a8a065b
-#Patch0:         0001-Revert-ockl-Don-t-use-wave32-ballot-builtin.patch
-# Upstream LLVM 18 doesn't have GFX1152 yet
-#Patch1:         0001-Revert-GFX11-Add-a-new-target-gfx1152.patch
-# -mlink-builtin-bitcode-postopt is not supported
-#Patch2:         0001-remove-mlink.patch
-
 Patch3:         0001-Remove-err_drv_duplicate_config-check.patch
 Patch4:         0001-Replace-use-of-mktemp-with-mkstemp.patch
 # https://github.com/llvm/llvm-project/issues/106521
 Patch5:         0001-Fix-build-with-GCC-14-on-ARM-78704.patch
+# Link comgr with static versions of llvm's libraries
+Patch6:         0001-comgr-link-with-static-llvm.patch
 
 BuildRequires:  cmake
 BuildRequires:  perl
@@ -475,7 +469,10 @@ fi
 
 p=$PWD
 
-%global llvmrocm_staticlibs_config \\\
+#
+# BASE LLVM
+#
+%global llvmrocm_cmake_config \\\
  -DBUILD_SHARED_LIBS=OFF \\\
  -DBUILD_TESTING=OFF \\\
  -DCLANG_DEFAULT_LINKER=lld \\\
@@ -499,40 +496,6 @@ p=$PWD
  -DLLVM_INCLUDE_TESTS=OFF \\\
  -DLLVM_TARGETS_TO_BUILD=%{targets_to_build} \\\
  -DMLIR_INSTALL_AGGREGATE_OBJECTS=OFF \\\
-
-#
-# STATIC LLVM
-#
-# Build only. Just the static libraries so comgr will not link with any rocm-llvm
-# shared libraries and solve the problem of mixing up comgr's llvm with any system
-# llvm.
-pushd .
-%if 0%{?suse_version}
-%define __sourcedir llvm
-%define __builddir static-llvm
-%else
-%define _vpath_srcdir llvm
-%define _vpath_builddir static-llvm
-%endif
-
-%cmake %{llvmrocm_staticlibs_config} \
-       -DCMAKE_CXX_COMPILER=g++ \
-       -DCMAKE_C_COMPILER=gcc \
-       -DCMAKE_INSTALL_PREFIX=%{bundle_prefix} \
-       -DCMAKE_INSTALL_LIBDIR=lib \
-       -DLLVM_ENABLE_PROJECTS=%{llvm_projects}
-
-%cmake_build -j ${JOBS}
-
-# find static-llvm -name 'lib*'
-
-popd
-
-#
-# BASE LLVM
-#
-%global llvmrocm_cmake_config \\\
- %{llvmrocm_staticlibs_config} \\\
  -DLLVM_BUILD_LLVM_DYLIB=ON \\\
  -DLLVM_LINK_LLVM_DYLIB=ON \\\
  -DLLVM_BUILD_TOOLS=ON \\\
@@ -561,7 +524,6 @@ export LD_LIBRARY_PATH=$PWD/build-llvm/lib
 
 popd
 
-build_stage0=$p/static-llvm
 build_stage1=$p/build-llvm
 
 %global llvmrocm_tools_config \\\
@@ -570,9 +532,9 @@ build_stage1=$p/build-llvm
     -DCMAKE_CXX_COMPILER=$build_stage1/bin/clang++ \\\
     -DCMAKE_LINKER=$build_stage1/bin/ld.lld \\\
     -DCMAKE_RANLIB=$build_stage1/bin/llvm-ranlib \\\
-    -DLLVM_DIR=$build_stage0/lib/cmake/llvm \\\
-    -DClang_DIR=$build_stage0/lib/cmake/clang \\\
-    -DLLD_DIR=$build_stage0/lib/cmake/lld
+    -DLLVM_DIR=$build_stage1/lib/cmake/llvm \\\
+    -DClang_DIR=$build_stage1/lib/cmake/clang \\\
+    -DLLD_DIR=$build_stage1/lib/cmake/lld
 #
 # COMPILER-RT
 #
@@ -613,7 +575,7 @@ pushd .
 %define _vpath_builddir build-devicelibs
 %endif
 
-%cmake %{llvmrocm_staticlibs_config} \
+%cmake %{llvmrocm_cmake_config} \
        %{llvmrocm_tools_config} \
        -DCMAKE_INSTALL_PREFIX=%{_prefix} \
        -DCMAKE_INSTALL_LIBDIR=%{_lib} \
@@ -639,13 +601,15 @@ pushd .
 %define _vpath_builddir build-comgr
 %endif
 
-%cmake %{llvmrocm_staticlibs_config} \
+%cmake %{llvmrocm_cmake_config} \
        %{llvmrocm_tools_config} \
        %{llvmrocm_devicelibs_config} \
-       -DCMAKE_INSTALL_RPATH=%{bundle_prefix}/lib \
        -DBUILD_SHARED_LIBS=ON \
        -DCMAKE_INSTALL_PREFIX=%{_prefix} \
        -DCMAKE_INSTALL_LIBDIR=%{_lib}
+
+# cmake produces a link.txt that includes libLLVM*.so, hack it out
+sed -i -e 's@libLLVM-%{llvm_maj_ver}git.so@libLLVMCore.a@' build-comgr/CMakeFiles/amd_comgr.dir/link.txt
 
 %cmake_build -j ${JOBS}
 
@@ -666,7 +630,7 @@ pushd .
 %define _vpath_builddir build-hipcc
 %endif
 
-%cmake %{llvmrocm_staticlibs_config} \
+%cmake %{llvmrocm_cmake_config} \
        %{llvmrocm_tools_config} \
        %{llvmrocm_devicelibs_config} \
        -DCMAKE_INSTALL_RPATH=%{bundle_prefix}/lib \

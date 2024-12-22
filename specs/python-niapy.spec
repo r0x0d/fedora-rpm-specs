@@ -18,7 +18,9 @@ Summary:        Microframework for building nature-inspired algorithms
 
 License:        MIT
 URL:            %{forgeurl}
-Source0:        %{forgesource}
+Source:         %{forgesource}
+# Replace deprecated `np.float_`.
+Patch:          %{forgeurl}/commit/99cb246ed483d5961d4ff17395732abcb85dced1.patch
 
 BuildArch:      noarch
 
@@ -76,7 +78,7 @@ Full HTML documentation is available at
 https://niapy.readthedocs.io/en/stable/index.html.
 
 %prep
-%forgeautosetup
+%forgeautosetup -p1
 # Since we aren’t building HTML documentation, we don’t need the HTML theme
 # dependency:
 sed -r -i 's/^(sphinx-.*theme)/#\1/' docs/requirements.txt

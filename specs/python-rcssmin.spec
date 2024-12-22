@@ -10,13 +10,15 @@ compression, so it can be used at runtime (rather than during a preprocessing
 step).}
 
 Name:		python-%{pypi_name}
-Version:	1.1.1
+Version:	1.2.0
 Release:	%autorelease
 Summary:	CSS Minifier
 
 License:	Apache-2.0
 URL:		http://opensource.perlig.de/rcssmin/
-Source0:	%{pypi_source}
+Source:		%{pypi_source}
+# Allow using setuptools >= 74
+Patch:		rcssmin-relax-setuptools.diff
 
 BuildRequires:	gcc
 BuildRequires:	python3-devel

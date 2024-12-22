@@ -9,7 +9,7 @@ Release: 17%{?dist}
 URL:     http://www.yanone.de/typedesign/kaffeesatz/
 
 %global foundry           Yanone
-%global fontlicense       OFL
+%global fontlicense       OFL-1.1
 %global fontlicenses      OFL.txt
 %global fontdocs          *txt *html *md
 %global fontdocsex        %{fontlicenses}

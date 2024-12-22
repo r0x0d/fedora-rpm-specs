@@ -13,11 +13,11 @@
 %global	git_builddir	%{nil}
 
 %if 0%{?use_gitbare}
-%global	gittardate		20240906
-%global	gittartime		1407
+%global	gittardate		20241220
+%global	gittartime		0038
 
-%global	gitbaredate	20240825
-%global	git_rev		ffd815fc2d30a5fe339e5c927060a14cdc88e345
+%global	gitbaredate	20241213
+%global	git_rev		5eb39f111e9de0eddfc7beee218fb0f6109bda59
 %global	git_short		%(echo %{git_rev} | cut -c-8)
 %global	git_version	%{gitbaredate}git%{git_short}
 %endif
@@ -27,7 +27,7 @@
 %global	git_builddir	-%{git_version}
 %endif
 
-#%%global		use_gcc_strict_sanitize	1
+%dnl %global		use_gcc_strict_sanitize	1
 
 %global		main_version	0.10.1
 %global		baserelease	1
@@ -87,11 +87,6 @@ BuildRequires:	pkgconfig(indicator-0.4)
 BuildRequires:	pkgconfig(libmenu-cache) >= 0.3.0
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	/usr/bin/curl-config
-
-%if 0%{?fedora} < 36
-# required for netstatus plugin
-BuildRequires:	wireless-tools-devel
-%endif
 
 %if 0%{?use_gitbare}
 BuildRequires:	automake
@@ -182,12 +177,6 @@ cat %PATCH103 | git am
 %patch -P102 -p1 -b .zenity
 %patch -P104 -p1 -b .batt_pending
 
-# Fedora >= 19 doesn't use vendor prefixes for desktop files. Instead of
-# maintaining two patches we just strip the prefixes from the files we just
-# patched with patch 100.
-sed -i 's|id=fedora-|id=|' data/default/panels/panel.in \
-	data/two_panels/panels/bottom.in \
-	data/two_panels/panels/top.in
 git commit -m "Apply Fedora specific configulation" -a
 
 %build
@@ -243,6 +232,9 @@ cd ..
 %{_libdir}/pkgconfig/lxpanel.pc
 
 %changelog
+* Fri Dec 20 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.10.1^20241213git5eb39f11-1
+- Update to the latest git
+
 * Fri Sep 06 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.10.1^20240825gitffd815fc-1
 - Update to the latest git
 

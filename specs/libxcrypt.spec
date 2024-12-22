@@ -168,7 +168,7 @@ fi                                          \
 
 Name:           libxcrypt
 Version:        4.4.36
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Extended crypt library for descrypt, md5crypt, bcrypt, and others
 
 # For explicit license breakdown, see the
@@ -185,6 +185,7 @@ Patch0000:      %{url}/commit/2572bd2553df.patch#/%{name}-configure-c99.patch
 Patch0001:      %{url}/pull/185.patch#/%{name}-manpage-fixes.patch
 Patch0002:      %{url}/commit/7a8b3f39ada0.patch#/%{name}-crypt_gensalt_3_Small-fix-from-Debian.patch
 Patch0003:      %{url}/commit/9a8ba6ed1c60.patch#/%{name}-test_short-outbuf_c-Do-not-include-crypt_h-directly.patch
+Patch0004:      %{url}/commit/6baecd0c54a9.patch#/%{name}-lib_crypt-static_c-include-errno_h-is-not-needed.patch
 
 # Patch 3000 - 5999: Backported patches from pull requests.
 Patch3000:      %{name}-Make-crypt-and-crypt_gensalt-use-thread-local-output.patch
@@ -590,6 +591,10 @@ done
 
 
 %changelog
+* Fri Dec 20 2024 Björn Esser <besser82@fedoraproject.org> - 4.4.36-12
+- Update patch for MT-Safeness in crypt and crypt_gensalt
+- Apply small upstream patch for testsuite
+
 * Wed Nov 27 2024 Björn Esser <besser82@fedoraproject.org> - 4.4.36-11
 - Drop -Wl,--no-tls-get-addr-optimize, as binutils are fixed now
 - Update patch for MT-Safeness in crypt and crypt_gensalt

@@ -14,7 +14,7 @@
 Name:           perl-Test-Simple
 Summary:        Basic utilities for writing tests
 Epoch:          3
-Version:        1.302204
+Version:        1.302206
 Release:        1%{?dist}
 # CC0-1.0: lib/ok.pm
 # Public Domain: lib/Test/Tutorial.pod
@@ -62,7 +62,6 @@ BuildRequires:  perl(Term::Table::Cell)
 BuildRequires:  perl(Term::Table::LineBreak)
 BuildRequires:  perl(Term::Table::Util)
 BuildRequires:  perl(Time::HiRes)
-BuildRequires:  perl(vars)
 BuildRequires:  perl(warnings)
 # Test Suite
 BuildRequires:  perl(Cwd)
@@ -210,7 +209,6 @@ make test %{!?perl_bootstrap:AUTHOR_TESTING=1}
 %{_mandir}/man3/ok.3*
 %{_mandir}/man3/Test::Builder.3*
 %{_mandir}/man3/Test::Builder::Formatter.3*
-%{_mandir}/man3/Test::Builder::IO::Scalar.3*
 %{_mandir}/man3/Test::Builder::Module.3*
 %{_mandir}/man3/Test::Builder::Tester.3*
 %{_mandir}/man3/Test::Builder::Tester::Color.3*
@@ -404,6 +402,13 @@ make test %{!?perl_bootstrap:AUTHOR_TESTING=1}
 %{_libexecdir}/%{name}
 
 %changelog
+* Fri Dec 20 2024 Paul Howarth <paul@city-fan.org> - 3:1.302206-1
+- Update to 1.302206
+  - Use our instead of 'use vars'
+  - Fix $[ usage
+  - Documentation updates
+  - Remove Test::Builder::IO::Scalar (GH#1016)
+
 * Sun Sep 15 2024 Paul Howarth <paul@city-fan.org> - 3:1.302204-1
 - Update to 1.302204
   - Add pending diagnostics functionality

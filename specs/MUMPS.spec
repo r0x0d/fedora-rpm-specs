@@ -4,7 +4,7 @@
 %global _incmpichdir %{_includedir}/mpich-%{_arch}
 %global _libmpichdir %{_libdir}/mpich/lib
 
-%global soname_version 5.6
+%global soname_version 5.7
 
 # Prevent broken links 
 %undefine _ld_as_needed
@@ -42,8 +42,8 @@
 %endif
 
 Name: MUMPS
-Version: %{soname_version}.2
-Release: 6%{?dist}
+Version: %{soname_version}.3
+Release: %autorelease
 Summary: A MUltifrontal Massively Parallel sparse direct Solver
 License: CECILL-C
 URL: https://mumps-solver.org
@@ -66,15 +66,7 @@ Patch3: %{name}-shared-seq.patch
 BuildRequires: make
 BuildRequires: gcc-gfortran
 BuildRequires: gcc
-%if 0%{?fedora} || 0%{?rhel}
 BuildRequires: pkgconfig(flexiblas)
-%else
-BuildRequires: openblas-srpm-macros, openblas-devel
-%ifnarch %{openblas_arches}
-BuildRequires: blas-devel
-BuildRequires: lapack-devel
-%endif
-%endif
 BuildRequires: metis-devel
 BuildRequires: scotch-devel >= 7.0.1
 BuildRequires: scotch-devel-metis >= 7.0.1
@@ -292,18 +284,8 @@ mkdir -p %{name}-%{version}-$MPI_COMPILER_NAME/lib
 mkdir -p %{name}-%{version}-$MPI_COMPILER_NAME/examples
 mkdir -p %{name}-%{version}-$MPI_COMPILER_NAME/modules
 
-%if 0%{?fedora} || 0%{?rhel}
 export LIBBLAS="-L%{_libdir} -lflexiblas"
 export INCBLAS=-I%{_includedir}/flexiblas
-%else
-%ifarch %{openblas_arches}
-export LIBBLAS="-L%{_libdir} -lopenblas"
-export INCBLAS=-I%{_includedir}/openblas
-%else
-export LIBBLAS="-L%{_libdir} -lblas -llapack"
-export INCBLAS=-I%{_includedir}
-%endif
-%endif
 
 make all \
  SONAME_VERSION=%{soname_version} \
@@ -379,18 +361,8 @@ mkdir -p %{name}-%{version}-$MPI_COMPILER_NAME/lib
 mkdir -p %{name}-%{version}-$MPI_COMPILER_NAME/examples
 mkdir -p %{name}-%{version}-$MPI_COMPILER_NAME/modules
 
-%if 0%{?fedora} || 0%{?rhel}
 export LIBBLAS="-L%{_libdir} -lflexiblas"
 export INCBLAS=-I%{_includedir}/flexiblas
-%else
-%ifarch %{openblas_arches}
-export LIBBLAS="-L%{_libdir} -lopenblas"
-export INCBLAS=-I%{_includedir}/openblas
-%else
-export LIBBLAS="-L%{_libdir} -lblas -llapack"
-export INCBLAS=-I%{_includedir}
-%endif
-%endif
 
 make all \
  SONAME_VERSION=%{soname_version} \
@@ -441,18 +413,8 @@ IPORD=" -I$PWD/PORD/include/"
 LPORD=" -L$PWD/PORD/lib -lpord"
 FPIC_OPT=-fPIC
 
-%if 0%{?fedora} || 0%{?rhel}
 export LIBBLAS="-L%{_libdir} -lflexiblas"
 export INCBLAS=-I%{_includedir}/flexiblas
-%else
-%ifarch %{openblas_arches}
-export LIBBLAS="-L%{_libdir} -lopenblas"
-export INCBLAS=-I%{_includedir}/openblas
-%else
-export LIBBLAS="-L%{_libdir} -lblas -llapack"
-export INCBLAS=-I%{_includedir}
-%endif
-%endif
 
 export LDFLAGS="%{__global_ldflags}"
 make all \
@@ -700,388 +662,4 @@ EOF
 %{_rpmmacrodir}/macros.MUMPS
 
 %changelog
-* Fri Aug 16 2024 Sandro Mani <manisandro@gmail.com> - 5.6.2-6
-- Rebuild (scotch-7.0.4)
-
-* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.6.2-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Thu Mar 28 2024 Antonio Trande <sagitter@fedoraproject.org> - 5.6.2-4
-- Use rhel macro instead of eln (rhbz#2271816)
-
-* Mon Jan 22 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.6.2-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Fri Jan 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.6.2-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Fri Jan 05 2024 Antonio Trande <sagitter@fedoraproject.org> - 5.6.2-1
-- Release 5.6.2
-- Disable MPICH tests
-
-* Thu Aug 17 2023 Antonio Trande <sagitter@fedoraproject.org> - 5.5.1-6
-- Rebuild for Scotch-7.0.4
-
-* Wed Jul 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 5.5.1-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Thu Apr 13 2023 Antonio Trande <sagitter@fedoraproject.org> - 5.5.1-4
-- Rebuild for Scotch-7
-- Add scotch -metis sub-packages
-
-* Tue Feb 21 2023 Antonio Trande <sagitter@fedoraproject.org> - 5.5.1-3
-- Disable OpenMPI tests in Fedora 38+ i686
-
-* Wed Jan 18 2023 Fedora Release Engineering <releng@fedoraproject.org> - 5.5.1-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
-
-* Tue Aug 23 2022 Antonio Trande <sagitter@fedoraproject.org> - 5.5.1-1
-- Release 5.5.1
-
-* Wed Jul 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 5.5.0-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
-
-* Sat Jul 09 2022 Antonio Trande <sagitter@fedoraproject.org> - 5.5.0-1
-- Release 5.5.0
-- Fix ELN builds
-
-* Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 5.4.1-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
-
-* Sat Sep 11 2021 Antonio Trande <sagitter@fedoraproject.org> - 5.4.1-1
-- Release 5.4.1
-
-* Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 5.4.0-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
-
-* Fri Jul 16 2021 Antonio Trande <sagitter@fedoraproject.org> - 5.4.0-1
-- Release 5.4.0
-
-* Mon Jan 25 2021 Fedora Release Engineering <releng@fedoraproject.org> - 5.3.5-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
-
-* Sat Nov 14 2020 Antonio Trande <sagitter@fedoraproject.org> - 5.3.5-1
-- Release 5.3.5
-
-* Tue Oct 06 2020 Antonio Trande <sagitter@fedoraproject.org> - 5.3.4-1
-- Release 5.3.4
-
-* Sat Aug 15 2020 Antonio Trande <sagitter@fedoraproject.org> - 5.3.3-2
-- Add an RPM macro for checking MUMPS version
-
-* Tue Aug 04 2020 Antonio Trande <sagitter@fedoraproject.org> - 5.3.3-1
-- Release 5.3.3
-
-* Sat Aug 01 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.3.1-6
-- Second attempt - Rebuilt for
-  https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
-
-* Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.3.1-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
-
-* Sat Jul 25 2020 Iñaki Úcar <iucar@fedoraproject.org> - 5.3.1-4
-- https://fedoraproject.org/wiki/Changes/FlexiBLAS_as_BLAS/LAPACK_manager
-
-* Fri Jul 17 2020 Merlin Mathesius <mmathesi@redhat.com> - 5.3.1-3
-- Minor conditional fixes for ELN
-
-* Sat Jun 13 2020 Antonio Trande <sagitter@fedoraproject.org> - 5.3.1-2
-- Modified for building on ELN
-
-* Mon Apr 13 2020 Antonio Trande <sagitter@fedoraproject.org> - 5.3.1-1
-- Release 5.3.1
-
-* Wed Apr 08 2020 Antonio Trande <sagitter@fedoraproject.org> - 5.3.0-1
-- Release 5.3.0
-
-* Wed Apr 08 2020 Antonio Trande <sagitter@fedoraproject.org> - 5.2.1-8
-- Fix rhbz#1819796 on epel8
-
-* Thu Apr 02 2020 Antonio Trande <sagitter@fedoraproject.org> - 5.2.1-7
-- Fix rhbz#1819796
-
-* Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.2.1-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
-
-* Sat Jan 25 2020 Antonio Trande <sagitter@fedoraproject.org> - 5.2.1-5
-- Workaround for GFortran 10 (-fallow-argument-mismatch)
-
-* Wed Jan 01 2020 Antonio Trande <sagitter@fedoraproject.org> - 5.2.1-4
-- Use libmpiblacs separately with scalapack-2.1.*
-
-* Sun Nov 17 2019 Tom Callaway <spot@fedoraproject.org> - 5.2.1-3
-- libmpiblacs is now inside of libscalapack
-
-* Wed Jul 24 2019 Fedora Release Engineering <releng@fedoraproject.org> - 5.2.1-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
-
-* Sat Jul 20 2019 Antonio Trande <sagitter@fedoraproject.org> - 5.2.1-1
-- Update to 5.2.1
-
-* Fri May 17 2019 Antonio Trande <sagitter@fedoraproject.org> - 5.1.2-10
-- Require scalapack explicity (rhbz #1711291 #1711289)
-- Disable tests with OpenMPI-4
-
-* Thu Feb 14 2019 Orion Poplawski <orion@nwra.com> - 5.1.2-9
-- Rebuild for openmpi 3.1.3
-
-* Thu Jan 31 2019 Fedora Release Engineering <releng@fedoraproject.org> - 5.1.2-8
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
-
-* Thu Jul 19 2018 Sandro Mani <manisandro@gmail.com> - 5.1.2-7
-- Rebuild (scotch)
-
-* Thu Jul 12 2018 Fedora Release Engineering <releng@fedoraproject.org> - 5.1.2-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
-
-* Thu Feb 15 2018 Antonio Trande <sagitter@fedoraproject.org> - 5.1.2-5
-- Use %%ldconfig_scriptlets
-
-* Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 5.1.2-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
-
-* Wed Jan 31 2018 Antonio Trande <sagitter@fedoraproject.org> - 5.1.2-3
-- Rebuild for GCC-8
-
-* Sat Oct 28 2017 Antonio Trande <sagitter@fedoraproject.org> - 5.1.2-2
-- Set openblas arches
-
-* Sat Oct 28 2017 Antonio Trande <sagitter@fedoraproject.org> - 5.1.2-1
-- Update to 5.1.2
-- Add -Wno-unused-dummy-argument -Wno-maybe-uninitialized options
-- Add new -DBLR_MT flag
-- Rebuild against openblas
-
-* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 5.1.1-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
-
-* Mon Jun 19 2017 Antonio Trande <sagitter@fedoraproject.org> - 5.1.1-2
-- Generate and install libmpiseq libraries (bug fix)
-
-* Tue Mar 21 2017 Antonio Trande <sagitter@fedoraproject.org> - 5.1.1-1
-- Update to 5.1.1
-- Build openmp version on Fedora and Rhel7 only
-
-* Wed Mar 15 2017 Orion Poplawski <orion@cora.nwra.com> - 5.0.2-9
-- Build with openblas on all available architectures
-
-* Tue Feb 14 2017 Antonio Trande <sagitter@fedoraproject.org>  5.0.2-8
-- Build OpenMPI version on Fedora26-s390
-
-* Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.2-7
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
-
-* Tue Jan 31 2017 Antonio Trande <sagitter@fedoraproject.org>  5.0.2-6
-- Rebuild for gcc-gfortran
-- Include Fortran modules
-
-* Fri Dec 02 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.2-5
-- Fix MPICH builds on s390
-
-* Tue Nov 01 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.2-4
-- Build on s390
-- Rebuild on epel
-
-* Mon Oct 31 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.2-3
-- New architectures
-
-* Fri Oct 21 2016 Orion Poplawski <orion@cora.nwra.com> - 5.0.2-2
-- Rebuild for openmpi 2.0
-
-* Mon Jul 18 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.2-1
-- Update to 5.0.2
-
-* Fri Apr 29 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-20
-- Build MPICH libraries on PPC64* except EPEL6
-
-* Mon Apr 04 2016 Peter Robinson <pbrobinson@fedoraproject.org> - 5.0.1-19
-- aarch64/Power64 have mpich/openmpi now
-
-* Wed Mar 23 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-18
-- Examples directory moved under /usr/lib/openmpi(mpich)
-
-* Wed Mar 23 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-17
-- Added rpm-mpi-hooks as BR in examples sub-packages
-- Added openmpi/mpich as Requires package
-
-* Wed Mar 23 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-16
-- Added rpm-mpi-hooks dependencies
-
-* Wed Mar 23 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-15
-- Fixed linker flags
-
-* Tue Mar 22 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-14
-- Fixed MPI paths
-
-* Sun Mar 20 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-13
-- Rebuild for Metis
-- Compiled with OpenMP support (bz#1319477)
-
-* Fri Feb 12 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-12
-- Added linker flags to fix unused-direct-shlib-dependency
-
-* Wed Feb 03 2016 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.1-11
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
-
-* Fri Jan 08 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-10
-- Built MPICH libraries on EPEL (bz#1296387)
-- Exclude OpenMPI on s390 arches
-- Exclude MPICH on PPC arches
-
-* Thu Jan 07 2016 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-9
-- Built MPICH libraries (bz#1296387)
-- Removed useless Requires packages
-
-* Fri Nov 20 2015 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-8
-- Fixed links to OpenMPI-1.10.1 libraries on Fedora
-
-* Fri Nov 20 2015 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-7
-- Fixed links to OpenMPI-1.6.4 libraries on EPEL7
-
-* Wed Nov 18 2015 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-6
-- Fixed links to OpenMPI-1.10 libraries
-
-* Mon Nov 16 2015 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-5
-- Set MPI libraries by using pkgconfig
-- ExcludeArch s390x s390
-
-* Fri Oct 30 2015 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-4
-- Hardened builds on <F23
-
-* Tue Sep 15 2015 Orion Poplawski <orion@cora.nwra.com> - 5.0.1-3
-- Rebuild for openmpi 1.10.0
-
-* Sun Jul 26 2015 Sandro Mani <manisandro@gmail.com> - 5.0.1-2
-- Rebuild for RPM MPI Requires Provides Change
-
-* Fri Jul 24 2015 Antonio Trande <sagitter@fedoraproject.org> - 5.0.1-1
-- Update to 5.0.1
-- Added a soname_version macro
-
-* Tue Jun 16 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.0.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
-
-* Wed Feb 25 2015 Antonio Trande <sagitter@fedoraproject.org> - 5.0.0-2
-- Fixed conditional macro for OpenMPI sub-package on EPEL7
-- Fixed library linkage against OpenMPI on EPEL7
-- Added ORDERINGSF variables for Scotch and Metis
-
-* Fri Feb 20 2015 Antonio Trande <sagitter@fedoraproject.org> - 5.0.0-1
-- Update to MUMPS-5.0.0
-- License changed in CeCILL-C
-- Linked against Metis
-- Linked serial version against Scotch
-- Linked MPI version against PT-Scotch
-
-* Mon Nov 10 2014 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-24
-- Removed OpenMPI minimal release request for EPEL
-- Fixed scalapack minimal release request
-
-* Mon Oct 27 2014 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-23
-- Rebuild after scalapack-2.0.2-5.el6.1 update (bz#1157775)
-
-* Tue Sep 23 2014 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-22 
-- MUMPS-openmpi linked to 'lapack' libs in the EPEL6 buildings
-
-* Sun Sep 07 2014 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-21 
-- Changed MUMPS sequential build setups
-- Packaged dummy mpif.h file including symbols used by MUMPS
-
-* Mon Aug 25 2014 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-20 
-- Excluded Fortran driver tests
-
-* Sat Aug 23 2014 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-19 
-- Fixed BR for OpenMPI sub-packages
-- Performed serial and parallel MUMPS tests
-
-* Fri Aug 15 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.10.0-18 
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
-
-* Tue Jun 24 2014 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-17
-- Some MPI packaging fixes
-- Changed MUMPS sequential build
-
-* Fri Jun 06 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.10.0-16
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
-
-* Sat May  3 2014 Tom Callaway <spot@fedoraproject.org> - 4.10.0-15
-- rebuild against new scalapack tree of blacs
-
-* Wed Aug 28 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-14
-- 'blacs-openmpi-devel' request unversioned
-- Defined which version of MUMPS-doc package is obsolete
-
-* Wed Aug 07 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-13
-- Obsolete packages are now versioned (bz#993574)
-- Adding redefined _pkgdocdir macro for earlier Fedora versions to conform
-  this spec with 'F-20 unversioned docdir' change (bz#993984)
-
-* Mon Jul 29 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-12
-- Old MUMPS subpackages are now obsoletes
-
-* Sat Jul 27 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-11
-- Added new macros for 'openmpi' destination directories
-- Done some package modifications according to MPI guidelines
-- This .spec file now produces '-openmpi', '-openmpi-devel', '-common' packages
-- Added MUMPS packaging in "serial mode"
-- %%{name}-common package is a noarch
-- Added an '-examples' subpackage that contains all test programs
-
-* Tue Jul 23 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-10
-- 'openmpi-devel' BR changed to 'openmpi-devel>=1.7'
-- 'blacs-openmpi-devel' BR changed to 'blacs-openmpi-devel>=1.1-50'
-- Removed '-lmpi_f77' library link, deprecated starting from 'openmpi-1.7.2'
-
-* Sat Mar 23 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-9
-- Removed '-Wuninitialized -Wno-maybe-uninitialized' flags because unrecognized
-  in EPEL6
-- Added condition to load MPI module properly
-
-* Sat Mar 02 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-8
-- Removed %%post/%%postun commands for devel sub-package
-
-* Thu Feb 28 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-7
-- Exchanged versioned/unversioned libs between main and devel packages
-- Set up a doc subpackage that cointains PDF documentation
-- Erased .ps documentation
-- ChangeLog even in devel package
-- SourceX/PatchY prefixed with %%{name}
-- Added 'openssh-clients' to BuildRequires
-
-* Wed Feb 27 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-6
-- Removed 'libopen-pal.so.4' and 'libopen-rte.so.4' private libraries exclusion
-- Imposed '-Wl,--as-needed' flags to the libopen-pal/-rte libs in shared-mumps.patch
-- Added '-Wuninitialized -Wno-maybe-uninitialized' in shared-mumps.patch 
-  to silence '-Wmaybe-uninizialized' warnings 
-
-* Tue Feb 26 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-5
-- Removed sequential version building
-- Removed Make.seq.inc file from sources
-- Set up of OPT* entries in the Make.par.inc file
-
-* Mon Feb 25 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-4
-- Added %%check section
-
-* Mon Feb 25 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-3
-- Sequential version's Make command  pointed to openmpi header/lib files
-- Set optflags macros
-
-* Fri Feb 22 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-2
-- Add '_includedir/MUMPS' directory, header files moved into
-- 'Buildroot:' line removed
-- Manuals pdf/ps included as %%doc files
-- Add a new sub-package 'examples', it contains test files and relative README
-- LICENSE and README files in %%doc
-- '%%clean section' removed
-- 'rm -rf %%{buildroot}' and '%%defattr' lines removed
-- Compiler flags included in custom Makefile.par.inc/Makefile.seq.inc files
-
-* Wed Feb 20 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-1
-- 'libopen-pal.so.4' and 'libopen-rte.so.4' private libraries exclusion
-
-* Wed Feb 20 2013 Antonio Trande <sagitter@fedoraproject.org> - 4.10.0-0
-- Remove exec permissions to remove 'script-without-shebang' errors
-- Make symbolic links instead hard-link 
-- Make sure documentation is using Unicode.
-- Add Package patches and custom Makefiles changed for Fedora.
-- Initial package.
+%autochangelog

@@ -3,7 +3,7 @@ Release:        14%{?dist}
 URL:            https://launchpad.net/newscycle
 
 %global foundry           glyphography
-%global fontlicense       OFL
+%global fontlicense       OFL-1.1
 %global fontlicenses      OFL.txt
 %global fontdocs          *.txt
 %global fontdocsex        %{fontlicenses}

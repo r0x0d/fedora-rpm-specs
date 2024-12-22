@@ -3,12 +3,15 @@
 
 Name: rubygem-%{gem_name}
 Version: 0.22.1
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: Ruby module for interaction with D-Bus
 # MIT: lib/dbus/core_ext/*
 License: LGPL-2.1-or-later AND MIT
 URL: https://github.com/mvidner/ruby-dbus
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
+# Support ruby3.4 backtrace formatting change
+# https://github.com/mvidner/ruby-dbus/pull/145
+Patch0:  %{gem_name}-pr145-support-ruby34-backtrace-formatting.patch
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
@@ -34,6 +37,7 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version}
+%patch -P0 -p1
 
 # Rakefile should not be executable.
 sed -i '1d' Rakefile
@@ -83,6 +87,9 @@ popd
 %{gem_instdir}/spec
 
 %changelog
+* Fri Dec 20 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.22.1-5
+- Support ruby3.4 backtrace formatting change
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.22.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

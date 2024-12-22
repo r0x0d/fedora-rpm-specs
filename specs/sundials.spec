@@ -6,7 +6,8 @@
 %bcond_with pthread
 #
 
-%define _legacy_common_support 1
+#define _legacy_common_support 1
+#https://github.com/LLNL/sundials/issues/97
 %define _lto_cflags %{nil}
 
 %global with_mpich 1
@@ -80,22 +81,22 @@
 %endif
 ##########
 # SOVERSIONs (*_SOVERSION from CMakeLists.txt):
-%global arkodelib_SOVERSION 5
-%global cvodelib_SOVERSION 6
-%global cvodeslib_SOVERSION 6
-%global idalib_SOVERSION 6
-%global idaslib_SOVERSION 5
-%global kinsollib_SOVERSION 6
+%global arkodelib_SOVERSION 6
+%global cvodelib_SOVERSION 7
+%global cvodeslib_SOVERSION 7
+%global idalib_SOVERSION 7
+%global idaslib_SOVERSION 6
+%global kinsollib_SOVERSION 7
 #global cpodeslib_SOVERSION 0
-%global nveclib_SOVERSION 6
-%global sunmatrixlib_SOVERSION 4
-%global sunlinsollib_SOVERSION 4
-%global sunnonlinsollib_SOVERSION 3
-%global sundialslib_SOVERSION 6
+%global nveclib_SOVERSION 7
+%global sunmatrixlib_SOVERSION 5
+%global sunlinsollib_SOVERSION 5
+%global sunnonlinsollib_SOVERSION 4
+%global sundialslib_SOVERSION 7
 
 Summary:    Suite of nonlinear solvers
 Name:       sundials
-Version:    6.7.0
+Version:    7.1.1
 Release:    %autorelease
 License:    BSD-3-Clause
 URL:        https://computation.llnl.gov/projects/%{name}/
@@ -307,9 +308,9 @@ export LIBSUPERLUMTLINK=-lsuperlumt_d
 
 %if %{with debug}
 %undefine _hardened_build
-export CFLAGS=" "
-export FFLAGS=" "
-export FCFLAGS=" "
+export CFLAGS=" -fPIC"
+export FFLAGS=" -fPIC"
+export FCFLAGS=" -fPIC"
 %{_bindir}/cmake -B sundials-%{version}/build -S sundials-%{version} \
  -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
  -DCMAKE_BUILD_TYPE:STRING=Debug \
@@ -319,7 +320,7 @@ export FCFLAGS=" "
  -DCMAKE_SHARED_LINKER_FLAGS_DEBUG:STRING="%{__global_ldflags} $LIBBLASLINK $LIBSUPERLUMTLINK" \
 %else
 export CFLAGS="%{build_cflags}"
-export FFLAGS="%{build_fflags}"
+export FFLAGS="%{build_fflags} -fPIC"
 %cmake -B sundials-%{version}/build -S sundials-%{version} \
  -DCMAKE_C_FLAGS_RELEASE:STRING="%{optflags} -I$INCBLAS" \
  -DCMAKE_Fortran_FLAGS_RELEASE:STRING="%{optflags} -I$INCBLAS" \
@@ -421,10 +422,10 @@ export FC=$MPI_BIN/mpif77
 
 %if %{with debug}
 %undefine _hardened_build
-export CFLAGS=" "
-export FFLAGS=" "
-export FCFLAGS=" "
-%{_bindir}/cmake  -B buildopenmpi_dir/build -S buildopenmpi_dir \
+export CFLAGS=" -fPIC"
+export FFLAGS=" -fPIC"
+export FCFLAGS=" -fPIC"
+%{_bindir}/cmake -B buildopenmpi_dir/build -S buildopenmpi_dir \
  -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
  -DCMAKE_BUILD_TYPE:STRING=Debug \
  -DCMAKE_C_FLAGS_DEBUG:STRING="-O0 -g %{__global_ldflags} -I$INCBLAS" \
@@ -433,7 +434,7 @@ export FCFLAGS=" "
  -DCMAKE_SHARED_LINKER_FLAGS_DEBUG:STRING="%{__global_ldflags} $LIBBLASLINK $LIBSUPERLUMTLINK $LIBHYPRELINK" \
 %else
 export CFLAGS="%{build_cflags}"
-export FFLAGS="%{build_fflags}"
+export FFLAGS="%{build_fflags} -fPIC"
 %cmake -B buildopenmpi_dir/build -S buildopenmpi_dir \
  -DCMAKE_C_FLAGS_RELEASE:STRING="%{optflags} -I$INCBLAS" \
  -DCMAKE_Fortran_FLAGS_RELEASE:STRING="%{optflags} -I$INCBLAS" \
@@ -557,9 +558,9 @@ export FC=$MPI_BIN/mpif77
 
 %if %{with debug}
 %undefine _hardened_build
-export CFLAGS=" "
-export FFLAGS=" "
-export FCFLAGS=" "
+export CFLAGS=" -fPIC"
+export FFLAGS=" -fPIC"
+export FCFLAGS=" -fPIC"
 %{_bindir}/cmake -B buildmpich_dir/build -S buildmpich_dir \
  -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
  -DCMAKE_BUILD_TYPE:STRING=Debug \
@@ -569,7 +570,7 @@ export FCFLAGS=" "
  -DCMAKE_SHARED_LINKER_FLAGS_DEBUG:STRING="%{__global_ldflags} $LIBBLASLINK $LIBSUPERLUMTLINK $LIBHYPRELINK" \
 %else
 export CFLAGS="%{build_cflags}"
-export FFLAGS="%{build_fflags}"
+export FFLAGS="%{build_fflags} -fPIC"
 %cmake -B buildmpich_dir/build -S buildmpich_dir \
  -DCMAKE_C_FLAGS_RELEASE:STRING="%{optflags} -I$INCBLAS" \
  -DCMAKE_Fortran_FLAGS_RELEASE:STRING="%{optflags} -I$INCBLAS" \
@@ -686,12 +687,10 @@ rm -f %{buildroot}%{_includedir}/sundials/NOTICE
 %define _vpath_builddir buildopenmpi_dir/build
 %if %{with debug}
 export LD_LIBRARY_PATH=%{buildroot}$MPI_LIB:$MPI_LIB
-export OMPI_MCA_rmaps_base_oversubscribe=yes
 %ctest -- -VV --output-on-failure --debug
 %else
 export LD_LIBRARY_PATH=%{buildroot}$MPI_LIB:$MPI_LIB
-export OMPI_MCA_rmaps_base_oversubscribe=yes
-%ctest -- --output-on-failure -E 'test_sunlinsol_superlumt|test_fsunlinsol_dense_mod'
+%ctest -E 'test_sunlinsol_superlumt'
 %endif
 %{_openmpi_unload}
 %endif
@@ -708,7 +707,7 @@ export LD_LIBRARY_PATH=%{buildroot}$MPI_LIB:$MPI_LIB
 %ctest -- -VV --output-on-failure --debug
 %else
 export LD_LIBRARY_PATH=%{buildroot}$MPI_LIB:$MPI_LIB
-%ctest -- --output-on-failure -E 'test_sunlinsol_superlumt|test_fsunlinsol_dense_mod'
+%ctest -E 'test_sunlinsol_superlumt'
 %endif
 %{_mpich_unload}
 %endif
@@ -723,7 +722,7 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 %ctest -- -VV --output-on-failure --debug
 %else
 export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
-%ctest -- --output-on-failure -E 'test_sunlinsol_superlumt|test_fsunlinsol_dense_mod'
+%ctest -E 'test_sunlinsol_superlumt'
 %endif
 %endif
 ## if with_sercheck
@@ -738,9 +737,9 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 %doc sundials-%{version}/src/README.idas.md
 %doc sundials-%{version}/src/README-kinsol.md
 %doc sundials-%{version}/NOTICE
+%{_libdir}/libsundials_core.so.%{sundialslib_SOVERSION}*
 %{_libdir}/libsundials_arkode*.so.%{arkodelib_SOVERSION}*
 %{_libdir}/libsundials_cvode*.so.%{cvodelib_SOVERSION}*
-%{_libdir}/libsundials_generic.so.%{sundialslib_SOVERSION}**
 %{_libdir}/libsundials_ida.so.%{idalib_SOVERSION}*
 %{_libdir}/libsundials_idas.so.%{idaslib_SOVERSION}*
 %{_libdir}/libsundials_kinsol.so.%{kinsollib_SOVERSION}*
@@ -759,7 +758,7 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 
 %files devel
 %{_libdir}/*.a
-%{_libdir}/libsundials_generic.so
+%{_libdir}/libsundials_core.so
 %{_libdir}/libsundials_ida*.so
 %{_libdir}/libsundials_cvode*.so
 %{_libdir}/libsundials_arkode*.so
@@ -777,7 +776,6 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 %if 0%{?with_fortran}
 %{_libdir}/libsundials_f*[_mod].so
 %{_fmoddir}/%{name}/
-%{_includedir}/sundials/sundials_futils.h
 %if %{with pthread}
 %{_libdir}/libsundials_fnvecpthreads.so
 %endif
@@ -798,10 +796,12 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 %{_includedir}/idas/
 %{_includedir}/kinsol/
 %dir %{_includedir}/sundials
+%{_includedir}/sundials/priv/
 %{_includedir}/sundials/sundials_export.h
 %{_includedir}/sundials/sundials_band.h
 %{_includedir}/sundials/sundials_dense.h
 %{_includedir}/sundials/sundials_direct.h
+%{_includedir}/sundials/sundials_futils.h
 %{_includedir}/sundials/sundials_iterative.h
 %{_includedir}/sundials/sundials_linearsolver.h
 %{_includedir}/sundials/sundials_math.h
@@ -826,6 +826,9 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 %{_includedir}/sundials/sundials_profiler.h
 %{_includedir}/sundials/sundials_adaptcontroller.h
 %{_includedir}/sundials/sundials_profiler.hpp
+%{_includedir}/sundials/sundials_core.h*
+%{_includedir}/sundials/sundials_errors.h
+%{_includedir}/sundials/sundials_types_deprecated.h
 
 %if 0%{?with_openmpi}
 %files openmpi
@@ -838,7 +841,6 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 %doc sundials-%{version}/src/README.idas.md
 %doc sundials-%{version}/src/README-kinsol.md
 %doc sundials-%{version}/NOTICE
-%{_libdir}/openmpi/lib/libsundials_generic.so.*
 %{_libdir}/openmpi/lib/libsundials_nvecparallel.so.*
 %{_libdir}/openmpi/lib/libsundials_nvecparhyp.so.*
 %if 0%{?fedora}
@@ -853,6 +855,7 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 %{_libdir}/openmpi/lib/libsundials_nvecmpipthreads.so.*
 %endif
 %{_libdir}/openmpi/lib/libsundials_nvecmpiplusx.so.*
+%{_libdir}/openmpi/lib/libsundials_core.so.*
 %{_libdir}/openmpi/lib/libsundials_kinsol.so.*
 %{_libdir}/openmpi/lib/libsundials_ida*.so.*
 %{_libdir}/openmpi/lib/libsundials_cvode*.so.*
@@ -890,7 +893,6 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 %{_fmoddir}/openmpi/%{name}/
 %{_libdir}/openmpi/lib/libsundials_f*[_mod].so
 %endif
-%{_libdir}/openmpi/lib/libsundials_generic.so
 %{_libdir}/openmpi/lib/libsundials_nvecparallel.so
 %{_libdir}/openmpi/lib/libsundials_nvecparhyp.so
 %if 0%{?fedora}
@@ -906,6 +908,7 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 %{_libdir}/openmpi/lib/libsundials_nvecpthreads.so
 %endif
 %{_libdir}/openmpi/lib/libsundials_nvecmpiplusx.so
+%{_libdir}/openmpi/lib/libsundials_core.so
 %{_libdir}/openmpi/lib/libsundials_kinsol.so
 %{_libdir}/openmpi/lib/libsundials_ida*.so
 %{_libdir}/openmpi/lib/libsundials_cvode*.so
@@ -931,7 +934,6 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 %doc sundials-%{version}/src/README.idas.md
 %doc sundials-%{version}/src/README-kinsol.md
 %doc sundials-%{version}/NOTICE
-%{_libdir}/mpich/lib/libsundials_generic.so.*
 %{_libdir}/mpich/lib/libsundials_nvecparallel.so.*
 %{_libdir}/mpich/lib/libsundials_nvecparhyp.so.*
 %if 0%{?fedora}
@@ -946,6 +948,7 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 %{_libdir}/mpich/lib/libsundials_nvecmpipthreads.so.*
 %endif
 %{_libdir}/mpich/lib/libsundials_nvecmpiplusx.so.*
+%{_libdir}/mpich/lib/libsundials_core.so.*
 %{_libdir}/mpich/lib/libsundials_kinsol.so.*
 %{_libdir}/mpich/lib/libsundials_ida*.so.*
 %{_libdir}/mpich/lib/libsundials_cvode*.so.*
@@ -984,7 +987,6 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 %{_libdir}/mpich/lib/libsundials_f*[_mod].so
 %endif
 %{_libdir}/mpich/lib/*.a
-%{_libdir}/mpich/lib/libsundials_generic.so
 %{_libdir}/mpich/lib/libsundials_nvecparallel.so
 %{_libdir}/mpich/lib/libsundials_nvecparhyp.so
 %if 0%{?fedora}
@@ -1000,6 +1002,7 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}:%{_libdir}
 %{_libdir}/mpich/lib/libsundials_nvecpthreads.so
 %endif
 %{_libdir}/mpich/lib/libsundials_nvecmpiplusx.so
+%{_libdir}/mpich/lib/libsundials_core.so
 %{_libdir}/mpich/lib/libsundials_kinsol.so
 %{_libdir}/mpich/lib/libsundials_ida*.so
 %{_libdir}/mpich/lib/libsundials_cvode*.so

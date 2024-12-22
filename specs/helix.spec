@@ -39,6 +39,9 @@ Source200:      https://raw.githubusercontent.com/blinxen/tree-sitter-eex/main/L
 
 # Remove windows dependencies
 Patch:          remove-windows-dependency.patch
+# Allow which 7
+# https://github.com/helix-editor/helix/commit/35802cb025b7a833387ce5187c7977e535f7000d
+Patch:          helix-24.07-allow-which-7.patch
 
 # Exclude %%{ix86} since the build fails with LLVM ERROR: out of memory Allocation failed error
 ExcludeArch: %{ix86}

@@ -14,9 +14,7 @@ Summary:        Run programs from your system in a microVM
 License:        MIT
 URL:            https://crates.io/crates/muvm
 Source:         %{crates_source}
-# Relax procfs dependency so it can build with the version packaged in Fedora
-Patch1:         rust-muvm-relax-procfs.patch
-Patch2:         0001-x11-Fix-XAUTHORITY-handling-for-wildcard-DISPLAY.patch
+Patch1:         0001-x11-Fix-XAUTHORITY-handling-for-wildcard-DISPLAY.patch
 
 BuildRequires:  cargo-rpm-macros >= 26
 

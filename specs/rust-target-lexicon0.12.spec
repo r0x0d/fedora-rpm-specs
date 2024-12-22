@@ -4,10 +4,10 @@
 
 %global crate target-lexicon
 
-Name:           rust-target-lexicon
-Version:        0.13.1
+Name:           rust-target-lexicon0.12
+Version:        0.12.16
 Release:        %autorelease
-Summary:        LLVM target triple types
+Summary:        Targeting utilities for compilers and related tools
 
 License:        Apache-2.0 WITH LLVM-exception
 URL:            https://crates.io/crates/target-lexicon
@@ -16,7 +16,7 @@ Source:         %{crates_source}
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-LLVM target triple types.}
+Targeting utilities for compilers and related tools.}
 
 %description %{_description}
 

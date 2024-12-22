@@ -37,6 +37,10 @@ License:        Apache-2.0
 URL:            https://neurodsp-tools.github.io/
 Source0:        https://github.com/neurodsp-tools/%{pypi_name}/archive/%{version}/%{pypi_name}-%{version}.tar.gz
 
+# Apply patch for NumPy 2.x (rebased onto 2.2.1)
+# https://github.com/neurodsp-tools/neurodsp/pull/333
+Patch:          https://github.com/neurodsp-tools/neurodsp/pull/333.patch
+
 BuildArch:      noarch
 
 %description %_description
@@ -59,7 +63,7 @@ BuildRequires:  python3-pytest
 
 %prep
 # No keyring/signature from the upstream to verify the source
-%autosetup -n %{pypi_name}-%{version}
+%autosetup -n %{pypi_name}-%{version} -p1
 rm -rf %{pypi_name}.egg-info
 
 find . -type f -name "*.py" -exec sed -i '/^#![  ]*\/usr\/bin\/env.*$/ d' {} 2>/dev/null ';'

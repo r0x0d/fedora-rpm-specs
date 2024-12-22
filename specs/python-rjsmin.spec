@@ -7,7 +7,7 @@ runtime (rather than during a preprocessing step). Usually it produces the
 same results as the original jsmin.c.}
 
 Name:           python-%{pypi_name}
-Version:        1.2.1
+Version:        1.2.3
 Release:        %autorelease
 Summary:        Javascript Minifier
 
@@ -19,7 +19,7 @@ BuildRequires:  gcc
 BuildRequires:  python3-devel
 BuildRequires:  python3-pytest
 BuildRequires:	python3-sphinx
-BuildRequires:	python3-sphinx_rtd_theme
+BuildRequires:  python3-cloud-sptheme
 
 %description %{desc}
 

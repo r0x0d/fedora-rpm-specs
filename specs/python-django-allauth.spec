@@ -4,7 +4,7 @@
 %global forgeurl https://codeberg.org/allauth/django-allauth
 
 Name:           python-django-allauth
-Version:        65.2.0
+Version:        65.3.0
 Release:        %autorelease
 Summary:        Integrated set of Django authentication apps
 License:        MIT

@@ -143,6 +143,9 @@ rm -rf src/plugins/contrib/help_plugin/{bzip2,zlib}
 # Don't use rpath!
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
+# Work around https://bugzilla.redhat.com/show_bug.cgi?id=2331361
+sed -i 's|opt_duplicate_compiler_generated_deps=\$opt_preserve_dup_deps|opt_duplicate_compiler_generated_deps=:|g' libtool
+
 
 %make_build
 

@@ -7,10 +7,6 @@
 %undefine _ld_as_needed
 %global _lto_cflags %{nil}
 
-# Testing libpetsc ?
-%bcond_without check
-#
-
 # Python binding and its testing
 %bcond_without python
 # Python tests need Cython
@@ -18,6 +14,10 @@
 %bcond_with pycheck
 %global pymodule_name petsc4py
 %global pymodule_version %{version}
+#
+
+# Testing libpetsc ?
+%bcond_without check
 #
 
 ## Debug builds ?
@@ -283,11 +283,11 @@
 %global mpichversion %(rpm -qi mpich | awk -F': ' '/Version/ {print $2}')
 %global openmpiversion %(rpm -qi openmpi | awk -F': ' '/Version/ {print $2}')
 %global majorver 3
-%global releasever 3.20
+%global releasever %{majorver}.22
 
 Name:    petsc
 Summary: Portable Extensible Toolkit for Scientific Computation
-Version: %{releasever}.6
+Version: %{releasever}.2
 Release: %autorelease
 License: BSD-2-Clause
 URL:     https://petsc.org/
@@ -300,17 +300,14 @@ Source2: %{name}-3.20-PETSc_cython3.0.6.h
 Source3: %{name}-3.20-PETSc_api_cython3.0.6.h
 
 ## Remove rpath flags
-Patch0:  %{name}-3.11-no-rpath.patch
+Patch0:  %{name}-3.21.1-no-rpath.patch
 
 ## Rename library name for 64-bit integer package
 Patch1:  %{name}-lib64.patch
 Patch3:  %{name}-3.19.4-fix_mumps_includes.patch
-Patch4:  %{name}-3.19.4-fix_metis64.patch
+Patch4:  %{name}-3.21.1-fix_metis64.patch
 Patch6:  %{name}-3.14.1-fix_pkgconfig_file.patch
-Patch7:  %{name}-3.17.0-avoid_fake_MKL_detection.patch
-
-Patch100: no-xdrlib.patch
-Patch101: no-parse_makefile.patch
+Patch7:  %{name}-3.22.2-avoid_fake_MKL_detection.patch
 
 %if %{with superlu}
 BuildRequires: SuperLU-devel >= 5.2.0
@@ -432,7 +429,7 @@ BuildRequires: fftw-devel
 BuildRequires: fftw-openmpi-devel
 %endif
 %if %{with hypre}
-BuildRequires: hypre-openmpi-devel
+BuildRequires: hypre-openmpi-devel >= 2.32.0
 %endif
 
 %description openmpi
@@ -516,7 +513,7 @@ BuildRequires: sundials-mpich-devel
 BuildRequires: superlu_dist-mpich-devel >= 6.3.0
 %endif
 %if %{with hypre}
-BuildRequires: hypre-mpich-devel
+BuildRequires: hypre-mpich-devel >= 2.32.0
 %endif
 %if %{with fftw}
 BuildRequires: fftw-devel
@@ -590,8 +587,6 @@ done
 
 pushd %{name}-%{version}
 %patch -P 7 -p1 -b .backup
-%patch -P 100 -p1
-%patch -P 101 -p1
 popd
 
 # Remove pregenerated Cython C sources
@@ -1020,8 +1015,9 @@ export CFLAGS="-O0 -g -Wl,-z,now -fPIC"
 export CXXFLAGS="-O0 -g -Wl,-z,now -fPIC"
 export FFLAGS="-O0 -g -Wl,-z,now -fPIC -I${MPI_FORTRAN_MOD_DIR}"
 xvfb-run -a make MAKE_NP=$RPM_BUILD_NCPUS all test -C buildopenmpi_dir V=1 MPIEXEC='%{_builddir}/%{name}-%{version}/buildopenmpi_dir/lib/petsc/bin/petscmpiexec -valgrind'
+xvfb-run -a make print-test test-fail=1 | tr ' ' '\n' | sort
 %else
-xvfb-run -a make MAKE_NP=$RPM_BUILD_NCPUS all test -C buildopenmpi_dir V=1
+xvfb-run -a make MAKE_NP=$RPM_BUILD_NCPUS all test -C buildopenmpi_dir V=0
 %endif
 %endif
 
@@ -1061,8 +1057,9 @@ export CFLAGS="-O0 -g -Wl,-z,now -fPIC"
 export CXXFLAGS="-O0 -g -Wl,-z,now -fPIC"
 export FFLAGS="-O0 -g -Wl,-z,now -fPIC -I${MPI_FORTRAN_MOD_DIR}"
 xvfb-run -a make MAKE_NP=$RPM_BUILD_NCPUS all test -C buildmpich_dir V=1 MPIEXEC='%{_builddir}/%{name}-%{version}/buildmpich_dir/lib/petsc/bin/petscmpiexec -valgrind'
+xvfb-run -a make print-test test-fail=1 | tr ' ' '\n' | sort
 %else
-xvfb-run -a make MAKE_NP=$RPM_BUILD_NCPUS all test -C buildmpich_dir V=1
+xvfb-run -a make MAKE_NP=$RPM_BUILD_NCPUS all test -C buildmpich_dir V=0
 %endif
 %endif
 
@@ -1098,8 +1095,9 @@ export CFLAGS="-O0 -g -Wl,-z,now -fPIC"
 export CXXFLAGS="-O0 -g -Wl,-z,now -fPIC"
 export FFLAGS="-O0 -g -Wl,-z,now -fPIC -I%{_libdir}/gfortran/modules"
 xvfb-run -a make MAKE_NP=$RPM_BUILD_NCPUS all test -C %{name}-%{version} V=1 MPIEXEC='%{_builddir}/%{name}-%{version}/%{name}-%{version}/lib/petsc/bin/petscmpiexec -n $RPM_BUILD_NCPUS -valgrind'
+xvfb-run -a make print-test test-fail=1 | tr ' ' '\n' | sort
 %else
-xvfb-run -a make MAKE_NP=$RPM_BUILD_NCPUS all test -C %{name}-%{version} V=1 MPIEXEC='%{_builddir}/%{name}-%{version}/%{name}-%{version}/lib/petsc/bin/petscmpiexec -n $RPM_BUILD_NCPUS'
+xvfb-run -a make MAKE_NP=$RPM_BUILD_NCPUS all test -C %{name}-%{version} V=0 MPIEXEC='%{_builddir}/%{name}-%{version}/%{name}-%{version}/lib/petsc/bin/petscmpiexec -n $RPM_BUILD_NCPUS'
 %endif
 
 %if %{with arch64}
@@ -1119,8 +1117,9 @@ export CFLAGS="-O0 -g -Wl,-z,now -fPIC"
 export CXXFLAGS="-O0 -g -Wl,-z,now -fPIC"
 export FFLAGS="-O0 -g -Wl,-z,now -fPIC -I%{_libdir}/gfortran/modules"
 xvfb-run -a make MAKE_NP=$RPM_BUILD_NCPUS all test -C build64 V=1 MPIEXEC='%{_builddir}/%{name}-%{version}/build64/lib/petsc/bin/petscmpiexec -n $RPM_BUILD_NCPUS -valgrind'
+xvfb-run -a make print-test test-fail=1 | tr ' ' '\n' | sort
 %else
-xvfb-run -a make MAKE_NP=$RPM_BUILD_NCPUS all test -C build64 V=1 MPIEXEC='%{_builddir}/%{name}-%{version}/build64/lib/petsc/bin/petscmpiexec -n $RPM_BUILD_NCPUS'
+xvfb-run -a make MAKE_NP=$RPM_BUILD_NCPUS all test -C build64 V=0 MPIEXEC='%{_builddir}/%{name}-%{version}/build64/lib/petsc/bin/petscmpiexec -n $RPM_BUILD_NCPUS'
 %endif
 %endif
 %endif

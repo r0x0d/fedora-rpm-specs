@@ -2,13 +2,12 @@
 %global pkgname osrf-pycommon
 
 Name:           python-%{pkgname}
-Version:        2.1.4
-Release:        6%{?dist}
+Version:        2.1.5
+Release:        1%{?dist}
 Summary:        Commonly needed Python modules used by software developed at OSRF
 
 # The entire source code is ASL 2.0 except parts of osrf_pycommon/terminal_color/windows.py which is BSD
-# Automatically converted from old format: ASL 2.0 and BSD - review is highly recommended.
-License:        Apache-2.0 AND LicenseRef-Callaway-BSD
+License:        Apache-2.0 AND BSD-3-Clause
 URL:            http://osrf-pycommon.readthedocs.org/
 Source0:        https://github.com/osrf/%{srcname}/archive/%{version}/%{srcname}-%{version}.tar.gz
 
@@ -48,10 +47,7 @@ BuildRequires:  python%{python3_pkgversion}-importlib-metadata
 BuildRequires:  python%{python3_pkgversion}-pytest
 BuildRequires:  python%{python3_pkgversion}-setuptools
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pkgname}}
-
-%if !0%{?rhel} || 0%{?rhel} >= 8
 Suggests:       %{name}-doc = %{version}-%{release}
-%endif
 
 %description -n python%{python3_pkgversion}-%{pkgname}
 osrf_pycommon is a python package which contains commonly used Python
@@ -108,6 +104,11 @@ install -p -m0644 -D docs/_build/man/%{srcname}.1 %{buildroot}%{_mandir}/man1/%{
 
 
 %changelog
+* Fri Dec 20 2024 Scott K Logan <logans@cottsay.net> - 2.1.5-1
+- Update to 2.1.5 (rhbz#2332954)
+- Review SPDX licensing
+- Drop spec file support for RHEL 7
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.1.4-6
 - convert license to SPDX
 

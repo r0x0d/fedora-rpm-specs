@@ -3,7 +3,7 @@
 
 Name:           python-%{srcname}
 Version:        2.0.7
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Multi-producer-multi-consumer signal dispatching mechanism
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -52,7 +52,7 @@ rm -rf %{pypi_name}.egg-info
 
 
 %check
-%{__python3} setup.py test -s tests
+%{__python3} -m unittest
 
 
 %files -n python3-%{srcname}
@@ -63,6 +63,9 @@ rm -rf %{pypi_name}.egg-info
 
 
 %changelog
+* Fri Sep 20 2024 Eduardo Echeverria <echevemaster@gmail.com> - 2.0.7-9
+- Fix unit test invocation
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.0.7-8
 - convert license to SPDX
 

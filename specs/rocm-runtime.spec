@@ -14,7 +14,7 @@
 
 Name:       rocm-runtime
 Version:    %{rocm_version}
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    ROCm Runtime Library
 
 License:    NCSA
@@ -71,12 +71,15 @@ excluded tests for each ASIC, and a convenience script to run the test suite.
 %prep
 %autosetup -n ROCR-Runtime-rocm-%{version} -p1
 
+# Use llvm's static libs kfdtest
+sed -i -e 's@LLVM_LINK_LLVM_DYLIB@0@' libhsakmt/tests/kfdtest/CMakeLists.txt
+
 %build
 
 export PATH=%{rocmllvm_bindir}:$PATH
 
 %cmake \
-       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_PREFIX_PATH=%{rocmllvm_cmakedir}/.. \
     -DCMAKE_INSTALL_LIBDIR=%{_lib} \
     -DCMAKE_SHARED_LINKER_FLAGS=-ldrm_amdgpu \
@@ -143,6 +146,9 @@ fi
 %endif
 
 %changelog
+* Fri Dec 20 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-2
+- Link kfdtest with static llvm libs
+
 * Sat Dec 7 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
 - Update to 6.3
 

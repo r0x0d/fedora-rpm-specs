@@ -1,33 +1,39 @@
-# Force out of source build
-%undefine __cmake_in_source_build
-
 # Use soversion
 %global soversion 11.0
 
 # Set to 1 to enable testsuite. Fails everywhere with GCC 8+.
-%global with_tests 0
+%bcond tests 0
 
 # Optional supports
-%global with_openexr 1
-%global with_ax      0
-%global with_nanovdb 1
+%bcond openexr 1
+%bcond ax      0
+%bcond nanovdb 1
+%bcond python  %{?fedora}
+%bcond imath   %{?fedora} || %{?rhel} >= 9
 
 # ax currently incompatible with newer llvm versions
-%if 0%{?fedora} >= 38 || 0%{?rhel} >= 8
 %global llvm_compat 15
-%endif
+
+%global _description %{expand:
+OpenVDB is an Academy Award-winning open-source C++ library comprising a novel
+hierarchical data structure and a suite of tools for the efficient storage and
+manipulation of sparse volumetric data discretized on three-dimensional grids.
+It is developed and maintained by Academy Software Foundation for use in
+volumetric applications typically encountered in feature film production.}
 
 Name:           openvdb
 Version:        11.0.0
 Release:        %autorelease
 Summary:        C++ library for sparse volumetric data discretized on three-dimensional grids
 License:        MPL-2.0
-URL:            http://www.openvdb.org/
+URL:            https://www.openvdb.org/
 
 Source0:        https://github.com/AcademySoftwareFoundation/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 # OpenVDB no longer builds on 32bits with latest TBB due to OOM.
-ExcludeArch:    i686
+ExcludeArch:    %{ix86}
+
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
 BuildRequires:  boost-devel >= 1.61
 # boost-python3-devel merged in boost-devel for Fedora 33+
@@ -40,8 +46,10 @@ BuildRequires:  doxygen >= 1.8.11
 #BuildRequires:  epydoc
 BuildRequires:  gcc-c++
 BuildRequires:  ghostscript >= 8.70
+BuildRequires:  findutils
+BuildRequires:  sed
 BuildRequires:  libstdc++-devel
-%if 0%{?with_ax}
+%if %{with ax}
 BuildRequires:  llvm%{?llvm_compat}-devel
 BuildRequires:	pkgconfig(libffi)
 %endif
@@ -55,10 +63,13 @@ BuildRequires:  glfw-devel >= 2.7
 %else
 BuildRequires:  pkgconfig(glfw3) >= 2.7
 %endif
+%if %{with imath}
+BuildRequires:  imath-devel
+%endif
 BuildRequires:  pkgconfig(jemalloc)
 BuildRequires:  pkgconfig(log4cplus) >= 1.0
 BuildRequires:  cmake(pybind11)
-%if 0%{?with_openexr}
+%if %{with openexr}
 BuildRequires:  pkgconfig(OpenEXR) >= 3.0
 %endif
 # Requires v2020.3 in adherence to VFX Reference Platform guideline
@@ -67,24 +78,14 @@ BuildRequires:  cmake(tbb) = 2020.3
 BuildRequires:  pkgconfig(xi)
 BuildRequires:  pkgconfig(zlib) > 1.2.7
 
-%description
-OpenVDB is an Academy Award-winning open-source C++ library comprising a novel
-hierarchical data structure and a suite of tools for the efficient storage and
-manipulation of sparse volumetric data discretized on three-dimensional grids.
-It is developed and maintained by Academy Software Foundation for use in
-volumetric applications typically encountered in feature film production.
+%description    %{_description}
 
 This package contains some graphical tools.
 
 %package        libs
 Summary:        Core OpenVDB libraries
 
-%description    libs
-OpenVDB is an Academy Award-winning open-source C++ library comprising a novel
-hierarchical data structure and a suite of tools for the efficient storage and
-manipulation of sparse volumetric data discretized on three-dimensional grids.
-It is developed and maintained by Academy Software Foundation for use in
-volumetric applications typically encountered in feature film production.
+%description    libs %{_description}
 
 %package        devel
 Summary:        Development files for %{name}
@@ -97,11 +98,12 @@ Requires:       pkgconfig(zlib) > 1.2.7
 Obsoletes:      %{name}-doc < 6.1.0-1
 Provides:       %{name}-doc = %{version}-%{release}
 
-%description    devel
+%description    devel %{_description}
+
 The %{name}-devel package contains libraries and header files for developing
 applications that use %{name}.
 
-%if 0%{?fedora}
+%if %{with python}
 %package        -n python3-%{name}
 Summary:        OpenVDB Python module
 BuildRequires:  pkgconfig(python3)
@@ -110,10 +112,8 @@ Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 Obsoletes:      %{name}-python3 < 6.2.0
 Obsoletes:      %{name}-python2 < 5.1.0-1
 Provides:       %{name}-python2 = %{version}-%{release}
-%{?python_provide:%python_provide python3-%{name}}
 
-%description    -n python3-%{name}
-%{description}
+%description    -n python3-%{name} %{_description}
 
 This package contains the Python module.
 %endif
@@ -129,10 +129,6 @@ sed -i \
 
 
 %build
-%ifarch %{arm}
-# https://bugzilla.redhat.com/show_bug.cgi?id=2021376
-%global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
-%endif
 %ifarch ppc64le
 %undefine _smp_mflags
 %endif 
@@ -145,7 +141,7 @@ export CXXFLAGS="%{build_cxxflags} -Wl,--as-needed"
     -DCMAKE_NO_SYSTEM_FROM_IMPORTED=TRUE \
     -DDISABLE_DEPENDENCY_VERSION_CHECKS=ON \
     -DOPENVDB_BUILD_DOCS=ON \
-%if 0%{?fedora}
+%if %{with python}
     -DOPENVDB_BUILD_PYTHON_MODULE=ON \
 %endif
 %if 0%{?rhel}
@@ -154,25 +150,29 @@ export CXXFLAGS="%{build_cxxflags} -Wl,--as-needed"
     -DOPENVDB_BUILD_UNITTESTS=OFF \
     -DOPENVDB_ENABLE_RPATH=OFF \
     -DPYOPENVDB_INSTALL_DIRECTORY=%{python3_sitearch} \
-%if 0%{?with_ax}
+%if %{with ax}
     -DHAVE_FFI_CALL=ON \
     -DUSE_AX=ON \
     -DLLVM_STATIC=0 \
     -DLLVM_CONFIG=$(which llvm-config%{?llvm_compat:-%{llvm_compat}}) \
     -DLLVM=%{_bindir} \
 %endif
-%if 0%{?with_openexr}
+%if %{with openexr}
     -DUSE_EXR=ON \
 %endif
-%if 0%{?with_nanovdb}
+%if %{with nanovdb}
     -DUSE_NANOVDB=ON \
-    -DNANOVDB_USE_OPENVDB=ON
+    -DNANOVDB_USE_OPENVDB=ON \
 %endif
+%if %{with imath}
+    -DUSE_IMATH_HALF=ON \
+%endif
+    %{nil}
 # Increase memory reserve to 12GB per build thread for a successful build on
 # ppc64le and s390x.
 %cmake_build %limit_build -m 12288
 
-%if 0%{?with_tests}
+%if %{with tests}
 %check
 %ctest test
 %endif
@@ -196,7 +196,7 @@ find %{buildroot} -name '*.a' -delete
 %{_libdir}/lib%{name}.so.%{version}
 %{_libdir}/lib%{name}.so.%{soversion}
 
-%if 0%{?fedora}
+%if %{with python}
 %files -n python3-%{name}
 %{python3_sitearch}/py%{name}.cpython-*.so
 %endif

@@ -2,7 +2,7 @@
 %global debug_package %{nil}
 
 Name:           wayland-protocols
-Version:        1.38
+Version:        1.39
 Release:        1%{?dist}
 Summary:        Wayland protocols that adds functionality not available in the core protocol
 
@@ -52,6 +52,9 @@ wayland-protocols.
 %{_includedir}/%{name}/
 
 %changelog
+* Fri Dec 20 2024 Neal Gompa <ngompa@fedoraproject.org> - 1.39-1
+- Update to 1.39
+
 * Sat Oct 12 2024 Neal Gompa <ngompa@fedoraproject.org> - 1.38-1
 - Update to 1.38
 

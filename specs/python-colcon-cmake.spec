@@ -1,11 +1,10 @@
 %global srcname colcon-cmake
 
 Name:           python-%{srcname}
-Version:        0.2.28
-Release:        4%{?dist}
+Version:        0.2.29
+Release:        1%{?dist}
 Summary:        Extension for colcon to support CMake packages
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://colcon.readthedocs.io
 Source0:        https://github.com/colcon/%{srcname}/archive/%{version}/%{srcname}-%{version}.tar.gz
@@ -18,11 +17,13 @@ An extension for colcon-core to support CMake projects.
 
 %package -n python%{python3_pkgversion}-%{srcname}
 Summary:        %{summary}
+BuildRequires:  cmake
 BuildRequires:  python%{python3_pkgversion}-colcon-core >= 0.5.6
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-packaging
 BuildRequires:  python%{python3_pkgversion}-pytest
 BuildRequires:  python%{python3_pkgversion}-setuptools >= 30.3.0
+Recommends:     cmake
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{srcname}}
 
 %if %{undefined __pythondist_requires}
@@ -49,10 +50,7 @@ An extension for colcon-core to support CMake projects.
 
 
 %check
-%{__python3} -m pytest \
-    --ignore=test/test_spell_check.py \
-    --ignore=test/test_flake8.py \
-    test
+%pytest -m 'not linter' test
 
 
 %files -n python%{python3_pkgversion}-%{srcname}
@@ -63,6 +61,10 @@ An extension for colcon-core to support CMake projects.
 
 
 %changelog
+* Fri Dec 20 2024 Scott K Logan <logans@cottsay.net> - 0.2.29-1
+- Update to 0.2.29 (rhbz#2328584)
+- Add Recommends: cmake
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0.2.28-4
 - convert license to SPDX
 

@@ -162,13 +162,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.13.0
 %define specversion 6.13.0
 %define patchversion 6.13
-%define pkgrelease 0.rc3.20241218gitaef25be35d23.31
+%define pkgrelease 0.rc3.20241220git8faabc041a00.33
 %define kversion 6
-%define tarfile_release 6.13-rc3-44-gaef25be35d23
+%define tarfile_release 6.13-rc3-136-g8faabc041a00
 # This is needed to do merge window version magic
 %define patchlevel 13
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc3.20241218gitaef25be35d23.31%{?buildid}%{?dist}
+%define specrelease 0.rc3.20241220git8faabc041a00.33%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.13.0
 
@@ -4171,9 +4171,16 @@ fi\
 #
 #
 %changelog
-* Wed Dec 18 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc3.aef25be35d23.31]
+* Fri Dec 20 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc3.8faabc041a00.33]
 - x86/insn_decoder_test: allow longer symbol-names (David Rheinsberg)
 - kernel.spec: update license field (Scott Weaver)
+
+* Fri Dec 20 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc3.8faabc041a00.32]
+- Linux v6.13.0-0.rc3.8faabc041a00
+
+* Thu Dec 19 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc3.eabcdba3ad40.31]
+- redhat/configs: automotive: disable CONFIG_AIO (Davide Caratti)
+- Linux v6.13.0-0.rc3.eabcdba3ad40
 
 * Wed Dec 18 2024 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.13.0-0.rc3.aef25be35d23.30]
 - Linux v6.13.0-0.rc3.aef25be35d23

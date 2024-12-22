@@ -7,8 +7,8 @@
 %global srcname fsspec
 
 Name:           python-%{srcname}
-Version:        2024.10.0
-%global tag     2024.10.0
+Version:        2024.12.0
+%global tag     2024.12.0
 Release:        %autorelease
 Summary:        Specification for Pythonic file system interfaces
 
@@ -95,10 +95,12 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 
 %check
 # fuse tests fail on koji builders due to missing kernel modules
+# test_async_cat_file_ranges uses the network; https://github.com/fsspec/filesystem_spec/pull/1734/files#r1893434370
 %{pytest} -vra \
   --deselect=fsspec/tests/test_fuse.py::test_basic \
   --deselect=fsspec/tests/test_fuse.py::test_chmod \
-  --deselect=fsspec/tests/test_fuse.py::test_seek_rw
+  --deselect=fsspec/tests/test_fuse.py::test_seek_rw \
+  --deselect=fsspec/implementations/tests/test_reference.py::test_async_cat_file_ranges
 
 
 %files -n python3-%{srcname} -f %{pyproject_files}

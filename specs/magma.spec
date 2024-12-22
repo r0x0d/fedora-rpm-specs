@@ -41,11 +41,10 @@ Source0:        https://bitbucket.org/icl/magma/get/%{commit}.tar.gz
 # https://bitbucket.org/icl/magma/issues/77/versioning-so
 Patch0:         0001-Prepare-magma-cmake-for-fedora.patch
 
-BuildRequires:  blas-devel
 BuildRequires:  cmake
+BuildRequires:  flexiblas-devel
 BuildRequires:  hipblas-devel
 BuildRequires:  hipsparse-devel
-BuildRequires:  lapack-devel
 BuildRequires:  ninja-build
 BuildRequires:  python3
 BuildRequires:  rocm-cmake
@@ -59,8 +58,10 @@ BuildRequires:  rocm-rpm-macros-modules
 Requires:       rocm-rpm-macros-modules
 
 # MIT
-# Just the hipify-perl file is taken and it is fairly old
-Provides:       bundled(hipify)
+# Just the hipify-perl file is taken and it is very old
+# This is older than any release of https://github.com/ROCm/HIPIFY.git
+# So setting to earliest release -1
+Provides:       bundled(hipify) = 3.4.0
 
 # ROCm is only on x86_64:
 ExclusiveArch:  x86_64
@@ -145,11 +146,12 @@ do
     make generate
 
     %cmake -G Ninja \
-           -DMAGMA_ENABLE_HIP=ON \
+	   -DBLA_VENDOR=FlexiBLAS \
            -DCMAKE_CXX_COMPILER=hipcc \
-           -DGPU_TARGET=${ROCM_GPUS} \
            -DCMAKE_INSTALL_LIBDIR=$ROCM_LIB \
            -DCMAKE_INSTALL_BINDIR=$ROCM_BIN \
+           -DGPU_TARGET=${ROCM_GPUS} \
+           -DMAGMA_ENABLE_HIP=ON \
            -DUSE_FORTRAN=OFF
 
     %cmake_build

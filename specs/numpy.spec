@@ -20,7 +20,7 @@
 
 Name:           numpy
 Version:        2.2.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Epoch:          1
 Summary:        A fast multidimensional array facility for Python
 
@@ -174,7 +174,7 @@ popd &> /dev/null
 
 #symlink for includes, BZ 185079
 mkdir -p %{buildroot}%{_includedir}
-ln -s %{python3_sitearch}/%{name}/core/include/numpy/ %{buildroot}%{_includedir}/numpy
+ln -s %{python3_sitearch}/%{name}/_core/include/numpy/ %{buildroot}%{_includedir}/numpy
 
 %if 0%{?fedora}
 rm %{buildroot}%{python3_sitearch}/numpy/_core/include/numpy/random/libdivide.h
@@ -254,6 +254,9 @@ python3 runtests.py --no-build -- -ra -k 'not test_ppc64_ibm_double_double128 %{
 
 
 %changelog
+* Fri Dec 20 2024 Gwyn Ciesla <gwync@protonmail.com> - 1:2.2.0-4
+- Fix /usr/include/numpy symlink, 2333490
+
 * Wed Dec 18 2024 Orion Poplawski <orion@nwra.com> - 1:2.2.0-3
 - Make main package require f2py (rhbz#2332307)
 

@@ -1,7 +1,7 @@
 #global commit  f44636f00666b8eb869417960926d01690ff4f42
 #global shortcommit #(c=#{commit}; echo ${c:0:7})
 #global checkout_date 2023094
-%global upstream_version  1.8.0
+%global upstream_version  1.9.0
 
 # setup.py does not list all requirements, and we also unbundle quite a few
 # from the externals folder, so we can't only rely on the automatic generator
@@ -114,6 +114,8 @@ BuildRequires:  python3-nbformat
 BuildRequires:  python3-vtk
 # Makes pytest segfault
 # BuildRequires:  python3-mayavi
+# Currently in procps-ng, but let’s not assume:
+BuildRequires:  /usr/bin/free
 
 Requires:       python3-matplotlib
 Requires:       python3-decorator
@@ -207,6 +209,8 @@ k="${k-}${k+ and }not test_regularized_csp[None-full-eeg]"
 # Flaky (Aborted)
 k="${k-}${k+ and }not test_save_complex_data[single-2e-06-True-True]"
 %endif
+# Flaky (AssertionError: Shielding factor not 2.300 <= 2.847 < 2.800)
+k="${k-}${k+ and }not test_fine_cal_systems[kit]"
 
 # https://github.com/mne-tools/mne-python/blob/v1.0.3/tools/github_actions_test.sh#L7
 # skip tests that require network

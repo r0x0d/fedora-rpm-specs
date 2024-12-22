@@ -10,7 +10,7 @@
 # $gpu will be evaluated in the loops below             
 %global _vpath_builddir %{_vendor}-%{_target_os}-build-${gpu}
 
-%bcond_without debug
+%bcond_with debug
 %if %{with debug}
 %global build_type DEBUG
 %else
@@ -51,7 +51,7 @@
 
 Name:           rocblas
 Version:        %{rocm_version}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        BLAS implementation for ROCm
 Url:            https://github.com/ROCmSoftwarePlatform/%{upstreamname}
 License:        MIT AND BSD-3-Clause
@@ -204,6 +204,9 @@ fi
 %endif
 
 %changelog
+* Fri Dec 20 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-2
+- Build type should be release
+
 * Fri Dec 6 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
 - Update to 6.3
 

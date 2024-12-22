@@ -1,18 +1,22 @@
-# Use a git commit with fixes
-%global commit 827b609e61c5821347ad06e865c86722c11fe9f3
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
+Name:           python-nitime
+Version:        0.11
+Release:        %autorelease
+Summary:        Timeseries analysis for neuroscience data
 
-# Multiple tests fail on i386
-# https://github.com/nipy/nitime/issues/136
-# https://github.com/nipy/nitime/issues/137
-%bcond_with tests
+%global forgeurl https://github.com/nipy/nitime
+%global tag %{version}
+%forgemeta
 
-# Docs are broken, need to be reported upstream
-# Currently disabled
-%bcond_with docs
+License:        BSD-3-Clause
+URL:            http://nipy.org/nitime
+Source:         %forgesource
 
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+ExcludeArch:    %{ix86}
 
-%global srcname nitime
+BuildRequires:  gcc
+BuildRequires:  python3-devel
+BuildRequires:  %{py3_dist pytest}
 
 %global _description %{expand:
 Nitime is library of tools and algorithms for the analysis of time-series data
@@ -29,72 +33,20 @@ http://mail.scipy.org/mailman/listinfo/nipy-devel.
 Documentation is available at http://nipy.org/nitime/documentation.html
 }
 
-
-Name:           python-%{srcname}
-Version:        0.8.1
-Release:        21%{?dist}
-Summary:        Timeseries analysis for neuroscience data
-
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
-URL:            http://nipy.org/%{srcname}
-Source0:        https://github.com/nipy/nitime/archive/%{commit}/%{srcname}-%{shortcommit}.tar.gz
-Patch0:         0001-Remove-six.patch
-
-BuildRequires:  python3-devel
-
-BuildRequires:  %{py3_dist cython}
-BuildRequires:  %{py3_dist matplotlib}
-BuildRequires:  %{py3_dist networkx}
-BuildRequires:  %{py3_dist nibabel}
-BuildRequires:  %{py3_dist pytest}
-BuildRequires:  %{py3_dist scipy}
-BuildRequires:  %{py3_dist setuptools}
-BuildRequires:  gcc
-BuildRequires:  git-core
-
-Requires:       %{py3_dist numpy}
-Requires:       %{py3_dist scipy}
-Requires:       %{py3_dist matplotlib}
-Requires:       %{py3_dist networkx}
-Requires:       %{py3_dist nibabel}
-Requires:       %{py3_dist cython}
-Requires:       %{py3_dist six}
-
 %description %_description
 
-%package -n python3-%{srcname}
+%package -n python3-nitime
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{srcname}}
 
-%description -n python3-%{srcname} %_description
+%description -n python3-nitime %_description
 
-%if %{with docs}
-%package doc
-Summary:    Documentation for %{name}
-BuildArch:  noarch
-
-# Bundles a few sphinxexts but they don't seem to be easy to find
-BuildRequires:  %{py3_dist sphinx}
-BuildRequires:  %{py3_dist numpydoc}
-BuildRequires:  texlive-latex
-BuildRequires:  texlive-ucs
-BuildRequires:  tex(amsthm.sty)
-
-%description doc
-Documentation files for %{name}.
-%endif
+%pyproject_extras_subpkg -n python3-nitime full
 
 %prep
-%autosetup -n %{srcname}-%{commit} -S git
-rm -rvf %{srcname}.egg-info
-rm -f nitime/six.py
-
-find . -name "*.so" -exec rm -fv '{}' \;
+%forgeautosetup -p1
 
 # Correct shebangs to python3
 sed -i 's|^#!/usr/bin/env python|#!/usr/bin/python3|' setup.py
-sed -i 's|python|python3|' doc/Makefile
 
 # This example doesn't seem to be correct, so we remove it for the time being and let upstream know.
 rm -fv doc/examples/filtering_fmri.py
@@ -105,118 +57,27 @@ pushd tools
     done
 popd
 
+# Remove duplicate license file from module
+rm -v nitime/LICENSE
+
+# Allow building with NumPy 1.x. F40 and F41 will stay on 1.x.
+sed -r -i 's/numpy>=2.*,</numpy</' pyproject.toml
+
+%generate_buildrequires
+%pyproject_buildrequires -x full
+
 %build
-%py3_build
-
-%if %{with docs}
-pushd doc &&
-    PYTHONPATH=../ make html &&
-    rm -fv _build/html/.buildinfo
-popd
-%endif
-
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l nitime
 
 %check
-%if %{with tests}
-%pytest --pyargs %{srcname}
-%endif
+%pytest -v --import-mode=importlib
 
-%files -n python3-%{srcname}
-%license LICENSE
+%files -n python3-nitime -f %{pyproject_files}
 %doc README.txt THANKS
-%{python3_sitearch}/%{srcname}-%{version}-py%{python3_version}.egg-info
-%{python3_sitearch}/%{srcname}
-
-%if %{with docs}
-%files doc
-%license LICENSE
-%doc doc/_build/html
-%endif
 
 %changelog
-* Sat Dec 14 2024 Miro Hrončok <mhroncok@redhat.com> - 0.8.1-21
-- Drop unused test dependency on deprecated python3-nose
-- Use pytest instead when built with tests
-- The tests still fail (numpy incompatibility, using the imp module, ...)
-
-* Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.8.1-20
-- convert license to SPDX
-
-* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.1-19
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
-
-* Mon Jun 10 2024 Python Maint <python-maint@redhat.com> - 0.8.1-18
-- Rebuilt for Python 3.13
-
-* Fri Jan 26 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.1-17
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Mon Jan 22 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.1-16
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
-
-* Fri Jul 21 2023 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.1-15
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
-
-* Fri Jan 20 2023 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.1-14
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
-
-* Fri Jul 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.1-13
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
-
-* Wed Jun 15 2022 Python Maint <python-maint@redhat.com> - 0.8.1-12
-- Rebuilt for Python 3.11
-
-* Fri Jan 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.1-11
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
-
-* Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.1-10
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
-
-* Fri Jun 04 2021 Python Maint <python-maint@redhat.com> - 0.8.1-9
-- Rebuilt for Python 3.10
-
-* Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.1-8
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
-
-* Wed Jul 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.1-7
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
-
-* Thu Jun 25 2020 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.8.1-6
-- Explicitly BR setuptools
-
-* Tue May 26 2020 Miro Hrončok <mhroncok@redhat.com> - 0.8.1-5
-- Rebuilt for Python 3.9
-
-* Thu Jan 30 2020 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.1-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
-
-* Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 0.8.1-3
-- Rebuilt for Python 3.8.0rc1 (#1748018)
-
-* Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 0.8.1-2
-- Rebuilt for Python 3.8
-
-* Thu Aug 01 2019 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.8.1-1
-- Update to new version
-- Fix build
-- Use conditionals
-- Drop Python 2
-- Disable broken doc build
-
-* Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.8-0.4.git1fab571
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
-
-* Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.8-0.3.git1fab571
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
-
-* Tue Nov 06 2018 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.8-0.2.git1fab571
-- Enable documentation on rawhide where build succeeds (F30)
-- Remove extra buildinfo file
-- Make doc package noarch
-- Move THANKS file to correct bits
-
-* Sun Nov 04 2018 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.8-0.1.git1fab571
-- Initial build
+%autochangelog

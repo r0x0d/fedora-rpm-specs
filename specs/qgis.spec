@@ -46,7 +46,7 @@ BuildRequires:  libspatialite-devel
 BuildRequires:  libdxfrw-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  libzip-devel
-BuildRequires:  make
+BuildRequires:  ninja-build
 BuildRequires:  netcdf-devel
 BuildRequires:  ocl-icd-devel
 BuildRequires:  opencl-headers
@@ -188,9 +188,9 @@ sed -i 's/"node": "8 || 9 || 10 || 11 || 12 || 13 || 14 || 15 || 16 || 17 || 18 
       -D WITH_SERVER:BOOL=TRUE \
       -D WITH_3D:BOOL=TRUE \
       -D WITH_QSPATIALITE:BOOL=TRUE \
-      -D WITH_SERVER_LANDINGPAGE_WEBAPP=ON
+      -D WITH_SERVER_LANDINGPAGE_WEBAPP=ON \
+      -G Ninja
 export YARN_CACHE_FOLDER="$PWD/.package-cache"
-%global _smp_mflags -j1
 %cmake_build
 
 

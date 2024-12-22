@@ -1,11 +1,10 @@
 %global srcname colcon-lcov-result
 
 Name:           python-%{srcname}
-Version:        0.5.2
-Release:        8%{?dist}
+Version:        0.5.3
+Release:        1%{?dist}
 Summary:        Extension for colcon to provide test results using LCOV
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://colcon.readthedocs.io
 Source0:        https://github.com/colcon/%{srcname}/archive/%{version}/%{srcname}-%{version}.tar.gz
@@ -33,15 +32,9 @@ BuildRequires:  python%{python3_pkgversion}-setuptools >= 30.3.0
 Requires:       python%{python3_pkgversion}-colcon-core >= 0.5.6
 %endif
 
-%if !0%{?rhel} || 0%{?rhel} >= 8
 Recommends:     binutils
 Recommends:     gcc
 Recommends:     lcov
-%else
-Requires:       binutils
-Requires:       gcc
-Requires:       lcov
-%endif
 
 %description -n python%{python3_pkgversion}-%{srcname}
 An extension for colcon-core to provide aggregate coverage results using LCOV.
@@ -80,6 +73,10 @@ the following coverage metrics:
 
 
 %changelog
+* Fri Dec 20 2024 Scott K Logan <logans@cottsay.net> - 0.5.3-1
+- Update to 0.5.3 (rhbz#2324372)
+- Drop spec file support for RHEL 7
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0.5.2-8
 - convert license to SPDX
 

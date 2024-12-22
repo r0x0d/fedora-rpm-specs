@@ -1,11 +1,10 @@
 %global srcname colcon-defaults
 
 Name:           python-%{srcname}
-Version:        0.2.8
-Release:        8%{?dist}
+Version:        0.2.9
+Release:        1%{?dist}
 Summary:        Extension for colcon to read defaults from a config file
 
-# Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:        Apache-2.0
 URL:            https://colcon.readthedocs.io
 Source0:        https://github.com/colcon/%{srcname}/archive/%{version}/%{srcname}-%{version}.tar.gz
@@ -61,6 +60,9 @@ line arguments from a configuration file.
 
 
 %changelog
+* Fri Dec 20 2024 Scott K Logan <logans@cottsay.net> - 0.2.9-1
+- Update to 0.2.9 (rhbz#2333150)
+
 * Wed Jul 24 2024 Miroslav Suchý <msuchy@redhat.com> - 0.2.8-8
 - convert license to SPDX
 

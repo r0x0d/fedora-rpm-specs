@@ -182,15 +182,15 @@ module load rocm/default
 %cmake \
     -DCMAKE_INSTALL_LIBDIR=%{_lib} \
     -DCMAKE_SKIP_RPATH=ON \
-    -DLLAMA_AVX=OFF \
-    -DLLAMA_AVX2=OFF \
-    -DLLAMA_AVX512=OFF \
-    -DLLAMA_AVX512_VBMI=OFF \
-    -DLLAMA_AVX512_VNNI=OFF \
-    -DLLAMA_FMA=OFF \
-    -DLLAMA_F16C=OFF \
+    -DGGML_AVX=OFF \
+    -DGGML_AVX2=OFF \
+    -DGGML_AVX512=OFF \
+    -DGGML_AVX512_VBMI=OFF \
+    -DGGML_AVX512_VNNI=OFF \
+    -DGGML_FMA=OFF \
+    -DGGML_F16C=OFF \
 %if %{with rocm}
-    -DLLAMA_HIPBLAS=%{build_hip} \
+    -DGGML_HIP=%{build_hip} \
     -DAMDGPU_TARGETS=${ROCM_GPUS} \
 %endif
     -DLLAMA_BUILD_EXAMPLES=%{build_examples} \
@@ -247,6 +247,9 @@ rm %{buildroot}%{_bindir}/convert*.py
 %{_libdir}/libggml.so
 %{_libdir}/libggml-base.so
 %{_libdir}/libggml-cpu.so
+%if %{with rocm}
+%{_libdir}/libggml-hip.so
+%endif
 %{_libdir}/cmake/llama/*.cmake
 %{_exec_prefix}/lib/pkgconfig/llama.pc
 

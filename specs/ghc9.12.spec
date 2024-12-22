@@ -23,7 +23,6 @@
 
 %ifarch s390x
 %undefine with_ghc_prof
-%global with_haddock 1
 %endif
 
 %global ghc_major 9.12
@@ -284,6 +283,7 @@ Installing this package causes %{name}-*-doc packages corresponding to
 %{name}-*-devel packages to be automatically installed too.
 
 
+%ifnarch s390x
 %package doc-index
 Summary: GHC library documentation indexing
 License: BSD-3-Clause
@@ -292,6 +292,7 @@ BuildArch: noarch
 
 %description doc-index
 The package enables re-indexing of installed library documention.
+%endif
 
 
 %package filesystem
@@ -656,6 +657,12 @@ rm %{buildroot}%{ghcliblib}/package.conf.d/*.conf.copy
 # https://gitlab.haskell.org/ghc/ghc/-/issues/24121
 rm %{buildroot}%{ghclibdir}/share/doc/%ghcplatform/*/LICENSE
 
+%ifarch s390x
+%if %{without haddock}
+rm %{buildroot}%{ghc_html_libraries_dir}/gen_contents_index
+%endif
+%endif
+
 (
 cd %{buildroot}%{_bindir}
 for i in *; do
@@ -837,11 +844,13 @@ make test
 %files doc
 %{ghc_html_dir}/index.html
 
+%ifnarch s390x
 %files doc-index
 %{ghc_html_libraries_dir}/gen_contents_index
 %if %{with haddock}
 %verify(not size mtime) %{ghc_html_libraries_dir}/doc-index*.html
 %verify(not size mtime) %{ghc_html_libraries_dir}/index*.html
+%endif
 %endif
 
 %files filesystem
@@ -874,6 +883,7 @@ make test
 * Wed Dec 18 2024 Jens Petersen <petersen@redhat.com> - 9.12.1-0.3
 - Update to 9.12.1
 - https://downloads.haskell.org/ghc/9.12.1/docs/users_guide/9.12.1-notes.html
+- s390x is only quick flavor without profiling or haddocks (#2329744)
 
 * Sat Nov 30 2024 Jens Petersen <petersen@redhat.com> - 9.12.0.20241128-0.2
 - 9.12 rc1
