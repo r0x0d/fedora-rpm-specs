@@ -8,7 +8,7 @@
 
 Name:           aubio
 Version:        0.4.9
-Release:        24%{?dist}
+Release:        25%{?dist}
 Summary:        An audio labeling tool
 
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
@@ -133,6 +133,9 @@ sed -i -e '/^#![[:blank:]]*\//, 1d' %{buildroot}%{python3_sitearch}/%{name}/*.py
 %{python3_sitearch}/%{name}*.egg-info
 
 %changelog
+* Sat Dec 21 2024 Orion Poplawski <orion@nwra.com> - 0.4.9-25
+- Rebuild with numpy 2.2 (rhbz#2333015)
+
 * Thu Jul 25 2024 Miroslav Suchý <msuchy@redhat.com> - 0.4.9-24
 - convert license to SPDX
 

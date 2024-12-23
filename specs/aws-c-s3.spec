@@ -3,8 +3,8 @@ The AWS-C-S3 library is an asynchronous AWS S3 client
 focused on maximizing throughput and network utilization.}
 
 Name:           aws-c-s3
-Version:        0.7.5
-Release:        1%{?dist}
+Version:        0.7.7
+Release:        2%{?dist}
 Summary:        C99 library implementation for communicating with the S3 service
 
 License:        Apache-2.0
@@ -111,6 +111,13 @@ install -p -m 644 docs/images/*.svg %{buildroot}/%{_docdir}/aws-c-s3/docs/images
 
 
 %changelog
+* Sat Dec 21 2024 Dominik Wombacher <dominik@wombacher.cc> - 0.7.7-2
+- Patch '0001-disable-tests-that-require-internet-connectivity.patch' updated to work with current release.
+
+* Fri Dec 13 2024 Packit <hello@packit.dev> - 0.7.7-1
+- Update to version 0.7.7
+- Resolves: rhbz#2331911
+
 * Mon Dec 09 2024 Dominik Wombacher <dominik@wombacher.cc> - 0.7.5-1
 - update to 0.7.5
 

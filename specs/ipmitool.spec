@@ -4,8 +4,8 @@
 Name:         ipmitool
 Summary:      Utility for IPMI control
 Version:      1.8.19
-Release:      8%{?dist}
-License:      BSD-3-Clause-No-Nuclear-Warranty
+Release:      9%{?dist}
+License:      BSD-3-Clause-Sun
 URL:          http://ipmitool.sourceforge.net/
 Source0:      https://github.com/%{name}/%{name}/archive/%{gitname}_%{gitversion}/%{name}-%{version}.tar.gz
 Source1:      openipmi-ipmievd.sysconf
@@ -192,6 +192,9 @@ install -Dm 755 contrib/bmc-snmp-proxy         %{buildroot}%{_libexecdir}/bmc-sn
 %{_libexecdir}/bmc-snmp-proxy
 
 %changelog
+* Sat Dec 21 2024 Kevin Fenzi <kevin@scrye.com> - 1.8.19-9
+- Correct license. Fixes rhbz#2333046
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 1.8.19-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

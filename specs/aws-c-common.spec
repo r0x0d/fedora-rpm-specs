@@ -3,7 +3,7 @@ Core c99 package for AWS SDK for C. Includes cross-platform primitives,
 configuration, data structures, and error handling.}
 
 Name:           aws-c-common
-Version:        0.10.3
+Version:        0.10.6
 Release:        1%{?dist}
 Summary:        Core c99 package for AWS SDK for C
 
@@ -93,6 +93,10 @@ Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
 
 %changelog
+* Wed Dec 11 2024 Packit <hello@packit.dev> - 0.10.6-1
+- Update to version 0.10.6
+- Resolves: rhbz#2329252
+
 * Thu Nov 14 2024 Packit <hello@packit.dev> - 0.10.3-1
 - Update to version 0.10.3
 - Resolves: rhbz#2318418

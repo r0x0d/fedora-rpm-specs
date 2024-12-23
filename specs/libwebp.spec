@@ -20,8 +20,8 @@
 %endif
 
 Name:          libwebp
-Version:       1.4.0
-Release:       4%{?dist}
+Version:       1.5.0
+Release:       1%{?dist}
 URL:           http://webmproject.org/
 Summary:       Library and tools for the WebP graphics format
 # Additional IPR is licensed as well. See PATENTS file for details
@@ -293,7 +293,10 @@ cp swig/*.jar swig/*.so %{buildroot}/%{_libdir}/%{name}-java/
 
 
 %changelog
-* Tue Aug 8 2024 Martin Stransky <stransky@redhat.com> - 1.4.0-4
+* Fri Dec 20 2024 Sandro Mani <manisandro@gmail.com> - 1.5.0-1
+- Update to 1.5.0
+
+* Thu Aug 8 2024 Martin Stransky <stransky@redhat.com> - 1.4.0-4
 - Added libwebp explicit dependency to libwebp-tools package
 
 * Thu Aug 1 2024 Martin Stransky <stransky@redhat.com> - 1.4.0-3

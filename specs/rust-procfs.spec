@@ -133,12 +133,8 @@ use the "serde1" feature of the "%{crate}" crate.
 
 %if %{with check}
 %check
-# * https://github.com/eminence/procfs/issues/322:
-#   process::tests::test_proc_fd_count_runsinglethread assumes that the process
-#   gains exactly two open file descriptors when opening two files in the /proc
-#   filesystem, but this is brittle: there are many ways that a process could
-#   end up with more file descriptors than anticipated, and these are more
-#   likely to reflect legitimate differences in the environment than real bugs.
+# * Some tests must be run serially:
+#   https://github.com/eminence/procfs/issues/322
 # * thread 'sys::kernel::random::tests::test_write_wakeup_threshold' panicked at
 #   src/sys/kernel/random.rs:94:24: test_write_wakeup_threshold error: Io(Os {
 #   code: 30, kind: ReadOnlyFilesystem, message: "Read-only file system" },
@@ -148,8 +144,8 @@ use the "serde1" feature of the "%{crate}" crate.
 #   https://github.com/eminence/procfs/issues/323
 # * On s390x, test_kernel_stat and test_meminfo fail:
 #   https://github.com/eminence/procfs/issues/324
-%{cargo_test -- -- --exact %{shrink:
-    --skip process::tests::test_proc_fd_count_runsinglethread
+%{cargo_test -- -- %{shrink:
+    --skip _runsinglethread
     --skip sys::kernel::random::tests::test_write_wakeup_threshold
 %ifnarch x86_64 %{ix86}
     --skip tests::test_cpuinfo
@@ -159,6 +155,8 @@ use the "serde1" feature of the "%{crate}" crate.
     --skip tests::test_meminfo
 %endif
 }}
+# Run the tests that must be run serially:
+%{cargo_test -- -- _runsinglethread --test-threads 1}
 %endif
 
 %changelog

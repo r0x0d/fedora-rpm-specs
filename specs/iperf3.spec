@@ -1,6 +1,6 @@
 Name:           iperf3
-Version:        3.17.1
-Release:        2%{?dist}
+Version:        3.18
+Release:        1%{?dist}
 Summary:        Measurement tool for TCP/UDP bandwidth performance
 
 # src/cjson.{c,h} and src/net.{c,h} are MIT
@@ -12,8 +12,6 @@ Summary:        Measurement tool for TCP/UDP bandwidth performance
 License:        BSD-3-Clause-LBNL AND MIT AND dtoa AND BSD-3-Clause AND NCSA AND LicenseRef-Fedora-Public-Domain
 URL:            https://github.com/esnet/iperf
 Source0:        %{url}/archive/%{version}/iperf-%{version}.tar.gz
-# https://github.com/esnet/iperf/pull/1278
-Patch0:         1278-rebase.patch
 BuildRequires:  libuuid-devel
 BuildRequires:  gcc
 BuildRequires:  lksctp-tools-devel
@@ -60,6 +58,9 @@ rm -f %{buildroot}%{_libdir}/libiperf.la
 %{_libdir}/*.so
 
 %changelog
+* Sat Dec 21 2024 Kevin Fenzi <kevin@scrye.com> - 3.18-1
+- Update to 3.18. Fixes rhbz#2332370
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.17.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

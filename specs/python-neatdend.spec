@@ -48,6 +48,12 @@ sed -i 's/^scipy~=1.6.3/scipy>=1.6.3/' requirements/requirements.txt
 sed -i 's/^sympy~=1.7.1/sympy>=1.7.1/' requirements/requirements.txt
 sed -i 's/^cython~=0.29.4/cython>=3.0.0/' requirements/requirements.txt
 
+# Ad hoc patch for NumPy 2.x
+# Upstream is working on 1.0.0, which will be compatible.
+sed -i 's/np\.NaN/np.nan/g' $(grep -rl 'np\.NaN')
+sed -i 's/np\.infty/np.inf/g' $(grep -rl 'np\.infty')
+sed -i 's/np\.product/np.prod/g' $(grep -rl 'np\.product')
+
 %generate_buildrequires
 %pyproject_buildrequires -r
 

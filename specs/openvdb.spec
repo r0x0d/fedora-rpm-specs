@@ -64,7 +64,7 @@ BuildRequires:  glfw-devel >= 2.7
 BuildRequires:  pkgconfig(glfw3) >= 2.7
 %endif
 %if %{with imath}
-BuildRequires:  imath-devel
+BuildRequires:  pkgconfig(Imath)
 %endif
 BuildRequires:  pkgconfig(jemalloc)
 BuildRequires:  pkgconfig(log4cplus) >= 1.0

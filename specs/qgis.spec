@@ -1,7 +1,7 @@
 #TODO: Run test suite (see debian/rules)
 
 Name:           qgis
-Version:        3.40.1
+Version:        3.40.2
 Release:        1%{?dist}
 Summary:        A user friendly Open Source Geographic Information System
 
@@ -26,8 +26,6 @@ Source5:        %{name}-mime.xml
 Patch0:         %{name}-serverprefix.patch
 # Pass --offline to yarn, plus replace deprecated md4 with sha256 in webpack sources
 Patch1:         %{name}-yarn-offline.patch
-# Fix build against qwt-6.2
-Patch2:         %{name}-qwt.patch
 
 BuildRequires:  cmake
 BuildRequires:  desktop-file-utils
@@ -304,6 +302,9 @@ rm -f %{buildroot}%{_prefix}/lib/liboauth2authmethod_static.a
 
 
 %changelog
+* Sat Dec 21 2024 Sandro Mani <manisandro@gmail.com> - 3.40.2-1
+- Update to 3.40.2
+
 * Fri Nov 22 2024 Sandro Mani <manisandro@gmail.com> - 3.40.1-1
 - Update to 3.40.1
 

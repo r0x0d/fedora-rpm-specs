@@ -1,15 +1,15 @@
 %global srcname aw-core
-%global commit 3b83ab542406349b3d5e601318289b77d23d906f
-%global short_commit %(c=%{commit}; echo ${c:0:7})
 
 Name:           python-%{srcname}
-Version:        0.5.16^20240507.%{short_commit}
+Version:        0.5.17
 Release:        %autorelease
 Summary:        Core library for ActivityWatch
 
 License:        MPL-2.0
 URL:            https://github.com/ActivityWatch/aw-core
-Source:         %{url}/archive/%{commit}/%{srcname}-%{short_commit}.tar.gz
+Source:         %{url}/archive/v%{version}/%{srcname}-%{version}.tar.gz
+
+Patch:          https://github.com/ActivityWatch/aw-core/pull/127.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -27,11 +27,7 @@ Summary:    %{summary}
 %description -n python3-%{srcname} %{_description}
 
 %prep
-%autosetup -n %{srcname}-%{commit}
-# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
-sed -ri '/^[[:blank:]]*pytest-cov\b/d' pyproject.toml
-sed -ri '/^[[:blank:]]*pylint\b/d' pyproject.toml
-sed -ri '/^[[:blank:]]*black\b/d' pyproject.toml
+%autosetup -p 1 -n %{srcname}-%{version}
 
 # works also with 3.9 on f39 and 3.11 on f40, so unpinning
 sed -ri 's/platformdirs = "3.10"/platformdirs = ">=3.9"/' pyproject.toml
@@ -44,9 +40,9 @@ sed -ri 's/platformdirs = "3.10"/platformdirs = ">=3.9"/' pyproject.toml
 
 %install
 %pyproject_install
-%pyproject_save_files {aw_core,aw_datastore,aw_transform,aw_query}
-install -Dm 0644 %{_builddir}/%{srcname}-%{commit}/aw_cli/* -t %{buildroot}%{python3_sitelib}/aw_cli
+%pyproject_save_files -L {aw_cli,aw_core,aw_datastore,aw_transform,aw_query}
 mkdir -p %{buildroot}%{_mandir}/man1
+export PYTHONPATH="$PYTHONPATH:%{buildroot}%{python3_sitelib}"
 help2man --no-discard-stderr %{buildroot}%{_bindir}/aw-cli -o %{buildroot}%{_mandir}/man1/aw-cli.1
 
 %check
@@ -54,10 +50,9 @@ help2man --no-discard-stderr %{buildroot}%{_bindir}/aw-cli -o %{buildroot}%{_man
 
 %files -n python3-%{srcname} -f %{pyproject_files}
 %doc README.md
-%license LICENSE.txt
+%license %{python3_sitelib}/aw_core-%{version}.dist-info/LICENSE.txt
 %{_mandir}/man1/aw-cli.1*
 %{_bindir}/aw-cli
-%{python3_sitelib}/aw_cli
 
 %changelog
 %autochangelog

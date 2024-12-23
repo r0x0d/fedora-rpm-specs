@@ -16,7 +16,6 @@ BuildRequires:  gdk-pixbuf2-devel
 BuildRequires:  librsvg2-devel
 BuildRequires:  meson
 BuildRequires:  sassc
-BuildRequires:  rubygem-sass
 
 Requires:       gtk-murrine-engine
 

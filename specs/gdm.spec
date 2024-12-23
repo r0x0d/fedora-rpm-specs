@@ -54,6 +54,7 @@ BuildRequires:  yelp-tools
 Provides: service(graphical-login) = %{name}
 
 Requires: accountsservice
+Requires: dbus-common
 Requires: dconf
 # since we use it, and pam spams the log if the module is missing
 Requires: gnome-keyring-pam
@@ -110,6 +111,7 @@ GDM specific authentication features.
 %build
 %meson -Dpam-prefix=%{_sysconfdir} \
        -Drun-dir=/run/gdm \
+       -Ddbus-sys=%{_datadir}/dbus-1/system.d \
        -Ddefault-path=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin \
        -Ddefault-pam-config=redhat \
        -Ddistro=redhat \
@@ -222,7 +224,7 @@ fi
 %config %{_sysconfdir}/pam.d/gdm-password
 # not config files
 %{_datadir}/gdm/gdm.schemas
-%{_sysconfdir}/dbus-1/system.d/gdm.conf
+%{_datadir}/dbus-1/system.d/gdm.conf
 %dir %{_sysconfdir}/gdm/Init
 %dir %{_sysconfdir}/gdm/PreSession
 %dir %{_sysconfdir}/gdm/PostSession

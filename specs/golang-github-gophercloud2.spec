@@ -9,7 +9,7 @@
 
 # https://github.com/gophercloud/gophercloud
 %global goipath         github.com/gophercloud/gophercloud/v2
-Version:                2.3.0
+Version:                2.4.0
 
 %gometa -L -f
 

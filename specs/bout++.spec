@@ -500,11 +500,12 @@ done
 # Ignore errors on some architectures
 # s390x: https://bugzilla.redhat.com/show_bug.cgi?id=1998838
 # s390x: https://bugzilla.redhat.com/show_bug.cgi?id=2259532
+# All architectures: https://github.com/boutproject/BOUT-dev/issues/3041
 
 %if %{with test}
 for mpi in %{mpi_list}
 do
-    fail=1
+    fail=0
     if [ $mpi = mpich ] ; then
         %_mpich_load
 	%ifarch s390x

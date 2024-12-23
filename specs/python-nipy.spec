@@ -1,12 +1,5 @@
 %bcond tests 1
 
-%global forgeurl https://github.com/nipy/nipy
-%global version 0.6.0
-# Use either tag or commit
-%global tag %{version}
-#%%global commit e5e063b09d094ff79d2089261828fd2b2c843ab6
-%forgemeta
-
 # Lower build type safety to level 1 to avoid `-Wint-conversion` turning
 # into an error
 %global build_type_safety_c 1
@@ -17,9 +10,13 @@ Release:        %autorelease
 Epoch:          1
 Summary:        Neuroimaging in Python FMRI analysis package
 
+%global forgeurl https://github.com/nipy/nipy
+%global tag %{version}
+%forgemeta
+
 License:        BSD-3-Clause
 URL:            https://nipy.org/nipy
-Source0:        %forgesource
+Source:         %forgesource
 
 # Man pages hand-written for Fedora in groff_man(7) format based on --help
 Source10:       nipy_3dto4d.1
@@ -27,10 +24,6 @@ Source11:       nipy_4d_realign.1
 Source12:       nipy_4dto3d.1
 Source13:       nipy_diagnose.1
 Source14:       nipy_tsdiffana.1
-
-# Improve const-correctness in C code
-# https://github.com/nipy/nipy/pull/545
-Patch:          https://github.com/nipy/nipy/pull/545.patch
 
 # Drop i686 (leaf package)
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval

@@ -3,13 +3,13 @@
 %global srcname h5netcdf
 
 Name: python-%{srcname}
-Version: 1.2.0
+Version: 1.4.1
 Release: %autorelease
 Summary: Python interface for the netCDF4 file-format in HDF5 files
-License: BSD
+License: BSD-3-Clause
 
 URL: https://h5netcdf.org/
-Source0: %{pypi_source}
+Source: %{pypi_source %{srcname}}
 
 BuildArch: noarch
 BuildRequires:  python3-devel
@@ -31,12 +31,7 @@ Summary: %{summary}
 %autosetup -n %{srcname}-%{version} -p1
 
 %generate_buildrequires
-# Testing
-%if %{with check}
-%pyproject_buildrequires -x test
-%else
-%pyproject_buildrequires 
-%endif
+%pyproject_buildrequires %{?with_check:-x test}
 
 %build
 %pyproject_wheel
@@ -44,7 +39,7 @@ Summary: %{summary}
 %install
 %pyproject_install
 
-%pyproject_save_files h5netcdf
+%pyproject_save_files -l h5netcdf
 
 %check
 %if %{with check}
@@ -58,4 +53,3 @@ Summary: %{summary}
 
 %changelog
 %autochangelog
-

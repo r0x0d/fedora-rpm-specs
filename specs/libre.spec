@@ -1,10 +1,11 @@
 Summary:        Generic library for real-time communications
 Name:           libre
 Version:        3.18.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD-3-Clause
 URL:            https://github.com/baresip/re
 Source0:        https://github.com/baresip/re/archive/v%{version}/re-%{version}.tar.gz
+Patch0:         https://github.com/baresip/re/commit/45c810ac76af3c5045aadce4f79349c04e29bc23.patch#/libre-3.18.0-net_netlink_addrs.patch
 BuildRequires:  cmake
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
@@ -62,7 +63,7 @@ The libre-devel package includes header files and libraries necessary for
 developing programs which use the re C library.
 
 %prep
-%setup -q -n re-%{version}
+%autosetup -p1 -n re-%{version}
 
 %build
 %cmake \
@@ -97,6 +98,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}.a
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Sun Dec 22 2024 Robert Scheck <robert@fedoraproject.org> 3.18.0-2
+- Add upstream patch for address support via rtnetlink API
+
 * Thu Dec 12 2024 Robert Scheck <robert@fedoraproject.org> 3.18.0-1
 - Upgrade to 3.18.0 (#2331646)
 

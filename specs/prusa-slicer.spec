@@ -24,7 +24,7 @@ License:        AGPL-3.0-only
 URL:            https://github.com/prusa3d/PrusaSlicer/
 Source0:        https://github.com/prusa3d/PrusaSlicer/archive/version_%version.tar.gz
 Source2:        %name.appdata.xml
-%global libbgcode_commit 638538cba6731eeafd47d332df70426d619532b5
+%global libbgcode_commit 8ae75bd0eea622f0e34cae311b3bd065b55eae9b
 Source3:        https://github.com/prusa3d/libbgcode/archive/%{libbgcode_commit}.tar.gz#/libbgcode-%{libbgcode_commit}.tar.gz
 Source4:        https://github.com/atomicobject/heatshrink/archive/refs/tags/v0.4.1.tar.gz#/heatshrink-0.4.1.tar.gz
 Source5:        https://github.com/prusa3d/openvdb/archive/a68fd58d0e2b85f01adeb8b13d7555183ab10aa5.tar.gz#/openvdb-8.2.tar.gz
@@ -50,6 +50,8 @@ Patch394:       prusa-slicer-pr-11769.patch
 Patch395:       prusa-slicer-opencascade.patch
 # https://github.com/prusa3d/PrusaSlicer/pull/13242
 Patch401:       prusa-slicer-pr-13242.patch
+# https://github.com/prusa3d/PrusaSlicer/pull/13081
+Patch421:       prusa-slicer-pr-13081.patch
 
 # Highly-parallel uild can run out of memory on PPC64le
 %ifarch ppc64le

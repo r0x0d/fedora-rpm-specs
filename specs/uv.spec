@@ -585,20 +585,6 @@ tomcli set crates/uv/Cargo.toml del dependencies.tracing-durations-export
 tomcli set Cargo.toml str \
     workspace.dependencies.unicode-width.version '0.1.12'
 
-# procfs
-#   wanted: 0.17.0
-#   currently packaged: 0.16.0
-#   https://bugzilla.redhat.com/show_bug.cgi?id=2316899
-tomcli set Cargo.toml str \
-    workspace.dependencies.procfs.version '>=0.16,<0.18'
-
-# which
-#   wanted: 7.0.0
-#   currently packaged: 6.0.3
-#   https://bugzilla.redhat.com/show_bug.cgi?id=2323107
-tomcli set Cargo.toml str \
-    workspace.dependencies.which.version '>=6.0.3,<8.0.0'
-
 %cargo_prep
 
 

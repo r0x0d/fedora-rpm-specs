@@ -1,15 +1,19 @@
 %global pack syncstar
 
 Name:           %{pack}
-Version:        0.1.0
-Release:        2%{?dist}
+Version:        0.2.0
+Release:        1%{?dist}
 Summary:        Service for creating bootable USB storage devices at community conference kiosks
 
 # The syncstar project is licensed under AGPL-3.0-or-later license, except for the following files
 #
 # MIT license -
-# syncstar/frontend/static/css3/bs.min.css
-# syncstar/frontend/static/jscn/bs.min.js
+# syncstar/frontend/assets/index-*.css (Read here https://github.com/facebook/react)
+# syncstar/frontend/assets/index-*.js (Read here https://github.com/facebook/react)
+#
+# OFL license -
+# syncstar/frontend/assets/mono_*.ttf (Read here https://github.com/JetBrains/JetBrainsMono)
+# syncstar/frontend/assets/sans_*.ttf (Read here https://github.com/rsms/inter)
 
 License:        AGPL-3.0-or-later AND MIT
 Url:            https://github.com/gridhead/%{pack}
@@ -50,9 +54,14 @@ visitors can avail its services.
 %{_bindir}/%{name}
 
 %changelog
-* Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.1.0-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
+* Sat Dec 21 2024 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.2.0-1
+- Second release for SyncStar project
+- More information can be found on https://github.com/gridhead/syncstar/releases/tag/0.2.0
+
+* Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.1.0-2
+- Existing release for SyncStar project
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
 * Tue Jul 02 2024 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.1.0-1
 - Initial release for SyncStar project

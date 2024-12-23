@@ -51,6 +51,9 @@ BuildRequires:  latexmk
 %prep
 %autosetup -n %{pretty_name}-%{version}
 
+# Apply fix for NumPy 2.x
+sed -r -i 's/np\.alltrue/np.all/g' MEAutility/tests/test_core.py
+
 %generate_buildrequires
 %pyproject_buildrequires
 

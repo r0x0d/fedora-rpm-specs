@@ -609,7 +609,11 @@ pushd .
        -DCMAKE_INSTALL_LIBDIR=%{_lib}
 
 # cmake produces a link.txt that includes libLLVM*.so, hack it out
+%if 0%{?suse_version}
+sed -i -e 's@libLLVM-%{llvm_maj_ver}git.so@libLLVMCore.a@' CMakeFiles/amd_comgr.dir/link.txt
+%else
 sed -i -e 's@libLLVM-%{llvm_maj_ver}git.so@libLLVMCore.a@' build-comgr/CMakeFiles/amd_comgr.dir/link.txt
+%endif
 
 %cmake_build -j ${JOBS}
 

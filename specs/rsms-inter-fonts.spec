@@ -12,7 +12,7 @@ glyphs, slashed zero for when you need to disambiguate "0" from "o", tabular
 numbers, etc.}
 
 %global foundry rsms
-%global fontlicense OFL
+%global fontlicense OFL-1.1
 %global fontlicenses LICENSE.txt
 %global fontdocsex %{fontlicenses}
 

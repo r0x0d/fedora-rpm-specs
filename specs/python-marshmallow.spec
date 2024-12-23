@@ -3,7 +3,7 @@
 %global _docdir_fmt %{name}
 
 Name:           python-%{modname}
-Version:        3.21.3
+Version:        3.23.2
 Release:        %autorelease
 Summary:        Python library for converting complex datatypes to and from primitive types
 License:        MIT
@@ -74,6 +74,8 @@ sed -i '/"sphinx-issues==/d' pyproject.toml
 sed -i '/version = release = importlib.metadata.version/d' docs/conf.py
 # Drop the sphinx version constraint
 sed -i 's/"sphinx==[^ ]*"/"sphinx"/' pyproject.toml
+# the newer version is not yet in Fedora and is required just because CVEs, old version has all required functionality
+sed -i '/"alabaster==/c\\"alabaster==0.7.16"' pyproject.toml
 
 %generate_buildrequires
 %pyproject_buildrequires -x docs,tests

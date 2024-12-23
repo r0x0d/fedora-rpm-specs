@@ -2,7 +2,7 @@
 
 Name:           python-flask-sqlalchemy-lite
 Version:        0.1.0
-Release:        2
+Release:        2%{?dist}
 Summary:        Adds SQLAlchemy support to Flask application
 
 License:        MIT

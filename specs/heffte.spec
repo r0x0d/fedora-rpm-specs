@@ -1,7 +1,7 @@
 Name:           heffte
 Version:        2.4.1
 %global         sover 2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Highly Efficient FFT for Exascale
 
 License:        BSD-3-Clause
@@ -13,6 +13,24 @@ Source0:        https://github.com/icl-utk-edu/heffte/archive/v%{version}/%{name
 # mpi is broken on s390x see, bug #2322073
 ExcludeArch: %{ix86} s390x
 
+%ifarch x86_64
+%bcond_without rocm
+%endif
+%if %{with rocm}
+%global build_rocm ON
+%bcond_with cpu_check
+%else
+%global build_rocm OFF
+%bcond_without cpu_check
+%endif
+
+%bcond_with debug
+%if %{with debug}
+%global build_type DEBUG
+%else
+%global build_type RelWithDebInfo
+%endif
+
 BuildRequires:  gcc-c++
 BuildRequires:  gcc-fortran
 BuildRequires:  cmake >= 3.16
@@ -20,6 +38,13 @@ BuildRequires:  doxygen
 BuildRequires:  openmpi-devel
 BuildRequires:  mpich-devel
 BuildRequires:  fftw-devel
+
+%if %{with rocm}
+BuildRequires:  rocm-comgr-devel
+BuildRequires:  rocm-hip-devel
+BuildRequires:  rocm-runtime-devel
+BuildRequires:  rocfft-devel
+%endif
 
 %global heffte_desc \
 The Highly Efficient FFT for Exascale (heFFTe) library is being developed \
@@ -93,11 +118,19 @@ This package contains documentation for %{name}.
 %global _vpath_builddir %{_target_platform}-${mpi}
 export PRTE_MCA_rmaps_default_mapping_policy=:oversubscribe
 
+%if %{with rocm}
+export HIP_PATH=`hipconfig -p`
+export CMAKE_HIP_COMPILER=`hipconfig -l`/clang++
+export CMAKE_HIP_ARCHITECTURES="gfx900;gfx906:xnack-;gfx908:xnack-;gfx90a:xnack+;gfx90a:xnack-;gfx942;gfx1010;gfx1012;gfx1030;gfx1031;gfx1035;gfx1100;gfx1101;gfx1102;gfx1103;gfx1151"
+%endif
+
 for mpi in  mpich openmpi; do
   test -n "${mpi}" && module load mpi/${mpi}-%{_arch}
   %cmake \
+    -DCMAKE_BUILD_TYPE=%{build_type} \
     -DHeffte_ENABLE_FFTW=ON \
     -DHeffte_ENABLE_FORTRAN=ON \
+    -DHeffte_ENABLE_ROCM=%{build_rocm} \
     -DHeffte_ENABLE_TESTING=ON \
     -DHeffte_ENABLE_DOXYGEN=ON \
     -DCMAKE_SKIP_INSTALL_RPATH=ON \
@@ -119,6 +152,8 @@ done
 # files for testing install are not useful to package
 rm -rf %{buildroot}%{_datadir}/%{name}/testing
 
+# Can not check rocm without gpu hw
+%if %{with cpu_check}
 %check
 # allow openmpi to oversubscribe, i.e. runs test with more
 # cores than the builder has
@@ -126,9 +161,11 @@ export PRTE_MCA_rmaps_default_mapping_policy=:oversubscribe
 
 for mpi in mpich openmpi; do
   test -n "${mpi}" && module load mpi/${mpi}-%{_arch}
+  export LD_LIBRARY_PATH=${PWD}/%{_target_platform}-${mpi}:$LD_LIBRARY_PATH
   %ctest %{?testargs}
   test -n "${mpi}" && module unload mpi/${mpi}-%{_arch}
 done
+%endif
 
 %files openmpi
 %doc README.md
@@ -165,6 +202,9 @@ done
 %{_datadir}/%{name}/docs
 
 %changelog
+* Sun Dec 15 2024 Tom Rix <Tom.Rix@amd.com> - 2.4.1-3
+- Add ROCm support
+
 * Sun Dec 01 2024 Christoph Junghans <junghans@votca.org> - 2.4.1-2
 - Comments from package review (bug #2321925)
 
