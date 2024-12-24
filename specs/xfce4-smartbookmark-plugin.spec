@@ -6,7 +6,7 @@
 
 Name:           xfce4-smartbookmark-plugin
 Version:        0.5.2
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Smart bookmarks for the Xfce panel
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -54,6 +54,9 @@ chmod 755 %{buildroot}/%{_libdir}/xfce4/panel/plugins/*.so
 
 
 %changelog
+* Sun Dec 22 2024 Mukundan Ragavan <nonamedotc@gmail.com> - 0.5.2-11
+- rebuild for xfce-4.20
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 0.5.2-10
 - convert license to SPDX
 

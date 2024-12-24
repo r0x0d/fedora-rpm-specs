@@ -4,7 +4,7 @@
 
 Name:           player
 Version:        3.1.0
-Release:        58%{?dist}
+Release:        59%{?dist}
 Summary:        Cross-platform robot device interface and server
 
 License:        GPL-2.0-or-later AND LGPL-2.1-or-later
@@ -143,12 +143,15 @@ sed -i 's|EXCLUDE                =|EXCLUDE                = ../%{_vpath_builddir
 %build
 export CXXFLAGS="-std=c++14 %{optflags}"
 export LDFLAGS="%{?__global_ldflags} -lpthread"
+# python3 binding fails to build, now explicitly disabing it (#2161923)
 %cmake %{?_cmake_skip_rpath} \
   -DCMAKE_BUILD_TYPE=Release \
   -DBUILD_DOCUMENTATION=ON \
   -DBUILD_PLAYERCC=ON \
   -DSWIG_EXECUTABLE=/usr/bin/swig \
   -DBUILD_PLAYERCC_BOOST=ON \
+  -DBUILD_PYTHONC_BINDINGS=OFF \
+  -DBUILD_PYTHONCPP_BINDINGS=OFF \
   -DBUILD_EXAMPLES=ON \
   -DBUILD_RUBYCPP_BINDINGS=ON \
   -DUNICAP_DIR=/usr \
@@ -228,6 +231,9 @@ desktop-file-install \
 %{ruby_vendorarchdir}/*.so
 
 %changelog
+* Sun Dec 22 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.1.0-59
+- Explicltiy disable python bindings (ref: #2161923)
+
 * Thu Jul 25 2024 Sérgio Basto <sergio@serjux.com> - 3.1.0-58
 - Rebuild for opencv 4.10.0
 

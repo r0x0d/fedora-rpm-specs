@@ -1,7 +1,7 @@
 %global majorver 4.18
 
 Name:           xfce4-screensaver
-Version:        4.18.3
+Version:        4.18.4
 Release:        %autorelease
 Summary:        Screensaver application for Xfce Desktop
 
@@ -77,7 +77,7 @@ desktop-file-install \
 %{_sysconfdir}/xdg/menus/xfce4-screensavers.menu
 %{_bindir}/%{name}
 %{_bindir}/xfce4-screensaver-command
-%{_bindir}/xfce4-screensaver-configure
+%{_bindir}/xfce4-screensaver-configure.py
 %{_bindir}/xfce4-screensaver-preferences
 %{_libexecdir}/xfce4-screensaver-dialog
 %{_libexecdir}/xfce4-screensaver-gl-helper

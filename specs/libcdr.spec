@@ -1,7 +1,7 @@
 %global apiversion 0.1
 
 Name: libcdr
-Version: 0.1.7
+Version: 0.1.8
 Release: %autorelease
 Summary: A library for import of CorelDRAW drawings
 

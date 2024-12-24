@@ -46,8 +46,10 @@ sed -r -i '/include_package_data=.*/a cmake_args=["-DUSE_SYSTEM_BLOSC2:BOOL=ON"]
 # Those dependencies are generated incorrectly
 sed -r -i 's/"(cmake|ninja)",//g;
            s/oldest-supported-//g;
-           /numpy>=2.*/d;
+           s/numpy>=2.*"/numpy"/;
           ' pyproject.toml
+# NumPy is already specified in `pyproject.toml`.
+sed -r -i '/numpy/d' requirements-test-wheels.txt
 
 %generate_buildrequires
 %pyproject_buildrequires requirements-test-wheels.txt

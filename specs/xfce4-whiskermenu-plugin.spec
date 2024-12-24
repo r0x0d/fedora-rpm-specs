@@ -3,7 +3,7 @@
 
 Name:		xfce4-whiskermenu-plugin
 Version:	2.8.3
-Release:	4%{?dist}
+Release:	5%{?dist}
 Summary:	An alternate application launcher for Xfce
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -60,6 +60,9 @@ that you’ve launched from it
 %{_mandir}/man1/xfce4-popup-whiskermenu.1*
 
 %changelog
+* Sun Dec 22 2024 Mukundan Ragavan <nonamedotc@gmail.com> - 2.8.3-5
+- rebuild for xfce-4.20
+
 * Fri Jul  26 2024 Miroslav Suchý <msuchy@redhat.com> - 2.8.3-4
 - convert license to SPDX
 

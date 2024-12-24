@@ -6,7 +6,7 @@ Version: 5.116.0
 Release: 2%{?dist}
 Summary:        KDE Frameworks 5 Tier 1 addon for advanced thread management
 
-License:        CC0-1.0, LGPL-2.0-or-later
+License:        CC0-1.0 AND LGPL-2.0-or-later
 URL:            https://invent.kde.org/frameworks/%{framework}
 
 %global majmin %majmin_ver_kf5

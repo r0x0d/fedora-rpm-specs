@@ -1,5 +1,5 @@
 # Tests are disabled as they require x86_64 libraries to run
-%bcond_with tests
+%bcond tests 0
 
 %global forgeurl https://github.com/ptitSeb/box64
 
@@ -8,7 +8,7 @@ Box64 lets you run x86_64 Linux programs (such as games) on non-x86_64 Linux
 systems, like ARM (host system needs to be 64-bit little-endian).}
 
 Name:           box64
-Version:        0.3.0
+Version:        0.3.2
 Release:        %autorelease
 Summary:        Linux userspace x86_64 emulator with a twist, targeted at ARM64
 
@@ -23,7 +23,7 @@ BuildRequires:  perl-podlators
 BuildRequires:  systemd-rpm-macros
 
 # box64 only supports these architectures
-ExclusiveArch:  aarch64 riscv64 ppc64le x86_64
+ExclusiveArch:  aarch64 riscv64 ppc64le %{x86_64}
 
 Requires:       %{name}-data = %{version}-%{release}
 %ifarch aarch64
@@ -176,6 +176,18 @@ Requires(postun): %{_sbindir}/update-alternatives
 This package contains a version of box64 targeting Qualcomm Snapdragon 845
 systems.
 
+%package        sd865
+Summary:        %{summary}
+
+Requires:       %{name}-data = %{version}-%{release}
+Requires(post): %{_sbindir}/update-alternatives
+Requires(postun): %{_sbindir}/update-alternatives
+
+%description    sd865 %{common_description}
+
+This package contains a version of box64 targeting Qualcomm Snapdragon 865
+systems.
+
 %package        sd888
 Summary:        %{summary}
 
@@ -199,6 +211,18 @@ Requires(postun): %{_sbindir}/update-alternatives
 
 This package contains a version of box64 targeting Qualcomm Snapdragon 8 Gen 2
 systems.
+
+%package        sdoryon1
+Summary:        %{summary}
+
+Requires:       %{name}-data = %{version}-%{release}
+Requires(post): %{_sbindir}/update-alternatives
+Requires(postun): %{_sbindir}/update-alternatives
+
+%description    sdoryon1 %{common_description}
+
+This package contains a version of box64 targeting Qualcomm Snapdragon Oryon 1
+(X1E80100/X1E78100) systems.
 
 %package        tegrat194
 Summary:        %{summary}
@@ -247,7 +271,7 @@ sed -i 's/\r$//' docs/*.md
 sed -i 's:/etc/binfmt.d:%{_binfmtdir}:g' CMakeLists.txt
 
 %build
-%global common_flags -DNOGIT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
+%global common_flags -DNOGIT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBOX32=ON -DBOX32_BINFMT=ON
 %ifarch aarch64
 %global common_flags -DARM_DYNAREC=ON %{common_flags}
 
@@ -323,6 +347,12 @@ rm -r %{__cmake_builddir}
 cp -p %{__cmake_builddir}/%{name} %{name}.sd845
 rm -r %{__cmake_builddir}
 
+# Qualcomm Snapdragon 865
+%cmake %{common_flags} -DSD865=ON
+%cmake_build
+cp -p %{__cmake_builddir}/%{name} %{name}.sd865
+rm -r %{__cmake_builddir}
+
 # Qualcomm Snapdragon 888
 %cmake %{common_flags} -DSD888=ON
 %cmake_build
@@ -333,6 +363,12 @@ rm -r %{__cmake_builddir}
 %cmake %{common_flags} -DSD8G2=ON
 %cmake_build
 cp -p %{__cmake_builddir}/%{name} %{name}.sd8g2
+rm -r %{__cmake_builddir}
+
+# Qualcomm Snapdragon Oryon 1 (X1E80100/X1E78100)
+%cmake %{common_flags} -DSDORYON1=ON
+%cmake_build
+cp -p %{__cmake_builddir}/%{name} %{name}.sdoryon1
 rm -r %{__cmake_builddir}
 
 # Nvidia Tegra Xavier
@@ -364,7 +400,7 @@ rm -r %{__cmake_builddir}
 %ifarch ppc64le
   -DPPC64LE=ON
 %endif
-%ifarch x86_64
+%ifarch %{x86_64}
   -DLD80BITS=ON \
   -DNOALIGN=ON
 %endif
@@ -374,12 +410,15 @@ rm -r %{__cmake_builddir}
 pod2man --stderr docs/%{name}.pod > docs/%{name}.1
 
 %install
-%ifarch x86_64
+%ifarch %{x86_64}
 # Install manually as cmake_install doesn't seem to work on x86_64
 install -Dpm0755 -t %{buildroot}%{_bindir} %{__cmake_builddir}/%{name}
 install -Ddpm0755 %{buildroot}%{_binfmtdir}
 sed 's:${CMAKE_INSTALL_PREFIX}/bin/${BOX64}:%{_bindir}/%{name}:' \
+  < system/box32.conf.cmake > system/box32.conf
+sed 's:${CMAKE_INSTALL_PREFIX}/bin/${BOX64}:%{_bindir}/%{name}:' \
   < system/box64.conf.cmake > system/box64.conf
+install -Dpm0644 -t %{buildroot}%{_binfmtdir} system/box32.conf
 install -Dpm0644 -t %{buildroot}%{_binfmtdir} system/box64.conf
 install -Dpm0644 -t %{buildroot}%{_sysconfdir} system/box64.box64rc
 %else
@@ -406,8 +445,10 @@ install -Dpm0755 -t %{buildroot}%{_bindir} \
   %{name}.rpi4 \
   %{name}.rpi5 \
   %{name}.sd845 \
+  %{name}.sd865 \
   %{name}.sd888 \
   %{name}.sd8g2 \
+  %{name}.sdoryon1 \
   %{name}.tegrat194 \
   %{name}.tegrat234 \
   %{name}.tegrax1
@@ -529,6 +570,15 @@ if [ $1 -eq 0 ] ; then
   %{_sbindir}/update-alternatives --remove %{name} %{_bindir}/%{name}.sd845
 fi
 
+%post sd865
+%{_sbindir}/update-alternatives --install %{_bindir}/%{name} \
+  %{name} %{_bindir}/%{name}.sd865 10
+
+%postun sd865
+if [ $1 -eq 0 ] ; then
+  %{_sbindir}/update-alternatives --remove %{name} %{_bindir}/%{name}.sd865
+fi
+
 %post sd888
 %{_sbindir}/update-alternatives --install %{_bindir}/%{name} \
   %{name} %{_bindir}/%{name}.sd888 10
@@ -545,6 +595,15 @@ fi
 %postun sd8g2
 if [ $1 -eq 0 ] ; then
   %{_sbindir}/update-alternatives --remove %{name} %{_bindir}/%{name}.sd8g2
+fi
+
+%post sdoryon1
+%{_sbindir}/update-alternatives --install %{_bindir}/%{name} \
+  %{name} %{_bindir}/%{name}.sdoryon1 10
+
+%postun sdoryon1
+if [ $1 -eq 0 ] ; then
+  %{_sbindir}/update-alternatives --remove %{name} %{_bindir}/%{name}.sdoryon1
 fi
 
 %post tegrat194
@@ -637,6 +696,10 @@ fi
 %ghost %{_bindir}/%{name}
 %{_bindir}/%{name}.sd845
 
+%files sd865
+%ghost %{_bindir}/%{name}
+%{_bindir}/%{name}.sd865
+
 %files sd888
 %ghost %{_bindir}/%{name}
 %{_bindir}/%{name}.sd888
@@ -644,6 +707,10 @@ fi
 %files sd8g2
 %ghost %{_bindir}/%{name}
 %{_bindir}/%{name}.sd8g2
+
+%files sdoryon1
+%ghost %{_bindir}/%{name}
+%{_bindir}/%{name}.sdoryon1
 
 %files tegrat194
 %ghost %{_bindir}/%{name}
@@ -664,6 +731,7 @@ fi
 %doc %lang(cn) README_CN.md
 %doc %lang(uk) README_UK.md
 %doc docs/*.md docs/img
+%{_binfmtdir}/box32.conf
 %{_binfmtdir}/box64.conf
 %{_mandir}/man1/box64.1*
 %config(noreplace) %{_sysconfdir}/box64.box64rc

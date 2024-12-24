@@ -5,7 +5,7 @@
 
 Name:           thunar-vcs-plugin
 Version:        0.2.0
-Release:        33%{?dist}
+Release:        34%{?dist}
 Summary:        Version Contol System plugin for the Thunar filemanager
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -76,6 +76,9 @@ rm $RPM_BUILD_ROOT%{_libdir}/thunarx-*/%{name}.la
 
 
 %changelog
+* Sun Dec 22 2024 Mukundan Ragavan <nonamedotc@gmail.com> - 0.2.0-34
+- rebuild for xfce 4.20
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 0.2.0-33
 - convert license to SPDX
 

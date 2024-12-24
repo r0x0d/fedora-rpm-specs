@@ -1,7 +1,7 @@
-%global xfceversion 4.18
+%global xfceversion 4.20
 
 Name:		xfce4-power-manager
-Version:	4.18.4
+Version:	4.20.0
 Release:	%autorelease
 Summary:	Power management for the Xfce desktop environment
 
@@ -12,7 +12,7 @@ URL:		http://goodies.xfce.org/projects/applications/%{name}
 Source0:	http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
 Source1:	%{name}.xml
 
-BuildRequires: make
+BuildRequires:  make
 BuildRequires:  gcc-c++
 BuildRequires:  pkgconfig(libxfconf-0) >= %{xfceversion}
 BuildRequires:  pkgconfig(libxfce4ui-2) >= %{xfceversion}
@@ -62,7 +62,7 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %files -f %{name}.lang
 %license COPYING
-%doc AUTHORS ChangeLog NEWS TODO
+%doc AUTHORS ChangeLog NEWS
 %{_sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/%{name}.xml
 %{_bindir}/%{name}
 %{_bindir}/%{name}-settings

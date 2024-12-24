@@ -3,7 +3,7 @@
 
 Name:           xfce4-cpufreq-plugin
 Version:        1.2.8
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        CPU frequency scaling plugin for the Xfce4 panel 
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -52,6 +52,9 @@ find %{buildroot} -name \*.la -exec rm {} \;
 %{_datadir}/xfce4/panel/plugins/cpufreq.desktop
 
 %changelog
+* Sun Dec 22 2024 Mukundan Ragavan <nonamedotc@gmail.com> - 1.2.8-6
+- rebuild for xfce-4.20
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 1.2.8-5
 - convert license to SPDX
 

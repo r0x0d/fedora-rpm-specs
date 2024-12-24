@@ -135,26 +135,26 @@ use the "serde1" feature of the "%{crate}" crate.
 %check
 # * Some tests must be run serially:
 #   https://github.com/eminence/procfs/issues/322
+skip="${skip-} --skip _runsinglethread"
 # * thread 'sys::kernel::random::tests::test_write_wakeup_threshold' panicked at
 #   src/sys/kernel/random.rs:94:24: test_write_wakeup_threshold error: Io(Os {
 #   code: 30, kind: ReadOnlyFilesystem, message: "Read-only file system" },
 #   Some("/proc/sys/kernel/random/write_wakeup_threshold")). This fails in a git
 #   checkout if it is running in a mock chroot.
+skip="${skip-} --skip sys::kernel::random::tests::test_write_wakeup_threshold"
+%ifnarch x86_64 %{ix86}
 # * On non-x86 architectures, test_cpuinfo fails:
 #   https://github.com/eminence/procfs/issues/323
-# * On s390x, test_kernel_stat and test_meminfo fail:
-#   https://github.com/eminence/procfs/issues/324
-%{cargo_test -- -- %{shrink:
-    --skip _runsinglethread
-    --skip sys::kernel::random::tests::test_write_wakeup_threshold
-%ifnarch x86_64 %{ix86}
-    --skip tests::test_cpuinfo
+skip="${skip-} --skip tests::test_cpuinfo"
 %endif
 %ifarch s390x
-    --skip tests::test_kernel_stat
-    --skip tests::test_meminfo
+# * On s390x, test_kernel_stat and test_meminfo fail:
+#   https://github.com/eminence/procfs/issues/324
+skip="${skip-} --skip tests::test_kernel_stat"
+skip="${skip-} --skip tests::test_meminfo"
 %endif
-}}
+
+%{cargo_test -- -- ${skip-}}
 # Run the tests that must be run serially:
 %{cargo_test -- -- _runsinglethread --test-threads 1}
 %endif

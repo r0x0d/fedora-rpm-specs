@@ -3,7 +3,7 @@
 %global _docdir_fmt %{name}
 
 Name:           python-sphinxcontrib-programoutput
-Version:        0.17
+Version:        0.18
 Release:        %autorelease
 Summary:        Extension to insert output of commands into documents
 
@@ -11,14 +11,13 @@ License:        BSD-3-Clause
 URL:            https://pypi.python.org/pypi/sphinxcontrib-programoutput
 Source0:        https://github.com/NextThought/sphinxcontrib-programoutput/archive/%{version}/%{srcname}-%{version}.tar.gz
 
-Patch:          https://github.com/OpenNTI/sphinxcontrib-programoutput/commit/bd1c14d2e0806dda1902bd452595beaa951aec36.patch
-
 BuildArch:      noarch
 BuildRequires:  python3-sphinx
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  python3dist(sphinx) >= 1.3.5
+BuildRequires:  python3-furo
 # The documentation runs commands like 'python -V' and 'python --help'.
 # Any python version is fine.
 BuildRequires:  python-unversioned-command
@@ -52,7 +51,7 @@ rm build/lib/sphinxcontrib/__init__.py
 
 # workaround https://github.com/python/cpython/issues/94741
 echo 'import importlib; importlib.invalidate_caches(); del importlib' > build/lib/sitecustomize.py
-PYTHONPATH=build/lib sphinx-build -b html doc build/html
+PYTHONPATH=build/lib sphinx-build -b html docs build/html
 rm build/lib/sitecustomize.py build/lib/__pycache__/sitecustomize.*.pyc
 
 rm -r build/html/.buildinfo build/html/.doctrees
@@ -62,9 +61,6 @@ rm -r build/html/.buildinfo build/html/.doctrees
 mkdir -p %{buildroot}%{_pkgdocdir}
 cp -rv build/html %{buildroot}%{_pkgdocdir}/
 ln -vsf %{_jsdir}/jquery/latest/jquery.min.js %{buildroot}%{_pkgdocdir}/html/_static/jquery.js
-
-# remove .pth file which is useless under python3 and breaks namespace modules
-rm %{buildroot}%{python3_sitelib}/sphinxcontrib_programoutput-*-nspkg.pth
 
 %check
 OPTIONS=(

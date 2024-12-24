@@ -1,5 +1,5 @@
 Name:           alglib
-Version:        4.03.0
+Version:        4.04.0
 Release:        1%{?dist}
 Summary:        A numerical analysis and data processing library
 
@@ -75,7 +75,7 @@ popd
 
 %files
 %license gpl2.txt
-%{_libdir}/libalglib-4.03.0.so
+%{_libdir}/libalglib-4.04.0.so
 
 %files devel
 %{_includedir}/%{name}/
@@ -87,6 +87,9 @@ popd
 
 
 %changelog
+* Sun Dec 22 2024 Sandro Mani <manisandro@gmail.com> - 4.04.0-1
+- Update to 4.04.0
+
 * Sun Sep 29 2024 Sandro Mani <manisandro@gmail.com> - 4.03.0-1
 - Update to 4.03.0
 

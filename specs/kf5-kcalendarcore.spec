@@ -13,7 +13,7 @@ Version: 5.116.0
 Release: 2%{?dist}
 Summary: KDE Frameworks 5 Tier 1 KCalendarCore Library
 
-License: BSD-3-Clause, CC0-1.0, LGPL-2.0-or-later, LGPL-3.0-or-later
+License: BSD-3-Clause AND CC0-1.0 AND LGPL-2.0-or-later AND LGPL-3.0-or-later
 URL:     https://invent.kde.org/frameworks/%{framework}
 
 %global majmin %majmin_ver_kf5

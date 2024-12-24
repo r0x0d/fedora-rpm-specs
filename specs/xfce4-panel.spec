@@ -1,4 +1,4 @@
-%global xfceversion 4.18
+%global xfceversion 4.20
 
 %global namespc Libxfce4panel
 
@@ -10,7 +10,7 @@
 %global _with_vala 0
 
 Name:           xfce4-panel
-Version:        4.18.6
+Version:        4.20.0
 Release:        %autorelease
 Summary:        Next generation panel for Xfce
 
@@ -39,6 +39,7 @@ BuildRequires:  intltool
 BuildRequires:  desktop-file-utils
 BuildRequires:  gtk-doc
 BuildRequires:  gobject-introspection-devel
+BuildRequires:  libxfce4windowing-devel
 
 %if 0%{?fedora}
 BuildRequires:  libdbusmenu-gtk3-devel

@@ -1,7 +1,7 @@
-%global xfceversion 4.18
+%global xfceversion 4.20
 
 Name:           xfce4-session
-Version:        4.18.4
+Version:        4.20.0
 Release:        %autorelease
 Summary:        Xfce session manager
 
@@ -15,9 +15,9 @@ Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-
 Source2:        xfce-mimeapps.list
 # Patch startxfce4 to keep it on the same vty for logind
 # https://bugzilla.redhat.com/show_bug.cgi?id=1117682
-Patch1:         xfce-session-4.10-startxfce4.patch
+Patch1:         xfce-session-%{xfceversion}-startxfce4.patch
 
-BuildRequires: make
+BuildRequires:  make
 BuildRequires:  dbus-devel >= 1.1.0
 BuildRequires:  dbus-glib-devel >= 0.84
 BuildRequires:  glib2-devel >= 2.24.0
@@ -37,6 +37,8 @@ BuildRequires:  libxslt
 BuildRequires:  systemd-devel >= 195
 BuildRequires:  polkit-devel
 BuildRequires:  libtool
+BuildRequires:  libxfce4windowing-devel
+
 Requires:       iceauth xrdb xset
 Requires:       xfce-polkit >= 0.2-2
 Requires:       systemd >= 195
@@ -84,7 +86,7 @@ cp -a %{SOURCE2} %{buildroot}%{_datadir}/applications/xfce-mimeapps.list
 
 %files -f %{name}.lang
 %license COPYING
-%doc AUTHORS BUGS ChangeLog NEWS TODO
+%doc AUTHORS ChangeLog NEWS
 %doc doc/FAQ doc/NEWS.pre-4.3 doc/README.Kiosk
 %{_sysconfdir}/xdg/xfce4
 %{_bindir}/*
@@ -94,6 +96,7 @@ cp -a %{SOURCE2} %{buildroot}%{_datadir}/applications/xfce-mimeapps.list
 %{_datadir}/applications/*.desktop
 %{_datadir}/applications/xfce-mimeapps.list
 %{_datadir}/xsessions/xfce.desktop
+%{_datadir}/wayland-sessions/xfce-wayland.desktop
 %{_datadir}/icons/hicolor/*/*/*
 %{_datadir}/polkit-1/actions/org.xfce.session.policy
 %{_mandir}/man1/*

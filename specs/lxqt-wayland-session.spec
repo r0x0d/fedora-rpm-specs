@@ -1,9 +1,11 @@
 # niri isn't packaged in Fedora
 %bcond niri_session 0
+# we don't want to support hyprland
+%bcond hyprland_session 0
 
 Name:           lxqt-wayland-session
 Version:        0.1.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Wayland session files for LXQt
 # See "LICENSE" for a breakdown of license usage
 License:        LGPL-2.1-only AND GPL-3.0-only AND MIT AND GPL-2.0-only AND BSD-3-Clause
@@ -42,6 +44,7 @@ actually supported compositors.
 
 %dnl ------------------------------------------------------------------
 
+%if %{with hyprland_session}
 %package -n     lxqt-hyprland-session
 Summary:        Session files for LXQt-Hyprland
 License:        BSD-3-Clause
@@ -56,6 +59,7 @@ compositor with LXQt.
 %files -n lxqt-hyprland-session
 %license LICENSE.BSD
 %{_datadir}/lxqt/wayland/lxqt-hyprland.conf
+%endif
 
 %dnl ------------------------------------------------------------------
 
@@ -172,6 +176,11 @@ labwc as the Wayland compositor with LXQt.
 %install
 %cmake_install
 
+%if ! %{with hyprland_session}
+# Drop hyprland session files
+rm -v %{buildroot}%{_datadir}/lxqt/wayland/lxqt-hyprland.conf
+%endif
+
 %if ! %{with niri_session}
 # Drop niri session files
 rm -v %{buildroot}%{_datadir}/lxqt/wayland/lxqt-niri.kdl
@@ -179,6 +188,9 @@ rm -v %{buildroot}%{_datadir}/lxqt/wayland/lxqt-niri.kdl
 
 
 %changelog
+* Sun Dec 22 2024 Neal Gompa <ngompa@fedoraproject.org> - 0.1.1-3
+- Disable hyprland session option
+
 * Tue Dec 17 2024 Neal Gompa <ngompa@fedoraproject.org> - 0.1.1-2
 - Disable niri session subpackage until niri is packaged (rhbz#2332801)
 

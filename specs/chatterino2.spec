@@ -81,6 +81,9 @@ Source9:        https://github.com/Neargye/magic_enum/archive/%{commit9}/magic_e
 Source10:       https://github.com/arsenm/sanitizers-cmake/archive/%{commit10}/sanitizers-cmake-%{shortcommit10}.tar.gz
 Source11:       https://github.com/mackron/miniaudio/archive/%{commit11}/miniaudio-%{shortcommit11}.tar.gz
 
+# https://github.com/Chatterino/chatterino2/pull/5556
+Patch:          https://github.com/Chatterino/chatterino2/pull/5556.patch#/5556-rebased.patch
+
 BuildRequires:  boost-devel
 BuildRequires:  clang
 BuildRequires:  cmake
@@ -126,6 +129,7 @@ found https://wiki.chatterino.com/.
 
 %prep
 %forgesetup
+%autopatch -p1
 %setup -n %{name}-%{tarball_version} -q -D -T -a2
 %setup -n %{name}-%{tarball_version} -q -D -T -a3
 %setup -n %{name}-%{tarball_version} -q -D -T -a4

@@ -47,6 +47,10 @@ Summary: %summary
 
 sed -r -i '1d' ffc/__main__.py ffc/main.py
 
+# Ad hoc NumPy 2.x patch replacing `numpy.product` with `numpy.prod`.
+# https://bitbucket.org/fenics-project/ffc/pull-requests/102
+sed -i 's/numpy\.product/numpy.prod/g' $(grep -rl 'numpy\.product')
+
 %build
 %py3_build
 

@@ -7,7 +7,7 @@ this configuration file.
 
 Name:           python-paste-deploy
 Version:        3.1.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        %{sum}
 License:        MIT
 URL:            https://github.com/Pylons/pastedeploy
@@ -16,7 +16,7 @@ BuildArch:      noarch
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-pytest
-BuildRequires:  python3-pytest-cov
+#BuildRequires:  python3-pytest-cov
 BuildRequires:  python3-setuptools
 
 %description
@@ -46,6 +46,8 @@ rm -rf *.egg-info
 
 %build
 %py3_build
+# disable coverage tests
+sed -i 's/ --cov//' pytest.ini
 
 
 %install
@@ -64,6 +66,9 @@ rm -rf %{buildroot}%{python3_sitelib}/test
 
 
 %changelog
+* Fri Dec 20 2024 Ján ONDREJ (SAL) <ondrejj(at)salstar.sk> - 3.1.0-6
+- Coverage tests should not be run in Fedora/EPEL
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.1.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

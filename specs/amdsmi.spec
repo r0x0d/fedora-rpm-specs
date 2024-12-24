@@ -1,5 +1,5 @@
 %global rocm_release 6.3
-%global rocm_patch 0
+%global rocm_patch 1
 %global rocm_version %{rocm_release}.%{rocm_patch}
 %global upstreamname amdsmi
 
@@ -154,6 +154,9 @@ rm %{buildroot}%{_libdir}/cmake/amd_smi/amd_smi-config.cmake
 %endif
 
 %changelog
+* Sun Dec 22 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.1-1
+- Update to 6.3.1
+
 * Sat Dec 7 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
 - Update to 6.3
 

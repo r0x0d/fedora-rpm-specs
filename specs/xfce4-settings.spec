@@ -1,7 +1,7 @@
-%global xfceversion 4.18
+%global xfceversion 4.20
 
 Name:           xfce4-settings
-Version:        4.18.6
+Version:        4.20.0
 Release:        %autorelease
 Summary:        Settings Manager for Xfce
 
@@ -30,7 +30,7 @@ BuildRequires:  libxklavier-devel
 BuildRequires:  xorg-x11-drv-libinput-devel
 %endif
 BuildRequires:  libXrandr-devel
-BuildRequires:  garcon-devel >= 0.1.10
+BuildRequires:  garcon-devel >= %{xfceversion}
 Requires:       xfconf
 %if 0%{?rhel} <= 7
 Requires:       gnome-icon-theme
@@ -65,7 +65,7 @@ done
 
 %files -f %{name}.lang
 %license COPYING
-%doc AUTHORS ChangeLog NEWS TODO
+%doc AUTHORS ChangeLog NEWS
 %config(noreplace) %{_sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
 %config(noreplace) %{_sysconfdir}/xdg/autostart/xfsettingsd.desktop
 %config(noreplace) %{_sysconfdir}/xdg/menus/xfce-settings-manager.menu
@@ -78,8 +78,7 @@ done
 %{_bindir}/xfce4-find-cursor
 %{_datadir}/applications/xfce*.desktop
 %{_libdir}/xfce4
-%{_libdir}/xfce4/xfce4-compose-mail
-%{_libdir}/xfce4/settings
+%{_libdir}/gtk-3.0/modules/libxfsettingsd-gtk-settings-sync.so
 %{_datadir}/icons/hicolor/*/*/*xfce*
 %{_datadir}/xfce4/helpers/*.desktop
 

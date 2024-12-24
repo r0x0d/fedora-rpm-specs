@@ -1,7 +1,7 @@
-%global xfceversion 4.18
+%global xfceversion 4.20
 
 Name:           xfconf
-Version:        4.18.3
+Version:        4.20.0
 Release:        %autorelease
 Summary:        Hierarchical configuration system for Xfce
 
@@ -21,6 +21,7 @@ BuildRequires:  intltool
 BuildRequires:  gcc-c++
 BuildRequires:  gobject-introspection-devel
 BuildRequires:  vala
+BuildRequires:  systemd-rpm-macros
 
 Requires:       dbus
 
@@ -73,7 +74,7 @@ find %{buildroot} -type f -name *.la -exec rm -f {} \;
 
 %files -f %{name}.lang
 %license COPYING
-%doc AUTHORS NEWS TODO
+%doc AUTHORS NEWS
 %{_libdir}/lib*.so.*
 %{_bindir}/xfconf-query
 %{_libdir}/xfce4/xfconf/
@@ -83,6 +84,7 @@ find %{buildroot} -type f -name *.la -exec rm -f {} \;
 %{_datadir}/dbus-1/services/org.xfce.Xfconf.service
 %{_datadir}/gir-1.0/Xfconf-0.gir
 %{_datadir}/bash-completion/completions/xfconf-query
+%{_userunitdir}/xfconfd.service
 
 %files devel
 %doc %{_datadir}/gtk-doc
@@ -90,7 +92,6 @@ find %{buildroot} -type f -name *.la -exec rm -f {} \;
 %{_libdir}/pkgconfig/*.pc
 %{_includedir}/xfce4/xfconf-0
 %{_libdir}/gio/modules/libxfconfgsettingsbackend.so
-%{_datadir}/gtk-doc/html/%{name}/*
 
 %changelog
 %autochangelog

@@ -1,8 +1,8 @@
 %global _hardened_build 1
-%global xfceversion 4.18
+%global xfceversion 4.20
 
 Name:           Thunar
-Version:        4.18.11
+Version:        4.20.0
 Release:        %autorelease
 Summary:        Thunar File Manager
 

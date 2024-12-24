@@ -3,7 +3,7 @@
 
 Name:           tinyfugue
 Version:        5.0
-Release:        0.112.b8%{?dist}
+Release:        0.113.b8%{?dist}
 Summary:        A MU* client
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
@@ -47,7 +47,8 @@ macros, and create hooks and triggers for automated responses to game messages.
 rm -rfv src/pcre-2.08
 
 %build
-export CPPFLAGS="${CFLAGS}"
+# Don't error out on the harmless conString* to String* assignments
+export CPPFLAGS="${CFLAGS} -Wno-incompatible-pointer-types"
 %configure \
     --enable-core \
     --enable-inet6 \
@@ -71,6 +72,10 @@ install -D -p -m 644 src/tf.1.nroffman %{buildroot}%{_mandir}/man1/tf.1
 %{_mandir}/man1/tf.1*
 
 %changelog
+* Sun Dec 22 2024 Petr Šabata <contyk@redhat.com> - 5.0-0.113.b8
+- Disable -Wincompatible-pointer-types as the warning-turned-error is
+  harmless in this case
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 5.0-0.112.b8
 - convert license to SPDX
 

@@ -1,7 +1,7 @@
-%global xfceversion 4.18
+%global xfceversion 4.20
 
 Name:           xfdesktop
-Version:        4.18.1
+Version:        4.20.0
 Release:        %autorelease
 Summary:        Desktop manager for the Xfce Desktop Environment
 
@@ -26,6 +26,8 @@ BuildRequires:  intltool
 BuildRequires:  desktop-file-utils
 BuildRequires:  libSM-devel
 BuildRequires:  libICE-devel
+BuildRequires:  libxfce4windowing-devel
+
 Requires:       xfwm4 >= %{xfceversion}
 Requires:       xfce4-panel >= %{xfceversion}
 Requires:       redhat-menus
@@ -65,7 +67,7 @@ desktop-file-validate \
 
 %files -f %{name}.lang
 %license COPYING
-%doc TODO ChangeLog NEWS AUTHORS
+%doc ChangeLog NEWS AUTHORS
 %{_bindir}/*
 %{_datadir}/applications/*
 %{_datadir}/icons/hicolor/*/*/*

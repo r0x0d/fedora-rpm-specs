@@ -71,7 +71,7 @@ find %{buildroot} -name '*.la' -delete
 %doc README.md
 %license COPYING
 %{_libdir}/libnvidia-egl-wayland.so.1
-%{_libdir}/libnvidia-egl-wayland.so.1.1.17
+%{_libdir}/libnvidia-egl-wayland.so.1.1.18
 %{_datadir}/egl/egl_external_platform.d/10_nvidia_wayland.json
 
 %files devel

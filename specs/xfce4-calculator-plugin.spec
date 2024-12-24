@@ -4,7 +4,7 @@
 
 Name:		xfce4-calculator-plugin
 Version:	0.7.2
-Release:	5%{?dist}
+Release:	6%{?dist}
 Summary:	A calculator plugin for the Xfce4 panel
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -54,6 +54,9 @@ rm -f NEWS
 %{_datadir}/icons/hicolor/*/*/*calculator*
 
 %changelog
+* Sun Dec 22 2024 Mukundan Ragavan <nonamedotc@gmail.com> - 0.7.2-6
+- rebuild for xfce-4.20
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 0.7.2-5
 - convert license to SPDX
 

@@ -13,10 +13,12 @@
 Summary: Bonobo user interface components
 Name: libbonoboui
 Version: 2.24.5
-Release: 29%{?dist}
+Release: 30%{?dist}
 URL: http://www.gnome.org
 #VCS: git:git://git.gnome.org/libbonoboui
 Source0: http://download.gnome.org/sources/libbonoboui/2.24/%{name}-%{version}.tar.bz2
+# Fix FTBFS with gcc14 -Werror=incompatible-pointer-types
+Patch0:  libbonoboui-2.24.5-c99-pointer-cast.patch
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License: LicenseRef-Callaway-LGPLv2+
 
@@ -70,6 +72,7 @@ use libbonoboui.
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch -P0 -p1
 
 %build
 
@@ -113,6 +116,9 @@ done
 %{_datadir}/gtk-doc/html/libbonoboui
 
 %changelog
+* Sun Dec 22 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.24.5-30
+- Fix for gcc14 -Werror=incompatible-pointer-types
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 2.24.5-29
 - convert license to SPDX
 

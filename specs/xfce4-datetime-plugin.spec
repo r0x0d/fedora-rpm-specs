@@ -4,7 +4,7 @@
 
 Name:           xfce4-datetime-plugin
 Version:        0.8.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Date/time plugin for the Xfce panel
 
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -55,6 +55,9 @@ chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/*.so
 
 
 %changelog
+* Sun Dec 22 2024 Mukundan Ragavan <nonamedotc@gmail.com> - 0.8.2-7
+- rebuild for xfce-4.20
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 0.8.2-6
 - convert license to SPDX
 

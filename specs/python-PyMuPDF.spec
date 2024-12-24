@@ -5,24 +5,24 @@
 %bcond docs %{defined fedora}
 
 Name:		python-%{pypi_name}
-Version:	1.24.8
+Version:	1.25.1
 Release:	%autorelease
 Summary:	Python binding for MuPDF - a lightweight PDF and XPS viewer
 
 License:	AGPL-3.0-or-later
 URL:		https://github.com/pymupdf/PyMuPDF
 Source0:	%{url}/archive/%{version}/%{pypi_name}-%{version}.tar.gz
-Patch0:		0001-fix-test_-font.patch
-Patch1:		0001-test_pixmap-adjust-to-turbojpeg.patch
-Patch2:		0001-adjust-tesseract-tessdata-path-to-Fedora-default.patch
 
-BuildRequires:	python3-devel
-BuildRequires:	python3-fonttools
-BuildRequires:	python3-pillow
-BuildRequires:	python3-pip
-BuildRequires:	python3-psutil
-BuildRequires:	python3-pytest
-BuildRequires:	python3-setuptools
+Patch:		0001-fix-test_-font.patch
+Patch:		0001-test_pixmap-adjust-to-turbojpeg.patch
+Patch:		0001-adjust-tesseract-tessdata-path-to-Fedora-default.patch
+Patch:		0001-setup.py-do-not-require-libclang-and-swig.patch
+
+# test dependencies not picked up by generator
+BuildRequires:	python3dist(pillow)
+BuildRequires:	python3dist(pytest)
+BuildRequires:	python3dist(psutil)
+BuildRequires:	tesseract-langpack-eng
 %if %{with docs}
 BuildRequires:	python3-sphinx
 BuildRequires:	python3-sphinx-copybutton
@@ -67,10 +67,11 @@ python-%{pypi_name}-doc contains documentation and examples for PyMuPDF
 
 %prep
 %autosetup -n %{pypi_name}-%{version} -p 1
+# disable google analytics for installed doc
+sed -i -e "s/,'sphinxcontrib.googleanalytics'//" docs/conf.py
 
-# We do not use generate_buildrequires for various reasons:
-# - setup.py gives libclang and swig which we do not have as py3dist(x)
-# - doc build requirements should be conditional
+%generate_buildrequires
+%pyproject_buildrequires -R
 
 %build
 # generate debug symbols
@@ -79,6 +80,8 @@ export PYMUPDF_SETUP_MUPDF_BUILD_TYPE='debug'
 export PYMUPDF_SETUP_MUPDF_BUILD=''
 # build rebased implementation only:
 export PYMUPDF_SETUP_IMPLEMENTATIONS='b'
+# build breaks on F39/EL9 with limited API, and we depend on py version anyways:
+export PYMUPDF_SETUP_PY_LIMITED_API=0
 CFLAGS="$CFLAGS -I/usr/include -I/usr/include/freetype2 -I/usr/include/mupdf"
 LDFLAGS="$LDFLAGS -lfreetype -lmupdf"
 %pyproject_wheel
@@ -112,7 +115,8 @@ SKIP="$SKIP and not test_3087"
 SKIP="$SKIP and not test_htmlbox1"
 %endif
 # spuriously failing tests (several archs)
-SKIP="$SKIP and not test_insert and not test_3081 and not test_3087"
+SKIP="$SKIP and not test_insert and not test_3087"
+export PYMUPDF_SYSINSTALL_TEST=1
 %pytest -k "$SKIP"
 
 %files -n python3-%{pypi_name} -f %{pyproject_files}

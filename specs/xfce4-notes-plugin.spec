@@ -12,6 +12,10 @@ License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
 Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minor_version}/%{name}-%{version}.tar.bz2
 
+# patch from upstream git
+# https://gitlab.xfce.org/panel-plugins/xfce4-notes-plugin/-/issues/84
+Patch0:         0001-Fix-FTBFS-with-gcc-14.patch
+
 BuildRequires:  make
 BuildRequires:  gcc-c++
 BuildRequires:  xfce4-panel-devel >= %{xfceversion}
@@ -30,7 +34,7 @@ background color and much more.
 
 
 %prep
-%autosetup
+%autosetup -p1
 
 %build
 %configure --disable-static

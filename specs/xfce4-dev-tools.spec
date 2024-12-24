@@ -1,8 +1,8 @@
 %global prerel pre1
-%global xfceversion 4.20%{?prerel}
+%global xfceversion 4.20
 
 Name:           xfce4-dev-tools
-Version:        4.19.4
+Version:        4.20.0
 Release:        %autorelease
 Summary:        Xfce developer tools
 

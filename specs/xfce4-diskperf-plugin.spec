@@ -6,7 +6,7 @@
 
 Name:           xfce4-diskperf-plugin
 Version:        2.7.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Disk performance plugin for the Xfce panel
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -52,6 +52,9 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 
 %changelog
+* Sun Dec 22 2024 Mukundan Ragavan <nonamedotc@gmail.com> - 2.7.0-8
+- rebuild for xfce-4.20
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.7.0-7
 - convert license to SPDX
 

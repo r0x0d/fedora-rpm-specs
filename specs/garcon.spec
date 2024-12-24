@@ -1,11 +1,11 @@
 # Review at https://bugzilla.redhat.com/show_bug.cgi?id=554603
 
-%global xfceversion 4.18
+%global xfceversion 4.20
 
 %global namespc Garcon
 
 Name:           garcon
-Version:        4.18.2
+Version:        4.20.0
 Release:        %autorelease
 Summary:        Implementation of the freedesktop.org menu specification
 

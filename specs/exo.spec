@@ -1,7 +1,7 @@
-%global xfceversion 4.18
+%global xfceversion 4.20
 
 Name:           exo
-Version:        4.18.0
+Version:        4.20.0
 Release:        %autorelease
 Summary:        Application library for the Xfce desktop environment
 

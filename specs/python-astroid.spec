@@ -1,6 +1,6 @@
 %global srcname     astroid
 
-Version:        3.3.6
+Version:        3.3.7
 
 Name:           python-astroid
 # Note: please check that this doesn't break pylint before committing and building! -GC

@@ -2,12 +2,13 @@
 
 %global flatpak_version 1.5.0
 %global geoclue_version 2.5.2
-%global glib_version 2.69.1
+%global glib_version 2.72
+%global libportal_version 0.9.0
 %global low_memory_monitor_version 2.0
 %global pipewire_version 0.2.90
 
 Name:    xdg-desktop-portal
-Version: 1.19.0
+Version: 1.19.1
 Release: %autorelease
 Summary: Portal frontend service to flatpak
 
@@ -24,11 +25,13 @@ BuildRequires: pkgconfig(flatpak) >= %{flatpak_version}
 BuildRequires: pkgconfig(fuse3)
 BuildRequires: pkgconfig(gdk-pixbuf-2.0)
 BuildRequires: pkgconfig(gio-unix-2.0) >= %{glib_version}
+BuildRequires: pkgconfig(gstreamer-pbutils-1.0)
 BuildRequires: pkgconfig(json-glib-1.0)
 BuildRequires: pkgconfig(libgeoclue-2.0) >= %{geoclue_version}
 BuildRequires: pkgconfig(libpipewire-0.3) >= %{pipewire_version}
-BuildRequires: pkgconfig(libportal)
+BuildRequires: pkgconfig(libportal) >= %{libportal_version}
 BuildRequires: pkgconfig(libsystemd)
+BuildRequires: pkgconfig(umockdev-1.0)
 BuildRequires: python3-dbusmock
 BuildRequires: python3-gobject-base
 BuildRequires: python3-pytest
@@ -41,12 +44,15 @@ BuildRequires: python3-sphinx-copybutton
 BuildRequires: python3-sphinxext-opengraph
 BuildRequires: /usr/bin/sphinx-build
 %endif
+BuildRequires: /usr/bin/gst-inspect-1.0
+BuildRequires: gstreamer1-plugins-good
 # for man-pages
 BuildRequires: /usr/bin/rst2man
 
 Requires:      dbus
 Requires:      geoclue2 >= %{geoclue_version}
 Requires:      glib2%{?_isa} >= %{glib_version}
+Requires:      libportal%{?_isa} >= %{libportal_version}
 Recommends:    pipewire >= %{pipewire_version}
 Requires:      pipewire-libs%{?_isa} >= %{pipewire_version}
 # Required for the document portal.
@@ -116,6 +122,7 @@ install -dm 755 %{buildroot}/%{_datadir}/xdg-desktop-portal/portals
 %{_libexecdir}/xdg-desktop-portal
 %{_libexecdir}/xdg-desktop-portal-rewrite-launchers
 %{_libexecdir}/xdg-desktop-portal-validate-icon
+%{_libexecdir}/xdg-desktop-portal-validate-sound
 %{_libexecdir}/xdg-document-portal
 %{_libexecdir}/xdg-permission-store
 %{_mandir}/man5/portals.conf.5*

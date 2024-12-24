@@ -1,10 +1,10 @@
 # review at https://bugzilla.redhat.com/show_bug.cgi?id=229930
-%global xfceversion 4.18
+%global xfceversion 4.20
 %global _hardened_build 1
 %global debug_package %{nil}
 
 Name:           thunar-volman
-Version:        4.18.0
+Version:        4.20.0
 Release:        %autorelease
 Summary:        Automatic management of removable drives and media for Thunar
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
@@ -13,7 +13,7 @@ URL:            http://goodies.xfce.org/projects/thunar-plugins/%{name}
 #VCS: git:git://git.xfce.org/xfce/thunar-volman
 Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
 
-BuildRequires: make
+BuildRequires:  make
 BuildRequires:  gcc-c++
 BuildRequires:  exo-devel >= 0.6.0
 BuildRequires:  xfconf >= %{xfceversion}

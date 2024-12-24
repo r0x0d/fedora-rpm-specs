@@ -4,8 +4,8 @@
 %bcond_without tests
 
 Name:           python-%{srcname}
-Version:        14.0
-Release:        2%{?dist}
+Version:        15.0
+Release:        1%{?dist}
 Summary:        A py.test plugin that re-runs failed tests to eliminate flakey failures
 
 License:        MPL-2.0
@@ -56,6 +56,9 @@ BuildRequires:  python%{python3_pkgversion}-devel
 
 
 %changelog
+* Sun Dec 22 2024 Scott K Logan <logans@cottsay.net> - 15.0-1
+- Update to 15.0 (rhbz#2327591)
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 14.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

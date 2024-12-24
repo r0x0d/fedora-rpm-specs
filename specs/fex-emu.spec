@@ -18,21 +18,25 @@
 %bcond check 0
 %endif
 
-# Thunks don't build for now
-#  ld.lld: error: cannot open Scrt1.o: No such file or directory
+%if (0%{?fedora} && 0%{?fedora} >= 41)
+%global has_sysroot 1
+%bcond thunks 1
+%else
 %bcond thunks 0
+%endif
 
 # FEX does not support x86_64 hosts in production, only enable this when
 # testing local builds for development
 %bcond x86_debug 0
 
 Name:       fex-emu
-Version:    2410%{?commit:^%{date}git%{commit}}
+Version:    2412%{?commit:^%{date}git%{commit}}
 Release:    %autorelease
 Summary:    Fast usermode x86 and x86-64 emulator for ARM64
 
 # FEX itself is MIT, see below for the bundled libraries
-License:    MIT AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND GPL-2.0-only AND GPL-2.0-or-later
+%global fex_license MIT AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND GPL-2.0-only AND GPL-2.0-or-later
+License:    %{fex_license}
 URL:        https://fex-emu.com
 %if %{defined commit}
 Source0:    %{forgeurl}/commit/%{commit}/%{srcname}-%{commit}.tar.gz
@@ -40,14 +44,19 @@ Source0:    %{forgeurl}/commit/%{commit}/%{srcname}-%{commit}.tar.gz
 Source0:    %{forgeurl}/archive/%{srcname}-%{version}/%{srcname}-%{srcname}-%{version}.tar.gz
 Source1:    README.fedora
 %endif
-# Add support for using a prctl to opt-in for receiving compat input events
-Patch0:     %{forgeurl}/commit/6a07ea73a819a5ce4357721b4359956131d1b11e.patch
-# Steam fixes
-Patch1:     0001-Support-CLONE_FS-and-CLONE_FILES-with-fork-semantics.patch
-Patch2:     0002-FEXServer-Listen-on-both-abstract-named-sockets.patch
-Patch3:     0003-FEXLoader-Align-stack-base.patch
-Patch4:     0004-FileManagement-Hide-the-FEX-RootFS-fd-from-proc-self.patch
-Patch5:     0005-FileManagement-Hide-the-FEX-RootFS-fd-from-proc-self.patch
+
+%if 0%{?has_sysroot}
+Source2:    fex-sysroot-macros.inc
+%include    %SOURCE2
+Source3:    fex-sysroot-%{sysroot_version}.tar.gz
+Source4:    toolchain_x86_32.cmake
+Source5:    toolchain_x86_64.cmake
+SourceLicense: %{fex_license} %{sysroot_license}
+%endif
+
+# Fix thunk build
+Patch0:     0001-Thunks-gen-Add-support-for-compiling-against-clang-1.patch
+Patch1:     0001-Library-Forwarding-Allow-reading-standard-library-he.patch
 
 # Bundled dependencies managed as git submodules upstream
 # These are too entangled with the build system to unbundle for now
@@ -56,21 +65,21 @@ Patch5:     0005-FileManagement-Hide-the-FEX-RootFS-fd-from-proc-self.patch
 local externals = {
   { name="Catch2", ref="8ac8190", owner="catchorg", version="3.5.3", license="BSL-1.0", bcond="check" },
   { name="cpp-optparse", ref="eab4212", owner="Sonicadvance1", path="../Source/Common/cpp-optparse", license="MIT" },
-  { name="drm-headers", ref="8efb6dc", owner="FEX-Emu", package="kernel", version="6.8", license="GPL-2.0-only" },
+  { name="drm-headers", ref="8efb6dc", owner="FEX-Emu", package="kernel", version="6.11", license="GPL-2.0-only" },
   --Exclude these altogether for now, as they're prebuilt binaries only needed for the integration tests
   --{ name="fex-gcc-target-tests-bins", ref="442678a", owner="FEX-Emu", license="GPL-2.0-or-later", bcond="integration" },
   --{ name="fex-gvisor-tests-bins", ref="71349ae", owner="FEX-Emu", license="Apache-2.0", bcond="integration" },
   --{ name="fex-posixtest-bins", ref="9ae2963", owner="FEX-Emu", package="posixtest", version="1.5.2", license="GPL-2.0-or-later", bcond="integration" },
-  { name="fmt", ref="0c9fce2", owner="fmtlib", version="10.1.2", license="MIT" },
+  { name="fmt", ref="0c9fce2", owner="fmtlib", version="11.0.2", license="MIT" },
   --Excluded as we use the FEXConfig Qt backend instead
   --{ name="imgui", ref="4c986ec", owner="Sonicadvance1", version="1.73", license="MIT" },
   { name="jemalloc", ref="02ca52b", owner="FEX-Emu", version="5.3.0", license="MIT" },
   { name="jemalloc", ref="4043539", owner="FEX-Emu", path="jemalloc_glibc", version="5.3.0", license="MIT" },
   { name="robin-map", ref="d5683d9", owner="FEX-Emu", version="1.3.0", license="MIT" },
   { name="vixl", ref="a90f5d5", owner="FEX-Emu", version="5.1.0", license="BSD-3-Clause" },
-  { name="Vulkan-Headers", ref="29f979e", owner="KhronosGroup", package="vulkan-headers", license="Apache-2.0" },
-  { name="xbyak", ref="f17cb9d", owner="herumi", version="6.68", license="BSD-3-Clause", bcond="x86_debug" },
-  { name="xxhash", ref="bbb27a5", owner="Cyan4973", version="0.8.1", license="BSD-2-Clause" },
+  { name="Vulkan-Headers", ref="29f979e", owner="KhronosGroup", package="vulkan-headers", version="1.3.296", license="Apache-2.0" },
+  { name="xbyak", ref="c68cc53", owner="herumi", version="7.09", license="BSD-3-Clause", bcond="x86_debug" },
+  { name="xxhash", ref="bbb27a5", owner="Cyan4973", version="0.8.2", license="BSD-2-Clause" },
 }
 
 for i, s in ipairs(externals) do
@@ -137,6 +146,9 @@ BuildRequires:  cmake(Qt6Widgets)
 
 Requires:       systemd-udev
 Requires:       %{name}-filesystem = %{version}-%{release}
+%if %{with thunks}
+Recommends:     %{name}-thunks = %{version}-%{release}
+%endif
 
 Recommends:     fex-emu-rootfs-fedora
 Recommends:     erofs-fuse
@@ -177,6 +189,15 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %description    utils
 This package provides utility tools for %{name} for advanced users.
 
+%if %{with thunks}
+%package        thunks
+Summary:        Thunk libraries for %{name}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+
+%description    thunks
+This package provides host library thunks for %{name}.
+%endif
+
 %prep
 %if %{defined commit}
 %setup -q -n %{srcname}-%{commit}
@@ -196,6 +217,16 @@ cp -p %SOURCE1 .
 # Ensure library soversion is set
 sed -i FEXCore/Source/CMakeLists.txt \
   -e '/PROPERTIES OUTPUT_NAME/aset_target_properties(${Name} PROPERTIES VERSION %{version})'
+
+# Set up sysroot and toolchain files
+
+%if 0%{?has_sysroot}
+  # Unpack and prepare sysroot
+  tar xzf %SOURCE3
+  cp -p %SOURCE4 %SOURCE5 .
+  CPPINC="/$(cd sysroot; ls -d usr/include/c++/*)"
+  sed -i "s,%%CPPINC%%,$CPPINC,g" toolchain_*.cmake
+%endif
 
 %build
 %cmake -G Ninja \
@@ -218,6 +249,11 @@ sed -i FEXCore/Source/CMakeLists.txt \
 %else
     -DBUILD_FEX_LINUX_TESTS=OFF \
 %endif
+%if 0%{?has_sysroot}
+    -DX86_DEV_ROOTFS=$PWD/sysroot \
+    -DX86_32_TOOLCHAIN_FILE=$PWD/toolchain_x86_32.cmake \
+    -DX86_64_TOOLCHAIN_FILE=$PWD/toolchain_x86_64.cmake \
+%endif
     %{nil}
 
 %cmake_build
@@ -229,6 +265,14 @@ sed -i FEXCore/Source/CMakeLists.txt \
 # by other packages
 install -Ddpm0755 %{buildroot}%{_datadir}/fex-emu/RootFS/
 install -Ddpm0755 %{buildroot}%{_datadir}/fex-emu/overlays/
+
+%if %{with thunks}
+# This is for running tests only (and gets installed into the wrong libdir)
+rm %{buildroot}/usr/lib/libfex_thunk_test.so
+%else
+# Not useful without thunks
+rm %{buildroot}%{_datadir}/fex-emu/ThunksDB.json
+%endif
 
 %postun
 if [ $1 -eq 0 ]; then
@@ -253,7 +297,6 @@ fi
 %{_binfmtdir}/FEX-x86.conf
 %{_binfmtdir}/FEX-x86_64.conf
 %{_datadir}/fex-emu/AppConfig/
-%{_datadir}/fex-emu/ThunksDB.json
 %{_mandir}/man1/FEX.1*
 
 %files filesystem
@@ -268,6 +311,15 @@ fi
 %files utils
 %{_bindir}/FEXConfig
 %{_bindir}/FEXRootFSFetcher
+
+%if %{with thunks}
+%files thunks
+%{_libdir}/fex-emu/HostThunks/
+%{_libdir}/fex-emu/HostThunks_32/
+%{_datadir}/fex-emu/ThunksDB.json
+%{_datadir}/fex-emu/GuestThunks/
+%{_datadir}/fex-emu/GuestThunks_32/
+%endif
 
 %changelog
 %autochangelog

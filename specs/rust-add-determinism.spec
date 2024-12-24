@@ -7,15 +7,13 @@
 %global crate add-determinism
 
 Name:           rust-add-determinism
-Version:        0.4.3
+Version:        0.5.0
 Release:        %autorelease
 Summary:        RPM buildroot helper to strip nondeterministic bits in files
 
 License:        GPL-3.0-or-later
 URL:            https://crates.io/crates/add-determinism
 Source:         %{crates_source}
-
-Patch:          https://github.com/keszybz/add-determinism/commit/2ef536bbd81a432bb3d7fe39b4ca9215a1657783.patch
 
 BuildRequires:  cargo-rpm-macros >= 26
 

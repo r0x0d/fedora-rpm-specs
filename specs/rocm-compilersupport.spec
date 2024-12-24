@@ -6,7 +6,7 @@
 %global comgr_full_api_ver %{comgr_maj_api_ver}.8.0
 # Upstream tags are based on rocm releases:
 %global rocm_release 6.3
-%global rocm_patch 0
+%global rocm_patch 1
 %global rocm_version %{rocm_release}.%{rocm_patch}
 # What LLVM is upstream using (use LLVM_VERSION_MAJOR from llvm/CMakeLists.txt):
 %global llvm_maj_ver 18
@@ -57,7 +57,7 @@
 
 Name:           rocm-compilersupport
 Version:        %{llvm_maj_ver}
-Release:        28.rocm%{rocm_version}%{?dist}
+Release:        29.rocm%{rocm_version}%{?dist}
 Summary:        Various AMD ROCm LLVM related services
 
 Url:            https://github.com/ROCm/llvm-project
@@ -991,6 +991,9 @@ mv %{buildroot}%{_bindir}/hip*.pm %{buildroot}%{perl_vendorlib}
 %endif
 
 %changelog
+* Sun Dec 22 2024 Tom Rix <Tom.Rix@amd.com> - 18-29.rocm6.3.1
+- Update to 6.3.1
+
 * Wed Dec 18 2024 Tom Rix <Tom.Rix@amd.com> - 18-28.rocm6.3.0
 - Statically link comgr
 - Remove lld-devel

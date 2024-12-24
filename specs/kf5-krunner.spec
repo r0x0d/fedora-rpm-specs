@@ -5,7 +5,7 @@ Version: 5.116.0
 Release: 2%{?dist}
 Summary: KDE Frameworks 5 Tier 3 solution with parallelized query system
 
-License: BSD-2-Clause AND CC0-1.0 AND LGPL-2.0-or-later AND LGPL-2.1-or-later AND LicenseRef-KDE-Accepted-GPL
+License: BSD-2-Clause AND CC0-1.0 AND LGPL-2.0-or-later AND LGPL-2.1-or-later
 URL:     https://invent.kde.org/frameworks/%{framework}
 
 %global majmin %majmin_ver_kf5

@@ -6,7 +6,7 @@
 %bcond pydantic_tests %{without bootstrap}
 
 Name:           python-inline-snapshot
-Version:        0.17.1
+Version:        0.18.1
 Release:        %autorelease
 Summary:        Golden master/snapshot/approval testing library
 
@@ -14,6 +14,10 @@ Summary:        Golden master/snapshot/approval testing library
 License:        MIT
 URL:            https://github.com/15r10nk/inline-snapshot
 Source:         %{pypi_source inline_snapshot}
+
+# Use sys.executable rather than "python" to invoke pytest
+# https://github.com/15r10nk/inline-snapshot/pull/167
+Patch:          %{url}/pull/167.patch
 
 BuildArch:      noarch
 
@@ -27,6 +31,18 @@ BuildRequires:  tomcli
 BuildRequires:  %{py3_dist pytest-xdist}
 # For test_black_formatting_error (mocker fixture)
 BuildRequires:  %{py3_dist pytest-mock}
+# A comment in pyproject.toml in [tool.hatch.envs.hatch-test] says:
+#   Info for everyone who packages this library:
+#   The following dependencies are installed with uv if you run `pytest --use-uv`
+#   and used for specific tests in specific versions:
+#    - pydantic v1 & v2
+#    - attrs
+#   But you dont have to use uv to test this library.
+#   You can also just install the dependencies and use `pytest` normally
+%if %{with pydantic_tests}
+BuildRequires:  %{py3_dist pydantic}
+%endif
+BuildRequires:  %{py3_dist attrs}
 
 %global common_description %{expand:
 Golden master/snapshot/approval testing library which puts the values right
@@ -49,9 +65,6 @@ Summary:        %{summary}
 tomcli get pyproject.toml -F newline-list \
     'tool.hatch.envs.hatch-test.extra-dependencies' |
     grep -vE '^(pyright|mypy)\b' |
-%if %{without pydantic_tests}
-    grep -vE '^(pydantic)\b' |
-%endif
     tee _test-requirements.txt
 
 

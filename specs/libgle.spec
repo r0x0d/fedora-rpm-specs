@@ -1,7 +1,7 @@
 Summary: A Tubing and Extrusion Library for OpenGL
 Name: libgle
 Version: 3.1.0
-Release: 33%{?dist}
+Release: 34%{?dist}
 # Automatically converted from old format: GPLv2 or (Artistic clarified and MIT) - review is highly recommended.
 License: GPL-2.0-only OR (ClArtistic AND LicenseRef-Callaway-MIT)
 URL: http://www.linas.org/gle/
@@ -9,6 +9,9 @@ Source: http://www.linas.org/gle/pub/gle-%{version}.tar.gz
 # Make the examples makefile multilib-compliant
 Patch0: libgle-examples-makefile.patch
 Patch1: libgle-configure-c99.patch
+# https://github.com/linas/glextrusion/pull/13
+# https://github.com/linas/glextrusion/commit/2453603748f156a6cde0e810c147dc14a1bbbab8
+Patch2: libgle-pr13-function-type-cast.patch
 
 BuildRequires:  gcc
 BuildRequires: mesa-libGL-devel 
@@ -46,6 +49,7 @@ Extrusion Library.
 %setup -q -n gle-%{version}
 %patch -P0 -p5
 %patch -P1 -p1
+%patch -P2 -p1
 # Prevent re-running autotools.
 touch -r Makefile.am aclocal.m4 configure*
 
@@ -75,6 +79,9 @@ mv $RPM_BUILD_ROOT%{_docdir}/gle docs
 
 
 %changelog
+* Tue Oct 08 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.1.0-34
+- Backport upstream patch to fix FTBFS with -Werror=incompatible-pointer-types
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 3.1.0-33
 - convert license to SPDX
 

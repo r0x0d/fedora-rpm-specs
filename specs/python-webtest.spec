@@ -5,7 +5,7 @@
 
 Name:           python-webtest
 Version:        3.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Helper to test WSGI applications
 
 License:        MIT
@@ -20,7 +20,6 @@ BuildRequires:  python3-setuptools
 
 %if 0%{?with_tests}
 BuildRequires:  python3-pytest
-BuildRequires:  python3-pytest-cov
 BuildRequires:  python3-beautifulsoup4
 BuildRequires:  python3-paste-deploy
 BuildRequires:  python3-pyquery
@@ -90,6 +89,9 @@ rm -f docs/Makefile docs/conf.py docs/changelog.rst
 %{python3_sitelib}/WebTest-*.egg-info
 
 %changelog
+* Sun Dec 22 2024 Ján ONDREJ (SAL) <ondrejj(at)salstar.sk> - 3.0.1-2
+- Coverage tests should not be run in Fedora/EPEL
+
 * Tue Sep 03 2024 Ján ONDREJ (SAL) <ondrejj(at)salstar.sk> - 3.0.1-1
 - Update to upstream.
 

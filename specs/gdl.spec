@@ -31,7 +31,7 @@ ExcludeArch: %{ix86}
 
 Name:           gdl
 Version:        1.0.6
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        GNU Data Language
 
 License:        GPL-2.0-or-later
@@ -267,6 +267,9 @@ cat xorg.log
 
 
 %changelog
+* Mon Dec 23 2024 Orion Poplawski <orion@nwra.com> - 1.0.6-5
+- Rebuild with numpy 2.x (rhbz#2333764)
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 1.0.6-4
 - Rebuild for hdf5 1.14.5
 

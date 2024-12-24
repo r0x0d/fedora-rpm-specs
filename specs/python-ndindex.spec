@@ -1,5 +1,5 @@
 Name:           python-ndindex
-Version:        1.7
+Version:        1.9.2
 Release:        %autorelease
 Summary:        Python library for manipulating indices of ndarrays
 # Upstream specified license as MIT and this covers almost all source files.
@@ -7,8 +7,6 @@ Summary:        Python library for manipulating indices of ndarrays
 License:        MIT AND BSD-3-Clause
 URL:            https://quansight-labs.github.io/ndindex/
 Source:         https://github.com/quansight-labs/ndindex/archive/%{version}/%{name}-%{version}.tar.gz
-Patch:          0001-Use-configparser.ConfigParser-instead-of-SafeConfigP.patch
-Patch:          0002-setup.py-specify-cython-language_level.patch
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
@@ -18,6 +16,7 @@ BuildRequires:  gcc
 BuildRequires:  python3-pytest
 BuildRequires:  python3-hypothesis
 BuildRequires:  python3-numpy
+BuildRequires:  python3-sympy
 
 ExcludeArch:    %{ix86}
 
@@ -52,12 +51,17 @@ rm pytest.ini
 
 %check
 OPTIONS=(
-  # This test is flaky
+  # These tests are flaky
   --deselect=ndindex/tests/test_shapetools.py::test_iter_indices_matmul
-  # https://github.com/Quansight-Labs/ndindex/issues/158
-  --deselect=ndindex/tests/test_ndindex.py::test_eq
+  --deselect=ndindex/tests/test_as_subindex.py::test_as_subindex_hypothesis
 )
 
+# Ugly hack to make the tests work.
+# Upstream uses an editable build, which drops the .so files in the tree.
+# The usual remedies like using `--import-mode=importlib` do not work.
+pushd ndindex
+ln -s %{buildroot}%{python3_sitearch}/ndindex/*.so .
+popd
 %pytest -v "${OPTIONS[@]}"
 
 %files -n python3-ndindex

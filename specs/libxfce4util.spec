@@ -1,9 +1,9 @@
-%global xfceversion 4.18
+%global xfceversion 4.20
 
 %global namespc Libxfce4util
 
 Name:           libxfce4util
-Version:        4.18.2
+Version:        4.20.0
 Release:        %autorelease
 Summary:        Utility library for the Xfce4 desktop environment
 
@@ -62,7 +62,7 @@ rm -f %{buildroot}%{_libdir}/*.la
 
 %files -f %{name}.lang
 %license COPYING
-%doc AUTHORS ChangeLog NEWS README.Kiosk THANKS
+%doc AUTHORS ChangeLog NEWS
 %{_libdir}/lib*.so.*
 %{_sbindir}/xfce4-kiosk-query
 %{_libdir}/girepository-1.0/%{namespc}-1.0.typelib

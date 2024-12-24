@@ -1,9 +1,9 @@
 # Review at https://bugzilla.redhat.com/show_bug.cgi?id=549593
 
-%global xfceversion 4.18
+%global xfceversion 4.20
 
 Name:           tumbler
-Version:        4.18.2
+Version:        4.20.0
 Release:        %autorelease
 Summary:        D-Bus service for applications to request thumbnails
 

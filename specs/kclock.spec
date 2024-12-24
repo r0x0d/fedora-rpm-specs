@@ -4,7 +4,7 @@
 Name:           kclock
 Version:        24.12.0
 Release:        1%{?dist}
-License:        GPLv2+ and LGPLv2.1+ and CC-BY and GPLv3+
+License:        LGPL-2.1-or-later AND LGPL-2.0-or-later AND GPL-3.0-or-later AND CC-BY-4.0 AND GPL-2.0-or-later
 Summary:        Clock app for Plasma Mobile
 Url:            https://apps.kde.org/kclock/
 Source0:        https://download.kde.org/%{stable_kf6}/release-service/%{version}/src/%{name}-%{version}.tar.xz
