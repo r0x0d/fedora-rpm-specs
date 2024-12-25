@@ -33,7 +33,7 @@
 %constrain_build -m 4096
 
 Name:           uv
-Version:        0.5.7
+Version:        0.5.11
 Release:        %autorelease
 Summary:        An extremely fast Python package installer and resolver, written in Rust
 
@@ -175,9 +175,9 @@ Source100:      %{async_zip_git}/archive/%{async_zip_rev}/rs-async-zip-%{async_z
 # We therefore bundle the fork as prescribed in
 #   https://docs.fedoraproject.org/en-US/packaging-guidelines/Rust/#_replacing_git_dependencies
 %global pubgrub_git https://github.com/astral-sh/pubgrub
-%global pubgrub_rev 57832d0588fbb7aab824813481104761dc1c7740
+%global pubgrub_rev 05e8d12cea8d72c6d2d017900e478d0abd28fef4
 %global pubgrub_baseversion 0.2.1
-%global pubgrub_snapdate 20241203
+%global pubgrub_snapdate 20241216
 %global version_ranges_baseversion 0.1.1
 Source200:      %{pubgrub_git}/archive/%{pubgrub_rev}/pubgrub-%{pubgrub_rev}.tar.gz
 
@@ -211,10 +211,6 @@ Patch:          0001-Downstream-only-do-not-override-the-default-allocato.patch
 #   Should uv.find_uv_bin() be able to find /usr/bin/uv?
 #   https://github.com/astral-sh/uv/issues/4451
 Patch:          0001-Downstream-patch-always-find-the-system-wide-uv-exec.patch
-
-# Make the backoff crate dependency Windows-only
-# https://github.com/astral-sh/uv/pull/10002
-Patch:          %{url}/pull/10002.patch
 
 # These patches are for the forked, bundled async_zip crate.
 #

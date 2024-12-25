@@ -12,7 +12,7 @@
 
 # https://github.com/sibprogrammer/xq
 %global goipath         github.com/sibprogrammer/xq
-Version:                1.2.5
+Version:                1.3.0
 
 %gometa -L -f
 

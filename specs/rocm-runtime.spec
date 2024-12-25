@@ -3,7 +3,7 @@
 %global enableimage 1
 %endif
 %global rocm_release 6.3
-%global rocm_patch 0
+%global rocm_patch 1
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 %if 0%{?suse_version}
@@ -14,7 +14,7 @@
 
 Name:       rocm-runtime
 Version:    %{rocm_version}
-Release:    2%{?dist}
+Release:    1%{?dist}
 Summary:    ROCm Runtime Library
 
 License:    NCSA
@@ -146,6 +146,9 @@ fi
 %endif
 
 %changelog
+* Sun Dec 22 2024 Tom Rix <Tom.Rix@amc.com> - 6.3.1-1
+- Update to 6.3.1
+
 * Fri Dec 20 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-2
 - Link kfdtest with static llvm libs
 

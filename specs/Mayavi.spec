@@ -3,13 +3,16 @@
 
 Name:           Mayavi
 Version:        4.8.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Scientific data 3-dimensional visualizer
 # Automatically converted from old format: BSD and EPL and LGPLv2+ and LGPLv2 and LGPLv3 - review is highly recommended.
 License:        LicenseRef-Callaway-BSD AND LicenseRef-Callaway-EPL AND LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-LGPLv2 AND LGPL-3.0-only
 URL:            http://code.enthought.com/projects/mayavi/
 Source0:        https://github.com/enthought/mayavi/archive/%{version}/mayavi-%{version}.tar.gz
 Source1:        mayavi2.desktop
+# NumPy 2.x patch
+# https://github.com/enthought/mayavi/pull/1315
+Patch:          https://github.com/enthought/mayavi/pull/1315.patch
 BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  python%{python3_pkgversion}-devel
@@ -17,6 +20,7 @@ BuildRequires:  python%{python3_pkgversion}-Cython
 BuildRequires:  python%{python3_pkgversion}-setuptools
 # For tests
 BuildRequires:  python%{python3_pkgversion}-pytest
+BuildRequires:  python%{python3_pkgversion}-pytest-xvfb
 BuildRequires:  python%{python3_pkgversion}-apptools
 BuildRequires:  python%{python3_pkgversion}-qt5
 BuildRequires:  python%{python3_pkgversion}-traits
@@ -130,12 +134,7 @@ install -p -m 644 ./docs/source/mayavi/images/mayavi2-48x48.png \
  $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/apps/mayavi2.png
 
 %check
-# This isn't working yet
-#libdir=`echo build/lib.*`
-#ln tvtk/tvtk_classes.zip ${libdir}/tvtk/
-# Mayavi tests appear to hang running under xvfb-run
-#PYTHONPATH=${libdir} mayavi/scripts/mayavi2 -t || :
-xvfb-run env %pytest -v mayavi
+%pytest -v mayavi
 
 %files
 %license *LICENSE*
@@ -160,6 +159,10 @@ xvfb-run env %pytest -v mayavi
 
 
 %changelog
+* Tue Oct 29 2024 Sandro <devel@penguinpee.nl> - 4.8.2-4
+- Apply patch for NumPy 2.x
+- Run tests using pytest-xvfb
+
 * Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.8.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

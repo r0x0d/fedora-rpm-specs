@@ -1,3 +1,5 @@
+%global prerelease -rc.1
+
 %global _hardened_build 1
 
 %global selinux_types %(%{__awk} '/^#[[:space:]]*SELINUXTYPE=/,/^[^#]/ { if ($3 == "-") printf "%s ", $2 }' /etc/selinux/config 2>/dev/null)
@@ -13,15 +15,19 @@
 %global _missing_braces -Wno-error=missing-braces
 %endif
 
+%ifarch %{ix86}
+%global _file_offset_bits -D_FILE_OFFSET_BITS=64
+%endif
+
 Summary:   Open source remote desktop protocol (RDP) server
 Name:      xrdp
 Epoch:     1
-Version:   0.10.1
-Release:   2%{?dist}
+Version:   0.10.2
+Release:   0.rc1.1%{?dist}
 # Automatically converted from old format: ASL 2.0 and GPLv2+ and MIT - review is highly recommended.
 License:   Apache-2.0 AND GPL-2.0-or-later AND LicenseRef-Callaway-MIT
 URL:       http://www.xrdp.org/
-Source0:   https://github.com/neutrinolabs/xrdp/releases/download/v%{version}/xrdp-%{version}.tar.gz
+Source0:   https://github.com/neutrinolabs/xrdp/releases/download/v%{version}%{?prerelease}/xrdp-%{version}%{?prerelease}.tar.gz
 Source1:   xrdp-sesman.pamd
 Source2:   xrdp.sysconfig
 Source3:   xrdp.logrotate
@@ -30,15 +36,15 @@ Source5:   README.Fedora
 Source6:   xrdp.te
 Source7:   xrdp-polkit-1.rules
 Source8:   %{name}-tmpfiles.conf
-Patch0:    xrdp-0.9.9-sesman.patch
-Patch1:    xrdp-0.10.0-xrdp-ini.patch
+Patch0:    xrdp-0.10.2-sesman.patch
+Patch1:    xrdp-0.10.2-xrdp-ini.patch
 Patch2:    xrdp-0.10.1-service.patch
 Patch3:    xrdp-0.10.0-scripts-libexec.patch
 Patch4:    xrdp-0.9.6-script-interpreter.patch
 Patch5:    xrdp-0.9.16-arch.patch
 Patch6:    xrdp-0.9.18-vnc-uninit.patch
 %if 0%{?fedora} >= 32 || 0%{?rhel} >= 8
-Patch7:    xrdp-0.9.20-sesman-ini.patch
+Patch7:    xrdp-0.10.2-sesman-ini.patch
 %endif
 
 BuildRequires: make
@@ -50,7 +56,7 @@ BuildRequires: libXrandr-devel
 BuildRequires: imlib2-devel
 BuildRequires: openssl
 BuildRequires: pam-devel
-BuildRequires: pkgconfig(fuse)
+BuildRequires: pkgconfig(fuse3)
 BuildRequires: pkgconfig(openssl)
 BuildRequires: pkgconfig(pixman-1)
 BuildRequires: pkgconfig(systemd)
@@ -105,7 +111,7 @@ Requires(postun): /usr/sbin/semodule
 This package contains SELinux policy module necessary to run xrdp.
 
 %prep
-%autosetup -p1 -n %{name}-%{version}
+%autosetup -p1 -n %{name}-%{version}%{?prerelease}
 %{__cp} %{SOURCE5} .
 
 # SELinux policy module
@@ -118,7 +124,7 @@ echo '#!/bin/bash -l
 
 %build
 autoreconf -vif
-CFLAGS="$RPM_OPT_FLAGS %{?_missing_braces}" \
+CFLAGS="$RPM_OPT_FLAGS %{?_missing_braces} %{?_file_offset_bits}" \
 %configure --enable-fuse --enable-pixman --enable-painter --enable-vsock \
            --enable-ipv6 --with-socketdir=%{_rundir}/%{name} --with-imlib2
 %make_build
@@ -242,6 +248,7 @@ fi
 %config(noreplace) %{_sysconfdir}/xrdp/km*.ini
 %config(noreplace) %{_sysconfdir}/xrdp/openssl.conf
 %config(noreplace) %{_sysconfdir}/xrdp/xrdp_keyboard.ini
+%config(noreplace) %{_sysconfdir}/xrdp/gfx.toml
 %config(noreplace) %{_sysconfdir}/xrdp/pulse/default.pa
 %exclude %ghost %{_sysconfdir}/xrdp/*.pem
 %exclude %ghost %{_sysconfdir}/xrdp/rsakeys.ini
@@ -249,6 +256,7 @@ fi
 %{_libexecdir}/xrdp/reconnectwm.sh
 %{_libexecdir}/xrdp/waitforx
 %{_libexecdir}/xrdp/xrdp-sesexec
+%{_libexecdir}/xrdp/xrdp-droppriv
 %{_bindir}/xrdp-genkeymap
 %{_bindir}/xrdp-sesadmin
 %{_bindir}/xrdp-keygen
@@ -268,6 +276,7 @@ fi
 %{_datadir}/xrdp/xrdp24b.bmp
 %{_datadir}/xrdp/xrdp_logo.bmp
 %{_datadir}/xrdp/xrdp_logo.png
+%{_datadir}/xrdp/xrdp-chkpriv
 %{_datadir}/xrdp/README.logo
 %{_datadir}/polkit-1/rules.d/xrdp.rules
 %{_mandir}/man5/*
@@ -307,6 +316,9 @@ fi
 %{_datadir}/selinux/*/%{name}.pp
 
 %changelog
+* Tue Dec 24 2024 Bojan Smojver <bojan@rexursive.com> - 1:0.10.2~0.rc1.1
+- Update to 0.10.2-rc.1
+
 * Wed Sep  4 2024 Miroslav Suchý <msuchy@redhat.com> - 1:0.10.1-2
 - convert license to SPDX
 

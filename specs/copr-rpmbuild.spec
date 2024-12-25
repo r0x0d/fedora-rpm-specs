@@ -16,7 +16,7 @@ Requires: %1 \
 Name:    copr-rpmbuild
 Version: 1.2
 Summary: Run COPR build tasks
-Release: 1%{?dist}
+Release: 2%{?dist}
 URL: https://github.com/fedora-copr/copr
 License: GPL-2.0-or-later
 
@@ -24,6 +24,11 @@ License: GPL-2.0-or-later
 # git clone %%url && cd copr
 # tito build --tgz --tag %%name-%%version-%%release
 Source0:    %name-%version.tar.gz
+
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+%if !%{defined fc40} && !%{defined fc41}
+ExcludeArch:   %{ix86}
+%endif
 
 BuildRequires: %{python}-copr-common >= %copr_common_version
 BuildRequires: %{python}-devel
@@ -298,6 +303,9 @@ EOF
 
 
 %changelog
+* Mon Dec 16 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 1.2-2
+- Drop i686 support beginning in Fedora 42 (leaf package)
+
 * Tue Nov 19 2024 Pavel Raiskup <praiskup@redhat.com> 1.2-1
 - change the pyp2spec invocation for v0.10.0+
 

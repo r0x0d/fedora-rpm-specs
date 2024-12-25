@@ -3,7 +3,7 @@
 
 Name:		qpdfview
 Version:	0.5.0
-Release:	16%{?dist}
+Release:	17%{?dist}
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:	GPL-2.0-or-later
 Summary:	Tabbed PDF Viewer
@@ -193,6 +193,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}-qt6.desktop
 %{_mandir}/man?/*
 
 %changelog
+* Sat Oct 05 2024 Michael J Gruber <mjg@fedoraproject.org> - 0.5.0-17
+- Rebuild (mupdf)
+
 * Fri Jul 26 2024 Miroslav Suchý <msuchy@redhat.com> - 0.5.0-16
 - convert license to SPDX
 

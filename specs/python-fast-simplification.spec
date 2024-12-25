@@ -20,13 +20,6 @@ Source:         %{url}/archive/v%{version}/fast-simplification-%{version}.tar.gz
 # Don’t compile with -O3 unless we can point to benchmarks that justify it.
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/#_compiler_flags
 Patch:          0001-Downstream-only-do-not-override-system-compiler-flag.patch
-# Downstream-only: allow building with numpy 1.x
-#    
-# We believe upstream requires numpy 2.x only so that they can build binary
-# distributions compatible with both 2.x and 1.x for PyPI.
-#
-# See discussion in https://github.com/pyvista/fast-simplification/issues/38.
-Patch:          0002-Downstream-only-allow-building-with-numpy-1.x.patch
 
 # https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
 ExcludeArch:    %{ix86}

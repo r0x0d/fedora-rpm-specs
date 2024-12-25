@@ -1,6 +1,6 @@
 %global upstreamname MIOpen
 %global rocm_release 6.3
-%global rocm_patch 0
+%global rocm_patch 1
 %global rocm_version %{rocm_release}.%{rocm_patch}
 
 %global toolchain rocm
@@ -262,6 +262,9 @@ fi
 %endif
 
 %changelog
+* Mon Dec 23 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.1-1
+- Update to 6.3.1
+
 * Wed Dec 11 2024 Tom Rix <Tom.Rix@amd.com> - 6.3.0-1
 - Update to 6.3
 

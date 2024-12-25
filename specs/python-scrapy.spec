@@ -1,14 +1,14 @@
 %global pypi_name Scrapy
 %global pkg_name scrapy
 Name:		python-scrapy
-Version:	2.11.2
-Release:	2%{?dist}
+Version:	2.12.0
+Release:	1%{?dist}
 Summary:	A high-level Python Screen Scraping framework
 # Automatically converted from old format: BSD - review is highly recommended.
 License:	LicenseRef-Callaway-BSD
 URL:		https://scrapy.org
 # TODO fix Source0 to correct github source URL
-Source0:	https://files.pythonhosted.org/packages/f2/1f/5524416a64c030fbe18caeba079e7176836b281bf9eb50b79efdf8015063/scrapy-2.11.2.tar.gz
+Source0:	https://files.pythonhosted.org/packages/source/S/%{pypi_name}/%{pkg_name}-%{version}.tar.gz
 BuildArch:	noarch
 
 
@@ -85,10 +85,9 @@ This package contains the documentation for %{name}
 
 %build
 %py3_build
-# Removing docs temporarily because is not compatible with sphinx 7.2.x
-#PYTHONPATH=$(pwd) make -C docs html
-#%make_build PYTHONPATH=$(pwd) -C docs html
-#rm -f docs/build/html/.buildinfo
+pushd docs
+%make_build html && rm -r build/html/.buildinfo
+popd
 
 %install
 %py3_install
@@ -101,10 +100,13 @@ This package contains the documentation for %{name}
 %{python3_sitelib}/Scrapy-*.egg-info
 %{_bindir}/scrapy
 
-#%files doc
-#%doc docs/build/html
+%files doc
+%doc docs/build/html
 
 %changelog
+* Mon Dec 23 2024 Eduardo Echeverria <echevemaster@gmail.com> - 2.12.0-1
+- Update to 2.12.0
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 2.11.2-2
 - convert license to SPDX
 

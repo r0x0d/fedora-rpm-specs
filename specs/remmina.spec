@@ -1,16 +1,13 @@
-%global commit 17cf7956b9f925fa788083a2db8d5e669f86bfaf
+%global commit 8b841a1900516a1f1ba16586dc296f8f20e61239
 
 Name: remmina
-Version: 1.4.36
-Release: 2%{?dist}
+Version: 1.4.37
+Release: 1%{?dist}
 Summary: Remote Desktop Client
 License: GPL-2.0-or-later and MIT
 URL: https://remmina.org
 
 Source0: https://gitlab.com/Remmina/Remmina/-/archive/v%{version}/Remmina-%{version}.tar.gz#/%{name}-%{version}.tar.gz
-
-# https://gitlab.com/Remmina/Remmina/-/issues/3223
-Patch0: b1d621d256cc8877446b654c1ac2909099f5effb.patch
 
 # Cmake helper file to easy build plugins outside remmina source tree
 # See http://www.muflone.com/remmina-plugin-rdesktop/english/install.html which
@@ -343,7 +340,10 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*.appdat
 %{_mandir}/man1/remmina-gnome.1*
 
 %changelog
-* Sat Dec 07 2024 Daniel Milnes <daniel@daniel-milnes.uk> - 1.4.36-url2path
+* Mon Dec 23 2024 Daniel Milnes <daniel@daniel-milnes.uk> - 1.4.37-1
+- Update to 1.4.37 rhbz#2333334
+
+* Sat Dec 07 2024 Daniel Milnes <daniel@daniel-milnes.uk> - 1.4.36-2
 - Backport fix for SSH crash
 
 * Mon Nov 18 2024 Daniel Milnes <daniel@daniel-milnes.uk> - 1.4.36-1

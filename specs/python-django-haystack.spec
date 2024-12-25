@@ -1,16 +1,14 @@
 # tests require running a solr server
 %bcond_with tests
 
-%global pypi_name django-haystack
-
-Name:           python-%{pypi_name}
-Version:        3.2.1
+Name:           python-django-haystack
+Version:        3.3.0
 Release:        %autorelease
 Summary:        Pluggable search for Django
 
 License:        BSD-3-Clause
 URL:            http://haystacksearch.org/
-Source:         %{pypi_source}
+Source:         %{pypi_source django_haystack}
 
 BuildArch:      noarch
 
@@ -27,14 +25,14 @@ You can find more information at http://haystacksearch.org/.}
 
 %description %_description
 
-%package -n python3-%{pypi_name}
+%package -n python3-django-haystack
 Summary:        Haystack provides modular search for Django - Python 3 version
 
 BuildRequires:  python3-devel
 
-%description -n python3-%{pypi_name} %_description
+%description -n python3-django-haystack %_description
 
-This package provides Python 3 build of %{pypi_name}.
+This package provides Python 3 build of django-haystack.
 
 
 %package docs
@@ -58,7 +56,7 @@ Documentation for Django Haystack pluggable search
 
 
 %prep
-%autosetup -p1 -n %{pypi_name}-%{version}
+%autosetup -p1 -n django_haystack-%{version}
 
 %generate_buildrequires
 %pyproject_buildrequires %{?with_tests:-t}
@@ -78,7 +76,7 @@ popd
 
 %install
 %pyproject_install
-%pyproject_save_files haystack
+%pyproject_save_files -l haystack
 
 
 %check
@@ -91,9 +89,8 @@ popd
 %endif
 
 
-%files -n python3-%{pypi_name} -f %{pyproject_files}
-%doc PKG-INFO README.rst AUTHORS
-%license LICENSE
+%files -n python3-django-haystack -f %{pyproject_files}
+%doc PKG-INFO README.rst
 
 %files docs
 %doc docs/

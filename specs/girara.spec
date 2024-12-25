@@ -1,6 +1,6 @@
 Name:               girara
-Version:            0.4.4
-Release:            3%{?dist}
+Version:            0.4.5
+Release:            1%{?dist}
 Summary:            Simple user interface library
 License:            Zlib
 URL:                https://pwmt.org/projects/%{name}/
@@ -56,7 +56,8 @@ developing applications that use %{name}.
 %files -f %{girara_locales}.lang
 %license LICENSE
 %doc AUTHORS README.md
-%{_libdir}/libgirara-gtk3.so.*
+%{_libdir}/libgirara-gtk3.so.4
+%{_libdir}/libgirara-gtk3.so.4.0
 
 %files devel
 %dir %{_includedir}/%{name}
@@ -66,6 +67,10 @@ developing applications that use %{name}.
 
 
 %changelog
+* Wed Dec 18 2024 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.4.5-1
+- Update to 0.4.5 (fixes rhbz#2331281)
+- version sonames in files
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.4-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

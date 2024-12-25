@@ -10,8 +10,8 @@ For example, it allows you to have all your casting and parsing rules in a
 single place.}
 
 Name:		python-itemloaders
-Version:	1.0.4
-Release:	14%{?dist}
+Version:	1.3.2
+Release:	1%{?dist}
 Summary:	Library that helps you collect data from HTML and XML sources.
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -57,6 +57,9 @@ BuildRequires:	python3-w3lib
 %{python3_sitelib}/itemloaders-*.egg-info
 
 %changelog
+* Mon Dec 23 2024 Eduardo Echeverria <echevemaster@gmail.com> - 1.3.2-1
+- Update to 1.3.2
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.0.4-14
 - convert license to SPDX
 

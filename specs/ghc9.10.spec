@@ -21,6 +21,7 @@
 %global ghc_release %{version}
 
 %global base_ver 4.20.0.0
+%global Cabal_ver 3.12.0.0
 %global ghc_bignum_ver 1.3
 %global ghc_compact_ver 0.1.0.0
 %global ghc_experimental_ver 0.1.0.0
@@ -30,8 +31,12 @@
 %global rts_ver 1.0.2
 %global xhtml_ver 3000.2.2.1
 
+%global hadrian_Cabal_ver 3.10.3.0
+
 # bootstrap needs 9.6+ (& hadrian needs Cabal-3.10)
-#%%global ghcboot_major 9.6
+%if 0%{?fedora} < 41
+%global ghcboot_major 9.6
+%endif
 %global ghcboot ghc%{?ghcboot_major}
 
 # make sure ghc libraries' ABI hashes unchanged
@@ -61,18 +66,20 @@ Version: 9.10.1
 # - release can only be reset if *all* library versions get bumped simultaneously
 #   (sometimes after a major release)
 # - minor release numbers for a branch should be incremented monotonically
-Release: 4%{?dist}
+Release: 5%{?dist}
 Summary: Glasgow Haskell Compiler
 
 License: BSD-3-Clause AND HaskellReport
 URL: https://haskell.org/ghc/
-Source0: https://downloads.haskell.org/ghc/%{ghc_release}/ghc-%{version}-src.tar.xz
+Source0: https://downloads.haskell.org/ghc/%{version}/ghc-%{version}-src.tar.xz
 %if %{with testsuite}
-Source1: https://downloads.haskell.org/ghc/%{ghc_release}/ghc-%{version}-testsuite.tar.xz
+Source1: https://downloads.haskell.org/ghc/%{version}/ghc-%{version}-testsuite.tar.xz
 %endif
 Source5: ghc-pkg.man
 Source6: haddock.man
 Source7: runghc.man
+Source10: https://hackage.haskell.org/package/Cabal-syntax-%{hadrian_Cabal_ver}/Cabal-syntax-%{hadrian_Cabal_ver}.tar.gz
+Source11: https://hackage.haskell.org/package/Cabal-%{hadrian_Cabal_ver}/Cabal-%{hadrian_Cabal_ver}.tar.gz
 
 # absolute haddock path (was for html/libraries -> libraries)
 Patch1: ghc-gen_contents_index-haddock-path.patch
@@ -84,9 +91,6 @@ Patch9: https://gitlab.haskell.org/ghc/ghc/-/merge_requests/9604.patch
 
 # unregisterised
 Patch16: ghc-hadrian-s390x-rts--qg.patch
-
-# hadrian
-Patch20: hadrian-9.10-deps.patch
 
 # Debian patches:
 # bad according to upstream
@@ -123,7 +127,7 @@ BuildRequires: %{ghcboot}-compiler
 %if %{with abicheck}
 BuildRequires: %{name}
 %endif
-BuildRequires: ghc-rpm-macros-extra >= 2.6.5
+BuildRequires: ghc-rpm-macros-extra >= 2.7.5
 BuildRequires: %{ghcboot}-array-devel
 BuildRequires: %{ghcboot}-binary-devel
 BuildRequires: %{ghcboot}-bytestring-devel
@@ -164,7 +168,7 @@ BuildRequires: clang%{llvm_major}
 # needed for binary-dist-dir
 BuildRequires:  autoconf automake
 %if %{with build_hadrian}
-BuildRequires:  ghc-Cabal-devel > 3.10
+BuildRequires:  ghc-Cabal-devel
 BuildRequires:  ghc-QuickCheck-devel
 BuildRequires:  ghc-base-devel
 BuildRequires:  ghc-base16-bytestring-devel
@@ -328,8 +332,8 @@ This provides the hadrian tool which can be used to build ghc.
 
 # use "./libraries-versions.sh" to check versions
 %if %{defined ghclibdir}
-%ghc_lib_subpackage -d -l BSD-3-Clause Cabal-3.12.0.0
-%ghc_lib_subpackage -d -l BSD-3-Clause Cabal-syntax-3.12.0.0
+%ghc_lib_subpackage -d -l BSD-3-Clause Cabal-%{Cabal_ver}
+%ghc_lib_subpackage -d -l BSD-3-Clause Cabal-syntax-%{Cabal_ver}
 %ghc_lib_subpackage -d -l %BSDHaskellReport array-0.5.7.0
 %ghc_lib_subpackage -d -l %BSDHaskellReport -c gmp-devel%{?_isa},libffi-devel%{?_isa},numactl-devel%{?_isa} base-%{base_ver}
 %ghc_lib_subpackage -d -l BSD-3-Clause binary-0.8.9.2
@@ -400,7 +404,7 @@ Installing this package causes %{name}-*-prof packages corresponding to
 
 
 %prep
-%setup -q -n ghc-%{version} %{?with_testsuite:-b1}
+%setup -q -n ghc-%{version} %{?with_testsuite:-b1} -a10 -a11
 
 %patch -P1 -p1 -b .orig
 %patch -P3 -p1 -b .orig
@@ -418,8 +422,6 @@ rm libffi-tarballs/libffi-*.tar.gz
 %patch -P16 -p1 -b .orig
 %endif
 %endif
-
-%patch -P20 -p1 -b .orig
 
 #debian
 #%%patch -P24 -p1 -b .orig
@@ -491,11 +493,13 @@ export LANG=C.utf8
 %global ghc_debuginfo 1
 (
 cd hadrian
-%if 0%{?fedora} >= 38
+ln -s ../libraries/ghc-platform ghc-platform-%{ghc_platform_ver}
+ln -s ../utils/ghc-toolchain ghc-toolchain-%{ghc_toolchain_ver}
+ln -s ../Cabal-syntax-%{hadrian_Cabal_ver} Cabal-syntax-%{hadrian_Cabal_ver}
+ln -s ../Cabal-%{hadrian_Cabal_ver} Cabal-%{hadrian_Cabal_ver}
+%ghc_libs_build -P -W ghc-platform-%{ghc_platform_ver} ghc-toolchain-%{ghc_toolchain_ver} Cabal-syntax-%{hadrian_Cabal_ver} Cabal-%{hadrian_Cabal_ver}
+
 %ghc_bin_build -W
-%else
-%ghc_bin_build
-%endif
 )
 %global hadrian hadrian/dist/build/hadrian/hadrian
 %else
@@ -672,7 +676,7 @@ export LANG=C.utf8
 # stolen from ghc6/debian/rules:
 export LD_LIBRARY_PATH=%{buildroot}%{ghclibplatform}:
 GHC=%{buildroot}%{ghclibdir}/bin/ghc
-# Do some very simple tests that the compiler actually works
+# simple sanity checks that the compiler actually works
 rm -rf testghc
 mkdir testghc
 echo 'main = putStrLn "Foo"' > testghc/foo.hs
@@ -866,6 +870,9 @@ make test
 
 
 %changelog
+* Mon Dec 23 2024 Jens Petersen <petersen@redhat.com> - 9.10.1-5
+- build hadrian with bundled Cabal-3.10.3 source to allow using ghc-9.4
+
 * Sat Sep  7 2024 Jens Petersen <petersen@redhat.com> - 9.10.1-4
 - rts now depends on libnuma
 

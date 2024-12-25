@@ -1,9 +1,12 @@
 %global modulename pytest-runner
 %global _modulename pytest_runner
 
+# Tests require virtualenv fixture, we only have venv
+%bcond tests 0
+
 Name:           python-%{modulename}
 Version:        4.0
-Release:        24%{?dist}
+Release:        25%{?dist}
 Summary:        Invoke py.test as distutils command with dependency resolution
 
 License:        MIT
@@ -12,6 +15,9 @@ URL:            https://pypi.python.org/pypi/pytest-runner
 Source0:        https://files.pythonhosted.org/packages/source/p/%{modulename}/%{modulename}-%{version}.tar.gz
 
 BuildArch: noarch
+
+# deprecated upstream, see https://github.com/pytest-dev/pytest-runner/blob/main/README.rst#deprecation-notice
+Provides:       deprecated()
 
 %global _description \
 Setup scripts can use pytest-runner to add setup.py test support for pytest runner.
@@ -25,7 +31,10 @@ Requires:       python3-pytest
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-setuptools_scm
+%if %{with tests}
 BuildRequires:  python3-pytest
+BuildRequires:  python3-pytest-venv
+%endif
 
 %description -n python3-%{modulename} %{_description}
 
@@ -41,7 +50,10 @@ Python 3 version.
 %py3_install
 
 %check
-%{__python3} setup.py test
+%py3_check_import ptr
+%if %{with tests}
+%pytest
+%endif
 
 %files -n python3-%{modulename}
 %doc README.rst
@@ -51,6 +63,10 @@ Python 3 version.
 %{python3_sitelib}/__pycache__/ptr.*
 
 %changelog
+* Mon Dec 23 2024 Michel Lind <salimma@fedoraproject.org> - 4.0-25
+- Use `pytest` instead of the removed `setup.py test` for setuptools 74+ compatibility
+- Mark as deprecated
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 4.0-24
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

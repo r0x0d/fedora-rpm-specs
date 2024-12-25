@@ -1,12 +1,10 @@
 Name:              zathura
-Version:           0.5.6
-Release:           3%{?dist}
+Version:           0.5.11
+Release:           1%{?dist}
 Summary:           A lightweight document viewer
 License:           Zlib
 URL:               http://pwmt.org/projects/%{name}/
 Source0:           http://pwmt.org/projects/%{name}/download/%{name}-%{version}.tar.xz
-# https://github.com/pwmt/zathura/commit/0c344affeaaae5b1360d0958fb23b3481f63945c
-Patch:             0001-Fix-type-mismatch-with-g_ascii_string_to_unsigned.patch
 
 %if %{undefined flatpak}
 BuildRequires:     bash-completion
@@ -22,7 +20,7 @@ BuildRequires:     fish
 %endif
 BuildRequires:     gcc
 BuildRequires:     gettext
-BuildRequires:     girara-devel >= 0.4.3
+BuildRequires:     girara-devel >= 0.4.5
 BuildRequires:     glib2-devel >= 2.72
 BuildRequires:     gtk3-devel >= 3.24
 BuildRequires:     intltool
@@ -113,7 +111,7 @@ Requires:          %{name} = %{version}-%{release}
 This package provides %{summary}.
 
 %prep
-%autosetup -p1
+%autosetup
 
 %build
 %meson -Dsynctex=enabled -Dseccomp=enabled -Dtests=enabled
@@ -158,6 +156,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/*.desktop
 
 
 %changelog
+* Wed Dec 18 2024 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.5.11-1
+- Update to 0.5.11 (rh#2302671)
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.5.6-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

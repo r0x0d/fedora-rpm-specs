@@ -1,5 +1,6 @@
 %bcond system_lapack 1
-%bcond atlas %[%{undefined rhel} && %{undefined flatpak} && "%{_arch}" != "riscv64"]
+# atlas dropped in Fedora 42, remove completely when that is EOL
+%bcond atlas %[%{undefined rhel} && %{undefined flatpak} && "%{_arch}" != "riscv64" && 0%{?fedora} < 42 ]
 %bcond blis %[%{undefined rhel} && %{undefined flatpak}]
 %bcond openblas 1
 
@@ -443,6 +444,9 @@ make -C build64 test
 %endif
 
 %changelog
+* Sun Dec 22 2024 Orion Poplawski <orion@nwra.com> - 3.4.4-4
+- Drop atlas support in Fedora 42+
+
 * Wed Aug 07 2024 Iñaki Úcar <iucar@fedoraproject.org> - 3.4.4-3
 - Bump LAPACK API to 3.12.0
 

@@ -17,7 +17,7 @@ douteuse est erronée, le correcteur ne signalera rien.}
 
 Name:           grammalecte
 Version:        2.1.2
-Release:        14%{?dist}
+Release:        15%{?dist}
 Summary:        French grammar checker
 Summary(fr):    Correcteur grammatical dédié à la langue française
 
@@ -26,8 +26,7 @@ Summary(fr):    Correcteur grammatical dédié à la langue française
 # - MPLv2.0 for dictionaries (*.dic) and affix files (*.aff)
 # - LGPLv2+ for French thesaurus (thes_fr.*) and hyphenation rules (*.tex)
 # See ./gc_lang/fr/oxt/Dictionnaires/dictionaries/README*.txt
-# Automatically converted from old format: GPLv3 and MPLv2.0 and LGPLv2+ - review is highly recommended.
-License:        GPL-3.0-only AND MPL-2.0 AND LicenseRef-Callaway-LGPLv2+
+License:        GPL-3.0-only AND MPL-2.0 AND LGPLv2+
 URL:            https://grammalecte.net/
 Source0:        %{name}-%{version}.tar.xz
 # The source for this package was pulled from upstream's VCS. Use the
@@ -38,6 +37,7 @@ Source2:        libreoffice-%{name}.metainfo.xml
 BuildRequires:  libappstream-glib
 BuildRequires:  python3-devel
 BuildRequires:  %{py3_dist bottle}
+BuildRequires:  %{py3_dist pip}
 BuildRequires:  %{py3_dist setuptools}
 
 %description
@@ -96,14 +96,14 @@ ln -sf %{python3_sitelib}/bottle.py 3rd/
 
 %build
 # Build LibreOffice extension and Python module ZIP
-%{__python3} make.py -b -d fr
+%{python3} make.py -b -d fr
 
 # Build Python module
 mkdir python/
 unzip _build/Grammalecte-fr-v%{version}.zip -d python/
 pushd python/
 rm -rf *.egg-info
-%py3_build
+%pyproject_wheel
 popd
 
 
@@ -119,7 +119,8 @@ find $RPM_BUILD_ROOT%{_libdir}/libreoffice/share/extensions/%{name}/ -type f | x
 
 # Install Python module
 pushd python/
-%py3_install
+%pyproject_install
+%pyproject_save_files %{name}
 popd
 
 # Unbundle bottle library
@@ -133,10 +134,10 @@ install -Dpm 0644 %{SOURCE2} $RPM_BUILD_ROOT%{_metainfodir}/%{name}.appdata.xml
 
 
 %check
-%{__python3} ./make.py fr -t
+%{python3} ./make.py fr -t
 
 pushd python/
-PYTHONPATH=$RPM_BUILD_ROOT%{python3_sitelib}/ %{__python3} setup.py test
+%{py3_test_envvars} %{__python3} -m unittest
 popd
 
 appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_metainfodir}/%{name}.appdata.xml
@@ -149,16 +150,17 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_metainfodir}/%{name}.app
 %{_metainfodir}/%{name}.appdata.xml
 
 
-%files -n python3-%{name}
+%files -n python3-%{name} -f %{pyproject_files}
 %doc python/README.txt
 %license python/{LICENSE.txt,LICENSE.fr.txt}
 %{_bindir}/%{name}-cli.py
 %{_bindir}/%{name}-server.py
-%{python3_sitelib}/%{name}/
-%{python3_sitelib}/Grammalecte_fr-*.egg-info/
-
 
 %changelog
+* Mon Dec 23 2024 Mohamed El Morabity <melmorabity@fedoraproject.org> - 2.1.2-15
+- Fix FTBFS (#RHBZ 2319629)
+- Migrate to latest Python packaging guidelines
+
 * Mon Sep 02 2024 Miroslav Suchý <msuchy@redhat.com> - 2.1.2-14
 - convert license to SPDX
 

@@ -1,7 +1,7 @@
 Summary: Utilities for managing accounts and shadow password files
 Name: shadow-utils
 Version: 4.17.0~rc1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Epoch: 2
 License: BSD-3-Clause AND GPL-2.0-or-later
 URL: https://github.com/shadow-maint/shadow
@@ -16,6 +16,8 @@ Source7: passwd.pamd
 
 ### Globals ###
 %global includesubiddir %{_includedir}/shadow
+# Fail linking if there are undefined symbols.
+%global _ld_strict_symbol_defs 1
 
 ### Patches ###
 # Misc manual page changes - non-upstreamable
@@ -114,15 +116,6 @@ cp -a %{SOURCE6} man/login.defs.d/HOME_MODE.xml
 rm lib/getdate.c
 
 %build
-%ifarch sparc64
-#sparc64 need big PIE
-export CFLAGS="$RPM_OPT_FLAGS -fPIE"
-export LDFLAGS="-pie -Wl,-z,relro -Wl,-z,now"
-%else
-export CFLAGS="$RPM_OPT_FLAGS -fpie"
-export LDFLAGS="-pie -Wl,-z,relro -Wl,-z,now"
-%endif
-
 autoreconf
 %configure \
 	--disable-account-tools-setuid \
@@ -287,6 +280,10 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libsubid.a
 %{_libdir}/libsubid.so
 
 %changelog
+* Sun Dec 22 2024 Björn Esser <besser82@fedoraproject.org> - 2:4.17.0~rc1-2
+- Remove potentially dangerous {C,LD}FLAGS shenanigans
+- Fail linking if there are undefined symbols at link-time
+
 * Mon Dec  9 2024 Iker Pedrosa <ipedrosa@redhat.com> - 2:4.17.0~rc1-1
 - Rebase to version 4.17.0-rc1
 

@@ -1,14 +1,12 @@
 # Fedora/remirepo spec file for php-phpdocumentor-reflection-docblock5
 #
-# Copyright (c) 2017-2020 Remi Collet, Shawn Iwinski
-#               2014-2015 Remi Collet
-#
-# License: CC-BY-SA
-# http://creativecommons.org/licenses/by-sa/4.0/
+# SPDX-FileCopyrightText:  Copyright 2014-2024 Remi Collet
+# SPDX-License-Identifier: CECILL-2.1
+# http://www.cecill.info/licences/Licence_CeCILL_V2-en.txt
 #
 # Please, preserve the changelog entries
 #
-%global gh_commit    622548b623e81ca6d78b721c5e029f4ce664f170
+%global gh_commit    e5e784149a09bd69d9a5e3b01c5cbd2e2bd653d8
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     phpDocumentor
 %global gh_project   ReflectionDocBlock
@@ -16,8 +14,8 @@
 %bcond_without       tests
 
 Name:           php-phpdocumentor-reflection-docblock%{major}
-Version:        5.3.0
-Release:        8%{?dist}
+Version:        5.6.1
+Release:        2%{?dist}
 Summary:        DocBlock parser
 
 License:        MIT
@@ -31,17 +29,24 @@ Source1:       makesrc.sh
 BuildArch:      noarch
 BuildRequires:  php-fedora-autoloader-devel
 %if %{with tests}
-BuildRequires:  php(language) >= 7.2
+BuildRequires:  php(language) >= 7.4
 BuildRequires:  php-filter
-BuildRequires: (php-composer(phpdocumentor/type-resolver)     >= 1.3   with php-composer(phpdocumentor/type-resolver)     <  2)
-BuildRequires: (php-composer(webmozart/assert)                >= 1.9.1 with php-composer(webmozart/assert)                <  2)
-BuildRequires: (php-composer(phpdocumentor/reflection-common) >= 2.2   with php-composer(phpdocumentor/reflection-common) <  3)
+BuildRequires: (php-composer(phpdocumentor/type-resolver)     >= 1.7   with php-composer(phpdocumentor/type-resolver)     < 2)
+BuildRequires: (php-composer(webmozart/assert)                >= 1.9.1 with php-composer(webmozart/assert)                < 2)
+BuildRequires: (php-composer(phpdocumentor/reflection-common) >= 2.2   with php-composer(phpdocumentor/reflection-common) < 3)
+BuildRequires: (php-composer(phpstan/phpdoc-parser)           >= 1.7   with php-composer(phpstan/phpdoc-parser)           < 3)
+BuildRequires: (php-composer(doctrine/deprecations)           >= 1.1   with php-composer(doctrine/deprecations)           < 2)
 # From composer.json, require-dev
-#        "mockery/mockery": "~1.3.2",
-#        "psalm/phar": "^4.8"
-BuildRequires:  phpunit9
+#        "mockery/mockery": "~1.3.5 || ~1.6.0",
+#        "phpunit/phpunit": "^9.5",
+#        "phpstan/phpstan": "^1.8",
+#        "phpstan/phpstan-mockery": "^1.1",
+#        "phpstan/extension-installer": "^1.1",
+#        "phpstan/phpstan-webmozart-assert": "^1.2",
+#        "psalm/phar": "^5.26"
+BuildRequires:  phpunit9 >= 9.5
 %global phpunit %{_bindir}/phpunit9
-BuildRequires: (php-composer(mockery/mockery) >= 1.3.2 with php-composer(mockery/mockery) <  2)
+BuildRequires: (php-composer(mockery/mockery) >= 1.6 with php-composer(mockery/mockery) <  2)
 # From phpcompatinfo report for 5.0.0
 BuildRequires:  php-reflection
 BuildRequires:  php-pcre
@@ -49,16 +54,20 @@ BuildRequires:  php-spl
 %endif
 
 # From composer.json, require
-#        "php": "^7.2 || ^8.0",
-#        "phpdocumentor/type-resolver": "^1.3",
+#        "php": "^7.4 || ^8.0",
+#        "phpdocumentor/type-resolver": "^1.7",
 #        "webmozart/assert": "^1.9.1",
 #        "phpdocumentor/reflection-common": "^2.2",
-#        "ext-filter": "*"
-Requires:       php(language) >= 7.2
+#        "ext-filter": "*",
+#        "phpstan/phpdoc-parser": "^1.7|^2.0",
+#        "doctrine/deprecations": "^1.1"
+Requires:       php(language) >= 7.4
 Requires:       php-filter
-Requires:      (php-composer(phpdocumentor/type-resolver)     >= 1.3   with php-composer(phpdocumentor/type-resolver)     < 2)
+Requires:      (php-composer(phpdocumentor/type-resolver)     >= 1.7   with php-composer(phpdocumentor/type-resolver)     < 2)
 Requires:      (php-composer(webmozart/assert)                >= 1.9.1 with php-composer(webmozart/assert)                < 2)
 Requires:      (php-composer(phpdocumentor/reflection-common) >= 2.2   with php-composer(phpdocumentor/reflection-common) < 3)
+Requires:      (php-composer(phpstan/phpdoc-parser)           >= 1.7   with php-composer(phpstan/phpdoc-parser)           < 3)
+Requires:      (php-composer(doctrine/deprecations)           >= 1.1   with php-composer(doctrine/deprecations)           < 2)
 # From phpcompatinfo report for 4.3.2
 Requires:       php-reflection
 Requires:       php-pcre
@@ -102,6 +111,8 @@ cat <<AUTOLOAD | tee -a src/DocBlock/autoload.php
     '%{_datadir}/php/phpDocumentor/Reflection2/autoload-common.php',
     '%{_datadir}/php/phpDocumentor/Reflection2/autoload-type-resolver.php',
     '%{_datadir}/php/Webmozart/Assert/autoload.php',
+    '%{_datadir}/php/PHPStan/PhpDocParser/autoload.php',
+    '%{_datadir}/php/Doctrine/Deprecations/autoload.php',
 ]);
 AUTOLOAD
 
@@ -129,12 +140,13 @@ cat <<BOOTSTRAP | tee -a bootstrap.php
 BOOTSTRAP
 
 RETURN_CODE=0
-for PHP_EXEC in "php %{phpunit}" php73 php74 php80 php81; do
+for PHP_EXEC in "php %{phpunit}" php81 php82 php83 php84; do
     if which $PHP_EXEC; then
         set $PHP_EXEC
         $1 -d auto_prepend_file=$PWD/bootstrap.php \
             ${2:-%{_bindir}/phpunit9} \
                 --bootstrap bootstrap.php \
+                --filter '^((?!(testAddingAKeyword|testRegressionWordpressDocblocks|testIndentationIsKept)).)*$' \
                 --verbose || RETURN_CODE=1
     fi
 done
@@ -153,6 +165,17 @@ exit $RETURN_CODE
 
 
 %changelog
+* Mon Dec 23 2024 Remi Collet <remi@remirepo.net> - 5.6.1-2
+- allow phpstan/phpdoc-parser v2
+
+* Mon Dec  9 2024 Remi Collet <remi@remirepo.net> - 5.6.1-1
+- update to 5.6.1
+- re-license spec file to CECILL-2.1
+- raise dependency on PHP 7.4
+- raise dependency on phpdocumentor/type-resolver 1.7
+- add dependency on phpstan/phpdoc-parser
+- add dependency on doctrine/deprecations
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.3.0-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

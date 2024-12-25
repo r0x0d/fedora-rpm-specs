@@ -1,16 +1,16 @@
 Name:           xorgxrdp
-Version:        0.10.2
-Release:        2%{?dist}
+Version:        0.10.3
+Release:        1%{?dist}
 Summary:        Implementation of xrdp backend as Xorg modules
 
 License:        MIT
 URL:            https://github.com/neutrinolabs/xorgxrdp
 Source0:        https://github.com/neutrinolabs/xorgxrdp/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
-BuildRequires: make
+BuildRequires:  make
 BuildRequires:  nasm
 BuildRequires:  xorg-x11-server-devel
-BuildRequires:  xrdp-devel >= 1:0.10.0
+BuildRequires:  xrdp-devel >= 1:0.10.2
 %if 0%{?fedora} > 0 && 0%{?fedora} <= 24
 BuildRequires:  libXfont-devel
 %else
@@ -28,6 +28,7 @@ BuildRequires:  libtool
 Conflicts: %{name}-glamor
 %endif
 
+Requires:       xrdp >= 1:0.10.2
 Requires:       Xorg %(xserver-sdk-abi-requires videodrv 2>/dev/null)
 Requires:       Xorg %(xserver-sdk-abi-requires xinput 2>/dev/null)
 
@@ -37,6 +38,7 @@ Summary:        Implementation of xrdp backend as Xorg modules with glamor
 RemovePathPostfixes: .glamor
 Conflicts: %{name}
 
+Requires:       xrdp >= 1:0.10.2
 Requires:       Xorg %(xserver-sdk-abi-requires videodrv 2>/dev/null)
 Requires:       Xorg %(xserver-sdk-abi-requires xinput 2>/dev/null)
 %endif
@@ -127,6 +129,9 @@ CFLAGS="$RPM_OPT_FLAGS -I/usr/include/libdrm" \
 %endif
 
 %changelog
+* Mon Dec 16 2024 Bojan Smojver <bojan@rexursive.com> - 0.10.3-1
+- Bump up to 0.10.3
+
 * Fri Sep 27 2024 Sérgio Basto <sergio@serjux.com> - 0.10.2-2
 - Rebuild for rebase of xorg-server to versions 21.1.x
 

@@ -1,6 +1,6 @@
 Name:           colm
 Version:        0.14.7
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Programming language designed for the analysis of computer languages
 
 # aapl/ and some headers from src/ are the LGPLv2+
@@ -11,6 +11,8 @@ Source0:        https://www.colm.net/files/%{name}/%{name}-%{version}.tar.gz
 Patch0:		fc61ecb3a22b89864916ec538eaf04840e7dd6b5.diff
 # backport commit that allows AC_CHECK_LIB to detect libfsm
 Patch1:         https://github.com/adrian-thurston/colm/commit/28b6e0a01157049b4cb279b0ef25ea9dcf3b46ed.patch#/%{name}-libfsm-ac_check_lib.diff
+# Correctly use off_t in cookie_seek_function_t in src/stream.c
+Patch2:         colm-0.14.7-ac_sys_largefile-for-off_t.patch
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  autoconf
@@ -38,6 +40,8 @@ Requires:       %{name}%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
 %autosetup -p1
 # Do not pollute with docs
 sed -i -e "/dist_doc_DATA/d" Makefile.am
+# Remove incompatible SIZEOF_LONG definition
+sed -i -e '\@SIZEOF_LONG@d' test/rlparse.d/config.h
 
 %build
 autoreconf -vfi
@@ -73,6 +77,10 @@ install -p -m 0644 -D %{name}.vim %{buildroot}%{_datadir}/vim/vimfiles/syntax/%{
 
 
 %changelog
+* Mon Dec 23 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 0.14.7-8
+- Correctly use off_t in cookie_seek_function_t especially on 32bit
+- Remove incompatible SIZEOF_LONG definition in test suite
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 0.14.7-7
 - convert license to SPDX
 

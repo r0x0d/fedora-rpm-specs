@@ -1,6 +1,6 @@
 Name:             zathura-ps
-Version:          0.2.7
-Release:          8%{?dist}
+Version:          0.2.8
+Release:          1%{?dist}
 Summary:          PS support for zathura via libspectre
 License:          Zlib
 URL:              https://pwmt.org/projects/%{name}
@@ -45,6 +45,12 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.metainf
 %{_datadir}/metainfo/org.pwmt.zathura-ps.metainfo.xml
 
 %changelog
+* Sun Aug 04 2024 Michael J Gruber <mjg@fedoraproject.org> - 0.2.8-1
+- 0.2.8 bump
+
+* Mon Dec 23 2024 Ankur Sinha <sanjay.ankur@gmail.com> - 0.2.7-9
+- Rebuild for girara 0.4.5, mupdf 1.25.2
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.7-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

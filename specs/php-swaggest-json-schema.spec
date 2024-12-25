@@ -1,8 +1,8 @@
 # remirepo/fedora spec file for php-swaggest-json-schema
 #
-# Copyright (c) 2019-2023 Remi Collet
-# License: CC-BY-SA-4.0
-# http://creativecommons.org/licenses/by-sa/4.0/
+# SPDX-FileCopyrightText:  Copyright 2019-2024 Remi Collet
+# SPDX-License-Identifier: CECILL-2.1
+# http://www.cecill.info/licences/Licence_CeCILL_V2-en.txt
 #
 # Please, preserve the changelog entries
 #
@@ -10,7 +10,7 @@
 %bcond_without       tests
 
 # Github
-%global gh_commit    d23adb53808b8e2da36f75bc0188546e4cbe3b45
+%global gh_commit    1f3a77a382c5d273a0f1fe34be3b8af4060a88cd
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_owner     swaggest
 %global gh_project   php-json-schema
@@ -23,8 +23,8 @@
 %global major        %nil
 
 Name:           php-%{pk_vendor}-%{pk_project}%{major}
-Version:        0.12.42
-Release:        5%{?gh_date?%{gh_date}git%{gh_short}}%{?dist}
+Version:        0.12.43
+Release:        1%{?gh_date?%{gh_date}git%{gh_short}}%{?dist}
 Summary:        High definition PHP structures with JSON-schema based validation
 
 License:        MIT
@@ -34,16 +34,11 @@ Source1:        makesrc.sh
 
 BuildArch:      noarch
 %if %{with tests}
-BuildRequires:  php(language) >= 5.4
+BuildRequires:  php(language) >= 7.1
 BuildRequires:  php-json
 BuildRequires:  php-mbstring
-%if 0%{?fedora} >= 27 || 0%{?rhel} >= 8
 BuildRequires: (php-composer(phplang/scope-exit)    >= 1.0   with php-composer(phplang/scope-exit)    < 2)
 BuildRequires: (php-composer(swaggest/json-diff)    >= 3.8.2 with php-composer(swaggest/json-diff)    < 4)
-%else
-BuildRequires:  php-phplang-scope-exit              >= 1.0
-BuildRequires:  php-swaggest-json-diff              >= 3.8.2
-%endif
 # For tests, from composer.json "require-dev": {
 #    "phpunit/phpunit": "^5",
 #    "phpunit/php-code-coverage": "^4",
@@ -59,22 +54,17 @@ BuildRequires:  php-fedora-autoloader-devel
 %endif
 
 # From composer.json, "require": {
-#    "php": ">=5.4",
+#    "php": ">=7.1",
 #    "ext-json": "*",
 #    "ext-mbstring": "*",
 #    "phplang/scope-exit": "^1.0",
 #    "swaggest/json-diff": "^3.8.2",
 #    "symfony/polyfill-mbstring": "^1.19"
-Requires:       php(language) >= 5.4
+Requires:       php(language) >= 7.1
 Requires:       php-json
 Requires:       php-mbstring
-%if 0%{?fedora} >= 27 || 0%{?rhel} >= 8
 Requires:      (php-composer(phplang/scope-exit)    >= 1.0   with php-composer(phplang/scope-exit)    < 2)
 Requires:      (php-composer(swaggest/json-diff)    >= 3.8.2 with php-composer(swaggest/json-diff)    < 4)
-%else
-Requires:       php-phplang-scope-exit              >= 1.0
-Requires:       php-swaggest-json-diff              >= 3.8.2
-%endif
 # From phpcompatinfo report for 0.12.17
 Requires:       php-date
 Requires:       php-filter
@@ -143,7 +133,7 @@ sed -e '/setUp()/s/$/:void/' \
 # Skip online tests: testInvalid, testValidate
 # Skip because of phpunit9: testPatternPropertiesMismatch
 ret=0
-for cmd in php php80 php81 php82 php83; do
+for cmd in php php81 php82 php83 php84; do
    if which $cmd; then
       $cmd %{phpunit} \
         --no-coverage \
@@ -166,6 +156,11 @@ exit $ret
 
 
 %changelog
+* Mon Dec 23 2024 Remi Collet <remi@remirepo.net> - 0.12.43-1
+- update to 0.12.43
+- re-license spec file to CECILL-2.1
+- raise dependency on PHP 7.1
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.12.42-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

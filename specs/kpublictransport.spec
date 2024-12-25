@@ -25,7 +25,6 @@ BuildRequires: gettext
 
 %package devel
 Summary: Development files for %{name}
-License: BSD and CC0-1.0 and LGPLv2+ and MIT and ODbL-1.0
 Requires: %{name}%{?_isa} = %{version}-%{release}
 
 %description devel

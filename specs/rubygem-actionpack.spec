@@ -7,7 +7,7 @@
 Name: rubygem-%{gem_name}
 Epoch: 1
 Version: 7.0.8
-Release: 7%{?dist}
+Release: 8%{?dist}
 Summary: Web-flow and rendering framework putting the VC in MVC (part of Rails)
 License: MIT
 URL: http://rubyonrails.org
@@ -46,6 +46,9 @@ Patch5: rubygem-actionpack-7.2.0-Drop-dependency-on-mutex-m.patch
 # https://github.com/rails/rails/pull/53164
 Patch6: rubygem-actionpack-7.1.5-7-1-Fix-URI-DEFAULT-PARSER-warnings.patch
 Patch7: rubygem-actionpack-7.1.5-7-1-Fix-URI-DEFAULT-PARSER-warnings-test.patch
+# Add support for selenium-webdriver 4.22+
+# https://github.com/rails/rails/pull/52172
+Patch8: rubygem-actionpack-7.1.5.1-Support-selenium-webdriver-4-22-0-that-enables-CDP-in-Firefox.patch
 
 
 # Let's keep Requires and BuildRequires sorted alphabeticaly
@@ -91,6 +94,7 @@ pushd %{_builddir}
 %patch 3 -p2
 %patch 4 -p2
 %patch 7 -p2
+%patch 8 -p2
 popd
 
 %patch 5 -p2
@@ -140,6 +144,9 @@ popd
 %doc %{gem_instdir}/README.rdoc
 
 %changelog
+* Mon Dec 23 2024 Vít Ondruch <vondruch@redhat.com> - 1:7.0.8-8
+- Add support for selenium-webdriver 4.22+
+
 * Wed Dec 04 2024 Vít Ondruch <vondruch@redhat.com> - 1:7.0.8-7
 - Mitigate extensive `URI::RFC3986_PARSER.escape is obsolete.` warnings.
 

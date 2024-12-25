@@ -19,7 +19,7 @@ Release: 1%{?dist}
 # - libasprintf info files
 # - libtextstyle info files
 # Everything else is GPLv3+
-License: GPL-3.0-or-later AND LGPL-2.0-or-later AND GFDL-1.2-or-later
+License: GPL-3.0-or-later and LGPL-2.0-or-later and GFDL-1.2-or-later
 URL: https://www.gnu.org/software/gettext/
 Source: https://ftp.gnu.org/pub/gnu/%{name}/%{name}-%{version}.tar.gz
 Source2: msghack.py
@@ -89,7 +89,7 @@ programs.
 
 %package runtime
 Summary: GNU runtime libraries and programs for producing multi-lingual messages
-License: GPL-3.0-or-later AND LGPL-2.0-or-later
+License: GPL-3.0-or-later and LGPL-2.0-or-later
 # Depend on the exact version of the library sub package
 Requires: %{name}-libs%{_isa} = %{version}-%{release}
 Requires: %{name}-envsubst = %{version}-%{release}
@@ -117,7 +117,7 @@ Summary: Development files for %{name}
 # autopoint is GPLv3+
 # libasprintf is LGPLv2+
 # libgettextpo is GPLv3+
-License: LGPL-2.0-or-later AND GPL-3.0-or-later AND GFDL-1.2-or-later
+License: LGPL-2.0-or-later and GPL-3.0-or-later and GFDL-1.2-or-later
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-libs = %{version}-%{release}
 Requires: %{name}-common-devel = %{version}-%{release}
@@ -137,7 +137,7 @@ want to add gettext support for your project.
 Summary: Libraries for %{name}
 # libasprintf is LGPLv2+
 # libgettextpo is GPLv3+
-License: LGPL-2.0-or-later AND GPL-3.0-or-later
+License: LGPL-2.0-or-later and GPL-3.0-or-later
 Requires: libtextstyle%{?_isa} = %{version}-%{release}
 
 %description libs
@@ -153,7 +153,7 @@ emulator.
 
 %package -n libtextstyle-devel
 Summary: Development files for libtextstyle
-License: GPL-3.0-or-later AND GFDL-1.2-or-later
+License: GPL-3.0-or-later and GFDL-1.2-or-later
 Requires: libtextstyle%{?_isa} = %{version}-%{release}
 
 %description -n libtextstyle-devel

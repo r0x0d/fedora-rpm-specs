@@ -1,12 +1,11 @@
 %global srcname rosdistro
 
 Name:           python-%{srcname}
-Version:        0.9.1
-Release:        4%{?dist}
+Version:        1.0.1
+Release:        1%{?dist}
 Summary:        File format for managing ROS Distributions
 
-# Automatically converted from old format: BSD and MIT - review is highly recommended.
-License:        LicenseRef-Callaway-BSD AND LicenseRef-Callaway-MIT
+License:        BSD-3-Clause AND MIT
 URL:            http://www.ros.org/wiki/rosdistro
 Source0:        https://github.com/ros-infrastructure/%{srcname}/archive/%{version}/%{srcname}-%{version}.tar.gz
 
@@ -55,9 +54,7 @@ Requires:       python%{python3_pkgversion}-rospkg
 Requires:       python%{python3_pkgversion}-setuptools
 %endif
 
-%if !0%{?rhel} || 0%{?rhel} >= 8
 Suggests:       %{name}-doc = %{version}-%{release}
-%endif
 
 %description -n python%{python3_pkgversion}-%{srcname}
 The rosdistro tool allows you to get access to the full dependency tree and
@@ -75,9 +72,6 @@ local cache file, to speed up performance for the next query.
 
 %prep
 %autosetup -p1 -n %{srcname}-%{version}
-
-# Drop unsupported syntax in older setuptools
-sed -i "s/mock; python_version < '3.3'//" setup.py
 
 
 %build
@@ -100,10 +94,7 @@ popd
 
 
 %check
-PYTHONPATH=%{buildroot}%{python3_sitelib} \
-  %{__python3} -m pytest \
-  -k 'not test_manifest_providers' \
-  test
+%pytest -k 'not test_manifest_providers' test
 
 
 %files doc
@@ -128,6 +119,11 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 
 
 %changelog
+* Mon Dec 23 2024 Scott K Logan <logans@cottsay.net> - 1.0.1-1
+- Update to 1.0.1 (rhbz#2318382)
+- Drop spec file support for RHEL 7
+- Review SPDX licensing
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 0.9.1-4
 - convert license to SPDX
 

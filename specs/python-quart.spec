@@ -1,5 +1,5 @@
 Name:           python-quart
-Version:        0.19.9
+Version:        0.20.0
 Release:        %autorelease
 Summary:        A Python ASGI web microframework with the same API as Flask
 
@@ -17,6 +17,8 @@ Source13:       quart-shell.1
 # Downstream-only: patch out coverage analysis
 # 
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
+#
+# (This also patches out pytest-sugar because it’s unnecessary.)
 Patch:          0001-Downstream-only-patch-out-coverage-analysis.patch
 
 BuildArch:      noarch
@@ -45,11 +47,11 @@ Summary:        %{summary}
 
 
 %prep
-%autosetup -n quart-%{version}
+%autosetup -n quart-%{version} -p1
 
 
 %generate_buildrequires
-%pyproject_buildrequires -t -x dotenv
+%pyproject_buildrequires -x dotenv requirements/tests.in
 
 
 %build
@@ -65,13 +67,13 @@ install -t '%{buildroot}%{_mandir}/man1' -D -p -m 0644 \
 
 
 %check
-%tox -- -- -v
+%pytest -v
 
 
 %files -n python3-quart -f %{pyproject_files}
-%license LICENSE
-%doc CHANGES.rst
-%doc README.rst
+%license LICENSE.txt
+%doc CHANGES.md
+%doc README.md
 
 %{_bindir}/quart
 %{_mandir}/man1/quart{,-*}.1*

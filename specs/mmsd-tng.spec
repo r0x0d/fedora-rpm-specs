@@ -9,6 +9,11 @@ Source0:        https://gitlab.com/kop316/mmsd/-/archive/%{version}/mmsd-%{versi
 
 Source1:        mmsd-tng.service
 
+# https://fedoraproject.org/wiki/Changes/EncourageI686LeafRemoval
+%if !%{defined fc40} && !%{defined fc41}
+ExcludeArch:    %{ix86}
+%endif
+
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  meson

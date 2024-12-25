@@ -1,15 +1,13 @@
-%global _short_name bitmath
-%global _short_release 1
-
 Name: python-bitmath
+Version: 1.3.3.1
+Release: 1%{?dist}
 Summary: Aids representing and manipulating file sizes in various prefix notations
-Version: 1.3.1
-Release: %{_short_release}%{?dist}.30
 
 # Automatically converted from old format: BSD - review is highly recommended.
 License: LicenseRef-Callaway-BSD
-Source0: https://github.com/tbielawa/bitmath/archive/%{version}.%{_short_release}.tar.gz
-Url: https://github.com/tbielawa/bitmath
+URL: https://github.com/tbielawa/bitmath
+
+Source: https://github.com/tbielawa/bitmath/archive/%{version}.tar.gz
 
 BuildArch: noarch
 BuildRequires:  python3-devel
@@ -65,6 +63,30 @@ bitmath is thoroughly unittested, with almost 200 individual tests (a
 number which is always increasing). bitmath's test-coverage is almost
 always at 100%.
 
+
+######################################################################
+%prep
+%autosetup -p1 -n bitmath-%{version}
+%generate_buildrequires
+%pyproject_buildrequires
+
+
+######################################################################
+%build
+%pyproject_wheel
+
+######################################################################
+%install
+%pyproject_install
+%pyproject_save_files bitmath
+
+mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man1/
+cp -v *.1 $RPM_BUILD_ROOT/%{_mandir}/man1/
+mkdir -p $RPM_BUILD_ROOT/%{_docdir}/%{name}/docs
+cp -v -r docsite/source/* $RPM_BUILD_ROOT/%{_docdir}/%{name}/docs/
+rm -f $RPM_BUILD_ROOT/%{_docdir}/%{name}/docs/NEWS.rst
+
+
 ######################################################################
 %check
 # We can't run the progressbar and argparse tests in python3 until
@@ -74,35 +96,19 @@ always at 100%.
 %pytest -v --ignore=tests/test_argparse_type.py \
            --ignore=tests/test_progressbar.py
 
-######################################################################
-%prep
-%setup -n bitmath-%{version}.%{_short_release} -q
 
 ######################################################################
-%build
-%py3_build
-
-######################################################################
-%install
-%py3_install
-
-
-mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man1/
-cp -v *.1 $RPM_BUILD_ROOT/%{_mandir}/man1/
-mkdir -p $RPM_BUILD_ROOT/%{_docdir}/%{name}/docs
-cp -v -r docsite/source/* $RPM_BUILD_ROOT/%{_docdir}/%{name}/docs/
-rm -f $RPM_BUILD_ROOT/%{_docdir}/%{name}/docs/NEWS.rst
-
-######################################################################
-%files -n python3-bitmath
-%{python3_sitelib}/*
-%doc README.rst NEWS.rst LICENSE
+%files -n python3-bitmath -f %{pyproject_files}
+%doc README.rst NEWS.rst
 %doc %{_mandir}/man1/bitmath.1*
 %doc %{_docdir}/%{name}/docs/
 %{_bindir}/bitmath
 
 ######################################################################
 %changelog
+* Mon Dec 23 2024 Felix Schwarz <fschwarz@fedoraproject.org> - 1.3.3.1-1
+- update to latest version
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.3.1-1.30
 - convert license to SPDX
 

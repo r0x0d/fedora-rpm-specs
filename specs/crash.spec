@@ -4,7 +4,7 @@
 Summary: Kernel analysis utility for live systems, netdump, diskdump, kdump, LKCD or mcore dumpfiles
 Name: crash
 Version: 8.0.6
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPL-3.0-only
 Source0: https://github.com/crash-utility/crash/archive/crash-%{version}.tar.gz
 Source1: http://ftp.gnu.org/gnu/gdb/gdb-10.2.tar.gz
@@ -19,6 +19,11 @@ Provides: bundled(libiberty)
 Provides: bundled(gdb) = 10.2
 Patch0: lzo_snappy_zstd.patch
 Patch1: crash-8.0.6_build.patch
+Patch2: 0001-Fix-infinite-loop-during-module-symbols-initializati.patch
+Patch3: 0002-Fix-for-help-r-segfault-in-case-of-ramdump.patch
+Patch4: 0003-arm64-add-cpu-context-registers-to-better-support-gd.patch
+Patch5: 0004-x86_64-Mark-VC-stack-unavailable-when-CONFIG_AMD_MEM.patch
+Patch6: 0005-Fix-incorrect-bt-v-output-suggesting-overflow.patch
 
 %description
 The core analysis suite is a self-contained tool that can be used to
@@ -40,6 +45,11 @@ offered by Mission Critical Linux, or the LKCD kernel patch.
 %setup -n %{name}-%{version} -q
 %patch -P 0 -p1 -b lzo_snappy_zstd.patch
 %patch -P 1 -p1
+%patch -P 2 -p1
+%patch -P 3 -p1
+%patch -P 4 -p1
+%patch -P 5 -p1
+%patch -P 6 -p1
 
 %build
 
@@ -65,6 +75,13 @@ cp -p defs.h %{buildroot}%{_includedir}/crash
 %{_includedir}/*
 
 %changelog
+* Fri Dec 20 2024 Lianbo Jiang <lijiang@redhat.com> - 8.0.6-2
+- Fix infinite loop during module symbols initialization
+- Fix for "help -r" segfault in case of ramdump
+- arm64: add cpu context registers to better support gdb stack unwind
+- x86_64: Mark #VC stack unavailable when CONFIG_AMD_MEM_ENCRYPT is not set
+- Fix incorrect 'bt -v' output suggesting overflow
+
 * Tue Nov 12 2024 Lianbo Jiang <lijiang@redhat.com> - 8.0.6-1
 - Rebase to upstream crash 8.0.6
 

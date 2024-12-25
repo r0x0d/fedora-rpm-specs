@@ -1,5 +1,5 @@
 Name:           python-tox-uv
-Version:        1.16.1
+Version:        1.16.2
 Release:        %autorelease
 Summary:        Integration of uv with tox
 
@@ -69,6 +69,7 @@ k="${k-}${k+ and }not test_uv_python_set"
 
 
 %files -n python3-tox-uv -f %{pyproject_files}
+%doc README.md
 
 
 %changelog

@@ -25,7 +25,6 @@
 %bcond oidn	1
 %bcond oneapi   0
 %bcond opgl	1
-# Currently hipcc (from rocm-compilersupport) requires this
 %global llvm_compat 18
 %endif
 %bcond usd	1
@@ -292,17 +291,9 @@ BuildRequires:  libappstream-glib
 # HIP stuff
 # https://developer.blender.org/docs/handbook/building_blender/cycles_gpu_binaries/#linux
 %if %{with hip}
-BuildRequires:  hipcc
-# Explicitly add the following BR for llvm_compat mode
-BuildRequires:  clang%{?llvm_compat}
-BuildRequires:  lld%{?llvm_compat}
-%if 0%{?fedora} > 41
-BuildRequires:  rocm-llvm-devel
-%endif
 BuildRequires:  rocm-core
 BuildRequires:  rocm-device-libs
 BuildRequires:  rocm-hip-devel
-Recommends:     rocm-hip-devel
 BuildRequires:  rocm-runtime-devel
 %endif
 
@@ -355,13 +346,11 @@ sed -i "s/date_time/date_time python%{python3_version_nodots}/" \
 
 %build
 %if %{with hip}
-%if 0%{?llvm_compat} > 0
-# clang++ path hack for hipcc
-export HIP_CLANG_PATH=%{_libdir}/llvm%{llvm_compat}/bin
+export HIP_PATH=`hipconfig -p`
+export HIP_CLANG_PATH=`hipconfig -l`
 # On F-41, hipcc wants llvm-objcopy
 %if 0%{?fedora} <= 41
-export PATH=${PATH}:%{_libdir}/llvm%{llvm_compat}/bin
-%endif
+export PATH=${PATH}:${HIP_CLANG_PATH}
 %endif
 %endif
 
@@ -409,6 +398,7 @@ export PATH=${PATH}:%{_libdir}/llvm%{llvm_compat}/bin
 %endif
     -DXR_OPENXR_SDK_LOADER_LIBRARY=%{_libdir}/libopenxr_loader.so.1 \
 %if %{with hip}
+    -DHIP_HIPCC_EXECUTABLE=${HIP_CLANG_PATH}/clang++ \
     -DWITH_CYCLES_HIP_BINARIES=ON \
 %endif
 %if %{with oneapi}

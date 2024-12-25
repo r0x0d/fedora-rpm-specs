@@ -3,18 +3,18 @@
 # Some extras are disabled in RHEL to avoid bringing in additional
 # dependencies.
 #
-# Requires python-lz4:
-%bcond graphite_extra %{expr:%{undefined rhel} || %{defined epel}}
+# Requires python-lz4 (not yet in EPEL10):
+%bcond graphite_extra %{expr:%{undefined rhel} || (%{defined epel} && !%{defined el10})}
 # Requires python-skia-pathops, not packaged:
 %bcond pathops_extra 0
-# Requires python-matplotlib (not yet in EPEL10):
-%bcond plot_extra %{expr:%{undefined rhel} || (%{defined epel} && !%{defined el10})}
+# Requires python-matplotlib:
+%bcond plot_extra %{expr:%{undefined rhel} || %{defined epel}}
 # Requires python-uharfbuzz, not packaged:
 %bcond repacker_extra 0
 # Requires python-sympy (not yet in any EPEL):
 %bcond symfont_extra %{expr:%{undefined rhel}}
-# Requires python-fs (not yet in EPEL10):
-%bcond ufo_extra %{expr:%{undefined rhel} || (%{defined epel} && !%{defined el10})}
+# Requires python-fs:
+%bcond ufo_extra %{expr:%{undefined rhel} || %{defined epel}}
 # Requires python-brotli, python-zopfli:
 %bcond woff_extra %{expr:%{undefined rhel} || %{defined epel}}
 # Requires scipy, munkres, pycairo
@@ -29,7 +29,7 @@ AFM and to an extent Type 1 and some Mac-specific formats.}
 
 Name:           fonttools
 Version:        4.55.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Tools to manipulate font files
 
 # https://spdx.org/licenses/MIT.html
@@ -194,6 +194,9 @@ k="${k-}${k+ and }not (InterpolatableTest and test_sparse_interpolatable_ufos)"
 %doc NEWS.rst README.rst
 
 %changelog
+* Wed Dec 18 2024 Romain Geissler <romain.geissler@amadeus.com> - 4.55.3-2
+- Update extra dependencies for EPEL.
+
 * Sun Dec 15 2024 Parag Nemade <pnemade AT redhat DOT com> - 4.55.3-1
 - Update to 4.55.3 version (#2331592)
 
