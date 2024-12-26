@@ -5,7 +5,7 @@
 %global xfceversion 4.16
 
 Name:           xfce4-clipman-plugin
-Version:        1.6.6
+Version:        1.6.7
 Release:        %autorelease
 Summary:        Clipboard manager plugin for the Xfce panel
 

@@ -60,7 +60,7 @@
 Summary: A Modern Concurrent Version Control System
 Name: subversion
 Version: 1.14.5
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: Apache-2.0
 URL: https://subversion.apache.org/
 Source0: https://downloads.apache.org/subversion/subversion-%{version}.tar.bz2
@@ -221,7 +221,9 @@ This package includes the JNI bindings to the Subversion libraries.
 Summary: Ruby bindings to the Subversion libraries
 BuildRequires: ruby-devel >= 1.9.1, ruby >= 1.9.1
 BuildRequires: rubygem(test-unit)
+BuildRequires: rubygem(csv)
 Requires: subversion-libs%{?_isa} = %{version}-%{release}
+Requires: rubygem(csv)
 Conflicts: ruby-libs%{?_isa} < 1.8.2
 
 %description ruby
@@ -583,6 +585,9 @@ make check-javahl
 %endif
 
 %changelog
+* Wed Dec 18 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.14.5-3
+- Explicitly add dependency for rubygem(csv) for ruby3.4
+
 * Fri Dec 13 2024 Joe Orton <jorton@redhat.com> - 1.14.5-2
 - fix ELN build failure
 

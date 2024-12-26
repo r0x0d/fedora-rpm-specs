@@ -6,8 +6,8 @@
 %endif
 
 Name:		perl-Specio
-Version:	0.48
-Release:	7%{?dist}
+Version:	0.49
+Release:	1%{?dist}
 Summary:	Type constraints and coercions for Perl
 # lib/Specio/PartialDump.pm:	GPL-1.0-or-later OR Artistic-1.0-Perl
 #				<https://github.com/houseabsolute/Specio/issues/17>
@@ -24,6 +24,7 @@ BuildRequires:	perl-interpreter
 BuildRequires:	perl(ExtUtils::MakeMaker) >= 6.76
 # Module Runtime
 BuildRequires:	perl(Carp)
+BuildRequires:	perl(Clone)
 BuildRequires:	perl(Devel::StackTrace)
 BuildRequires:	perl(Eval::Closure)
 BuildRequires:	perl(Exporter)
@@ -38,7 +39,6 @@ BuildRequires:	perl(Ref::Util) >= 0.112
 BuildRequires:	perl(Role::Tiny) >= 1.003003
 BuildRequires:	perl(Role::Tiny::With)
 BuildRequires:	perl(Scalar::Util)
-BuildRequires:	perl(Storable)
 BuildRequires:	perl(strict)
 BuildRequires:	perl(Sub::Quote)
 BuildRequires:	perl(Sub::Util) >= 1.40
@@ -161,6 +161,13 @@ make test
 %{_mandir}/man3/Test::Specio.3*
 
 %changelog
+* Tue Dec 24 2024 Paul Howarth <paul@city-fan.org> - 0.49-1
+- Update to 0.49
+  - Attempting to import any structured type caused a confusing
+    "Can't store CODE items" error
+  - Removed the "this is alpha" warning from Specio::Library::Structured; it's
+    as production-ready as it's going to get
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.48-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

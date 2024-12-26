@@ -160,6 +160,12 @@ Recommends:     squashfuse
 Obsoletes:      fex-emu-gdb < 2409-4
 Provides:       fex-emu-gdb = %{version}-%{release}
 
+# Do not check guest thunks for requires, since these are x86-64 binaries that link against libs in the FEX RootFS.
+%global __requires_exclude_from ^%{_datadir}/fex-emu/GuestThunks.*$
+
+# Do not check guest and host thunks for provides, since these are not general system libraries on the host.
+%global __provides_exclude_from ^(%{_datadir}/fex-emu/GuestThunks.*|%{_libdir}/fex-emu/HostThunks.*)$
+
 %description
 FEX allows you to run x86 and x86-64 binaries on an AArch64 host, similar to
 qemu-user and box86. It has native support for a rootfs overlay, so you don't

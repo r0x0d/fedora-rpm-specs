@@ -3,10 +3,9 @@ Version:	0.2.0
 Release:	9%{?dist}
 Summary:	An AVTP protocol implementation
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:	LicenseRef-Callaway-BSD
+License:	BSD-3-Clause
 URL:		https://github.com/Avnu/libavtp
-Source0:	https://github.com/Avnu/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:	%{url}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 BuildRequires:	cmake
 BuildRequires:	gcc

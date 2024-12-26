@@ -36,6 +36,9 @@ Patch:          %{url}/pull/85.patch
 # python-datrie: FTBFS in Fedora rawhide/f40
 # https://bugzilla.redhat.com/show_bug.cgi?id=2261554
 Patch:          %{url}/pull/99.patch
+# pytest-runner is not needed for building the package
+# https://github.com/pytries/datrie/pull/89
+Patch:          %{url}/pull/89.patch
 
 BuildRequires:  python3-devel
 

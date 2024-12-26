@@ -5,7 +5,7 @@
 %global xfceversion 4.16
 
 Name:           xfce4-battery-plugin
-Version:        1.1.5
+Version:        1.1.6
 Release:        %autorelease
 Summary:        Battery monitor for the Xfce panel
 

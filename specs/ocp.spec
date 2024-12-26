@@ -1,12 +1,12 @@
 #global snapshot 0
-%global commit d2da9c4dc12d634e5b9653bb1f4bdc10d4f77e10
-%global commitdate 20240404
-%global gittag v0.2.109
+%global commit 72139d86ea1e90a4256c78c5eab6827ed58215b1
+%global commitdate 20241223
+%global gittag v3.0.0
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:		ocp
-Version:	0.2.109%{?snapshot:^%{commitdate}git%{shortcommit}}
-Release:	3%{?dist}
+Version:	3.0.0%{?snapshot:^%{commitdate}git%{shortcommit}}
+Release:	1%{?dist}
 Summary:	Open Cubic Player for MOD/S3M/XM/IT/MIDI music files
 
 # Main ocp source is GPL-2.0-or-later.
@@ -63,7 +63,7 @@ Requires:	unifont-fonts
 
 # Bundled code
 Provides:	bundled(timidity++) = 2.15.0
-Provides:	bundled(libsidplayfp) = 2.7.0b
+Provides:	bundled(libsidplayfp) = 2.12.0
 Provides:	bundled(adplug) = 2.3.4-beta
 Provides:	bundled(libbinio) = 1.5
 Provides:	bundled(reSID) = 1.0-pre2
@@ -176,6 +176,10 @@ rm -f %{buildroot}%{_pkgdocdir}/COPYING
 
 
 %changelog
+* Tue Dec 24 2024 Charles R. Anderson <cra@alum.wpi.edu> - 3.0.0-1
+- Update to 3.0.0
+- Adds modland.com support directly from the file browser
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.109-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

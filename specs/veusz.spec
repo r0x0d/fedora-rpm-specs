@@ -1,6 +1,6 @@
 Name:           veusz
 Version:        3.6.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        GUI scientific plotting package
 
 License:        GPL-2.0-or-later AND (LGPL-2.1-only OR GPL-3.0-only) AND PSF-2.0 AND CC0-1.0
@@ -122,6 +122,9 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} \
 %{python3_sitearch}/veusz
 
 %changelog
+* Tue Dec 24 2024 Jeremy Sanders <jeremy@jeremysanders.net> - 3.6.2-7
+- Bump for Numpy 2 (RHBZ#2333963)
+
 * Sat Jul 20 2024 Fedora Release Engineering <releng@fedoraproject.org> - 3.6.2-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

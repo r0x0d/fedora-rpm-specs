@@ -6,7 +6,14 @@ Name:             python-%{pypi_name}
 Version:          1.84
 Release:          %autorelease
 Summary:          Python tools for computational molecular biology
-Source0:          %{pypi_source}
+Source:           %{pypi_source}
+Patch:            %{name}-1.84-replace_deprecated_function.patch
+
+# Patch for fixing ValueError thrown when tests are run with NumPy 2.x
+# Upstream is still working in NumPy 2.x compatibility, though I
+# couldn't find a fix for that particular issue.
+# See also: https://github.com/biopython/biopython/pull/4897
+Patch:            numpy-2.x.patch
 
 # Starting from biopython-1.69, BioPython is released under the
 # "Biopython License Agreement"; it looks like a MIT variant
@@ -15,8 +22,6 @@ License:          MIT AND BSD-3-Clause
 URL:              https://biopython.org/
 BuildRequires:    gcc
 BuildRequires:    pyproject-rpm-macros
-
-Patch0:           %{name}-1.84-replace_deprecated_function.patch
 
 %description
 A set of freely available Python tools for computational molecular

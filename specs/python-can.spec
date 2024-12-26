@@ -48,9 +48,11 @@ utilities for sending and receiving messages on a can bus.
 %autosetup -p1 -n %{name}-%{version}%{?candidate:%{candidate}}
 
 %generate_buildrequires
+export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %pyproject_buildrequires
 
 %build
+export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %pyproject_wheel
 
 %install

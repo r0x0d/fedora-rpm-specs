@@ -3,8 +3,8 @@
 %bcond_without tests
 
 Name:           python-cssselect
-Version:        1.1.0
-Release:        11%{?dist}
+Version:        1.2.0
+Release:        1%{?dist}
 Summary:        Parses CSS3 Selectors and translates them to XPath 1.0
 
 # Automatically converted from old format: BSD - review is highly recommended.
@@ -56,6 +56,9 @@ Python 3 version.
 %{python3_sitelib}/%{modname}/
 
 %changelog
+* Tue Dec 24 2024 Eduardo Echeverria <echevemaster@gmail.com> - 1.2.0-1
+- Update to 1.2.0
+
 * Wed Sep 04 2024 Miroslav Suchý <msuchy@redhat.com> - 1.1.0-11
 - convert license to SPDX
 

@@ -1,6 +1,6 @@
 Name:           portaudio
 Version:        19
-Release:        44%{?dist}
+Release:        45%{?dist}
 Summary:        Free, cross platform, open-source, audio I/O library
 License:        MIT
 URL:            http://www.portaudio.com/
@@ -12,12 +12,18 @@ Patch2:         portaudio-pkgconfig-alsa.patch
 # http://audacity.googlecode.com/svn/audacity-src/trunk/lib-src/portmixer/portaudio.patch
 Patch3:         portaudio-audacity.patch
 
-BuildRequires: make
+BuildRequires:  alsa-lib-devel
+BuildRequires:  autoconf
+BuildRequires:  automake
 BuildRequires:  doxygen
 BuildRequires:  gcc-c++
-BuildRequires:  alsa-lib-devel
+%if 0%{?fedora} || 0%{?rhel} >= 9
+BuildRequires:  pipewire-jack-audio-connection-kit-devel
+%else
 BuildRequires:  jack-audio-connection-kit-devel
-BuildRequires:  autoconf automake libtool
+%endif
+BuildRequires:  libtool
+BuildRequires:  make
 
 %description
 PortAudio is a portable audio I/O library designed for cross-platform
@@ -68,7 +74,8 @@ doxygen
 %files
 %license LICENSE.txt
 %doc README.md
-%{_libdir}/*.so.*
+%{_libdir}/libportaudio.so.2*
+%{_libdir}/libportaudiocpp.so.0*
 
 %files devel
 %doc doc/html/*
@@ -77,12 +84,17 @@ doxygen
 %{_includedir}/pa_jack.h
 %{_includedir}/pa_linux_alsa.h
 %{_includedir}/pa_unix_oss.h
-%exclude %{_libdir}/*.la
-%{_libdir}/*.so
-%{_libdir}/pkgconfig/*.pc
+%{_libdir}/libportaudio.so
+%{_libdir}/libportaudiocpp.so
+%{_libdir}/pkgconfig/portaudio-2.0.pc
+%{_libdir}/pkgconfig/portaudiocpp.pc
 
 
 %changelog
+* Wed Oct 16 2024 Xavier Bachelot <xavier@bachelot.org> - 19-45
+- Add conditional for {pipewire-,}jack-audio-connection-kit-devel
+- Narrow scope of globs for .so/.pc
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 19-44
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

@@ -1,5 +1,5 @@
 Name:           pari
-Version:        2.17.0
+Version:        2.17.1
 Release:        %autorelease
 Summary:        Number Theory-oriented Computer Algebra System
 
@@ -87,6 +87,7 @@ contains a wealth of number-theoretic functions.
 # Silence abidiff warnings about the size of functions_basic[] changing
 cp -p %{SOURCE5} .
 
+%conf
 # Avoid unwanted rpaths
 sed -i "s|runpathprefix='.*'|runpathprefix=''|" config/get_ld
 

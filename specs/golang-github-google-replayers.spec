@@ -32,23 +32,6 @@ License:        Apache-2.0
 URL:            %{gourl}
 Source0:        %{gosource}
 
-BuildRequires:  golang(github.com/golang/protobuf/proto)
-BuildRequires:  golang(github.com/golang/protobuf/ptypes)
-BuildRequires:  golang(github.com/golang/protobuf/ptypes/any)
-BuildRequires:  golang(github.com/google/martian)
-BuildRequires:  golang(github.com/google/martian/v3/fifo)
-BuildRequires:  golang(github.com/google/martian/v3/httpspec)
-BuildRequires:  golang(github.com/google/martian/v3/martianhttp)
-BuildRequires:  golang(github.com/google/martian/v3/martianlog)
-BuildRequires:  golang(github.com/google/martian/v3/mitm)
-BuildRequires:  golang(golang.org/x/net/context)
-BuildRequires:  golang(google.golang.org/api/option)
-BuildRequires:  golang(google.golang.org/api/transport/http)
-BuildRequires:  golang(google.golang.org/genproto/googleapis/rpc/status)
-BuildRequires:  golang(google.golang.org/grpc)
-BuildRequires:  golang(google.golang.org/grpc/metadata)
-BuildRequires:  golang(google.golang.org/grpc/status)
-
 %if %{with check}
 # Tests
 BuildRequires:  golang(github.com/google/go-cmp/cmp)
@@ -70,9 +53,11 @@ sed -i 's|github.com/google/martian|github.com/google/martian/v3|' $(find -iname
 
 %if %{with check}
 %check
+# grpcreplay: https://github.com/google/go-replayers/issues/61
 # httpreplay: fails due to martian incompatibility, even with 3.2.1 (latest)
-# version of github.com/google/martian.
+#             version of github.com/google/martian.
 %gocheck \
+	-d grpcreplay \
 	-d httpreplay \
 	-d httpreplay/cmd/httpr \
 	-d httpreplay/internal/proxy

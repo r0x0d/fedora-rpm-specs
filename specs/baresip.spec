@@ -1,7 +1,7 @@
 Summary:        Modular SIP user-agent with audio and video support
 Name:           baresip
 Version:        3.18.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD-3-Clause
 URL:            https://github.com/baresip/baresip
 Source0:        https://github.com/baresip/baresip/archive/v%{version}/%{name}-%{version}.tar.gz
@@ -52,7 +52,7 @@ Requires:       pkgconfig
 The baresip-devel package includes header files and libraries necessary
 for developing programs which use the baresip C library.
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 9
 %package aac
 Summary:        AAC audio codec module for baresip
 BuildRequires:  fdk-aac-free-devel
@@ -449,7 +449,7 @@ gtk-update-icon-cache --force %{_datadir}/icons/Adwaita &>/dev/null || :
 %{_includedir}/%{name}.h
 %{_libdir}/pkgconfig/lib%{name}.pc
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 9
 %files aac
 %{_libdir}/%{name}/modules/aac.so
 %endif
@@ -538,6 +538,9 @@ gtk-update-icon-cache --force %{_datadir}/icons/Adwaita &>/dev/null || :
 %{_libdir}/%{name}/modules/x11.so
 
 %changelog
+* Tue Dec 24 2024 Robert Scheck <robert@fedoraproject.org> 3.18.0-2
+- Enable baresip-aac subpackage on RHEL 9 and later
+
 * Thu Dec 12 2024 Robert Scheck <robert@fedoraproject.org> 3.18.0-1
 - Upgrade to 3.18.0 (#2331640)
 

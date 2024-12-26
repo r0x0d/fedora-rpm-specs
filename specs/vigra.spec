@@ -1,7 +1,7 @@
 Summary:        Generic Programming for Computer Vision
 Name:           vigra
 Version:        1.11.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 # The "Lenna" files are non-free, we need to remove them from the source tarball.
 # wget https://github.com/ukoethe/vigra/archive/refs/tags/Version-1-11-2.tar.gz
@@ -144,6 +144,9 @@ install -p -m755 -D %{SOURCE1} %{buildroot}%{_bindir}/vigra-config
 %endif
 
 %changelog
+* Tue Dec 24 2024 Orion Poplawski <orion@nwra.com> - 1.11.2-2
+- Rebuild with numpy 2.x (rhbz#2333964)
+
 * Sat Nov 30 2024 Bruno Postle <bruno@postle.net> - 1.11.2-1
 - Upstream maintenance release
 - dropped vigra-1.11.1.py37.patch, 81958d302494e137f98a8b1d7869841532f90388.patch and vigra-openexr3.patch

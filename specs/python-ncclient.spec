@@ -18,10 +18,18 @@ Summary:        Python library for the NETCONF protocol
 License:        Apache-2.0 AND Unlicense
 URL:            https://github.com/ncclient/ncclient
 Source:         %{url}/archive/v%{version}/ncclient-%{version}.tar.gz
+# Drop the pytest-runner dependency
+# https://github.com/ncclient/ncclient/pull/613
+Patch:          %{url}/pull/613.patch
+
+BuildSystem:            pyproject
+BuildOption(install):   -l ncclient
+BuildOption(generate_buildrequires): -t %{?with_doc_pdf:docs/requirements.txt}
+
+# For %%py3_shebang_fix in %%prep, before dynamic BR’s from the BuildSystem:
+BuildRequires:  pyproject-rpm-macros
 
 BuildArch:      noarch
-
-BuildRequires:  python3-devel
 
 %global common_description %{expand:
 ncclient is a Python library that facilitates client-side scripting and
@@ -56,8 +64,7 @@ The python-ncclient-doc package contains detailed documentation and examples
 for python-ncclient.
 
 
-%prep
-%autosetup -n ncclient-%{version}
+%prep -a
 %py3_shebang_fix examples
 
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_linters
@@ -71,13 +78,7 @@ sed -r -i 's/==/>=/' docs/requirements.txt
 echo 'intersphinx_mapping.clear()' >> docs/source/conf.py
 
 
-%generate_buildrequires
-%pyproject_buildrequires -t %{?with_doc_pdf:docs/requirements.txt}
-
-
-%build
-%pyproject_wheel
-
+%build -a
 %if %{with doc_pdf}
 %make_build -C docs latex SPHINXOPTS='-j%{?_smp_build_ncpus}'
 # There is an escaping problem we haven’t traced to its root cause. In the list
@@ -89,12 +90,7 @@ sed -r -i 's/\x07nd/and/g' docs/build/latex/ncclient.tex
 %endif
 
 
-%install
-%pyproject_install
-%pyproject_save_files -l ncclient
-
-
-%check
+%check -a
 %tox
 
  

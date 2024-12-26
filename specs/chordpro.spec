@@ -5,14 +5,15 @@
 Name: chordpro
 Summary: Print songbooks (lyrics + chords)
 License: Artistic-2.0
-Version: 6.060
+Version: 6.070
 Release: %autorelease
 Source: https://cpan.metacpan.org/authors/id/J/JV/JV/%{FullName}-%{version}.tar.gz
 Source1: README.ABC
 Source2: README.LilyPond
+Source3: README.WX
+Source9: config.tmpl
 Patch1: chordpro-abc.patch
 Patch2: chordpro-fonts.patch
-Patch3: chordpro-wxcfg.patch
 Obsoletes: chordpro-abc == 6.050.4
 URL: https://www.chordpro.org
 
@@ -27,26 +28,36 @@ BuildArch: noarch
 Requires: perl(:VERSION) >= 5.26.0
 
 Requires: perl(SVGPDF)                      >= 0.088
-Requires: perl(PDF::API2)                   >= 2.044
-Requires: perl(Text::Layout)                >= 0.038
-Requires: perl(JSON::PP)                    >= 2.27203
-Requires: perl(JSON::XS)                    >= 4.03
-Requires: perl(String::Interpolate::Named)  >= 1.03
+Requires: gnu-free-fonts-common
+Requires: gnu-free-mono-fonts
+Requires: gnu-free-sans-fonts
+Requires: gnu-free-serif-fonts
+Requires: perl(Data::Printer)               >= 1.001001
 Requires: perl(File::HomeDir)               >= 1.004
 Requires: perl(File::LoadLines)             >= 1.044
-Requires: perl(HarfBuzz::Shaper)
-Requires: perl(Image::Info)                 >= 1.41
-Requires: perl(List::Util)                  >= 1.46
-Requires: perl(Data::Printer)               >= 1.001001
-Requires: perl(Storable)                    >= 3.08
-Requires: perl(Object::Pad)                 >= 0.78
-Requires: perl(Hash::Util)
 Requires: perl(FindBin)
-Requires: gnu-free-fonts-common
-Requires: gnu-free-serif-fonts
-Requires: gnu-free-sans-fonts
-Requires: gnu-free-mono-fonts
+Requires: perl(HarfBuzz::Shaper)	    >= 0.026
+Requires: perl(Hash::Util)
+Requires: perl(Image::Info)                 >= 1.41
+Requires: perl(JSON::PP)                    >= 2.27203
+Requires: perl(JSON::XS)                    >= 4.03
+Requires: perl(LWP::Protocol::https)
+Requires: perl(List::Util)                  >= 1.46
+Requires: perl(Object::Pad)                 >= 0.78
+Requires: perl(PDF::API2)                   >= 2.044
+Requires: perl(Ref::Util)		    >= 0.204
+Requires: perl(Scalar::Util)		    >= 1.63
+Requires: perl(Storable)                    >= 3.08
+Requires: perl(String::Interpolate::Named)  >= 1.03
+Requires: perl(Text::Layout)                >= 0.038
 
+# BuildRequires for ChordPro.
+BuildRequires: desktop-file-utils
+BuildRequires: gnu-free-fonts-common
+BuildRequires: gnu-free-mono-fonts
+BuildRequires: gnu-free-sans-fonts
+BuildRequires: gnu-free-serif-fonts
+BuildRequires: libappstream-glib
 BuildRequires: make
 BuildRequires: perl(Carp)
 BuildRequires: perl(Data::Dumper)
@@ -58,19 +69,22 @@ BuildRequires: perl(File::LoadLines)             >= 1.021
 BuildRequires: perl(File::Spec)
 BuildRequires: perl(File::Temp)
 BuildRequires: perl(FindBin)
+BuildRequires: perl(Getopt::Long)
 BuildRequires: perl(HarfBuzz::Shaper)
 BuildRequires: perl(Hash::Util)
-BuildRequires: perl(Getopt::Long)
 BuildRequires: perl(Image::Info)                 >= 1.41
 BuildRequires: perl(JSON::PP)                    >= 2.27203
 BuildRequires: perl(JSON::XS)                    >= 4.03
-BuildRequires: perl(PDF::API2)                   >= 2.044
-BuildRequires: perl(String::Interpolate::Named)  >= 1.03
-BuildRequires: perl(Test::More)
-BuildRequires: perl(Text::Layout)                >= 0.038
 BuildRequires: perl(List::Util)                  >= 1.33
 BuildRequires: perl(Object::Pad)                 >= 0.78
+BuildRequires: perl(PDF::API2)                   >= 2.044
+BuildRequires: perl(Ref::Util)			 >= 0.204
+BuildRequires: perl(Scalar::Util)		 >= 1.63
 BuildRequires: perl(Storable)                    >= 3.08
+BuildRequires: perl(String::Interpolate::Named)  >= 1.03
+BuildRequires: perl(SVGPDF)                      >= 0.088
+BuildRequires: perl(Test::More)
+BuildRequires: perl(Text::Layout)                >= 0.038
 BuildRequires: perl(base)
 BuildRequires: perl(constant)
 BuildRequires: perl(lib)
@@ -79,12 +93,7 @@ BuildRequires: perl(utf8)
 BuildRequires: perl(warnings)
 BuildRequires: perl-generators
 BuildRequires: perl-interpreter
-BuildRequires: desktop-file-utils
-BuildRequires: libappstream-glib
-BuildRequires: gnu-free-fonts-common
-BuildRequires: gnu-free-serif-fonts
-BuildRequires: gnu-free-sans-fonts
-BuildRequires: gnu-free-mono-fonts
+BuildRequires: perl-libs
 
 %description
 ChordPro will read a text file containing the lyrics of one or many
@@ -109,7 +118,12 @@ Requires: %{name} = %{version}-%{release}
 Requires: perl(Wx) >= 0.99
 
 %description gui
-This package contains the wxWidgets (GUI) extension for %{name}.
+This package installs the requirements for the wxWidgets (GUI) version
+of ChordPro.
+
+To run the GUI version it is better (though not strictly necessary) to
+install an updated version of the perl Wx module. See
+https://github.com/sciurius/wxPerl for instructions.
 
 %package lilypond
 
@@ -125,24 +139,30 @@ This packages installs the requirements for LilyPond support for ChordPro.
 %prep
 %setup -q -n %{FullName}-%{version}
 
-%patch -P 1 -p0 -b .abc 
+%patch -P 1 -p0 -b .abc
 %patch -P 2 -p0 -b .fonts
-%patch -P 3 -p0 -b .wxcfg
 
 # Update outdated READMEs.
 cp -a %{SOURCE1} .
 cp -a %{SOURCE2} .
+cp -a %{SOURCE3} .
+
+# Add possible missing file.
+test -f lib/ChordPro/res/config/config.tmpl \
+     || cp -a %{SOURCE9} lib/ChordPro/res/config/config.tmpl
 
 # Remove some stuff.
 rm lib/ChordPro/res/linux/setup_desktop.sh
-# LaTeX
+# LaTeX (not yet supported).
 rm lib/ChordPro/Output/LaTeX.pm
 rm lib/ChordPro/res/templates/*.tt
 rm t/74_latex.t
-# MarkDown
+# MarkDown (not yet supported).
 rm lib/ChordPro/Output/Markdown.pm
 rm t/73_md.t
-# Fonts
+# Use system package.
+rm -fr lib/ChordPro/lib/SVGPDF*
+# Fonts (use system fonts).
 rm lib/ChordPro/res/fonts/Free*.ttf
 
 %build
@@ -219,6 +239,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 %exclude %{share}/lib/ChordPro/Delegate/Lilypond.pm
 
 %files gui
+%doc README.WX
 %{_bindir}/wxchordpro
 %{share}/lib/ChordPro/Wx.pm
 %{share}/lib/ChordPro/Wx

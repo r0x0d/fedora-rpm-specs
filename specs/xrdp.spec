@@ -1,4 +1,4 @@
-%global prerelease -rc.1
+#%%global prerelease -rc.1
 
 %global _hardened_build 1
 
@@ -23,7 +23,7 @@ Summary:   Open source remote desktop protocol (RDP) server
 Name:      xrdp
 Epoch:     1
 Version:   0.10.2
-Release:   0.rc1.1%{?dist}
+Release:   1%{?dist}
 # Automatically converted from old format: ASL 2.0 and GPLv2+ and MIT - review is highly recommended.
 License:   Apache-2.0 AND GPL-2.0-or-later AND LicenseRef-Callaway-MIT
 URL:       http://www.xrdp.org/
@@ -316,6 +316,9 @@ fi
 %{_datadir}/selinux/*/%{name}.pp
 
 %changelog
+* Wed Dec 25 2024 Bojan Smojver <bojan@rexursive.com> - 1:0.10.2~1
+- Update to 0.10.2
+
 * Tue Dec 24 2024 Bojan Smojver <bojan@rexursive.com> - 1:0.10.2~0.rc1.1
 - Update to 0.10.2-rc.1
 

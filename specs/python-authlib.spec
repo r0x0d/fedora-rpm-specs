@@ -5,16 +5,13 @@
 %bcond tests_jose %{undefined rhel}
 
 Name:           python-authlib
-Version:        1.3.2
+Version:        1.4.0
 Release:        %autorelease
 Summary:        Build OAuth and OpenID Connect servers in Python
 
 License:        BSD-3-Clause
 URL:            https://github.com/lepture/authlib
 Source0:        %{url}/archive/v%{version}/authlib-%{version}.tar.gz
-# Fix tests for Python 3.13
-# Upstream PR: https://github.com/lepture/authlib/pull/682
-Patch:          0001-tests-Dereference-LocalProxy-before-serialization.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-devel

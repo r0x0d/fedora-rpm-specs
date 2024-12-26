@@ -1,6 +1,6 @@
 %global tarname FreeFem-sources
-%global tarvers 4.14
-%global ffvers 4.14
+%global tarvers 4.15
+%global ffvers 4.15
 
 %bcond_without serial
 
@@ -11,6 +11,9 @@
 # Allow disabling building with/against mpich
 # Build with --without openmpi to not build mpich
 %bcond_without mpich
+
+
+%bcond_without xfail
 
 # Don't exercise %%check on the archs below.
 # They fail/hang for yet undetermined causes.
@@ -25,7 +28,7 @@
 Summary: PDE solving tool
 Name: freefem++
 Version: %{expand:%(echo %tarvers | tr - .)}
-Release: 12%{?dist}
+Release: 1%{?dist}
 URL: https://freefem.org
 Source0: https://github.com/FreeFem/FreeFem-sources/archive/v%{tarvers}.tar.gz#/%{tarname}-%{tarvers}.tar.gz
 
@@ -42,62 +45,65 @@ Patch09: 0009-Fix-quoting.patch
 Patch10: 0010-Use-prebuilt-FreeFEM-documentation.pdf.patch
 Patch11: 0011-Install-docs-into-docdir.patch
 Patch12: 0012-Use-libdir-to-setup-ff_prefix_dir.patch
-Patch13: 0013-Misc-build-fixes.patch
-Patch14: 0014-Wmisleading-indentation.patch
-Patch15: 0015-Fix-missing-includes-for-gcc-11.patch
-Patch16: 0016-Modernize-autotools.patch
-Patch17: 0017-Unbundle-boost.patch
-Patch18: 0018-Fedora-hacks.patch
-Patch19: 0019-Modernize-autotools.patch
+Patch13: 0013-Wmisleading-indentation.patch
+Patch14: 0014-Fix-missing-includes-for-gcc-11.patch
+Patch15: 0015-Modernize-autotools.patch
+Patch16: 0016-Unbundle-boost.patch
+Patch17: 0017-Fedora-hacks.patch
+Patch18: 0018-Comment-out-LD_LBFGS_NOCEDAL.patch
 
 # --disable-download doesn't work
 # Bundle hpddm.zip to prevent downloading during builds.
 # cf. hpddm in 3rdparty/getall
-%if 0%{fedora} > 39
-# Bleeding edge
+%if 0%{fedora} > 42
+# bleeding edge petsc
+# Fails to build on Fedora <= 42
+%global hpddm_git_hash acc20d7ad9c28d5cc57e794818689a166a4ccf8a
+%global hpddm_git_md5sum 655e35271b8167df4ed0816df8cfe915
+%global hpddm_gitdate 20240925
+%else
 # petsc-3.20.x compatible
 # hpddm-20231112gita789a19
 %global hpddm_git_hash a789a193f3c9c7c3c2674eb8d1f8db95cd1ae48c
 %global hpddm_git_md5sum debcabc4cb0100cd5e79f9efb8cbafe3
 %global hpddm_gitdate 20231112
-%elif 0%{fedora} > 38
-# petsc-3.18.5 compatible
-# hpddm-20221104gitff61cf3
-%global hpddm_git_hash ff61cf3ced922c2f896ebe1fff1a42f1f2805a3a
-%global hpddm_git_md5sum 872bf9c2bf1de6c6943a0f7712f89c5c
-%global hpddm_gitdate 20221104
-%else
-# petsc-3.17.4 compatible
-# hpddm-20210919git7113b9a
-%global hpddm_git_hash 7113b9a6b77fceee3f52490cb27941a87b96542f
-%global hpddm_git_md5sum 6910b7b974f0b60d9c247c666e7f3862
-%global hpddm_gitdate 20210919
 %endif
 %global hpddm_gitcommit %(c=%{hpddm_git_hash}; echo ${c:0:7})
 
-%global htool_git_hash 946875d79d0036afb4dc2c0c13c165a607d830df
-%global htool_git_md5sum 1403db4800a2d4b69f3da7eb3f6687a2
+%global htool_git_hash 1a3b198ffc6f73cd62059094ca7b606d151da976
+%global htool_git_md5sum 325ab9411e7a50212f99c1302f4cf81f
 %global htool_gitcommit %(c=%{htool_git_hash}; echo ${c:0:7})
-%global htool_gitdate 20230530
+%global htool_gitdate 20240802
 
+%if "%{version}" >= "4.15"
+%global bemtool_git_hash 6e61fbf86d8cd53994d9f597e60fde537650ba14
+%global bemtool_git_md5sum 2de5404f4a88d7c8847bd85209fd69a1
+%global bemtool_gitcommit %(c=%{bemtool_git_hash}; echo ${c:0:7})
+%global bemtool_gitdate 20230923
+%else
 %global bemtool_git_hash 629c44513698405b58c50650cba69419474062ad
 %global bemtool_git_md5sum 869832f5cbec4dfb2c16e2d94bad0b7d
 %global bemtool_gitcommit %(c=%{bemtool_git_hash}; echo ${c:0:7})
 %global bemtool_gitdate 20230917
-
+%endif
 Source1: https://github.com/hpddm/hpddm/archive/%{hpddm_gitcommit}/master.zip#/hpddm-%{hpddm_gitdate}git%{hpddm_gitcommit}.zip
 
 # FreeFEM doesn't build docs anymore.
 # Use pre-build binary, d/l'ed from
 # https://doc.freefem.org/pdf/FreeFEM-documentation.pdf
-Source2: https://raw.githubusercontent.com/FreeFem/FreeFem-doc/pdf/FreeFEM-documentation.pdf#/FreeFEM-documentation-4.13-20231206.pdf
+Source2: https://raw.githubusercontent.com/FreeFem/FreeFem-doc/pdf/FreeFEM-documentation.pdf#/FreeFEM-documentation-4.13-20241205.pdf
 
 # Bundled libraries
 Source3: https://www.ljll.math.upmc.fr/frey/ftp/archives/freeyams.2012.02.05.tgz
 Source4: https://github.com/htool-ddm/htool/archive/%{htool_gitcommit}/master.zip#/htool-%{htool_gitdate}git%{htool_gitcommit}.zip
+%if "%{version}" >= "4.15"
+# from branch update_htool
+Source5: https://github.com/PierreMarchand20/BemTool/archive/%{bemtool_gitcommit}.zip#/bemtool-%{bemtool_gitdate}git%{bemtool_gitcommit}.zip
+%else
 Source5: https://github.com/PierreMarchand20/BemTool/archive/%{bemtool_gitcommit}/master.zip#/bemtool-%{bemtool_gitdate}git%{bemtool_gitcommit}.zip
+%endif
 Source6: https://www.ljll.math.upmc.fr/frey/ftp/archives/mshmet.2012.04.25.tgz
-Source7: http://mumps.enseeiht.fr/MUMPS_5.5.1.tar.gz
+Source7: https://mumps-solver.org/MUMPS_5.6.2.tar.gz
 
 License: LGPL-3.0-or-later
 
@@ -237,7 +243,6 @@ pushd serial
 %patch -P 16 -p1
 %patch -P 17 -p1
 %patch -P 18 -p1
-%patch -P 19 -p1
 
 sed -i \
   -e 's,/hpddm/zip/7113b9a6b77fceee3f52490cb27941a87b96542f,/hpddm/zip/%{hpddm_git_hash},' \
@@ -254,21 +259,12 @@ sed -i \
   -e "s,'869832f5cbec4dfb2c16e2d94bad0b7d','%{bemtool_git_md5sum}'," \
   3rdparty/getall
 
-%if 0%{fedora} > 38
+%if %{with xfail}
 sed -i -e 's,XFAIL_TESTS = ,XFAIL_TESTS = Pinocchio.edp ,' examples/3dSurf/Makefile.am
-%endif
-%if 0%{fedora} > 37
 sed -i -e 's,XFAIL_TESTS = ,XFAIL_TESTS = testvtk.edp ,' examples/3dSurf/Makefile.am
-%endif
 sed -i -e 's,XFAIL_TESTS =$,XFAIL_TESTS = ,' examples/3d/Makefile.am
 sed -i -e 's,XFAIL_TESTS =,XFAIL_TESTS = fallingspheres.edp ,'	examples/3d/Makefile.am
-
-sed -i \
-  -e 's,MUMPS_5.4.0.tar.gz,MUMPS_5.5.1.tar.gz,' \
-  -e "s,'808178997dc571c748e9cf0cabf9a26e','da26c4b43d53a9a6096775245cee847f'," \
-  3rdparty/getall
-sed -i -e 's,5.4.0,5.5.1,' 3rdparty/mumps-seq/Makefile
-sed -e 's,5.4.0,5.5.1,' < 3rdparty/mumps-seq/Makefile-mumps-5.4.0.inc > 3rdparty/mumps-seq/Makefile-mumps-5.5.1.inc
+%endif
 
 # Bogus permissions
 find . -type f -perm 755 \( -name "*.c*" -o -name "*.h*" -o -name "*.edp" -o -name "*.idp" \) | xargs chmod 644
@@ -314,11 +310,7 @@ pushd serial
 	--without-cadna \
 	--with-mpi=no \
 	--docdir=%{_pkgdocdir} \
-%if 0%{fedora} > 38
 	CPPFLAGS="-I$(pwd) -I/usr/include/scotch" \
-%else
-	CPPFLAGS="-I$(pwd)" \
-%endif
 	CFLAGS="%{optflags} -fPIC" \
 	CXXFLAGS="%{optflags} -fPIC"
 
@@ -353,11 +345,7 @@ for mpi in %{?with_mpich:mpich} %{?with_openmpi:openmpi} ; do
 	--without-cadna \
 	--with-mpi=yes \
 	--docdir=%{_pkgdocdir} \
-%if 0%{fedora} > 38
 	CPPFLAGS="-I$(pwd) -I/usr/include/scotch" \
-%else
-	CPPFLAGS="-I$(pwd)" \
-%endif
 	CFLAGS="%{optflags} -fPIC" \
 	CXXFLAGS="%{optflags} -fPIC" \
 	MPICXX=$MPI_BIN/mpic++ \
@@ -436,6 +424,8 @@ done
 %{_datadir}/FreeFEM
 # Not useful to install
 %exclude %{_bindir}/ff-pkg-download
+# Unclear, if to be shipped
+%exclude %{_bindir}/md2edp
 %endif
 
 %if %{with openmpi}
@@ -453,6 +443,10 @@ done
 %endif
 
 %changelog
+* Mon Dec 23 2024 Ralf Corsépius <corsepiu@fedoraproject.org> - 4.14-1
+- Update to 4.15.
+- Rebase patches.
+
 * Fri Oct 25 2024 Orion Poplawski <orion@nwra.com> - 4.14-12
 - Rebuild for hdf5 1.14.5
 

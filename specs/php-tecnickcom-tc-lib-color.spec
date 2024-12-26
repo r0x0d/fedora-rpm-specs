@@ -1,12 +1,12 @@
 # remirepo/fedora spec file for php-tecnickcom-tc-lib-color
 #
-# Copyright (c) 2015-2024 Remi Collet
-# License: CC-BY-SA-4.0
-# http://creativecommons.org/licenses/by-sa/4.0/
+# SPDX-FileCopyrightText:  Copyright 2015-2024 Remi Collet
+# SPDX-License-Identifier: CECILL-2.1
+# http://www.cecill.info/licences/Licence_CeCILL_V2-en.txt
 #
 # Please, preserve the changelog entries
 #
-%global gh_commit    bddf746992e46026ac7387d56042ba6d9d14573d
+%global gh_commit    f0f38cfd50bbeb3d40b4320bc1038e3e777e7b68
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global c_vendor     tecnickcom
 %global gh_owner     tecnickcom
@@ -15,7 +15,7 @@
 %global with_tests   0%{!?_without_tests:1}
 
 Name:           php-%{gh_owner}-%{gh_project}
-Version:        2.2.5
+Version:        2.2.6
 Release:        1%{?dist}
 Summary:        PHP library to manipulate various color representations
 
@@ -113,6 +113,10 @@ exit $ret
 
 
 %changelog
+* Mon Dec 23 2024 Remi Collet <remi@remirepo.net> - 2.2.6-1
+- update to 2.2.6 (no change)
+- re-license spec file to CECILL-2.1
+
 * Mon Nov 25 2024 Remi Collet <remi@remirepo.net> - 2.2.5-1
 - update to 2.2.5 (no change)
 

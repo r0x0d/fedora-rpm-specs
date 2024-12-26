@@ -14,7 +14,7 @@
 
 Name:           openjpeg
 Version:        2.5.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        C-Library for JPEG 2000
 
 # windirent.h is MIT, the rest is BSD
@@ -68,6 +68,7 @@ BuildRequires:  mingw64-zstd
 %endif
 
 Obsoletes:      openjpeg2 < 2.5.2-2
+Obsoletes:      openjpeg-libs <= 1.5.1-38
 Provides:       openjpeg2 = %{version}-%{release}
 
 %description
@@ -449,6 +450,9 @@ rm -rf %{buildroot}%{mingw64_datadir}/doc
 
 
 %changelog
+* Tue Dec 24 2024 Sérgio Basto <sergio@serjux.com>
+- Also obsolete openjpeg-libs 1.x.x
+
 * Mon Dec 09 2024 Sandro Mani <manisandro@gmail.com> - 2.5.3-1
 - Update to 2.5.3
 
