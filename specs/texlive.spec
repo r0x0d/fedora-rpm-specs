@@ -15,7 +15,7 @@
 
 Name: texlive
 Version: %{tl_version}
-Release: 76%{?dist}
+Release: 77%{?dist}
 Epoch: 11
 Summary: TeX formatting system
 License: Apache-2.0 AND Artistic-2.0 AND CC0-1.0 AND CC-BY-3.0 AND CC-BY-4.0 AND CC-BY-SA-3.0 AND CC-BY-SA-4.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-or-later AND LGPL-2.1-or-later AND LPPL-1.3a AND LPPL-1.3c AND MIT AND LicenseRef-Fedora-Public-Domain AND LicenseRef-Utopia
@@ -104604,6 +104604,7 @@ Summary: Read, store and recall array-formatted data
 Version: svn60540
 Requires: texlive-base
 Requires: texlive-kpathsea-bin, tex-kpathsea
+Requires: tex(forloop.sty)
 Provides: tex(readarray.sty) = %{tl_version}
 
 %description readarray
@@ -109099,6 +109100,9 @@ Requires: tex(pgf.sty)
 Requires: tex(verbatim.sty)
 Requires: tex(environ.sty)
 Requires: tex(etoolbox.sty)
+Requires: tex(listingsutf8.sty)
+Requires: tex(pdfcol.sty)
+Requires: tex(tikzfill.sty)
 Provides: tex(tcbbreakable.code.tex) = %{tl_version}
 Provides: tex(tcbdocumentation.code.tex) = %{tl_version}
 Provides: tex(tcbexternal.code.tex) = %{tl_version}
@@ -186858,6 +186862,10 @@ mv %{buildroot}%{_texdir}/texmf-dist/fonts/map/dvips/mpfonts/mpfonts.map %{build
 
 
 %changelog
+* Mon May 12 2025 Than Ngo <than@redhat.com> - 11:2023-77
+- Fixed rhbz#2284201 - texlive-tcolorbox has missing dependencies
+- Fixed rhbz#2359772 - texlive-readarray requires texlive-forloop
+
 * Wed Jan 29 2025 Than Ngo <than@redhat.com> - 11:2023-76
 - Fixed rhbz#2271057 - Upgrade biblatex to 3.20
 
