@@ -15,7 +15,7 @@
 
 Name: texlive
 Version: %{tl_version}
-Release: 77%{?dist}
+Release: 78%{?dist}
 Epoch: 11
 Summary: TeX formatting system
 License: Apache-2.0 AND Artistic-2.0 AND CC0-1.0 AND CC-BY-3.0 AND CC-BY-4.0 AND CC-BY-SA-3.0 AND CC-BY-SA-4.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-or-later AND LGPL-2.1-or-later AND LPPL-1.3a AND LPPL-1.3c AND MIT AND LicenseRef-Fedora-Public-Domain AND LicenseRef-Utopia
@@ -186862,6 +186862,9 @@ mv %{buildroot}%{_texdir}/texmf-dist/fonts/map/dvips/mpfonts/mpfonts.map %{build
 
 
 %changelog
+* Fri Jul 25 2025 Fedora Release Engineering <releng@fedoraproject.org> - 11:2023-78
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
+
 * Mon May 12 2025 Than Ngo <than@redhat.com> - 11:2023-77
 - Fixed rhbz#2284201 - texlive-tcolorbox has missing dependencies
 - Fixed rhbz#2359772 - texlive-readarray requires texlive-forloop
