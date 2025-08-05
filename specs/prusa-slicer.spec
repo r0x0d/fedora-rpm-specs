@@ -50,6 +50,8 @@ Patch395:       prusa-slicer-opencascade.patch
 Patch396:	prusa-slicer-pr-13761.patch
 # https://github.com/prusa3d/PrusaSlicer/pull/13081
 Patch421:       prusa-slicer-pr-13081.patch
+# https://github.com/prusa3d/PrusaSlicer/pull/14388 and https://bugzilla.redhat.com/show_bug.cgi?id=2381383
+Patch431:       prusa-slicer-pr-14388-cmake-4.patch
 
 # Highly-parallel uild can run out of memory on PPC64le
 %ifarch ppc64le
@@ -383,7 +385,7 @@ desktop-file-validate %buildroot%_datadir/applications/PrusaGcodeviewer.desktop
 # Some tests are Perl but there is a framework for other tests even though
 # currently the only thing that uses them is one of the bundled libraries.
 # There's no reason not to run as much as we can.
-%cmake_build -- test ARGS=-V
+%ctest
 
 
 %files -f license-files -f lang-files
