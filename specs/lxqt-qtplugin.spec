@@ -1,10 +1,13 @@
 Name:          lxqt-qtplugin
 Summary:       Qt plugin framework for LXQt Desktop Suite
 Version:       2.2.0
-Release:       2%{?dist}
+Release:       3%{?dist}
 License:       LGPL-2.1-only
 URL:           https://lxqt-project.org/
 Source0:       https://github.com/lxqt/lxqt-qtplugin/archive/%{version}/lxqt-qtplugin-%{version}.tar.gz
+
+Patch0:        lxqt-qtplugin-fix-build-against-qt-6-10.patch
+
 BuildRequires: cmake
 BuildRequires: gcc-c++
 BuildRequires: pkgconfig(lxqt)
@@ -22,7 +25,7 @@ BuildRequires: qt6-qtbase-private-devel
 %{summary}.
 
 %prep
-%autosetup -n lxqt-qtplugin-%{version}
+%autosetup -p1 -n lxqt-qtplugin-%{version}
 
 %build
 %cmake
@@ -36,6 +39,9 @@ BuildRequires: qt6-qtbase-private-devel
 %{_libdir}/qt6/plugins/platformthemes/libqtlxqt.so
 
 %changelog
+* Tue Sep 30 2025 Jan Grulich <jgrulich@redhat.com> - 2.2.0-3
+- Rebuild (qt6)
+
 * Thu Jul 24 2025 Fedora Release Engineering <releng@fedoraproject.org> - 2.2.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
 

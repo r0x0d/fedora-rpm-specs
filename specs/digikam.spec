@@ -14,7 +14,7 @@ ExclusiveArch: %{qt5_qtwebengine_arches}
 Name:    digikam
 Summary: A digital camera accessing & photo management application
 Version: 8.7.0
-Release: 2%{?beta}%{?dist}
+Release: 3%{?beta}%{?dist}
 
 License: GPL-2.0-or-later
 URL:     http://www.digikam.org/
@@ -34,6 +34,7 @@ Source10: digikam-import.desktop
 ## upstream patches
 
 ## upstreamable patches
+Patch0:   digikam-fix-build-against-qt-6-10.patch
 
 %if 0%{?ninja}
 BuildRequires: ninja-build
@@ -334,6 +335,9 @@ update-desktop-database -q &> /dev/null
 
 
 %changelog
+* Tue Sep 30 2025 Jan Grulich <jgrulich@redhat.com> - 8.7.0-3
+- Rebuild (qt6)
+
 * Wed Jul 23 2025 Fedora Release Engineering <releng@fedoraproject.org> - 8.7.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
 
@@ -1297,7 +1301,7 @@ update-desktop-database -q &> /dev/null
 - BR: liblqr-1-devel
 
 * Wed Aug 05 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.0.0-0.4.beta3
-- drop xdg-utils references 
+- drop xdg-utils references
 - tighten -libs related deps via %%{?_isa}
 
 * Fri Jul 24 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.0.0-0.3.beta3
@@ -1323,7 +1327,7 @@ update-desktop-database -q &> /dev/null
 
 * Wed Feb 04 2009 Rex Dieter <rdieter@fedoraproject.org> - 0.10.0-0.15.rc1
 - BR: kdeedu-devel >= 4.2.0, Req: kdeedu-marble >= 4.2.0
-- add min Req: kdelibs4 dep too 
+- add min Req: kdelibs4 dep too
 
 * Thu Jan 22 2009 Rex Dieter <rdieter@fedoraproject.org> - 0.10-0-0.14.rc1
 - digikam-0.10.0-rc1

@@ -1,8 +1,8 @@
 %global forgeurl https://github.com/hluk/CopyQ/
-%global commit 3cbba8de25df47e337514692e072db2182d75819
+%global commit aaf841bf0450052ebfe410c2304760ac4a2a1bf3
 
 Name:    copyq
-Version: 12.0.0
+Version: 12.0.1
 Release: %autorelease
 Summary: Advanced clipboard manager
 License: GPL-3.0-or-later
@@ -12,6 +12,8 @@ License: GPL-3.0-or-later
 Url:     %{forgeurl}
 Source0: %{forgesource}
 Source1: %{name}.rpmlintrc
+
+Patch0:  copyq-fix-build-against-qt-6-10.patch
 
 BuildRequires: cmake, extra-cmake-modules, gcc-c++
 BuildRequires: libappstream-glib

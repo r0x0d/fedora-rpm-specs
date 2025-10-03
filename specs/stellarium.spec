@@ -1,11 +1,13 @@
 Name:           stellarium
 Version:        25.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Photo-realistic nightsky renderer
 
 License:        GPL-2.0-or-later
 URL:            http://www.stellarium.org
 Source0:        https://github.com/Stellarium/stellarium/archive/v%{version}/stellarium-%{version}.tar.gz
+
+Patch0:         stellarium-fix-build-against-qt-6-10.patch
 
 # Disabled due to lconvert segfaulting on armv7hl and i686
 # https://bugzilla.redhat.com/show_bug.cgi?id=1884681
@@ -60,8 +62,7 @@ Data files for the stellarium package.
 
 
 %prep
-%setup -q
-
+%autosetup -p1
 
 %build
 # Kill USE_PLUGIN_TELESCOPECONTROL support due to libindi 2 incompatibility
@@ -105,6 +106,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.stellarium.Ste
 %{_datadir}/stellarium
 
 %changelog
+* Tue Sep 30 2025 Jan Grulich <jgrulich@redhat.com> - 25.3-2
+- Rebuild (qt6)
+
 * Mon Sep 29 2025 Gwyn Ciesla <gwync@protonmail.com> - 25.3-1
 - 25.3
 
