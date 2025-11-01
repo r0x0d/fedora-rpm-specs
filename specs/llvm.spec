@@ -1746,7 +1746,11 @@ popd
 	# This option uses the NUMBER_OF_LOGICAL_CORES query in CMake which doesn't
 	# work on s390x.
 	# https://gitlab.kitware.com/cmake/cmake/-/issues/26619
-	%global cmake_config_args %{cmake_config_args} -DLLVM_RAM_PER_COMPILE_JOB=2048
+	# The value 4096 was used after we've seen cases of memory exhaustion on a
+	# system with 64GiB RAM and 16 jobs. It worked a few times after applied,
+	# but we can't guarantee it's enough. It's important to remember that RHEL8
+	# uses GCC. This value should not be applied to a build using clang.
+	%global cmake_config_args %{cmake_config_args} -DLLVM_RAM_PER_COMPILE_JOB=4096
 %endif
 %endif
 #endregion misc options
@@ -2295,6 +2299,9 @@ rm -rf %{buildroot}%{install_prefix}/src/python
 %if %{with flang}
 # Remove unnecessary files.
 rm -rfv %{buildroot}%{install_libdir}/cmake/flang
+
+# Remove runtime development headers (see https://github.com/llvm/llvm-project/pull/165610)
+rm -rfv %{buildroot}%{install_includedir}/flang-rt
 
 rm -v %{buildroot}%{install_libdir}/libFIRAnalysis.a \
       %{buildroot}%{install_libdir}/libFIRBuilder.a \

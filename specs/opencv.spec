@@ -472,7 +472,7 @@ cd modules/python/package
 # disabling IPP because it is closed source library from intel
 
 %cmake \
-%if 0%{?fedora} > 38
+%if 0%{?fedora} > 38 || 0%{?rhel} > 10
  -DCMAKE_CXX_STANDARD=17 \
 %endif
  -DCV_TRACE=OFF \
