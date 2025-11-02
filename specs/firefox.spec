@@ -272,7 +272,6 @@ Patch242:        0026-Add-KDE-integration-to-Firefox.patch
 # Upstream patches
 Patch402:        mozilla-1196777.patch
 Patch407:        mozilla-1667096.patch
-Patch408:        D268839.1760704138.diff
 
 # PGO/LTO patches
 Patch600:        pgo.patch
@@ -585,7 +584,6 @@ cat %{SOURCE49} | sed -e "s|LIBCLANG_RT_PLACEHOLDER|`pwd`/wasi-sdk-25/build/sysr
 %patch -P228 -p1 -b .disable-openh264-download
 %patch -P229 -p1 -b .firefox-nss-addon-hack
 %patch -P231 -p1 -b .fedora-customization
-%patch -P408 -p1 -b .D268839.1760704138
 
 %patch -P402 -p1 -b .1196777
 %patch -P407 -p1 -b .1667096

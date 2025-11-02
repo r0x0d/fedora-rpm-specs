@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.18.0
 %define specversion 6.18.0
 %define patchversion 6.18
-%define pkgrelease 0.rc3.251030ge53642b87a4f4.33
+%define pkgrelease 0.rc3.251031gd127176862a93.34
 %define kversion 6
-%define tarfile_release 6.18-rc3-16-ge53642b87a4f4
+%define tarfile_release 6.18-rc3-131-gd127176862a93
 # This is needed to do merge window version magic
 %define patchlevel 18
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc3.251030ge53642b87a4f4.33%{?buildid}%{?dist}
+%define specrelease 0.rc3.251031gd127176862a93.34%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.18.0
 
@@ -4500,12 +4500,17 @@ fi\
 #
 #
 %changelog
-* Thu Oct 30 2025 Justin M. Forbes <jforbes@fedoraproject.org> [6.18.0-0.rc3.251030ge53642b87a4f4.33]
-- Linux v6.18.0-0.rc3.251030ge53642b87a4f4
+* Fri Oct 31 2025 Justin M. Forbes <jforbes@fedoraproject.org> [6.18.0-0.rc3.251031gd127176862a93.34]
+- Linux v6.18.0-0.rc3.251031gd127176862a93
 
-* Thu Oct 30 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-0.rc3.e53642b87a4f.33]
+* Fri Oct 31 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-0.rc3.d127176862a9.34]
 - powerpc/tools: drop `-o pipefail` in gcc check scripts (Jan Stancek)
 - redhat/configs: clang_lto: disable CONFIG_FORTIFY_KUNIT_TEST (Scott Weaver)
+
+* Fri Oct 31 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-0.rc3.d127176862a9.33]
+- redhat/configs:  configure CONFIG_ATH12K_AHB for rhel (Jose Ignacio Tornos Martinez)
+- Final configs for Fedora 6.18 (Justin M. Forbes)
+- Linux v6.18.0-0.rc3.d127176862a9
 
 * Thu Oct 30 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-0.rc3.e53642b87a4f.32]
 - redhat/configs: Enable additional RV monitors on debug kernels (Gabriele Monaco)

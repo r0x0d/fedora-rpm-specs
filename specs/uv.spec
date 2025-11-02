@@ -11,7 +11,7 @@
 %bcond it %{undefined el10}
 
 Name:           uv
-Version:        0.9.6
+Version:        0.9.7
 Release:        %autorelease
 Summary:        An extremely fast Python package installer and resolver, written in Rust
 
