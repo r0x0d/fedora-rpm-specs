@@ -15,7 +15,7 @@
 
 Name: texlive
 Version: %{tl_version}
-Release: 80%{?dist}
+Release: 81%{?dist}
 Epoch: 11
 Summary: TeX formatting system
 License: Apache-2.0 AND Artistic-2.0 AND CC0-1.0 AND CC-BY-3.0 AND CC-BY-4.0 AND CC-BY-SA-3.0 AND CC-BY-SA-4.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-or-later AND LGPL-2.1-or-later AND LPPL-1.3a AND LPPL-1.3c AND MIT AND LicenseRef-Fedora-Public-Domain AND LicenseRef-Utopia
@@ -186862,6 +186862,9 @@ mv %{buildroot}%{_texdir}/texmf-dist/fonts/map/dvips/mpfonts/mpfonts.map %{build
 
 
 %changelog
+* Sat Jan 17 2026 Fedora Release Engineering <releng@fedoraproject.org> - 11:2023-81
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
 * Fri Sep 19 2025 Python Maint <python-maint@redhat.com> - 11:2023-80
 - Rebuilt for Python 3.14.0rc3 bytecode
 
