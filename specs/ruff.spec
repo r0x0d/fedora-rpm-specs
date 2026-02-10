@@ -498,9 +498,6 @@ skip="${skip-} --skip backtrace_works"
 # We could export SNAPSHOTS=overwrite, but that would ignore many other
 # possible discrepancies. Skipping the affected tests is better.
 skip="${skip-} --skip color/"
-# Flaky cycle fixpoint test
-# https://github.com/salsa-rs/salsa/issues/1023
-skip="${skip-} --skip cycle_nested_deep_conditional_changed"
 
 # Fails cryptically: requires network, perhaps?
 #   error: no matching package named `boxcar` found
@@ -524,14 +521,12 @@ skip="${skip-} --skip python_environment::ty_environment_is_only_environment"
 # Not confirmed flaky, but the other ty_environment_* ones are, so…
 skip="${skip-} --skip python_environment::ty_environment_is_system_not_virtual"
 
+%ifarch s390x
 # This panics consistently on s390x only; not reported upstream since it
 # couldn’t be reproduced in a git checkout under qemu-user-static emulation.
-%ifarch s390x
 skip="${skip-} --skip mdtest__generics_specialize_constrained"
-%endif
 
 %if %{defined fc42}
-%ifarch s390x
 # Segfaults on F42 only. LLVM bug? Not worth reporting upstream since it
 # doesn’t appear elsewhere.
 skip="${skip-} --skip cycle_nested_deep_panic"

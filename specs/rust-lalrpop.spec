@@ -5,7 +5,7 @@
 %global crate lalrpop
 
 Name:           rust-lalrpop
-Version:        0.20.2
+Version:        0.22.2
 Release:        %autorelease
 Summary:        Convenient LR(1) parser generator
 
@@ -13,7 +13,6 @@ License:        Apache-2.0 OR MIT
 URL:            https://crates.io/crates/lalrpop
 Source:         %{crates_source}
 # Manually created patch for downstream crate metadata changes
-# * bump itertools dependency from 0.11 to 0.12
 # * prevent unused lalrpop binary from being built and shipped
 Patch:          lalrpop-fix-metadata.diff
 
