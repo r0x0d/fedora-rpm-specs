@@ -246,8 +246,11 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rpm-specfile.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlightjs-rpm-specfile@1.0.0/rpm-specfile.js"></script>
   <script>
+    hljs.registerLanguage("rpm-specfile", hljsDefineRpmSpecfile);
+
     const MAX_RESULTS = 100;
     let allFiles = [];
     let activeFile = null;
@@ -260,11 +263,12 @@
     async function init() {
       try {
         const resp = await fetch("filelist.json");
+        if (!resp.ok) throw new Error("filelist.json not found");
         allFiles = await resp.json();
         resultCountEl.textContent = `${allFiles.length} spec files`;
         renderList(allFiles.slice(0, MAX_RESULTS));
       } catch {
-        resultCountEl.textContent = "Failed to load file list";
+        resultCountEl.textContent = "Failed to load file list — generate filelist.json or deploy via GitHub Pages";
       }
     }
 
