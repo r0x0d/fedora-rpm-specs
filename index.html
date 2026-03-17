@@ -268,6 +268,36 @@
 
     .code-table tr.highlighted .line-num { opacity: 1; }
 
+    .progress-bar {
+      height: 3px;
+      background: var(--border);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.2s;
+    }
+
+    .match-count {
+      margin-left: auto;
+      font-size: 11px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 10px;
+      padding: 1px 7px;
+      flex-shrink: 0;
+    }
+
+    .file-list li .match-count {
+      display: inline;
+      float: right;
+      margin-top: 1px;
+    }
+
     .placeholder {
       flex: 1;
       display: flex;
@@ -326,7 +356,7 @@
         <button data-mode="content">Content (regex)</button>
       </div>
     </div>
-    <div class="search-hint" id="search-hint">Press Enter to search file contents on GitHub</div>
+    <div class="search-hint" id="search-hint">Press Enter to search across all spec file contents</div>
   </div>
   <div class="main">
     <div class="sidebar">
@@ -346,9 +376,14 @@
 
     const MAX_RESULTS = 100;
     const GITHUB_REPO = "r0x0d/fedora-rpm-specs";
+    const CONTENT_SEARCH_CONCURRENCY = 30;
+
     let allFiles = [];
     let activeFile = null;
     let searchMode = "filename";
+    let contentCache = {};
+    let searchAbort = null;
+    let lastContentPattern = null;
 
     const searchInput = document.getElementById("search");
     const fileListEl = document.getElementById("file-list");
@@ -366,14 +401,19 @@
       btn.classList.add("active");
       searchMode = btn.dataset.mode;
 
+      cancelContentSearch();
+
       if (searchMode === "content") {
         searchInput.placeholder = "Search file contents (e.g. %{rhel})...";
         searchHintEl.classList.add("visible");
         resultCountEl.textContent = "Enter a pattern and press Enter";
         fileListEl.innerHTML = "";
+        removeProgressBar();
       } else {
         searchInput.placeholder = "Search filenames...";
         searchHintEl.classList.remove("visible");
+        lastContentPattern = null;
+        removeProgressBar();
         filterFiles(searchInput.value.trim());
       }
       searchInput.focus();
@@ -438,28 +478,148 @@
       if (searchMode === "content") {
         const query = searchInput.value.trim();
         if (!query) return;
-        const url = `https://github.com/search?q=${encodeURIComponent("repo:" + GITHUB_REPO + " " + query)}&type=code`;
-        window.open(url, "_blank", "noopener");
+        contentSearch(query);
       } else {
         const first = fileListEl.querySelector("li");
         if (first) first.click();
       }
     });
 
+    // --- In-browser content search ---
+
+    function cancelContentSearch() {
+      if (searchAbort) {
+        searchAbort.abort();
+        searchAbort = null;
+      }
+    }
+
+    function removeProgressBar() {
+      const bar = document.querySelector(".progress-bar");
+      if (bar) bar.remove();
+    }
+
+    function ensureProgressBar() {
+      let bar = document.querySelector(".progress-bar");
+      if (!bar) {
+        bar = document.createElement("div");
+        bar.className = "progress-bar";
+        bar.innerHTML = '<div class="progress-bar-fill"></div>';
+        const sidebar = document.querySelector(".sidebar");
+        sidebar.insertBefore(bar, fileListEl);
+      }
+      return bar.querySelector(".progress-bar-fill");
+    }
+
+    function addMatchToList(filename, matchCount) {
+      const li = document.createElement("li");
+      li.title = filename;
+      li.textContent = filename;
+      if (filename === activeFile) li.classList.add("active");
+
+      const badge = document.createElement("span");
+      badge.className = "match-count";
+      badge.textContent = `${matchCount}`;
+      li.appendChild(badge);
+
+      li.addEventListener("click", () => loadSpec(filename, null, lastContentPattern));
+      fileListEl.appendChild(li);
+    }
+
+    async function contentSearch(pattern) {
+      cancelContentSearch();
+
+      let regex;
+      try {
+        regex = new RegExp(pattern, "im");
+      } catch (err) {
+        resultCountEl.textContent = `Invalid regex: ${err.message}`;
+        return;
+      }
+
+      lastContentPattern = pattern;
+      searchAbort = new AbortController();
+      const signal = searchAbort.signal;
+      const progressFill = ensureProgressBar();
+
+      fileListEl.innerHTML = "";
+      let searched = 0;
+      let matchFileCount = 0;
+      const total = allFiles.length;
+
+      resultCountEl.textContent = `Searching... 0 / ${total}`;
+      progressFill.style.width = "0%";
+
+      const queue = [...allFiles];
+
+      async function worker() {
+        while (queue.length > 0) {
+          if (signal.aborted) return;
+          const filename = queue.shift();
+
+          let content = contentCache[filename];
+          if (content === undefined) {
+            try {
+              const resp = await fetch(`specs/${filename}`, { signal });
+              if (!resp.ok) { searched++; continue; }
+              content = await resp.text();
+              contentCache[filename] = content;
+            } catch {
+              if (signal.aborted) return;
+              searched++;
+              continue;
+            }
+          }
+
+          if (regex.test(content)) {
+            const lines = content.split("\n");
+            let lineMatchCount = 0;
+            for (const line of lines) {
+              if (regex.test(line)) lineMatchCount++;
+            }
+            matchFileCount++;
+            addMatchToList(filename, lineMatchCount);
+          }
+
+          searched++;
+          if (searched % 20 === 0 || searched === total) {
+            resultCountEl.textContent = `Searching... ${searched} / ${total} (${matchFileCount} matches)`;
+            progressFill.style.width = `${(searched / total * 100).toFixed(1)}%`;
+          }
+        }
+      }
+
+      const workers = [];
+      for (let i = 0; i < CONTENT_SEARCH_CONCURRENCY; i++) {
+        workers.push(worker());
+      }
+      await Promise.all(workers);
+
+      if (!signal.aborted) {
+        resultCountEl.textContent = `${matchFileCount} files match "${pattern}"`;
+        progressFill.style.width = "100%";
+        setTimeout(removeProgressBar, 1000);
+      }
+    }
+
     // --- Spec viewer with line numbers ---
 
-    async function loadSpec(filename, targetLine) {
+    async function loadSpec(filename, targetLine, highlightPattern) {
       activeFile = filename;
       document.querySelectorAll(".file-list li").forEach(li => {
-        li.classList.toggle("active", li.textContent === filename);
+        li.classList.toggle("active", li.textContent === filename || li.title === filename);
       });
 
       viewerEl.innerHTML = `<div class="loading"><div class="spinner"></div>Loading ${filename}...</div>`;
 
       try {
-        const resp = await fetch(`specs/${filename}`);
-        if (!resp.ok) throw new Error(resp.statusText);
-        const text = await resp.text();
+        let text = contentCache[filename];
+        if (text === undefined) {
+          const resp = await fetch(`specs/${filename}`);
+          if (!resp.ok) throw new Error(resp.statusText);
+          text = await resp.text();
+          contentCache[filename] = text;
+        }
 
         const repoUrl = `https://github.com/${GITHUB_REPO}/blob/main/specs/${encodeURIComponent(filename)}`;
 
@@ -477,17 +637,25 @@
         hljs.highlightElement(codeEl);
 
         const highlightedHtml = codeEl.innerHTML;
-        const lines = highlightedHtml.split("\n");
+        const htmlLines = highlightedHtml.split("\n");
+        const rawLines = text.split("\n");
         const contentEl = viewerEl.querySelector(".viewer-content");
 
+        let patternRegex = null;
+        if (highlightPattern) {
+          try { patternRegex = new RegExp(highlightPattern, "i"); } catch {}
+        }
+
         let tableHtml = '<table class="code-table">';
-        for (let i = 0; i < lines.length; i++) {
+        for (let i = 0; i < htmlLines.length; i++) {
           const lineNum = i + 1;
           const lineId = `${filename}-L${lineNum}`;
-          const highlighted = targetLine === lineNum ? ' class="highlighted"' : "";
-          tableHtml += `<tr id="${lineId}"${highlighted}>`;
+          const isTarget = targetLine === lineNum;
+          const isPatternMatch = patternRegex && rawLines[i] && patternRegex.test(rawLines[i]);
+          const cls = isTarget || isPatternMatch ? ' class="highlighted"' : "";
+          tableHtml += `<tr id="${lineId}"${cls}>`;
           tableHtml += `<td class="line-num"><a href="#${lineId}">${lineNum}</a></td>`;
-          tableHtml += `<td class="line-code">${lines[i] || " "}</td>`;
+          tableHtml += `<td class="line-code">${htmlLines[i] || " "}</td>`;
           tableHtml += `</tr>`;
         }
         tableHtml += "</table>";
@@ -497,6 +665,9 @@
 
         if (targetLine) {
           scrollToLine(filename, targetLine);
+        } else if (patternRegex) {
+          const firstMatch = contentEl.querySelector("tr.highlighted");
+          if (firstMatch) firstMatch.scrollIntoView({ block: "center" });
         }
       } catch (err) {
         viewerEl.innerHTML = `<div class="placeholder">Failed to load ${filename}: ${err.message}</div>`;
