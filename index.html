@@ -384,6 +384,8 @@
     let contentCache = {};
     let searchAbort = null;
     let lastContentPattern = null;
+    let lastClickedLine = null;
+    let selectedLines = [];
 
     const searchInput = document.getElementById("search");
     const fileListEl = document.getElementById("file-list");
@@ -392,18 +394,62 @@
     const searchToggleEl = document.getElementById("search-toggle");
     const searchHintEl = document.getElementById("search-hint");
 
+    // --- URL state management ---
+
+    function updateUrl() {
+      const params = new URLSearchParams();
+      if (lastContentPattern) params.set("q", lastContentPattern);
+
+      let hash = "";
+      if (activeFile) {
+        hash = encodeURIComponent(activeFile);
+        if (selectedLines.length === 1) {
+          hash += `:L${selectedLines[0]}`;
+        } else if (selectedLines.length > 1) {
+          const min = Math.min(...selectedLines);
+          const max = Math.max(...selectedLines);
+          hash += `:L${min}-L${max}`;
+        }
+      }
+
+      const paramStr = params.toString();
+      let url = location.pathname;
+      if (paramStr) url += `?${paramStr}`;
+      if (hash) url += `#${hash}`;
+      history.replaceState(null, "", url);
+    }
+
+    function parseUrl() {
+      const params = new URLSearchParams(location.search);
+      const q = params.get("q") || null;
+      const rawHash = decodeURIComponent(location.hash.slice(1));
+
+      let filename = null, lineStart = null, lineEnd = null;
+      if (rawHash) {
+        const match = rawHash.match(/^(.+?):L(\d+)(?:-L(\d+))?$/);
+        if (match) {
+          filename = match[1];
+          lineStart = parseInt(match[2], 10);
+          lineEnd = match[3] ? parseInt(match[3], 10) : lineStart;
+        } else {
+          filename = rawHash;
+        }
+      }
+
+      return { q, filename, lineStart, lineEnd };
+    }
+
     // --- Search mode toggle ---
 
-    searchToggleEl.addEventListener("click", (e) => {
-      const btn = e.target.closest("button[data-mode]");
-      if (!btn || btn.classList.contains("active")) return;
-      searchToggleEl.querySelectorAll("button").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      searchMode = btn.dataset.mode;
-
+    function setSearchMode(mode) {
+      if (mode === searchMode) return;
+      searchToggleEl.querySelectorAll("button").forEach(b => {
+        b.classList.toggle("active", b.dataset.mode === mode);
+      });
+      searchMode = mode;
       cancelContentSearch();
 
-      if (searchMode === "content") {
+      if (mode === "content") {
         searchInput.placeholder = "Search file contents (e.g. %{rhel})...";
         searchHintEl.classList.add("visible");
         resultCountEl.textContent = "Enter a pattern and press Enter";
@@ -416,6 +462,12 @@
         removeProgressBar();
         filterFiles(searchInput.value.trim());
       }
+    }
+
+    searchToggleEl.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-mode]");
+      if (!btn) return;
+      setSearchMode(btn.dataset.mode);
       searchInput.focus();
     });
 
@@ -432,7 +484,7 @@
         resultCountEl.textContent = "Failed to load file list";
       }
 
-      handleHashNavigation();
+      restoreFromUrl();
     }
 
     function renderList(files) {
@@ -522,7 +574,7 @@
       badge.textContent = `${matchCount}`;
       li.appendChild(badge);
 
-      li.addEventListener("click", () => loadSpec(filename, null, lastContentPattern));
+      li.addEventListener("click", () => loadSpec(filename, null, null, lastContentPattern));
       fileListEl.appendChild(li);
     }
 
@@ -538,6 +590,7 @@
       }
 
       lastContentPattern = pattern;
+      updateUrl();
       searchAbort = new AbortController();
       const signal = searchAbort.signal;
       const progressFill = ensureProgressBar();
@@ -604,8 +657,18 @@
 
     // --- Spec viewer with line numbers ---
 
-    async function loadSpec(filename, targetLine, highlightPattern) {
+    async function loadSpec(filename, lineStart, lineEnd, highlightPattern) {
       activeFile = filename;
+      selectedLines = [];
+      lastClickedLine = null;
+
+      if (lineStart != null) {
+        const end = lineEnd != null ? lineEnd : lineStart;
+        for (let i = lineStart; i <= end; i++) selectedLines.push(i);
+      }
+
+      updateUrl();
+
       document.querySelectorAll(".file-list li").forEach(li => {
         li.classList.toggle("active", li.textContent === filename || li.title === filename);
       });
@@ -621,12 +684,10 @@
           contentCache[filename] = text;
         }
 
-        const repoUrl = `https://github.com/${GITHUB_REPO}/blob/main/specs/${encodeURIComponent(filename)}`;
-
         viewerEl.innerHTML = `
           <div class="viewer-header">
             <span>${filename}</span>
-            <a href="${repoUrl}" target="_blank" rel="noopener">View on GitHub</a>
+            <a id="github-link" target="_blank" rel="noopener">View on GitHub</a>
           </div>
           <div class="viewer-content">
             <pre><code class="language-rpm-specfile"></code></pre>
@@ -646,15 +707,17 @@
           try { patternRegex = new RegExp(highlightPattern, "i"); } catch {}
         }
 
+        const highlightSet = new Set(selectedLines);
+
         let tableHtml = '<table class="code-table">';
         for (let i = 0; i < htmlLines.length; i++) {
           const lineNum = i + 1;
           const lineId = `${filename}-L${lineNum}`;
-          const isTarget = targetLine === lineNum;
-          const isPatternMatch = patternRegex && rawLines[i] && patternRegex.test(rawLines[i]);
-          const cls = isTarget || isPatternMatch ? ' class="highlighted"' : "";
+          const isSelected = highlightSet.has(lineNum);
+          const isPatternMatch = !isSelected && patternRegex && rawLines[i] && patternRegex.test(rawLines[i]);
+          const cls = isSelected || isPatternMatch ? ' class="highlighted"' : "";
           tableHtml += `<tr id="${lineId}"${cls}>`;
-          tableHtml += `<td class="line-num"><a href="#${lineId}">${lineNum}</a></td>`;
+          tableHtml += `<td class="line-num"><a href="#${lineId}" data-line="${lineNum}">${lineNum}</a></td>`;
           tableHtml += `<td class="line-code">${htmlLines[i] || " "}</td>`;
           tableHtml += `</tr>`;
         }
@@ -662,9 +725,10 @@
         contentEl.innerHTML = tableHtml;
 
         contentEl.addEventListener("click", handleLineClick);
+        updateGitHubLink();
 
-        if (targetLine) {
-          scrollToLine(filename, targetLine);
+        if (selectedLines.length > 0) {
+          scrollToLine(filename, selectedLines[0]);
         } else if (patternRegex) {
           const firstMatch = contentEl.querySelector("tr.highlighted");
           if (firstMatch) firstMatch.scrollIntoView({ block: "center" });
@@ -674,49 +738,70 @@
       }
     }
 
-    // --- Line number click handling ---
+    // --- Line number click handling with shift-select ---
 
     function handleLineClick(e) {
       const anchor = e.target.closest(".line-num a");
       if (!anchor) return;
       e.preventDefault();
 
-      const tr = anchor.closest("tr");
-      if (!tr) return;
+      const lineNum = parseInt(anchor.dataset.line, 10);
+      const table = anchor.closest(".code-table");
 
-      const table = tr.closest(".code-table");
+      if (e.shiftKey && lastClickedLine != null) {
+        const start = Math.min(lastClickedLine, lineNum);
+        const end = Math.max(lastClickedLine, lineNum);
+        selectedLines = [];
+        for (let i = start; i <= end; i++) selectedLines.push(i);
+      } else {
+        selectedLines = [lineNum];
+        lastClickedLine = lineNum;
+      }
+
       table.querySelectorAll("tr.highlighted").forEach(r => r.classList.remove("highlighted"));
-      tr.classList.add("highlighted");
+      for (const ln of selectedLines) {
+        const row = document.getElementById(`${activeFile}-L${ln}`);
+        if (row) row.classList.add("highlighted");
+      }
 
-      const hash = anchor.getAttribute("href").slice(1);
-      history.replaceState(null, "", `#${hash}`);
+      updateUrl();
+      updateGitHubLink();
+    }
+
+    function updateGitHubLink() {
+      const link = document.getElementById("github-link");
+      if (!link || !activeFile) return;
+      let url = `https://github.com/${GITHUB_REPO}/blob/main/specs/${encodeURIComponent(activeFile)}`;
+      if (selectedLines.length === 1) {
+        url += `#L${selectedLines[0]}`;
+      } else if (selectedLines.length > 1) {
+        url += `#L${Math.min(...selectedLines)}-L${Math.max(...selectedLines)}`;
+      }
+      link.href = url;
     }
 
     function scrollToLine(filename, lineNum) {
-      const lineId = `${filename}-L${lineNum}`;
-      const el = document.getElementById(lineId);
-      if (el) {
-        el.scrollIntoView({ block: "center" });
+      const el = document.getElementById(`${filename}-L${lineNum}`);
+      if (el) el.scrollIntoView({ block: "center" });
+    }
+
+    // --- Restore state from URL on load / popstate ---
+
+    async function restoreFromUrl() {
+      const { q, filename, lineStart, lineEnd } = parseUrl();
+
+      if (q) {
+        setSearchMode("content");
+        searchInput.value = q;
+        await contentSearch(q);
+      }
+
+      if (filename) {
+        await loadSpec(filename, lineStart, lineEnd, q);
       }
     }
 
-    // --- Deep link from URL hash ---
-
-    function parseHash(hash) {
-      if (!hash || hash.length < 2) return null;
-      const raw = hash.slice(1);
-      const match = raw.match(/^(.+)-L(\d+)$/);
-      if (match) return { filename: match[1], line: parseInt(match[2], 10) };
-      return { filename: raw, line: null };
-    }
-
-    function handleHashNavigation() {
-      const parsed = parseHash(window.location.hash);
-      if (!parsed) return;
-      loadSpec(parsed.filename, parsed.line);
-    }
-
-    window.addEventListener("hashchange", handleHashNavigation);
+    window.addEventListener("popstate", restoreFromUrl);
 
     init();
   </script>
