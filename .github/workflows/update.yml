@@ -32,3 +32,25 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SQUASH_HISTORY: false
           TARGET_DIR: specs
+
+  update_filelist:
+    name: "Update file list for GitHub Pages"
+    needs: spec_update
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Generate filelist.json
+        run: ls specs/ | sort | jq -R -s 'split("\n") | map(select(. != ""))' > filelist.json
+
+      - name: Commit and push filelist.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add filelist.json
+          git diff --staged --quiet && echo "No changes to filelist" || (git commit -m "Update filelist.json [skip ci]" && git push)
