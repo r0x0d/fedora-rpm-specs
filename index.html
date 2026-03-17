@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fedora RPM Spec Files</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css" media="(prefers-color-scheme: light)">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f6f8fa;
+      --bg-tertiary: #eaeef2;
+      --text: #1f2328;
+      --text-secondary: #656d76;
+      --border: #d0d7de;
+      --accent: #0969da;
+      --accent-subtle: #ddf4ff;
+      --hover: #f3f4f6;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --bg-secondary: #161b22;
+        --bg-tertiary: #21262d;
+        --text: #e6edf3;
+        --text-secondary: #8b949e;
+        --border: #30363d;
+        --accent: #58a6ff;
+        --accent-subtle: #122d4f;
+        --hover: #1c2128;
+        --shadow: 0 1px 3px rgba(0,0,0,0.3);
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-secondary);
+      flex-shrink: 0;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    header p {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .search-wrapper {
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      flex-shrink: 0;
+    }
+
+    .search-wrapper input {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 15px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-secondary);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .search-wrapper input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-subtle);
+    }
+
+    .search-wrapper input::placeholder { color: var(--text-secondary); }
+
+    .main {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .sidebar {
+      width: 320px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+    }
+
+    .sidebar-header {
+      padding: 8px 16px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-secondary);
+      flex-shrink: 0;
+    }
+
+    .file-list {
+      flex: 1;
+      overflow-y: auto;
+      list-style: none;
+    }
+
+    .file-list li {
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: background 0.1s;
+    }
+
+    .file-list li:hover { background: var(--hover); }
+    .file-list li.active { background: var(--accent-subtle); color: var(--accent); font-weight: 500; }
+
+    .viewer {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .viewer-header {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-secondary);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .viewer-header a {
+      margin-left: auto;
+      font-size: 13px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 400;
+    }
+
+    .viewer-header a:hover { text-decoration: underline; }
+
+    .viewer-content {
+      flex: 1;
+      overflow: auto;
+      padding: 0;
+    }
+
+    .viewer-content pre {
+      margin: 0;
+      padding: 16px 20px;
+      font-size: 13px;
+      line-height: 1.55;
+      tab-size: 4;
+      background: var(--bg) !important;
+    }
+
+    .viewer-content code { background: none !important; }
+
+    .placeholder {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: 15px;
+      padding: 40px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      flex: 1;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 768px) {
+      .main { flex-direction: column; }
+      .sidebar {
+        width: 100%;
+        max-height: 40vh;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Fedora RPM Spec Files</h1>
+    <p>Search and browse RPM spec files from the Fedora lookaside cache</p>
+  </header>
+  <div class="search-wrapper">
+    <input type="text" id="search" placeholder="Search spec files..." autofocus>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div class="sidebar-header" id="result-count">Loading file list...</div>
+      <ul class="file-list" id="file-list"></ul>
+    </div>
+    <div class="viewer" id="viewer">
+      <div class="placeholder">Select a spec file from the list to view its contents</div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rpm-specfile.min.js"></script>
+  <script>
+    const MAX_RESULTS = 100;
+    let allFiles = [];
+    let activeFile = null;
+
+    const searchInput = document.getElementById("search");
+    const fileListEl = document.getElementById("file-list");
+    const viewerEl = document.getElementById("viewer");
+    const resultCountEl = document.getElementById("result-count");
+
+    async function init() {
+      try {
+        const resp = await fetch("filelist.json");
+        allFiles = await resp.json();
+        resultCountEl.textContent = `${allFiles.length} spec files`;
+        renderList(allFiles.slice(0, MAX_RESULTS));
+      } catch {
+        resultCountEl.textContent = "Failed to load file list";
+      }
+    }
+
+    function renderList(files) {
+      fileListEl.innerHTML = "";
+      for (const f of files) {
+        const li = document.createElement("li");
+        li.textContent = f;
+        li.title = f;
+        if (f === activeFile) li.classList.add("active");
+        li.addEventListener("click", () => loadSpec(f));
+        fileListEl.appendChild(li);
+      }
+    }
+
+    function filterFiles(query) {
+      if (!query) {
+        resultCountEl.textContent = `${allFiles.length} spec files`;
+        renderList(allFiles.slice(0, MAX_RESULTS));
+        return;
+      }
+      const q = query.toLowerCase();
+      const matches = [];
+      for (const f of allFiles) {
+        if (f.toLowerCase().includes(q)) {
+          matches.push(f);
+          if (matches.length >= MAX_RESULTS) break;
+        }
+      }
+      const total = matches.length >= MAX_RESULTS ? `${MAX_RESULTS}+` : matches.length;
+      resultCountEl.textContent = `${total} results`;
+      renderList(matches);
+    }
+
+    let debounceTimer;
+    searchInput.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => filterFiles(searchInput.value.trim()), 120);
+    });
+
+    async function loadSpec(filename) {
+      activeFile = filename;
+      document.querySelectorAll(".file-list li").forEach(li => {
+        li.classList.toggle("active", li.textContent === filename);
+      });
+
+      viewerEl.innerHTML = `<div class="loading"><div class="spinner"></div>Loading ${filename}...</div>`;
+
+      try {
+        const resp = await fetch(`specs/${filename}`);
+        if (!resp.ok) throw new Error(resp.statusText);
+        const text = await resp.text();
+
+        const repoUrl = `https://github.com/r0x0d/fedora-rpm-specs/blob/main/specs/${encodeURIComponent(filename)}`;
+
+        viewerEl.innerHTML = `
+          <div class="viewer-header">
+            <span>${filename}</span>
+            <a href="${repoUrl}" target="_blank" rel="noopener">View on GitHub</a>
+          </div>
+          <div class="viewer-content">
+            <pre><code class="language-rpm-specfile"></code></pre>
+          </div>`;
+
+        const codeEl = viewerEl.querySelector("code");
+        codeEl.textContent = text;
+        hljs.highlightElement(codeEl);
+      } catch (err) {
+        viewerEl.innerHTML = `<div class="placeholder">Failed to load ${filename}: ${err.message}</div>`;
+      }
+    }
+
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const first = fileListEl.querySelector("li");
+        if (first) first.click();
+      }
+    });
+
+    init();
+  </script>
+</body>
+</html>
