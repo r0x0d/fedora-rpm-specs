@@ -73,8 +73,14 @@
       flex-shrink: 0;
     }
 
+    .search-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
     .search-wrapper input {
-      width: 100%;
+      flex: 1;
       padding: 10px 14px;
       font-size: 15px;
       border: 1px solid var(--border);
@@ -91,6 +97,43 @@
     }
 
     .search-wrapper input::placeholder { color: var(--text-secondary); }
+
+    .search-toggle {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .search-toggle button {
+      padding: 8px 14px;
+      font-size: 13px;
+      border: none;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+
+    .search-toggle button:not(:last-child) {
+      border-right: 1px solid var(--border);
+    }
+
+    .search-toggle button.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .search-hint {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      display: none;
+    }
+
+    .search-hint.visible { display: block; }
 
     .main {
       display: flex;
@@ -173,7 +216,7 @@
 
     .viewer-content pre {
       margin: 0;
-      padding: 16px 20px;
+      padding: 0;
       font-size: 13px;
       line-height: 1.55;
       tab-size: 4;
@@ -181,6 +224,49 @@
     }
 
     .viewer-content code { background: none !important; }
+
+    .code-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      line-height: 1.55;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    .code-table td { padding: 0; vertical-align: top; }
+
+    .line-num {
+      width: 1px;
+      white-space: nowrap;
+      padding: 0 12px 0 16px !important;
+      text-align: right;
+      user-select: none;
+      -webkit-user-select: none;
+      color: var(--text-secondary);
+      opacity: 0.5;
+      cursor: pointer;
+    }
+
+    .line-num:hover { opacity: 1; }
+
+    .line-num a {
+      color: inherit;
+      text-decoration: none;
+      display: block;
+    }
+
+    .line-code {
+      padding: 0 16px 0 12px !important;
+      white-space: pre;
+      overflow-x: auto;
+      tab-size: 4;
+    }
+
+    .code-table tr.highlighted {
+      background: var(--accent-subtle);
+    }
+
+    .code-table tr.highlighted .line-num { opacity: 1; }
 
     .placeholder {
       flex: 1;
@@ -233,7 +319,14 @@
     <p>Search and browse RPM spec files from the Fedora lookaside cache</p>
   </header>
   <div class="search-wrapper">
-    <input type="text" id="search" placeholder="Search spec files..." autofocus>
+    <div class="search-row">
+      <input type="text" id="search" placeholder="Search filenames..." autofocus>
+      <div class="search-toggle" id="search-toggle">
+        <button class="active" data-mode="filename">Filenames</button>
+        <button data-mode="content">Content (regex)</button>
+      </div>
+    </div>
+    <div class="search-hint" id="search-hint">Press Enter to search file contents on GitHub</div>
   </div>
   <div class="main">
     <div class="sidebar">
@@ -252,13 +345,41 @@
     hljs.registerLanguage("rpm-specfile", hljsDefineRpmSpecfile);
 
     const MAX_RESULTS = 100;
+    const GITHUB_REPO = "r0x0d/fedora-rpm-specs";
     let allFiles = [];
     let activeFile = null;
+    let searchMode = "filename";
 
     const searchInput = document.getElementById("search");
     const fileListEl = document.getElementById("file-list");
     const viewerEl = document.getElementById("viewer");
     const resultCountEl = document.getElementById("result-count");
+    const searchToggleEl = document.getElementById("search-toggle");
+    const searchHintEl = document.getElementById("search-hint");
+
+    // --- Search mode toggle ---
+
+    searchToggleEl.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-mode]");
+      if (!btn || btn.classList.contains("active")) return;
+      searchToggleEl.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      searchMode = btn.dataset.mode;
+
+      if (searchMode === "content") {
+        searchInput.placeholder = "Search file contents (e.g. %{rhel})...";
+        searchHintEl.classList.add("visible");
+        resultCountEl.textContent = "Enter a pattern and press Enter";
+        fileListEl.innerHTML = "";
+      } else {
+        searchInput.placeholder = "Search filenames...";
+        searchHintEl.classList.remove("visible");
+        filterFiles(searchInput.value.trim());
+      }
+      searchInput.focus();
+    });
+
+    // --- File list ---
 
     async function init() {
       try {
@@ -268,8 +389,10 @@
         resultCountEl.textContent = `${allFiles.length} spec files`;
         renderList(allFiles.slice(0, MAX_RESULTS));
       } catch {
-        resultCountEl.textContent = "Failed to load file list — generate filelist.json or deploy via GitHub Pages";
+        resultCountEl.textContent = "Failed to load file list";
       }
+
+      handleHashNavigation();
     }
 
     function renderList(files) {
@@ -305,11 +428,27 @@
 
     let debounceTimer;
     searchInput.addEventListener("input", () => {
+      if (searchMode !== "filename") return;
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => filterFiles(searchInput.value.trim()), 120);
     });
 
-    async function loadSpec(filename) {
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+      if (searchMode === "content") {
+        const query = searchInput.value.trim();
+        if (!query) return;
+        const url = `https://github.com/search?q=${encodeURIComponent("repo:" + GITHUB_REPO + " " + query)}&type=code`;
+        window.open(url, "_blank", "noopener");
+      } else {
+        const first = fileListEl.querySelector("li");
+        if (first) first.click();
+      }
+    });
+
+    // --- Spec viewer with line numbers ---
+
+    async function loadSpec(filename, targetLine) {
       activeFile = filename;
       document.querySelectorAll(".file-list li").forEach(li => {
         li.classList.toggle("active", li.textContent === filename);
@@ -322,7 +461,7 @@
         if (!resp.ok) throw new Error(resp.statusText);
         const text = await resp.text();
 
-        const repoUrl = `https://github.com/r0x0d/fedora-rpm-specs/blob/main/specs/${encodeURIComponent(filename)}`;
+        const repoUrl = `https://github.com/${GITHUB_REPO}/blob/main/specs/${encodeURIComponent(filename)}`;
 
         viewerEl.innerHTML = `
           <div class="viewer-header">
@@ -336,17 +475,77 @@
         const codeEl = viewerEl.querySelector("code");
         codeEl.textContent = text;
         hljs.highlightElement(codeEl);
+
+        const highlightedHtml = codeEl.innerHTML;
+        const lines = highlightedHtml.split("\n");
+        const contentEl = viewerEl.querySelector(".viewer-content");
+
+        let tableHtml = '<table class="code-table">';
+        for (let i = 0; i < lines.length; i++) {
+          const lineNum = i + 1;
+          const lineId = `${filename}-L${lineNum}`;
+          const highlighted = targetLine === lineNum ? ' class="highlighted"' : "";
+          tableHtml += `<tr id="${lineId}"${highlighted}>`;
+          tableHtml += `<td class="line-num"><a href="#${lineId}">${lineNum}</a></td>`;
+          tableHtml += `<td class="line-code">${lines[i] || " "}</td>`;
+          tableHtml += `</tr>`;
+        }
+        tableHtml += "</table>";
+        contentEl.innerHTML = tableHtml;
+
+        contentEl.addEventListener("click", handleLineClick);
+
+        if (targetLine) {
+          scrollToLine(filename, targetLine);
+        }
       } catch (err) {
         viewerEl.innerHTML = `<div class="placeholder">Failed to load ${filename}: ${err.message}</div>`;
       }
     }
 
-    searchInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        const first = fileListEl.querySelector("li");
-        if (first) first.click();
+    // --- Line number click handling ---
+
+    function handleLineClick(e) {
+      const anchor = e.target.closest(".line-num a");
+      if (!anchor) return;
+      e.preventDefault();
+
+      const tr = anchor.closest("tr");
+      if (!tr) return;
+
+      const table = tr.closest(".code-table");
+      table.querySelectorAll("tr.highlighted").forEach(r => r.classList.remove("highlighted"));
+      tr.classList.add("highlighted");
+
+      const hash = anchor.getAttribute("href").slice(1);
+      history.replaceState(null, "", `#${hash}`);
+    }
+
+    function scrollToLine(filename, lineNum) {
+      const lineId = `${filename}-L${lineNum}`;
+      const el = document.getElementById(lineId);
+      if (el) {
+        el.scrollIntoView({ block: "center" });
       }
-    });
+    }
+
+    // --- Deep link from URL hash ---
+
+    function parseHash(hash) {
+      if (!hash || hash.length < 2) return null;
+      const raw = hash.slice(1);
+      const match = raw.match(/^(.+)-L(\d+)$/);
+      if (match) return { filename: match[1], line: parseInt(match[2], 10) };
+      return { filename: raw, line: null };
+    }
+
+    function handleHashNavigation() {
+      const parsed = parseHash(window.location.hash);
+      if (!parsed) return;
+      loadSpec(parsed.filename, parsed.line);
+    }
+
+    window.addEventListener("hashchange", handleHashNavigation);
 
     init();
   </script>
