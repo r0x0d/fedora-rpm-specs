@@ -11,7 +11,7 @@
 
 Summary:	Point Data Abstraction Library
 Name:		PDAL
-Version:	2.10.0
+Version:	2.10.1
 Release:	1%{?dist}
 # The code is licensed BSD except for:
 # - filters/private/csf/* and plugins/i3s/lepcc/* are ASL 2.0
@@ -207,16 +207,12 @@ sphinx-build -b html . build/html
 %license plugins/e57/libE57Format/LICENSE.md
 %{_libdir}/libpdalcpp.so.20*
 %{_libdir}/libpdal_plugin_kernel_fauxplugin.so.20*
-%{_libdir}/libpdal_plugin_reader_pgpointcloud.so.20*
-%{_libdir}/libpdal_plugin_writer_pgpointcloud.so.20*
 
 %files devel
 %{_bindir}/pdal-config
 %{_includedir}/pdal/
 # drop unversioned symbolic links (BZ#1841616)
 %exclude %{_libdir}/libpdal_plugin_kernel_fauxplugin.so
-%exclude %{_libdir}/libpdal_plugin_reader_pgpointcloud.so
-%exclude %{_libdir}/libpdal_plugin_writer_pgpointcloud.so
 %{_libdir}/libpdalcpp.so
 %{_libdir}/cmake/PDAL/
 %{_libdir}/pkgconfig/*.pc
@@ -232,6 +228,9 @@ sphinx-build -b html . build/html
 %endif
 
 %changelog
+* Fri Mar 27 2026 Sandro Mani <manisandro@gmail.com> - 2.10.1-1
+- Update to 2.10.1
+
 * Sat Feb 14 2026 Sandro Mani <manisandro@gmail.com> - 2.10.0-1
 - Update to 2.10.0
 
