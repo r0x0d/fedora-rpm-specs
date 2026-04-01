@@ -86,6 +86,8 @@ Summary:        Development files for Rapid YAML
 
 Requires:       rapidyaml%{?_isa} = %{version}-%{release}
 Requires:       c4core-devel%{?_isa}
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Conflicts/#_compat_package_conflicts
+Conflicts:      rapidyaml0.10.0-devel
 
 %description devel
 %{common_description}

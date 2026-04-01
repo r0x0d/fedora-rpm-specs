@@ -2,7 +2,7 @@
 #region version
 %global maj_ver 22
 %global min_ver 1
-%global patch_ver 1
+%global patch_ver 2
 #global rc_ver rc3
 
 %bcond_with snapshot_build
@@ -492,13 +492,10 @@ Patch104: 0001-Driver-Give-devtoolset-path-precedence-over-Installe.patch
 # (https://github.com/llvm/llvm-project/pull/124743 landed in LLVM 21)
 Patch2003: 0001-cmake-Resolve-symlink-when-finding-install-prefix.patch
 
-# Backport a fix from LLVM 23.
-# https://github.com/llvm/llvm-project/pull/185375
-Patch2204: 22-185375.patch
-
-# Backport a fix for high CPU usage on s390x from LLVM 23.
-# https://github.com/llvm/llvm-project/pull/185922
-Patch2205: 22-185922.patch
+# Backport fixes for lit resource exhaustion on i686.
+Patch2206: 0001-lit-Stop-holding-subprocess-objects-open-in-TimeoutH.patch
+Patch2207: 0002-lit-dealloc-ApplyResult-objects-as-they-re-waited-on.patch
+Patch2208: 0003-lit-Explicitly-unset-timer-to-free-thread-stack-1887.patch
 
 #region LLD patches
 Patch106: 0001-19-Always-build-shared-libs-for-LLD.patch

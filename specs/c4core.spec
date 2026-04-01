@@ -69,6 +69,8 @@ no equivalent under consideration.}
 Summary:        %{summary}
 
 Requires:       %{name}%{?_isa} = %{version}-%{release}
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Conflicts/#_compat_package_conflicts
+Conflicts:      c4core0.2.8-devel
 
 # Each of these header-only libraries is made available under c4/ext/… in the
 # API of this package. Dependent packages that use them should really have

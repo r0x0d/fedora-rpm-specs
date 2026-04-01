@@ -26,6 +26,11 @@ BuildArch:  noarch
 BuildRequires:  python3-devel
 BuildRequires:  git-core
 
+%if 0%{?sources_gpg} == 1
+BuildRequires:  /usr/bin/gpgv2
+%endif
+
+
 %description
 %common_desc
 
@@ -72,6 +77,7 @@ sed -i \
     -e "/^coverage[[:space:]]*[!><=]/d" \
     -e "/^osprofiler[[:space:]]*[!><=]/d" \
     -e "/^reno[[:space:]]*[!><=]/d" \
+    -e "/^testrepository[[:space:]]*[!><=]/d" \
     test-requirements.txt doc/requirements.txt
  
 
