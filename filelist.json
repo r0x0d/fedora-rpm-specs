@@ -17261,6 +17261,7 @@
   "redhat-lsb.spec",
   "redhat-menus.spec",
   "redhat-rpm-config.spec",
+  "redhat-systemd-presets.spec",
   "redict.spec",
   "redir.spec",
   "redisx.spec",
