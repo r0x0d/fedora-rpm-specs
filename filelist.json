@@ -3078,6 +3078,7 @@
   "fmit.spec",
   "fmt-ptrn.spec",
   "fmt.spec",
+  "fmt11.spec",
   "fmtools.spec",
   "fntsample.spec",
   "focuswriter.spec",
