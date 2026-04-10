@@ -154,6 +154,16 @@ Requires:       libdrm-devel
 %{summary}
 %endif
 
+%if %{with preview}
+%package static
+Summary: Static libraries for %{name}
+Requires: amdsmi%{pkg_suffix}-devel = %{version}-%{release}
+Provides:  amdsmi%{pkg_suffix}-static = %{version}-%{release}
+
+%description static
+%{summary}
+%endif
+
 %prep
 %if %{without preview}
 %autosetup -p1 -n %{upstreamname}
@@ -260,6 +270,7 @@ mv %{buildroot}%{pkg_prefix}/share/tests %{buildroot}%{pkg_prefix}/share/amdsmi/
 %if %{with preview}
 #ERROR   0002: file '/usr/lib/python3.14/site-packages/amdsmi/libamd_smi.so' contains an invalid runpath '/builddir/build/BUILD/amdsmi-7.12.0-build/amdsmi/redhat-linux-build/src/nic/ai-nic/amdsmi_unified/build' in [/builddir/build/BUILD/amdsmi-7.12.0-build/amdsmi/redhat-linux-build/src/nic/ai-nic/amdsmi_unified/build:]
 chrpath -d %{buildroot}%{pkg_prefix}/lib/python%{python3_version}/site-packages/amdsmi/libamd_smi.so
+
 %endif
 
 %if 0%{?suse_version}
@@ -299,6 +310,11 @@ chrpath -d %{buildroot}%{pkg_prefix}/lib/python%{python3_version}/site-packages/
 %if %{with test}
 %files test
 %{pkg_prefix}/share/amdsmi
+%endif
+
+%if %{with preview}
+%files static
+%{pkg_prefix}/%{pkg_libdir}/libamd_smi_static.a
 %endif
 
 %changelog

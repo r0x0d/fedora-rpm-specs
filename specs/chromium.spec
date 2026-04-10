@@ -262,7 +262,7 @@
 %endif
 
 Name:	chromium
-Version: 146.0.7680.177
+Version: 147.0.7727.55
 Release: 1%{?dist}
 Summary: A WebKit (Blink) powered web browser that Google doesn't want you to use
 Url: http://www.chromium.org/Home
@@ -326,7 +326,6 @@ Patch97: chromium-141-glibc-2.42-SYS_SECCOMP.patch
 # need for old ffmpeg 5.x on epel9
 Patch128: chromium-138-el9-ffmpeg-deprecated-apis.patch
 Patch129: chromium-el9-ffmpeg-AV_CODEC_FLAG_COPY_OPAQUE.patch
-Patch130: chromium-142-el9-ffmpeg-5.x-duration.patch
 # disable the check
 Patch131: chromium-107-proprietary-codecs.patch
 # fix tab crash with SIGTRAP error when using system ffmpeg
@@ -337,14 +336,14 @@ Patch133: chromium-142-el9-ffmpeg-5.1.x.patch
 Patch135: chromium-133-disable-H.264-video-parser-during-demuxing.patch
 # Workaround for youtube stop working
 Patch136: chromium-133-workaround-system-ffmpeg-whitelist.patch
-
+# fatal error: 'third_party/ffmpeg/libavutil/rational.h' file not found
+Patch137: chromium-147-system-ffmpeg.patch
 # file conflict with old kernel on el8/el9
 Patch141: chromium-118-dma_buf_export_sync_file-conflict.patch
 
 # fix ftbfs caused by old rustc-1.88 on el9 and 10.1
 Patch143: chromium-146-rust-1.88-enable-unstable_features.patch
 Patch144: chromium-146-rust-1.88-undefined-symbol.patch
-Patch145: chromium-146-ftbfs-rust-bytemuck.patch
 
 # add correct path for Qt6Gui header and libs
 Patch150: chromium-124-qt6.patch
@@ -394,8 +393,8 @@ Patch314: chromium-136-rust-skrifa-build-error.patch
 # error with old rustc
 Patch315: chromium-145-rustc-ftbfs.patch
 
-# add -ftrivial-auto-var-init=zero and -fwrapv
-Patch316: chromium-122-clang-build-flags.patch
+# llvm <= 22: clang++: error: unknown argument: '-fno-lifetime-dse'
+Patch316: chromium-147-clang++-unknown-argument.patch
 
 # unknown warning option -Wno-nontrivial-memcall
 Patch317: chromium-142-clang++-unknown-argument.patch
@@ -1084,7 +1083,6 @@ Qt6 UI for chromium.
 %if 0%{?rhel} == 9
 %patch -P128 -p1 -b .el9-ffmpeg-deprecated-apis
 %patch -P129 -p1 -b .el9-ffmpeg-AV_CODEC_FLAG_COPY_OPAQUE
-%patch -P130 -p1 -b .el9-ffmpeg-5.x-duration
 %patch -P133 -p1 -b .el9-ffmpeg-5.1.x
 %endif
 %patch -P131 -p1 -b .prop-codecs
@@ -1092,6 +1090,7 @@ Qt6 UI for chromium.
 %patch -P135 -p1 -b .disable-H.264-video-parser-during-demuxing
 %patch -P136 -p1 -b .workaround-system-ffmpeg-whitelist
 %endif
+%patch -P137 -p1 -b .system-ffmpeg
 
 %if 0%{?rhel} == 8 || 0%{?rhel} == 9
 %patch -P141 -p1 -b .dma_buf_export_sync_file-conflict
@@ -1101,8 +1100,6 @@ Qt6 UI for chromium.
 %patch -P143 -p1 -b .rust-1.88-enable-unstable_features
 %patch -P144 -p1 -b .rustc-1.88-undefined-symbol
 %endif
-
-%patch -P145 -p1 -b .ftbfs-rust-bytemuck
 
 %patch -P150 -p1 -b .qt6
 
@@ -1132,7 +1129,8 @@ Qt6 UI for chromium.
 %if 0%{?rhel} && 0%{?rhel} < 10
 %patch -P354 -p1 -b .split-threshold-for-reg-with-hint
 %endif
-%patch -P316 -p1 -b .clang-build-flags
+
+%patch -P316 -p1 -b .clang++-unknown-argument
 
 %if 0%{?fedora} && 0%{?fedora} < 42 || 0%{?rhel} && 0%{?rhel} < 10
 %patch -P317 -p1 -b .clang++-unsupported-argument
@@ -1859,6 +1857,69 @@ fi
 %endif
 
 %changelog
+* Thu Apr 09 2026 Than Ngo <than@redhat.com> - 147.0.7727.55-1
+- Update to 147.0.7727.55
+  * Critical CVE-2026-5858: Heap buffer overflow in WebML
+  * Critical CVE-2026-5859: Integer overflow in WebML
+  * High CVE-2026-5860: Use after free in WebRTC
+  * High CVE-2026-5861: Use after free in V8
+  * High CVE-2026-5862: Inappropriate implementation in V8
+  * High CVE-2026-5863: Inappropriate implementation in V8
+  * High CVE-2026-5864: Heap buffer overflow in WebAudio
+  * High CVE-2026-5865: Type Confusion in V8
+  * High CVE-2026-5866: Use after free in Media
+  * High CVE-2026-5867: Heap buffer overflow in WebML
+  * High CVE-2026-5868: Heap buffer overflow in ANGLE
+  * High CVE-2026-5869: Heap buffer overflow in WebML
+  * High CVE-2026-5870: Integer overflow in Skia
+  * High CVE-2026-5871: Type Confusion in V8
+  * High CVE-2026-5872: Use after free in Blink
+  * High CVE-2026-5873: Out of bounds read and write in V8
+  * Medium CVE-2026-5874: Use after free in PrivateAI
+  * Medium CVE-2026-5875: Policy bypass in Blink
+  * Medium CVE-2026-5876: Side-channel information leakage in Navigation
+  * Medium CVE-2026-5877: Use after free in Navigation
+  * Medium CVE-2026-5878: Incorrect security UI in Blink
+  * Medium CVE-2026-5879: Insufficient validation of untrusted input in ANGLE
+  * Medium CVE-2026-5880: Incorrect security UI in browser UI
+  * Medium CVE-2026-5881: Policy bypass in LocalNetworkAccess
+  * Medium CVE-2026-5882: Incorrect security UI in Fullscreen
+  * Medium CVE-2026-5883: Use after free in Media
+  * Medium CVE-2026-5884: Insufficient validation of untrusted input in Media
+  * Medium CVE-2026-5885: Insufficient validation of untrusted input in WebML
+  * Medium CVE-2026-5886: Out of bounds read in WebAudio
+  * Medium CVE-2026-5887: Insufficient validation of untrusted input in Downloads
+  * Medium CVE-2026-5888: Uninitialized Use in WebCodecs
+  * Medium CVE-2026-5889: Cryptographic Flaw in PDFium
+  * Medium CVE-2026-5890: Race in WebCodecs
+  * Medium CVE-2026-5891: Insufficient policy enforcement in browser UI
+  * Medium CVE-2026-5892: Insufficient policy enforcement in PWAs
+  * Medium CVE-2026-5893: Race in V8
+  * Low CVE-2026-5894: Inappropriate implementation in PDF
+  * Low CVE-2026-5895: Incorrect security UI in Omnibox
+  * Low CVE-2026-5896: Policy bypass in Audio
+  * Low CVE-2026-5897: Incorrect security UI in Downloads
+  * Low CVE-2026-5898: Incorrect security UI in Omnibox
+  * Low CVE-2026-5899: Incorrect security UI in History Navigation
+  * Low CVE-2026-5900: Policy bypass in Downloads
+  * Low CVE-2026-5901: Policy bypass in DevTools
+  * Low CVE-2026-5902: Race in Media
+  * Low CVE-2026-5903: Policy bypass in IFrameSandbox
+  * Low CVE-2026-5904: Use after free in V8
+  * Low CVE-2026-5905: Incorrect security UI in Permissions
+  * Low CVE-2026-5906: Incorrect security UI in Omnibox
+  * Low CVE-2026-5907: Insufficient data validation in Media
+  * Low CVE-2026-5908: Integer overflow in Media
+  * Low CVE-2026-5909: Integer overflow in Media
+  * Low CVE-2026-5910: Integer overflow in Media
+  * Low CVE-2026-5911: Policy bypass in ServiceWorkers
+  * Low CVE-2026-5912: Integer overflow in WebRTC
+  * Low CVE-2026-5913: Out of bounds read in Blink
+  * Low CVE-2026-5914: Type Confusion in CSS
+  * Low CVE-2026-5915: Insufficient validation of untrusted input in WebML
+  * Low CVE-2026-5918: Inappropriate implementation in Navigation
+  * Low CVE-2026-5919: Insufficient validation of untrusted input in WebSockets
+
 * Wed Apr 01 2026 Than Ngo <than@redhat.com> - 146.0.7680.177-1
 - Update to 146.0.7680.177
   * High CVE-2026-5273: Use after free in CSS
