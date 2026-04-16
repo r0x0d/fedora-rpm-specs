@@ -59,7 +59,11 @@ Requires:       perl(FindBin)
 Requires:       perl(IPC::Cmd)
 Requires:       perl(lib)
 Requires:       perl(Time::Piece)
-Requires:       zlib-ng-compat-devel
+%if %{defined el9}
+Requires: zlib-devel
+%else
+Requires: zlib-ng-compat-devel
+%endif
 
 %description    ruby
 This package contains ruby-build targets for MRI/CRuby versions.

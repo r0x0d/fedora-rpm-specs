@@ -5,11 +5,10 @@
 %global crate thin-vec
 
 Name:           rust-thin-vec
-Version:        0.2.15
+Version:        0.2.16
 Release:        %autorelease
 Summary:        Vec that takes up less space on the stack
 
-# Upstream license specification: MIT/Apache-2.0
 License:        MIT OR Apache-2.0
 URL:            https://crates.io/crates/thin-vec
 Source:         %{crates_source}
@@ -17,7 +16,7 @@ Source:         %{crates_source}
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-A vec that takes up less space on the stack.}
+A Vec that takes up less space on the stack.}
 
 %description %{_description}
 
@@ -95,18 +94,6 @@ This package contains library source intended for building other packages which
 use the "std" feature of the "%{crate}" crate.
 
 %files       -n %{name}+std-devel
-%ghost %{crate_instdir}/Cargo.toml
-
-%package     -n %{name}+unstable-devel
-Summary:        %{summary}
-BuildArch:      noarch
-
-%description -n %{name}+unstable-devel %{_description}
-
-This package contains library source intended for building other packages which
-use the "unstable" feature of the "%{crate}" crate.
-
-%files       -n %{name}+unstable-devel
 %ghost %{crate_instdir}/Cargo.toml
 
 %prep

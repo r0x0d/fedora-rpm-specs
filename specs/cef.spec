@@ -238,12 +238,12 @@
 %global chromium_major 146
 %global chromium_branch 7680
 # Where possible, track Chromium versions already released in Fedora.
-%global chromium_minor 164
+%global chromium_minor 177
 %global chromium_version %{chromium_major}.0.%{chromium_branch}.%{chromium_minor}
-%global cef_commit 3ca6a87d10927bb1cccab7c9eabcabba316decbc
+%global cef_commit 3a0fcf1e1b6249b50c96ac77c429bfefade09d96
 %global cef_branch %{chromium_branch}
 %global cef_minor 0
-%global cef_patch 9
+%global cef_patch 11
 %global cef_version %{chromium_major}.%{cef_minor}.%{cef_patch}
 %global shortcommit %(c=%{cef_commit}; echo ${c:0:7})
 
@@ -484,9 +484,6 @@ Patch415: add-ppc64-pthread-stack-size.patch
 Patch417: 0001-add-xnn-ppc64el-support.patch
 Patch418: 0002-regenerate-xnn-buildgn.patch
 Patch419: 0009-sandbox-ignore-byte-span-error.patch
-
-# Fix FTBFS, error: out-of-line definition of 'ProcessARateVector' does not match any declaration in 'blink::Delay'
-Patch420: chromium-146-ppc64le-build-error.patch
 
 # flatpak sandbox patches from
 # https://github.com/flathub/org.chromium.Chromium/tree/master/patches/chromium
@@ -1180,7 +1177,6 @@ mv %{_builddir}/cef-%{cef_commit} ./cef
 %patch -P417 -p1 -b .0001-add-xnn-ppc64el-support
 %patch -P418 -p1 -b .0002-regenerate-xnn-buildgn
 %patch -P419 -p1 -b .0009-sandbox-ignore-byte-span-error
-%patch -P420 -p1 -b .fix-ppc64le-build-error
 %endif
 
 %if 0%{?flatpak}

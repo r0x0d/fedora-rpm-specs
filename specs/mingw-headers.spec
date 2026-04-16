@@ -9,8 +9,8 @@
 %global bundle_dummy_pthread_headers 0
 
 Name:           mingw-headers
-Version:        13.0.0
-Release:        3%{?dist}
+Version:        14.0.0
+Release:        1%{?dist}
 Summary:        Win32/Win64 header files
 
 License:        BSD-3-Clause AND LGPL-2.0-or-later AND LGPL-2.1-or-later AND GPL-2.0-or-later AND ZPL-2.1 AND MIT-Khronos-old AND LicenseRef-Fedora-Public-Domain
@@ -26,9 +26,9 @@ Patch0:         mingw-headers-no-widl.patch
 BuildArch:      noarch
 
 BuildRequires: make
-BuildRequires: mingw32-filesystem >= 133
-BuildRequires: mingw64-filesystem >= 133
-BuildRequires: ucrt64-filesystem >= 133
+BuildRequires: mingw32-filesystem
+BuildRequires: mingw64-filesystem
+BuildRequires: ucrt64-filesystem
 
 
 %description
@@ -37,7 +37,7 @@ MinGW Windows cross-compiler Win32 and Win64 header files.
 
 %package -n mingw32-headers
 Summary:        MinGW Windows cross-compiler Win32 header files
-Requires:       mingw32-filesystem >= 95
+Requires:       mingw32-filesystem
 %if 0%{bundle_dummy_pthread_headers} == 0
 Requires:       mingw32-winpthreads
 %endif
@@ -47,7 +47,7 @@ MinGW Windows cross-compiler Win32 header files.
 
 %package -n mingw64-headers
 Summary:        MinGW Windows cross-compiler Win64 header files
-Requires:       mingw64-filesystem >= 95
+Requires:       mingw64-filesystem
 %if 0%{bundle_dummy_pthread_headers} == 0
 Requires:       mingw64-winpthreads
 %endif
@@ -57,7 +57,7 @@ MinGW Windows cross-compiler Win64 header files.
 
 %package -n ucrt64-headers
 Summary:        MinGW Windows cross-compiler Win64 header files
-Requires:       ucrt64-filesystem >= 133
+Requires:       ucrt64-filesystem
 %if 0%{bundle_dummy_pthread_headers} == 0
 Requires:       ucrt64-winpthreads
 %endif
@@ -113,6 +113,12 @@ rm -f %{buildroot}%{ucrt64_includedir}/pthread_unistd.h
 
 
 %changelog
+* Wed Apr 15 2026 Sandro Mani <manisandro@gmail.com> - 14.0.0-1
+- Update to 14.0.0
+
+* Tue Apr 14 2026 Sandro Mani <manisandro@gmail.com> - 14.0.0-0.1
+- Update to 14.0.0 (bootstrap)
+
 * Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 13.0.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
 
