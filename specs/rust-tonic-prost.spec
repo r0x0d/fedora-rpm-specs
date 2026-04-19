@@ -65,7 +65,8 @@ cp -p '%{SOURCE10}' .
 
 %if %{with check}
 %check
-%cargo_test
+# * encode_too_big: Fails to allocate memory for i686
+%cargo_test -- -- --skip codec::tests::encode_too_big
 %endif
 
 %changelog

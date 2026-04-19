@@ -2,25 +2,21 @@
 %bcond check 1
 %global debug_package %{nil}
 
-%global crate cmov
+%global crate iobuffer
 
-Name:           rust-cmov
-Version:        0.5.3
+Name:           rust-iobuffer
+Version:        0.2.0
 Release:        %autorelease
-Summary:        Conditional move CPU intrinsics with pure Rust fallback implemenation
+Summary:        Simple memory-based buffer for IO reading and writing
 
-License:        Apache-2.0 OR MIT
-URL:            https://crates.io/crates/cmov
+License:        Apache-2.0
+URL:            https://crates.io/crates/iobuffer
 Source:         %{crates_source}
 
 BuildRequires:  cargo-rpm-macros >= 24
 
 %global _description %{expand:
-Conditional move CPU intrinsics which are guaranteed on major platforms
-(ARM32/ARM64, x86/x86_64, RISC-V) to execute in constant-time and not be
-rewritten as branches by the compiler. Provides wrappers for the CMOV
-family of instructions on x86/x86_64 and CSEL on AArch64, along with a
-portable "best-effort" pure Rust fallback implementation.}
+A simple memory-based buffer for IO reading and writing.}
 
 %description %{_description}
 
@@ -34,9 +30,9 @@ This package contains library source intended for building other packages which
 use the "%{crate}" crate.
 
 %files          devel
-%license %{crate_instdir}/LICENSE-APACHE
-%license %{crate_instdir}/LICENSE-MIT
+%license %{crate_instdir}/LICENSE
 %doc %{crate_instdir}/CHANGELOG.md
+%doc %{crate_instdir}/CONTRIBUTING.md
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
 

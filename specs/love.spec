@@ -1,13 +1,13 @@
-# Because of the LuaJIT requirements:
-%ifarch %{arm} %{ix86} x86_64 %{mips} aarch64
-%global luadep luajit
-%else
+# LuaJIT excludes these arches, fall back to regular lua for those:
+%ifarch riscv64 ppc64 ppc64le
 %global luadep lua
+%else
+%global luadep luajit
 %endif
 
 Name:           love
 Version:        11.5
-Release:        7%{?dist}
+Release:        9%{?dist}
 Summary:        A free 2D game engine which enables easy game creation in Lua
 
 License:        Zlib
@@ -42,8 +42,8 @@ Provides: bundled(luasocket) = 3.0
 Provides: bundled(lz4) = 1.8.0
 Provides: bundled(physfs) = 3.0.1
 
-#Big endian systems are not yet supported by love 11+
-ExcludeArch:    ppc ppc64 s390x
+#Big endian systems are not yet supported by love 11+, PPC64LE is broken
+ExclusiveArch: %{arm} %{ix86} x86_64 aarch64 riscv64
 
 %description
 LOVE is an open source, cross platform 2D game engine which uses the
@@ -100,6 +100,13 @@ rm -f %{buildroot}%{_libdir}/lib%{name}.la
 %{_libdir}/lib%{name}*.so
 
 %changelog
+* Fri Apr 17 2026 Jeremy Newton <alexjnewt AT hotmail DOT com> - 11.5-9
+- Drop macro package
+
+* Fri Apr 17 2026 Jeremy Newton <alexjnewt AT hotmail DOT com> - 11.5-8
+- Add macros package for easier building of love dependent packages
+- Update arch conditions to reflect luagit and buildable targets
+
 * Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 11.5-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
 
