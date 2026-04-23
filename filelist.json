@@ -2931,6 +2931,7 @@
   "fedora-distro-aliases.spec",
   "fedora-easy-karma.spec",
   "fedora-eln-backgrounds.spec",
+  "fedora-eln-release.spec",
   "fedora-flathub-remote.spec",
   "fedora-gnat-project-common.spec",
   "fedora-iot-config.spec",
