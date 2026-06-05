@@ -7492,6 +7492,7 @@
   "libqxp.spec",
   "libqxt-qt5.spec",
   "librabbitmq.spec",
+  "librandombytes.spec",
   "libraqm.spec",
   "librasterlite2.spec",
   "libratbag.spec",
