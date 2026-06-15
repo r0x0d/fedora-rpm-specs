@@ -19686,6 +19686,7 @@
   "rust-pathdiff.spec",
   "rust-pathfinder_geometry.spec",
   "rust-pathfinder_simd.spec",
+  "rust-pathrs.spec",
   "rust-pbkdf2.spec",
   "rust-pcap-file.spec",
   "rust-pcap.spec",
