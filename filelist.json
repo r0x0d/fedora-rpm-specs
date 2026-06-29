@@ -14635,6 +14635,7 @@
   "python-evdev.spec",
   "python-eventlet.spec",
   "python-events.spec",
+  "python-exa-py.spec",
   "python-exabgp.spec",
   "python-exceptiongroup.spec",
   "python-exdir.spec",
