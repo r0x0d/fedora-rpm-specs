@@ -24,7 +24,7 @@
 
 %bcond_with preview
 %if %{with preview}
-%global rocm_release 7.13
+%global rocm_release 7.14
 %global rocm_patch 0
 %global pkg_src therock-%{rocm_release}
 %else
@@ -69,7 +69,7 @@ Version:    %{rocm_version}
 %if %{with preview}
 Release:        0%{?dist}
 %else
-Release:        3%{?dist}
+Release:        4%{?dist}
 %endif
 Summary:    ROCm Runtime Library
 
@@ -251,6 +251,9 @@ rm -f %{buildroot}%{pkg_prefix}/%{pkg_libdir}/pkgconfig/libhsakmt.pc
 %endif
 
 %changelog
+* Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 7.2.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
+
 * Tue Jun 2 2026 Tom Rix <Tom.Rix@amd.com> - 7.2.1-3
 - merge compat changes
 

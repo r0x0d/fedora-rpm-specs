@@ -22,7 +22,7 @@
 
 %bcond_with preview
 %if %{with preview}
-%global rocm_release 7.12
+%global rocm_release 7.14
 %global rocm_patch 0
 %else
 %global rocm_release 7.2
@@ -44,7 +44,7 @@ Version:        %{rocm_version}
 %if %{with preview}
 Release:        0%{?dist}
 %else
-Release:        2%{?dist}
+Release:        3%{?dist}
 %endif
 Summary:        ROCm RPM macros
 License:        GPL-2.0-or-later
@@ -164,6 +164,9 @@ cp -p modules/* %{buildroot}%{_datadir}/modulefiles/rocm/
 %endif
 
 %changelog
+* Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 7.2.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
+
 * Tue Mar 10 2026 Tom Rix <Tom.Rix@amd.com> - 7.2.0-2
 - Add --with preview
 

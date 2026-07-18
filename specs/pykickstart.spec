@@ -4,7 +4,7 @@
 %bcond_with signed
 
 Name:      pykickstart
-Version:   3.75
+Version:   3.76
 Release:   1%{?dist}
 License:   GPL-2.0-only
 Summary:   Python utilities for manipulating kickstart files.
@@ -85,6 +85,12 @@ LC_ALL=C make PYTHON=%{__python3} test-no-coverage
 %{python3_sitelib}/pykickstart-%{version}.dist-info
 
 %changelog
+* Fri Jul 17 2026 Brian C. Lane <bcl@redhat.com> - 3.76-1
+- Add support for Stratis storage to autopart (vtrefny)
+
+* Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 3.75-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
+
 * Mon Jun 22 2026 Brian C. Lane <bcl@redhat.com> - 3.75-1
 - packit.yaml: Just list the tar.gz (bcl)
 - Makefile: Use https for po-pull (bcl)

@@ -26,7 +26,7 @@
 
 %bcond_with preview
 %if %{with preview}
-%global rocm_release 7.13
+%global rocm_release 7.14
 %global rocm_patch 0
 %global pkg_src therock-%{rocm_release}
 %else
@@ -130,7 +130,7 @@ Version:        %{rocm_version}
 %if %{with preview}
 Release:        0%{?dist}
 %else
-Release:        6%{?dist}
+Release:        7%{?dist}
 %endif
 Summary:        ROCm random number generator
 
@@ -287,6 +287,9 @@ rm -f %{buildroot}%{pkg_prefix}/share/doc/rocrand/LICENSE.md
 %endif
 
 %changelog
+* Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 7.2.0-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
+
 * Tue Jul 7 2026 Tom Rix <Tom.Rix@amd.com> - 7.2.0-6
 - bring check back
 

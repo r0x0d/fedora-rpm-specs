@@ -25,7 +25,7 @@
 %bcond_with preview
 %if %{with preview}
 %global rocm_major 7
-%global rocm_minor 13
+%global rocm_minor 14
 %global rocm_patch 0
 %global rocm_release %{rocm_major}.%{rocm_minor}
 %global pkg_src therock-%{rocm_release}
@@ -114,9 +114,9 @@
 Name:           %{pkg_name}
 Version:        %{rocm_version}
 %if %{with preview}
-Release:        0%{?dist}
+Release:        1%{?dist}
 %else
-Release:        2%{?dist}
+Release:        3%{?dist}
 %endif
 Summary:        ROCm Compute Language Runtime
 License:        MIT AND Apache-2.0 AND MIT-Khronos-old
@@ -454,6 +454,9 @@ rm -f %{buildroot}%{pkg_prefix}/share/doc/hip/LICENSE.md
 %{pkg_prefix}/%{pkg_libdir}/libhiprtc.so.%{rocm_major}{,.*}
 %{pkg_prefix}/%{pkg_libdir}/libhiprtc-builtins.so.%{rocm_major}{,.*}
 %{pkg_prefix}/share/hip
+%if %{with preview}
+%{pkg_prefix}/bin/hrr-playback
+%endif
 
 %files -n rocm-hip%{pkg_suffix}-devel
 %{pkg_prefix}/%{pkg_libdir}/libamdhip64.so
@@ -477,6 +480,9 @@ rm -f %{buildroot}%{pkg_prefix}/share/doc/hip/LICENSE.md
 %endif
 
 %changelog
+* Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 7.2.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
+
 * Tue Jun 2 2026 Tom Rix <Tom.Rix@amd.com> - 7.2.2-2
 - merge compat changes
 
