@@ -18148,6 +18148,7 @@
   "rust-concolor-query.spec",
   "rust-concolor.spec",
   "rust-concurrent-queue.spec",
+  "rust-cond_sync.spec",
   "rust-config-file.spec",
   "rust-config.spec",
   "rust-config0.13.spec",
