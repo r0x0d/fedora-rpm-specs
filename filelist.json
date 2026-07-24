@@ -17682,6 +17682,7 @@
   "rust-ambient-id.spec",
   "rust-ammonia.spec",
   "rust-amq-protocol-types.spec",
+  "rust-amq-protocol-uri.spec",
   "rust-annotate-snippets.spec",
   "rust-annotate-snippets0.11.spec",
   "rust-ansi-parser.spec",
