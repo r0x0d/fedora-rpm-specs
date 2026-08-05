@@ -3,7 +3,7 @@
 %global glib_version 2.84.0
 
 Name:           libadwaita
-Version:        1.10~alpha.1
+Version:        1.10~beta.1
 Release:        %autorelease
 Summary:        Building blocks for modern GNOME applications
 
@@ -12,11 +12,10 @@ License:        LGPL-2.1-or-later AND MIT
 URL:            https://gitlab.gnome.org/GNOME/libadwaita
 Source0:        https://download.gnome.org/sources/%{name}/%{gnome_major_minor_version}/%{name}-%{gnome_tarball_version}.tar.xz
 
-%gnome_check_version
+# https://gitlab.gnome.org/GNOME/libadwaita/-/merge_requests/1802
+Patch0:         fix-sassc-requirement-for-tarball-builds.patch
 
-# https://gitlab.gnome.org/sp1rit/ministream/-/merge_requests/2
-# https://gitlab.gnome.org/GNOME/libadwaita/-/work_items/1146
-Patch:          0001-ministream-do-not-install.patch
+%gnome_check_version
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  gcc
@@ -25,7 +24,6 @@ BuildRequires:  gi-docgen
 BuildRequires:  libappstream-glib
 BuildRequires:  meson >= 0.63.0
 BuildRequires:  vala
-BuildRequires:  /usr/bin/sassc
 BuildRequires:  pkgconfig(appstream)
 BuildRequires:  pkgconfig(fribidi)
 BuildRequires:  pkgconfig(glib-2.0) >= %{glib_version}
