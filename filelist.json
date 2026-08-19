@@ -16648,6 +16648,8 @@
   "qclib.spec",
   "qcom-firmware-extract.spec",
   "qcom-ptool.spec",
+  "qcom-sensinghub.spec",
+  "qcom-time-services.spec",
   "qcoro.spec",
   "qcustomplot.spec",
   "qd.spec",
