@@ -20247,6 +20247,7 @@
   "rust-signature2.spec",
   "rust-signature_derive.spec",
   "rust-sigul-pesign-bridge.spec",
+  "rust-siguldry-fedora-autopen.spec",
   "rust-siguldry-pkcs11.spec",
   "rust-siguldry.spec",
   "rust-simba.spec",
