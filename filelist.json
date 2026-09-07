@@ -19269,6 +19269,7 @@
   "rust-lru-slab.spec",
   "rust-lru.spec",
   "rust-lru0.12.spec",
+  "rust-lru0.16.spec",
   "rust-lscolors.spec",
   "rust-lsd.spec",
   "rust-lsp-server.spec",
