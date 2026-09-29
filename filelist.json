@@ -19920,6 +19920,7 @@
   "rust-reqsign-aliyun-oss.spec",
   "rust-reqsign-aws-core.spec",
   "rust-reqsign-aws-v4.spec",
+  "rust-reqsign-aws-v4a.spec",
   "rust-reqsign-azure-storage.spec",
   "rust-reqsign-command-execute-tokio.spec",
   "rust-reqsign-core.spec",
