@@ -17725,6 +17725,8 @@
   "rust-assert_no_alloc.spec",
   "rust-associative-cache.spec",
   "rust-astral-html.spec",
+  "rust-astral-ini.spec",
+  "rust-astral-mail-headers.spec",
   "rust-astral-pubgrub.spec",
   "rust-astral-reqwest-middleware.spec",
   "rust-astral-reqwest-retry.spec",
