@@ -15813,6 +15813,7 @@
   "python-pytokens.spec",
   "python-pytoolconfig.spec",
   "python-pytools.spec",
+  "python-pytorch-tokenizers.spec",
   "python-pytzdata.spec",
   "python-pyuca.spec",
   "python-pyudev.spec",
