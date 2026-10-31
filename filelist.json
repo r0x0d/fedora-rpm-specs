@@ -5260,6 +5260,7 @@
   "gucharmap.spec",
   "gudev-sharp.spec",
   "guestfs-tools.spec",
+  "gufo.spec",
   "guichan.spec",
   "guidelines-support-library.spec",
   "guile-commonmark.spec",
