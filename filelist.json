@@ -17933,6 +17933,7 @@
   "rust-cached_proc_macro.spec",
   "rust-cached_proc_macro_types.spec",
   "rust-cachedir.spec",
+  "rust-caf.spec",
   "rust-cairo-rs.spec",
   "rust-cairo-rs0.20.spec",
   "rust-cairo-rs0.21.spec",
