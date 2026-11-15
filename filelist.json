@@ -7022,6 +7022,7 @@
   "libheif.spec",
   "libheinz.spec",
   "libhid.spec",
+  "libhipcxx.spec",
   "libhubbub.spec",
   "libi2cd.spec",
   "libibcommon.spec",
